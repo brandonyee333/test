@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -28,13 +31,16 @@ import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransf
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,17 +52,22 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.TopHits;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -64,14 +75,48 @@ import org.springframework.stereotype.Repository;
  * @author Rachael Koestartyo
  */
 @Repository
-public class ElasticsearchFieldRepositoryImpl
-	extends BaseElasticsearchRepository<Field, Long>
-	implements FieldRepository {
+public class ElasticsearchFieldRepositoryImpl implements FieldRepository {
+
+	@Override
+	public long count() {
+		return _faroInfoElasticsearchInvoker.count(
+			_getCollectionName(), QueryBuilders.matchAllQuery());
+	}
 
 	@Override
 	public long countFields(FilterHelper filterHelper) {
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(), filterHelper.getQueryBuilder());
+			_getCollectionName(), filterHelper.getQueryBuilder());
+	}
+
+	@Override
+	public void delete(Field field) {
+		_faroInfoElasticsearchInvoker.delete(
+			_getCollectionName(), String.valueOf(field.getId()));
+	}
+
+	@Override
+	public void deleteAll() {
+		_faroInfoElasticsearchInvoker.delete(
+			_getCollectionName(), QueryBuilders.matchAllQuery());
+	}
+
+	@Override
+	public void deleteAll(Iterable<? extends Field> fields) {
+		Stream<? extends Field> stream = StreamSupport.stream(
+			fields.spliterator(), false);
+
+		_faroInfoElasticsearchInvoker.deleteByQuery(
+			QueryBuilders.termsQuery(
+				"id",
+				stream.map(
+					Field::getId
+				).map(
+					String::valueOf
+				).collect(
+					Collectors.toList()
+				)),
+			true, _getCollectionName());
 	}
 
 	@Override
@@ -80,7 +125,7 @@ public class ElasticsearchFieldRepositoryImpl
 		String ownerType) {
 
 		_faroInfoElasticsearchInvoker.delete(
-			getCollectionName(),
+			_getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("context", context)
 			).filter(
@@ -99,7 +144,7 @@ public class ElasticsearchFieldRepositoryImpl
 	@Override
 	public void deleteByContextAndOwnerId(String context, Long ownerId) {
 		_faroInfoElasticsearchInvoker.delete(
-			getCollectionName(),
+			_getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("context", context)
 			).filter(
@@ -110,15 +155,21 @@ public class ElasticsearchFieldRepositoryImpl
 	@Override
 	public void deleteByDataSourceId(Long dataSourceId) {
 		_faroInfoElasticsearchInvoker.delete(
-			getCollectionName(),
+			_getCollectionName(),
 			QueryBuilders.termQuery(
 				"dataSourceId", String.valueOf(dataSourceId)));
 	}
 
 	@Override
+	public void deleteById(Long id) {
+		_faroInfoElasticsearchInvoker.delete(
+			_getCollectionName(), id.toString());
+	}
+
+	@Override
 	public void deleteByOwnerIdAndOwnerType(Long ownerId, String ownerType) {
 		_faroInfoElasticsearchInvoker.delete(
-			getCollectionName(),
+			_getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
 			).filter(
@@ -131,7 +182,7 @@ public class ElasticsearchFieldRepositoryImpl
 		List<Long> ownerIds, String ownerType) {
 
 		_faroInfoElasticsearchInvoker.delete(
-			getCollectionName(),
+			_getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termsQuery(
 					"ownerId", ListUtil.map(ownerIds, String::valueOf))
@@ -141,14 +192,59 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
+	public boolean existsById(Long id) {
+		return _faroInfoElasticsearchInvoker.exists(
+			_getCollectionName(), id.toString());
+	}
+
+	@Override
 	public boolean existsByNameAndOwnerId(String name, Long ownerId) {
 		return _faroInfoElasticsearchInvoker.exists(
-			getCollectionName(),
+			_getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("name", name)
 			).filter(
 				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
 			));
+	}
+
+	@Override
+	public Iterable<Field> findAll() {
+		return findAll(Sort.by("id"));
+	}
+
+	@Override
+	public Page<Field> findAll(Pageable pageable) {
+		return PageableExecutionUtils.getPage(
+			_toFields(
+				_faroInfoElasticsearchInvoker.get(
+					_getCollectionName(),
+					_getFieldSortBuilders(pageable.getSort()),
+					_getFrom(pageable), pageable.getPageSize())),
+			pageable, () -> count());
+	}
+
+	@Override
+	public Iterable<Field> findAll(Sort sort) {
+		return _toFields(
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), _getFieldSortBuilders(sort)));
+	}
+
+	@Override
+	public Iterable<Field> findAllById(Iterable<Long> ids) {
+		Stream<Long> stream = StreamSupport.stream(ids.spliterator(), false);
+
+		return _toFields(
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(),
+				QueryBuilders.termsQuery(
+					"id",
+					stream.map(
+						String::valueOf
+					).collect(
+						Collectors.toList()
+					))));
 	}
 
 	@Override
@@ -178,9 +274,9 @@ public class ElasticsearchFieldRepositoryImpl
 				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId)));
 		}
 
-		return toList(
+		return _toFields(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(), boolQueryBuilder));
+				_getCollectionName(), boolQueryBuilder));
 	}
 
 	@Override
@@ -196,9 +292,9 @@ public class ElasticsearchFieldRepositoryImpl
 		String context, Long dataSourceId, List<Long> ownerIds,
 		String ownerType) {
 
-		return toList(
+		return _toFields(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
+				_getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("context", context)
 				).filter(
@@ -224,9 +320,9 @@ public class ElasticsearchFieldRepositoryImpl
 	public List<Field> findByContextAndNameAndOwnerIdInAndOwnerType(
 		String context, String name, List<Long> ownerIds, String ownerType) {
 
-		return toList(
+		return _toFields(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
+				_getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("context", context)
 				).filter(
@@ -260,7 +356,7 @@ public class ElasticsearchFieldRepositoryImpl
 		String context, List<Long> ownerIds) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			getCollectionName(),
+			_getCollectionName(),
 			searchSourceBuilder -> {
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.terms(
@@ -292,7 +388,7 @@ public class ElasticsearchFieldRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (isEmpty(aggregations)) {
+		if (_isEmpty(aggregations)) {
 			return Collections.emptyList();
 		}
 
@@ -313,16 +409,16 @@ public class ElasticsearchFieldRepositoryImpl
 			jsonArray.put(searchHit.getSourceAsMap());
 		}
 
-		return toList(jsonArray);
+		return _toFields(jsonArray);
 	}
 
 	@Override
 	public List<Field> findByFieldTypeAndOwnerTypeAndValueIn(
 		String fieldType, String ownerType, List<String> values) {
 
-		return toList(
+		return _toFields(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
+				_getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("fieldType", fieldType)
 				).filter(
@@ -333,13 +429,23 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
+	public Optional<Field> findById(Long id) {
+		return Optional.ofNullable(
+			_faroInfoElasticsearchInvoker.fetch(
+				_getCollectionName(), id.toString())
+		).map(
+			this::_toField
+		);
+	}
+
+	@Override
 	public List<Transformation> getFieldTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		TransformationGetResponse transformationGetResponse =
 			new TransformationGetResponse();
 
-		transformationGetResponse.setCollectionName(getCollectionName());
+		transformationGetResponse.setCollectionName(_getCollectionName());
 		transformationGetResponse.setElasticsearchInvoker(
 			_faroInfoElasticsearchInvoker);
 		transformationGetResponse.setPage(pageable.getPageNumber());
@@ -397,6 +503,46 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public <S extends Field> S save(S field) {
+		JSONObject jsonObject = _toJSONObject(field);
+
+		String id = jsonObject.optString(
+			"id", _timeOrderedUuidGenerator.generateId());
+
+		jsonObject.put("id", id);
+
+		return (S)_toField(
+			_faroInfoElasticsearchInvoker.add(
+				_getCollectionName(), jsonObject));
+	}
+
+	@Override
+	public <S extends Field> Iterable<S> saveAll(Iterable<S> fields) {
+		List<S> list = new ArrayList<>();
+
+		JSONArray jsonArray = new JSONArray();
+
+		fields.forEach(
+			field -> {
+				JSONObject jsonObject = _toJSONObject(field);
+
+				String id = jsonObject.optString(
+					"id", _timeOrderedUuidGenerator.generateId());
+
+				jsonObject.put("id", id);
+
+				jsonArray.put(jsonObject);
+
+				list.add((S)_toField(jsonObject));
+			});
+
+		_faroInfoElasticsearchInvoker.add(_getCollectionName(), jsonArray);
+
+		return list;
+	}
+
+	@Override
 	public List<Field> searchFields(
 		FilterHelper filterHelper, Pageable pageable) {
 
@@ -404,7 +550,7 @@ public class ElasticsearchFieldRepositoryImpl
 			CollectionGetResponse collectionGetResponse =
 				new CollectionGetResponse();
 
-			collectionGetResponse.setCollectionName(getCollectionName());
+			collectionGetResponse.setCollectionName(_getCollectionName());
 			collectionGetResponse.setElasticsearchInvoker(
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
@@ -424,7 +570,8 @@ public class ElasticsearchFieldRepositoryImpl
 			JSONObject embeddedJSONObject = jsonObject.getJSONObject(
 				"_embedded");
 
-			return toList(embeddedJSONObject.getJSONArray(getCollectionName()));
+			return _toFields(
+				embeddedJSONObject.getJSONArray(_getCollectionName()));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -445,17 +592,42 @@ public class ElasticsearchFieldRepositoryImpl
 				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 				"ctx._source.dataSourceName = params.dataSourceName",
 				Collections.singletonMap("dataSourceName", dataSourceName)),
-			getCollectionName());
+			_getCollectionName());
 	}
 
-	@Override
-	protected String getCollectionName() {
+	private String _getCollectionName() {
 		return "fields";
 	}
 
-	@Override
-	protected ElasticsearchInvoker getElasticsearchInvoker() {
-		return _faroInfoElasticsearchInvoker;
+	private List<FieldSortBuilder> _getFieldSortBuilders(Sort sort) {
+		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
+
+		if ((sort == null) || sort.isUnsorted()) {
+			fieldSortBuilders.add(SortBuilderUtil.fieldSort("id"));
+
+			return fieldSortBuilders;
+		}
+
+		for (Sort.Order order : sort.toList()) {
+			String fieldName = order.getProperty();
+
+			fieldName = fieldName.replace('/', '.');
+
+			SortOrder sortOrder = SortOrder.ASC;
+
+			if (order.isDescending()) {
+				sortOrder = SortOrder.DESC;
+			}
+
+			fieldSortBuilders.add(
+				SortBuilderUtil.fieldSort(fieldName, sortOrder));
+		}
+
+		return fieldSortBuilders;
+	}
+
+	private int _getFrom(Pageable pageable) {
+		return (int)pageable.getOffset();
 	}
 
 	private String[] _getSorts(Sort sort) {
@@ -479,10 +651,44 @@ public class ElasticsearchFieldRepositoryImpl
 		return sorts.toArray(new String[0]);
 	}
 
+	private boolean _isEmpty(Aggregations aggregations) {
+		if (aggregations == null) {
+			return true;
+		}
+
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		return aggregationList.isEmpty();
+	}
+
+	private Field _toField(JSONObject jsonObject) {
+		return _objectMapper.convertValue(jsonObject, Field.class);
+	}
+
+	private List<Field> _toFields(JSONArray jsonArray) {
+		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
+
+		return stream.map(
+			object -> _toField((JSONObject)object)
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private JSONObject _toJSONObject(Field field) {
+		return _objectMapper.convertValue(field, JSONObject.class);
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchFieldRepositoryImpl.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
