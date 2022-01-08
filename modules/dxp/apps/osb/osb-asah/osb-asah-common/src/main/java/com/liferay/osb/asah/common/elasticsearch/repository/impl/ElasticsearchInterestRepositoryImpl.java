@@ -14,11 +14,14 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
@@ -32,6 +35,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,6 +47,7 @@ import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
@@ -50,10 +58,17 @@ import org.elasticsearch.search.aggregations.bucket.histogram.ExtendedBounds;
 import org.elasticsearch.search.aggregations.bucket.histogram.InternalDateHistogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.NumericMetricsAggregation;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -61,26 +76,66 @@ import org.springframework.stereotype.Repository;
  * @author Robson Pastor
  */
 @Repository
-public class ElasticsearchInterestRepositoryImpl
-	extends BaseElasticsearchRepository<Interest, Long>
-	implements InterestRepository {
+public class ElasticsearchInterestRepositoryImpl implements InterestRepository {
+
+	@Override
+	public long count() {
+		return _faroInfoElasticsearchInvoker.count(
+			_getCollectionName(), QueryBuilders.matchAllQuery());
+	}
 
 	@Override
 	public long countByFilterStringAndScoreGreaterThanEqual(
 		FilterHelper filterHelper, Double score) {
 
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(),
+			_getCollectionName(),
 			_buildQueryBuilder(filterHelper, null, null, null, null, score));
 	}
 
 	@Override
 	public long countByOwnerIdAndOwnerType(Long ownerId, String ownerType) {
 		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(),
+			_getCollectionName(),
 			_buildQueryBuilder(
 				null, null, Collections.singletonList(ownerId), ownerType, null,
 				null));
+	}
+
+	@Override
+	public void delete(Interest interest) {
+		_faroInfoElasticsearchInvoker.delete(
+			_getCollectionName(), String.valueOf(interest.getId()));
+	}
+
+	@Override
+	public void deleteAll() {
+		_faroInfoElasticsearchInvoker.delete(
+			_getCollectionName(), QueryBuilders.matchAllQuery());
+	}
+
+	@Override
+	public void deleteAll(Iterable<? extends Interest> interests) {
+		Stream<? extends Interest> stream = StreamSupport.stream(
+			interests.spliterator(), false);
+
+		_faroInfoElasticsearchInvoker.deleteByQuery(
+			QueryBuilders.termsQuery(
+				"id",
+				stream.map(
+					Interest::getId
+				).map(
+					String::valueOf
+				).collect(
+					Collectors.toList()
+				)),
+			true, _getCollectionName());
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		_faroInfoElasticsearchInvoker.delete(
+			_getCollectionName(), id.toString());
 	}
 
 	@Override
@@ -88,7 +143,7 @@ public class ElasticsearchInterestRepositoryImpl
 		String name, Date recordedDate) {
 
 		_faroInfoElasticsearchInvoker.delete(
-			getCollectionName(),
+			_getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					"dateRecorded"
@@ -103,7 +158,7 @@ public class ElasticsearchInterestRepositoryImpl
 	@Override
 	public void deleteByOwnerIdAndOwnerType(Long ownerId, String ownerType) {
 		_faroInfoElasticsearchInvoker.delete(
-			getCollectionName(),
+			_getCollectionName(),
 			_buildQueryBuilder(
 				null, null, Collections.singletonList(ownerId), ownerType, null,
 				null));
@@ -114,7 +169,7 @@ public class ElasticsearchInterestRepositoryImpl
 		String ownerType, Date recordedDate) {
 
 		_faroInfoElasticsearchInvoker.delete(
-			getCollectionName(),
+			_getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					"dateRecorded"
@@ -127,17 +182,70 @@ public class ElasticsearchInterestRepositoryImpl
 	}
 
 	@Override
+	public boolean existsById(Long id) {
+		return _faroInfoElasticsearchInvoker.exists(
+			_getCollectionName(), id.toString());
+	}
+
+	@Override
+	public Iterable<Interest> findAll() {
+		return findAll(Sort.by("id"));
+	}
+
+	@Override
+	public Page<Interest> findAll(Pageable pageable) {
+		return PageableExecutionUtils.getPage(
+			_toInterests(
+				_faroInfoElasticsearchInvoker.get(
+					_getCollectionName(),
+					_getFieldSortBuilders(pageable.getSort()),
+					_getFrom(pageable), pageable.getPageSize())),
+			pageable, () -> count());
+	}
+
+	@Override
+	public Iterable<Interest> findAll(Sort sort) {
+		return _toInterests(
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), _getFieldSortBuilders(sort)));
+	}
+
+	@Override
+	public Iterable<Interest> findAllById(Iterable<Long> ids) {
+		Stream<Long> stream = StreamSupport.stream(ids.spliterator(), false);
+
+		return _toInterests(
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(),
+				QueryBuilders.termsQuery(
+					"id",
+					stream.map(
+						String::valueOf
+					).collect(
+						Collectors.toList()
+					))));
+	}
+
+	@Override
 	public List<Interest> findByFilterStringAndScoreGreaterThanEqual(
 		FilterHelper filterHelper, Double score, Pageable pageable) {
 
-		return toList(
+		return _toInterests(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				getFieldSortBuilders(
-					getSortFieldNameConversionMap(), pageable.getSort()),
-				getFrom(pageable),
+				_getCollectionName(), _getFieldSortBuilders(pageable.getSort()),
+				_getFrom(pageable),
 				_buildQueryBuilder(filterHelper, null, null, null, null, score),
 				pageable.getPageSize()));
+	}
+
+	@Override
+	public Optional<Interest> findById(Long id) {
+		return Optional.ofNullable(
+			_faroInfoElasticsearchInvoker.fetch(
+				_getCollectionName(), id.toString())
+		).map(
+			this::_toInterest
+		);
 	}
 
 	@Override
@@ -146,9 +254,9 @@ public class ElasticsearchInterestRepositoryImpl
 			String name, Long ownerId, String ownerType, Date fromRecordedDate,
 			Date toRecordedDate) {
 
-		return toList(
+		return _toInterests(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
+				_getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.rangeQuery(
 						"dateRecorded"
@@ -170,12 +278,10 @@ public class ElasticsearchInterestRepositoryImpl
 	public List<Interest> findByOwnerIdAndOwnerType(
 		@Nullable Long ownerId, String ownerType, Pageable pageable) {
 
-		return toList(
+		return _toInterests(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				getFieldSortBuilders(
-					getSortFieldNameConversionMap(), pageable.getSort()),
-				(int)pageable.getOffset(),
+				_getCollectionName(), _getFieldSortBuilders(pageable.getSort()),
+				_getFrom(pageable),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
 				).filter(
@@ -188,9 +294,9 @@ public class ElasticsearchInterestRepositoryImpl
 	public List<Interest> findByOwnerTypeAndRecordedDate(
 		Long interestId, String ownerType, Date recordedDate, int size) {
 
-		return toList(
+		return _toInterests(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(), SortBuilderUtil.fieldSort("id"),
+				_getCollectionName(), SortBuilderUtil.fieldSort("id"),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.rangeQuery(
 						"id"
@@ -212,9 +318,9 @@ public class ElasticsearchInterestRepositoryImpl
 	public Interest getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
 		String name, Long ownerId, String ownerType, Date recordedDate) {
 
-		return toEntity(
+		return _toInterest(
 			_faroInfoElasticsearchInvoker.fetch(
-				getCollectionName(),
+				_getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("name", name)
 				).filter(
@@ -234,7 +340,7 @@ public class ElasticsearchInterestRepositoryImpl
 		@Nullable Double score, Pageable pageable) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			getCollectionName(),
+			_getCollectionName(),
 			searchSourceBuilder -> {
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.terms(
@@ -249,7 +355,7 @@ public class ElasticsearchInterestRepositoryImpl
 						PipelineAggregatorBuilders.bucketSort(
 							"paginate", null
 						).from(
-							(int)pageable.getOffset()
+							_getFrom(pageable)
 						).size(
 							pageable.getPageSize()
 						)
@@ -263,7 +369,7 @@ public class ElasticsearchInterestRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (isEmpty(aggregations)) {
+		if (_isEmpty(aggregations)) {
 			return Collections.emptyList();
 		}
 
@@ -287,7 +393,7 @@ public class ElasticsearchInterestRepositoryImpl
 
 		return JSONUtil.toStringList(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
+				_getCollectionName(),
 				SortBuilderUtil.fieldSort("score", SortOrder.DESC),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("ownerId", ownerId)
@@ -304,7 +410,7 @@ public class ElasticsearchInterestRepositoryImpl
 		Date toDate) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			getCollectionName(),
+			_getCollectionName(),
 			searchSourceBuilder -> {
 				DateHistogramAggregationBuilder aggregationBuilder =
 					AggregationBuilders.dateHistogram(period);
@@ -358,7 +464,7 @@ public class ElasticsearchInterestRepositoryImpl
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		List<Map<String, Object>> transformations = new ArrayList();
+		List<Map<String, Object>> transformations = new ArrayList<>();
 
 		InternalDateHistogram internalDateHistogram = aggregations.get(period);
 
@@ -388,13 +494,43 @@ public class ElasticsearchInterestRepositoryImpl
 	}
 
 	@Override
-	protected String getCollectionName() {
-		return "interests";
+	@SuppressWarnings("unchecked")
+	public <S extends Interest> S save(S interest) {
+		JSONObject jsonObject = _toJSONObject(interest);
+
+		String id = jsonObject.optString(
+			"id", _timeOrderedUuidGenerator.generateId());
+
+		jsonObject.put("id", id);
+
+		return (S)_toInterest(
+			_faroInfoElasticsearchInvoker.add(
+				_getCollectionName(), jsonObject));
 	}
 
 	@Override
-	protected ElasticsearchInvoker getElasticsearchInvoker() {
-		return _faroInfoElasticsearchInvoker;
+	public <S extends Interest> Iterable<S> saveAll(Iterable<S> interests) {
+		List<S> list = new ArrayList<>();
+
+		JSONArray jsonArray = new JSONArray();
+
+		interests.forEach(
+			interest -> {
+				JSONObject jsonObject = _toJSONObject(interest);
+
+				String id = jsonObject.optString(
+					"id", _timeOrderedUuidGenerator.generateId());
+
+				jsonObject.put("id", id);
+
+				jsonArray.put(jsonObject);
+
+				list.add((S)_toInterest(jsonObject));
+			});
+
+		_faroInfoElasticsearchInvoker.add(_getCollectionName(), jsonArray);
+
+		return list;
 	}
 
 	private QueryBuilder _buildQueryBuilder(
@@ -485,6 +621,10 @@ public class ElasticsearchInterestRepositoryImpl
 		return BucketOrder.compound(bucketOrders);
 	}
 
+	private String _getCollectionName() {
+		return "interests";
+	}
+
 	private DateHistogramInterval _getDateHistogramInterval(
 		String computeFunctionString) {
 
@@ -508,7 +648,72 @@ public class ElasticsearchInterestRepositoryImpl
 			"Unsupported compute function: " + computeFunctionString);
 	}
 
+	private List<FieldSortBuilder> _getFieldSortBuilders(Sort sort) {
+		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
+
+		if ((sort == null) || sort.isUnsorted()) {
+			fieldSortBuilders.add(SortBuilderUtil.fieldSort("id"));
+
+			return fieldSortBuilders;
+		}
+
+		for (Sort.Order order : sort.toList()) {
+			String fieldName = order.getProperty();
+
+			fieldName = fieldName.replace('/', '.');
+
+			SortOrder sortOrder = SortOrder.ASC;
+
+			if (order.isDescending()) {
+				sortOrder = SortOrder.DESC;
+			}
+
+			fieldSortBuilders.add(
+				SortBuilderUtil.fieldSort(fieldName, sortOrder));
+		}
+
+		return fieldSortBuilders;
+	}
+
+	private int _getFrom(Pageable pageable) {
+		return (int)pageable.getOffset();
+	}
+
+	private boolean _isEmpty(Aggregations aggregations) {
+		if (aggregations == null) {
+			return true;
+		}
+
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		return aggregationList.isEmpty();
+	}
+
+	private Interest _toInterest(JSONObject jsonObject) {
+		return _objectMapper.convertValue(jsonObject, Interest.class);
+	}
+
+	private List<Interest> _toInterests(JSONArray jsonArray) {
+		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
+
+		return stream.map(
+			object -> _toInterest((JSONObject)object)
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private JSONObject _toJSONObject(Interest interest) {
+		return _objectMapper.convertValue(interest, JSONObject.class);
+	}
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
