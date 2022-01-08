@@ -95,15 +95,12 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}")
-	public String getDataSource(@PathVariable Long id) {
+	public DataSourceDTO getDataSourceDTO(@PathVariable Long id) {
 		DataSource dataSource = _dataSourceDog.getDataSource(id);
 
 		_sanitize(dataSource);
 
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			dataSource, JSONObject.class);
-
-		return dataSourceJSONObject.toString();
+		return new DataSourceDTO(dataSource);
 	}
 
 	@GetMapping
