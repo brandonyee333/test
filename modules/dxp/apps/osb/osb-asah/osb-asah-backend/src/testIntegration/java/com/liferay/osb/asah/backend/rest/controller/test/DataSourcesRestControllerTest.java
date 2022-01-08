@@ -151,9 +151,10 @@ public class DataSourcesRestControllerTest {
 		_dataSourcesRestController.deleteDataSource(
 			dataSourceJSONObject.getLong("id"));
 
-		JSONObject updateDataSourceJSONObject = new JSONObject(
-			_dataSourcesRestController.getDataSource(
-				dataSourceJSONObject.getLong("id")));
+		JSONObject updateDataSourceJSONObject = _objectMapper.convertValue(
+			_dataSourcesRestController.getDataSourceDTO(
+				dataSourceJSONObject.getLong("id")),
+			JSONObject.class);
 
 		Assertions.assertTrue(updateDataSourceJSONObject.has("deletionDate"));
 		Assertions.assertEquals(
