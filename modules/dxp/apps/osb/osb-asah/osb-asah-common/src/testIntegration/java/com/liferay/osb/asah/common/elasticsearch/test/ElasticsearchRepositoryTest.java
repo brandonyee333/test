@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -45,69 +45,97 @@ public class ElasticsearchRepositoryTest
 
 	@Test
 	public void testAdd() {
-		ElasticsearchRepository<Channel> elasticsearchRepository =
+		ElasticsearchRepository<Interest> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"channels", _faroInfoElasticsearchInvoker, Channel.class,
+				"interests", _faroInfoElasticsearchInvoker, Interest.class,
 				_objectMapper);
 
-		Channel channel = elasticsearchRepository.add(new Channel("name"));
+		Interest interest = new Interest();
 
-		Assertions.assertNotNull(channel.getId());
-		Assertions.assertEquals("name", channel.getName());
+		interest.setName("name");
+
+		interest = elasticsearchRepository.add(interest);
+
+		Assertions.assertNotNull(interest.getId());
+		Assertions.assertEquals("name", interest.getName());
 	}
 
 	@Test
 	public void testFetchFirst() {
-		ElasticsearchRepository<Channel> elasticsearchRepository =
+		ElasticsearchRepository<Interest> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"channels", _faroInfoElasticsearchInvoker, Channel.class,
+				"interests", _faroInfoElasticsearchInvoker, Interest.class,
 				_objectMapper);
 
-		Channel channel = elasticsearchRepository.add(new Channel("name1"));
+		Interest interest1 = new Interest();
 
-		elasticsearchRepository.add(new Channel("name2"));
+		interest1.setName("name1");
 
-		Channel returnedChannel = elasticsearchRepository.fetchFirst(
+		interest1 = elasticsearchRepository.add(interest1);
+
+		Interest interest2 = new Interest();
+
+		interest2.setName("name2");
+
+		elasticsearchRepository.add(interest2);
+
+		Interest returnedInterest = elasticsearchRepository.fetchFirst(
 			searchSourceBuilder -> searchSourceBuilder.sort(
 				SortBuilderUtil.fieldSort("id", SortOrder.ASC)));
 
-		Assertions.assertEquals(channel.getId(), returnedChannel.getId());
+		Assertions.assertEquals(interest1.getId(), returnedInterest.getId());
 	}
 
 	@Test
 	public void testGet() {
-		ElasticsearchRepository<Channel> elasticsearchRepository =
+		ElasticsearchRepository<Interest> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"channels", _faroInfoElasticsearchInvoker, Channel.class,
+				"interests", _faroInfoElasticsearchInvoker, Interest.class,
 				_objectMapper);
 
-		Channel channel = elasticsearchRepository.add(new Channel("name"));
+		Interest interest = new Interest();
 
-		Channel returnedChannel = elasticsearchRepository.get(
-			String.valueOf(channel.getId()));
+		interest.setName("name");
 
-		Assertions.assertEquals(channel.getId(), returnedChannel.getId());
+		interest = elasticsearchRepository.add(interest);
+
+		Interest returnedInterest = elasticsearchRepository.get(
+			String.valueOf(interest.getId()));
+
+		Assertions.assertEquals(interest.getId(), returnedInterest.getId());
 	}
 
 	@Test
 	public void testSearch() {
-		ElasticsearchRepository<Channel> elasticsearchRepository =
+		ElasticsearchRepository<Interest> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"channels", _faroInfoElasticsearchInvoker, Channel.class,
+				"interests", _faroInfoElasticsearchInvoker, Interest.class,
 				_objectMapper);
 
-		Channel channel1 = elasticsearchRepository.add(new Channel("name1"));
+		Interest interest1 = new Interest();
 
-		Channel channel2 = elasticsearchRepository.add(new Channel("name2"));
+		interest1.setName("name1");
 
-		Channel channel3 = elasticsearchRepository.add(new Channel("name3"));
+		interest1 = elasticsearchRepository.add(interest1);
 
-		ResultBag<Channel> resultBag = elasticsearchRepository.search(
+		Interest interest2 = new Interest();
+
+		interest2.setName("name2");
+
+		interest2 = elasticsearchRepository.add(interest2);
+
+		Interest interest3 = new Interest();
+
+		interest3.setName("name3");
+
+		interest3 = elasticsearchRepository.add(interest3);
+
+		ResultBag<Interest> resultBag = elasticsearchRepository.search(
 			QueryBuilders.matchAllQuery(), 20, Sort.desc("id"), 0);
 
 		Assertions.assertEquals(3, resultBag.getTotal());
 		Assertions.assertEquals(
-			Arrays.asList(channel3, channel2, channel1),
+			Arrays.asList(interest3, interest2, interest1),
 			resultBag.getResults());
 	}
 
