@@ -3,6 +3,7 @@
 		"projects": {
 			"properties": {
 				"id": {
+					"fielddata": true,
 					"fields": {
 						"keyword": {
 							"type": "keyword"
