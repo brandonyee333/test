@@ -68,11 +68,12 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 	}
 
 	@Override
-	public void deleteByIndividualSegmentId(Long individualSegmentId) {
+	public void deleteByIndividualSegmentIdIn(List<Long> individualSegmentIds) {
 		_faroInfoElasticsearchInvoker.delete(
 			getCollectionName(),
-			QueryBuilders.termQuery(
-				"individualSegmentId", String.valueOf(individualSegmentId)));
+			QueryBuilders.termsQuery(
+				"individualSegmentId",
+				ListUtil.map(individualSegmentIds, String::valueOf)));
 	}
 
 	@Override

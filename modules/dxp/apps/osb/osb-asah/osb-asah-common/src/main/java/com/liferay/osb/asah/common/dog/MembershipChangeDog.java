@@ -185,9 +185,9 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		_membershipChangeRepository.saveAll(membershipChanges);
 	}
 
-	public void deleteMembershipChanges(Long individualSegmentId) {
-		_membershipChangeRepository.deleteByIndividualSegmentId(
-			individualSegmentId);
+	public void deleteMembershipChanges(List<Long> individualSegmentIds) {
+		_membershipChangeRepository.deleteByIndividualSegmentIdIn(
+			individualSegmentIds);
 	}
 
 	public Map<Long, JSONObject> getAccountNamesJSONObjects(

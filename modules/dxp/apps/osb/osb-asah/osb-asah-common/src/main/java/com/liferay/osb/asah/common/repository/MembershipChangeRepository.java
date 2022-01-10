@@ -43,8 +43,8 @@ public interface MembershipChangeRepository
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void deleteByIndividualSegmentId(
-		@Param("individualSegmentId") Long individualSegmentId);
+	public void deleteByIndividualSegmentIdIn(
+		@Param("individualSegmentIds") List<Long> individualSegmentIds);
 
 	@Cacheable
 	public Optional<MembershipChange> findByIndividualId(Long individualId);
