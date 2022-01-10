@@ -195,6 +195,18 @@ public abstract class BaseSegmentRepositoryTestCase
 	}
 
 	@Test
+	public void testFindByChannelIdIn() {
+		Segment segment1 = entityModels.get(0);
+		Segment segment2 = entityModels.get(1);
+
+		List<Segment> segments = _segmentRepository.findByChannelIdIn(
+			SetUtil.of(segment1.getChannelId(), segment2.getChannelId()),
+			PageRequest.of(0, 10));
+
+		Assertions.assertEquals(3, segments.size(), segments.toString());
+	}
+
+	@Test
 	public void testFindByChannelIdIsNotNullOrNameStartingWith() {
 		Assertions.assertEquals(
 			entityModels,

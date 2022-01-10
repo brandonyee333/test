@@ -37,6 +37,7 @@ import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
 import java.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -749,6 +750,30 @@ public abstract class BaseIndividualRepositoryTestCase
 		segmentIds = individual.getSegmentIds();
 
 		Assertions.assertEquals(0, segmentIds.size(), segmentIds.toString());
+	}
+
+	@Test
+	public void testRemoveSegmentIds() {
+		Optional<Individual> individualOptional = individualRepository.findById(
+			_individual1Id);
+
+		Individual individual = individualOptional.get();
+
+		individual.setSegmentIds(SetUtil.of(1L, 2L, 3L));
+
+		individualRepository.save(individual);
+
+		individualRepository.removeSegmentIds(Arrays.asList(1L, 3L));
+
+		individualOptional = individualRepository.findById(_individual1Id);
+
+		individual = individualOptional.get();
+
+		List<Long> segmentIds = new ArrayList<>(individual.getSegmentIds());
+
+		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
+
+		Assertions.assertEquals(2L, segmentIds.get(0));
 	}
 
 	@Test
