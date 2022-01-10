@@ -45,11 +45,13 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -613,6 +615,44 @@ public class UpdateDynamicMembershipsNaniteTest
 			Collections.singleton(
 				new Individual.DataSourceAccountPK(dataSourceIndividual)),
 			individual.getDataSourceAccountPKs());
+	}
+
+	@Test
+	public void testWithIndividuals() throws Exception {
+		Segment segment = _segmentRepository.save(
+			FaroInfoTestUtil.buildStaticSegment());
+
+		List<Individual> individuals = new ArrayList<>();
+
+		DataSource dataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildLiferayDataSource());
+
+		Individual individual1 = FaroInfoTestUtil.buildIndividual(
+			1L, dataSource);
+
+		individual1.setSegmentIds(SetUtil.of(segment.getId()));
+
+		_fieldRepository.saveAll(individual1.getFields());
+
+		individuals.add(_individualDog.addIndividual(individual1, false));
+
+		Individual individual2 = FaroInfoTestUtil.buildIndividual(
+			1L, dataSource);
+
+		individual2.setSegmentIds(SetUtil.of(segment.getId()));
+
+		_fieldRepository.saveAll(individual2.getFields());
+
+		individuals.add(_individualDog.addIndividual(individual2, false));
+
+		_updateDynamicMembershipsNanite.run(
+			JSONUtil.put(
+				"individualsJSONArray",
+				JSONUtil.toJSONArray(individuals, Individual::getId)));
+
+		individuals.forEach(
+			individual -> Assertions.assertFalse(
+				_membershipDog.isMember(individual.getId(), segment.getId())));
 	}
 
 	private void _addIndividualInterests(
