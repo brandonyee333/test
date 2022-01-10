@@ -48,3 +48,13 @@ Line 4: def assetEntriesCheckerUtilReference = bundleContext.getServiceReference
 Line 5: def assetEntriesCheckerUtilService = bundleContext.getService(assetEntriesCheckerUtilReference);
 Line 6: assetEntriesCheckerUtilService.checkAssetEntries()
 ]]></value>
+<value><![CDATA[LIFERAY_ERROR: {groupId=43343}]]></value>
+<value><![CDATA[LIFERAY_ERROR: Unable to get recent groups]]></value>
+<value><![CDATA[LIFERAY_ERROR: Unable to get recent groups]]></value>
+<value><![CDATA[LIFERAY_ERROR: Unable to get recent groups]]></value>
+<value><![CDATA[LIFERAY_ERROR: Unable to get recent groups]]></value>
+<value><![CDATA[LIFERAY_ERROR: Unable to get recent groups]]></value>
+<value><![CDATA[LIFERAY_ERROR: Unable to get recent groups]]></value>
+<value><![CDATA[LIFERAY_ERROR: Unable to get recent groups]]></value>
+<value><![CDATA[LIFERAY_ERROR: Unable to get recent groups]]></value>
+<value><![CDATA[LIFERAY_ERROR: Unable to get recent groups]]></value>
