@@ -217,7 +217,7 @@ definition {
 
 	@description = "This is a test for LPS-141766. Copied Web Contents don't have FriendlyURLEntries."
 	@priority = "4"
-	test CopiedWebContentHasItsOwnFriendlyURL {
+	test ViewAssociatedDisplayPageFromCopyOfWebContent {
 		task ("Add two Public Pages") {
 			JSONLayout.addPublicLayout(
 				groupName = "Test Site Name",
