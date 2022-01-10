@@ -80,13 +80,11 @@ public class SelectDDMFormFieldValueAccessor
 				optionsValuesJSONArray.getString(i));
 
 			if (matcher.matches()) {
-				StringBundler sb = new StringBundler(3);
+				JSONArray jsonArray = createJSONArray("[]");
 
-				sb.append(StringPool.OPEN_BRACKET);
-				sb.append(getOptionsLabels(ddmFormFieldValue, locale));
-				sb.append(StringPool.CLOSE_BRACKET);
+				jsonArray.put(getOptionsLabels(ddmFormFieldValue, locale));
 
-				return createJSONArray(sb.toString());
+				return jsonArray;
 			}
 		}
 
