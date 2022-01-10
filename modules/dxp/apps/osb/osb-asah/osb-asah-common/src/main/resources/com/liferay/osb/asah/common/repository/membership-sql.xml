@@ -2,9 +2,9 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="Membership.deleteByIndividualSegmentId">
+	<entry key="Membership.deleteByIndividualSegmentIdIn">
 		<![CDATA[
-			DELETE FROM Membership WHERE Membership.individualSegmentId = :individualSegmentId
+			DELETE FROM Membership WHERE Membership.individualSegmentId IN (:individualSegmentIds)
 		]]>
 	</entry>
 	<entry key="Membership.findIndividualIdByIndividualInAndIndividualSegmentIdAndStatus">

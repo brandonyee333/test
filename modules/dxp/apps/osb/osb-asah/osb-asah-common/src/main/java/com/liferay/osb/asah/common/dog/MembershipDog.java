@@ -274,8 +274,9 @@ public class MembershipDog extends BaseFaroInfoDog {
 		}
 	}
 
-	public void deleteMembership(Long individualSegmentId) {
-		_membershipRepository.deleteByIndividualSegmentId(individualSegmentId);
+	public void deleteMemberships(List<Long> individualSegmentIds) {
+		_membershipRepository.deleteByIndividualSegmentIdIn(
+			individualSegmentIds);
 	}
 
 	public List<Long> getActiveIndividualIds(Long individualSegmentId) {

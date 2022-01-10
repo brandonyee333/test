@@ -42,8 +42,8 @@ public interface MembershipRepository extends Repository<Membership, Long> {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void deleteByIndividualSegmentId(
-		@Param("individualSegmentId") Long individualSegmentId);
+	public void deleteByIndividualSegmentIdIn(
+		@Param("individualSegmentIds") List<Long> individualSegmentIds);
 
 	@Cacheable
 	public boolean existsByIndividualIdAndIndividualSegmentIdAndStatus(
