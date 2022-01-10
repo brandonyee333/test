@@ -159,6 +159,30 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
+	public List<Segment> findByChannelIdIn(
+		Set<Long> channelIds, Pageable pageable) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				getFrom(pageable),
+				QueryBuilders.termsQuery(
+					"channelId",
+					Stream.of(
+						channelIds
+					).flatMap(
+						Set::stream
+					).map(
+						String::valueOf
+					).collect(
+						Collectors.toList()
+					)),
+				pageable.getPageSize()));
+	}
+
+	@Override
 	public List<Segment> findByChannelIdIsNotNullOrNameStartingWith(
 		String name, Pageable pageable) {
 

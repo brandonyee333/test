@@ -61,6 +61,10 @@ public interface SegmentRepository extends Repository<Segment, Long> {
 	public boolean existsByName(String name);
 
 	@Cacheable
+	public List<Segment> findByChannelIdIn(
+		@Param("channelIds") Set<Long> channelIds, Pageable pageable);
+
+	@Cacheable
 	public List<Segment> findByChannelIdIsNotNullOrNameStartingWith(
 		String name, Pageable pageable);
 
