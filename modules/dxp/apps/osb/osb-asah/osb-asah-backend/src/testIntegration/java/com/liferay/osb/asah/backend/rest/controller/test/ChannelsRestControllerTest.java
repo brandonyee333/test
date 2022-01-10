@@ -42,8 +42,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -167,10 +165,7 @@ public class ChannelsRestControllerTest
 			Assertions.assertEquals(
 				"Unable to create channel", osbAsahException.getMessage());
 
-			Assertions.assertEquals(
-				0,
-				_elasticsearchInvoker.count(
-					"channels", QueryBuilders.matchAllQuery()));
+			Assertions.assertEquals(0, _channelRepository.count());
 
 			return;
 		}
@@ -383,6 +378,9 @@ public class ChannelsRestControllerTest
 
 	@MockBean
 	private ChannelHttp _channelHttp;
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private ChannelsRestController _channelsRestController;

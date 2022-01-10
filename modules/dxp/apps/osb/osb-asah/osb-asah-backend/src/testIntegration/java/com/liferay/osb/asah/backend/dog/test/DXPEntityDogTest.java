@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.model.Sort;
@@ -32,8 +31,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -55,8 +52,7 @@ public class DXPEntityDogTest
 
 	@AfterEach
 	public void tearDown() {
-		_faroInfoElasticsearchInvoker.delete(
-			"channels", QueryBuilders.matchAllQuery());
+		_channelRepository.deleteAll();
 
 		_dxpEntityDog.deleteByType(DXPEntity.Type.GROUP);
 		_dxpEntityDog.deleteByType(DXPEntity.Type.ORGANIZATION);
@@ -262,9 +258,9 @@ public class DXPEntityDogTest
 	}
 
 	@Autowired
-	private DXPEntityDog _dxpEntityDog;
+	private ChannelRepository _channelRepository;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 }

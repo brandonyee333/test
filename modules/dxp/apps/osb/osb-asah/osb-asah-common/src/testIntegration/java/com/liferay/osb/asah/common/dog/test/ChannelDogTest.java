@@ -38,6 +38,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.IterableUtils;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
@@ -167,14 +169,14 @@ public class ChannelDogTest
 		Assertions.assertEquals(
 			"2", accountIndividualCountsJSONObject.getString("channelId"));
 
-		JSONArray channelsJSONArray = faroInfoElasticsearchInvoker.get(
-			"channels");
+		List<Channel> channels = IterableUtils.toList(
+			_channelRepository.findAll());
 
-		Assertions.assertEquals(1, channelsJSONArray.length());
+		Assertions.assertEquals(1, channels.size());
 
-		JSONObject channelJSONObject = channelsJSONArray.getJSONObject(0);
+		Channel channel = channels.get(0);
 
-		Assertions.assertEquals("2", channelJSONObject.getString("id"));
+		Assertions.assertEquals(2, channel.getId());
 	}
 
 	@RepositoryResource(
@@ -327,5 +329,8 @@ public class ChannelDogTest
 
 	@Autowired
 	private ChannelDog _channelDog;
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 }

@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.extractor.processor.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -35,6 +35,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -194,23 +195,22 @@ public class AnalyticsEventsMessageProcessorTest
 
 		_dataSourceRepository.save(dataSource);
 
-		_elasticsearchInvoker.add(
-			"channels",
-			JSONUtil.put(
-				"dataSources",
-				JSONUtil.put(
-					JSONUtil.put(
-						"groupIds", JSONUtil.put("20122")
-					).put(
-						"id", "990121114030678099"
-					))
-			).put(
-				"defaultChannel", true
-			).put(
-				"id", "999"
-			).put(
-				"name", "channelA"
-			));
+		com.liferay.osb.asah.common.entity.Channel channel =
+			new com.liferay.osb.asah.common.entity.Channel();
+
+		ChannelDataSource channelDataSource = new ChannelDataSource();
+
+		channelDataSource.setDataSourceId(990121114030678099L);
+		channelDataSource.setGroupIds(Collections.singleton(20122L));
+
+		channel.setChannelDataSources(Collections.singleton(channelDataSource));
+
+		channel.setDefaultChannel(true);
+		channel.setId(999L);
+		channel.setIsNew(true);
+		channel.setName("channelA");
+
+		_channelRepository.save(channel);
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
@@ -397,6 +397,9 @@ public class AnalyticsEventsMessageProcessorTest
 
 	@Autowired
 	private AnalyticsEventsMessageProcessor _analyticsEventsMessageProcessor;
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

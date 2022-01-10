@@ -18,7 +18,8 @@ import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
@@ -37,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.elasticsearch.index.query.QueryBuilders;
+import org.apache.commons.collections4.IterableUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -74,23 +75,23 @@ public class DataSourceDogTest
 	public void testChannelsCleared() {
 		_dataSourceDog.disconnectDataSource(405201047787757795L);
 
-		Assertions.assertEquals(
-			0,
-			faroInfoElasticsearchInvoker.count(
-				"channels",
-				QueryBuilders.termQuery(
-					"dataSources.id", "405201047787757795")));
+		List<Channel> channels = _channelRepository.findByDataSourceId(
+			405201047787757795L);
 
-		Assertions.assertEquals(
-			2,
-			faroInfoElasticsearchInvoker.count(
-				"channels",
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.termQuery(
-						"dataSources.id", "405201047787757795")
-				).filter(
-					QueryBuilders.existsQuery("dataSources")
-				)));
+		Assertions.assertEquals(0, channels.size());
+
+		channels = IterableUtils.toList(_channelRepository.findAll());
+
+		Assertions.assertEquals(3, channels.size());
+
+		for (Channel channel : channels) {
+			for (ChannelDataSource channelDataSource :
+					channel.getChannelDataSources()) {
+
+				Assertions.assertNotEquals(
+					405201047787757795L, channelDataSource.getDataSourceId());
+			}
+		}
 	}
 
 	@Test
@@ -215,6 +216,9 @@ public class DataSourceDogTest
 
 	@MockBean
 	private ChannelHttp _channelHttp;
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
