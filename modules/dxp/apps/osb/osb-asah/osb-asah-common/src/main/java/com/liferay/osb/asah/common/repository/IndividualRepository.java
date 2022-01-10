@@ -137,6 +137,9 @@ public interface IndividualRepository
 	public void removeSegmentIdByIdIn(
 		@Param("ids") Set<Long> ids, @Param("segmentId") Long segmentId);
 
+	@Modifying
+	public void removeSegmentIds(@Param("segmentIds") List<Long> segmentIds);
+
 	public List<Individual> searchIndividuals(
 		FilterHelper filterHelper, Pageable pageable);
 

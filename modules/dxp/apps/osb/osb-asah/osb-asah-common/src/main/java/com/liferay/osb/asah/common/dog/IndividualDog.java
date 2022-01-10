@@ -423,8 +423,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
-		_interestRepository.deleteByOwnerIdAndOwnerType(
-			individualId, "individual");
+		_interestRepository.deleteByOwnerIdInAndOwnerType(
+			Collections.singletonList(individualId), "individual");
 
 		_membershipDog.deactivateMemberships(deletionDate, individualId);
 
@@ -880,6 +880,10 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	public void removeSegmentId(Set<Long> individualIds, Long segmentId) {
 		_individualRepository.removeSegmentIdByIdIn(individualIds, segmentId);
+	}
+
+	public void removeSegmentIds(List<Long> segmentIds) {
+		_individualRepository.removeSegmentIds(segmentIds);
 	}
 
 	public List<Individual> searchIndividuals(

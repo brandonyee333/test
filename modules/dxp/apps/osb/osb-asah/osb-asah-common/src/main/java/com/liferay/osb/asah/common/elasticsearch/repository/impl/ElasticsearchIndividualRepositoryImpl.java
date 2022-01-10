@@ -1080,6 +1080,22 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
+	public void removeSegmentIds(List<Long> segmentIds) {
+		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			QueryBuilders.termsQuery(
+				"individualSegmentIds",
+				ListUtil.map(segmentIds, String::valueOf)),
+			true,
+			new Script(
+				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+				"ctx._source.individualSegmentIds.removeIf(segmentId -> " +
+					"params.segmentIds.contains(String.valueOf(segmentId)))",
+				Collections.singletonMap(
+					"segmentIds", ListUtil.map(segmentIds, String::valueOf))),
+			_getCollectionName());
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public <S extends Individual> S save(S individual) {
 		JSONObject jsonObject = _toJSONObject(individual);

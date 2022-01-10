@@ -1,3 +1,7 @@
+CREATE OR REPLACE FUNCTION array_subtract(current_array ANYARRAY, subtract_array ANYARRAY) RETURNS ANYARRAY AS '
+    select array_agg(unnested_current_array) from unnest(current_array) as unnested_current_array where unnested_current_array <> all(subtract_array);
+' LANGUAGE sql;
+
 CREATE OR REPLACE FUNCTION try_cast_bigint(value_string TEXT, default_value BIGINT DEFAULT NULL) RETURNS BIGINT AS '
 BEGIN
     return value_string::BIGINT;
