@@ -882,6 +882,90 @@ definition {
 		);
 	}
 
+	@description = "LPS-100416 - Non-Repeatable text fields show incorrect translation on label at first load."
+	@ignore = "true"
+	@priority = "4"
+	test AddNonRepeatableTextFieldWithTranslation {
+		JSONGroup.addGroup(groupName = "Test Site Name");
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		WebContentNavigator.gotoManageStructures();
+
+		WebContentStructures.addCP(
+			structureDescription = "WC Structure Description",
+			structureName = "WC Structure Name");
+
+		DynamicDataMapping.addField(
+			field = "Text",
+			fieldFieldLabel = "English",
+			fieldName = "Text");
+
+		AssertElementPresent(
+			locator1 = "DDMEditStructure#SETTINGS_REPEATABLE",
+			value1 = "No");
+
+		WebContentStructures.saveCP(structureName = "WC Structure Name");
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "WC Structure Name");
+
+		DDLRecord.editTranslation(localizedLanguage = "German (Germany)");
+
+		DynamicDataMapping.editField(
+			fieldFieldLabel = "English",
+			fieldFieldLabelEdit = "German");
+
+		WebContentStructures.saveCP(structureName = "WC Structure Name");
+
+		WebContentNavigator.gotoManageTemplatesViaStructures(structureName = "WC Structure Name");
+
+		WebContentTemplates.addCP(
+			templateDescription = "Test Template Description",
+			templateName = "WC Template Name");
+
+		WebContentTemplates.addField(fieldName = "English");
+
+		DDLDataDefinition.save();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Instance Settings");
+
+		PortalSettings.configureCurrentLanguagesCP(defaultPortalLanguage = "German (Germany)");
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
+
+		WebContent.addWithStructureCP(webContentTitle = "Web Content Title");
+
+		WebContent.viewDefaultLanguage(localizedLanguage = "German (Germany)");
+
+		AssertElementPresent(
+			key_fieldName = "Text",
+			locator1 = "Form#FIELD_LABEL",
+			value1 = "German");
+
+		WebContent.addTranslation(
+			localizedLanguage = "English (United States)",
+			webContentTitle = "Web Content Title");
+
+		AssertElementPresent(
+			key_fieldName = "Text",
+			locator1 = "Form#FIELD_LABEL",
+			value1 = "English");
+
+		WebContent.selectLocale(locale = "German (Germany)");
+
+		AssertElementPresent(
+			key_fieldName = "Text",
+			locator1 = "Form#FIELD_LABEL",
+			value1 = "German");
+	}
+
 	@description = "LPS-102795 - Adding Translations to removable fields sets contents to null."
 	@priority = "4"
 	test AddTranslationsToRemovableFields {
