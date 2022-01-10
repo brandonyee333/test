@@ -1,0 +1,50 @@
+<value><![CDATA[LIFERAY_ERROR: Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.]]></value>
+<value><![CDATA[LIFERAY_ERROR: Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.]]></value>
+<value><![CDATA[LIFERAY_ERROR: Email test@liferay.com will be ignored because it is included in mail.send.blacklist]]></value>
+<value><![CDATA[LIFERAY_ERROR: Skipping email because the sender is not specified]]></value>
+<value><![CDATA[LIFERAY_ERROR: Email test@liferay.com will be ignored because it is included in mail.send.blacklist]]></value>
+<value><![CDATA[LIFERAY_ERROR: Email test@liferay.com will be ignored because it is included in mail.send.blacklist]]></value>
+<value><![CDATA[LIFERAY_ERROR: SanitizerLogWrapper warning: Following message contains CRLF characters
+startup failed:
+Script1.groovy: 3: unable to resolve class com.liferay.registry.RegistryUtil
+ @ line 3, column 1.
+   import com.liferay.registry.RegistryUtil
+   ^
+
+1 error
+
+Line 1: // ### Groovy Sample ###
+Line 2: 
+Line 3: import com.liferay.registry.RegistryUtil
+Line 4: 
+Line 5: def registry = RegistryUtil.getRegistry()
+Line 6: def bundleContext = registry._bundleContext
+Line 7: 
+Line 8: def assetEntriesCheckerUtilReference = bundleContext.getServiceReference("com.liferay.asset.publisher.web.internal.messaging.AssetEntriesCheckerHelper");
+Line 9: def assetEntriesCheckerUtilService = bundleContext.getService(assetEntriesCheckerUtilReference);
+Line 10: assetEntriesCheckerUtilService.checkAssetEntries()
+]]></value>
+<value><![CDATA[LIFERAY_ERROR: SanitizerLogWrapper warning: Following message contains CRLF characters
+startup failed:
+Script1.groovy: 6: unexpected char: 0xFFFF @ line 6, column 51.
+   tilService.checkAssetEntries()
+                                 ^
+
+1 error
+
+Line 1: /def registry = RegistryUtil.getRegistry()
+Line 2: def bundleContext = registry._bundleContext
+Line 3: 
+Line 4: def assetEntriesCheckerUtilReference = bundleContext.getServiceReference("com.liferay.asset.publisher.web.internal.messaging.AssetEntriesCheckerHelper");
+Line 5: def assetEntriesCheckerUtilService = bundleContext.getService(assetEntriesCheckerUtilReference);
+Line 6: assetEntriesCheckerUtilService.checkAssetEntries()
+]]></value>
+<value><![CDATA[LIFERAY_ERROR: SanitizerLogWrapper warning: Following message contains CRLF characters
+No such property: RegistryUtil for class: Script1
+Line 1: def registry = RegistryUtil.getRegistry()
+Line 2: def bundleContext = registry._bundleContext
+Line 3: 
+Line 4: def assetEntriesCheckerUtilReference = bundleContext.getServiceReference("com.liferay.asset.publisher.web.internal.messaging.AssetEntriesCheckerHelper");
+Line 5: def assetEntriesCheckerUtilService = bundleContext.getService(assetEntriesCheckerUtilReference);
+Line 6: assetEntriesCheckerUtilService.checkAssetEntries()
+]]></value>
