@@ -156,12 +156,12 @@ public class ElasticsearchInterestRepositoryImpl implements InterestRepository {
 	}
 
 	@Override
-	public void deleteByOwnerIdAndOwnerType(Long ownerId, String ownerType) {
+	public void deleteByOwnerIdInAndOwnerType(
+		List<Long> ownerIds, String ownerType) {
+
 		_faroInfoElasticsearchInvoker.delete(
 			_getCollectionName(),
-			_buildQueryBuilder(
-				null, null, Collections.singletonList(ownerId), ownerType, null,
-				null));
+			_buildQueryBuilder(null, null, ownerIds, ownerType, null, null));
 	}
 
 	@Override

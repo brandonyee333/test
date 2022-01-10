@@ -11,12 +11,12 @@
 				recordedDate >= :recordedDate
 		]]>
 	</entry>
-	<entry key="Interest.deleteByOwnerIdAndOwnerType">
+	<entry key="Interest.deleteByOwnerIdInAndOwnerType">
 		<![CDATA[
 			DELETE FROM
 				Interest
 			WHERE
-				ownerId = :ownerId AND
+				ownerId IN (:ownerIds) AND
 				ownerType = :ownerType
 		]]>
 	</entry>

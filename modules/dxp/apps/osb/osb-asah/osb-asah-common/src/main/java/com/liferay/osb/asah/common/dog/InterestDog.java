@@ -46,8 +46,8 @@ public class InterestDog {
 		_interestRepository.saveAll(interests);
 	}
 
-	public void deleteInterests(Long ownerId, String ownerType) {
-		_interestRepository.deleteByOwnerIdAndOwnerType(ownerId, ownerType);
+	public void deleteInterests(List<Long> ownerIds, String ownerType) {
+		_interestRepository.deleteByOwnerIdInAndOwnerType(ownerIds, ownerType);
 	}
 
 	public void deleteInterests(String ownerType, Date recordedDate) {

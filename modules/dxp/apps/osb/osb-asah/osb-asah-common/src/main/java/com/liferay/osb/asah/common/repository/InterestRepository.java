@@ -46,8 +46,9 @@ public interface InterestRepository
 		@Param("name") String name, @Param("recordedDate") Date recordedDate);
 
 	@Modifying
-	public void deleteByOwnerIdAndOwnerType(
-		@Param("ownerId") Long ownerId, @Param("ownerType") String ownerType);
+	public void deleteByOwnerIdInAndOwnerType(
+		@Param("ownerIds") List<Long> ownerIds,
+		@Param("ownerType") String ownerType);
 
 	@Modifying
 	public void deleteByOwnerTypeAndRecordedDateLessThanEqual(
