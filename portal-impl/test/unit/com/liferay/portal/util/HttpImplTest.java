@@ -288,9 +288,6 @@ public class HttpImplTest extends PowerMockito {
 	}
 
 	@Test
-	}
-
-	@Test
 	public void testGetQueryStringWithHttpServletRequest() {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
@@ -335,6 +332,9 @@ public class HttpImplTest extends PowerMockito {
 			JavaConstants.JAVAX_SERVLET_FORWARD_REQUEST_URI, "https://foo.com");
 
 		Assert.assertTrue(_httpImpl.isForwarded(mockHttpServletRequest));
+	}
+
+	@Test
 	public void testNormalizePath() {
 		Assert.assertEquals("/api/axis", _httpImpl.normalizePath("/api/axis?"));
 		Assert.assertEquals("/", _httpImpl.normalizePath("/.."));
