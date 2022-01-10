@@ -63,6 +63,15 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
+		JSONArray individualsJSONArray = contextJSONObject.optJSONArray(
+			"individualsJSONArray");
+
+		if (individualsJSONArray != null) {
+			_updateDynamicMembershipsForIndividuals(individualsJSONArray);
+
+			return;
+		}
+
 		Date modifiedDate = DateUtil.toUTCDate(
 			contextJSONObject.getString("dateModified"));
 
@@ -96,15 +105,6 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			finally {
 				reentrantLock.unlock();
 			}
-
-			return;
-		}
-
-		JSONArray individualsJSONArray = contextJSONObject.optJSONArray(
-			"individualsJSONArray");
-
-		if (individualsJSONArray != null) {
-			_updateDynamicMembershipsForIndividuals(individualsJSONArray);
 
 			return;
 		}
