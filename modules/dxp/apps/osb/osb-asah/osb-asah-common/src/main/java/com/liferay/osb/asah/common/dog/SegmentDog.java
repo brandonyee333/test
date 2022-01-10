@@ -143,7 +143,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		_asahTaskDog.scheduleAsahTask(
 			"DeleteIndividualSegmentTasksNanite",
-			JSONUtil.put("individualSegmentId", String.valueOf(segmentId)));
+			JSONUtil.put("individualSegmentIds", JSONUtil.put(segmentId)));
 	}
 
 	public void deleteSegments(Set<Long> channelIds) {

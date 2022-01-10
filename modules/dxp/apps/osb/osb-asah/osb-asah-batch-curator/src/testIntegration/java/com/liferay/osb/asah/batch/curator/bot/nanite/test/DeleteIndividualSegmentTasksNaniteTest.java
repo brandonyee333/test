@@ -92,7 +92,7 @@ public class DeleteIndividualSegmentTasksNaniteTest
 				RandomUtils.nextInt()));
 
 		_deleteIndividualSegmentTasksNanite.run(
-			JSONUtil.put("individualSegmentId", String.valueOf(segmentId)));
+			JSONUtil.put("individualSegmentIds", JSONUtil.put(segmentId)));
 
 		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(

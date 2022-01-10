@@ -106,7 +106,7 @@ public class AccountDogTest
 		JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
 		Assertions.assertNotNull(
-			contextJSONObject.getString("individualSegmentId"));
+			contextJSONObject.getJSONArray("individualSegmentIds"));
 
 		Optional<Account> accountOptional = _accountRepository.findById(
 			accountId);

@@ -14,20 +14,19 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.dog.VisitedPageDog;
+import com.liferay.osb.asah.common.util.ListUtil;
+
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,24 +40,23 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		Long individualSegmentId = contextJSONObject.getLong(
-			"individualSegmentId");
+		JSONArray jsonArray = contextJSONObject.getJSONArray(
+			"individualSegmentIds");
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("ownerId", individualSegmentId)
-		).filter(
-			QueryBuilders.termQuery("ownerType", "individual-segment")
-		);
+		List<Long> individualSegmentIds = ListUtil.map(
+			jsonArray.toList(),
+			individualSegmentId -> (Long)individualSegmentId);
 
-		_interestDog.deleteInterests(individualSegmentId, "individual-segment");
+		_interestDog.deleteInterests(
+			individualSegmentIds, "individual-segment");
 
-		faroInfoElasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
+		_visitedPageDog.deleteVisitedPages(individualSegmentIds);
 
-		membershipChangeDog.deleteMembershipChanges(individualSegmentId);
+		membershipChangeDog.deleteMembershipChanges(individualSegmentIds);
 
-		membershipDog.deleteMembership(individualSegmentId);
+		membershipDog.deleteMemberships(individualSegmentIds);
 
-		_individualDog.removeSegmentId(individualSegmentId);
+		_individualDog.removeSegmentIds(individualSegmentIds);
 	}
 
 	@Autowired
@@ -80,6 +78,6 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 	private InterestDog _interestDog;
 
 	@Autowired
-	private ObjectMapper _objectMapper;
+	private VisitedPageDog _visitedPageDog;
 
 }
