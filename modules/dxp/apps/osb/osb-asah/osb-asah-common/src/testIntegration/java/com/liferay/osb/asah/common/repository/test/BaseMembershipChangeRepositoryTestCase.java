@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.jupiter.api.Assertions;
@@ -96,18 +97,29 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 	}
 
 	@Test
-	public void testDeleteByIndividualSegmentId() {
-		_membershipChangeRepository.deleteByIndividualSegmentId(
-			_membershipChange.getIndividualSegmentId());
+	public void testDeleteByIndividualSegmentIdIn() {
+		List<Segment> subList = _segments.subList(0, 2);
 
-		Long membershipChangeId = _membershipChange.getId();
+		Stream<Segment> stream = subList.stream();
 
-		Assertions.assertNotNull(membershipChangeId);
+		List<Long> segmentIds = stream.map(
+			Segment::getId
+		).collect(
+			Collectors.toList()
+		);
 
-		Optional<MembershipChange> membershipChangeOptional =
-			_membershipChangeRepository.findById(membershipChangeId);
+		_membershipChangeRepository.deleteByIndividualSegmentIdIn(segmentIds);
 
-		Assertions.assertFalse(membershipChangeOptional.isPresent());
+		List<MembershipChange> membershipChanges = IterableUtils.toList(
+			_membershipChangeRepository.findAll());
+
+		Stream<MembershipChange> membershipChangesStream =
+			membershipChanges.stream();
+
+		Assertions.assertFalse(
+			membershipChangesStream.anyMatch(
+				membershipChange -> segmentIds.contains(
+					membershipChange.getIndividualSegmentId())));
 	}
 
 	@Test

@@ -25,6 +25,9 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
+
+import org.apache.commons.collections4.IterableUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -119,10 +122,25 @@ public abstract class BaseMembershipRepositoryTestCase
 	}
 
 	@Test
-	public void testDeleteByIndividualSegmentId() {
-		_membershipRepository.deleteByIndividualSegmentId(56L);
+	public void testDeleteByIndividualSegmentIdIn() {
+		List<Membership> memberships = IterableUtils.toList(
+			_membershipRepository.findAll());
 
-		Assertions.assertEquals(2, _membershipRepository.count());
+		Stream<Membership> stream = memberships.stream();
+
+		Assertions.assertTrue(
+			stream.anyMatch(
+				membership -> membership.getIndividualSegmentId() == 34));
+
+		_membershipRepository.deleteByIndividualSegmentIdIn(Arrays.asList(34L));
+
+		memberships = IterableUtils.toList(_membershipRepository.findAll());
+
+		stream = memberships.stream();
+
+		Assertions.assertFalse(
+			stream.anyMatch(
+				membership -> membership.getIndividualSegmentId() == 34));
 	}
 
 	@Test

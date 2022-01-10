@@ -24,6 +24,9 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+
+import org.apache.commons.collections4.IterableUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -119,11 +122,32 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Test
-	public void testDeleteByOwnerIdAndOwnerType() {
-		_interestRepository.deleteByOwnerIdAndOwnerType(
-			374790572703144534L, "individual");
+	public void testDeleteByOwnerIdInAndOwnerType() {
+		Assertions.assertEquals(
+			5, _interestRepository.count(), _interestRepository.toString());
 
-		Assertions.assertEquals(3, _interestRepository.count());
+		List<Long> ownerIds = Arrays.asList(
+			374790572703144534L, 374790572703144535L);
+
+		List<Interest> interests = IterableUtils.toList(
+			_interestRepository.findAll());
+
+		Stream<Interest> stream = interests.stream();
+
+		Assertions.assertTrue(
+			stream.anyMatch(
+				interest -> ownerIds.contains(interest.getOwnerId())));
+
+		_interestRepository.deleteByOwnerIdInAndOwnerType(
+			ownerIds, "individual");
+
+		interests = IterableUtils.toList(_interestRepository.findAll());
+
+		stream = interests.stream();
+
+		Assertions.assertFalse(
+			stream.anyMatch(
+				interest -> ownerIds.contains(interest.getOwnerId())));
 	}
 
 	@Test
