@@ -94,18 +94,20 @@ public class StreamingIngestionPipeline {
 				streamingIngestionPipelineOptions.getWriteInterval()));
 
 		PCollection<KV<String, Iterable<AnalyticsEvent>>>
-			sessionizedAnalyticsEventsPCollection = pubsubMessagesPCollection.apply(
-				"Parse Analytics Events", ParDo.of(new AnalyticsEventParser())
-			).apply(
-				"Create Sessions",
-				new Sessionizer(
-					streamingIngestionPipelineOptions.
-						getSessionWindowAllowedLateness(),
-					streamingIngestionPipelineOptions.
-						getSessionWindowEarlyFiringsInterval(),
-					streamingIngestionPipelineOptions.
-						getSessionWindowGapDuration())
-			);
+			sessionizedAnalyticsEventsPCollection =
+				pubsubMessagesPCollection.apply(
+					"Parse Analytics Events",
+					ParDo.of(new AnalyticsEventParser())
+				).apply(
+					"Create Sessions",
+					new Sessionizer(
+						streamingIngestionPipelineOptions.
+							getSessionWindowAllowedLateness(),
+						streamingIngestionPipelineOptions.
+							getSessionWindowEarlyFiringsInterval(),
+						streamingIngestionPipelineOptions.
+							getSessionWindowGapDuration())
+				);
 
 		sessionizedAnalyticsEventsPCollection.apply(
 			"Write Events",
