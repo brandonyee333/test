@@ -91,6 +91,8 @@ public class ProjectDog {
 
 	@PostConstruct
 	public void init() {
+		_postgreSQLSchemaManager.createGlobalSchema();
+
 		_consumers.add(this::_createSnapshots);
 	}
 
