@@ -267,10 +267,6 @@ definition {
 				webContentTitle = "WC WebContent Title");
 		}
 
-		task ("Set up Friendly URL in English") {
-			WebContent.editFriendlyURL(webContentFriendlyURL = "/test");
-		}
-
 		task ("Add a translation for the title") {
 			PortletEntry.changeLocale(locale = "pt-BR");
 
