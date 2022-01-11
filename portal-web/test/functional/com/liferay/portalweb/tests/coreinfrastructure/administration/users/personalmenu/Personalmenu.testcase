@@ -222,6 +222,10 @@ definition {
 			userFirstName = "Test",
 			userLastName = "Test",
 			userScreenName = "testscreen");
+
+		User.editUserInformation(
+			userEmailAddressEdit = "test@liferay.com",
+			userScreenNameEdit = "test");
 	}
 
 	@description = "This is a use case for LPS-105387."
