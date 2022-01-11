@@ -77,7 +77,7 @@ public class StreamingIngestionPipeline {
 
 		Pipeline pipeline = Pipeline.create(streamingIngestionPipelineOptions);
 
-		PCollection<String> pubsubMessages = pipeline.apply(
+		PCollection<String> pubsubMessagesPCollection = pipeline.apply(
 			"Read PubSub Messages",
 			PubsubIO.readStrings(
 			).fromSubscription(
@@ -86,7 +86,7 @@ public class StreamingIngestionPipeline {
 				"eventDate"
 			));
 
-		pubsubMessages.apply(
+		pubsubMessagesPCollection.apply(
 			"Backup PubSub Messages",
 			new BackupPubsubMessages(
 				streamingIngestionPipelineOptions.getOutputDirectory(),
@@ -94,7 +94,7 @@ public class StreamingIngestionPipeline {
 				streamingIngestionPipelineOptions.getWriteInterval()));
 
 		PCollection<KV<String, Iterable<AnalyticsEvent>>>
-			sessionizedAnalyticsEvents = pubsubMessages.apply(
+			sessionizedAnalyticsEventsPCollection = pubsubMessagesPCollection.apply(
 				"Parse Analytics Events", ParDo.of(new AnalyticsEventParser())
 			).apply(
 				"Create Sessions",
@@ -107,18 +107,16 @@ public class StreamingIngestionPipeline {
 						getSessionWindowGapDuration())
 			);
 
-		sessionizedAnalyticsEvents.apply(
+		sessionizedAnalyticsEventsPCollection.apply(
 			"Write Events",
 			new EventBigQueryWriter(
 				streamingIngestionPipelineOptions.getEventTableName()));
-
-		sessionizedAnalyticsEvents.apply(
+		sessionizedAnalyticsEventsPCollection.apply(
 			"Write Event Properties",
 			new EventPropertiesBigQueryWriter(
 				streamingIngestionPipelineOptions.
 					getEventPropertiesTableName()));
-
-		sessionizedAnalyticsEvents.apply(
+		sessionizedAnalyticsEventsPCollection.apply(
 			"Write Sessions",
 			new SessionBigQueryWriter(
 				streamingIngestionPipelineOptions.getSessionTableName()));
@@ -139,7 +137,7 @@ public class StreamingIngestionPipeline {
 			}
 			catch (Exception exception) {
 				_logger.error(
-					"Unable to parse Analytics Event Message {}",
+					"Unable to parse analytics event message {}",
 					processContext.element());
 			}
 		}
@@ -209,6 +207,8 @@ public class StreamingIngestionPipeline {
 							String sessionId = DigestUtils.md5Hex(
 								element.getKey() + "#" +
 									intervalWindow.start());
+
+							// TODO Move this to a private method
 
 							for (AnalyticsEvent analyticsEvent :
 									element.getValue()) {
@@ -331,6 +331,8 @@ public class StreamingIngestionPipeline {
 							KV<String, Iterable<AnalyticsEvent>> element =
 								processContext.element();
 
+							// TODO Move this to a private method
+
 							for (AnalyticsEvent analyticsEvent :
 									element.getValue()) {
 
@@ -402,6 +404,9 @@ public class StreamingIngestionPipeline {
 							ProcessContext processContext) {
 
 							if (paneInfo.isLast()) {
+
+								// TODO Move this to a private method
+
 								KV<String, Iterable<AnalyticsEvent>> element =
 									processContext.element();
 
