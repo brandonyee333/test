@@ -1,0 +1,47 @@
+[
+	{
+		"createDate": "2022-01-05T13:17:05.271Z",
+		"dataSources": [
+			{
+				"groupIds": [
+					"43811416",
+					"82272606",
+					"54804552",
+					"10693199",
+					"57390646"
+				],
+				"id": "507692450032087801"
+			}
+		],
+		"defaultChannel": true,
+		"id": "507692450375472147",
+		"name": "Channel1"
+	},
+	{
+		"createDate": "2022-01-05T13:17:05.271Z",
+		"dataSources": [
+			{
+				"groupIds": [
+					"43811417"
+				],
+				"id": "507692450032087802"
+			}
+		],
+		"defaultChannel": false,
+		"id": "507692450375472148",
+		"name": "Channel2"
+	},
+	{
+		"createDate": "2022-01-05T13:17:05.271Z",
+		"dataSources": [
+			{
+				"groupIds": [
+				],
+				"id": "507692450032087803"
+			}
+		],
+		"defaultChannel": false,
+		"id": "507692450375472149",
+		"name": "Channel3"
+	}
+]
