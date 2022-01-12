@@ -1,0 +1,78 @@
+definition {
+
+	macro _addSiteTemplateByName {
+		Variables.assertDefined(parameterList = "${siteTemplateName}");
+
+		if (isSet(specificURL)) {
+			var portalURL = "${specificURL}";
+		}
+		else {
+			var portalURL = JSONCompany.getPortalURL();
+		}
+
+		var curl = '''
+			${portalURL}/api/jsonws/layoutsetprototype/add-layout-set-prototype \
+				-u ${creatorEmailAddress}:${creatorPassword} \
+				-d name=${siteTemplateName} \
+				-d description=${templateDescription} \
+				-d active=${TemplateStatus} \
+				-d layoutsUpdateable=${TemplateIsUpdateable} \
+				-d readyForPropagation=${TemplatePropagation}
+		''';
+
+		com.liferay.poshi.runner.util.JSONCurlUtil.post("${curl}");
+	}
+
+	macro _deleteNonDefaultSiteTemplates {
+		Variables.assertDefined(parameterList = "${companyId}");
+
+		var curl = '''
+			${portalURL}/api/jsonws/layoutsetprototype/delete-nondefault-layout-set-prototypes \
+				-u ${creatorEmailAddress}:${creatorPassword} \
+				-d companyId=${companyId}
+		''';
+
+		com.liferay.poshi.runner.util.JSONCurlUtil.post("${curl}");
+	}
+
+	macro _deleteSiteTemplateByName {
+		Variables.assertDefined(parameterList = "${templateID}");
+
+		if (isSet(specificURL)) {
+			var portalURL = "${specificURL}";
+		}
+		else {
+			var portalURL = JSONCompany.getPortalURL();
+		}
+
+		var curl = '''
+			${portalURL}/api/jsonws/layoutsetprototype/delete-layout-set-prototype \
+				-u ${creatorEmailAddress}:${templateID}
+		''';
+
+		com.liferay.poshi.runner.util.JSONCurlUtil.post("${curl}");
+	}
+
+	macro _getAllNonDefaultSiteTemplateId {
+		Variables.assertDefined(parameterList = "${userId}");
+
+		var companyId = JSONCompany.getCompanyId();
+
+		if (isSet(specificURL)) {
+			var portalURL = "${specificURL}";
+		}
+		else {
+			var portalURL = JSONCompany.getPortalURL();
+		}
+
+		var curl = '''
+			${portalURL}/api/jsonws/layoutsetprototype/get-layout-set-prototypes \
+				-u test@liferay.com:test \
+				-d companyId=${companyId}
+		''';
+		var siteTemplateIds = JSONCurlUtil.post("${curl}", "$..['nameCurrentValue']");
+
+		return "${siteTemplateIds}";
+	}
+
+}
