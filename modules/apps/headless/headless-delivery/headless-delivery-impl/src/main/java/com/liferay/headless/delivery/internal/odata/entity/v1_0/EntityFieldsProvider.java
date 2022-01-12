@@ -125,9 +125,11 @@ public class EntityFieldsProvider {
 		}
 		else if (Objects.equals(
 					ddmFormField.getDataType(), DDMFormFieldType.RADIO) ||
-				 (Objects.equals(
-					 ddmFormField.getType(), DDMFormFieldType.TEXT) &&
-				  Objects.equals(ddmFormField.getIndexType(), "keyword"))) {
+				 (Objects.equals(ddmFormField.getIndexType(), "keyword") &&
+				  (Objects.equals(
+					  ddmFormField.getType(), DDMFormFieldType.SELECT) ||
+				   Objects.equals(
+					   ddmFormField.getType(), DDMFormFieldType.TEXT)))) {
 
 			return new StringEntityField(
 				ddmFormField.getName(),
