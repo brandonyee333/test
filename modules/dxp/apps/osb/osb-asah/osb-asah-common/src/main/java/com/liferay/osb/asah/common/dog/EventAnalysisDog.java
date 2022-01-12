@@ -545,11 +545,15 @@ public class EventAnalysisDog {
 	private void _validate(Sort sort) {
 		String sortColumn = sort.getColumn();
 
-		if (!Objects.equals(sortColumn, "name")) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"Unable to sort event analysis by " + sortColumn);
+		if (Objects.equals(sortColumn, "createdByUserName") ||
+			Objects.equals(sortColumn, "name")) {
+
+			return;
 		}
+
+		throw new OSBAsahException(
+			HttpStatus.BAD_REQUEST,
+			"Unable to sort event analysis by " + sortColumn);
 	}
 
 	private void _validateEventAnalysisBreakdowns(
