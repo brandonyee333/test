@@ -329,6 +329,7 @@ const openSelectionModal = ({
 	buttonAddLabel = Liferay.Language.get('add'),
 	buttonCancelLabel = Liferay.Language.get('cancel'),
 	customSelectEvent = false,
+	getSelectedItemsOnly = true,
 	height,
 	id,
 	multiple = false,
@@ -355,7 +356,9 @@ const openSelectionModal = ({
 			if (searchContainer) {
 				iframeWindowObj.Liferay.componentReady(searchContainer.id).then(
 					(searchContainer) => {
-						const allSelectedElements = searchContainer.select.getAllSelectedElements();
+						const allSelectedElements = getSelectedItemsOnly
+							? searchContainer.select.getAllSelectedElements()
+							: searchContainer.select._getAllElements(false);
 
 						const allSelectedNodes = allSelectedElements.getDOMNodes();
 
@@ -365,6 +368,10 @@ const openSelectionModal = ({
 
 								if (node.value) {
 									item.value = node.value;
+								}
+
+								if (!getSelectedItemsOnly && node.checked) {
+									item.checked = node.checked;
 								}
 
 								const row = node.closest('dd, tr, li');
