@@ -61,8 +61,6 @@ public class UserSessionDog {
 	}
 
 	public List<Long> getIndividualIds(String filterString) {
-		final QueryBuilder queryBuilder = _createQueryBuilder(filterString);
-
 		List<Long> individualIds = new ArrayList<>();
 
 		SearchResponse searchResponse = _cerebroInfoElasticsearchInvoker.search(
@@ -76,7 +74,7 @@ public class UserSessionDog {
 					).size(
 						Integer.MAX_VALUE
 					));
-				searchSourceBuilder.query(queryBuilder);
+				searchSourceBuilder.query(_createQueryBuilder(filterString));
 				searchSourceBuilder.size(0);
 			});
 
