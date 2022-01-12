@@ -1,0 +1,64 @@
+definition {
+
+	macro _getSiteTemplateById {
+		Variables.assertDefined(parameterList = "${TemplateId}");
+
+		if (isSet(specificURL)) {
+			var portalURL = "${specificURL}";
+		}
+		else {
+			var portalURL = JSONCompany.getPortalURL();
+		}
+
+		var curl = '''
+			${portalURL}/api/jsonws/layoutsetprototype/get-layout-set-prototype \
+				 -u test@liferay.com:test \
+				 -d layoutSetPrototypeId=${layoutSetPrototypeId}
+		''';
+
+		return "${curl}";
+	}
+
+	macro getSiteTemplateIdByName {
+		Variables.assertDefined(parameterList = "${siteTemplateName}");
+
+		var templateId = JSONSiteTemplateAPI._getAllNonDefaultSiteTemplateId();
+
+		for (var templateId : list "${TemplateIdList}") {
+			var currentTemplateName = JSONSiteTemplateGetter.getSiteTemplateName(templateId = "${TemplateId}");
+
+			if (contains("${currentTemplateName}", "${siteTemplateName}")) {
+				return "${layoutSetPrototypeId}";
+			}
+		}
+	}
+
+	macro getSiteTemplateName {
+		Variables.assertDefined(parameterList = "${TemplateId}");
+
+		var curl = JSONSiteTemplateGetter._getSiteTemplateById(layoutSetPrototypeId = "${TemplateId}");
+
+		var templateName = JSONCurlUtil.get("${curl}", "$['nameCurrentValue']");
+	}
+
+	macro getSiteTemplateUuidByName {
+		Variables.assertDefined(parameterList = "${siteTemplateName}");
+
+		if (isSet(specificURL)) {
+			var portalURL = "${specificURL}";
+		}
+		else {
+			var portalURL = JSONCompany.getPortalURL();
+		}
+
+		var curl = '''
+			${portalURL}/api/jsonws/layoutsetprototype/get-layout-set-prototype \
+				 -u test@liferay.com:test \
+				 -d layoutSetPrototypeId=${layoutSetPrototypeId}
+		''';
+		var SiteTemplateUuid = JSONCurlUtil.get("${curl}", "$['uuid']");
+
+		return "${SiteTemplateUuid}";
+	}
+
+}
