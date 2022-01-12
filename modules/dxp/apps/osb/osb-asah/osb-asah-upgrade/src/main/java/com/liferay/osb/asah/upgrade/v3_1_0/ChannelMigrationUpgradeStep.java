@@ -47,7 +47,7 @@ public class ChannelMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 	}
 
 	@Override
-	protected String getSelectLatestSQL() {
+	protected String getSelectLatestIdSQL() {
 		return "SELECT id FROM channel ORDER BY id DESC LIMIT 1";
 	}
 

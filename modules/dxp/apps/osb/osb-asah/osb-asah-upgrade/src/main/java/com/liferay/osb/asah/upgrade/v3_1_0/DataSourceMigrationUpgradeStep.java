@@ -48,7 +48,7 @@ public class DataSourceMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 	}
 
 	@Override
-	protected String getSelectLatestSQL() {
+	protected String getSelectLatestIdSQL() {
 		return "SELECT id FROM datasource ORDER BY id DESC LIMIT 1";
 	}
 

@@ -69,13 +69,13 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 
 	protected abstract String getElasticsearchCollectionName();
 
-	protected abstract String getSelectLatestSQL();
+	protected abstract String getSelectLatestIdSQL();
 
 	private Long _getLatestId(boolean retry) {
 		try {
 			return Optional.ofNullable(
 				_namedParameterJdbcTemplate.queryForObject(
-					getSelectLatestSQL(), Collections.emptyMap(),
+					getSelectLatestIdSQL(), Collections.emptyMap(),
 					(rs, rowNum) -> rs.getLong("id"))
 			).orElse(
 				0L
@@ -83,7 +83,7 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Select initial Event ID failed");
+				_log.debug("Select latest ID query failed");
 			}
 
 			if (retry) {
