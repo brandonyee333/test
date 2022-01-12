@@ -1,0 +1,70 @@
+definition {
+
+	macro addPageToSiteTemplate {
+		var TODO = "Todo";
+	}
+
+	macro addSiteBySiteTemplateName {
+		var TODO = "Todo";
+	}
+
+	macro addSiteTemplateByName {
+		Variables.assertDefined(parameterList = "${siteTemplateName}");
+
+		//var siteTemplateName = JSONSiteTemplateSetter.setTemplateName(nameMap = "${SiteTemplateName}");
+
+		if (!(isSet(templateDescription))) {
+			var templateDescription = "";
+		}
+
+		if (!(isSet(templateStatus))) {
+			var templateStatus = "true";
+		}
+
+		if (!(isSet(TemplateIsUpdateable))) {
+			var TemplateIsUpdateable = "true";
+		}
+
+		if (!(isSet(TemplatePropagation))) {
+			var TemplatePropagation = "true";
+		}
+
+		if (!(isSet(creatorEmailAddress))) {
+			var creatorEmailAddress = "test@liferay.com";
+		}
+
+		if (!(isSet(creatorPassword))) {
+			var creatorPassword = "test";
+		}
+
+		JSONSiteTemplateAPI._addSiteTemplateByName(
+			creatorEmailAddress = "${creatorEmailAddress}",
+			creatorPassword = "${creatorPassword}",
+			siteTemplateName = "${siteTemplateName}",
+			templateDescription = "${templateDescription}",
+			TemplateIsUpdateable = "${TemplateIsUpdateable}",
+			TemplatePropagation = "${TemplatePropagation}",
+			TemplateStatus = "${TemplateStatus}");
+	}
+
+	macro deleteNonDefaultTemplates {
+		var companyId = JSONCompany.getCompanyId();
+
+		JSONSiteTemplateAPI._addSiteTemplateByName(companyId = "${companyId}");
+	}
+
+	macro deleteSiteTemplateByName {
+		Variables.assertDefined(parameterList = "${siteTemplateName}");
+
+		var templateId = JSONSiteTemplateAPI._getAllNonDefaultSiteTemplateId();
+
+		for (var templateId : list "${TemplateIdList}") {
+			var currentTemplateName = JSONSiteTemplateGetter.getSiteTemplateName(templateId = "${TemplateId}");
+
+			if (contains("${currentTemplateName}", "${siteTemplateName}")) {
+				JSONSiteTemplateAPI._deleteSiteTemplateByName(templateId = "${TemplateId}");
+			}
+		}
+	}
+
+}
