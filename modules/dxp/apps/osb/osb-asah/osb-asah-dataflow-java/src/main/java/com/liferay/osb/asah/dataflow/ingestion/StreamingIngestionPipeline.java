@@ -493,6 +493,8 @@ public class StreamingIngestionPipeline {
 	private static void _outputSessionTableRow(
 		IntervalWindow intervalWindow, DoFn.ProcessContext processContext) {
 
+		TableRow tableRow = new TableRow();
+
 		KV<String, Iterable<AnalyticsEvent>> element =
 			(KV<String, Iterable<AnalyticsEvent>>)processContext.element();
 
@@ -500,10 +502,9 @@ public class StreamingIngestionPipeline {
 
 		String[] sessionKeyParts = sessionKey.split("#");
 
-		TableRow tableRow = new TableRow();
-
 		tableRow.set("channelId", Long.parseLong(sessionKeyParts[2]));
 		tableRow.set("projectId", sessionKeyParts[0]);
+
 		tableRow.set("sessionEnd", String.valueOf(intervalWindow.end()));
 		tableRow.set(
 			"sessionId",
