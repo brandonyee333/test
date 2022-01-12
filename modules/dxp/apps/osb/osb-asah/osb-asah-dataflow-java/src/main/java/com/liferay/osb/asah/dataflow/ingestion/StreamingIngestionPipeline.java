@@ -210,82 +210,80 @@ public class StreamingIngestionPipeline {
 								element.getKey() + "#" +
 									intervalWindow.start());
 
-							// TODO Move this to a private method
-
 							for (AnalyticsEvent analyticsEvent :
 									element.getValue()) {
 
-								Map<String, String> context =
-									analyticsEvent.context;
-
-								TableRow tableRow = new TableRow();
-
-								tableRow.set(
-									"applicationId",
-									analyticsEvent.applicationId);
-								tableRow.set(
-									"browserName", context.get("browserName"));
-								tableRow.set(
-									"canonicalUrl",
-									context.get("canonicalUrl"));
-								tableRow.set(
-									"channelId",
-									Long.parseLong(analyticsEvent.channelId));
-								tableRow.set("city", context.get("city"));
-								tableRow.set(
-									"contentLanguageId",
-									context.get("contentLanguageId"));
-								tableRow.set(
-									"context",
-									ObjectMapperUtil.writeValueAsString(
-										context));
-								tableRow.set("country", context.get("country"));
-								tableRow.set(
-									"createDate", analyticsEvent.createDate);
-								tableRow.set(
-									"dataSourceId",
-									Long.parseLong(
-										analyticsEvent.dataSourceId));
-								tableRow.set(
-									"description", context.get("description"));
-								tableRow.set(
-									"deviceType", context.get("deviceType"));
-								tableRow.set(
-									"eventDate", analyticsEvent.eventDate);
-								tableRow.set("eventId", analyticsEvent.eventId);
-								tableRow.set(
-									"eventProperties",
-									ObjectMapperUtil.writeValueAsString(
-										analyticsEvent.eventProperties));
-								tableRow.set(
-									"experienceId",
-									context.get("experienceId"));
-								tableRow.set("id", analyticsEvent.id);
-								tableRow.set(
-									"languageId", context.get("languageId"));
-								tableRow.set(
-									"platformName",
-									context.get("platformName"));
-								tableRow.set(
-									"projectId", analyticsEvent.projectId);
-								tableRow.set(
-									"projectTimeZoneId",
-									analyticsEvent.projectTimeZoneId);
-								tableRow.set(
-									"referrer", context.get("referrer"));
-								tableRow.set("region", context.get("region"));
-								tableRow.set("sessionId", sessionId);
-								tableRow.set(
-									"timezoneOffset",
-									context.get("timezoneOffset"));
-								tableRow.set("title", context.get("title"));
-								tableRow.set("url", context.get("url"));
-								tableRow.set("userId", analyticsEvent.userId);
-								tableRow.set(
-									"variantId", context.get("variantId"));
-
-								processContext.output(tableRow);
+								_outputEventTableRow(
+									analyticsEvent, processContext, sessionId);
 							}
+						}
+
+						private void _outputEventTableRow(
+							AnalyticsEvent analyticsEvent,
+							ProcessContext processContext, String sessionId) {
+
+							TableRow tableRow = new TableRow();
+
+							tableRow.set(
+								"applicationId", analyticsEvent.applicationId);
+
+							Map<String, String> context =
+								analyticsEvent.context;
+
+							tableRow.set(
+								"browserName", context.get("browserName"));
+							tableRow.set(
+								"canonicalUrl", context.get("canonicalUrl"));
+
+							tableRow.set(
+								"channelId",
+								Long.parseLong(analyticsEvent.channelId));
+							tableRow.set("city", context.get("city"));
+							tableRow.set(
+								"contentLanguageId",
+								context.get("contentLanguageId"));
+							tableRow.set(
+								"context",
+								ObjectMapperUtil.writeValueAsString(context));
+							tableRow.set("country", context.get("country"));
+							tableRow.set(
+								"createDate", analyticsEvent.createDate);
+							tableRow.set(
+								"dataSourceId",
+								Long.parseLong(analyticsEvent.dataSourceId));
+							tableRow.set(
+								"description", context.get("description"));
+							tableRow.set(
+								"deviceType", context.get("deviceType"));
+							tableRow.set("eventDate", analyticsEvent.eventDate);
+							tableRow.set("eventId", analyticsEvent.eventId);
+							tableRow.set(
+								"eventProperties",
+								ObjectMapperUtil.writeValueAsString(
+									analyticsEvent.eventProperties));
+							tableRow.set(
+								"experienceId", context.get("experienceId"));
+							tableRow.set("id", analyticsEvent.id);
+							tableRow.set(
+								"languageId", context.get("languageId"));
+							tableRow.set(
+								"platformName", context.get("platformName"));
+							tableRow.set("projectId", analyticsEvent.projectId);
+							tableRow.set(
+								"projectTimeZoneId",
+								analyticsEvent.projectTimeZoneId);
+							tableRow.set("referrer", context.get("referrer"));
+							tableRow.set("region", context.get("region"));
+							tableRow.set("sessionId", sessionId);
+							tableRow.set(
+								"timezoneOffset",
+								context.get("timezoneOffset"));
+							tableRow.set("title", context.get("title"));
+							tableRow.set("url", context.get("url"));
+							tableRow.set("userId", analyticsEvent.userId);
+							tableRow.set("variantId", context.get("variantId"));
+
+							processContext.output(tableRow);
 						}
 
 					})
@@ -326,40 +324,42 @@ public class StreamingIngestionPipeline {
 					new DoFn<KV<String, Iterable<AnalyticsEvent>>, TableRow>() {
 
 						@ProcessElement
-						public void process(
-							IntervalWindow intervalWindow, PaneInfo paneInfo,
-							ProcessContext processContext) {
-
+						public void process(ProcessContext processContext) {
 							KV<String, Iterable<AnalyticsEvent>> element =
 								processContext.element();
-
-							// TODO Move this to a private method
 
 							for (AnalyticsEvent analyticsEvent :
 									element.getValue()) {
 
-								for (Map.Entry<String, String> entry :
-										analyticsEvent.eventProperties.
-											entrySet()) {
+								_outputEventPropertyTableRows(
+									analyticsEvent, processContext);
+							}
+						}
 
-									TableRow tableRow = new TableRow();
+						private void _outputEventPropertyTableRows(
+							AnalyticsEvent analyticsEvent,
+							ProcessContext processContext) {
 
-									tableRow.set(
-										"channelId",
-										Long.parseLong(
-											analyticsEvent.channelId));
-									tableRow.set(
-										"eventDate", analyticsEvent.eventDate);
-									tableRow.set("id", analyticsEvent.id);
-									tableRow.set(
-										"projectId", analyticsEvent.channelId);
-									tableRow.set(
-										"propertyName", entry.getKey());
-									tableRow.set(
-										"propertyValue", entry.getValue());
+							Map<String, String> eventProperties =
+								analyticsEvent.eventProperties;
 
-									processContext.output(tableRow);
-								}
+							for (Map.Entry<String, String> entry :
+									eventProperties.entrySet()) {
+
+								TableRow tableRow = new TableRow();
+
+								tableRow.set(
+									"channelId",
+									Long.parseLong(analyticsEvent.channelId));
+								tableRow.set(
+									"eventDate", analyticsEvent.eventDate);
+								tableRow.set("id", analyticsEvent.id);
+								tableRow.set(
+									"projectId", analyticsEvent.channelId);
+								tableRow.set("propertyName", entry.getKey());
+								tableRow.set("propertyValue", entry.getValue());
+
+								processContext.output(tableRow);
 							}
 						}
 
@@ -406,41 +406,40 @@ public class StreamingIngestionPipeline {
 							ProcessContext processContext) {
 
 							if (paneInfo.isLast()) {
-
-								// TODO Move this to a private method
-
-								KV<String, Iterable<AnalyticsEvent>> element =
-									processContext.element();
-
-								String sessionKey = element.getKey();
-
-								String[] sessionKeyParts = sessionKey.split(
-									"#");
-
-								String projectId = sessionKeyParts[0];
-								String channelId = sessionKeyParts[2];
-
-								TableRow tableRow = new TableRow();
-
-								tableRow.set(
-									"channelId", Long.parseLong(channelId));
-								tableRow.set("projectId", projectId);
-								tableRow.set(
-									"sessionEnd",
-									String.valueOf(intervalWindow.end()));
-
-								String sessionId = DigestUtils.md5Hex(
-									element.getKey() + "#" +
-										intervalWindow.start());
-
-								tableRow.set("sessionId", sessionId);
-
-								tableRow.set(
-									"sessionStart",
-									String.valueOf(intervalWindow.start()));
-
-								processContext.output(tableRow);
+								_outputSessionTableRow(
+									intervalWindow, processContext);
 							}
+						}
+
+						private void _outputSessionTableRow(
+							IntervalWindow intervalWindow,
+							ProcessContext processContext) {
+
+							KV<String, Iterable<AnalyticsEvent>> element =
+								processContext.element();
+
+							String sessionKey = element.getKey();
+
+							String[] sessionKeyParts = sessionKey.split("#");
+
+							TableRow tableRow = new TableRow();
+
+							tableRow.set(
+								"channelId",
+								Long.parseLong(sessionKeyParts[2]));
+							tableRow.set("projectId", sessionKeyParts[0]);
+							tableRow.set(
+								"sessionEnd",
+								String.valueOf(intervalWindow.end()));
+							tableRow.set(
+								"sessionId",
+								DigestUtils.md5Hex(
+									sessionKey + "#" + intervalWindow.start()));
+							tableRow.set(
+								"sessionStart",
+								String.valueOf(intervalWindow.start()));
+
+							processContext.output(tableRow);
 						}
 
 					})
