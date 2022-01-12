@@ -25,6 +25,9 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
+import java.util.Map;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -50,7 +53,7 @@ public class BlockedCustomEventDefinitionBagDataFetcher
 				true, null, keyword,
 				dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
-				Sort.of(dataFetchingEnvironment.getArgument("sort")),
+				_getSort(dataFetchingEnvironment.getArgument("sort")),
 				EventDefinition.Type.CUSTOM);
 
 		return new ResultBag<>(
@@ -58,6 +61,14 @@ public class BlockedCustomEventDefinitionBagDataFetcher
 				eventDefinitionsPage.getContent(),
 				BlockedCustomEventDefinitionDTO::new),
 			eventDefinitionsPage.getTotalElements());
+	}
+
+	private Sort _getSort(Map<String, String> sort) {
+		if (Objects.equals(sort.get("column"), "lastSeenDate")) {
+			return new Sort("blockedLastSeenDate", sort.get("type"));
+		}
+
+		return Sort.of(sort);
 	}
 
 	@Autowired
