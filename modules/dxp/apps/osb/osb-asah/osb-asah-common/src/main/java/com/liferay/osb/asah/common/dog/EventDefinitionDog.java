@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -169,7 +170,7 @@ public class EventDefinitionDog {
 		@Nullable String keyword, int page, int size, Sort sort,
 		EventDefinition.Type type) {
 
-		_validate(sort);
+		_validate(blocked, sort);
 
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
@@ -309,11 +310,13 @@ public class EventDefinitionDog {
 		_eventDefinitionRepository.save(eventDefinition);
 	}
 
-	private void _validate(Sort sort) {
+	private void _validate(Boolean blocked, Sort sort) {
 		String sortColumn = sort.getColumn();
 
 		if (!Objects.equals(sortColumn, "name") &&
-			!Objects.equals(sortColumn, "displayName")) {
+			!Objects.equals(sortColumn, "displayName") &&
+			(!Objects.equals(sortColumn, "blockedLastSeenDate") ||
+			 !BooleanUtils.toBoolean(blocked))) {
 
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
