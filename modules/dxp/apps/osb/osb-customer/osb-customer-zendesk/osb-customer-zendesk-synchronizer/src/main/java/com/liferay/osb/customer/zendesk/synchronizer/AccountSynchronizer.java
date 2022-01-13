@@ -35,6 +35,7 @@ import com.liferay.osb.customer.koroneiki.web.service.ExternalLinkWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AddressUtil;
@@ -57,7 +58,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -166,7 +166,7 @@ public class AccountSynchronizer {
 	}
 
 	public void closeZendeskTickets(AccountEntry accountEntry, User user)
-		throws PortalException {
+		throws Exception {
 
 		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
 			return;
@@ -191,6 +191,9 @@ public class AccountSynchronizer {
 
 		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
 			getDefaultUserEmail(accountEntry.getAccountEntryId()));
+
+		checkAndAddOrganizationMembership(
+			zendeskUser.getZendeskUserId(), zendeskOrganizationId);
 
 		List<ZendeskTicket> zendeskTickets =
 			_zendeskTicketWebService.getZendeskTickets(criteria);
@@ -269,6 +272,9 @@ public class AccountSynchronizer {
 					getDefaultUserEmail(accountEntry.getAccountEntryId()));
 
 			newZendeskUserId = zendeskUser.getZendeskUserId();
+
+			checkAndAddOrganizationMembership(
+				newZendeskUserId, zendeskOrganizationId);
 		}
 
 		for (ZendeskTicket zendeskTicket : zendeskTickets) {
@@ -362,6 +368,9 @@ public class AccountSynchronizer {
 					getDefaultUserEmail(accountEntry.getAccountEntryId()));
 
 			newZendeskUserId = zendeskUser.getZendeskUserId();
+
+			checkAndAddOrganizationMembership(
+				newZendeskUserId, zendeskOrganizationId);
 		}
 
 		for (ZendeskTicket zendeskTicket : zendeskTickets) {
@@ -639,13 +648,24 @@ public class AccountSynchronizer {
 			return;
 		}
 
-		_zendeskOrganizationMembershipWebService.createOrganizationMemberships(
-			zendeskUserId, zendeskOrganizationIds);
+		_asyncZendeskOrganizationMembershipWebService.
+			createOrganizationMemberships(
+				zendeskUserId, zendeskOrganizationIds);
 
 		for (long zendeskOrganizationId : zendeskOrganizationIds) {
 			_asyncZendeskUserWebService.
 				createZendeskUserOrganizationSubscription(
 					zendeskUserId, zendeskOrganizationId);
+		}
+	}
+
+	protected void checkAndAddOrganizationMembership(
+			long zendeskUserId, long zendeskOrganizationId)
+		throws Exception {
+
+		if (!hasOrganizationMembership(zendeskUserId, zendeskOrganizationId)) {
+			addOrganizationMemberships(
+				zendeskUserId, new long[] {zendeskOrganizationId});
 		}
 	}
 
@@ -776,6 +796,27 @@ public class AccountSynchronizer {
 		return false;
 	}
 
+	protected boolean hasOrganizationMembership(
+			long zendeskUserId, long zendeskOrganizationId)
+		throws Exception {
+
+		List<ZendeskOrganizationMembership> zendeskOrganizationMemberships =
+			_zendeskOrganizationMembershipWebService.
+				getZendeskUserOrganizationMemberships(zendeskUserId);
+
+		for (ZendeskOrganizationMembership zendeskOrganizationMembership :
+				zendeskOrganizationMemberships) {
+
+			if (zendeskOrganizationId ==
+					zendeskOrganizationMembership.getZendeskOrganizationId()) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	protected void removeCustomers(
 			AccountEntry accountEntry, long zendeskOrganizationId)
 		throws Exception {
@@ -818,8 +859,9 @@ public class AccountSynchronizer {
 			return;
 		}
 
-		_zendeskOrganizationMembershipWebService.deleteOrganizationMemberships(
-			zendeskUserId, zendeskOrganizationIds);
+		_asyncZendeskOrganizationMembershipWebService.
+			deleteOrganizationMemberships(
+				zendeskUserId, zendeskOrganizationIds);
 	}
 
 	@Reference
@@ -830,6 +872,10 @@ public class AccountSynchronizer {
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	@Reference(target = "(async=true)")
+	private ZendeskOrganizationMembershipWebService
+		_asyncZendeskOrganizationMembershipWebService;
 
 	@Reference(target = "(async=true)")
 	private ZendeskOrganizationWebService _asyncZendeskOrganizationWebService;
@@ -876,7 +922,7 @@ public class AccountSynchronizer {
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
 
-	@Reference(target = "(async=true)")
+	@Reference
 	private ZendeskOrganizationMembershipWebService
 		_zendeskOrganizationMembershipWebService;
 
