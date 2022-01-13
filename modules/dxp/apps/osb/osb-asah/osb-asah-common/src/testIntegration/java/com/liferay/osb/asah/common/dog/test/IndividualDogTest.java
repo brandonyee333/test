@@ -641,6 +641,51 @@ public class IndividualDogTest
 		Assertions.assertEquals(4, individuals.size(), individuals.toString());
 	}
 
+	@ElasticsearchIndex(
+		name = "user-sessions", resourcePath = "user_sessions.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testSearchIndividuals3() {
+		Individual individual = new Individual();
+
+		individual.setChannelIds(Collections.singleton(100L));
+		individual.setId(1L);
+		individual.setSegmentIds(Collections.emptySet());
+
+		_individualDog.addIndividual(individual, false);
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("(channelIds eq '100' and (sessions.filter(filter=");
+		sb.append(
+			"'(context/country %s ''%s'' and context/city %s ''%s'')')))");
+
+		List<Individual> individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "eq", "Japan", "eq", "Tokyo"),
+			true, 0, 10, null);
+
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
+
+		individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "ne", "Japan", "ne", "Tokyo"),
+			true, 0, 10, null);
+
+		Assertions.assertEquals(0, individuals.size(), individuals.toString());
+
+		individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "eq", "japan", "eq", "tokyo"),
+			true, 0, 10, null);
+
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
+
+		individuals = _individualDog.searchIndividuals(
+			100L, String.format(sb.toString(), "ne", "japan", "ne", "tokyo"),
+			true, 0, 10, null);
+
+		Assertions.assertEquals(0, individuals.size(), individuals.toString());
+	}
+
 	@Test
 	public void testUpdateDynamicAddMemberships() {
 		Individual individual = new Individual();
