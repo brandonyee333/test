@@ -76,7 +76,7 @@
 			UPDATE
 				Individual
 			SET
-			 	segmentIds = array_subtract(segmentIds, ARRAY[ :segmentIds ])
+				segmentIds = array_subtract(segmentIds, ARRAY[ :segmentIds ])
 			WHERE
 				ARRAY[ :segmentIds ] && Individual.segmentIds
 		]]>

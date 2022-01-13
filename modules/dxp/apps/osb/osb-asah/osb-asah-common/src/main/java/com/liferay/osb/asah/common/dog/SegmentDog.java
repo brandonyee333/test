@@ -147,28 +147,28 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public void deleteSegments(Set<Long> channelIds) throws Exception {
-		List<Segment> allSegments = new ArrayList<>();
+		List<Segment> segments = new ArrayList<>();
 
 		int page = 0;
 
 		while (true) {
-			List<Segment> segments = _segmentRepository.findByChannelIdIn(
+			List<Segment> curSegments = _segmentRepository.findByChannelIdIn(
 				channelIds, PageRequest.of(page++, 500));
 
-			if (segments.isEmpty()) {
+			if (curSegments.isEmpty()) {
 				break;
 			}
 
-			allSegments.addAll(segments);
+			segments.addAll(curSegments);
 		}
 
-		_segmentRepository.deleteAll(allSegments);
+		_segmentRepository.deleteAll(segments);
 
 		_asahTaskDog.scheduleAsahTask(
 			"DeleteIndividualSegmentTasksNanite",
 			JSONUtil.put(
 				"individualSegmentIds",
-				JSONUtil.toJSONArray(allSegments, Segment::getId)));
+				JSONUtil.toJSONArray(segments, Segment::getId)));
 	}
 
 	public void disableDynamicSegments(

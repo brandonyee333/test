@@ -772,7 +772,6 @@ public abstract class BaseIndividualRepositoryTestCase
 		List<Long> segmentIds = new ArrayList<>(individual.getSegmentIds());
 
 		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
-
 		Assertions.assertEquals(2L, segmentIds.get(0));
 	}
 

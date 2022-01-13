@@ -98,11 +98,11 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 
 	@Test
 	public void testDeleteByIndividualSegmentIdIn() {
-		List<Segment> subList = _segments.subList(0, 2);
+		List<Segment> segments = _segments.subList(0, 2);
 
-		Stream<Segment> stream = subList.stream();
+		Stream<Segment> segmentsStream = segments.stream();
 
-		List<Long> segmentIds = stream.map(
+		List<Long> segmentIds = segmentsStream.map(
 			Segment::getId
 		).collect(
 			Collectors.toList()
