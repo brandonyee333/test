@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,10 +42,10 @@ import org.json.JSONArray;
  */
 public class FilterStringToQueryBuilderConverter {
 
-	public static String buildIgnoreCaseRegExp(String value) {
+	public static String buildIgnoreCaseRegExp(boolean contains, String value) {
 		IntStream intStream = value.codePoints();
 
-		return intStream.mapToObj(
+		Stream<String> stream = intStream.mapToObj(
 			c -> (char)c
 		).map(
 			c -> {
@@ -62,9 +63,17 @@ public class FilterStringToQueryBuilderConverter {
 
 				return String.valueOf(c);
 			}
-		).collect(
-			Collectors.joining("", ".*?", ".*?")
 		);
+
+		if (contains) {
+			return stream.collect(Collectors.joining("", ".*?", ".*?"));
+		}
+
+		return stream.collect(Collectors.joining("", "", ""));
+	}
+
+	public static String buildIgnoreCaseRegExp(String value) {
+		return buildIgnoreCaseRegExp(true, value);
 	}
 
 	public static QueryBuilder convert(String filterString) {
