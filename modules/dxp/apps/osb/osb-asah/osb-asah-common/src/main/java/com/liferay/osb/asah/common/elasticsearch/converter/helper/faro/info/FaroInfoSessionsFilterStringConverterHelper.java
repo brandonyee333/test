@@ -121,6 +121,13 @@ public class FaroInfoSessionsFilterStringConverterHelper
 
 		if (operator.equalsIgnoreCase("eq")) {
 			if (value != null) {
+				if (value instanceof String) {
+					return QueryBuilders.regexpQuery(
+						fieldName,
+						FilterStringToQueryBuilderConverter.
+							buildIgnoreCaseRegExp(false, (String)value));
+				}
+
 				return QueryBuilders.termQuery(fieldName, value);
 			}
 
@@ -170,8 +177,19 @@ public class FaroInfoSessionsFilterStringConverterHelper
 
 		if (operator.equalsIgnoreCase("ne")) {
 			if (value != null) {
-				return BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.termQuery(fieldName, value));
+				QueryBuilder queryBuilder = null;
+
+				if (value instanceof String) {
+					queryBuilder = QueryBuilders.regexpQuery(
+						fieldName,
+						FilterStringToQueryBuilderConverter.
+							buildIgnoreCaseRegExp(false, (String)value));
+				}
+				else {
+					queryBuilder = QueryBuilders.termQuery(fieldName, value);
+				}
+
+				return BoolQueryBuilderUtil.mustNot(queryBuilder);
 			}
 
 			return BoolQueryBuilderUtil.filter(
