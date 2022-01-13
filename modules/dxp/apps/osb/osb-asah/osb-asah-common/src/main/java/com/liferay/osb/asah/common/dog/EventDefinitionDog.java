@@ -314,7 +314,7 @@ public class EventDefinitionDog {
 		String sortColumn = sort.getColumn();
 
 		if ((!Objects.equals(sortColumn, "blockedLastSeenDate") ||
-			 !BooleanUtils.toBoolean(blocked))
+			 !BooleanUtils.toBoolean(blocked)) &&
 			!Objects.equals(sortColumn, "displayName") &&
 			!Objects.equals(sortColumn, "name")) {
 
