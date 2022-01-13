@@ -62,7 +62,21 @@ public class OracleDB extends BaseDB {
 	}
 
 	@Override
-	public List<Index> getIndexes(Connection con) throws SQLException {
+	public ResultSet getIndexResultSet(Connection connection, String tableName) 
+		throws SQLException {
+		DatabaseMetaData databaseMetaData = connection.getMetaData();
+		
+		DBInspector dbInspector = new DBInspector(connection);
+		
+		String catalog = dbInspector.getCatalog();
+ 		String schema = dbInspector.getSchema();
+ 		
+ 		return databaseMetaData.getIndexInfo(
+ 				catalog, schema, tableName, false, true);
+	}
+
+	@Override
+	public List<Index> getIndexes(Connection connection) throws SQLException {
 		List<Index> indexes = new ArrayList<>();
 
 		StringBundler sb = new StringBundler(3);
