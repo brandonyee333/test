@@ -47,12 +47,14 @@ public class BlockedCustomEventDefinitionBagDataFetcherTest
 
 	@BeforeEach
 	public void setUp() {
-		Date date = new Date();
-
 		EventDefinition eventDefinition1 = new EventDefinition();
 
 		eventDefinition1.setBlocked(true);
+
+		Date date = new Date();
+
 		eventDefinition1.setBlockedLastSeenDate(date);
+
 		eventDefinition1.setBlockedLastSeenURL("http://text.com");
 		eventDefinition1.setBlockedReasonType(
 			EventDefinition.BlockedReasonType.BLOCKED_BY_USER);

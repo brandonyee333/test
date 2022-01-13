@@ -313,10 +313,10 @@ public class EventDefinitionDog {
 	private void _validate(Boolean blocked, Sort sort) {
 		String sortColumn = sort.getColumn();
 
-		if (!Objects.equals(sortColumn, "name") &&
+		if ((!Objects.equals(sortColumn, "blockedLastSeenDate") ||
+			 !BooleanUtils.toBoolean(blocked))
 			!Objects.equals(sortColumn, "displayName") &&
-			(!Objects.equals(sortColumn, "blockedLastSeenDate") ||
-			 !BooleanUtils.toBoolean(blocked))) {
+			!Objects.equals(sortColumn, "name")) {
 
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
