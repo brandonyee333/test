@@ -194,12 +194,10 @@ definition {
 		}
 
 		task ("Create Vanilla Counter as a Custom Element") {
-			RemoteApps.goToRemoteAppsPortlet();
-
-			RemoteApps.addCustomElement(
-				entryHTMLName = "${customElementHTMLName}",
-				entryName = "${customElementName}",
-				entryURL = "${customElementURL}");
+			JSONRemoteApp.addCustomElementRemoteAppEntry(
+				customElementHTMLName = "vanilla-counter",
+				customElementName = "Vanilla Counter",
+				customElementURL = "http://remote-component-test.wincent.com/packages/vanilla-counter/index.js");
 		}
 
 		task ("Add Vanilla Counter to Test Page") {
@@ -216,6 +214,10 @@ definition {
 			Navigator.gotoPage(pageName = "Test Page");
 
 			AssertElementPresent(locator1 = "RemoteApps#VANILLA_COUNTER_REMOTE_APP");
+
+			OcularAssertElementImage(
+				locator1 = "RemoteApps#VANILLA_COUNTER_REMOTE_APP",
+            	value1 = "remote-apps/example.png");
 		}
 	}
 
