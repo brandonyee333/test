@@ -721,12 +721,16 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		long[] groupIds, String permissionSQL) {
 
 		com.liferay.petra.string.StringBundler groupAdminResourcePermissionSB =
-			new com.liferay.petra.string.StringBundler(
-				(groupIds.length * 2) - 1);
+			null;
 
 		for (long groupId : groupIds) {
 			if (!isEnabled(groupId)) {
-				if (groupAdminResourcePermissionSB.length() > 0) {
+				if (groupAdminResourcePermissionSB == null) {
+					groupAdminResourcePermissionSB =
+						new com.liferay.petra.string.StringBundler(
+							(groupIds.length * 2) - 1);
+				}
+				else {
 					groupAdminResourcePermissionSB.append(", ");
 				}
 
@@ -734,22 +738,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			}
 		}
 
-		String groupAdminSQL = null;
-
-		if (groupAdminResourcePermissionSB.length() > 0) {
-			com.liferay.petra.string.StringBundler groupAdminSQLSB =
-				new com.liferay.petra.string.StringBundler(5);
-
-			groupAdminSQLSB.append(" OR (");
-			groupAdminSQLSB.append(groupIdField);
-			groupAdminSQLSB.append(" IN (");
-			groupAdminSQLSB.append(groupAdminResourcePermissionSB);
-			groupAdminSQLSB.append(")) ");
-
-			groupAdminSQL = groupAdminSQLSB.toString();
-		}
-
-		if (Validator.isNotNull(groupAdminSQL)) {
+		if (groupAdminResourcePermissionSB != null) {
 			sb.append("(");
 		}
 
@@ -759,12 +748,12 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		sb.append(permissionSQL);
 		sb.append(")) ");
 
-		if (Validator.isNotNull(groupAdminSQL)) {
-			sb.append(groupAdminSQL);
-		}
-
-		if (Validator.isNotNull(groupAdminSQL)) {
-			sb.append(") ");
+		if (groupAdminResourcePermissionSB != null) {
+			sb.append(" OR (");
+			sb.append(groupIdField);
+			sb.append(" IN (");
+			sb.append(groupAdminResourcePermissionSB);
+			sb.append("))) ");
 		}
 	}
 
