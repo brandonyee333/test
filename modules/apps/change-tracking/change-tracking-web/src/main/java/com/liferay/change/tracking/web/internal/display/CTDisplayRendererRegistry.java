@@ -22,7 +22,6 @@ import com.liferay.change.tracking.spi.display.CTDisplayRenderer;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
-import com.liferay.petra.lang.SafeClosable;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -369,9 +368,10 @@ public class CTDisplayRendererRegistry {
 		}
 
 		try (SafeCloseable safeCloseable1 =
-				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(ctCollectionId);
-			SafeCloseable safeCloseable2 = CTSQLModeThreadLocal.
-				setCTSQLModeWithSafeCloseable(ctSQLMode);
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
+					ctCollectionId);
+			SafeCloseable safeCloseable2 =
+				CTSQLModeThreadLocal.setCTSQLModeWithSafeCloseable(ctSQLMode);
 			UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter()) {
 
 			PipingServletResponse pipingServletResponse =
