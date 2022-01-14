@@ -58,6 +58,7 @@ import org.apache.commons.logging.Log;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -201,7 +202,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		MessageSubscriber messageSubscriber = getMessageSubscriber();
 
 		return messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+			_baseNanitePullMessagesSize, AnalyticsEvent::toAnalyticsEvent);
 	}
 
 	protected void registerException(
@@ -483,6 +484,9 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			basePageModel.setURL(url);
 		}
 	}
+
+	@Value("${osb.asah.base.nanite.pull.messages.size:50}")
+	private int _baseNanitePullMessagesSize;
 
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(30, 20);

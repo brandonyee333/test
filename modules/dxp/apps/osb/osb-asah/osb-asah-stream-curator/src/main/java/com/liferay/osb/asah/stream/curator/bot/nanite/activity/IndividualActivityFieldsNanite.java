@@ -47,6 +47,7 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import reactor.util.function.Tuple2;
@@ -261,7 +262,9 @@ public class IndividualActivityFieldsNanite implements Nanite {
 				long start = System.currentTimeMillis();
 
 				List<Message<JSONObject>> messages =
-					_messageSubscriber.pullMessages(100, JSONObject::new);
+					_messageSubscriber.pullMessages(
+						_individualActivityFieldsNanitePullMessagesSize,
+						JSONObject::new);
 
 				if (messages.isEmpty()) {
 					break;
@@ -379,6 +382,11 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
+
+	@Value(
+		"${osb.asah.individual.activity.fields.nanite.pull.messages.size:100}"
+	)
+	private int _individualActivityFieldsNanitePullMessagesSize;
 
 	@Autowired
 	private IndividualDog _individualDog;

@@ -42,6 +42,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import reactor.util.function.Tuple2;
@@ -96,7 +97,8 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 			List<Message<AnalyticsEvent>> messages =
 				_messageSubscriber.pullMessages(
-					50, AnalyticsEvent::toAnalyticsEvent);
+					_customAssetDashboardsNanitePullMessagesSize,
+					AnalyticsEvent::toAnalyticsEvent);
 
 			if (messages.isEmpty()) {
 				break;
@@ -228,6 +230,9 @@ public class CustomAssetDashboardNanite implements Nanite {
 
 	@Autowired
 	private CustomAssetDashboardRepository _customAssetDashboardRepository;
+
+	@Value("${osb.asah.custom.asset.dashboards.nanite.pull.messages.size:50}")
+	private int _customAssetDashboardsNanitePullMessagesSize;
 
 	@MessageSubscriber.Autowired(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET
