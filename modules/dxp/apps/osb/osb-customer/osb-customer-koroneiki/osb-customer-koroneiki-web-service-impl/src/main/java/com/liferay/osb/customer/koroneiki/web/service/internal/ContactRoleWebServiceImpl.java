@@ -49,9 +49,8 @@ public class ContactRoleWebServiceImpl implements ContactRoleWebService {
 		throws Exception {
 
 		HttpInvoker.HttpResponse httpResponse =
-			_contactRoleResource.
-				getContactRoleContactRoleTypeContactRoleNameHttpResponse(
-					_http.encodePath(type), _http.encodePath(name));
+			_contactRoleResource.getContactRoleHttpResponse(
+				_http.encodePath(type), _http.encodePath(name));
 
 		if (httpResponse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
 			return null;

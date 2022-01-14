@@ -46,7 +46,7 @@ public class TeamRoleWebServiceImpl implements TeamRoleWebService {
 
 	public TeamRole fetchTeamRole(String type, String name) throws Exception {
 		HttpInvoker.HttpResponse httpResponse =
-			_teamRoleResource.getTeamRoleTeamRoleTypeTeamRoleNameHttpResponse(
+			_teamRoleResource.getTeamRoleHttpResponse(
 				_http.encodePath(type), _http.encodePath(name));
 
 		if (httpResponse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
