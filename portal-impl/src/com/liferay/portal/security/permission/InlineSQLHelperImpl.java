@@ -660,49 +660,17 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		String roleIdsOrOwnerIdSQL = getRoleIdsOrOwnerIdSQL(
 			permissionChecker, groupIds, userIdField);
 
-		StringBundler groupAdminResourcePermissionSB = null;
-
-		for (long groupId : groupIds) {
-			if (!isEnabled(groupId)) {
-				groupAdminResourcePermissionSB = new StringBundler(5);
-
-				if (!roleIdsOrOwnerIdSQL.isEmpty()) {
-					groupAdminResourcePermissionSB.append(" OR ");
-				}
-
-				groupAdminResourcePermissionSB.append(
-					"((ResourcePermission.primKeyId = 0) AND ");
-
-				groupAdminResourcePermissionSB.append(
-					"(ResourcePermission.roleId = ");
-
-				groupAdminResourcePermissionSB.append(
-					permissionChecker.getOwnerRoleId());
-
-				groupAdminResourcePermissionSB.append("))");
-
-				break;
-			}
-		}
-
 		int scope = ResourceConstants.SCOPE_INDIVIDUAL;
-
-		String groupAdminSQL = StringPool.BLANK;
-
-		if (groupAdminResourcePermissionSB != null) {
-			groupAdminSQL = groupAdminResourcePermissionSB.toString();
-		}
 
 		permissionSQL = StringUtil.replace(
 			permissionSQL,
 			new String[] {
 				"[$CLASS_NAME$]", "[$COMPANY_ID$]",
-				"[$GROUP_ADMIN_RESOURCE_PERMISSION$]",
 				"[$RESOURCE_SCOPE_INDIVIDUAL$]", "[$ROLE_IDS_OR_OWNER_ID$]"
 			},
 			new String[] {
-				className, String.valueOf(companyId), groupAdminSQL,
-				String.valueOf(scope), roleIdsOrOwnerIdSQL
+				className, String.valueOf(companyId), String.valueOf(scope),
+				roleIdsOrOwnerIdSQL
 			});
 
 		StringBundler sb = new StringBundler(8);
@@ -725,7 +693,8 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 			sb.append(_WHERE_CLAUSE);
 
-			_appendPermissionSQL(sb, classPKField, permissionSQL);
+			_appendPermissionSQL(
+				sb, classPKField, groupIdField, groupIds, permissionSQL);
 
 			if (pos != -1) {
 				sb.append(sql.substring(pos));
@@ -736,7 +705,8 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 			sb.append(sql.substring(0, pos));
 
-			_appendPermissionSQL(sb, classPKField, permissionSQL);
+			_appendPermissionSQL(
+				sb, classPKField, groupIdField, groupIds, permissionSQL);
 
 			sb.append("AND ");
 
@@ -747,13 +717,55 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 	}
 
 	private void _appendPermissionSQL(
-		StringBundler sb, String classPKField, String permissionSQL) {
+		StringBundler sb, String classPKField, String groupIdField,
+		long[] groupIds, String permissionSQL) {
+
+		com.liferay.petra.string.StringBundler groupAdminResourcePermissionSB =
+			new com.liferay.petra.string.StringBundler(
+				(groupIds.length * 2) - 1);
+
+		for (long groupId : groupIds) {
+			if (!isEnabled(groupId)) {
+				if (groupAdminResourcePermissionSB.length() > 0) {
+					groupAdminResourcePermissionSB.append(", ");
+				}
+
+				groupAdminResourcePermissionSB.append(groupId);
+			}
+		}
+
+		String groupAdminSQL = null;
+
+		if (groupAdminResourcePermissionSB.length() > 0) {
+			com.liferay.petra.string.StringBundler groupAdminSQLSB =
+				new com.liferay.petra.string.StringBundler(5);
+
+			groupAdminSQLSB.append(" OR (");
+			groupAdminSQLSB.append(groupIdField);
+			groupAdminSQLSB.append(" IN (");
+			groupAdminSQLSB.append(groupAdminResourcePermissionSB);
+			groupAdminSQLSB.append(")) ");
+
+			groupAdminSQL = groupAdminSQLSB.toString();
+		}
+
+		if (Validator.isNotNull(groupAdminSQL)) {
+			sb.append("(");
+		}
 
 		sb.append("(");
 		sb.append(classPKField);
 		sb.append(" IN (");
 		sb.append(permissionSQL);
 		sb.append(")) ");
+
+		if (Validator.isNotNull(groupAdminSQL)) {
+			sb.append(groupAdminSQL);
+		}
+
+		if (Validator.isNotNull(groupAdminSQL)) {
+			sb.append(") ");
+		}
 	}
 
 	private static final String _GROUP_BY_CLAUSE = " GROUP BY ";
