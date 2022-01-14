@@ -1,0 +1,23 @@
+[
+	{
+		"assetId": "1",
+		"channelId": "1",
+		"eventDate": "${now-1d}",
+		"id": "1",
+		"title": "Beryl Promotions Newsletter"
+	},
+	{
+		"assetId": "2",
+		"channelId": "1",
+		"eventDate": "${now-1d}",
+		"id": "2",
+		"title": "Beryl Irrigation Newsletter"
+	},
+	{
+		"assetId": "3",
+		"channelId": "1",
+		"eventDate": "${now-1d}",
+		"id": "3",
+		"title": "Beryl Processing Newsletter"
+	}
+]

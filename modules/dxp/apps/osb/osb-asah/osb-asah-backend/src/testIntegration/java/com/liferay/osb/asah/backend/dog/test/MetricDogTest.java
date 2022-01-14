@@ -438,6 +438,31 @@ public class MetricDogTest
 	}
 
 	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_4.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testgetAssetMetricsCount() {
+		SearchQueryContext searchQueryContext = _createSearchQuery(
+			null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null);
+
+		searchQueryContext.setKeywords("Beryl");
+
+		Assertions.assertEquals(
+			3, _metricDog.getAssetMetricsCount(searchQueryContext));
+
+		searchQueryContext.setKeywords("Beryl Pro");
+
+		Assertions.assertEquals(
+			2, _metricDog.getAssetMetricsCount(searchQueryContext));
+
+		searchQueryContext.setKeywords("Irrigation");
+
+		Assertions.assertEquals(
+			1, _metricDog.getAssetMetricsCount(searchQueryContext));
+	}
+
+	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
