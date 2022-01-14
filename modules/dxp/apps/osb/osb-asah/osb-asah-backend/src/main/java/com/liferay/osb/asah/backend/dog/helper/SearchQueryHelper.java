@@ -37,7 +37,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -418,27 +421,42 @@ public class SearchQueryHelper {
 			String term = matcher.group(1);
 
 			if (term != null) {
-				keywordsQueryBuilder.should(
+				QueryStringQueryBuilder queryStringQuery =
 					QueryBuilders.queryStringQuery(
 						String.format(
 							"%s:%s", "title.search",
 							StringUtils.wrap(
-								QueryUtil.escapeKeywords(term), "\""))));
+								QueryUtil.escapeKeywords(term), "\"")));
+
+				queryStringQuery = queryStringQuery.defaultOperator(
+					Operator.AND);
+
+				keywordsQueryBuilder.should(queryStringQuery);
 			}
 			else {
 				term = matcher.group(2);
 
-				keywordsQueryBuilder.should(
+				QueryStringQueryBuilder queryStringQuery =
 					QueryBuilders.queryStringQuery(
 						String.format(
 							"%s:*%s*", "title.search",
-							QueryUtil.escapeKeywords(term)))
+							QueryUtil.escapeKeywords(term)));
+
+				queryStringQuery = queryStringQuery.defaultOperator(
+					Operator.AND);
+
+				MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(
+					"title.search", term
+				).fuzziness(
+					Fuzziness.AUTO
+				);
+
+				matchQueryBuilder = matchQueryBuilder.operator(Operator.AND);
+
+				keywordsQueryBuilder.should(
+					queryStringQuery
 				).should(
-					QueryBuilders.matchQuery(
-						"title.search", term
-					).fuzziness(
-						Fuzziness.AUTO
-					)
+					matchQueryBuilder
 				);
 			}
 
