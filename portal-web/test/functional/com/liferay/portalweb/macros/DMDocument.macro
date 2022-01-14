@@ -1213,7 +1213,7 @@ definition {
 	}
 
 	macro getFileEntryID {
-		var dmFileEntryID = selenium.getAttribute("//li[contains(.,'${dmDocumentTitle}')]//input[contains(@class,'entry-selector')]@value");
+		var dmFileEntryID = selenium.getAttribute("//dd[contains(.,'${dmDocumentTitle}')]//input[contains(@class,'entry-selector')]@value");
 
 		echo("## * Document File Entry ID: ${dmFileEntryID}");
 
