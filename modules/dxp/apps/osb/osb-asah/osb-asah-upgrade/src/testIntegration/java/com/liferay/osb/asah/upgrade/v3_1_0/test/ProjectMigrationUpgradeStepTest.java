@@ -14,14 +14,18 @@
 
 package com.liferay.osb.asah.upgrade.v3_1_0.test;
 
+import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_1_0.ProjectMigrationUpgradeStep;
+
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,7 +62,7 @@ public class ProjectMigrationUpgradeStepTest
 	}
 
 	@Test
-	public void testUpgrade() throws Exception {
+	public void testUpgrade1() throws Exception {
 		JSONArray jsonArray = new JSONArray(
 			ResourceUtil.readResourceToString(
 				"dependencies/projects.json", this));
@@ -83,11 +87,47 @@ public class ProjectMigrationUpgradeStepTest
 			});
 	}
 
+	@Test
+	public void testUpgrade2() throws Exception {
+		JSONArray jsonArray = new JSONArray(
+			ResourceUtil.readResourceToString(
+				"dependencies/projects.json", this));
+
+		ElasticsearchInvoker globalElasticsearchInvoker =
+			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
+
+		globalElasticsearchInvoker.add("projects", jsonArray);
+
+		_projectDog.addProject(
+			new Project("asah9a3c72dd78374408a940b6445206b65e"));
+
+		_projectMigrationUpgradeStep.upgrade("");
+
+		List<Project> projects = _projectDog.getProjects();
+
+		Assertions.assertEquals(10, projects.size());
+
+		ProjectIdThreadLocal.forProject(
+			"global",
+			() -> {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+					Assertions.assertTrue(
+						_projectRepository.existsById(
+							jsonObject.getString("id")));
+				}
+			});
+	}
+
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
 	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private ProjectMigrationUpgradeStep _projectMigrationUpgradeStep;
