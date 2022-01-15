@@ -38,8 +38,6 @@ public class ProjectMigrationUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		_postgreSQLSchemaManager.createGlobalSchema();
-
 		ElasticsearchInvoker globalElasticsearchInvoker =
 			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
 
