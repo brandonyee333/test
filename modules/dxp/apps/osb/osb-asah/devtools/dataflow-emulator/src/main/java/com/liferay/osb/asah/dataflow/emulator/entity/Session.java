@@ -1,0 +1,98 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.dataflow.emulator.entity;
+
+import java.util.Date;
+
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Table;
+
+/**
+ * @author Leslie Wong
+ */
+@Table
+public class Session implements Persistable<String> {
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getChannelId() {
+		return _channelId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@Override
+	public String getId() {
+		return _id;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getProjectId() {
+		return _projectId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Date getSessionEnd() {
+		return _sessionEnd;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Date getSessionStart() {
+		return _sessionStart;
+	}
+
+	@Override
+	public boolean isNew() {
+		return true;
+	}
+
+	public void setChannelId(Long channelId) {
+		_channelId = channelId;
+	}
+
+	public void setId(String id) {
+		_id = id;
+	}
+
+	public void setProjectId(String projectId) {
+		_projectId = projectId;
+	}
+
+	public void setSessionEnd(Date sessionEnd) {
+		_sessionEnd = sessionEnd;
+	}
+
+	public void setSessionStart(Date sessionStart) {
+		_sessionStart = sessionStart;
+	}
+
+	@Transient
+	private Long _channelId;
+
+	@Transient
+	private String _id;
+
+	@Transient
+	private String _projectId;
+
+	@Transient
+	private Date _sessionEnd;
+
+	@Transient
+	private Date _sessionStart;
+
+}

@@ -1,0 +1,14 @@
+apply plugin: "com.liferay.spring.boot.defaults"
+apply plugin: "io.spring.dependency-management"
+
+bootJar {
+	classifier = "application"
+}
+
+dependencies {
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
+}
+
+jar {
+	enabled = true
+}
