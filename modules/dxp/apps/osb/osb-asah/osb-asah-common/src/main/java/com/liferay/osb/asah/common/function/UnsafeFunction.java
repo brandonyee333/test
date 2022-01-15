@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.function;
 
+import java.util.function.Function;
+
 /**
  * @author Shuyang Zhou
  */
@@ -21,5 +23,9 @@ package com.liferay.osb.asah.common.function;
 public interface UnsafeFunction<T, R, E extends Throwable> {
 
 	public R apply(T t) throws E;
+
+	static <T, E extends Throwable> UnsafeFunction<T, T, E> identity() {
+		return t -> t;
+	}
 
 }
