@@ -16,6 +16,8 @@ package com.liferay.osb.asah.upgrade.v3_1_0;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.dog.ProjectDog;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.Project;
@@ -26,6 +28,14 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,12 +52,28 @@ public class ProjectMigrationUpgradeStep implements UpgradeStep {
 			_elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
 
 		List<Project> projects = JSONUtil.toList(
-			globalElasticsearchInvoker.get("projects"),
+			globalElasticsearchInvoker.get(
+				"projects",
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.termsQuery("id", _getProjectIds()))),
 			jsonObject -> _objectMapper.convertValue(
 				jsonObject, Project.class));
 
+		if (projects.isEmpty()) {
+			if (_log.isInfoEnabled()) {
+				_log.info("No projects to migrate. Skipping.");
+			}
+
+			return;
+		}
+
 		try {
 			ProjectIdThreadLocal.setGlobalContext(true);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					String.format("Migrating %d projects", projects.size()));
+			}
 
 			_projectRepository.saveAll(projects);
 		}
@@ -55,6 +81,21 @@ public class ProjectMigrationUpgradeStep implements UpgradeStep {
 			ProjectIdThreadLocal.setGlobalContext(false);
 		}
 	}
+
+	private Set<String> _getProjectIds() {
+		List<Project> projects = _projectDog.getProjects();
+
+		Stream<Project> stream = projects.stream();
+
+		return stream.map(
+			Project::getId
+		).collect(
+			Collectors.toSet()
+		);
+	}
+
+	private static final Log _log = LogFactory.getLog(
+		ProjectMigrationUpgradeStep.class);
 
 	@Autowired
 	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
@@ -64,6 +105,9 @@ public class ProjectMigrationUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private PostgreSQLSchemaManager _postgreSQLSchemaManager;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private ProjectRepository _projectRepository;
