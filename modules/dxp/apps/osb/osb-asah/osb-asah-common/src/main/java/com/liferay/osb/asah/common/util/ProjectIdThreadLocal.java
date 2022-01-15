@@ -71,6 +71,7 @@ public class ProjectIdThreadLocal {
 
 	public static void remove() {
 		_projectId.remove();
+		_globalContext.remove();
 
 		MDC.remove("osbAsahProjectId");
 	}
