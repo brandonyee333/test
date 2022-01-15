@@ -27,6 +27,9 @@ import com.liferay.osb.asah.upgrade.v3_1_0.EventAnalysisUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.PagesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.ProjectMigrationUpgradeStep;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +39,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class UpgradeProcessConfiguration {
+
+	@Bean(name = "globalUpgradeSteps")
+	public List<UpgradeStep> globalUpgradeSteps() {
+		return Collections.singletonList(_projectMigrationUpgradeStep);
+	}
 
 	@Bean
 	public UpgradeProcess upgradeProcess() {
@@ -60,7 +68,7 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"3.0.10", "3.1.0", _channelMigrationUpgradeStep,
 			_dataSourceMigrationUpgradeStep, _eventAnalysisUpgradeStep,
-			_pagesUpgradeStep, _projectMigrationUpgradeStep);
+			_pagesUpgradeStep);
 
 		return upgradeProcess;
 	}

@@ -104,7 +104,7 @@ public class UpgradeProcessRunnerTest {
 			"1.0.0"
 		);
 
-		_upgradeProcessRunner.run();
+		_upgradeProcessRunner.runProjectUpgrades();
 
 		Assertions.assertEquals(2, projectIds.size(), projectIds.toString());
 		Assertions.assertTrue(projectIds.contains("test1"));
@@ -145,7 +145,7 @@ public class UpgradeProcessRunnerTest {
 			"2.12.0"
 		);
 
-		_upgradeProcessRunner.run();
+		_upgradeProcessRunner.runProjectUpgrades();
 
 		ProjectIdThreadLocal.forProject(
 			project,

@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,6 +41,31 @@ import org.springframework.stereotype.Component;
 public class UpgradeProcessRunner {
 
 	public void run() throws Exception {
+		runGlobalUpgrades();
+
+		runProjectUpgrades();
+	}
+
+	public void runGlobalUpgrades() throws Exception {
+		try {
+			ProjectIdThreadLocal.setGlobalContext(true);
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Checking for global upgrades");
+			}
+
+			_run(_globalUpgradeSteps, "");
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Finished global upgrades");
+			}
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
+	}
+
+	public void runProjectUpgrades() throws Exception {
 		List<Project> projects = _projectDog.getProjects();
 
 		for (Project project : projects) {
@@ -148,6 +174,10 @@ public class UpgradeProcessRunner {
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
+
+	@Autowired
+	@Qualifier("globalUpgradeSteps")
+	private List<UpgradeStep> _globalUpgradeSteps;
 
 	@Autowired
 	private ProjectDog _projectDog;
