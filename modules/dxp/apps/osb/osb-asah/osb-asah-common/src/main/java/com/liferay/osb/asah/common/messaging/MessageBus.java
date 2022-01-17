@@ -24,6 +24,9 @@ public interface MessageBus {
 	public void registerMessageListener(
 		Channel channel, MessageListener messageListener);
 
+	public MessageStreamingSubscriber registerMessageStreamingSubscriber(
+		Channel channel, String messageSubscriberName);
+
 	public MessageSubscriber registerMessageSubscriber(
 		Channel channel, String messageSubscriberName);
 

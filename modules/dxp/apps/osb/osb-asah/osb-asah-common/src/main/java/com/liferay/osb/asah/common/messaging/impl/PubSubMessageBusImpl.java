@@ -114,6 +114,25 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	@Override
+	public MessageStreamingSubscriber registerMessageStreamingSubscriber(
+		Channel channel, String messageSubscriberName) {
+
+		try {
+			Subscription subscription = _getOrCreateSubscription(
+				channel,
+				_getProjectSubscriptionName(channel, messageSubscriberName));
+
+			return new MessageStreamingSubscriberImpl(
+				_pubSubClientFactory, subscription);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new IllegalStateException(exception);
+		}
+	}
+
+	@Override
 	public MessageSubscriber registerMessageSubscriber(
 		Channel channel, String messageSubscriberName) {
 
