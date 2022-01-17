@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.model.KeywordInfo;
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
@@ -28,6 +29,7 @@ import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -333,50 +336,63 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
 			keywordInfosMap, urlPageViewsMap);
 
-		List<Interest> interests = new ArrayList<>();
+		Set<Map.Entry<String, Long>> urlsPageViewsEntries =
+			_getURLsPageViewsEntrySet(dayDateString, keywordInfosMap, ownerId);
 
-		for (Map.Entry<String, Long> entry :
-				_getURLsPageViewsEntrySet(
-					dayDateString, keywordInfosMap, ownerId)) {
+		Map<String, Interest> interestsMap = new ConcurrentHashMap<>(
+			urlsPageViewsEntries.size());
 
+		String projectId = ProjectIdThreadLocal.getProjectId();
+
+		for (Map.Entry<String, Long> entry : urlsPageViewsEntries) {
 			String keyword = entry.getKey();
 			long pageViews = entry.getValue();
 
-			double score = 0;
+			_boundedExecutor.runAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
 
-			Interest interest = _interestDog.fetchInterest(
-				keyword, ownerId, "individual", DateUtil.addDays(dayDate, -1));
+					double score = 0;
 
-			if (interest != null) {
-				score = InterestScoreArm.DECAY * interest.getScore();
-			}
+					Interest interest = _interestDog.fetchInterest(
+						keyword, ownerId, "individual",
+						DateUtil.addDays(dayDate, -1));
 
-			score = _interestScoreArm.computeScore(
-				pageViews, individualPageViews, score,
-				totalKeywordsPageViewsMap.get(keyword), totalViews);
+					if (interest != null) {
+						score = InterestScoreArm.DECAY * interest.getScore();
+					}
 
-			if (score < MINIMUM_INTEREST_SCORE_THRESHOLD) {
-				continue;
-			}
+					score = _interestScoreArm.computeScore(
+						pageViews, individualPageViews, score,
+						totalKeywordsPageViewsMap.get(keyword), totalViews);
 
-			Interest newInterest = new Interest();
+					if (score < MINIMUM_INTEREST_SCORE_THRESHOLD) {
+						return;
+					}
 
-			newInterest.setName(keyword);
-			newInterest.setOwnerId(ownerId);
-			newInterest.setOwnerType("individual");
-			newInterest.setRecordedDate(dayDate);
-			newInterest.setScore(score);
-			newInterest.setViews(keywordsPageViewsMap.get(keyword));
+					Interest newInterest = new Interest();
 
-			interests.add(newInterest);
+					newInterest.setName(keyword);
+					newInterest.setOwnerId(ownerId);
+					newInterest.setOwnerType("individual");
+					newInterest.setRecordedDate(dayDate);
+					newInterest.setScore(score);
+					newInterest.setViews(keywordsPageViewsMap.get(keyword));
 
+					interestsMap.put(keyword, newInterest);
+				});
+		}
+
+		_boundedExecutor.awaitPendingTasks();
+
+		for (String keyword : interestsMap.keySet()) {
 			_addVisitedPages(
 				elasticsearchBulkRequestBuilder, dayDateString, ownerId,
 				keyword, keywordInfosMap.get(keyword), urlPageViewsMap);
 		}
 
-		if (!interests.isEmpty()) {
-			_interestDog.addInterests(interests);
+		if (!interestsMap.isEmpty()) {
+			_interestDog.addInterests(new ArrayList<>(interestsMap.values()));
 		}
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {
@@ -392,6 +408,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	@Autowired
 	private AssetDog _assetDog;
+
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(50, 40);
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
