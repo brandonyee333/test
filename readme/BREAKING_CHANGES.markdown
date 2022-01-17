@@ -2761,7 +2761,7 @@ should follow these steps:
 
 1.  Instantiate your `MessageListener`.
 
-2.  Call `SchedulerEngineHelper.register(MessageListener, SchedulerEntry)` to
+1.  Call `SchedulerEngineHelper.register(MessageListener, SchedulerEntry)` to
     register your `SchedulerEventMessageListener`.
 
 #### Why was this change made?

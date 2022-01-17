@@ -40,35 +40,35 @@ Broken links may need to be investigated with a specific check or a combination 
 
 1. Fork and checkout the latest repository source
 
-2. In the terminal, navigate to the directory of the documentation you want to build. You will need to make sure you're in the same directory as the "articles" and "articles-dxp" directories.
+1. In the terminal, navigate to the directory of the documentation you want to build. You will need to make sure you're in the same directory as the "articles" and "articles-dxp" directories.
   * Changing directory in terminal: "cd {directory-path}"
   * Checking the files and folders in current directory: "ls"
 
-3. Run "ant dist-dxp" which will build the documentation guide into a ZIP file
+1. Run "ant dist-dxp" which will build the documentation guide into a ZIP file
   * If the build fails, you may need to notify the Documentation Team to fix the build error before you can attempt another article import
   * Check if the failure mentions specific intros, markdowns, and items that are missing
 
-4. If the build is successful, you will find the guide's ZIP file in the "dist" folder
+1. If the build is successful, you will find the guide's ZIP file in the "dist" folder
 
 ##### Documentation Original URL Check
 
 1. Navigate to _Control Panel_ > _Configuration_ > _OSB Documentation Admin_
 
-2. Find the documentation category of the reported broken link article
+1. Find the documentation category of the reported broken link article
 
-3. Check if the Documentation Original URL is in the correct relative URL format (may change depending on Documentation Team's updates)
+1. Check if the Documentation Original URL is in the correct relative URL format (may change depending on Documentation Team's updates)
   * Update the URL if needed. A new import of the articles is necessary if immediate changes are needed.
 
 ##### Documentation Source Check
 
 1. Navigate to the correct branch of the documentation repository on GitHub
 
-2. Find and select the article markdown that contains the broken link
+1. Find and select the article markdown that contains the broken link
 
-3. Click on "Raw" on the GitHub page so you can see the article without any styling or formatting
+1. Click on "Raw" on the GitHub page so you can see the article without any styling or formatting
   * Check if the URL is in the correct relative URL format
   * If the URL needs to be updated, notify the Documentation Team to fix the link
 
-4. Click on "History" on the GitHub page so you can see the commit history
+1. Click on "History" on the GitHub page so you can see the commit history
   * Check when the last change to the link or article was made
   * If the change was made after the last scheduled import, a new import of the articles is necessary if immediate changes are needed

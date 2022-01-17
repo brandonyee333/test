@@ -18,11 +18,11 @@ published GA release is 7.0 GA2 (7001), add your upgrade fix to the
 `UpgradeProcess_7_0_2` class (create it if doesn't already exist). This step
 solves the issue for subsequent GA upgrades.
 
-2. Backport the upgrade fixes to `ee-7.0.x`. The fix pack team includes these
+1. Backport the upgrade fixes to `ee-7.0.x`. The fix pack team includes these
 modifications for future fix packs. This solves the issue for new EE customers
 who upgrade to DXP after installing this fix pack.
 
-3. If it's a critical issue or your customer needs to solve the problem but
+1. If it's a critical issue or your customer needs to solve the problem but
 can't repeat the upgrade, create a new module in the
 `modules/private/post-upgrade-fix` directory inside the **liferay-portal-ee**
 (`ee-7.0.x`) branch. This module must include a Gogo console command which
@@ -32,7 +32,7 @@ use it in the future (add the related LPS issue to the article). For initial
 review, send a pull request that commits this module to the Upgrade SME (i.e.,
 Alberto Chaparro).
 
-4. The module must fulfill the following naming guidelines:
+1. The module must fulfill the following naming guidelines:
 
 	- **Directory name:**
 	`modules/private/post-upgrade-fix/post-upgrade-fix-{LPS_nnnnn}`

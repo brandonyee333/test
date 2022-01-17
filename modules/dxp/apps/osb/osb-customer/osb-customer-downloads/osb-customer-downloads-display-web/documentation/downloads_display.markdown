@@ -17,11 +17,11 @@ Inside the _Setup_ tab, do the following in the _ESA_, _Evaluation EULA_, and _S
 
 1. Leave _Language_ as _English (United States)_ unless told otherwise.
 
-2. _URL_ field will be an address to the EULA's agreement content. For testing purposes, any url could work (e.g. _http://localhost:8080?test=test_).
+1. _URL_ field will be an address to the EULA's agreement content. For testing purposes, any url could work (e.g. _http://localhost:8080?test=test_).
 
-3. _Version Displayed_ should be 1.0.
+1. _Version Displayed_ should be 1.0.
 
-4. _Required to Accept_ should be 1.0.
+1. _Required to Accept_ should be 1.0.
 
 #### Custom Fields
 
@@ -113,8 +113,8 @@ _Control Panel_ > _Users_ > _Users and Organizations_ > find current user > _Mis
 
 1. _osbCustomerESA_
 
-2. _osbCustomerEvaulationEULA_
+1. _osbCustomerEvaulationEULA_
 
-3. _osbCustomerStudioEULA_
+1. _osbCustomerStudioEULA_
 
 After saving, terms and conditions for _ESA_, _Evaluation EULA_, and _Studio EULA_ will have to be accepted again in order to proceed to download.
