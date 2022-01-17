@@ -435,9 +435,9 @@ public class StreamingIngestionPipeline {
 			tableRow.set("channelId", Long.parseLong(analyticsEvent.channelId));
 			tableRow.set("eventDate", analyticsEvent.eventDate);
 			tableRow.set("id", analyticsEvent.id);
+			tableRow.set("name", entry.getKey());
 			tableRow.set("projectId", analyticsEvent.channelId);
-			tableRow.set("propertyName", entry.getKey());
-			tableRow.set("propertyValue", entry.getValue());
+			tableRow.set("value", entry.getValue());
 
 			processContext.output(tableRow);
 		}
@@ -503,12 +503,12 @@ public class StreamingIngestionPipeline {
 		String[] sessionKeyParts = sessionKey.split("#");
 
 		tableRow.set("channelId", Long.parseLong(sessionKeyParts[2]));
-		tableRow.set("projectId", sessionKeyParts[0]);
 
-		tableRow.set("sessionEnd", String.valueOf(intervalWindow.end()));
 		tableRow.set(
-			"sessionId",
-			DigestUtils.md5Hex(sessionKey + "#" + intervalWindow.start()));
+			"id",
+			DigestUtils.sha256Hex(sessionKey + "#" + intervalWindow.start()));
+		tableRow.set("projectId", sessionKeyParts[0]);
+		tableRow.set("sessionEnd", String.valueOf(intervalWindow.end()));
 		tableRow.set("sessionStart", String.valueOf(intervalWindow.start()));
 
 		processContext.output(tableRow);

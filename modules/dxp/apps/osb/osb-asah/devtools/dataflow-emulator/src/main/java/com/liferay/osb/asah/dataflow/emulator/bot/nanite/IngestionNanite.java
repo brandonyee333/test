@@ -83,7 +83,7 @@ public class IngestionNanite {
 					_log.info(
 						String.format(
 							"Closing session {%s, %s}", sessionContext.userId,
-							sessionContext.sessionId));
+							sessionContext.id));
 				}
 
 				_writeSession(sessionContext);
@@ -282,12 +282,12 @@ public class IngestionNanite {
 
 			sessionContext.dataSourceId = analyticsEvent.getDataSourceId();
 			sessionContext.channelId = analyticsEvent.getChannelId();
+			sessionContext.id = DigestUtils.md5Hex(
+				sessionKey + "#" + eventDate.getTime());
 			sessionContext.projectId = analyticsEvent.getProjectId();
 			sessionContext.sessionStart = analyticsEvent.getEventDate();
 			sessionContext.userId = analyticsEvent.getUserId();
 			sessionContext.sessionKey = sessionKey;
-			sessionContext.sessionId = DigestUtils.md5Hex(
-				sessionKey + "#" + eventDate.getTime());
 
 			_sessions.put(sessionKey, sessionContext);
 		}
@@ -303,8 +303,7 @@ public class IngestionNanite {
 			_log.info(
 				String.format(
 					"User session {%s, %s} will be closed at %s",
-					sessionContext.userId, sessionContext.sessionId,
-					sessionEnd));
+					sessionContext.userId, sessionContext.id, sessionEnd));
 		}
 
 		sessionContext.sessionEnd = sessionEnd;
@@ -325,6 +324,7 @@ public class IngestionNanite {
 		event.setChannelId(Long.valueOf(analyticsEvent.getChannelId()));
 		event.setCity(context.get("city"));
 		event.setContentLanguageId(context.get("contentLanguageId"));
+		event.setContext(context);
 		event.setCountry(context.get("country"));
 		event.setCreateDate(analyticsEvent.getCreateDate());
 		event.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
@@ -332,6 +332,7 @@ public class IngestionNanite {
 		event.setDeviceType(context.get("deviceType"));
 		event.setEventDate(analyticsEvent.getEventDate());
 		event.setEventId(analyticsEvent.getEventId());
+		event.setEventProperties(analyticsEvent.getEventProperties());
 		event.setExperienceId(context.get("experienceId"));
 		event.setId(analyticsEvent.getId());
 		event.setLanguageId(context.get("languageId"));
@@ -340,7 +341,7 @@ public class IngestionNanite {
 		event.setProjectTimeZoneId(analyticsEvent.getProjectTimeZoneId());
 		event.setReferrer(context.get("referrer"));
 		event.setRegion(context.get("region"));
-		event.setSessionId(sessionContext.sessionId);
+		event.setSessionId(sessionContext.id);
 		event.setTimezoneOffset(context.get("timezoneOffset"));
 		event.setTitle(context.get("title"));
 		event.setUrl(context.get("url"));
@@ -373,7 +374,7 @@ public class IngestionNanite {
 		Session session = new Session();
 
 		session.setChannelId(Long.valueOf(sessionContext.channelId));
-		session.setId(sessionContext.sessionId);
+		session.setId(sessionContext.id);
 		session.setProjectId(sessionContext.projectId);
 		session.setSessionEnd(sessionContext.sessionEnd);
 		session.setSessionStart(sessionContext.sessionStart);
@@ -414,10 +415,10 @@ public class IngestionNanite {
 
 		public String channelId;
 		public String dataSourceId;
+		public String id;
 		public long maxEventDateTimestamp;
 		public String projectId;
 		public Date sessionEnd;
-		public String sessionId;
 		public String sessionKey;
 		public Date sessionStart;
 		public String userId;
