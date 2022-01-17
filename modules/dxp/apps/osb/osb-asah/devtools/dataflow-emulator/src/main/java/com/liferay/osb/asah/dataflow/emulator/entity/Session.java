@@ -47,12 +47,20 @@ public class Session implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Date getSessionEnd() {
-		return _sessionEnd;
+		if (_sessionEnd == null) {
+			return null;
+		}
+
+		return new Date(_sessionEnd.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Date getSessionStart() {
-		return _sessionStart;
+		if (_sessionStart == null) {
+			return null;
+		}
+
+		return new Date(_sessionStart.getTime());
 	}
 
 	@Override
@@ -73,11 +81,21 @@ public class Session implements Persistable<String> {
 	}
 
 	public void setSessionEnd(Date sessionEnd) {
-		_sessionEnd = sessionEnd;
+		if (sessionEnd != null) {
+			_sessionEnd = new Date(sessionEnd.getTime());
+		}
+		else {
+			_sessionEnd = null;
+		}
 	}
 
 	public void setSessionStart(Date sessionStart) {
-		_sessionStart = sessionStart;
+		if (sessionStart != null) {
+			_sessionStart = new Date(sessionStart.getTime());
+		}
+		else {
+			_sessionStart = null;
+		}
 	}
 
 	@Transient

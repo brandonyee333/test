@@ -71,7 +71,11 @@ public class Event implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
-		return _createDate;
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -91,7 +95,11 @@ public class Event implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Date getEventDate() {
-		return _eventDate;
+		if (_eventDate == null) {
+			return null;
+		}
+
+		return new Date(_eventDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -214,7 +222,12 @@ public class Event implements Persistable<String> {
 	}
 
 	public void setCreateDate(Date createDate) {
-		_createDate = createDate;
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
+		else {
+			_createDate = null;
+		}
 	}
 
 	public void setDataSourceId(Long dataSourceId) {
@@ -230,7 +243,12 @@ public class Event implements Persistable<String> {
 	}
 
 	public void setEventDate(Date eventDate) {
-		_eventDate = eventDate;
+		if (eventDate != null) {
+			_eventDate = new Date(eventDate.getTime());
+		}
+		else {
+			_eventDate = null;
+		}
 	}
 
 	public void setEventId(String eventId) {
