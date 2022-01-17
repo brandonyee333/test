@@ -153,6 +153,8 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 
 		if (!adaptiveMediaOptional.isPresent()) {
 			_processAMImage(fileVersion);
+
+			return fileVersion.getSize();
 		}
 
 		return adaptiveMediaOptional.flatMap(
