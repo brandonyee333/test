@@ -281,7 +281,7 @@ public class IngestionNanite {
 			sessionContext = new SessionContext();
 
 			sessionContext.channelId = analyticsEvent.getChannelId();
-			sessionContext.id = DigestUtils.md5Hex(
+			sessionContext.id = DigestUtils.sha256Hex(
 				sessionKey + "#" + eventDate.getTime());
 			sessionContext.projectId = analyticsEvent.getProjectId();
 			sessionContext.sessionStart = analyticsEvent.getEventDate();

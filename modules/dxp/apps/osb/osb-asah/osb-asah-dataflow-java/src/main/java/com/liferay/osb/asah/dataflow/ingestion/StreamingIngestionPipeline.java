@@ -206,7 +206,7 @@ public class StreamingIngestionPipeline {
 							KV<String, Iterable<AnalyticsEvent>> element =
 								processContext.element();
 
-							String sessionId = DigestUtils.md5Hex(
+							String sessionId = DigestUtils.sha256Hex(
 								element.getKey() + "#" +
 									intervalWindow.start());
 
