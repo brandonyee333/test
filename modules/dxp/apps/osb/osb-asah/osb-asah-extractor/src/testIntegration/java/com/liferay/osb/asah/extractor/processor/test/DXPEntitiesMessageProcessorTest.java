@@ -41,6 +41,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
 import org.json.JSONArray;
@@ -78,7 +83,7 @@ public class DXPEntitiesMessageProcessorTest
 			"custom", "type-Text", 349978106408647035L, "input-field",
 			"type-Text", "Text", "individual");
 
-		_dxpEntitiesMessageProcessor.processQueuedMessages();
+		_processQueuedMessages();
 
 		ProjectIdThreadLocal.setProjectId("test");
 
@@ -125,7 +130,7 @@ public class DXPEntitiesMessageProcessorTest
 	)
 	@Test
 	public void testProcessQueuedMessagesRetainsOrder() throws Exception {
-		_dxpEntitiesMessageProcessor.processQueuedMessages();
+		_processQueuedMessages();
 
 		List<Message<String>> messages = _messageSubscriber.pullMessages(
 			50, String::valueOf);
@@ -147,6 +152,23 @@ public class DXPEntitiesMessageProcessorTest
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/dxp_entities_message_1.json", this),
 			jsonArray, true);
+	}
+
+	private void _processQueuedMessages() throws Exception {
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+		Future<?> future = executorService.submit(
+			_dxpEntitiesMessageProcessor::processQueuedMessages);
+
+		try {
+			future.get(3, TimeUnit.SECONDS);
+		}
+		catch (TimeoutException timeoutException) {
+			future.cancel(true);
+		}
+		finally {
+			executorService.shutdownNow();
+		}
 	}
 
 	@Autowired
