@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
@@ -97,7 +96,7 @@ public class IngestionNanite {
 	public void run() throws Exception {
 		while (true) {
 			List<Message<String>> messages = _messageSubscriber.pullMessages(
-				100, UnsafeFunction.identity());
+				100, String::valueOf);
 
 			if (messages.isEmpty()) {
 				break;
