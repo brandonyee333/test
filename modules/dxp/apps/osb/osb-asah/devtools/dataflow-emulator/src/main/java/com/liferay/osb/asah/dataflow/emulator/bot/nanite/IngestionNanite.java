@@ -280,14 +280,12 @@ public class IngestionNanite {
 		if (sessionContext == null) {
 			sessionContext = new SessionContext();
 
-			sessionContext.dataSourceId = analyticsEvent.getDataSourceId();
 			sessionContext.channelId = analyticsEvent.getChannelId();
 			sessionContext.id = DigestUtils.md5Hex(
 				sessionKey + "#" + eventDate.getTime());
 			sessionContext.projectId = analyticsEvent.getProjectId();
 			sessionContext.sessionStart = analyticsEvent.getEventDate();
 			sessionContext.userId = analyticsEvent.getUserId();
-			sessionContext.sessionKey = sessionKey;
 
 			_sessions.put(sessionKey, sessionContext);
 		}
@@ -414,12 +412,10 @@ public class IngestionNanite {
 	private static class SessionContext {
 
 		public String channelId;
-		public String dataSourceId;
 		public String id;
 		public long maxEventDateTimestamp;
 		public String projectId;
 		public Date sessionEnd;
-		public String sessionKey;
 		public Date sessionStart;
 		public String userId;
 
