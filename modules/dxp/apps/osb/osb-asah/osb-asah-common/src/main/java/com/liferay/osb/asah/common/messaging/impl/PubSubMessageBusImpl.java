@@ -35,6 +35,7 @@ import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageListener;
+import com.liferay.osb.asah.common.messaging.MessageStreamingSubscriber;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 
 import java.util.Collections;
@@ -221,7 +222,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 			_getProjectSubscriptionName(channel, messageListener.getClass()));
 
 		return _pubSubClientFactory.createSubscriber(
-			subscription.getName(), _createMessageReceiver(messageListener));
+			_createMessageReceiver(messageListener), subscription.getName());
 	}
 
 	private void _createTopic(
