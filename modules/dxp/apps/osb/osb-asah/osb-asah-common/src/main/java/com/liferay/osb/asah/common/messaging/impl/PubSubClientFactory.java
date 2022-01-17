@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.messaging.impl;
 
+import com.google.api.gax.batching.FlowControlSettings;
 import com.google.api.gax.core.CredentialsProvider;
 import com.google.api.gax.core.NoCredentialsProvider;
 import com.google.api.gax.grpc.GrpcTransportChannel;
@@ -38,6 +39,7 @@ import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -64,18 +66,24 @@ public class PubSubClientFactory {
 	}
 
 	public Subscriber createSubscriber(
-		String projectSubscriptionName, MessageReceiver messageReceiver) {
+		long maxOutstandingMessages, MessageReceiver messageReceiver,
+		String projectSubscriptionName) {
 
-		Subscriber.Builder builder = Subscriber.newBuilder(
-			projectSubscriptionName, messageReceiver);
+		FlowControlSettings flowControlSettings =
+			FlowControlSettings.newBuilder(
+			).setMaxOutstandingElementCount(
+				maxOutstandingMessages
+			).build();
 
-		ManagedChannel managedChannel = _managedChannelSupplier.get();
+		return _createSubscriber(
+			flowControlSettings, messageReceiver, projectSubscriptionName);
+	}
 
-		_setClientSettingsBuilderProviders(
-			builder::setCredentialsProvider, builder::setChannelProvider,
-			managedChannel);
+	public Subscriber createSubscriber(
+		MessageReceiver messageReceiver, String projectSubscriptionName) {
 
-		return builder.build();
+		return _createSubscriber(
+			null, messageReceiver, projectSubscriptionName);
 	}
 
 	public PubSubClient<SubscriberStub> createSubscriberStub()
@@ -123,6 +131,26 @@ public class PubSubClientFactory {
 
 		return new PubSubClient(
 			TopicAdminClient.create(builder.build()), managedChannel);
+	}
+
+	private Subscriber _createSubscriber(
+		@Nullable FlowControlSettings flowControlSettings,
+		MessageReceiver messageReceiver, String projectSubscriptionName) {
+
+		Subscriber.Builder builder = Subscriber.newBuilder(
+			projectSubscriptionName, messageReceiver);
+
+		if (flowControlSettings != null) {
+			builder.setFlowControlSettings(flowControlSettings);
+		}
+
+		ManagedChannel managedChannel = _managedChannelSupplier.get();
+
+		_setClientSettingsBuilderProviders(
+			builder::setCredentialsProvider, builder::setChannelProvider,
+			managedChannel);
+
+		return builder.build();
 	}
 
 	private void _setClientSettingsBuilderProviders(
