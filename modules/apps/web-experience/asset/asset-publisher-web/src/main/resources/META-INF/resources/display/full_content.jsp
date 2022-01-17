@@ -182,7 +182,7 @@ request.setAttribute("view.jsp-showIconLabel", true);
 				/>
 			</div>
 		</c:if>
-		
+
 		<%
 		String viewInContextURL = HttpUtil.addParameter(assetRenderer.getURLViewInContext(liferayPortletRequest, liferayPortletResponse, HttpUtil.setParameter(viewFullContentURL.toString(), "redirect", currentURL)), liferayPortletResponse.getNamespace() + "viewSingleAsset", true);
 
