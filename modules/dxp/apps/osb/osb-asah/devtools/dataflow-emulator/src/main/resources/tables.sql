@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Event (
- 	applicationId TEXT,
+	applicationId TEXT,
 	browserName TEXT,
 	canonicalUrl TEXT,
 	channelId BIGINT,
@@ -32,15 +32,15 @@ CREATE TABLE IF NOT EXISTS EventProperty (
 	channelId BIGINT,
 	eventDate TIMESTAMP,
 	id TEXT,
-	projectId TEXT,
 	name TEXT,
+	projectId TEXT,
 	value TEXT
 );
 
 CREATE TABLE IF NOT EXISTS Session (
-	sessionStart TIMESTAMP,
-	projectId TEXT,
 	channelId BIGINT,
 	id TEXT UNIQUE,
-	sessionEnd TIMESTAMP
+	projectId TEXT,
+	sessionEnd TIMESTAMP,
+	sessionStart TIMESTAMP
 );
