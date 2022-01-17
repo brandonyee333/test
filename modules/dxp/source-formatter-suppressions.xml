@@ -3,6 +3,6 @@
 <suppressions>
 	<source-check>
 		<suppress checks="JavaDeprecatedKernelClassesCheck" files=".*" />
-		<suppress checks="MarkdownEmptyLinesCheck" files="util/portal-tools-data-partitioning-sql-builder-oracle/README\.markdown" />
+		<suppress checks="MarkdownStylingCheck" files="util/portal-tools-data-partitioning-sql-builder-oracle/README\.markdown" />
 	</source-check>
 </suppressions>
