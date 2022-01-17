@@ -5122,9 +5122,15 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
+		String newEncPwd;
 
-		String newEncPwd = PasswordEncryptorUtil.encrypt(
-			password1, user.getPassword());
+		if (user.isPasswordEncrypted()) {
+			newEncPwd = PasswordEncryptorUtil.encrypt(
+				password1, user.getPassword());
+		}
+		else {
+			newEncPwd = PasswordEncryptorUtil.encrypt(password1);
+		}
 
 		// Password hashing takes a long time. Therefore, encrypt the password
 		// before we get the user to avoid
