@@ -121,8 +121,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				}
 			}
 
-			if (!interests.isEmpty()) {
-				_interestDog.addInterests(interests);
+			if (!newInterests.isEmpty()) {
+				_interestDog.addInterests(newInterests);
 			}
 		}
 
