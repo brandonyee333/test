@@ -14,6 +14,11 @@
 
 package com.liferay.osb.asah.extractor.processor;
 
+import com.google.cloud.pubsub.v1.AckReplyConsumer;
+import com.google.cloud.pubsub.v1.MessageReceiver;
+import com.google.protobuf.ByteString;
+import com.google.pubsub.v1.PubsubMessage;
+
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
@@ -32,22 +37,18 @@ import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.messaging.MessageStreamingSubscriber;
 import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.PreDestroy;
 
@@ -70,44 +71,34 @@ import org.springframework.stereotype.Component;
 public class DXPEntitiesMessageProcessor {
 
 	public void processQueuedMessages() {
+		MessageReceiver messageReceiver =
+			(PubsubMessage pubsubMessage, AckReplyConsumer consumer) -> {
+				ByteString byteString = pubsubMessage.getData();
+
+				JSONObject jsonObject = new JSONObject(
+					byteString.toStringUtf8());
+
+				try {
+					String projectId = jsonObject.getString("projectId");
+
+					_boundedExecutor.runAsync(
+						() -> {
+							ProjectIdThreadLocal.setProjectId(projectId);
+							_processMessage(jsonObject);
+						},
+						KeyReentrantLock.getReentrantLock(
+							getClass(), projectId));
+				}
+				catch (Exception exception) {
+					_log.error(exception, exception);
+				}
+
+				consumer.ack();
+			};
+
 		try {
-			while (true) {
-				long start = System.currentTimeMillis();
-
-				List<Message<JSONObject>> messages =
-					_messageSubscriber.pullMessages(
-						_dxpEntitiesMessageProcessorPullMessagesSize,
-						JSONObject::new);
-
-				if (messages.isEmpty()) {
-					break;
-				}
-
-				Stream<Message<JSONObject>> stream = messages.stream();
-
-				stream.collect(
-					Collectors.groupingBy(
-						message -> {
-							JSONObject jsonObject = message.getObject();
-
-							return jsonObject.getString("projectId");
-						})
-				).forEach(
-					(projectId, messagesList) -> _processQueuedMessagesAsync(
-						messagesList, projectId)
-				);
-
-				if (_log.isDebugEnabled()) {
-					Class<?> clazz = getClass();
-
-					_log.debug(
-						String.format(
-							"%s dispatched %d analytics events messages in " +
-								"%d ms",
-							clazz.getSimpleName(), messages.size(),
-							System.currentTimeMillis() - start));
-				}
-			}
+			_messageStreaming.subscribe(
+				_maxOutstandingMessages, messageReceiver);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -432,53 +423,6 @@ public class DXPEntitiesMessageProcessor {
 		}
 	}
 
-	private void _processQueuedMessagesAsync(
-		List<Message<JSONObject>> messages, String projectId) {
-
-		_boundedExecutor.runAsync(
-			() -> {
-				List<String> ackIds = new ArrayList<>();
-
-				try {
-					long start = System.currentTimeMillis();
-
-					ProjectIdThreadLocal.setProjectId(projectId);
-
-					for (Message<JSONObject> message : messages) {
-						try {
-							_processMessage(message.getObject());
-
-							ackIds.add(message.getAckId());
-						}
-						catch (Exception exception) {
-							_messageSubscriber.registerException(
-								exception, message);
-
-							_log.error(
-								"Unable to process analytics events message " +
-									message.getObject(),
-								exception);
-						}
-					}
-
-					if (_log.isDebugEnabled()) {
-						Class<?> clazz = getClass();
-
-						_log.debug(
-							String.format(
-								"%s processed %d analytics events messages " +
-									"in %d ms",
-								clazz.getSimpleName(), messages.size(),
-								System.currentTimeMillis() - start));
-					}
-				}
-				finally {
-					_messageSubscriber.sendAckIds(ackIds);
-				}
-			},
-			KeyReentrantLock.getReentrantLock(getClass(), projectId));
-	}
-
 	private void _processUserFieldObject(
 		String action, JSONObject objectJSONObject) {
 
@@ -566,8 +510,15 @@ public class DXPEntitiesMessageProcessor {
 	@Autowired
 	private IndividualDog _individualDog;
 
-	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
-	private MessageSubscriber _messageSubscriber;
+	@Value(
+		"${osb.asah.analytics.events.message.processor.streaming.max.outstanding.messages:1000}"
+	)
+	private long _maxOutstandingMessages;
+
+	@MessageStreamingSubscriber.Autowired(
+		channel = Channel.DXP_ENTITIES_MESSAGE
+	)
+	private MessageStreamingSubscriber _messageStreaming;
 
 	@Autowired
 	private OrganizationDog _organizationDog;
