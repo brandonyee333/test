@@ -14,20 +14,14 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.AnalyticsEventUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-
-import io.prometheus.client.Histogram;
-import io.prometheus.client.SimpleTimer;
+import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +30,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -45,7 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -79,150 +71,123 @@ public class AnalyticsEventsRestController {
 		Errors errors, @RequestHeader HttpHeaders httpHeaders,
 		HttpServletRequest httpServletRequest) {
 
-		SimpleTimer simpleTimer = new SimpleTimer();
+		if (!_analyticsEventsMessageCache.add(analyticsEventsMessage.getId())) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Discarding duplicate message: " +
+						analyticsEventsMessage.toJSON());
+			}
 
-		try {
-			String analyticsEventsMessageId = analyticsEventsMessage.getId();
+			return new ResponseEntity<>(
+				"Duplicate Message " + analyticsEventsMessage.getId(),
+				HttpStatus.OK);
+		}
 
-			if ((analyticsEventsMessageId != null) &&
-				BooleanUtils.isTrue(
-					_analyticsEventMessageIds.getIfPresent(
-						analyticsEventsMessageId))) {
+		String clientIP = httpHeaders.getFirst("X-Forwarded-For");
 
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Discarding duplicate message: " +
-							analyticsEventsMessage.toJSON());
-				}
+		if (clientIP == null) {
+			clientIP = httpServletRequest.getRemoteAddr();
+		}
+		else {
+			String[] parts = clientIP.split(",");
+
+			clientIP = parts[0];
+		}
+
+		analyticsEventsMessage.setClientIP(clientIP);
+
+		List<AnalyticsEventsMessage.Event> events =
+			analyticsEventsMessage.getEvents();
+
+		int eventsSize = events.size();
+
+		List<FieldError> fieldErrors = new ArrayList<>(errors.getFieldErrors());
+
+		if (errors.hasErrors()) {
+			if (StringUtils.isEmpty(analyticsEventsMessage.getDataSourceId())) {
+				_analyticsEventsMessageCache.remove(
+					analyticsEventsMessage.getId());
 
 				return new ResponseEntity<>(
-					"Duplicate Message " + analyticsEventsMessageId,
-					HttpStatus.OK);
+					errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 			}
 
-			if (analyticsEventsMessageId != null) {
-				_analyticsEventMessageIds.put(analyticsEventsMessageId, true);
+			Stream<FieldError> stream = fieldErrors.stream();
+
+			Optional<FieldError> fieldErrorOptional = stream.filter(
+				fieldError -> StringUtils.startsWith(
+					fieldError.getField(), "context")
+			).findAny();
+
+			if (fieldErrorOptional.isPresent()) {
+				return new ResponseEntity<>(
+					errors.getFieldError(), HttpStatus.BAD_REQUEST);
 			}
 
-			String clientIP = httpHeaders.getFirst("X-Forwarded-For");
-
-			if (clientIP == null) {
-				clientIP = httpServletRequest.getRemoteAddr();
+			for (int index : _getInvalidEventIndices(fieldErrors)) {
+				events.remove(index);
 			}
-			else {
-				String[] parts = clientIP.split(",");
+		}
 
-				clientIP = parts[0];
-			}
+		Date date = DateUtil.newDate();
 
-			analyticsEventsMessage.setClientIP(clientIP);
+		events.removeIf(
+			event -> {
+				String analyticsEventId =
+					AnalyticsEventUtil.generateAnalyticsEventId(
+						analyticsEventsMessage.getDataSourceId(), event,
+						analyticsEventsMessage.getProjectId(),
+						analyticsEventsMessage.getUserId());
 
-			List<AnalyticsEventsMessage.Event> events =
-				analyticsEventsMessage.getEvents();
+				event.setId(analyticsEventId);
 
-			int eventsSize = events.size();
+				long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
+					event.getEventDate(), date);
 
-			List<FieldError> fieldErrors = new ArrayList<>(
-				errors.getFieldErrors());
+				if (!_analyticsEventsMessageCache.add(analyticsEventId) ||
+					((deltaMilliseconds > (DateUtil.DAY * 7)) &&
+					 (_eventDog.fetchEvent(analyticsEventId) != null))) {
 
-			if (errors.hasErrors()) {
-				if (StringUtils.isEmpty(
-						analyticsEventsMessage.getDataSourceId())) {
-
-					if (analyticsEventsMessageId != null) {
-						_analyticsEventMessageIds.invalidate(
-							analyticsEventsMessageId);
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Discarding duplicate event: " + analyticsEventId);
 					}
 
-					return new ResponseEntity<>(
-						errors.getAllErrors(), HttpStatus.BAD_REQUEST);
+					fieldErrors.add(
+						new FieldError(
+							"analyticsEventsMessage", "analyticsEventId",
+							analyticsEventId, false, null, null,
+							"Duplicate event"));
+
+					return true;
 				}
 
-				Stream<FieldError> stream = fieldErrors.stream();
+				return false;
+			});
 
-				Optional<FieldError> fieldErrorOptional = stream.filter(
-					fieldError -> StringUtils.startsWith(
-						fieldError.getField(), "context")
-				).findAny();
+		analyticsEventsMessage.setProjectId(
+			ProjectIdThreadLocal.getProjectId());
 
-				if (fieldErrorOptional.isPresent()) {
-					return new ResponseEntity<>(
-						errors.getFieldError(), HttpStatus.BAD_REQUEST);
-				}
-
-				for (int index : _getInvalidEventIndices(fieldErrors)) {
-					events.remove(index);
-				}
+		if (!events.isEmpty()) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Pushing analytics events message to the queue " +
+						analyticsEventsMessage.toJSON());
 			}
 
-			Date date = DateUtil.newDate();
-
-			events.removeIf(
-				event -> {
-					String analyticsEventId =
-						AnalyticsEventUtil.generateAnalyticsEventId(
-							analyticsEventsMessage.getDataSourceId(), event,
-							analyticsEventsMessage.getProjectId(),
-							analyticsEventsMessage.getUserId());
-
-					event.setId(analyticsEventId);
-
-					long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
-						event.getEventDate(), date);
-
-					if (BooleanUtils.isTrue(
-							_analyticsEventIds.getIfPresent(
-								analyticsEventId)) ||
-						((deltaMilliseconds > DateUtil.DAY) &&
-						 (_eventDog.fetchEvent(analyticsEventId) != null))) {
-
-						if (_log.isDebugEnabled()) {
-							_log.debug(
-								"Discarding duplicate event: " +
-									analyticsEventId);
-						}
-
-						fieldErrors.add(
-							new FieldError(
-								"analyticsEventsMessage", "analyticsEventId",
-								analyticsEventId, false, null, null,
-								"Duplicate event"));
-
-						return true;
-					}
-
-					_analyticsEventIds.put(analyticsEventId, true);
-
-					return false;
-				});
-
-			analyticsEventsMessage.setProjectId(
-				ProjectIdThreadLocal.getProjectId());
-
-			if (!events.isEmpty()) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Pushing analytics events message to the queue " +
-							analyticsEventsMessage.toJSON());
-				}
-
-				_messageBus.sendMessage(
-					Channel.ANALYTICS_EVENTS_MESSAGE,
-					analyticsEventsMessage.toJSON());
-			}
-			else if (analyticsEventsMessageId != null) {
-				_analyticsEventMessageIds.invalidate(analyticsEventsMessageId);
-			}
-
-			if (eventsSize != events.size()) {
-				return new ResponseEntity<>(fieldErrors, HttpStatus.OK);
-			}
-
-			return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+			_messageBus.sendMessage(
+				Channel.ANALYTICS_EVENTS_MESSAGE,
+				analyticsEventsMessage.toJSON());
 		}
-		finally {
-			_eventRequestsHistogram.observe(simpleTimer.elapsedSeconds());
+		else {
+			_analyticsEventsMessageCache.remove(analyticsEventsMessage.getId());
 		}
+
+		if (eventsSize != events.size()) {
+			return new ResponseEntity<>(fieldErrors, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
 	}
 
 	private Set<Integer> _getInvalidEventIndices(List<FieldError> fieldErrors) {
@@ -242,26 +207,11 @@ public class AnalyticsEventsRestController {
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsRestController.class);
 
-	private static final Cache<String, Boolean> _analyticsEventIds =
-		Caffeine.newBuilder(
-		).expireAfterAccess(
-			1, TimeUnit.DAYS
-		).maximumSize(
-			2400000
-		).build();
-	private static final Cache<String, Boolean> _analyticsEventMessageIds =
-		Caffeine.newBuilder(
-		).expireAfterAccess(
-			1, TimeUnit.DAYS
-		).maximumSize(
-			2400000
-		).build();
-	private static final Histogram _eventRequestsHistogram =
-		PrometheusUtil.histogram(
-			"publisher_event_request_seconds",
-			"The number of seconds taken to process the event requests");
 	private static final Pattern _pattern = Pattern.compile(
 		"^events\\[(\\d+)].*");
+
+	@Autowired
+	private AnalyticsEventsMessageCache _analyticsEventsMessageCache;
 
 	@Autowired
 	private EventDog _eventDog;
