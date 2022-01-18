@@ -37,6 +37,7 @@ import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.transforms.SerializableFunction;
 import org.apache.beam.sdk.transforms.WithKeys;
+import org.apache.beam.sdk.transforms.WithTimestamps;
 import org.apache.beam.sdk.transforms.windowing.AfterProcessingTime;
 import org.apache.beam.sdk.transforms.windowing.AfterWatermark;
 import org.apache.beam.sdk.transforms.windowing.FixedWindows;
@@ -53,6 +54,7 @@ import org.apache.beam.sdk.values.TypeDescriptor;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import org.joda.time.Duration;
+import org.joda.time.Instant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,6 +165,11 @@ public class StreamingIngestionPipeline {
 		@Override
 		public PDone expand(PCollection<String> pCollection) {
 			return pCollection.apply(
+				"Update Timestamp",
+				WithTimestamps.of(
+					(SerializableFunction<String, Instant>)
+						message -> Instant.now())
+			).apply(
 				_writeIntervalInMinutes + " Minutes Window",
 				Window.into(
 					FixedWindows.of(
