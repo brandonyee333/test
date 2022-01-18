@@ -18,15 +18,13 @@ import ClayList from '@clayui/list';
 import ClayManagementToolbar from '@clayui/management-toolbar';
 import ClayModal from '@clayui/modal';
 import React, {
-	ChangeEventHandler,
 	FormEvent,
 	useContext,
 	useEffect,
 	useState,
 } from 'react';
 
-import {normalizeLanguageId} from '../../utils/string';
-import ViewContext, {TObjectField} from './context';
+import ViewContext from './context';
 
 import './ModalAddColumnsObjectCustomView.scss';
 import {TYPES} from './context';
@@ -36,43 +34,12 @@ interface IProps extends React.HTMLAttributes<HTMLElement> {
 	onClose: () => void;
 }
 
-type TInitialValues = {
-	label: string;
-	listTypeDefinitionId: number;
-	name?: string;
-	required: boolean;
-	type: string;
-};
-
-type TName = {
-	[key: string]: string;
-};
-
-interface TObjectViewColumn {
-	label: TName;
-	checked: boolean;
-	filtered: boolean;
-}
-
 const defaultLanguageId = Liferay.ThemeDisplay.getDefaultLanguageId();
 
 const ModalAddColumnsObjectCustomView: React.FC<IProps> = ({
 	observer,
 	onClose,
 }) => {
-
-	// let initialValues: TInitialValues[] = [
-	// 	{
-	// 		label: '',
-	// 		listTypeDefinitionId: 0,
-	// 		name: undefined,
-	// 		required: false,
-	// 		type: '',
-	// 	},
-	// ];
-
-	// Author, Creation Date, Modified Date, Workflow Status, ID
-
 	const [
 		{isViewOnly, objectFields, objectView, objectViewId},
 		dispatch,
@@ -80,58 +47,84 @@ const ModalAddColumnsObjectCustomView: React.FC<IProps> = ({
 
 	const [filteredItems, setFilteredItems] = useState(objectFields);
 	const [fieldsChecked, setFieldsChecked] = useState(false);
+	const [allFieldsChecked, setAllFieldsChecked] = useState(false);
 	const [query, setQuery] = useState('');
 
-	// console.log(filteredItems);
+	useEffect(() => {
+		if (
+			fieldsChecked &&
+			filteredItems.every((item) => item.checked === true)
+		) {
+			setAllFieldsChecked(true);
+		}
+		else if (filteredItems.find((item) => item.checked === true)) {
+			setFieldsChecked(true);
+			setAllFieldsChecked(false);
+		}
+		else {
+			setFieldsChecked(false);
+			setAllFieldsChecked(false);
+		}
+	}, [filteredItems]);
 
-	// useEffect(() => {
-	// 	if (filteredItems.find((item) => item.checked === true)) {
-	// 		setFieldsChecked(true);
-	// 	}
-	// 	else {
-	// 		setFieldsChecked(false);
-	// 	}
-	// }, [filteredItems]);
+	useEffect(() => {
+		if (query) {
+			setFilteredItems((filteredItems) =>
+				filteredItems.map((field) => {
+					if (
+						!field.label[defaultLanguageId]
+							.toLowerCase()
+							.includes(query.toLowerCase())
+					) {
+						return {
+							...field,
+							filtered: false,
+						};
+					}
 
-	// useEffect(() => {
-	// 	if (query) {
-	// 		setFilteredItems(
-	// 			filteredItems.map((field) => {
-	// 				if (
-	// 					!field.label.toLowerCase().includes(query.toLowerCase())
-	// 				) {
-	// 					return {
-	// 						...field,
-	// 						filtered: false,
-	// 					};
-	// 				}
+					return {...field, filtered: true};
+				})
+			);
+		}
+		else {
+			setFilteredItems((filteredItems) =>
+				filteredItems.map((field) => {
+					return {
+						...field,
+						filtered: true,
+					};
+				})
+			);
+		}
+	}, [query]);
 
-	// 				return field;
-	// 			})
-	// 		);
-	// 	}
-	// 	else {
-	// 		setFilteredItems(
-	// 			filteredItems.map((field) => {
-	// 				return {
-	// 					...field,
-	// 					filtered: true,
-	// 				};
-	// 			})
-	// 		);
-	// 	}
-	// }, [filteredItems, query]);
 
-	const handleAllFieldsChecked = () => {
+	const setSelection = (checked: boolean) => {
+		if (allFieldsChecked) {
+			return false;
+		}
+		else if (fieldsChecked) {
+			return true;
+		}
+		else if (!checked) {
+			return false;
+		}
+		else {
+			setFieldsChecked(true);
+
+			return true;
+		}
+	};
+
+	const handleAllFieldsChecked = (checked: boolean) => {
 		setFilteredItems(
 			filteredItems.map((field) => {
 				return {
 					...field,
-					checked: !fieldsChecked,
+					checked: setSelection(checked),
 				};
 			})
 		);
-		setFieldsChecked(!fieldsChecked);
 	};
 
 	const handleFieldChecked = (name: String) => {
@@ -183,8 +176,14 @@ const ModalAddColumnsObjectCustomView: React.FC<IProps> = ({
 								<ClayManagementToolbar.Item>
 									<ClayCheckbox
 										checked={fieldsChecked}
-										indeterminate={fieldsChecked}
-										onChange={handleAllFieldsChecked}
+										indeterminate={
+											!allFieldsChecked && fieldsChecked
+										}
+										onChange={({target}) =>
+											handleAllFieldsChecked(
+												target.checked
+											)
+										}
 									/>
 								</ClayManagementToolbar.Item>
 							</ClayManagementToolbar.ItemList>
@@ -225,32 +224,26 @@ const ModalAddColumnsObjectCustomView: React.FC<IProps> = ({
 							</ClayManagementToolbar.Search>
 						</ClayManagementToolbar>
 
-						<div>
-							<ClayList className="object-web__modal-add-columns--list">
-								{filteredItems?.map((field, index) => (
-									<ClayList.Item
-										className={
-											field?.filtered ? '' : 'hide'
-										}
-										flex
-										key={`list-item-${index}`}
-									>
-										<ClayCheckbox
+						<ClayList className="object-web__modal-add-columns--list">
+							{filteredItems?.map((field, index) => (
+								<ClayList.Item
+									className={field?.filtered ? '' : 'hide'}
+									flex
+									key={`list-item-${index}`}
+								>
+									<ClayCheckbox
 
-											// @ts-ignore
+										// @ts-ignore
 
-											checked={field.checked}
-											label={
-												field.label[defaultLanguageId]
-											}
-											onChange={() => {
-												handleFieldChecked(field.name);
-											}}
-										/>
-									</ClayList.Item>
-								))}
-							</ClayList>
-						</div>
+										checked={field.checked}
+										label={field.label[defaultLanguageId]}
+										onChange={() => {
+											handleFieldChecked(field.name);
+										}}
+									/>
+								</ClayList.Item>
+							))}
+						</ClayList>
 					</ClayModal.Body>
 
 					<ClayModal.Footer
