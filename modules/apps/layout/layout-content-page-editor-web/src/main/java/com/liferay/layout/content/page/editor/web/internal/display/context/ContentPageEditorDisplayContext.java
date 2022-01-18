@@ -509,7 +509,7 @@ public class ContentPageEditorDisplayContext {
 						LayoutSetLocalServiceUtil.fetchLayoutSet(
 							themeDisplay.getSiteGroupId(), false);
 
-					if (Validator.isNull(layout.getThemeId()) ||
+					if (layout.isInheritLookAndFeel() ||
 						Objects.equals(
 							layout.getThemeId(), layoutSet.getThemeId())) {
 
