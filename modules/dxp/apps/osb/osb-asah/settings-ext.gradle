@@ -1,27 +1,7 @@
 String projectPathPrefix = properties["project.path.prefix"]
 
-rootDir.eachDir {
+rootDir.eachDirRecurse {
 	File subprojectDir ->
-
-	if (subprojectDir.name.equals("devtools")) {
-		subprojectDir.eachDir {
-			File devtoolsProjectDir ->
-
-			File devtoolsSrcDir = new File(devtoolsProjectDir, "src")
-
-			if (!devtoolsSrcDir.exists()) {
-				return
-			}
-
-			String devtoolsSubprojectName = "${projectPathPrefix}:${devtoolsProjectDir.name}"
-
-			include devtoolsSubprojectName
-
-			ProjectDescriptor projectDescriptor = project(devtoolsSubprojectName)
-
-			projectDescriptor.projectDir = devtoolsProjectDir
-		}
-	}
 
 	File srcDir = new File(subprojectDir, "src")
 
