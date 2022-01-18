@@ -33,7 +33,7 @@ import org.openqa.selenium.interactions.Locatable;
 import org.openqa.selenium.remote.FileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.By;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Michael Hashimoto
