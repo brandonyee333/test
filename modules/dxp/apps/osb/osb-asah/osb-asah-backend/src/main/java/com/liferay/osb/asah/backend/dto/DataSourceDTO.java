@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.dto;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -135,12 +134,10 @@ public class DataSourceDTO {
 		return _contactsSyncDetailDTO;
 	}
 
-	@JsonAlias("createDate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	@JsonProperty("dateCreated")
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -202,12 +199,10 @@ public class DataSourceDTO {
 		return _id;
 	}
 
-	@JsonAlias("modifiedDate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	@JsonProperty("dateModified")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
