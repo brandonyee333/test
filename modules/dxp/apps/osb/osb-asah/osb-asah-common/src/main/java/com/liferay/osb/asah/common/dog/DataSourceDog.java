@@ -729,17 +729,6 @@ public class DataSourceDog {
 		for (int i = 0; i < (sorts.length - 1); i = i + 2) {
 			String sort = sorts[i];
 
-			if (sort.contains("credentials")) {
-				sort = "credentialType";
-			}
-
-			if (sort.contains("dateCreated")) {
-				sort = "createDate";
-			}
-			else if (sort.contains("provider")) {
-				sort = "providerType";
-			}
-
 			if (Objects.equals(sorts[i + 1], "asc")) {
 				orders.add(Sort.Order.asc(sort));
 			}
