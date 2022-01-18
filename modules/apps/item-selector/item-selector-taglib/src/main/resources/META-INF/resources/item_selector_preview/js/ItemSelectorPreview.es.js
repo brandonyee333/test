@@ -27,6 +27,9 @@ const KEY_CODE = {
 	RIGTH: 39,
 };
 
+const itemIsImage = ({mimeType, type}) =>
+	type === 'image' || Boolean(mimeType?.match(/image.*/));
+
 const ItemSelectorPreview = ({
 	container,
 	currentIndex = 0,
@@ -38,6 +41,7 @@ const ItemSelectorPreview = ({
 	uploadItemURL,
 }) => {
 	const [currentItemIndex, setCurrentItemIndex] = useState(currentIndex);
+	const [isImage, setIsImage] = useState(false);
 	const [itemList, setItemList] = useState(items);
 	const [reloadOnHide, setReloadOnHide] = useState(false);
 
@@ -236,6 +240,10 @@ const ItemSelectorPreview = ({
 		);
 	};
 
+	useEffect(() => {
+		setIsImage(itemIsImage(currentItem));
+	}, [currentItem]);
+
 	return (
 		<div className="fullscreen item-selector-preview">
 			<Header
@@ -253,6 +261,7 @@ const ItemSelectorPreview = ({
 				currentItem={currentItem}
 				handleClickNext={handleClickNext}
 				handleClickPrevious={handleClickPrevious}
+				isImage={isImage}
 				showArrows={itemList.length > 1}
 			/>
 
