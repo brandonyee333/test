@@ -186,6 +186,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SUCCESS_DISMISSIBLE</td>
+	<td>//div[contains(@class,'alert-success')][contains(@class,'alert-dismissible')] | //div[contains(@class,'alert-success')][contains(@class,'alert-dismissable')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>TOOLTIP</td>
 	<td>//div[contains(@class,'tooltip-content')]</td>
 	<td></td>

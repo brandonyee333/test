@@ -171,6 +171,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>CLOSE_MESSAGE</td>
+	<td>//div[contains(@class,'alert-dismissible')]//button[@aria-label='Close']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CLOSE_MODAL</td>
 	<td>//h3[contains(@class,'modal-title') and contains(.,'${key_modalTitle}')]/../div/button[contains(@class,'close')]</td>
 	<td></td>

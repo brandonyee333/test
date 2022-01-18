@@ -37,6 +37,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>PROCESS_TITLE</td>
+	<td>//h5[contains(@id,'StagingProcessesPortlet')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -60,6 +65,11 @@
 <tr>
 	<td>STAGING_STATUS_PORTLET</td>
 	<td>//h5[contains(text(),'Successful')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>STAGING_PUBLISH_TEMPLATE_LINK</td>
+	<td>//ul[contains(@class,'dropdown-menu')]//a[contains(.,'${key_publishTemplateName}')]</td>
 	<td></td>
 </tr>
 <tr>
