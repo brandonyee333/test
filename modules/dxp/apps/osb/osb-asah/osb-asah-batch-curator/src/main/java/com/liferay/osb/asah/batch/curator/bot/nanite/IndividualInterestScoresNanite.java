@@ -40,6 +40,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -125,7 +126,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			}
 
 			if (!newInterests.isEmpty()) {
-				_interestDog.addInterests(newInterests);
+				ListUtils.partition(
+					newInterests, 1000
+				).forEach(
+					_interestDog::addInterests
+				);
 			}
 		}
 
@@ -212,6 +217,14 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				).put(
 					"url", keywordInfo.getDataSourceAssetPK()
 				));
+
+			if ((elasticsearchBulkRequestBuilder.getSize() % 1000) == 0) {
+				elasticsearchBulkRequestBuilder.get();
+
+				elasticsearchBulkRequestBuilder =
+					faroInfoElasticsearchInvoker.
+						createElasticsearchBulkRequestBuilder();
+			}
 		}
 	}
 
@@ -392,7 +405,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		}
 
 		if (!interestsMap.isEmpty()) {
-			_interestDog.addInterests(new ArrayList<>(interestsMap.values()));
+			ListUtils.partition(
+				new ArrayList<>(interestsMap.values()), 1000
+			).forEach(
+				_interestDog::addInterests
+			);
 		}
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {

@@ -115,6 +115,10 @@ public class ElasticsearchBulkRequestBuilder {
 		return null;
 	}
 
+	public int getSize() {
+		return _bulkRequestBuilder.numberOfActions();
+	}
+
 	public boolean hasActions() {
 		if (_bulkRequestBuilder.numberOfActions() > 0) {
 			return true;
