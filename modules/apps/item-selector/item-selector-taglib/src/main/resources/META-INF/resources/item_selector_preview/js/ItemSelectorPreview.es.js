@@ -253,7 +253,7 @@ const ItemSelectorPreview = ({
 				handleClickEdit={handleClickEdit}
 				headerTitle={headerTitle}
 				infoButtonRef={infoButtonRef}
-				showEditIcon={!!editItemURL}
+				showEditIcon={isImage}
 				showInfoIcon={!!currentItem.metadata}
 			/>
 
