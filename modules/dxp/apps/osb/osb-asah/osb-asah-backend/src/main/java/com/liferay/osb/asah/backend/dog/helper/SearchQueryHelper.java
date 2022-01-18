@@ -421,29 +421,29 @@ public class SearchQueryHelper {
 			String term = matcher.group(1);
 
 			if (term != null) {
-				QueryStringQueryBuilder queryStringQuery =
+				QueryStringQueryBuilder queryStringQueryBuilder =
 					QueryBuilders.queryStringQuery(
 						String.format(
 							"%s:%s", "title.search",
 							StringUtils.wrap(
 								QueryUtil.escapeKeywords(term), "\"")));
 
-				queryStringQuery = queryStringQuery.defaultOperator(
-					Operator.AND);
+				queryStringQueryBuilder =
+					queryStringQueryBuilder.defaultOperator(Operator.AND);
 
-				keywordsQueryBuilder.should(queryStringQuery);
+				keywordsQueryBuilder.should(queryStringQueryBuilder);
 			}
 			else {
 				term = matcher.group(2);
 
-				QueryStringQueryBuilder queryStringQuery =
+				QueryStringQueryBuilder queryStringQueryBuilder =
 					QueryBuilders.queryStringQuery(
 						String.format(
 							"%s:*%s*", "title.search",
 							QueryUtil.escapeKeywords(term)));
 
-				queryStringQuery = queryStringQuery.defaultOperator(
-					Operator.AND);
+				queryStringQueryBuilder =
+					queryStringQueryBuilder.defaultOperator(Operator.AND);
 
 				MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(
 					"title.search", term
@@ -454,7 +454,7 @@ public class SearchQueryHelper {
 				matchQueryBuilder = matchQueryBuilder.operator(Operator.AND);
 
 				keywordsQueryBuilder.should(
-					queryStringQuery
+					queryStringQueryBuilder
 				).should(
 					matchQueryBuilder
 				);
