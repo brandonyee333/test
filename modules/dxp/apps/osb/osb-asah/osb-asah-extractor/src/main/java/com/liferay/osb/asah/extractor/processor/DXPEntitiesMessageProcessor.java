@@ -68,43 +68,42 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class DXPEntitiesMessageProcessor {
+public class DXPEntitiesMessageProcessor implements MessageReceiver {
 
 	public void processQueuedMessages() {
-		MessageReceiver messageReceiver =
-			(PubsubMessage pubsubMessage, AckReplyConsumer consumer) -> {
-				ByteString byteString = pubsubMessage.getData();
-
-				JSONObject jsonObject = new JSONObject(
-					byteString.toStringUtf8());
-
-				try {
-					String projectId = jsonObject.getString("projectId");
-
-					_boundedExecutor.runAsync(
-						() -> {
-							ProjectIdThreadLocal.setProjectId(projectId);
-							_processMessage(jsonObject);
-						},
-						KeyReentrantLock.getReentrantLock(
-							getClass(), projectId));
-				}
-				catch (Exception exception) {
-					_log.error(exception, exception);
-				}
-
-				consumer.ack();
-			};
-
 		try {
-			_messageStreaming.subscribe(
-				_maxOutstandingMessages, messageReceiver);
+			_messageStreaming.subscribe(_maxOutstandingMessages, this);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
 		}
 
 		_boundedExecutor.awaitPendingTasks();
+	}
+
+	@Override
+	public void receiveMessage(
+		PubsubMessage pubsubMessage, AckReplyConsumer ackReplyConsumer) {
+
+		ByteString byteString = pubsubMessage.getData();
+
+		JSONObject jsonObject = new JSONObject(byteString.toStringUtf8());
+
+		try {
+			String projectId = jsonObject.getString("projectId");
+
+			_boundedExecutor.runAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
+					_processMessage(jsonObject);
+				},
+				KeyReentrantLock.getReentrantLock(getClass(), projectId));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+
+		ackReplyConsumer.ack();
 	}
 
 	private void _addAssociations(
