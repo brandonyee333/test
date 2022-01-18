@@ -26,7 +26,7 @@ public interface StreamingIngestionPipelineOptions
 	extends DataflowPipelineOptions {
 
 	@Validation.Required
-	public String getEventPropertiesTableName();
+	public String getEventPropertyTableName();
 
 	@Validation.Required
 	public String getEventTableName();
@@ -67,7 +67,7 @@ public interface StreamingIngestionPipelineOptions
 	)
 	public long getWriteInterval();
 
-	public void setEventPropertiesTableName(String eventPropertiesTableName);
+	public void setEventPropertyTableName(String eventPropertyTableName);
 
 	public void setEventTableName(String eventTableName);
 

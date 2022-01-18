@@ -115,9 +115,8 @@ public class StreamingIngestionPipeline {
 				streamingIngestionPipelineOptions.getEventTableName()));
 		sessionizedAnalyticsEventsPCollection.apply(
 			"Write Event Properties",
-			new EventPropertiesBigQueryWriter(
-				streamingIngestionPipelineOptions.
-					getEventPropertiesTableName()));
+			new EventPropertyBigQueryWriter(
+				streamingIngestionPipelineOptions.getEventPropertyTableName()));
 		sessionizedAnalyticsEventsPCollection.apply(
 			"Write Sessions",
 			new SessionBigQueryWriter(
@@ -238,12 +237,12 @@ public class StreamingIngestionPipeline {
 
 	}
 
-	public static class EventPropertiesBigQueryWriter
+	public static class EventPropertyBigQueryWriter
 		extends PTransform
 			<PCollection<KV<String, Iterable<AnalyticsEvent>>>, WriteResult> {
 
-		public EventPropertiesBigQueryWriter(String eventPropertiesTableName) {
-			_eventPropertiesTableName = eventPropertiesTableName;
+		public EventPropertyBigQueryWriter(String eventPropertyTableName) {
+			_eventPropertyTableName = eventPropertyTableName;
 		}
 
 		@Override
@@ -270,10 +269,10 @@ public class StreamingIngestionPipeline {
 
 					})
 			).apply(
-				"Write Event Properties Rows to Big Query",
+				"Write Event Property Rows to Big Query",
 				BigQueryIO.writeTableRows(
 				).to(
-					_eventPropertiesTableName
+					_eventPropertyTableName
 				).withCreateDisposition(
 					BigQueryIO.Write.CreateDisposition.CREATE_NEVER
 				).withMethod(
@@ -284,7 +283,7 @@ public class StreamingIngestionPipeline {
 			);
 		}
 
-		private final String _eventPropertiesTableName;
+		private final String _eventPropertyTableName;
 
 	}
 
