@@ -16,17 +16,17 @@
 	},
 	{
 		"mode": "NULLABLE",
+		"name": "name",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
 		"name": "projectId",
 		"type": "STRING"
 	},
 	{
 		"mode": "NULLABLE",
-		"name": "propertyName",
-		"type": "STRING"
-	},
-	{
-		"mode": "NULLABLE",
-		"name": "propertyValue",
+		"name": "value",
 		"type": "STRING"
 	}
 ]

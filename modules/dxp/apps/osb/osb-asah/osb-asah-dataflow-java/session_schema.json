@@ -1,8 +1,13 @@
 [
 	{
 		"mode": "NULLABLE",
-		"name": "sessionStart",
-		"type": "TIMESTAMP"
+		"name": "channelId",
+		"type": "NUMERIC"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "id",
+		"type": "STRING"
 	},
 	{
 		"mode": "NULLABLE",
@@ -11,17 +16,12 @@
 	},
 	{
 		"mode": "NULLABLE",
-		"name": "channelId",
-		"type": "STRING"
-	},
-	{
-		"mode": "NULLABLE",
-		"name": "sessionId",
-		"type": "STRING"
-	},
-	{
-		"mode": "NULLABLE",
 		"name": "sessionEnd",
+		"type": "TIMESTAMP"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "sessionStart",
 		"type": "TIMESTAMP"
 	}
 ]
