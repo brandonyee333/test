@@ -75,8 +75,8 @@ public class MessageSubscriberAutowiredAnnotationBeanPostProcessor
 
 			if (!fieldTypeClass.equals(MessageSubscriber.class)) {
 				throw new IllegalArgumentException(
-					"Unable to autowire MessageSubscriber due inconsistent " +
-						"bean type");
+					"Unable to autowire MessageSubscriber due to " +
+						"inconsistent bean type");
 			}
 
 			MessageSubscriber.Autowired messageSubscriberAutowired =
