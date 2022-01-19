@@ -11,12 +11,4 @@
 		<Bug pattern="UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS" />
 		<Class name="com.liferay.osb.asah.dataflow.ingestion.StreamingIngestionPipeline$SessionBigQueryWriter$1" />
 	</Match>
-	<Match>
-		<Bug pattern="WEAK_MESSAGE_DIGEST_MD5" />
-		<Class name="com.liferay.osb.asah.dataflow.ingestion.StreamingIngestionPipeline" />
-	</Match>
-	<Match>
-		<Bug pattern="WEAK_MESSAGE_DIGEST_MD5" />
-		<Class name="com.liferay.osb.asah.dataflow.ingestion.StreamingIngestionPipeline$EventBigQueryWriter$1" />
-	</Match>
 </FindBugsFilter>
