@@ -631,6 +631,30 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>com.liferay.frontend.js.minifier.jar!closure-compiler.jar</file-name>
+				<version>v20180204</version>
+				<project-name>Closure Compiler</project-name>
+				<project-url>https://developers.google.com/closure/compiler/</project-url>
+				<licenses>
+					<license>
+						<license-name>The Apache Software License, Version 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0.html</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.frontend.js.minifier.jar!yuicompressor.jar</file-name>
+				<version>2.4.7</version>
+				<project-name>yui compressor</project-name>
+				<project-url>http://developer.yahoo.com/yui/compressor/</project-url>
+				<licenses>
+					<license>
+						<license-name>BSD License</license-name>
+						<license-url>http://developer.yahoo.com/yui/license.html</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>com.liferay.imageio.plugins.jar!common-image.jar</file-name>
 				<version>3.3.2</version>
 				<project-name>TwelveMonkeys :: Common :: Image</project-name>
@@ -1111,18 +1135,6 @@
 					<license>
 						<license-name>GNU Lesser General Public Licence</license-name>
 						<license-url>http://www.gnu.org/licenses/lgpl.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.portal.cluster.multiple.jar!org.jgroups.jar</file-name>
-				<version>3.6.16.LIFERAY-PATCHED-1</version>
-				<project-name>JGroups</project-name>
-				<project-url>http://www.jboss.org</project-url>
-				<licenses>
-					<license>
-						<license-name>LGPL 2.1</license-name>
-						<license-url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -5169,7 +5181,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/commons-lang3.jar</file-name>
-				<version>3.9</version>
+				<version>3.12.0</version>
 				<project-name>Commons Lang</project-name>
 				<project-url>http://commons.apache.org/proper/commons-lang/</project-url>
 				<licenses>
