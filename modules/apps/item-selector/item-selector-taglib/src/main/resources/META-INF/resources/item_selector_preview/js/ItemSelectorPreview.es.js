@@ -41,7 +41,7 @@ const ItemSelectorPreview = ({
 	uploadItemURL,
 }) => {
 	const [currentItemIndex, setCurrentItemIndex] = useState(currentIndex);
-	const [isImage, setIsImage] = useState(false);
+	const [isImage, setIsImage] = useState(itemIsImage(items[currentIndex]));
 	const [itemList, setItemList] = useState(items);
 	const [reloadOnHide, setReloadOnHide] = useState(false);
 
