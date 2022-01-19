@@ -1539,9 +1539,9 @@ definition {
 
 		PortletEntry.inputTitle(title = "WC WebContent Title");
 
-		AlloyEditor.typeEditor(
+		CKEditor.addContentInWebContent(
 			content = "WC WebContent Content",
-			editor = "HTML");
+			fieldLabel = "HTML");
 
 		PortletEntry.publish();
 
