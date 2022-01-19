@@ -2351,9 +2351,9 @@ definition {
 					optionValue = "${translated} Column ${optionNumber}",
 					rowNumber = "${optionNumber}");
 			}
-		}
 
-		Form.save();
+			Form.save();
+		}
 
 		ProductMenu.gotoPortlet(
 			category = "Content & Data",
