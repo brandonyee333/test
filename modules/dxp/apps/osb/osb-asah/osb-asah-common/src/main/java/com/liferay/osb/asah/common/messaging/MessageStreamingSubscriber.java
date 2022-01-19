@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 public interface MessageStreamingSubscriber {
 
 	public void subscribe(
-		long maxOutstandingMessages, MessageReceiver receiver);
+		long maxOutstandingMessages, MessageReceiver messageReceiver);
 
 	@Documented
 	@Retention(RetentionPolicy.RUNTIME)
