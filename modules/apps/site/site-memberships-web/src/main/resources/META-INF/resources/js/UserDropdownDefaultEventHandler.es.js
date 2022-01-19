@@ -40,21 +40,21 @@ class UserDropdownDefaultEventHandler extends DefaultEventHandler {
 						return;
 					}
 
-					const allItems = document.createElement('input');
+					const allInput = document.createElement('input');
 
-					allItems.name = this.ns('availableRowIds');
-					allItems.value = items.map((item) => item.value);
+					allInput.name = this.ns('availableRowIds');
+					allInput.value = items.map((item) => item.value);
 
-					editUserGroupRoleFm.appendChild(allItems);
+					editUserGroupRoleFm.appendChild(allInput);
 
-					const selectedItems = document.createElement('input');
+					const checkedInput = document.createElement('input');
 
-					selectedItems.name = this.ns('rowIds');
-					selectedItems.value = items
+					checkedInput.name = this.ns('rowIds');
+					checkedInput.value = items
 						.filter((item) => item.checked)
 						.map((item) => item.value);
 
-					editUserGroupRoleFm.appendChild(selectedItems);
+					editUserGroupRoleFm.appendChild(checkedInput);
 
 					submitForm(
 						editUserGroupRoleFm,
