@@ -61,7 +61,7 @@ public class IngestionNanite {
 
 	public void checkWatermark() {
 
-		// Data driven watermark wasn't advancing for the last minute
+		// Data driven watermark was not advancing for the last minute
 
 		if ((System.currentTimeMillis() - _watermarkModifiedTimestamp) <
 				DateUtil.MINUTE) {
