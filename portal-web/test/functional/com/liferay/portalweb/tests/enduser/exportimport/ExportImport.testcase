@@ -1242,7 +1242,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "com.liferay.journal.exception.NoSuchArticleException");
 	}
 
-	@description = "This is a use case for LPS-83326."
+	@description = "This is a use case for LPS-83326 and LPS-99287."
 	@priority = "5"
 	test ExportImportWebcontentFolderWithWorkflow {
 		Navigator.openSiteLanding(siteURLKey = "Guest");
@@ -1260,6 +1260,19 @@ definition {
 
 		LAR.exportPortlet(larFileName = "WebContent_portlet.lar");
 
+		Navigator.openSiteLanding(siteURLKey = "guest");
+
+		WebContentFolder.moveToRecycleBinCP(folderName = "WC Folder Name");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Recycle Bin");
+
+		RecycleBin.emptyCP();
+
 		JSONGroup.addGroup(groupName = "Site Name");
 
 		Navigator.openSiteLanding(siteURLKey = "Site Name");
@@ -1271,6 +1284,8 @@ definition {
 		WebContentFolder.viewFolderWorkflow(
 			folderName = "WC Folder Name",
 			workflowResourceValue = "Single Approver");
+
+		AssertConsoleTextNotPresent(value1 = "com.liferay.exportimport.kernel.lar.PortletDataException");
 	}
 
 	@priority = "4"
