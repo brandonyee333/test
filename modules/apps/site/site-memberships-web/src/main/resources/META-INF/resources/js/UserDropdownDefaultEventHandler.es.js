@@ -13,7 +13,6 @@
  */
 
 import {DefaultEventHandler, openSelectionModal} from 'frontend-js-web';
-import dom from 'metal-dom';
 
 class UserDropdownDefaultEventHandler extends DefaultEventHandler {
 	deleteGroupUsers(itemData) {
@@ -29,16 +28,33 @@ class UserDropdownDefaultEventHandler extends DefaultEventHandler {
 	assignRoles(itemData) {
 		openSelectionModal({
 			buttonAddLabel: Liferay.Language.get('done'),
+			getSelectedItemsOnly: false,
 			multiple: true,
-			onSelect: (selectedItem) => {
-				if (selectedItem) {
+			onSelect: (items) => {
+				if (items.length) {
 					const editUserGroupRoleFm = this.one(
 						'#editUserGroupRoleFm'
 					);
 
-					selectedItem.forEach((item) => {
-						dom.append(editUserGroupRoleFm, item);
-					});
+					if (!editUserGroupRoleFm) {
+						return;
+					}
+
+					const allItems = document.createElement('input');
+
+					allItems.name = this.ns('availableRowIds');
+					allItems.value = items.map((item) => item.value);
+
+					editUserGroupRoleFm.appendChild(allItems);
+
+					const selectedItems = document.createElement('input');
+
+					selectedItems.name = this.ns('rowIds');
+					selectedItems.value = items
+						.filter((item) => item.checked)
+						.map((item) => item.value);
+
+					editUserGroupRoleFm.appendChild(selectedItems);
 
 					submitForm(
 						editUserGroupRoleFm,
@@ -46,7 +62,6 @@ class UserDropdownDefaultEventHandler extends DefaultEventHandler {
 					);
 				}
 			},
-			selectEventName: this.ns('selectUsersRoles'),
 			title: Liferay.Language.get('assign-roles'),
 			url: itemData.assignRolesURL,
 		});
