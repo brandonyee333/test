@@ -330,6 +330,8 @@ definition {
 			DoubleClick.javaScriptDoubleClick(locator1 = "DDMEditStructure#SETTINGS_NAME");
 		}
 		else {
+			ScrollWebElementIntoView.scrollWebElementIntoViewTop(locator1 = "DDMEditStructure#SETTINGS_NAME");
+
 			DoubleClick(locator1 = "DDMEditStructure#SETTINGS_NAME");
 		}
 
@@ -396,6 +398,8 @@ definition {
 		DynamicDataMapping.selectDynamicDataMappingFrame();
 
 		DynamicDataMapping.editFieldSettings(fieldFieldLabel = "${fieldFieldLabel}");
+
+		ScrollWebElementIntoView.scrollWebElementIntoViewTop(locator1 = "DDMEditStructure#SETTINGS_OPTIONS");
 
 		DoubleClick(locator1 = "DDMEditStructure#SETTINGS_OPTIONS");
 
@@ -608,7 +612,7 @@ definition {
 			DoubleClick.javaScriptDoubleClick(locator1 = "DDMEditStructure#FORM_FIELD");
 		}
 		else {
-			DoubleClick(locator1 = "DDMEditStructure#FORM_FIELD");
+			Click.clickNoMouseOver(locator1 = "DDMEditStructure#FORM_FIELD");
 		}
 
 		AssertClick(
