@@ -276,6 +276,9 @@ public class LocalStorage implements Storage {
 		_open();
 	}
 
+	private static final int _FILE_MAX_ALLOWED_SIZE = NumberUtils.toInt(
+		System.getenv("FILE_MAX_ALLOWED_SIZE"), 2 * 1024 * 1024);
+
 	private static final Log _log = LogFactory.getLog(LocalStorage.class);
 
 	private FileEncoder _fileEncoder;
