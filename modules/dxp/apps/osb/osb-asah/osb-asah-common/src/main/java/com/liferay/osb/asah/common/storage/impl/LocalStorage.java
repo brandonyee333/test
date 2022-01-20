@@ -18,18 +18,18 @@ import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import java.nio.charset.StandardCharsets;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.owasp.esapi.ESAPI;
+import org.owasp.esapi.Validator;
 
 /**
  * @author Marcellus Tavares
@@ -122,12 +122,14 @@ public class LocalStorage implements Storage {
 	public boolean write(InputStream inputStream) {
 		boolean status = true;
 
-		try (BufferedReader bufferedReader = new BufferedReader(
-				new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+		try {
+			Validator validator = ESAPI.validator();
 
 			String line = null;
 
-			while ((line = bufferedReader.readLine()) != null) {
+			while ((line = validator.safeReadLine(
+						inputStream, _FILE_MAX_ALLOWED_SIZE)) != null) {
+
 				if (!write(line)) {
 					status = false;
 				}
@@ -137,8 +139,8 @@ public class LocalStorage implements Storage {
 
 			_archiveSuccessFile();
 		}
-		catch (IOException ioException) {
-			_log.error(ioException, ioException);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
 			status = false;
 		}
