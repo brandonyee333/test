@@ -358,9 +358,15 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setSegmentNames(segmentNames);
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
-			if (!_isDuplicate(analyticsEvent)) {
-				analyticsEvents.add(analyticsEvent);
+			if (_isDuplicate(analyticsEvent)) {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Discarding duplicate event: " + id);
+				}
+
+				continue;
 			}
+
+			analyticsEvents.add(analyticsEvent);
 		}
 
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
