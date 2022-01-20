@@ -235,16 +235,16 @@ public class AnalyticsEventsRestController {
 	private static final Cache<String, Boolean> _analyticsEventIds =
 		Caffeine.newBuilder(
 		).expireAfterAccess(
-			1, TimeUnit.DAYS
+			7, TimeUnit.DAYS
 		).maximumSize(
-			2400000
+			5000000
 		).build();
 	private static final Cache<String, Boolean> _analyticsEventMessageIds =
 		Caffeine.newBuilder(
 		).expireAfterAccess(
-			1, TimeUnit.DAYS
+			3, TimeUnit.DAYS
 		).maximumSize(
-			2400000
+			5000000
 		).build();
 	private static final Histogram _eventRequestsHistogram =
 		PrometheusUtil.histogram(

@@ -227,7 +227,7 @@ public class AnalyticsEventsMessageProcessor {
 		long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
 			analyticsEvent.getEventDate(), date);
 
-		if (deltaMilliseconds <= DateUtil.DAY) {
+		if (deltaMilliseconds <= (DateUtil.DAY * 7)) {
 			return false;
 		}
 
