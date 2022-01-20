@@ -31,6 +31,7 @@ import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplicati
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -301,7 +302,7 @@ public class AnalyticsEventsMessageProcessorTest
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
-	public void testProcessQueuedMessagesDiscardDuplicatedEvents()
+	public void testProcessQueuedMessagesDiscardDuplicatedEvents1()
 		throws Exception {
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
@@ -312,6 +313,7 @@ public class AnalyticsEventsMessageProcessorTest
 
 		_pageMessageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
+
 		Assertions.assertEquals(1, messages.size(), messages.toString());
 
 		Mockito.verify(
@@ -321,6 +323,39 @@ public class AnalyticsEventsMessageProcessorTest
 		);
 	}
 
+	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "analytics_events_message_duplicated_events.json"
+	)
+	@SQLResource(resourcePath = "test_events.sql")
+	@Test
+	public void testProcessQueuedMessagesDiscardDuplicatedEvents2()
+		throws Exception {
+
+		_analyticsEventsMessageProcessor.processQueuedMessages();
+
+		List<Message<AnalyticsEvent>> messages =
+			_pageMessageSubscriber.pullMessages(
+				50, AnalyticsEvent::toAnalyticsEvent);
+
+		_pageMessageSubscriber.sendAckIds(
+			ListUtil.map(messages, Message::getAckId));
+
+		Assertions.assertEquals(0, messages.size());
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_canonical_url_1.json"
