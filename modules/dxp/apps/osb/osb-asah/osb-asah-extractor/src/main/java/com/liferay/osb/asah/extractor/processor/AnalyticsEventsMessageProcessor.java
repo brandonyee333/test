@@ -231,7 +231,7 @@ public class AnalyticsEventsMessageProcessor {
 			return false;
 		}
 
-		if (_eventDog.fetchEvent(analyticsEvent.getId()) != null) {
+		if (_eventDog.existsEvent(analyticsEvent.getId())) {
 			return true;
 		}
 

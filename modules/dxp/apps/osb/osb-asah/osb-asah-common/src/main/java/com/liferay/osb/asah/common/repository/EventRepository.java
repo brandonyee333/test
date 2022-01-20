@@ -66,7 +66,7 @@ public interface EventRepository
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId);
 
-	public Optional<Event> findByAnalyticsEventId(String analyticsEventId);
+	public boolean existsByAnalyticsEventId(String analyticsEventId);
 
 	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId);
 

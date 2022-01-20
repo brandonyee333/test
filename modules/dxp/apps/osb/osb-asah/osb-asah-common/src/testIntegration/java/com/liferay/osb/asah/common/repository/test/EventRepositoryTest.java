@@ -181,7 +181,7 @@ public class EventRepositoryTest
 	}
 
 	@Test
-	public void testFindByAnalyticsEventId() {
+	public void testExistsByAnalyticsEventId() {
 		Event event = new Event();
 
 		event.setAnalyticsEventId("1");
@@ -190,10 +190,7 @@ public class EventRepositoryTest
 
 		_eventRepository.save(event);
 
-		Optional<Event> eventOptional = _eventRepository.findByAnalyticsEventId(
-			"1");
-
-		Assertions.assertTrue(eventOptional.isPresent());
+		Assertions.assertTrue(_eventRepository.existsByAnalyticsEventId("1"));
 	}
 
 	@SQLResource(
