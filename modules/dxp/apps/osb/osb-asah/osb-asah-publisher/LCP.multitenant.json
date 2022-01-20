@@ -11,7 +11,7 @@
 		"cdn": false,
 		"targetPort": 8080
 	},
-	"memory": 4096,
+	"memory": 8192,
 	"ports": [
 		{
 			"external": false,
