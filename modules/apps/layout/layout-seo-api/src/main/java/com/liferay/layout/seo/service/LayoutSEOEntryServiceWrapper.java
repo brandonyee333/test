@@ -14,6 +14,7 @@
 
 package com.liferay.layout.seo.service;
 
+import com.liferay.layout.seo.model.LayoutSEOEntry;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -33,7 +34,7 @@ public class LayoutSEOEntryServiceWrapper
 	}
 
 	@Override
-	public com.liferay.layout.seo.model.LayoutSEOEntry copyLayoutSEOEntry(
+	public LayoutSEOEntry copyLayoutSEOEntry(
 			long userId, long groupId, boolean privateLayout, long layoutId,
 			boolean canonicalURLEnabled,
 			java.util.Map<java.util.Locale, String> canonicalURLMap,
@@ -64,7 +65,7 @@ public class LayoutSEOEntryServiceWrapper
 	}
 
 	@Override
-	public com.liferay.layout.seo.model.LayoutSEOEntry updateCustomMetaTags(
+	public LayoutSEOEntry updateCustomMetaTags(
 			long groupId, boolean privateLayout, long layoutId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -74,7 +75,7 @@ public class LayoutSEOEntryServiceWrapper
 	}
 
 	@Override
-	public com.liferay.layout.seo.model.LayoutSEOEntry updateLayoutSEOEntry(
+	public LayoutSEOEntry updateLayoutSEOEntry(
 			long groupId, boolean privateLayout, long layoutId,
 			boolean canonicalURLEnabled,
 			java.util.Map<java.util.Locale, String> canonicalURLMap,
@@ -95,7 +96,7 @@ public class LayoutSEOEntryServiceWrapper
 	}
 
 	@Override
-	public com.liferay.layout.seo.model.LayoutSEOEntry updateLayoutSEOEntry(
+	public LayoutSEOEntry updateLayoutSEOEntry(
 			long groupId, boolean privateLayout, long layoutId,
 			boolean enabledCanonicalURLMap,
 			java.util.Map<java.util.Locale, String> canonicalURLMap,
