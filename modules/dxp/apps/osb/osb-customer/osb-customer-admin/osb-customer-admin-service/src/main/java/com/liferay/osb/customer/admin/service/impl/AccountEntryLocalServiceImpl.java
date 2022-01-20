@@ -218,25 +218,12 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setModifiedDate(now);
 		accountEntry.setSupportEndDate(supportEndDate);
 
-		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(supportEndDate != null) && supportEndDate.after(now)) {
-
-			accountEntry.setActiveSupport(true);
-		}
-		else {
-			accountEntry.setActiveSupport(false);
-		}
+		accountEntry.setActiveSupport(hasActiveSupport(supportEndDate, status));
 
 		accountEntry.setTicketSupportEndDate(ticketSupportEndDate);
 
-		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(ticketSupportEndDate != null) && ticketSupportEndDate.after(now)) {
-
-			accountEntry.setActiveTicketSupport(true);
-		}
-		else {
-			accountEntry.setActiveTicketSupport(false);
-		}
+		accountEntry.setActiveTicketSupport(
+			hasActiveTicketSupport(ticketSupportEndDate, status));
 
 		accountEntry.setStatus(status);
 
@@ -253,7 +240,8 @@ public class AccountEntryLocalServiceImpl
 			long userId, long accountEntryId, String koroneikiAccountKey,
 			String dossieraAccountKey, String corpProjectUuid,
 			long corpProjectId, String name, String code, String instructions,
-			int status, String[] languageIds)
+			Date supportEndDate, Date ticketSupportEndDate, int status,
+			String[] languageIds)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -275,6 +263,15 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
 		accountEntry.setInstructions(instructions);
+		accountEntry.setSupportEndDate(supportEndDate);
+
+		accountEntry.setActiveSupport(hasActiveSupport(supportEndDate, status));
+
+		accountEntry.setTicketSupportEndDate(ticketSupportEndDate);
+
+		accountEntry.setActiveTicketSupport(
+			hasActiveTicketSupport(ticketSupportEndDate, status));
+
 		accountEntry.setStatus(status);
 
 		if (!ArrayUtil.isEmpty(languageIds)) {
@@ -282,11 +279,13 @@ public class AccountEntryLocalServiceImpl
 				accountEntryId, languageIds);
 		}
 
+		accountEntry = accountEntryPersistence.update(accountEntry);
+
 		updateAuditEntry(
 			user.getUserId(), user.getFullName(), oldAccountEntry,
 			accountEntry);
 
-		return accountEntryPersistence.update(accountEntry);
+		return accountEntry;
 	}
 
 	public AccountEntry updateInstructions(
@@ -375,19 +374,12 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setInstructions(instructions);
 		accountEntry.setSupportEndDate(supportEndDate);
 
-		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(supportEndDate != null) && supportEndDate.after(now)) {
-
-			accountEntry.setActiveSupport(true);
-		}
+		accountEntry.setActiveSupport(hasActiveSupport(supportEndDate, status));
 
 		accountEntry.setTicketSupportEndDate(ticketSupportEndDate);
 
-		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(ticketSupportEndDate != null) && ticketSupportEndDate.after(now)) {
-
-			accountEntry.setActiveTicketSupport(true);
-		}
+		accountEntry.setActiveTicketSupport(
+			hasActiveTicketSupport(ticketSupportEndDate, status));
 
 		accountEntry.setStatus(status);
 
@@ -411,6 +403,32 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		return StringUtil.merge(formattedLanguageIds);
+	}
+
+	protected boolean hasActiveSupport(Date supportEndDate, int status) {
+		Date now = new Date();
+
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			(supportEndDate != null) && supportEndDate.after(now)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	protected boolean hasActiveTicketSupport(
+		Date ticketSupportEndDate, int status) {
+
+		Date now = new Date();
+
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			(ticketSupportEndDate != null) && ticketSupportEndDate.after(now)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	protected void updateAuditEntry(

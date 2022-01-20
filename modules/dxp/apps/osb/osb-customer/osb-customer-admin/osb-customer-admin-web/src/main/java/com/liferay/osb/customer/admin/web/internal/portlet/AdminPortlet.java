@@ -339,8 +339,8 @@ public class AdminPortlet extends MVCPortlet {
 				themeDisplay.getUserId(), accountEntryId, koroneikiAccountKey,
 				dossieraAccountKey, accountEntry.getCorpProjectUuid(),
 				accountEntry.getCorpProjectId(), accountEntry.getName(),
-				accountEntry.getCode(), instructions, accountEntry.getStatus(),
-				languageIds);
+				accountEntry.getCode(), instructions, null, null,
+				accountEntry.getStatus(), languageIds);
 		}
 
 		updateAccountAttachment(actionRequest);

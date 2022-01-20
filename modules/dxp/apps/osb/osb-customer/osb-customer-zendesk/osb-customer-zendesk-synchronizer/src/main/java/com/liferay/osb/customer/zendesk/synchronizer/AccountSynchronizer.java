@@ -99,12 +99,21 @@ public class AccountSynchronizer {
 			}
 
 			for (ContactRole contactRole : contact.getContactRoles()) {
+				String contactRoleName = contactRole.getName();
+
+				if (!accountEntry.isActiveTicketSupport() &&
+					!contactRoleName.equals(
+						ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
+
+					continue;
+				}
+
 				if (ArrayUtil.contains(
 						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
-						contactRole.getName()) ||
+						contactRoleName) ||
 					ArrayUtil.contains(
 						ContactRoleConstants.PARTNER_CONTACT_ROLES,
-						contactRole.getName())) {
+						contactRoleName)) {
 
 					_customerSynchronizer.add(user, account, accountEntry);
 

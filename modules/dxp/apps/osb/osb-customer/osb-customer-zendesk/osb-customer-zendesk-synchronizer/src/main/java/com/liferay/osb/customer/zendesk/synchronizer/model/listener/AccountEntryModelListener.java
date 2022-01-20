@@ -113,8 +113,10 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				}
 			}
 
-			if (isActiveSupport(oldAccountEntry) &&
-				!isActiveSupport(accountEntry)) {
+			if ((isActiveSupport(oldAccountEntry) &&
+				 !isActiveSupport(accountEntry)) ||
+				(oldAccountEntry.isActiveTicketSupport() &&
+				 !accountEntry.isActiveTicketSupport())) {
 
 				_accountSynchronizer.removeCustomers(account, accountEntry);
 			}

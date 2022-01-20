@@ -19,8 +19,11 @@ import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.portal.kernel.json.JSONObject;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -49,6 +52,9 @@ public class AccountUpdateMessageSubscriber
 			return;
 		}
 
+		List<ProductPurchase> productPurchases =
+			accountReader.getProductPurchases(account.getKey());
+
 		accountEntryLocalService.updateAccountEntry(
 			OSBCustomerConstants.USER_DEFAULT_USER_ID,
 			accountEntry.getAccountEntryId(), account.getKey(),
@@ -56,8 +62,10 @@ public class AccountUpdateMessageSubscriber
 			accountReader.getCorpProjectUuid(account.getExternalLinks()),
 			accountReader.getCorpProjectId(account.getExternalLinks()),
 			account.getName(), account.getCode(),
-			accountEntry.getInstructions(), accountReader.getStatus(account),
-			accountEntry.getLanguageIds());
+			accountEntry.getInstructions(),
+			accountReader.getSupportEndDate(productPurchases),
+			accountReader.getTicketSupportEndDate(productPurchases),
+			accountReader.getStatus(account), accountEntry.getLanguageIds());
 	}
 
 }
