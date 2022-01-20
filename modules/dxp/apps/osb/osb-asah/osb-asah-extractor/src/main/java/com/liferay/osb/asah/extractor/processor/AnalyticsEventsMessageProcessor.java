@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -46,6 +47,7 @@ import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -219,6 +221,23 @@ public class AnalyticsEventsMessageProcessor {
 		return false;
 	}
 
+	private boolean _isDuplicate(AnalyticsEvent analyticsEvent) {
+		Date date = DateUtil.newDate();
+
+		long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
+			analyticsEvent.getEventDate(), date);
+
+		if (deltaMilliseconds <= DateUtil.DAY) {
+			return false;
+		}
+
+		if (_eventDog.fetchEvent(analyticsEvent.getId()) != null) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean _isKnownIndividual(Individual individual) {
 		if (_fieldRepository.existsByNameAndOwnerId(
 				"email", individual.getId())) {
@@ -339,7 +358,9 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setSegmentNames(segmentNames);
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
-			analyticsEvents.add(analyticsEvent);
+			if (!_isDuplicate(analyticsEvent)) {
+				analyticsEvents.add(analyticsEvent);
+			}
 		}
 
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
@@ -478,6 +499,9 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private EventDog _eventDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

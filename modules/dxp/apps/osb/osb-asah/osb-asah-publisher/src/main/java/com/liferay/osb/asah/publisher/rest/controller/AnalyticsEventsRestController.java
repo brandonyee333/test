@@ -17,8 +17,6 @@ package com.liferay.osb.asah.publisher.rest.controller;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
@@ -31,7 +29,6 @@ import io.prometheus.client.SimpleTimer;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -155,8 +152,6 @@ public class AnalyticsEventsRestController {
 				}
 			}
 
-			Date date = DateUtil.newDate();
-
 			events.removeIf(
 				event -> {
 					String analyticsEventId =
@@ -167,14 +162,9 @@ public class AnalyticsEventsRestController {
 
 					event.setId(analyticsEventId);
 
-					long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
-						event.getEventDate(), date);
-
 					if (BooleanUtils.isTrue(
 							_analyticsEventIds.getIfPresent(
-								analyticsEventId)) ||
-						((deltaMilliseconds > DateUtil.DAY) &&
-						 (_eventDog.fetchEvent(analyticsEventId) != null))) {
+								analyticsEventId))) {
 
 						if (_log.isDebugEnabled()) {
 							_log.debug(
@@ -262,9 +252,6 @@ public class AnalyticsEventsRestController {
 			"The number of seconds taken to process the event requests");
 	private static final Pattern _pattern = Pattern.compile(
 		"^events\\[(\\d+)].*");
-
-	@Autowired
-	private EventDog _eventDog;
 
 	@Autowired
 	private MessageBus _messageBus;
