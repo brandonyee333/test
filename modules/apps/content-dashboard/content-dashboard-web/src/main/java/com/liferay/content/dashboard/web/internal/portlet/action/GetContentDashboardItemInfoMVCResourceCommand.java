@@ -23,7 +23,6 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFacto
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemType;
 import com.liferay.info.item.InfoItemReference;
-import com.liferay.info.type.WebImage;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -36,8 +35,8 @@ import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -92,6 +92,9 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 		HttpServletRequest httpServletRequest = _portal.getHttpServletRequest(
 			resourceRequest);
 		Locale locale = _portal.getLocale(resourceRequest);
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
 
 		try {
 			String className = ParamUtil.getString(
@@ -141,7 +144,8 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 				).put(
 					"title", contentDashboardItem.getTitle(locale)
 				).put(
-					"user", _getUserJSONObject(contentDashboardItem, locale)
+					"user",
+					_getUserJSONObject(contentDashboardItem, themeDisplay)
 				).put(
 					"versions",
 					_getVersionsJSONArray(contentDashboardItem, locale)
@@ -248,25 +252,27 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 	}
 
 	private JSONObject _getUserJSONObject(
-		ContentDashboardItem contentDashboardItem, Locale locale) {
+		ContentDashboardItem contentDashboardItem, ThemeDisplay themeDisplay) {
 
 		return JSONUtil.put(
 			"name", contentDashboardItem.getUserName()
 		).put(
 			"url",
 			Optional.ofNullable(
-				(WebImage)contentDashboardItem.getDisplayFieldValue(
-					"authorProfileImage", locale)
+				_userLocalService.fetchUser(contentDashboardItem.getUserId())
 			).filter(
-				webImage -> {
-					long portraitURL = GetterUtil.getLong(
-						_http.getParameter(
-							HtmlUtil.escape(webImage.getUrl()), "img_id"));
-
-					return portraitURL > 0;
-				}
+				user -> user.getPortraitId() > 0
 			).map(
-				WebImage::getUrl
+				user -> {
+					try {
+						return user.getPortraitURL(themeDisplay);
+					}
+					catch (PortalException portalException) {
+						_log.error(portalException, portalException);
+
+						return null;
+					}
+				}
 			).orElse(
 				null
 			)
