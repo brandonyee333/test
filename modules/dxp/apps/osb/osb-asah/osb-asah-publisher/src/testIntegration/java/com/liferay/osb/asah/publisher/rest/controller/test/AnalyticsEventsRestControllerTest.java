@@ -56,9 +56,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-
 /**
  * @author Inácio Nery
  */
@@ -68,10 +65,6 @@ public class AnalyticsEventsRestControllerTest
 	@BeforeEach
 	public void setUp() {
 		JacksonTester.initFields(this, new ObjectMapper());
-
-		try (Jedis jedis = _jedisPool.getResource()) {
-			jedis.flushAll();
-		}
 	}
 
 	@Test
@@ -400,9 +393,6 @@ public class AnalyticsEventsRestControllerTest
 		return _testRestTemplate.exchange(
 			"/", HttpMethod.POST, requestEntity, String.class);
 	}
-
-	@Autowired
-	private JedisPool _jedisPool;
 
 	@MockBean
 	private MessageBus _messageBus;
