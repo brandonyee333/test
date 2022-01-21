@@ -90,10 +90,6 @@ public class Http {
 	public ResponseEntity<String> exchangeResponseEntity(
 		String url, String path, HttpMethod httpMethod, Object body) {
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Exchange " + httpMethod + " " + body);
-		}
-
 		RestTemplate restTemplate = new RestTemplate();
 
 		_configureRestTemplate(restTemplate);
@@ -105,10 +101,6 @@ public class Http {
 	public ResponseEntity<String> exchangeResponseEntity(
 		String url, String path, HttpMethod httpMethod, Object body,
 		BasicAuthorizationInterceptor basicAuthorizationInterceptor) {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Get " + url);
-		}
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -126,10 +118,6 @@ public class Http {
 	public ResponseEntity<String> exchangeResponseEntity(
 		String url, String path, HttpMethod httpMethod, Object body,
 		HttpHeaders httpHeaders) {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Get " + url);
-		}
 
 		RestTemplate restTemplate = new RestTemplate();
 
