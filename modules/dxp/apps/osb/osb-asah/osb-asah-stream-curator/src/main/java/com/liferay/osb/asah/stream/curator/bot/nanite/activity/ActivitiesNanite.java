@@ -635,10 +635,10 @@ public class ActivitiesNanite implements Nanite {
 				this::_runAsync
 			);
 
-			if (_log.isDebugEnabled()) {
+			if (_log.isInfoEnabled()) {
 				Class<?> clazz = getClass();
 
-				_log.debug(
+				_log.info(
 					String.format(
 						"%s dispatched %d analytics events in %d ms",
 						clazz.getSimpleName(), messages.size(),
