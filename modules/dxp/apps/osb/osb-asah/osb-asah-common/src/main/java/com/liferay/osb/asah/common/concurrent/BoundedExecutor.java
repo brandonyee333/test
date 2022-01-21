@@ -54,6 +54,10 @@ public class BoundedExecutor {
 		}
 	}
 
+	public int countPendingTasks() {
+		return _semaphore.getQueueLength();
+	}
+
 	public void runAsync(Runnable asyncRunnable) {
 		runAsync(asyncRunnable, null);
 	}
