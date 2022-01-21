@@ -31,11 +31,13 @@ import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -55,6 +57,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -72,31 +75,13 @@ public class IndividualInterestScoresNaniteTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		DataSource dataSource = _dataSourceRepository.save(
+		_dataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
-		Individual individual = FaroInfoTestUtil.buildIndividual(
-			1L, dataSource);
+		_individual = _creteIndividual();
 
-		_fieldRepository.saveAll(individual.getFields());
-
-		_individual = _individualDog.addIndividual(individual, false);
-
-		_dataSourceId = dataSource.getId();
-
-		_assetJSONObject1 = _objectMapper.convertValue(
-			_assetRepository.save(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildPageAssetJSONObject(_dataSourceId),
-					Asset.class)),
-			JSONObject.class);
-
-		_assetJSONObject2 = _objectMapper.convertValue(
-			_assetRepository.save(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildPageAssetJSONObject(_dataSourceId),
-					Asset.class)),
-			JSONObject.class);
+		_assetJSONObject1 = _createAssetJSONObject();
+		_assetJSONObject2 = _createAssetJSONObject();
 
 		_addActivities(DateUtil.addDays(DateUtil.newDayDateString(), -1));
 	}
@@ -150,6 +135,50 @@ public class IndividualInterestScoresNaniteTest
 				DateUtil.addDays(dayDateString, -30),
 				visitedPageJSONObject.getString("day"));
 		}
+	}
+
+	@Test
+	public void testInterestAreInsertedAndRemovedOverTime() throws Exception {
+		String dayDateString = DateUtil.addDays(
+			DateUtil.newDayDateString(), -1);
+
+		int interactions = 0;
+
+		boolean decreasing;
+
+		int previousInterestsSize = 0;
+
+		do {
+			_individualInterestScoresNanite.run(dayDateString);
+
+			List<Interest> interests =
+				_interestRepository.findByFilterStringAndScoreGreaterThanEqual(
+					null, null, PageRequest.of(0, 10000));
+
+			dayDateString = DateUtil.addDays(dayDateString, 1);
+
+			decreasing = previousInterestsSize >= interests.size();
+
+			if (!decreasing) {
+				_addActivities(
+					dayDateString, _creteIndividual(),
+					_createAssetJSONObject());
+			}
+
+			previousInterestsSize = interests.size();
+
+			Assertions.assertFalse(
+				++interactions > 150,
+				String.format(
+					"Too many interactions (%d). Were interests being " +
+						"deleted? %b",
+					interactions, decreasing));
+		}
+		while (previousInterestsSize > 0);
+
+		Assertions.assertTrue(
+			interactions > 1,
+			"Too few interactions means no interest was created");
 	}
 
 	@Test
@@ -294,21 +323,26 @@ public class IndividualInterestScoresNaniteTest
 	}
 
 	private void _addActivities(String dateString) {
+		_addActivities(
+			dateString, _individual, _assetJSONObject1, _assetJSONObject2);
+	}
+
+	private void _addActivities(
+		String dateString, Individual individual,
+		JSONObject... assetJSONObjects) {
+
 		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
 			FaroInfoTestUtil.buildActivityGroup(
-				_dataSourceId, DateUtil.toUTCDate(dateString), _individual));
+				_dataSource.getId(), DateUtil.toUTCDate(dateString),
+				individual));
 
-		faroInfoElasticsearchInvoker.add(
-			"activities",
-			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(activityGroup, JSONObject.class),
-				_assetJSONObject1, "pageViewed", new String[0]));
-
-		faroInfoElasticsearchInvoker.add(
-			"activities",
-			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(activityGroup, JSONObject.class),
-				_assetJSONObject2, "pageViewed", new String[0]));
+		for (JSONObject jsonObject : assetJSONObjects) {
+			faroInfoElasticsearchInvoker.add(
+				"activities",
+				FaroInfoTestUtil.buildActivityJSONObject(
+					_objectMapper.convertValue(activityGroup, JSONObject.class),
+					jsonObject, "pageViewed", new String[0]));
+		}
 	}
 
 	private void _assertInterestScoreDirection(
@@ -360,6 +394,25 @@ public class IndividualInterestScoresNaniteTest
 		}
 	}
 
+	private JSONObject _createAssetJSONObject() {
+		return _objectMapper.convertValue(
+			_assetRepository.save(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildPageAssetJSONObject(
+						_dataSource.getId()),
+					Asset.class)),
+			JSONObject.class);
+	}
+
+	private Individual _creteIndividual() {
+		Individual individual = FaroInfoTestUtil.buildIndividual(
+			1L, _dataSource);
+
+		_fieldRepository.saveAll(individual.getFields());
+
+		return _individualDog.addIndividual(individual, false);
+	}
+
 	private JSONObject _getContextJSONObject(
 		JSONObject individualSegmentJSONObject) {
 
@@ -403,8 +456,8 @@ public class IndividualInterestScoresNaniteTest
 		return keywords;
 	}
 
-	private static final double
-		_MAX_DAYS_BEFORE_INTEREST_SCORE_BELOW_THRESHOLD = 60;
+	private static final int _MAX_DAYS_BEFORE_INTEREST_SCORE_BELOW_THRESHOLD =
+		60;
 
 	@Autowired
 	private ActivityGroupDog _activityGroupDog;
@@ -418,7 +471,7 @@ public class IndividualInterestScoresNaniteTest
 	@Autowired
 	private AssetRepository _assetRepository;
 
-	private Long _dataSourceId;
+	private DataSource _dataSource;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
@@ -433,6 +486,9 @@ public class IndividualInterestScoresNaniteTest
 
 	@Autowired
 	private IndividualInterestScoresNanite _individualInterestScoresNanite;
+
+	@Autowired
+	private InterestRepository _interestRepository;
 
 	@Autowired
 	private MembershipDog _membershipDog;
