@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot;
 
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
@@ -23,6 +24,7 @@ import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Project;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -30,6 +32,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
+
+import javax.annotation.PreDestroy;
 
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
@@ -151,10 +155,28 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runImmediateAsahTask() {
-		List<AsahTask> asahTasks = _asahTaskDog.getImmediateAsahTasks();
+		for (Project project : _projectDog.getProjects()) {
+			_boundedExecutor.runAsync(
+				() -> {
+					try {
+						ProjectIdThreadLocal.setProjectId(project.getId());
 
-		for (AsahTask asahTask : asahTasks) {
-			_asahTaskManager.executeAsahTask(asahTask, true);
+						List<AsahTask> asahTasks =
+							_asahTaskDog.getImmediateAsahTasks();
+
+						for (AsahTask asahTask : asahTasks) {
+							_asahTaskManager.executeAsahTask(asahTask, true);
+						}
+					}
+					catch (Exception exception) {
+						_log.error(
+							"Unable to run immediate Asah Task", exception);
+					}
+					finally {
+						ProjectIdThreadLocal.remove();
+					}
+				},
+				KeyReentrantLock.getReentrantLock(getClass(), project.getId()));
 		}
 	}
 
@@ -171,6 +193,11 @@ public class OSBAsahBatchCuratorBot {
 
 	private String _buildCronExpression(int second, int minute) {
 		return String.format("%d %d 0 * * ?", second, minute);
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_boundedExecutor.shutdown();
 	}
 
 	private Runnable _getDataRetentionRunnable() {
@@ -306,6 +333,9 @@ public class OSBAsahBatchCuratorBot {
 
 	@Autowired
 	private AsahTaskScheduler _asahTaskScheduler;
+
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(50, 40);
 
 	@Autowired(required = false)
 	@Qualifier("contentRecommendationDataSolutionNaniteRunnable")
