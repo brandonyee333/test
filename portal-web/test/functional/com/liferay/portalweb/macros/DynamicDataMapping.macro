@@ -11,6 +11,8 @@ definition {
 			DoubleClick.javaScriptDoubleClick(locator1 = "DDMEditStructure#SETTINGS_FIELD_LABEL");
 		}
 		else {
+			ScrollWebElementIntoView.scrollWebElementIntoViewTop(locator1 = "DDMEditStructure#SETTINGS_FIELD_LABEL");
+
 			DoubleClick(locator1 = "DDMEditStructure#SETTINGS_FIELD_LABEL");
 		}
 
