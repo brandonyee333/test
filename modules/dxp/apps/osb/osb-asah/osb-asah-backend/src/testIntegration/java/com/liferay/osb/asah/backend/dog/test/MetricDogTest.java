@@ -456,6 +456,11 @@ public class MetricDogTest
 		Assertions.assertEquals(
 			2, _metricDog.getAssetMetricsCount(searchQueryContext));
 
+		searchQueryContext.setKeywords("Beryl Processing Newsletter");
+
+		Assertions.assertEquals(
+			1, _metricDog.getAssetMetricsCount(searchQueryContext));
+
 		searchQueryContext.setKeywords("Irrigation");
 
 		Assertions.assertEquals(
