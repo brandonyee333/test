@@ -88,6 +88,14 @@ public class AsahTaskManager {
 				}
 			}
 
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					String.format(
+						"Pending UpdateDynamicMembershipsNanite tasks: %d",
+						_updateDynamicMembershipsNaniteBoundedExecutor.
+							countPendingTasks()));
+			}
+
 			_updateDynamicMembershipsNaniteBoundedExecutor.runAsync(
 				new AsahTaskRunnable(asahTask, this, false));
 		}
