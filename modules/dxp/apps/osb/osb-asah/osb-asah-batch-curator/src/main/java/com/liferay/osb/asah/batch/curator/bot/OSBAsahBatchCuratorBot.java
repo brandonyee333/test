@@ -18,14 +18,17 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.commons.collections4.MultiValuedMap;
@@ -144,6 +147,15 @@ public class OSBAsahBatchCuratorBot {
 	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
 	public void runExperimentNanite() {
 		_asahTaskManager.runNanitesForAllProjects("ExperimentNanite");
+	}
+
+	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
+	public void runImmediateAsahTask() {
+		List<AsahTask> asahTasks = _asahTaskDog.getImmediateAsahTasks();
+
+		for (AsahTask asahTask : asahTasks) {
+			_asahTaskManager.executeAsahTask(asahTask, true);
+		}
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -285,6 +297,9 @@ public class OSBAsahBatchCuratorBot {
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahBatchCuratorBot.class);
+
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
 	private AsahTaskManager _asahTaskManager;

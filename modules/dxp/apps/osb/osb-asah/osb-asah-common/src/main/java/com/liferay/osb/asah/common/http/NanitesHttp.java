@@ -14,18 +14,12 @@
 
 package com.liferay.osb.asah.common.http;
 
-import java.util.List;
-
 import org.json.JSONArray;
 
 /**
  * @author Shinn Lok
  */
 public interface NanitesHttp {
-
-	public void executeAsahTask(Long asahTaskId);
-
-	public void executeAsahTasks(List<Long> asahTaskIds);
 
 	public void removeSchedule();
 

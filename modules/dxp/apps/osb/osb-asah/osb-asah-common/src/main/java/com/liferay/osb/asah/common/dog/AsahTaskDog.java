@@ -24,9 +24,6 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.collections4.IterableUtils;
 
@@ -80,10 +77,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 	public AsahTask scheduleAsahTask(AsahTask asahTask) {
 		asahTask = _asahTaskRepository.save(asahTask);
 
-		if (asahTask.getCronExpression() == null) {
-			_nanitesHttp.executeAsahTask(asahTask.getId());
-		}
-		else {
+		if (asahTask.getCronExpression() != null) {
 			_nanitesHttp.scheduleAsahTask(asahTask.getId());
 		}
 
@@ -92,22 +86,12 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 
 	public void scheduleAsahTask(String className, JSONArray contextJSONArray) {
 		try {
-			Iterable<AsahTask> asahTasks = _asahTaskRepository.saveAll(
+			_asahTaskRepository.saveAll(
 				JSONUtil.toList(
 					contextJSONArray,
 					contextJSONObject -> new AsahTask(
 						className, contextJSONObject,
 						ProjectIdThreadLocal.getProjectId())));
-
-			Stream<AsahTask> stream = StreamSupport.stream(
-				asahTasks.spliterator(), true);
-
-			_nanitesHttp.executeAsahTasks(
-				stream.map(
-					AsahTask::getId
-				).collect(
-					Collectors.toList()
-				));
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(
