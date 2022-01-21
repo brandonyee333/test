@@ -745,6 +745,6 @@ public class SearchQueryHelper {
 	}
 
 	private static final Pattern _pattern = Pattern.compile(
-		"\"([^\"]*)\"|([\\S]+[ ]{0,1}[\\S]+)");
+		"\"([^\"]*)\"|([\\s\\S]+)");
 
 }
