@@ -114,10 +114,19 @@ public class AsahTaskManager {
 
 	public void executeAsahTasks() {
 		try {
-			List<AsahTask> asahTasks = _asahTaskDog.getImmediateAsahTasks();
+			int page = 0;
 
-			for (AsahTask asahTask : asahTasks) {
-				executeAsahTask(asahTask, true);
+			while (true) {
+				List<AsahTask> asahTasks = _asahTaskDog.getImmediateAsahTasks(
+					page++, 100);
+
+				if (asahTasks.isEmpty()) {
+					break;
+				}
+
+				for (AsahTask asahTask : asahTasks) {
+					executeAsahTask(asahTask, true);
+				}
 			}
 		}
 		catch (Exception exception) {
