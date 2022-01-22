@@ -254,8 +254,6 @@ public class OSBAsahBatchCuratorBot {
 
 			_asahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
 
-			_asahTaskManager.executeAsahTasks();
-
 			_asahTaskManager.scheduleAsahTasks();
 
 			_scheduleNanites();
