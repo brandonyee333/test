@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.entity.RunLog;
+import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -97,7 +98,9 @@ public class AsahTaskManager {
 			}
 
 			_updateDynamicMembershipsNaniteBoundedExecutor.runAsync(
-				new AsahTaskRunnable(asahTask, this, false));
+				new AsahTaskRunnable(asahTask, this, false),
+				KeyReentrantLock.getReentrantLock(
+					getClass(), asahTask.getProjectId()));
 		}
 		else {
 			_boundedExecutor.runAsync(
@@ -250,6 +253,6 @@ public class AsahTaskManager {
 
 	private final BoundedExecutor
 		_updateDynamicMembershipsNaniteBoundedExecutor =
-			BoundedExecutor.newBoundedExecutor(100000, 1);
+			BoundedExecutor.newBoundedExecutor(10000, 30);
 
 }
