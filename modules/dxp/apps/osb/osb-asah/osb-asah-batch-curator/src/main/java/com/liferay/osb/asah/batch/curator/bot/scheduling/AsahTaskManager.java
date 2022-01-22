@@ -91,7 +91,7 @@ public class AsahTaskManager {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
-						"Pending UpdateDynamicMembershipsNanite tasks: %d",
+						"Pending update dynamic memberships nanite tasks: %d",
 						_updateDynamicMembershipsNaniteBoundedExecutor.
 							countPendingTasks()));
 			}
