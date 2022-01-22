@@ -30,7 +30,6 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.TimeZone;
 
 import javax.annotation.PreDestroy;
@@ -161,10 +160,9 @@ public class OSBAsahBatchCuratorBot {
 					try {
 						ProjectIdThreadLocal.setProjectId(project.getId());
 
-						List<AsahTask> asahTasks =
-							_asahTaskDog.getImmediateAsahTasks();
+						for (AsahTask asahTask :
+								_asahTaskDog.getImmediateAsahTasks(0, 100)) {
 
-						for (AsahTask asahTask : asahTasks) {
 							_asahTaskManager.executeAsahTask(asahTask, true);
 						}
 					}
