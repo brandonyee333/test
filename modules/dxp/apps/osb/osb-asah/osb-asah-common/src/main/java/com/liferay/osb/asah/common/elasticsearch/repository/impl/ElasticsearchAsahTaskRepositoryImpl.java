@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -52,12 +53,13 @@ public class ElasticsearchAsahTaskRepositoryImpl
 	}
 
 	@Override
-	public List<AsahTask> findByCronExpressionIsNull() {
+	public List<AsahTask> findByCronExpressionIsNull(Pageable pageable) {
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
+				getCollectionName(), getFrom(pageable),
 				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.existsQuery("cronExpression"))));
+					QueryBuilders.existsQuery("cronExpression")),
+				pageable.getPageSize()));
 	}
 
 	@Override

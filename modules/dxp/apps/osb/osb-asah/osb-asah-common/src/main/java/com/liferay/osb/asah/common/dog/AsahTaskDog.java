@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -66,8 +67,9 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 		return _asahTaskRepository.findByClassName(className);
 	}
 
-	public List<AsahTask> getImmediateAsahTasks() {
-		return _asahTaskRepository.findByCronExpressionIsNull();
+	public List<AsahTask> getImmediateAsahTasks(int page, int size) {
+		return _asahTaskRepository.findByCronExpressionIsNull(
+			PageRequest.of(page, size));
 	}
 
 	public List<AsahTask> getScheduledAsahTasks() {
