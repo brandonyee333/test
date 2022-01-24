@@ -9,6 +9,10 @@ rootDir.eachDirRecurse {
 		return
 	}
 
+	if (!subprojectDir.name.startsWith("osb-asah") && !subprojectDir.name.equals("dataflow-emulator")) {
+		return
+	}
+
 	if (gradle.startParameter.taskNames.contains("assemble") && subprojectDir.name.equals("osb-asah-spark-python")) {
 		return
 	}
