@@ -16,23 +16,22 @@ package com.liferay.osb.asah.upgrade.v3_1_0;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import javax.annotation.PostConstruct;
+
+import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,6 +39,7 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -59,7 +59,7 @@ public class ProjectMigrationUpgradeStep implements UpgradeStep {
 				Collections.singletonList(
 					SortBuilderUtil.fieldSort("id.keyword")),
 				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.termsQuery("id", _getProjectIds()))),
+					QueryBuilders.termsQuery("id", _getProjectIds(true)))),
 			jsonObject -> _objectMapper.convertValue(
 				jsonObject, Project.class));
 
@@ -86,32 +86,52 @@ public class ProjectMigrationUpgradeStep implements UpgradeStep {
 		}
 	}
 
-	private Set<String> _getProjectIds() {
-		List<Project> projects = _projectDog.getProjects();
+	private List<String> _getProjectIds(boolean retry) {
+		try {
+			return _namedParameterJdbcTemplate.queryForList(
+				"SELECT id FROM project", Collections.emptyMap(), String.class);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Project ID list query failed");
+			}
 
-		Stream<Project> stream = projects.stream();
+			if (retry) {
+				_log.error("Retrying...", exception);
 
-		return stream.map(
-			Project::getId
-		).collect(
-			Collectors.toSet()
-		);
+				try {
+					Thread.sleep(5000);
+				}
+				catch (InterruptedException interruptedException) {
+					_log.error(interruptedException, interruptedException);
+				}
+
+				return _getProjectIds(false);
+			}
+
+			return Collections.emptyList();
+		}
+	}
+
+	@PostConstruct
+	private void _init() {
+		_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
+			_dataSource);
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		ProjectMigrationUpgradeStep.class);
 
 	@Autowired
+	private DataSource _dataSource;
+
+	@Autowired
 	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
+
+	private NamedParameterJdbcTemplate _namedParameterJdbcTemplate;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private PostgreSQLSchemaManager _postgreSQLSchemaManager;
-
-	@Autowired
-	private ProjectDog _projectDog;
 
 	@Autowired
 	private ProjectRepository _projectRepository;
