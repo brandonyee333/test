@@ -16,9 +16,6 @@ package com.liferay.osb.asah.upgrade.v3_1_0;
 
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
-import java.sql.Connection;
-import java.sql.Statement;
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,21 +35,18 @@ public class SchemaUpgradeStep implements UpgradeStep {
 	public void upgrade(String version) throws Exception {
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
-				new ClassPathResource("tables-3.1.0.sql")),
+				new ClassPathResource("constraints-3.1.0.sql")),
 			_postgreSQLDataSource);
 
-		try (Connection connection = _postgreSQLDataSource.getConnection()) {
-			try (Statement statement = connection.createStatement()) {
-				statement.execute(
-					"CREATE UNIQUE INDEX IF NOT EXISTS IX_EVENTANALYSIS_CIN " +
-						"ON EventAnalysis (channelId, name)");
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				new ClassPathResource("indexes-3.1.0.sql")),
+			_postgreSQLDataSource);
 
-				statement.execute(
-					"ALTER TABLE EventAnalysis ADD CONSTRAINT " +
-						"EVENTDEFINITIONID_FKEY FOREIGN KEY (" +
-							"eventDefinitionId) REFERENCES EventDefinition;");
-			}
-		}
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				new ClassPathResource("tables-3.1.0.sql")),
+			_postgreSQLDataSource);
 	}
 
 	@Autowired
