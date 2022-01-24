@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -27,6 +28,7 @@ import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,6 +56,8 @@ public class ProjectMigrationUpgradeStep implements UpgradeStep {
 		List<Project> projects = JSONUtil.toList(
 			globalElasticsearchInvoker.get(
 				"projects",
+				Collections.singletonList(
+					SortBuilderUtil.fieldSort("id.keyword")),
 				BoolQueryBuilderUtil.mustNot(
 					QueryBuilders.termsQuery("id", _getProjectIds()))),
 			jsonObject -> _objectMapper.convertValue(
