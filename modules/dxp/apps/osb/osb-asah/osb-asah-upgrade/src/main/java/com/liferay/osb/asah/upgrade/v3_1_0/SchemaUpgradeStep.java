@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class EventAnalysisUpgradeStep implements UpgradeStep {
+public class SchemaUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
