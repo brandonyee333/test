@@ -2923,7 +2923,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch7.impl.jar!log4j-api.jar</file-name>
-				<version>2.13.3</version>
+				<version>2.17.0</version>
 				<project-name>Apache Log4j API</project-name>
 				<project-url>https://www.apache.org/</project-url>
 				<licenses>
@@ -2935,25 +2935,13 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch7.impl.jar!log4j-core.jar</file-name>
-				<version>2.13.3</version>
+				<version>2.17.0</version>
 				<project-name>Apache Log4j Core</project-name>
 				<project-url>https://www.apache.org/</project-url>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
 						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.portal.search.elasticsearch7.impl.jar!log4j.jar</file-name>
-				<version>1.2.17</version>
-				<project-name>Apache Log4j</project-name>
-				<project-url>http://logging.apache.org/log4j/1.2/</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -3260,25 +3248,37 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.cas.impl.jar!bcpkix-jdk15on.jar</file-name>
-				<version>1.61</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs</project-name>
-				<project-url>http://www.bouncycastle.org/java.html</project-url>
+				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
 					<license>
 						<license-name>Bouncy Castle Licence</license-name>
-						<license-url>http://www.bouncycastle.org/licence.html</license-url>
+						<license-url>https://www.bouncycastle.org/licence.html</license-url>
 					</license>
 				</licenses>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.cas.impl.jar!bcprov-jdk15on.jar</file-name>
-				<version>1.61</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle Provider</project-name>
-				<project-url>http://www.bouncycastle.org/java.html</project-url>
+				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
 					<license>
 						<license-name>Bouncy Castle Licence</license-name>
-						<license-url>http://www.bouncycastle.org/licence.html</license-url>
+						<license-url>https://www.bouncycastle.org/licence.html</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.portal.security.sso.cas.impl.jar!bcutil-jdk15on.jar</file-name>
+				<version>1.69</version>
+				<project-name>Bouncy Castle ASN.1 Extension and Utility APIs</project-name>
+				<project-url>https://www.bouncycastle.org/java.html</project-url>
+				<licenses>
+					<license>
+						<license-name>Bouncy Castle Licence</license-name>
+						<license-url>https://www.bouncycastle.org/licence.html</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -4588,6 +4588,18 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>com.liferay.portal.vulcan.impl.jar!jackson-module-jaxb-annotations.jar</file-name>
+				<version>2.9.8</version>
+				<project-name>Jackson module: JAXB Annotations</project-name>
+				<project-url>https://github.com/FasterXML/jackson-modules-base</project-url>
+				<licenses>
+					<license>
+						<license-name>The Apache Software License, Version 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>com.liferay.portal.vulcan.impl.jar!java-dataloader.jar</file-name>
 				<version>2.1.1</version>
 				<project-name>java-dataloader</project-name>
@@ -5035,7 +5047,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.sync.service.jar!bcpg-jdk15on.jar</file-name>
-				<version>1.64</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle OpenPGP API</project-name>
 				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
@@ -5047,7 +5059,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.sync.service.jar!bcpkix-jdk15on.jar</file-name>
-				<version>1.64</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs</project-name>
 				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
@@ -5059,8 +5071,20 @@
 			</library>
 			<library>
 				<file-name>com.liferay.sync.service.jar!bcprov-jdk15on.jar</file-name>
-				<version>1.64</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle Provider</project-name>
+				<project-url>https://www.bouncycastle.org/java.html</project-url>
+				<licenses>
+					<license>
+						<license-name>Bouncy Castle Licence</license-name>
+						<license-url>https://www.bouncycastle.org/licence.html</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.sync.service.jar!bcutil-jdk15on.jar</file-name>
+				<version>1.69</version>
+				<project-name>Bouncy Castle ASN.1 Extension and Utility APIs</project-name>
 				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
 					<license>
@@ -6736,7 +6760,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/commons-lang3.jar</file-name>
-				<version>3.9</version>
+				<version>3.12.0</version>
 				<project-name>Commons Lang</project-name>
 				<project-url>http://commons.apache.org/proper/commons-lang/</project-url>
 				<licenses>
