@@ -9,7 +9,7 @@ rootDir.eachDirRecurse {
 		return
 	}
 
-	if (!subprojectDir.name.startsWith("osb-asah") && !subprojectDir.name.equals("dataflow-emulator")) {
+	if (!subprojectDir.name.equals("dataflow-emulator") && !subprojectDir.name.startsWith("osb-asah")) {
 		return
 	}
 
