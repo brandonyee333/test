@@ -56,12 +56,14 @@ function build_docker_image {
 		cp ~/.asah/europe-west2/gcp_credentials.json ${file_name}/build/europe_west2_gcp_credentials.json
 		cp ~/.asah/europe-west3/gcp_credentials.json ${file_name}/build/europe_west3_gcp_credentials.json
 		cp ~/.asah/southamerica-east1/gcp_credentials.json ${file_name}/build/southamerica_east1_gcp_credentials.json
+		cp ~/.asah/uat/gcp_credentials.json ${file_name}/build/uat_gcp_credentials.json
 		cp ~/.asah/us-west1/gcp_credentials.json ${file_name}/build/us_west1_gcp_credentials.json
 
 		echo "" >> ${file_name}/Dockerfile
 		echo "COPY ./build/europe_west2_gcp_credentials.json europe_west2_gcp_credentials.json" >> ${file_name}/Dockerfile
 		echo "COPY ./build/europe_west3_gcp_credentials.json europe_west3_gcp_credentials.json" >> ${file_name}/Dockerfile
 		echo "COPY ./build/southamerica_east1_gcp_credentials.json southamerica_east1_gcp_credentials.json" >> ${file_name}/Dockerfile
+		echo "COPY ./build/uat_gcp_credentials.json uat_gcp_credentials.json" >> ${file_name}/Dockerfile
 		echo "COPY ./build/us_west1_gcp_credentials.json us_west1_gcp_credentials.json" >> ${file_name}/Dockerfile
 		echo "" >> ${file_name}/Dockerfile
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
@@ -98,6 +100,7 @@ function check_repository {
 	if [ ! -f ~/.asah/europe-west2/gcp_credentials.json ] ||
 	   [ ! -f ~/.asah/europe-west3/gcp_credentials.json ] ||
 	   [ ! -f ~/.asah/southamerica-east1/gcp_credentials.json ] ||
+	   [ ! -f ~/.asah/uat/gcp_credentials.json ] ||
 	   [ ! -f ~/.asah/us-west1/gcp_credentials.json ]
 	then
 		echo "Verify gcp_credentials.json files.";
