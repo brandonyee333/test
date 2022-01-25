@@ -329,6 +329,8 @@ public class Sidecar {
 			System.getenv()
 		).put(
 			"HOSTNAME", "localhost"
+		).put(
+			"LIBFFI_TMPDIR", _sidecarHomePath.toString()
 		).build();
 	}
 
