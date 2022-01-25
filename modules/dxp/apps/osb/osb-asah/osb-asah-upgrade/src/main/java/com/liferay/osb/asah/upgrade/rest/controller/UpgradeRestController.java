@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.v3_0_5.EventIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.IndividualEventUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_1_0.PagesUpgradeStep;
 
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,11 @@ public class UpgradeRestController {
 	@GetMapping("/individual-event-upgrades")
 	public JSONArray getIndividualEventUpgrades() {
 		return _getUpgradesJSONArray(_individualEventsCompletableFutures);
+	}
+
+	@GetMapping("/pages-upgrades")
+	public JSONArray getPagesUpgrades() {
+		return _getUpgradesJSONArray(_pagesCompletableFutures);
 	}
 
 	@PostMapping("/event-index-upgrade/{projectId}")
@@ -105,6 +111,30 @@ public class UpgradeRestController {
 			Project::getId
 		).forEach(
 			this::_startIndividualEventUpgrade
+		);
+	}
+
+	@PostMapping("/pages-upgrade/{projectId}")
+	public void startPagesUpgrade(@PathVariable String projectId) {
+		Optional<Project> projectOptional = _fetchProject(projectId);
+
+		if (!projectOptional.isPresent()) {
+			throw new IllegalArgumentException("Invalid project ID");
+		}
+
+		_startPagesUpgrade(projectId);
+	}
+
+	@PostMapping("/pages-upgrades")
+	public void startPagesUpgrades() {
+		List<Project> projects = _projectDog.getProjects();
+
+		Stream<Project> stream = projects.stream();
+
+		stream.map(
+			Project::getId
+		).forEach(
+			this::_startPagesUpgrade
 		);
 	}
 
@@ -175,6 +205,32 @@ public class UpgradeRestController {
 				_executorService));
 	}
 
+	private void _startPagesUpgrade(String projectId) {
+		CompletableFuture<Void> completableFuture =
+			_pagesCompletableFutures.get(projectId);
+
+		if (completableFuture != null) {
+			return;
+		}
+
+		_pagesCompletableFutures.put(
+			projectId,
+			CompletableFuture.runAsync(
+				() -> ProjectIdThreadLocal.forProject(
+					projectId,
+					() -> {
+						try {
+							_pagesUpgradeStep.upgrade("3.1.0");
+						}
+						catch (Exception exception) {
+							_log.error(
+								"Unable to upgrade pages for " + projectId,
+								exception);
+						}
+					}),
+				_executorService));
+	}
+
 	private JSONObject _toJSONObject(
 		CompletableFuture<Void> completableFuture, String projectId) {
 
@@ -208,6 +264,12 @@ public class UpgradeRestController {
 
 	@Autowired
 	private IndividualEventUpgradeStep _individualEventUpgradeStep;
+
+	private final Map<String, CompletableFuture<Void>>
+		_pagesCompletableFutures = new ConcurrentHashMap<>();
+
+	@Autowired
+	private PagesUpgradeStep _pagesUpgradeStep;
 
 	@Autowired
 	private ProjectDog _projectDog;

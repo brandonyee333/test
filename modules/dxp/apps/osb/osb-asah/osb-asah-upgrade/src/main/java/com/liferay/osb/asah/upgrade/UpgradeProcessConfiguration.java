@@ -23,7 +23,6 @@ import com.liferay.osb.asah.upgrade.v3_0_5.VoteEventDefinitionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_6.EventAttributeIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.ChannelMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.DataSourceMigrationUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_1_0.PagesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.ProjectMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.SchemaUpgradeStep;
 
@@ -72,7 +71,6 @@ public class UpgradeProcessConfiguration {
 
 		upgradeSteps.add(_channelMigrationUpgradeStep);
 		upgradeSteps.add(_dataSourceMigrationUpgradeStep);
-		upgradeSteps.add(_pagesUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"3.0.10", "3.1.0", upgradeSteps.toArray(new UpgradeStep[0]));
@@ -95,9 +93,6 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private EventDefinitionUpgradeStep _eventDefinitionUpgradeStep;
-
-	@Autowired
-	private PagesUpgradeStep _pagesUpgradeStep;
 
 	@Autowired
 	private ProjectMigrationUpgradeStep _projectMigrationUpgradeStep;
