@@ -65,6 +65,8 @@ public class SchemaUpgradeStep implements UpgradeStep {
 					projectId));
 
 			_postgreSQLSchemaManager.createSchema(new Project(projectId));
+
+			ProjectIdThreadLocal.setProjectId(projectId);
 		}
 	}
 
