@@ -21,6 +21,7 @@ import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
+import com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
@@ -299,7 +300,11 @@ public class UserSynchronizer {
 			ContactRole[] contactRoles =
 				contactAccountView.getCustomerContactRoles();
 
-			if (accountEntry.isActiveSupport()) {
+			String state = _accountReader.getState(account.getKey());
+
+			if (state.equals(ProductPurchaseConstants.STATE_ACTIVE) ||
+				state.equals(ProductPurchaseConstants.STATE_UNACTIVATED)) {
+
 				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 			}
 

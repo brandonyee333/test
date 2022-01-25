@@ -221,6 +221,12 @@ public class AccountReaderImpl implements AccountReader {
 				name.equals(ProductConstants.NAME_LIMITED) ||
 				name.equals(ProductConstants.NAME_PLATINUM)) {
 
+				if (_getProductPurchaseState(productPurchase) ==
+						ProductPurchaseConstants.STATE_UNACTIVATED) {
+
+					continue;
+				}
+
 				if (productPurchase.getPerpetual()) {
 					return _END_DATE_PERPETUAL;
 				}

@@ -57,8 +57,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 			AccountEntry oldAccountEntry = _oldAccountEntry.get();
 
-			if (!oldAccountEntry.isActiveSupport() &&
-				accountEntry.isActiveSupport()) {
+			if (!oldAccountEntry.isActiveTicketSupport() &&
+				accountEntry.isActiveTicketSupport()) {
 
 				resetClosedWatchers(accountEntry.getKoroneikiAccountKey());
 			}

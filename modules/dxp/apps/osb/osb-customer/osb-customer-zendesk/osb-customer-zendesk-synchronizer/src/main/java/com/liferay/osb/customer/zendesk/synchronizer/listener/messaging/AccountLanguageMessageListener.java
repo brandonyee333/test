@@ -90,7 +90,7 @@ public class AccountLanguageMessageListener extends BaseMessageListener {
 			_accountEntryLocalService.fetchKoroneikiAccountEntry(
 				koroneikiAccountKey);
 
-		if ((accountEntry != null) && isActiveSupport(accountEntry)) {
+		if ((accountEntry != null) && isActiveTicketSupport(accountEntry)) {
 			Account account = _accountWebService.fetchAccount(
 				koroneikiAccountKey);
 
@@ -98,12 +98,12 @@ public class AccountLanguageMessageListener extends BaseMessageListener {
 		}
 	}
 
-	protected boolean isActiveSupport(AccountEntry accountEntry) {
+	protected boolean isActiveTicketSupport(AccountEntry accountEntry) {
 		if (accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) {
 			return false;
 		}
 
-		if (!accountEntry.isActiveSupport()) {
+		if (!accountEntry.isActiveTicketSupport()) {
 			return false;
 		}
 

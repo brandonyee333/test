@@ -125,7 +125,9 @@ public class TeamAccountRoleMessageListener extends BaseMessageListener {
 				_accountEntryLocalService.fetchKoroneikiAccountEntry(
 					account.getKey());
 
-			if ((accountEntry == null) || !accountEntry.isActiveSupport()) {
+			if ((accountEntry == null) ||
+				!accountEntry.isActiveTicketSupport()) {
+
 				return;
 			}
 
@@ -146,7 +148,9 @@ public class TeamAccountRoleMessageListener extends BaseMessageListener {
 				_accountEntryLocalService.fetchKoroneikiAccountEntry(
 					account.getKey());
 
-			if ((accountEntry == null) || !accountEntry.isActiveSupport()) {
+			if ((accountEntry == null) ||
+				!accountEntry.isActiveTicketSupport()) {
+
 				return;
 			}
 

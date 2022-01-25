@@ -54,7 +54,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			if (!isActiveSupport(accountEntry)) {
+			if (!isActiveTicketSupport(accountEntry)) {
 				return;
 			}
 
@@ -84,7 +84,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			Account account = _accountWebService.getAccount(
 				accountEntry.getKoroneikiAccountKey());
 
-			if (!_zendeskOrganization.get() && !isActiveSupport(accountEntry)) {
+			if (!_zendeskOrganization.get() &&
+				!isActiveTicketSupport(accountEntry)) {
+
 				return;
 			}
 
@@ -113,19 +115,15 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				}
 			}
 
-			if ((isActiveSupport(oldAccountEntry) &&
-				 !isActiveSupport(accountEntry)) ||
-				(oldAccountEntry.isActiveTicketSupport() &&
-				 !accountEntry.isActiveTicketSupport())) {
+			if (isActiveTicketSupport(oldAccountEntry) &&
+				!isActiveTicketSupport(accountEntry)) {
 
 				_accountSynchronizer.removeCustomers(account, accountEntry);
 			}
 
-			if (isActiveSupport(accountEntry) &&
-				((oldAccountEntry.isActiveTicketSupport() !=
-					accountEntry.isActiveTicketSupport()) ||
-				 (isActiveSupport(oldAccountEntry) != isActiveSupport(
-					 accountEntry)))) {
+			if (isActiveTicketSupport(accountEntry) &&
+				(isActiveTicketSupport(oldAccountEntry) !=
+					isActiveTicketSupport(accountEntry))) {
 
 				_accountSynchronizer.addCustomers(account, accountEntry);
 
@@ -177,12 +175,12 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		return false;
 	}
 
-	protected boolean isActiveSupport(AccountEntry accountEntry) {
+	protected boolean isActiveTicketSupport(AccountEntry accountEntry) {
 		if (accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) {
 			return false;
 		}
 
-		if (!accountEntry.isActiveSupport()) {
+		if (!accountEntry.isActiveTicketSupport()) {
 			return false;
 		}
 

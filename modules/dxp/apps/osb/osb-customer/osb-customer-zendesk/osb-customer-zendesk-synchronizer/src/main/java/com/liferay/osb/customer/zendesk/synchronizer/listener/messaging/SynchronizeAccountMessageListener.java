@@ -124,7 +124,7 @@ public class SynchronizeAccountMessageListener extends BaseMessageListener {
 		if (account == null) {
 			if ((accountEntry != null) &&
 				!hasZendeskOrganization(accountEntry) &&
-				!accountEntry.isActiveSupport()) {
+				!accountEntry.isActiveTicketSupport()) {
 
 				_accountEntryLocalService.updateLastZendeskAuditDate(
 					OSBCustomerConstants.USER_DEFAULT_USER_ID,
