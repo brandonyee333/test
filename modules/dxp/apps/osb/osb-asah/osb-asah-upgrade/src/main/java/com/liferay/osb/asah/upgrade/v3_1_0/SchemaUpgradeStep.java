@@ -14,9 +14,15 @@
 
 package com.liferay.osb.asah.upgrade.v3_1_0;
 
+import com.liferay.osb.asah.common.entity.Project;
+import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import javax.sql.DataSource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,24 +39,42 @@ public class SchemaUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new ClassPathResource("tables-3.1.0.sql")),
-			_postgreSQLDataSource);
+		try {
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("tables-3.1.0.sql")),
+				_postgreSQLDataSource);
 
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new ClassPathResource("constraints-3.1.0.sql")),
-			_postgreSQLDataSource);
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("constraints-3.1.0.sql")),
+				_postgreSQLDataSource);
 
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new ClassPathResource("indexes-3.1.0.sql")),
-			_postgreSQLDataSource);
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("indexes-3.1.0.sql")),
+				_postgreSQLDataSource);
+		}
+		catch (Exception exception) {
+			String projectId = ProjectIdThreadLocal.getProjectId();
+
+			_log.error(
+				String.format(
+					"Failed to run SchemaUpgradeStep on %s. Attempting to " +
+						"create project schema",
+					projectId));
+
+			_postgreSQLSchemaManager.createSchema(new Project(projectId));
+		}
 	}
+
+	private static final Log _log = LogFactory.getLog(SchemaUpgradeStep.class);
 
 	@Autowired
 	@Qualifier("postgreSQLDataSource")
 	private DataSource _postgreSQLDataSource;
+
+	@Autowired
+	private PostgreSQLSchemaManager _postgreSQLSchemaManager;
 
 }
