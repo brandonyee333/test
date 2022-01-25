@@ -35,17 +35,17 @@ public class SchemaUpgradeStep implements UpgradeStep {
 	public void upgrade(String version) throws Exception {
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
+				new ClassPathResource("tables-3.1.0.sql")),
+			_postgreSQLDataSource);
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
 				new ClassPathResource("constraints-3.1.0.sql")),
 			_postgreSQLDataSource);
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
 				new ClassPathResource("indexes-3.1.0.sql")),
-			_postgreSQLDataSource);
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new ClassPathResource("tables-3.1.0.sql")),
 			_postgreSQLDataSource);
 	}
 
