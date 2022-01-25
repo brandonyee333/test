@@ -693,9 +693,9 @@ public class ActivitiesNanite implements Nanite {
 
 						if (activityJSONObject != null) {
 							activityJSONArray.put(activityJSONObject);
-
-							auxAckIds.add(message.getAckId());
 						}
+
+						auxAckIds.add(message.getAckId());
 					}
 
 					_addActivityJSONArray(activityJSONArray, tuple2.getT1());
