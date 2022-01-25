@@ -90,3 +90,7 @@ page import="java.util.List" %>
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
+
+<%
+portletDisplay.setShowExportImportIcon(false);
+%>
