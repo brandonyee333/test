@@ -115,6 +115,10 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 				_reindexHelper.reassignAlias(
 					indexAlias, newIndexName, oldIndexName);
 
+				doUpgrade(newIndexName, oldIndexName);
+
+				_reindexHelper.refreshIndex(newIndexName);
+
 				_reindexHelper.deleteIndex(oldIndexName);
 			}
 			else {
