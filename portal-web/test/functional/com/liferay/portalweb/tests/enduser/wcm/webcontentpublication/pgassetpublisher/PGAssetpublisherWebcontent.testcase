@@ -546,6 +546,56 @@ definition {
 			webContentTitle = "WC Webcontent Title");
 	}
 
+	@description = "LPS-103624 - URLs are not well formed when changing language in classic Display Pages."
+	@ignore = "true"
+	@priority = "4"
+	test ViewInContextTranslatedWC {
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Guest",
+			layoutName = "Asset Publisher Page",
+			widgetName = "Language Selector");
+
+		Navigator.gotoPage(pageName = "Asset Publisher Page");
+
+		AssetPublisherPortlet.configureAssetLinkBehaviorPG(assetLinkBehavior = "View in Context");
+
+		Navigator.gotoPage(pageName = "Asset Publisher Page");
+
+		AssetPublisherPortlet.configureFlaggableDisplaySettingsPG(
+			portletName = "Asset Publisher",
+			setAsDefaultPage = "true");
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+		WebContentNavigator.gotoAddCP();
+
+		WebContent.addCP(
+			webContentContent = "WC WebContent English Content",
+			webContentTitle = "WC WebContent English Title");
+
+		WebContent.addTranslation(
+			localizedLanguage = "German (Germany)",
+			webContentTitle = "WC WebContent English Title");
+
+		WebContent.addCP(
+			webContentContent = "WC WebContent German Content",
+			webContentTitle = "WC WebContent German Title");
+
+		WebContent.editDisplayPageCP(pageName = "Asset Publisher Page");
+
+		Navigator.gotoPage(pageName = "Asset Publisher Page");
+
+		AssetPublisherPortlet.viewAssetDetailsPG(
+			assetContent = "WC WebContent English Content",
+			assetTitle = "WC WebContent English Title");
+
+		LanguagePortlet.selectLanguagePG(language = "German (Germany)");
+
+		AssetPublisherPortlet.viewAssetPG(
+			assetContent = "WC WebContent German Content",
+			assetTitle = "WC WebContent German Title");
+	}
+
 	@description = "This is a use case for LPS-49853."
 	@priority = "5"
 	test ViewWebContentViaAPAsGuestWithViewPermission {
