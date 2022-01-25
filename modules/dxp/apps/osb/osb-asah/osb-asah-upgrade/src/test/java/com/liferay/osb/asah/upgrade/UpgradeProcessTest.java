@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.upgrade;
 
+import com.liferay.osb.asah.common.util.ReleaseInfo;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +44,22 @@ public class UpgradeProcessTest {
 		upgradeProcess.addUpgradeSteps("2.1.1", "2.1.2");
 
 		Assertions.assertEquals("2.1.3", upgradeProcess.getMaxVersionString());
+	}
+
+	@Test
+	public void testMaxVersionString3() {
+		UpgradeProcess upgradeProcess = new UpgradeProcess();
+
+		String version = ReleaseInfo.getVersion();
+
+		version = version.substring(0, version.length() - 1);
+
+		version += "99";
+
+		upgradeProcess.addUpgradeSteps("0", "1");
+		upgradeProcess.addUpgradeSteps("1", version);
+
+		Assertions.assertEquals("1", upgradeProcess.getMaxVersionString());
 	}
 
 }

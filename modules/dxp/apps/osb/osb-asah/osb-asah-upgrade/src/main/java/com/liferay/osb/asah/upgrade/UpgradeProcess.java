@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.upgrade;
 
+import com.liferay.osb.asah.common.util.ReleaseInfo;
+
 import java.io.Serializable;
 
 import java.util.Arrays;
@@ -39,6 +41,15 @@ public class UpgradeProcess {
 	public void addUpgradeSteps(
 		String fromVersionString, String toVersionString,
 		UpgradeStep... upgradeSteps) {
+
+		VersionComparator versionComparator = new VersionComparator();
+
+		int compare = versionComparator.compare(
+			toVersionString, ReleaseInfo.getVersion());
+
+		if (compare > 0) {
+			return;
+		}
 
 		_upgradeStepsMap.put(
 			fromVersionString,
