@@ -83,11 +83,12 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Select latest ID query failed");
+				_log.debug(
+					"Select latest ID query failed. " + exception.getMessage());
 			}
 
 			if (retry) {
-				_log.error("Retrying...", exception);
+				_log.error("Retrying...");
 
 				try {
 					Thread.sleep(5000);
