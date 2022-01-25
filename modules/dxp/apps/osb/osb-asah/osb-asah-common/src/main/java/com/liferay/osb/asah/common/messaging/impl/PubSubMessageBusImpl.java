@@ -357,7 +357,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 			Subscription.Builder builder = Subscription.newBuilder();
 
-			builder.setAckDeadlineSeconds(10);
+			builder.setAckDeadlineSeconds(600);
 			builder.setName(projectSubscriptionName.toString());
 			builder.setPushConfig(PushConfig.getDefaultInstance());
 			builder.setTopic(projectTopicName.toString());
