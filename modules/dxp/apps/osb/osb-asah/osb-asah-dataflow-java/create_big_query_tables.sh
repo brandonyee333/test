@@ -1,11 +1,11 @@
 #!/bin/bash
 
-export PROJECT_ID=$(gcloud config get-value project)
-export DATA_LOCATION='us-west1'
+LOCATION=$(gcloud config get-value compute/region)
+PROJECT_ID=$(gcloud config get-value project)
 
 # Dataset
 
-bq mk --project_id ${PROJECT_ID} --data_location=${DATA_LOCATION} osbasah
+bq mk --project_id ${PROJECT_ID} --data_location=${LOCATION} osbasah
 
 # Tables
 
