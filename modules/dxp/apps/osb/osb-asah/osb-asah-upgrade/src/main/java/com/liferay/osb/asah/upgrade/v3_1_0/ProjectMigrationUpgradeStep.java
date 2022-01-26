@@ -93,11 +93,11 @@ public class ProjectMigrationUpgradeStep implements UpgradeStep {
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Project ID list query failed");
+				_log.debug("Project ID list query failed", exception);
 			}
 
 			if (retry) {
-				_log.error("Retrying...", exception);
+				_log.error("Retrying...");
 
 				try {
 					Thread.sleep(5000);
