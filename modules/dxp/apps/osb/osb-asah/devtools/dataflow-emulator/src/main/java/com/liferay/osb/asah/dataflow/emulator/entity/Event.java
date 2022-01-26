@@ -14,7 +14,9 @@
 
 package com.liferay.osb.asah.dataflow.emulator.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.annotation.AccessType;
@@ -125,6 +127,21 @@ public class Event implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Long getIndividualId() {
+		return _individualId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getKeywords() {
+		return _keywords;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Boolean getKnownIndividual() {
+		return _knownIndividual;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getLanguageId() {
 		return _languageId;
 	}
@@ -152,6 +169,11 @@ public class Event implements Persistable<String> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getRegion() {
 		return _region;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public List<String> getSegmentNames() {
+		return _segmentNames;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -267,6 +289,18 @@ public class Event implements Persistable<String> {
 		_id = id;
 	}
 
+	public void setIndividualId(Long individualId) {
+		_individualId = individualId;
+	}
+
+	public void setKeywords(String keywords) {
+		_keywords = keywords;
+	}
+
+	public void setKnownIndividual(Boolean knownIndividual) {
+		_knownIndividual = knownIndividual;
+	}
+
 	public void setLanguageId(String languageId) {
 		_languageId = languageId;
 	}
@@ -289,6 +323,10 @@ public class Event implements Persistable<String> {
 
 	public void setRegion(String region) {
 		_region = region;
+	}
+
+	public void setSegmentNames(List<String> segmentNames) {
+		_segmentNames = segmentNames;
 	}
 
 	public void setSessionId(String sessionId) {
@@ -367,6 +405,15 @@ public class Event implements Persistable<String> {
 	private String _id;
 
 	@Transient
+	private Long _individualId;
+
+	@Transient
+	private String _keywords;
+
+	@Transient
+	private Boolean _knownIndividual;
+
+	@Transient
 	private String _languageId;
 
 	@Transient
@@ -383,6 +430,9 @@ public class Event implements Persistable<String> {
 
 	@Transient
 	private String _region;
+
+	@Transient
+	private List<String> _segmentNames = new ArrayList<>();
 
 	@Transient
 	private String _sessionId;

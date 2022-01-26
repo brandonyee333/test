@@ -27,6 +27,7 @@ import com.liferay.osb.asah.dataflow.emulator.repository.EventPropertyRepository
 import com.liferay.osb.asah.dataflow.emulator.repository.EventRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.SessionRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -333,12 +334,17 @@ public class IngestionNanite {
 		event.setEventProperties(analyticsEvent.getEventProperties());
 		event.setExperienceId(context.get("experienceId"));
 		event.setId(analyticsEvent.getId());
+		event.setIndividualId(Long.valueOf(analyticsEvent.getIndividualId()));
+		event.setKeywords(context.get("keywords"));
+		event.setKnownIndividual(analyticsEvent.isKnownIndividual());
 		event.setLanguageId(context.get("languageId"));
 		event.setPlatformName(context.get("platformName"));
 		event.setProjectId(analyticsEvent.getProjectId());
 		event.setProjectTimeZoneId(analyticsEvent.getProjectTimeZoneId());
 		event.setReferrer(context.get("referrer"));
 		event.setRegion(context.get("region"));
+		event.setSegmentNames(
+			new ArrayList<>(analyticsEvent.getSegmentNames()));
 		event.setSessionId(sessionContext.id);
 		event.setTimezoneOffset(context.get("timezoneOffset"));
 		event.setTitle(context.get("title"));
