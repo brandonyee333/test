@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.Collections;
-import java.util.Optional;
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.annotation.PostConstruct;
@@ -73,13 +73,18 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 
 	private Long _getLatestId(boolean retry) {
 		try {
-			return Optional.ofNullable(
-				_namedParameterJdbcTemplate.queryForObject(
-					getSelectLatestIdSQL(), Collections.emptyMap(),
-					(rs, rowNum) -> rs.getLong("id"))
-			).orElse(
-				0L
-			);
+			List<Long> latestIds = _namedParameterJdbcTemplate.queryForList(
+				getSelectLatestIdSQL(), Collections.emptyMap(), Long.class);
+
+			if ((latestIds == null) || latestIds.isEmpty()) {
+				return 0L;
+			}
+
+			if (_log.isWarnEnabled()) {
+				_log.warn("Select latest ID query returns more than one row");
+			}
+
+			return latestIds.get(0);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
