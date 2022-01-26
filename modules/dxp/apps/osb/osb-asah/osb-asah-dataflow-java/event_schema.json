@@ -86,6 +86,21 @@
 	},
 	{
 		"mode": "NULLABLE",
+		"name": "individualId",
+		"type": "NUMERIC"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "keywords",
+		"type": "STRING"
+	},
+	{
+		"mode": "NULLABLE",
+		"name": "knownIndividual",
+		"type": "BOOLEAN"
+	},
+	{
+		"mode": "NULLABLE",
 		"name": "languageId",
 		"type": "STRING"
 	},
@@ -117,6 +132,11 @@
 	{
 		"mode": "NULLABLE",
 		"name": "sessionId",
+		"type": "STRING"
+	},
+	{
+		"mode": "REPEATED",
+		"name": "segmentNames",
 		"type": "STRING"
 	},
 	{
