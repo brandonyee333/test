@@ -1,25 +1,24 @@
 #!/bin/bash
 
 function main {
-  ../gradlew clean compileJava execute \
-  -Dexec.args=" \
-    --eventPropertyTableName=${EVENT_PROPERTY_TABLE_NAME} \
-    --eventTableName=${EVENT_TABLE_NAME} \
-    --inputSubscription=projects/${PROJECT_ID}/subscriptions/${DXP_CLOUD_PROJECT}_analytics_events_dataflow \
-    --outputDirectory=${OUTPUT_FOLDER} \
-    --outputFileNamePrefix=analytics-events \
-    --project=${PROJECT_ID} \
-    --region=${REGION} \
-    --runner=${RUNNER} \
-    --sessionTableName=${SESSION_TABLE_NAME} \
-    --sessionWindowGapDuration=${SESSION_WINDOW_GAP_DURATION} \
-    --sessionWindowAllowedLateness=${SESSION_WINDOW_ALLOWED_LATENESS} \
-    --stagingLocation=${PIPELINE_FOLDER}/staging \
-    --tempLocation=${PIPELINE_FOLDER}/temp" \
-  -Dexec.cleanupDaemonThreads=false \
-  -Dexec.mainClass=${MAIN_CLASS_NAME}
+../gradlew clean compileJava execute \
+-Dexec.args=" \
+	--eventPropertyTableName=${EVENT_PROPERTY_TABLE_NAME} \
+	--eventTableName=${EVENT_TABLE_NAME} \
+	--inputSubscription=projects/${PROJECT_ID}/subscriptions/${DXP_CLOUD_PROJECT}_analytics_events_dataflow \
+	--outputDirectory=${OUTPUT_FOLDER} \
+	--outputFileNamePrefix=analytics-events \
+	--project=${PROJECT_ID} \
+	--region=${REGION} \
+	--runner=${RUNNER} \
+	--sessionTableName=${SESSION_TABLE_NAME} \
+	--sessionWindowGapDuration=${SESSION_WINDOW_GAP_DURATION} \
+	--sessionWindowAllowedLateness=${SESSION_WINDOW_ALLOWED_LATENESS} \
+	--stagingLocation=${PIPELINE_FOLDER}/staging \
+	--tempLocation=${PIPELINE_FOLDER}/temp" \
+-Dexec.cleanupDaemonThreads=false \
+-Dexec.mainClass=${MAIN_CLASS_NAME}
 }
-
 
 if [ "$#" -ne 1 ]
 then

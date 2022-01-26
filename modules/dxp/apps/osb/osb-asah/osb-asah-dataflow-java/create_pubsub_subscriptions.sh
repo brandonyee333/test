@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function main {
-  gcloud pubsub subscriptions create --project ${PROJECT_ID} --topic ${DXP_CLOUD_PROJECT}_analytics_events ${DXP_CLOUD_PROJECT}_analytics_events_dataflow
+gcloud pubsub subscriptions create --project ${PROJECT_ID} --topic ${DXP_CLOUD_PROJECT}_analytics_events ${DXP_CLOUD_PROJECT}_analytics_events_dataflow
 }
 
 if [ "$#" -ne 1 ]
