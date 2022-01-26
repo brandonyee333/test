@@ -141,11 +141,8 @@ public class IndividualInterestScoresNaniteTest
 	public void testInterestAreInsertedAndRemovedOverTime() throws Exception {
 		String dayDateString = DateUtil.addDays(
 			DateUtil.newDayDateString(), -1);
-
+		boolean decreasing = false;
 		int interactions = 0;
-
-		boolean decreasing;
-
 		int previousInterestsSize = 0;
 
 		do {
