@@ -27,6 +27,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -107,16 +108,21 @@ public class AsahTaskManagerTest
 	public void testExecuteAsahTask2() {
 		_asahTaskManager.executeAsahTask(450553576847486528L, false);
 
-		ArgumentCaptor<AsahTaskRunnable> argumentCaptor =
+		ArgumentCaptor<AsahTaskRunnable> asahTaskRunnableArgumentCaptor =
 			ArgumentCaptor.forClass(AsahTaskRunnable.class);
+
+		ArgumentCaptor<ReentrantLock> reentrantLockArgumentCaptor =
+			ArgumentCaptor.forClass(ReentrantLock.class);
 
 		Mockito.verify(
 			_updateDynamicMembershipsNaniteBoundedExecutor, Mockito.times(1)
 		).runAsync(
-			argumentCaptor.capture()
+			asahTaskRunnableArgumentCaptor.capture(),
+			reentrantLockArgumentCaptor.capture()
 		);
 
-		AsahTaskRunnable asahTaskRunnable = argumentCaptor.getValue();
+		AsahTaskRunnable asahTaskRunnable =
+			asahTaskRunnableArgumentCaptor.getValue();
 
 		Assertions.assertArrayEquals(
 			new String[] {"UpdateDynamicMembershipsNanite"},
@@ -152,16 +158,21 @@ public class AsahTaskManagerTest
 		_asahTaskManager.executeAsahTasks(
 			Arrays.asList(450553576847486527L, 450553576847486529L), false);
 
-		ArgumentCaptor<AsahTaskRunnable> argumentCaptor =
+		ArgumentCaptor<AsahTaskRunnable> asahTaskRunnableArgumentCaptor =
 			ArgumentCaptor.forClass(AsahTaskRunnable.class);
+
+		ArgumentCaptor<ReentrantLock> reentrantLockArgumentCaptor =
+			ArgumentCaptor.forClass(ReentrantLock.class);
 
 		Mockito.verify(
 			_updateDynamicMembershipsNaniteBoundedExecutor, Mockito.times(1)
 		).runAsync(
-			argumentCaptor.capture()
+			asahTaskRunnableArgumentCaptor.capture(),
+			reentrantLockArgumentCaptor.capture()
 		);
 
-		AsahTaskRunnable asahTaskRunnable = argumentCaptor.getValue();
+		AsahTaskRunnable asahTaskRunnable =
+			asahTaskRunnableArgumentCaptor.getValue();
 
 		Assertions.assertArrayEquals(
 			new String[] {"UpdateDynamicMembershipsNanite"},
@@ -174,10 +185,10 @@ public class AsahTaskManagerTest
 		Mockito.verify(
 			_boundedExecutor, Mockito.times(1)
 		).runAsync(
-			argumentCaptor.capture()
+			asahTaskRunnableArgumentCaptor.capture()
 		);
 
-		asahTaskRunnable = argumentCaptor.getValue();
+		asahTaskRunnable = asahTaskRunnableArgumentCaptor.getValue();
 
 		Assertions.assertArrayEquals(
 			new String[] {"DataControlNanite"},
