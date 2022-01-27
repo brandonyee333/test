@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
@@ -25,8 +24,6 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
-
-import javax.annotation.PreDestroy;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,41 +69,29 @@ public class UpgradeProcessRunner {
 		List<Project> projects = _projectDog.getProjects();
 
 		for (Project project : projects) {
-			_boundedExecutor.runAsync(
-				() -> {
-					try {
-						ProjectIdThreadLocal.setProjectId(project.getId());
+			try {
+				ProjectIdThreadLocal.setProjectId(project.getId());
 
-						if (_log.isInfoEnabled()) {
-							_log.info(
-								"Checking upgrades for project: " +
-									project.getId());
-						}
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Checking upgrades for project: " + project.getId());
+				}
 
-						_run();
+				_run();
 
-						if (_log.isInfoEnabled()) {
-							_log.info(
-								"Finished upgrades for project: " +
-									project.getId());
-						}
-					}
-					catch (Exception exception) {
-						_log.error(
-							"Failed upgrades for project: " + project.getId(),
-							exception);
-					}
-				});
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Finished upgrades for project: " + project.getId());
+				}
+			}
+			catch (Exception exception) {
+				_log.error(
+					"Failed upgrades for project: " + project.getId(),
+					exception);
+			}
 		}
 
-		_boundedExecutor.awaitPendingTasks();
-
 		_upgradeState.complete();
-	}
-
-	@PreDestroy
-	private void _destroy() {
-		_boundedExecutor.shutdown();
 	}
 
 	private AsahMarker _getAsahMarker() {
@@ -191,9 +176,6 @@ public class UpgradeProcessRunner {
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
-
-	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(15, 10);
 
 	@Autowired
 	@Qualifier("globalUpgradeSteps")
