@@ -54,15 +54,14 @@ public class AccountEntryLocalServiceWrapper
 	public com.liferay.osb.customer.admin.model.AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
 			String corpProjectUuid, long corpProjectId, String name,
-			String code, String instructions, java.util.Date supportEndDate,
-			java.util.Date ticketSupportEndDate, int status,
-			String[] languageIds)
+			String code, String instructions, boolean activeSupport,
+			boolean activeTicketSupport, int status, String[] languageIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEntryLocalService.addAccountEntry(
 			userId, koroneikiAccountKey, dossieraAccountKey, corpProjectUuid,
-			corpProjectId, name, code, instructions, supportEndDate,
-			ticketSupportEndDate, status, languageIds);
+			corpProjectId, name, code, instructions, activeSupport,
+			activeTicketSupport, status, languageIds);
 	}
 
 	/**
@@ -427,12 +426,22 @@ public class AccountEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.admin.model.AccountEntry updateAccountEntry(
-			long accountEntryId, java.util.Date supportEndDate,
-			java.util.Date ticketSupportEndDate, int status)
+			long accountEntryId, boolean activeSupport,
+			boolean activeTicketSupport, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEntryLocalService.updateAccountEntry(
-			accountEntryId, supportEndDate, ticketSupportEndDate, status);
+			accountEntryId, activeSupport, activeTicketSupport, status);
+	}
+
+	@Override
+	public com.liferay.osb.customer.admin.model.AccountEntry updateAccountEntry(
+			long userId, long accountEntryId, String koroneikiAccountKey,
+			String dossieraAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _accountEntryLocalService.updateAccountEntry(
+			userId, accountEntryId, koroneikiAccountKey, dossieraAccountKey);
 	}
 
 	@Override
@@ -440,13 +449,14 @@ public class AccountEntryLocalServiceWrapper
 			long userId, long accountEntryId, String koroneikiAccountKey,
 			String dossieraAccountKey, String corpProjectUuid,
 			long corpProjectId, String name, String code, String instructions,
-			int status, String[] languageIds)
+			boolean activeSupport, boolean activeTicketSupport, int status,
+			String[] languageIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEntryLocalService.updateAccountEntry(
 			userId, accountEntryId, koroneikiAccountKey, dossieraAccountKey,
-			corpProjectUuid, corpProjectId, name, code, instructions, status,
-			languageIds);
+			corpProjectUuid, corpProjectId, name, code, instructions,
+			activeSupport, activeTicketSupport, status, languageIds);
 	}
 
 	@Override

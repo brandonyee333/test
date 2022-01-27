@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -79,8 +78,8 @@ public interface AccountEntryLocalService
 	public AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
 			String corpProjectUuid, long corpProjectId, String name,
-			String code, String instructions, Date supportEndDate,
-			Date ticketSupportEndDate, int status, String[] languageIds)
+			String code, String instructions, boolean activeSupport,
+			boolean activeTicketSupport, int status, String[] languageIds)
 		throws PortalException;
 
 	/**
@@ -312,15 +311,21 @@ public interface AccountEntryLocalService
 	public AccountEntry updateAccountEntry(AccountEntry accountEntry);
 
 	public AccountEntry updateAccountEntry(
-			long accountEntryId, Date supportEndDate, Date ticketSupportEndDate,
-			int status)
+			long accountEntryId, boolean activeSupport,
+			boolean activeTicketSupport, int status)
+		throws PortalException;
+
+	public AccountEntry updateAccountEntry(
+			long userId, long accountEntryId, String koroneikiAccountKey,
+			String dossieraAccountKey)
 		throws PortalException;
 
 	public AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String koroneikiAccountKey,
 			String dossieraAccountKey, String corpProjectUuid,
 			long corpProjectId, String name, String code, String instructions,
-			int status, String[] languageIds)
+			boolean activeSupport, boolean activeTicketSupport, int status,
+			String[] languageIds)
 		throws PortalException;
 
 	public AccountEntry updateInstructions(
