@@ -34,6 +34,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
@@ -65,11 +66,22 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 	public List<DataSource> searchDataSources(
 		FilterHelper filterHelper, Pageable pageable) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+		Table<Record> dataSourceTable = DSL.table("DataSource");
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
+			dataSourceTable.asterisk());
 
 		return _populateDataSources(
 			selectSelectStep.from(
-				"DataSource"
+				dataSourceTable
+			).join(
+				"ChannelDataSource"
+			).on(
+				DSL.field(
+					"id"
+				).eq(
+					DSL.field("ChannelDataSource.dataSourceId")
+				)
 			).where(
 				filterHelper.getCondition()
 			).orderBy(
