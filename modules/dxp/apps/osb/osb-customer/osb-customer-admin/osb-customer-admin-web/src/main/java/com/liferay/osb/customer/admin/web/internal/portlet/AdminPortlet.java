@@ -328,19 +328,13 @@ public class AdminPortlet extends MVCPortlet {
 			_accountEntryLocalService.addAccountEntry(
 				themeDisplay.getUserId(), koroneikiAccountKey,
 				dossieraAccountKey, StringPool.BLANK, 0, null, null,
-				instructions, null, null, WorkflowConstants.STATUS_APPROVED,
+				instructions, false, false, WorkflowConstants.STATUS_APPROVED,
 				languageIds);
 		}
 		else {
-			AccountEntry accountEntry =
-				_accountEntryLocalService.getAccountEntry(accountEntryId);
-
 			_accountEntryLocalService.updateAccountEntry(
 				themeDisplay.getUserId(), accountEntryId, koroneikiAccountKey,
-				dossieraAccountKey, accountEntry.getCorpProjectUuid(),
-				accountEntry.getCorpProjectId(), accountEntry.getName(),
-				accountEntry.getCode(), instructions, null, null,
-				accountEntry.getStatus(), languageIds);
+				dossieraAccountKey);
 		}
 
 		updateAccountAttachment(actionRequest);

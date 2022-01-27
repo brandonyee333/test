@@ -65,8 +65,8 @@ public class AccountUpdateMessageSubscriber
 				accountReader.getCorpProjectUuid(account.getExternalLinks()),
 				accountReader.getCorpProjectId(account.getExternalLinks()),
 				account.getName(), account.getCode(), null,
-				accountReader.getSupportEndDate(productPurchases),
-				accountReader.getTicketSupportEndDate(productPurchases),
+				accountReader.isActiveSupport(account.getEntitlements()),
+				accountReader.isActiveTicketSupport(account.getEntitlements()),
 				accountReader.getStatus(account),
 				new String[] {
 					AccountEntryConstants.getLanguageId(account.getLanguage())
@@ -81,8 +81,8 @@ public class AccountUpdateMessageSubscriber
 				accountReader.getCorpProjectId(account.getExternalLinks()),
 				account.getName(), account.getCode(),
 				accountEntry.getInstructions(),
-				accountReader.getSupportEndDate(productPurchases),
-				accountReader.getTicketSupportEndDate(productPurchases),
+				accountReader.isActiveSupport(account.getEntitlements()),
+				accountReader.isActiveTicketSupport(account.getEntitlements()),
 				accountReader.getStatus(account),
 				accountEntry.getLanguageIds());
 		}

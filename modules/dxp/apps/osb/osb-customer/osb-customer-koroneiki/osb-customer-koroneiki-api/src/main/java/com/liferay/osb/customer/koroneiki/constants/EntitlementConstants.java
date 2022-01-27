@@ -21,8 +21,25 @@ public class EntitlementConstants {
 
 	public static final String NAME_CUSTOMER_DXP = "Customer - DXP";
 
+	public static final String NAME_GOLD_SUBSCRIPTION = "Gold Subscription";
+
+	public static final String NAME_LIMITED_SUBSCRIPTION =
+		"Limited Subscription";
+
 	public static final String NAME_PARTNER = "Partner";
 
+	public static final String NAME_PLATINUM_SUBSCRIPTION =
+		"Platinum Subscription";
+
 	public static final String ORGANIZATION_NAME_PREFIX = "Koroneiki ";
+
+	public static final String[] SUPPORT_ENTITLEMENTS = {
+		NAME_GOLD_SUBSCRIPTION, NAME_LIMITED_SUBSCRIPTION,
+		NAME_PLATINUM_SUBSCRIPTION
+	};
+
+	public static final String[] TICKET_SUPPORT_ENTITLEMENTS = {
+		NAME_GOLD_SUBSCRIPTION, NAME_PLATINUM_SUBSCRIPTION
+	};
 
 }

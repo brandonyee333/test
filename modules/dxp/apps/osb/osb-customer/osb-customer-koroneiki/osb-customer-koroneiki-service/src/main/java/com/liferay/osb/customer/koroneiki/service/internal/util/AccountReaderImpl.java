@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.koroneiki.service.internal.util;
 
 import com.liferay.osb.customer.admin.constants.WorkflowConstants;
+import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
@@ -24,6 +25,7 @@ import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
@@ -278,6 +280,36 @@ public class AccountReaderImpl implements AccountReader {
 		}
 
 		return ticketSupportEndDate;
+	}
+
+	public boolean isActiveSupport(Entitlement[] entitlements) {
+		for (Entitlement entitlement : entitlements) {
+			String entitlementName = entitlement.getName();
+
+			if (ArrayUtil.contains(
+					EntitlementConstants.SUPPORT_ENTITLEMENTS,
+					entitlementName)) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isActiveTicketSupport(Entitlement[] entitlements) {
+		for (Entitlement entitlement : entitlements) {
+			String entitlementName = entitlement.getName();
+
+			if (ArrayUtil.contains(
+					EntitlementConstants.TICKET_SUPPORT_ENTITLEMENTS,
+					entitlementName)) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public boolean isSyncAccount(List<ProductPurchase> productPurchases)

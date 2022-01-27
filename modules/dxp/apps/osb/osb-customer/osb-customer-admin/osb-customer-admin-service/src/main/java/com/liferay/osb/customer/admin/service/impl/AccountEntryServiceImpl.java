@@ -194,13 +194,11 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 					koroneikiAccountKey);
 
 			if (accountEntry != null) {
-				List<ProductPurchase> productPurchases =
-					_accountReader.getProductPurchases(account.getKey());
-
 				accountEntryLocalService.updateAccountEntry(
 					accountEntry.getAccountEntryId(),
-					_accountReader.getSupportEndDate(productPurchases),
-					_accountReader.getTicketSupportEndDate(productPurchases),
+					_accountReader.isActiveSupport(account.getEntitlements()),
+					_accountReader.isActiveTicketSupport(
+						account.getEntitlements()),
 					_accountReader.getStatus(account));
 			}
 			else {
@@ -218,9 +216,10 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 						_accountReader.getCorpProjectId(
 							account.getExternalLinks()),
 						account.getName(), account.getCode(), null,
-						_accountReader.getSupportEndDate(productPurchases),
-						_accountReader.getTicketSupportEndDate(
-							productPurchases),
+						_accountReader.isActiveSupport(
+							account.getEntitlements()),
+						_accountReader.isActiveTicketSupport(
+							account.getEntitlements()),
 						_accountReader.getStatus(account),
 						new String[] {
 							AccountEntryConstants.getLanguageId(
