@@ -12,12 +12,7 @@ definition {
 
 		User.firstLoginPG();
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Publications",
-			panel = "Applications",
-			portlet = "Settings");
-
-		Publications.enablePublications();
+		JSONPublications.enablePublications();
 	}
 
 	tearDown {
@@ -44,7 +39,9 @@ definition {
 		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property test.assert.warning.exceptions = "true";
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -79,9 +76,9 @@ definition {
 
 		DMDocument.viewDocumentVersionNumberCmdPG(dmDocumentVersionNumber = "2.0");
 
-		Publications.gotoPublish(publicationName = "Publication Name");
+		JSONPublications.publishPublication(publicationName = "Publication Name");
 
-		Publications.publishPublication(publicationName = "Publication Name");
+		Publications.viewPublicationPublished(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -108,7 +105,9 @@ definition {
 			dmDocumentFile = "Document_1.txt",
 			dmDocumentTitle = "DM Document Title");
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -122,7 +121,9 @@ definition {
 			dmDocumentTitleEdit = "DM Document Title Edit",
 			dmDocumentVersionNumber = "1.1");
 
-		Publications.createNewPublication(publicationName = "Publication Name 2");
+		JSONPublications.addPublication(publicationName = "Publication Name 2");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name 2");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -136,11 +137,13 @@ definition {
 			dmDocumentTitleEdit = "DM Document 2 Title Edit",
 			dmDocumentVersionNumber = "1.1");
 
-		Publications.gotoPublish(publicationName = "Publication Name 2");
+		JSONPublications.publishPublication(publicationName = "Publication Name 2");
 
-		Publications.publishPublication(publicationName = "Publication Name 2");
+		Publications.viewPublicationPublished(publicationName = "Publication Name 2");
 
-		Publications.selectPublication(publicationName = "Publication Name");
+		Publications.selectPublication(
+			gotoManagePublications = "true",
+			publicationName = "Publication Name");
 
 		Publications.gotoPublish(publicationName = "Publication Name");
 
@@ -152,8 +155,8 @@ definition {
 
 		Publications.viewPublicationsDiff(
 			columnName = "Title",
-			columnValueInPublication = "WC WebContent Title Edit",
-			entryTitle = "WC WebContent Title Edit",
+			columnValueInPublication = "DM Document Title Edit",
+			entryTitle = "DM Document Title Edit",
 			publicationName = "Publication Name");
 
 		IFrame.closeFrame();
@@ -183,7 +186,9 @@ definition {
 			dmFolderDescription = "DM Folder 1 Description",
 			dmFolderName = "DM Folder 1 Name");
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -258,7 +263,9 @@ definition {
 			dmDocumentFile = "Document_1.txt",
 			dmDocumentTitle = "DM Document Title");
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -314,9 +321,9 @@ definition {
 			changeDescription = "Test Test added a Documents Folder in Guest",
 			changeTitle = "DM Folder Name");
 
-		Publications.gotoPublish(publicationName = "Publication Name");
+		JSONPublications.publishPublication(publicationName = "Publication Name");
 
-		Publications.publishPublication(publicationName = "Publication Name");
+		Publications.viewPublicationPublished(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -338,7 +345,9 @@ definition {
 
 		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -391,9 +400,9 @@ definition {
 			changeDescription = "Test Test added a Document in Guest",
 			changeTitle = "DM Document Title");
 
-		Publications.gotoPublish(publicationName = "Publication Name");
+		JSONPublications.publishPublication(publicationName = "Publication Name");
 
-		Publications.publishPublication(publicationName = "Publication Name");
+		Publications.viewPublicationPublished(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -424,7 +433,9 @@ definition {
 
 		JSONGroup.addGroup(groupName = "Site Name");
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",
@@ -456,9 +467,9 @@ definition {
 			changeType = "Added",
 			changeUser = "Test Test");
 
-		Publications.gotoPublish(publicationName = "Publication Name");
+		JSONPublications.publishPublication(publicationName = "Publication Name");
 
-		Publications.publishPublication(publicationName = "Publication Name");
+		Publications.viewPublicationPublished(publicationName = "Publication Name");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 

@@ -12,12 +12,7 @@ definition {
 
 		User.firstLoginPG();
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Publications",
-			panel = "Applications",
-			portlet = "Settings");
-
-		Publications.enablePublications();
+		JSONPublications.enablePublications();
 	}
 
 	tearDown {
@@ -50,7 +45,9 @@ definition {
 			folderName = "WC Folder Name",
 			groupName = "Site Name");
 
-		Publications.createNewPublication(publicationName = "Publication 1 Name");
+		JSONPublications.addPublication(publicationName = "Publication 1 Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication 1 Name");
 
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Content",
@@ -82,7 +79,9 @@ definition {
 			changeType = "Modified",
 			changeUser = "Test Test");
 
-		Publications.createNewPublication(publicationName = "Publication 2 Name");
+		JSONPublications.addPublication(publicationName = "Publication 2 Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication 2 Name");
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
 
@@ -105,11 +104,13 @@ definition {
 			changeType = "Deleted",
 			changeUser = "Test Test");
 
-		Publications.gotoPublish(publicationName = "Publication 2 Name");
+		JSONPublications.publishPublication(publicationName = "Publication 2 Name");
 
-		Publications.publishPublication(publicationName = "Publication 2 Name");
+		Publications.viewPublicationPublished(publicationName = "Publication 2 Name");
 
-		Publications.selectPublication(publicationName = "Publication 1 Name");
+		Publications.selectPublication(
+			gotoManagePublications = "true",
+			publicationName = "Publication 1 Name");
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
 
@@ -145,7 +146,9 @@ definition {
 
 		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -195,9 +198,9 @@ definition {
 			expiredContent = "true",
 			webContentTitle = "WC WebContent Title");
 
-		Publications.gotoPublish(publicationName = "Publication Name");
+		JSONPublications.publishPublication(publicationName = "Publication Name");
 
-		Publications.publishPublication(publicationName = "Publication Name");
+		Publications.viewPublicationPublished(publicationName = "Publication Name");
 
 		Navigator.gotoPage(pageName = "Test Page");
 
@@ -213,7 +216,9 @@ definition {
 
 		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -253,7 +258,9 @@ definition {
 			gotoManagePublications = "true",
 			publicationName = "Publication Name");
 
-		Publications.publishPublication(publicationName = "Publication Name");
+		JSONPublications.publishPublication(publicationName = "Publication Name");
+
+		Publications.viewPublicationPublished(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -268,7 +275,9 @@ definition {
 	test PublishWebContentWithDMAndImageFields {
 		property test.assert.warning.exceptions = "true";
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -368,9 +377,9 @@ definition {
 			changeType = "Added",
 			changeUser = "Test Test");
 
-		Publications.gotoPublish(publicationName = "Publication Name");
+		JSONPublications.publishPublication(publicationName = "Publication Name");
 
-		Publications.publishPublication(publicationName = "Publication Name");
+		Publications.viewPublicationPublished(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -390,7 +399,9 @@ definition {
 
 		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 
-		Publications.createNewPublication(publicationName = "Publication Name");
+		JSONPublications.addPublication(publicationName = "Publication Name");
+
+		JSONPublications.selectPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
 
@@ -445,9 +456,9 @@ definition {
 			changeType = "Added",
 			changeUser = "Test Test");
 
-		Publications.gotoPublish(publicationName = "Publication Name");
+		JSONPublications.publishPublication(publicationName = "Publication Name");
 
-		Publications.publishPublication(publicationName = "Publication Name");
+		Publications.viewPublicationPublished(publicationName = "Publication Name");
 
 		Navigator.openSpecificURL(url = "${portalURL}/web/guest/-/friendlyUrl");
 
