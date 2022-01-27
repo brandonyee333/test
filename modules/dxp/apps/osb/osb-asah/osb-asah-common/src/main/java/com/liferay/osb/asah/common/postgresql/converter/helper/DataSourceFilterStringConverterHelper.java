@@ -60,9 +60,13 @@ public class DataSourceFilterStringConverterHelper
 		String fieldName, String operator, String valueString) {
 
 		if (fieldName.equals("channelId") && operator.equals("eq")) {
-			Field<Long> field = DSL.field("id", Long.class);
+			Set<Long> dataSourceIds = _getDataSourceIds(valueString);
 
-			return field.in(_getDataSourceIds(valueString));
+			if (!dataSourceIds.isEmpty()) {
+				Field<Long> field = DSL.field("id", Long.class);
+
+				return field.in(dataSourceIds);
+			}
 		}
 
 		return null;
