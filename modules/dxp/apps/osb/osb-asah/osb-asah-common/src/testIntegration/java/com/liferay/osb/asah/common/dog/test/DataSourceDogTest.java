@@ -45,6 +45,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
@@ -107,6 +108,27 @@ public class DataSourceDogTest
 
 		Assertions.assertEquals("DISCONNECTED", dataSource.getState());
 		Assertions.assertEquals("INACTIVE", dataSource.getStatus());
+	}
+
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@Test
+	public void testGetDataSources() {
+		Page<DataSource> dataSourcesPage = _dataSourceDog.getDataSourcesPage(
+			"(channelId eq [1])", 0, 10, null);
+
+		Assertions.assertFalse(dataSourcesPage.isEmpty());
+
+		dataSourcesPage = _dataSourceDog.getDataSourcesPage(
+			"(channelId eq [4])", 0, 10, null);
+
+		Assertions.assertTrue(dataSourcesPage.isEmpty());
 	}
 
 	@Test
