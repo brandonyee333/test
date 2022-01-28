@@ -284,11 +284,9 @@ public class AccountReaderImpl implements AccountReader {
 
 	public boolean isActiveSupport(Entitlement[] entitlements) {
 		for (Entitlement entitlement : entitlements) {
-			String entitlementName = entitlement.getName();
-
 			if (ArrayUtil.contains(
 					EntitlementConstants.SUPPORT_ENTITLEMENTS,
-					entitlementName)) {
+					entitlement.getName())) {
 
 				return true;
 			}
@@ -299,11 +297,9 @@ public class AccountReaderImpl implements AccountReader {
 
 	public boolean isActiveTicketSupport(Entitlement[] entitlements) {
 		for (Entitlement entitlement : entitlements) {
-			String entitlementName = entitlement.getName();
-
 			if (ArrayUtil.contains(
 					EntitlementConstants.TICKET_SUPPORT_ENTITLEMENTS,
-					entitlementName)) {
+					entitlement.getName())) {
 
 				return true;
 			}
