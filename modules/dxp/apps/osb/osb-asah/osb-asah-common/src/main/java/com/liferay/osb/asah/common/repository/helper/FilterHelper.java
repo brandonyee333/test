@@ -36,20 +36,18 @@ public class FilterHelper {
 		String filterString,
 		FilterStringConverterHelper postgresqlFilterStringConverterHelper) {
 
+		_elasticsearchFilterStringConverterHelper =
+			elasticsearchFilterStringConverterHelper;
 		_filterString = filterString;
-
-		_condition = ConditionUtil.toCondition(
-			_filterString, postgresqlFilterStringConverterHelper);
-		_queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			_filterString, elasticsearchFilterStringConverterHelper);
+		_postgresqlFilterStringConverterHelper =
+			postgresqlFilterStringConverterHelper;
 	}
 
 	public FilterHelper(String filterString) {
 		_filterString = filterString;
 
-		_condition = ConditionUtil.toCondition(_filterString);
-		_queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			_filterString);
+		_elasticsearchFilterStringConverterHelper = null;
+		_postgresqlFilterStringConverterHelper = null;
 	}
 
 	@Override
@@ -64,9 +62,13 @@ public class FilterHelper {
 
 		FilterHelper filterHelper = (FilterHelper)obj;
 
-		if (Objects.equals(_condition, filterHelper._condition) &&
+		if (Objects.equals(
+				_elasticsearchFilterStringConverterHelper,
+				filterHelper._elasticsearchFilterStringConverterHelper) &&
 			Objects.equals(_filterString, filterHelper._filterString) &&
-			Objects.equals(_queryBuilder, filterHelper._queryBuilder)) {
+			Objects.equals(
+				_postgresqlFilterStringConverterHelper,
+				filterHelper._postgresqlFilterStringConverterHelper)) {
 
 			return true;
 		}
@@ -75,7 +77,12 @@ public class FilterHelper {
 	}
 
 	public Condition getCondition() {
-		return _condition;
+		if (_postgresqlFilterStringConverterHelper == null) {
+			return ConditionUtil.toCondition(_filterString);
+		}
+
+		return ConditionUtil.toCondition(
+			_filterString, _postgresqlFilterStringConverterHelper);
 	}
 
 	public String getFilterString() {
@@ -83,16 +90,25 @@ public class FilterHelper {
 	}
 
 	public QueryBuilder getQueryBuilder() {
-		return _queryBuilder;
+		if (_elasticsearchFilterStringConverterHelper == null) {
+			return FilterStringToQueryBuilderConverter.convert(_filterString);
+		}
+
+		return FilterStringToQueryBuilderConverter.convert(
+			_filterString, _elasticsearchFilterStringConverterHelper);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_condition, _filterString, _queryBuilder);
+		return Objects.hash(
+			_elasticsearchFilterStringConverterHelper, _filterString,
+			_postgresqlFilterStringConverterHelper);
 	}
 
-	private final Condition _condition;
+	private final FilterStringConverterHelper
+		_elasticsearchFilterStringConverterHelper;
 	private final String _filterString;
-	private final QueryBuilder _queryBuilder;
+	private final FilterStringConverterHelper
+		_postgresqlFilterStringConverterHelper;
 
 }
