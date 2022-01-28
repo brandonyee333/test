@@ -154,10 +154,6 @@ public class PortalImplCanonicalURLTest {
 		).build();
 
 		friendlyURLMap = HashMapBuilder.put(
-			LocaleUtil.GERMANY, _group.getFriendlyURL()
-		).put(
-			LocaleUtil.SPAIN, _group.getFriendlyURL()
-		).put(
 			LocaleUtil.US, _group.getFriendlyURL()
 		).build();
 
