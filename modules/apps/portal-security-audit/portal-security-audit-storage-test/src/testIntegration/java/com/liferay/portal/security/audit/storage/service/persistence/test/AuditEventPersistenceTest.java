@@ -101,6 +101,17 @@ public class AuditEventPersistenceTest {
 	}
 
 	@Test
+	public void testCreateDummyChange() throws Exception {
+		long pk = RandomTestUtil.nextLong();
+
+		AuditEvent auditEvent = _persistence.create(pk);
+
+		Assert.assertNotNull(auditEvent);
+
+		Assert.assertEquals(auditEvent.getPrimaryKey(), pk);
+	}
+
+	@Test
 	public void testRemove() throws Exception {
 		AuditEvent newAuditEvent = addAuditEvent();
 
