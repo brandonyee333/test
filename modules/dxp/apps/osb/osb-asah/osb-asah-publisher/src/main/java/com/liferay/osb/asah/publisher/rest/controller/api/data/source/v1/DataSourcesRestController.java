@@ -41,8 +41,12 @@ public class DataSourcesRestController {
 	 */
 	@Deprecated
 	@GetMapping("/{id}")
-	public String getDataSource(@PathVariable Long id) {
-		DataSource dataSource = _dataSourceDog.getDataSource(id);
+	public String fetchDataSource(@PathVariable Long id) {
+		DataSource dataSource = _dataSourceDog.fetchDataSource(id);
+
+		if (dataSource == null) {
+			return null;
+		}
 
 		_sanitize(dataSource);
 
