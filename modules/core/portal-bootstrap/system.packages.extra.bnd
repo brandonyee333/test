@@ -362,9 +362,9 @@ Provide-Capability:\
 	@../../../lib/portal/json-java.jar,\
 	@../../../lib/portal/liferay-icu4j.jar,\
 	@../../../lib/portal/log4j-extras.jar,\
-	@../../../lib/portal/log4j.jar,\
 	@../../../lib/portal/netty-all.jar,\
 	@../../../lib/portal/portletmvc4spring-framework.jar,\
+	@../../../lib/portal/reload4j.jar,\
 	@../../../lib/portal/rome.jar,\
 	@../../../lib/portal/slf4j-api.jar,\
 	@../../../lib/portal/spring-aop.jar,\
