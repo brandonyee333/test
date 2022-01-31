@@ -15,10 +15,13 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
+import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceOrganization;
 import com.liferay.osb.asah.common.entity.DataSourceSite;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -93,6 +96,14 @@ public class DataSourceRepositoryTest
 		dataSource3.setWorkspaceURL("");
 
 		setUpRepository(dataSource1, dataSource2, dataSource3);
+
+		Channel channel = new Channel("Channel");
+
+		entityModels.forEach(
+			dataSource -> channel.addChannelDataSource(
+				new ChannelDataSource(dataSource.getId(), null)));
+
+		_channelRepository.save(channel);
 	}
 
 	@Test
@@ -484,6 +495,9 @@ public class DataSourceRepositoryTest
 		Assertions.assertEquals(
 			expectedDataSource.getURL(), actualDataSource.getURL());
 	}
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DataSourceFilterStringConverterHelper
