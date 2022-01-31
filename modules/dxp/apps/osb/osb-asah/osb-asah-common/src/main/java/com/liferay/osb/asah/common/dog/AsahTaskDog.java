@@ -56,7 +56,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 		return asahTaskOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
-				"There is no Asah Task with ID " + asahTaskId));
+				"There is no Asah task with ID " + asahTaskId));
 	}
 
 	public List<AsahTask> getAsahTasks() {
@@ -97,7 +97,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(
-				"Unable to schedule Asah Task", exception);
+				"Unable to schedule Asah task", exception);
 		}
 	}
 

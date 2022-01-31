@@ -168,7 +168,7 @@ public class OSBAsahBatchCuratorBot {
 					}
 					catch (Exception exception) {
 						_log.error(
-							"Unable to run immediate Asah Task", exception);
+							"Unable to run immediate Asah task", exception);
 					}
 					finally {
 						ProjectIdThreadLocal.remove();
