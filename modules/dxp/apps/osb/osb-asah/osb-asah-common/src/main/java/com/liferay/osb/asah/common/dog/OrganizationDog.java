@@ -123,6 +123,19 @@ public class OrganizationDog {
 			dataSourceId, organizationPKs);
 	}
 
+	public Page<Organization> getOrganizationsPage(
+		@Nullable String keywords, int size,
+		com.liferay.osb.asah.common.model.Sort sort, int start) {
+
+		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
+
+		List<Organization> organizations =
+			_organizationRepository.searchOrganizations(keywords, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			organizations, pageRequest, organizations::size);
+	}
+
 	public Page<Transformation> getTransformationPage(
 		String apply, @Nullable String filterString, int page, int size) {
 
