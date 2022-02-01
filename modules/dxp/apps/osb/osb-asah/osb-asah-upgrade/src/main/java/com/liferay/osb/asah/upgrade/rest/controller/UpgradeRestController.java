@@ -19,8 +19,8 @@ import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.v3_0_5.EventIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_0_5.IndividualEventUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_1_0.EventsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.PagesUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_1_1.EventsUpgradeStep;
 
 import java.util.List;
 import java.util.Map;
@@ -234,7 +234,7 @@ public class UpgradeRestController {
 					projectId,
 					() -> {
 						try {
-							_eventsUpgradeStep.upgrade("3.1.1");
+							_eventsUpgradeStep.upgrade("3.1.0");
 						}
 						catch (Exception exception) {
 							_log.error(
