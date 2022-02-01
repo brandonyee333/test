@@ -87,8 +87,6 @@ public class EventsUpgradeStep implements UpgradeStep {
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.existsQuery("eventContext")
 			).filter(
-				QueryBuilders.existsQuery("eventProperties")
-			).filter(
 				QueryBuilders.existsQuery("sessionId")
 			));
 		searchSourceBuilder.size(_customEventUpgradeBatchSize);
@@ -254,10 +252,12 @@ public class EventsUpgradeStep implements UpgradeStep {
 				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
 
 			JSONObject eventPropertiesJSONObject =
-				activityJSONObject.getJSONObject("eventProperties");
+				activityJSONObject.optJSONObject("eventProperties");
 
-			analyticsEvent.setEventProperties(
-				_toSafeMap(eventPropertiesJSONObject.toMap()));
+			if (eventPropertiesJSONObject != null) {
+				analyticsEvent.setEventProperties(
+					_toSafeMap(eventPropertiesJSONObject.toMap()));
+			}
 
 			analyticsEvent.setId(activityJSONObject.getString("id"));
 			analyticsEvent.setEventId(activityJSONObject.getString("eventId"));
