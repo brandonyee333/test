@@ -59,7 +59,7 @@ public class BeanUtils {
 
 			Object value = source.get(targetPropertyName);
 
-			if (value == null) {
+			if ((value == null) || StringUtil.isNull(value.toString())) {
 				continue;
 			}
 
@@ -176,7 +176,7 @@ public class BeanUtils {
 			try {
 				Object value = sourcePropertyReadMethod.invoke(source);
 
-				if (value == null) {
+				if ((value == null) || StringUtil.isNull(value.toString())) {
 					continue;
 				}
 
