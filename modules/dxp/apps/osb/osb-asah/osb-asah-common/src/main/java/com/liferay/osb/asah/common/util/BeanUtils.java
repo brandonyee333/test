@@ -33,6 +33,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.jooq.JSON;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.core.ResolvableType;
@@ -132,9 +133,15 @@ public class BeanUtils {
 						Arrays.asList((Long[])array.getArray()));
 				}
 				else if (targetPropertyValue instanceof JSON) {
-					JSON jsonValue = (JSON)targetPropertyValue;
+					String jsonValueString = String.valueOf(
+						targetPropertyValue);
 
-					targetPropertyValue = new JSONObject(jsonValue.toString());
+					if (jsonValueString.startsWith("{")) {
+						targetPropertyValue = new JSONObject(jsonValueString);
+					}
+					else if (jsonValueString.startsWith("[")) {
+						targetPropertyValue = new JSONArray(jsonValueString);
+					}
 				}
 
 				targetPropertyWriteMethod.invoke(target, targetPropertyValue);
