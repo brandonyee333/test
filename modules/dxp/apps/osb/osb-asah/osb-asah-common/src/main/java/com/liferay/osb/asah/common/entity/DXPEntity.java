@@ -109,6 +109,10 @@ public class DXPEntity implements Persistable<Long> {
 	}
 
 	public String getName() {
+		if (_name == null) {
+			return _fieldsJSONObject.optString("name", null);
+		}
+
 		return _name;
 	}
 
