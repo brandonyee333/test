@@ -338,10 +338,12 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 					put(
 						"dataSourceId",
 						objectJSONObject.getString("osbAsahDataSourceId"));
-					put("fields.userId", objectJSONObject.optInt("userId"));
+					put(
+						"fields." + type.getIdFieldName(),
+						objectJSONObject.optInt(type.getIdFieldName()));
 				}
 			},
-			DXPEntity.Type.USER);
+			type);
 
 		if (action.equalsIgnoreCase("delete") && (dxpEntity != null)) {
 			try {
