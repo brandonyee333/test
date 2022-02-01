@@ -16,16 +16,19 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,6 +50,7 @@ import org.json.JSONObject;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -163,6 +167,46 @@ public class ElasticsearchOrganizationRepositoryImpl
 	}
 
 	@Override
+	public List<Organization> searchOrganizations(
+		@Nullable String keywords, Pageable pageable) {
+
+		try {
+			CollectionGetResponse collectionGetResponse =
+				new CollectionGetResponse();
+
+			collectionGetResponse.setCollectionName("organizations");
+			collectionGetResponse.setElasticsearchInvoker(
+				_faroInfoElasticsearchInvoker);
+			collectionGetResponse.setPage(pageable.getPageNumber());
+			collectionGetResponse.setQueryBuilder(
+				QueryUtil.buildSearchQueryBuilder("name", keywords));
+			collectionGetResponse.setSize(pageable.getPageSize());
+
+			List<String> sorts = new ArrayList<>();
+
+			for (com.liferay.osb.asah.common.model.Sort.Order order :
+					pageable.getSort()) {
+
+				sorts.add(order.getProperty());
+				sorts.add(_getOrderDirection(order));
+			}
+
+			collectionGetResponse.setSorts(sorts.toArray(new String[0]));
+
+			JSONObject jsonObject = new JSONObject(
+				collectionGetResponse.respond());
+
+			JSONObject embeddedJSONObject = jsonObject.getJSONObject(
+				"_embedded");
+
+			return toList(embeddedJSONObject.getJSONArray("organizations"));
+		}
+		catch (Exception exception) {
+			return Collections.emptyList();
+		}
+	}
+
+	@Override
 	protected String getCollectionName() {
 		return "organizations";
 	}
@@ -198,6 +242,16 @@ public class ElasticsearchOrganizationRepositoryImpl
 		}
 
 		return jsonObject;
+	}
+
+	private String _getOrderDirection(
+		com.liferay.osb.asah.common.model.Sort.Order order) {
+
+		if (order.isAscending()) {
+			return "asc";
+		}
+
+		return "desc";
 	}
 
 	private String[] _getSorts(Sort sort) {

@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import org.eclipse.jetty.util.StringUtil;
+
 import org.jooq.AggregateFunction;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -33,6 +35,7 @@ import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
@@ -143,6 +146,36 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 			pageable.getOffset()
 		).fetch(
 			record -> new Organization(record.intoMap())
+		);
+	}
+
+	public List<Organization> searchOrganizations(
+		@Nullable String keywords, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Organization"
+		).where(
+			_getCondition(keywords)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+			record -> new Organization(record.intoMap())
+		);
+	}
+
+	private Condition _getCondition(String keywords) {
+		if (StringUtil.isBlank(keywords)) {
+			return DSL.noCondition();
+		}
+
+		return DSL.field(
+			"name"
+		).contains(
+			keywords
 		);
 	}
 
