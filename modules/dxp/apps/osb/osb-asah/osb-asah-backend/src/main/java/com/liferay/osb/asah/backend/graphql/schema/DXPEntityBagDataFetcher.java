@@ -43,7 +43,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "groups", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "organizations", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "roles", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "teams", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "userGroups", typeName = "QueryType")
