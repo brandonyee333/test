@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.test.util.faro.DXPRawTestUtil;
@@ -46,6 +47,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Matthew Kong
@@ -161,6 +163,24 @@ public class OrganizationDogTest
 				Collections.singletonList(organization.getOrganizationPK()));
 
 		Assertions.assertFalse(organizations.isEmpty());
+	}
+
+	@Test
+	public void testGetOrganizationsPage() throws Exception {
+		JSONObject dxpRawOrganizationJSONObject =
+			DXPRawTestUtil.buildOrganizationJSONObject(
+				String.valueOf(_liferayDataSource.getId()));
+
+		Organization organization = _organizationDog.addOrganization(
+			dxpRawOrganizationJSONObject, _liferayDataSource);
+
+		String name = organization.getName();
+
+		Page<Organization> organizationsPage =
+			_organizationDog.getOrganizationsPage(
+				name.substring(3), 10, new Sort("name", "asc"), 0);
+
+		Assertions.assertEquals(organizationsPage.getTotalElements(), 1);
 	}
 
 	@Test
