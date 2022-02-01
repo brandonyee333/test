@@ -193,6 +193,8 @@ public class GraphQLConfiguration {
 		_wireGraphQLTypeProperty(builder, "jobs", "results", "JobBag");
 		_wireGraphQLTypeProperty(builder, "metrics", "results", "MetricBag");
 		_wireGraphQLTypeProperty(
+			builder, "organizations", "results", "OrganizationBag");
+		_wireGraphQLTypeProperty(
 			builder, "pageAssets", "results", "PageAssetBag");
 		_wireGraphQLTypeProperty(
 			builder, "status", "dataExportTaskStatus", "DataExportTask");
