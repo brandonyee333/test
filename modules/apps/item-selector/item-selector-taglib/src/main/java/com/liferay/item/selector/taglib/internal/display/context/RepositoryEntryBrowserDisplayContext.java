@@ -14,14 +14,19 @@
 
 package com.liferay.item.selector.taglib.internal.display.context;
 
+import com.liferay.document.library.kernel.util.ImageProcessorUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -32,6 +37,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author Adolfo Pérez
  */
 public class RepositoryEntryBrowserDisplayContext {
+
+	public static final String VIDEO_EXTERNAL_SHORTCUT =
+		"application/vnd+liferay.video.external.shortcut+html";
 
 	public RepositoryEntryBrowserDisplayContext(
 		HttpServletRequest httpServletRequest) {
@@ -51,6 +59,34 @@ public class RepositoryEntryBrowserDisplayContext {
 		Group group = _getGroup(groupId);
 
 		return group.getDescriptiveName(locale);
+	}
+
+	public String getType(FileVersion fileVersion) {
+		if (fileVersion == null) {
+			return StringPool.BLANK;
+		}
+
+		if (ArrayUtil.contains(
+				PropsValues.DL_FILE_ENTRY_PREVIEW_AUDIO_MIME_TYPES,
+				fileVersion.getMimeType())) {
+
+			return "audio";
+		}
+
+		if (ImageProcessorUtil.isSupported(fileVersion.getMimeType())) {
+			return "image";
+		}
+
+		if (ArrayUtil.contains(
+				PropsValues.DL_FILE_ENTRY_PREVIEW_VIDEO_MIME_TYPES,
+				fileVersion.getMimeType()) ||
+			Objects.equals(
+				VIDEO_EXTERNAL_SHORTCUT, fileVersion.getMimeType())) {
+
+			return "video";
+		}
+
+		return StringPool.BLANK;
 	}
 
 	public boolean isSearchEverywhere() {
