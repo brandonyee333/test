@@ -23,10 +23,12 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.junit.jupiter.api.Assertions;
@@ -34,6 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * @author Leslie Wong
@@ -77,6 +80,41 @@ public class EventAttributeRepositoryTest
 		Assertions.assertEquals(
 			Collections.emptyList(),
 			_eventAttributeRepository.findDistinctAttributeValues(2001L, 10));
+	}
+
+	@SQLResource(resourcePath = "test_event_attributes_2.sql")
+	@Test
+	public void testFindValuesByEventAttributeDefinitionIdAndEventDefinitionIdAndChannelIdAndKeywords() {
+		List<String> values1 =
+			_eventAttributeRepository.searchDistinctValuesByKeywords(
+				1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 100));
+
+		Assertions.assertEquals(4, values1.size());
+
+		for (String value :
+				Arrays.asList(
+					"event attribute value 4", "event attribute value 3",
+					"event attribute value 2", "event attribute value 1")) {
+
+			Assertions.assertTrue(values1.contains(value));
+		}
+
+		List<String> values2 =
+			_eventAttributeRepository.searchDistinctValuesByKeywords(
+				1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 3));
+
+		Assertions.assertEquals(3, values2.size());
+
+		List<String> values3 =
+			_eventAttributeRepository.searchDistinctValuesByKeywords(
+				1L, 3001L, 3002L, "Attribute Value", PageRequest.of(1, 3));
+
+		Assertions.assertEquals(1, values3.size());
+
+		Assertions.assertEquals(
+			4,
+			_eventAttributeRepository.countDistinctValuesByKeywords(
+				1L, 3001L, 3002L, "Attribute Value"));
 	}
 
 	private Date _getExpectedDate(Date date, int deltaDays) {
