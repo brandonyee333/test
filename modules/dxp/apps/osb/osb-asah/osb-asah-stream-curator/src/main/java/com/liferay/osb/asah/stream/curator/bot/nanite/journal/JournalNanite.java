@@ -87,6 +87,11 @@ public class JournalNanite extends BaseNanite<Journal> {
 	}
 
 	@Override
+	protected boolean isRefresh() {
+		return false;
+	}
+
+	@Override
 	protected void setModelCustomProperties(
 		AnalyticsEvent analyticsEvent, Journal journal) {
 

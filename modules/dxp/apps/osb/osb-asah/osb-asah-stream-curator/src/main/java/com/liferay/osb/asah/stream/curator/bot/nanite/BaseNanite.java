@@ -160,6 +160,10 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	protected abstract Function<T, String> getPrimaryKeyGeneratorFunction();
 
+	protected boolean isRefresh() {
+		return true;
+	}
+
 	protected T mergeModels(T oldModel, T newModel) {
 		if (oldModel.getSegmentNames() != null) {
 			oldModel.addSegmentNames(newModel.getSegmentNames());
@@ -216,7 +220,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	protected void saveModels(Collection<T> models) {
 		_cerebroInfoElasticsearchInvoker.save(
-			getCollectionName(), ModelMapper.toJSONArray(models), false);
+			getCollectionName(), ModelMapper.toJSONArray(models), isRefresh());
 	}
 
 	protected void sendAckIds(List<String> ackIds) {
