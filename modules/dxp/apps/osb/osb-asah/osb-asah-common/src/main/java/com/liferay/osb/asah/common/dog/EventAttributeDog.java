@@ -21,6 +21,9 @@ import com.liferay.osb.asah.common.repository.EventAttributeRepository;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -52,6 +55,22 @@ public class EventAttributeDog {
 				String.format(
 					"There is no event attribute with name %s and event ID %s",
 					attributeName, eventId)));
+	}
+
+	public Page<String> getEventAttributeValuesPage(
+		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
+		String keywords, Integer size, Integer start) {
+
+		PageRequest pageRequest = PageRequest.of(start, size);
+
+		return PageableExecutionUtils.getPage(
+			_eventAttributeRepository.searchDistinctValuesByKeywords(
+				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				keywords, pageRequest),
+			pageRequest,
+			() -> _eventAttributeRepository.countDistinctValuesByKeywords(
+				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				keywords));
 	}
 
 	@Autowired
