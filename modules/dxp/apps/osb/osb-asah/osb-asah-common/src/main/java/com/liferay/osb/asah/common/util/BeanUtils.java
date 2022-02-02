@@ -133,14 +133,13 @@ public class BeanUtils {
 						Arrays.asList((Long[])array.getArray()));
 				}
 				else if (targetPropertyValue instanceof JSON) {
-					String jsonValueString = String.valueOf(
-						targetPropertyValue);
+					String json = String.valueOf(targetPropertyValue);
 
-					if (jsonValueString.startsWith("{")) {
-						targetPropertyValue = new JSONObject(jsonValueString);
+					if (json.startsWith("{")) {
+						targetPropertyValue = new JSONObject(json);
 					}
-					else if (jsonValueString.startsWith("[")) {
-						targetPropertyValue = new JSONArray(jsonValueString);
+					else if (json.startsWith("[")) {
+						targetPropertyValue = new JSONArray(json);
 					}
 				}
 
