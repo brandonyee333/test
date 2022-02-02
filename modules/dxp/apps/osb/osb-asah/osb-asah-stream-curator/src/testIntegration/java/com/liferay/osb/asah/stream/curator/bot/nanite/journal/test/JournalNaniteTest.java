@@ -50,6 +50,8 @@ public class JournalNaniteTest
 	public void testJournalMetrics() throws Exception {
 		runNanite();
 
+		_elasticsearchInvoker.refresh();
+
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_journal_info.json", this),
