@@ -52,6 +52,9 @@ public interface ElasticsearchInvoker {
 
 	public JSONObject add(String collectionName, JSONObject jsonObject);
 
+	public JSONObject add(
+		String collectionName, JSONObject jsonObject, boolean refresh);
+
 	public long count(String collectionName, QueryBuilder queryBuilder);
 
 	public ElasticsearchBulkRequestBuilder
@@ -138,9 +141,18 @@ public interface ElasticsearchInvoker {
 
 	public JSONObject replace(String collectionName, JSONObject jsonObject);
 
+	public JSONObject replace(
+		String collectionName, JSONObject jsonObject, boolean refresh);
+
 	public void save(String collectionName, JSONArray jsonArray);
 
+	public void save(
+		String collectionName, JSONArray jsonArray, boolean refresh);
+
 	public JSONObject save(String collectionName, JSONObject jsonObject);
+
+	public JSONObject save(
+		String collectionName, JSONObject jsonObject, boolean refresh);
 
 	public SearchResponse search(
 		String collectionName, Consumer<SearchSourceBuilder> consumer);

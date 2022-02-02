@@ -160,6 +160,13 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject add(String collectionName, JSONObject jsonObject) {
+		return add(collectionName, jsonObject, true);
+	}
+
+	@Override
+	public JSONObject add(
+		String collectionName, JSONObject jsonObject, boolean refresh) {
+
 		if (jsonObject == null) {
 			return null;
 		}
@@ -174,8 +181,11 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		IndexRequestBuilder indexRequestBuilder = _client.prepareIndex(
 			_elasticsearchAliases.check(collectionName), collectionName, id);
 
-		indexRequestBuilder.setRefreshPolicy(
-			WriteRequest.RefreshPolicy.IMMEDIATE);
+		if (refresh) {
+			indexRequestBuilder.setRefreshPolicy(
+				WriteRequest.RefreshPolicy.IMMEDIATE);
+		}
+
 		indexRequestBuilder.setSource(jsonObject.toString(), XContentType.JSON);
 
 		ClientUtil.waitForConnection(_client);
@@ -554,12 +564,22 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject replace(String collectionName, JSONObject jsonObject) {
+		return replace(collectionName, jsonObject, true);
+	}
+
+	@Override
+	public JSONObject replace(
+		String collectionName, JSONObject jsonObject, boolean refresh) {
+
 		IndexRequestBuilder indexRequestBuilder = _client.prepareIndex(
 			_elasticsearchAliases.get(collectionName), collectionName,
 			String.valueOf(jsonObject.get("id")));
 
-		indexRequestBuilder.setRefreshPolicy(
-			WriteRequest.RefreshPolicy.IMMEDIATE);
+		if (refresh) {
+			indexRequestBuilder.setRefreshPolicy(
+				WriteRequest.RefreshPolicy.IMMEDIATE);
+		}
+
 		indexRequestBuilder.setSource(jsonObject.toString(), XContentType.JSON);
 
 		ClientUtil.waitForConnection(_client);
@@ -571,13 +591,27 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public void save(String collectionName, JSONArray jsonArray) {
+		save(collectionName, jsonArray, true);
+	}
+
+	@Override
+	public void save(
+		String collectionName, JSONArray jsonArray, boolean refresh) {
+
 		for (int j = 0; j < jsonArray.length(); j++) {
-			save(collectionName, jsonArray.getJSONObject(j));
+			save(collectionName, jsonArray.getJSONObject(j), refresh);
 		}
 	}
 
 	@Override
 	public JSONObject save(String collectionName, JSONObject jsonObject) {
+		return save(collectionName, jsonObject, true);
+	}
+
+	@Override
+	public JSONObject save(
+		String collectionName, JSONObject jsonObject, boolean refresh) {
+
 		Object id = jsonObject.opt("id");
 
 		if (id != null) {
@@ -585,11 +619,11 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 				collectionName, String.valueOf(id));
 
 			if (existingJSONObject != null) {
-				return replace(collectionName, jsonObject);
+				return replace(collectionName, jsonObject, refresh);
 			}
 		}
 
-		return add(collectionName, jsonObject);
+		return add(collectionName, jsonObject, refresh);
 	}
 
 	@Override
