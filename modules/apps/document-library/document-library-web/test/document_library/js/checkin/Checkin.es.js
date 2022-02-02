@@ -45,11 +45,17 @@ function _renderCheckinComponent({checkedOut = true} = {}) {
 }
 
 describe('Checkin', () => {
-	const components = {};
-	Liferay.component = (id, component) => {
-		components[id] = component;
-	};
-	Liferay.componentReady = (id) => Promise.resolve(components[id]);
+	beforeEach(() => {
+		const components = {};
+
+		Liferay.component = (id, component) => {
+			components[id] = component;
+		};
+		Liferay.componentReady = (id) => Promise.resolve(components[id]);
+
+		Liferay.destroyComponent = jest.fn();
+	});
+
 	afterEach(cleanup);
 
 	describe('when the file is checked out', () => {
