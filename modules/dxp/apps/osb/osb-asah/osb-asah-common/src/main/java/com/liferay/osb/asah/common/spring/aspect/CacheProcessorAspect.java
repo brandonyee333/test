@@ -319,6 +319,10 @@ public class CacheProcessorAspect {
 			return false;
 		}
 
+		if (query.startsWith("mutation UpdateEventAnalysis")) {
+			return true;
+		}
+
 		Map<String, Object> variables = (Map<String, Object>)parameters.get(
 			"variables");
 
