@@ -1,0 +1,13 @@
+{
+	"data": {
+		"eventAttributeValues": {
+			"eventAttributeValues": [
+				"event attribute value 1",
+				"event attribute value 2",
+				"event attribute value 3",
+				"event attribute value 4"
+			],
+			"total": 4
+		}
+	}
+}

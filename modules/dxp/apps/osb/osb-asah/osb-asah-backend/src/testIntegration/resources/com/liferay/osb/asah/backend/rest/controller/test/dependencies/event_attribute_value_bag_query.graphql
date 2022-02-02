@@ -1,0 +1,20 @@
+query EventAttributeValues(
+	$channelId: String!,
+	$eventAttributeDefinitionId: String!,
+	$eventDefinitionId: String!,
+	$keywords: String!,
+	$size: Int!,
+	$start: Int!
+) {
+	eventAttributeValues(
+		channelId: $channelId,
+		eventAttributeDefinitionId: $eventAttributeDefinitionId,
+		eventDefinitionId: $eventDefinitionId,
+		keywords: $keywords,
+		size: $size,
+		start: $start
+	) {
+		eventAttributeValues
+		total
+	}
+}
