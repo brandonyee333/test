@@ -438,6 +438,11 @@ type EventAttributeValue {
 	value: String
 }
 
+type EventAttributeValueBag {
+	eventAttributeValues: [String]
+	total: Int
+}
+
 type EventDefinition {
 	description: String
 	displayName: String
@@ -1075,6 +1080,15 @@ type QueryType {
 		sort: Sort!,
 		type: EventAttributeDefinitionType!
 	): EventAttributeDefinitionBag
+
+	eventAttributeValues(
+		channelId: String!,
+		eventAttributeDefinitionId: String!,
+		eventDefinitionId: String!,
+		keywords: String!,
+		size: Int!,
+		start: Int!
+	): EventAttributeValueBag
 
 	eventDefinition(
 		displayName: String,
