@@ -216,7 +216,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	protected void saveModels(Collection<T> models) {
 		_cerebroInfoElasticsearchInvoker.save(
-			getCollectionName(), ModelMapper.toJSONArray(models));
+			getCollectionName(), ModelMapper.toJSONArray(models), false);
 	}
 
 	protected void sendAckIds(List<String> ackIds) {
