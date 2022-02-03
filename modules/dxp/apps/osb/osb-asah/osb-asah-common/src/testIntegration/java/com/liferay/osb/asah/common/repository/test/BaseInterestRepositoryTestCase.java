@@ -151,6 +151,14 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Test
+	public void testDeleteByOwnerTypeAndRecordedDate() {
+		_interestRepository.deleteByOwnerTypeAndRecordedDate(
+			"individual", DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+
+		Assertions.assertEquals(2, _interestRepository.count());
+	}
+
+	@Test
 	public void testDeleteByOwnerTypeAndRecordedDateLessThanEqual() {
 		_interestRepository.deleteByOwnerTypeAndRecordedDateLessThanEqual(
 			"individual", DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));

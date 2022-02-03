@@ -44,8 +44,13 @@ import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -288,6 +293,66 @@ public class IndividualInterestScoresNaniteTest
 	}
 
 	@Test
+	public void testRunTwice() {
+		String dayDateString = DateUtil.newDayDateString();
+
+		faroInfoElasticsearchInvoker.add(
+			"interests",
+			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
+				_assetJSONObject1, DateUtil.addDays(dayDateString, -1),
+				_individual.getId(), 1, 10));
+
+		IntStream.range(
+			1, 3
+		).forEach(
+			i -> {
+				try {
+					_individualInterestScoresNanite.run(
+						JSONUtil.put("processDay", dayDateString));
+				}
+				catch (Exception exception) {
+					_log.error(exception, exception);
+
+					Assertions.fail();
+				}
+			}
+		);
+
+		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
+			"interests",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("dateRecorded", dayDateString)));
+
+		Map<String, Boolean> map = new HashedMap<>();
+
+		interestsJSONArray.forEach(
+			object -> {
+				JSONObject jsonObject = (JSONObject)object;
+
+				String key =
+					jsonObject.getString("ownerId") +
+						jsonObject.getString("name");
+
+				if (map.containsKey(key)) {
+					Assertions.fail();
+				}
+
+				map.put(key, true);
+			});
+
+		AsahMarker asahMarker = _asahMarkerDog.getAsahMarker(
+			"IndividualInterestScoresNanite",
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		Assertions.assertEquals(
+			dayDateString,
+			asahMarkerContextJSONObject.getString("lastSuccessfulDay"));
+	}
+
+	@Test
 	public void testScoresIncreaseWithActivities() throws Exception {
 		String dayDateString = DateUtil.newDayDateString();
 
@@ -455,6 +520,9 @@ public class IndividualInterestScoresNaniteTest
 
 	private static final int _MAX_DAYS_BEFORE_INTEREST_SCORE_BELOW_THRESHOLD =
 		60;
+
+	private static final Log _log = LogFactory.getLog(
+		IndividualInterestScoresNaniteTest.class);
 
 	@Autowired
 	private ActivityGroupDog _activityGroupDog;
