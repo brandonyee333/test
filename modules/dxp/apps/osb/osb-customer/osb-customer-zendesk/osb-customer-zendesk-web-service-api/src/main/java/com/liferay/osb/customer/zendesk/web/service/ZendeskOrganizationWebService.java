@@ -28,8 +28,8 @@ import java.util.Set;
 public interface ZendeskOrganizationWebService {
 
 	public ZendeskOrganization createOrUpdateZendeskOrganization(
-			String accountCode, String country, String details,
-			String externalId, String name, String notes,
+			String accountCode, String accountKey, String country,
+			String details, String externalId, String name, String notes,
 			String partnerFirstLineSupport, String partnerJiraProject,
 			String partnerCode, String sla, String status,
 			String supportLanguage, String supportRegion, String tier,

@@ -39,13 +39,8 @@ import org.osgi.service.component.annotations.Reference;
 public class ZendeskOrganizationCreateMessageSubscriber
 	extends BaseMessageSubscriber {
 
-	protected void addExternalLink(long accountEntryId, String entityId)
+	protected void addExternalLink(String accountKey, String entityId)
 		throws Exception {
-
-		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
-			accountEntryId);
-
-		String accountKey = accountEntry.getKoroneikiAccountKey();
 
 		List<ExternalLink> externalLinks =
 			_externalLinkWebService.getExternalLinks(accountKey, 1, 1000);
@@ -103,7 +98,13 @@ public class ZendeskOrganizationCreateMessageSubscriber
 			}
 		}
 
-		addExternalLink(accountEntryId, zendeskOrganizationId);
+		JSONObject organizationFieldsJSONObject =
+			organizationJSONObject.getJSONObject("organization_fields");
+
+		String koroneikiAccountKey = organizationFieldsJSONObject.getString(
+			"account_key");
+
+		addExternalLink(koroneikiAccountKey, zendeskOrganizationId);
 	}
 
 	@Reference

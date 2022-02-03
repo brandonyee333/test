@@ -28,6 +28,10 @@ public class ZendeskOrganization {
 		return _accountCode;
 	}
 
+	public String getAccountKey() {
+		return _accountKey;
+	}
+
 	public String getDetails() {
 		return _details;
 	}
@@ -96,6 +100,10 @@ public class ZendeskOrganization {
 		_accountCode = accountCode;
 	}
 
+	public void setAccountKey(String accountKey) {
+		_accountKey = accountKey;
+	}
+
 	public void setDetails(String details) {
 		_details = details;
 	}
@@ -161,6 +169,7 @@ public class ZendeskOrganization {
 	}
 
 	private String _accountCode;
+	private String _accountKey;
 	private String _details;
 	private String _externalId;
 	private String _name;

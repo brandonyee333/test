@@ -206,6 +206,8 @@ public class ZendeskConverter {
 		JSONObject organizationFieldsJSONObject = jsonObject.getJSONObject(
 			"organization_fields");
 
+		zendeskOrganization.setAccountKey(
+			organizationFieldsJSONObject.getString("account_key"));
 		zendeskOrganization.setPartnerFirstLineSupport(
 			organizationFieldsJSONObject.getString(
 				"partner_first_line_support"));
