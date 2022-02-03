@@ -181,7 +181,7 @@ public class EventsUpgradeStep implements UpgradeStep {
 				_populateEventMap(
 					activityJSONObject.getString("id"), analyticsEvent,
 					activityJSONObject.getJSONObject("eventContext"),
-					activityJSONObject.getJSONObject("eventProperties"), events,
+					activityJSONObject.optJSONObject("eventProperties"), events,
 					activityJSONObject.getString("sessionId"));
 
 				if (events.size() == 1000) {
@@ -396,6 +396,22 @@ public class EventsUpgradeStep implements UpgradeStep {
 		eventsMap.put("eventId", analyticsEvent.getEventId());
 		eventsMap.put(
 			"eventProperties", _toJSONPGobject(eventPropertiesJSONObject));
+
+		List<String> eventPropertyNames = new ArrayList<>();
+		List<String> eventPropertyValues = new ArrayList<>();
+
+		if (eventPropertiesJSONObject != null) {
+			eventPropertyNames = new ArrayList<>(
+				eventPropertiesJSONObject.keySet());
+
+			for (String eventPropertyName : eventPropertyNames) {
+				eventPropertyValues.add(
+					eventPropertiesJSONObject.getString(eventPropertyName));
+			}
+		}
+
+		eventsMap.put("eventPropertyNames", eventPropertyNames);
+		eventsMap.put("eventPropertyValues", eventPropertyValues);
 		eventsMap.put("experienceId", context.get("experienceId"));
 		eventsMap.put("id", analyticsEvent.getId());
 		eventsMap.put(
