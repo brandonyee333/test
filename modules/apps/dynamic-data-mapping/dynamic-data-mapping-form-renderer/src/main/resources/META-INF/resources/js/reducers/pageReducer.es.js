@@ -30,9 +30,17 @@ export default (state, action) => {
 		case EVENT_TYPES.PAGE_VALIDATION_FAILED: {
 			const {newPages, pageIndex} = action.payload;
 			const visitor = new PagesVisitor(newPages ?? state.pages);
+			const fieldTypes = [
+				'select-multiple',
+				'radio',
+				'checkbox',
+				'text',
+				'hidden',
+			];
 
 			let firstInvalidFieldLabel = null;
 			let firstInvalidFieldInput = null;
+			let firstInvalidFieldName = null;
 
 			const pages = visitor.mapFields(
 				(
@@ -55,6 +63,7 @@ export default (state, action) => {
 						firstInvalidFieldInput = document.querySelector(
 							`[name='${field.name}']`
 						);
+						firstInvalidFieldName = field.name;
 					}
 
 					return {
@@ -67,7 +76,14 @@ export default (state, action) => {
 			);
 
 			if (firstInvalidFieldInput) {
-				firstInvalidFieldInput.focus();
+				if (!fieldTypes.includes(firstInvalidFieldInput.type)) {
+					firstInvalidFieldInput.focus();
+				}
+				else {
+					document
+						.getElementsByName(firstInvalidFieldName)[0]
+						?.parentElement?.scrollIntoView();
+				}
 			}
 
 			return {
