@@ -38,78 +38,74 @@ public abstract class BaseScoresNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		setRunning(true);
+		try {
+			setRunning(true);
 
-		if (contextJSONObject != null) {
-			String processDayDateString = contextJSONObject.optString(
-				"processDay", null);
+			AsahMarker asahMarker = getAsahMarker();
 
-			if (processDayDateString != null) {
-				run(processDayDateString);
+			if (contextJSONObject != null) {
+				String processDayDateString = contextJSONObject.optString(
+					"processDay", null);
 
-				return;
+				if (processDayDateString != null) {
+					run(processDayDateString);
+
+					_updateLastSuccessfulDayDate(
+						asahMarker, processDayDateString);
+
+					return;
+				}
 			}
-		}
 
-		AsahMarker asahMarker = getAsahMarker();
-
-		String lastSuccessfulDayDateString = _getLastSuccessfulDayDateString(
-			asahMarker, contextJSONObject);
-
-		if (lastSuccessfulDayDateString == null) {
-			lastSuccessfulDayDateString =
-				_faroInfoActivityDog.getFirstDayDateString();
+			String lastSuccessfulDayDateString =
+				_getLastSuccessfulDayDateString(asahMarker, contextJSONObject);
 
 			if (lastSuccessfulDayDateString == null) {
-				return;
+				lastSuccessfulDayDateString =
+					_faroInfoActivityDog.getFirstDayDateString();
+
+				if (lastSuccessfulDayDateString == null) {
+					return;
+				}
 			}
-		}
-		else {
-			lastSuccessfulDayDateString = DateUtil.addDays(
-				lastSuccessfulDayDateString, 1);
-		}
-
-		String currentDayDateString = DateUtil.newDayDateString();
-
-		while (lastSuccessfulDayDateString.compareTo(currentDayDateString) <
-					0) {
-
-			long start = System.currentTimeMillis();
-
-			run(lastSuccessfulDayDateString);
-
-			if (_log.isDebugEnabled()) {
-				Class<?> clazz = getClass();
-
-				_log.debug(
-					String.format(
-						"Processed %s for %s in %d ms", clazz.getSimpleName(),
-						lastSuccessfulDayDateString,
-						System.currentTimeMillis() - start));
+			else {
+				lastSuccessfulDayDateString = DateUtil.addDays(
+					lastSuccessfulDayDateString, 1);
 			}
 
-			if (isInterrupted()) {
-				setRunning(false);
+			String currentDayDateString = DateUtil.newDayDateString();
 
-				return;
+			while (lastSuccessfulDayDateString.compareTo(currentDayDateString) <
+						0) {
+
+				long start = System.currentTimeMillis();
+
+				run(lastSuccessfulDayDateString);
+
+				if (_log.isDebugEnabled()) {
+					Class<?> clazz = getClass();
+
+					_log.debug(
+						String.format(
+							"Processed %s for %s in %d ms",
+							clazz.getSimpleName(), lastSuccessfulDayDateString,
+							System.currentTimeMillis() - start));
+				}
+
+				if (isInterrupted()) {
+					return;
+				}
+
+				_updateLastSuccessfulDayDate(
+					asahMarker, lastSuccessfulDayDateString);
+
+				lastSuccessfulDayDateString = DateUtil.addDays(
+					lastSuccessfulDayDateString, 1);
 			}
-
-			JSONObject asahMarkerContextJSONObject =
-				asahMarker.getContextJSONObject();
-
-			asahMarkerContextJSONObject.put(
-				"lastSuccessfulDay", lastSuccessfulDayDateString);
-
-			asahMarkerDog.updateAsahMarker(
-				asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
-
-			afterOSBAsahMarkerUpdated(lastSuccessfulDayDateString);
-
-			lastSuccessfulDayDateString = DateUtil.addDays(
-				lastSuccessfulDayDateString, 1);
 		}
-
-		setRunning(false);
+		finally {
+			setRunning(false);
+		}
 	}
 
 	protected void afterOSBAsahMarkerUpdated(
@@ -207,6 +203,21 @@ public abstract class BaseScoresNanite extends BaseNanite {
 		}
 
 		return lastSuccessfulDayDateString;
+	}
+
+	private void _updateLastSuccessfulDayDate(
+		AsahMarker asahMarker, String lastSuccessfulDayDateString) {
+
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		asahMarkerContextJSONObject.put(
+			"lastSuccessfulDay", lastSuccessfulDayDateString);
+
+		asahMarkerDog.updateAsahMarker(
+			asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		afterOSBAsahMarkerUpdated(lastSuccessfulDayDateString);
 	}
 
 	private static final Log _log = LogFactory.getLog(BaseScoresNanite.class);
