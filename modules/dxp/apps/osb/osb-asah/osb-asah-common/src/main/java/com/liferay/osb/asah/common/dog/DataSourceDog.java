@@ -93,11 +93,11 @@ public class DataSourceDog {
 		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setName(_getDataSourceName(dataSource.getName()));
 
-		String providerType = dataSource.getProviderType();
-
 		dataSource = _dataSourceRepository.save(dataSource);
 
 		dataSource.setIsNew(Boolean.FALSE);
+
+		String providerType = dataSource.getProviderType();
 
 		if (Objects.equals(providerType, "CSV")) {
 			dataSource.setState("READY");
