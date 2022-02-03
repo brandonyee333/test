@@ -174,8 +174,12 @@ public abstract class BaseScoresNanite extends BaseNanite {
 		if (contextJSONObject != null) {
 			synchronized (this) {
 				if (lastSuccessfulDayDateString != null) {
-					String reprocessDayDateString = contextJSONObject.getString(
-						"reprocessDay");
+					String reprocessDayDateString = contextJSONObject.optString(
+						"reprocessDay", null);
+
+					if (reprocessDayDateString == null) {
+						return lastSuccessfulDayDateString;
+					}
 
 					long deltaMilliseconds = DateUtil.getDeltaMilliseconds(
 						reprocessDayDateString, lastSuccessfulDayDateString);
