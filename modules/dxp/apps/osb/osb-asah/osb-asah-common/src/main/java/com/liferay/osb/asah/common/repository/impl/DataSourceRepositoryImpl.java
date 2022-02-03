@@ -74,7 +74,7 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 		return _populateDataSources(
 			selectSelectStep.from(
 				dataSourceTable
-			).join(
+			).leftJoin(
 				"ChannelDataSource"
 			).on(
 				DSL.field(
