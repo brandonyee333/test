@@ -20,7 +20,6 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.SelectConditionStep;
-import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -39,36 +38,30 @@ public class EventAttributeRepositoryImpl extends BaseRepository {
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords) {
 
-		SelectOnConditionStep<Record1<String>>
-			eventAttributeInnerJoinEventSelectOnConditionStep =
-				_getEventAttributeInnerJoinEventSelectOnConditionStep(
-					_getDistinctValueSelectSelectStep());
+		SelectSelectStep<Record1<Integer>> selectCount =
+			_dslContext.selectCount();
 
-		SelectConditionStep<Record1<String>> whereSelectConditionStep =
-			eventAttributeInnerJoinEventSelectOnConditionStep.where(
-				_getLikeIgnoreCaseKeywordsCondition(
-					channelId, eventAttributeDefinitionId, eventDefinitionId,
-					keywords));
-
-		return _dslContext.fetchCount(whereSelectConditionStep);
+		return selectCount.from(
+			_getEventAttributeSelectStep(
+				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				keywords)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public List<String> findDistinctAttributeValuesByKeywords(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Pageable pageable) {
 
-		SelectOnConditionStep<Record1<String>>
-			eventAttributeInnerJoinEventSelectOnConditionStep =
-				_getEventAttributeInnerJoinEventSelectOnConditionStep(
-					_getDistinctValueSelectSelectStep());
+		SelectConditionStep<Record1<String>> eventAttributeSelectStep =
+			_getEventAttributeSelectStep(
+				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				keywords);
 
-		SelectConditionStep<Record1<String>> whereSelectConditionStep =
-			eventAttributeInnerJoinEventSelectOnConditionStep.where(
-				_getLikeIgnoreCaseKeywordsCondition(
-					channelId, eventAttributeDefinitionId, eventDefinitionId,
-					keywords));
-
-		return whereSelectConditionStep.limit(
+		return eventAttributeSelectStep.limit(
 			pageable.getPageSize()
 		).offset(
 			pageable.getOffset()
@@ -77,31 +70,7 @@ public class EventAttributeRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	private SelectSelectStep<Record1<String>>
-		_getDistinctValueSelectSelectStep() {
-
-		return _dslContext.selectDistinct(
-			DSL.lower(DSL.field("value", String.class)));
-	}
-
-	private SelectOnConditionStep<Record1<String>>
-		_getEventAttributeInnerJoinEventSelectOnConditionStep(
-			SelectSelectStep<Record1<String>> selectSelectStep) {
-
-		return selectSelectStep.from(
-			"EventAttribute"
-		).innerJoin(
-			"Event"
-		).on(
-			DSL.field(
-				"Event.id"
-			).eq(
-				DSL.field("EventAttribute.eventId")
-			)
-		);
-	}
-
-	private Condition _getLikeIgnoreCaseKeywordsCondition(
+	private Condition _getCondition(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords) {
 
@@ -127,6 +96,31 @@ public class EventAttributeRepositoryImpl extends BaseRepository {
 			).likeIgnoreCase(
 				"%" + keywords + "%"
 			)
+		);
+	}
+
+	private SelectConditionStep<Record1<String>> _getEventAttributeSelectStep(
+		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
+		String keywords) {
+
+		SelectSelectStep<Record1<String>> selectSelectStep =
+			_dslContext.selectDistinct(
+				DSL.lower(DSL.field("value", String.class)));
+
+		return selectSelectStep.from(
+			"EventAttribute"
+		).innerJoin(
+			"Event"
+		).on(
+			DSL.field(
+				"Event.id"
+			).eq(
+				DSL.field("EventAttribute.eventId")
+			)
+		).where(
+			_getCondition(
+				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				keywords)
 		);
 	}
 
