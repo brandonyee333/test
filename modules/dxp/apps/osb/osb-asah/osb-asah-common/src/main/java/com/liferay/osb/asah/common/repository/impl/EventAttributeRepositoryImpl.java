@@ -61,7 +61,11 @@ public class EventAttributeRepositoryImpl extends BaseRepository {
 				channelId, eventAttributeDefinitionId, eventDefinitionId,
 				keywords);
 
-		return eventAttributeSelectStep.limit(
+		return eventAttributeSelectStep.orderBy(
+			DSL.lower(
+				DSL.field("value", String.class)
+			).asc()
+		).limit(
 			pageable.getPageSize()
 		).offset(
 			pageable.getOffset()
