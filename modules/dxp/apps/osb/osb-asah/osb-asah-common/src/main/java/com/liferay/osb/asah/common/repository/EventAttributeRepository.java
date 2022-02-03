@@ -31,7 +31,7 @@ import org.springframework.data.repository.query.Param;
 public interface EventAttributeRepository
 	extends PagingAndSortingRepository<EventAttribute, Long> {
 
-	public int countDistinctValuesByKeywords(
+	public long countDistinctAttributeValuesByKeywords(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords);
 
@@ -44,7 +44,7 @@ public interface EventAttributeRepository
 		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
 		@Param("size") int size);
 
-	public List<String> searchDistinctValuesByKeywords(
+	public List<String> findDistinctAttributeValuesByKeywords(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Pageable pageable);
 
