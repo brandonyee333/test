@@ -108,6 +108,9 @@ public abstract class BaseOrganizationRepositoryTestCase
 				"Org", PageRequest.of(0, 10));
 
 		Assertions.assertEquals(1, organizations.size());
+
+		Assertions.assertEquals(
+			1, _organizationRepository.countOrganizations("Org"));
 	}
 
 	@Override
