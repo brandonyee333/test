@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
@@ -88,6 +89,7 @@ import org.springframework.stereotype.Component;
 public class DataSourceDog {
 
 	public DataSource addDataSource(DataSource dataSource) {
+		dataSource.setId(_timeOrderedUuidGenerator.generateIdAsLong());
 		dataSource.setName(_getDataSourceName(dataSource.getName()));
 
 		String providerType = dataSource.getProviderType();
@@ -842,5 +844,8 @@ public class DataSourceDog {
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
