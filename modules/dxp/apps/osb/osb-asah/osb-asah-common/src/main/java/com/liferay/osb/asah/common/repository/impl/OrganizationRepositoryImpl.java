@@ -30,6 +30,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
@@ -44,6 +45,21 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 
 	public OrganizationRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	public long countOrganizations(@Nullable String keywords) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Organization"
+		).where(
+			_getCondition(keywords)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public List<Transformation> getOrganizationTransformations(

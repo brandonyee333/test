@@ -33,6 +33,9 @@ import org.springframework.lang.Nullable;
 public interface OrganizationRepository extends Repository<Organization, Long> {
 
 	@Cacheable
+	public long countOrganizations(@Nullable String keywords);
+
+	@Cacheable
 	public Organization findByDataSourceIdAndOrganizationPK(
 		Long dataSourceId, Long organizationPK);
 

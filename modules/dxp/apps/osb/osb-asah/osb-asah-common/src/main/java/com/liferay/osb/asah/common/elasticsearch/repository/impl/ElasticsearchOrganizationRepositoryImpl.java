@@ -62,6 +62,13 @@ public class ElasticsearchOrganizationRepositoryImpl
 	implements OrganizationRepository {
 
 	@Override
+	public long countOrganizations(@Nullable String keywords) {
+		return _faroInfoElasticsearchInvoker.count(
+			"organizations",
+			QueryUtil.buildSearchQueryBuilder("name", keywords));
+	}
+
+	@Override
 	public Organization findByDataSourceIdAndOrganizationPK(
 		Long dataSourceId, Long organizationPK) {
 

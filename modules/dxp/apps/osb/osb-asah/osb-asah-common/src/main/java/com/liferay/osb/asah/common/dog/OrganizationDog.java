@@ -133,7 +133,8 @@ public class OrganizationDog {
 			_organizationRepository.searchOrganizations(keywords, pageRequest);
 
 		return PageableExecutionUtils.getPage(
-			organizations, pageRequest, organizations::size);
+			organizations, pageRequest,
+			() -> _organizationRepository.countOrganizations(keywords));
 	}
 
 	public Page<Transformation> getTransformationPage(
