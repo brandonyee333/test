@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.sql.Array;
 import java.sql.Timestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.Arrays;
@@ -119,12 +120,20 @@ public class BeanUtils {
 			}
 			else {
 				if ((targetPropertyClass != null) &&
-					targetPropertyClass.isAssignableFrom(LocalDateTime.class) &&
 					(targetPropertyValue instanceof Timestamp)) {
 
 					Timestamp timestamp = (Timestamp)targetPropertyValue;
 
-					targetPropertyValue = timestamp.toLocalDateTime();
+					LocalDateTime localDateTime = timestamp.toLocalDateTime();
+
+					if (targetPropertyClass.isAssignableFrom(LocalDate.class)) {
+						targetPropertyValue = localDateTime.toLocalDate();
+					}
+					else if (targetPropertyClass.isAssignableFrom(
+								LocalDateTime.class)) {
+
+						targetPropertyValue = localDateTime;
+					}
 				}
 				else if (targetPropertyValue instanceof Array) {
 					Array array = (Array)targetPropertyValue;
