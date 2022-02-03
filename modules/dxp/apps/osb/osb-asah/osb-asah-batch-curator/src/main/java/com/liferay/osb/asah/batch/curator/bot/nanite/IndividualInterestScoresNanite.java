@@ -231,6 +231,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	private void _deleteInterestScores(String dayDateString) throws Exception {
 		Date dayDate = DateUtil.toUTCDate(dayDateString);
 
+		_interestDog.deleteInterestsByExactRecordedDate("individual", dayDate);
+
 		_interestDog.deleteInterests(
 			"individual", DateUtil.addDays(dayDate, -2));
 
