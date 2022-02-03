@@ -35,6 +35,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -354,6 +355,18 @@ public class IndividualsFilterStringConverterHelper
 		}
 
 		if (condition != DSL.noCondition()) {
+			Long individualId = IndividualIdThreadLocal.getIndividualId();
+
+			if (individualId != null) {
+				condition = DSL.and(
+					condition,
+					DSL.field(
+						"id"
+					).eq(
+						individualId
+					));
+			}
+
 			return condition;
 		}
 
@@ -364,11 +377,12 @@ public class IndividualsFilterStringConverterHelper
 		boolean checkEqualityOnly, String filterString, int minDocCount,
 		boolean negate, String operator, int value) {
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString, _faroInfoActivitiesFilterStringConverterHelper);
+		BoolQueryBuilder boolQueryBuilder = _getOwnerIdBoolQueryBuilder(
+			FilterStringToQueryBuilderConverter.convert(
+				filterString, _faroInfoActivitiesFilterStringConverterHelper));
 
 		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
-			checkEqualityOnly, minDocCount, queryBuilder, value);
+			checkEqualityOnly, minDocCount, boolQueryBuilder, value);
 
 		if (ownerIds.isEmpty()) {
 			if (operator.equals("le") || operator.equals("lt")) {
@@ -401,7 +415,8 @@ public class IndividualsFilterStringConverterHelper
 			queryBuilder = QueryBuilders.matchAllQuery();
 		}
 
-		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(queryBuilder);
+		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
+			_getOwnerIdBoolQueryBuilder(queryBuilder));
 
 		if (ownerIds.isEmpty()) {
 			return DSL.noCondition();
@@ -713,7 +728,9 @@ public class IndividualsFilterStringConverterHelper
 		}
 
 		return ListUtil.map(
-			_faroInfoActivityDog.getOwnerIds(boolQueryBuilder), Long::valueOf);
+			_faroInfoActivityDog.getOwnerIds(
+				_getOwnerIdBoolQueryBuilder(boolQueryBuilder)),
+			Long::valueOf);
 	}
 
 	private Condition _getIndividualPKCondition(
@@ -821,6 +838,16 @@ public class IndividualsFilterStringConverterHelper
 
 		List<Long> individualIds = new ArrayList<>();
 
+		BoolQueryBuilder boolQueryBuilder = _getOwnerIdBoolQueryBuilder(null);
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString.replaceAll(matcher.group(1), "score eq " + value),
+			_faroInfoInterestsFilterStringConverterHelper);
+
+		if (queryBuilder != null) {
+			boolQueryBuilder.filter(queryBuilder);
+		}
+
 		JSONArrayIterator.of(
 			"interests", _faroInfoElasticsearchInvoker,
 			interestJSONObject -> {
@@ -830,9 +857,7 @@ public class IndividualsFilterStringConverterHelper
 				return null;
 			}
 		).setQueryBuilder(
-			FilterStringToQueryBuilderConverter.convert(
-				filterString.replaceAll(matcher.group(1), "score eq " + value),
-				_faroInfoInterestsFilterStringConverterHelper)
+			boolQueryBuilder
 		).iterate();
 
 		if (individualIds.isEmpty()) {
@@ -885,10 +910,41 @@ public class IndividualsFilterStringConverterHelper
 		}
 
 		if (condition != DSL.noCondition()) {
+			Long individualId = IndividualIdThreadLocal.getIndividualId();
+
+			if (individualId != null) {
+				condition = DSL.and(
+					condition,
+					DSL.field(
+						"id"
+					).eq(
+						individualId
+					));
+			}
+
 			return condition;
 		}
 
 		return DSL.not(DSL.noCondition());
+	}
+
+	private BoolQueryBuilder _getOwnerIdBoolQueryBuilder(
+		QueryBuilder queryBuilder) {
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if (queryBuilder != null) {
+			boolQueryBuilder.filter(queryBuilder);
+		}
+
+		Long individualId = IndividualIdThreadLocal.getIndividualId();
+
+		if (individualId != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("ownerId", individualId));
+		}
+
+		return boolQueryBuilder;
 	}
 
 	private Condition _getUserIdCondition(boolean negate, String userId) {
