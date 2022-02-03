@@ -90,6 +90,7 @@ public class DataSourceDog {
 
 	public DataSource addDataSource(DataSource dataSource) {
 		dataSource.setId(_timeOrderedUuidGenerator.generateIdAsLong());
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setName(_getDataSourceName(dataSource.getName()));
 
 		String providerType = dataSource.getProviderType();
