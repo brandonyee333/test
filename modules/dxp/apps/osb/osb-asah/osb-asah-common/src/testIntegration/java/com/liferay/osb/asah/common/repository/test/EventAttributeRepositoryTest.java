@@ -74,47 +74,47 @@ public class EventAttributeRepositoryTest
 			_eventAttributeRepository.findDistinctAttributeValues(2001L, 5));
 	}
 
-	@SQLResource(resourcePath = "test_event_attributes_1.sql")
-	@Test
-	public void testFindDistinctAttributeValuesNoMatchingValues() {
-		Assertions.assertEquals(
-			Collections.emptyList(),
-			_eventAttributeRepository.findDistinctAttributeValues(2001L, 10));
-	}
-
 	@SQLResource(resourcePath = "test_event_attributes_2.sql")
 	@Test
-	public void testFindValuesByEventAttributeDefinitionIdAndEventDefinitionIdAndChannelIdAndKeywords() {
-		List<String> values1 =
-			_eventAttributeRepository.searchDistinctValuesByKeywords(
+	public void testFindDistinctAttributeValuesByKeywords() {
+		List<String> values =
+			_eventAttributeRepository.findDistinctAttributeValuesByKeywords(
 				1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 100));
 
-		Assertions.assertEquals(4, values1.size());
+		Assertions.assertEquals(4, values.size());
 
 		for (String value :
 				Arrays.asList(
 					"event attribute value 4", "event attribute value 3",
 					"event attribute value 2", "event attribute value 1")) {
 
-			Assertions.assertTrue(values1.contains(value));
+			Assertions.assertTrue(values.contains(value));
 		}
 
-		List<String> values2 =
-			_eventAttributeRepository.searchDistinctValuesByKeywords(
+		values =
+			_eventAttributeRepository.findDistinctAttributeValuesByKeywords(
 				1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 3));
 
-		Assertions.assertEquals(3, values2.size());
+		Assertions.assertEquals(3, values.size());
 
-		List<String> values3 =
-			_eventAttributeRepository.searchDistinctValuesByKeywords(
+		values =
+			_eventAttributeRepository.findDistinctAttributeValuesByKeywords(
 				1L, 3001L, 3002L, "Attribute Value", PageRequest.of(1, 3));
 
-		Assertions.assertEquals(1, values3.size());
+		Assertions.assertEquals(1, values.size());
 
 		Assertions.assertEquals(
 			4,
-			_eventAttributeRepository.countDistinctValuesByKeywords(
+			_eventAttributeRepository.countDistinctAttributeValuesByKeywords(
 				1L, 3001L, 3002L, "Attribute Value"));
+	}
+
+	@SQLResource(resourcePath = "test_event_attributes_1.sql")
+	@Test
+	public void testFindDistinctAttributeValuesNoMatchingValues() {
+		Assertions.assertEquals(
+			Collections.emptyList(),
+			_eventAttributeRepository.findDistinctAttributeValues(2001L, 10));
 	}
 
 	private Date _getExpectedDate(Date date, int deltaDays) {

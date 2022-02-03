@@ -47,7 +47,7 @@ public class EventAttributeDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Test
-	public void testFindValuesByRelationshipIdsAndKeywords() {
+	public void testFindAttributeValuesByRelationshipIdsAndKeywords() {
 		Channel channel = _channelDog.addChannel("Test Channel");
 
 		Date date = DateUtil.newDayDate();
@@ -93,39 +93,36 @@ public class EventAttributeDogTest
 			eventAttributes, date, eventDefinition.getId(), 1L, "sessionId",
 			"abcdef");
 
-		Page<String> eventAttributeValuesPage1 =
+		Page<String> eventAttributeValuesPage =
 			_eventAttributeDog.getEventAttributeValuesPage(
 				channel.getId(), eventAttributeDefinition.getId(),
 				eventDefinition.getId(), "Attribute Value", 100, 0);
 
-		List<String> eventAttributeValues1 =
-			eventAttributeValuesPage1.getContent();
+		Assertions.assertEquals(4, eventAttributeValuesPage.getTotalElements());
 
-		Assertions.assertEquals(4, eventAttributeValues1.size());
+		List<String> eventAttributeValues =
+			eventAttributeValuesPage.getContent();
 
-		Assertions.assertEquals(
-			4, eventAttributeValuesPage1.getTotalElements());
+		Assertions.assertEquals(4, eventAttributeValues.size());
 
 		for (String value :
 				Arrays.asList(
 					"event attribute value 4", "event attribute value 3",
 					"event attribute value 2", "event attribute value 1")) {
 
-			Assertions.assertTrue(eventAttributeValues1.contains(value));
+			Assertions.assertTrue(eventAttributeValues.contains(value));
 		}
 
-		Page<String> eventAttributeValuesPage2 =
+		eventAttributeValuesPage =
 			_eventAttributeDog.getEventAttributeValuesPage(
 				channel.getId(), eventAttributeDefinition.getId(),
 				eventDefinition.getId(), "Attribute Value", 3, 1);
 
-		List<String> eventAttributeValues2 =
-			eventAttributeValuesPage2.getContent();
+		Assertions.assertEquals(4, eventAttributeValuesPage.getTotalElements());
 
-		Assertions.assertEquals(1, eventAttributeValues2.size());
+		eventAttributeValues = eventAttributeValuesPage.getContent();
 
-		Assertions.assertEquals(
-			4, eventAttributeValuesPage2.getTotalElements());
+		Assertions.assertEquals(1, eventAttributeValues.size());
 	}
 
 	@Autowired

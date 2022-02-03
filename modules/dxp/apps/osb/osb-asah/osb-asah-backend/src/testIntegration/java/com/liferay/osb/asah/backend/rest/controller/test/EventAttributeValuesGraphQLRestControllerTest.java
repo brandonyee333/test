@@ -20,24 +20,24 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
  * @author Alejo Ceballos
  */
 @SQLResource(
-	resourcePath = "event_attribute_value_bag_graphql_rest_controller_test.sql"
+	resourcePath = "event_attribute_values_graphql_rest_controller_test.sql"
 )
-public class EventAttributeValueBagGraphQLRestControllerTest
+public class EventAttributeValuesGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
 	@Override
 	public String getBodyPath() {
-		return "event_attribute_value_bag_body.json";
+		return "event_attribute_values_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "event_attribute_value_bag_expected_result.json";
+		return "expected_event_attribute_values_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "event_attribute_value_bag_query.graphql";
+		return "event_attribute_values_query.graphql";
 	}
 
 }
