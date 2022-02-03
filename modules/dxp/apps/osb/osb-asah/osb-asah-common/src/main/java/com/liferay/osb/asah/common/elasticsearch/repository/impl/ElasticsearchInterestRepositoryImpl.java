@@ -165,6 +165,20 @@ public class ElasticsearchInterestRepositoryImpl implements InterestRepository {
 	}
 
 	@Override
+	public void deleteByOwnerTypeAndRecordedDate(
+		String ownerType, Date recordedDate) {
+
+		_faroInfoElasticsearchInvoker.delete(
+			_getCollectionName(),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery(
+					"dateRecorded", DateUtil.toString(recordedDate))
+			).filter(
+				QueryBuilders.termQuery("ownerType", ownerType)
+			));
+	}
+
+	@Override
 	public void deleteByOwnerTypeAndRecordedDateLessThanEqual(
 		String ownerType, Date recordedDate) {
 

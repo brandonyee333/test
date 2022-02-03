@@ -20,6 +20,15 @@
 				ownerType = :ownerType
 		]]>
 	</entry>
+	<entry key="Interest.deleteByOwnerTypeAndRecordedDate">
+		<![CDATA[
+			DELETE FROM
+				Interest
+			WHERE
+				ownerType = :ownerType AND
+				recordedDate = :recordedDate
+		]]>
+	</entry>
 	<entry key="Interest.deleteByOwnerTypeAndRecordedDateLessThanEqual">
 		<![CDATA[
 			DELETE FROM

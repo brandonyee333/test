@@ -55,6 +55,13 @@ public class InterestDog {
 			ownerType, recordedDate);
 	}
 
+	public void deleteInterestsByExactRecordedDate(
+		String ownerType, Date recordedDate) {
+
+		_interestRepository.deleteByOwnerTypeAndRecordedDate(
+			ownerType, recordedDate);
+	}
+
 	public Interest fetchInterest(
 		String name, Long ownerId, String ownerType, Date recordedDate) {
 

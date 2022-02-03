@@ -51,6 +51,11 @@ public interface InterestRepository
 		@Param("ownerType") String ownerType);
 
 	@Modifying
+	public void deleteByOwnerTypeAndRecordedDate(
+		@Param("ownerType") String ownerType,
+		@Param("recordedDate") Date recordedDate);
+
+	@Modifying
 	public void deleteByOwnerTypeAndRecordedDateLessThanEqual(
 		@Param("ownerType") String ownerType,
 		@Param("recordedDate") Date recordedDate);
