@@ -70,7 +70,7 @@ public class IndividualSegmentsRestController
 	}
 
 	@GetMapping("/{id}/accounts")
-	public PageDTO<AccountDTO> getAccountDTOsPageDTO(
+	public PageDTO<AccountDTO> getAccountDTOPageDTO(
 		@PathVariable Long id,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
@@ -79,13 +79,13 @@ public class IndividualSegmentsRestController
 
 		Segment segment = segmentDog.getSegment(id);
 
-		return _toAccountDTOsPageDTO(
+		return _toAccountDTOPageDTO(
 			_accountDog.searchAccountPage(
 				segment.getChannelId(), filterString, page, id, size, sorts));
 	}
 
 	@GetMapping("/preview-disabled-segments")
-	public PageDTO<SegmentDTO> getPreviewDisabledSegmentDTOsPageDTOs(
+	public PageDTO<SegmentDTO> getPreviewDisabledSegmentDTOPageDTO(
 		@RequestParam Long dataSourceId,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
@@ -115,7 +115,7 @@ public class IndividualSegmentsRestController
 			SegmentDTO.class);
 	}
 
-	private PageDTO<AccountDTO> _toAccountDTOsPageDTO(
+	private PageDTO<AccountDTO> _toAccountDTOPageDTO(
 		AccountDTO accountDTO, Page<Account> accountsPage) {
 
 		return new PageDTO<>(
@@ -124,10 +124,10 @@ public class IndividualSegmentsRestController
 			accountsPage.getTotalPages());
 	}
 
-	private PageDTO<AccountDTO> _toAccountDTOsPageDTO(
+	private PageDTO<AccountDTO> _toAccountDTOPageDTO(
 		Page<Account> accountsPage) {
 
-		return _toAccountDTOsPageDTO(
+		return _toAccountDTOPageDTO(
 			new AccountDTO(accountsPage.getContent()), accountsPage);
 	}
 

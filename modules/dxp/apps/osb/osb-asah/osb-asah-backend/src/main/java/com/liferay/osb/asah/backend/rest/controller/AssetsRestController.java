@@ -43,7 +43,7 @@ public class AssetsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply")
-	public PageDTO<AssetDTO> getAssetDTOsPageDTO(
+	public PageDTO<AssetDTO> getAssetDTOPageDTO(
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
@@ -55,13 +55,13 @@ public class AssetsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "apply")
-	public PageDTO<TransformationDTO> getAssetTransformationDTOsPageDTO(
+	public PageDTO<TransformationDTO> getAssetTransformationDTOPageDTO(
 		@RequestParam String apply,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			"asset-transformations",
 			_assetDog.getTransformationPage(apply, filterString, page, size));
 	}
@@ -78,16 +78,16 @@ public class AssetsRestController extends BaseRestController {
 		return _toPageDTO(new AssetDTO(assetPage.getContent()), assetPage);
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		String transformationKey, Page<Transformation> transformationsPage) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			new TransformationDTO(
 				transformationKey, transformationsPage.getContent()),
 			transformationsPage);
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		TransformationDTO transformationDTO,
 		Page<Transformation> transformationsPage) {
 

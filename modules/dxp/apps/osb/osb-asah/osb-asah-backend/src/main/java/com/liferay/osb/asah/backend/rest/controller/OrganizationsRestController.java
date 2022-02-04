@@ -34,34 +34,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrganizationsRestController extends BaseRestController {
 
 	@GetMapping(params = "apply")
-	public PageDTO<TransformationDTO> getTransformationDTOsPageDTO(
+	public PageDTO<TransformationDTO> getTransformationDTOPageDTO(
 		@RequestParam String apply,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			_organizationDog.getTransformationPage(
 				apply, filterString, page, size));
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		Page<Transformation> transformationsPage) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			"organization-transformations", transformationsPage);
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		String transformationKey, Page<Transformation> transformationsPage) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			new TransformationDTO(
 				transformationKey, transformationsPage.getContent()),
 			transformationsPage);
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		TransformationDTO transformationDTO,
 		Page<Transformation> transformationsPage) {
 

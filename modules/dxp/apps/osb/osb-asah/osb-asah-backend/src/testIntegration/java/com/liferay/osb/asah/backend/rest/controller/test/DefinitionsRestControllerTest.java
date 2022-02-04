@@ -55,7 +55,7 @@ public class DefinitionsRestControllerTest
 				"dependencies/expected_definitions_individual_attributes.json",
 				this),
 			_objectMapper.convertValue(
-				_definitionsRestController.getIndividualFieldMappingDTOsPageDTO(
+				_definitionsRestController.getIndividualFieldMappingDTOPageDTO(
 					null),
 				JSONObject.class),
 			false);

@@ -87,13 +87,13 @@ public class InterestsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetInterestDTOsPageDTO() throws Exception {
+	public void testGetInterestDTOPageDTO() throws Exception {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_interests.json", this),
 			(JSONArray)JSONUtil.getValue(
 				_objectMapper.convertValue(
-					_interestsRestController.getInterestDTOsPageDTO(
+					_interestsRestController.getInterestDTOPageDTO(
 						null, 0, 20, null, null),
 					JSONObject.class),
 				"JSONObject/_embedded", "JSONArray/interests"),

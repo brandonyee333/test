@@ -95,7 +95,7 @@ public class ChannelsRestControllerTest
 		}
 
 		JSONObject channelsJSONObject = _objectMapper.convertValue(
-			_channelsRestController.getChannelDTOsPageDTO(null, 0, 20, null),
+			_channelsRestController.getChannelDTOPageDTO(null, 0, 20, null),
 			JSONObject.class);
 
 		JSONArray channelsJSONArray = (JSONArray)channelsJSONObject.query(
@@ -128,7 +128,7 @@ public class ChannelsRestControllerTest
 	@Test
 	public void testGetChannels() {
 		JSONObject channelsJSONObject = _objectMapper.convertValue(
-			_channelsRestController.getChannelDTOsPageDTO(null, 0, 20, null),
+			_channelsRestController.getChannelDTOPageDTO(null, 0, 20, null),
 			JSONObject.class);
 
 		JSONArray channelsJSONArray = (JSONArray)channelsJSONObject.query(

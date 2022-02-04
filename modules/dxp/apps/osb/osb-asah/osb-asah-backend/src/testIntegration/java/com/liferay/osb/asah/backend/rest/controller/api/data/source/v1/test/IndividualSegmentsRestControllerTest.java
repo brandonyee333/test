@@ -249,7 +249,7 @@ public class IndividualSegmentsRestControllerTest
 	@Test
 	public void testGetIndividualSegmentsForDataSourceId() throws Exception {
 		JSONObject responseJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
+			_individualSegmentsRestController.getSegmentDTOPageDTO(
 				327968823603501234L, "((individualCount ge 1))", 0, 20,
 				new String[] {"dateModified"}),
 			JSONObject.class);
@@ -263,7 +263,7 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals(2, individualSegmentsJSONArray.length());
 
 		responseJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
+			_individualSegmentsRestController.getSegmentDTOPageDTO(
 				331238757269547423L, "((individualCount ge 1))", 0, 20,
 				new String[] {"dateModified"}),
 			JSONObject.class);
@@ -435,9 +435,9 @@ public class IndividualSegmentsRestControllerTest
 		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@Test
-	public void testGetSegmentDTOsPageDTOs1() throws Exception {
+	public void testGetSegmentDTOPageDTO1() throws Exception {
 		PageDTO<SegmentDTO> pageDTO =
-			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
+			_individualSegmentsRestController.getSegmentDTOPageDTO(
 				1L, null, 0, 50, new String[0]);
 
 		Map<String, SegmentDTO> content = pageDTO.getContent();
@@ -496,9 +496,9 @@ public class IndividualSegmentsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetSegmentDTOsPageDTOs2() {
+	public void testGetSegmentDTOPageDTO2() {
 		PageDTO<SegmentDTO> pageDTO =
-			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
+			_individualSegmentsRestController.getSegmentDTOPageDTO(
 				1L, null, 0, 50, new String[0]);
 
 		Map<String, SegmentDTO> content = pageDTO.getContent();

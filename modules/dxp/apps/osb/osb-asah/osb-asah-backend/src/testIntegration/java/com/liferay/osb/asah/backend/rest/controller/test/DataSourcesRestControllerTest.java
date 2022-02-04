@@ -208,7 +208,7 @@ public class DataSourcesRestControllerTest {
 		}
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
-			_dataSourcesRestController.getDataSourceDTOsPageDTO(
+			_dataSourcesRestController.getDataSourceDTOPageDTO(
 				null, 0, 10, null),
 			JSONObject.class);
 
@@ -334,7 +334,7 @@ public class DataSourcesRestControllerTest {
 				DataSourceDTO.class));
 
 		JSONObject dataSourcesJSONObject = _objectMapper.convertValue(
-			_dataSourcesRestController.getDataSourceDTOsPageDTO(
+			_dataSourcesRestController.getDataSourceDTOPageDTO(
 				null, 0, 20, null),
 			JSONObject.class);
 

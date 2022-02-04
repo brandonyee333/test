@@ -73,7 +73,7 @@ public class ActivityGroupsRestController extends BaseRestController {
 	}
 
 	@GetMapping
-	public PageDTO<ActivityGroupDTO> getActivityGroupDTOsPageDTO(
+	public PageDTO<ActivityGroupDTO> getActivityGroupDTOPageDTO(
 			@RequestParam(required = false) String expand,
 			@RequestParam(name = "expandFilter", required = false) String
 				expandFilterString,

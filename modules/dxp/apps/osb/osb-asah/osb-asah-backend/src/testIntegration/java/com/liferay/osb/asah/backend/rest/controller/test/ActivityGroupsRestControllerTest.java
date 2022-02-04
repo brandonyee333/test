@@ -69,7 +69,7 @@ public class ActivityGroupsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_activity_groups.json", this),
 			_objectMapper.convertValue(
-				_activityGroupsRestController.getActivityGroupDTOsPageDTO(
+				_activityGroupsRestController.getActivityGroupDTOPageDTO(
 					null, null, null, 0, 20, null),
 				JSONObject.class),
 			false);
@@ -78,7 +78,7 @@ public class ActivityGroupsRestControllerTest
 				"dependencies/expected_activity_groups_expand_filter.json",
 				this),
 			_objectMapper.convertValue(
-				_activityGroupsRestController.getActivityGroupDTOsPageDTO(
+				_activityGroupsRestController.getActivityGroupDTOPageDTO(
 					"activities,activities-count",
 					"((userId eq 'db1ed215-9ed2-46a4-90de-535604c02c65'))",
 					null, 0, 20, null),

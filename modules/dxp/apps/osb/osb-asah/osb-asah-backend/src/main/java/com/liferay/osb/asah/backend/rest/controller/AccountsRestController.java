@@ -54,7 +54,7 @@ public class AccountsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply")
-	public PageDTO<AccountDTO> getAccountDTOsPageDTO(
+	public PageDTO<AccountDTO> getAccountDTOPageDTO(
 		@RequestParam(required = false) Long channelId,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
@@ -67,7 +67,7 @@ public class AccountsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/distribution")
-	public PageDTO<DistributionDTO> getDistributionDTOsPageDTO(
+	public PageDTO<DistributionDTO> getDistributionDTOPageDTO(
 		@RequestParam(required = false) Long channelId,
 		@RequestParam Long fieldMappingId,
 		@RequestParam(name = "filter", required = false) String filterString,
@@ -92,7 +92,7 @@ public class AccountsRestController extends BaseRestController {
 					fieldMapping.getFieldName() + " to distribute accounts");
 		}
 
-		return _toDistributionDTOsPageDTO(
+		return _toDistributionDTOPageDTO(
 			_accountDog.getDistributionPage(
 				channelId, fieldMapping.getFieldName(),
 				fieldMapping.getFieldType(), filterString, individualSegmentId,
@@ -100,7 +100,7 @@ public class AccountsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply", value = "/{id}/individual-segments")
-	public PageDTO<SegmentDTO> getSegmentDTOsPageDTO(
+	public PageDTO<SegmentDTO> getSegmentDTOPageDTO(
 		@PathVariable Long id,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
@@ -113,7 +113,7 @@ public class AccountsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "apply", value = "/{id}/individual-segments")
-	public PageDTO<TransformationDTO> getSegmentTransformationDTOsPageDTO(
+	public PageDTO<TransformationDTO> getSegmentTransformationDTOPageDTO(
 			@PathVariable Long id, @RequestParam String apply,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
@@ -121,26 +121,26 @@ public class AccountsRestController extends BaseRestController {
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			"individual-segment-transformations",
 			_segmentDog.getTransformationPage(
 				id, apply, filterString, page, size));
 	}
 
 	@GetMapping(params = "apply")
-	public PageDTO<TransformationDTO> getTransformationDTOsPageDTO(
+	public PageDTO<TransformationDTO> getTransformationDTOPageDTO(
 		@RequestParam String apply,
 		@RequestParam(required = false) Long channelId,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			_accountDog.getTransformationPage(
 				apply, channelId, filterString, page, size));
 	}
 
-	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
+	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(
 		DistributionDTO distributionDTO, Page<Distribution> distributionsPage) {
 
 		return new PageDTO<>(
@@ -149,10 +149,10 @@ public class AccountsRestController extends BaseRestController {
 			distributionsPage.getTotalPages());
 	}
 
-	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
+	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(
 		Page<Distribution> distributionsPage) {
 
-		return _toDistributionDTOsPageDTO(
+		return _toDistributionDTOPageDTO(
 			new DistributionDTO(
 				distributionsPage.getContent(),
 				"accounts-distribution-transformations"),
@@ -187,23 +187,23 @@ public class AccountsRestController extends BaseRestController {
 			segmentsPage.getTotalPages());
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		Page<Transformation> transformationsPage) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			"account-transformations", transformationsPage);
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		String transformationKey, Page<Transformation> transformationsPage) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			new TransformationDTO(
 				transformationKey, transformationsPage.getContent()),
 			transformationsPage);
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		TransformationDTO transformationDTO,
 		Page<Transformation> transformationsPage) {
 

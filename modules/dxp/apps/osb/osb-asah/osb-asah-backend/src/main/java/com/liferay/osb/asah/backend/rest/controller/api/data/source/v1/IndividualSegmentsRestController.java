@@ -96,7 +96,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply", value = "/{id}/individuals")
 	@SuppressErrorLogging(ResourceNotFoundException.class)
-	public PageDTO<IndividualDTO> getIndividualDTOsPageDTOs(
+	public PageDTO<IndividualDTO> getIndividualDTOPageDTO(
 		@PathVariable Long id,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(required = false) Boolean includeAnonymousUsers,
@@ -110,7 +110,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply", value = "/{id}/membership-changes")
-	public PageDTO<MembershipChangeDTO> getMembershipChangeDTOsPageDTOs(
+	public PageDTO<MembershipChangeDTO> getMembershipChangeDTOPageDTO(
 		@PathVariable Long id, @RequestParam(required = false) String expand,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
@@ -122,7 +122,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 				filterString, id, page, size, sorts);
 
 		if (StringUtils.isEmpty(expand)) {
-			return _toMembershipChangeDTOsPageDTO(membershipChangesPages);
+			return _toMembershipChangeDTOPageDTO(membershipChangesPages);
 		}
 
 		List<MembershipChange> membershipChanges =
@@ -168,7 +168,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			}
 		}
 
-		return _toMembershipChangeDTOsPageDTO(
+		return _toMembershipChangeDTOPageDTO(
 			new MembershipChangeDTO(membershipChangeDTOs),
 			membershipChangesPages);
 	}
@@ -194,7 +194,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}/memberships")
-	public PageDTO<MembershipDTO> getMembershipDTOsPageDTO(
+	public PageDTO<MembershipDTO> getMembershipDTOPageDTO(
 		@PathVariable Long id,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
@@ -202,13 +202,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		if (!segmentDog.isIncludeAnonymousUsers(id)) {
-			return _toMembershipDTOsPageDTO(
+			return _toMembershipDTOPageDTO(
 				membershipDog.getMembershipPage(
 					_individualDog.getKnownIndividualIds(filterString, id), id,
 					"ACTIVE", page, size, sorts));
 		}
 
-		return _toMembershipDTOsPageDTO(
+		return _toMembershipDTOPageDTO(
 			membershipDog.getMembershipPage(id, "ACTIVE", page, size, sorts));
 	}
 
@@ -259,7 +259,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply")
-	public PageDTO<SegmentDTO> getSegmentDTOsPageDTOs(
+	public PageDTO<SegmentDTO> getSegmentDTOPageDTO(
 		@RequestParam(required = false) Long dataSourceId,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
@@ -293,14 +293,14 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "apply", value = "/{id}/individuals")
-	public PageDTO<TransformationDTO> getTransformationDTOsPageDTO(
+	public PageDTO<TransformationDTO> getTransformationDTOPageDTO(
 		@PathVariable Long id, @RequestParam String apply,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(required = false) Boolean includeAnonymousUsers,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			"individual-transformations",
 			_individualDog.getTransformationPage(
 				apply, null, filterString, includeAnonymousUsers, id, page,
@@ -308,13 +308,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "apply")
-	public PageDTO<TransformationDTO> getTransformationDTOsPageDTO(
+	public PageDTO<TransformationDTO> getTransformationDTOPageDTO(
 		@RequestParam String apply,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			"individual-segment-transformations",
 			_segmentDog.getTransformationPage(apply, filterString, page, size));
 	}
@@ -561,7 +561,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			individualsPage.getTotalPages());
 	}
 
-	private PageDTO<MembershipChangeDTO> _toMembershipChangeDTOsPageDTO(
+	private PageDTO<MembershipChangeDTO> _toMembershipChangeDTOPageDTO(
 		MembershipChangeDTO membershipChangeDTO,
 		Page<MembershipChange> membershipChangesPage) {
 
@@ -572,7 +572,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			membershipChangesPage.getTotalPages());
 	}
 
-	private PageDTO<MembershipChangeDTO> _toMembershipChangeDTOsPageDTO(
+	private PageDTO<MembershipChangeDTO> _toMembershipChangeDTOPageDTO(
 		Page<MembershipChange> membershipChangesPage) {
 
 		return new PageDTO<>(
@@ -583,7 +583,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			membershipChangesPage.getTotalPages());
 	}
 
-	private PageDTO<MembershipDTO> _toMembershipDTOsPageDTO(
+	private PageDTO<MembershipDTO> _toMembershipDTOPageDTO(
 		Page<Membership> membershipsPage) {
 
 		return new PageDTO<>(
@@ -593,16 +593,16 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			membershipsPage.getTotalPages());
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		String transformationKey, Page<Transformation> transformations) {
 
-		return _toTransformationDTOsPageDTO(
+		return _toTransformationDTOPageDTO(
 			new TransformationDTO(
 				transformationKey, transformations.getContent()),
 			transformations);
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOsPageDTO(
+	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		TransformationDTO transformationDTO,
 		Page<Transformation> transformations) {
 

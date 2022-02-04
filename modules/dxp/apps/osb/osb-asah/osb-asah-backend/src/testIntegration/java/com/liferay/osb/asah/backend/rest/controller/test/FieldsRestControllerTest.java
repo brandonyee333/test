@@ -67,7 +67,7 @@ public class FieldsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_fields.json", this),
 			_objectMapper.convertValue(
-				_fieldsRestController.getFieldDTOsPageDTO(null, 0, 20, null),
+				_fieldsRestController.getFieldDTOPageDTO(null, 0, 20, null),
 				JSONObject.class),
 			false);
 	}
@@ -82,7 +82,7 @@ public class FieldsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_field_transformations.json", this),
 			_objectMapper.convertValue(
-				_fieldsRestController.getTransformationDTOsPageDTO(
+				_fieldsRestController.getTransformationDTOPageDTO(
 					"groupby((name))", null, 0, 20),
 				JSONObject.class),
 			false);

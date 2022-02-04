@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DefinitionsRestController extends BaseRestController {
 
 	@GetMapping("/individual-attributes")
-	public PageDTO<FieldMappingDTO> getIndividualFieldMappingDTOsPageDTO(
+	public PageDTO<FieldMappingDTO> getIndividualFieldMappingDTOPageDTO(
 		@RequestParam(required = false) String name) {
 
 		Page<FieldMapping> fieldMappingPage =

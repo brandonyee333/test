@@ -94,12 +94,12 @@ public class AccountsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetAccountDTOsPageDTO() throws Exception {
+	public void testGetAccountDTOPageDTO() throws Exception {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts.json", this),
 			_objectMapper.convertValue(
-				_accountsRestController.getAccountDTOsPageDTO(
+				_accountsRestController.getAccountDTOPageDTO(
 					null, null, 0, 20, null),
 				JSONObject.class),
 			false);
@@ -107,7 +107,7 @@ public class AccountsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts_sorted.json", this),
 			_objectMapper.convertValue(
-				_accountsRestController.getAccountDTOsPageDTO(
+				_accountsRestController.getAccountDTOPageDTO(
 					888L, null, 0, 20,
 					new String[] {"individualCount", "desc"}),
 				JSONObject.class),
@@ -137,7 +137,7 @@ public class AccountsRestControllerTest
 				"dependencies/expected_accounts_distribution_filtered.json",
 				this),
 			_objectMapper.convertValue(
-				_accountsRestController.getDistributionDTOsPageDTO(
+				_accountsRestController.getDistributionDTOPageDTO(
 					1L, 366573389382719637L, null, 366637689379787789L, 10, 100,
 					null),
 				JSONObject.class),
@@ -147,7 +147,7 @@ public class AccountsRestControllerTest
 				"dependencies/expected_accounts_distribution_filtered.json",
 				this),
 			_objectMapper.convertValue(
-				_accountsRestController.getDistributionDTOsPageDTO(
+				_accountsRestController.getDistributionDTOPageDTO(
 					1L, 366573389382719637L,
 					"organization/billingState/value eq 'New York'", null, 10,
 					100, null),
@@ -158,7 +158,7 @@ public class AccountsRestControllerTest
 				"dependencies/expected_accounts_distribution_sorted.json",
 				this),
 			_objectMapper.convertValue(
-				_accountsRestController.getDistributionDTOsPageDTO(
+				_accountsRestController.getDistributionDTOPageDTO(
 					1L, 366573390725218943L, null, null, 10, 100,
 					new String[] {"name", "desc"}),
 				JSONObject.class),
@@ -167,7 +167,7 @@ public class AccountsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts_terms_distribution.json", this),
 			_objectMapper.convertValue(
-				_accountsRestController.getDistributionDTOsPageDTO(
+				_accountsRestController.getDistributionDTOPageDTO(
 					1L, 366573390725218943L, null, null, 10, 100, null),
 				JSONObject.class),
 			false);
@@ -177,7 +177,7 @@ public class AccountsRestControllerTest
 					"/expected_accounts_terms_distribution_truncated.json",
 				this),
 			_objectMapper.convertValue(
-				_accountsRestController.getDistributionDTOsPageDTO(
+				_accountsRestController.getDistributionDTOPageDTO(
 					1L, 366573390725218943L, null, null, 10, 1, null),
 				JSONObject.class),
 			false);
@@ -186,7 +186,7 @@ public class AccountsRestControllerTest
 				"dependencies/expected_accounts_numbers_distribution.json",
 				this),
 			_objectMapper.convertValue(
-				_accountsRestController.getDistributionDTOsPageDTO(
+				_accountsRestController.getDistributionDTOPageDTO(
 					1L, 366573389382719637L, null, null, 10, 100, null),
 				JSONObject.class),
 			false);
@@ -200,7 +200,7 @@ public class AccountsRestControllerTest
 	public void testGetAccountsDistributionInvalidFieldMapping1() {
 		Exception exception = Assertions.assertThrows(
 			Exception.class,
-			() -> _accountsRestController.getDistributionDTOsPageDTO(
+			() -> _accountsRestController.getDistributionDTOPageDTO(
 				1L, 366573390725218129L, null, null, 10, 100, null));
 
 		MatcherAssert.assertThat(
@@ -216,7 +216,7 @@ public class AccountsRestControllerTest
 	public void testGetAccountsDistributionInvalidFieldMapping2() {
 		Exception exception = Assertions.assertThrows(
 			Exception.class,
-			() -> _accountsRestController.getDistributionDTOsPageDTO(
+			() -> _accountsRestController.getDistributionDTOPageDTO(
 				1L, 340477857996688156L, null, null, 10, 100, null));
 
 		MatcherAssert.assertThat(
@@ -234,7 +234,7 @@ public class AccountsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_account_transformations_1.json", this),
 			_objectMapper.convertValue(
-				_accountsRestController.getTransformationDTOsPageDTO(
+				_accountsRestController.getTransformationDTOPageDTO(
 					"groupby((accountPK))", null, null, 0, 20),
 				JSONObject.class),
 			false);
@@ -242,7 +242,7 @@ public class AccountsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_account_transformations_2.json", this),
 			_objectMapper.convertValue(
-				_accountsRestController.getTransformationDTOsPageDTO(
+				_accountsRestController.getTransformationDTOPageDTO(
 					"groupby((accountPK))", 999L, null, 0, 20),
 				JSONObject.class),
 			false);
@@ -270,7 +270,7 @@ public class AccountsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_individual_segments.json", this),
 			_objectMapper.convertValue(
-				_accountsRestController.getSegmentDTOsPageDTO(
+				_accountsRestController.getSegmentDTOPageDTO(
 					342313459339515838L, null, 0, 20, null),
 				JSONObject.class),
 			false);
@@ -299,7 +299,7 @@ public class AccountsRestControllerTest
 				"dependencies/expected_individual_segment_transformations.json",
 				this),
 			_objectMapper.convertValue(
-				_accountsRestController.getSegmentTransformationDTOsPageDTO(
+				_accountsRestController.getSegmentTransformationDTOPageDTO(
 					342313459339515838L, "groupby((filter))", null, 0, 20),
 				JSONObject.class),
 			false);

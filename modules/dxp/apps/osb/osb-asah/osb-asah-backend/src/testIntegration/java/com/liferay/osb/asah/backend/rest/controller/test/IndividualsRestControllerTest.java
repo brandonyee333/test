@@ -69,12 +69,12 @@ public class IndividualsRestControllerTest
 	)
 	@Test
 	public void testActiveMembershipReturned() {
-		PageDTO<SegmentDTO> segmentDTOsPageDTOs =
-			_individualsRestController.getSegmentDTOsPageDTOs(
+		PageDTO<SegmentDTO> segmentDTOPageDTO =
+			_individualsRestController.getSegmentDTOPageDTO(
 				123L, "active-membership", null, 0, 10, null);
 
 		JSONObject segmentsJSONObject = _objectMapper.convertValue(
-			segmentDTOsPageDTOs, JSONObject.class);
+			segmentDTOPageDTO, JSONObject.class);
 
 		JSONObject embeddedJSONObject = segmentsJSONObject.getJSONObject(
 			"_embedded");
@@ -218,13 +218,12 @@ public class IndividualsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetIndividualDTOsPageDTOs() throws Exception {
-		PageDTO<IndividualDTO> individualDTOsPageDTOs =
-			_individualsRestController.getIndividualDTOsPageDTOs(
+	public void testGetIndividualDTOPageDTO() throws Exception {
+		PageDTO<IndividualDTO> individualDTOPageDTO =
+			_individualsRestController.getIndividualDTOPageDTO(
 				100L, null, null, false, 0, 1, null);
 
-		Map<String, IndividualDTO> contents =
-			individualDTOsPageDTOs.getContent();
+		Map<String, IndividualDTO> contents = individualDTOPageDTO.getContent();
 
 		IndividualDTO individualDTO = contents.get("_embedded");
 
@@ -269,7 +268,7 @@ public class IndividualsRestControllerTest
 				"dependencies/expected_individuals_distribution_filtered.json",
 				this),
 			_objectMapper.convertValue(
-				_individualsRestController.getDistributionDTOsPageDTO(
+				_individualsRestController.getDistributionDTOPageDTO(
 					366588394714972833L, "(accountId eq '342313458385210529')",
 					10, 100, null),
 				JSONObject.class),
@@ -279,7 +278,7 @@ public class IndividualsRestControllerTest
 				"dependencies/expected_individuals_distribution_filtered.json",
 				this),
 			_objectMapper.convertValue(
-				_individualsRestController.getDistributionDTOsPageDTO(
+				_individualsRestController.getDistributionDTOPageDTO(
 					366588394714972833L,
 					"(individualSegmentIds eq '327968823603500655')", 10, 100,
 					null),
@@ -290,7 +289,7 @@ public class IndividualsRestControllerTest
 				"dependencies/expected_individuals_distribution_sorted.json",
 				this),
 			_objectMapper.convertValue(
-				_individualsRestController.getDistributionDTOsPageDTO(
+				_individualsRestController.getDistributionDTOPageDTO(
 					331238757947565158L, null, 10, 100,
 					new String[] {"name", "desc"}),
 				JSONObject.class),
@@ -300,7 +299,7 @@ public class IndividualsRestControllerTest
 				"dependencies/expected_individuals_numbers_distribution.json",
 				this),
 			_objectMapper.convertValue(
-				_individualsRestController.getDistributionDTOsPageDTO(
+				_individualsRestController.getDistributionDTOPageDTO(
 					366588394714972833L, null, 5, 100, null),
 				JSONObject.class),
 			false);
@@ -309,7 +308,7 @@ public class IndividualsRestControllerTest
 				"dependencies/expected_individuals_terms_distribution.json",
 				this),
 			_objectMapper.convertValue(
-				_individualsRestController.getDistributionDTOsPageDTO(
+				_individualsRestController.getDistributionDTOPageDTO(
 					331238757947565158L, null, 10, 100, null),
 				JSONObject.class),
 			false);
@@ -327,7 +326,7 @@ public class IndividualsRestControllerTest
 	public void testGetIndividualsDistributionInvalidFieldMappings() {
 		Exception exception = Assertions.assertThrows(
 			Exception.class,
-			() -> _individualsRestController.getDistributionDTOsPageDTO(
+			() -> _individualsRestController.getDistributionDTOPageDTO(
 				331238757947565234L, null, 10, 100, null));
 
 		MatcherAssert.assertThat(
@@ -350,11 +349,11 @@ public class IndividualsRestControllerTest
 	)
 	@Test
 	public void testInactiveMembershipNotReturned() {
-		PageDTO<SegmentDTO> segmentDTOsPageDTOs =
-			_individualsRestController.getSegmentDTOsPageDTOs(
+		PageDTO<SegmentDTO> segmentDTOPageDTO =
+			_individualsRestController.getSegmentDTOPageDTO(
 				456L, "active-membership", null, 0, 10, null);
 
-		Map<String, SegmentDTO> contents = segmentDTOsPageDTOs.getContent();
+		Map<String, SegmentDTO> contents = segmentDTOPageDTO.getContent();
 
 		Assertions.assertNull(contents.get("910"));
 	}

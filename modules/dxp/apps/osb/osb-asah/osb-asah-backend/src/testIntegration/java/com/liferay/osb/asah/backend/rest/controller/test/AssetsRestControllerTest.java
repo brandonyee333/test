@@ -61,12 +61,12 @@ public class AssetsRestControllerTest
 		resourcePath = "osbasahfaroinfo/assets.json"
 	)
 	@Test
-	public void testGetAssetDTOsPageDTO() throws Exception {
+	public void testGetAssetDTOPageDTO() throws Exception {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_assets.json", this),
 			_objectMapper.convertValue(
-				_assetsRestController.getAssetDTOsPageDTO(null, 0, 20, null),
+				_assetsRestController.getAssetDTOPageDTO(null, 0, 20, null),
 				JSONObject.class),
 			false);
 	}
@@ -81,7 +81,7 @@ public class AssetsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_asset_transformations.json", this),
 			_objectMapper.convertValue(
-				_assetsRestController.getAssetTransformationDTOsPageDTO(
+				_assetsRestController.getAssetTransformationDTOPageDTO(
 					"groupby((assetType))", null, 0, 20),
 				JSONObject.class),
 			false);

@@ -78,7 +78,7 @@ public class InterestsRestController
 
 	@Cacheable
 	@GetMapping(params = "!apply")
-	public PageDTO<InterestDTO> getInterestDTOsPageDTO(
+	public PageDTO<InterestDTO> getInterestDTOPageDTO(
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,

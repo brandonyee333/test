@@ -52,7 +52,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChannelsRestController {
 
 	@GetMapping
-	public PageDTO<ChannelDTO> getChannelDTOsPageDTO(
+	public PageDTO<ChannelDTO> getChannelDTOPageDTO(
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,

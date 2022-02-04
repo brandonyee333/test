@@ -177,12 +177,12 @@ public class IndividualSegmentsRestControllerTest
 	)
 	@Test
 	public void testExpandAccountNames() throws Exception {
-		PageDTO<MembershipChangeDTO> membershipChangeDTOsPageDTOs =
-			_individualSegmentsRestController.getMembershipChangeDTOsPageDTOs(
+		PageDTO<MembershipChangeDTO> membershipChangeDTOPageDTO =
+			_individualSegmentsRestController.getMembershipChangeDTOPageDTO(
 				346306743994746064L, "account-names", null, 0, 10, null);
 
 		JSONObject membershipChangesJSONObject = _objectMapper.convertValue(
-			membershipChangeDTOsPageDTOs, JSONObject.class);
+			membershipChangeDTOPageDTO, JSONObject.class);
 
 		JSONObject embeddedJSONObject =
 			membershipChangesJSONObject.getJSONObject("_embedded");
@@ -236,7 +236,7 @@ public class IndividualSegmentsRestControllerTest
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_individual_segment_accounts.json", this),
 			_objectMapper.convertValue(
-				_individualSegmentsRestController.getAccountDTOsPageDTO(
+				_individualSegmentsRestController.getAccountDTOPageDTO(
 					366637689379787789L, null, 0, 20, null),
 				JSONObject.class),
 			false);
@@ -264,7 +264,7 @@ public class IndividualSegmentsRestControllerTest
 		// Include anonymous users
 
 		JSONObject individualsJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getIndividualDTOsPageDTOs(
+			_individualSegmentsRestController.getIndividualDTOPageDTO(
 				327968823603500666L, null, true, 0, 20, null),
 			JSONObject.class);
 
@@ -279,7 +279,7 @@ public class IndividualSegmentsRestControllerTest
 		// Does not include anonymous users
 
 		individualsJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getIndividualDTOsPageDTOs(
+			_individualSegmentsRestController.getIndividualDTOPageDTO(
 				327968823603500666L, null, false, 0, 20, null),
 			JSONObject.class);
 
@@ -320,7 +320,7 @@ public class IndividualSegmentsRestControllerTest
 		// Include anonymous users
 
 		JSONObject membershipChangesJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getMembershipChangeDTOsPageDTOs(
+			_individualSegmentsRestController.getMembershipChangeDTOPageDTO(
 				327968823603500666L, null, null, 0, 20, null),
 			JSONObject.class);
 
@@ -335,7 +335,7 @@ public class IndividualSegmentsRestControllerTest
 		// Does not include anonymous users
 
 		membershipChangesJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getMembershipDTOsPageDTO(
+			_individualSegmentsRestController.getMembershipDTOPageDTO(
 				327968823603500677L, null, 0, 20, null),
 			JSONObject.class);
 
@@ -374,7 +374,7 @@ public class IndividualSegmentsRestControllerTest
 		// Include anonymous users
 
 		JSONObject membershipsJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getMembershipDTOsPageDTO(
+			_individualSegmentsRestController.getMembershipDTOPageDTO(
 				327968823603500666L, null, 0, 20, null),
 			JSONObject.class);
 
@@ -389,7 +389,7 @@ public class IndividualSegmentsRestControllerTest
 		// Does not include anonymous users
 
 		membershipsJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getMembershipDTOsPageDTO(
+			_individualSegmentsRestController.getMembershipDTOPageDTO(
 				327968823603500677L, null, 0, 20, null),
 			JSONObject.class);
 
@@ -448,7 +448,7 @@ public class IndividualSegmentsRestControllerTest
 			JSONUtil.getValue(
 				_objectMapper.convertValue(
 					_individualSegmentsRestController.
-						getPreviewDisabledSegmentDTOsPageDTOs(
+						getPreviewDisabledSegmentDTOPageDTO(
 							351238757269547424L, null, 0, 10, null),
 					JSONObject.class),
 				"JSONObject/page", "Object/totalElements"));
@@ -457,7 +457,7 @@ public class IndividualSegmentsRestControllerTest
 			JSONUtil.getValue(
 				_objectMapper.convertValue(
 					_individualSegmentsRestController.
-						getPreviewDisabledSegmentDTOsPageDTOs(
+						getPreviewDisabledSegmentDTOPageDTO(
 							351238757269547424L, "((status eq 'ACTIVE'))", 0,
 							10, null),
 					JSONObject.class),

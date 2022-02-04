@@ -43,7 +43,7 @@ public class IndividualsRestController
 				IndividualsRestController {
 
 	@GetMapping("/distribution")
-	public PageDTO<DistributionDTO> getDistributionDTOsPageDTO(
+	public PageDTO<DistributionDTO> getDistributionDTOPageDTO(
 			@RequestParam Long fieldMappingId,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
@@ -68,13 +68,13 @@ public class IndividualsRestController
 					fieldMapping.getFieldName() + " to distribute individuals");
 		}
 
-		return _toDistributionDTOsPageDTO(
+		return _toDistributionDTOPageDTO(
 			_individualDog.getDistributionPage(
 				fieldMapping.getFieldName(), fieldMapping.getFieldType(),
 				filterString, numberOfBins, size, sorts));
 	}
 
-	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
+	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(
 		DistributionDTO distributionDTO, Page<Distribution> distributionsPage) {
 
 		return new PageDTO<>(
@@ -83,10 +83,10 @@ public class IndividualsRestController
 			distributionsPage.getTotalPages());
 	}
 
-	private PageDTO<DistributionDTO> _toDistributionDTOsPageDTO(
+	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(
 		Page<Distribution> distributionsPage) {
 
-		return _toDistributionDTOsPageDTO(
+		return _toDistributionDTOPageDTO(
 			new DistributionDTO(
 				distributionsPage.getContent(),
 				"individuals-distribution-transformations"),
