@@ -48,7 +48,7 @@ public class EventAttributeRepositoryTest
 
 	@SQLResource(resourcePath = "test_event_attributes.sql")
 	@Test
-	public void testFindDistinctAttributeValues() {
+	public void testfindEventAttributeValuesByEventAttributeDefinitionId() {
 		Date date = DateUtil.newDate();
 
 		Assertions.assertEquals(
@@ -71,15 +71,25 @@ public class EventAttributeRepositoryTest
 							_getExpectedDate(date, -6), "Hair Dye"));
 				}
 			},
-			_eventAttributeRepository.findDistinctAttributeValues(2001L, 5));
+			_eventAttributeRepository.
+				findEventAttributeValuesByEventAttributeDefinitionId(2001L, 5));
+	}
+
+	@SQLResource(resourcePath = "test_event_attributes_1.sql")
+	@Test
+	public void testfindEventAttributeValuesByEventAttributeDefinitionIdNoMatchingValues() {
+		Assertions.assertEquals(
+			Collections.emptyList(),
+			_eventAttributeRepository.
+				findEventAttributeValuesByEventAttributeDefinitionId(
+					2001L, 10));
 	}
 
 	@SQLResource(resourcePath = "test_event_attributes_2.sql")
 	@Test
-	public void testFindDistinctAttributeValuesByKeywords() {
-		List<String> values =
-			_eventAttributeRepository.findDistinctAttributeValuesByKeywords(
-				1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 100));
+	public void testsearchValues() {
+		List<String> values = _eventAttributeRepository.searchValues(
+			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 100));
 
 		Assertions.assertEquals(4, values.size());
 
@@ -91,30 +101,20 @@ public class EventAttributeRepositoryTest
 			Assertions.assertTrue(values.contains(value));
 		}
 
-		values =
-			_eventAttributeRepository.findDistinctAttributeValuesByKeywords(
-				1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 3));
+		values = _eventAttributeRepository.searchValues(
+			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 3));
 
 		Assertions.assertEquals(3, values.size());
 
-		values =
-			_eventAttributeRepository.findDistinctAttributeValuesByKeywords(
-				1L, 3001L, 3002L, "Attribute Value", PageRequest.of(1, 3));
+		values = _eventAttributeRepository.searchValues(
+			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(1, 3));
 
 		Assertions.assertEquals(1, values.size());
 
 		Assertions.assertEquals(
 			4,
-			_eventAttributeRepository.countDistinctAttributeValuesByKeywords(
+			_eventAttributeRepository.countValues(
 				1L, 3001L, 3002L, "Attribute Value"));
-	}
-
-	@SQLResource(resourcePath = "test_event_attributes_1.sql")
-	@Test
-	public void testFindDistinctAttributeValuesNoMatchingValues() {
-		Assertions.assertEquals(
-			Collections.emptyList(),
-			_eventAttributeRepository.findDistinctAttributeValues(2001L, 10));
 	}
 
 	private Date _getExpectedDate(Date date, int deltaDays) {

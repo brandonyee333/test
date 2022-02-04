@@ -34,7 +34,7 @@ public class EventAttributeRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countDistinctAttributeValuesByKeywords(
+	public long countValues(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords) {
 
@@ -52,7 +52,7 @@ public class EventAttributeRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<String> findDistinctAttributeValuesByKeywords(
+	public List<String> searchValues(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Pageable pageable) {
 

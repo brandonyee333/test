@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="EventAttribute.findDistinctAttributeValues">
+	<entry key="EventAttribute.findEventAttributeValuesByEventAttributeDefinitionId">
 		<![CDATA[
 			SELECT
 				MAX(EventAttribute.eventDate) as lastSeenDate,

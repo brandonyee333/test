@@ -64,15 +64,13 @@ public class EventAttributeDog {
 		PageRequest pageRequest = PageRequest.of(start, size);
 
 		return PageableExecutionUtils.getPage(
-			_eventAttributeRepository.findDistinctAttributeValuesByKeywords(
+			_eventAttributeRepository.searchValues(
 				channelId, eventAttributeDefinitionId, eventDefinitionId,
 				keywords, pageRequest),
 			pageRequest,
-			() ->
-				_eventAttributeRepository.
-					countDistinctAttributeValuesByKeywords(
-						channelId, eventAttributeDefinitionId,
-						eventDefinitionId, keywords));
+			() -> _eventAttributeRepository.countValues(
+				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				keywords));
 	}
 
 	@Autowired
