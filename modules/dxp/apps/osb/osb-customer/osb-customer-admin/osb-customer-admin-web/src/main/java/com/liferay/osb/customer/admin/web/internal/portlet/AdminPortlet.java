@@ -458,17 +458,17 @@ public class AdminPortlet extends MVCPortlet {
 		properties.put(
 			"expirationDate", longDateFormatDateTime.format(expirationDate));
 		properties.put("hostNames", StringUtil.merge(hostNames));
+		properties.put("instanceSize", instanceSize);
 		properties.put("ipAddresses", StringUtil.merge(ipAddresses));
 		properties.put("key", key);
-		properties.put("instanceSize", instanceSize);
 		properties.put("lastAccessedTime", lastAccessedTime);
 		properties.put("licenseEntryName", licenseEntryName);
 		properties.put("licenseEntryType", licenseEntryType);
 		properties.put("licenseVersion", licenseVersion);
 		properties.put("macAddresses", StringUtil.merge(macAddresses));
+		properties.put("maxConcurrentUsers", maxConcurrentUsers);
 		properties.put("maxHttpSessions", maxHttpSessions);
 		properties.put("maxServers", maxServers);
-		properties.put("maxConcurrentUsers", maxConcurrentUsers);
 		properties.put("maxUsers", maxUsers);
 		properties.put("owner", owner);
 		properties.put("productEntryName", productEntryName);
