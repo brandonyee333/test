@@ -164,7 +164,7 @@ public class ContactMessageListener extends BaseMessageListener {
 		try {
 			String name = contactRole.getName();
 
-			if ((accountEntry != null) &&
+			if (!isPartner(account) && (accountEntry != null) &&
 				!accountEntry.isActiveTicketSupport() &&
 				!name.equals(
 					ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
