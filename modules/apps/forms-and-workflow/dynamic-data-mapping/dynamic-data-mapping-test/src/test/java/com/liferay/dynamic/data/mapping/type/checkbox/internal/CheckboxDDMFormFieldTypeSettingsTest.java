@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.dynamic.data.mapping.type.paragraph;
+package com.liferay.dynamic.data.mapping.type.checkbox.internal;
 
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -41,11 +41,11 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
- * @author Leonardo Barros
+ * @author Marcellus Tavares
  */
 @PrepareForTest({PortalClassLoaderUtil.class, ResourceBundleUtil.class})
 @RunWith(PowerMockRunner.class)
-public class ParagraphDDMFormFieldTypeSettingsTest
+public class CheckboxDDMFormFieldTypeSettingsTest
 	extends BaseDDMFormFieldTypeSettingsTestCase {
 
 	@Before
@@ -56,29 +56,24 @@ public class ParagraphDDMFormFieldTypeSettingsTest
 	}
 
 	@Test
-	public void testCreateParagraphDDMFormFieldTypeSettingsDDMForm() {
+	public void testCreateCheckboxDDMFormFieldTypeSettingsDDMForm() {
 		DDMForm ddmForm = DDMFormFactory.create(
-			ParagraphDDMFormFieldTypeSettings.class);
+			CheckboxDDMFormFieldTypeSettings.class);
 
 		Map<String, DDMFormField> ddmFormFieldsMap =
 			ddmForm.getDDMFormFieldsMap(false);
-
-		DDMFormField labelDDMFormField = ddmFormFieldsMap.get("label");
-
-		Assert.assertNotNull(labelDDMFormField);
-		Assert.assertEquals("key-value", labelDDMFormField.getType());
-		Assert.assertNotNull(labelDDMFormField.getLabel());
-
-		Map<String, Object> properties = labelDDMFormField.getProperties();
-
-		Assert.assertTrue(properties.containsKey("placeholder"));
 
 		DDMFormField predefinedValueDDMFormField = ddmFormFieldsMap.get(
 			"predefinedValue");
 
 		Assert.assertNotNull(predefinedValueDDMFormField);
 		Assert.assertEquals(
-			"FALSE", predefinedValueDDMFormField.getVisibilityExpression());
+			"boolean", predefinedValueDDMFormField.getDataType());
+		Assert.assertEquals("checkbox", predefinedValueDDMFormField.getType());
+		Assert.assertTrue(predefinedValueDDMFormField.isLocalizable());
+
+		Assert.assertEquals(
+			"true", predefinedValueDDMFormField.getProperty("showAsSwitcher"));
 
 		DDMFormField repeatableDDMFormField = ddmFormFieldsMap.get(
 			"repeatable");
@@ -87,44 +82,21 @@ public class ParagraphDDMFormFieldTypeSettingsTest
 		Assert.assertEquals(
 			"FALSE", repeatableDDMFormField.getVisibilityExpression());
 
-		DDMFormField requiredDDMFormField = ddmFormFieldsMap.get("required");
+		DDMFormField showAsSwitcherDDMFormField = ddmFormFieldsMap.get(
+			"showAsSwitcher");
 
-		Assert.assertNotNull(requiredDDMFormField);
+		Assert.assertNotNull(showAsSwitcherDDMFormField);
+		Assert.assertEquals("checkbox", showAsSwitcherDDMFormField.getType());
 		Assert.assertEquals(
-			"FALSE", requiredDDMFormField.getVisibilityExpression());
+			"boolean", showAsSwitcherDDMFormField.getDataType());
 
-		DDMFormField showLabelDDMFormField = ddmFormFieldsMap.get("showLabel");
-
-		Assert.assertNotNull(showLabelDDMFormField);
 		Assert.assertEquals(
-			"FALSE", showLabelDDMFormField.getVisibilityExpression());
-
-		DDMFormField textDDMFormField = ddmFormFieldsMap.get("text");
-
-		Assert.assertNotNull(textDDMFormField);
-
-		Assert.assertEquals("string", textDDMFormField.getDataType());
-		Assert.assertNotNull(textDDMFormField.getLabel());
-
-		properties = textDDMFormField.getProperties();
-
-		Assert.assertTrue(properties.containsKey("placeholder"));
-
-		Assert.assertTrue(textDDMFormField.isRequired());
-		Assert.assertEquals("editor", textDDMFormField.getType());
-
-		DDMFormField tipDDMFormField = ddmFormFieldsMap.get("tip");
-
-		Assert.assertNotNull(tipDDMFormField);
-		Assert.assertEquals("FALSE", tipDDMFormField.getVisibilityExpression());
+			"true", showAsSwitcherDDMFormField.getProperty("showAsSwitcher"));
 
 		DDMFormField validationDDMFormField = ddmFormFieldsMap.get(
 			"validation");
 
 		Assert.assertNotNull(validationDDMFormField);
-		Assert.assertEquals(
-			"ddm-validation", validationDDMFormField.getDataType());
-		Assert.assertEquals("validation", validationDDMFormField.getType());
 		Assert.assertEquals(
 			"FALSE", validationDDMFormField.getVisibilityExpression());
 	}

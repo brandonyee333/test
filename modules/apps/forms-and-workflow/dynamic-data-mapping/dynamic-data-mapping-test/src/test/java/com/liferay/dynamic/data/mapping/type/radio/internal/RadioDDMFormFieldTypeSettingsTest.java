@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.dynamic.data.mapping.type.select;
+package com.liferay.dynamic.data.mapping.type.radio.internal;
 
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -45,7 +45,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  */
 @PrepareForTest({PortalClassLoaderUtil.class, ResourceBundleUtil.class})
 @RunWith(PowerMockRunner.class)
-public class SelectDDMFormFieldTypeSettingsTest
+public class RadioDDMFormFieldTypeSettingsTest
 	extends BaseDDMFormFieldTypeSettingsTestCase {
 
 	@Before
@@ -56,58 +56,33 @@ public class SelectDDMFormFieldTypeSettingsTest
 	}
 
 	@Test
-	public void testCreateSelectDDMFormFieldTypeSettingsDDMForm() {
+	public void testCreateRadioDDMFormFieldTypeSettingsDDMForm() {
 		DDMForm ddmForm = DDMFormFactory.create(
-			SelectDDMFormFieldTypeSettings.class);
+			RadioDDMFormFieldTypeSettings.class);
 
 		Map<String, DDMFormField> ddmFormFieldsMap =
 			ddmForm.getDDMFormFieldsMap(false);
 
-		DDMFormField dataSourceTypeDDMFormField = ddmFormFieldsMap.get(
-			"dataSourceType");
+		DDMFormField inlineDDMFormField = ddmFormFieldsMap.get("inline");
 
-		Assert.assertNotNull(dataSourceTypeDDMFormField);
-		Assert.assertNotNull(dataSourceTypeDDMFormField.getLabel());
-		Assert.assertNotNull(dataSourceTypeDDMFormField.getPredefinedValue());
-		Assert.assertEquals("radio", dataSourceTypeDDMFormField.getType());
+		Assert.assertNotNull(inlineDDMFormField);
 
-		DDMFormField ddmDataProviderInstanceIdDDMFormField =
-			ddmFormFieldsMap.get("ddmDataProviderInstanceId");
-
-		Assert.assertNotNull(ddmDataProviderInstanceIdDDMFormField);
-		Assert.assertNotNull(ddmDataProviderInstanceIdDDMFormField.getLabel());
+		Assert.assertNotNull(inlineDDMFormField.getLabel());
 		Assert.assertEquals(
-			"select", ddmDataProviderInstanceIdDDMFormField.getType());
-		Assert.assertEquals(
-			"equals(dataSourceType, \"data-provider\")",
-			ddmDataProviderInstanceIdDDMFormField.getVisibilityExpression());
-
-		DDMFormField multipleDDMFormField = ddmFormFieldsMap.get("multiple");
-
-		Assert.assertNotNull(multipleDDMFormField);
-		Assert.assertNotNull(multipleDDMFormField.getLabel());
-		Assert.assertEquals(
-			"true", multipleDDMFormField.getProperty("showAsSwitcher"));
+			"true", inlineDDMFormField.getProperty("showAsSwitcher"));
 
 		DDMFormField optionsDDMFormField = ddmFormFieldsMap.get("options");
 
 		Assert.assertNotNull(optionsDDMFormField);
 		Assert.assertEquals("ddm-options", optionsDDMFormField.getDataType());
 		Assert.assertNotNull(optionsDDMFormField.getLabel());
-		Assert.assertEquals(
-			"false", optionsDDMFormField.getProperty("showLabel"));
 		Assert.assertTrue(optionsDDMFormField.isRequired());
 		Assert.assertEquals("options", optionsDDMFormField.getType());
-		Assert.assertEquals(
-			"equals(dataSourceType, \"manual\")",
-			optionsDDMFormField.getVisibilityExpression());
 
-		DDMFormField validationDDMFormField = ddmFormFieldsMap.get(
-			"validation");
+		DDMFormField indexTypeDDMFormField = ddmFormFieldsMap.get("indexType");
 
-		Assert.assertNotNull(validationDDMFormField);
-		Assert.assertEquals(
-			"FALSE", validationDDMFormField.getVisibilityExpression());
+		Assert.assertNotNull(indexTypeDDMFormField);
+		Assert.assertNotNull(indexTypeDDMFormField.getLabel());
 	}
 
 	protected void setUpLanguageUtil() {

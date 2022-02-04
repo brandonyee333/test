@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.dynamic.data.mapping.type.radio;
+package com.liferay.dynamic.data.mapping.type.date.internal;
 
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -41,11 +41,11 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
- * @author Leonardo Barros
+ * @author Bruno Basto
  */
 @PrepareForTest({PortalClassLoaderUtil.class, ResourceBundleUtil.class})
 @RunWith(PowerMockRunner.class)
-public class RadioDDMFormFieldTypeSettingsTest
+public class DateDDMFormFieldTypeSettingsTest
 	extends BaseDDMFormFieldTypeSettingsTestCase {
 
 	@Before
@@ -56,28 +56,31 @@ public class RadioDDMFormFieldTypeSettingsTest
 	}
 
 	@Test
-	public void testCreateRadioDDMFormFieldTypeSettingsDDMForm() {
+	public void testCreateDateDDMFormFieldTypeSettingsDDMForm() {
 		DDMForm ddmForm = DDMFormFactory.create(
-			RadioDDMFormFieldTypeSettings.class);
+			DateDDMFormFieldTypeSettings.class);
 
 		Map<String, DDMFormField> ddmFormFieldsMap =
 			ddmForm.getDDMFormFieldsMap(false);
 
-		DDMFormField inlineDDMFormField = ddmFormFieldsMap.get("inline");
+		DDMFormField predefinedValueDDMFormField = ddmFormFieldsMap.get(
+			"predefinedValue");
 
-		Assert.assertNotNull(inlineDDMFormField);
-
-		Assert.assertNotNull(inlineDDMFormField.getLabel());
+		Assert.assertNotNull(predefinedValueDDMFormField);
 		Assert.assertEquals(
-			"true", inlineDDMFormField.getProperty("showAsSwitcher"));
+			"string", predefinedValueDDMFormField.getDataType());
+		Assert.assertEquals("date", predefinedValueDDMFormField.getType());
+		Assert.assertTrue(predefinedValueDDMFormField.isLocalizable());
 
-		DDMFormField optionsDDMFormField = ddmFormFieldsMap.get("options");
+		DDMFormField validationDDMFormField = ddmFormFieldsMap.get(
+			"validation");
 
-		Assert.assertNotNull(optionsDDMFormField);
-		Assert.assertEquals("ddm-options", optionsDDMFormField.getDataType());
-		Assert.assertNotNull(optionsDDMFormField.getLabel());
-		Assert.assertTrue(optionsDDMFormField.isRequired());
-		Assert.assertEquals("options", optionsDDMFormField.getType());
+		Assert.assertNotNull(validationDDMFormField);
+		Assert.assertEquals(
+			"ddm-validation", validationDDMFormField.getDataType());
+		Assert.assertEquals("validation", validationDDMFormField.getType());
+		Assert.assertEquals(
+			"FALSE", validationDDMFormField.getVisibilityExpression());
 
 		DDMFormField indexTypeDDMFormField = ddmFormFieldsMap.get("indexType");
 

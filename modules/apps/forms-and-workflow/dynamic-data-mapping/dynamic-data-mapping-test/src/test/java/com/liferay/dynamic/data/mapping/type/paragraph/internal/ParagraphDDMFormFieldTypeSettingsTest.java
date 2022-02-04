@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.dynamic.data.mapping.type.text;
+package com.liferay.dynamic.data.mapping.type.paragraph.internal;
 
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -45,7 +45,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  */
 @PrepareForTest({PortalClassLoaderUtil.class, ResourceBundleUtil.class})
 @RunWith(PowerMockRunner.class)
-public class TextDDMFormFieldTypeSettingsTest
+public class ParagraphDDMFormFieldTypeSettingsTest
 	extends BaseDDMFormFieldTypeSettingsTestCase {
 
 	@Before
@@ -56,34 +56,77 @@ public class TextDDMFormFieldTypeSettingsTest
 	}
 
 	@Test
-	public void testCreateTextDDMFormFieldTypeSettingsDDMForm() {
+	public void testCreateParagraphDDMFormFieldTypeSettingsDDMForm() {
 		DDMForm ddmForm = DDMFormFactory.create(
-			TextDDMFormFieldTypeSettings.class);
+			ParagraphDDMFormFieldTypeSettings.class);
 
 		Map<String, DDMFormField> ddmFormFieldsMap =
 			ddmForm.getDDMFormFieldsMap(false);
 
-		DDMFormField displayStyleDDMFormField = ddmFormFieldsMap.get(
-			"displayStyle");
+		DDMFormField labelDDMFormField = ddmFormFieldsMap.get("label");
 
-		Assert.assertNotNull(displayStyleDDMFormField);
-		Assert.assertNotNull(displayStyleDDMFormField.getLabel());
+		Assert.assertNotNull(labelDDMFormField);
+		Assert.assertEquals("key-value", labelDDMFormField.getType());
+		Assert.assertNotNull(labelDDMFormField.getLabel());
+
+		Map<String, Object> properties = labelDDMFormField.getProperties();
+
+		Assert.assertTrue(properties.containsKey("placeholder"));
+
+		DDMFormField predefinedValueDDMFormField = ddmFormFieldsMap.get(
+			"predefinedValue");
+
+		Assert.assertNotNull(predefinedValueDDMFormField);
 		Assert.assertEquals(
-			"true", displayStyleDDMFormField.getProperty("inline"));
-		Assert.assertEquals("radio", displayStyleDDMFormField.getType());
+			"FALSE", predefinedValueDDMFormField.getVisibilityExpression());
 
-		DDMFormField placeholderDDMFormField = ddmFormFieldsMap.get(
-			"placeholder");
+		DDMFormField repeatableDDMFormField = ddmFormFieldsMap.get(
+			"repeatable");
 
-		Assert.assertNotNull(placeholderDDMFormField);
-		Assert.assertEquals("string", placeholderDDMFormField.getDataType());
-		Assert.assertEquals("text", placeholderDDMFormField.getType());
-
-		DDMFormField tooltipDDMFormField = ddmFormFieldsMap.get("tooltip");
-
-		Assert.assertNotNull(tooltipDDMFormField);
+		Assert.assertNotNull(repeatableDDMFormField);
 		Assert.assertEquals(
-			"FALSE", tooltipDDMFormField.getVisibilityExpression());
+			"FALSE", repeatableDDMFormField.getVisibilityExpression());
+
+		DDMFormField requiredDDMFormField = ddmFormFieldsMap.get("required");
+
+		Assert.assertNotNull(requiredDDMFormField);
+		Assert.assertEquals(
+			"FALSE", requiredDDMFormField.getVisibilityExpression());
+
+		DDMFormField showLabelDDMFormField = ddmFormFieldsMap.get("showLabel");
+
+		Assert.assertNotNull(showLabelDDMFormField);
+		Assert.assertEquals(
+			"FALSE", showLabelDDMFormField.getVisibilityExpression());
+
+		DDMFormField textDDMFormField = ddmFormFieldsMap.get("text");
+
+		Assert.assertNotNull(textDDMFormField);
+
+		Assert.assertEquals("string", textDDMFormField.getDataType());
+		Assert.assertNotNull(textDDMFormField.getLabel());
+
+		properties = textDDMFormField.getProperties();
+
+		Assert.assertTrue(properties.containsKey("placeholder"));
+
+		Assert.assertTrue(textDDMFormField.isRequired());
+		Assert.assertEquals("editor", textDDMFormField.getType());
+
+		DDMFormField tipDDMFormField = ddmFormFieldsMap.get("tip");
+
+		Assert.assertNotNull(tipDDMFormField);
+		Assert.assertEquals("FALSE", tipDDMFormField.getVisibilityExpression());
+
+		DDMFormField validationDDMFormField = ddmFormFieldsMap.get(
+			"validation");
+
+		Assert.assertNotNull(validationDDMFormField);
+		Assert.assertEquals(
+			"ddm-validation", validationDDMFormField.getDataType());
+		Assert.assertEquals("validation", validationDDMFormField.getType());
+		Assert.assertEquals(
+			"FALSE", validationDDMFormField.getVisibilityExpression());
 	}
 
 	protected void setUpLanguageUtil() {
