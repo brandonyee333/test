@@ -235,6 +235,20 @@ public class IndividualsRestController extends BaseRestController {
 		return _toPageDTO(new IndividualDTO(individualDTOs), individualPage);
 	}
 
+	@GetMapping("/count")
+	public long getIndividualsCount(
+			@RequestParam(required = false) Long channelId,
+			@RequestParam(required = false) String expand,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
+			@RequestParam(defaultValue = "false", required = false) boolean
+				includeAnonymousUsers)
+		throws Exception {
+
+		return _individualDog.countIndividuals(
+			channelId, filterString, includeAnonymousUsers);
+	}
+
 	@GetMapping("/{id}/individual-segments")
 	public PageDTO<SegmentDTO> getSegmentDTOPageDTO(
 		@PathVariable Long id, @RequestParam(required = false) String expand,
