@@ -1078,6 +1078,7 @@ AUI.add(
 						instance.set('displayLocale', event.newVal);
 						instance.set('readOnly', defaultLocale !== event.newVal && !localizable);
 
+						instance.syncLabel(instance.get('displayLocale'));
 						instance.syncValueUI();
 						instance.syncReadOnlyUI();
 					},
