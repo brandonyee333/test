@@ -748,3 +748,11 @@ $productMenuWidth: 320px;
 .pick-button-icon {
 	width: 32px;
 }
+
+.modal-dialog {
+	position: relative;
+}
+
+.modal-open .modal {
+	overflow-y: auto;
+}
