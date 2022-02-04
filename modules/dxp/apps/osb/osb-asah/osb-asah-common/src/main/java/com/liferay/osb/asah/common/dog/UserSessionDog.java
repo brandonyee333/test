@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoSessionsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -92,14 +94,23 @@ public class UserSessionDog {
 	}
 
 	private QueryBuilder _createQueryBuilder(String filterString) {
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		Long individualId = IndividualIdThreadLocal.getIndividualId();
+
+		if (individualId != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("individualId", individualId));
+		}
+
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
 			filterString, _faroInfoSessionsFilterStringConverterHelper);
 
-		if (queryBuilder == null) {
-			return QueryBuilders.matchAllQuery();
+		if (queryBuilder != null) {
+			boolQueryBuilder.filter(queryBuilder);
 		}
 
-		return queryBuilder;
+		return boolQueryBuilder;
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
