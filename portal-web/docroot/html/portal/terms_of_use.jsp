@@ -31,6 +31,7 @@ TermsOfUseContentProvider termsOfUseContentProvider = TermsOfUseContentProviderR
 <aui:form action='<%= themeDisplay.getPathMain() + "/portal/update_terms_of_use" %>' name="fm">
 	<aui:input name="doAsUserId" type="hidden" value="<%= themeDisplay.getDoAsUserId() %>" />
 	<aui:input name="<%= WebKeys.REFERER %>" type="hidden" value="<%= referer %>" />
+	<aui:input name="p_auth" type="hidden" value="<%= AuthTokenUtil.getToken(request) %>" />
 
 	<c:choose>
 		<c:when test="<%= termsOfUseContentProvider != null %>">
