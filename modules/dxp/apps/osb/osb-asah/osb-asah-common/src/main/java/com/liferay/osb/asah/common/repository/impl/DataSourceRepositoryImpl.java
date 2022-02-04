@@ -84,6 +84,8 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 				)
 			).where(
 				filterHelper.getCondition()
+			).groupBy(
+				DSL.field("id")
 			).orderBy(
 				getSortFields(pageable.getSort(), null)
 			).limit(
