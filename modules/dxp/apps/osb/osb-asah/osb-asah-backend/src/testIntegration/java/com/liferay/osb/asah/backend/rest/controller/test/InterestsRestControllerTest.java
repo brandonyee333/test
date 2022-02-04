@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.InterestDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
@@ -33,6 +34,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -98,6 +102,36 @@ public class InterestsRestControllerTest
 					JSONObject.class),
 				"JSONObject/_embedded", "JSONArray/interests"),
 			false);
+	}
+
+	@ElasticsearchIndex(
+		name = "interests", resourcePath = "interests.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetInterestDTOsPageDTOOrderByName() {
+		List<InterestDTO> interestDTOs = _getInterestDTOs(
+			new String[] {"name", "desc"});
+
+		InterestDTO firstInterestDTO = interestDTOs.get(0);
+
+		InterestDTO lastInterestDTO = interestDTOs.get(interestDTOs.size() - 1);
+
+		Assertions.assertEquals("web", firstInterestDTO.getName());
+
+		Assertions.assertEquals(
+			"clicks-and-mortar e-tailers", lastInterestDTO.getName());
+
+		interestDTOs = _getInterestDTOs(new String[] {"name", "asc"});
+
+		firstInterestDTO = interestDTOs.get(0);
+
+		lastInterestDTO = interestDTOs.get(interestDTOs.size() - 1);
+
+		Assertions.assertEquals(
+			"clicks-and-mortar e-tailers", firstInterestDTO.getName());
+
+		Assertions.assertEquals("web", lastInterestDTO.getName());
 	}
 
 	@ElasticsearchIndex(
@@ -383,6 +417,21 @@ public class InterestsRestControllerTest
 				responseJSONObject, "JSONObject/_embedded",
 				"JSONArray/interest-topics"),
 			false);
+	}
+
+	private List<InterestDTO> _getInterestDTOs(String[] sorts) {
+		PageDTO pageDTO = _interestsRestController.getInterestDTOsPageDTO(
+			null, 0, 15, null, sorts);
+
+		Map<String, InterestDTO> contents = pageDTO.getContent();
+
+		InterestDTO interestDTO = contents.get("_embedded");
+
+		Set<InterestDTO> interestDTOs = interestDTO.getInterestDTOs();
+
+		Stream<InterestDTO> stream = interestDTOs.stream();
+
+		return stream.collect(Collectors.toList());
 	}
 
 	@Autowired
