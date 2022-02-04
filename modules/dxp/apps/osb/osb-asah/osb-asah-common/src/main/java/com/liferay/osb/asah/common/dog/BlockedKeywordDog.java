@@ -84,16 +84,7 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 				"There is no blocked keyword with ID " + blockedKeywordId));
 	}
 
-	public List<BlockedKeyword> getBlockedKeywords() {
-		return IterableUtils.toList(_blockedKeywordRepository.findAll());
-	}
-
-	public List<BlockedKeyword> getBlockedKeywords(Set<String> keywords) {
-		return _blockedKeywordRepository.findByKeywordIn(
-			_normalizeKeywords(keywords));
-	}
-
-	public Page<BlockedKeyword> getBlockedKeywordsPage(
+	public Page<BlockedKeyword> getBlockedKeywordPage(
 		String keyword, int page, int size, String[] sorts) {
 
 		Sort sort = _getSort(sorts);
@@ -110,6 +101,15 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 
 		return _blockedKeywordRepository.findAll(
 			PageRequest.of(page, size, sort));
+	}
+
+	public List<BlockedKeyword> getBlockedKeywords() {
+		return IterableUtils.toList(_blockedKeywordRepository.findAll());
+	}
+
+	public List<BlockedKeyword> getBlockedKeywords(Set<String> keywords) {
+		return _blockedKeywordRepository.findByKeywordIn(
+			_normalizeKeywords(keywords));
 	}
 
 	private List<BlockedKeyword> _createMissingBlockedKeywords(

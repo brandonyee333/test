@@ -234,7 +234,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 			false, individualSegmentIds);
 	}
 
-	public Page<MembershipChange> searchMembershipChangesPages(
+	public Page<MembershipChange> searchMembershipChangePages(
 		String filterString, Long segmentId, int page, int size,
 		String[] sorts) {
 

@@ -44,15 +44,15 @@ public class EventAnalysisBagDataFetcher
 	public ResultBag<EventAnalysisDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Page<EventAnalysis> eventAnalysesPage =
-			_eventAnalysisDog.getEventAnalysesPage(
+		Page<EventAnalysis> eventAnalysisPage =
+			_eventAnalysisDog.getEventAnalysisPage(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				dataFetchingEnvironment.getArgument("keywords"),
 				dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")));
 
-		Stream<EventAnalysis> stream = eventAnalysesPage.stream();
+		Stream<EventAnalysis> stream = eventAnalysisPage.stream();
 
 		List<EventAnalysisDTO> eventAnalysisDTOs = stream.map(
 			EventAnalysisDTO::new
@@ -61,7 +61,7 @@ public class EventAnalysisBagDataFetcher
 		);
 
 		return new ResultBag<>(
-			eventAnalysisDTOs, eventAnalysesPage.getTotalElements());
+			eventAnalysisDTOs, eventAnalysisPage.getTotalElements());
 	}
 
 	@Autowired

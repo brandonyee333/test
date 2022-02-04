@@ -55,8 +55,8 @@ public class DXPEntityBagDataFetcher
 	public ResultBag<? extends DXPEntityDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Page<? extends DXPEntity> dxpEntitiesPage =
-			_dxpEntityDog.getDXPEntitiesPage(
+		Page<? extends DXPEntity> dxpEntityPage =
+			_dxpEntityDog.getDXPEntityPage(
 				NumberUtils.createLong(
 					dataFetchingEnvironment.getArgument("channelId")),
 				dataFetchingEnvironment.getArgument("keywords"),
@@ -68,7 +68,7 @@ public class DXPEntityBagDataFetcher
 
 		return new ResultBag<>(
 			ListUtil.map(
-				dxpEntitiesPage.toList(),
+				dxpEntityPage.toList(),
 				dxpEntity -> {
 					if (dxpEntity instanceof DXPOrganization) {
 						return new DXPOrganizationDTO(
@@ -81,7 +81,7 @@ public class DXPEntityBagDataFetcher
 
 					return new DXPEntityDTO(dxpEntity);
 				}),
-			dxpEntitiesPage.getTotalElements());
+			dxpEntityPage.getTotalElements());
 	}
 
 	private String _getCollectionName(

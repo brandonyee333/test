@@ -746,13 +746,13 @@ public class ReportRestController extends BaseRestController {
 		getReportSegmentDTOResultBagEntityModel(
 			@RequestParam(defaultValue = "0") Integer page) {
 
-		Page<Segment> segmentsPage = _segmentDog.getSegmentsPage(
+		Page<Segment> segmentPage = _segmentDog.getSegmentPage(
 			page, _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
 			_getSegmentResultBagEntityModel(page + 1), page,
-			_getSegmentResultBagEntityModel(page - 1),
-			segmentsPage.getContent(), segmentsPage.getTotalElements(),
+			_getSegmentResultBagEntityModel(page - 1), segmentPage.getContent(),
+			segmentPage.getTotalElements(),
 			this::_toReportSegmentDTOEntityModel);
 	}
 

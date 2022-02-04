@@ -145,15 +145,15 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		Page<Individual> individualsPage = _individualDog.searchIndividualsPage(
+		Page<Individual> individualPage = _individualDog.searchIndividualPage(
 			channelId, filterString, includeAnonymousUsers, page,
 			Math.max(1, size), sorts);
 
 		if (StringUtils.isEmpty(expand)) {
-			return _toIndividualDTOPageDTO(individualsPage);
+			return _toIndividualDTOPageDTO(individualPage);
 		}
 
-		List<Individual> individuals = individualsPage.getContent();
+		List<Individual> individuals = individualPage.getContent();
 
 		Set<IndividualDTO> individualDTOs = new LinkedHashSet<>();
 
@@ -232,7 +232,7 @@ public class IndividualsRestController extends BaseRestController {
 			}
 		}
 
-		return _toPageDTO(new IndividualDTO(individualDTOs), individualsPage);
+		return _toPageDTO(new IndividualDTO(individualDTOs), individualPage);
 	}
 
 	@GetMapping("/{id}/individual-segments")
@@ -243,7 +243,7 @@ public class IndividualsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		Page<Segment> segmentsPage = _segmentDog.searchSegmentsPage(
+		Page<Segment> segmentsPage = _segmentDog.searchSegmentPage(
 			filterString, id, page, Math.max(1, size), sorts);
 
 		if (StringUtils.isEmpty(expand)) {
@@ -305,7 +305,7 @@ public class IndividualsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size) {
 
 		return _toTransformationDTOsPageDTO(
-			_individualDog.getTransformationsPage(
+			_individualDog.getTransformationPage(
 				apply, channelId, filterString, includeAnonymousUsers, null,
 				page, size));
 	}

@@ -58,8 +58,8 @@ public class EventAttributeDefinitionBagDataFetcher
 				dataFetchingEnvironment.getArgument("eventDefinitionId"));
 		}
 
-		Page<EventAttributeDefinition> eventAttributeDefinitionsPage =
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+		Page<EventAttributeDefinition> eventAttributeDefinitionPage =
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionPage(
 				eventDefinitionId,
 				dataFetchingEnvironment.getArgument("keyword"),
 				dataFetchingEnvironment.getArgument("page"),
@@ -69,7 +69,7 @@ public class EventAttributeDefinitionBagDataFetcher
 					dataFetchingEnvironment.getArgument("type")));
 
 		Stream<EventAttributeDefinition> stream =
-			eventAttributeDefinitionsPage.stream();
+			eventAttributeDefinitionPage.stream();
 
 		List<EventAttributeDefinitionDTO> eventAttributeDefinitionDTOs =
 			stream.map(
@@ -80,7 +80,7 @@ public class EventAttributeDefinitionBagDataFetcher
 
 		return new ResultBag<>(
 			eventAttributeDefinitionDTOs,
-			eventAttributeDefinitionsPage.getTotalElements());
+			eventAttributeDefinitionPage.getTotalElements());
 	}
 
 	@Autowired

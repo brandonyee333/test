@@ -62,7 +62,7 @@ public class AccountsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toPageDTO(
-			_accountDog.searchAccountsPage(
+			_accountDog.searchAccountPage(
 				channelId, filterString, page, null, Math.max(1, size), sorts));
 	}
 
@@ -93,7 +93,7 @@ public class AccountsRestController extends BaseRestController {
 		}
 
 		return _toDistributionDTOsPageDTO(
-			_accountDog.getDistributionsPage(
+			_accountDog.getDistributionPage(
 				channelId, fieldMapping.getFieldName(),
 				fieldMapping.getFieldType(), filterString, individualSegmentId,
 				numberOfBins, size, sorts));
@@ -108,7 +108,7 @@ public class AccountsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toSegmentPageDTO(
-			_segmentDog.searchAccountSegmentsPage(
+			_segmentDog.searchAccountSegmentPage(
 				id, filterString, page, size, sorts));
 	}
 
@@ -123,7 +123,7 @@ public class AccountsRestController extends BaseRestController {
 
 		return _toTransformationDTOsPageDTO(
 			"individual-segment-transformations",
-			_segmentDog.getTransformationsPage(
+			_segmentDog.getTransformationPage(
 				id, apply, filterString, page, size));
 	}
 
@@ -136,7 +136,7 @@ public class AccountsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size) {
 
 		return _toTransformationDTOsPageDTO(
-			_accountDog.getTransformationsPage(
+			_accountDog.getTransformationPage(
 				apply, channelId, filterString, page, size));
 	}
 

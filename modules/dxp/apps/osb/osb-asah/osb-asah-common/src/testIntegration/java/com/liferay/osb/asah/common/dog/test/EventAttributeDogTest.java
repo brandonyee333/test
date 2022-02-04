@@ -93,15 +93,15 @@ public class EventAttributeDogTest
 			eventAttributes, date, eventDefinition.getId(), 1L, "sessionId",
 			"abcdef");
 
-		Page<String> eventAttributeValuesPage =
-			_eventAttributeDog.getEventAttributeValuesPage(
+		Page<String> eventAttributeValuePage =
+			_eventAttributeDog.getEventAttributeValuePage(
 				channel.getId(), eventAttributeDefinition.getId(),
 				eventDefinition.getId(), "Attribute Value", 100, 0);
 
-		Assertions.assertEquals(4, eventAttributeValuesPage.getTotalElements());
+		Assertions.assertEquals(4, eventAttributeValuePage.getTotalElements());
 
 		List<String> eventAttributeValues =
-			eventAttributeValuesPage.getContent();
+			eventAttributeValuePage.getContent();
 
 		Assertions.assertEquals(4, eventAttributeValues.size());
 
@@ -113,14 +113,13 @@ public class EventAttributeDogTest
 			Assertions.assertTrue(eventAttributeValues.contains(value));
 		}
 
-		eventAttributeValuesPage =
-			_eventAttributeDog.getEventAttributeValuesPage(
-				channel.getId(), eventAttributeDefinition.getId(),
-				eventDefinition.getId(), "Attribute Value", 3, 1);
+		eventAttributeValuePage = _eventAttributeDog.getEventAttributeValuePage(
+			channel.getId(), eventAttributeDefinition.getId(),
+			eventDefinition.getId(), "Attribute Value", 3, 1);
 
-		Assertions.assertEquals(4, eventAttributeValuesPage.getTotalElements());
+		Assertions.assertEquals(4, eventAttributeValuePage.getTotalElements());
 
-		eventAttributeValues = eventAttributeValuesPage.getContent();
+		eventAttributeValues = eventAttributeValuePage.getContent();
 
 		Assertions.assertEquals(1, eventAttributeValues.size());
 	}

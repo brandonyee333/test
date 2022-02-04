@@ -258,7 +258,7 @@ public class FieldMappingDog {
 			_fieldMappingRepository.findAllById(fieldMappingIds));
 	}
 
-	public Page<Transformation> getTransformationsPage(
+	public Page<Transformation> getTransformationPage(
 		String apply, @Nullable String filterString, int page, int size) {
 
 		PageRequest pageRequest = PageRequest.of(
@@ -292,7 +292,7 @@ public class FieldMappingDog {
 		return _fieldMappingRepository.save(fieldMapping);
 	}
 
-	public Page<FieldMapping> searchFieldMappingsPage(
+	public Page<FieldMapping> searchFieldMappingPage(
 		@Nullable String filterString, int page, int size,
 		@Nullable String[] sorts) {
 
@@ -311,7 +311,7 @@ public class FieldMappingDog {
 			() -> _fieldMappingRepository.countFieldMappings(filterHelper));
 	}
 
-	public Page<FieldMapping> searchIndividualFieldMappingsPage(
+	public Page<FieldMapping> searchIndividualFieldMappingPage(
 		@Nullable String name, int page, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(

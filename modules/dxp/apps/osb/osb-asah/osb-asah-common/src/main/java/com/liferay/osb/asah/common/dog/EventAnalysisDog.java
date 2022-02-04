@@ -128,7 +128,17 @@ public class EventAnalysisDog {
 		_eventAnalysisRepository.deleteByIdIn(new HashSet<>(eventAnalysisIds));
 	}
 
-	public Page<EventAnalysis> getEventAnalysesPage(
+	public EventAnalysis getEventAnalysis(Long eventAnalysisId) {
+		Optional<EventAnalysis> eventAnalysisOptional =
+			_eventAnalysisRepository.findById(eventAnalysisId);
+
+		return eventAnalysisOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no event analysis with ID " + eventAnalysisId));
+	}
+
+	public Page<EventAnalysis> getEventAnalysisPage(
 		Long channelId, @Nullable String keywords, int page, int size,
 		Sort sort) {
 
@@ -142,16 +152,6 @@ public class EventAnalysisDog {
 			pageRequest,
 			() -> _eventAnalysisRepository.countEventAnalyses(
 				channelId, keywords));
-	}
-
-	public EventAnalysis getEventAnalysis(Long eventAnalysisId) {
-		Optional<EventAnalysis> eventAnalysisOptional =
-			_eventAnalysisRepository.findById(eventAnalysisId);
-
-		return eventAnalysisOptional.orElseThrow(
-			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"There is no event analysis with ID " + eventAnalysisId));
 	}
 
 	public EventAnalysisResult getEventAnalysisResult(

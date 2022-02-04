@@ -120,15 +120,15 @@ public class DataSourceDogTest
 	)
 	@Test
 	public void testGetDataSources() {
-		Page<DataSource> dataSourcesPage = _dataSourceDog.getDataSourcesPage(
+		Page<DataSource> dataSourcePage = _dataSourceDog.getDataSourcePage(
 			"(channelId eq [1])", 0, 10, null);
 
-		Assertions.assertFalse(dataSourcesPage.isEmpty());
+		Assertions.assertFalse(dataSourcePage.isEmpty());
 
-		dataSourcesPage = _dataSourceDog.getDataSourcesPage(
+		dataSourcePage = _dataSourceDog.getDataSourcePage(
 			"(channelId eq [4])", 0, 10, null);
 
-		Assertions.assertTrue(dataSourcesPage.isEmpty());
+		Assertions.assertTrue(dataSourcePage.isEmpty());
 	}
 
 	@Test

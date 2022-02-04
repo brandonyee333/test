@@ -93,7 +93,7 @@ public class FieldMappingsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toPageDTO(
-			_fieldMappingDog.searchFieldMappingsPage(
+			_fieldMappingDog.searchFieldMappingPage(
 				filterString, page, Math.max(1, size), sorts));
 	}
 
@@ -106,7 +106,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		return _toTransformationDTOsPageDTO(
 			"field-mapping-transformations",
-			_fieldMappingDog.getTransformationsPage(
+			_fieldMappingDog.getTransformationPage(
 				apply, filterString, page, size));
 	}
 

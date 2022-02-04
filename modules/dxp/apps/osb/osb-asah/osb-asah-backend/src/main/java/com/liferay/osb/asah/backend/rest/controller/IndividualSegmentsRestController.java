@@ -80,7 +80,7 @@ public class IndividualSegmentsRestController
 		Segment segment = segmentDog.getSegment(id);
 
 		return _toAccountDTOsPageDTO(
-			_accountDog.searchAccountsPage(
+			_accountDog.searchAccountPage(
 				segment.getChannelId(), filterString, page, id, size, sorts));
 	}
 
@@ -93,7 +93,7 @@ public class IndividualSegmentsRestController
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return toSegmentDTOPageDTO(
-			segmentDog.searchPreviewDisabledSegmentsPage(
+			segmentDog.searchPreviewDisabledSegmentPage(
 				dataSourceId, filterString, page, Math.max(1, size), sorts));
 	}
 

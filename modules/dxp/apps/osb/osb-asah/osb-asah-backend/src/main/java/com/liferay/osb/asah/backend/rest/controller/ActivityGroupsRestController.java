@@ -84,17 +84,17 @@ public class ActivityGroupsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		Page<ActivityGroup> activityGroupsPage =
-			_activityGroupDog.searchActivityGroupsPage(
+		Page<ActivityGroup> activityGroupPage =
+			_activityGroupDog.searchActivityGroupPage(
 				filterString, page, size, sorts);
 
 		if (!StringUtils.isEmpty(expand)) {
-			if (activityGroupsPage.isEmpty()) {
-				return _toPageDTO(activityGroupsPage);
+			if (activityGroupPage.isEmpty()) {
+				return _toPageDTO(activityGroupPage);
 			}
 
 			Map<String, ActivityGroupDTO> activityGroupDTOs = Stream.of(
-				activityGroupsPage.getContent()
+				activityGroupPage.getContent()
 			).flatMap(
 				List::stream
 			).map(
@@ -110,10 +110,10 @@ public class ActivityGroupsRestController extends BaseRestController {
 
 			return _toPageDTO(
 				new ActivityGroupDTO(activityGroupDTOs.values()),
-				activityGroupsPage);
+				activityGroupPage);
 		}
 
-		return _toPageDTO(activityGroupsPage);
+		return _toPageDTO(activityGroupPage);
 	}
 
 	private void _addExpansion(

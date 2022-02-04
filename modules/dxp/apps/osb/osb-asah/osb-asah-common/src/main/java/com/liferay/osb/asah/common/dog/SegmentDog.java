@@ -291,6 +291,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 			new ArrayList<>(segmentIds), "ACTIVE");
 	}
 
+	public Page<Segment> getSegmentPage(int page, int size) {
+		return _segmentRepository.findAll(PageRequest.of(page, size));
+	}
+
 	public Page<Segment> getSegmentPage(Long segmentId, int size, Sort sort) {
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.findByIdAfter(
@@ -338,11 +342,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return segmentsJSONObjects;
 	}
 
-	public Page<Segment> getSegmentsPage(int page, int size) {
-		return _segmentRepository.findAll(PageRequest.of(page, size));
-	}
-
-	public Page<Transformation> getTransformationsPage(
+	public Page<Transformation> getTransformationPage(
 			Long accountId, String apply, @Nullable String filterString,
 			int page, int size)
 		throws Exception {
@@ -370,7 +370,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			transformations, pageRequest, transformations::size);
 	}
 
-	public Page<Transformation> getTransformationsPage(
+	public Page<Transformation> getTransformationPage(
 		String apply, @Nullable String filterString, int page, int size) {
 
 		PageRequest pageRequest = PageRequest.of(
@@ -424,7 +424,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return segment;
 	}
 
-	public Page<Segment> searchAccountSegmentsPage(
+	public Page<Segment> searchAccountSegmentPage(
 		Long accountId, @Nullable String filterString, int page, int size,
 		@Nullable String[] sorts) {
 
@@ -474,7 +474,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			new FilterHelper(filterString), pageRequest);
 	}
 
-	public Page<Segment> searchPreviewDisabledSegmentsPage(
+	public Page<Segment> searchPreviewDisabledSegmentPage(
 		Long dataSourceId, String filterString, int page, int size,
 		String[] sorts) {
 
@@ -494,7 +494,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 				fieldMappingIds, dataSourceId, filterHelper));
 	}
 
-	public Page<Segment> searchSegmentsPage(
+	public Page<Segment> searchSegmentPage(
 		Long dataSourceId, String filterString, int page, int size,
 		String[] sorts) {
 
@@ -513,7 +513,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			() -> _segmentRepository.countSegments(channelIds, filterHelper));
 	}
 
-	public Page<Segment> searchSegmentsPage(
+	public Page<Segment> searchSegmentPage(
 		String filterString, Long individualId, int page, int size,
 		String[] sorts) {
 

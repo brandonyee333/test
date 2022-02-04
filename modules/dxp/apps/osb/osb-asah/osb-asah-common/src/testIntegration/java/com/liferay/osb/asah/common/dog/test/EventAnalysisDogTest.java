@@ -218,12 +218,12 @@ public class EventAnalysisDogTest
 	@SQLResource(resourcePath = "test_get_event_analyses.sql")
 	@Test
 	public void testGetEventAnalysesPageSortByCreatedBy() {
-		Page<EventAnalysis> eventAnalysesPage =
-			_eventAnalysisDog.getEventAnalysesPage(
+		Page<EventAnalysis> eventAnalysisPage =
+			_eventAnalysisDog.getEventAnalysisPage(
 				1L, "1", 0, 10, Sort.asc("createdByUserName"));
 
 		List<Long> eventAnalysisIds = ListUtil.map(
-			eventAnalysesPage.getContent(), EventAnalysis::getId);
+			eventAnalysisPage.getContent(), EventAnalysis::getId);
 
 		Assertions.assertEquals(1, eventAnalysisIds.size());
 		Assertions.assertEquals(2345L, eventAnalysisIds.get(0));
@@ -232,12 +232,12 @@ public class EventAnalysisDogTest
 	@SQLResource(resourcePath = "test_get_event_analyses.sql")
 	@Test
 	public void testGetEventAnalysesPageSortByName() {
-		Page<EventAnalysis> eventAnalysesPage =
-			_eventAnalysisDog.getEventAnalysesPage(
+		Page<EventAnalysis> eventAnalysisPage =
+			_eventAnalysisDog.getEventAnalysisPage(
 				1L, "1", 0, 10, Sort.asc("name"));
 
 		List<Long> eventAnalysisIds = ListUtil.map(
-			eventAnalysesPage.getContent(), EventAnalysis::getId);
+			eventAnalysisPage.getContent(), EventAnalysis::getId);
 
 		Assertions.assertEquals(1, eventAnalysisIds.size());
 		Assertions.assertEquals(2345L, eventAnalysisIds.get(0));

@@ -396,7 +396,7 @@ public class EventAttributeDefinitionDogTest
 	@Test
 	public void testGetEventAttributeDefinitions() {
 		_assertEventAttributeDefinitions(
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionPage(
 				null, null, 0, 5, Sort.asc("displayName"),
 				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
@@ -409,7 +409,7 @@ public class EventAttributeDefinitionDogTest
 				}
 			});
 		_assertEventAttributeDefinitions(
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionPage(
 				null, null, 0, 5, Sort.asc("name"),
 				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
@@ -527,7 +527,7 @@ public class EventAttributeDefinitionDogTest
 	@Test
 	public void testGetEventAttributeDefinitionsGlobal() {
 		_assertEventAttributeDefinitions(
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionPage(
 				null, null, 0, 10, Sort.asc("name"),
 				EventAttributeDefinition.Type.GLOBAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
@@ -557,7 +557,7 @@ public class EventAttributeDefinitionDogTest
 			_eventDefinitionDog.fetchEventDefinitionByName("savedToList");
 
 		_assertEventAttributeDefinitions(
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionPage(
 				eventDefinition.getId(), null, 0, 5, Sort.asc("name"),
 				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
@@ -578,7 +578,7 @@ public class EventAttributeDefinitionDogTest
 	@Test
 	public void testGetEventAttributeDefinitionsWithKeywordMatchDescription() {
 		_assertEventAttributeDefinitions(
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionPage(
 				null, "seller", 0, 5, Sort.asc("name"),
 				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
@@ -596,7 +596,7 @@ public class EventAttributeDefinitionDogTest
 	@Test
 	public void testGetEventAttributeDefinitionsWithKeywordMatchDisplayName() {
 		_assertEventAttributeDefinitions(
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionPage(
 				null, "number of", 0, 5, Sort.asc("name"),
 				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
@@ -617,7 +617,7 @@ public class EventAttributeDefinitionDogTest
 	@Test
 	public void testGetEventAttributeDefinitionsWithKeywordMatchName() {
 		_assertEventAttributeDefinitions(
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionPage(
 				null, "ity", 0, 5, Sort.asc("name"),
 				EventAttributeDefinition.Type.LOCAL),
 			new HashMap<String, EventAttributeDefinition.DataType>() {

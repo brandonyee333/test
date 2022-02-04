@@ -151,21 +151,7 @@ public class EventDefinitionDog {
 				"There is no event definition with ID " + eventDefinitionId));
 	}
 
-	public Map<Long, EventDefinition> getEventDefinitions(
-		Set<Long> eventDefinitionIds) {
-
-		List<EventDefinition> eventDefinitions =
-			_eventDefinitionRepository.findByIdIn(eventDefinitionIds);
-
-		Stream<EventDefinition> eventDefinitionsStream =
-			eventDefinitions.stream();
-
-		return eventDefinitionsStream.collect(
-			Collectors.toMap(
-				EventDefinition::getId, eventDefinition -> eventDefinition));
-	}
-
-	public Page<EventDefinition> getEventDefinitionsPage(
+	public Page<EventDefinition> getEventDefinitionPage(
 		@Nullable Boolean blocked, @Nullable Boolean hidden,
 		@Nullable String keyword, int page, int size, Sort sort,
 		EventDefinition.Type type) {
@@ -180,6 +166,20 @@ public class EventDefinitionDog {
 			pageRequest,
 			() -> _eventDefinitionRepository.countEventDefinitions(
 				blocked, null, hidden, keyword, type));
+	}
+
+	public Map<Long, EventDefinition> getEventDefinitions(
+		Set<Long> eventDefinitionIds) {
+
+		List<EventDefinition> eventDefinitions =
+			_eventDefinitionRepository.findByIdIn(eventDefinitionIds);
+
+		Stream<EventDefinition> eventDefinitionsStream =
+			eventDefinitions.stream();
+
+		return eventDefinitionsStream.collect(
+			Collectors.toMap(
+				EventDefinition::getId, eventDefinition -> eventDefinition));
 	}
 
 	public void hideEventDefinitions(List<Long> eventDefinitionIds) {

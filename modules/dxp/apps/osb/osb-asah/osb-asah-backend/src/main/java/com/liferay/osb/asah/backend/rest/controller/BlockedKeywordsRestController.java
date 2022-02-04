@@ -70,7 +70,7 @@ public class BlockedKeywordsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toPageDTO(
-			_blockedKeywordDog.getBlockedKeywordsPage(
+			_blockedKeywordDog.getBlockedKeywordPage(
 				keyword, page, size, sorts));
 	}
 

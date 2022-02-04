@@ -284,7 +284,7 @@ public class AccountDog {
 		return accountsJSONObjects;
 	}
 
-	public Page<Distribution> getDistributionsPage(
+	public Page<Distribution> getDistributionPage(
 		@Nullable Long channelId, String fieldName, String fieldType,
 		@Nullable String filterString, @Nullable Long individualSegmentId,
 		int numberOfBins, int size, @Nullable String[] sorts) {
@@ -310,7 +310,7 @@ public class AccountDog {
 			distributions, pageRequest, distributions::size);
 	}
 
-	public Page<Transformation> getTransformationsPage(
+	public Page<Transformation> getTransformationPage(
 		String apply, @Nullable Long channelId, @Nullable String filterString,
 		int page, int size) {
 
@@ -443,19 +443,7 @@ public class AccountDog {
 		return account;
 	}
 
-	public List<Account> searchAccounts(
-		String filterString, int page, int size) {
-
-		return ListUtil.map(
-			_accountRepository.searchAccounts(
-				new FilterHelper(
-					_defaultFilterStringConverterHelper, filterString,
-					_accountsFilterStringConverterHelper),
-				PageRequest.of(page, size)),
-			account -> populateAccount(account, null));
-	}
-
-	public Page<Account> searchAccountsPage(
+	public Page<Account> searchAccountPage(
 		@Nullable Long channelId, @Nullable String filterString, int page,
 		@Nullable Long segmentId, int size, @Nullable String[] sorts) {
 
@@ -502,6 +490,18 @@ public class AccountDog {
 			accounts, pageRequest,
 			() -> _accountRepository.countAccounts(
 				_getAccountPKs(segmentId), filterHelper));
+	}
+
+	public List<Account> searchAccounts(
+		String filterString, int page, int size) {
+
+		return ListUtil.map(
+			_accountRepository.searchAccounts(
+				new FilterHelper(
+					_defaultFilterStringConverterHelper, filterString,
+					_accountsFilterStringConverterHelper),
+				PageRequest.of(page, size)),
+			account -> populateAccount(account, null));
 	}
 
 	public Account updateAccount(Account account) {

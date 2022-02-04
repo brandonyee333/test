@@ -69,7 +69,7 @@ public class IndividualsRestController
 		}
 
 		return _toDistributionDTOsPageDTO(
-			_individualDog.getDistributionsPage(
+			_individualDog.getDistributionPage(
 				fieldMapping.getFieldName(), fieldMapping.getFieldType(),
 				filterString, numberOfBins, size, sorts));
 	}

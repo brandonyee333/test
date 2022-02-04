@@ -110,7 +110,7 @@ public class DXPEntityDog {
 			dxpEntity -> (DXPUser)dxpEntity);
 	}
 
-	public Page<? extends DXPEntity> getDXPEntitiesPage(
+	public Page<? extends DXPEntity> getDXPEntityPage(
 		@Nullable Long channelId, @Nullable String keywords, int size,
 		Sort sort, int start, DXPEntity.Type type) {
 

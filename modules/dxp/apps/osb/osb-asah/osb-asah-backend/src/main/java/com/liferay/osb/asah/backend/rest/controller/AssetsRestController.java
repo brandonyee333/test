@@ -63,7 +63,7 @@ public class AssetsRestController extends BaseRestController {
 
 		return _toTransformationDTOsPageDTO(
 			"asset-transformations",
-			_assetDog.getTransformationsPage(apply, filterString, page, size));
+			_assetDog.getTransformationPage(apply, filterString, page, size));
 	}
 
 	private PageDTO<AssetDTO> _toPageDTO(

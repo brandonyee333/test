@@ -669,7 +669,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		);
 	}
 
-	public Page<Distribution> getDistributionsPage(
+	public Page<Distribution> getDistributionPage(
 		String fieldName, String fieldType, String filterString,
 		int numberOfBins, int size, String[] sorts) {
 
@@ -802,7 +802,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			segmentId);
 	}
 
-	public Page<Transformation> getTransformationsPage(
+	public Page<Transformation> getTransformationPage(
 		String apply, Long channelId, String filterString,
 		Boolean includeAnonymousUsers, Long segmentId, int page, int size) {
 
@@ -886,6 +886,43 @@ public class IndividualDog extends BaseFaroInfoDog {
 		_individualRepository.removeSegmentIds(segmentIds);
 	}
 
+	public Page<Individual> searchIndividualPage(
+		Long channelId, String filterString, Boolean includeAnonymousUsers,
+		int page, int size, String[] sorts) {
+
+		return PageableExecutionUtils.getPage(
+			searchIndividuals(
+				channelId, filterString, includeAnonymousUsers, page, size,
+				sorts),
+			PageRequest.of(page, size, _getSort(sorts)),
+			() -> countIndividuals(
+				channelId, filterString, includeAnonymousUsers));
+	}
+
+	public Page<Individual> searchIndividualPage(
+		String filterString, Boolean includeAnonymousUsers, Long segmentId,
+		int page, int size, String[] sorts) {
+
+		FilterHelper filterHelper = new FilterHelper(
+			_faroInfoIndividualsFilterStringConverterHelper, filterString,
+			_individualsFilterStringConverterHelper);
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		Long segmentChannelId = _getSegmentChannelId(segmentId);
+
+		List<Individual> individuals = _individualRepository.searchIndividuals(
+			null, filterHelper, includeAnonymousUsers, segmentChannelId,
+			segmentId, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			ListUtil.map(individuals, this::_populateIndividual), pageRequest,
+			() -> _individualRepository.countIndividuals(
+				null, filterHelper, includeAnonymousUsers, segmentChannelId,
+				segmentId));
+	}
+
 	public List<Individual> searchIndividuals(
 		Date date, Long individualId, int size) {
 
@@ -953,43 +990,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 				_faroInfoIndividualsFilterStringConverterHelper, filterString,
 				_individualsFilterStringConverterHelper),
 			individualIds);
-	}
-
-	public Page<Individual> searchIndividualsPage(
-		Long channelId, String filterString, Boolean includeAnonymousUsers,
-		int page, int size, String[] sorts) {
-
-		return PageableExecutionUtils.getPage(
-			searchIndividuals(
-				channelId, filterString, includeAnonymousUsers, page, size,
-				sorts),
-			PageRequest.of(page, size, _getSort(sorts)),
-			() -> countIndividuals(
-				channelId, filterString, includeAnonymousUsers));
-	}
-
-	public Page<Individual> searchIndividualsPage(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId,
-		int page, int size, String[] sorts) {
-
-		FilterHelper filterHelper = new FilterHelper(
-			_faroInfoIndividualsFilterStringConverterHelper, filterString,
-			_individualsFilterStringConverterHelper);
-
-		PageRequest pageRequest = PageRequest.of(
-			page, size, SortUtil.getSort(sorts));
-
-		Long segmentChannelId = _getSegmentChannelId(segmentId);
-
-		List<Individual> individuals = _individualRepository.searchIndividuals(
-			null, filterHelper, includeAnonymousUsers, segmentChannelId,
-			segmentId, pageRequest);
-
-		return PageableExecutionUtils.getPage(
-			ListUtil.map(individuals, this::_populateIndividual), pageRequest,
-			() -> _individualRepository.countIndividuals(
-				null, filterHelper, includeAnonymousUsers, segmentChannelId,
-				segmentId));
 	}
 
 	public void updateDataSourceName(Long dataSourceId, String dataSourceName) {

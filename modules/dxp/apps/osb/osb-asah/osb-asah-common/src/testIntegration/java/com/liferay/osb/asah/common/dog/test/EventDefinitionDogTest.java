@@ -225,7 +225,7 @@ public class EventDefinitionDogTest
 	@Test
 	public void testBlockEventDefinitions() {
 		Page<EventDefinition> eventDefinitions =
-			_eventDefinitionDog.getEventDefinitionsPage(
+			_eventDefinitionDog.getEventDefinitionPage(
 				false, null, null, 0, 3, Sort.asc("name"),
 				EventDefinition.Type.CUSTOM);
 
@@ -350,7 +350,7 @@ public class EventDefinitionDogTest
 	@Test
 	public void testGetDisplayedEventDefinitions() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitionsPage(
+			_eventDefinitionDog.getEventDefinitionPage(
 				false, false, null, 0, 20, Sort.asc("name"),
 				EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
@@ -390,7 +390,7 @@ public class EventDefinitionDogTest
 	@Test
 	public void testGetEventDefinitions() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitionsPage(
+			_eventDefinitionDog.getEventDefinitionPage(
 				false, null, null, 0, 5, Sort.asc("name"),
 				EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
@@ -408,7 +408,7 @@ public class EventDefinitionDogTest
 	@Test
 	public void testGetEventDefinitionsWithKeywordMatchDescription() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitionsPage(
+			_eventDefinitionDog.getEventDefinitionPage(
 				false, null, "item", 0, 5, Sort.asc("name"),
 				EventDefinition.Type.CUSTOM),
 			new ArrayList<String>() {
@@ -423,7 +423,7 @@ public class EventDefinitionDogTest
 	@Test
 	public void testGetEventDefinitionsWithKeywordMatchDisplayName() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitionsPage(
+			_eventDefinitionDog.getEventDefinitionPage(
 				false, null, "Shopping", 0, 5, Sort.asc("name"),
 				EventDefinition.Type.CUSTOM),
 			new ArrayList<String>() {
@@ -438,7 +438,7 @@ public class EventDefinitionDogTest
 	@Test
 	public void testGetEventDefinitionsWithKeywordMatchName() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitionsPage(
+			_eventDefinitionDog.getEventDefinitionPage(
 				false, null, "applied", 0, 5, Sort.asc("name"),
 				EventDefinition.Type.CUSTOM),
 			Collections.singletonList("codeApplied"));
@@ -447,7 +447,7 @@ public class EventDefinitionDogTest
 	@Test
 	public void testGetHiddenEventDefinitions() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitionsPage(
+			_eventDefinitionDog.getEventDefinitionPage(
 				false, true, null, 0, 20, Sort.asc("name"),
 				EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
@@ -572,7 +572,7 @@ public class EventDefinitionDogTest
 	@Test
 	public void testUnblockEventDefinitionsLimitOverflow() {
 		Page<EventDefinition> eventDefinitions =
-			_eventDefinitionDog.getEventDefinitionsPage(
+			_eventDefinitionDog.getEventDefinitionPage(
 				true, null, null, 0, 5, Sort.asc("name"),
 				EventDefinition.Type.CUSTOM);
 

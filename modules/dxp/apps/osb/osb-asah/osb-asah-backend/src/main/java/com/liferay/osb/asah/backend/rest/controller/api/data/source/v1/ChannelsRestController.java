@@ -59,7 +59,7 @@ public class ChannelsRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toPageDTO(
-			_channelDog.getChannelsPage(filterString, page, size, sorts));
+			_channelDog.getChannelPage(filterString, page, size, sorts));
 	}
 
 	@PatchMapping("/{id}")

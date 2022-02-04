@@ -270,7 +270,7 @@ public class FieldDog {
 				context, ownerId);
 	}
 
-	public Page<Transformation> getTransformationsPage(
+	public Page<Transformation> getTransformationPage(
 		String apply, @Nullable String filterString, int page, int size) {
 
 		PageRequest pageRequest = PageRequest.of(
@@ -292,7 +292,7 @@ public class FieldDog {
 			"email", individual.getId());
 	}
 
-	public Page<Field> searchFieldsPage(
+	public Page<Field> searchFieldPage(
 		@Nullable String filterString, int page, int size,
 		@Nullable String[] sorts) {
 

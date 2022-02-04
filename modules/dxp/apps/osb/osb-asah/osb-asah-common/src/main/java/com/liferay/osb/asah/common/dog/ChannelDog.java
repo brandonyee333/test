@@ -207,15 +207,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 		return channelNamesByGroupIds;
 	}
 
-	public List<Channel> getChannels(List<Long> channelIds) {
-		return IterableUtils.toList(_channelRepository.findAllById(channelIds));
-	}
-
-	public List<Channel> getChannels(Long dataSourceId) {
-		return _channelRepository.findByDataSourceId(dataSourceId);
-	}
-
-	public Page<Channel> getChannelsPage(
+	public Page<Channel> getChannelPage(
 		String name, int page, int size, String[] sorts) {
 
 		if (name != null) {
@@ -228,6 +220,14 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 		return _channelRepository.findAll(
 			PageRequest.of(page, size, _getSort(sorts)));
+	}
+
+	public List<Channel> getChannels(List<Long> channelIds) {
+		return IterableUtils.toList(_channelRepository.findAllById(channelIds));
+	}
+
+	public List<Channel> getChannels(Long dataSourceId) {
+		return _channelRepository.findByDataSourceId(dataSourceId);
 	}
 
 	public Set<Long> getRemovedGroupIds(

@@ -105,7 +105,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toIndividualDTOPageDTO(
-			_individualDog.searchIndividualsPage(
+			_individualDog.searchIndividualPage(
 				filterString, includeAnonymousUsers, id, page, size, sorts));
 	}
 
@@ -118,7 +118,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		Page<MembershipChange> membershipChangesPages =
-			_membershipChangeDog.searchMembershipChangesPages(
+			_membershipChangeDog.searchMembershipChangePages(
 				filterString, id, page, size, sorts);
 
 		if (StringUtils.isEmpty(expand)) {
@@ -203,13 +203,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		if (!segmentDog.isIncludeAnonymousUsers(id)) {
 			return _toMembershipDTOsPageDTO(
-				membershipDog.getMembershipsPage(
+				membershipDog.getMembershipPage(
 					_individualDog.getKnownIndividualIds(filterString, id), id,
 					"ACTIVE", page, size, sorts));
 		}
 
 		return _toMembershipDTOsPageDTO(
-			membershipDog.getMembershipsPage(id, "ACTIVE", page, size, sorts));
+			membershipDog.getMembershipPage(id, "ACTIVE", page, size, sorts));
 	}
 
 	@GetMapping("/{id}")
@@ -266,7 +266,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		Page<Segment> segmentsPage = segmentDog.searchSegmentsPage(
+		Page<Segment> segmentsPage = segmentDog.searchSegmentPage(
 			dataSourceId, filterString, page, Math.max(1, size), sorts);
 
 		if (segmentsPage.getTotalElements() > 0) {
@@ -302,7 +302,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		return _toTransformationDTOsPageDTO(
 			"individual-transformations",
-			_individualDog.getTransformationsPage(
+			_individualDog.getTransformationPage(
 				apply, null, filterString, includeAnonymousUsers, id, page,
 				size));
 	}
@@ -316,8 +316,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		return _toTransformationDTOsPageDTO(
 			"individual-segment-transformations",
-			_segmentDog.getTransformationsPage(
-				apply, filterString, page, size));
+			_segmentDog.getTransformationPage(apply, filterString, page, size));
 	}
 
 	@PostMapping("/{id}/memberships")

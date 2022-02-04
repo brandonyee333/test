@@ -110,11 +110,11 @@ public class DataSourcesRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		Page<DataSource> dataSourcesPage = _dataSourceDog.getDataSourcesPage(
+		Page<DataSource> dataSourcePage = _dataSourceDog.getDataSourcePage(
 			filterString, page, size, sorts);
 
 		return _toPageDTO(
-			dataSourcesPage.map(
+			dataSourcePage.map(
 				dataSource -> {
 					_sanitize(dataSource);
 

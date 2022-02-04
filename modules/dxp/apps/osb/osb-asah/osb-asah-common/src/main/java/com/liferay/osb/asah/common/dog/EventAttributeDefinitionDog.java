@@ -167,6 +167,24 @@ public class EventAttributeDefinitionDog {
 				EventAttributeDefinition::getId));
 	}
 
+	public Page<EventAttributeDefinition> getEventAttributeDefinitionPage(
+		Long eventDefinitionId, String keyword, int page, int size, Sort sort,
+		EventAttributeDefinition.Type type) {
+
+		_validate(sort);
+
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+		return PageableExecutionUtils.getPage(
+			_eventAttributeDefinitionRepository.searchEventAttributeDefinitions(
+				eventDefinitionId, keyword, pageRequest, type),
+			pageRequest,
+			() ->
+				_eventAttributeDefinitionRepository.
+					countEventAttributeDefinitions(
+						eventDefinitionId, keyword, type));
+	}
+
 	public List<EventAttributeDefinition> getEventAttributeDefinitions(
 		List<Long> eventAttributeDefinitionIds) {
 
@@ -192,24 +210,6 @@ public class EventAttributeDefinitionDog {
 		}
 
 		return _eventAttributeDefinitionRepository.findByType(type);
-	}
-
-	public Page<EventAttributeDefinition> getEventAttributeDefinitionsPage(
-		Long eventDefinitionId, String keyword, int page, int size, Sort sort,
-		EventAttributeDefinition.Type type) {
-
-		_validate(sort);
-
-		PageRequest pageRequest = PageRequest.of(page, size, sort);
-
-		return PageableExecutionUtils.getPage(
-			_eventAttributeDefinitionRepository.searchEventAttributeDefinitions(
-				eventDefinitionId, keyword, pageRequest, type),
-			pageRequest,
-			() ->
-				_eventAttributeDefinitionRepository.
-					countEventAttributeDefinitions(
-						eventDefinitionId, keyword, type));
 	}
 
 	public EventAttributeDefinition updateEventAttributeDefinition(

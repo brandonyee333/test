@@ -37,8 +37,8 @@ public class EventAttributeValueBagDataFetcher
 	public ResultBag<String> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Page<String> eventAttributeValuesPage =
-			_eventAttributeDog.getEventAttributeValuesPage(
+		Page<String> eventAttributeValuePage =
+			_eventAttributeDog.getEventAttributeValuePage(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				Long.valueOf(
 					dataFetchingEnvironment.getArgument(
@@ -50,8 +50,8 @@ public class EventAttributeValueBagDataFetcher
 				dataFetchingEnvironment.getArgument("start"));
 
 		return new ResultBag<>(
-			eventAttributeValuesPage.getContent(),
-			eventAttributeValuesPage.getTotalElements());
+			eventAttributeValuePage.getContent(),
+			eventAttributeValuePage.getTotalElements());
 	}
 
 	@Autowired

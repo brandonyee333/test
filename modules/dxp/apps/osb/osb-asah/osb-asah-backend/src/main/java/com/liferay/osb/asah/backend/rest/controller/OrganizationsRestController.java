@@ -41,7 +41,7 @@ public class OrganizationsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size) {
 
 		return _toTransformationDTOsPageDTO(
-			_organizationDog.getTransformationsPage(
+			_organizationDog.getTransformationPage(
 				apply, filterString, page, size));
 	}
 

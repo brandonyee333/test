@@ -94,7 +94,7 @@ public class ActivityGroupDog {
 				"There is no activity group with ID " + activityGroupId));
 	}
 
-	public Page<ActivityGroup> searchActivityGroupsPage(
+	public Page<ActivityGroup> searchActivityGroupPage(
 		String filterString, int page, int size, String[] sorts) {
 
 		FilterHelper filterHelper = new FilterHelper(

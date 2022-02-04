@@ -57,7 +57,7 @@ public class EventAttributeDog {
 					attributeName, eventId)));
 	}
 
-	public Page<String> getEventAttributeValuesPage(
+	public Page<String> getEventAttributeValuePage(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Integer size, Integer start) {
 

@@ -271,7 +271,7 @@ public class AssetDog {
 		return _assetRepository.countAssetKeywords(keywords);
 	}
 
-	public Page<Transformation> getTransformationsPage(
+	public Page<Transformation> getTransformationPage(
 		String apply, @Nullable String filterString, int page, int size) {
 
 		PageRequest pageRequest = PageRequest.of(

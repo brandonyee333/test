@@ -48,8 +48,8 @@ public class BlockedCustomEventDefinitionBagDataFetcher
 
 		String keyword = dataFetchingEnvironment.getArgument("keyword");
 
-		Page<EventDefinition> eventDefinitionsPage =
-			_eventDefinitionDog.getEventDefinitionsPage(
+		Page<EventDefinition> eventDefinitionPage =
+			_eventDefinitionDog.getEventDefinitionPage(
 				true, null, keyword,
 				dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
@@ -58,9 +58,9 @@ public class BlockedCustomEventDefinitionBagDataFetcher
 
 		return new ResultBag<>(
 			ListUtil.map(
-				eventDefinitionsPage.getContent(),
+				eventDefinitionPage.getContent(),
 				BlockedCustomEventDefinitionDTO::new),
-			eventDefinitionsPage.getTotalElements());
+			eventDefinitionPage.getTotalElements());
 	}
 
 	private Sort _getSort(Map<String, String> sort) {

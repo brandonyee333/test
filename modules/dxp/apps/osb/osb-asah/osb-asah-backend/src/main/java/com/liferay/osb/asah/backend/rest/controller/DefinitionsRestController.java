@@ -48,8 +48,8 @@ public class DefinitionsRestController extends BaseRestController {
 	public PageDTO<FieldMappingDTO> getIndividualFieldMappingDTOsPageDTO(
 		@RequestParam(required = false) String name) {
 
-		Page<FieldMapping> fieldMappingsPage =
-			_fieldMappingDog.searchIndividualFieldMappingsPage(
+		Page<FieldMapping> fieldMappingPage =
+			_fieldMappingDog.searchIndividualFieldMappingPage(
 				name, 0,
 				Math.max(
 					1,
@@ -57,7 +57,7 @@ public class DefinitionsRestController extends BaseRestController {
 				new String[] {"fieldName", "asc"});
 
 		Map<String, FieldMappingDTO> fieldMappingDTOs = Stream.of(
-			fieldMappingsPage.getContent()
+			fieldMappingPage.getContent()
 		).flatMap(
 			List::stream
 		).map(
@@ -72,7 +72,7 @@ public class DefinitionsRestController extends BaseRestController {
 		_addDataSources(fieldMappingDTOs);
 
 		return _toPageDTO(
-			new FieldMappingDTO(fieldMappingDTOs.values()), fieldMappingsPage);
+			new FieldMappingDTO(fieldMappingDTOs.values()), fieldMappingPage);
 	}
 
 	private void _addDataSources(

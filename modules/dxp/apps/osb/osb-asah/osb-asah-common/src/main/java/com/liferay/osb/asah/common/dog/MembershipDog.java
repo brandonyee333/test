@@ -322,6 +322,37 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualId);
 	}
 
+	public Page<Membership> getMembershipPage(
+		List<Long> individualIds, Long individualSegmentId, String status,
+		int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_membershipRepository.
+				findByIndividualIdInAndIndividualSegmentIdAndStatus(
+					individualIds, individualSegmentId, status, pageRequest),
+			pageRequest,
+			() ->
+				_membershipRepository.
+					countByIndividualIdInAndIndividualSegmentIdAndStatus(
+						individualIds, individualSegmentId, status));
+	}
+
+	public Page<Membership> getMembershipPage(
+		Long individualSegmentId, String status, int page, int size,
+		String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_membershipRepository.findByIndividualSegmentIdAndStatus(
+				individualSegmentId, status, pageRequest),
+			pageRequest,
+			() -> _membershipRepository.countByIndividualSegmentIdAndStatus(
+				individualSegmentId, status));
+	}
+
 	public Map<Long, JSONObject> getMembershipsJSONObjects(
 		Long individualId, List<Segment> segments) {
 
@@ -365,37 +396,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 		}
 
 		return membershipsJSONObjects;
-	}
-
-	public Page<Membership> getMembershipsPage(
-		List<Long> individualIds, Long individualSegmentId, String status,
-		int page, int size, String[] sorts) {
-
-		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
-
-		return PageableExecutionUtils.getPage(
-			_membershipRepository.
-				findByIndividualIdInAndIndividualSegmentIdAndStatus(
-					individualIds, individualSegmentId, status, pageRequest),
-			pageRequest,
-			() ->
-				_membershipRepository.
-					countByIndividualIdInAndIndividualSegmentIdAndStatus(
-						individualIds, individualSegmentId, status));
-	}
-
-	public Page<Membership> getMembershipsPage(
-		Long individualSegmentId, String status, int page, int size,
-		String[] sorts) {
-
-		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
-
-		return PageableExecutionUtils.getPage(
-			_membershipRepository.findByIndividualSegmentIdAndStatus(
-				individualSegmentId, status, pageRequest),
-			pageRequest,
-			() -> _membershipRepository.countByIndividualSegmentIdAndStatus(
-				individualSegmentId, status));
 	}
 
 	public List<Long> isMember(
