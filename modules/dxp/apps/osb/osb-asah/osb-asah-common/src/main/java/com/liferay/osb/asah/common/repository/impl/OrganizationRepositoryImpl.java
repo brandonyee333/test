@@ -47,18 +47,36 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countOrganizations(@Nullable String keywords) {
+	public long countByName(@Nullable String name) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"Organization"
 		).where(
-			_getCondition(keywords)
+			_getCondition(name)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
 			0L
+		);
+	}
+
+	public List<Organization> findByName(
+		@Nullable String name, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Organization"
+		).where(
+			_getCondition(name)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+			record -> new Organization(record.intoMap())
 		);
 	}
 
@@ -165,33 +183,15 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public List<Organization> searchOrganizations(
-		@Nullable String keywords, Pageable pageable) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.from(
-			"Organization"
-		).where(
-			_getCondition(keywords)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new Organization(record.intoMap())
-		);
-	}
-
-	private Condition _getCondition(String keywords) {
-		if (StringUtil.isBlank(keywords)) {
+	private Condition _getCondition(String name) {
+		if (StringUtil.isBlank(name)) {
 			return DSL.noCondition();
 		}
 
 		return DSL.field(
 			"name"
 		).contains(
-			keywords
+			name
 		);
 	}
 

@@ -62,10 +62,9 @@ public class ElasticsearchOrganizationRepositoryImpl
 	implements OrganizationRepository {
 
 	@Override
-	public long countOrganizations(@Nullable String keywords) {
+	public long countByName(@Nullable String name) {
 		return _faroInfoElasticsearchInvoker.count(
-			"organizations",
-			QueryUtil.buildSearchQueryBuilder("name", keywords));
+			"organizations", QueryUtil.buildSearchQueryBuilder("name", name));
 	}
 
 	@Override
@@ -94,6 +93,46 @@ public class ElasticsearchOrganizationRepositoryImpl
 				).filter(
 					QueryBuilders.termsQuery("organizationPK", organizationPKs)
 				)));
+	}
+
+	@Override
+	public List<Organization> findByName(
+		@Nullable String name, Pageable pageable) {
+
+		try {
+			CollectionGetResponse collectionGetResponse =
+				new CollectionGetResponse();
+
+			collectionGetResponse.setCollectionName("organizations");
+			collectionGetResponse.setElasticsearchInvoker(
+				_faroInfoElasticsearchInvoker);
+			collectionGetResponse.setPage(pageable.getPageNumber());
+			collectionGetResponse.setQueryBuilder(
+				QueryUtil.buildSearchQueryBuilder("name", name));
+			collectionGetResponse.setSize(pageable.getPageSize());
+
+			List<String> sorts = new ArrayList<>();
+
+			for (com.liferay.osb.asah.common.model.Sort.Order order :
+					pageable.getSort()) {
+
+				sorts.add(order.getProperty());
+				sorts.add(_getOrderDirection(order));
+			}
+
+			collectionGetResponse.setSorts(sorts.toArray(new String[0]));
+
+			JSONObject jsonObject = new JSONObject(
+				collectionGetResponse.respond());
+
+			JSONObject embeddedJSONObject = jsonObject.getJSONObject(
+				"_embedded");
+
+			return toList(embeddedJSONObject.getJSONArray("organizations"));
+		}
+		catch (Exception exception) {
+			return Collections.emptyList();
+		}
 	}
 
 	@Override
@@ -171,46 +210,6 @@ public class ElasticsearchOrganizationRepositoryImpl
 					getSortFieldNameConversionMap(), pageable.getSort()),
 				getFrom(pageable), filterHelper.getQueryBuilder(),
 				pageable.getPageSize()));
-	}
-
-	@Override
-	public List<Organization> searchOrganizations(
-		@Nullable String keywords, Pageable pageable) {
-
-		try {
-			CollectionGetResponse collectionGetResponse =
-				new CollectionGetResponse();
-
-			collectionGetResponse.setCollectionName("organizations");
-			collectionGetResponse.setElasticsearchInvoker(
-				_faroInfoElasticsearchInvoker);
-			collectionGetResponse.setPage(pageable.getPageNumber());
-			collectionGetResponse.setQueryBuilder(
-				QueryUtil.buildSearchQueryBuilder("name", keywords));
-			collectionGetResponse.setSize(pageable.getPageSize());
-
-			List<String> sorts = new ArrayList<>();
-
-			for (com.liferay.osb.asah.common.model.Sort.Order order :
-					pageable.getSort()) {
-
-				sorts.add(order.getProperty());
-				sorts.add(_getOrderDirection(order));
-			}
-
-			collectionGetResponse.setSorts(sorts.toArray(new String[0]));
-
-			JSONObject jsonObject = new JSONObject(
-				collectionGetResponse.respond());
-
-			JSONObject embeddedJSONObject = jsonObject.getJSONObject(
-				"_embedded");
-
-			return toList(embeddedJSONObject.getJSONArray("organizations"));
-		}
-		catch (Exception exception) {
-			return Collections.emptyList();
-		}
 	}
 
 	@Override

@@ -86,6 +86,11 @@ public abstract class BaseOrganizationRepositoryTestCase
 	}
 
 	@Test
+	public void testCountByName() {
+		Assertions.assertEquals(1, _organizationRepository.countByName("Org"));
+	}
+
+	@Test
 	public void testFindByDataSourceIdAndOrganizationPK() {
 		Assertions.assertNotNull(
 			_organizationRepository.findByDataSourceIdAndOrganizationPK(
@@ -102,15 +107,11 @@ public abstract class BaseOrganizationRepositoryTestCase
 	}
 
 	@Test
-	public void testSearchOrganizationsByKeyword() {
-		List<Organization> organizations =
-			_organizationRepository.searchOrganizations(
-				"Org", PageRequest.of(0, 10));
+	public void testFindByName() {
+		List<Organization> organizations = _organizationRepository.findByName(
+			"Org", PageRequest.of(0, 10));
 
 		Assertions.assertEquals(1, organizations.size());
-
-		Assertions.assertEquals(
-			1, _organizationRepository.countOrganizations("Org"));
 	}
 
 	@Override

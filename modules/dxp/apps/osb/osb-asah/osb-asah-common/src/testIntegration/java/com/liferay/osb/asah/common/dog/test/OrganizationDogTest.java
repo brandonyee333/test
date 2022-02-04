@@ -166,7 +166,7 @@ public class OrganizationDogTest
 	}
 
 	@Test
-	public void testGetOrganizationsPage() throws Exception {
+	public void testGetOrganizationPage() throws Exception {
 		JSONObject dxpRawOrganizationJSONObject =
 			DXPRawTestUtil.buildOrganizationJSONObject(
 				String.valueOf(_liferayDataSource.getId()));
@@ -176,11 +176,11 @@ public class OrganizationDogTest
 
 		String name = organization.getName();
 
-		Page<Organization> organizationsPage =
-			_organizationDog.getOrganizationsPage(
+		Page<Organization> organizationPage =
+			_organizationDog.getOrganizationPage(
 				name.substring(3), 10, new Sort("name", "asc"), 0);
 
-		Assertions.assertEquals(organizationsPage.getTotalElements(), 1);
+		Assertions.assertEquals(organizationPage.getTotalElements(), 1);
 	}
 
 	@Test

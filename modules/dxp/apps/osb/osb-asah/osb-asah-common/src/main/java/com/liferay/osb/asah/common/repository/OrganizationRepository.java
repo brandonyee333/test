@@ -33,7 +33,7 @@ import org.springframework.lang.Nullable;
 public interface OrganizationRepository extends Repository<Organization, Long> {
 
 	@Cacheable
-	public long countOrganizations(@Nullable String keywords);
+	public long countByName(@Nullable String name);
 
 	@Cacheable
 	public Organization findByDataSourceIdAndOrganizationPK(
@@ -43,15 +43,15 @@ public interface OrganizationRepository extends Repository<Organization, Long> {
 	public List<Organization> findByDataSourceIdAndOrganizationPKIn(
 		Long dataSourceId, Collection<Long> organizationPKs);
 
+	@Cacheable
+	public List<Organization> findByName(
+		@Nullable String name, Pageable pageable);
+
 	public List<Transformation> getOrganizationTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
 	public List<Organization> searchOrganizations(
 		FilterHelper filterHelper, Pageable pageable);
-
-	@Cacheable
-	public List<Organization> searchOrganizations(
-		@Nullable String keywords, Pageable pageable);
 
 }

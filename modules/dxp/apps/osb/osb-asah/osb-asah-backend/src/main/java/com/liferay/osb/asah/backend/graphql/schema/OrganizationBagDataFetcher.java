@@ -41,8 +41,8 @@ public class OrganizationBagDataFetcher
 	public ResultBag<OrganizationDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Page<Organization> organizationsPage =
-			_organizationDog.getOrganizationsPage(
+		Page<Organization> organizationPage =
+			_organizationDog.getOrganizationPage(
 				dataFetchingEnvironment.getArgument("keywords"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")),
@@ -50,9 +50,9 @@ public class OrganizationBagDataFetcher
 
 		return new ResultBag<>(
 			ListUtil.map(
-				organizationsPage.toList(),
+				organizationPage.getContent(),
 				organization -> new OrganizationDTO(organization)),
-			organizationsPage.getTotalElements());
+			organizationPage.getTotalElements());
 	}
 
 	@Autowired
