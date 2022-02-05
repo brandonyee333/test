@@ -420,7 +420,7 @@ public class InterestsRestControllerTest
 	}
 
 	private List<InterestDTO> _getInterestDTOs(String[] sorts) {
-		PageDTO pageDTO = _interestsRestController.getInterestDTOsPageDTO(
+		PageDTO pageDTO = _interestsRestController.getInterestDTOPageDTO(
 			null, 0, 15, null, sorts);
 
 		Map<String, InterestDTO> contents = pageDTO.getContent();

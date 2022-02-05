@@ -67,7 +67,7 @@ public class DXPEntityBagDataFetcher
 
 		return new ResultBag<>(
 			ListUtil.map(
-				dxpEntityPage.toList(),
+				dxpEntityPage.getContent(),
 				dxpEntity -> {
 					if (dxpEntity instanceof DXPOrganization) {
 						return new DXPOrganizationDTO(
