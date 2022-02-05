@@ -94,16 +94,10 @@ public class SegmentDogTest
 
 			_liferayDataSourceOrganizationIdsJSONObject.put(
 				String.valueOf(liferayDataSourceId),
-				_dxpRawElasticsearchInvoker.add(
+				faroInfoElasticsearchInvoker.add(
 					"organizations",
-					JSONUtil.put(
-						"dataSourceId",
-						organizationJSONObject.get("dataSourceId")
-					).put(
-						"fields", organizationJSONObject
-					).put(
-						"type", DXPEntity.Type.ORGANIZATION
-					)));
+					organizationJSONObject.put(
+						"type", DXPEntity.Type.ORGANIZATION)));
 		}
 
 		for (String fieldName : _FIELD_NAMES) {

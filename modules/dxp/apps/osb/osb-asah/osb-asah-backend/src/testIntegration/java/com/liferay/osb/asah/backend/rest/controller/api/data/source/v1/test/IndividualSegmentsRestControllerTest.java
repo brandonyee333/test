@@ -88,12 +88,12 @@ public class IndividualSegmentsRestControllerTest
 			).put(
 				"fields", JSONUtil.put("name", "groupName")
 			));
-		JSONObject organizationJSONObject = _dxpRawElasticsearchInvoker.add(
+		JSONObject organizationJSONObject = _faroInfoElasticsearchInvoker.add(
 			"organizations",
 			JSONUtil.put(
 				"dataSourceId", 1L
 			).put(
-				"fields", JSONUtil.put("name", "organizationName")
+				"name", "organizationName"
 			));
 		JSONObject roleJSONObject = _dxpRawElasticsearchInvoker.add(
 			"roles",
