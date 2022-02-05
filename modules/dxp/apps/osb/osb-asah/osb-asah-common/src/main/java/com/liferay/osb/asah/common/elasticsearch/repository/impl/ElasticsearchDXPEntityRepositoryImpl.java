@@ -251,17 +251,20 @@ public class ElasticsearchDXPEntityRepositoryImpl
 			List<String> sorts = new ArrayList<>();
 
 			for (Sort.Order order : pageable.getSort()) {
-				if (!StringUtils.equals(type.getCollectionName(), "users") ||
-					!StringUtils.equals(order.getProperty(), "name")) {
+				if (StringUtils.equals(order.getProperty(), "name")) {
+					if (StringUtils.equals(type.getCollectionName(), "users")) {
+						sorts.add("fields.firstName");
 
-					sorts.add(order.getProperty());
+						sorts.add(_getOrderDirection(order));
+
+						sorts.add("fields.lastName");
+					}
+					else {
+						sorts.add("fields.name");
+					}
 				}
 				else {
-					sorts.add("fields.firstName");
-
-					sorts.add(_getOrderDirection(order));
-
-					sorts.add("fields.lastName");
+					sorts.add(order.getProperty());
 				}
 
 				sorts.add(_getOrderDirection(order));
