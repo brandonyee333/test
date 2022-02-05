@@ -448,7 +448,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		JSONArray jsonArray = null;
 
-		if (DXPEntity.Type.ofCollectionName(collectionName) != null) {
+		if (!collectionName.equals("organizations") &&
+			(DXPEntity.Type.ofCollectionName(collectionName) != null)) {
+
 			List<? extends DXPEntity> dxpEntities =
 				_dxpEntityDog.findByFieldsAndType(
 					Collections.singletonMap(

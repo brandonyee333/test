@@ -723,7 +723,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		JSONObject referencedJSONObject = null;
 
-		if (DXPEntity.Type.ofCollectionName(collectionName) == null) {
+		if (collectionName.equalsIgnoreCase("organizations") ||
+			(DXPEntity.Type.ofCollectionName(collectionName) == null)) {
+
 			referencedJSONObject = elasticsearchInvoker.get(collectionName, id);
 		}
 		else {
