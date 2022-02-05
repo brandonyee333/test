@@ -118,6 +118,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -446,6 +447,15 @@ public class ProductResourceImpl
 				cpDefinition.getDescriptionMap());
 		}
 
+		Map<String, String> productUrlTitleMap = product.getUrls();
+
+		Map<Locale, String> urlTitleMap = LanguageUtils.getLocalizedMap(
+			productUrlTitleMap);
+
+		if ((cpDefinition != null) && (urlTitleMap == null)) {
+			urlTitleMap = cpDefinition.getUrlTitleMap();
+		}
+
 		boolean ignoreSKUCombinations = true;
 
 		if (cpDefinition != null) {
@@ -456,7 +466,7 @@ public class ProductResourceImpl
 			product.getExternalReferenceCode(), commerceCatalog.getGroupId(),
 			LanguageUtils.getLocalizedMap(nameMap),
 			LanguageUtils.getLocalizedMap(shortDescriptionMap),
-			LanguageUtils.getLocalizedMap(descriptionMap), null,
+			LanguageUtils.getLocalizedMap(descriptionMap), urlTitleMap,
 			LanguageUtils.getLocalizedMap(product.getMetaTitle()),
 			LanguageUtils.getLocalizedMap(product.getMetaDescription()),
 			LanguageUtils.getLocalizedMap(product.getMetaKeyword()),
