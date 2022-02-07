@@ -41,6 +41,7 @@ import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
+import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -515,20 +516,27 @@ public class IndividualDog extends BaseFaroInfoDog {
 	public boolean existsByChannelIdAndFilterStringAndId(
 		Long channelId, String filterString, Long individualId) {
 
-		if (channelId == null) {
-			return _individualRepository.existsByFilterStringAndId(
+		try {
+			IndividualIdThreadLocal.setIndividualId(individualId);
+
+			if (channelId == null) {
+				return _individualRepository.existsByFilterStringAndId(
+					new FilterHelper(
+						_faroInfoIndividualsFilterStringConverterHelper,
+						filterString, _individualsFilterStringConverterHelper),
+					individualId);
+			}
+
+			return _individualRepository.existsByChannelIdAndFilterStringAndId(
+				channelId,
 				new FilterHelper(
 					_faroInfoIndividualsFilterStringConverterHelper,
 					filterString, _individualsFilterStringConverterHelper),
 				individualId);
 		}
-
-		return _individualRepository.existsByChannelIdAndFilterStringAndId(
-			channelId,
-			new FilterHelper(
-				_faroInfoIndividualsFilterStringConverterHelper, filterString,
-				_individualsFilterStringConverterHelper),
-			individualId);
+		finally {
+			IndividualIdThreadLocal.remove();
+		}
 	}
 
 	public boolean existsByDataSourceIndividualPK(
