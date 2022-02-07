@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -324,6 +325,13 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		).iterate();
 
 		if (boolQueryBuilder.hasClauses()) {
+			Long individualId = IndividualIdThreadLocal.getIndividualId();
+
+			if (individualId != null) {
+				boolQueryBuilder.filter(
+					QueryBuilders.termQuery("id", individualId));
+			}
+
 			return boolQueryBuilder;
 		}
 
@@ -334,11 +342,12 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		boolean checkEqualityOnly, String filterString, int minDocCount,
 		boolean negate, String operator, int value) {
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString, _faroInfoActivitiesFilterStringConverterHelper);
+		BoolQueryBuilder boolQueryBuilder = _getOwnerIdBoolQueryBuilder(
+			FilterStringToQueryBuilderConverter.convert(
+				filterString, _faroInfoActivitiesFilterStringConverterHelper));
 
 		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
-			checkEqualityOnly, minDocCount, queryBuilder, value);
+			checkEqualityOnly, minDocCount, boolQueryBuilder, value);
 
 		if (ownerIds.isEmpty()) {
 			if (operator.equals("le") || operator.equals("lt")) {
@@ -370,7 +379,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			queryBuilder = QueryBuilders.matchAllQuery();
 		}
 
-		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(queryBuilder);
+		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
+			_getOwnerIdBoolQueryBuilder(queryBuilder));
 
 		if (!ownerIds.isEmpty()) {
 			return QueryBuilders.termsQuery("id", ownerIds);
@@ -668,7 +678,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			throw new Exception("Invalid time frame: " + timeFrame);
 		}
 
-		return _faroInfoActivityDog.getOwnerIds(boolQueryBuilder);
+		return _faroInfoActivityDog.getOwnerIds(
+			_getOwnerIdBoolQueryBuilder(boolQueryBuilder));
 	}
 
 	private QueryBuilder _getIndividualPKQueryBuilder(
@@ -775,6 +786,16 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 		List<String> individualIds = new ArrayList<>();
 
+		BoolQueryBuilder boolQueryBuilder = _getOwnerIdBoolQueryBuilder(null);
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString.replaceAll(matcher.group(1), "score eq " + value),
+			_faroInfoInterestsFilterStringConverterHelper);
+
+		if (queryBuilder != null) {
+			boolQueryBuilder.filter(queryBuilder);
+		}
+
 		JSONArrayIterator.of(
 			"interests", _faroInfoElasticsearchInvoker,
 			interestJSONObject -> {
@@ -783,9 +804,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				return null;
 			}
 		).setQueryBuilder(
-			FilterStringToQueryBuilderConverter.convert(
-				filterString.replaceAll(matcher.group(1), "score eq " + value),
-				_faroInfoInterestsFilterStringConverterHelper)
+			boolQueryBuilder
 		).iterate();
 
 		if (!interested) {
@@ -824,10 +843,36 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		).iterate();
 
 		if (boolQueryBuilder.hasClauses()) {
+			Long individualId = IndividualIdThreadLocal.getIndividualId();
+
+			if (individualId != null) {
+				boolQueryBuilder.filter(
+					QueryBuilders.termQuery("id", individualId));
+			}
+
 			return boolQueryBuilder;
 		}
 
 		return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
+	}
+
+	private BoolQueryBuilder _getOwnerIdBoolQueryBuilder(
+		QueryBuilder queryBuilder) {
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if (queryBuilder != null) {
+			boolQueryBuilder.filter(queryBuilder);
+		}
+
+		Long individualId = IndividualIdThreadLocal.getIndividualId();
+
+		if (individualId != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("ownerId", individualId));
+		}
+
+		return boolQueryBuilder;
 	}
 
 	private QueryBuilder _getUserIdQueryBuilder(boolean negate, String userId) {
