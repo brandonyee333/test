@@ -604,8 +604,8 @@ definition {
 		ServerAdministration.openServerAdmin();
 
 		ServerAdministration.addCategoryLogLevels(
-			categoryLevel = "INFO",
-			categoryName = "com.liferay.portal.search.elasticsearch7.internal.connection");
+			categoryName = "com.liferay.portal.search.elasticsearch7.internal.connection",
+			categoryPriority = "INFO");
 
 		AntCommand(
 			locator1 = "build-test-elasticsearch7.xml",
