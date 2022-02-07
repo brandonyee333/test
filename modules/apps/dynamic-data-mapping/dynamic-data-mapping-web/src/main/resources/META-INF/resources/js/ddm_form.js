@@ -1306,7 +1306,8 @@ AUI.add(
 
 						if (
 							locale === defaultLocale ||
-							value !== localizationMap[defaultLocale] ||
+							(localizationMap[defaultLocale] !== undefined &&
+								value !== localizationMap[defaultLocale]) ||
 							localizationMap[locale]
 						) {
 							localizationMap[locale] = value;
