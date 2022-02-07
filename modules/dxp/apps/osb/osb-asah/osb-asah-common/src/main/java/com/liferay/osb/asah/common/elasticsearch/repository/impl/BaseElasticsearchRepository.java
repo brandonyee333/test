@@ -18,9 +18,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.Repository;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;

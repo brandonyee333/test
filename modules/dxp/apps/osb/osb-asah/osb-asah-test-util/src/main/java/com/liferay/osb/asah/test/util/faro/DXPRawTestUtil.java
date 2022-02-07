@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.test.util.faro;
 
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import org.json.JSONObject;

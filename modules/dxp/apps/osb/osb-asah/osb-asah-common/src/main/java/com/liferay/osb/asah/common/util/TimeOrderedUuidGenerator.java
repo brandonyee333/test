@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.elasticsearch.impl;
+package com.liferay.osb.asah.common.util;
 
 import java.security.SecureRandom;
 

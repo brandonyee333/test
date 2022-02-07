@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

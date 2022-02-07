@@ -17,9 +17,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.SalesforceIndividualsNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Map;

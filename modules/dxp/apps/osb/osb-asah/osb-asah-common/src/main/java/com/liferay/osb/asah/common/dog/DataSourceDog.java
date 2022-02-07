@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
@@ -39,6 +38,7 @@ import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.security.KeyPair;

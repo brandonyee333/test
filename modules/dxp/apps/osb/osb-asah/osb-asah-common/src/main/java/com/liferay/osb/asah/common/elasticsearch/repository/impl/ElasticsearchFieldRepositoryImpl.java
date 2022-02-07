@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -29,6 +28,7 @@ import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;

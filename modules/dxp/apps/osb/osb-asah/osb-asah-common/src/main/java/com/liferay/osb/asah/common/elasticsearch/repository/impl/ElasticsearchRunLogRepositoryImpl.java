@@ -19,10 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.util.WeDeployServiceThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 

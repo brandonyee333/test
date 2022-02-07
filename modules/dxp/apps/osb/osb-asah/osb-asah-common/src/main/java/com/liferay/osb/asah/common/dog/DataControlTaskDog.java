@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
@@ -24,6 +23,7 @@ import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import com.univocity.parsers.csv.CsvParser;

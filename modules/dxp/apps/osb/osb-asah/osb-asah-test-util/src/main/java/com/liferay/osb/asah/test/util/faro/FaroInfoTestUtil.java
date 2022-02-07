@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.test.util.faro;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -29,6 +28,7 @@ import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;

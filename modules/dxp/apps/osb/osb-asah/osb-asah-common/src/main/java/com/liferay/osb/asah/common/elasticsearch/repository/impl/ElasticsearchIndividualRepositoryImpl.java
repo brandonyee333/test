@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -40,6 +39,7 @@ import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTra
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
