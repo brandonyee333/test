@@ -319,7 +319,7 @@ public class CacheProcessorAspect {
 			return false;
 		}
 
-		if (query.startsWith("mutation UpdateEventAnalysis")) {
+		if (query.startsWith("mutation")) {
 			return true;
 		}
 
