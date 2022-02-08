@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<portlet portlet-id="com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_zoJuuKUEGTkl" root-portlet-id="com_liferay_journal_content_web_portlet_JournalContentPortlet" old-plid="20146" scope-group-id="20143" private-layout="false">
+	<portlet-preferences path="/group/20143/portlet/com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_zoJuuKUEGTkl/preferences/layout/0/20146/portlet-preferences.xml">
+		<preference-data>
+			<JournalArticle>
+				<staged-model group-id="20143" uuid="a94a441d-8891-4d4f-184e-dcff1167bee0" article-resource-uuid="76eed581-bd33-7ac5-e11d-bd00c0a4fb51" path="/group/20143/com.liferay.journal.model.JournalArticle/35880.xml">
+					<references>
+						<reference class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" class-pk="32208" attached-class-name="com.liferay.journal.model.JournalArticle" group-id="20152" live-group-id="20152" type="dependency" uuid="785ea77a-34c1-c04e-99f5-babdcc6a5fd9" company-id="20116" preloaded="true" referenced-class-name="com.liferay.journal.model.JournalArticle" structure-key="BASIC-WEB-CONTENT" missing="true"/>
+						<reference class-name="com.liferay.dynamic.data.mapping.model.DDMTemplate" class-pk="32211" attached-class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" group-id="20152" live-group-id="20152" type="dependency" uuid="ecbb895a-e027-a445-a609-40219834f645" company-id="20116" preloaded="true" referenced-class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" template-key="BASIC-WEB-CONTENT" missing="true"/>
+					</references>
+				</staged-model>
+			</JournalArticle>
+			<references>
+				<reference class-name="com.liferay.journal.model.JournalArticle" class-pk="35880" group-id="20143" live-group-id="20143" type="dependency" uuid="a94a441d-8891-4d4f-184e-dcff1167bee0" company-id="20116" article-id="35879" preloaded="false" article-resource-uuid="76eed581-bd33-7ac5-e11d-bd00c0a4fb51" missing="false"/>
+			</references>
+		</preference-data>
+	</portlet-preferences>
+</portlet>

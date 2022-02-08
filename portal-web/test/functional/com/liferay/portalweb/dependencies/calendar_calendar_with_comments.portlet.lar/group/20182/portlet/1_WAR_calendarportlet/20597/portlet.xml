@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<portlet portlet-id="1_WAR_calendarportlet" root-portlet-id="1_WAR_calendarportlet" old-plid="20597" scope-layout-type="" scope-layout-uuid="" private-layout="false">
+	<portlet-data path="/group/20182/portlet/1_WAR_calendarportlet/20182/portlet-data.xml"/>
+	<portlet-preferences path="/group/20182/portlet/1_WAR_calendarportlet/preferences/group/20182/0/portlet-preferences.xml">
+		<preference-data/>
+	</portlet-preferences>
+	<portlet-preferences path="/group/20182/portlet/1_WAR_calendarportlet/preferences/layout/0/20597/portlet-preferences.xml">
+		<preference-data/>
+	</portlet-preferences>
+</portlet>

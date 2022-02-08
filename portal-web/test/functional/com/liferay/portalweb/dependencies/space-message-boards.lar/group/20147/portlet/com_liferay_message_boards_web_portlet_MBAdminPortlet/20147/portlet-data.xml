@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+
+<MBPortletDataHandler group-id="20147">
+	<MBCategory>
+		<staged-model group-id="20147" uuid="5ad61fbe-9938-0360-93b4-43bc8c36acc0" path="/group/20147/com.liferay.message.boards.kernel.model.MBCategory/33159.xml"/>
+		<staged-model group-id="20147" uuid="6ff7e2e3-f060-9533-5c9a-d19dbd87a7fb" path="/group/20147/com.liferay.message.boards.kernel.model.MBCategory/33161.xml"/>
+	</MBCategory>
+	<MBMessage>
+		<staged-model group-id="20147" uuid="a9ac6261-51b1-743d-3842-be355082e412" question="false" threadUuid="8d55841a-f045-9742-8b48-f5f57ae1e36d" hasAttachmentsFileEntries="false" path="/group/20147/com.liferay.message.boards.kernel.model.MBMessage/33221.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBCategory" class-pk="33161" group-id="20147" live-group-id="20147" type="parent" uuid="6ff7e2e3-f060-9533-5c9a-d19dbd87a7fb" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20147" uuid="c6be9bd9-d699-7231-1148-4fe970bbadaa" question="false" threadUuid="8d55841a-f045-9742-8b48-f5f57ae1e36d" hasAttachmentsFileEntries="false" path="/group/20147/com.liferay.message.boards.kernel.model.MBMessage/33252.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBCategory" class-pk="33161" group-id="20147" live-group-id="20147" type="parent" uuid="6ff7e2e3-f060-9533-5c9a-d19dbd87a7fb" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBMessage" class-pk="33221" group-id="20147" live-group-id="20147" type="parent" uuid="a9ac6261-51b1-743d-3842-be355082e412" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20147" uuid="738e8e6f-788b-bc8b-9b64-0622455ea564" question="false" threadUuid="8d55841a-f045-9742-8b48-f5f57ae1e36d" hasAttachmentsFileEntries="false" path="/group/20147/com.liferay.message.boards.kernel.model.MBMessage/33282.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBCategory" class-pk="33161" group-id="20147" live-group-id="20147" type="parent" uuid="6ff7e2e3-f060-9533-5c9a-d19dbd87a7fb" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBMessage" class-pk="33221" group-id="20147" live-group-id="20147" type="parent" uuid="a9ac6261-51b1-743d-3842-be355082e412" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20147" uuid="267560c6-175a-43ae-6aa7-b900a8ff3c1a" question="false" threadUuid="8d55841a-f045-9742-8b48-f5f57ae1e36d" hasAttachmentsFileEntries="false" path="/group/20147/com.liferay.message.boards.kernel.model.MBMessage/33310.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBCategory" class-pk="33161" group-id="20147" live-group-id="20147" type="parent" uuid="6ff7e2e3-f060-9533-5c9a-d19dbd87a7fb" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBMessage" class-pk="33221" group-id="20147" live-group-id="20147" type="parent" uuid="a9ac6261-51b1-743d-3842-be355082e412" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20147" uuid="2543ff57-7c2c-4d86-394a-b027b63988a6" question="false" threadUuid="62827416-b608-adba-a426-a3f52b1dd2e9" hasAttachmentsFileEntries="false" path="/group/20147/com.liferay.message.boards.kernel.model.MBMessage/33324.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBCategory" class-pk="33159" group-id="20147" live-group-id="20147" type="parent" uuid="5ad61fbe-9938-0360-93b4-43bc8c36acc0" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20147" uuid="e149b681-4a85-1996-fef3-c58e0068689b" question="false" threadUuid="62827416-b608-adba-a426-a3f52b1dd2e9" hasAttachmentsFileEntries="false" path="/group/20147/com.liferay.message.boards.kernel.model.MBMessage/33353.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBCategory" class-pk="33159" group-id="20147" live-group-id="20147" type="parent" uuid="5ad61fbe-9938-0360-93b4-43bc8c36acc0" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBMessage" class-pk="33324" group-id="20147" live-group-id="20147" type="parent" uuid="2543ff57-7c2c-4d86-394a-b027b63988a6" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20147" uuid="226eb940-3878-b1cf-bd90-29403e013652" question="false" threadUuid="62827416-b608-adba-a426-a3f52b1dd2e9" hasAttachmentsFileEntries="false" path="/group/20147/com.liferay.message.boards.kernel.model.MBMessage/33383.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBCategory" class-pk="33159" group-id="20147" live-group-id="20147" type="parent" uuid="5ad61fbe-9938-0360-93b4-43bc8c36acc0" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBMessage" class-pk="33353" group-id="20147" live-group-id="20147" type="parent" uuid="e149b681-4a85-1996-fef3-c58e0068689b" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20147" uuid="afb488cd-9682-b469-f5db-c14f1c425a45" question="false" threadUuid="62827416-b608-adba-a426-a3f52b1dd2e9" hasAttachmentsFileEntries="false" path="/group/20147/com.liferay.message.boards.kernel.model.MBMessage/33394.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBCategory" class-pk="33159" group-id="20147" live-group-id="20147" type="parent" uuid="5ad61fbe-9938-0360-93b4-43bc8c36acc0" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBMessage" class-pk="33324" group-id="20147" live-group-id="20147" type="parent" uuid="2543ff57-7c2c-4d86-394a-b027b63988a6" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20147" uuid="2966c143-2c56-b65e-3ac9-166b3999bc45" question="false" threadUuid="62827416-b608-adba-a426-a3f52b1dd2e9" hasAttachmentsFileEntries="false" path="/group/20147/com.liferay.message.boards.kernel.model.MBMessage/33422.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBCategory" class-pk="33159" group-id="20147" live-group-id="20147" type="parent" uuid="5ad61fbe-9938-0360-93b4-43bc8c36acc0" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.message.boards.kernel.model.MBMessage" class-pk="33324" group-id="20147" live-group-id="20147" type="parent" uuid="2543ff57-7c2c-4d86-394a-b027b63988a6" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+	</MBMessage>
+	<MBThreadFlag>
+		<staged-model group-id="20147" uuid="393a32ab-a291-5a86-6ea6-00d201b78178" root-message-id="33221" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33229.xml"/>
+		<staged-model group-id="20147" uuid="a3828256-baa0-d911-fa01-fca0cbb247e8" root-message-id="33221" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33251.xml"/>
+		<staged-model group-id="20147" uuid="a4def65b-776c-465e-9136-e45ba08c39ce" root-message-id="33221" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33281.xml"/>
+		<staged-model group-id="20147" uuid="89e7344c-2898-493b-b50e-95e89c1fc0c4" root-message-id="33221" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33309.xml"/>
+		<staged-model group-id="20147" uuid="a689cba9-4d2d-f38f-61fe-09281804407f" root-message-id="33221" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33319.xml"/>
+		<staged-model group-id="20147" uuid="2c8ea05a-89df-9696-d325-1dab6fb9ce93" root-message-id="33324" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33331.xml"/>
+		<staged-model group-id="20147" uuid="abbc1417-4bba-60f5-c7c6-cfcfecb7d168" root-message-id="33324" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33352.xml"/>
+		<staged-model group-id="20147" uuid="c09f10be-d1e7-b66e-8cf9-1ddf5182c979" root-message-id="33324" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33382.xml"/>
+		<staged-model group-id="20147" uuid="59e1e180-7225-173d-f59e-e0a1fa071a5d" root-message-id="33324" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33393.xml"/>
+		<staged-model group-id="20147" uuid="968628af-e6d9-94e6-d8ca-0e8f32480ef4" root-message-id="33324" path="/group/20147/com.liferay.message.boards.kernel.model.MBThreadFlag/33421.xml"/>
+	</MBThreadFlag>
+</MBPortletDataHandler>

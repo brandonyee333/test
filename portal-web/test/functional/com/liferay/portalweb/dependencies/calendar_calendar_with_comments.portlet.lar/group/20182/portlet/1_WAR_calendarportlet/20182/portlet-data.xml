@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<CalendarPortletDataHandler>
+	<Calendar>
+		<staged-model group-id="20182" uuid="e9bbff5a-3649-4fbb-b8c1-d67bc5cafc92" path="/group/20182/com.liferay.calendar.model.Calendar/20517.xml">
+			<references>
+				<reference class-name="com.liferay.calendar.model.CalendarResource" class-pk="20515" group-id="20182" type="strong" uuid="3875194a-38c6-47d0-8949-c23364cccb23" company-id="20155"/>
+			</references>
+		</staged-model>
+	</Calendar>
+	<CalendarResource>
+		<staged-model group-id="20182" uuid="3875194a-38c6-47d0-8949-c23364cccb23" path="/group/20182/com.liferay.calendar.model.CalendarResource/20515.xml" class-name="com.liferay.portal.model.Group">
+			<references>
+				<reference class-name="com.liferay.calendar.model.Calendar" class-pk="20517" group-id="20182" type="strong" uuid="e9bbff5a-3649-4fbb-b8c1-d67bc5cafc92" company-id="20155"/>
+			</references>
+		</staged-model>
+	</CalendarResource>
+	<CalendarBooking>
+		<staged-model group-id="20182" uuid="770c351b-60f7-4225-824e-4cd95027b01b" path="/group/20182/com.liferay.calendar.model.CalendarBooking/20604.xml">
+			<references>
+				<reference class-name="com.liferay.calendar.model.Calendar" class-pk="20517" group-id="20182" type="strong" uuid="e9bbff5a-3649-4fbb-b8c1-d67bc5cafc92" company-id="20155"/>
+			</references>
+		</staged-model>
+	</CalendarBooking>
+</CalendarPortletDataHandler>
