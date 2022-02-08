@@ -1,0 +1,20 @@
+[
+	{
+		"action": "add",
+		"dataSourceId": "349978106408647035",
+		"objectJSONObject": {
+			"birthday": "1604986275864",
+			"classNameId": 20008,
+			"classPK": 42063,
+			"companyId": 20097,
+			"contactId": 42064,
+			"emailAddress": "jack.dawson@test.com",
+			"male": true,
+			"parentContactId": 0,
+			"prefixId": 0,
+			"suffixId": 0,
+			"userId": 42063
+		},
+		"type": "com.liferay.portal.kernel.model.Contact"
+	}
+]

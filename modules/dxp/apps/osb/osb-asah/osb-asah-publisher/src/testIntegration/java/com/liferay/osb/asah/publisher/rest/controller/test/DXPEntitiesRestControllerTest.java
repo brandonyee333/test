@@ -17,11 +17,14 @@ package com.liferay.osb.asah.publisher.rest.controller.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+
+import java.util.Date;
 
 import org.assertj.core.api.Assertions;
 
@@ -63,10 +66,53 @@ public class DXPEntitiesRestControllerTest
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
+	public void testAddAndUpdateContactDXPEntityWithoutDates()
+		throws Exception {
+
+		Date date = DateUtil.newDate();
+
+		_exchange(
+			ResourceUtil.readResourceToString(
+				"dependencies/analytics_message_2.json", this));
+
+		ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(
+			String.class);
+
+		Mockito.verify(
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			ArgumentMatchers.any(), argumentCaptor.capture()
+		);
+
+		for (String message : argumentCaptor.getAllValues()) {
+			JSONObject messageJSONObject = new JSONObject(message);
+
+			JSONObject objectJSONObject = messageJSONObject.getJSONObject(
+				"object");
+
+			Assertions.assertThat(
+				objectJSONObject.getLong("createDate")
+			).isGreaterThanOrEqualTo(
+				date.getTime()
+			);
+
+			Assertions.assertThat(
+				objectJSONObject.getLong("modifiedDate")
+			).isGreaterThanOrEqualTo(
+				date.getTime()
+			);
+		}
+	}
+
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@Test
 	public void testAddDXPEntities() throws Exception {
 		ResponseEntity<String> responseEntity = _exchange(
 			ResourceUtil.readResourceToString(
-				"dependencies/analytics_message.json", this));
+				"dependencies/analytics_message_1.json", this));
 
 		Assertions.assertThat(
 			responseEntity.getBody()
