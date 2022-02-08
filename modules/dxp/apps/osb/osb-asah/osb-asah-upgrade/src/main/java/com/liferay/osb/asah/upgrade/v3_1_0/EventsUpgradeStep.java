@@ -14,9 +14,16 @@
 
 package com.liferay.osb.asah.upgrade.v3_1_0;
 
+import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.BigQueryError;
+import com.google.cloud.bigquery.BigQueryException;
+import com.google.cloud.bigquery.BigQueryOptions;
+import com.google.cloud.bigquery.InsertAllRequest;
+import com.google.cloud.bigquery.InsertAllResponse;
+import com.google.cloud.bigquery.TableId;
+
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -24,11 +31,15 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,13 +48,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
-
-import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,8 +71,6 @@ import org.postgresql.util.PGobject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -93,8 +101,10 @@ public class EventsUpgradeStep implements UpgradeStep {
 		searchSourceBuilder.sort("id");
 		searchSourceBuilder.trackTotalHits(false);
 
-		String latestActivityId = _getLatestActivityId(
-			ProjectIdThreadLocal.getProjectId(), true);
+		Properties properties = _getProperties();
+
+		String latestActivityId = properties.getProperty(
+			ProjectIdThreadLocal.getProjectId(), "0");
 
 		try {
 			while (true) {
@@ -146,6 +156,11 @@ public class EventsUpgradeStep implements UpgradeStep {
 					jsonArray.length() - 1);
 
 				latestActivityId = jsonObject.getString("id");
+
+				properties.put(
+					ProjectIdThreadLocal.getProjectId(), latestActivityId);
+
+				_saveProperties(properties);
 			}
 
 			_boundedExecutor.awaitPendingTasks();
@@ -204,23 +219,36 @@ public class EventsUpgradeStep implements UpgradeStep {
 		int writes = events.size();
 
 		try {
-			_namedParameterJdbcTemplate.batchUpdate(
-				_SQL_INSERT_EVENT,
-				SqlParameterSourceUtils.createBatch(
-					events.toArray(new HashMap[0])));
+			InsertAllRequest.Builder builder = InsertAllRequest.newBuilder(
+				_tableId);
+
+			Stream<Map<String, Object>> stream = events.stream();
+
+			stream.map(
+				eventMap -> InsertAllRequest.RowToInsert.of(
+					MapUtil.getString(eventMap, "id"), eventMap)
+			).forEach(
+				builder::addRow
+			);
+
+			InsertAllResponse insertAllResponse = _bigQuery.insertAll(
+				builder.build());
+
+			if (insertAllResponse.hasErrors()) {
+				Map<Long, List<BigQueryError>> insertErrors =
+					insertAllResponse.getInsertErrors();
+
+				for (Map.Entry<Long, List<BigQueryError>> entry :
+						insertErrors.entrySet()) {
+
+					_log.error("Insert all response error: " + entry);
+				}
+
+				writes = writes - insertErrors.size();
+			}
 		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to save events batch", exception);
-			}
-
-			if (_log.isInfoEnabled()) {
-				_log.info("Retrying...");
-			}
-
-			_sleep(3000);
-
-			writes = _updateEvents(events);
+		catch (BigQueryException bigQueryException) {
+			_log.error("Unable to save events batch", bigQueryException);
 		}
 		finally {
 			if (_log.isDebugEnabled()) {
@@ -293,45 +321,18 @@ public class EventsUpgradeStep implements UpgradeStep {
 		return _toSafeMap(eventContextJSONObject.toMap());
 	}
 
-	private String _getLatestActivityId(String projectId, boolean retry) {
-		try {
-			List<Long> latestActivityIds =
-				_namedParameterJdbcTemplate.queryForList(
-					_SQL_SELECT_LATEST_ACTIVITY_ID_BY_PROJECT_ID,
-					new HashMap<String, String>() {
-						{
-							put("projectId", projectId);
-						}
-					},
-					Long.class);
+	private Properties _getProperties() {
+		try (FileInputStream fileInputStream = new FileInputStream(
+				_propertiesFile)) {
 
-			if (latestActivityIds.isEmpty()) {
-				return "0";
-			}
+			Properties properties = new Properties();
 
-			return String.valueOf(latestActivityIds.get(0));
+			properties.load(fileInputStream);
+
+			return properties;
 		}
 		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Select latest activity ID failed", exception);
-			}
-
-			if (retry) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Retrying...");
-				}
-
-				try {
-					Thread.sleep(3000);
-				}
-				catch (InterruptedException interruptedException) {
-					_log.error(interruptedException, interruptedException);
-				}
-
-				return _getLatestActivityId(projectId, false);
-			}
-
-			return "0";
+			return new Properties();
 		}
 	}
 
@@ -348,8 +349,9 @@ public class EventsUpgradeStep implements UpgradeStep {
 
 	@PostConstruct
 	private void _init() {
-		_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-			_dataSource);
+		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
+
+		_bigQuery = bigQueryOptions.getService();
 	}
 
 	private boolean _isKnownIndividual(Individual individual) {
@@ -437,6 +439,17 @@ public class EventsUpgradeStep implements UpgradeStep {
 		events.add(eventsMap);
 	}
 
+	private void _saveProperties(Properties properties) {
+		try (FileOutputStream fileOutputStream = new FileOutputStream(
+				_propertiesFile)) {
+
+			properties.store(fileOutputStream, null);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+	}
+
 	private void _setBatchSize(
 		long newTime, SearchSourceBuilder searchSourceBuilder) {
 
@@ -455,15 +468,6 @@ public class EventsUpgradeStep implements UpgradeStep {
 			_customEventUpgradeBatchSize -= 100;
 
 			_updateBatchSize(newStatistics, searchSourceBuilder);
-		}
-	}
-
-	private void _sleep(long millis) {
-		try {
-			Thread.sleep(millis);
-		}
-		catch (InterruptedException interruptedException) {
-			_log.error(interruptedException, interruptedException);
 		}
 	}
 
@@ -503,60 +507,15 @@ public class EventsUpgradeStep implements UpgradeStep {
 		}
 	}
 
-	private int _updateEvents(List<Map<String, Object>> events) {
-		int writes = 0;
-
-		for (Map<String, Object> event : events) {
-			try {
-				_namedParameterJdbcTemplate.update(_SQL_INSERT_EVENT, event);
-
-				writes++;
-			}
-			catch (Exception exception) {
-				_log.error("Unable to save " + new JSONObject(event));
-			}
-		}
-
-		return writes;
-	}
-
-	private static final String[] _EVENT_TABLE_COLUMN_NAMES = {
-		"activityId", "applicationId", "browserName", "canonicalUrl",
-		"channelId", "city", "contentLanguageId", "context", "country",
-		"createDate", "dataSourceId", "description", "deviceType", "eventDate",
-		"eventId", "eventProperties", "experienceId", "id", "individualId",
-		"keywords", "knownIndividual", "languageId", "platformName",
-		"projectId", "projectTimeZoneId", "referrer", "region", "sessionId",
-		"timezoneOffset", "title", "url", "userId", "variantId"
-	};
-
-	private static final String _SQL_INSERT_EVENT = String.format(
-		"INSERT INTO global.Event (%s) VALUES (%s) ON CONFLICT DO NOTHING",
-		String.join(", ", _EVENT_TABLE_COLUMN_NAMES),
-		String.join(
-			", ",
-			ListUtil.map(
-				Arrays.asList(_EVENT_TABLE_COLUMN_NAMES),
-				columnName -> ":" + columnName)));
-
-	private static final String _SQL_SELECT_LATEST_ACTIVITY_ID_BY_PROJECT_ID =
-		"SELECT activityId FROM global.Event WHERE projectId = :projectId " +
-			"ORDER BY activityId DESC LIMIT 1";
-
 	private static final Log _log = LogFactory.getLog(EventsUpgradeStep.class);
 
+	private BigQuery _bigQuery;
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(40, 30);
 	private double _currentStatistics = 120;
 
 	@Value("${osb.asah.custom.event.upgrade.batch.size:10000}")
 	private int _customEventUpgradeBatchSize;
-
-	@Autowired
-	private DataSource _dataSource;
-
-	@Autowired
-	private EventStorageDog _eventStorageDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
@@ -567,9 +526,12 @@ public class EventsUpgradeStep implements UpgradeStep {
 	@Autowired
 	private IndividualDog _individualDog;
 
-	private NamedParameterJdbcTemplate _namedParameterJdbcTemplate;
+	private final File _propertiesFile = new File(
+		"/temp/events-upgrade-step.properties");
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	private final TableId _tableId = TableId.of("osbasah", "event-import");
 
 }
