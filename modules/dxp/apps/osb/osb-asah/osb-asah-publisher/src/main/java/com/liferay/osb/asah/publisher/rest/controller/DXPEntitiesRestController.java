@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.publisher.rest.controller;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -26,6 +27,7 @@ import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
 
 import java.util.Collections;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -68,22 +70,37 @@ public class DXPEntitiesRestController {
 				String type = jsonObject.getString("type");
 
 				if (type.equals(DXPEntity.Type.CLASS_NAME_CONTACT)) {
-					if (action.equalsIgnoreCase("add")) {
-						action = "update";
-					}
+					Date date = DateUtil.newDate();
 
-					objectJSONObject = JSONUtil.put(
+					JSONObject contactJSONObject = JSONUtil.put(
 						"contact", objectJSONObject
-					).put(
-						"createDate", objectJSONObject.getLong("createDate")
 					).put(
 						"emailAddress",
 						objectJSONObject.getString("emailAddress")
 					).put(
-						"modifiedDate", objectJSONObject.getLong("modifiedDate")
+						"modifiedDate",
+						objectJSONObject.optLong("modifiedDate", date.getTime())
 					).put(
 						"userId", objectJSONObject.getInt("classPK")
 					);
+
+					if (action.equalsIgnoreCase("add")) {
+						action = "update";
+
+						contactJSONObject.put(
+							"createDate",
+							objectJSONObject.optLong(
+								"createDate", date.getTime()));
+					}
+					else if (objectJSONObject.has("createDate") &&
+							 action.equalsIgnoreCase("update")) {
+
+						contactJSONObject.put(
+							"createDate",
+							objectJSONObject.getLong("createDate"));
+					}
+
+					objectJSONObject = contactJSONObject;
 
 					_processGenderField(objectJSONObject);
 
