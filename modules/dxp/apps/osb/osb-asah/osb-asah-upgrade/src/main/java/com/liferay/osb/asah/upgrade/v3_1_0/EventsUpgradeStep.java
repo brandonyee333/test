@@ -68,8 +68,6 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.postgresql.util.PGobject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -388,7 +386,7 @@ public class EventsUpgradeStep implements UpgradeStep {
 			"channelId", Long.parseLong(analyticsEvent.getChannelId()));
 		eventsMap.put("city", context.get("city"));
 		eventsMap.put("contentLanguageId", context.get("contentLanguageId"));
-		eventsMap.put("context", _toJSONPGobject(contextJSONObject));
+		eventsMap.put("context", contextJSONObject.toString());
 		eventsMap.put("country", context.get("country"));
 		eventsMap.put("createDate", analyticsEvent.getCreateDate());
 		eventsMap.put(
@@ -397,13 +395,14 @@ public class EventsUpgradeStep implements UpgradeStep {
 		eventsMap.put("deviceType", context.get("deviceType"));
 		eventsMap.put("eventDate", analyticsEvent.getEventDate());
 		eventsMap.put("eventId", analyticsEvent.getEventId());
-		eventsMap.put(
-			"eventProperties", _toJSONPGobject(eventPropertiesJSONObject));
 
 		List<String> eventPropertyNames = new ArrayList<>();
 		List<String> eventPropertyValues = new ArrayList<>();
 
 		if (eventPropertiesJSONObject != null) {
+			eventsMap.put(
+				"eventProperties", eventPropertiesJSONObject.toString());
+
 			eventPropertyNames = new ArrayList<>(
 				eventPropertiesJSONObject.keySet());
 
@@ -469,20 +468,6 @@ public class EventsUpgradeStep implements UpgradeStep {
 			_customEventUpgradeBatchSize -= 100;
 
 			_updateBatchSize(newStatistics, searchSourceBuilder);
-		}
-	}
-
-	private PGobject _toJSONPGobject(JSONObject jsonObject) {
-		try {
-			PGobject pGobject = new PGobject();
-
-			pGobject.setType("json");
-			pGobject.setValue(jsonObject.toString());
-
-			return pGobject;
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
 		}
 	}
 
