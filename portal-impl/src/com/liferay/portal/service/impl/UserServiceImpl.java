@@ -15,6 +15,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
+import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredUserException;
@@ -1949,6 +1950,7 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	 * @param  agreedToTermsOfUse whether the user has agree to the terms of use
 	 * @return the user
 	 */
+	@CTAware(onProduction = true)
 	@Override
 	public User updateAgreedToTermsOfUse(
 			long userId, boolean agreedToTermsOfUse)
@@ -2208,6 +2210,7 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	 *         password the next time they log in
 	 * @return the user
 	 */
+	@CTAware(onProduction = true)
 	@Override
 	public User updatePassword(
 			long userId, String password1, String password2,
@@ -2246,6 +2249,7 @@ public class UserServiceImpl extends UserServiceBaseImpl {
 	 * @param  answer the user's new password reset answer
 	 * @return the user
 	 */
+	@CTAware(onProduction = true)
 	@Override
 	public User updateReminderQuery(long userId, String question, String answer)
 		throws PortalException {

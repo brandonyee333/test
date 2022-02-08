@@ -4377,6 +4377,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         use
 	 * @return the user
 	 */
+	@CTAware(onProduction = true)
 	@Override
 	public User updateAgreedToTermsOfUse(
 			long userId, boolean agreedToTermsOfUse)
@@ -4534,6 +4535,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  emailAddressVerified whether the user has verified email address
 	 * @return the user
 	 */
+	@CTAware(onProduction = true)
 	@Override
 	public User updateEmailAddressVerified(
 			long userId, boolean emailAddressVerified)
@@ -5092,6 +5094,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         password the next time they log in
 	 * @return the user
 	 */
+	@CTAware(onProduction = true)
 	@Override
 	public User updatePassword(
 			long userId, String password1, String password2,
@@ -5115,6 +5118,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         tracked, or validated. Primarily used for password imports.
 	 * @return the user
 	 */
+	@CTAware(onProduction = true)
 	@Override
 	public User updatePassword(
 			long userId, String password1, String password2,
@@ -5271,6 +5275,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         password the next time they login
 	 * @return the user
 	 */
+	@CTAware(onProduction = true)
 	@Override
 	public User updatePasswordReset(long userId, boolean passwordReset)
 		throws PortalException {
@@ -5312,6 +5317,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  answer the user's new password reset answer
 	 * @return the user
 	 */
+	@CTAware(onProduction = true)
 	@Override
 	public User updateReminderQuery(long userId, String question, String answer)
 		throws PortalException {
