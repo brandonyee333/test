@@ -1,0 +1,6 @@
+<FindBugsFilter>
+	<Match>
+		<Bug pattern="DMI_HARDCODED_ABSOLUTE_FILENAME" />
+		<Class name="com.liferay.osb.asah.upgrade.v3_1_0.EventsUpgradeStep" />
+	</Match>
+</FindBugsFilter>

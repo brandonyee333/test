@@ -40,6 +40,7 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -331,7 +332,7 @@ public class EventsUpgradeStep implements UpgradeStep {
 
 			return properties;
 		}
-		catch (Exception exception) {
+		catch (IOException ioException) {
 			return new Properties();
 		}
 	}
