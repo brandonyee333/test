@@ -1,53 +1,53 @@
 <MBMessage>
-  <__cachedModel>false</__cachedModel>
-  <__new>false</__new>
-  <__uuid>2543ff57-7c2c-4d86-394a-b027b63988a6</__uuid>
-  <__originalUuid>2543ff57-7c2c-4d86-394a-b027b63988a6</__originalUuid>
-  <__messageId>33324</__messageId>
-  <__groupId>20147</__groupId>
-  <__originalGroupId>20147</__originalGroupId>
-  <__setOriginalGroupId>false</__setOriginalGroupId>
-  <__companyId>20116</__companyId>
-  <__originalCompanyId>20116</__originalCompanyId>
-  <__setOriginalCompanyId>false</__setOriginalCompanyId>
-  <__userId>31936</__userId>
-  <__originalUserId>31936</__originalUserId>
-  <__setOriginalUserId>false</__setOriginalUserId>
-  <__userName>Jonathan Prince</__userName>
-  <__createDate class="sql-timestamp">2016-05-23 02:53:06.089</__createDate>
-  <__modifiedDate class="sql-timestamp">2016-05-23 02:53:06.094</__modifiedDate>
-  <__setModifiedDate>false</__setModifiedDate>
-  <__classNameId>0</__classNameId>
-  <__originalClassNameId>0</__originalClassNameId>
-  <__setOriginalClassNameId>false</__setOriginalClassNameId>
-  <__classPK>0</__classPK>
-  <__originalClassPK>0</__originalClassPK>
-  <__setOriginalClassPK>false</__setOriginalClassPK>
-  <__categoryId>33159</__categoryId>
-  <__originalCategoryId>33159</__originalCategoryId>
-  <__setOriginalCategoryId>false</__setOriginalCategoryId>
-  <__threadId>33325</__threadId>
-  <__originalThreadId>33325</__originalThreadId>
-  <__setOriginalThreadId>false</__setOriginalThreadId>
-  <__rootMessageId>33324</__rootMessageId>
-  <__parentMessageId>0</__parentMessageId>
-  <__originalParentMessageId>0</__originalParentMessageId>
-  <__setOriginalParentMessageId>false</__setOriginalParentMessageId>
-  <__subject>Stuck in the Anti-Gravity Chamber</__subject>
-  <__body>Super embarrassing, but does anybody know what to do when the Anti-Gravity Chamber door gets stuck and maintenance has gone for the day? Yesterday was the second time I’ve been in there all night, and I have to say, not liking the ambience.</__body>
-  <__format>bbcode</__format>
-  <__anonymous>false</__anonymous>
-  <__priority>0.0</__priority>
-  <__allowPingbacks>true</__allowPingbacks>
-  <__answer>false</__answer>
-  <__originalAnswer>false</__originalAnswer>
-  <__setOriginalAnswer>false</__setOriginalAnswer>
-  <__status>0</__status>
-  <__originalStatus>0</__originalStatus>
-  <__setOriginalStatus>false</__setOriginalStatus>
-  <__statusByUserId>31936</__statusByUserId>
-  <__statusByUserName>Jonathan Prince</__statusByUserName>
-  <__statusDate class="sql-timestamp">2016-05-23 02:53:06.094</__statusDate>
-  <__columnBitmask>0</__columnBitmask>
-  <__attachmentsFolderId>0</__attachmentsFolderId>
+	<__cachedModel>false</__cachedModel>
+	<__new>false</__new>
+	<__uuid>2543ff57-7c2c-4d86-394a-b027b63988a6</__uuid>
+	<__originalUuid>2543ff57-7c2c-4d86-394a-b027b63988a6</__originalUuid>
+	<__messageId>33324</__messageId>
+	<__groupId>20147</__groupId>
+	<__originalGroupId>20147</__originalGroupId>
+	<__setOriginalGroupId>false</__setOriginalGroupId>
+	<__companyId>20116</__companyId>
+	<__originalCompanyId>20116</__originalCompanyId>
+	<__setOriginalCompanyId>false</__setOriginalCompanyId>
+	<__userId>31936</__userId>
+	<__originalUserId>31936</__originalUserId>
+	<__setOriginalUserId>false</__setOriginalUserId>
+	<__userName>Jonathan Prince</__userName>
+	<__createDate class="sql-timestamp">2016-05-23 02:53:06.089</__createDate>
+	<__modifiedDate class="sql-timestamp">2016-05-23 02:53:06.094</__modifiedDate>
+	<__setModifiedDate>false</__setModifiedDate>
+	<__classNameId>0</__classNameId>
+	<__originalClassNameId>0</__originalClassNameId>
+	<__setOriginalClassNameId>false</__setOriginalClassNameId>
+	<__classPK>0</__classPK>
+	<__originalClassPK>0</__originalClassPK>
+	<__setOriginalClassPK>false</__setOriginalClassPK>
+	<__categoryId>33159</__categoryId>
+	<__originalCategoryId>33159</__originalCategoryId>
+	<__setOriginalCategoryId>false</__setOriginalCategoryId>
+	<__threadId>33325</__threadId>
+	<__originalThreadId>33325</__originalThreadId>
+	<__setOriginalThreadId>false</__setOriginalThreadId>
+	<__rootMessageId>33324</__rootMessageId>
+	<__parentMessageId>0</__parentMessageId>
+	<__originalParentMessageId>0</__originalParentMessageId>
+	<__setOriginalParentMessageId>false</__setOriginalParentMessageId>
+	<__subject>Stuck in the Anti-Gravity Chamber</__subject>
+	<__body>Super embarrassing, but does anybody know what to do when the Anti-Gravity Chamber door gets stuck and maintenance has gone for the day? Yesterday was the second time I've been in there all night, and I have to say, not liking the ambience.</__body>
+	<__format>bbcode</__format>
+	<__anonymous>false</__anonymous>
+	<__priority>0.0</__priority>
+	<__allowPingbacks>true</__allowPingbacks>
+	<__answer>false</__answer>
+	<__originalAnswer>false</__originalAnswer>
+	<__setOriginalAnswer>false</__setOriginalAnswer>
+	<__status>0</__status>
+	<__originalStatus>0</__originalStatus>
+	<__setOriginalStatus>false</__setOriginalStatus>
+	<__statusByUserId>31936</__statusByUserId>
+	<__statusByUserName>Jonathan Prince</__statusByUserName>
+	<__statusDate class="sql-timestamp">2016-05-23 02:53:06.094</__statusDate>
+	<__columnBitmask>0</__columnBitmask>
+	<__attachmentsFolderId>0</__attachmentsFolderId>
 </MBMessage>

@@ -1,35 +1,35 @@
 <MBCategory>
-  <__cachedModel>false</__cachedModel>
-  <__new>false</__new>
-  <__uuid>5ad61fbe-9938-0360-93b4-43bc8c36acc0</__uuid>
-  <__originalUuid>5ad61fbe-9938-0360-93b4-43bc8c36acc0</__originalUuid>
-  <__categoryId>33159</__categoryId>
-  <__originalCategoryId>33159</__originalCategoryId>
-  <__setOriginalCategoryId>false</__setOriginalCategoryId>
-  <__groupId>20147</__groupId>
-  <__originalGroupId>20147</__originalGroupId>
-  <__setOriginalGroupId>false</__setOriginalGroupId>
-  <__companyId>20116</__companyId>
-  <__originalCompanyId>20116</__originalCompanyId>
-  <__setOriginalCompanyId>false</__setOriginalCompanyId>
-  <__userId>20164</__userId>
-  <__userName>Space Admin</__userName>
-  <__createDate class="sql-timestamp">2016-05-23 02:33:34.491</__createDate>
-  <__modifiedDate class="sql-timestamp">2016-05-23 02:57:31.455</__modifiedDate>
-  <__setModifiedDate>false</__setModifiedDate>
-  <__parentCategoryId>0</__parentCategoryId>
-  <__originalParentCategoryId>0</__originalParentCategoryId>
-  <__setOriginalParentCategoryId>false</__setOriginalParentCategoryId>
-  <__name>General Discussion</__name>
-  <__description>General Discussions for students to have about the happenings at S.P.A.C.E.</__description>
-  <__displayStyle>default</__displayStyle>
-  <__threadCount>1</__threadCount>
-  <__messageCount>5</__messageCount>
-  <__lastPostDate class="sql-timestamp">2016-05-23 02:57:31.439</__lastPostDate>
-  <__status>0</__status>
-  <__originalStatus>0</__originalStatus>
-  <__setOriginalStatus>false</__setOriginalStatus>
-  <__statusByUserId>0</__statusByUserId>
-  <__statusByUserName></__statusByUserName>
-  <__columnBitmask>0</__columnBitmask>
+	<__cachedModel>false</__cachedModel>
+	<__new>false</__new>
+	<__uuid>5ad61fbe-9938-0360-93b4-43bc8c36acc0</__uuid>
+	<__originalUuid>5ad61fbe-9938-0360-93b4-43bc8c36acc0</__originalUuid>
+	<__categoryId>33159</__categoryId>
+	<__originalCategoryId>33159</__originalCategoryId>
+	<__setOriginalCategoryId>false</__setOriginalCategoryId>
+	<__groupId>20147</__groupId>
+	<__originalGroupId>20147</__originalGroupId>
+	<__setOriginalGroupId>false</__setOriginalGroupId>
+	<__companyId>20116</__companyId>
+	<__originalCompanyId>20116</__originalCompanyId>
+	<__setOriginalCompanyId>false</__setOriginalCompanyId>
+	<__userId>20164</__userId>
+	<__userName>Space Admin</__userName>
+	<__createDate class="sql-timestamp">2016-05-23 02:33:34.491</__createDate>
+	<__modifiedDate class="sql-timestamp">2016-05-23 02:57:31.455</__modifiedDate>
+	<__setModifiedDate>false</__setModifiedDate>
+	<__parentCategoryId>0</__parentCategoryId>
+	<__originalParentCategoryId>0</__originalParentCategoryId>
+	<__setOriginalParentCategoryId>false</__setOriginalParentCategoryId>
+	<__name>General Discussion</__name>
+	<__description>General Discussions for students to have about the happenings at S.P.A.C.E.</__description>
+	<__displayStyle>default</__displayStyle>
+	<__threadCount>1</__threadCount>
+	<__messageCount>5</__messageCount>
+	<__lastPostDate class="sql-timestamp">2016-05-23 02:57:31.439</__lastPostDate>
+	<__status>0</__status>
+	<__originalStatus>0</__originalStatus>
+	<__setOriginalStatus>false</__setOriginalStatus>
+	<__statusByUserId>0</__statusByUserId>
+	<__statusByUserName></__statusByUserName>
+	<__columnBitmask>0</__columnBitmask>
 </MBCategory>

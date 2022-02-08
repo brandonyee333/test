@@ -15,7 +15,6 @@
 package com.liferay.akismet.service;
 
 import com.liferay.akismet.model.AkismetDataClp;
-
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
@@ -37,6 +36,7 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  */
 public class ClpSerializer {
+
 	public static String getServletContextName() {
 		if (Validator.isNotNull(_servletContextName)) {
 			return _servletContextName;
@@ -51,13 +51,14 @@ public class ClpSerializer {
 				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
 				Class<?> portletPropsClass = classLoader.loadClass(
-						"com.liferay.util.portlet.PortletProps");
+					"com.liferay.util.portlet.PortletProps");
 
-				Method getMethod = portletPropsClass.getMethod("get",
-						new Class<?>[] { String.class });
+				Method getMethod = portletPropsClass.getMethod(
+					"get", new Class<?>[] {String.class});
 
-				String portletPropsServletContextName = (String)getMethod.invoke(null,
-						"akismet-portlet-deployment-context");
+				String portletPropsServletContextName =
+					(String)getMethod.invoke(
+						null, "akismet-portlet-deployment-context");
 
 				if (Validator.isNotNull(portletPropsServletContextName)) {
 					_servletContextName = portletPropsServletContextName;
@@ -73,7 +74,7 @@ public class ClpSerializer {
 			if (Validator.isNull(_servletContextName)) {
 				try {
 					String propsUtilServletContextName = PropsUtil.get(
-							"akismet-portlet-deployment-context");
+						"akismet-portlet-deployment-context");
 
 					if (Validator.isNotNull(propsUtilServletContextName)) {
 						_servletContextName = propsUtilServletContextName;
@@ -108,25 +109,13 @@ public class ClpSerializer {
 	}
 
 	public static Object translateInput(List<Object> oldList) {
-		List<Object> newList = new ArrayList<Object>(oldList.size());
+		List<Object> newList = new ArrayList<>(oldList.size());
 
-		for (int i = 0; i < oldList.size(); i++) {
-			Object curObj = oldList.get(i);
-
+		for (Object curObj : oldList) {
 			newList.add(translateInput(curObj));
 		}
 
 		return newList;
-	}
-
-	public static Object translateInputAkismetData(BaseModel<?> oldModel) {
-		AkismetDataClp oldClpModel = (AkismetDataClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getAkismetDataRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
 	}
 
 	public static Object translateInput(Object obj) {
@@ -141,13 +130,24 @@ public class ClpSerializer {
 		}
 	}
 
+	public static Object translateInputAkismetData(BaseModel<?> oldModel) {
+		AkismetDataClp oldClpModel = (AkismetDataClp)oldModel;
+
+		BaseModel<?> newModel = oldClpModel.getAkismetDataRemoteModel();
+
+		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+		return newModel;
+	}
+
 	public static Object translateOutput(BaseModel<?> oldModel) {
 		Class<?> oldModelClass = oldModel.getClass();
 
 		String oldModelClassName = oldModelClass.getName();
 
 		if (oldModelClassName.equals(
-					"com.liferay.akismet.model.impl.AkismetDataImpl")) {
+				"com.liferay.akismet.model.impl.AkismetDataImpl")) {
+
 			return translateOutputAkismetData(oldModel);
 		}
 
@@ -155,11 +155,9 @@ public class ClpSerializer {
 	}
 
 	public static Object translateOutput(List<Object> oldList) {
-		List<Object> newList = new ArrayList<Object>(oldList.size());
+		List<Object> newList = new ArrayList<>(oldList.size());
 
-		for (int i = 0; i < oldList.size(); i++) {
-			Object curObj = oldList.get(i);
-
+		for (Object curObj : oldList) {
 			newList.add(translateOutput(curObj));
 		}
 
@@ -178,26 +176,43 @@ public class ClpSerializer {
 		}
 	}
 
+	public static Object translateOutputAkismetData(BaseModel<?> oldModel) {
+		AkismetDataClp newModel = new AkismetDataClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setAkismetDataRemoteModel(oldModel);
+
+		return newModel;
+	}
+
 	public static Throwable translateThrowable(Throwable throwable) {
 		if (_useReflectionToTranslateThrowable) {
 			try {
-				UnsyncByteArrayOutputStream unsyncByteArrayOutputStream = new UnsyncByteArrayOutputStream();
-				ObjectOutputStream objectOutputStream = new ObjectOutputStream(unsyncByteArrayOutputStream);
+				UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+					new UnsyncByteArrayOutputStream();
+
+				ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+					unsyncByteArrayOutputStream);
 
 				objectOutputStream.writeObject(throwable);
 
 				objectOutputStream.flush();
 				objectOutputStream.close();
 
-				UnsyncByteArrayInputStream unsyncByteArrayInputStream = new UnsyncByteArrayInputStream(unsyncByteArrayOutputStream.unsafeGetByteArray(),
-						0, unsyncByteArrayOutputStream.size());
+				UnsyncByteArrayInputStream unsyncByteArrayInputStream =
+					new UnsyncByteArrayInputStream(
+						unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
+						unsyncByteArrayOutputStream.size());
 
 				Thread currentThread = Thread.currentThread();
 
-				ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+				ClassLoader contextClassLoader =
+					currentThread.getContextClassLoader();
 
-				ObjectInputStream objectInputStream = new ClassLoaderObjectInputStream(unsyncByteArrayInputStream,
-						contextClassLoader);
+				ObjectInputStream objectInputStream =
+					new ClassLoaderObjectInputStream(
+						unsyncByteArrayInputStream, contextClassLoader);
 
 				throwable = (Throwable)objectInputStream.readObject();
 
@@ -231,24 +246,16 @@ public class ClpSerializer {
 		String className = clazz.getName();
 
 		if (className.equals("com.liferay.akismet.NoSuchDataException")) {
-			return new com.liferay.akismet.NoSuchDataException(throwable.getMessage(),
-				throwable.getCause());
+			return new com.liferay.akismet.NoSuchDataException(
+				throwable.getMessage(), throwable.getCause());
 		}
 
 		return throwable;
 	}
 
-	public static Object translateOutputAkismetData(BaseModel<?> oldModel) {
-		AkismetDataClp newModel = new AkismetDataClp();
+	private static final Log _log = LogFactoryUtil.getLog(ClpSerializer.class);
 
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setAkismetDataRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(ClpSerializer.class);
 	private static String _servletContextName;
 	private static boolean _useReflectionToTranslateThrowable = true;
+
 }

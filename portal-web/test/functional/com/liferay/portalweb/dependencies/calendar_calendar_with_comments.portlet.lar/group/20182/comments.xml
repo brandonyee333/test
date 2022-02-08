@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 
 <comments>
-	<asset path="/group/20182/comments/20494/20604/" class-name="com.liferay.calendar.model.CalendarBooking" class-pk="20604">
+	<asset class-name="com.liferay.calendar.model.CalendarBooking" class-pk="20604" path="/group/20182/comments/20494/20604/">
 		<references>
-			<reference class-name="com.liferay.portal.model.User" class-pk="20199" type="weak" uuid="ca74aeb9-3632-4e96-ba45-1b691a321f02" company-id="20155" missing="true"/>
-			<reference class-name="com.liferay.portal.model.User" class-pk="20199" type="weak" uuid="ca74aeb9-3632-4e96-ba45-1b691a321f02" company-id="20155" missing="true"/>
+			<reference class-name="com.liferay.portal.model.User" class-pk="20199" company-id="20155" missing="true" type="weak" uuid="ca74aeb9-3632-4e96-ba45-1b691a321f02" />
+			<reference class-name="com.liferay.portal.model.User" class-pk="20199" company-id="20155" missing="true" type="weak" uuid="ca74aeb9-3632-4e96-ba45-1b691a321f02" />
 		</references>
 	</asset>
 </comments>

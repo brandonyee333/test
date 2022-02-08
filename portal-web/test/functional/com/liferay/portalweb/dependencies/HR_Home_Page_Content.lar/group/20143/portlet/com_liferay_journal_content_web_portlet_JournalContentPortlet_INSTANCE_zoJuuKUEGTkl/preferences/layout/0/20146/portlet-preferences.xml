@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<portlet-preferences owner-id="0" owner-type="3" default-user="false" plid="20146" portlet-id="com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_zoJuuKUEGTkl">
+<portlet-preferences default-user="false" owner-id="0" owner-type="3" plid="20146" portlet-id="com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_zoJuuKUEGTkl">
 	<preference>
 		<name>portletSetupUseCustomTitle</name>
 		<value>false</value>

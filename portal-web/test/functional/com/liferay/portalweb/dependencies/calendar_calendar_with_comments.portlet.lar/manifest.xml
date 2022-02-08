@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
 <root>
-	<header available-locales="ca_ES,zh_CN,en_US,fi_FI,fr_FR,de_DE,iw_IL,hu_HU,ja_JP,pt_BR,es_ES" build-number="6210" export-date="Tue, 05 May 2015 22:11:52 +0000" type="portlet" company-id="20155" company-group-id="20195" group-id="20182" user-personal-site-group-id="20192" private-layout="false" root-portlet-id="1_WAR_calendarportlet"/>
+	<header available-locales="ca_ES,zh_CN,en_US,fi_FI,fr_FR,de_DE,iw_IL,hu_HU,ja_JP,pt_BR,es_ES" build-number="6210" company-group-id="20195" company-id="20155" export-date="Tue, 05 May 2015 22:11:52 +0000" group-id="20182" private-layout="false" root-portlet-id="1_WAR_calendarportlet" type="portlet" user-personal-site-group-id="20192" />
 	<missing-references>
-		<missing-reference class-name="com.liferay.portal.model.User" class-pk="20199" display-name="Test Test" type="weak" referrer-class-name="com.liferay.portlet.messageboards.model.MBDiscussion" referrer-display-name="" uuid="ca74aeb9-3632-4e96-ba45-1b691a321f02" company-id="20155"/>
+		<missing-reference class-name="com.liferay.portal.model.User" class-pk="20199" company-id="20155" display-name="Test Test" referrer-class-name="com.liferay.portlet.messageboards.model.MBDiscussion" referrer-display-name="" type="weak" uuid="ca74aeb9-3632-4e96-ba45-1b691a321f02" />
 	</missing-references>
-	<portlet portlet-id="1_WAR_calendarportlet" layout-id="4" path="/group/20182/portlet/1_WAR_calendarportlet/20597/portlet.xml" portlet-data="true" portlet-configuration="setup"/>
+	<portlet layout-id="4" path="/group/20182/portlet/1_WAR_calendarportlet/20597/portlet.xml" portlet-configuration="setup" portlet-data="true" portlet-id="1_WAR_calendarportlet" />
 	<manifest-summary>
-		<staged-model manifest-summary-key="com.liferay.calendar.model.Calendar" addition-count="1"/>
-		<staged-model manifest-summary-key="com.liferay.calendar.model.CalendarBooking" addition-count="1"/>
-		<staged-model manifest-summary-key="com.liferay.calendar.model.CalendarNotificationTemplate"/>
+		<staged-model addition-count="1" manifest-summary-key="com.liferay.calendar.model.Calendar" />
+		<staged-model addition-count="1" manifest-summary-key="com.liferay.calendar.model.CalendarBooking" />
+		<staged-model manifest-summary-key="com.liferay.calendar.model.CalendarNotificationTemplate" />
 	</manifest-summary>
 </root>

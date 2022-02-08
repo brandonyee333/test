@@ -2,9 +2,9 @@
 
 <categories-hierarchy>
 	<assets>
-		<asset class-name="com.liferay.calendar.model.CalendarBooking" class-pk="20604" category-uuids=""/>
-		<asset class-name="com.liferay.calendar.model.Calendar" class-pk="20517" category-uuids=""/>
-		<asset class-name="com.liferay.calendar.model.CalendarResource" class-pk="20515" category-uuids=""/>
+		<asset category-uuids="" class-name="com.liferay.calendar.model.CalendarBooking" class-pk="20604" />
+		<asset category-uuids="" class-name="com.liferay.calendar.model.Calendar" class-pk="20517" />
+		<asset category-uuids="" class-name="com.liferay.calendar.model.CalendarResource" class-pk="20515" />
 	</assets>
 	<categories/>
 	<vocabularies/>

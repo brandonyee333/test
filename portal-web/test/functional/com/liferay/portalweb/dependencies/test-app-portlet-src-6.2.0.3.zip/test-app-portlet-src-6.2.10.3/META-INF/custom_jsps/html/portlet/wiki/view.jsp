@@ -2,13 +2,13 @@
 /**
  * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the applicable 
+ * The contents of this file are subject to the terms of the applicable
  * Liferay software end user license agreement ("License Agreement")
  * found on www.liferay.com/legal/eulas. You may also contact Liferay, Inc.
  * for a copy of the License Agreement. You may not use this file except in
- * compliance with the License Agreement. 
+ * compliance with the License Agreement.
  * See the License Agreement for the specific language governing
- * permissions and limitations under the License Agreement, including 
+ * permissions and limitations under the License Agreement, including
  * but not limited to distribution rights of the Software.
  *
  */
@@ -16,7 +16,9 @@
 
 <%@ include file="/html/portlet/wiki/init.jsp" %>
 
-<liferay-util:buffer var="html">
+<liferay-util:buffer
+	var="html"
+>
 	<liferay-util:include page="/html/portlet/wiki/view.portal.jsp" />
 </liferay-util:buffer>
 
@@ -25,7 +27,9 @@ WikiPage wikiPage = (WikiPage)request.getAttribute(WebKeys.WIKI_PAGE);
 %>
 
 <c:if test="<%= (wikiPage != null) && WikiPermission.contains(permissionChecker, scopeGroupId, ActionKeys.ADD_NODE) %>">
-	<liferay-util:buffer var="customHTML">
+	<liferay-util:buffer
+		var="customHTML"
+	>
 		<c:choose>
 			<c:when test="<%= _isSpam(wikiPage) %>">
 				<portlet:actionURL var="notSpamURL">
@@ -79,11 +83,15 @@ WikiPage wikiPage = (WikiPage)request.getAttribute(WebKeys.WIKI_PAGE);
 </c:if>
 
 <c:if test="<%= (_isSpam(wikiPage) || _isPendingApproval(wikiPage)) && !themeDisplay.isSignedIn() %>">
-	<liferay-util:buffer var="spamContentEndHTML">
+	<liferay-util:buffer
+		var="spamContentEndHTML"
+	>
 		<span id="<portlet:namespace />spamContentEnd"></span>
 	</liferay-util:buffer>
 
-	<liferay-util:buffer var="spamContentStartHTML">
+	<liferay-util:buffer
+		var="spamContentStartHTML"
+	>
 		<span id="<portlet:namespace />spamContentStart"></span>
 	</liferay-util:buffer>
 
@@ -94,7 +102,11 @@ WikiPage wikiPage = (WikiPage)request.getAttribute(WebKeys.WIKI_PAGE);
 	if ((x > 0) && (y > 0)) {
 		String trimmedSpamContentEndHTML = spamContentEndHTML.trim();
 
-		html = html.substring(0, x).concat(html.substring(y + trimmedSpamContentEndHTML.length()));
+		html = html.substring(
+			0, x
+		).concat(
+			html.substring(y + trimmedSpamContentEndHTML.length())
+		);
 	}
 	%>
 

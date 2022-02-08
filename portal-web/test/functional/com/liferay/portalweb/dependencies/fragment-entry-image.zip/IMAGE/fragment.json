@@ -1,1 +1,6 @@
-{"jsPath":"/IMAGE/src/index.js","htmlPath":"/IMAGE/src/index.html","cssPath":"/IMAGE/src/index.css","name":"Image"}
+{
+	"cssPath": "/IMAGE/src/index.css",
+	"htmlPath": "/IMAGE/src/index.html",
+	"jsPath": "/IMAGE/src/index.js",
+	"name": "Image"
+}

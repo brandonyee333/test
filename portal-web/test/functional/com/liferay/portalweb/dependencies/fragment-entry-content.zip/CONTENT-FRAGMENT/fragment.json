@@ -1,1 +1,6 @@
-{"jsPath":"/CONTENT-FRAGMENT/src/index.js","htmlPath":"/CONTENT-FRAGMENT/src/index.html","cssPath":"/CONTENT-FRAGMENT/src/index.css","name":"Content"}
+{
+	"cssPath": "/CONTENT-FRAGMENT/src/index.css",
+	"htmlPath": "/CONTENT-FRAGMENT/src/index.html",
+	"jsPath": "/CONTENT-FRAGMENT/src/index.js",
+	"name": "Content"
+}
