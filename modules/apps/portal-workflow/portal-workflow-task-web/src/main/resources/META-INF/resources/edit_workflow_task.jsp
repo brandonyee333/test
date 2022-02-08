@@ -274,7 +274,7 @@ renderResponse.setTitle(workflowTaskDisplayContext.getHeaderTitle(workflowTask))
 					<c:if test="<%= (assetEntry != null) && workflowHandler.isCommentable() %>">
 
 						<%
-						long discussionClassPK = workflowHandler.getDiscussionClassPk(workflowTask.getOptionalAttributes());
+						long discussionClassPK = workflowHandler.getDiscussionClassPK(workflowTask.getOptionalAttributes());
 						%>
 
 						<liferay-ui:panel
