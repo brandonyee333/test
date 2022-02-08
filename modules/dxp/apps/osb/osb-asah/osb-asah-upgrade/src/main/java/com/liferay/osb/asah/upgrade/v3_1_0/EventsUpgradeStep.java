@@ -388,12 +388,14 @@ public class EventsUpgradeStep implements UpgradeStep {
 		eventsMap.put("contentLanguageId", context.get("contentLanguageId"));
 		eventsMap.put("context", contextJSONObject.toString());
 		eventsMap.put("country", context.get("country"));
-		eventsMap.put("createDate", analyticsEvent.getCreateDate());
+		eventsMap.put(
+			"createDate", DateUtil.toUTCString(analyticsEvent.getCreateDate()));
 		eventsMap.put(
 			"dataSourceId", Long.parseLong(analyticsEvent.getDataSourceId()));
 		eventsMap.put("description", context.get("description"));
 		eventsMap.put("deviceType", context.get("deviceType"));
-		eventsMap.put("eventDate", analyticsEvent.getEventDate());
+		eventsMap.put(
+			"eventDate", DateUtil.toUTCString(analyticsEvent.getEventDate()));
 		eventsMap.put("eventId", analyticsEvent.getEventId());
 
 		List<String> eventPropertyNames = new ArrayList<>();
