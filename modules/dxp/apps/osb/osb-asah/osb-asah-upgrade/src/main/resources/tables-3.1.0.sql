@@ -84,6 +84,6 @@ CREATE TABLE IF NOT EXISTS EventAnalysis (
 	modifiedDate TIMESTAMPTZ,
 	name VARCHAR(255),
 	rangeEnd TIMESTAMPTZ,
-	rangeKey TEXT,
+	rangeKey INTEGER,
 	rangeStart TIMESTAMPTZ
 );
