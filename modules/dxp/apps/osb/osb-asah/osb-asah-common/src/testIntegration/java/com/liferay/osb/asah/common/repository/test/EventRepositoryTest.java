@@ -118,7 +118,8 @@ public class EventRepositoryTest
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "between",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "between",
 						Arrays.asList("2021-05-10", "2021-06-01"))),
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -136,7 +137,8 @@ public class EventRepositoryTest
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "between",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "between",
 						Arrays.asList("2021-05-10", "2021-06-01"))),
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -154,7 +156,8 @@ public class EventRepositoryTest
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "between",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "between",
 						Arrays.asList("2021-05-10", "2021-06-01"))),
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -172,7 +175,8 @@ public class EventRepositoryTest
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "between",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "between",
 						Arrays.asList("2021-05-10", "2021-06-01"))),
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -206,7 +210,8 @@ public class EventRepositoryTest
 					Collections.singletonList(
 						new EventAnalysisFilter(
 							"56789", AttributeType.EVENT,
-							EventAttributeDefinition.DataType.DATE, "between",
+							EventAttributeDefinition.DataType.DATE, null,
+							"testDate", "between",
 							Arrays.asList("2021-05-10", "2021-05-13"))),
 					246810L,
 					DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -227,7 +232,8 @@ public class EventRepositoryTest
 					Collections.singletonList(
 						new EventAnalysisFilter(
 							"56789", AttributeType.EVENT,
-							EventAttributeDefinition.DataType.DATE, "between",
+							EventAttributeDefinition.DataType.DATE, null,
+							"testDate", "between",
 							Arrays.asList("2021-05-10", "2021-05-13"))),
 					246810L,
 					DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -243,7 +249,8 @@ public class EventRepositoryTest
 				AnalysisType.AVERAGE, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, null,
+					"testUrl", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -276,7 +283,8 @@ public class EventRepositoryTest
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"67890", AttributeType.EVENT, 1,
-					EventAttributeDefinition.DataType.BOOLEAN, null, "DESC"),
+					EventAttributeDefinition.DataType.BOOLEAN, null, null,
+					"testMember", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -301,7 +309,8 @@ public class EventRepositoryTest
 				1L,
 				new EventAnalysisBreakdown(
 					"67890", AttributeType.EVENT, null,
-					EventAttributeDefinition.DataType.BOOLEAN, null, "DESC"),
+					EventAttributeDefinition.DataType.BOOLEAN, null, null,
+					"testMember", "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -318,7 +327,7 @@ public class EventRepositoryTest
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, null,
 					EventAttributeDefinition.DataType.DATE, DateGrouping.MONTH,
-					"DESC"),
+					null, "testDate", "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -335,11 +344,12 @@ public class EventRepositoryTest
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, null,
 					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
-					"DESC"),
+					null, "testDate", "DESC"),
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "between",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "between",
 						Arrays.asList("2021-05-10", "2021-06-01"))),
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -356,7 +366,8 @@ public class EventRepositoryTest
 				1L,
 				new EventAnalysisBreakdown(
 					"78901", AttributeType.EVENT, 2000,
-					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
+					EventAttributeDefinition.DataType.DURATION, null, null,
+					"testDuration", "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -372,7 +383,8 @@ public class EventRepositoryTest
 				1L,
 				new EventAnalysisBreakdown(
 					"45678", AttributeType.EVENT, 1,
-					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
+					EventAttributeDefinition.DataType.NUMBER, null, null,
+					"testRating", "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -388,7 +400,8 @@ public class EventRepositoryTest
 				1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, null,
+					"testUrl", "DESC"),
 				null, 246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -404,7 +417,7 @@ public class EventRepositoryTest
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
 					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
-					"DESC"),
+					null, "testDate", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -434,11 +447,12 @@ public class EventRepositoryTest
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
 					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
-					"DESC"),
+					null, "testDate", "DESC"),
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "between",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "between",
 						Arrays.asList("2021-05-10", "2021-06-01"))),
 				246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
@@ -463,7 +477,8 @@ public class EventRepositoryTest
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"78901", AttributeType.EVENT, 2000,
-					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
+					EventAttributeDefinition.DataType.DURATION, null, null,
+					"testDuration", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -494,7 +509,7 @@ public class EventRepositoryTest
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
 					EventAttributeDefinition.DataType.DATE, DateGrouping.MONTH,
-					"DESC"),
+					null, "testDate", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -520,7 +535,8 @@ public class EventRepositoryTest
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"78901", AttributeType.EVENT, 10000,
-					EventAttributeDefinition.DataType.DURATION, null, "DESC"),
+					EventAttributeDefinition.DataType.DURATION, null, null,
+					"testDuration", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -547,7 +563,8 @@ public class EventRepositoryTest
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"45678", AttributeType.EVENT, 3,
-					EventAttributeDefinition.DataType.NUMBER, null, "DESC"),
+					EventAttributeDefinition.DataType.NUMBER, null, null,
+					"testRating", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -574,7 +591,8 @@ public class EventRepositoryTest
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, null,
+					"testUrl", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -602,7 +620,8 @@ public class EventRepositoryTest
 				AnalysisType.UNIQUE, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, null,
+					"testUrl", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -631,15 +650,16 @@ public class EventRepositoryTest
 			Collections.singletonList(
 				new EventAnalysisFilter(
 					"34567", AttributeType.EVENT,
-					EventAttributeDefinition.DataType.STRING, "eq",
-					Collections.singletonList("400"))));
+					EventAttributeDefinition.DataType.STRING, null, "testCode",
+					"eq", Collections.singletonList("400"))));
 
 		Map<Object, Number> eventAttributeValues =
 			_eventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, breakdownItem, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, "DESC"),
+					EventAttributeDefinition.DataType.STRING, null, null,
+					"testUrl", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
@@ -668,7 +688,7 @@ public class EventRepositoryTest
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
 					EventAttributeDefinition.DataType.DATE, DateGrouping.YEAR,
-					"DESC"),
+					null, "testDate", "DESC"),
 				null, 246810L, PageRequest.of(0, 10),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),

@@ -9,6 +9,8 @@
 				"attributeId": "12345",
 				"attributeType": "EVENT",
 				"dataType": "STRING",
+				"description": "string",
+				"displayName": "string",
 				"operator": "contains",
 				"values": [
 					"test"
@@ -18,6 +20,8 @@
 				"attributeId": "23456",
 				"attributeType": "EVENT",
 				"dataType": "NUMBER",
+				"description": "number",
+				"displayName": "number",
 				"operator": "ge",
 				"values": [
 					"250"

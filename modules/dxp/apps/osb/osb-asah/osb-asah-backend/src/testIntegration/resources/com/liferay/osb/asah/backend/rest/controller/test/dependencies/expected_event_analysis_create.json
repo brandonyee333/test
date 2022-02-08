@@ -11,12 +11,15 @@
 					"attributeId": "23456",
 					"attributeType": "EVENT",
 					"binSize": 2000,
-					"dataType": "DURATION"
+					"dataType": "DURATION",
+					"description": "duration",
+					"displayName": "duration"
 				},
 				{
 					"attributeId": "12345",
 					"attributeType": "EVENT",
-					"dataType": "STRING"
+					"dataType": "STRING",
+					"displayName": "string"
 				}
 			],
 			"eventAnalysisFilters": [
@@ -24,6 +27,8 @@
 					"attributeId": "12345",
 					"attributeType": "EVENT",
 					"dataType": "STRING",
+					"description": "string",
+					"displayName": "string",
 					"operator": "contains",
 					"values": [
 						"test"
@@ -33,6 +38,7 @@
 					"attributeId": "23456",
 					"attributeType": "EVENT",
 					"dataType": "NUMBER",
+					"displayName": "number",
 					"operator": "ge",
 					"values": [
 						"250"

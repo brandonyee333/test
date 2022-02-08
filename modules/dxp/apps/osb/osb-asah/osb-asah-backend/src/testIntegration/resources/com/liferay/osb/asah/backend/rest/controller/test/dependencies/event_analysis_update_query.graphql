@@ -10,11 +10,15 @@ mutation UpdateEventAnalysis($analysisType: AnalysisType!, $channelId: String!, 
 			attributeType
 			binSize
 			dataType
+			description
+			displayName
 		}
 		eventAnalysisFilters {
 			attributeId
 			attributeType
 			dataType
+			description
+			displayName
 			operator
 			values
 		}

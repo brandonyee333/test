@@ -9,12 +9,15 @@
 				"attributeId": "23456",
 				"attributeType": "EVENT",
 				"binSize": 2000,
-				"dataType": "DURATION"
+				"dataType": "DURATION",
+				"description": "duration",
+				"displayName": "duration"
 			},
 			{
 				"attributeId": "12345",
 				"attributeType": "EVENT",
-				"dataType": "STRING"
+				"dataType": "STRING",
+				"displayName": "duration"
 			}
 		],
 		"eventDefinitionId": "246810",

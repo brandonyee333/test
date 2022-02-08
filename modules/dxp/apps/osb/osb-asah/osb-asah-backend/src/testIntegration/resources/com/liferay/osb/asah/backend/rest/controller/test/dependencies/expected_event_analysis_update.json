@@ -11,7 +11,9 @@
 					"attributeId": "23456",
 					"attributeType": "EVENT",
 					"binSize": 2000,
-					"dataType": "DURATION"
+					"dataType": "DURATION",
+					"description": "duration",
+					"displayName": "duration"
 				}
 			],
 			"eventAnalysisFilters": [
@@ -19,6 +21,8 @@
 					"attributeId": "12345",
 					"attributeType": "EVENT",
 					"dataType": "STRING",
+					"description": "duration",
+					"displayName": "string",
 					"operator": "contains",
 					"values": [
 						"test"

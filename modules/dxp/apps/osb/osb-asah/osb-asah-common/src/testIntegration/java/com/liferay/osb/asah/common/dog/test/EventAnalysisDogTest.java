@@ -72,11 +72,12 @@ public class EventAnalysisDogTest
 				new EventAnalysisBreakdown(
 					"1", AttributeType.EVENT, 10,
 					EventAttributeDefinition.DataType.STRING, DateGrouping.DAY,
-					"ASC")),
+					"Test Description 1", "Test Display Name 1", "ASC")),
 			Collections.singletonList(
 				new EventAnalysisFilter(
 					"1", AttributeType.EVENT,
 					EventAttributeDefinition.DataType.STRING, "eq",
+					"Test Description 1", "Test Display Name 1",
 					Collections.singletonList("value"))),
 			246810L, "Event Analysis", LocalDate.parse("2021-06-01"), null,
 			LocalDate.parse("2021-05-15"), 100L, "Test");
@@ -98,11 +99,13 @@ public class EventAnalysisDogTest
 					new EventAnalysisBreakdown(
 						"1", AttributeType.EVENT, 10,
 						EventAttributeDefinition.DataType.STRING,
-						DateGrouping.DAY, "ASC")),
+						DateGrouping.DAY, "Test Description 1",
+						"Test Display Name 1", "ASC")),
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"1", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.STRING, "eq",
+						EventAttributeDefinition.DataType.STRING,
+						"Test Description 1", "Test Display Name 1", "eq",
 						Collections.singletonList("value"))),
 				eventAnalysis.getId(), 246810L, "Event Analysis Update", null,
 				0, null, 101L, "Test Test");
@@ -269,7 +272,8 @@ public class EventAnalysisDogTest
 		EventAnalysisBreakdown eventAnalysisBreakdown =
 			new EventAnalysisBreakdown(
 				"12345", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"DESC");
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
@@ -294,11 +298,13 @@ public class EventAnalysisDogTest
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
 				"67890", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.BOOLEAN, null, "DESC");
+				EventAttributeDefinition.DataType.BOOLEAN, null, null,
+				"testMember", "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
 				"12345", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"DESC");
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
@@ -328,12 +334,13 @@ public class EventAnalysisDogTest
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
 				"56789", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
-				"DESC");
+				EventAttributeDefinition.DataType.DATE, DateGrouping.DAY, null,
+				"testDate", "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
 				"12345", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"DESC");
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
@@ -367,8 +374,8 @@ public class EventAnalysisDogTest
 				Collections.singletonList(
 					new EventAnalysisBreakdown(
 						"34567", AttributeType.EVENT, 2000,
-						EventAttributeDefinition.DataType.DURATION, null,
-						"DESC")),
+						EventAttributeDefinition.DataType.DURATION, null, null,
+						"testCode", "DESC")),
 				Collections.emptyList(), 246810L, 0, 10,
 				TimeRange.of(
 					LocalDate.parse("2021-06-01"),
@@ -389,11 +396,12 @@ public class EventAnalysisDogTest
 			new EventAnalysisBreakdown(
 				"56789", AttributeType.EVENT, 0,
 				EventAttributeDefinition.DataType.DATE, DateGrouping.MONTH,
-				"DESC");
+				null, "testDate", "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
 				"12345", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"DESC");
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
@@ -424,11 +432,13 @@ public class EventAnalysisDogTest
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
 				"78901", AttributeType.EVENT, 2000,
-				EventAttributeDefinition.DataType.DURATION, null, "DESC");
+				EventAttributeDefinition.DataType.DURATION, null, null,
+				"testDuration", "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
 				"12345", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"DESC");
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
@@ -462,8 +472,8 @@ public class EventAnalysisDogTest
 				Collections.singletonList(
 					new EventAnalysisBreakdown(
 						"45678", AttributeType.EVENT, 2,
-						EventAttributeDefinition.DataType.NUMBER, null,
-						"DESC")),
+						EventAttributeDefinition.DataType.NUMBER, null, null,
+						"testRating", "DESC")),
 				Collections.emptyList(), 246810L, 0, 10,
 				TimeRange.of(
 					LocalDate.parse("2021-06-01"),
@@ -483,15 +493,18 @@ public class EventAnalysisDogTest
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
 				"12345", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
 				"23456", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null,
+				"testTitle", "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown3 =
 			new EventAnalysisBreakdown(
 				"34567", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null,
+				"testCode", "DESC");
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
@@ -522,15 +535,18 @@ public class EventAnalysisDogTest
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
 				"34567", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null,
+				"testCode", "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
 				"23456", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null,
+				"testTitle", "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown3 =
 			new EventAnalysisBreakdown(
 				"12345", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"DESC");
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
@@ -564,7 +580,8 @@ public class EventAnalysisDogTest
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "gt",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "gt",
 						Collections.singletonList("2021-03-14"))),
 				246810L, 0, 10,
 				TimeRange.of(
@@ -585,7 +602,8 @@ public class EventAnalysisDogTest
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "lt",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "lt",
 						Collections.singletonList("2021-03-14"))),
 				246810L, 0, 10,
 				TimeRange.of(
@@ -606,7 +624,8 @@ public class EventAnalysisDogTest
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "between",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "between",
 						Arrays.asList("2020-01-01", "2021-05-10"))),
 				246810L, 0, 10,
 				TimeRange.of(
@@ -627,7 +646,8 @@ public class EventAnalysisDogTest
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.DATE, "eq",
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "eq",
 						Collections.singletonList("2021-05-13"))),
 				246810L, 0, 10,
 				TimeRange.of(
@@ -645,15 +665,18 @@ public class EventAnalysisDogTest
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
 				"12345", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "ASC");
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"ASC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
 				"23456", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "ASC");
+				EventAttributeDefinition.DataType.STRING, null, null,
+				"testTitle", "ASC");
 		EventAnalysisBreakdown eventAnalysisBreakdown3 =
 			new EventAnalysisBreakdown(
 				"34567", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "ASC");
+				EventAttributeDefinition.DataType.STRING, null, null,
+				"testCode", "ASC");
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
@@ -668,7 +691,8 @@ public class EventAnalysisDogTest
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"12345", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.STRING, "eq",
+						EventAttributeDefinition.DataType.STRING, null,
+						"testUrl", "eq",
 						Collections.singletonList(
 							"https://www.beryl.com/design"))),
 				246810L, 0, 10,
@@ -691,12 +715,13 @@ public class EventAnalysisDogTest
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
 				"56789", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.DATE, DateGrouping.YEAR,
-				"DESC");
+				EventAttributeDefinition.DataType.DATE, DateGrouping.YEAR, null,
+				"testDate", "DESC");
 		EventAnalysisBreakdown eventAnalysisBreakdown2 =
 			new EventAnalysisBreakdown(
 				"12345", AttributeType.EVENT, 0,
-				EventAttributeDefinition.DataType.STRING, null, "DESC");
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"DESC");
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
@@ -726,15 +751,16 @@ public class EventAnalysisDogTest
 	public void testGetEventAnalysisMultipleFilters() {
 		EventAnalysisFilter eventAnalysisFilter1 = new EventAnalysisFilter(
 			"12345", AttributeType.EVENT,
-			EventAttributeDefinition.DataType.STRING, "contains",
-			Collections.singletonList("test"));
+			EventAttributeDefinition.DataType.STRING, null, "Test Attribute 1",
+			"contains", Collections.singletonList("test"));
 		EventAnalysisFilter eventAnalysisFilter2 = new EventAnalysisFilter(
 			"12345", AttributeType.EVENT,
-			EventAttributeDefinition.DataType.STRING, "contains",
-			Collections.singletonList("This"));
+			EventAttributeDefinition.DataType.STRING, null, "Test Attribute 1",
+			"contains", Collections.singletonList("This"));
 		EventAnalysisFilter eventAnalysisFilter3 = new EventAnalysisFilter(
 			"23456", AttributeType.EVENT,
-			EventAttributeDefinition.DataType.NUMBER, "between",
+			EventAttributeDefinition.DataType.NUMBER, null, "Test Attribute 2",
+			"between",
 			new ArrayList<String>() {
 				{
 					add("200");
@@ -769,8 +795,8 @@ public class EventAnalysisDogTest
 	public void testGetEventAnalysisSingleFilter() {
 		EventAnalysisFilter eventAnalysisFilter = new EventAnalysisFilter(
 			"12345", AttributeType.EVENT,
-			EventAttributeDefinition.DataType.STRING, "contains",
-			Collections.singletonList("should"));
+			EventAttributeDefinition.DataType.STRING, null, "Test Attribute 1",
+			"contains", Collections.singletonList("should"));
 
 		EventAnalysisResult eventAnalysisResult =
 			_eventAnalysisDog.getEventAnalysisResult(
