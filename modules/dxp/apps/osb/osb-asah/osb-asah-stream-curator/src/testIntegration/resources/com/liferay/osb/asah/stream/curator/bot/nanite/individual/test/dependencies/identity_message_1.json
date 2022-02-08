@@ -2,7 +2,7 @@
 	{
 		"analyticsData": {
 		},
-		"channelId": "1",
+		"channelId": "undefined",
 		"dataSourceId": "1",
 		"emailAddressHashed": "3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd",
 		"projectId": "test",

@@ -1,0 +1,24 @@
+[
+	{
+		"dataSources": [
+			{
+				"id": "1"
+			}
+		],
+		"dateCreated": "2020-04-07T06:10:23.417Z",
+		"defaultChannel": true,
+		"id": "1",
+		"name": "channelA"
+	},
+	{
+		"dataSources": [
+			{
+				"id": "2"
+			}
+		],
+		"dateCreated": "2020-04-07T06:10:23.417Z",
+		"defaultChannel": true,
+		"id": "2",
+		"name": "channelB"
+	}
+]

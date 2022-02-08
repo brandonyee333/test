@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -98,6 +99,10 @@ public class IndividualNaniteTest
 	@MessageBusChannel(
 		channel = Channel.IDENTITY_MESSAGE,
 		resourcePath = "identity_message_1.json"
+	)
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
