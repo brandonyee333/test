@@ -490,7 +490,9 @@ public class EventAnalysisDog {
 			return new EventAnalysisFilter(
 				eventAnalysisBreakdown.getAttributeId(),
 				eventAnalysisBreakdown.getAttributeType(),
-				eventAnalysisBreakdown.getDataType(), "eq",
+				eventAnalysisBreakdown.getDataType(),
+				eventAnalysisBreakdown.getDescription(),
+				eventAnalysisBreakdown.getDisplayName(), "eq",
 				Collections.singletonList(null));
 		}
 
@@ -504,7 +506,9 @@ public class EventAnalysisDog {
 			return new EventAnalysisFilter(
 				eventAnalysisBreakdown.getAttributeId(),
 				eventAnalysisBreakdown.getAttributeType(),
-				eventAnalysisBreakdown.getDataType(), "dateGrouping",
+				eventAnalysisBreakdown.getDataType(),
+				eventAnalysisBreakdown.getDescription(),
+				eventAnalysisBreakdown.getDisplayName(), "dateGrouping",
 				Arrays.asList(dateGrouping.toString(), value));
 		}
 
@@ -514,7 +518,9 @@ public class EventAnalysisDog {
 			return new EventAnalysisFilter(
 				eventAnalysisBreakdown.getAttributeId(),
 				eventAnalysisBreakdown.getAttributeType(),
-				eventAnalysisBreakdown.getDataType(), "bin",
+				eventAnalysisBreakdown.getDataType(),
+				eventAnalysisBreakdown.getDescription(),
+				eventAnalysisBreakdown.getDisplayName(), "bin",
 				Arrays.asList(
 					String.valueOf(eventAnalysisBreakdown.getBinSize()),
 					value));
@@ -523,7 +529,9 @@ public class EventAnalysisDog {
 		return new EventAnalysisFilter(
 			eventAnalysisBreakdown.getAttributeId(),
 			eventAnalysisBreakdown.getAttributeType(),
-			eventAnalysisBreakdown.getDataType(), "eq",
+			eventAnalysisBreakdown.getDataType(),
+			eventAnalysisBreakdown.getDescription(),
+			eventAnalysisBreakdown.getDisplayName(), "eq",
 			Collections.singletonList(value));
 	}
 

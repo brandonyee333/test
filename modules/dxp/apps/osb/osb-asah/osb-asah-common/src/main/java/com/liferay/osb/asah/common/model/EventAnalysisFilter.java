@@ -34,12 +34,14 @@ public class EventAnalysisFilter {
 
 	public EventAnalysisFilter(
 		String attributeId, AttributeType attributeType,
-		EventAttributeDefinition.DataType dataType, String operator,
-		List<String> values) {
+		EventAttributeDefinition.DataType dataType, String description,
+		String displayName, String operator, List<String> values) {
 
 		_attributeId = attributeId;
 		_attributeType = attributeType;
 		_dataType = dataType;
+		_description = description;
+		_displayName = displayName;
 		_operator = operator;
 		_values = values;
 	}
@@ -60,6 +62,8 @@ public class EventAnalysisFilter {
 			Objects.equals(
 				_attributeType, eventAnalysisFilter._attributeType) &&
 			Objects.equals(_dataType, eventAnalysisFilter._dataType) &&
+			Objects.equals(_description, eventAnalysisFilter._description) &&
+			Objects.equals(_displayName, eventAnalysisFilter._displayName) &&
 			Objects.equals(_operator, eventAnalysisFilter._operator) &&
 			Objects.equals(_values, eventAnalysisFilter._values)) {
 
@@ -81,6 +85,14 @@ public class EventAnalysisFilter {
 		return _dataType;
 	}
 
+	public String getDescription() {
+		return _description;
+	}
+
+	public String getDisplayName() {
+		return _displayName;
+	}
+
 	public String getOperator() {
 		return _operator;
 	}
@@ -92,7 +104,8 @@ public class EventAnalysisFilter {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_attributeId, _attributeType, _dataType, _operator, _values);
+			_attributeId, _attributeType, _dataType, _description, _displayName,
+			_operator, _values);
 	}
 
 	public void setAttributeId(String attributeId) {
@@ -107,6 +120,14 @@ public class EventAnalysisFilter {
 		_dataType = dataType;
 	}
 
+	public void setDescription(String description) {
+		_description = description;
+	}
+
+	public void setDisplayName(String displayName) {
+		_displayName = displayName;
+	}
+
 	public void setOperator(String operator) {
 		_operator = operator;
 	}
@@ -118,6 +139,8 @@ public class EventAnalysisFilter {
 	private String _attributeId;
 	private AttributeType _attributeType;
 	private EventAttributeDefinition.DataType _dataType;
+	private String _description;
+	private String _displayName;
 	private String _operator;
 	private List<String> _values;
 

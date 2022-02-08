@@ -132,6 +132,8 @@ input EventAnalysisBreakdownInput {
 	binSize: Float
 	dataType: EventAttributeDefinitionDataType!
 	dateGrouping: DateGrouping
+	description: String
+	displayName: String!
 	sortType: SortType
 }
 
@@ -139,6 +141,8 @@ input EventAnalysisFilterInput {
 	attributeId: String!
 	attributeType: AttributeType!
 	dataType: EventAttributeDefinitionDataType!
+	description: String
+	displayName: String!
 	operator: String!
 	values: [String]!
 }
@@ -393,6 +397,8 @@ type EventAnalysisBreakdown {
 	binSize: Float
 	dataType: String
 	dateGrouping: String
+	description: String
+	displayName: String
 	sortType: String
 }
 
@@ -400,6 +406,8 @@ type EventAnalysisFilter {
 	attributeId: String
 	attributeType: String
 	dataType: String
+	description: String
+	displayName: String
 	operator: String
 	values: [String]
 }

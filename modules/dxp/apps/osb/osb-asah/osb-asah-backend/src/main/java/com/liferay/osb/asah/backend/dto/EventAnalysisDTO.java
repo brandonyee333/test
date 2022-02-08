@@ -212,6 +212,10 @@ public class EventAnalysisDTO {
 				Objects.equals(
 					_dateGrouping, eventAnalysisBreakdownDTO._dateGrouping) &&
 				Objects.equals(
+					_description, eventAnalysisBreakdownDTO._description) &&
+				Objects.equals(
+					_displayName, eventAnalysisBreakdownDTO._displayName) &&
+				Objects.equals(
 					_sortType, eventAnalysisBreakdownDTO._sortType)) {
 
 				return true;
@@ -246,6 +250,14 @@ public class EventAnalysisDTO {
 			return _dateGrouping;
 		}
 
+		public String getDescription() {
+			return _description;
+		}
+
+		public String getDisplayName() {
+			return _displayName;
+		}
+
 		public String getSortType() {
 			return _sortType;
 		}
@@ -254,7 +266,7 @@ public class EventAnalysisDTO {
 		public int hashCode() {
 			return Objects.hash(
 				_attributeId, _attributeType, _binSize, _dataType,
-				_dateGrouping, _sortType);
+				_dateGrouping, _description, _displayName, _sortType);
 		}
 
 		public void setAttributeId(String attributeId) {
@@ -277,6 +289,14 @@ public class EventAnalysisDTO {
 			_dateGrouping = dateGrouping;
 		}
 
+		public void setDescription(String description) {
+			_description = description;
+		}
+
+		public void setDisplayName(String displayName) {
+			_displayName = displayName;
+		}
+
 		public void setSortType(String sortType) {
 			_sortType = sortType;
 		}
@@ -286,6 +306,8 @@ public class EventAnalysisDTO {
 		private Number _binSize;
 		private EventAttributeDefinition.DataType _dataType;
 		private DateGrouping _dateGrouping;
+		private String _description;
+		private String _displayName;
 		private String _sortType;
 
 	}
@@ -315,6 +337,10 @@ public class EventAnalysisDTO {
 				Objects.equals(
 					_attributeType, eventAnalysisFilterDTO._attributeType) &&
 				Objects.equals(_dataType, eventAnalysisFilterDTO._dataType) &&
+				Objects.equals(
+					_description, eventAnalysisFilterDTO._description) &&
+				Objects.equals(
+					_displayName, eventAnalysisFilterDTO._displayName) &&
 				Objects.equals(_operator, eventAnalysisFilterDTO._operator) &&
 				Objects.equals(_values, eventAnalysisFilterDTO._values)) {
 
@@ -336,6 +362,14 @@ public class EventAnalysisDTO {
 			return _dataType;
 		}
 
+		public String getDescription() {
+			return _description;
+		}
+
+		public String getDisplayName() {
+			return _displayName;
+		}
+
 		public String getOperator() {
 			return _operator;
 		}
@@ -347,7 +381,8 @@ public class EventAnalysisDTO {
 		@Override
 		public int hashCode() {
 			return Objects.hash(
-				_attributeId, _attributeType, _dataType, _operator, _values);
+				_attributeId, _attributeType, _dataType, _description,
+				_displayName, _operator, _values);
 		}
 
 		public void setAttributeId(String attributeId) {
@@ -362,6 +397,14 @@ public class EventAnalysisDTO {
 			_dataType = dataType;
 		}
 
+		public void setDescription(String description) {
+			_description = description;
+		}
+
+		public void setDisplayName(String displayName) {
+			_displayName = displayName;
+		}
+
 		public void setOperator(String operator) {
 			_operator = operator;
 		}
@@ -373,6 +416,8 @@ public class EventAnalysisDTO {
 		private String _attributeId;
 		private AttributeType _attributeType;
 		private EventAttributeDefinition.DataType _dataType;
+		private String _description;
+		private String _displayName;
 		private String _operator;
 		private List<String> _values;
 
