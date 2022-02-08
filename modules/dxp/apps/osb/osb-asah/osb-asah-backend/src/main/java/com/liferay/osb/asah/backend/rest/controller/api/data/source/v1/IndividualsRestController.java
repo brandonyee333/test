@@ -237,16 +237,11 @@ public class IndividualsRestController extends BaseRestController {
 
 	@GetMapping("/count")
 	public long getIndividualsCount(
-			@RequestParam(required = false) Long channelId,
-			@RequestParam(required = false) String expand,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "false", required = false) boolean
-				includeAnonymousUsers)
-		throws Exception {
+		@RequestParam(defaultValue = "false", required = false) boolean
+			includeAnonymousUsers) {
 
 		return _individualDog.countIndividuals(
-			channelId, filterString, includeAnonymousUsers);
+			null, null, includeAnonymousUsers);
 	}
 
 	@GetMapping("/{id}/individual-segments")
