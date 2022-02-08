@@ -140,8 +140,7 @@ public class LayoutPageTemplateLayoutPrototypeLocalServiceWrapper
 		}
 
 		Locale defaultLocale = LocaleUtil.fromLanguageId(
-			LocalizationUtil.getDefaultLanguageId(
-				layoutPrototype.getName()));
+			LocalizationUtil.getDefaultLanguageId(layoutPrototype.getName()));
 
 		int status = WorkflowConstants.STATUS_INACTIVE;
 
