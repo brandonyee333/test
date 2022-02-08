@@ -35,6 +35,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
@@ -60,6 +61,8 @@ import javax.annotation.PreDestroy;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -315,24 +318,32 @@ public class IndividualNanite implements Nanite {
 							if (!_suppressionDog.isSuppressed(
 									null, emailAddressHashed)) {
 
-								Long channelId = JSONUtil.optLong(
-									null, messageJSONObject, "channelId");
+								String channelId = messageJSONObject.optString(
+									"channelId", null);
+								Long dataSourceId = messageJSONObject.getLong(
+									"dataSourceId");
+
+								if (StringUtil.isNull(channelId) ||
+									StringUtils.isBlank(channelId) ||
+									!NumberUtils.isCreatable(channelId)) {
+
+									channelId = String.valueOf(
+										_dataSourceDog.getDefaultChannelId(
+											dataSourceId));
+								}
 
 								Individual individual = _updateIndividual(
-									channelId,
-									messageJSONObject.getLong("dataSourceId"),
-									emailAddressHashed,
+									NumberUtils.createLong(channelId),
+									dataSourceId, emailAddressHashed,
 									messageJSONObject.getString("userId"));
 
 								_updatePagesAndAssets(
-									channelId,
-									messageJSONObject.getLong("dataSourceId"),
-									individual,
+									NumberUtils.createLong(channelId),
+									dataSourceId, individual,
 									messageJSONObject.getString("userId"));
 
 								_updateUserSessions(
-									messageJSONObject.getLong("dataSourceId"),
-									individual.getId(),
+									dataSourceId, individual.getId(),
 									messageJSONObject.getString("userId"));
 							}
 
@@ -441,10 +452,6 @@ public class IndividualNanite implements Nanite {
 			_mergeIndividual(individual1, dataSourceId, individual2, userId);
 		}
 		else if ((individual1 == null) && (individual2 == null)) {
-			if (Objects.isNull(channelId)) {
-				channelId = _dataSourceDog.getDefaultChannelId(dataSourceId);
-			}
-
 			return _individualDog.addIndividual(
 				channelId, dataSourceId, emailAddressHashed, userId);
 		}

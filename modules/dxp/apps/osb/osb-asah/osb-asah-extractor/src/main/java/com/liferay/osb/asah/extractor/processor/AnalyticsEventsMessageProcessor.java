@@ -62,6 +62,7 @@ import javax.annotation.PreDestroy;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -296,7 +297,9 @@ public class AnalyticsEventsMessageProcessor {
 		String channelId = analyticsEventsMessage.getChannelId();
 		String dataSourceId = analyticsEventsMessage.getDataSourceId();
 
-		if (StringUtil.isNull(channelId) || StringUtils.isBlank(channelId)) {
+		if (StringUtil.isNull(channelId) || StringUtils.isBlank(channelId) ||
+			!NumberUtils.isCreatable(channelId)) {
+
 			channelId = String.valueOf(
 				_dataSourceDog.getDefaultChannelId(Long.valueOf(dataSourceId)));
 
