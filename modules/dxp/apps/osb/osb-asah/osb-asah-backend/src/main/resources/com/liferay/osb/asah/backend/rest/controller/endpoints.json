@@ -176,6 +176,10 @@
 			"href": "{url}/individuals{?apply,channelId,expand,filter,includeAnonymousUsers,page,size,sort*}",
 			"templated": true
 		},
+		"individuals-count": {
+			"href": "{url}/individuals/count{?includeAnonymousUsers}",
+			"templated": true
+		},
 		"individuals-distribution": {
 			"href": "{url}/individuals/distribution{?fieldMappingId,filter,numberOfBins,size,sort*}",
 			"templated": true
