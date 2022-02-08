@@ -277,6 +277,7 @@ public class EventsUpgradeStep implements UpgradeStep {
 				activityJSONObject.getString("dataSourceId"));
 			analyticsEvent.setEventDate(
 				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
+			analyticsEvent.setEventId(activityJSONObject.getString("eventId"));
 
 			JSONObject eventPropertiesJSONObject =
 				activityJSONObject.optJSONObject("eventProperties");
@@ -287,7 +288,6 @@ public class EventsUpgradeStep implements UpgradeStep {
 			}
 
 			analyticsEvent.setId(activityJSONObject.getString("id"));
-			analyticsEvent.setEventId(activityJSONObject.getString("eventId"));
 
 			Individual individual = _individualDog.fetchIndividual(
 				Long.valueOf(activityJSONObject.getString("ownerId")));
@@ -296,6 +296,7 @@ public class EventsUpgradeStep implements UpgradeStep {
 				activityJSONObject.getString("ownerId"));
 
 			analyticsEvent.setKnownIndividual(_isKnownIndividual(individual));
+			analyticsEvent.setProjectId(ProjectIdThreadLocal.getProjectId());
 			analyticsEvent.setSegmentNames(
 				_getSegmentNames(
 					Long.valueOf(activityJSONObject.getString("channelId")),
