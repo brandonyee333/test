@@ -121,25 +121,24 @@ public class InterestCompositionDog {
 			}
 		}
 
-		long countInterestDistributions =
-			_interestRepository.countInterestDistributions(
-				keyword, individualIds, "individual", recordedDate, score);
+		long count = _interestRepository.countInterestDistributions(
+			keyword, individualIds, "individual", recordedDate, score);
 
 		if (_calculateMaxCount(sort, start)) {
-			List<Distribution> maxList =
+			List<Distribution> distributions =
 				_interestRepository.getInterestDistributions(
 					keyword, individualIds, "individual", recordedDate, score,
 					PageRequest.of(0, 1, Sort.desc("count")));
 
-			Distribution maxDistribution = maxList.get(0);
+			Distribution distributions = distributions.get(0);
 
 			return new CompositionResultBag(
-				maxDistribution.getCount(), compositions,
-				countInterestDistributions, individualIds.size());
+				distributions.getCount(), compositions, count,
+				individualIds.size());
 		}
 
 		return new CompositionResultBag(
-			compositions, countInterestDistributions, individualIds.size());
+			compositions, count, individualIds.size());
 	}
 
 	private List<Long> _getIndividualIds(
