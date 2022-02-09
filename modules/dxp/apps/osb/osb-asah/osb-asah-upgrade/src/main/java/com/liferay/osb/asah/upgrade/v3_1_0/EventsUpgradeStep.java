@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.upgrade.v3_1_0;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryError;
 import com.google.cloud.bigquery.BigQueryException;
@@ -51,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -288,14 +292,14 @@ public class EventsUpgradeStep implements UpgradeStep {
 			}
 
 			analyticsEvent.setId(activityJSONObject.getString("id"));
-
-			Individual individual = _individualDog.fetchIndividual(
-				Long.valueOf(activityJSONObject.getString("ownerId")));
-
 			analyticsEvent.setIndividualId(
 				activityJSONObject.getString("ownerId"));
 
+			Individual individual = _fetchIndividual(
+				Long.valueOf(activityJSONObject.getString("ownerId")));
+
 			analyticsEvent.setKnownIndividual(_isKnownIndividual(individual));
+
 			analyticsEvent.setProjectId(ProjectIdThreadLocal.getProjectId());
 			analyticsEvent.setSegmentNames(
 				_getSegmentNames(
@@ -310,6 +314,10 @@ public class EventsUpgradeStep implements UpgradeStep {
 
 			return null;
 		}
+	}
+
+	private Individual _fetchIndividual(Long ownerId) {
+		return _individualsCache.get(ownerId, _individualDog::fetchIndividual);
 	}
 
 	private Map<String, String> _getEventContext(
@@ -343,8 +351,11 @@ public class EventsUpgradeStep implements UpgradeStep {
 			return Collections.emptySet();
 		}
 
-		return new HashSet<>(
-			_segmentDog.getSegmentNames(channelId, individual.getSegmentIds()));
+		return _segmentsCache.get(
+			individual.getId(),
+			individualId -> new HashSet<>(
+				_segmentDog.getSegmentNames(
+					channelId, individual.getSegmentIds())));
 	}
 
 	@PostConstruct
@@ -359,13 +370,17 @@ public class EventsUpgradeStep implements UpgradeStep {
 			return false;
 		}
 
-		if (_fieldRepository.existsByNameAndOwnerId(
-				"email", individual.getId())) {
+		return _knownIndividualsCache.get(
+			individual.getId(),
+			individualId -> {
+				if (_fieldRepository.existsByNameAndOwnerId(
+						"email", individual.getId())) {
 
-			return true;
-		}
+					return true;
+				}
 
-		return false;
+				return false;
+			});
 	}
 
 	private void _populateEventMap(
@@ -497,6 +512,28 @@ public class EventsUpgradeStep implements UpgradeStep {
 	}
 
 	private static final Log _log = LogFactory.getLog(EventsUpgradeStep.class);
+
+	private static final Cache<Long, Individual> _individualsCache =
+		Caffeine.newBuilder(
+		).expireAfterAccess(
+			7, TimeUnit.DAYS
+		).maximumSize(
+			5000000
+		).build();
+	private static final Cache<Long, Boolean> _knownIndividualsCache =
+		Caffeine.newBuilder(
+		).expireAfterAccess(
+			7, TimeUnit.DAYS
+		).maximumSize(
+			5000000
+		).build();
+	private static final Cache<Long, Set<String>> _segmentsCache =
+		Caffeine.newBuilder(
+		).expireAfterAccess(
+			7, TimeUnit.DAYS
+		).maximumSize(
+			5000000
+		).build();
 
 	private BigQuery _bigQuery;
 	private final BoundedExecutor _boundedExecutor =
