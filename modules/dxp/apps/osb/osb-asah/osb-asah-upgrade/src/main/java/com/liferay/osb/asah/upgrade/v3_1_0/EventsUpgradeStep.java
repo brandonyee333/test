@@ -219,7 +219,7 @@ public class EventsUpgradeStep implements UpgradeStep {
 	private void _batchUpdateEvents(
 		List<Map<String, Object>> events, long startTime) {
 
-		int writes = events.size();
+		int successfulWrites = events.size();
 
 		try {
 			InsertAllRequest.Builder builder = InsertAllRequest.newBuilder(
@@ -241,13 +241,17 @@ public class EventsUpgradeStep implements UpgradeStep {
 				Map<Long, List<BigQueryError>> insertErrors =
 					insertAllResponse.getInsertErrors();
 
-				for (Map.Entry<Long, List<BigQueryError>> entry :
-						insertErrors.entrySet()) {
-
-					_log.error("Insert all response error: " + entry);
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						String.format(
+							"Retrying %s events", insertErrors.size()));
 				}
 
-				writes = writes - insertErrors.size();
+				_sleep(1000);
+
+				int failedWrites = _retry(insertErrors.keySet(), events);
+
+				successfulWrites = successfulWrites - failedWrites;
 			}
 		}
 		catch (BigQueryException bigQueryException) {
@@ -257,7 +261,7 @@ public class EventsUpgradeStep implements UpgradeStep {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"It took " + (System.currentTimeMillis() - startTime) +
-						"ms to insert " + writes + " events");
+						"ms to insert " + successfulWrites + " events");
 			}
 
 			events.clear();
@@ -457,6 +461,46 @@ public class EventsUpgradeStep implements UpgradeStep {
 		events.add(eventsMap);
 	}
 
+	private int _retry(
+		Set<Long> errorIndexes, List<Map<String, Object>> events) {
+
+		int failedWrites = 0;
+
+		InsertAllRequest.Builder builder = InsertAllRequest.newBuilder(
+			_tableId);
+
+		for (Long errorIndex : errorIndexes) {
+			Map<String, Object> event = events.get(errorIndex.intValue());
+
+			builder.addRow(
+				InsertAllRequest.RowToInsert.of(
+					MapUtil.getString(event, "id"), event));
+		}
+
+		InsertAllResponse insertAllResponse = _bigQuery.insertAll(
+			builder.build());
+
+		if (insertAllResponse.hasErrors()) {
+			Map<Long, List<BigQueryError>> insertErrors =
+				insertAllResponse.getInsertErrors();
+
+			for (Map.Entry<Long, List<BigQueryError>> entry :
+					insertErrors.entrySet()) {
+
+				Long key = entry.getKey();
+
+				_log.error(
+					String.format(
+						"Unable to insert %s. Reason: %s",
+						events.get(key.intValue()), entry.getValue()));
+			}
+
+			failedWrites = insertErrors.size();
+		}
+
+		return failedWrites;
+	}
+
 	private void _saveProperties(Properties properties) {
 		try (FileOutputStream fileOutputStream = new FileOutputStream(
 				_propertiesFile)) {
@@ -486,6 +530,15 @@ public class EventsUpgradeStep implements UpgradeStep {
 			_customEventUpgradeBatchSize -= 100;
 
 			_updateBatchSize(newStatistics, searchSourceBuilder);
+		}
+	}
+
+	private void _sleep(long millis) {
+		try {
+			Thread.sleep(millis);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
 		}
 	}
 
