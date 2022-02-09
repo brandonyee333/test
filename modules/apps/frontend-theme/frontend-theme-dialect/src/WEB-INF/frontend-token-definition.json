@@ -4607,7 +4607,6 @@
 			"name": "forms"
 		},
 		{
-
 			"frontendTokenSets": [
 				{
 					"frontendTokens": [
@@ -4777,7 +4776,6 @@
 							"type": "String"
 						}
 					],
-
 					"label": "hotkeys-large",
 					"name": "hotkeysLarge"
 				},
@@ -4844,7 +4842,6 @@
 							"type": "String"
 						}
 					],
-
 					"label": "hotkeys-small",
 					"name": "hotkeysSmall"
 				},
@@ -4852,6 +4849,7 @@
 					"frontendTokens": [
 						{
 							"defaultValue": "var(--color-neutral-7)",
+							"editorType": "ColorPicker",
 							"label": "hotkeys-dark-background-color",
 							"mappings": [
 								{
@@ -4864,6 +4862,7 @@
 						},
 						{
 							"defaultValue": "var(--color-neutral-7)",
+							"editorType": "ColorPicker",
 							"label": "hotkeys-dark-border-color",
 							"mappings": [
 								{
@@ -4876,6 +4875,7 @@
 						},
 						{
 							"defaultValue": "var(--color-neutral-0)",
+							"editorType": "ColorPicker",
 							"label": "hotkeys-dark-color",
 							"mappings": [
 								{
@@ -4887,14 +4887,14 @@
 							"type": "String"
 						}
 					],
-					
 					"label": "hotkeys-dark",
 					"name": "hotkeysDark"
 				},
 				{
 					"frontendTokens": [
 						{
-							"defaultValue": "var(--color-neutral-1)",
+							"defaultValue": "var(--color-neutral-0)",
+							"editorType": "ColorPicker",
 							"label": "hotkeys-light-background-color",
 							"mappings": [
 								{
@@ -4906,7 +4906,8 @@
 							"type": "String"
 						},
 						{
-							"defaultValue": "var(--color-neutral-5)",
+							"defaultValue": "var(--color-neutral-4)",
+							"editorType": "ColorPicker",
 							"label": "hotkeys-light-border-color",
 							"mappings": [
 								{
@@ -4918,7 +4919,8 @@
 							"type": "String"
 						},
 						{
-							"defaultValue": "var(--color-neutral-5)",
+							"defaultValue": "var(--color-neutral-4)",
+							"editorType": "ColorPicker",
 							"label": "hotkeys-light-color",
 							"mappings": [
 								{

@@ -13,6 +13,23 @@ $c-kbd: (
 	padding-top: var(--hotkeys-padding-y),
 );
 
+$c-kbd-group: (
+	line-height: var(--hotkeys-line-height),
+	font-size: var(--hotkeys-font-size),
+);
+
+// Kbd Sizes
+
+$c-kbd-group-sm: (
+	font-size: var(--hotkeys-sm-font-size),
+	line-height: var(--hotkeys-sm-line-height),
+);
+
+$c-kbd-group-lg: (
+	font-size: var(--hotkeys-lg-font-size),
+	line-height: var(--hotkeys-lg-line-height),
+);
+
 $c-kbd-lg: (
 	border-width: var(--hotkeys-lg-border-width),
 	font-size: var(--hotkeys-lg-font-size),
@@ -33,14 +50,24 @@ $c-kbd-sm: (
 	padding-top: var(--hotkeys-sm-padding-y),
 );
 
-$c-kbd-dark: (
-	background-color: var(--hotkeys-dark-background-color),
-	border-color: var(--hotkeys-dark-border-color),
-	color: var(--hotkeys-dark-color),
+// Kbd Variants
+
+$c-kbd-group-light: (
+	font-family: inherit,
 );
 
 $c-kbd-light: (
 	background-color: var(--hotkeys-light-background-color),
 	border-color: var(--hotkeys-light-border-color),
 	color: var(--hotkeys-light-color),
+);
+
+$c-kbd-group-dark: (
+	font-family: inherit,
+);
+
+$c-kbd-dark: (
+	background-color: var(--hotkeys-dark-background-color),
+	border-color: var(--hotkeys-dark-border-color),
+	color: var(--hotkeys-dark-color),
 );

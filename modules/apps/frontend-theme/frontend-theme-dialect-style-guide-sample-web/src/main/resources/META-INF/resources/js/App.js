@@ -58,14 +58,14 @@ const TABS = [
 		label: Liferay.Language.get('forms'),
 	},
 	{
-		content: <LabelGuide />,
-		hash: '#labels',
-		label: Liferay.Language.get('labels'),
-	},
-	{
 		content: <HotkeyGuide />,
 		hash: '#hotkeys',
 		label: Liferay.Language.get('hotkeys'),
+	},
+	{
+		content: <LabelGuide />,
+		hash: '#labels',
+		label: Liferay.Language.get('labels'),
 	},
 ];
 

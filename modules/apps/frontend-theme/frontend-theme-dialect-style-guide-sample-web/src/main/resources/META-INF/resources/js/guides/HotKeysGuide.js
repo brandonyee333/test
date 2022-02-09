@@ -59,16 +59,32 @@ const TOKEN_GROUPS = [
 		size: 'medium',
 	},
 ];
-
+const GROUPS_ITENS = [
+	{
+		label: 'c-kbd c-kbd-group-sm',
+		style: 'c-kbd c-kbd-group-sm',
+	},
+	{
+		label: 'c-kbd c-kbd-group',
+		style: 'c-kbd c-kbd-group',
+	},
+	{
+		label: 'c-kbd c-kbd-group-lg',
+		style: 'c-kbd c-kbd-group-lg',
+	},
+];
 const HotkeyGuide = () => {
 	return (
 		<>
-			{TOKEN_GROUPS.map((token) => (
-				// eslint-disable-next-line react/jsx-key
-				<TokenGroup group="hotkeys" title={token.categoryTitle}>
-					{token.hotkeys.map((item) => (
+			{TOKEN_GROUPS.map((token, tokenId) => (
+				<TokenGroup
+					group="hotkeys"
+					key={`${tokenId}`}
+					title={token.categoryTitle}
+				>
+					{token.hotkeys.map((item, itemIndex) => (
 						<TokenItem
-							key={item}
+							key={`${itemIndex}`}
 							label={item.label}
 							size={token.size}
 						>
@@ -82,19 +98,25 @@ const HotkeyGuide = () => {
 				group="hotkeys"
 				title={Liferay.Language.get('hotkeys-groups')}
 			>
-				<TokenItem label="c-kbd-inline">
-					<kbd className="c-kbd">
-						<kbd className="c-kbd">A</kbd>
+				{GROUPS_ITENS.map((item, tokenId) => (
+					<TokenItem
+						key={`${tokenId}`}
+						label={item.label}
+						size="medium"
+					>
+						<kbd className={item.style}>
+							<kbd className="c-kbd">A</kbd>
 
-						<span className="c-kbd-separator">+</span>
+							<span className="c-kbd-separator">+</span>
 
-						<kbd className="c-kbd">⇧</kbd>
+							<kbd className="c-kbd">⇧</kbd>
 
-						<span className="c-kbd-separator">+</span>
+							<span className="c-kbd-separator">+</span>
 
-						<kbd className="c-kbd">M</kbd>
-					</kbd>
-				</TokenItem>
+							<kbd className="c-kbd">M</kbd>
+						</kbd>
+					</TokenItem>
+				))}
 			</TokenGroup>
 		</>
 	);
