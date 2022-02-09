@@ -60,7 +60,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 		FilterHelper filterHelper, @Nullable Double score) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.aggregationsList();
+			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"Interest"
