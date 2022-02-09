@@ -20,13 +20,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 
 /**
  * @author Marcellus Tavares
  */
-@Primary
 public interface JobRepository extends Repository<Job, Long> {
 
 	@Cacheable
