@@ -133,10 +133,10 @@ public class ElasticsearchInterestRepositoryImpl implements InterestRepository {
 			return 0;
 		}
 
-		List<Aggregation> aggregationList = aggregations.asList();
+		List<Aggregation> aggregationsList = aggregations.asList();
 
 		InternalCardinality internalCardinality =
-			(InternalCardinality)aggregationList.get(0);
+			(InternalCardinality)aggregationsList.get(0);
 
 		return internalCardinality.getValue();
 	}
@@ -737,9 +737,9 @@ public class ElasticsearchInterestRepositoryImpl implements InterestRepository {
 			return true;
 		}
 
-		List<Aggregation> aggregationList = aggregations.asList();
+		List<Aggregation> aggregationsList = aggregations.asList();
 
-		return aggregationList.isEmpty();
+		return aggregationsList.isEmpty();
 	}
 
 	private Interest _toInterest(JSONObject jsonObject) {
