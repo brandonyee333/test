@@ -301,9 +301,9 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			return ownerIds;
 		}
 
-		List<Aggregation> aggregationList = aggregations.asList();
+		List<Aggregation> aggregationsList = aggregations.asList();
 
-		if (aggregationList.isEmpty()) {
+		if (aggregationsList.isEmpty()) {
 			return ownerIds;
 		}
 

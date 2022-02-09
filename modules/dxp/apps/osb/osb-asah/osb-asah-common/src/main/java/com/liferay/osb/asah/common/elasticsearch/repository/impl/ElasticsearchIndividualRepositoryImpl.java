@@ -1532,9 +1532,9 @@ public class ElasticsearchIndividualRepositoryImpl
 			return true;
 		}
 
-		List<Aggregation> aggregationList = aggregations.asList();
+		List<Aggregation> aggregationsList = aggregations.asList();
 
-		return aggregationList.isEmpty();
+		return aggregationsList.isEmpty();
 	}
 
 	private Individual _toIndividual(JSONObject jsonObject) {

@@ -656,9 +656,9 @@ public class ElasticsearchFieldRepositoryImpl implements FieldRepository {
 			return true;
 		}
 
-		List<Aggregation> aggregationList = aggregations.asList();
+		List<Aggregation> aggregationsList = aggregations.asList();
 
-		return aggregationList.isEmpty();
+		return aggregationsList.isEmpty();
 	}
 
 	private Field _toField(JSONObject jsonObject) {

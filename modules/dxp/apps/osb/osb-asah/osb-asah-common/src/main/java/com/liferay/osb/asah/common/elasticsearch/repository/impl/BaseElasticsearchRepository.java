@@ -284,9 +284,9 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 			return true;
 		}
 
-		List<Aggregation> aggregationList = aggregations.asList();
+		List<Aggregation> aggregationsList = aggregations.asList();
 
-		return aggregationList.isEmpty();
+		return aggregationsList.isEmpty();
 	}
 
 	protected List<T> search(SearchSourceBuilder searchSourceBuilder) {
