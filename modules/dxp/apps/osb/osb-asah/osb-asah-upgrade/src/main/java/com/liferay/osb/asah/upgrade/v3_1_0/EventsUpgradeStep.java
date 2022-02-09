@@ -351,15 +351,27 @@ public class EventsUpgradeStep implements UpgradeStep {
 	private Set<String> _getSegmentNames(
 		Long channelId, Individual individual) {
 
-		if (individual == null) {
+		if ((individual == null) || (individual.getId() == null)) {
 			return Collections.emptySet();
 		}
 
-		return _segmentsCache.get(
-			individual.getId(),
-			individualId -> new HashSet<>(
+		Long individualId = individual.getId();
+
+		if (individualId == null) {
+			return Collections.emptySet();
+		}
+
+		Set<String> segmentNames = _segmentsCache.get(
+			individualId,
+			id -> new HashSet<>(
 				_segmentDog.getSegmentNames(
 					channelId, individual.getSegmentIds())));
+
+		if (segmentNames == null) {
+			return Collections.emptySet();
+		}
+
+		return segmentNames;
 	}
 
 	@PostConstruct
@@ -374,17 +386,27 @@ public class EventsUpgradeStep implements UpgradeStep {
 			return false;
 		}
 
-		return _knownIndividualsCache.get(
-			individual.getId(),
-			individualId -> {
-				if (_fieldRepository.existsByNameAndOwnerId(
-						"email", individual.getId())) {
+		Long individualId = individual.getId();
 
+		if (individualId == null) {
+			return false;
+		}
+
+		Boolean knownIndividual = _knownIndividualsCache.get(
+			individualId,
+			id -> {
+				if (_fieldRepository.existsByNameAndOwnerId("email", id)) {
 					return true;
 				}
 
 				return false;
 			});
+
+		if (knownIndividual == null) {
+			return false;
+		}
+
+		return knownIndividual;
 	}
 
 	private void _populateEventMap(
