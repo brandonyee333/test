@@ -114,6 +114,18 @@ public abstract class BaseInterestRepositoryTestCase
 	}
 
 	@Test
+	public void testCountInterestDistributions() {
+		List<Long> ownerIds = Arrays.asList(
+			374790572703144534L, 374790572703144535L);
+
+		Assertions.assertEquals(
+			2,
+			_interestRepository.countInterestDistributions(
+				null, ownerIds, "individual",
+				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), null));
+	}
+
+	@Test
 	public void testDeleteByNameAndRecordedDateGreaterThanEqual() {
 		_interestRepository.deleteByNameAndRecordedDateGreaterThanEqual(
 			"individual", DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
