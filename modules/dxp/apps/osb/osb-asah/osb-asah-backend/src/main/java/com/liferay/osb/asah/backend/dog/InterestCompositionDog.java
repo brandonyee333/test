@@ -121,6 +121,10 @@ public class InterestCompositionDog {
 			}
 		}
 
+		long countInterestDistributions =
+			_interestRepository.countInterestDistributions(
+				keyword, individualIds, "individual", recordedDate, score);
+
 		if (_calculateMaxCount(sort, start)) {
 			List<Distribution> maxList =
 				_interestRepository.getInterestDistributions(
@@ -130,12 +134,12 @@ public class InterestCompositionDog {
 			Distribution maxDistribution = maxList.get(0);
 
 			return new CompositionResultBag(
-				maxDistribution.getCount(), compositions, compositions.size(),
-				individualIds.size());
+				maxDistribution.getCount(), compositions,
+				countInterestDistributions, individualIds.size());
 		}
 
 		return new CompositionResultBag(
-			compositions, compositions.size(), individualIds.size());
+			compositions, countInterestDistributions, individualIds.size());
 	}
 
 	private List<Long> _getIndividualIds(
