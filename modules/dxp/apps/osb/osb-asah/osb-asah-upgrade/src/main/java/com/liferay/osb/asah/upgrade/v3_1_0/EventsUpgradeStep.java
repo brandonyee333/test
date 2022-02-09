@@ -173,6 +173,10 @@ public class EventsUpgradeStep implements UpgradeStep {
 
 			throw runtimeException;
 		}
+
+		_individualsCache.invalidateAll();
+		_knownIndividualsCache.invalidateAll();
+		_segmentsCache.invalidateAll();
 	}
 
 	protected void upgradeActivities(
