@@ -60,7 +60,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 		FilterHelper filterHelper, @Nullable Double score) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
+			_dslContext.aggregationsList();
 
 		return selectSelectStep.from(
 			"Interest"
@@ -77,10 +77,10 @@ public class InterestRepositoryImpl extends BaseRepository {
 		String keyword, List<Long> ownerIds, String ownerType,
 		Date recordedDate, Double score) {
 
-		SelectSelectStep<Record1<Integer>> selectCount =
+		SelectSelectStep<Record1<Integer>> selectSelectStep1 =
 			_dslContext.selectCount();
 
-		SelectSelectStep<Record2<Integer, Object>> selectSelectStep =
+		SelectSelectStep<Record2<Integer, Object>> selectSelectStep2 =
 			_dslContext.select(
 				DSL.count(
 				).as(
@@ -88,8 +88,8 @@ public class InterestRepositoryImpl extends BaseRepository {
 				),
 				DSL.field("name"));
 
-		return selectCount.from(
-			selectSelectStep.from(
+		return selectSelectStep1.from(
+			selectSelectStep2.from(
 				"Interest"
 			).where(
 				_getConditions(
