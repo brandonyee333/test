@@ -57,6 +57,7 @@ import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInter
 import org.elasticsearch.search.aggregations.bucket.histogram.ExtendedBounds;
 import org.elasticsearch.search.aggregations.bucket.histogram.InternalDateHistogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
 import org.elasticsearch.search.aggregations.metrics.NumericMetricsAggregation;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -100,6 +101,44 @@ public class ElasticsearchInterestRepositoryImpl implements InterestRepository {
 			_buildQueryBuilder(
 				null, null, Collections.singletonList(ownerId), ownerType, null,
 				null));
+	}
+
+	@Override
+	public long countInterestDistributions(
+		@Nullable String keyword, @Nullable List<Long> ownerIds,
+		@Nullable String ownerType, @Nullable Date recordedDate,
+		@Nullable Double score) {
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			_getCollectionName(),
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.cardinality(
+						"uniqueInterests"
+					).field(
+						"name"
+					).precisionThreshold(
+						40000
+					));
+				searchSourceBuilder.query(
+					_buildQueryBuilder(
+						null, keyword, ownerIds, ownerType, recordedDate,
+						score));
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (_isEmpty(aggregations)) {
+			return 0;
+		}
+
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		InternalCardinality internalCardinality =
+			(InternalCardinality)aggregationList.get(0);
+
+		return internalCardinality.getValue();
 	}
 
 	@Override

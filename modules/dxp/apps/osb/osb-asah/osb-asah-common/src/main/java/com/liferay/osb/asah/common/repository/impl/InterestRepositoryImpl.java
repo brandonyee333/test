@@ -73,6 +73,38 @@ public class InterestRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public long countInterestDistributions(
+		String keyword, List<Long> ownerIds, String ownerType,
+		Date recordedDate, Double score) {
+
+		SelectSelectStep<Record1<Integer>> selectCount =
+			_dslContext.selectCount();
+
+		SelectSelectStep<Record2<Integer, Object>> selectSelectStep =
+			_dslContext.select(
+				DSL.count(
+				).as(
+					"count"
+				),
+				DSL.field("name"));
+
+		return selectCount.from(
+			selectSelectStep.from(
+				"Interest"
+			).where(
+				_getConditions(
+					null, null, keyword, ownerIds, ownerType, recordedDate,
+					score)
+			).groupBy(
+				DSL.field("name")
+			)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public List<Interest> findByFilterStringAndScoreGreaterThanEqual(
 		@Nullable FilterHelper filterHelper, @Nullable Double score,
 		Pageable pageable) {

@@ -41,6 +41,10 @@ public interface InterestRepository
 
 	public long countByOwnerIdAndOwnerType(Long ownerId, String ownerType);
 
+	public long countInterestDistributions(
+		String keyword, List<Long> ownerIds, String ownerType,
+		Date recordedDate, Double score);
+
 	@Modifying
 	public void deleteByNameAndRecordedDateGreaterThanEqual(
 		@Param("name") String name, @Param("recordedDate") Date recordedDate);
