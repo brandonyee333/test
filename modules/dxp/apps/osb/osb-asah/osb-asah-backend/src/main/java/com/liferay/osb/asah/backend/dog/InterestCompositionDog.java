@@ -125,15 +125,15 @@ public class InterestCompositionDog {
 			keyword, individualIds, "individual", recordedDate, score);
 
 		if (_calculateMaxCount(sort, start)) {
-			List<Distribution> distributions =
+			List<Distribution> distributionsList =
 				_interestRepository.getInterestDistributions(
 					keyword, individualIds, "individual", recordedDate, score,
 					PageRequest.of(0, 1, Sort.desc("count")));
 
-			Distribution distributions = distributions.get(0);
+			Distribution distribution = distributionsList.get(0);
 
 			return new CompositionResultBag(
-				distributions.getCount(), compositions, count,
+				distribution.getCount(), compositions, count,
 				individualIds.size());
 		}
 
