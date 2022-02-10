@@ -18,7 +18,7 @@ import {putDeactivateKeys} from '../../../../../common/services/liferay/rest/ray
 import {ALERT_DOWNLOAD_TYPE, STATUS_CODE} from '../../../utils/constants';
 import DeactivateKeysModal from './Modal';
 
-const DeactivateButton = ({selectedKeys, sessionId}) => {
+const DeactivateButton = ({selectedKeys, sessionId, setActivationKeys}) => {
 	const {licenseKeyDownloadURL} = useApplicationProvider();
 	const [deactivateKeysStatus, setDeactivateKeysStatus] = useState('');
 	const [isDeactivating, setIsDeactivating] = useState(false);
@@ -45,6 +45,11 @@ const DeactivateButton = ({selectedKeys, sessionId}) => {
 		if (response.status === STATUS_CODE.sucess) {
 			setIsDeactivating(false);
 			setIsVisibleModal(false);
+			setActivationKeys((previousActivationKeys) =>
+				previousActivationKeys.filter(
+					(activationKeys) => !selectedKeys.includes(activationKeys)
+				)
+			);
 
 			return setDeactivateKeysStatus(ALERT_DOWNLOAD_TYPE.success);
 		}
