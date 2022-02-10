@@ -2505,10 +2505,10 @@ AUI.add(
 
 						if (scrollTop === 0) {
 							start -= delta;
+							end = cache.start;
 
 							if (start < 0) {
 								start = 0;
-								end = cache.start;
 							}
 
 							if (end > start) {
@@ -2544,7 +2544,7 @@ AUI.add(
 
 							if (
 								!showAll &&
-								start <= cache.total &&
+								start < cache.total &&
 								start != cache.oldStart
 							) {
 								cache.oldStart = start;
