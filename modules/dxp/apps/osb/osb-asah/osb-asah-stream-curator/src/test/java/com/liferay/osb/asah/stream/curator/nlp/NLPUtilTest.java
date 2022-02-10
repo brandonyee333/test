@@ -40,10 +40,22 @@ public class NLPUtilTest {
 		Assertions.assertEquals(
 			new HashSet<String>() {
 				{
+					add("Felix Gogo Shell");
+					add("Knowledge");
+					add("Liferay");
+					add("reference");
+				}
+			},
+			NLPUtil.getKeywords(
+				"Felix Gogo Shell - reference - Knowledge | \"Liferay\""));
+
+		Assertions.assertEquals(
+			new HashSet<String>() {
+				{
 					add("EE");
+					add("Enterprise Edition");
 					add("License");
-					add("Liferay Portal Enterprise Edition");
-					add("Liferay Portal Enterprise Edition License");
+					add("Liferay Portal");
 				}
 			},
 			NLPUtil.getKeywords(

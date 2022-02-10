@@ -228,7 +228,9 @@ public class ActivitiesNaniteTest
 		Arrays.sort(keywords);
 
 		Assertions.assertArrayEquals(
-			new String[] {"felix gogo shell", "knowledge", "reference"},
+			new String[] {
+				"felix gogo shell", "knowledge", "liferay", "reference"
+			},
 			keywords);
 	}
 
