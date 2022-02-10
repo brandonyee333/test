@@ -42,7 +42,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -166,6 +169,13 @@ public class NLPUtil {
 				}
 
 				constituentLabeledWords = _removeParentheticals(
+					constituentLabeledWords);
+
+				if (constituentLabeledWords.isEmpty()) {
+					continue;
+				}
+
+				constituentLabeledWords = _removeQuotes(
 					constituentLabeledWords);
 
 				if (constituentLabeledWords.isEmpty()) {
@@ -348,6 +358,18 @@ public class NLPUtil {
 		}
 
 		return labeledWords;
+	}
+
+	private List<LabeledWord> _removeQuotes(List<LabeledWord> labeledWords) {
+		Stream<LabeledWord> stream = labeledWords.stream();
+
+		return stream.filter(
+			labeledWord ->
+				!StringUtils.equals(labeledWord.value(), "'") &&
+				!StringUtils.equals(labeledWord.value(), "\"")
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private static final Log _log = LogFactory.getLog(NLPUtil.class);
