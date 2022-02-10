@@ -103,6 +103,8 @@ public class PortalImplEscapeRedirectTest {
 
 			Assert.assertNull(_portalImpl.escapeRedirect("//www.google.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect("//www.google.com/"));
+			Assert.assertNull(
+				_portalImpl.escapeRedirect("//www.google.com//www.google.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect("https:google.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect(":@liferay.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect("http:/web"));
@@ -210,6 +212,9 @@ public class PortalImplEscapeRedirectTest {
 			"user/test/~/control_panel/manage/-/select/image,url/",
 			_portalImpl.escapeRedirect(
 				"user/test/~/control_panel/manage/-/select/image,url/"));
+		Assert.assertEquals("?param1=abc", "?param1=abc");
+		Assert.assertEquals("#abc", "#abc");
+		Assert.assertEquals("", "");
 
 		// Relative path with protocol
 
