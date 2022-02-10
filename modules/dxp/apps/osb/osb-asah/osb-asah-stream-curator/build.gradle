@@ -18,12 +18,12 @@ configurations.all {
 File langDetectProfileDir = file("src/main/resources/com/liferay/osb/asah/stream/curator/nlp/profile")
 
 dependencies {
-	compile classifier: "models", group: "edu.stanford.nlp", name: "stanford-corenlp", version: "3.9.2"
+	compile classifier: "models", group: "edu.stanford.nlp", name: "stanford-corenlp", version: "4.4.0"
 	compile group: "com.cybozu.labs", name: "langdetect", version: "1.1-20120112"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jdk8", version: "2.9.8"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-json-org", version: "2.9.8"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jsr310", version: "2.9.8"
-	compile group: "edu.stanford.nlp", name: "stanford-corenlp", version: "3.9.2"
+	compile group: "edu.stanford.nlp", name: "stanford-corenlp", version: "4.4.0"
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
 
 	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
