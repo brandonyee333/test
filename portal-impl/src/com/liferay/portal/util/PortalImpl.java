@@ -940,16 +940,10 @@ public class PortalImpl implements Portal {
 			return null;
 		}
 
-		String decodedURL = HttpUtil.decodeURL(url);
+		if (!uri.isAbsolute()) {
 
-		String domain = uri.getHost();
-		String path = uri.getPath();
-
-		if ((domain == null) && (path != null) &&
-			!path.equals(StringPool.BLANK) &&
-			decodedURL.startsWith(HttpUtil.decodeURL(path))) {
-
-			// Relative URL
+			// !uri.isAbsolute() ==
+			// https://datatracker.ietf.org/doc/html/rfc3986#section-4.2
 
 			return url;
 		}
@@ -962,6 +956,8 @@ public class PortalImpl implements Portal {
 
 			return null;
 		}
+
+		String domain = uri.getHost();
 
 		if (Validator.isNull(domain)) {
 
