@@ -442,7 +442,7 @@ public class StreamingIngestionPipeline {
 			tableRow.set("eventDate", analyticsEvent.eventDate);
 			tableRow.set("id", analyticsEvent.id);
 			tableRow.set("name", entry.getKey());
-			tableRow.set("projectId", analyticsEvent.channelId);
+			tableRow.set("projectId", analyticsEvent.projectId);
 			tableRow.set("value", entry.getValue());
 
 			processContext.output(tableRow);
