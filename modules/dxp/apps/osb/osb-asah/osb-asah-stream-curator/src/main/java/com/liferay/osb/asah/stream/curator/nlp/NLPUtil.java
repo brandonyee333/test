@@ -313,7 +313,7 @@ public class NLPUtil {
 		int leftParenthesisIndex = -1;
 		int rightParenthesisIndex = -1;
 
-		for (int i = labeledWords.size() - 1; i > 0; i--) {
+		for (int i = labeledWords.size() - 1; i >= 0; i--) {
 			LabeledWord labeledWord = labeledWords.get(i);
 
 			Label label = labeledWord.tag();
@@ -335,7 +335,7 @@ public class NLPUtil {
 
 				List<LabeledWord> beforeRightParenthesisLabeledWords =
 					labeledWords.subList(
-						rightParenthesisIndex + 1, labeledWords.size());
+						leftParenthesisIndex + 1, rightParenthesisIndex);
 
 				beforeLeftParenthesisLabeledWords.addAll(
 					beforeRightParenthesisLabeledWords);
