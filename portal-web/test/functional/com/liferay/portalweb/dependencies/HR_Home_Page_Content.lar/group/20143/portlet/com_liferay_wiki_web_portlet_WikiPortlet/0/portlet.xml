@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-
-<portlet old-plid="0" portlet-id="com_liferay_wiki_web_portlet_WikiPortlet" private-layout="false" root-portlet-id="com_liferay_wiki_web_portlet_WikiPortlet" scope-group-id="20143" scope-layout-type="" scope-layout-uuid="">
-	<portlet-data path="/group/20143/portlet/com_liferay_wiki_web_portlet_WikiPortlet/0/portlet-data.xml" />
-</portlet>

@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-
-<expando-tables>
-	<expando-table class-name="com.liferay.message.boards.kernel.model.MBCategory" />
-	<expando-table class-name="com.liferay.message.boards.kernel.model.MBThreadFlag" />
-	<expando-table class-name="com.liferay.message.boards.kernel.model.MBMessage" />
-</expando-tables>

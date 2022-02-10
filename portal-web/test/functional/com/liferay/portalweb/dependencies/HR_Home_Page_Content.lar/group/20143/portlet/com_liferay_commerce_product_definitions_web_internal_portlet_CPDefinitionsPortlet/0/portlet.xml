@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-<portlet old-plid="0" portlet-id="com_liferay_commerce_product_definitions_web_internal_portlet_CPDefinitionsPortlet" private-layout="false" root-portlet-id="com_liferay_commerce_product_definitions_web_internal_portlet_CPDefinitionsPortlet" scope-group-id="20143" scope-layout-type="" scope-layout-uuid="">
-	<portlet-data path="/group/20143/portlet/com_liferay_commerce_product_definitions_web_internal_portlet_CPDefinitionsPortlet/20143/portlet-data.xml" />
-	<portlet-preferences path="/group/20143/portlet/com_liferay_commerce_product_definitions_web_internal_portlet_CPDefinitionsPortlet/preferences/layout/0/0/portlet-preferences.xml">
-		<preference-data/>
-	</portlet-preferences>
-</portlet>
