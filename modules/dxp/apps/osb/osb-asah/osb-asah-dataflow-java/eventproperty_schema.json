@@ -1,26 +1,26 @@
 [
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "channelId",
 		"type": "NUMERIC"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "eventDate",
 		"type": "TIMESTAMP"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "id",
 		"type": "STRING"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "name",
 		"type": "STRING"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "projectId",
 		"type": "STRING"
 	},

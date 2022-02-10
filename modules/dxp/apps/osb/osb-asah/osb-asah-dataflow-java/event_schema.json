@@ -1,6 +1,6 @@
 [
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "applicationId",
 		"type": "STRING"
 	},
@@ -15,7 +15,7 @@
 		"type": "STRING"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "channelId",
 		"type": "NUMERIC"
 	},
@@ -40,12 +40,12 @@
 		"type": "STRING"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "createDate",
 		"type": "TIMESTAMP"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "dataSourceId",
 		"type": "NUMERIC"
 	},
@@ -60,12 +60,12 @@
 		"type": "STRING"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "eventDate",
 		"type": "TIMESTAMP"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "eventId",
 		"type": "STRING"
 	},
@@ -80,7 +80,7 @@
 		"type": "STRING"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "id",
 		"type": "STRING"
 	},
@@ -110,7 +110,7 @@
 		"type": "STRING"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "projectId",
 		"type": "STRING"
 	},
@@ -130,7 +130,7 @@
 		"type": "STRING"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "sessionId",
 		"type": "STRING"
 	},
@@ -155,7 +155,7 @@
 		"type": "STRING"
 	},
 	{
-		"mode": "NULLABLE",
+		"mode": "REQUIRED",
 		"name": "userId",
 		"type": "STRING"
 	},
