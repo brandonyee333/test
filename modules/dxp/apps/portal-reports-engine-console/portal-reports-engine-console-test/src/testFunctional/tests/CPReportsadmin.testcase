@@ -394,8 +394,9 @@ definition {
 			reportsFileName = "reports_admin_template_source_sample_class_name.pdf",
 			userName = "Test Test");
 
+		takeScreenshot();
+
 		ReportsAdmin.downloadReportEntryFile(
-			reportFormat = "pdf",
 			reportsFileName = "reports_admin_template_source_sample_class_name.pdf");
 	}
 

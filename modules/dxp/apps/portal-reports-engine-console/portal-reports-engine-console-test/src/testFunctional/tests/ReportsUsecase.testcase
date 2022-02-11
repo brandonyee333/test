@@ -87,7 +87,6 @@ definition {
 		ReportsDisplayPortlet.viewReportEntry(reportsDefinitionName = "Reports Definition Name");
 
 		ReportsDisplayPortlet.downloadReportEntryFile(
-			reportFormat = "pdf",
 			reportsFileName = "reports_admin_template_source_sample_class_name.pdf");
 	}
 
