@@ -4399,6 +4399,21 @@ AUI.add(
 					}
 				},
 
+				destroy() {
+					var instance = this;
+
+					Liferay.detach('submitForm', this._onLiferaySubmitForm);
+
+					Liferay.destroyComponents((component, componentConfig) => {
+						return (
+							Liferay.PortletKeys.DYNAMIC_DATA_MAPPING ===
+							componentConfig.portletId
+						);
+					});
+
+					instance.destructor();
+				},
+
 				destructor() {
 					var instance = this;
 
