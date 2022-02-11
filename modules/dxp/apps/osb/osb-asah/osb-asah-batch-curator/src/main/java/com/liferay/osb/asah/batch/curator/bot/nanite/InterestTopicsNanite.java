@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.InterestTopic;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -122,12 +124,24 @@ public class InterestTopicsNanite extends BaseNanite {
 		for (int i = 0; i < _ldaTopicsCount; i++) {
 			TreeSet<IDSorter> idSorters = sortedWords.get(i);
 
+			int[] tokensPerTopic = parallelTopicModel.getTokensPerTopic();
+
+			if (!idSorters.isEmpty() && ArrayUtils.isNotEmpty(tokensPerTopic) &&
+				(tokensPerTopic.length > i) && (tokensPerTopic[i] <= 0)) {
+
+				getLog().warn(
+					String.format(
+						"Topic terms length should not be 0.\n" +
+							"sortedWords index (0 based): %d\n" +
+								"sortedWords size: %d\nidSorters: %s",
+						i, sortedWords.size(), JSONUtil.put(idSorters)));
+			}
+
 			for (IDSorter idSorter : idSorters) {
 				interestTopics.add(
 					_createInterestTopic(
 						parallelTopicModel.getAlphabet(), idSorter,
-						parallelTopicModel.getTokensPerTopic()[i], i,
-						parallelTopicModel.alpha[i]));
+						tokensPerTopic[i], i, parallelTopicModel.alpha[i]));
 			}
 		}
 
