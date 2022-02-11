@@ -1,0 +1,7 @@
+Bundle-Name: Liferay OSB Customer OKTA Web Service API
+Bundle-SymbolicName: com.liferay.osb.customer.okta.web.service.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.customer.okta.web.service,\
+	com.liferay.osb.customer.okta.web.service.constants
+-dsannotations-options: inherit

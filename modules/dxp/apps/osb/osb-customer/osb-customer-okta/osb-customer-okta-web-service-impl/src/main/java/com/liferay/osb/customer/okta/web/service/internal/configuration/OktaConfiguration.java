@@ -12,29 +12,29 @@
  *
  */
 
-package com.liferay.osb.customer.admin.internal.configuration;
+package com.liferay.osb.customer.okta.web.service.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
- * @author Kyle Bischof
+ * @author Jenny Chen
  */
 @ExtendedObjectClassDefinition(category = "other")
 @Meta.OCD(
-	id = "com.liferay.osb.customer.admin.internal.configuration.LoginPostActionConfiguration",
-	localization = "content/Language", name = "login-post-action-name"
+	id = "com.liferay.osb.customer.okta.web.service.internal.configuration.OktaConfiguration",
+	localization = "content/Language", name = "okta-name"
 )
-public interface LoginPostActionConfiguration {
+public interface OktaConfiguration {
 
-	@Meta.AD(deflt = "true", name = "sync-koroneiki", required = false)
-	public boolean syncKoroneiki();
+	@Meta.AD(
+		deflt = "liferay-sandbox.oktapreview.com", name = "host",
+		required = false
+	)
+	public String host();
 
-	@Meta.AD(deflt = "true", name = "sync-okta-user", required = false)
-	public boolean syncOktaUser();
-
-	@Meta.AD(deflt = "true", name = "sync-web-user", required = false)
-	public boolean syncWebUser();
+	@Meta.AD(deflt = "test", name = "api-token", required = false)
+	public String apiToken();
 
 }

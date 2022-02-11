@@ -1,0 +1,29 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.customer.okta.web.service;
+
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
+
+/**
+ * @author Jenny Chen
+ */
+public interface OktaWebService {
+
+	public JSONObject getUser(String emailAddress) throws Exception;
+
+	public JSONArray getUserGroups(String oktaUserId) throws Exception;
+
+}

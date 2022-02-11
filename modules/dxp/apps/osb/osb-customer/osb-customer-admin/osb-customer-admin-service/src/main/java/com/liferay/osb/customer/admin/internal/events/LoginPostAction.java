@@ -19,7 +19,6 @@ import com.liferay.osb.customer.admin.internal.configuration.LoginPostActionConf
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
-import com.liferay.osb.customer.legacy.web.service.LegacyWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -29,10 +28,8 @@ import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
-import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -72,7 +69,7 @@ public class LoginPostAction extends Action {
 				synchronizeWithKoroneiki(user);
 			}
 
-			synchronizeWithWeb(user);
+			synchronizeWithOkta(user);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -139,28 +136,23 @@ public class LoginPostAction extends Action {
 
 				_userLocalService.addOrganizationUser(
 					organization.getOrganizationId(), user.getUserId());
-
-				_userIdentityProvider.addOrganizationMembership(
-					organization.getOrganizationId(), user.getUserId());
 			}
 		}
 
 		for (Long organizationId : entitlementsMap.values()) {
 			_userLocalService.unsetOrganizationUsers(
 				organizationId, new long[] {user.getUserId()});
-
-			_userIdentityProvider.removeOrganizationMembership(
-				organizationId, user.getUserId());
 		}
 	}
 
-	protected void synchronizeWithWeb(User user) throws Exception {
+	protected void synchronizeWithOkta(User user) throws Exception {
 
 		// User
 
-		User remoteUser = _legacyWebService.getUser(user.getUuid());
+		User oktaUser = _userIdentityProvider.getUserByEmailAddress(
+			user.getEmailAddress());
 
-		if (_loginPostActionConfiguration.syncWebUser()) {
+		if (_loginPostActionConfiguration.syncOktaUser()) {
 			com.liferay.portal.kernel.model.Contact contact = user.getContact();
 
 			Calendar calendar = Calendar.getInstance();
@@ -169,36 +161,27 @@ public class LoginPostAction extends Action {
 
 			_userLocalService.updateUser(
 				user.getUserId(), null, null, null, false, null, null,
-				remoteUser.getScreenName(), remoteUser.getEmailAddress(),
+				oktaUser.getScreenName(), oktaUser.getEmailAddress(),
 				user.getFacebookId(), user.getOpenId(), true, null,
-				remoteUser.getLanguageId(), remoteUser.getTimeZoneId(),
-				user.getGreeting(), user.getComments(),
-				remoteUser.getFirstName(), remoteUser.getMiddleName(),
-				remoteUser.getLastName(), contact.getPrefixId(),
-				contact.getSuffixId(), contact.isMale(),
+				oktaUser.getLanguageId(), oktaUser.getTimeZoneId(),
+				user.getGreeting(), user.getComments(), oktaUser.getFirstName(),
+				oktaUser.getMiddleName(), oktaUser.getLastName(),
+				contact.getPrefixId(), contact.getSuffixId(), contact.isMale(),
 				calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
 				calendar.get(Calendar.YEAR), contact.getSmsSn(),
 				contact.getFacebookSn(), contact.getJabberSn(),
 				contact.getSkypeSn(), contact.getTwitterSn(),
-				remoteUser.getJobTitle(), null, null, null, null, null, null);
+				oktaUser.getJobTitle(), null, null, null, null, null, null);
 		}
-
-		// Expandos
-
-		ExpandoBridge expandoBridge = user.getExpandoBridge();
-
-		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
-
-		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
 		// Organizations
 
-		long[] webOrganizationIds = remoteUser.getOrganizationIds();
+		long[] oktaOrganizationIds = oktaUser.getOrganizationIds();
 
 		long[] curOrganizationIds = user.getOrganizationIds();
 
 		for (long curOrganizationId : curOrganizationIds) {
-			if (ArrayUtil.contains(webOrganizationIds, curOrganizationId)) {
+			if (ArrayUtil.contains(oktaOrganizationIds, curOrganizationId)) {
 				continue;
 			}
 
@@ -217,70 +200,29 @@ public class LoginPostAction extends Action {
 
 			String name = organization.getName();
 
-			if (name.startsWith(
+			if (!name.startsWith(
 					EntitlementConstants.ORGANIZATION_NAME_PREFIX)) {
 
-				_userIdentityProvider.addOrganizationMembership(
-					organization.getOrganizationId(), user.getUserId());
-			}
-			else {
 				_userLocalService.unsetOrganizationUsers(
 					curOrganizationId, new long[] {user.getUserId()});
 			}
 		}
 
-		for (long webOrganizationId : webOrganizationIds) {
-			if (ArrayUtil.contains(curOrganizationIds, webOrganizationId)) {
+		for (long oktaOrganizationId : oktaOrganizationIds) {
+			if (ArrayUtil.contains(curOrganizationIds, oktaOrganizationId)) {
 				continue;
 			}
 
 			Organization organization =
-				_organizationLocalService.getOrganization(webOrganizationId);
+				_organizationLocalService.getOrganization(oktaOrganizationId);
 
 			String name = organization.getName();
 
-			if (name.startsWith(
+			if (!name.startsWith(
 					EntitlementConstants.ORGANIZATION_NAME_PREFIX)) {
 
-				_userIdentityProvider.removeOrganizationMembership(
-					webOrganizationId, user.getUserId());
-			}
-			else {
 				_userLocalService.addOrganizationUsers(
-					webOrganizationId, new long[] {user.getUserId()});
-			}
-		}
-
-		// Roles
-
-		long[] newRoleIds = remoteUser.getRoleIds();
-
-		long[] oldRoleIds = user.getRoleIds();
-
-		for (long oldRoleId : oldRoleIds) {
-			if (ArrayUtil.contains(newRoleIds, oldRoleId)) {
-				continue;
-			}
-
-			Role role = _roleLocalService.getRole(oldRoleId);
-
-			ExpandoBridge roleExpandoBridge = role.getExpandoBridge();
-
-			boolean remote = (Boolean)roleExpandoBridge.getAttribute(
-				"remote", false);
-
-			if (!remote) {
-				continue;
-			}
-
-			_userLocalService.unsetRoleUsers(
-				oldRoleId, new long[] {user.getUserId()});
-		}
-
-		for (long newRoleId : newRoleIds) {
-			if (!ArrayUtil.contains(oldRoleIds, newRoleId)) {
-				_userLocalService.addRoleUsers(
-					newRoleId, new long[] {user.getUserId()});
+					oktaOrganizationId, new long[] {user.getUserId()});
 			}
 		}
 	}
@@ -291,9 +233,6 @@ public class LoginPostAction extends Action {
 	@Reference
 	private ContactWebService _contactWebService;
 
-	@Reference
-	private LegacyWebService _legacyWebService;
-
 	private volatile LoginPostActionConfiguration _loginPostActionConfiguration;
 
 	@Reference
@@ -302,10 +241,7 @@ public class LoginPostAction extends Action {
 	@Reference
 	private Portal _portal;
 
-	@Reference
-	private RoleLocalService _roleLocalService;
-
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
