@@ -100,6 +100,10 @@ public class InterestTopicsNanite extends BaseNanite {
 		interestTopic.setTerm(valueParts[0]);
 		interestTopic.setTermType(valueParts[1]);
 
+		if (topicTermsLength <= 0) {
+			topicTermsLength = 1;
+		}
+
 		interestTopic.setTermWeight(idSorter.getWeight() / topicTermsLength);
 		interestTopic.setTopic(topic);
 		interestTopic.setTopicWeight(topicWeight);
