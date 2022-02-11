@@ -62,7 +62,9 @@ definition {
 			groupName = "${groupName}",
 			site = "${site}");
 
-		var contentXML = JSONWebcontentSetter.setContentXML(content = "${content}");
+		var contentXML = JSONWebcontentSetter.setContentXML(
+			content = "${content}",
+			source = "${source}");
 
 		var descriptionMap = JSONWebcontentSetter.setDescriptionMap(description = "${description}");
 
@@ -84,7 +86,9 @@ definition {
 			folderId = "${folderId}",
 			groupId = "${groupId}",
 			serviceContext = "${serviceContext}",
-			titleMap = "${titleMap}");
+			titleMap = "${titleMap}",
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}");
 	}
 
 	@summary = "Delete a WC Article under an existing site via article title"
