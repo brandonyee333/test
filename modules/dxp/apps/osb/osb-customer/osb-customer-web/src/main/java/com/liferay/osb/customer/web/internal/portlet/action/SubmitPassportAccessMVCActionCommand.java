@@ -135,10 +135,6 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 	protected boolean hasPermission(User user, String endUserEmailAddress)
 		throws Exception {
 
-		if (!isVerifiedUser(user.getUserId())) {
-			return false;
-		}
-
 		if (isLiferayEmployee(user.getUserId())) {
 			return true;
 		}
@@ -259,16 +255,6 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 	protected boolean isLiferayEmployee(long userId) throws PortalException {
 		if (_organizationLocalService.hasUserOrganization(
 				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	protected boolean isVerifiedUser(long userId) throws PortalException {
-		if (_roleLocalService.hasUserRole(
-				userId, OSBCustomerConstants.ROLE_VERIFIED_USER_ID)) {
 
 			return true;
 		}

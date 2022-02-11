@@ -85,8 +85,6 @@ public class OSBCustomerConstants {
 
 	public static final long ROLE_TRIAL_ID = 214323;
 
-	public static final long ROLE_VERIFIED_USER_ID = 1546579;
-
 	public static final String TEMP_DIR = "osb/temp/";
 
 	public static final long USER_DEFAULT_USER_ID = 10161;

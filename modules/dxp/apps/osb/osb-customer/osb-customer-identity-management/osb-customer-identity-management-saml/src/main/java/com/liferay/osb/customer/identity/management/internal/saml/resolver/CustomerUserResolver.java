@@ -122,9 +122,6 @@ public class CustomerUserResolver implements UserResolver {
 			StringPool.BLANK, lastName, 0, 0, true, Calendar.JANUARY, 1, 1970,
 			StringPool.BLANK, null, null, null, null, false, serviceContext);
 
-		user = userLocalService.updateEmailAddressVerified(
-			user.getUserId(), true);
-
 		user = userLocalService.updatePasswordReset(user.getUserId(), false);
 
 		Date modifiedDate = getValueAsDate("modifiedDate", attributesMap, null);
@@ -386,9 +383,6 @@ public class CustomerUserResolver implements UserResolver {
 
 			user = userLocalService.updateEmailAddress(
 				user.getUserId(), StringPool.BLANK, emailAddress, emailAddress);
-
-			user = userLocalService.updateEmailAddressVerified(
-				user.getUserId(), true);
 		}
 
 		if (!Objects.equals(user.getFirstName(), firstName) ||
