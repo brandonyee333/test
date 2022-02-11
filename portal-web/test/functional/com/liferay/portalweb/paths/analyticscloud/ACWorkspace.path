@@ -13,7 +13,7 @@
 <!-- WORKSPACE LIST SCREEN FIELDS -->
 <tr>
 	<td>USER_MENU_OPTION</td>
-	<td>//div[contains(@class,'sticker-circle')]</td>
+	<td>//*[contains(@class,'sticker-circle')]</td>
 	<td></td>
 </tr>
 <tr>
