@@ -379,8 +379,7 @@ definition {
 
 		CalendarNavigator.gotoPreviousDay();
 
-		CalendarEvent.addViaDayView(
-			eventTitle = "Calendar Event Title1");
+		CalendarEvent.addViaDayView(eventTitle = "Calendar Event Title1");
 
 		Alert.viewSuccessMessage();
 

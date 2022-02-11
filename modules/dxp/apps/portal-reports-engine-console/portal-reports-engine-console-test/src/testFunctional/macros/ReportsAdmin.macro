@@ -257,7 +257,6 @@ definition {
 			value1 = "Download");
 
 		Pause(locator1 = "2000");
-
 	}
 
 	macro gotoConfiguration {

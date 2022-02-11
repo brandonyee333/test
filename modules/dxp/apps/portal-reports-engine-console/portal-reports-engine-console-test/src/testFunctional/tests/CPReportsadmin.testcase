@@ -396,8 +396,7 @@ definition {
 
 		takeScreenshot();
 
-		ReportsAdmin.downloadReportEntryFile(
-			reportsFileName = "reports_admin_template_source_sample_class_name.pdf");
+		ReportsAdmin.downloadReportEntryFile(reportsFileName = "reports_admin_template_source_sample_class_name.pdf");
 	}
 
 	@priority = "4"

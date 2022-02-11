@@ -1005,8 +1005,6 @@ definition {
 		}
 
 		MouseOver.mouseOverNotVisible(locator1 = "Calendar#SCHEDULER_EVENT_GENERIC");
-
-		
 	}
 
 	macro saveEventUserInvite {
