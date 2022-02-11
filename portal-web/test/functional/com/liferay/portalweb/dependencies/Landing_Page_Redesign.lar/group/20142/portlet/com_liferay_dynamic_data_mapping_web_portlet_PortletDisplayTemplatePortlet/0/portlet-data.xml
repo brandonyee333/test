@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<PortletDisplayTemplatePortletDataHandler>
+	<DDMTemplate>
+		<staged-model group-id="20142" uuid="2bd5b282-c1cd-3112-faf7-28d7abed4547" resource-class-name="com.liferay.portlet.display.template.PortletDisplayTemplate" path="/group/20142/com.liferay.dynamic.data.mapping.model.DDMTemplate/31541.xml" attached-class-name="com.liferay.asset.kernel.model.AssetEntry"/>
+		<staged-model group-id="20142" uuid="336b88c3-9372-46dd-426e-d9c19070c4b9" resource-class-name="com.liferay.portlet.display.template.PortletDisplayTemplate" path="/group/20142/com.liferay.dynamic.data.mapping.model.DDMTemplate/31544.xml" attached-class-name="com.liferay.asset.kernel.model.AssetEntry"/>
+	</DDMTemplate>
+</PortletDisplayTemplatePortletDataHandler>

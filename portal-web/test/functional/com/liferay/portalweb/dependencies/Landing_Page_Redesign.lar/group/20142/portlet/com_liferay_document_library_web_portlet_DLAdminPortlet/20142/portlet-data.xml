@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<DLPortletDataHandler group-id="20142">
+	<DLFolder>
+		<staged-model group-id="20142" uuid="e1715027-b09a-2a6a-92c7-145d7dc1a07c" defaultFileEntryTypeUuid="" path="/group/20142/com.liferay.document.library.kernel.model.DLFolder/31386.xml"/>
+	</DLFolder>
+	<DLFileEntry>
+		<staged-model group-id="20142" uuid="6f8e66f6-0f62-a882-a397-15d2b2f90c5a" bin-path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31389/1.0" bin-path-thumbnail-default-image="/group/20142/portlet/com_liferay_document_library_web_portlet_DLPortlet/bin/31389/document_thumbnail/1.0/0" path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31389.xml">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="31386" group-id="20142" live-group-id="20142" type="parent" uuid="e1715027-b09a-2a6a-92c7-145d7dc1a07c" company-id="20115" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20142" uuid="e47169d3-5798-31fd-b59b-8ac7623537dd" bin-path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31393/1.0" bin-path-thumbnail-default-image="/group/20142/portlet/com_liferay_document_library_web_portlet_DLPortlet/bin/31393/document_thumbnail/1.0/0" path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31393.xml">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="31386" group-id="20142" live-group-id="20142" type="parent" uuid="e1715027-b09a-2a6a-92c7-145d7dc1a07c" company-id="20115" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20142" uuid="0b5fdddc-3df4-e1bd-badf-ec8b9d73c96a" bin-path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31397/1.0" bin-path-thumbnail-default-image="/group/20142/portlet/com_liferay_document_library_web_portlet_DLPortlet/bin/31397/document_thumbnail/1.0/0" path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31397.xml">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="31386" group-id="20142" live-group-id="20142" type="parent" uuid="e1715027-b09a-2a6a-92c7-145d7dc1a07c" company-id="20115" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20142" uuid="52b5ee0c-3234-3a7b-bff1-f258ef2f8a55" bin-path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31401/1.0" bin-path-thumbnail-default-image="/group/20142/portlet/com_liferay_document_library_web_portlet_DLPortlet/bin/31401/document_thumbnail/1.0/0" path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31401.xml">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="31386" group-id="20142" live-group-id="20142" type="parent" uuid="e1715027-b09a-2a6a-92c7-145d7dc1a07c" company-id="20115" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="20142" uuid="e20906cc-6632-5748-5652-cc2e4f334d16" bin-path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31405/1.0" bin-path-thumbnail-default-image="/group/20142/portlet/com_liferay_document_library_web_portlet_DLPortlet/bin/31405/document_thumbnail/1.0/0" path="/group/20142/com.liferay.document.library.kernel.model.DLFileEntry/31405.xml">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="31386" group-id="20142" live-group-id="20142" type="parent" uuid="e1715027-b09a-2a6a-92c7-145d7dc1a07c" company-id="20115" missing="false"/>
+			</references>
+		</staged-model>
+	</DLFileEntry>
+</DLPortletDataHandler>

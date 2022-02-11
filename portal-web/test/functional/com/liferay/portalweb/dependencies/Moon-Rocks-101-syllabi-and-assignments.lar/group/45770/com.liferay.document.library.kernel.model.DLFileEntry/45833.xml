@@ -1,0 +1,110 @@
+<com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry>
+  <__dlFileEntry class="DLFileEntry">
+    <__cachedModel>true</__cachedModel>
+    <__new>false</__new>
+    <__uuid>697dfba9-8fef-6b83-3f4b-2b7ff63d042a</__uuid>
+    <__originalUuid>697dfba9-8fef-6b83-3f4b-2b7ff63d042a</__originalUuid>
+    <__fileEntryId>45833</__fileEntryId>
+    <__groupId>45770</__groupId>
+    <__originalGroupId>45770</__originalGroupId>
+    <__setOriginalGroupId>false</__setOriginalGroupId>
+    <__companyId>20116</__companyId>
+    <__originalCompanyId>20116</__originalCompanyId>
+    <__setOriginalCompanyId>false</__setOriginalCompanyId>
+    <__userId>30520</__userId>
+    <__originalUserId>30520</__originalUserId>
+    <__setOriginalUserId>false</__setOriginalUserId>
+    <__userName>Space Admin</__userName>
+    <__createDate>2016-11-29 14:45:54.987 UTC</__createDate>
+    <__modifiedDate>2016-11-29 14:45:54.987 UTC</__modifiedDate>
+    <__setModifiedDate>false</__setModifiedDate>
+    <__classNameId>0</__classNameId>
+    <__classPK>0</__classPK>
+    <__repositoryId>45770</__repositoryId>
+    <__originalRepositoryId>45770</__originalRepositoryId>
+    <__setOriginalRepositoryId>false</__setOriginalRepositoryId>
+    <__folderId>45823</__folderId>
+    <__originalFolderId>45823</__originalFolderId>
+    <__setOriginalFolderId>false</__setOriginalFolderId>
+    <__treePath>/45817/45820/45823/</__treePath>
+    <__name>1515</__name>
+    <__originalName>1515</__originalName>
+    <__fileName>owain-unit-1-assignment.pdf</__fileName>
+    <__originalFileName>owain-unit-1-assignment.pdf</__originalFileName>
+    <__extension>pdf</__extension>
+    <__mimeType>application/pdf</__mimeType>
+    <__originalMimeType>application/pdf</__originalMimeType>
+    <__title>owain-unit-1-assignment.pdf</__title>
+    <__originalTitle>owain-unit-1-assignment.pdf</__originalTitle>
+    <__description></__description>
+    <__extraSettings></__extraSettings>
+    <__fileEntryTypeId>0</__fileEntryTypeId>
+    <__originalFileEntryTypeId>0</__originalFileEntryTypeId>
+    <__setOriginalFileEntryTypeId>false</__setOriginalFileEntryTypeId>
+    <__version>1.0</__version>
+    <__size>66991</__size>
+    <__readCount>0</__readCount>
+    <__smallImageId>0</__smallImageId>
+    <__originalSmallImageId>0</__originalSmallImageId>
+    <__setOriginalSmallImageId>false</__setOriginalSmallImageId>
+    <__largeImageId>0</__largeImageId>
+    <__originalLargeImageId>0</__originalLargeImageId>
+    <__setOriginalLargeImageId>false</__setOriginalLargeImageId>
+    <__custom1ImageId>0</__custom1ImageId>
+    <__originalCustom1ImageId>0</__originalCustom1ImageId>
+    <__setOriginalCustom1ImageId>false</__setOriginalCustom1ImageId>
+    <__custom2ImageId>0</__custom2ImageId>
+    <__originalCustom2ImageId>0</__originalCustom2ImageId>
+    <__setOriginalCustom2ImageId>false</__setOriginalCustom2ImageId>
+    <__manualCheckInRequired>false</__manualCheckInRequired>
+    <__columnBitmask>0</__columnBitmask>
+  </__dlFileEntry>
+  <__dlFileVersion class="com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl">
+    <__cachedModel>true</__cachedModel>
+    <__new>false</__new>
+    <__uuid>a084ca63-e880-3ab1-fd25-163391fc081b</__uuid>
+    <__originalUuid>a084ca63-e880-3ab1-fd25-163391fc081b</__originalUuid>
+    <__fileVersionId>45834</__fileVersionId>
+    <__groupId>45770</__groupId>
+    <__originalGroupId>45770</__originalGroupId>
+    <__setOriginalGroupId>false</__setOriginalGroupId>
+    <__companyId>20116</__companyId>
+    <__originalCompanyId>20116</__originalCompanyId>
+    <__setOriginalCompanyId>false</__setOriginalCompanyId>
+    <__userId>30520</__userId>
+    <__userName>Space Admin</__userName>
+    <__createDate>2016-11-29 14:45:54.987 UTC</__createDate>
+    <__modifiedDate>2016-11-29 14:45:54.989 UTC</__modifiedDate>
+    <__setModifiedDate>false</__setModifiedDate>
+    <__repositoryId>45770</__repositoryId>
+    <__folderId>45823</__folderId>
+    <__originalFolderId>45823</__originalFolderId>
+    <__setOriginalFolderId>false</__setOriginalFolderId>
+    <__fileEntryId>45833</__fileEntryId>
+    <__originalFileEntryId>45833</__originalFileEntryId>
+    <__setOriginalFileEntryId>false</__setOriginalFileEntryId>
+    <__treePath>/45817/45820/45823/</__treePath>
+    <__fileName>owain-unit-1-assignment.pdf</__fileName>
+    <__extension>pdf</__extension>
+    <__mimeType>application/pdf</__mimeType>
+    <__originalMimeType>application/pdf</__originalMimeType>
+    <__title>owain-unit-1-assignment.pdf</__title>
+    <__originalTitle>owain-unit-1-assignment.pdf</__originalTitle>
+    <__description></__description>
+    <__changeLog></__changeLog>
+    <__extraSettings></__extraSettings>
+    <__fileEntryTypeId>0</__fileEntryTypeId>
+    <__version>1.0</__version>
+    <__originalVersion>1.0</__originalVersion>
+    <__size>66991</__size>
+    <__checksum></__checksum>
+    <__status>0</__status>
+    <__originalStatus>0</__originalStatus>
+    <__setOriginalStatus>false</__setOriginalStatus>
+    <__statusByUserId>30520</__statusByUserId>
+    <__statusByUserName>Space Admin</__statusByUserName>
+    <__statusDate>2017-01-05 20:10:56.834 UTC</__statusDate>
+    <__columnBitmask>0</__columnBitmask>
+  </__dlFileVersion>
+  <__escapedModel>false</__escapedModel>
+</com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry>

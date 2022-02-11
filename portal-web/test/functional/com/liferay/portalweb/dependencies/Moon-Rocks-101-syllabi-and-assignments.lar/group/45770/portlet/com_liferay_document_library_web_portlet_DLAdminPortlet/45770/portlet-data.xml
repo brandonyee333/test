@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<DLPortletDataHandler group-id="45770">
+	<DLFolder>
+		<staged-model group-id="45770" uuid="7a4df42a-0d4f-de31-e1af-cf1fda1b2b0b" defaultFileEntryTypeUuid="" path="/group/45770/com.liferay.document.library.kernel.model.DLFolder/45814.xml" asset-priority="0.0"/>
+		<staged-model group-id="45770" uuid="8ac23d90-4ff7-dc02-ad23-99e1746bd63e" defaultFileEntryTypeUuid="" path="/group/45770/com.liferay.document.library.kernel.model.DLFolder/45817.xml" asset-priority="0.0"/>
+		<staged-model group-id="45770" uuid="6dd85cd2-da74-cd1a-7637-cbd6437874e7" defaultFileEntryTypeUuid="" path="/group/45770/com.liferay.document.library.kernel.model.DLFolder/45820.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="45817" group-id="45770" live-group-id="45770" type="parent" uuid="8ac23d90-4ff7-dc02-ad23-99e1746bd63e" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="45770" uuid="a8373eef-3207-0fbb-4b47-d56e848c64e2" defaultFileEntryTypeUuid="" path="/group/45770/com.liferay.document.library.kernel.model.DLFolder/45823.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="45820" group-id="45770" live-group-id="45770" type="parent" uuid="6dd85cd2-da74-cd1a-7637-cbd6437874e7" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="45770" uuid="7c29a7fe-b555-9c7f-ff29-1c1a69700675" defaultFileEntryTypeUuid="" path="/group/45770/com.liferay.document.library.kernel.model.DLFolder/45826.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="45820" group-id="45770" live-group-id="45770" type="parent" uuid="6dd85cd2-da74-cd1a-7637-cbd6437874e7" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+	</DLFolder>
+	<DLFileEntry>
+		<staged-model group-id="45770" uuid="697dfba9-8fef-6b83-3f4b-2b7ff63d042a" bin-path="/group/45770/com.liferay.document.library.kernel.model.DLFileEntry/45833/1.0" bin-path-thumbnail-default-pdf="/group/45770/portlet/com_liferay_document_library_web_portlet_DLPortlet/bin/45833/document_thumbnail/1.0/0" bin-path-pdf-preview-count="1" bin-path-preview-1-pdf="/group/45770/portlet/com_liferay_document_library_web_portlet_DLPortlet/bin/45833/document_preview/1.0/1" path="/group/45770/com.liferay.document.library.kernel.model.DLFileEntry/45833.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="45823" group-id="45770" live-group-id="45770" type="parent" uuid="a8373eef-3207-0fbb-4b47-d56e848c64e2" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+	</DLFileEntry>
+</DLPortletDataHandler>

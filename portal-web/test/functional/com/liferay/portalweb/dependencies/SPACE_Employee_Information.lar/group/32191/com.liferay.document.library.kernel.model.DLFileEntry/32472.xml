@@ -1,0 +1,102 @@
+<com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry>
+  <__dlFileEntry class="DLFileEntry">
+    <__cachedModel>true</__cachedModel>
+    <__new>false</__new>
+    <__uuid>e77916d8-7767-d687-be28-0c298a40ef4a</__uuid>
+    <__originalUuid>e77916d8-7767-d687-be28-0c298a40ef4a</__originalUuid>
+    <__fileEntryId>32472</__fileEntryId>
+    <__groupId>32191</__groupId>
+    <__originalGroupId>32191</__originalGroupId>
+    <__setOriginalGroupId>false</__setOriginalGroupId>
+    <__companyId>20116</__companyId>
+    <__originalCompanyId>20116</__originalCompanyId>
+    <__setOriginalCompanyId>false</__setOriginalCompanyId>
+    <__userId>31656</__userId>
+    <__originalUserId>31656</__originalUserId>
+    <__setOriginalUserId>false</__setOriginalUserId>
+    <__userName>Theodore Andersen</__userName>
+    <__createDate>2016-05-23 03:34:06.230 UTC</__createDate>
+    <__modifiedDate>2016-05-23 03:34:06.232 UTC</__modifiedDate>
+    <__setModifiedDate>false</__setModifiedDate>
+    <__classNameId>0</__classNameId>
+    <__classPK>0</__classPK>
+    <__repositoryId>32191</__repositoryId>
+    <__originalRepositoryId>32191</__originalRepositoryId>
+    <__setOriginalRepositoryId>false</__setOriginalRepositoryId>
+    <__folderId>32426</__folderId>
+    <__originalFolderId>32426</__originalFolderId>
+    <__setOriginalFolderId>false</__setOriginalFolderId>
+    <__treePath>/32426/</__treePath>
+    <__name>9</__name>
+    <__originalName>9</__originalName>
+    <__fileName>Helene Mervil.docx</__fileName>
+    <__originalFileName>Helene Mervil.docx</__originalFileName>
+    <__extension>docx</__extension>
+    <__mimeType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</__mimeType>
+    <__originalMimeType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</__originalMimeType>
+    <__title>Helene Mervil.docx</__title>
+    <__originalTitle>Helene Mervil.docx</__originalTitle>
+    <__description></__description>
+    <__extraSettings></__extraSettings>
+    <__fileEntryTypeId>32432</__fileEntryTypeId>
+    <__originalFileEntryTypeId>32432</__originalFileEntryTypeId>
+    <__setOriginalFileEntryTypeId>false</__setOriginalFileEntryTypeId>
+    <__version>1.0</__version>
+    <__size>5331</__size>
+    <__readCount>0</__readCount>
+    <__smallImageId>0</__smallImageId>
+    <__largeImageId>0</__largeImageId>
+    <__custom1ImageId>0</__custom1ImageId>
+    <__custom2ImageId>0</__custom2ImageId>
+    <__manualCheckInRequired>false</__manualCheckInRequired>
+    <__columnBitmask>0</__columnBitmask>
+  </__dlFileEntry>
+  <__dlFileVersion class="com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl">
+    <__cachedModel>true</__cachedModel>
+    <__new>false</__new>
+    <__uuid>9de640bd-b351-25ca-1c7f-b2b253c86601</__uuid>
+    <__originalUuid>9de640bd-b351-25ca-1c7f-b2b253c86601</__originalUuid>
+    <__fileVersionId>32473</__fileVersionId>
+    <__groupId>32191</__groupId>
+    <__originalGroupId>32191</__originalGroupId>
+    <__setOriginalGroupId>false</__setOriginalGroupId>
+    <__companyId>20116</__companyId>
+    <__originalCompanyId>20116</__originalCompanyId>
+    <__setOriginalCompanyId>false</__setOriginalCompanyId>
+    <__userId>31656</__userId>
+    <__userName>Theodore Andersen</__userName>
+    <__createDate>2016-05-23 03:34:06.232 UTC</__createDate>
+    <__modifiedDate>2016-05-23 03:34:06.237 UTC</__modifiedDate>
+    <__setModifiedDate>false</__setModifiedDate>
+    <__repositoryId>32191</__repositoryId>
+    <__folderId>32426</__folderId>
+    <__originalFolderId>32426</__originalFolderId>
+    <__setOriginalFolderId>false</__setOriginalFolderId>
+    <__fileEntryId>32472</__fileEntryId>
+    <__originalFileEntryId>32472</__originalFileEntryId>
+    <__setOriginalFileEntryId>false</__setOriginalFileEntryId>
+    <__treePath>/32426/</__treePath>
+    <__fileName>Helene Mervil.docx</__fileName>
+    <__extension>docx</__extension>
+    <__mimeType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</__mimeType>
+    <__originalMimeType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</__originalMimeType>
+    <__title>Helene Mervil.docx</__title>
+    <__originalTitle>Helene Mervil.docx</__originalTitle>
+    <__description></__description>
+    <__changeLog></__changeLog>
+    <__extraSettings></__extraSettings>
+    <__fileEntryTypeId>32432</__fileEntryTypeId>
+    <__version>1.0</__version>
+    <__originalVersion>1.0</__originalVersion>
+    <__size>5331</__size>
+    <__checksum></__checksum>
+    <__status>0</__status>
+    <__originalStatus>0</__originalStatus>
+    <__setOriginalStatus>false</__setOriginalStatus>
+    <__statusByUserId>31656</__statusByUserId>
+    <__statusByUserName>Theodore Andersen</__statusByUserName>
+    <__statusDate>2016-05-23 03:34:06.237 UTC</__statusDate>
+    <__columnBitmask>0</__columnBitmask>
+  </__dlFileVersion>
+  <__escapedModel>false</__escapedModel>
+</com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry>

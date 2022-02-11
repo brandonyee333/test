@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<LayoutSetPrototypePortletDataHandler group-id="20133">
+	<LayoutSetPrototype>
+		<staged-model uuid="009ea8b6-3489-b816-219d-a2edcc4901bf" path="/company/20116/com.liferay.portal.kernel.model.LayoutSetPrototype/30562.xml">
+			<references>
+				<reference class-name="com.liferay.portal.kernel.model.Layout" class-pk="30571" group-id="30563" live-group-id="30563" type="embedded" uuid="dd7e4fa0-a647-7555-62e1-fc2a29a2ecaf" company-id="20116" layout-id="1" private-layout="true" missing="false"/>
+				<reference class-name="com.liferay.portal.kernel.model.Layout" class-pk="30578" group-id="30563" live-group-id="30563" type="embedded" uuid="8f43bd18-cb9f-32f9-9689-41c012588d58" company-id="20116" layout-id="2" private-layout="true" missing="false"/>
+				<reference class-name="com.liferay.portal.kernel.model.Layout" class-pk="30585" group-id="30563" live-group-id="30563" type="embedded" uuid="ca1032e8-89df-a8e4-ada8-2b5e14a2bff1" company-id="20116" layout-id="3" private-layout="true" missing="false"/>
+			</references>
+		</staged-model>
+	</LayoutSetPrototype>
+</LayoutSetPrototypePortletDataHandler>

@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<DLPortletDataHandler group-id="32191">
+	<DLFolder>
+		<staged-model group-id="32191" uuid="b13b5987-1dec-024a-ef23-0ede344fa4ba" defaultFileEntryTypeUuid="" path="/group/32191/com.liferay.document.library.kernel.model.DLFolder/32420.xml" asset-priority="0.0"/>
+		<staged-model group-id="32191" uuid="e8fa72a2-7da8-f0b1-7eaf-5811ec465c7c" defaultFileEntryTypeUuid="" path="/group/32191/com.liferay.document.library.kernel.model.DLFolder/32423.xml" asset-priority="0.0"/>
+		<staged-model group-id="32191" uuid="b526304e-b679-fa3d-43e9-0e2c44b36594" defaultFileEntryTypeUuid="" path="/group/32191/com.liferay.document.library.kernel.model.DLFolder/32426.xml" asset-priority="0.0"/>
+	</DLFolder>
+	<DLFileEntry>
+		<staged-model group-id="32191" uuid="2f9f0a12-2eb4-1e56-9fe7-3063fab3bed6" bin-path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32438/1.0" path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32438.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="32420" group-id="32191" live-group-id="32191" type="parent" uuid="b13b5987-1dec-024a-ef23-0ede344fa4ba" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFileEntryType" class-pk="32432" group-id="32191" live-group-id="32191" type="strong" uuid="ceee4e13-f8c6-2e6e-b135-fc2ac3384fc2" company-id="20116" file-entry-type-key="33203" preloaded="false" missing="false"/>
+			</references>
+			<structure-fields ddm-form-values-path="/group/32191/com.liferay.dynamic.data.mapping.model.DDMStructure/32429/32441" structureUuid="feb22bdb-c14e-adca-781c-107b1c116606"/>
+		</staged-model>
+		<staged-model group-id="32191" uuid="0a944cd2-f4ab-4260-43e6-7d22b8520b94" bin-path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32455/1.0" path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32455.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="32420" group-id="32191" live-group-id="32191" type="parent" uuid="b13b5987-1dec-024a-ef23-0ede344fa4ba" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFileEntryType" class-pk="32432" group-id="32191" live-group-id="32191" type="strong" uuid="ceee4e13-f8c6-2e6e-b135-fc2ac3384fc2" company-id="20116" file-entry-type-key="33203" preloaded="false" missing="false"/>
+			</references>
+			<structure-fields ddm-form-values-path="/group/32191/com.liferay.dynamic.data.mapping.model.DDMStructure/32429/32458" structureUuid="feb22bdb-c14e-adca-781c-107b1c116606"/>
+		</staged-model>
+		<staged-model group-id="32191" uuid="e77916d8-7767-d687-be28-0c298a40ef4a" bin-path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32472/1.0" path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32472.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="32426" group-id="32191" live-group-id="32191" type="parent" uuid="b526304e-b679-fa3d-43e9-0e2c44b36594" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFileEntryType" class-pk="32432" group-id="32191" live-group-id="32191" type="strong" uuid="ceee4e13-f8c6-2e6e-b135-fc2ac3384fc2" company-id="20116" file-entry-type-key="33203" preloaded="false" missing="false"/>
+			</references>
+			<structure-fields ddm-form-values-path="/group/32191/com.liferay.dynamic.data.mapping.model.DDMStructure/32429/32475" structureUuid="feb22bdb-c14e-adca-781c-107b1c116606"/>
+		</staged-model>
+		<staged-model group-id="32191" uuid="235f9712-667b-0fd4-eec2-69b616efd031" bin-path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32489/1.0" path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32489.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="32426" group-id="32191" live-group-id="32191" type="parent" uuid="b526304e-b679-fa3d-43e9-0e2c44b36594" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFileEntryType" class-pk="32432" group-id="32191" live-group-id="32191" type="strong" uuid="ceee4e13-f8c6-2e6e-b135-fc2ac3384fc2" company-id="20116" file-entry-type-key="33203" preloaded="false" missing="false"/>
+			</references>
+			<structure-fields ddm-form-values-path="/group/32191/com.liferay.dynamic.data.mapping.model.DDMStructure/32429/32492" structureUuid="feb22bdb-c14e-adca-781c-107b1c116606"/>
+		</staged-model>
+		<staged-model group-id="32191" uuid="e97bdeaa-f5e2-77e0-b065-642c8df82292" bin-path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32507/1.0" path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32507.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="32423" group-id="32191" live-group-id="32191" type="parent" uuid="e8fa72a2-7da8-f0b1-7eaf-5811ec465c7c" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFileEntryType" class-pk="32432" group-id="32191" live-group-id="32191" type="strong" uuid="ceee4e13-f8c6-2e6e-b135-fc2ac3384fc2" company-id="20116" file-entry-type-key="33203" preloaded="false" missing="false"/>
+			</references>
+			<structure-fields ddm-form-values-path="/group/32191/com.liferay.dynamic.data.mapping.model.DDMStructure/32429/32510" structureUuid="feb22bdb-c14e-adca-781c-107b1c116606"/>
+		</staged-model>
+		<staged-model group-id="32191" uuid="730709e5-07cb-6c72-c0ae-2e3a5cd99dfa" bin-path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32524/1.0" path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntry/32524.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="32423" group-id="32191" live-group-id="32191" type="parent" uuid="e8fa72a2-7da8-f0b1-7eaf-5811ec465c7c" company-id="20116" missing="false"/>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFileEntryType" class-pk="32432" group-id="32191" live-group-id="32191" type="strong" uuid="ceee4e13-f8c6-2e6e-b135-fc2ac3384fc2" company-id="20116" file-entry-type-key="33203" preloaded="false" missing="false"/>
+			</references>
+			<structure-fields ddm-form-values-path="/group/32191/com.liferay.dynamic.data.mapping.model.DDMStructure/32429/32527" structureUuid="feb22bdb-c14e-adca-781c-107b1c116606"/>
+		</staged-model>
+	</DLFileEntry>
+	<DLFileEntryType>
+		<staged-model group-id="32191" uuid="ceee4e13-f8c6-2e6e-b135-fc2ac3384fc2" path="/group/32191/com.liferay.document.library.kernel.model.DLFileEntryType/32432.xml">
+			<references>
+				<reference class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" class-pk="32429" attached-class-name="com.liferay.document.library.kernel.model.DLFileEntryMetadata" group-id="32191" live-group-id="32191" type="strong" uuid="feb22bdb-c14e-adca-781c-107b1c116606" company-id="20116" preloaded="false" referenced-class-name="com.liferay.document.library.kernel.model.DLFileEntryMetadata" structure-key="AUTO_CEEE4E13-F8C6-2E6E-B135-FC2AC3384FC2" missing="false" structure-id="32429"/>
+			</references>
+		</staged-model>
+	</DLFileEntryType>
+	<DDMStructure>
+		<staged-model group-id="32191" uuid="feb22bdb-c14e-adca-781c-107b1c116606" ddm-form-path="/group/32191/com.liferay.dynamic.data.mapping.model.DDMStructure/32429/ddm-form.json" ddm-data-provider-instance-ids="" ddm-form-layout-path="/group/32191/com.liferay.dynamic.data.mapping.model.DDMStructure/32429/ddm-form-layout.json" path="/group/32191/com.liferay.dynamic.data.mapping.model.DDMStructure/32429.xml" attached-class-name="com.liferay.document.library.kernel.model.DLFileEntryMetadata"/>
+	</DDMStructure>
+</DLPortletDataHandler>

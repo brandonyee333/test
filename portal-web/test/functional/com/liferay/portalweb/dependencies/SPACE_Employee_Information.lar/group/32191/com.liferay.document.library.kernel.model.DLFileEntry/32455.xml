@@ -1,0 +1,102 @@
+<com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry>
+  <__dlFileEntry class="DLFileEntry">
+    <__cachedModel>true</__cachedModel>
+    <__new>false</__new>
+    <__uuid>0a944cd2-f4ab-4260-43e6-7d22b8520b94</__uuid>
+    <__originalUuid>0a944cd2-f4ab-4260-43e6-7d22b8520b94</__originalUuid>
+    <__fileEntryId>32455</__fileEntryId>
+    <__groupId>32191</__groupId>
+    <__originalGroupId>32191</__originalGroupId>
+    <__setOriginalGroupId>false</__setOriginalGroupId>
+    <__companyId>20116</__companyId>
+    <__originalCompanyId>20116</__originalCompanyId>
+    <__setOriginalCompanyId>false</__setOriginalCompanyId>
+    <__userId>31656</__userId>
+    <__originalUserId>31656</__originalUserId>
+    <__setOriginalUserId>false</__setOriginalUserId>
+    <__userName>Theodore Andersen</__userName>
+    <__createDate>2016-05-23 03:33:37.504 UTC</__createDate>
+    <__modifiedDate>2016-05-23 03:33:37.508 UTC</__modifiedDate>
+    <__setModifiedDate>false</__setModifiedDate>
+    <__classNameId>0</__classNameId>
+    <__classPK>0</__classPK>
+    <__repositoryId>32191</__repositoryId>
+    <__originalRepositoryId>32191</__originalRepositoryId>
+    <__setOriginalRepositoryId>false</__setOriginalRepositoryId>
+    <__folderId>32420</__folderId>
+    <__originalFolderId>32420</__originalFolderId>
+    <__setOriginalFolderId>false</__setOriginalFolderId>
+    <__treePath>/32420/</__treePath>
+    <__name>8</__name>
+    <__originalName>8</__originalName>
+    <__fileName>Eloise Blake.docx</__fileName>
+    <__originalFileName>Eloise Blake.docx</__originalFileName>
+    <__extension>docx</__extension>
+    <__mimeType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</__mimeType>
+    <__originalMimeType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</__originalMimeType>
+    <__title>Eloise Blake.docx</__title>
+    <__originalTitle>Eloise Blake.docx</__originalTitle>
+    <__description></__description>
+    <__extraSettings></__extraSettings>
+    <__fileEntryTypeId>32432</__fileEntryTypeId>
+    <__originalFileEntryTypeId>32432</__originalFileEntryTypeId>
+    <__setOriginalFileEntryTypeId>false</__setOriginalFileEntryTypeId>
+    <__version>1.0</__version>
+    <__size>5281</__size>
+    <__readCount>0</__readCount>
+    <__smallImageId>0</__smallImageId>
+    <__largeImageId>0</__largeImageId>
+    <__custom1ImageId>0</__custom1ImageId>
+    <__custom2ImageId>0</__custom2ImageId>
+    <__manualCheckInRequired>false</__manualCheckInRequired>
+    <__columnBitmask>0</__columnBitmask>
+  </__dlFileEntry>
+  <__dlFileVersion class="com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl">
+    <__cachedModel>true</__cachedModel>
+    <__new>false</__new>
+    <__uuid>8be6c4fc-dfe8-82f9-c509-9934beedff57</__uuid>
+    <__originalUuid>8be6c4fc-dfe8-82f9-c509-9934beedff57</__originalUuid>
+    <__fileVersionId>32456</__fileVersionId>
+    <__groupId>32191</__groupId>
+    <__originalGroupId>32191</__originalGroupId>
+    <__setOriginalGroupId>false</__setOriginalGroupId>
+    <__companyId>20116</__companyId>
+    <__originalCompanyId>20116</__originalCompanyId>
+    <__setOriginalCompanyId>false</__setOriginalCompanyId>
+    <__userId>31656</__userId>
+    <__userName>Theodore Andersen</__userName>
+    <__createDate>2016-05-23 03:33:37.508 UTC</__createDate>
+    <__modifiedDate>2016-05-23 03:33:37.528 UTC</__modifiedDate>
+    <__setModifiedDate>false</__setModifiedDate>
+    <__repositoryId>32191</__repositoryId>
+    <__folderId>32420</__folderId>
+    <__originalFolderId>32420</__originalFolderId>
+    <__setOriginalFolderId>false</__setOriginalFolderId>
+    <__fileEntryId>32455</__fileEntryId>
+    <__originalFileEntryId>32455</__originalFileEntryId>
+    <__setOriginalFileEntryId>false</__setOriginalFileEntryId>
+    <__treePath>/32420/</__treePath>
+    <__fileName>Eloise Blake.docx</__fileName>
+    <__extension>docx</__extension>
+    <__mimeType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</__mimeType>
+    <__originalMimeType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</__originalMimeType>
+    <__title>Eloise Blake.docx</__title>
+    <__originalTitle>Eloise Blake.docx</__originalTitle>
+    <__description></__description>
+    <__changeLog></__changeLog>
+    <__extraSettings></__extraSettings>
+    <__fileEntryTypeId>32432</__fileEntryTypeId>
+    <__version>1.0</__version>
+    <__originalVersion>1.0</__originalVersion>
+    <__size>5281</__size>
+    <__checksum></__checksum>
+    <__status>0</__status>
+    <__originalStatus>0</__originalStatus>
+    <__setOriginalStatus>false</__setOriginalStatus>
+    <__statusByUserId>31656</__statusByUserId>
+    <__statusByUserName>Theodore Andersen</__statusByUserName>
+    <__statusDate>2016-05-23 03:33:37.528 UTC</__statusDate>
+    <__columnBitmask>0</__columnBitmask>
+  </__dlFileVersion>
+  <__escapedModel>false</__escapedModel>
+</com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry>

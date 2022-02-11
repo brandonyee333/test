@@ -1,0 +1,110 @@
+<com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry>
+  <__dlFileEntry class="DLFileEntry">
+    <__cachedModel>true</__cachedModel>
+    <__new>false</__new>
+    <__uuid>e47169d3-5798-31fd-b59b-8ac7623537dd</__uuid>
+    <__originalUuid>e47169d3-5798-31fd-b59b-8ac7623537dd</__originalUuid>
+    <__fileEntryId>31393</__fileEntryId>
+    <__groupId>20142</__groupId>
+    <__originalGroupId>20142</__originalGroupId>
+    <__setOriginalGroupId>false</__setOriginalGroupId>
+    <__companyId>20115</__companyId>
+    <__originalCompanyId>20115</__originalCompanyId>
+    <__setOriginalCompanyId>false</__setOriginalCompanyId>
+    <__userId>20155</__userId>
+    <__originalUserId>20155</__originalUserId>
+    <__setOriginalUserId>false</__setOriginalUserId>
+    <__userName>Test Test</__userName>
+    <__createDate>2016-05-12 22:20:59.949 UTC</__createDate>
+    <__modifiedDate>2016-05-12 22:20:59.949 UTC</__modifiedDate>
+    <__setModifiedDate>false</__setModifiedDate>
+    <__classNameId>0</__classNameId>
+    <__classPK>0</__classPK>
+    <__repositoryId>20142</__repositoryId>
+    <__originalRepositoryId>20142</__originalRepositoryId>
+    <__setOriginalRepositoryId>false</__setOriginalRepositoryId>
+    <__folderId>31386</__folderId>
+    <__originalFolderId>31386</__originalFolderId>
+    <__setOriginalFolderId>false</__setOriginalFolderId>
+    <__treePath>/31386/</__treePath>
+    <__name>4</__name>
+    <__originalName>4</__originalName>
+    <__fileName>footer-logo.png</__fileName>
+    <__originalFileName>footer-logo.png</__originalFileName>
+    <__extension>png</__extension>
+    <__mimeType>image/png</__mimeType>
+    <__originalMimeType>image/png</__originalMimeType>
+    <__title>footer-logo.png</__title>
+    <__originalTitle>footer-logo.png</__originalTitle>
+    <__description></__description>
+    <__extraSettings></__extraSettings>
+    <__fileEntryTypeId>0</__fileEntryTypeId>
+    <__originalFileEntryTypeId>0</__originalFileEntryTypeId>
+    <__setOriginalFileEntryTypeId>false</__setOriginalFileEntryTypeId>
+    <__version>1.0</__version>
+    <__size>11776</__size>
+    <__readCount>1</__readCount>
+    <__smallImageId>0</__smallImageId>
+    <__originalSmallImageId>0</__originalSmallImageId>
+    <__setOriginalSmallImageId>false</__setOriginalSmallImageId>
+    <__largeImageId>0</__largeImageId>
+    <__originalLargeImageId>0</__originalLargeImageId>
+    <__setOriginalLargeImageId>false</__setOriginalLargeImageId>
+    <__custom1ImageId>0</__custom1ImageId>
+    <__originalCustom1ImageId>0</__originalCustom1ImageId>
+    <__setOriginalCustom1ImageId>false</__setOriginalCustom1ImageId>
+    <__custom2ImageId>0</__custom2ImageId>
+    <__originalCustom2ImageId>0</__originalCustom2ImageId>
+    <__setOriginalCustom2ImageId>false</__setOriginalCustom2ImageId>
+    <__manualCheckInRequired>false</__manualCheckInRequired>
+    <__columnBitmask>0</__columnBitmask>
+  </__dlFileEntry>
+  <__dlFileVersion class="com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl">
+    <__cachedModel>true</__cachedModel>
+    <__new>false</__new>
+    <__uuid>2f3f528f-8521-aa76-d2e7-ee00930d8a52</__uuid>
+    <__originalUuid>2f3f528f-8521-aa76-d2e7-ee00930d8a52</__originalUuid>
+    <__fileVersionId>31394</__fileVersionId>
+    <__groupId>20142</__groupId>
+    <__originalGroupId>20142</__originalGroupId>
+    <__setOriginalGroupId>false</__setOriginalGroupId>
+    <__companyId>20115</__companyId>
+    <__originalCompanyId>20115</__originalCompanyId>
+    <__setOriginalCompanyId>false</__setOriginalCompanyId>
+    <__userId>20155</__userId>
+    <__userName>Test Test</__userName>
+    <__createDate>2016-05-12 22:20:59.949 UTC</__createDate>
+    <__modifiedDate>2016-05-12 22:20:59.949 UTC</__modifiedDate>
+    <__setModifiedDate>false</__setModifiedDate>
+    <__repositoryId>20142</__repositoryId>
+    <__folderId>31386</__folderId>
+    <__originalFolderId>31386</__originalFolderId>
+    <__setOriginalFolderId>false</__setOriginalFolderId>
+    <__fileEntryId>31393</__fileEntryId>
+    <__originalFileEntryId>31393</__originalFileEntryId>
+    <__setOriginalFileEntryId>false</__setOriginalFileEntryId>
+    <__treePath>/31386/</__treePath>
+    <__fileName>footer-logo.png</__fileName>
+    <__extension>png</__extension>
+    <__mimeType>image/png</__mimeType>
+    <__originalMimeType>image/png</__originalMimeType>
+    <__title>footer-logo.png</__title>
+    <__originalTitle>footer-logo.png</__originalTitle>
+    <__description></__description>
+    <__changeLog></__changeLog>
+    <__extraSettings></__extraSettings>
+    <__fileEntryTypeId>0</__fileEntryTypeId>
+    <__version>1.0</__version>
+    <__originalVersion>1.0</__originalVersion>
+    <__size>11776</__size>
+    <__checksum></__checksum>
+    <__status>0</__status>
+    <__originalStatus>0</__originalStatus>
+    <__setOriginalStatus>false</__setOriginalStatus>
+    <__statusByUserId>20155</__statusByUserId>
+    <__statusByUserName>Test Test</__statusByUserName>
+    <__statusDate>2018-03-20 02:55:00.693 UTC</__statusDate>
+    <__columnBitmask>0</__columnBitmask>
+  </__dlFileVersion>
+  <__escapedModel>false</__escapedModel>
+</com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry>

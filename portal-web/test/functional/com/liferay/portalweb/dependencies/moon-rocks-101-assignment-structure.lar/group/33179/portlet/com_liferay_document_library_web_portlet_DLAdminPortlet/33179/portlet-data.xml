@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<DLPortletDataHandler group-id="33179">
+	<DLFolder>
+		<staged-model group-id="33179" uuid="7a4df42a-0d4f-de31-e1af-cf1fda1b2b0b" defaultFileEntryTypeUuid="" path="/group/33179/com.liferay.document.library.kernel.model.DLFolder/33234.xml" asset-priority="0.0"/>
+		<staged-model group-id="33179" uuid="8ac23d90-4ff7-dc02-ad23-99e1746bd63e" defaultFileEntryTypeUuid="" path="/group/33179/com.liferay.document.library.kernel.model.DLFolder/33237.xml" asset-priority="0.0"/>
+		<staged-model group-id="33179" uuid="6dd85cd2-da74-cd1a-7637-cbd6437874e7" defaultFileEntryTypeUuid="" path="/group/33179/com.liferay.document.library.kernel.model.DLFolder/33240.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="33237" group-id="33179" live-group-id="33179" type="parent" uuid="8ac23d90-4ff7-dc02-ad23-99e1746bd63e" company-id="20202" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="33179" uuid="a8373eef-3207-0fbb-4b47-d56e848c64e2" defaultFileEntryTypeUuid="" path="/group/33179/com.liferay.document.library.kernel.model.DLFolder/33243.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="33240" group-id="33179" live-group-id="33179" type="parent" uuid="6dd85cd2-da74-cd1a-7637-cbd6437874e7" company-id="20202" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="33179" uuid="7c29a7fe-b555-9c7f-ff29-1c1a69700675" defaultFileEntryTypeUuid="" path="/group/33179/com.liferay.document.library.kernel.model.DLFolder/33246.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.document.library.kernel.model.DLFolder" class-pk="33240" group-id="33179" live-group-id="33179" type="parent" uuid="6dd85cd2-da74-cd1a-7637-cbd6437874e7" company-id="20202" missing="false"/>
+			</references>
+		</staged-model>
+	</DLFolder>
+</DLPortletDataHandler>
