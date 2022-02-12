@@ -86,7 +86,7 @@ public class InterestTopicsNanite extends BaseNanite {
 
 	@Override
 	protected Log getLog() {
-		return LogFactory.getLog(InterestTopicsNanite.class);
+		return _log;
 	}
 
 	private InterestTopic _createInterestTopic(
@@ -126,12 +126,13 @@ public class InterestTopicsNanite extends BaseNanite {
 			if (!idSorters.isEmpty() && ArrayUtils.isNotEmpty(tokensPerTopic) &&
 				(tokensPerTopic.length > i) && (tokensPerTopic[i] <= 0)) {
 
-				getLog().warn(
-					String.format(
-						"Topic terms length should not be 0.\n" +
-							"sortedWords index (0 based): %d\n" +
-								"sortedWords size: %d\nidSorters: %s",
-						i, sortedWords.size(), JSONUtil.put(idSorters)));
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						String.format(
+							"Topic terms length is 0. Sorted words index: %d." +
+								" Sorted words size: %d. ID sorters: %s.",
+							i, sortedWords.size(), JSONUtil.put(idSorters)));
+				}
 			}
 
 			for (IDSorter idSorter : idSorters) {
@@ -177,6 +178,9 @@ public class InterestTopicsNanite extends BaseNanite {
 	}
 
 	private static final String _SEPARATOR = "_SEPARATOR_";
+
+	private static final Log _log = LogFactory.getLog(
+		InterestTopicsNanite.class);
 
 	@Autowired
 	private AssetDog _assetDog;
