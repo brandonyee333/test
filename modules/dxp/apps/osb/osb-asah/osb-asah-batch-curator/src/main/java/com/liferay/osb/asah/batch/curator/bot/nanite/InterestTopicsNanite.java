@@ -124,15 +124,14 @@ public class InterestTopicsNanite extends BaseNanite {
 			int[] tokensPerTopic = parallelTopicModel.getTokensPerTopic();
 
 			if (!idSorters.isEmpty() && ArrayUtils.isNotEmpty(tokensPerTopic) &&
-				(tokensPerTopic.length > i) && (tokensPerTopic[i] <= 0)) {
+				(tokensPerTopic.length > i) && (tokensPerTopic[i] <= 0) &&
+				_log.isWarnEnabled()) {
 
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						String.format(
-							"Topic terms length is 0. Sorted words index: %d." +
-								" Sorted words size: %d. ID sorters: %s.",
-							i, sortedWords.size(), JSONUtil.put(idSorters)));
-				}
+				_log.warn(
+					String.format(
+						"Topic terms length is 0. Sorted words index: %d. " +
+							"Sorted words size: %d. ID sorters: %s.",
+						i, sortedWords.size(), JSONUtil.put(idSorters)));
 			}
 
 			for (IDSorter idSorter : idSorters) {
