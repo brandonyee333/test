@@ -196,8 +196,8 @@ function generate_wedeploy_profiles {
 
 		generate_wedeploy_profile ${profile_name} ${service_name} ${file_path}
 
-		if [ ${profile_name} != "multitenant" ] &&
-		   [ ${profile_name} != "staging" ]
+		if [ ${profile_name} != "prd" ] &&
+		   [ ${profile_name} != "uat" ]
 		then
 			continue;
 		fi
