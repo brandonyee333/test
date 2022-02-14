@@ -7,11 +7,11 @@ configurations.all {
 }
 
 dependencies {
-	compile group: "org.apache.beam", name: "beam-runners-direct-java", version: "2.29.0"
-	compile group: "org.apache.beam", name: "beam-runners-google-cloud-dataflow-java", version: "2.29.0"
-	compile group: "org.apache.beam", name: "beam-sdks-java-core", version: "2.29.0"
-	compile group: "org.apache.beam", name: "beam-sdks-java-extensions-google-cloud-platform-core", version: "2.29.0"
-	compile group: "org.apache.beam", name: "beam-sdks-java-io-google-cloud-platform", version: "2.29.0"
+	compile group: "org.apache.beam", name: "beam-runners-direct-java", version: "2.35.0"
+	compile group: "org.apache.beam", name: "beam-runners-google-cloud-dataflow-java", version: "2.35.0"
+	compile group: "org.apache.beam", name: "beam-sdks-java-core", version: "2.35.0"
+	compile group: "org.apache.beam", name: "beam-sdks-java-extensions-google-cloud-platform-core", version: "2.35.0"
+	compile group: "org.apache.beam", name: "beam-sdks-java-io-google-cloud-platform", version: "2.35.0"
 	compile group: "org.slf4j", name: "slf4j-api", version: "1.7.32"
 }
 
