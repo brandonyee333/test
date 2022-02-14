@@ -85,25 +85,48 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 	public void receiveMessage(
 		PubsubMessage pubsubMessage, AckReplyConsumer ackReplyConsumer) {
 
-		ByteString byteString = pubsubMessage.getData();
-
-		JSONObject jsonObject = new JSONObject(byteString.toStringUtf8());
-
 		try {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Processing message with ID " +
+						pubsubMessage.getMessageId());
+			}
+
+			ByteString byteString = pubsubMessage.getData();
+
+			JSONObject jsonObject = new JSONObject(byteString.toStringUtf8());
+
 			String projectId = jsonObject.getString("projectId");
 
 			_boundedExecutor.runAsync(
 				() -> {
+					long start = System.currentTimeMillis();
+
 					ProjectIdThreadLocal.setProjectId(projectId);
 					_processMessage(jsonObject);
+
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							String.format(
+								"Message %s processed in %d ms",
+								pubsubMessage.getMessageId(),
+								System.currentTimeMillis() - start));
+					}
 				},
 				KeyReentrantLock.getReentrantLock(getClass(), projectId));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
 		}
+		finally {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Sending ack of message with ID " +
+						pubsubMessage.getMessageId());
+			}
 
-		ackReplyConsumer.ack();
+			ackReplyConsumer.ack();
+		}
 	}
 
 	private void _addAssociations(
