@@ -161,7 +161,7 @@ public class DXPEntitiesMessageProcessorTest
 			_dxpEntitiesMessageProcessor::processQueuedMessages);
 
 		try {
-			future.get(5, TimeUnit.SECONDS);
+			future.get(8, TimeUnit.SECONDS);
 		}
 		catch (TimeoutException timeoutException) {
 			future.cancel(true);
