@@ -37,7 +37,6 @@ import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.transforms.SerializableFunction;
 import org.apache.beam.sdk.transforms.WithKeys;
-import org.apache.beam.sdk.transforms.WithTimestamps;
 import org.apache.beam.sdk.transforms.windowing.AfterProcessingTime;
 import org.apache.beam.sdk.transforms.windowing.AfterWatermark;
 import org.apache.beam.sdk.transforms.windowing.FixedWindows;
@@ -48,13 +47,13 @@ import org.apache.beam.sdk.transforms.windowing.Sessions;
 import org.apache.beam.sdk.transforms.windowing.TimestampCombiner;
 import org.apache.beam.sdk.transforms.windowing.Window;
 import org.apache.beam.sdk.values.KV;
+import org.apache.beam.sdk.values.PBegin;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PDone;
 import org.apache.beam.sdk.values.TypeDescriptor;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import org.joda.time.Duration;
-import org.joda.time.Instant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,37 +78,35 @@ public class StreamingIngestionPipeline {
 
 		Pipeline pipeline = Pipeline.create(streamingIngestionPipelineOptions);
 
-		PCollection<String> pubsubMessagesPCollection = pipeline.apply(
-			"Read PubSub Messages",
-			PubsubIO.readStrings(
-			).fromSubscription(
-				streamingIngestionPipelineOptions.getInputSubscription()
-			).withTimestampAttribute(
-				"eventDate"
-			));
-
-		pubsubMessagesPCollection.apply(
+		pipeline.apply(
 			"Backup PubSub Messages",
 			new BackupPubsubMessages(
+				streamingIngestionPipelineOptions.getInputSubscription(),
 				streamingIngestionPipelineOptions.getOutputDirectory(),
 				streamingIngestionPipelineOptions.getOutputFileNamePrefix(),
 				streamingIngestionPipelineOptions.getWriteInterval()));
 
 		PCollection<KV<String, Iterable<AnalyticsEvent>>>
-			sessionizedAnalyticsEventsPCollection =
-				pubsubMessagesPCollection.apply(
-					"Parse Analytics Events",
-					ParDo.of(new AnalyticsEventParser())
-				).apply(
-					"Create Sessions",
-					new Sessionizer(
-						streamingIngestionPipelineOptions.
-							getSessionWindowAllowedLateness(),
-						streamingIngestionPipelineOptions.
-							getSessionWindowEarlyFiringsInterval(),
-						streamingIngestionPipelineOptions.
-							getSessionWindowGapDuration())
-				);
+			sessionizedAnalyticsEventsPCollection = pipeline.apply(
+				"Read PubSub Messages",
+				PubsubIO.readStrings(
+				).fromSubscription(
+					streamingIngestionPipelineOptions.getInputSubscription()
+				).withTimestampAttribute(
+					"eventDate"
+				)
+			).apply(
+				"Parse Analytics Events", ParDo.of(new AnalyticsEventParser())
+			).apply(
+				"Create Sessions",
+				new Sessionizer(
+					streamingIngestionPipelineOptions.
+						getSessionWindowAllowedLateness(),
+					streamingIngestionPipelineOptions.
+						getSessionWindowEarlyFiringsInterval(),
+					streamingIngestionPipelineOptions.
+						getSessionWindowGapDuration())
+			);
 
 		sessionizedAnalyticsEventsPCollection.apply(
 			"Write Events",
@@ -150,25 +147,25 @@ public class StreamingIngestionPipeline {
 
 	}
 
-	public static class BackupPubsubMessages
-		extends PTransform<PCollection<String>, PDone> {
+	public static class BackupPubsubMessages extends PTransform<PBegin, PDone> {
 
 		public BackupPubsubMessages(
-			String outputDirectory, String outputFileNamePrefix,
-			long writeIntervalInMinutes) {
+			String inputSubscription, String outputDirectory,
+			String outputFileNamePrefix, long writeIntervalInMinutes) {
 
+			_inputSubscription = inputSubscription;
 			_outputDirectory = outputDirectory;
 			_outputFileNamePrefix = outputFileNamePrefix;
 			_writeIntervalInMinutes = writeIntervalInMinutes;
 		}
 
 		@Override
-		public PDone expand(PCollection<String> pCollection) {
-			return pCollection.apply(
-				"Update Timestamp",
-				WithTimestamps.of(
-					(SerializableFunction<String, Instant>)
-						message -> Instant.now())
+		public PDone expand(PBegin pBegin) {
+			return pBegin.apply(
+				PubsubIO.readStrings(
+				).fromSubscription(
+					String.format("%s_backup", _inputSubscription)
+				)
 			).apply(
 				_writeIntervalInMinutes + " Minutes Window",
 				Window.into(
@@ -181,6 +178,7 @@ public class StreamingIngestionPipeline {
 			);
 		}
 
+		private final String _inputSubscription;
 		private final String _outputDirectory;
 		private final String _outputFileNamePrefix;
 		private final long _writeIntervalInMinutes;
