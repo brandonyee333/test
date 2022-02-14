@@ -129,8 +129,8 @@ public class InterestTopicsNanite extends BaseNanite {
 
 				_log.warn(
 					String.format(
-						"Topic terms length is 0. Sorted words index: %d. " +
-							"Sorted words size: %d. ID sorters: %s.",
+						"Topic terms length is 0. Sorted words index is %d. " +
+							"Sorted words size is %d. ID sorters are %s.",
 						i, sortedWords.size(), JSONUtil.put(idSorters)));
 			}
 
