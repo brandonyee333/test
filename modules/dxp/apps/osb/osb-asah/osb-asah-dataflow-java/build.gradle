@@ -6,6 +6,12 @@ configurations.all {
 	}
 }
 
+repositories {
+	maven {
+		url "http://packages.confluent.io/maven/"
+	}
+}
+
 dependencies {
 	compile group: "org.apache.beam", name: "beam-runners-direct-java", version: "2.35.0"
 	compile group: "org.apache.beam", name: "beam-runners-google-cloud-dataflow-java", version: "2.35.0"
