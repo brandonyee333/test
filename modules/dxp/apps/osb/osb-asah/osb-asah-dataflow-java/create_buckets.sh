@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export LOCATION=$(gcloud config get-value compute/region)
-export PROJECT_ID=$(gcloud config get-value project)
+LOCATION=$(gcloud config get-value compute/region)
+PROJECT_ID=$(gcloud config get-value project)
 
 # Analytics events
 
