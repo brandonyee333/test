@@ -380,10 +380,10 @@ public abstract class BaseAsUsedCheck extends BaseCheck {
 	private boolean _containsVariableType(
 		DetailAST variableDefinitionDetailAST, String... variableTypeNames) {
 
-		List<DetailAST> identDetailASTList = getAllChildTokens(
-			variableDefinitionDetailAST, true, TokenTypes.IDENT);
+		for (DetailAST identDetailAST :
+				getAllChildTokens(
+					variableDefinitionDetailAST, true, TokenTypes.IDENT)) {
 
-		for (DetailAST identDetailAST : identDetailASTList) {
 			if (ArrayUtil.contains(
 					variableTypeNames,
 					getVariableTypeName(
@@ -551,11 +551,8 @@ public abstract class BaseAsUsedCheck extends BaseCheck {
 			return false;
 		}
 
-		List<DetailAST> identDetailASTList = getAllChildTokens(
-			methodCallDetailAST, true, TokenTypes.IDENT);
-
-		for (DetailAST identDetailAST : identDetailASTList) {
-			if (Objects.equals(identDetailAST.getText(), "Mockito")) {
+		for (String identifier : getIdentifiers(methodCallDetailAST, true)) {
+			if (Objects.equals(identifier, "Mockito")) {
 				return true;
 			}
 		}

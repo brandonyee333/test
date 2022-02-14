@@ -176,12 +176,10 @@ public class ExceptionVariableNameCheck extends VariableNameCheck {
 				exceptionDefinitions = new TreeSet<>();
 			}
 
-			DetailAST nameDetailAST = definitionDetailAST.findFirstToken(
-				TokenTypes.IDENT);
-
 			exceptionDefinitions.add(
 				new ExceptionDefinition(
-					nameDetailAST.getText(), definitionDetailAST.getLineNo(),
+					getIdentifier(definitionDetailAST),
+					definitionDetailAST.getLineNo(),
 					definitionDetailAST.getColumnNo(),
 					_getEndRangeLineNumber(definitionDetailAST)));
 
@@ -204,14 +202,10 @@ public class ExceptionVariableNameCheck extends VariableNameCheck {
 			if ((firstChildDetailAST != null) &&
 				(firstChildDetailAST.getType() == TokenTypes.BOR)) {
 
-				List<DetailAST> identDetailASTList =
-					DetailASTUtil.getAllChildTokens(
-						firstChildDetailAST, true, TokenTypes.IDENT);
+				for (String identifier :
+						getIdentifiers(firstChildDetailAST, true)) {
 
-				for (DetailAST identDetailAST : identDetailASTList) {
-					String s = identDetailAST.getText();
-
-					if (s.endsWith("Exception")) {
+					if (identifier.endsWith("Exception")) {
 						return "Exception";
 					}
 				}

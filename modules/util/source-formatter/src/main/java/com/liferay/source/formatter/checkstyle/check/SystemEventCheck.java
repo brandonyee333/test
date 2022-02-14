@@ -65,9 +65,7 @@ public class SystemEventCheck extends BaseCheck {
 			return;
 		}
 
-		DetailAST identDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
-
-		String className = identDetailAST.getText();
+		String className = getIdentifier(detailAST);
 
 		if (!className.endsWith("LocalServiceImpl")) {
 			return;
@@ -93,10 +91,7 @@ public class SystemEventCheck extends BaseCheck {
 				continue;
 			}
 
-			identDetailAST = methodDefDetailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			String methodName = identDetailAST.getText();
+			String methodName = getIdentifier(methodDefDetailAST);
 
 			if (_hasSystemDeleteEventAnnotation(methodDefDetailAST)) {
 				if (!entityName.equals(
@@ -151,16 +146,10 @@ public class SystemEventCheck extends BaseCheck {
 		DetailAST matchingMethodDefDetailAST = null;
 
 		for (DetailAST curMethodDefDetailAST : methodDefDetailASTList) {
-			if (methodDefDetailAST.getLineNo() ==
-					curMethodDefDetailAST.getLineNo()) {
+			if ((methodDefDetailAST.getLineNo() ==
+					curMethodDefDetailAST.getLineNo()) ||
+				!methodName.equals(getIdentifier(curMethodDefDetailAST))) {
 
-				continue;
-			}
-
-			DetailAST identDetailAST = curMethodDefDetailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			if (!methodName.equals(identDetailAST.getText())) {
 				continue;
 			}
 
@@ -385,11 +374,10 @@ public class SystemEventCheck extends BaseCheck {
 		for (DetailAST annotationMemberValuePairDetailAST :
 				annotationMemberValuePairDetailASTList) {
 
-			DetailAST identDetailAST =
-				annotationMemberValuePairDetailAST.findFirstToken(
-					TokenTypes.IDENT);
+			if (!Objects.equals(
+					getIdentifier(annotationMemberValuePairDetailAST),
+					"type")) {
 
-			if (!Objects.equals(identDetailAST.getText(), "type")) {
 				continue;
 			}
 

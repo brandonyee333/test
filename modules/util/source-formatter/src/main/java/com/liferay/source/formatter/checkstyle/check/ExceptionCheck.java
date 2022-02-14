@@ -76,14 +76,11 @@ public class ExceptionCheck extends BaseCheck {
 			return;
 		}
 
-		DetailAST nameDetailAST = methodDefinitionDetailAST.findFirstToken(
-			TokenTypes.IDENT);
+		String methodName = getIdentifier(methodDefinitionDetailAST);
 
-		if (nameDetailAST == null) {
+		if (methodName == null) {
 			return;
 		}
-
-		String methodName = nameDetailAST.getText();
 
 		List<DetailAST> identDetailASTList = getAllChildTokens(
 			classDefinitionDetailAST, true, TokenTypes.IDENT);
@@ -110,9 +107,7 @@ public class ExceptionCheck extends BaseCheck {
 				return;
 			}
 
-			nameDetailAST = parentDetailAST.findFirstToken(TokenTypes.IDENT);
-
-			if (methodName.equals(nameDetailAST.getText())) {
+			if (methodName.equals(getIdentifier(parentDetailAST))) {
 				continue;
 			}
 
@@ -151,11 +146,10 @@ public class ExceptionCheck extends BaseCheck {
 			return exceptionNames;
 		}
 
-		List<DetailAST> identDetailASTList = getAllChildTokens(
-			literalThrowsDetailAST, false, TokenTypes.IDENT);
+		for (String exceptionName :
+				getIdentifiers(literalThrowsDetailAST, false)) {
 
-		for (DetailAST identDetailAST : identDetailASTList) {
-			exceptionNames.add(identDetailAST.getText());
+			exceptionNames.add(exceptionName);
 		}
 
 		return exceptionNames;

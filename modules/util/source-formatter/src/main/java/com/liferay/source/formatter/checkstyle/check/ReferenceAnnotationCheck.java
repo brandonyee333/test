@@ -87,10 +87,9 @@ public class ReferenceAnnotationCheck extends BaseCheck {
 		for (DetailAST variableDefinitionDetailAST :
 				variableDefinitionDetailASTList) {
 
-			DetailAST identDetailAST =
-				variableDefinitionDetailAST.findFirstToken(TokenTypes.IDENT);
+			if (!variableName.equals(
+					getIdentifier(variableDefinitionDetailAST))) {
 
-			if (!variableName.equals(identDetailAST.getText())) {
 				continue;
 			}
 
@@ -139,9 +138,7 @@ public class ReferenceAnnotationCheck extends BaseCheck {
 		String unbindName = _getAnnotationMemberValue(
 			annotationDetailAST, "unbind", null);
 
-		DetailAST identDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
-
-		String methodName = identDetailAST.getText();
+		String methodName = getIdentifier(detailAST);
 
 		String defaultUnbindMethodName = _getDefaultUnbindMethodName(
 			methodName);
@@ -220,12 +217,9 @@ public class ReferenceAnnotationCheck extends BaseCheck {
 			variableDefinitionDetailAST.findFirstToken(TokenTypes.MODIFIERS);
 
 		if (!modifiersDetailAST.branchContains(TokenTypes.LITERAL_VOLATILE)) {
-			DetailAST identDetailAST =
-				variableDefinitionDetailAST.findFirstToken(TokenTypes.IDENT);
-
 			log(
-				identDetailAST, _MSG_MISSING_VOLATILE,
-				identDetailAST.getText());
+				variableDefinitionDetailAST, _MSG_MISSING_VOLATILE,
+				getIdentifier(variableDefinitionDetailAST));
 		}
 	}
 
@@ -238,10 +232,7 @@ public class ReferenceAnnotationCheck extends BaseCheck {
 		for (DetailAST methodDefinitionDetailAST :
 				methodDefinitionDetailASTList) {
 
-			DetailAST identDetailAST = methodDefinitionDetailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			if (methodName.equals(identDetailAST.getText())) {
+			if (methodName.equals(getIdentifier(methodDefinitionDetailAST))) {
 				return true;
 			}
 		}
@@ -260,11 +251,8 @@ public class ReferenceAnnotationCheck extends BaseCheck {
 		for (DetailAST annotationMemberValuePairDetailAST :
 				annotationMemberValuePairDetailASTList) {
 
-			DetailAST identDetailAST =
-				annotationMemberValuePairDetailAST.findFirstToken(
-					TokenTypes.IDENT);
-
-			String annotationMemberName = identDetailAST.getText();
+			String annotationMemberName = getIdentifier(
+				annotationMemberValuePairDetailAST);
 
 			if (!annotationMemberName.equals(name)) {
 				continue;

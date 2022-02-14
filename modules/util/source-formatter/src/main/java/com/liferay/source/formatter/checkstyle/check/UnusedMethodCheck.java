@@ -73,22 +73,20 @@ public class UnusedMethodCheck extends BaseCheck {
 				continue;
 			}
 
-			DetailAST nameDetailAST = methodDefinitionDetailAST.findFirstToken(
-				TokenTypes.IDENT);
+			String methodName = getIdentifier(methodDefinitionDetailAST);
 
-			String name = nameDetailAST.getText();
-
-			if (allowedMethodNames.contains(name)) {
+			if (allowedMethodNames.contains(methodName)) {
 				continue;
 			}
 
 			DetailAST parametersDetailAST =
 				methodDefinitionDetailAST.findFirstToken(TokenTypes.PARAMETERS);
 
-			Set<Integer> parameterCountSet = referencedMethodNamesMap.get(name);
+			Set<Integer> parameterCountSet = referencedMethodNamesMap.get(
+				methodName);
 
 			if (parameterCountSet == null) {
-				log(methodDefinitionDetailAST, _MSG_UNUSED_METHOD, name);
+				log(methodDefinitionDetailAST, _MSG_UNUSED_METHOD, methodName);
 
 				continue;
 			}
@@ -124,10 +122,10 @@ public class UnusedMethodCheck extends BaseCheck {
 					}
 				}
 
-				log(methodDefinitionDetailAST, _MSG_UNUSED_METHOD, name);
+				log(methodDefinitionDetailAST, _MSG_UNUSED_METHOD, methodName);
 			}
 			else if (!parameterCountSet.contains(parameterCount)) {
-				log(methodDefinitionDetailAST, _MSG_UNUSED_METHOD, name);
+				log(methodDefinitionDetailAST, _MSG_UNUSED_METHOD, methodName);
 			}
 		}
 	}

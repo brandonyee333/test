@@ -120,10 +120,7 @@ public class ChainingCheck extends BaseCheck {
 			return;
 		}
 
-		DetailAST variableNameDetailAST = parentDetailAST.findFirstToken(
-			TokenTypes.IDENT);
-
-		String variableName = variableNameDetailAST.getText();
+		String variableName = getIdentifier(parentDetailAST);
 
 		String variableTypeName = getVariableTypeName(
 			methodCallDetailAST, variableName, false);
@@ -592,10 +589,7 @@ public class ChainingCheck extends BaseCheck {
 		for (DetailAST methodDefinitionDetailAST :
 				methodDefinitionDetailASTList) {
 
-			DetailAST nameDetailAST = methodDefinitionDetailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			if (methodName.equals(nameDetailAST.getText())) {
+			if (methodName.equals(getIdentifier(methodDefinitionDetailAST))) {
 				return getTypeName(methodDefinitionDetailAST, false);
 			}
 		}
@@ -784,12 +778,9 @@ public class ChainingCheck extends BaseCheck {
 				continue;
 			}
 
-			DetailAST nameDetailAST = parentDetailAST.findFirstToken(
-				TokenTypes.IDENT);
+			String name = getIdentifier(parentDetailAST);
 
-			if ((nameDetailAST != null) &&
-				variableName.equals(nameDetailAST.getText())) {
-
+			if ((name != null) && variableName.equals(name)) {
 				return true;
 			}
 

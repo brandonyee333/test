@@ -62,10 +62,10 @@ public class GenericTypeCheck extends BaseCheck {
 		if ((detailAST.getType() == TokenTypes.EXTENDS_CLAUSE) ||
 			(detailAST.getType() == TokenTypes.IMPLEMENTS_CLAUSE)) {
 
-			List<DetailAST> childDetailASTList = getAllChildTokens(
-				detailAST, false, TokenTypes.DOT, TokenTypes.IDENT);
+			for (DetailAST childDetailAST :
+					getAllChildTokens(
+						detailAST, false, TokenTypes.DOT, TokenTypes.IDENT)) {
 
-			for (DetailAST childDetailAST : childDetailASTList) {
 				_checkType(detailAST, childDetailAST);
 			}
 		}

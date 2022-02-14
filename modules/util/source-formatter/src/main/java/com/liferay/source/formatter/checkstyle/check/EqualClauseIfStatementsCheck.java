@@ -17,7 +17,6 @@ package com.liferay.source.formatter.checkstyle.check;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,18 +60,11 @@ public class EqualClauseIfStatementsCheck extends BaseCheck {
 			return;
 		}
 
-		List<DetailAST> identDetailASTList = getAllChildTokens(
-			clauseExprDetailAST1, true, TokenTypes.IDENT);
-
-		List<String> namesList = new ArrayList<>();
-
-		for (DetailAST identDetailAST : identDetailASTList) {
-			namesList.add(identDetailAST.getText());
-		}
+		List<String> identifiers = getIdentifiers(clauseExprDetailAST1, true);
 
 		DetailAST slistDetailAST1 = detailAST.findFirstToken(TokenTypes.SLIST);
 
-		if (!_hasValueChangeOperation(namesList, slistDetailAST1)) {
+		if (!_hasValueChangeOperation(identifiers, slistDetailAST1)) {
 			log(detailAST, _MSG_COMBINE_IF_STATEMENTS);
 		}
 	}
@@ -117,14 +109,13 @@ public class EqualClauseIfStatementsCheck extends BaseCheck {
 			slistDetailAST, true, ASSIGNMENT_OPERATOR_TOKEN_TYPES);
 
 		for (DetailAST assignDetailAST : assignDetailASTList) {
-			DetailAST identDetailAST = assignDetailAST.findFirstToken(
-				TokenTypes.IDENT);
+			String identifier = getIdentifier(assignDetailAST);
 
-			if (identDetailAST == null) {
+			if (identifier == null) {
 				continue;
 			}
 
-			if (namesList.contains(identDetailAST.getText())) {
+			if (namesList.contains(identifier)) {
 				return true;
 			}
 		}
@@ -151,12 +142,10 @@ public class EqualClauseIfStatementsCheck extends BaseCheck {
 				for (DetailAST methodDefinitionDetailAST :
 						methodDefinitionDetailASTList) {
 
-					DetailAST identDetailAST =
-						methodDefinitionDetailAST.findFirstToken(
-							TokenTypes.IDENT);
+					String identifier = getIdentifier(
+						methodDefinitionDetailAST);
 
-					if ((identDetailAST != null) &&
-						methodName.equals(identDetailAST.getText()) &&
+					if ((identifier != null) && methodName.equals(identifier) &&
 						_hasValueChangeOperation(
 							namesList,
 							methodDefinitionDetailAST.findFirstToken(

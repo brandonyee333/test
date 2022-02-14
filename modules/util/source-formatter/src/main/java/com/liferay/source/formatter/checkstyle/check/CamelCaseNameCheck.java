@@ -266,16 +266,11 @@ public class CamelCaseNameCheck extends BaseCheck {
 			}
 		}
 
-		List<DetailAST> identDetailASTlist = getAllChildTokens(
-			assignDetailAST, true, TokenTypes.IDENT);
-
-		for (DetailAST identDetailAST : identDetailASTlist) {
-			String text = identDetailAST.getText();
-
-			if (text.contains(constantFormatName) ||
-				text.contains(lowerCaseCamelCaseFormatName) ||
-				text.contains(name) ||
-				text.contains(upperCaseCamelCaseFormatName)) {
+		for (String identifier : getIdentifiers(assignDetailAST, true)) {
+			if (identifier.contains(constantFormatName) ||
+				identifier.contains(lowerCaseCamelCaseFormatName) ||
+				identifier.contains(name) ||
+				identifier.contains(upperCaseCamelCaseFormatName)) {
 
 				return true;
 			}

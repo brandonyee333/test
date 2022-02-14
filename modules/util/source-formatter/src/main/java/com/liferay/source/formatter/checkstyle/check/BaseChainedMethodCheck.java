@@ -18,7 +18,6 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,10 +28,9 @@ public abstract class BaseChainedMethodCheck extends BaseCheck {
 	protected boolean containsVariableName(
 		DetailAST detailAST, String variableName, boolean allowGetters) {
 
-		List<DetailAST> identDetailASTList = getAllChildTokens(
-			detailAST, true, TokenTypes.IDENT);
+		for (DetailAST identDetailAST :
+				getAllChildTokens(detailAST, true, TokenTypes.IDENT)) {
 
-		for (DetailAST identDetailAST : identDetailASTList) {
 			if (!variableName.equals(identDetailAST.getText())) {
 				continue;
 			}
@@ -105,14 +103,7 @@ public abstract class BaseChainedMethodCheck extends BaseCheck {
 			return null;
 		}
 
-		DetailAST nameDetailAST = parentDetailAST.findFirstToken(
-			TokenTypes.IDENT);
-
-		if (nameDetailAST != null) {
-			return nameDetailAST.getText();
-		}
-
-		return null;
+		return getIdentifier(parentDetailAST);
 	}
 
 }

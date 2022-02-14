@@ -123,10 +123,7 @@ public class StaticBlockCheck extends BaseCheck {
 				continue;
 			}
 
-			DetailAST nameDetailAST = previousSiblingDetailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			String name = nameDetailAST.getText();
+			String name = getIdentifier(previousSiblingDetailAST);
 
 			if (previousSiblingDetailAST.getType() != TokenTypes.VARIABLE_DEF) {
 				staticObjectNames.add(name);
@@ -151,10 +148,10 @@ public class StaticBlockCheck extends BaseCheck {
 
 		Map<String, List<DetailAST>> identDetailASTMap = new HashMap<>();
 
-		List<DetailAST> identDetailASTList = getAllChildTokens(
-			staticInitDetailAST, true, TokenTypes.IDENT);
+		for (DetailAST identDetailAST :
+				getAllChildTokens(
+					staticInitDetailAST, true, TokenTypes.IDENT)) {
 
-		for (DetailAST identDetailAST : identDetailASTList) {
 			List<DetailAST> list = identDetailASTMap.get(
 				identDetailAST.getText());
 
@@ -202,10 +199,7 @@ public class StaticBlockCheck extends BaseCheck {
 		for (DetailAST variableDefinitionDetailAST :
 				variableDefinitionDetailASTList) {
 
-			DetailAST nameDetailAST =
-				variableDefinitionDetailAST.findFirstToken(TokenTypes.IDENT);
-
-			String name = nameDetailAST.getText();
+			String name = getIdentifier(variableDefinitionDetailAST);
 
 			List<DetailAST> identDetailASTList = identDetailASTMap.get(name);
 

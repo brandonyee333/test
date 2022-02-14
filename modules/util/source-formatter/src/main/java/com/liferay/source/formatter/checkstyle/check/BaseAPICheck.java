@@ -788,10 +788,7 @@ public abstract class BaseAPICheck extends BaseCheck {
 				return null;
 			}
 
-			DetailAST identDetailAST = parentDetailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			return identDetailAST.getText();
+			return getIdentifier(parentDetailAST);
 		}
 
 		if (ArrayUtil.contains(

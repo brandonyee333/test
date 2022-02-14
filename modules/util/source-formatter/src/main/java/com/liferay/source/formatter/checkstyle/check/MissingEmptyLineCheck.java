@@ -233,11 +233,9 @@ public class MissingEmptyLineCheck extends BaseCheck {
 			return;
 		}
 
-		DetailAST identDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
-
 		if (variableTypeName.equals(
 				getVariableTypeName(
-					detailAST, identDetailAST.getText(), false))) {
+					detailAST, getIdentifier(detailAST), false))) {
 
 			log(
 				detailAST, _MSG_MISSING_EMPTY_LINE_AFTER_VARIABLE_DEFINITION,
@@ -313,20 +311,16 @@ public class MissingEmptyLineCheck extends BaseCheck {
 		}
 
 		if (firstReferencedAssignDetailAST != null) {
-			DetailAST nameDetailAST =
-				firstReferencedAssignDetailAST.findFirstToken(TokenTypes.IDENT);
+			String name = getIdentifier(firstReferencedAssignDetailAST);
 
-			if (nameDetailAST == null) {
-				parentDetailAST = firstReferencedAssignDetailAST.getParent();
-
-				nameDetailAST = parentDetailAST.findFirstToken(
-					TokenTypes.IDENT);
+			if (name == null) {
+				name = getIdentifier(
+					firstReferencedAssignDetailAST.getParent());
 			}
 
 			log(
 				firstReferencedAssignDetailAST,
-				_MSG_MISSING_EMPTY_LINE_BEFORE_VARIABLE_ASSIGN,
-				nameDetailAST.getText());
+				_MSG_MISSING_EMPTY_LINE_BEFORE_VARIABLE_ASSIGN, name);
 		}
 	}
 
@@ -437,12 +431,12 @@ public class MissingEmptyLineCheck extends BaseCheck {
 			return;
 		}
 
-		List<DetailAST> identDetailASTList = getAllChildTokens(
-			nextSiblingDetailAST, true, TokenTypes.IDENT);
-
 		boolean nextVariableUsesVariable = false;
 
-		for (DetailAST identDetailAST : identDetailASTList) {
+		for (DetailAST identDetailAST :
+				getAllChildTokens(
+					nextSiblingDetailAST, true, TokenTypes.IDENT)) {
+
 			String identName = identDetailAST.getText();
 
 			if (!identName.equals(name)) {
@@ -642,10 +636,7 @@ public class MissingEmptyLineCheck extends BaseCheck {
 			}
 		}
 		else if (parentDetailAST.getType() == TokenTypes.VARIABLE_DEF) {
-			DetailAST nameDetailAST = parentDetailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			return nameDetailAST.getText();
+			return getIdentifier(parentDetailAST);
 		}
 
 		return null;

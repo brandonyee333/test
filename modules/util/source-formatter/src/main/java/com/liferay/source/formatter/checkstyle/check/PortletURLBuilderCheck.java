@@ -50,16 +50,12 @@ public class PortletURLBuilderCheck extends BaseBuilderCheck {
 
 	@Override
 	protected String getAssignClassName(DetailAST assignDetailAST) {
-		List<DetailAST> identDetailASTList = getAllChildTokens(
-			assignDetailAST, true, TokenTypes.IDENT);
-
 		for (BaseBuilderCheck.BuilderInformation builderInformation :
 				getBuilderInformationList()) {
 
-			for (DetailAST identDetailAST : identDetailASTList) {
+			for (String identifier : getIdentifiers(assignDetailAST, true)) {
 				if (Objects.equals(
-						builderInformation.getBuilderClassName(),
-						identDetailAST.getText())) {
+						builderInformation.getBuilderClassName(), identifier)) {
 
 					return null;
 				}
@@ -72,12 +68,10 @@ public class PortletURLBuilderCheck extends BaseBuilderCheck {
 			return getTypeName(parentDetailAST, false);
 		}
 
-		DetailAST identDetailAST = assignDetailAST.findFirstToken(
-			TokenTypes.IDENT);
+		String variableName = getIdentifier(assignDetailAST);
 
-		if (identDetailAST != null) {
-			return getVariableTypeName(
-				assignDetailAST, identDetailAST.getText(), false);
+		if (variableName != null) {
+			return getVariableTypeName(assignDetailAST, variableName, false);
 		}
 
 		return null;

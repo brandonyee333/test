@@ -43,7 +43,7 @@ public class MethodNamingCheck extends BaseCheck {
 			return;
 		}
 
-		String methodName = _getMethodName(detailAST);
+		String methodName = getIdentifier(detailAST);
 
 		if (isAttributeValue(_CHECK_SEARCH_METHOD_NAMES) &&
 			methodName.startsWith("search")) {
@@ -108,8 +108,7 @@ public class MethodNamingCheck extends BaseCheck {
 			for (DetailAST methodDefinitionDetailAST :
 					methodDefinitionDetailASTList) {
 
-				String curMethodName = _getMethodName(
-					methodDefinitionDetailAST);
+				String curMethodName = getIdentifier(methodDefinitionDetailAST);
 
 				if (curMethodName.equals(noUnderscoreMethodName) ||
 					(curMethodName.equals(newMethodName) &&
@@ -135,10 +134,9 @@ public class MethodNamingCheck extends BaseCheck {
 			return;
 		}
 
-		DetailAST identDetailAST = parentDetailAST.findFirstToken(
-			TokenTypes.IDENT);
+		String className = getIdentifier(parentDetailAST);
 
-		if (identDetailAST == null) {
+		if (className == null) {
 			return;
 		}
 
@@ -147,8 +145,6 @@ public class MethodNamingCheck extends BaseCheck {
 		if (typeDetailAST == null) {
 			return;
 		}
-
-		String className = identDetailAST.getText();
 
 		String objectName = null;
 
@@ -224,12 +220,6 @@ public class MethodNamingCheck extends BaseCheck {
 				return;
 			}
 		}
-	}
-
-	private String _getMethodName(DetailAST detailAST) {
-		DetailAST nameDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
-
-		return nameDetailAST.getText();
 	}
 
 	private static final String _CHECK_SEARCH_METHOD_NAMES =

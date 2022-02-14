@@ -238,10 +238,9 @@ public class DeprecatedAPICheck extends BaseAPICheck {
 
 		String className = importName.substring(x + 1);
 
-		List<DetailAST> identDetailASTList = getAllChildTokens(
-			detailAST, true, TokenTypes.IDENT);
+		for (DetailAST identDetailAST :
+				getAllChildTokens(detailAST, true, TokenTypes.IDENT)) {
 
-		for (DetailAST identDetailAST : identDetailASTList) {
 			if (className.equals(identDetailAST.getText()) &&
 				!hasDeprecatedParent(identDetailAST) &&
 				!hasSuppressDeprecationWarningsAnnotation(identDetailAST)) {

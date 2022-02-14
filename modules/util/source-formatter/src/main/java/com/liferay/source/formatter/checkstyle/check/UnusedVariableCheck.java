@@ -54,9 +54,7 @@ public class UnusedVariableCheck extends BaseCheck {
 			return;
 		}
 
-		DetailAST nameDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
-
-		String variableName = nameDetailAST.getText();
+		String variableName = getIdentifier(detailAST);
 
 		if (variableName.equals("serialVersionUID")) {
 			return;

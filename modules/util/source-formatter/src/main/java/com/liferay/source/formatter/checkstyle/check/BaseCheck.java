@@ -59,6 +59,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Hugo Huijser
@@ -382,6 +384,31 @@ public abstract class BaseCheck extends AbstractCheck {
 		}
 	}
 
+	protected String getIdentifier(DetailAST detailAST) {
+		DetailAST identDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
+
+		if (identDetailAST == null) {
+			return null;
+		}
+
+		return identDetailAST.getText();
+	}
+
+	protected List<String> getIdentifiers(
+		DetailAST detailAST, boolean recursive) {
+
+		List<DetailAST> identDetailASTs = getAllChildTokens(
+			detailAST, recursive, TokenTypes.IDENT);
+
+		Stream<DetailAST> stream = identDetailASTs.stream();
+
+		return stream.map(
+			childDetailAST -> childDetailAST.getText()
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	protected List<String> getImportNames(DetailAST detailAST) {
 		if (isJSPFile()) {
 			String absolutePath = getAbsolutePath();
@@ -487,19 +514,12 @@ public abstract class BaseCheck extends AbstractCheck {
 		DetailAST dotDetailAST = detailAST.findFirstToken(TokenTypes.DOT);
 
 		if (dotDetailAST == null) {
-			DetailAST nameDetailAST = detailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			return nameDetailAST.getText();
+			return getIdentifier(detailAST);
 		}
 
-		List<DetailAST> nameDetailASTList = getAllChildTokens(
-			dotDetailAST, false, TokenTypes.IDENT);
+		List<String> identifiers = getIdentifiers(dotDetailAST, false);
 
-		DetailAST methodNameDetailAST = nameDetailASTList.get(
-			nameDetailASTList.size() - 1);
-
-		return methodNameDetailAST.getText();
+		return identifiers.get(identifiers.size() - 1);
 	}
 
 	protected String getPackageName(DetailAST detailAST) {
@@ -562,10 +582,7 @@ public abstract class BaseCheck extends AbstractCheck {
 		for (DetailAST parameterDefinitionDetailAST :
 				getParameterDefs(detailAST)) {
 
-			DetailAST identDetailAST =
-				parameterDefinitionDetailAST.findFirstToken(TokenTypes.IDENT);
-
-			parameterNames.add(identDetailAST.getText());
+			parameterNames.add(getIdentifier(parameterDefinitionDetailAST));
 		}
 
 		return parameterNames;
@@ -782,15 +799,14 @@ public abstract class BaseCheck extends AbstractCheck {
 	protected List<DetailAST> getVariableCallerDetailASTList(
 		DetailAST variableDefinitionDetailAST) {
 
-		DetailAST identDetailAST = variableDefinitionDetailAST.findFirstToken(
-			TokenTypes.IDENT);
+		String variableName = getIdentifier(variableDefinitionDetailAST);
 
-		if (identDetailAST == null) {
+		if (variableName == null) {
 			return Collections.emptyList();
 		}
 
 		return getVariableCallerDetailASTList(
-			variableDefinitionDetailAST, identDetailAST.getText());
+			variableDefinitionDetailAST, variableName);
 	}
 
 	protected List<DetailAST> getVariableCallerDetailASTList(
@@ -890,7 +906,7 @@ public abstract class BaseCheck extends AbstractCheck {
 						variableDefinitionDetailASTList) {
 
 					if (variableName.equals(
-							_getVariableName(variableDefinitionDetailAST))) {
+							getIdentifier(variableDefinitionDetailAST))) {
 
 						return variableDefinitionDetailAST;
 					}
@@ -908,7 +924,7 @@ public abstract class BaseCheck extends AbstractCheck {
 						variableDefinitionDetailASTList) {
 
 					if (variableName.equals(
-							_getVariableName(variableDefinitionDetailAST))) {
+							getIdentifier(variableDefinitionDetailAST))) {
 
 						return variableDefinitionDetailAST;
 					}
@@ -926,7 +942,7 @@ public abstract class BaseCheck extends AbstractCheck {
 						parameterDefinitionDetailASTList) {
 
 					if (variableName.equals(
-							_getVariableName(parameterDefinitionDetailAST))) {
+							getIdentifier(parameterDefinitionDetailAST))) {
 
 						return parameterDefinitionDetailAST;
 					}
@@ -942,15 +958,13 @@ public abstract class BaseCheck extends AbstractCheck {
 					recourcesDetailAST, false, TokenTypes.RESOURCE);
 
 				for (DetailAST resourceDetailAST : resourceDetailASTList) {
-					if (variableName.equals(
-							_getVariableName(resourceDetailAST))) {
-
+					if (variableName.equals(getIdentifier(resourceDetailAST))) {
 						return resourceDetailAST;
 					}
 				}
 			}
 			else if ((previousDetailAST.getType() == TokenTypes.VARIABLE_DEF) &&
-					 variableName.equals(_getVariableName(previousDetailAST))) {
+					 variableName.equals(getIdentifier(previousDetailAST))) {
 
 				DetailAST parentDetailAST = previousDetailAST.getParent();
 
@@ -992,13 +1006,7 @@ public abstract class BaseCheck extends AbstractCheck {
 			return null;
 		}
 
-		DetailAST nameDetailAST = dotDetailAST.findFirstToken(TokenTypes.IDENT);
-
-		if (nameDetailAST == null) {
-			return null;
-		}
-
-		return nameDetailAST.getText();
+		return getIdentifier(dotDetailAST);
 	}
 
 	protected DetailAST getVariableTypeDetailAST(
@@ -1214,9 +1222,7 @@ public abstract class BaseCheck extends AbstractCheck {
 			return false;
 		}
 
-		DetailAST nameDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
-
-		String name = nameDetailAST.getText();
+		String name = getIdentifier(detailAST);
 
 		if (name.matches(".*(Collection|List|Map|Set)")) {
 			return true;
@@ -1494,13 +1500,6 @@ public abstract class BaseCheck extends AbstractCheck {
 		_jspImportNamesMap.put(directoryName, importNames);
 
 		return importNames;
-	}
-
-	private String _getVariableName(DetailAST variableDefinitionDetailAST) {
-		DetailAST nameDetailAST = variableDefinitionDetailAST.findFirstToken(
-			TokenTypes.IDENT);
-
-		return nameDetailAST.getText();
 	}
 
 	private List<Variable> _getVariables(

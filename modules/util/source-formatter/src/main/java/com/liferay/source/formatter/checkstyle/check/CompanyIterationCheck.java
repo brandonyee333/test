@@ -50,10 +50,7 @@ public class CompanyIterationCheck extends BaseCheck {
 		String typeName = getTypeName(
 			variableDefinitionDetailAST.findFirstToken(TokenTypes.TYPE), true);
 
-		DetailAST nameDetailAST = variableDefinitionDetailAST.findFirstToken(
-			TokenTypes.IDENT);
-
-		String variableName = nameDetailAST.getText();
+		String variableName = getIdentifier(variableDefinitionDetailAST);
 
 		if (typeName.equals("Company")) {
 			log(

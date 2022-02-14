@@ -56,7 +56,7 @@ public class VariableNameCheck extends BaseCheck {
 			return;
 		}
 
-		String name = _getVariableName(detailAST);
+		String name = getIdentifier(detailAST);
 
 		if (detailAST.getType() == TokenTypes.VARIABLE_DEF) {
 			_checkClassNameVariable(detailAST, name);
@@ -348,7 +348,7 @@ public class VariableNameCheck extends BaseCheck {
 				break;
 			}
 
-			String variableName = _getVariableName(curDetailAST);
+			String variableName = getIdentifier(curDetailAST);
 
 			if (variableName.equals(countlessVariableName)) {
 				parentDetailAST = detailAST.getParent();
@@ -433,10 +433,7 @@ public class VariableNameCheck extends BaseCheck {
 				continue;
 			}
 
-			DetailAST identDetailAST = parentDetailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			if (!typeName.equals(identDetailAST.getText())) {
+			if (!typeName.equals(getIdentifier(parentDetailAST))) {
 				return;
 			}
 
@@ -456,10 +453,9 @@ public class VariableNameCheck extends BaseCheck {
 			for (DetailAST variableDeclarationDetailAST :
 					variableDeclarationDetailASTList) {
 
-				identDetailAST = variableDeclarationDetailAST.findFirstToken(
-					TokenTypes.IDENT);
+				if (expectedVariableName.equals(
+						getIdentifier(variableDeclarationDetailAST))) {
 
-				if (expectedVariableName.equals(identDetailAST.getText())) {
 					return;
 				}
 			}
@@ -732,10 +728,7 @@ public class VariableNameCheck extends BaseCheck {
 		}
 
 		for (DetailAST definitionDetailAST : definitionDetailASTList) {
-			DetailAST definitionNameDetailAST =
-				definitionDetailAST.findFirstToken(TokenTypes.IDENT);
-
-			if (variableName.equals(definitionNameDetailAST.getText())) {
+			if (variableName.equals(getIdentifier(definitionDetailAST))) {
 				return true;
 			}
 		}
@@ -745,9 +738,7 @@ public class VariableNameCheck extends BaseCheck {
 
 	private DetailAST _getDetailAST(Set<DetailAST> detailASTSet, String name) {
 		for (DetailAST detailAST : detailASTSet) {
-			if (StringUtil.equalsIgnoreCase(
-					name, _getVariableName(detailAST))) {
-
+			if (StringUtil.equalsIgnoreCase(name, getIdentifier(detailAST))) {
 				return detailAST;
 			}
 		}
@@ -803,13 +794,6 @@ public class VariableNameCheck extends BaseCheck {
 		}
 
 		return digits;
-	}
-
-	private String _getVariableName(DetailAST variableDefinitionDetailAST) {
-		DetailAST nameDetailAST = variableDefinitionDetailAST.findFirstToken(
-			TokenTypes.IDENT);
-
-		return nameDetailAST.getText();
 	}
 
 	private boolean _isBooleanType(DetailAST typeDetailAST) {

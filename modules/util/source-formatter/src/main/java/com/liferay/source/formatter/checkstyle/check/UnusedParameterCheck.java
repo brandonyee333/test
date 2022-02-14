@@ -59,9 +59,7 @@ public class UnusedParameterCheck extends BaseCheck {
 			return;
 		}
 
-		DetailAST nameDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
-
-		String name = nameDetailAST.getText();
+		String name = getIdentifier(detailAST);
 
 		if (name.equals("readObject") || name.equals("writeObject")) {
 			return;
@@ -76,13 +74,12 @@ public class UnusedParameterCheck extends BaseCheck {
 		DetailAST statementsDetailAST = detailAST.findFirstToken(
 			TokenTypes.SLIST);
 
-		List<DetailAST> allIdentsAST = getAllChildTokens(
-			statementsDetailAST, true, TokenTypes.IDENT);
+		List<String> identifiers = getIdentifiers(statementsDetailAST, true);
 
 		parameterNameLoop:
 		for (String parameterName : getParameterNames(detailAST)) {
-			for (DetailAST identDetailAST : allIdentsAST) {
-				if (parameterName.equals(identDetailAST.getText())) {
+			for (String identifier : identifiers) {
+				if (parameterName.equals(identifier)) {
 					continue parameterNameLoop;
 				}
 			}
@@ -103,18 +100,15 @@ public class UnusedParameterCheck extends BaseCheck {
 			return false;
 		}
 
-		DetailAST nameDetailAST = detailAST.findFirstToken(TokenTypes.IDENT);
-
-		String name = nameDetailAST.getText();
+		String name = getIdentifier(detailAST);
 
 		for (DetailAST methodReferenceDetailAST :
 				methodReferenceDetailASTList) {
 
-			for (DetailAST identDetailAST :
-					getAllChildTokens(
-						methodReferenceDetailAST, true, TokenTypes.IDENT)) {
+			for (String identifier :
+					getIdentifiers(methodReferenceDetailAST, true)) {
 
-				if (name.equals(identDetailAST.getText())) {
+				if (name.equals(identifier)) {
 					return true;
 				}
 			}

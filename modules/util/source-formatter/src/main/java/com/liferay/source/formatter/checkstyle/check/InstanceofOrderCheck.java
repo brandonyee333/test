@@ -49,8 +49,8 @@ public class InstanceofOrderCheck extends BaseCheck {
 			return;
 		}
 
-		String variableName1 = _getVariableName(detailAST);
-		String variableName2 = _getVariableName(nextConditionDetailAST);
+		String variableName1 = getIdentifier(detailAST);
+		String variableName2 = getIdentifier(nextConditionDetailAST);
 
 		if ((variableName1 == null) || !variableName1.equals(variableName2)) {
 			return;
@@ -79,17 +79,6 @@ public class InstanceofOrderCheck extends BaseCheck {
 		DetailAST parentDetailAST = detailAST.getParent();
 
 		return parentDetailAST.getNextSibling();
-	}
-
-	private String _getVariableName(DetailAST literalInstanceofDetailAST) {
-		DetailAST nameDetailAST = literalInstanceofDetailAST.findFirstToken(
-			TokenTypes.IDENT);
-
-		if (nameDetailAST == null) {
-			return null;
-		}
-
-		return nameDetailAST.getText();
 	}
 
 	private static final String _MSG_ORDER_INSTANCEOF = "instanceof.order";

@@ -112,10 +112,7 @@ public class ConstructorGlobalVariableDeclarationCheck extends BaseCheck {
 				parentDetailAST, false, TokenTypes.VARIABLE_DEF);
 
 			for (DetailAST variableDefDetailAST : variableDefDetailASTList) {
-				DetailAST identDetailAST = variableDefDetailAST.findFirstToken(
-					TokenTypes.IDENT);
-
-				if (variableName.equals(identDetailAST.getText())) {
+				if (variableName.equals(getIdentifier(variableDefDetailAST))) {
 					log(
 						firstChildDetailAST, _MSG_DECLARE_GLOBAL_VARIABLE_VALUE,
 						variableName, variableDefDetailAST.getLineNo());

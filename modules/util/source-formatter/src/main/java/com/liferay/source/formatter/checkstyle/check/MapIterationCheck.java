@@ -44,13 +44,8 @@ public class MapIterationCheck extends BaseCheck {
 	}
 
 	private void _checkKeySetIteration(DetailAST forEachClauseDetailAST) {
-		DetailAST variableDefinitionDetailAST =
-			forEachClauseDetailAST.findFirstToken(TokenTypes.VARIABLE_DEF);
-
-		DetailAST identDetailAST = variableDefinitionDetailAST.findFirstToken(
-			TokenTypes.IDENT);
-
-		String keyName = identDetailAST.getText();
+		String keyName = getIdentifier(
+			forEachClauseDetailAST.findFirstToken(TokenTypes.VARIABLE_DEF));
 
 		List<DetailAST> keySetMethodCallDetailASTList = getMethodCalls(
 			forEachClauseDetailAST, "keySet");

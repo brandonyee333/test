@@ -54,10 +54,9 @@ public class ThreadLocalUtilCheck extends BaseCheck {
 		firstChildDetailAST = firstChildDetailAST.getFirstChild();
 
 		if (firstChildDetailAST.getType() == TokenTypes.LITERAL_NEW) {
-			DetailAST nameDetailAST = detailAST.findFirstToken(
-				TokenTypes.IDENT);
-
-			log(detailAST, _MSG_USE_THREAD_LOCAL_UTIL, nameDetailAST.getText());
+			log(
+				detailAST, _MSG_USE_THREAD_LOCAL_UTIL,
+				getIdentifier(detailAST));
 		}
 	}
 
