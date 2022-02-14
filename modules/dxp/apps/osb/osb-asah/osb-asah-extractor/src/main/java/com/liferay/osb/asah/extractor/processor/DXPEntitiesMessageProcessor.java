@@ -519,9 +519,6 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
-	@Value("${osb.asah.dxp.entities.message.processor.pull.messages.size:50}")
-	private int _dxpEntitiesMessageProcessorPullMessagesSize;
-
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
 
