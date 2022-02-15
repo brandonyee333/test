@@ -8,7 +8,7 @@ configurations.all {
 
 repositories {
 	maven {
-		url "http://packages.confluent.io/maven/"
+		url "http://packages.confluent.io/maven"
 	}
 }
 
