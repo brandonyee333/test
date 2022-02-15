@@ -63,7 +63,6 @@ definition {
 
 				Modal.save();
 			}
-
 			else {
 				SelectFrame(locator1 = "IFrame#MODAL_BODY");
 
