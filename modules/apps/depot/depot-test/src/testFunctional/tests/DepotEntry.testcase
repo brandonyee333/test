@@ -200,13 +200,13 @@ definition {
 
 		LexiconCard.clickCard(card = "Blank Site");
 
+		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+
 		PortletEntry.inputName(name = "Site Name");
 
-		Button.clickSave();
+		Button.clickAdd();
 
-		AssertTextEquals(
-			locator1 = "Message#ERROR_FORM_FIELD_REQUIRED",
-			value1 = "Please enter a unique name.");
+		Alert.viewErrorMessage(errorMessage = "Please enter a unique name.");
 	}
 
 	@description = "This ensures that a depot can be deleted."
