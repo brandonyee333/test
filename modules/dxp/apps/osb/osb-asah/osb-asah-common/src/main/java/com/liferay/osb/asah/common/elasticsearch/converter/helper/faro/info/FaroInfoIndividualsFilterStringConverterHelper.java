@@ -272,13 +272,32 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			return QueryBuilders.matchAllQuery();
 		}
 
-		List<Long> individualIds = _membershipDog.getIndividualIds(
-			_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
-			value, minDocCount, checkEqualityOnly);
+		QueryBuilder accountsFilterByCountFunctionQueryBuilder;
 
-		QueryBuilder accountsFilterByCountFunctionQueryBuilder =
-			QueryBuilders.termsQuery(
-				"id", ListUtil.map(individualIds, String::valueOf));
+		Long individualId = IndividualIdThreadLocal.getIndividualId();
+
+		if (individualId != null) {
+			if (!_membershipDog.isIndividualInSegments(
+					individualId,
+					_segmentDog.getSegmentIds(
+						individualSegmentNames, "INACTIVE"),
+					value, minDocCount, checkEqualityOnly)) {
+
+				return null;
+			}
+
+			accountsFilterByCountFunctionQueryBuilder = QueryBuilders.termQuery(
+				"id", String.valueOf(individualId));
+		}
+		else {
+			List<Long> individualIds = _membershipDog.getIndividualIds(
+				_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
+				value, minDocCount, checkEqualityOnly);
+
+			accountsFilterByCountFunctionQueryBuilder =
+				QueryBuilders.termsQuery(
+					"id", ListUtil.map(individualIds, String::valueOf));
+		}
 
 		if (negate) {
 			return BoolQueryBuilderUtil.mustNot(

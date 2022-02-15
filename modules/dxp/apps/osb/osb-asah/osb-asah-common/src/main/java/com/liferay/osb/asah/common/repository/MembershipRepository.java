@@ -91,6 +91,11 @@ public interface MembershipRepository extends Repository<Membership, Long> {
 		List<Long> individualSegmentIds, int max, int min, boolean ascending);
 
 	@Cacheable
+	public List<Long> findIndividualIdByIndividualSegmentIdIn(
+		Long individualId, List<Long> individualSegmentIds, int max, int min,
+		boolean ascending);
+
+	@Cacheable
 	public List<Long> findIndividualSegmentIdByIndividualIdAndStatus(
 		@Param("individualId") Long individualId,
 		@Param("status") String status);

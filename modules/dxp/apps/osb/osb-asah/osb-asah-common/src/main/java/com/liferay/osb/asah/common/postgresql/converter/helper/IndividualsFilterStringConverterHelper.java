@@ -298,19 +298,41 @@ public class IndividualsFilterStringConverterHelper
 			return DSL.noCondition();
 		}
 
-		List<Long> individualIds = _membershipDog.getIndividualIds(
-			_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
-			value, minDocCount, checkEqualityOnly);
+		Condition condition;
 
-		if (individualIds.isEmpty()) {
-			return DSL.noCondition();
+		Long individualId = IndividualIdThreadLocal.getIndividualId();
+
+		if (individualId != null) {
+			if (!_membershipDog.isIndividualInSegments(
+					individualId,
+					_segmentDog.getSegmentIds(
+						individualSegmentNames, "INACTIVE"),
+					value, minDocCount, checkEqualityOnly)) {
+
+				return DSL.noCondition();
+			}
+
+			condition = DSL.field(
+				"individual.id"
+			).eq(
+				individualId
+			);
 		}
+		else {
+			List<Long> individualIds = _membershipDog.getIndividualIds(
+				_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
+				value, minDocCount, checkEqualityOnly);
 
-		Condition condition = DSL.field(
-			"individual.id"
-		).in(
-			individualIds
-		);
+			if (individualIds.isEmpty()) {
+				return DSL.noCondition();
+			}
+
+			condition = DSL.field(
+				"individual.id"
+			).in(
+				individualIds
+			);
+		}
 
 		if (negate) {
 			return DSL.not(condition);

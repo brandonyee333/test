@@ -414,6 +414,60 @@ public class ElasticsearchMembershipRepositoryImpl
 	}
 
 	@Override
+	public List<Long> findIndividualIdByIndividualSegmentIdIn(
+		Long individualId, List<Long> individualSegmentIds, int max, int min,
+		boolean ascending) {
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(),
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"individualIds"
+					).field(
+						"individualId"
+					).minDocCount(
+						min
+					).order(
+						BucketOrder.compound(
+							BucketOrder.count(ascending), BucketOrder.key(true))
+					).size(
+						Integer.MAX_VALUE
+					));
+
+				searchSourceBuilder.query(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termsQuery(
+							"individualSegmentId",
+							ListUtil.map(individualSegmentIds, String::valueOf))
+					).filter(
+						QueryBuilders.termQuery("individualId", individualId)
+					));
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (isEmpty(aggregations)) {
+			return Collections.emptyList();
+		}
+
+		Terms terms = aggregations.get("individualIds");
+
+		List<Long> individualIds = new ArrayList<>();
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			if (ascending && (bucket.getDocCount() > max)) {
+				break;
+			}
+
+			individualIds.add(Long.valueOf(bucket.getKeyAsString()));
+		}
+
+		return individualIds;
+	}
+
+	@Override
 	public List<Long> findIndividualSegmentIdByIndividualIdAndStatus(
 		Long individualId, String status) {
 

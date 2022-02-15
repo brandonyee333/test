@@ -398,6 +398,17 @@ public class MembershipDog extends BaseFaroInfoDog {
 		return membershipsJSONObjects;
 	}
 
+	public boolean isIndividualInSegments(
+		Long individualId, List<Long> individualSegmentIds, int max, int min,
+		boolean ascending) {
+
+		List<Long> individualIds =
+			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+				individualId, individualSegmentIds, max, min, ascending);
+
+		return !individualIds.isEmpty();
+	}
+
 	public List<Long> isMember(
 		List<Long> individualIds, Long individualSegmentId) {
 

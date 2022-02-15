@@ -67,6 +67,33 @@ public class MembershipRepositoryImpl {
 		);
 	}
 
+	public List<Long> findIndividualIdByIndividualSegmentIdIn(
+		Long individualId, List<Long> individualSegmentIds, int max, int min,
+		boolean ascending) {
+
+		Field<Object> individualIdField = DSL.field("individualId");
+
+		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
+			individualIdField);
+
+		Field<Object> individualSegmentIdField = DSL.field(
+			"individualSegmentId");
+
+		return selectSelectStep.from(
+			"Membership"
+		).where(
+			DSL.and(
+				individualSegmentIdField.in(individualSegmentIds),
+				individualIdField.eq(individualId))
+		).groupBy(
+			individualIdField
+		).having(
+			_getConditions(max, min, ascending)
+		).fetch(
+			0, Long.class
+		);
+	}
+
 	public List<Membership> searchMemberships(
 		@Nullable Long id, Long individualSegmentId, int size, String status) {
 
