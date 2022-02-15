@@ -198,9 +198,12 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		List<Individual> individuals = new ArrayList<>();
 
 		for (MembershipChange membershipChange : membershipChanges) {
-			individuals.add(
-				_individualDog.fetchIndividual(
-					membershipChange.getIndividualId()));
+			Individual individual = _individualDog.fetchIndividual(
+				membershipChange.getIndividualId());
+
+			if (individual != null) {
+				individuals.add(individual);
+			}
 		}
 
 		Map<Long, JSONObject> individualAccountNamesJSONObjects =
