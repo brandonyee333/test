@@ -64,7 +64,7 @@ definition {
 
 		// End the test if the Google refresh token limit is exceeded.
 
-		Translations.translateSpecificFieldWithGoogle(fieldName = "Content");
+		Translations.translateSpecificField(fieldName = "Content");
 
 		if (IsTextEqual.isPartialText(key_fieldName = "Content", locator1 = "Message#SUCCESS_SPECIFIC_FORM_FIELD_REQUIRED", value1 = "Field Translated")) {
 			Translations.viewTargetFields(
@@ -91,6 +91,149 @@ definition {
 		}
 	}
 
+	@description = "This ensures that google translation can be used to auto-translate a content page."
+	@priority = "5"
+	test CanTranslateContentPage {
+		property test.name.skip.portal.instance = "AutoTranslation#CanTranslateContentPage";
+
+		JSONLayout.addPublicLayout(
+			groupName = "Site Name",
+			layoutName = "Content Page Name",
+			type = "content");
+
+		ContentPagesNavigator.openEditContentPage(
+			pageName = "Content Page Name",
+			siteName = "Site Name");
+
+		PageEditor.addFragment(
+			collectionName = "Basic Components",
+			fragmentName = "Button");
+
+		PagesAdmin.openPagesAdmin(siteURLKey = "site-name");
+
+		WaitForPageLoad();
+
+		ContentPagesNavigator.goToTranslation(pageName = "Content Page Name");
+
+		Translations.changeTargetLocale(
+			currentTargetLocale = "ar-SA",
+			newTargetLocale = "zh-CN");
+
+		Translations.autoTranslate();
+
+		// End the test if the Google refresh token limit is exceeded.
+
+		if (IsTextEqual.isPartialText(locator1 = "Toolbar#FEEDBACK", value1 = "Successfully received translations.")) {
+
+			Translations.viewTargetFields(
+				contentPageName = "内容页面名称",
+				link = "去某地");
+
+			PortletEntry.publish();
+
+			ContentPagesNavigator.openEditContentPage(
+				pageName = "Content Page Name",
+				siteName = "Site Name");
+
+			PageEditor.changeLocale(
+				currentLocale = "en-US",
+				locale = "zh-CN");
+
+			ContentPages.viewFragmentText(
+				fragmentName = "button",
+				id = "link",
+				text = "去某地");
+
+			PageEditor.clickPublish();
+
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "Content Page Name",
+				siteName = "Site Name");
+
+			Navigator.ensureLocaleURL(locale = "zh");
+
+			Page.viewCurrentPage(pageName = "内容页面名称");
+		}
+		else if (IsTextEqual.isPartialText(locator1 = "Toolbar#FEEDBACK", value1 = "There is a problem with the translation service. Please contact your administrator.")) {
+			echo("There is a Google network issue. Ending test.");
+		}
+	}
+
+	@description = "This ensures that the fragment filed on content page can be translated independently."
+	@priority = "5"
+	test CanTranslateContentPageFieldIndependently {
+		property test.name.skip.portal.instance = "AutoTranslation#CanTranslateContentPageFieldIndependently";
+
+		JSONLayout.addPublicLayout(
+			groupName = "Site Name",
+			layoutName = "Content Page Name",
+			type = "content");
+
+		ContentPagesNavigator.openEditContentPage(
+			pageName = "Content Page Name",
+			siteName = "Site Name");
+
+		PageEditor.addFragment(
+			collectionName = "Basic Components",
+			fragmentName = "Heading");
+
+		PageEditor.editFragmentText(
+			fragmentName = "Heading",
+			id = "element-text",
+			text = "Heading");
+
+		PagesAdmin.openPagesAdmin(siteURLKey = "site-name");
+
+		WaitForPageLoad();
+
+		ContentPagesNavigator.goToTranslation(pageName = "Content Page Name");
+
+		Translations.changeTargetLocale(
+			currentTargetLocale = "ar-SA",
+			newTargetLocale = "de-DE");
+
+		Translations.translateSpecificField(fieldName = "element-text");
+
+		if (IsTextEqual.isPartialText(key_fieldName = "Content", locator1 = "Message#SUCCESS_SPECIFIC_FORM_FIELD_REQUIRED", value1 = "Field Translated")) {
+			Translations.viewTargetFields(
+				contentPageName = "Content Page Name",
+				elementText = "Üerschrift");
+
+			PortletEntry.publish();
+
+			ContentPagesNavigator.openEditContentPage(
+				pageName = "Content Page Name",
+				siteName = "Site Name");
+
+			PageEditor.changeLocale(
+				currentLocale = "en-US",
+				locale = "de-DE");
+
+			PageEditor.viewFragmentEditableText(
+				editableText = "Üerschrift",
+				fragmentName = "Heading",
+				id = "element-text");
+
+			PageEditor.clickPublish();
+
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "Content Page Name",
+				siteName = "Site Name");
+
+			Navigator.ensureLocaleURL(locale = "de");
+
+			Page.viewCurrentPage(pageName = "Content Page Name");
+
+			PageEditor.viewFragmentEditableText(
+				editableText = "Üerschrift",
+				fragmentName = "Heading",
+				id = "element-text");
+		}
+		else if (IsTextEqual.isPartialText(key_fieldName = "Content", locator1 = "Message#SUCCESS_SPECIFIC_FORM_FIELD_REQUIRED", value1 = "There is a problem with the translation service. Please contact your administrator.")) {
+			echo("There is a Google network issue. Ending test.");
+		}
+	}
+
 	@description = "This ensures that the web content description can be translated independently"
 	@priority = "5"
 	test CanTranslateDescriptionFieldIndependently {
@@ -105,7 +248,7 @@ definition {
 
 		// End the test if the Google refresh token limit is exceeded.
 
-		Translations.translateSpecificFieldWithGoogle(fieldName = "Description");
+		Translations.translateSpecificField(fieldName = "Description");
 
 		if (IsTextEqual.isPartialText(key_fieldName = "Description", locator1 = "Message#SUCCESS_SPECIFIC_FORM_FIELD_REQUIRED", value1 = "Field Translated")) {
 			Translations.viewTargetFields(
@@ -180,7 +323,7 @@ definition {
 
 		// End the test if the Google refresh token limit is exceeded.
 
-		Translations.translateSpecificFieldWithGoogle(fieldName = "Decimal");
+		Translations.translateSpecificField(fieldName = "Decimal");
 
 		if (IsTextEqual.isPartialText(key_fieldName = "Decimal", locator1 = "Message#SUCCESS_SPECIFIC_FORM_FIELD_REQUIRED", value1 = "Field Translated")) {
 			Translations.viewTargetFields(
@@ -192,7 +335,7 @@ definition {
 				locator1 = "TextInput#TRANSLATIONS_TARGET_FIELD",
 				value1 = "10");
 
-			Translations.translateSpecificFieldWithGoogle(fieldName = "Numeric");
+			Translations.translateSpecificField(fieldName = "Numeric");
 
 			Translations.viewTargetFields(
 				webContentDecimal = "1.0",
@@ -254,14 +397,14 @@ definition {
 
 		// End the test if the Google refresh token limit is exceeded.
 
-		Translations.translateSpecificFieldWithGoogle(fieldName = "Title");
+		Translations.translateSpecificField(fieldName = "Title");
 
 		if (IsTextEqual.isPartialText(key_fieldName = "Title", locator1 = "Message#SUCCESS_SPECIFIC_FORM_FIELD_REQUIRED", value1 = "Field Translated")) {
 			Translations.viewTargetFields(
 				webContentSourceHtml = "This is the content of the rich text field",
 				webContentTitle = "これはリッチテキストフィールドのタイトルです");
 
-			Translations.translateSpecificFieldWithGoogle(fieldName = "Rich Text");
+			Translations.translateSpecificField(fieldName = "Rich Text");
 
 			Translations.viewTargetFields(
 				webContentSourceHtml = "これはリッチテキストフィールドの内容です",
@@ -330,14 +473,14 @@ definition {
 
 		// End the test if the Google refresh token limit is exceeded.
 
-		Translations.translateSpecificFieldWithGoogle(fieldName = "Title");
+		Translations.translateSpecificField(fieldName = "Title");
 
 		if (IsTextEqual.isPartialText(key_fieldName = "Title", locator1 = "Message#SUCCESS_SPECIFIC_FORM_FIELD_REQUIRED", value1 = "Field Translated")) {
 			Translations.viewTargetFields(
 				webContentTextBox = "This is the content of the text box field",
 				webContentTitle = "これはウェブ記事のタイトルです");
 
-			Translations.translateSpecificFieldWithGoogle(fieldName = "Text Box");
+			Translations.translateSpecificField(fieldName = "Text Box");
 
 			Translations.viewTargetFields(
 				webContentTextBox = "これはテキストボックスフィールドの内容です",
@@ -403,14 +546,14 @@ definition {
 
 		// End the test if the Google refresh token limit is exceeded.
 
-		Translations.translateSpecificFieldWithGoogle(fieldName = "Title");
+		Translations.translateSpecificField(fieldName = "Title");
 
 		if (IsTextEqual.isPartialText(key_fieldName = "Title", locator1 = "Message#SUCCESS_SPECIFIC_FORM_FIELD_REQUIRED", value1 = "Field Translated")) {
 			Translations.viewTargetFields(
 				webContentText = "This is the content of the text field",
 				webContentTitle = "これはウェブ記事のタイトルです");
 
-			Translations.translateSpecificFieldWithGoogle(fieldName = "Text");
+			Translations.translateSpecificField(fieldName = "Text");
 
 			Translations.viewTargetFields(
 				webContentText = "これはテキストフィールドの内容です",
@@ -448,7 +591,7 @@ definition {
 
 		// End the test if the Google refresh token limit is exceeded.
 
-		Translations.translateSpecificFieldWithGoogle(fieldName = "Title");
+		Translations.translateSpecificField(fieldName = "Title");
 
 		if (IsTextEqual.isPartialText(key_fieldName = "Title", locator1 = "Message#SUCCESS_SPECIFIC_FORM_FIELD_REQUIRED", value1 = "Field Translated")) {
 			Translations.viewTargetFields(
@@ -489,7 +632,7 @@ definition {
 			currentTargetLocale = "ar-SA",
 			newTargetLocale = "ja-JP");
 
-		Translations.translateWithGoogle();
+		Translations.autoTranslate();
 
 		// End the test if the Google refresh token limit is exceeded.
 
@@ -526,7 +669,7 @@ definition {
 			currentTargetLocale = "ar-SA",
 			newTargetLocale = "es-ES");
 
-		Translations.translateWithGoogle();
+		Translations.autoTranslate();
 
 		// End the test if the Google refresh token limit is exceeded.
 
