@@ -58,15 +58,23 @@ definition {
 
 			LexiconCard.clickCard(card = "${siteTemplateName}");
 
-			SelectFrame(locator1 = "IFrame#MODAL_BODY");
+			if (IsVisible(locator1 = "TextInput#NAME")) {
+				PortletEntry.inputName(name = "${siteName}");
 
-			PortletEntry.inputName(name = "${siteName}");
+				Modal.save();
+			}
 
-			Button.clickAdd();
+			else {
+				SelectFrame(locator1 = "IFrame#MODAL_BODY");
 
-			SelectFrameTop();
+				PortletEntry.inputName(name = "${siteName}");
 
-			Alert.viewSuccessMessage();
+				Button.clickAdd();
+
+				SelectFrameTop();
+
+				Alert.viewSuccessMessage();
+			}
 		}
 
 		if ("${siteType}" == "Site Template") {
