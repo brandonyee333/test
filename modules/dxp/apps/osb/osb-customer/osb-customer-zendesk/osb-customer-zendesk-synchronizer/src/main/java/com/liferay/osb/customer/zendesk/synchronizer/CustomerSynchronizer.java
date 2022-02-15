@@ -108,7 +108,7 @@ public class CustomerSynchronizer {
 	@Reference
 	private AccountReader _accountReader;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference

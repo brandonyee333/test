@@ -228,7 +228,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 	@Reference
 	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference

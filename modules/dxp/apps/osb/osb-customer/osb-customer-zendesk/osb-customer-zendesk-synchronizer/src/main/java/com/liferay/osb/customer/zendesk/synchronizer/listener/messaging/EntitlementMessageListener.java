@@ -153,7 +153,7 @@ public class EntitlementMessageListener extends BaseMessageListener {
 
 	private ServiceRegistration<Destination> _serviceRegistration;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference

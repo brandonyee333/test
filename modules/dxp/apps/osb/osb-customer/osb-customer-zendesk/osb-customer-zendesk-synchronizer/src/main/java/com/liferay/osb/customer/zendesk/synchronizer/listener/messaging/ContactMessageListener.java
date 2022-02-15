@@ -332,7 +332,7 @@ public class ContactMessageListener extends BaseMessageListener {
 	@Reference
 	private TeamWebService _teamWebService;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference

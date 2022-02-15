@@ -255,7 +255,7 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 	@Reference
 	protected UserGroupRoleLocalService userGroupRoleLocalService;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	protected UserIdentityProvider userIdentityProvider;
 
 	@Reference

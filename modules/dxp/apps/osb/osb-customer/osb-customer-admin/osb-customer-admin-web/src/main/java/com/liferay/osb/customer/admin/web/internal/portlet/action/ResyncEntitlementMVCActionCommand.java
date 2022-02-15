@@ -132,7 +132,7 @@ public class ResyncEntitlementMVCActionCommand extends BaseMVCActionCommand {
 	@Reference
 	private OrganizationLocalService _organizationLocalService;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference

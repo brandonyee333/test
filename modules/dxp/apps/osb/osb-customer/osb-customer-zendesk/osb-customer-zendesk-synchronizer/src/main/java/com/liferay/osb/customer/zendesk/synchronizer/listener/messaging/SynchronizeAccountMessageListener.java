@@ -399,7 +399,7 @@ public class SynchronizeAccountMessageListener extends BaseMessageListener {
 	@Reference
 	private TeamSynchronizer _teamSynchronizer;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference

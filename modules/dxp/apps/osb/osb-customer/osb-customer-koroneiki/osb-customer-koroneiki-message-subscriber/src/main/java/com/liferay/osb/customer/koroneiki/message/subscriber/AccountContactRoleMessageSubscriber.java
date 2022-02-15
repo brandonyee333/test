@@ -111,7 +111,7 @@ public class AccountContactRoleMessageSubscriber
 	@Reference
 	private JSONFactory _jsonFactory;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
 
 }

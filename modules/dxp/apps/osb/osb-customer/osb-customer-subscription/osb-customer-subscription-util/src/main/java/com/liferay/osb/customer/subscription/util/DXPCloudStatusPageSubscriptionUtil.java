@@ -235,7 +235,7 @@ public class DXPCloudStatusPageSubscriptionUtil {
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
 
 }
