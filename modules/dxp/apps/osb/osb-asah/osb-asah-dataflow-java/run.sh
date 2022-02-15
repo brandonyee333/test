@@ -7,7 +7,6 @@ then
 fi
 
 PROJECT_ID=$(gcloud config get-value project)
-REGION=$(gcloud config get-value compute/region)
 
 DXP_CLOUD_PROJECT=${1}
 EVENT_PROPERTY_TABLE_NAME=${PROJECT_ID}:osbasah.eventproperty
@@ -15,6 +14,7 @@ EVENT_TABLE_NAME=${PROJECT_ID}:osbasah.event
 MAIN_CLASS_NAME=com.liferay.osb.asah.dataflow.ingestion.StreamingIngestionPipeline
 OUTPUT_FOLDER=gs://${PROJECT_ID}-analytics-events
 PIPELINE_FOLDER=gs://${PROJECT_ID}-dataflow
+REGION=$(gcloud config get-value compute/region)
 RUNNER=DataflowRunner
 SESSION_TABLE_NAME=${PROJECT_ID}:osbasah.session
 SESSION_WINDOW_ALLOWED_LATENESS=5
