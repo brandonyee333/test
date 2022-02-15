@@ -17,12 +17,23 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.tes
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 
+import java.util.Collections;
+
+import org.apache.lucene.search.join.ScoreMode;
+
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -405,6 +416,43 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	}
 
 	@Test
+	public void testAccountsFilterByCountWithIndividual() {
+		testFilterStringWithIndividual(
+			"accounts.filterByCount(filter='organization/yearStarted" +
+				"/value lt 2000', operator='ne', value=0)",
+			1L,
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("id", 1L)
+			).should(
+				QueryBuilders.nestedQuery(
+					"dataSourceAccountPKs",
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termsQuery(
+							"dataSourceAccountPKs.accountPKs",
+							"7dc0bc87-2d53-40d5-8137-2db03470adda")
+					).filter(
+						QueryBuilders.termQuery(
+							"dataSourceAccountPKs.dataSourceId",
+							"346306699042460013")
+					),
+					ScoreMode.None)
+			).should(
+				QueryBuilders.nestedQuery(
+					"dataSourceAccountPKs",
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termsQuery(
+							"dataSourceAccountPKs.accountPKs",
+							"e15f3b2f-7cad-4772-b844-0d96d2f27528")
+					).filter(
+						QueryBuilders.termQuery(
+							"dataSourceAccountPKs.dataSourceId",
+							"346306699042460013")
+					),
+					ScoreMode.None)
+			));
+	}
+
+	@Test
 	public void testAccountsFilterByCountWithInvalidOperatorThrowsException() {
 		testFilterStringThrowsException(
 			IllegalArgumentException.class, "Unknown operator: is",
@@ -499,6 +547,54 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 				"both be null",
 			"accounts.filterByCount(filter='contains(" +
 				"organization/phone/value, ''0'')', value=0)");
+	}
+
+	@Test
+	public void testAccountsFilterForIndividual() {
+		try {
+			IndividualIdThreadLocal.setIndividualId(1L);
+
+			QueryBuilder queryBuilder =
+				FilterStringToQueryBuilderConverter.convert(
+					"accounts.filter(filter='not startsWith(" +
+						"organization/shippingPostalCode/value, ''9'')')",
+					_faroInfoIndividualsFilterStringConverterHelper);
+
+			Assertions.assertEquals(
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("id", 1L)
+				).should(
+					QueryBuilders.nestedQuery(
+						"dataSourceAccountPKs",
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termsQuery(
+								"dataSourceAccountPKs.accountPKs",
+								"7dc0bc87-2d53-40d5-8137-2db03470adda")
+						).filter(
+							QueryBuilders.termQuery(
+								"dataSourceAccountPKs.dataSourceId",
+								"346306699042460013")
+						),
+						ScoreMode.None)
+				).should(
+					QueryBuilders.nestedQuery(
+						"dataSourceAccountPKs",
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termsQuery(
+								"dataSourceAccountPKs.accountPKs",
+								"e15f3b2f-7cad-4772-b844-0d96d2f27528")
+						).filter(
+							QueryBuilders.termQuery(
+								"dataSourceAccountPKs.dataSourceId",
+								"346306699042460013")
+						),
+						ScoreMode.None)
+				),
+				queryBuilder);
+		}
+		finally {
+			IndividualIdThreadLocal.remove();
+		}
 	}
 
 	@Test
@@ -940,6 +1036,26 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	}
 
 	@Test
+	public void testActivitiesFilterByCountWithIndividual1() {
+		testFilterStringWithIndividual(
+			"activities.filterByCount(filter='activityKey eq " +
+				"''Page#pageViewed#357731107452100994'' and day gt " +
+					"''yesterday''', operator='eq', value=1)",
+			1L, BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery()));
+	}
+
+	@Test
+	public void testActivitiesFilterByCountWithIndividual2() {
+		testFilterStringWithIndividual(
+			"activities.filterByCount(filter='activityKey eq " +
+				"''Page#pageViewed#357731107452100994''', operator='ge', " +
+					"value=1)",
+			346468614337714393L,
+			QueryBuilders.termsQuery(
+				"id", Collections.singleton("346468614337714393")));
+	}
+
+	@Test
 	public void testActivitiesFilterGtDay() throws Exception {
 		testFilterString(
 			"individuals", "activities.filter(filter='day gt ''2019-04-09''')",
@@ -961,6 +1077,14 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 		testFilterString(
 			"individuals", "activities.filter(filter='day lt ''2019-03-07''')",
 			"346468603851271125");
+	}
+
+	@Test
+	public void testActivitiesFilterWithIndividual() {
+		testFilterStringWithIndividual(
+			"activities.filter(filter='between(day, ''2019-04-11'', " +
+				"''2019-04-12'')')",
+			1L, QueryBuilders.matchAllQuery());
 	}
 
 	@ElasticsearchIndex(
@@ -1074,6 +1198,31 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	}
 
 	@Test
+	public void testInterestsFilterWithIndividual() {
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"IndividualInterestScoresNanite",
+				JSONUtil.put("lastSuccessfulDay", DateUtil.newDayDateString())),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"InterestThresholdScoreNanite",
+				JSONUtil.put(
+					"lastSuccessfulDay", DateUtil.newDayDateString()
+				).put(
+					"score", 0.2
+				)),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		testFilterStringWithIndividual(
+			"interests.filter(filter='(name eq ''abc'') and (score eq " +
+				"''true'')')",
+			346468700681239480L,
+			QueryBuilders.termsQuery("id", "346468700681239480"));
+	}
+
+	@Test
 	public void testOrganizationFilterGtModifiedDate() throws Exception {
 		testFilterString(
 			"individuals",
@@ -1183,6 +1332,34 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"(organizations.filter(filter='(type eq ''organization'')'))",
 			"346468603851271125", "346468605699756892", "346468608880878498",
 			"346468609906122549");
+	}
+
+	@Test
+	public void testOrganizationFilterWithFilter() {
+		try {
+			IndividualIdThreadLocal.setIndividualId(1L);
+
+			QueryBuilder queryBuilder =
+				FilterStringToQueryBuilderConverter.convert(
+					"(organizations.filter(filter='(parentId ne " +
+						"''402139267512234420'')'))",
+					_faroInfoIndividualsFilterStringConverterHelper);
+
+			Assertions.assertEquals(
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("id", 1L)
+				).should(
+					QueryBuilders.termQuery(
+						"organizationIds", "402139267512234420")
+				).should(
+					QueryBuilders.termQuery(
+						"organizationIds", "402139268847589065")
+				),
+				queryBuilder);
+		}
+		finally {
+			IndividualIdThreadLocal.remove();
+		}
 	}
 
 	@Test
@@ -1337,6 +1514,41 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 				"''https://customer.liferay.com/en/documentation'') and " +
 					"between(completeDate, ''2090-09-11'', ''2090-09-12'')')",
 			"346468603851271125");
+	}
+
+	@Test
+	public void testSessionsFilterWithIndividual1() {
+		testFilterStringWithIndividual(
+			"sessions.filter(filter='context/city eq ''Tokyo''')",
+			346468603851271125L,
+			QueryBuilders.termsQuery(
+				"id", Collections.singleton(346468603851271125L)));
+	}
+
+	@Test
+	public void testSessionsFilterWithIndividual2() {
+		testFilterStringWithIndividual(
+			"sessions.filter(filter='context/city eq ''Budapest''')",
+			346468603851271125L,
+			QueryBuilders.termsQuery("id", Collections.emptySet()));
+	}
+
+	protected void testFilterStringWithIndividual(
+		String filterString, Long individualId,
+		QueryBuilder expectedQueryBuilder) {
+
+		try {
+			IndividualIdThreadLocal.setIndividualId(individualId);
+
+			Assertions.assertEquals(
+				expectedQueryBuilder,
+				FilterStringToQueryBuilderConverter.convert(
+					filterString,
+					_faroInfoIndividualsFilterStringConverterHelper));
+		}
+		finally {
+			IndividualIdThreadLocal.remove();
+		}
 	}
 
 	@Autowired

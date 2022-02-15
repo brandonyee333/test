@@ -46,6 +46,7 @@ import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -62,6 +63,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+
+import org.jooq.Condition;
+import org.jooq.impl.DSL;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -461,6 +465,57 @@ public class IndividualsFilterStringConverterHelperTest
 			346468670578686898L, 346468678682539385L, 346468679569640045L,
 			346468680492094349L, 346468699875814972L, 346468700681239480L,
 			346468701457781206L);
+	}
+
+	@Test
+	public void testAccountsFilterByCountWithIndividual() {
+		testFilterStringWithIndividual(
+			"accounts.filterByCount(filter='organization/yearStarted/value " +
+				"lt 2000', operator='ne', value=0)",
+			1L,
+			DSL.and(
+				DSL.or(
+					DSL.and(
+						DSL.field(
+							"datasourceindividual.datasourceid"
+						).eq(
+							346306699042460013L
+						),
+						DSL.field(
+							DSL.cast(
+								DSL.array(
+									DSL.field(
+										"datasourceindividual.accountpks")),
+								String[].class)
+						).contains(
+							DSL.cast(
+								DSL.array(
+									"bef7a4a0-7128-4e37-b58d-a3fdff2e4213"),
+								String[].class)
+						)),
+					DSL.and(
+						DSL.field(
+							"datasourceindividual.datasourceid"
+						).eq(
+							346306699042460013L
+						),
+						DSL.field(
+							DSL.cast(
+								DSL.array(
+									DSL.field(
+										"datasourceindividual.accountpks")),
+								String[].class)
+						).contains(
+							DSL.cast(
+								DSL.array(
+									"7dc0bc87-2d53-40d5-8137-2db03470adda"),
+								String[].class)
+						))),
+				DSL.field(
+					"id"
+				).eq(
+					1
+				)));
 	}
 
 	@Test
@@ -973,6 +1028,20 @@ public class IndividualsFilterStringConverterHelperTest
 			346468699875814972L, 346468603851271125L);
 	}
 
+	@Test
+	public void testActivitiesFilterByCountWithIndividual() {
+		testFilterStringWithIndividual(
+			"activities.filterByCount(filter='activityKey eq " +
+				"''Page#pageViewed#357731107452100994''', operator='eq', " +
+					"value=1)",
+			346468699875814972L,
+			DSL.field(
+				"individual.id"
+			).in(
+				346468699875814972L
+			));
+	}
+
 	@Disabled
 	@Test
 	public void testActivitiesFilterGtDay() {
@@ -997,6 +1066,19 @@ public class IndividualsFilterStringConverterHelperTest
 		testFilterString(
 			"activities.filter(filter='day lt ''2019-03-07''')",
 			346468603851271125L);
+	}
+
+	@Test
+	public void testActivitiesFilterWithIndividual() {
+		testFilterStringWithIndividual(
+			"activities.filter(filter='between(day, ''2019-04-11'', " +
+				"''2019-04-12'')')",
+			346468603851271125L,
+			DSL.field(
+				"individual.id"
+			).in(
+				346468603851271125L
+			));
 	}
 
 	@Test
@@ -1053,6 +1135,35 @@ public class IndividualsFilterStringConverterHelperTest
 			346468664541254353L, 346468669276672682L, 346468670578686898L,
 			346468677661047218L, 346468678682539385L, 346468679569640045L,
 			346468680492094349L, 346468683127812925L, 346468701457781206L);
+	}
+
+	@Test
+	public void testInterestsFilterWithIndividual() {
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"IndividualInterestScoresNanite",
+				JSONUtil.put("lastSuccessfulDay", DateUtil.newDayDateString())),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		_asahMarkerDog.addAsahMarker(
+			new AsahMarker(
+				"InterestThresholdScoreNanite",
+				JSONUtil.put(
+					"lastSuccessfulDay", DateUtil.newDayDateString()
+				).put(
+					"score", 0.2
+				)),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		testFilterStringWithIndividual(
+			"interests.filter(filter='(name eq ''abc'') and (score eq " +
+				"''true'')')",
+			346468700681239480L,
+			DSL.field(
+				"individual.id"
+			).in(
+				346468700681239480L
+			));
 	}
 
 	@Disabled
@@ -1292,6 +1403,25 @@ public class IndividualsFilterStringConverterHelperTest
 			346468603851271125L);
 	}
 
+	@Test
+	public void testSessionsFilterWithIndividual1() {
+		testFilterStringWithIndividual(
+			"sessions.filter(filter='(context/country eq ''United States'')')",
+			346468614337714393L,
+			DSL.field(
+				"individual.id"
+			).in(
+				346468614337714393L
+			));
+	}
+
+	@Test
+	public void testSessionsFilterWithIndividual2() {
+		testFilterStringWithIndividual(
+			"sessions.filter(filter='(context/country eq ''United States'')')",
+			346468603851271125L, DSL.noCondition());
+	}
+
 	protected void testFilterString(
 		String filterString, Long... expectedIndividualIds) {
 
@@ -1312,6 +1442,22 @@ public class IndividualsFilterStringConverterHelperTest
 		MatcherAssert.assertThat(
 			expectedIndividualIds,
 			Matchers.arrayContainingInAnyOrder(ids.toArray(new Long[0])));
+	}
+
+	protected void testFilterStringWithIndividual(
+		String filterString, Long individualId, Condition expectedCondition) {
+
+		try {
+			IndividualIdThreadLocal.setIndividualId(individualId);
+
+			Assertions.assertEquals(
+				expectedCondition,
+				FilterStringToConditionConverter.convert(
+					filterString, _individualsFilterStringConverterHelper));
+		}
+		finally {
+			IndividualIdThreadLocal.remove();
+		}
 	}
 
 	private void _setUpAccounts() throws Exception {
