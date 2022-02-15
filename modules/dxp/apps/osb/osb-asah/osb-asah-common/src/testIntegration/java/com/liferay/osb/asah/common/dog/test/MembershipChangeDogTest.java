@@ -15,12 +15,18 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
+import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -29,12 +35,22 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.time.DateUtils;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,6 +91,87 @@ public class MembershipChangeDogTest
 					}
 				}
 			});
+	}
+
+	@Test
+	public void testGetAccountNamesJSONObjects() {
+		Account account = new Account();
+
+		account.setAccountPK("1");
+		account.setDataSourceId(1L);
+
+		Field field = new Field();
+
+		field.setContext("organization");
+		field.setDataSourceId(1L);
+		field.setDataSourceName("Data Source Name");
+		field.setFieldType("Text");
+		field.setName("accountName");
+		field.setOwnerType("account");
+		field.setOwnerId(1L);
+		field.setSourceName("id");
+		field.setValue("Test");
+
+		field = _fieldRepository.save(field);
+
+		account.setFields(Collections.singleton(field));
+
+		account.setId(1L);
+		account.setIsNew(true);
+
+		_accountDog.addAccount(account);
+
+		Individual individual = new Individual();
+
+		Individual.DataSourceAccountPK dataSourceAccountPK =
+			new Individual.DataSourceAccountPK();
+
+		dataSourceAccountPK.setAccountPKs(Collections.singleton("1"));
+		dataSourceAccountPK.setDataSourceId(1L);
+
+		individual.setDataSourceAccountPKs(
+			Collections.singleton(dataSourceAccountPK));
+
+		individual.setId(32L);
+		individual.setSegmentIds(Collections.singleton(1L));
+
+		_individualRepository.save(individual);
+
+		ArrayList<MembershipChange> membershipChanges = new ArrayList<>();
+
+		IntStream.range(
+			32, 34
+		).forEach(
+			i -> {
+				Optional<MembershipChange> membershipChangeOptional =
+					_membershipChangeRepository.findByIndividualId((long)i);
+
+				Assertions.assertTrue(membershipChangeOptional.isPresent());
+
+				membershipChanges.add(membershipChangeOptional.get());
+			}
+		);
+
+		Map<Long, JSONObject> accountNamesJSONObjects =
+			_membershipChangeDog.getAccountNamesJSONObjects(membershipChanges);
+
+		Collection<JSONObject> values = accountNamesJSONObjects.values();
+
+		Stream<JSONObject> stream = values.stream();
+
+		List<JSONObject> jsonObjects = stream.filter(
+			accountNamesJSONObject -> !Objects.isNull(accountNamesJSONObject)
+		).collect(
+			Collectors.toList()
+		);
+
+		Assertions.assertEquals(1, jsonObjects.size(), jsonObjects.toString());
+
+		JSONObject jsonObject = jsonObjects.get(0);
+
+		JSONArray jsonArray = jsonObject.getJSONArray("account-names");
+
+		Assertions.assertEquals("Test", jsonArray.get(0));
 	}
 
 	@Test
@@ -179,7 +276,16 @@ public class MembershipChangeDogTest
 	}
 
 	@Autowired
+	private AccountDog _accountDog;
+
+	@Autowired
 	private ChannelRepository _channelRepository;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
+
+	@Autowired
+	private IndividualRepository _individualRepository;
 
 	private final Map<Long, MembershipChange>
 		_membershipChangeByIndividualSegmentId = new HashMap<>();
