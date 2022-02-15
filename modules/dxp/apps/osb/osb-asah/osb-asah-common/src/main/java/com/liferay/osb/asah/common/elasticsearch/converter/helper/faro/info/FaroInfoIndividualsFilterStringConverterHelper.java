@@ -43,7 +43,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -803,7 +802,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
 		}
 
-		List<String> individualIds = new ArrayList<>();
+		Set<String> individualIds = new HashSet<>();
 
 		BoolQueryBuilder boolQueryBuilder = _getOwnerIdBoolQueryBuilder(null);
 
