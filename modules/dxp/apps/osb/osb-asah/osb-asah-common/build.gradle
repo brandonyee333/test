@@ -44,6 +44,7 @@ dependencies {
 	compile (group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.10") {
 		force = true
 	}
+
 	compile group: "org.apache.parquet", name: "parquet-avro", version: "1.11.1"
 	compile group: "org.aspectj", name: "aspectjweaver", version: "1.9.6"
 	compile group: "org.codehaus.janino", name: "janino", version: "3.1.3"
