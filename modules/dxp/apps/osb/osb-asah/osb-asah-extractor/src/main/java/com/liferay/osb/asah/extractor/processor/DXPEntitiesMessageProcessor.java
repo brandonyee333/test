@@ -514,20 +514,45 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 			return;
 		}
 
+		long start = System.currentTimeMillis();
+
 		Individual individual =
 			_individualDog.fetchIndividualByEmailAddressHashed(
 				DigestUtils.sha256Hex(StringUtils.lowerCase(emailAddress)));
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"Individual %s has been fetched in %d ms", emailAddress,
+					System.currentTimeMillis() - start));
+		}
+
 		try {
+			start = System.currentTimeMillis();
+
 			if (individual == null) {
 				_individualDog.addIndividual(
 					objectJSONObject.optString("uuid", null), objectJSONObject,
 					dataSource);
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						String.format(
+							"Individual %s has been added in %d ms",
+							emailAddress, System.currentTimeMillis() - start));
+				}
 			}
 			else {
 				_individualDog.updateIndividual(
 					objectJSONObject.optString("uuid", null), objectJSONObject,
 					dataSource, individual);
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						String.format(
+							"Individual %s has been updated in %d ms",
+							emailAddress, System.currentTimeMillis() - start));
+				}
 			}
 		}
 		catch (Exception exception) {
