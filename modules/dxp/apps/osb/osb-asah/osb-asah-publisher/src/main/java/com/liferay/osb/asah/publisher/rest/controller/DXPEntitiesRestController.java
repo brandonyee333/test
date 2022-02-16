@@ -59,81 +59,12 @@ public class DXPEntitiesRestController {
 		SimpleTimer simpleTimer = new SimpleTimer();
 
 		try {
-			JSONArray jsonArray = new JSONArray(json);
+			JSONArray jsonArray = _processMessages(dataSourceId, json);
 
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-				String action = jsonObject.getString("action");
-				JSONObject objectJSONObject = jsonObject.getJSONObject(
-					"objectJSONObject");
-				String type = jsonObject.getString("type");
-
-				if (type.equals(DXPEntity.Type.CLASS_NAME_CONTACT)) {
-					Date date = DateUtil.newDate();
-
-					JSONObject contactJSONObject = JSONUtil.put(
-						"contact", objectJSONObject
-					).put(
-						"emailAddress",
-						objectJSONObject.getString("emailAddress")
-					).put(
-						"modifiedDate",
-						objectJSONObject.optLong("modifiedDate", date.getTime())
-					).put(
-						"userId", objectJSONObject.getInt("classPK")
-					);
-
-					if (action.equalsIgnoreCase("add")) {
-						action = "update";
-
-						contactJSONObject.put(
-							"createDate",
-							objectJSONObject.optLong(
-								"createDate", date.getTime()));
-					}
-					else if (objectJSONObject.has("createDate") &&
-							 action.equalsIgnoreCase("update")) {
-
-						contactJSONObject.put(
-							"createDate",
-							objectJSONObject.getLong("createDate"));
-					}
-
-					objectJSONObject = contactJSONObject;
-
-					_processGenderField(objectJSONObject);
-
-					type = DXPEntity.Type.CLASS_NAME_USER;
-				}
-				else if (type.equals(DXPEntity.Type.CLASS_NAME_USER)) {
-					jsonObject.putOnce("expando", new JSONArray());
-				}
-
-				if (dataSourceId == null) {
-					objectJSONObject.put(
-						"osbAsahDataSourceId",
-						jsonObject.getString("dataSourceId"));
-				}
-				else {
-					objectJSONObject.put("osbAsahDataSourceId", dataSourceId);
-				}
-
-				_messageBus.sendMessage(
-					Channel.DXP_ENTITIES_MESSAGE,
-					JSONUtil.put(
-						"context",
-						JSONUtil.put(
-							"action", action
-						).put(
-							"type", type
-						)
-					).put(
-						"object", objectJSONObject
-					).put(
-						"projectId", ProjectIdThreadLocal.getProjectId()
-					).toString());
-			}
+			_messageBus.sendMessage(
+				Channel.DXP_ENTITIES_MESSAGE, jsonArray.toString(),
+				Collections.singletonMap(
+					"projectId", ProjectIdThreadLocal.getProjectId()));
 
 			return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
 		}
@@ -172,6 +103,82 @@ public class DXPEntitiesRestController {
 		}
 
 		return userJSONObject;
+	}
+
+	private JSONArray _processMessages(String dataSourceId, String json) {
+		JSONArray jsonArray = new JSONArray();
+
+		JSONArray messagesJSONArray = new JSONArray(json);
+
+		for (int i = 0; i < messagesJSONArray.length(); i++) {
+			JSONObject jsonObject = messagesJSONArray.getJSONObject(i);
+
+			String action = jsonObject.getString("action");
+			JSONObject objectJSONObject = jsonObject.getJSONObject(
+				"objectJSONObject");
+			String type = jsonObject.getString("type");
+
+			if (type.equals(DXPEntity.Type.CLASS_NAME_CONTACT)) {
+				Date date = DateUtil.newDate();
+
+				JSONObject contactJSONObject = JSONUtil.put(
+					"contact", objectJSONObject
+				).put(
+					"emailAddress", objectJSONObject.getString("emailAddress")
+				).put(
+					"modifiedDate",
+					objectJSONObject.optLong("modifiedDate", date.getTime())
+				).put(
+					"userId", objectJSONObject.getInt("classPK")
+				);
+
+				if (action.equalsIgnoreCase("add")) {
+					action = "update";
+
+					contactJSONObject.put(
+						"createDate",
+						objectJSONObject.optLong("createDate", date.getTime()));
+				}
+				else if (objectJSONObject.has("createDate") &&
+						 action.equalsIgnoreCase("update")) {
+
+					contactJSONObject.put(
+						"createDate", objectJSONObject.getLong("createDate"));
+				}
+
+				objectJSONObject = contactJSONObject;
+
+				_processGenderField(objectJSONObject);
+
+				type = DXPEntity.Type.CLASS_NAME_USER;
+			}
+			else if (type.equals(DXPEntity.Type.CLASS_NAME_USER)) {
+				jsonObject.putOnce("expando", new JSONArray());
+			}
+
+			if (dataSourceId == null) {
+				objectJSONObject.put(
+					"osbAsahDataSourceId",
+					jsonObject.getString("dataSourceId"));
+			}
+			else {
+				objectJSONObject.put("osbAsahDataSourceId", dataSourceId);
+			}
+
+			jsonArray.put(
+				JSONUtil.put(
+					"context",
+					JSONUtil.put(
+						"action", action
+					).put(
+						"type", type
+					)
+				).put(
+					"object", objectJSONObject
+				));
+		}
+
+		return jsonArray;
 	}
 
 	private static final Histogram _eventRequestsHistogram =

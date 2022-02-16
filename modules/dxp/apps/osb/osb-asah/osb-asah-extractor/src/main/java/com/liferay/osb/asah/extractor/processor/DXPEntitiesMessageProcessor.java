@@ -94,26 +94,17 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 
 			ByteString byteString = pubsubMessage.getData();
 
-			JSONObject jsonObject = new JSONObject(byteString.toStringUtf8());
+			Map<String, String> attributesMap =
+				pubsubMessage.getAttributesMap();
 
-			String projectId = jsonObject.getString("projectId");
+			String projectId = attributesMap.get("projectId");
 
-			_boundedExecutor.runAsync(
-				() -> {
-					long start = System.currentTimeMillis();
-
-					ProjectIdThreadLocal.setProjectId(projectId);
-					_processMessage(jsonObject);
-
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							String.format(
-								"Message %s processed in %d ms",
-								pubsubMessage.getMessageId(),
-								System.currentTimeMillis() - start));
-					}
-				},
-				KeyReentrantLock.getReentrantLock(getClass(), projectId));
+			if (projectId != null) {
+				_processJSONArrayMessage(pubsubMessage, byteString, projectId);
+			}
+			else {
+				_processJSONObjectMessage(pubsubMessage, byteString);
+			}
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -311,6 +302,56 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 			_getOwnerType(objectJSONObject.getString("className")));
 	}
 
+	private void _processJSONArrayMessage(
+		PubsubMessage pubsubMessage, ByteString byteString, String projectId) {
+
+		_runAsync(
+			() -> {
+				long start = System.currentTimeMillis();
+
+				JSONArray jsonArray = new JSONArray(byteString.toStringUtf8());
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					ProjectIdThreadLocal.setProjectId(projectId);
+					_processMessage(jsonArray.getJSONObject(i));
+				}
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						String.format(
+							"Message %s processed in %d ms",
+							pubsubMessage.getMessageId(),
+							System.currentTimeMillis() - start));
+				}
+			},
+			projectId);
+	}
+
+	private void _processJSONObjectMessage(
+		PubsubMessage pubsubMessage, ByteString byteString) {
+
+		JSONObject jsonObject = new JSONObject(byteString.toStringUtf8());
+
+		String projectId = jsonObject.getString("projectId");
+
+		_runAsync(
+			() -> {
+				long start = System.currentTimeMillis();
+
+				ProjectIdThreadLocal.setProjectId(projectId);
+				_processMessage(jsonObject);
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						String.format(
+							"Message %s processed in %d ms",
+							pubsubMessage.getMessageId(),
+							System.currentTimeMillis() - start));
+				}
+			},
+			projectId);
+	}
+
 	private void _processMessage(JSONObject messageJSONObject) {
 		JSONObject contextJSONObject = messageJSONObject.getJSONObject(
 			"context");
@@ -492,6 +533,11 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 		catch (Exception exception) {
 			_log.error(exception, exception);
 		}
+	}
+
+	private void _runAsync(Runnable runnable, String projectId) {
+		_boundedExecutor.runAsync(
+			runnable, KeyReentrantLock.getReentrantLock(getClass(), projectId));
 	}
 
 	private static final Log _log = LogFactory.getLog(
