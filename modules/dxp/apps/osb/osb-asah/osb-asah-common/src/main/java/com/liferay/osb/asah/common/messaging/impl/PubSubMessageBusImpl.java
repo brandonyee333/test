@@ -37,6 +37,7 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.common.messaging.MessageStreamingSubscriber;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -173,7 +174,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 				publisher.publish(
 					createPubsubMessage(
 						message, messageAttributes,
-						Channel.DXP_ENTITIES_MESSAGE.name()));
+						Channel.DXP_ENTITIES_MESSAGE.name() + "_" +
+							ProjectIdThreadLocal.getProjectId()));
 			}
 			else {
 				publisher.publish(
