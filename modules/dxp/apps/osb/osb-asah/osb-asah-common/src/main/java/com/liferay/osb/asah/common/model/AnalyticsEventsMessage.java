@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 
+import com.liferay.osb.asah.common.validation.PastDate;
 import java.io.Serializable;
 
 import java.util.Collections;
@@ -35,7 +36,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 /**
@@ -178,7 +178,10 @@ public class AnalyticsEventsMessage implements Serializable {
 			shape = JsonFormat.Shape.STRING, timezone = "UTC"
 		)
 		@NotNull
-		@Past
+		@PastDate(
+			allowedLateness = 3600000,
+			message = "Date must be within the last hour"
+		)
 		public Date getEventDate() {
 			if (_eventDate == null) {
 				return null;
