@@ -19,13 +19,11 @@ import com.liferay.osb.asah.common.entity.AsahTask;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 
 /**
  * @author André Miranda
  */
-@Primary
 public interface AsahTaskRepository extends Repository<AsahTask, Long> {
 
 	@Cacheable
