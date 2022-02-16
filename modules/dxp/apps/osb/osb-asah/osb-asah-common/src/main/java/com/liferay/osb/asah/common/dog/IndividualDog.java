@@ -166,6 +166,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 			}
 		}
 
+		Set<Field> customFields = individual.getCustomFields();
+
 		individual = _individualRepository.save(individual);
 
 		if (updateMemberships) {
@@ -178,6 +180,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 					"individualJSONObject",
 					JSONUtil.put("id", individual.getId())
 				));
+		}
+
+		if (CollectionUtils.isNotEmpty(fields)) {
+			individual.setCustomFields(customFields);
+			individual.setFields(fields);
+
+			return individual;
 		}
 
 		return _populateIndividual(individual);
@@ -1349,8 +1358,11 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		_updateIndividualAssociations(dataJSONObject, individual);
 
-		individual = _populateIndividual(
-			_individualRepository.save(individual));
+		Set<Field> customFields = individual.getCustomFields();
+
+		individual = _individualRepository.save(individual);
+
+		individual.setCustomFields(customFields);
 
 		_individualModified(individual, oldIndividualName);
 
