@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -41,6 +44,71 @@ public class AnalyticsEventsMessageTest {
 			Validation.buildDefaultValidatorFactory();
 
 		_validator = validatorFactory.getValidator();
+	}
+
+	@Test
+	public void testAnalyticsEventsMessageEventWithFutureEventDate() {
+		AnalyticsEventsMessage.Event event =
+			new AnalyticsEventsMessage.Event() {
+				{
+					setApplicationId("Page");
+					setEventDate(DateUtil.addDays(new Date(), 1));
+					setEventId("pageViewed");
+				}
+			};
+
+		Set<ConstraintViolation<AnalyticsEventsMessage.Event>>
+			constraintViolations = _validator.validate(event);
+
+		Assertions.assertEquals(1, constraintViolations.size());
+
+		ConstraintViolation<AnalyticsEventsMessage.Event> constraintViolation =
+			_getFirstConstraintViolation(constraintViolations);
+
+		Assertions.assertEquals(
+			"Date must be within the last hour",
+			constraintViolation.getMessage());
+	}
+
+	@Test
+	public void testAnalyticsEventsMessageEventWithPastEventDate1() {
+		AnalyticsEventsMessage.Event event =
+			new AnalyticsEventsMessage.Event() {
+				{
+					setApplicationId("Page");
+					setEventDate(DateUtil.addDays(new Date(), -1));
+					setEventId("pageViewed");
+				}
+			};
+
+		Set<ConstraintViolation<AnalyticsEventsMessage.Event>>
+			constraintViolations = _validator.validate(event);
+
+		Assertions.assertEquals(1, constraintViolations.size());
+
+		ConstraintViolation<AnalyticsEventsMessage.Event> constraintViolation =
+			_getFirstConstraintViolation(constraintViolations);
+
+		Assertions.assertEquals(
+			"Date must be within the last hour",
+			constraintViolation.getMessage());
+	}
+
+	@Test
+	public void testAnalyticsEventsMessageEventWithPastEventDate2() {
+		AnalyticsEventsMessage.Event event =
+			new AnalyticsEventsMessage.Event() {
+				{
+					setApplicationId("Page");
+					setEventDate(new Date());
+					setEventId("pageViewed");
+				}
+			};
+
+		Set<ConstraintViolation<AnalyticsEventsMessage.Event>>
+			constraintViolations = _validator.validate(event);
+
+		Assertions.assertTrue(constraintViolations.isEmpty());
 	}
 
 	@Test
@@ -71,6 +139,15 @@ public class AnalyticsEventsMessageTest {
 			_validator.validate(analyticsEventsMessage);
 
 		Assertions.assertFalse(violations.isEmpty());
+	}
+
+	private <T> ConstraintViolation<T> _getFirstConstraintViolation(
+		Set<ConstraintViolation<T>> constraintViolations) {
+
+		Iterator<ConstraintViolation<T>> iterator =
+			constraintViolations.iterator();
+
+		return iterator.next();
 	}
 
 	private Validator _validator;
