@@ -21,8 +21,8 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.AsahTaskRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -58,9 +58,9 @@ public class AsahTaskManagerTest
 			_updateDynamicMembershipsNaniteBoundedExecutor);
 	}
 
-	@ElasticsearchIndex(
-		name = "OSBAsahTasks", resourcePath = "osbasahtasks.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AsahTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahtasks.json"
 	)
 	@Test
 	public void testDeleteAsahTask() {
@@ -100,13 +100,13 @@ public class AsahTaskManagerTest
 		Assertions.assertFalse(asahTaskRunnable.isForce());
 	}
 
-	@ElasticsearchIndex(
-		name = "OSBAsahTasks", resourcePath = "osbasahtask.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AsahTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahtasks.json"
 	)
 	@Test
 	public void testExecuteAsahTask2() {
-		_asahTaskManager.executeAsahTask(450553576847486528L, false);
+		_asahTaskManager.executeAsahTask(450553576847486529L, false);
 
 		ArgumentCaptor<AsahTaskRunnable> asahTaskRunnableArgumentCaptor =
 			ArgumentCaptor.forClass(AsahTaskRunnable.class);
@@ -128,15 +128,15 @@ public class AsahTaskManagerTest
 			new String[] {"UpdateDynamicMembershipsNanite"},
 			asahTaskRunnable.getNaniteClassNames());
 		Assertions.assertEquals(
-			Long.valueOf("450553576847486528"),
+			Long.valueOf("450553576847486529"),
 			asahTaskRunnable.getAsahTaskId());
 		Assertions.assertEquals("test", asahTaskRunnable.getProjectId());
 		Assertions.assertFalse(asahTaskRunnable.isForce());
 	}
 
-	@ElasticsearchIndex(
-		name = "OSBAsahTasks", resourcePath = "osbasahtasks.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AsahTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahtasks.json"
 	)
 	@Test
 	public void testExecuteAsahTasks1() {
@@ -149,9 +149,9 @@ public class AsahTaskManagerTest
 		);
 	}
 
-	@ElasticsearchIndex(
-		name = "OSBAsahTasks", resourcePath = "osbasahtasks.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AsahTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahtasks.json"
 	)
 	@Test
 	public void testExecuteAsahTasks2() {
@@ -207,9 +207,9 @@ public class AsahTaskManagerTest
 				new AsahTask("Foo", null, null)));
 	}
 
-	@ElasticsearchIndex(
-		name = "OSBAsahTasks", resourcePath = "osbasahtasks.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AsahTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahtasks.json"
 	)
 	@Test
 	public void testScheduleAsahTasks() {
