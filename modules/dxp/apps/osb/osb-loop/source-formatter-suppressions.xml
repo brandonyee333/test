@@ -4,6 +4,7 @@
 	<source-check>
 		<suppress checks="GradleDependencyArtifactsCheck" files=".*" />
 		<suppress checks="JavaAPISignatureCheck" files="osb-loop-web/src/main/java/com/liferay/osb/loop/web/internal/util/LoopPersonUtil\.java" />
+		<suppress checks="PoshiStylingCheck" files="osb-loop-test/src/testFunctional/.*" />
 		<suppress checks="SQLLongNamesCheck" files="osb-loop-service/src/main/resources/META-INF/sql/tables\.sql" />
 		<suppress checks="XMLServiceEntityNameCheck" files="osb-loop-asset-entry-set/osb-loop-asset-entry-set-service/service\.xml" />
 	</source-check>

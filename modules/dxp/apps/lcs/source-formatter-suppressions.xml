@@ -8,5 +8,6 @@
 		<suppress checks="JavaDiamondOperatorCheck" files="lcs-api/.*" />
 		<suppress checks="JavaDiamondOperatorCheck" files="lcs-messaging/.*" />
 		<suppress checks="JavaDiamondOperatorCheck" files="lcs-security/.*" />
+		<suppress checks="PoshiStylingCheck" files="lcs-client-web/src/test/functional/tests/smoke/LCSSmoke\.testcase" />
 	</source-check>
 </suppressions>
