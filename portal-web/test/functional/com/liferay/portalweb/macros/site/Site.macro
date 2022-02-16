@@ -58,12 +58,7 @@ definition {
 
 			LexiconCard.clickCard(card = "${siteTemplateName}");
 
-			if (IsVisible(locator1 = "TextInput#NAME")) {
-				PortletEntry.inputName(name = "${siteName}");
-
-				Modal.save();
-			}
-			else {
+			if (IsVisible(locator1 = "IFrame#MODAL_BODY")) {
 				SelectFrame(locator1 = "IFrame#MODAL_BODY");
 
 				PortletEntry.inputName(name = "${siteName}");
@@ -73,6 +68,11 @@ definition {
 				SelectFrameTop();
 
 				Alert.viewSuccessMessage();
+			}
+			else {
+				PortletEntry.inputName(name = "${siteName}");
+
+				Modal.save();
 			}
 		}
 
