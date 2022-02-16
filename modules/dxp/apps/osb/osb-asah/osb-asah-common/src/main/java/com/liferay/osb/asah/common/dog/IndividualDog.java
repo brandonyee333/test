@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -43,6 +44,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -1137,26 +1139,36 @@ public class IndividualDog extends BaseFaroInfoDog {
 			fieldsStream.anyMatch(
 				field -> Objects.equals(field.getName(), "email"))) {
 
-			_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termsQuery(
-						"individualId",
-						ListUtil.map(
-							updatedIndividuals,
-							individual -> String.valueOf(individual.getId())))
-				).filter(
-					BoolQueryBuilderUtil.shouldNot(
-						QueryBuilders.existsQuery("knownIndividual")
-					).should(
-						QueryBuilders.termQuery("knownIndividual", false)
-					)
-				),
-				true,
-				new Script(
-					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-					"ctx._source.knownIndividual = true;",
-					Collections.emptyMap()),
-				_collections);
+			String projectId = ProjectIdThreadLocal.getProjectId();
+
+			_boundedExecutor.runAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
+
+					_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termsQuery(
+								"individualId",
+								ListUtil.map(
+									updatedIndividuals,
+									individual -> String.valueOf(
+										individual.getId())))
+						).filter(
+							BoolQueryBuilderUtil.shouldNot(
+								QueryBuilders.existsQuery("knownIndividual")
+							).should(
+								QueryBuilders.termQuery(
+									"knownIndividual", false)
+							)
+						),
+						true,
+						new Script(
+							Script.DEFAULT_SCRIPT_TYPE,
+							Script.DEFAULT_SCRIPT_LANG,
+							"ctx._source.knownIndividual = true;",
+							Collections.emptyMap()),
+						_collections);
+				});
 		}
 
 		_updateIndividualAssociations(dataJSONObject, updatedIndividuals);
@@ -1308,22 +1320,31 @@ public class IndividualDog extends BaseFaroInfoDog {
 			fieldsStream.anyMatch(
 				field -> Objects.equals(field.getName(), "email"))) {
 
-			_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("individualId", individualId)
-				).filter(
-					BoolQueryBuilderUtil.shouldNot(
-						QueryBuilders.existsQuery("knownIndividual")
-					).should(
-						QueryBuilders.termQuery("knownIndividual", false)
-					)
-				),
-				true,
-				new Script(
-					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-					"ctx._source.knownIndividual = true;",
-					Collections.emptyMap()),
-				_collections);
+			String projectId = ProjectIdThreadLocal.getProjectId();
+
+			_boundedExecutor.runAsync(
+				() -> {
+					ProjectIdThreadLocal.setProjectId(projectId);
+					_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termQuery(
+								"individualId", individualId)
+						).filter(
+							BoolQueryBuilderUtil.shouldNot(
+								QueryBuilders.existsQuery("knownIndividual")
+							).should(
+								QueryBuilders.termQuery(
+									"knownIndividual", false)
+							)
+						),
+						true,
+						new Script(
+							Script.DEFAULT_SCRIPT_TYPE,
+							Script.DEFAULT_SCRIPT_LANG,
+							"ctx._source.knownIndividual = true;",
+							Collections.emptyMap()),
+						_collections);
+				});
 		}
 
 		_updateIndividualAssociations(dataJSONObject, individual);
@@ -1711,6 +1732,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(10, 1);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
