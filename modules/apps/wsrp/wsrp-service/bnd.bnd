@@ -11,6 +11,7 @@ Import-Package:\
 Liferay-Require-SchemaVersion: 1.2.0
 Liferay-Service: true
 Web-ContextPath: /wsrp-service
+-fixupmessages: Classes found in the wrong directory: ...;is:=ignore
 -includeresource:\
 	META-INF/=@oasis.names.tc.wsrp-[0-9.]*.jar!/wsdl/*,\
 	@com.liferay.util.java-*.jar!/com/liferay/util/axis/*.class,\

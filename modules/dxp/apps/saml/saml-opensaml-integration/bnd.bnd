@@ -34,6 +34,5 @@ Import-Package:\
 	\
 	!sun.io,\
 	\
-	-fixupmessages: Classes found in the wrong directory: ...;is:=ignore,\
-	\
 	*
+-fixupmessages: Classes found in the wrong directory: ...;is:=ignore
