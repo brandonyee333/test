@@ -11,14 +11,14 @@
 	"events": [
 		{
 			"applicationId": "Layout",
-			"eventDate": "2021-11-07T09:34:45.345Z",
+			"eventDate": "${now}",
 			"eventId": "view",
 			"properties": {
 				"referrer": "http://www.google.com"
 			}
 		}
 	],
-	"id": "342313459339515848",
+	"id": "342313459339515840",
 	"protocolVersion": "1.0",
 	"userId": "id-i4xbdldy1af"
 }

@@ -11,7 +11,7 @@
 	"events": [
 		{
 			"applicationId": "Layout",
-			"eventDate": "2021-11-07T09:34:45.345Z",
+			"eventDate": "${now}",
 			"eventId": "view",
 			"properties": {
 				"referrer": "http://www.google.com"
@@ -19,7 +19,7 @@
 		},
 		{
 			"applicationId": "Layout",
-			"eventDate": "2021-11-07T09:34:45.345Z",
+			"eventDate": "${now}",
 			"eventId": "view",
 			"properties": {
 				"referrer": "http://www.google.com"

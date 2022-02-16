@@ -17,6 +17,7 @@ package com.liferay.osb.asah.publisher.rest.controller.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -92,8 +93,9 @@ public class AnalyticsEventsRestControllerTest
 		);
 
 		ResponseEntity<String> responseEntity = _exchange(
-			ResourceUtil.readResourceToString(
-				"dependencies/analytics_events_message_3.json", this));
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies/analytics_events_message_3.json", this)));
 
 		Assertions.assertThat(
 			responseEntity.getStatusCode()
@@ -104,8 +106,9 @@ public class AnalyticsEventsRestControllerTest
 
 	@Test
 	public void testPushAnalyticsEventsMessage() throws Exception {
-		String body = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_message_1.json", this);
+		String body = TestExecutionListenerUtil.replaceVariables(
+			ResourceUtil.readResourceToString(
+				"dependencies/analytics_events_message_1.json", this));
 
 		ResponseEntity<String> responseEntity = _exchange(body);
 
@@ -129,8 +132,9 @@ public class AnalyticsEventsRestControllerTest
 
 	@Test
 	public void testPushAnalyticsEventsMessageIfDuplicate() throws Exception {
-		String body = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_message_with_id.json", this);
+		String body = TestExecutionListenerUtil.replaceVariables(
+			ResourceUtil.readResourceToString(
+				"dependencies/analytics_events_message_with_id.json", this));
 
 		_exchange(body);
 
@@ -162,12 +166,15 @@ public class AnalyticsEventsRestControllerTest
 			HttpStatus.valueOf(200)
 		);
 
+		String newDateString = DateUtil.newDateString();
+
 		responseEntity = _exchange(
 			TestExecutionListenerUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies" +
 						"/analytics_events_message_duplicated_events_2.json",
-					this)));
+					this),
+				newDateString));
 
 		Assertions.assertThat(
 			responseEntity.getStatusCode()
@@ -185,10 +192,13 @@ public class AnalyticsEventsRestControllerTest
 		);
 
 		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToString(
-				"dependencies" +
-					"/analytics_events_message_duplicated_events_removed.json",
-				this),
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies" +
+						"/analytics_events_message_duplicated_events_removed." +
+							"json",
+					this),
+				newDateString),
 			argumentCaptor.getValue(), false);
 	}
 
@@ -214,9 +224,7 @@ public class AnalyticsEventsRestControllerTest
 	}
 
 	@Test
-	public void testPushAnalyticsEventsMessageIfInvalidContext()
-		throws Exception {
-
+	public void testPushAnalyticsEventsMessageIfInvalidContext() {
 		ResponseEntity<String> responseEntity = _exchange(
 			JSONUtil.put(
 				"context",
@@ -254,10 +262,11 @@ public class AnalyticsEventsRestControllerTest
 		throws Exception {
 
 		ResponseEntity<String> responseEntity = _exchange(
-			ResourceUtil.readResourceToString(
-				"dependencies" +
-					"/analytics_events_message_invalid_data_source_id.json",
-				this));
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies" +
+						"/analytics_events_message_invalid_data_source_id.json",
+					this)));
 
 		Assertions.assertThat(
 			responseEntity.getStatusCode()
@@ -270,11 +279,14 @@ public class AnalyticsEventsRestControllerTest
 	public void testPushAnalyticsEventsMessageIfInvalidEvents()
 		throws Exception {
 
+		String newDateString = DateUtil.newDateString();
+
 		ResponseEntity<String> responseEntity = _exchange(
 			TestExecutionListenerUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies/analytics_events_message_invalid_events.json",
-					this)));
+					this),
+				newDateString));
 
 		Assertions.assertThat(
 			responseEntity.getStatusCode()
@@ -292,10 +304,12 @@ public class AnalyticsEventsRestControllerTest
 		);
 
 		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToString(
-				"dependencies" +
-					"/analytics_events_message_invalid_events_removed.json",
-				this),
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies" +
+						"/analytics_events_message_invalid_events_removed.json",
+					this),
+				newDateString),
 			argumentCaptor.getValue(), false);
 	}
 
@@ -303,8 +317,9 @@ public class AnalyticsEventsRestControllerTest
 	public void testPushAnalyticsEventsMessageIfInvalidXForwardedFor()
 		throws Exception {
 
-		String body = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_message_2.json", this);
+		String body = TestExecutionListenerUtil.replaceVariables(
+			ResourceUtil.readResourceToString(
+				"dependencies/analytics_events_message_2.json", this));
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -335,8 +350,9 @@ public class AnalyticsEventsRestControllerTest
 	public void testPushAnalyticsEventsMessageIfMoreThanOneEvent()
 		throws Exception {
 
-		String body = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_message_4.json", this);
+		String body = TestExecutionListenerUtil.replaceVariables(
+			ResourceUtil.readResourceToString(
+				"dependencies/analytics_events_message_4.json", this));
 
 		_exchange(body);
 

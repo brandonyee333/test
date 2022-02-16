@@ -11,7 +11,7 @@
 	"events": [
 		{
 			"applicationId": "Layout",
-			"eventDate": "2017-11-10T09:34:45.345Z",
+			"eventDate": "${now}",
 			"eventId": "view",
 			"properties": {
 				"referrer": "http://www.google.com"

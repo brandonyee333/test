@@ -9,7 +9,7 @@
 		{
 			"additionalInfo": null,
 			"event": "view",
-			"eventDate": "2017-10-24T14:50:05.489Z",
+			"eventDate": "${now}",
 			"properties": {
 				"elementId": "banner1"
 			},
@@ -25,12 +25,12 @@
 		},
 		{
 			"applicationId": "Page",
-			"eventDate": "2017-10-24T14:50:05.489Z",
+			"eventDate": "${now}",
 			"eventId": "pageViewed"
 		},
 		{
 			"applicationId": "",
-			"eventDate": "2017-10-24T14:50:05.489Z",
+			"eventDate": "${now}",
 			"eventId": "pageViewed"
 		},
 		{

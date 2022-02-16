@@ -51,12 +51,15 @@ public class TestExecutionListenerUtil {
 	}
 
 	public static String replaceVariables(String json) {
+		return replaceVariables(json, DateUtil.newDateString());
+	}
+
+	public static String replaceVariables(String json, String newDateString) {
 		return StringUtils.replaceEach(
 			_replaceTimeExpressions(json, false),
 			new String[] {"${now}", "${random_long}", "${today}"},
 			new String[] {
-				DateUtil.newDateString(),
-				String.valueOf(RandomUtils.nextLong()),
+				newDateString, String.valueOf(RandomUtils.nextLong()),
 				DateUtil.newDayDateString()
 			});
 	}

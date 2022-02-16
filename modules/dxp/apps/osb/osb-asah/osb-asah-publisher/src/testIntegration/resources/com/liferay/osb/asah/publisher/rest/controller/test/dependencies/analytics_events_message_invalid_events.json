@@ -10,7 +10,7 @@
 		{
 			"additionalInfo": null,
 			"event": "view",
-			"eventDate": "2017-10-23T14:50:05.489Z",
+			"eventDate": "${now}",
 			"properties": {
 				"elementId": "banner1"
 			},
@@ -26,7 +26,7 @@
 		},
 		{
 			"applicationId": "Page",
-			"eventDate": "2017-10-23T14:50:05.489Z",
+			"eventDate": "${now}",
 			"eventId": "pageViewed"
 		},
 		{
@@ -62,7 +62,7 @@
 		},
 		{
 			"applicationId": "Page",
-			"eventDate": "2017-10-23T12:50:05.489Z",
+			"eventDate": "${now}",
 			"eventId": "pageViewed",
 			"properties": {
 				"test1": ""
@@ -70,7 +70,7 @@
 		},
 		{
 			"applicationId": "Page",
-			"eventDate": "2017-10-23T12:50:05.489Z",
+			"eventDate": "${now}",
 			"eventId": "pageLoaded",
 			"properties": {
 				"test1": "value1",
@@ -79,12 +79,12 @@
 		},
 		{
 			"applicationId": "Form",
-			"eventDate": "2017-10-02T14:50:05.489Z",
+			"eventDate": "${now}",
 			"eventId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbb"
 		},
 		{
 			"applicationId": "Page",
-			"eventDate": "2017-10-02T12:50:05.489Z",
+			"eventDate": "${now}",
 			"eventId": "pageLoaded",
 			"properties": {
 				"test1": "value1",
@@ -93,7 +93,7 @@
 		},
 		{
 			"applicationId": "Page",
-			"eventDate": "2017-10-23T12:50:05.489Z",
+			"eventDate": "${now}",
 			"eventId": "pageViewed",
 			"properties": {
 				"key01": "value01",
@@ -125,7 +125,7 @@
 		},
 		{
 			"applicationId": "Page",
-			"eventDate": "2017-10-23T12:50:05.489Z",
+			"eventDate": "${now}",
 			"eventId": "pageViewed",
 			"properties": {
 				"key01": "value01",
