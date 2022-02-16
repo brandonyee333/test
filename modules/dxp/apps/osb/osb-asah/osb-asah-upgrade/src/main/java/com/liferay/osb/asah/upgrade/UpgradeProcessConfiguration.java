@@ -25,6 +25,8 @@ import com.liferay.osb.asah.upgrade.v3_1_0.ChannelMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.DataSourceMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.ProjectMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.SchemaUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.AsahTaskMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.DatabaseSchemaUpgradeStep;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,8 +77,19 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"3.0.10", "3.1.0", upgradeSteps.toArray(new UpgradeStep[0]));
 
+		upgradeSteps = new ArrayList<>();
+
+		upgradeSteps.add(_databaseSchemaUpgradeStep);
+		upgradeSteps.add(_asahTaskMigrationUpgradeStep);
+
+		upgradeProcess.addUpgradeSteps(
+			"3.1.0", "3.2.0", upgradeSteps.toArray(new UpgradeStep[0]));
+
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private AsahTaskMigrationUpgradeStep _asahTaskMigrationUpgradeStep;
 
 	@Autowired
 	private ChannelMigrationUpgradeStep _channelMigrationUpgradeStep;
@@ -84,6 +97,9 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private CommentPostedEventDefinitionUpgradeStep
 		_commentPostedEventDefinitionUpgradeStep;
+
+	@Autowired
+	private DatabaseSchemaUpgradeStep _databaseSchemaUpgradeStep;
 
 	@Autowired
 	private DataSourceMigrationUpgradeStep _dataSourceMigrationUpgradeStep;

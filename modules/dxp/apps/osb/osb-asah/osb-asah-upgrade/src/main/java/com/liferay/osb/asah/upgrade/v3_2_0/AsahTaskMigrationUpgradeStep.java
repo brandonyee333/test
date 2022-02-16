@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v3_1_0;
+package com.liferay.osb.asah.upgrade.v3_2_0;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.entity.AsahTask;
+import com.liferay.osb.asah.common.repository.AsahTaskRepository;
 import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 
 import java.util.function.Consumer;
@@ -26,35 +26,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Leslie Wong
+ * @author Robson Pastor
  */
 @Component
-public class DataSourceMigrationUpgradeStep extends BaseMigrationUpgradeStep {
+public class AsahTaskMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 
 	@Override
 	protected Consumer<Object> getConsumer() {
 		return object -> {
-			DataSource dataSource = _objectMapper.convertValue(
-				object, DataSource.class);
+			AsahTask asahTask = _objectMapper.convertValue(
+				object, AsahTask.class);
 
-			dataSource.setIsNew(Boolean.TRUE);
+			asahTask.setIsNew(Boolean.TRUE);
 
-			_dataSourceRepository.save(dataSource);
+			_asahTaskRepository.save(asahTask);
 		};
 	}
 
 	@Override
 	protected String getElasticsearchCollectionName() {
-		return "data-sources";
+		return "OSBAsahTasks";
 	}
 
 	@Override
 	protected String getSelectLatestIdSQL() {
-		return "SELECT id FROM datasource ORDER BY id DESC LIMIT 1";
+		return "SELECT id FROM asahtask ORDER BY id DESC LIMIT 1";
 	}
 
 	@Autowired
-	private DataSourceRepository _dataSourceRepository;
+	private AsahTaskRepository _asahTaskRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
