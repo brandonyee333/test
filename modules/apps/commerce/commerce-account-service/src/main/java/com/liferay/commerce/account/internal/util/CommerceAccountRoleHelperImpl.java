@@ -135,7 +135,6 @@ public class CommerceAccountRoleHelperImpl
 					CommerceAccountActionKeys.MANAGE_ADDRESSES,
 					CommerceAccountActionKeys.VIEW_ADDRESSES
 				});
-
 			resourceActionIds.put(
 				"com.liferay.commerce.order",
 				new String[] {
