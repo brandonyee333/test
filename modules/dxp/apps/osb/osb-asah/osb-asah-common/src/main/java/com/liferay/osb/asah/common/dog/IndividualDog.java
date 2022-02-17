@@ -1079,17 +1079,18 @@ public class IndividualDog extends BaseFaroInfoDog {
 			"demographics", dataJSONObject, dataSource, individualIds,
 			"individual", "demographics", "email");
 
-		List<Field> fields = _fieldDog.getFields("demographics", individualIds);
-
-		Stream<Field> stream = fields.stream();
-
-		Map<Long, List<Field>> individualIdByField = stream.collect(
-			Collectors.groupingBy(Field::getOwnerId));
-
 		List<Individual> deletedIndividuals = new ArrayList<>();
 		List<Individual> updatedIndividuals = new ArrayList<>();
 
 		for (Individual individual : individuals) {
+			List<Field> fields = _fieldDog.getOwnerIdFields(
+				"demographics", individual.getId());
+
+			Stream<Field> stream = fields.stream();
+
+			Map<Long, List<Field>> individualIdByField = stream.collect(
+				Collectors.groupingBy(Field::getOwnerId));
+
 			List<String> names = ListUtil.map(
 				individualIdByField.get(individual.getId()), Field::getName);
 
@@ -1113,6 +1114,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 		if (!deletedIndividuals.isEmpty()) {
 			deleteIndividuals(new Date(), deletedIndividuals);
 		}
+
+		List<Field> fields = _fieldDog.getFields("demographics", individualIds);
 
 		JSONObject fieldsJSONObject = _fieldDog.getFieldsJSONObject(
 			"demographics", dataJSONObject, dataSource);
