@@ -726,7 +726,6 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-75457, LPS-75410, LPS-80246 and LPS-75393. Automate Numeric field with Decimal configurations."
-	@ignore = "true"
 	@priority = "4"
 	test AutomateNumericFieldWithDecimalConfigurations {
 		property test.name.skip.portal.instance = "Forms#AutomateNumericFieldWithDecimalConfigurations";
@@ -5279,7 +5278,6 @@ definition {
 	}
 
 	@description = "LPS-84637 - Form title and description get unescaped after unpublish it."
-	@ignore = "true"
 	@priority = "5"
 	test TitleAndDescriptionXSSUnescapedAfterUnpublish {
 		property portal.acceptance = "true";
