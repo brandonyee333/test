@@ -3,10 +3,6 @@
 	display: block;
 }
 
-.dropdown-menu {
-	border: 1px solid $dropdown-border-color;
-}
-
 // Moved .dropdown-menu > li > a to .dropdown-item in BS4
 
 .dropdown-menu > li > a,
@@ -22,18 +18,4 @@
 	box-shadow: none;
 	color: #a7a9bc;
 	cursor: not-allowed;
-}
-
-.dropdown-toggle:after {
-	border-width: 0;
-	content: '';
-}
-
-.dropup .dropdown-toggle:after {
-	border-width: 0;
-	content: '';
-}
-
-.dropdown > .dropdown-menu {
-	position: absolute;
 }
