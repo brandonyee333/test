@@ -21,10 +21,13 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
 
@@ -81,26 +84,33 @@ public class DXPEntitiesRestControllerTest
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			ArgumentMatchers.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture(),
+			ArgumentMatchers.eq(
+				Collections.singletonMap(
+					"projectId", ProjectIdThreadLocal.getProjectId()))
 		);
 
 		for (String message : argumentCaptor.getAllValues()) {
-			JSONObject messageJSONObject = new JSONObject(message);
+			JSONArray jsonArray = new JSONArray(message);
 
-			JSONObject objectJSONObject = messageJSONObject.getJSONObject(
-				"object");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject messageJSONObject = jsonArray.getJSONObject(i);
 
-			Assertions.assertThat(
-				objectJSONObject.getLong("createDate")
-			).isGreaterThanOrEqualTo(
-				date.getTime()
-			);
+				JSONObject objectJSONObject = messageJSONObject.getJSONObject(
+					"object");
 
-			Assertions.assertThat(
-				objectJSONObject.getLong("modifiedDate")
-			).isGreaterThanOrEqualTo(
-				date.getTime()
-			);
+				Assertions.assertThat(
+					objectJSONObject.getLong("createDate")
+				).isGreaterThanOrEqualTo(
+					date.getTime()
+				);
+
+				Assertions.assertThat(
+					objectJSONObject.getLong("modifiedDate")
+				).isGreaterThanOrEqualTo(
+					date.getTime()
+				);
+			}
 		}
 	}
 
@@ -124,23 +134,23 @@ public class DXPEntitiesRestControllerTest
 			String.class);
 
 		Mockito.verify(
-			_messageBus, Mockito.times(6)
+			_messageBus, Mockito.times(1)
 		).sendMessage(
-			ArgumentMatchers.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture(),
+			ArgumentMatchers.eq(
+				Collections.singletonMap(
+					"projectId", ProjectIdThreadLocal.getProjectId()))
 		);
 
-		JSONArray jsonArray = new JSONArray();
+		List<String> messages = argumentCaptor.getAllValues();
 
-		for (String message : argumentCaptor.getAllValues()) {
-			JSONObject messageJSONObject = new JSONObject(message);
-
-			jsonArray.put(messageJSONObject);
-		}
+		org.junit.jupiter.api.Assertions.assertEquals(
+			1, messages.size(), messages.toString());
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
 				"dependencies/dxp_entities_message.json", this),
-			jsonArray, false);
+			new JSONArray(messages.get(0)), false);
 	}
 
 	private <T> ResponseEntity<String> _exchange(T body) {

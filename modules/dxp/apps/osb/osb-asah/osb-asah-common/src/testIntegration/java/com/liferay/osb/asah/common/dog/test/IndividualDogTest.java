@@ -39,6 +39,7 @@ import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -56,6 +57,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1077,8 +1083,7 @@ public class IndividualDogTest
 				"knownIndividual", true
 			));
 
-		_individualDog.updateIndividual(
-			String.valueOf(individual.getId()),
+		_updateIndividualAsync(
 			JSONUtil.put(
 				"contact",
 				JSONUtil.put(
@@ -1089,7 +1094,7 @@ public class IndividualDogTest
 			).put(
 				"modifiedDate", System.currentTimeMillis()
 			),
-			_liferayDataSource, individual);
+			individual);
 
 		page1JSONObject = cerebroInfoElasticsearchInvoker.fetch(
 			"pages", page1JSONObject.getString("id"));
@@ -1223,6 +1228,38 @@ public class IndividualDogTest
 		).collect(
 			Collectors.toSet()
 		);
+	}
+
+	private void _updateIndividualAsync(
+			JSONObject dataJSONObject, Individual individual)
+		throws Exception {
+
+		String projectId = ProjectIdThreadLocal.getProjectId();
+
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+		Future<?> future = executorService.submit(
+			() -> {
+				try {
+					ProjectIdThreadLocal.setProjectId(projectId);
+
+					_individualDog.updateIndividual(
+						String.valueOf(individual.getId()), dataJSONObject,
+						_liferayDataSource, individual);
+				}
+				catch (Exception exception) {
+				}
+			});
+
+		try {
+			future.get(3, TimeUnit.SECONDS);
+		}
+		catch (TimeoutException timeoutException) {
+			future.cancel(true);
+		}
+		finally {
+			executorService.shutdownNow();
+		}
 	}
 
 	private static final String[] _FIELD_NAMES = {
