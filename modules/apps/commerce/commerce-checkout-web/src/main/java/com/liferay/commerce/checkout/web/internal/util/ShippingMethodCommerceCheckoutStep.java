@@ -53,7 +53,6 @@ import java.math.BigDecimal;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -276,26 +275,20 @@ public class ShippingMethodCommerceCheckoutStep
 			commerceContext, commerceOrder, commerceShippingMethodId,
 			shippingOptionName, themeDisplay.getLocale());
 
-		_executeInTransaction(
-			() -> {
-				_commerceOrderLocalService.updateShippingMethod(
-					commerceOrder.getCommerceOrderId(),
-					commerceShippingMethodId, shippingOptionName,
-					shippingAmount, commerceContext);
-
-				_commerceOrderLocalService.recalculatePrice(
-					commerceOrder.getCommerceOrderId(), commerceContext);
-
-				return null;
-			});
-	}
-
-	private CommerceOrder _executeInTransaction(
-			Callable<CommerceOrder> callable)
-		throws Exception {
-
 		try {
-			return TransactionInvokerUtil.invoke(_transactionConfig, callable);
+			TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					_commerceOrderLocalService.updateShippingMethod(
+						commerceOrder.getCommerceOrderId(),
+						commerceShippingMethodId, shippingOptionName,
+						shippingAmount, commerceContext);
+
+					_commerceOrderLocalService.recalculatePrice(
+						commerceOrder.getCommerceOrderId(), commerceContext);
+
+					return null;
+				});
 		}
 		catch (Throwable throwable) {
 			throw new PortalException(throwable);
