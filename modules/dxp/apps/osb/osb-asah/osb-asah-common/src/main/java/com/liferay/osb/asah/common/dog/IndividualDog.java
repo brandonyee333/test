@@ -1073,11 +1073,10 @@ public class IndividualDog extends BaseFaroInfoDog {
 			"demographics", individualIds);
 
 		_fieldDog.updateFields(
-			"custom", dataJSONObject, dataSource, individualIds, "individual",
-			"demographics", "email");
+			"custom", dataJSONObject, dataSource, individualIds, "individual");
 		_fieldDog.updateFields(
 			"demographics", dataJSONObject, dataSource, individualIds,
-			"individual", "demographics", "email");
+			"individual");
 
 		List<Individual> deletedIndividuals = new ArrayList<>();
 		List<Individual> updatedIndividuals = new ArrayList<>();
@@ -1258,13 +1257,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		if (dataJSONObject.has("expando")) {
 			_fieldDog.updateFields(
-				"custom", dataJSONObject, dataSource, individual, "individual",
-				"demographics", "email");
+				"custom", dataJSONObject, dataSource,
+				Collections.singletonList(individualId), "individual");
 		}
 
 		_fieldDog.updateFields(
-			"demographics", dataJSONObject, dataSource, individual,
-			"individual", "demographics", "email");
+			"demographics", dataJSONObject, dataSource,
+			Collections.singletonList(individualId), "individual");
 
 		List<Field> fields = _fieldDog.getOwnerIdFields(
 			"demographics", individualId);

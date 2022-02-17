@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -186,8 +187,8 @@ public class OrganizationDog {
 		throws Exception {
 
 		_fieldDog.updateFields(
-			"custom", dataJSONObject, dataSource, organization, "organization",
-			null, null);
+			"custom", dataJSONObject, dataSource,
+			Collections.singletonList(organization.getId()), "organization");
 
 		List<Field> fields =
 			_fieldRepository.findByContextAndOwnerIdAndOwnerType(

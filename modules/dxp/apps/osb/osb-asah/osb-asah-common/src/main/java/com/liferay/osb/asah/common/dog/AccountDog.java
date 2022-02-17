@@ -513,8 +513,8 @@ public class AccountDog {
 		throws Exception {
 
 		_fieldDog.updateFields(
-			"organization", dataJSONObject, dataSource, account, "account",
-			null, null);
+			"organization", dataJSONObject, dataSource,
+			Collections.singletonList(account.getId()), "account");
 
 		List<Field> fields =
 			_fieldRepository.findByContextAndOwnerIdAndOwnerType(
