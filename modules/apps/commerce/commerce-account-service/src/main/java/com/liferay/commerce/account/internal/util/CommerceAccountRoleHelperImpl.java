@@ -16,6 +16,7 @@ package com.liferay.commerce.account.internal.util;
 
 import com.liferay.commerce.account.constants.CommerceAccountActionKeys;
 import com.liferay.commerce.account.constants.CommerceAccountConstants;
+import com.liferay.commerce.account.model.CommerceAccount;
 import com.liferay.commerce.account.util.CommerceAccountRoleHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -127,6 +128,13 @@ public class CommerceAccountRoleHelperImpl
 		}
 		else if (name.equals(
 					CommerceAccountConstants.ROLE_NAME_ACCOUNT_BUYER)) {
+
+			resourceActionIds.put(
+				CommerceAccount.class.getName(),
+				new String[] {
+					CommerceAccountActionKeys.MANAGE_ADDRESSES,
+					CommerceAccountActionKeys.VIEW_ADDRESSES
+				});
 
 			resourceActionIds.put(
 				"com.liferay.commerce.order",
