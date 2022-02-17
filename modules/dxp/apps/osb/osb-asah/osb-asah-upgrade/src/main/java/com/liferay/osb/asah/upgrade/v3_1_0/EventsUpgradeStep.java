@@ -86,14 +86,6 @@ public class EventsUpgradeStep implements UpgradeStep {
 	public void upgrade(String version) {
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-		searchSourceBuilder.fetchSource(
-			new String[] {
-				"applicationId", "channelId", "dataSourceId", "endTime",
-				"eventContext", "eventId", "eventProperties", "id",
-				"object.canonicalUrl", "object.name", "object.url", "ownerId",
-				"sessionId", "userId"
-			},
-			null);
 		searchSourceBuilder.query(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.existsQuery("eventContext")
