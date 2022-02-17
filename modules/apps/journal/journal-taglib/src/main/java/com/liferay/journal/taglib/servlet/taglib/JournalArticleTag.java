@@ -68,8 +68,7 @@ public class JournalArticleTag extends IncludeTag {
 
 		try {
 			_articleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(
-				_article.getGroupId(), _article.getArticleId(),
-				_article.getVersion(), _ddmTemplateKey,
+				_article, _ddmTemplateKey,
 				ParamUtil.getString(request, "p_l_mode", Constants.VIEW),
 				getLanguageId(), 1, portletRequestModel, themeDisplay);
 		}
@@ -177,6 +176,8 @@ public class JournalArticleTag extends IncludeTag {
 
 	@Override
 	protected void setAttributes(HttpServletRequest httpServletRequest) {
+		httpServletRequest.setAttribute(
+			"liferay-journal:journal-article:article", _article);
 		httpServletRequest.setAttribute(
 			"liferay-journal:journal-article:articleDisplay", _articleDisplay);
 		httpServletRequest.setAttribute(
