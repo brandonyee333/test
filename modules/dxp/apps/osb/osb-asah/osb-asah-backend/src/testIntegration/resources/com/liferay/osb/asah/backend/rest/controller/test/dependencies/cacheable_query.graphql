@@ -53,3 +53,38 @@ fragment metricFragment on Metric {
     value
     __typename
 }
+
+query UserSession($channelId: String!, $entityId: String!, $entityType: EntityType!, $keywords: String, $page: Int!, $rangeEnd: String, $rangeKey: Int, $rangeStart: String, $size: Int!) {
+    eventsByUserSessions(channelId: $channelId, entityId: $entityId, entityType: $entityType, keywords: $keywords, page: $page, rangeEnd: $rangeEnd, rangeKey: $rangeKey, rangeStart: $rangeStart, size: $size) {
+        userSessions {
+            ... on UserSession {
+                browserName
+                completeDate
+                contentLanguageId
+                createDate
+                devicePixelRatio
+                deviceType
+                events {
+                    canonicalUrl
+                    createDate
+                    name
+                    pageDescription
+                    pageKeywords
+                    pageTitle
+                    referrer
+                    url
+                    __typename
+                }
+                languageId
+                screenHeight
+                screenWidth
+                timezoneOffset
+                userAgent
+                __typename
+            }
+            __typename
+        }
+        totalEvents
+        __typename
+    }
+}
