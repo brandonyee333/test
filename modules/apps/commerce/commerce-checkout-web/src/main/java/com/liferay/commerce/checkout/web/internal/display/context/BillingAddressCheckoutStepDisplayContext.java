@@ -20,6 +20,7 @@ import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 
 import java.util.List;
 
@@ -32,10 +33,14 @@ public class BillingAddressCheckoutStepDisplayContext
 	extends BaseAddressCheckoutStepDisplayContext {
 
 	public BillingAddressCheckoutStepDisplayContext(
+		ModelResourcePermission<CommerceAccount>
+			commerceAccountModelResourcePermission,
 		CommerceAddressService commerceAddressService,
 		HttpServletRequest httpServletRequest) {
 
-		super(commerceAddressService, httpServletRequest);
+		super(
+			commerceAccountModelResourcePermission, commerceAddressService,
+			httpServletRequest);
 	}
 
 	@Override
