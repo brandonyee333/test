@@ -41,6 +41,9 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUti
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -50,6 +53,7 @@ import java.math.BigDecimal;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -272,10 +276,35 @@ public class ShippingMethodCommerceCheckoutStep
 			commerceContext, commerceOrder, commerceShippingMethodId,
 			shippingOptionName, themeDisplay.getLocale());
 
-		_commerceOrderLocalService.updateShippingMethod(
-			commerceOrder.getCommerceOrderId(), commerceShippingMethodId,
-			shippingOptionName, shippingAmount, commerceContext);
+		_executeInTransaction(
+			() -> {
+				_commerceOrderLocalService.updateShippingMethod(
+					commerceOrder.getCommerceOrderId(),
+					commerceShippingMethodId, shippingOptionName,
+					shippingAmount, commerceContext);
+
+				_commerceOrderLocalService.recalculatePrice(
+					commerceOrder.getCommerceOrderId(), commerceContext);
+
+				return null;
+			});
 	}
+
+	private CommerceOrder _executeInTransaction(
+			Callable<CommerceOrder> callable)
+		throws Exception {
+
+		try {
+			return TransactionInvokerUtil.invoke(_transactionConfig, callable);
+		}
+		catch (Throwable throwable) {
+			throw new PortalException(throwable);
+		}
+	}
+
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 	@Reference
 	private CommerceCheckoutStepHelper _commerceCheckoutStepHelper;
