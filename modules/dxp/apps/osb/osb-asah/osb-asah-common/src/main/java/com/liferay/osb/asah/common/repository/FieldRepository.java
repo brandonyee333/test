@@ -85,9 +85,10 @@ public interface FieldRepository
 	public List<Field> findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 		@Param("context") String context, @Param("ownerId") Long ownerId);
 
-	public List<Field> findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
-		@Param("context") String context,
-		@Param("ownerIds") List<Long> ownerIds);
+	public List<Field>
+		findByContextAndOwnerIdInGroupByMaxModifiedDateAndNameAndOwnerId(
+			@Param("context") String context,
+			@Param("ownerIds") List<Long> ownerIds);
 
 	public List<Field> findByFieldTypeAndOwnerTypeAndValueIn(
 		String fieldType, String ownerType, List<String> values);

@@ -72,7 +72,7 @@
 					Field.ownerId = MaxModifiedDateField.ownerId
 		]]>
 	</entry>
-	<entry key="Field.findByContextAndOwnerIdInGroupByMaxModifiedDateAndName">
+	<entry key="Field.findByContextAndOwnerIdInGroupByMaxModifiedDateAndNameAndOwnerId">
 		<![CDATA[
 			SELECT
 				Field.*

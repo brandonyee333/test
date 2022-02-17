@@ -347,32 +347,41 @@ public class ElasticsearchFieldRepositoryImpl implements FieldRepository {
 	public List<Field> findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 		String context, Long ownerId) {
 
-		return findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
+		return findByContextAndOwnerIdInGroupByMaxModifiedDateAndNameAndOwnerId(
 			context, Arrays.asList(ownerId));
 	}
 
 	@Override
-	public List<Field> findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
-		String context, List<Long> ownerIds) {
+	public List<Field>
+		findByContextAndOwnerIdInGroupByMaxModifiedDateAndNameAndOwnerId(
+			String context, List<Long> ownerIds) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			_getCollectionName(),
 			searchSourceBuilder -> {
 				searchSourceBuilder.aggregation(
 					AggregationBuilders.terms(
-						"names"
+						"ownerIds"
 					).field(
-						"name"
+						"ownerId"
 					).size(
 						Integer.MAX_VALUE
 					).subAggregation(
-						AggregationBuilders.topHits(
-							"maxDateModified"
-						).sort(
-							SortBuilderUtil.fieldSort(
-								"dateModified", SortOrder.DESC)
+						AggregationBuilders.terms(
+							"names"
+						).field(
+							"name"
 						).size(
-							1
+							Integer.MAX_VALUE
+						).subAggregation(
+							AggregationBuilders.topHits(
+								"maxDateModified"
+							).sort(
+								SortBuilderUtil.fieldSort(
+									"dateModified", SortOrder.DESC)
+							).size(
+								1
+							)
 						)
 					));
 
@@ -392,21 +401,28 @@ public class ElasticsearchFieldRepositoryImpl implements FieldRepository {
 			return Collections.emptyList();
 		}
 
-		Terms nameTerms = aggregations.get("names");
+		Terms ownerIdTerms = aggregations.get("ownerIds");
 
 		JSONArray jsonArray = new JSONArray();
 
-		for (Terms.Bucket bucket : nameTerms.getBuckets()) {
-			Aggregations maxDateModifiedAggregations = bucket.getAggregations();
+		for (Terms.Bucket ownerIdTermBucket : ownerIdTerms.getBuckets()) {
+			Aggregations nameAggregations = ownerIdTermBucket.getAggregations();
 
-			TopHits topHits = maxDateModifiedAggregations.get(
-				"maxDateModified");
+			Terms nameTerms = nameAggregations.get("names");
 
-			SearchHits searchHits = topHits.getHits();
+			for (Terms.Bucket nameTermBucket : nameTerms.getBuckets()) {
+				Aggregations maxDateModifiedAggregations =
+					nameTermBucket.getAggregations();
 
-			SearchHit searchHit = searchHits.getAt(0);
+				TopHits topHits = maxDateModifiedAggregations.get(
+					"maxDateModified");
 
-			jsonArray.put(searchHit.getSourceAsMap());
+				SearchHits searchHits = topHits.getHits();
+
+				SearchHit searchHit = searchHits.getAt(0);
+
+				jsonArray.put(searchHit.getSourceAsMap());
+			}
 		}
 
 		return _toFields(jsonArray);

@@ -198,7 +198,7 @@ public class FieldDog {
 
 	public List<Field> getFields(String context, List<Long> ownerIds) {
 		return _fieldRepository.
-			findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
+			findByContextAndOwnerIdInGroupByMaxModifiedDateAndNameAndOwnerId(
 				context, ownerIds);
 	}
 
