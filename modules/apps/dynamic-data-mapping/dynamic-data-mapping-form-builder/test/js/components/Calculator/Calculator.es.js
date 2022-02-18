@@ -94,6 +94,17 @@ describe('Calculator', () => {
 			});
 		});
 
+		describe('clicking the Sum function', () => {
+			it("don't disables functions, numbers and operators", () => {
+				const result = component.getStateBasedOnExpression('sum(');
+
+				expect(result.disableDot).toBe(true);
+				expect(result.disableFunctions).toBe(false);
+				expect(result.disableNumbers).toBe(false);
+				expect(result.disableOperators).toBe(false);
+			});
+		});
+
 		describe('removeTokenFromExpression()', () => {
 			it('removes the last token from the expression', () => {
 				component.expression = '4*[Field1]';
@@ -116,9 +127,10 @@ describe('Calculator', () => {
 			it('disables functions, numbers and operators when last token is a sum function', () => {
 				const result = component.getStateBasedOnExpression('4*sum(');
 
-				expect(result.disableFunctions).toBe(true);
-				expect(result.disableNumbers).toBe(true);
-				expect(result.disableOperators).toBe(true);
+				expect(result.disableDot).toBe(true);
+				expect(result.disableFunctions).toBe(false);
+				expect(result.disableNumbers).toBe(false);
+				expect(result.disableOperators).toBe(false);
 			});
 
 			it('does not disable functions, numbers and operators when last token is not a sum function', () => {
