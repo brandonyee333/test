@@ -597,12 +597,19 @@ definition {
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8288 | Test Summary: Unique Visitors label is shown on the tabs of Sites dashboards"
 	@priority = "3"
 	test CanUniqueVisitorsLabelShowSitesDashboards {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
+
 		task ("Add a new user") {
 			JSONUser.addUser(
 				userEmailAddress = "ac@liferay.com",
 				userFirstName = "ac",
 				userLastName = "ac",
 				userScreenName = "ac");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "ac@liferay.com");
 		}
 
 		task ("Connect Analytics Cloud to DXP") {

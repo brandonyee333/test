@@ -79,6 +79,11 @@ definition {
 				userFirstName = "${name}",
 				userLastName = "${name}",
 				userScreenName = "${name}");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "${name}@liferay.com");
 		}
 
 		ACDXPSettings.syncNewContactData();
@@ -131,6 +136,11 @@ definition {
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
+
+		JSONUser.setFirstPassword(
+			agreeToTermsAndAnswerReminderQuery = "true",
+			requireReset = "false",
+			userEmailAddress = "userea@liferay.com");
 
 		ACDXPSettings.syncNewContactData();
 

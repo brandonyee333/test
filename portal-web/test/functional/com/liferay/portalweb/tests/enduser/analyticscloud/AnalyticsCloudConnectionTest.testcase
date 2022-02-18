@@ -338,6 +338,7 @@ definition {
 	@description = "Sync Liferay Data Source Contacts"
 	@priority = "5"
 	test CanSyncAllContactsFromDXPToAC {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.release = "true";
 
 		JSONUser.addUser(
@@ -345,6 +346,11 @@ definition {
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
+
+		JSONUser.setFirstPassword(
+			agreeToTermsAndAnswerReminderQuery = "true",
+			requireReset = "false",
+			userEmailAddress = "userea@liferay.com");
 
 		var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud();
 
@@ -530,6 +536,7 @@ definition {
 	@description = "Automation ID: LRAC-8822 | Test Summary: Sync Liferay Data Source Contacts by User Groups"
 	@priority = "4"
 	test SyncDataSourceContactsByGroups {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.release = "true";
 
 		task ("Add user, group and assign user to group") {
@@ -538,6 +545,11 @@ definition {
 				userFirstName = "userfn",
 				userLastName = "userln",
 				userScreenName = "usersn");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "userea@liferay.com");
 
 			JSONUserGroup.addUserGroup(
 				userGroupDescription = "User Group Description",
@@ -593,6 +605,7 @@ definition {
 	@description = "Automation ID: LRAC-8823 | Test Summary: Sync Liferay Data Source Contacts by Organizations"
 	@priority = "4"
 	test SyncDataSourceContactsByOrganizations {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.release = "true";
 
 		task ("Create a new user, a new organization and assign the organization for the created user") {
@@ -601,6 +614,11 @@ definition {
 				userFirstName = "userfn",
 				userLastName = "userln",
 				userScreenName = "usersn");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "userea@liferay.com");
 
 			ApplicationsMenu.gotoPortlet(
 				category = "Users",

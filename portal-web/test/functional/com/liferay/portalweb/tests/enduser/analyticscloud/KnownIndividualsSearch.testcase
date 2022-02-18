@@ -1,6 +1,7 @@
 @component-name = "portal-analytics-cloud"
 definition {
 
+	property custom.properties = "jsonws.web.service.paths.excludes=";
 	property portal.release = "false";
 	property portal.upstream = "true";
 	property property.group = "analytics.cloud.profile";
@@ -58,6 +59,11 @@ definition {
 				userFirstName = "ac",
 				userLastName = "ac",
 				userScreenName = "ac");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "ac@liferay.com");
 		}
 
 		task ("Sync the Contact Data") {
@@ -124,6 +130,11 @@ definition {
 				userFirstName = "ac",
 				userLastName = "ac",
 				userScreenName = "ac");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "ac@liferay.com");
 		}
 
 		task ("Sync the Contact Data") {
@@ -256,6 +267,11 @@ definition {
 				userFirstName = "ac",
 				userLastName = "ac",
 				userScreenName = "ac");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "ac@liferay.com");
 		}
 
 		task ("Sync the Contact Data") {
@@ -331,11 +347,21 @@ definition {
 				userLastName = "Smith",
 				userScreenName = "Randysn");
 
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "randy.smith@liferay.com");
+
 			JSONUser.addUser(
 				userEmailAddress = "maria.rau@liferay.com",
 				userFirstName = "Maria",
 				userLastName = "Rau",
 				userScreenName = "Mariasn");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "maria.rau@liferay.com");
 
 			ACDXPSettings.syncNewContactData();
 		}
@@ -569,12 +595,22 @@ definition {
 				userLastName = "Smith",
 				userScreenName = "Randysn");
 
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "randy.smith@liferay.com");
+
 			JSONUser.addUser(
 				jobTitle = "Teacher",
 				userEmailAddress = "maria.rau@liferay.com",
 				userFirstName = "Maria",
 				userLastName = "Rau",
 				userScreenName = "Mariasn");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "maria.rau@liferay.com");
 		}
 
 		task ("Sync the Contact Data") {
@@ -662,6 +698,11 @@ definition {
 				userFirstName = "ac",
 				userLastName = "ac",
 				userScreenName = "ac");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "ac@liferay.com");
 
 			ACDXPSettings.syncNewContactData();
 		}

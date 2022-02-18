@@ -298,6 +298,8 @@ definition {
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8507 | Test Summary: Segment Overview distribution filtered by text"
 	@priority = "3"
 	test SegmentOverviewDistributionFilteredByText {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
+
 		var users = "ac,liferay";
 		var emailList = "ac@liferay.com,liferay@liferay.com";
 		var nameList = "ac ac,liferay liferay";
@@ -318,6 +320,11 @@ definition {
 					userFirstName = "${name}",
 					userLastName = "${name}",
 					userScreenName = "${name}");
+
+				JSONUser.setFirstPassword(
+					agreeToTermsAndAnswerReminderQuery = "true",
+					requireReset = "false",
+					userEmailAddress = "${name}@liferay.com");
 			}
 
 			ACDXPSettings.syncNewContactData();

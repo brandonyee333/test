@@ -35,6 +35,7 @@ definition {
 	@ignore = "true"
 	@priority = "5"
 	test DeleteLiferayDXPDataSourceEnsureContactsAndEventsNoBeingSynced {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
 
 		// AC Bug ticket: LRAC-10534
 
@@ -51,6 +52,11 @@ definition {
 			userFirstName = "ac",
 			userLastName = "ac",
 			userScreenName = "ac");
+
+		JSONUser.setFirstPassword(
+			agreeToTermsAndAnswerReminderQuery = "true",
+			requireReset = "false",
+			userEmailAddress = "ac@liferay.com");
 
 		ACDXPSettings.syncNewContactData();
 
