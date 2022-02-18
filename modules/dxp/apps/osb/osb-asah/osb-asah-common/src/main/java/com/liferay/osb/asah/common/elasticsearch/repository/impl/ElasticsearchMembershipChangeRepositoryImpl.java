@@ -210,7 +210,11 @@ public class ElasticsearchMembershipChangeRepositoryImpl
 			return boolQueryBuilder;
 		}
 
-		return filterHelper.getQueryBuilder();
+		return BoolQueryBuilderUtil.filter(
+			boolQueryBuilder
+		).filter(
+			filterHelper.getQueryBuilder()
+		);
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
