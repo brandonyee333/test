@@ -48,47 +48,41 @@ class Calculator extends Component {
 		});
 	}
 
-	getStateBasedOnExpression(expression) {
-		let disableDot = false;
-		let disableFunctions = false;
-		let disableNumbers = false;
-		let disableOperators = false;
-		let showOnlyRepeatableFields = false;
-		const tokens = Tokenizer.tokenize(expression);
-
-		if (
-			tokens.length > 1 &&
-			tokens[tokens.length - 1].type === Token.LEFT_PARENTHESIS &&
-			tokens[tokens.length - 2].type === Token.FUNCTION &&
-			tokens[tokens.length - 2].value === 'sum'
-		) {
-			disableFunctions = true;
-			disableNumbers = true;
-			disableOperators = true;
-			showOnlyRepeatableFields = true;
-		}
-
+	_isDotDisabled(tokens) {
 		if (
 			tokens.length === 0 ||
 			(tokens.length > 0 &&
 				tokens[tokens.length - 1].type !== Token.LITERAL)
 		) {
-			disableDot = true;
+			return true;
 		}
 
+		return false;
+	}
+
+	_isOperatorDisabled(tokens) {
 		if (
 			tokens.length > 0 &&
 			tokens[tokens.length - 1].type === Token.OPERATOR
 		) {
-			disableOperators = true;
+			return true;
 		}
+
+		return false;
+	}
+
+	getStateBasedOnExpression(expression) {
+		const tokens = Tokenizer.tokenize(expression);
+
+		const disableDot = this._isDotDisabled(tokens);
+		const disableOperators = this._isOperatorDisabled(tokens);
 
 		return {
 			disableDot,
-			disableFunctions,
-			disableNumbers,
+			disableFunctions: false,
+			disableNumbers: false,
 			disableOperators,
-			showOnlyRepeatableFields,
+			showOnlyRepeatableFields: false,
 		};
 	}
 
@@ -147,7 +141,8 @@ class Calculator extends Component {
 						lastToken.type === Token.LITERAL)) ||
 				(newToken.type === Token.LITERAL &&
 					(lastToken.type === Token.VARIABLE ||
-						lastToken.type === Token.FUNCTION)))
+						lastToken.type === Token.FUNCTION))) &&
+			this._isSumAction(tokens) !== true
 		);
 	}
 
@@ -174,6 +169,15 @@ class Calculator extends Component {
 
 		this.addTokenToExpression(Token.FUNCTION, item.value);
 		this.addTokenToExpression(Token.LEFT_PARENTHESIS, '(');
+	}
+
+	_isSumAction(token) {
+		return (
+			token.length > 1 &&
+			token[token.length - 1].type === Token.LEFT_PARENTHESIS &&
+			token[token.length - 2].type === Token.FUNCTION &&
+			token[token.length - 2].value === 'sum'
+		);
 	}
 
 	_repeatableFieldsValueFn() {
