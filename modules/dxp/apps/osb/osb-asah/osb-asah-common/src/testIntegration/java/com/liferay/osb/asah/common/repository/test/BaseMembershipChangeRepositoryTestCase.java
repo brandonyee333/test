@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -223,6 +224,18 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		Assertions.assertEquals(
 			1, membershipChanges.size(), membershipChanges.toString());
 		Assertions.assertEquals(entityModels.get(0), membershipChanges.get(0));
+
+		membershipChanges = _membershipChangeRepository.searchMembershipChanges(
+			new FilterHelper("operation ge 'ADDED'"), false, segment.getId(),
+			PageRequest.of(0, 10));
+
+		Stream<MembershipChange> stream = membershipChanges.stream();
+
+		Map<Long, List<MembershipChange>> membershipChangesMap = stream.collect(
+			Collectors.groupingBy(MembershipChange::getIndividualSegmentId));
+
+		Assertions.assertEquals(
+			1, membershipChangesMap.size(), membershipChangesMap.toString());
 	}
 
 	@Test
