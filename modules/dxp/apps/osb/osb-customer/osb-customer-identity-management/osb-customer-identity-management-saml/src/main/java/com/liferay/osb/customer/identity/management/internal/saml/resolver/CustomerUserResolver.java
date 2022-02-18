@@ -262,7 +262,7 @@ public class CustomerUserResolver implements UserResolver {
 		List<Serializable> values = attributesMap.get(key);
 
 		if (ListUtil.isEmpty(values)) {
-			return null;
+			return Collections.emptyList();
 		}
 
 		Stream<Serializable> stream = values.stream();
@@ -311,42 +311,38 @@ public class CustomerUserResolver implements UserResolver {
 
 		List<String> groups = getValueAsStringList("groups", attributesMap);
 
-		if (groups != null) {
-			List<Organization> oldOrganizations = user.getOrganizations();
+		List<Organization> oldOrganizations = user.getOrganizations();
 
-			for (String organizationName : groups) {
-				Organization organization =
-					organizationLocalService.fetchOrganization(
-						companyId, organizationName);
+		for (String organizationName : groups) {
+			Organization organization =
+				organizationLocalService.fetchOrganization(
+					companyId, organizationName);
 
-				if (organization == null) {
-					continue;
-				}
-
-				ExpandoBridge expandoBridge = organization.getExpandoBridge();
-
-				Boolean saml = (Boolean)expandoBridge.getAttribute(
-					"saml", false);
-
-				if ((saml != null) && saml) {
-					userLocalService.addOrganizationUser(
-						organization.getOrganizationId(), user.getUserId());
-				}
+			if (organization == null) {
+				continue;
 			}
 
-			for (Organization organization : oldOrganizations) {
-				ExpandoBridge expandoBridge = organization.getExpandoBridge();
+			ExpandoBridge expandoBridge = organization.getExpandoBridge();
 
-				Boolean saml = (Boolean)expandoBridge.getAttribute(
-					"saml", false);
+			Boolean saml = (Boolean)expandoBridge.getAttribute("saml", false);
 
-				if ((saml != null) && saml &&
-					!groups.contains(organization.getName())) {
+			if ((saml != null) && saml) {
+				userLocalService.addOrganizationUser(
+					organization.getOrganizationId(), user.getUserId());
+			}
+		}
 
-					userLocalService.unsetOrganizationUsers(
-						organization.getOrganizationId(),
-						new long[] {user.getUserId()});
-				}
+		for (Organization organization : oldOrganizations) {
+			ExpandoBridge expandoBridge = organization.getExpandoBridge();
+
+			Boolean saml = (Boolean)expandoBridge.getAttribute("saml", false);
+
+			if ((saml != null) && saml &&
+				!groups.contains(organization.getName())) {
+
+				userLocalService.unsetOrganizationUsers(
+					organization.getOrganizationId(),
+					new long[] {user.getUserId()});
 			}
 		}
 
