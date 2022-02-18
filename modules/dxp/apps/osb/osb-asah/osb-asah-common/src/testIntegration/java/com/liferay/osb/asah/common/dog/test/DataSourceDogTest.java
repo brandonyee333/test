@@ -194,7 +194,7 @@ public class DataSourceDogTest
 
 		List<Field> fields =
 			_fieldRepository.
-				findByContextAndOwnerIdInGroupByMaxModifiedDateAndName(
+				findByContextAndOwnerIdInGroupByMaxModifiedDateAndNameAndOwnerId(
 					"demographics", Collections.singletonList(123L));
 
 		fields.forEach(
