@@ -1,0 +1,184 @@
+[
+	{
+		"activityKey": "Page#pageViewed#352610350661254489",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "351238757269547424",
+		"day": "2021-06-24T00:00:00.000Z",
+		"endTime": "2021-06-24T01:00:11.123Z",
+		"eventContext": {
+			"canonicalUrl": "https://www.liferay.com/es/home",
+			"country": "Brunei",
+			"title": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043267",
+		"object": {
+			"dataSourceAssetPK": "https://www.joaquin-dibbert.biz",
+			"id": "348853654381438580",
+			"name": "extend clicks-and-mortar e-tailers",
+			"objectType": "Page",
+			"url": "https://www.joaquin-dibbert.biz"
+		},
+		"ownerId": "337984659206412898",
+		"sessionId": "1",
+		"startTime": "2021-06-24T01:00:11.123Z",
+		"userId": "db1ed215-9ed2-46a4-90de-535604c02c65"
+	},
+	{
+		"activityKey": "Page#pageViewed#352610350661254489",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "351238757269547424",
+		"day": "2021-10-30T00:00:00.000Z",
+		"endTime": "2021-10-30T12:12:00.000Z",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
+		},
+		"groupId": "348853726639670821",
+		"id": "348853926240043268",
+		"object": {
+			"dataSourceAssetPK": "https://www.joaquin-dibbert.biz",
+			"id": "348853654381438580",
+			"name": "extend clicks-and-mortar e-tailers",
+			"objectType": "Page",
+			"url": "https://www.joaquin-dibbert.biz"
+		},
+		"ownerId": "337984612356412845",
+		"sessionId": "1",
+		"startTime": "2021-10-30T12:12:00.000Z",
+		"userId": "5666a530-7021-11e9-9f43-21e859277aa6"
+	},
+	{
+		"activityKey": "Page#pageLoaded#379253698937471128",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "378537591206619399",
+		"day": "2021-10-30T00:00:00.000Z",
+		"endTime": "2021-10-30T22:00:33.000Z",
+		"eventContext": {
+			"canonicalUrl": "https://www.liferay.com/es/home",
+			"country": "Brunei",
+			"title": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"eventId": "pageLoaded",
+		"eventProperties": {
+			"pageViewActivityId": "11c79282-f9a4-42db-a512-bf2e264644de"
+		},
+		"groupId": "379258616316638232",
+		"id": "348853926240043269",
+		"object": {
+			"dataSourceAssetPK": "http://192.168.109.41:8089/chico",
+			"id": "379253698937471128",
+			"name": "Chico - Liferay",
+			"objectType": "Page",
+			"url": "http://192.168.109.41:8089/chico?segmentsExperienceId=39028"
+		},
+		"ownerId": "337984659206412898",
+		"sessionId": "1",
+		"startTime": "2021-10-30T22:00:33.000Z",
+		"userId": "d1cb5880-def1-11e9-8caf-1d0d61d4920d"
+	},
+	{
+		"activityKey": "Page#pageUnloaded#370982839082228041",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "370975939087274525",
+		"day": "2021-12-24T00:00:00.000Z",
+		"endTime": "2021-12-24T00:23:00.244Z",
+		"eventContext": {
+			"canonicalUrl": "https://www.liferay.com/es/home",
+			"country": "Brunei",
+			"title": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"eventId": "pageUnloaded",
+		"eventProperties": {
+			"pageViewActivityId": "695e80c3-69cb-4f97-81e9-bf606e78067c",
+			"viewDuration": "11638"
+		},
+		"groupId": "373596281614489603",
+		"id": "348853926240043270",
+		"object": {
+			"dataSourceAssetPK": "https://www.liferay.com",
+			"id": "370982839082228041",
+			"name": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"objectType": "Page",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"ownerId": "370997372450569302",
+		"sessionId": "1",
+		"startTime": "2021-12-24T00:23:00.244Z",
+		"userId": "b6768060-c591-11e9-bdb3-7d8fa2cd3cfc"
+	},
+	{
+		"activityKey": "Page#pageUnloaded#370982839082228041",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "370975939087274525",
+		"day": "2022-01-15T00:00:00.000Z",
+		"endTime": "2022-01-15T11:13:00.123Z",
+		"eventContext": {
+			"canonicalUrl": "https://www.liferay.com/es/home",
+			"country": "Brazil",
+			"title": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"eventId": "pageUnloaded",
+		"eventProperties": {
+			"pageViewActivityId": "0bd29e95-464c-46d5-ab7c-98f6e39becc6",
+			"viewDuration": "25941"
+		},
+		"groupId": "373598261385090009",
+		"id": "348853926240043271",
+		"object": {
+			"dataSourceAssetPK": "https://www.liferay.com",
+			"id": "370982839082228041",
+			"name": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"objectType": "Page",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"ownerId": "373408403592592166",
+		"sessionId": "1",
+		"startTime": "2022-01-15T11:13:00.123Z",
+		"userId": "c49580a0-c592-11e9-92f9-f7e41e09bfe8"
+	},
+	{
+		"activityKey": "Page#pageUnloaded#370982839082228041",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "370975939087274525",
+		"day": "2022-02-18T00:00:00.000Z",
+		"endTime": "2022-02-18T09:15:00.111Z",
+		"eventContext": {
+			"canonicalUrl": "https://www.liferay.com/es/home",
+			"country": "Brazil",
+			"title": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"eventId": "pageUnloaded",
+		"eventProperties": {
+			"pageViewActivityId": "0bd29e95-464c-46d5-ab7c-98f6e39becc6",
+			"viewDuration": "25941"
+		},
+		"groupId": "373598261385090009",
+		"id": "348853926240043272",
+		"object": {
+			"dataSourceAssetPK": "https://www.liferay.com",
+			"id": "370982839082228041",
+			"name": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"objectType": "Page",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"ownerId": "373408403592592166",
+		"startTime": "2022-02-18T09:15:00.111Z",
+		"userId": "c49580a0-c592-11e9-92f9-f7e41e09bfe8"
+	}
+]
