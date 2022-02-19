@@ -14,9 +14,7 @@
 
 package com.liferay.osb.customer.admin.internal.events;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.admin.internal.configuration.LoginPostActionConfiguration;
-import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
@@ -31,11 +29,9 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +64,6 @@ public class LoginPostAction extends Action {
 			if (_loginPostActionConfiguration.syncKoroneiki()) {
 				synchronizeWithKoroneiki(user);
 			}
-
-			synchronizeWithOkta(user);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -145,88 +139,6 @@ public class LoginPostAction extends Action {
 		}
 	}
 
-	protected void synchronizeWithOkta(User user) throws Exception {
-
-		// User
-
-		User oktaUser = _userIdentityProvider.getUserByEmailAddress(
-			user.getEmailAddress());
-
-		if (_loginPostActionConfiguration.syncOktaUser()) {
-			com.liferay.portal.kernel.model.Contact contact = user.getContact();
-
-			Calendar calendar = Calendar.getInstance();
-
-			calendar.setTime(contact.getBirthday());
-
-			_userLocalService.updateUser(
-				user.getUserId(), null, null, null, false, null, null,
-				oktaUser.getScreenName(), oktaUser.getEmailAddress(),
-				user.getFacebookId(), user.getOpenId(), true, null,
-				oktaUser.getLanguageId(), oktaUser.getTimeZoneId(),
-				user.getGreeting(), user.getComments(), oktaUser.getFirstName(),
-				oktaUser.getMiddleName(), oktaUser.getLastName(),
-				contact.getPrefixId(), contact.getSuffixId(), contact.isMale(),
-				calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
-				calendar.get(Calendar.YEAR), contact.getSmsSn(),
-				contact.getFacebookSn(), contact.getJabberSn(),
-				contact.getSkypeSn(), contact.getTwitterSn(),
-				oktaUser.getJobTitle(), null, null, null, null, null, null);
-		}
-
-		// Organizations
-
-		long[] oktaOrganizationIds = oktaUser.getOrganizationIds();
-
-		long[] curOrganizationIds = user.getOrganizationIds();
-
-		for (long curOrganizationId : curOrganizationIds) {
-			if (ArrayUtil.contains(oktaOrganizationIds, curOrganizationId)) {
-				continue;
-			}
-
-			Organization organization =
-				_organizationLocalService.getOrganization(curOrganizationId);
-
-			ExpandoBridge organizationExpandoBridge =
-				organization.getExpandoBridge();
-
-			boolean remote = (Boolean)organizationExpandoBridge.getAttribute(
-				"remote", false);
-
-			if (!remote) {
-				continue;
-			}
-
-			String name = organization.getName();
-
-			if (!name.startsWith(
-					EntitlementConstants.ORGANIZATION_NAME_PREFIX)) {
-
-				_userLocalService.unsetOrganizationUsers(
-					curOrganizationId, new long[] {user.getUserId()});
-			}
-		}
-
-		for (long oktaOrganizationId : oktaOrganizationIds) {
-			if (ArrayUtil.contains(curOrganizationIds, oktaOrganizationId)) {
-				continue;
-			}
-
-			Organization organization =
-				_organizationLocalService.getOrganization(oktaOrganizationId);
-
-			String name = organization.getName();
-
-			if (!name.startsWith(
-					EntitlementConstants.ORGANIZATION_NAME_PREFIX)) {
-
-				_userLocalService.addOrganizationUsers(
-					oktaOrganizationId, new long[] {user.getUserId()});
-			}
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		LoginPostAction.class);
 
@@ -240,9 +152,6 @@ public class LoginPostAction extends Action {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference(target = "(provider=okta)")
-	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private UserLocalService _userLocalService;
