@@ -2,6 +2,7 @@
 
 <suppressions>
 	<checkstyle>
+		<suppress checks="JSONNamingCheck" files="osb-asah-upgrade/src/testIntegration/java/com/liferay/osb/asah/upgrade/v3_1_0/helper/test/EventsUpgradeHelperTest\.java" />
 		<suppress checks="JSONUtilCheck" files="osb-asah-common/src/test/java/com/liferay/osb/asah/common/json/JSONUtilTest\.java" />
 	</checkstyle>
 	<source-check>
