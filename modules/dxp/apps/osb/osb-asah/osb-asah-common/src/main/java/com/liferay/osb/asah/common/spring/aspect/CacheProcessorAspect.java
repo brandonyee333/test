@@ -337,6 +337,14 @@ public class CacheProcessorAspect {
 			JSONObject variablesJSONObject = new JSONObject(variables);
 
 			if (variablesJSONObject.has("rangeEnd")) {
+				if (variablesJSONObject.has("rangeStart") &&
+					StringUtils.equals(
+						variablesJSONObject.getString("rangeEnd"),
+						variablesJSONObject.getString("rangeStart"))) {
+
+					return true;
+				}
+
 				LocalDate currentLocalDate = LocalDate.now();
 				LocalDate rangeEndLocalDate = LocalDate.parse(
 					variablesJSONObject.getString("rangeEnd"));
