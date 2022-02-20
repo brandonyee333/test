@@ -59,6 +59,22 @@ public class GraphQLRestControllerTest
 	implements OSBAsahBackendSpringTestContext {
 
 	@Test
+	public void testSkipCacheUserSessionWithSameDates() throws Exception {
+		String query = ResourceUtil.readResourceToString(
+			"dependencies/cacheable_query.graphql", this);
+
+		Map<String, Object> variables = new HashMap<String, Object>() {
+			{
+				put("rangeEnd", "2022-02-17");
+				put("rangeKey", "90");
+				put("rangeStart", "2022-02-17");
+			}
+		};
+
+		_verify(true, "UserSession", query, variables);
+	}
+
+	@Test
 	public void testSkipCacheWithCustomRange1() throws Exception {
 		String query = ResourceUtil.readResourceToString(
 			"dependencies/cacheable_query.graphql", this);
