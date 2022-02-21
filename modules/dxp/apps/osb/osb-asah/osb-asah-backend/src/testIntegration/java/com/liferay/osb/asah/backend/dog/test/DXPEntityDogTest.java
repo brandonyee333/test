@@ -84,6 +84,22 @@ public class DXPEntityDogTest
 	}
 
 	@ElasticsearchIndex(
+		name = "users", resourcePath = "users.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	)
+	@Test
+	public void testFindByFieldsAndType() {
+		List<? extends DXPEntity> dxpEntities =
+			_dxpEntityDog.findByFieldsAndType(
+				Collections.singletonMap("fields.screenName", "bruno.admin"),
+				DXPEntity.Type.USER);
+
+		DXPEntity dxpEntity = dxpEntities.get(0);
+
+		Assertions.assertEquals("Bruno Admin", dxpEntity.getName());
+	}
+
+	@ElasticsearchIndex(
 		name = "groups", resourcePath = "groups.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
