@@ -1596,6 +1596,9 @@ definition {
 				fieldPredefinedValue = "#FF0000");
 		}
 
+		var currentDateYear = DateUtil.getCurrentYear();
+		var currentDatelastYear = ${currentDateYear} - 1;
+
 		task ("Add a Date field with predefined value") {
 			DynamicDataMapping.addField(
 				field = "Date",
@@ -1606,10 +1609,10 @@ definition {
 				field = "Date",
 				fieldFieldLabel = "Date",
 				fieldName = "Date",
-				fieldPredefinedValue = "10/10/2020",
+				fieldPredefinedValue = "10/10/${currentDatelastYear}",
 				fieldPredefinedValueDay = "10",
 				fieldPredefinedValueMonth = "October",
-				fieldPredefinedValueYear = "2020");
+				fieldPredefinedValueYear = "${currentDatelastYear}");
 		}
 
 		task ("Add a Decimal field with predefined value") {
@@ -1763,7 +1766,7 @@ definition {
 				predefinedValue = "true",
 				webContentBoolean = "true",
 				webContentColor = "background-color: rgb(255, 0, 0);",
-				webContentDate = "10/10/2020",
+				webContentDate = "10/10/${currentDatelastYear}",
 				webContentDecimal = "0.5",
 				webContentDocumentsAndMedia = "Document_1.jpg",
 				webContentDocumentsAndMediaFieldName = "DocumentsAndMedia",
