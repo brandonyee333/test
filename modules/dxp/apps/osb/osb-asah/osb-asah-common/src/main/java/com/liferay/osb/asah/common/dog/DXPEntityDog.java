@@ -96,7 +96,8 @@ public class DXPEntityDog {
 	public List<? extends DXPEntity> findByFieldsAndType(
 		Map<String, Object> fields, DXPEntity.Type type) {
 
-		return _dxpEntityRepository.findByFieldsAndType(fields, type);
+		return _mapDXPEntities(
+			_dxpEntityRepository.findByFieldsAndType(fields, type), type);
 	}
 
 	public List<DXPUser> findDXPUsersByMembershipClassNameAndMembershipId(
