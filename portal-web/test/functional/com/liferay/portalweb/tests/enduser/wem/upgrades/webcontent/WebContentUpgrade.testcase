@@ -104,6 +104,26 @@ definition {
 			totalPortletCount = "3");
 	}
 
+	@description = "This is a use case for LPS-123590."
+	@priority = "4"
+	test ViewSpecificDisplayPageTemplateArchive721 {
+		property data.archive.type = "data-archive-display-page-templates";
+		property database.types = "mariadb,mysql,postgresql";
+		property portal.version = "7.2.1";
+
+		Upgrade.viewSpecificDisplayPageTemplateViaAssetPublisher();
+	}
+
+	@description = "This is a use case for LPS-123590."
+	@priority = "4"
+	test ViewSpecificDisplayPageTemplateArchive72104 {
+		property data.archive.type = "data-archive-display-page-templates";
+		property database.types = "db2,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
+		property portal.version = "7.2.10.4";
+
+		Upgrade.viewSpecificDisplayPageTemplateViaAssetPublisher();
+	}
+
 	@priority = "5"
 	test ViewWebContentArchive625 {
 		property data.archive.type = "data-archive-web-content-draft";
