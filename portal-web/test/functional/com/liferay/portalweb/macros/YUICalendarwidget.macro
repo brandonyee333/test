@@ -27,7 +27,7 @@ definition {
 			value1 = "${month} ${year}");
 
 		AssertClick(
-			locator1 = "YUICalendarWidget#DATEPICKER_SPECIFIC_DAY",
+			locator1 = "YUICalendarWidget#DATEPICKER_SPECIFIC_DAY_1",
 			value1 = "${day}");
 	}
 
