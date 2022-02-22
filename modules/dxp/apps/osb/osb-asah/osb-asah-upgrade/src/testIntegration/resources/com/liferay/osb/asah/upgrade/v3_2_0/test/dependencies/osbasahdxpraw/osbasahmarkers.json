@@ -1,0 +1,54 @@
+[
+	{
+		"context": {
+			"lastSuccessfulAuditEvent": {
+				"additionalInfo": "{\"attributes\":[{\"newValue\":\"en_US\",\"name\":\"languageId\",\"oldValue\":\"fr_CA\"}]}",
+				"auditEventId": "208589",
+				"className": "com.liferay.portal.kernel.model.User",
+				"classPK": "65745",
+				"clientHost": "192.168.152.232",
+				"clientIP": "162.156.156.244",
+				"companyId": "20099",
+				"createDate": 1576698558562,
+				"eventType": "UPDATE",
+				"id": "394681373546063288",
+				"message": "",
+				"osbAsahDataSourceId": "368902749658149037",
+				"serverName": "preprod-stations.parkland.ca",
+				"serverPort": 80,
+				"sessionID": "A02AAFAC589BB517F38412C6756B32DA.node01",
+				"userId": "65745",
+				"userName": "Fulano de Tal"
+			},
+			"lastSyncTime": 1585064902281,
+			"osbAsahDataSourceId": "368902749658149037"
+		},
+		"id": "371880222511040866"
+	},
+	{
+		"context": {
+			"lastSuccessfulAuditEvent": {
+				"additionalInfo": "{\"attributes\":[{\"newValue\":\"en_US\",\"name\":\"languageId\",\"oldValue\":\"fr_CA\"}]}",
+				"auditEventId": "694528",
+				"className": "com.liferay.portal.kernel.model.User",
+				"classPK": "74769",
+				"clientHost": "162.168.1.11",
+				"clientIP": "75.159.54.236",
+				"companyId": "20099",
+				"createDate": 1601041405927,
+				"eventType": "UPDATE",
+				"id": "443199370317030166",
+				"message": "",
+				"osbAsahDataSourceId": "371880975285739144",
+				"serverName": "stations.parkland.ca",
+				"serverPort": 80,
+				"sessionID": "0C11C23CA60ECAE23AF821DAF8F70CBE.node01",
+				"userId": "74769",
+				"userName": "John Doe"
+			},
+			"lastSyncTime": 1601063254960,
+			"osbAsahDataSourceId": "371880975285739144"
+		},
+		"id": "371882542788210036"
+	}
+]
