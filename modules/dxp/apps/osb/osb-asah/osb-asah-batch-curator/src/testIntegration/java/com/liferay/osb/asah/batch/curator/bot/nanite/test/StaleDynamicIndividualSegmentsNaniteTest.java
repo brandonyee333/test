@@ -20,6 +20,7 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.StaleDynamicIndividualSegme
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
@@ -107,8 +108,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@AfterEach
 	public void tearDown() {
-		faroInfoElasticsearchInvoker.delete(
-			"OSBAsahMarkers", "StaleDynamicIndividualSegmentsNanite");
+		_asahMarkerDog.deleteAsahMarker("StaleDynamicIndividualSegmentsNanite");
 	}
 
 	@Test
@@ -389,6 +389,9 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@Autowired
 	private ActivityGroupDog _activityGroupDog;
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@Mock
 	private AsahTaskDog _asahTaskDog;
