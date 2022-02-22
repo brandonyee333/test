@@ -5,3 +5,14 @@ CREATE TABLE IF NOT EXISTS AsahTask (
 	cronExpression TEXT,
 	projectId TEXT
 );
+
+CREATE TABLE IF NOT EXISTS Job (
+	id BIGSERIAL PRIMARY KEY,
+	asahTaskId BIGINT NULL,
+	createDate TIMESTAMPTZ,
+	modifiedDate TIMESTAMPTZ,
+	name TEXT,
+	runDataPeriod TEXT,
+	runFrequency TEXT,
+	type TEXT
+);

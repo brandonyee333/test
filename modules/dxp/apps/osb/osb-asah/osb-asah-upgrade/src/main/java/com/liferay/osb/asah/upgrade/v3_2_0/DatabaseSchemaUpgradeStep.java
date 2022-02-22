@@ -44,6 +44,11 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 				new ResourceDatabasePopulator(
 					new ClassPathResource("tables-3.2.0.sql")),
 				_postgreSQLDataSource);
+
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("constraints-3.2.0.sql")),
+				_postgreSQLDataSource);
 		}
 		catch (Exception exception) {
 			String projectId = ProjectIdThreadLocal.getProjectId();
