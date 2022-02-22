@@ -18,7 +18,9 @@ import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
@@ -38,6 +40,7 @@ import com.sforce.soap.partner.SaveResult;
 import com.sforce.soap.partner.sobject.SObject;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -100,11 +103,10 @@ public class SalesforceExtractorNaniteTest
 
 	@AfterEach
 	public void tearDown() {
+		_asahMarkerRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
 		_salesforceRawElasticsearchInvoker.delete(
 			"Account", QueryBuilders.matchAllQuery());
-		_salesforceRawElasticsearchInvoker.delete(
-			"OSBAsahMarkers", QueryBuilders.matchAllQuery());
 		_salesforceRawElasticsearchInvoker.delete(
 			"audit-events", QueryBuilders.matchAllQuery());
 
@@ -178,14 +180,15 @@ public class SalesforceExtractorNaniteTest
 	}
 
 	private void _testAddField() {
-		JSONArray osbAsahMarkerJSONArray =
-			_salesforceRawElasticsearchInvoker.get("OSBAsahMarkers");
+		Iterable<AsahMarker> iterable = _asahMarkerRepository.findAll();
 
-		JSONObject osbAsahMarkerJSONObject =
-			osbAsahMarkerJSONArray.getJSONObject(0);
+		Iterator<AsahMarker> iterator = iterable.iterator();
 
-		JSONObject tablesJSONObject = osbAsahMarkerJSONObject.getJSONObject(
-			"tables");
+		AsahMarker asahMarker = iterator.next();
+
+		JSONObject context = asahMarker.getContextJSONObject();
+
+		JSONObject tablesJSONObject = (JSONObject)context.get("tables");
 
 		JSONObject tableJSONObject = tablesJSONObject.getJSONObject("Account");
 
@@ -196,8 +199,7 @@ public class SalesforceExtractorNaniteTest
 
 		tableJSONObject.put("fields", fieldsJSONObject.toString());
 
-		_salesforceRawElasticsearchInvoker.update(
-			"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		_asahMarkerRepository.save(asahMarker);
 
 		JSONArray tableJSONArray = _salesforceRawElasticsearchInvoker.get(
 			"Account");
@@ -221,16 +223,17 @@ public class SalesforceExtractorNaniteTest
 	}
 
 	private void _testAddSObject() throws Exception {
-		JSONArray osbAsahMarkerJSONArray =
-			_salesforceRawElasticsearchInvoker.get("OSBAsahMarkers");
+		Iterable<AsahMarker> iterable = _asahMarkerRepository.findAll();
 
-		JSONObject osbAsahMarkerJSONObject =
-			osbAsahMarkerJSONArray.getJSONObject(0);
+		Iterator<AsahMarker> iterator = iterable.iterator();
 
-		osbAsahMarkerJSONObject.put("tables", new JSONObject());
+		AsahMarker asahMarker = iterator.next();
 
-		_salesforceRawElasticsearchInvoker.update(
-			"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		JSONObject context = asahMarker.getContextJSONObject();
+
+		context.put("tables", new JSONObject());
+
+		_asahMarkerRepository.save(asahMarker);
 
 		_salesforceRawElasticsearchInvoker.delete(
 			"Account", QueryBuilders.matchAllQuery());
@@ -274,14 +277,17 @@ public class SalesforceExtractorNaniteTest
 	}
 
 	private void _testDeleteField() throws Exception {
-		JSONArray osbAsahMarkerJSONArray =
-			_salesforceRawElasticsearchInvoker.get("OSBAsahMarkers");
+		Iterable<AsahMarker> iterable = _asahMarkerRepository.findAll();
 
-		JSONObject osbAsahMarkerJSONObject =
-			osbAsahMarkerJSONArray.getJSONObject(0);
+		Iterator<AsahMarker> iterator = iterable.iterator();
 
-		JSONObject tablesJSONObject = osbAsahMarkerJSONObject.getJSONObject(
-			"tables");
+		AsahMarker asahMarker = iterator.next();
+
+		JSONObject context = asahMarker.getContextJSONObject();
+
+		context.put("tables", new JSONObject());
+
+		JSONObject tablesJSONObject = context.getJSONObject("tables");
 
 		JSONObject tableJSONObject = tablesJSONObject.getJSONObject("Account");
 
@@ -298,8 +304,7 @@ public class SalesforceExtractorNaniteTest
 
 		tableJSONObject.put("fields", fieldsJSONObject.toString());
 
-		_salesforceRawElasticsearchInvoker.update(
-			"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		_asahMarkerRepository.save(asahMarker);
 
 		JSONArray tableJSONArray = _salesforceRawElasticsearchInvoker.get(
 			"Account");
@@ -324,21 +329,23 @@ public class SalesforceExtractorNaniteTest
 	}
 
 	private void _testDeleteSObject() throws Exception {
-		JSONArray osbAsahMarkerJSONArray =
-			_salesforceRawElasticsearchInvoker.get("OSBAsahMarkers");
+		Iterable<AsahMarker> iterable = _asahMarkerRepository.findAll();
 
-		JSONObject osbAsahMarkerJSONObject =
-			osbAsahMarkerJSONArray.getJSONObject(0);
+		Iterator<AsahMarker> iterator = iterable.iterator();
 
-		JSONObject tablesJSONObject = osbAsahMarkerJSONObject.getJSONObject(
-			"tables");
+		AsahMarker asahMarker = iterator.next();
+
+		JSONObject context = asahMarker.getContextJSONObject();
+
+		context.put("tables", new JSONObject());
+
+		JSONObject tablesJSONObject = context.getJSONObject("tables");
 
 		JSONObject tableJSONObject = tablesJSONObject.getJSONObject("Account");
 
 		tablesJSONObject.put("OSBAsahTest__c", tableJSONObject);
 
-		_salesforceRawElasticsearchInvoker.update(
-			"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		_asahMarkerRepository.save(asahMarker);
 
 		JSONArray tableJSONArray = _salesforceRawElasticsearchInvoker.get(
 			"Account");
@@ -357,14 +364,15 @@ public class SalesforceExtractorNaniteTest
 	private void _testPopulateNewTables() throws Exception {
 		_salesforceExtractorNanite.run();
 
-		JSONArray osbAsahMarkerJSONArray =
-			_salesforceRawElasticsearchInvoker.get("OSBAsahMarkers");
+		Iterable<AsahMarker> iterable = _asahMarkerRepository.findAll();
 
-		JSONObject osbAsahMarkerJSONObject =
-			osbAsahMarkerJSONArray.getJSONObject(0);
+		Iterator<AsahMarker> iterator = iterable.iterator();
 
-		JSONObject tablesJSONObject = osbAsahMarkerJSONObject.getJSONObject(
-			"tables");
+		AsahMarker asahMarker = iterator.next();
+
+		JSONObject context = asahMarker.getContextJSONObject();
+
+		JSONObject tablesJSONObject = (JSONObject)context.get("tables");
 
 		JSONObject tableJSONObject = tablesJSONObject.getJSONObject("Account");
 
@@ -464,6 +472,9 @@ public class SalesforceExtractorNaniteTest
 	private static final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration =
 			SalesforceExtractorTestUtil.getSalesforceExtractorConfiguration();
+
+	@Autowired
+	private AsahMarkerRepository _asahMarkerRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

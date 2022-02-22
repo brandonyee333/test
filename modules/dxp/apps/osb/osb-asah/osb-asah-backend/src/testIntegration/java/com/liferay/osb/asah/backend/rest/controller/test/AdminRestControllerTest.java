@@ -18,8 +18,10 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.AdminRestController;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -32,7 +34,6 @@ import java.util.List;
 import org.everit.json.schema.ValidationException;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -131,22 +132,17 @@ public class AdminRestControllerTest
 	)
 	@Test
 	public void testRun() {
+		Iterable<AsahMarker> asahMarkers = _asahMarkerRepository.findAll();
+
 		JSONArray jsonArray = new JSONArray();
 
-		JSONArray osbAsahMarkersJSONArray = _elasticsearchInvoker.get(
-			"OSBAsahMarkers");
-
-		for (int i = 0; i < osbAsahMarkersJSONArray.length(); i++) {
-			JSONObject osbAsahMarkerJSONObject =
-				osbAsahMarkersJSONArray.getJSONObject(i);
-
-			jsonArray.put(osbAsahMarkerJSONObject.getString("id"));
+		for (AsahMarker asahMarker : asahMarkers) {
+			jsonArray.put(asahMarker.getId());
 		}
 
 		_adminRestController.run(jsonArray.toString());
 
-		Assertions.assertEquals(
-			0, _elasticsearchInvoker.count("OSBAsahMarkers", null));
+		Assertions.assertEquals(0, _asahMarkerRepository.count());
 	}
 
 	@Test
@@ -164,6 +160,9 @@ public class AdminRestControllerTest
 
 	@Autowired
 	private AdminRestController _adminRestController;
+
+	@Autowired
+	private AsahMarkerRepository _asahMarkerRepository;
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
