@@ -10,7 +10,6 @@
 		"forms",
 		"journal-clicks",
 		"journals",
-		"osbasahmarkers",
 		"page-referrers",
 		"pages",
 		"user-session-analytics-events",
@@ -21,7 +20,6 @@
 		"faro-audit-events",
 		"groups",
 		"organizations",
-		"osbasahmarkers",
 		"roles",
 		"run-logs",
 		"teams",
@@ -49,7 +47,6 @@
 		"membership-changes",
 		"memberships",
 		"organizations",
-		"osbasahmarkers",
 		"preferences",
 		"recommended-items",
 		"run-logs",
@@ -62,7 +59,6 @@
 		"contact",
 		"individuals",
 		"lead",
-		"osbasahmarkers",
 		"run-logs"
 	]
 }
