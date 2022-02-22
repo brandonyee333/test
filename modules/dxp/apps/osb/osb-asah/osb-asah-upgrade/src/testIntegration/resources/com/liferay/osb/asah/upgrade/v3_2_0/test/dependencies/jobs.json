@@ -1,0 +1,22 @@
+[
+	{
+		"createdDate": "${now-40d}",
+		"id": "1",
+		"lastUpdatedDate": "${now-40d}",
+		"name": "Related Content Job",
+		"osbAsahTaskId": "450553576847486527",
+		"parameters": [
+			{
+				"name": "parameter1",
+				"value": "value1"
+			},
+			{
+				"name": "parameter2",
+				"value": "value2"
+			}
+		],
+		"runDataPeriod": "LAST_30_DAYS",
+		"runFrequency": "EVERY_7_DAYS",
+		"type": "CONTENT_RECOMMENDATION_ITEM_SIMILARITY"
+	}
+]
