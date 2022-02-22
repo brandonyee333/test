@@ -837,9 +837,6 @@ public class DataSourceDog {
 	private SalesforceExtractorConfigurationDog
 		_salesforceExtractorConfigurationDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
-
 	@Autowired
 	private SegmentDog _segmentDog;
 

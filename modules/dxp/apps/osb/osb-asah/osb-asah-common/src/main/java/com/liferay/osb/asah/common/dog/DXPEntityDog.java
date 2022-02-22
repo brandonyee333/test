@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
@@ -24,7 +23,6 @@ import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -289,8 +287,5 @@ public class DXPEntityDog {
 
 	@Autowired
 	private DXPEntityRepository _dxpEntityRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }
