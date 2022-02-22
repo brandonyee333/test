@@ -129,6 +129,7 @@ public class JournalDDMStructuresDisplayContext {
 			sortedResults, ddmStructureSearch.getOrderByComparator());
 
 		ddmStructureSearch.setResults(sortedResults);
+
 		ddmStructureSearch.setTotal(total);
 
 		_ddmStructureSearch = ddmStructureSearch;
