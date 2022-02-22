@@ -39,7 +39,6 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -248,8 +247,7 @@ public class IndividualInterestScoresNaniteTest
 
 		_asahMarkerDog.addAsahMarker(
 			new AsahMarker(
-				"InterestThresholdScoreNanite", JSONUtil.put("score", 0.3)),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+				"InterestThresholdScoreNanite", JSONUtil.put("score", 0.3)));
 
 		_updateDynamicMembershipsNanite.run(
 			_getContextJSONObject(
@@ -341,8 +339,7 @@ public class IndividualInterestScoresNaniteTest
 			});
 
 		AsahMarker asahMarker = _asahMarkerDog.getAsahMarker(
-			"IndividualInterestScoresNanite",
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+			"IndividualInterestScoresNanite");
 
 		JSONObject asahMarkerContextJSONObject =
 			asahMarker.getContextJSONObject();

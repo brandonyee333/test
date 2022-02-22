@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.InterestRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.LocalDateTime;
 
@@ -159,8 +158,7 @@ public class InterestCompositionDog {
 
 	private Date _getLastSuccessfulDate() {
 		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			"IndividualInterestScoresNanite",
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+			"IndividualInterestScoresNanite");
 
 		if (asahMarker != null) {
 			JSONObject asahMarkerContextJSONObject =
@@ -177,8 +175,7 @@ public class InterestCompositionDog {
 
 	private Double _getMinimumScore() {
 		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			"InterestThresholdScoreNanite",
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+			"InterestThresholdScoreNanite");
 
 		if (asahMarker == null) {
 			return null;

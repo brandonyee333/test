@@ -141,8 +141,7 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 		asahMarkerContextJSONObject.put(
 			"lastSuccessfulSessionFinalizerDate", dateString);
 
-		_asahMarkerDog.updateAsahMarker(
-			asahMarker, WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
+		_asahMarkerDog.updateAsahMarker(asahMarker);
 
 		_boundedExecutor.awaitPendingTasks();
 	}
@@ -163,13 +162,11 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 	}
 
 	private AsahMarker _getAsahMarker() {
-		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			"SessionNanite", WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker("SessionNanite");
 
 		if (asahMarker == null) {
 			asahMarker = _asahMarkerDog.addAsahMarker(
-				new AsahMarker("SessionNanite"),
-				WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
+				new AsahMarker("SessionNanite"));
 
 			asahMarker.setIsNew(Boolean.FALSE);
 		}

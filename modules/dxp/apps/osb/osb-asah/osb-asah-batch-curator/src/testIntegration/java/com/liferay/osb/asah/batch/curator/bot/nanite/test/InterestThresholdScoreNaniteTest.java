@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
@@ -32,11 +31,8 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -69,15 +65,12 @@ public class InterestThresholdScoreNaniteTest
 	public void testNoThresholdWhenNoKeywords() throws Exception {
 		_interestThresholdScoreNanite.run(null);
 
-		Assertions.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"OSBAsahMarkers",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"id", "InterestThresholdScoreNanite")
-				).filter(
-					QueryBuilders.existsQuery("score")
-				)));
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
+			"InterestThresholdScoreNanite");
+
+		JSONObject jsonObject = asahMarker.getContextJSONObject();
+
+		Assertions.assertFalse(jsonObject.has("score"));
 	}
 
 	@Test
@@ -190,8 +183,7 @@ public class InterestThresholdScoreNaniteTest
 
 	private double _getInterestThresholdScore() {
 		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			"InterestThresholdScoreNanite",
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+			"InterestThresholdScoreNanite");
 
 		if (asahMarker == null) {
 			return 0;

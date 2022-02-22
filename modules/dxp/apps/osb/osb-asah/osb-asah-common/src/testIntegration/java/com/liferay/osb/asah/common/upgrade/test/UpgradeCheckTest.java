@@ -24,11 +24,9 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -50,14 +48,10 @@ public class UpgradeCheckTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		List<Project> projects = Arrays.asList(
-			new Project("project1"), new Project("project2"),
-			new Project("project3"));
-
 		Mockito.when(
 			_projectDog.getProjects()
 		).thenReturn(
-			projects
+			Collections.singletonList(new Project("project1"))
 		);
 
 		_upgradeCheck = new UpgradeCheck();
@@ -69,8 +63,7 @@ public class UpgradeCheckTest
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		_elasticsearchIndexManager.delete(
-			"project1_*", "project2_*", "project3_*", "project4_*");
+		_elasticsearchIndexManager.delete("project1_*");
 	}
 
 	@Test
@@ -79,20 +72,8 @@ public class UpgradeCheckTest
 	}
 
 	@Test
-	public void testCheckVersionIgnoreUnknownProjects() throws Exception {
-		_addUpgradeMarker("project1", ReleaseInfo.getVersion());
-		_addUpgradeMarker("project2", ReleaseInfo.getVersion());
-		_addUpgradeMarker("project3", ReleaseInfo.getVersion());
-		_addUpgradeMarker("project4", "2.8.0");
-
-		Assertions.assertTrue(_upgradeCheck.checkVersion());
-	}
-
-	@Test
 	public void testCheckVersionNotUpgrade() throws Exception {
 		_addUpgradeMarker("project1", "2.8.0");
-		_addUpgradeMarker("project2", "2.8.0");
-		_addUpgradeMarker("project3", "2.8.0");
 
 		Assertions.assertFalse(_upgradeCheck.checkVersion());
 	}
@@ -100,17 +81,13 @@ public class UpgradeCheckTest
 	@Test
 	public void testCheckVersionUpgraded() throws Exception {
 		_addUpgradeMarker("project1", ReleaseInfo.getVersion());
-		_addUpgradeMarker("project2", ReleaseInfo.getVersion());
-		_addUpgradeMarker("project3", ReleaseInfo.getVersion());
 
 		Assertions.assertTrue(_upgradeCheck.checkVersion());
 	}
 
 	@Test
 	public void testCheckVersionUpgradedButOne() throws Exception {
-		_addUpgradeMarker("project1", ReleaseInfo.getVersion());
-		_addUpgradeMarker("project2", ReleaseInfo.getVersion());
-		_addUpgradeMarker("project3", "2.8.0");
+		_addUpgradeMarker("project1", "2.8.0");
 
 		Assertions.assertFalse(_upgradeCheck.checkVersion());
 	}
@@ -119,8 +96,7 @@ public class UpgradeCheckTest
 		ProjectIdThreadLocal.forProject(
 			projectId,
 			() -> _asahMarkerDog.addAsahMarker(
-				new AsahMarker("Upgrade", JSONUtil.put("version", version)),
-				WeDeployDataService.OSB_ASAH_FARO_INFO));
+				new AsahMarker("Upgrade", JSONUtil.put("version", version))));
 	}
 
 	@Autowired

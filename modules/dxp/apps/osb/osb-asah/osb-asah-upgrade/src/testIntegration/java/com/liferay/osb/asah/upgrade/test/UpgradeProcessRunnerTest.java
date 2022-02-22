@@ -14,13 +14,12 @@
 
 package com.liferay.osb.asah.upgrade.test;
 
+import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
@@ -43,8 +42,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-
-import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -74,9 +71,7 @@ public class UpgradeProcessRunnerTest {
 
 	@BeforeEach
 	public void setUp() {
-		_elasticsearchIndexManager.delete(
-			"test1_osbasahfaroinfo_osbasahmarkers",
-			"test2_osbasahfaroinfo_osbasahmarkers");
+		_asahMarkerDog.deleteAsahMarker("Upgrade");
 	}
 
 	@Test
@@ -84,7 +79,7 @@ public class UpgradeProcessRunnerTest {
 		Mockito.when(
 			_projectDog.getProjects()
 		).thenReturn(
-			Arrays.asList(new Project("test1"), new Project("test2"))
+			Arrays.asList(new Project("test1"))
 		);
 
 		Set<String> projectIds = new HashSet<>();
@@ -106,9 +101,8 @@ public class UpgradeProcessRunnerTest {
 
 		_upgradeProcessRunner.runProjectUpgrades();
 
-		Assertions.assertEquals(2, projectIds.size(), projectIds.toString());
+		Assertions.assertEquals(1, projectIds.size(), projectIds.toString());
 		Assertions.assertTrue(projectIds.contains("test1"));
-		Assertions.assertTrue(projectIds.contains("test2"));
 	}
 
 	@Test
@@ -117,13 +111,8 @@ public class UpgradeProcessRunnerTest {
 
 		ProjectIdThreadLocal.forProject(
 			project,
-			() -> _elasticsearchInvoker.add(
-				"OSBAsahMarkers",
-				JSONUtil.put(
-					"context", JSONUtil.put("version", "2.11.0")
-				).put(
-					"id", "Upgrade"
-				)));
+			() -> _asahMarkerDog.addAsahMarker(
+				new AsahMarker("Upgrade", JSONUtil.put("version", "2.11.0"))));
 
 		Mockito.when(
 			_projectDog.getProjects()
@@ -149,21 +138,13 @@ public class UpgradeProcessRunnerTest {
 
 		ProjectIdThreadLocal.forProject(
 			project,
-			() -> JSONAssert.assertEquals(
-				JSONUtil.put(
-					"context", JSONUtil.put("version", "2.12.0")
-				).put(
-					"id", "Upgrade"
-				),
-				_elasticsearchInvoker.fetch("OSBAsahMarkers", "Upgrade"),
-				true));
+			() -> Assertions.assertEquals(
+				new AsahMarker("Upgrade", JSONUtil.put("version", "2.12.0")),
+				_asahMarkerDog.fetchAsahMarker("Upgrade")));
 	}
 
 	@Autowired
-	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	private AsahMarkerDog _asahMarkerDog;
 
 	@MockBean
 	private ProjectDog _projectDog;

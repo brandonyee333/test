@@ -1105,8 +1105,8 @@ public class IndividualsFilterStringConverterHelperTest
 		_asahMarkerDog.addAsahMarker(
 			new AsahMarker(
 				"IndividualInterestScoresNanite",
-				JSONUtil.put("lastSuccessfulDay", DateUtil.newDayDateString())),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+				JSONUtil.put(
+					"lastSuccessfulDay", DateUtil.newDayDateString())));
 
 		_asahMarkerDog.addAsahMarker(
 			new AsahMarker(
@@ -1115,8 +1115,7 @@ public class IndividualsFilterStringConverterHelperTest
 					"lastSuccessfulDay", DateUtil.newDayDateString()
 				).put(
 					"score", 0.3
-				)),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+				)));
 
 		testFilterString(
 			"interests.filter(filter='(name eq ''abc'') and (score eq " +
@@ -1142,8 +1141,8 @@ public class IndividualsFilterStringConverterHelperTest
 		_asahMarkerDog.addAsahMarker(
 			new AsahMarker(
 				"IndividualInterestScoresNanite",
-				JSONUtil.put("lastSuccessfulDay", DateUtil.newDayDateString())),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+				JSONUtil.put(
+					"lastSuccessfulDay", DateUtil.newDayDateString())));
 
 		_asahMarkerDog.addAsahMarker(
 			new AsahMarker(
@@ -1152,8 +1151,7 @@ public class IndividualsFilterStringConverterHelperTest
 					"lastSuccessfulDay", DateUtil.newDayDateString()
 				).put(
 					"score", 0.2
-				)),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+				)));
 
 		testFilterStringWithIndividual(
 			"interests.filter(filter='(name eq ''abc'') and (score eq " +

@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -258,8 +257,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 		boolean sortByVisitCount) {
 
 		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			"IndividualInterestScoresNanite",
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+			"IndividualInterestScoresNanite");
 
 		if (asahMarker == null) {
 			return null;

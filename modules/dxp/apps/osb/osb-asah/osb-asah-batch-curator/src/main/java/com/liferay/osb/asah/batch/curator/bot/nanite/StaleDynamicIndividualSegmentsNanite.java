@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
 
@@ -84,8 +83,7 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 		asahMarkerContextJSONObject.put(
 			"lastRunDate", DateUtil.newDayDateString());
 
-		asahMarkerDog.updateAsahMarker(
-			asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
+		asahMarkerDog.updateAsahMarker(asahMarker);
 	}
 
 	@Override

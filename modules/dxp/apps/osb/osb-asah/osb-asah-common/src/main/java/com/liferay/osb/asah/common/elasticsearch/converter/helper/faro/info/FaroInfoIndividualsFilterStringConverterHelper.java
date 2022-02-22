@@ -745,9 +745,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		}
 
 		AsahMarker interestThresholdScoreNaniteAsahMarker =
-			_asahMarkerDog.fetchAsahMarker(
-				"InterestThresholdScoreNanite",
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
+			_asahMarkerDog.fetchAsahMarker("InterestThresholdScoreNanite");
 
 		if (interestThresholdScoreNaniteAsahMarker == null) {
 			return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
@@ -775,9 +773,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				"score", 0.0);
 
 		AsahMarker individualInterestScoresNaniteAsahMarker =
-			_asahMarkerDog.fetchAsahMarker(
-				"IndividualInterestScoresNanite",
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
+			_asahMarkerDog.fetchAsahMarker("IndividualInterestScoresNanite");
 
 		if (individualInterestScoresNaniteAsahMarker == null) {
 			return _getInterestCriteriaQueryBuilderWhenNoInterests(

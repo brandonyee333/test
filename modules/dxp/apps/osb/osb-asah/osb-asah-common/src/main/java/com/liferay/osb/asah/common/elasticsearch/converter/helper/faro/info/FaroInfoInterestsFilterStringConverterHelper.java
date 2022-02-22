@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.util.StringUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -54,8 +53,7 @@ public class FaroInfoInterestsFilterStringConverterHelper
 		}
 
 		AsahMarker asahMarker = _asahMarkerDog.getAsahMarker(
-			"IndividualInterestScoresNanite",
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+			"IndividualInterestScoresNanite");
 
 		JSONObject asahMarkerContextJSONObject =
 			asahMarker.getContextJSONObject();

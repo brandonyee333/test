@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.upgrade.UpgradeState;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
 
@@ -95,16 +94,14 @@ public class UpgradeProcessRunner {
 	}
 
 	private AsahMarker _getAsahMarker() {
-		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			"Upgrade", WeDeployDataService.OSB_ASAH_FARO_INFO);
+		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker("Upgrade");
 
 		if (asahMarker != null) {
 			return asahMarker;
 		}
 
 		asahMarker = _asahMarkerDog.addAsahMarker(
-			new AsahMarker("Upgrade", JSONUtil.put("version", "0.0.0")),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+			new AsahMarker("Upgrade", JSONUtil.put("version", "0.0.0")));
 
 		asahMarker.setIsNew(Boolean.FALSE);
 
@@ -165,8 +162,7 @@ public class UpgradeProcessRunner {
 
 		asahMarkerContextJSONObject.put("version", versionString);
 
-		_asahMarkerDog.updateAsahMarker(
-			asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
+		_asahMarkerDog.updateAsahMarker(asahMarker);
 
 		return versionString;
 	}

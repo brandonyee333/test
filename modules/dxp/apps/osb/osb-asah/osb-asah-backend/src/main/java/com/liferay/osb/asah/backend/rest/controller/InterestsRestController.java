@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.LocalDateTime;
 
@@ -259,8 +258,7 @@ public class InterestsRestController
 
 	private Double _getScore() {
 		AsahMarker asahMarker = asahMarkerDog.fetchAsahMarker(
-			"InterestThresholdScoreNanite",
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+			"InterestThresholdScoreNanite");
 
 		if (asahMarker == null) {
 			return null;

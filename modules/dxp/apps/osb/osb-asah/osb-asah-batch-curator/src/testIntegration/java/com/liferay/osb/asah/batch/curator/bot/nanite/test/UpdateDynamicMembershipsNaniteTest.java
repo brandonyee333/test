@@ -46,7 +46,6 @@ import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -233,8 +232,7 @@ public class UpdateDynamicMembershipsNaniteTest
 					"score", 0.3
 				).put(
 					"type", "nanite"
-				)),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+				)));
 
 		Long individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''" + keyword + "'') and " +
@@ -315,8 +313,7 @@ public class UpdateDynamicMembershipsNaniteTest
 					"score", 0.3
 				).put(
 					"type", "nanite"
-				)),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+				)));
 
 		Long individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
@@ -677,8 +674,7 @@ public class UpdateDynamicMembershipsNaniteTest
 					"lastSuccessfulDay", dayDateString
 				).put(
 					"type", "nanite"
-				)),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+				)));
 	}
 
 	private JSONObject _getContextJSONObject(

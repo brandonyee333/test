@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.exception.InterruptBotException;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.Nanite;
 
@@ -111,8 +110,7 @@ public class SalesforceBotRunnable implements Runnable {
 	}
 
 	private void _deleteAsahMarker(String osbAsahDataSourceId) {
-		_asahMarkerDog.deleteAsahMarker(
-			osbAsahDataSourceId, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+		_asahMarkerDog.deleteAsahMarker(osbAsahDataSourceId);
 	}
 
 	private void _run(Configuration[] configurations) {

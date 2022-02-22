@@ -257,9 +257,7 @@ public class AdminRestController extends BaseRestController {
 
 		_naniteListSchema.validate(jsonArray);
 
-		asahMarkerDog.deleteAsahMarkers(
-			JSONUtil.toStringList(jsonArray),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+		asahMarkerDog.deleteAsahMarkers(JSONUtil.toStringList(jsonArray));
 
 		_nanitesHttp.run(jsonArray);
 	}

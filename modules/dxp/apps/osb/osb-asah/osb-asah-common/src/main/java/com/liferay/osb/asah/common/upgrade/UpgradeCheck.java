@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Objects;
 
@@ -49,7 +48,7 @@ public class UpgradeCheck {
 				ProjectIdThreadLocal.setProjectId(project.getId());
 
 				AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-					"Upgrade", WeDeployDataService.OSB_ASAH_FARO_INFO);
+					"Upgrade");
 
 				if (asahMarker == null) {
 					continue;

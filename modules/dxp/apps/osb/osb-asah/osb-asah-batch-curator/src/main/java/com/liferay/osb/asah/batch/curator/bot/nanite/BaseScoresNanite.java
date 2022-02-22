@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Map;
 
@@ -199,8 +198,7 @@ public abstract class BaseScoresNanite extends BaseNanite {
 						asahMarkerContextJSONObject.put(
 							"lastSuccessfulDay", lastSuccessfulDayDateString);
 
-						asahMarkerDog.updateAsahMarker(
-							asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
+						asahMarkerDog.updateAsahMarker(asahMarker);
 					}
 				}
 			}
@@ -218,8 +216,7 @@ public abstract class BaseScoresNanite extends BaseNanite {
 		asahMarkerContextJSONObject.put(
 			"lastSuccessfulDay", lastSuccessfulDayDateString);
 
-		asahMarkerDog.updateAsahMarker(
-			asahMarker, WeDeployDataService.OSB_ASAH_FARO_INFO);
+		asahMarkerDog.updateAsahMarker(asahMarker);
 
 		afterOSBAsahMarkerUpdated(lastSuccessfulDayDateString);
 	}

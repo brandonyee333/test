@@ -523,8 +523,7 @@ public class DataSourceDog {
 			_csvIndividualDog.deleteCSVIndividuals(dataSourceId);
 		}
 		else if (providerType.equals("LIFERAY")) {
-			_asahMarkerDog.deleteAsahMarker(
-				dataSourceId.toString(), WeDeployDataService.OSB_ASAH_DXP_RAW);
+			_asahMarkerDog.deleteAsahMarker(dataSourceId.toString());
 
 			_deleteData(
 				dataSourceId, "groups", "organizations", "roles", "teams",
@@ -532,9 +531,7 @@ public class DataSourceDog {
 			_deleteIndividualReferences(dataSourceId);
 		}
 		else if (providerType.equals("SALESFORCE")) {
-			_asahMarkerDog.deleteAsahMarker(
-				dataSourceId.toString(),
-				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+			_asahMarkerDog.deleteAsahMarker(dataSourceId.toString());
 
 			_deleteAccountReferences(dataSourceId);
 

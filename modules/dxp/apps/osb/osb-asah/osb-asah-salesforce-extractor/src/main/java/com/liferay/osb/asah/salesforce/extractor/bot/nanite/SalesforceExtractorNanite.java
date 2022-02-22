@@ -305,22 +305,19 @@ public class SalesforceExtractorNanite implements Nanite {
 		if (deletedStaleTable) {
 			asahMarkerContextJSONObject.put("tables", tablesJSONObject);
 
-			_asahMarkerDog.updateAsahMarker(
-				asahMarker, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+			_asahMarkerDog.updateAsahMarker(asahMarker);
 		}
 	}
 
 	private AsahMarker _getAsahMarker() {
 		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			_salesforceExtractorConfiguration.getDataSourceId(),
-			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+			_salesforceExtractorConfiguration.getDataSourceId());
 
 		if (asahMarker == null) {
 			asahMarker = _asahMarkerDog.addAsahMarker(
 				new AsahMarker(
 					_salesforceExtractorConfiguration.getDataSourceId(),
-					JSONUtil.put("tables", new JSONObject())),
-				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+					JSONUtil.put("tables", new JSONObject())));
 
 			asahMarker.setIsNew(Boolean.FALSE);
 		}
@@ -524,8 +521,7 @@ public class SalesforceExtractorNanite implements Nanite {
 
 			asahMarkerContextJSONObject.put("tables", tablesJSONObject);
 
-			_asahMarkerDog.updateAsahMarker(
-				asahMarker, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+			_asahMarkerDog.updateAsahMarker(asahMarker);
 		}
 		catch (Exception exception) {
 			if (exception instanceof InterruptBotException) {
@@ -820,8 +816,7 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		asahMarkerContextJSONObject.put("tables", tablesJSONObject);
 
-		_asahMarkerDog.updateAsahMarker(
-			asahMarker, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+		_asahMarkerDog.updateAsahMarker(asahMarker);
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
@@ -893,8 +888,7 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		asahMarkerContextJSONObject.put("tables", tablesJSONObject);
 
-		_asahMarkerDog.updateAsahMarker(
-			asahMarker, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+		_asahMarkerDog.updateAsahMarker(asahMarker);
 	}
 
 	private void _throwNewInterruptBotException() {
