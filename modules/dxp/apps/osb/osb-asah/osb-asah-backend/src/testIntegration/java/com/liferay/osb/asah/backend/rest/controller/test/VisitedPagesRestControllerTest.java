@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.VisitedPagesRestController;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -54,12 +55,12 @@ public class VisitedPagesRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,

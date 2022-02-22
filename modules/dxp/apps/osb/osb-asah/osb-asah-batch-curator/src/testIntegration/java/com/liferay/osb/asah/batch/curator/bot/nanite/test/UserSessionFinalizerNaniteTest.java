@@ -17,8 +17,10 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UserSessionFinalizerNanite;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -43,16 +45,16 @@ public class UserSessionFinalizerNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_session_info_old_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahcerebroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testExpiredSessionMultipleInteractions() throws Exception {
@@ -86,16 +88,16 @@ public class UserSessionFinalizerNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_session_info_old_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahcerebroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testExpiredSessionMultiplePageVisits() throws Exception {
@@ -125,16 +127,16 @@ public class UserSessionFinalizerNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_session_info_old_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahcerebroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testExpiredSessionSingleInteraction() throws Exception {
@@ -172,16 +174,16 @@ public class UserSessionFinalizerNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_4.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_session_info_old_4.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahcerebroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testExpiredSessionUpdatesAssets() throws Exception {
@@ -232,16 +234,16 @@ public class UserSessionFinalizerNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "osbasahmarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_7.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_session_info_old_7.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahcerebroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testFinalizeCompletedSession() throws Exception {
@@ -309,16 +311,16 @@ public class UserSessionFinalizerNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_5.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_session_info_old_5.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahcerebroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testUpdatePageViews() throws Exception {
@@ -345,16 +347,16 @@ public class UserSessionFinalizerNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_6.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_session_info_old_6.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahcerebroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testUpdateTimeOnPageSinglePage() throws Exception {

@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.dto.InterestDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -83,12 +84,12 @@ public class InterestsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "interests", resourcePath = "interests.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testGetInterestDTOPageDTO() throws Exception {

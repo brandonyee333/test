@@ -16,8 +16,10 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.InterestCompositionDog;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import java.util.LinkedHashMap;
 
@@ -34,10 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 )
 @ElasticsearchIndex(
 	name = "interests", resourcePath = "interests_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-)
-@ElasticsearchIndex(
-	name = "OSBAsahMarkers", resourcePath = "osbasahmarkers_info_1.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
@@ -58,6 +56,10 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 			2, 3, 2);
 	}
 
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_1.json"
+	)
 	@Test
 	public void testGetInactiveIndividualSegmentCompositionResultBag() {
 		checkResults(
@@ -74,9 +76,9 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 			3, 3, 3);
 	}
 
-	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers_info_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_2.json"
 	)
 	@Test
 	public void testGetIndividualCompositionResultBag() {
@@ -107,6 +109,10 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 			3, 1, 3);
 	}
 
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_1.json"
+	)
 	@Test
 	public void testGetIndividualSegmentCompositionResultBagWithSortAsc() {
 		checkResults(
@@ -123,6 +129,10 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 			3, 3, 3);
 	}
 
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_1.json"
+	)
 	@Test
 	public void testGetIndividualSegmentCompositionResultBagWithSortName() {
 		checkResults(

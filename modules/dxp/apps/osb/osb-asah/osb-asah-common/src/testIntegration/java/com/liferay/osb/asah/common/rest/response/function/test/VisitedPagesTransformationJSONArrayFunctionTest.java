@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.VisitedPagesTransformationJSONArrayFunction;
@@ -52,12 +53,12 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
@@ -81,12 +82,12 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testApplyNoAssets() throws Exception {
@@ -141,9 +142,9 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 			true);
 	}
 
-	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
@@ -165,10 +166,6 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -179,6 +176,10 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
@@ -220,12 +221,12 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
@@ -259,12 +260,12 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 	}
 
 	@ElasticsearchIndex(
-		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AsahMarkerRepository.class,
+		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
