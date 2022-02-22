@@ -25,6 +25,7 @@ import com.liferay.osb.asah.upgrade.v3_1_0.ChannelMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.DataSourceMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.ProjectMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.SchemaUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DatabaseSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobMigrationUpgradeStep;
@@ -82,6 +83,7 @@ public class UpgradeProcessConfiguration {
 
 		upgradeSteps.add(_databaseSchemaUpgradeStep);
 
+		upgradeSteps.add(_asahMarkerMigrationUpgradeStep);
 		upgradeSteps.add(_asahTaskMigrationUpgradeStep);
 		upgradeSteps.add(_jobMigrationUpgradeStep);
 
@@ -90,6 +92,9 @@ public class UpgradeProcessConfiguration {
 
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private AsahMarkerMigrationUpgradeStep _asahMarkerMigrationUpgradeStep;
 
 	@Autowired
 	private AsahTaskMigrationUpgradeStep _asahTaskMigrationUpgradeStep;
