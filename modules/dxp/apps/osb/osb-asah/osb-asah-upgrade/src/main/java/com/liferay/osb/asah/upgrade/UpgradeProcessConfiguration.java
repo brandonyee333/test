@@ -74,7 +74,6 @@ public class UpgradeProcessConfiguration {
 
 		upgradeSteps.add(_channelMigrationUpgradeStep);
 		upgradeSteps.add(_dataSourceMigrationUpgradeStep);
-		upgradeSteps.add(_jobMigrationUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"3.0.10", "3.1.0", upgradeSteps.toArray(new UpgradeStep[0]));
@@ -82,7 +81,9 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps = new ArrayList<>();
 
 		upgradeSteps.add(_databaseSchemaUpgradeStep);
+
 		upgradeSteps.add(_asahTaskMigrationUpgradeStep);
+		upgradeSteps.add(_jobMigrationUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"3.1.0", "3.2.0", upgradeSteps.toArray(new UpgradeStep[0]));
