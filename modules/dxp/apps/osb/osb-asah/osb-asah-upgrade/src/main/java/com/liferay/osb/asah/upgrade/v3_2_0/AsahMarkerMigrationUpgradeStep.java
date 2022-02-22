@@ -16,6 +16,7 @@ package com.liferay.osb.asah.upgrade.v3_2_0;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
@@ -50,30 +51,23 @@ public class AsahMarkerMigrationUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
-		_migrateCollection(
+		_upgradeCollection(
 			_cerebroInfoElasticsearchInvoker, "osbasahcerebroinfo");
-		_migrateCollection(_dxpRawElasticsearchInvoker, "osbasahdxpraw");
-		_migrateCollection(_faroInfoElasticsearchInvoker, "osbasahfaroinfo");
-		_migrateCollection(
+		_upgradeCollection(_dxpRawElasticsearchInvoker, "osbasahdxpraw");
+		_upgradeCollection(_faroInfoElasticsearchInvoker, "osbasahfaroinfo");
+		_upgradeCollection(
 			_salesforceRawElasticsearchInvoker, "osbasahsalesforceraw");
 	}
 
-	private List<String> _getMigratedIds(boolean retry) {
-		String query = "SELECT id FROM asahmarker";
-
+	private List<String> _getAsahMarkerIds(boolean retry) {
 		try {
-			List<String> ids = _namedParameterJdbcTemplate.queryForList(
-				query, Collections.emptyMap(), String.class);
-
-			if (!ids.isEmpty() && _log.isWarnEnabled()) {
-				_log.warn("Select latest ID query returns more than one row");
-			}
-
-			return ids;
+			return _namedParameterJdbcTemplate.queryForList(
+				"SELECT id FROM asahmarker", Collections.emptyMap(),
+				String.class);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Select latest ID query failed", exception);
+				_log.debug("Select Asah Marker IDs query failed", exception);
 			}
 
 			if (retry) {
@@ -86,7 +80,7 @@ public class AsahMarkerMigrationUpgradeStep implements UpgradeStep {
 					_log.error(interruptedException, interruptedException);
 				}
 
-				return _getMigratedIds(false);
+				return _getAsahMarkerIds(false);
 			}
 
 			return Collections.emptyList();
@@ -99,10 +93,8 @@ public class AsahMarkerMigrationUpgradeStep implements UpgradeStep {
 			_dataSource);
 	}
 
-	private void _migrateCollection(
+	private void _upgradeCollection(
 		ElasticsearchInvoker elasticsearchInvoker, String sourceName) {
-
-		List<String> migratedIds = _getMigratedIds(true);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(String.format("Migrating %s", sourceName));
@@ -112,10 +104,8 @@ public class AsahMarkerMigrationUpgradeStep implements UpgradeStep {
 			"OSBAsahMarkers",
 			Collections.singletonList(
 				SortBuilderUtil.fieldSort("id", SortOrder.ASC)),
-			QueryBuilders.boolQuery(
-			).mustNot(
-				QueryBuilders.termsQuery("id", migratedIds)
-			));
+			BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.termsQuery("id", _getAsahMarkerIds(true))));
 
 		objectJSONArray.forEach(
 			object -> {
