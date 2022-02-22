@@ -16,11 +16,8 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.AsahMarker;
 
-import org.springframework.context.annotation.Primary;
-
 /**
  * @author Marcellus Tavares
  */
-@Primary
 public interface AsahMarkerRepository extends Repository<AsahMarker, String> {
 }
