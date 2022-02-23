@@ -29,6 +29,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @ComponentScan(
 	basePackages = {
+		"com.liferay.osb.asah.common.bigquery",
 		"com.liferay.osb.asah.common.configuration",
 		"com.liferay.osb.asah.common.date.dog",
 		"com.liferay.osb.asah.common.dog", "com.liferay.osb.asah.common.dxp",
@@ -36,7 +37,6 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.liferay.osb.asah.common.faro.info",
 		"com.liferay.osb.asah.common.http",
 		"com.liferay.osb.asah.common.messaging",
-		"com.liferay.osb.asah.common.multitenancy",
 		"com.liferay.osb.asah.common.postgresql",
 		"com.liferay.osb.asah.common.repository",
 		"com.liferay.osb.asah.common.salesforce",
