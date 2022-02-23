@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
+import org.apache.beam.sdk.io.gcp.bigquery.TableDestination;
 import org.apache.beam.sdk.io.gcp.bigquery.WriteResult;
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
@@ -51,6 +52,7 @@ import org.apache.beam.sdk.values.PBegin;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PDone;
 import org.apache.beam.sdk.values.TypeDescriptor;
+import org.apache.beam.sdk.values.ValueInSingleWindow;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import org.joda.time.Duration;
@@ -109,17 +111,11 @@ public class StreamingIngestionPipeline {
 			);
 
 		sessionizedAnalyticsEventsPCollection.apply(
-			"Write Events",
-			new EventBigQueryWriter(
-				streamingIngestionPipelineOptions.getEventTableName()));
+			"Write Events", new EventBigQueryWriter());
 		sessionizedAnalyticsEventsPCollection.apply(
-			"Write Event Properties",
-			new EventPropertyBigQueryWriter(
-				streamingIngestionPipelineOptions.getEventPropertyTableName()));
+			"Write Event Properties", new EventPropertyBigQueryWriter());
 		sessionizedAnalyticsEventsPCollection.apply(
-			"Write Sessions",
-			new SessionBigQueryWriter(
-				streamingIngestionPipelineOptions.getSessionTableName()));
+			"Write Sessions", new SessionBigQueryWriter());
 
 		return pipeline.run();
 	}
@@ -189,10 +185,6 @@ public class StreamingIngestionPipeline {
 		extends PTransform
 			<PCollection<KV<String, Iterable<AnalyticsEvent>>>, WriteResult> {
 
-		public EventBigQueryWriter(String eventTableName) {
-			_eventTableName = eventTableName;
-		}
-
 		@Override
 		public WriteResult expand(
 			PCollection<KV<String, Iterable<AnalyticsEvent>>> pCollection) {
@@ -224,10 +216,26 @@ public class StreamingIngestionPipeline {
 
 					})
 			).apply(
-				"Write Event Properties Rows to Big Query",
+				"Write Event Rows to Big Query",
 				BigQueryIO.writeTableRows(
 				).to(
-					_eventTableName
+					new SerializableFunction
+						<ValueInSingleWindow<TableRow>, TableDestination>() {
+
+						@Override
+						public TableDestination apply(
+							ValueInSingleWindow<TableRow> valueInSingleWindow) {
+
+							TableRow tableRow = valueInSingleWindow.getValue();
+
+							return new TableDestination(
+								String.format(
+									"%s.%s", tableRow.get("projectId"),
+									"event"),
+								null);
+						}
+
+					}
 				).withCreateDisposition(
 					BigQueryIO.Write.CreateDisposition.CREATE_NEVER
 				).withMethod(
@@ -238,17 +246,11 @@ public class StreamingIngestionPipeline {
 			);
 		}
 
-		private final String _eventTableName;
-
 	}
 
 	public static class EventPropertyBigQueryWriter
 		extends PTransform
 			<PCollection<KV<String, Iterable<AnalyticsEvent>>>, WriteResult> {
-
-		public EventPropertyBigQueryWriter(String eventPropertyTableName) {
-			_eventPropertyTableName = eventPropertyTableName;
-		}
 
 		@Override
 		public WriteResult expand(
@@ -277,7 +279,23 @@ public class StreamingIngestionPipeline {
 				"Write Event Property Rows to Big Query",
 				BigQueryIO.writeTableRows(
 				).to(
-					_eventPropertyTableName
+					new SerializableFunction
+						<ValueInSingleWindow<TableRow>, TableDestination>() {
+
+						@Override
+						public TableDestination apply(
+							ValueInSingleWindow<TableRow> valueInSingleWindow) {
+
+							TableRow tableRow = valueInSingleWindow.getValue();
+
+							return new TableDestination(
+								String.format(
+									"%s.%s", tableRow.get("projectId"),
+									"eventproperty"),
+								null);
+						}
+
+					}
 				).withCreateDisposition(
 					BigQueryIO.Write.CreateDisposition.CREATE_NEVER
 				).withMethod(
@@ -288,17 +306,11 @@ public class StreamingIngestionPipeline {
 			);
 		}
 
-		private final String _eventPropertyTableName;
-
 	}
 
 	public static class SessionBigQueryWriter
 		extends PTransform
 			<PCollection<KV<String, Iterable<AnalyticsEvent>>>, WriteResult> {
-
-		public SessionBigQueryWriter(String sessionTableName) {
-			_sessionTableName = sessionTableName;
-		}
 
 		@Override
 		public WriteResult expand(
@@ -325,7 +337,23 @@ public class StreamingIngestionPipeline {
 				"Write Session Rows to Big Query",
 				BigQueryIO.writeTableRows(
 				).to(
-					_sessionTableName
+					new SerializableFunction
+						<ValueInSingleWindow<TableRow>, TableDestination>() {
+
+						@Override
+						public TableDestination apply(
+							ValueInSingleWindow<TableRow> valueInSingleWindow) {
+
+							TableRow tableRow = valueInSingleWindow.getValue();
+
+							return new TableDestination(
+								String.format(
+									"%s.%s", tableRow.get("projectId"),
+									"session"),
+								null);
+						}
+
+					}
 				).withCreateDisposition(
 					BigQueryIO.Write.CreateDisposition.CREATE_NEVER
 				).withMethod(
@@ -335,8 +363,6 @@ public class StreamingIngestionPipeline {
 				).withoutValidation()
 			);
 		}
-
-		private final String _sessionTableName;
 
 	}
 
