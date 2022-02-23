@@ -41,11 +41,6 @@ public class Session implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getProjectId() {
-		return _projectId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getSessionEnd() {
 		if (_sessionEnd == null) {
 			return null;
@@ -76,10 +71,6 @@ public class Session implements Persistable<String> {
 		_id = id;
 	}
 
-	public void setProjectId(String projectId) {
-		_projectId = projectId;
-	}
-
 	public void setSessionEnd(Date sessionEnd) {
 		if (sessionEnd != null) {
 			_sessionEnd = new Date(sessionEnd.getTime());
@@ -103,9 +94,6 @@ public class Session implements Persistable<String> {
 
 	@Transient
 	private String _id;
-
-	@Transient
-	private String _projectId;
 
 	@Transient
 	private Date _sessionEnd;

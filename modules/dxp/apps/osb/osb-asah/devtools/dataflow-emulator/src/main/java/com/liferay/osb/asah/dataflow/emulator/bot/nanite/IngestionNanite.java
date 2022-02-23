@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.entity.Event;
 import com.liferay.osb.asah.dataflow.emulator.entity.EventProperty;
 import com.liferay.osb.asah.dataflow.emulator.entity.Session;
@@ -340,7 +339,6 @@ public class IngestionNanite {
 		event.setKnownIndividual(analyticsEvent.isKnownIndividual());
 		event.setLanguageId(context.get("languageId"));
 		event.setPlatformName(context.get("platformName"));
-		event.setProjectId(analyticsEvent.getProjectId());
 		event.setProjectTimeZoneId(analyticsEvent.getProjectTimeZoneId());
 		event.setReferrer(context.get("referrer"));
 		event.setRegion(context.get("region"));
@@ -380,7 +378,6 @@ public class IngestionNanite {
 
 		session.setChannelId(Long.valueOf(sessionContext.channelId));
 		session.setId(sessionContext.id);
-		session.setProjectId(sessionContext.projectId);
 		session.setSessionEnd(sessionContext.sessionEnd);
 		session.setSessionStart(sessionContext.sessionStart);
 

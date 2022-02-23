@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS Event (
 	knownIndividual BOOLEAN,
 	languageId TEXT,
 	platformName TEXT,
-	projectId TEXT,
 	projectTimeZoneId TEXT,
 	referrer TEXT,
 	region TEXT,
@@ -46,7 +45,6 @@ CREATE TABLE IF NOT EXISTS EventProperty (
 CREATE TABLE IF NOT EXISTS Session (
 	channelId BIGINT,
 	id TEXT UNIQUE,
-	projectId TEXT,
 	sessionEnd TIMESTAMP,
 	sessionStart TIMESTAMP
 );

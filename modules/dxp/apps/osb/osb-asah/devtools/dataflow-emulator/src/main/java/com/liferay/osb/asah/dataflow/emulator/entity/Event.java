@@ -151,11 +151,6 @@ public class Event implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getProjectId() {
-		return _projectId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getProjectTimeZoneId() {
 		return _projectTimeZoneId;
 	}
@@ -308,10 +303,6 @@ public class Event implements Persistable<String> {
 		_platformName = platformName;
 	}
 
-	public void setProjectId(String projectId) {
-		_projectId = projectId;
-	}
-
 	public void setProjectTimeZoneId(String projectTimeZoneId) {
 		_projectTimeZoneId = projectTimeZoneId;
 	}
@@ -417,9 +408,6 @@ public class Event implements Persistable<String> {
 
 	@Transient
 	private String _platformName;
-
-	@Transient
-	private String _projectId;
 
 	@Transient
 	private String _projectTimeZoneId;
