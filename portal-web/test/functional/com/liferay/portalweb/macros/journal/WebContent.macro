@@ -840,15 +840,10 @@ definition {
 			value1 = "${webContentTitle} is not approved.");
 	}
 
-	macro clickChangeDefaultLanguage {
-		var menuItem = "${menuItem}";
-
+	macro changeDefaultLanguage {
 		Click(locator1 = "Button#CHANGE");
 
-		AssertClick(
-			key_locale = "${menuItem}",
-			locator1 = "Translation#CONTENT_TITLE",
-			value1 = "${menuItem}");
+		MenuItem.click(menuItem = "${defaultLanguage}");
 	}
 
 	macro clickMarginOfContentContainer {
@@ -1640,6 +1635,113 @@ definition {
 		}
 	}
 
+	macro viewChangeDefaultLanguageCP {
+		if (isSet(webContentTitleEscapeCharacter)) {
+			var key_webContentTitle = "${webContentTitleEscapeCharacter}";
+		}
+		else {
+			var key_webContentTitle = "${webContentTitle}";
+		}
+
+		AssertTextEquals(
+			locator1 = "TextInput#TITLE",
+			value1 = "${webContentTitle}");
+
+		if (isSet(webContentText)) {
+			AssertTextEquals(
+				key_fieldName = "Text",
+				locator1 = "TextInput#DDM",
+				value1 = "${webContentText}");
+		}
+		else {
+			SelectFrame.selectFrameNoLoading(
+				key_fieldLabel = "Content",
+				locator1 = "CKEditor#BODY_FIELD_IFRAME_WEB_CONTENT_ARTICLE");
+
+			AssertTextEquals(
+				locator1 = "CKEditor#BODY",
+				value1 = "${webContentContent}");
+
+			SelectFrame(value1 = "relative=top");
+		}
+
+		if (isSet(webContentDecimal)) {
+			AssertTextEquals(
+				key_fieldName = "Decimal",
+				locator1 = "TextInput#DDM",
+				value1 = "${webContentDecimal}");
+		}
+
+		if (isSet(webContentInteger)) {
+			AssertTextEquals(
+				key_fieldName = "Integer",
+				locator1 = "TextInput#DDM",
+				value1 = "${webContentInteger}");
+		}
+
+		if (isSet(webContentNumber)) {
+			AssertTextEquals(
+				key_fieldName = "Number",
+				locator1 = "TextInput#DDM",
+				value1 = "${webContentNumber}");
+		}
+
+		if (isSet(webContentTextBox)) {
+			AssertTextEquals(
+				key_fieldName = "TextBox",
+				locator1 = "DDMField#TEXT_BOX",
+				value1 = "${webContentTextBox}");
+		}
+
+		if (isSet(webContentDocumentsAndMedia)) {
+			AssertTextEquals(
+				key_fieldName = "DocumentsAndMedia",
+				locator1 = "TextInput#DDM",
+				value1 = "${webContentDocumentsAndMedia}");
+		}
+
+		if (isSet(webContentDescription)) {
+			if (isSet(otherLocaleSummary)) {
+				SelectFrame.selectFrameNoLoading(
+					key_fieldLabel = "${otherLocaleSummary}",
+					locator1 = "CKEditor#BODY_FIELD_IFRAME_WEB_CONTENT_ARTICLE");
+			}
+			else {
+				SelectFrame.selectFrameNoLoading(
+					key_fieldLabel = "Summary",
+					locator1 = "CKEditor#BODY_FIELD_IFRAME_WEB_CONTENT_ARTICLE");
+			}
+
+			AssertTextEquals(
+				locator1 = "CKEditor#BODY",
+				value1 = "${webContentDescription}");
+
+			SelectFrameTop(value1 = "relative=top");
+		}
+
+		if (isSet(webContentHTML)) {
+			SelectFrame.selectFrameNoLoading(
+				key_fieldLabel = "HTML",
+				locator1 = "CKEditor#BODY_FIELD_IFRAME_WEB_CONTENT_ARTICLE");
+
+			AssertTextEquals(
+				locator1 = "CKEditor#BODY",
+				value1 = "${webContentHTML}");
+
+			SelectFrame(value1 = "relative=top");
+		}
+
+		if (isSet(displayPageTemplateDisabled)) {
+			Portlet.waitForForm();
+
+			var key_panel = "Display Page Template";
+
+			AssertElementNotPresent(locator1 = "Panel#PANEL_COLLAPSED");
+
+			AssertElementNotPresent(locator1 = "Panel#PANEL_EXPANDED");
+		}
+	}
+
 	macro viewCompareVersions {
 		SelectFrame(locator1 = "IFrame#MODAL_BODY");
 
@@ -1821,6 +1923,12 @@ definition {
 		AssertElementNotPresent(locator1 = "WC#ENTRY_LIST_THUMBNAIL");
 
 		AssertElementNotPresent(locator1 = "WC#ENTRY_LIST_TITLE");
+	}
+
+	macro viewDefaultLanguage {
+		AssertVisible(
+			defaultLanguage = "${defaultLanguage}",
+			locator1 = "WCEditWebContent#DEFAULT_LANGUAGE");
 	}
 
 	macro viewDisplayStyleCP {
