@@ -29,15 +29,15 @@ import com.liferay.osb.asah.dataflow.emulator.repository.BQSessionRepository;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import javax.sql.DataSource;
 
@@ -116,6 +116,12 @@ public class IngestionNanite {
 				(projectId, analyticsEventsList) -> {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
+					if (!_projectIds.contains(projectId)) {
+						_createTables(projectId);
+
+						_projectIds.add(projectId);
+					}
+
 					_processAnalyticsEvents(analyticsEvents);
 				}
 			);
@@ -171,37 +177,27 @@ public class IngestionNanite {
 		}
 	}
 
+	private void _createTables(String projectId) {
+		if (_log.isInfoEnabled()) {
+			_log.info("Initializing Ingestion Schema");
+		}
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				new InMemoryResource(
+					"CREATE SCHEMA IF NOT EXISTS " + projectId)),
+			_dataSource);
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(new ClassPathResource("tables.sql")),
+			_dataSource);
+	}
+
 	private String _getSessionKey(AnalyticsEvent analyticsEvent) {
 		return String.format(
 			"%s#%s#%s#%s", analyticsEvent.getProjectId(),
 			analyticsEvent.getDataSourceId(), analyticsEvent.getChannelId(),
 			analyticsEvent.getUserId());
-	}
-
-	@PostConstruct
-	private void _init() {
-		if (_log.isInfoEnabled()) {
-			_log.info("Initializing Ingestion Schema");
-		}
-
-		try {
-			ProjectIdThreadLocal.setGlobalContext(true);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new InMemoryResource(
-						"CREATE SCHEMA IF NOT EXISTS " +
-							ProjectIdThreadLocal.getProjectId())),
-				_dataSource);
-
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ClassPathResource("tables.sql")),
-				_dataSource);
-		}
-		finally {
-			ProjectIdThreadLocal.setGlobalContext(false);
-		}
 	}
 
 	private boolean _isLate(AnalyticsEvent analyticsEvent) {
@@ -399,6 +395,8 @@ public class IngestionNanite {
 	}
 
 	private static final Log _log = LogFactory.getLog(IngestionNanite.class);
+
+	private static final Set<String> _projectIds = new HashSet<>();
 
 	@Value("${session.window.allowed.lateness:1}")
 	private long _allowedLateness;
