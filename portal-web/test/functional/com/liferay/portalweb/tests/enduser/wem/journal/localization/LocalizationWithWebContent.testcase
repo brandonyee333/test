@@ -329,14 +329,14 @@ definition {
 				settingFieldName = "Changeable Default Language");
 		}
 
-		task ("Go To Test Site And Create a Web Content") {
+		task ("Add a web content with translations") {
 			JSONWebcontent.addBasicWebContentLocalized(
 				contentMap = "en_US:Web Content Content,es_ES:Contenido de contenido web",
 				groupName = "Test Site Name",
 				titleMap = "en_US:Web Content Title,es_ES:Título del contenido web");
 		}
 
-		task ("Set Web Content with two translations") {
+		task ("Change the default language of web content to es-ES") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
@@ -352,10 +352,6 @@ definition {
 				webContentTitle = "Título del contenido web");
 
 			PortletEntry.publish();
-		}
-
-		task ("Assert there is no error in the console") {
-			AssertConsoleTextNotPresent(value1 = "error");
 		}
 
 		task ("View the default language of web content is es-ES") {
@@ -377,6 +373,21 @@ definition {
 		property test.name.skip.portal.instance = "LocalizationWithWebContent#ViewChangedDefaultPortalLanguageViaWebContent";
 		property testray.component.names = "Localization";
 
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		WebContentNavigator.gotoAddCP();
+
+		WebContent.addCP(
+			webContentContent = "Web Content Content 1",
+			webContentTitle = "Web Content Title 1");
+
+		PortletEntry.publish();
+
+		JSONWebcontent.addBasicWebContentLocalized(
+			contentMap = "en_US:Web Content Content 2,es_ES:Contenido de contenido web 2",
+			groupName = "Test Site Name",
+			titleMap = "en_US:Web Content Title 2,es_ES:Título del contenido web 2");
+
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Localization",
 			configurationName = "Language",
@@ -391,6 +402,12 @@ definition {
 		PortletEntry.viewLocale(
 			locale = "es-ES",
 			portletName = "Web Content");
+
+		WebContent.addCP(
+			webContentContent = "Web Content Content 3",
+			webContentTitle = "Web Content Title 3");
+
+		PortletEntry.publish();
 	}
 
 	@description = "This is a use case for LPS-110938. The localized Friendly URL of WC is shown in WCD when select template with Friendly URL field and it is displayed in DPT."
