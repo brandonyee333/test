@@ -87,6 +87,8 @@ public class IngestionNanite {
 							sessionContext.id));
 				}
 
+				ProjectIdThreadLocal.setProjectId(sessionContext.projectId);
+
 				_writeBQSession(sessionContext);
 
 				_sessions.remove(entry.getKey());

@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.dataflow.emulator.bot;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IngestionNanite;
 
 import org.apache.commons.logging.Log;
@@ -37,25 +36,22 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void checkIngestionNaniteWatermark() {
-		_runOnGlobalContext(_ingestionNanite::checkWatermark);
+		_ingestionNanite.checkWatermark();
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void closeIngestionNaniteOpenSessions() {
-		_runOnGlobalContext(_ingestionNanite::closeOpenSessions);
+		_ingestionNanite.closeOpenSessions();
 	}
 
 	@Scheduled(fixedDelay = 10 * DateUtil.SECOND)
 	public void runIngestionNanite() {
-		_runOnGlobalContext(
-			() -> {
-				try {
-					_ingestionNanite.run();
-				}
-				catch (Exception exception) {
-					_log.error(exception, exception);
-				}
-			});
+		try {
+			_ingestionNanite.run();
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
 	}
 
 	@Bean
@@ -66,17 +62,6 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 		threadPoolTaskScheduler.setPoolSize(2);
 
 		return threadPoolTaskScheduler;
-	}
-
-	private void _runOnGlobalContext(Runnable runnable) {
-		try {
-			ProjectIdThreadLocal.setGlobalContext(true);
-
-			runnable.run();
-		}
-		finally {
-			ProjectIdThreadLocal.setGlobalContext(false);
-		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
