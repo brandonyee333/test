@@ -17,7 +17,6 @@ package com.liferay.osb.asah.dataflow.emulator.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -62,7 +61,7 @@ public class Event implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Map<String, String> getContext() {
+	public String getContext() {
 		return _context;
 	}
 
@@ -110,7 +109,7 @@ public class Event implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Map<String, String> getEventProperties() {
+	public String getEventProperties() {
 		return _eventProperties;
 	}
 
@@ -235,7 +234,7 @@ public class Event implements Persistable<String> {
 		_contentLanguageId = contentLanguageId;
 	}
 
-	public void setContext(Map<String, String> context) {
+	public void setContext(String context) {
 		_context = context;
 	}
 
@@ -277,7 +276,7 @@ public class Event implements Persistable<String> {
 		_eventId = eventId;
 	}
 
-	public void setEventProperties(Map<String, String> eventProperties) {
+	public void setEventProperties(String eventProperties) {
 		_eventProperties = eventProperties;
 	}
 
@@ -372,7 +371,7 @@ public class Event implements Persistable<String> {
 	private String _contentLanguageId;
 
 	@Transient
-	private Map<String, String> _context;
+	private String _context;
 
 	@Transient
 	private String _country;
@@ -396,7 +395,7 @@ public class Event implements Persistable<String> {
 	private String _eventId;
 
 	@Transient
-	private Map<String, String> _eventProperties;
+	private String _eventProperties;
 
 	@Transient
 	private String _experienceId;

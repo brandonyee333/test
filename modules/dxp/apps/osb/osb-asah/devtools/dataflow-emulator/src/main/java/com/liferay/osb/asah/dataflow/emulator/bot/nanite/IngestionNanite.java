@@ -323,7 +323,7 @@ public class IngestionNanite {
 		event.setChannelId(Long.valueOf(analyticsEvent.getChannelId()));
 		event.setCity(context.get("city"));
 		event.setContentLanguageId(context.get("contentLanguageId"));
-		event.setContext(context);
+		event.setContext(String.valueOf(context));
 		event.setCountry(context.get("country"));
 		event.setCreateDate(analyticsEvent.getCreateDate());
 		event.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
@@ -331,7 +331,8 @@ public class IngestionNanite {
 		event.setDeviceType(context.get("deviceType"));
 		event.setEventDate(analyticsEvent.getEventDate());
 		event.setEventId(analyticsEvent.getEventId());
-		event.setEventProperties(analyticsEvent.getEventProperties());
+		event.setEventProperties(
+			String.valueOf(analyticsEvent.getEventProperties()));
 		event.setExperienceId(context.get("experienceId"));
 		event.setId(analyticsEvent.getId());
 		event.setIndividualId(Long.valueOf(analyticsEvent.getIndividualId()));
