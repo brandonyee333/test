@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
@@ -58,6 +59,7 @@ public class ProjectDog {
 			consumer.accept(project.getId());
 		}
 
+		_bigQuerySchemaManager.createSchema(project);
 		_postgreSQLSchemaManager.createSchema(project);
 
 		ProjectIdThreadLocal.forProject(
@@ -110,6 +112,9 @@ public class ProjectDog {
 	}
 
 	private static final Log _log = LogFactory.getLog(ProjectDog.class);
+
+	@Autowired
+	private BigQuerySchemaManager _bigQuerySchemaManager;
 
 	private final List<Consumer<String>> _consumers = new ArrayList<>();
 
