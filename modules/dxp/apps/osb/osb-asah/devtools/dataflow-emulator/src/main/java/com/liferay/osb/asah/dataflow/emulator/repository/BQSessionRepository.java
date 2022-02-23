@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.dataflow.emulator.repository;
 
-import com.liferay.osb.asah.dataflow.emulator.entity.EventProperty;
+import com.liferay.osb.asah.dataflow.emulator.entity.BQSession;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -23,8 +23,7 @@ import org.springframework.stereotype.Repository;
  * @author Marcellus Tavares
  */
 @Repository(
-	"com.liferay.osb.asah.dataflow.emulator.repository.EventPropertyRepository"
+	"com.liferay.osb.asah.dataflow.emulator.repository.SessionRepository"
 )
-public interface EventPropertyRepository
-	extends CrudRepository<EventProperty, String> {
+public interface BQSessionRepository extends CrudRepository<BQSession, String> {
 }

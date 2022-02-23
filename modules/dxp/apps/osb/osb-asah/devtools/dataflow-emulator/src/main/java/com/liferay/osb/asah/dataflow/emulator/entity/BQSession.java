@@ -26,7 +26,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Leslie Wong
  */
 @Table
-public class Session implements Persistable<String> {
+public class BQSession implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long getChannelId() {

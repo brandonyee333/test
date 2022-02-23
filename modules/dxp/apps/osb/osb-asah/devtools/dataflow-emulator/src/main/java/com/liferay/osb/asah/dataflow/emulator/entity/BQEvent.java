@@ -28,7 +28,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcellus Tavares
  */
 @Table
-public class Event implements Persistable<String> {
+public class BQEvent implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getApplicationId() {

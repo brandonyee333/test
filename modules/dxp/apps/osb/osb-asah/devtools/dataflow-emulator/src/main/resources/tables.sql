@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS Event (
+CREATE TABLE IF NOT EXISTS BQEvent (
 	applicationId TEXT,
 	browserName TEXT,
 	canonicalUrl TEXT,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS Event (
 	variantId TEXT
 );
 
-CREATE TABLE IF NOT EXISTS EventProperty (
+CREATE TABLE IF NOT EXISTS BQEventProperty (
 	channelId BIGINT,
 	eventDate TIMESTAMP,
 	id TEXT,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS EventProperty (
 	value TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Session (
+CREATE TABLE IF NOT EXISTS BQSession (
 	channelId BIGINT,
 	id TEXT UNIQUE,
 	sessionEnd TIMESTAMP,

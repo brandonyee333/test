@@ -20,12 +20,12 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.dataflow.emulator.entity.Event;
-import com.liferay.osb.asah.dataflow.emulator.entity.EventProperty;
-import com.liferay.osb.asah.dataflow.emulator.entity.Session;
-import com.liferay.osb.asah.dataflow.emulator.repository.EventPropertyRepository;
-import com.liferay.osb.asah.dataflow.emulator.repository.EventRepository;
-import com.liferay.osb.asah.dataflow.emulator.repository.SessionRepository;
+import com.liferay.osb.asah.dataflow.emulator.entity.BQEvent;
+import com.liferay.osb.asah.dataflow.emulator.entity.BQEventProperty;
+import com.liferay.osb.asah.dataflow.emulator.entity.BQSession;
+import com.liferay.osb.asah.dataflow.emulator.repository.BQEventPropertyRepository;
+import com.liferay.osb.asah.dataflow.emulator.repository.BQEventRepository;
+import com.liferay.osb.asah.dataflow.emulator.repository.BQSessionRepository;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,7 +87,7 @@ public class IngestionNanite {
 							sessionContext.id));
 				}
 
-				_writeSession(sessionContext);
+				_writeBQSession(sessionContext);
 
 				_sessions.remove(entry.getKey());
 			}
@@ -254,8 +254,8 @@ public class IngestionNanite {
 				return;
 			}
 
-			_writeEvent(analyticsEvent, sessionContext);
-			_writeEventProperties(analyticsEvent);
+			_writeBQEvent(analyticsEvent, sessionContext);
+			_writeBQEventProperties(analyticsEvent);
 		}
 		catch (Exception exception) {
 			_log.error(
@@ -321,79 +321,79 @@ public class IngestionNanite {
 		return sessionContext;
 	}
 
-	private void _writeEvent(
+	private void _writeBQEvent(
 		AnalyticsEvent analyticsEvent, SessionContext sessionContext) {
 
-		Event event = new Event();
+		BQEvent bqEvent = new BQEvent();
 
 		Map<String, String> context = analyticsEvent.getContext();
 
-		event.setApplicationId(analyticsEvent.getApplicationId());
-		event.setBrowserName(context.get("browserName"));
-		event.setCanonicalUrl(context.get("canonicalUrl"));
-		event.setChannelId(Long.valueOf(analyticsEvent.getChannelId()));
-		event.setCity(context.get("city"));
-		event.setContentLanguageId(context.get("contentLanguageId"));
-		event.setContext(String.valueOf(context));
-		event.setCountry(context.get("country"));
-		event.setCreateDate(analyticsEvent.getCreateDate());
-		event.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
-		event.setDescription(context.get("description"));
-		event.setDeviceType(context.get("deviceType"));
-		event.setEventDate(analyticsEvent.getEventDate());
-		event.setEventId(analyticsEvent.getEventId());
-		event.setEventProperties(
+		bqEvent.setApplicationId(analyticsEvent.getApplicationId());
+		bqEvent.setBrowserName(context.get("browserName"));
+		bqEvent.setCanonicalUrl(context.get("canonicalUrl"));
+		bqEvent.setChannelId(Long.valueOf(analyticsEvent.getChannelId()));
+		bqEvent.setCity(context.get("city"));
+		bqEvent.setContentLanguageId(context.get("contentLanguageId"));
+		bqEvent.setContext(String.valueOf(context));
+		bqEvent.setCountry(context.get("country"));
+		bqEvent.setCreateDate(analyticsEvent.getCreateDate());
+		bqEvent.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
+		bqEvent.setDescription(context.get("description"));
+		bqEvent.setDeviceType(context.get("deviceType"));
+		bqEvent.setEventDate(analyticsEvent.getEventDate());
+		bqEvent.setEventId(analyticsEvent.getEventId());
+		bqEvent.setEventProperties(
 			String.valueOf(analyticsEvent.getEventProperties()));
-		event.setExperienceId(context.get("experienceId"));
-		event.setId(analyticsEvent.getId());
-		event.setIndividualId(Long.valueOf(analyticsEvent.getIndividualId()));
-		event.setKeywords(context.get("keywords"));
-		event.setKnownIndividual(analyticsEvent.isKnownIndividual());
-		event.setLanguageId(context.get("languageId"));
-		event.setPlatformName(context.get("platformName"));
-		event.setProjectTimeZoneId(analyticsEvent.getProjectTimeZoneId());
-		event.setReferrer(context.get("referrer"));
-		event.setRegion(context.get("region"));
-		event.setSegmentNames(
+		bqEvent.setExperienceId(context.get("experienceId"));
+		bqEvent.setId(analyticsEvent.getId());
+		bqEvent.setIndividualId(Long.valueOf(analyticsEvent.getIndividualId()));
+		bqEvent.setKeywords(context.get("keywords"));
+		bqEvent.setKnownIndividual(analyticsEvent.isKnownIndividual());
+		bqEvent.setLanguageId(context.get("languageId"));
+		bqEvent.setPlatformName(context.get("platformName"));
+		bqEvent.setProjectTimeZoneId(analyticsEvent.getProjectTimeZoneId());
+		bqEvent.setReferrer(context.get("referrer"));
+		bqEvent.setRegion(context.get("region"));
+		bqEvent.setSegmentNames(
 			new ArrayList<>(analyticsEvent.getSegmentNames()));
-		event.setSessionId(sessionContext.id);
-		event.setTimezoneOffset(context.get("timezoneOffset"));
-		event.setTitle(context.get("title"));
-		event.setUrl(context.get("url"));
-		event.setUserId(analyticsEvent.getUserId());
-		event.setVariantId(context.get("variantId"));
+		bqEvent.setSessionId(sessionContext.id);
+		bqEvent.setTimezoneOffset(context.get("timezoneOffset"));
+		bqEvent.setTitle(context.get("title"));
+		bqEvent.setUrl(context.get("url"));
+		bqEvent.setUserId(analyticsEvent.getUserId());
+		bqEvent.setVariantId(context.get("variantId"));
 
-		_eventRepository.save(event);
+		_bqEventRepository.save(bqEvent);
 	}
 
-	private void _writeEventProperties(AnalyticsEvent analyticsEvent) {
+	private void _writeBQEventProperties(AnalyticsEvent analyticsEvent) {
 		Map<String, String> eventProperties =
 			analyticsEvent.getEventProperties();
 
 		for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
-			EventProperty eventProperty = new EventProperty();
+			BQEventProperty bqEventProperty = new BQEventProperty();
 
-			eventProperty.setChannelId(
+			bqEventProperty.setChannelId(
 				Long.valueOf(analyticsEvent.getChannelId()));
-			eventProperty.setEventDate(analyticsEvent.getEventDate());
-			eventProperty.setId(analyticsEvent.getId());
-			eventProperty.setName(entry.getKey());
-			eventProperty.setProjectId(analyticsEvent.getProjectId());
-			eventProperty.setValue(entry.getValue());
+			bqEventProperty.setEventDate(analyticsEvent.getEventDate());
+			bqEventProperty.setId(analyticsEvent.getId());
+			bqEventProperty.setName(entry.getKey());
+			bqEventProperty.setProjectId(analyticsEvent.getProjectId());
+			bqEventProperty.setValue(entry.getValue());
 
-			_eventPropertyRepository.save(eventProperty);
+			_bqEventPropertyRepository.save(bqEventProperty);
 		}
 	}
 
-	private void _writeSession(SessionContext sessionContext) {
-		Session session = new Session();
+	private void _writeBQSession(SessionContext sessionContext) {
+		BQSession bqSession = new BQSession();
 
-		session.setChannelId(Long.valueOf(sessionContext.channelId));
-		session.setId(sessionContext.id);
-		session.setSessionEnd(sessionContext.sessionEnd);
-		session.setSessionStart(sessionContext.sessionStart);
+		bqSession.setChannelId(Long.valueOf(sessionContext.channelId));
+		bqSession.setId(sessionContext.id);
+		bqSession.setSessionEnd(sessionContext.sessionEnd);
+		bqSession.setSessionStart(sessionContext.sessionStart);
 
-		_sessionRepository.save(session);
+		_bqSessionRepository.save(bqSession);
 	}
 
 	private static final Log _log = LogFactory.getLog(IngestionNanite.class);
@@ -402,23 +402,23 @@ public class IngestionNanite {
 	private long _allowedLateness;
 
 	@Autowired
+	private BQEventPropertyRepository _bqEventPropertyRepository;
+
+	@Autowired
+	private BQEventRepository _bqEventRepository;
+
+	@Autowired
+	private BQSessionRepository _bqSessionRepository;
+
+	@Autowired
 	@Qualifier("postgreSQLDataSource")
 	private DataSource _dataSource;
-
-	@Autowired
-	private EventPropertyRepository _eventPropertyRepository;
-
-	@Autowired
-	private EventRepository _eventRepository;
 
 	@Value("${session.window.gap.duration:3}")
 	private long _gapDuration;
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS)
 	private MessageSubscriber _messageSubscriber;
-
-	@Autowired
-	private SessionRepository _sessionRepository;
 
 	private final Map<String, SessionContext> _sessions =
 		new ConcurrentHashMap<>();
