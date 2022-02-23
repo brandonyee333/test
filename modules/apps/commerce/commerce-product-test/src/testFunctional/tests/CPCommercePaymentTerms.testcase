@@ -1,0 +1,80 @@
+@component-name = "portal-commerce"
+definition {
+
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Order Management";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+	}
+
+	tearDown {
+		Navigator.openURL();
+
+		if (IsElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE")) {
+			User.logoutPG();
+		}
+
+		User.firstLoginPG();
+
+		CommerceConfiguration.commerceAdminTearDown();
+
+		CommerceConfiguration.commerceInitializersTearDown();
+	}
+
+	@description = "Verify user can add a new payment term to Terms and Conditions."
+	@priority = "3"
+	test AddANewPaymentTerm {
+		property portal.acceptance = "false";
+
+		task ("Given a terms and coditions page.") {
+			CommerceNavigator.gotoPortlet(
+				category = "Order Management",
+				portlet = "Terms and Conditions");
+		}
+
+		task ("When a sales manager creates a new entry and is presented to the details page of the entry") {
+			LexiconEntry.gotoAdd();
+
+			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
+
+			Type(
+				key_fieldLabel = "Name",
+				locator1 = "TextInput#GENERIC_TEXT_INPUT",
+				value1 = "test-name");
+
+			AssertClick(
+				locator1 = "Button#SUBMIT",
+				value1 = "Submit");
+		}
+
+		task ("And when the sales manager goes back to the "Terms and Conditions" page, the new entry is present.") {
+			CommerceNavigator.gotoPortlet(
+				category = "Order Management",
+				portlet = "Terms and Conditions");
+
+			AssertElementPresent(
+				key_termName = "test-name",
+				locator1 = "CommercePayment#TERMS_AND_CONDITIONS");
+		}
+
+		task ("Then the sales manager opens the new entry again and sees that all the field contains the correct data") {
+			AssertClick(
+				key_termName = "test-name",
+				locator1 = "CommercePayment#TERMS_AND_CONDITIONS",
+				value1 = "test-name");
+
+			AssertElementPresent(
+				key_testName = "test-name",
+				locator1 = "CommercePayment#TERMS_AND_CONDITIONS_TITLE");
+
+			AssertElementPresent(
+				key_testPriority = "0.0",
+				locator1 = "CommercePayment#TERMS_AND_CONDITIONS_PRIORITY");
+		}
+	}
+
+}

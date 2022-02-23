@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>CommercePayment</title>
+</head>
+
+<body>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CommercePayment</td></tr>
+</thead>
+
+<tbody>
+
+<tr>
+	<td>TERMS_AND_CONDITIONS</td>
+	<td>//div[@class='table-list-title' and contains(.,'${key_termName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TERMS_AND_CONDITIONS_TITLE</td>
+	<td>//input[contains(@class,'form-control language-value field form-control') and @value='${key_testName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TERMS_AND_CONDITIONS_PRIORITY</td>
+	<td>//input[contains(@class,'field form-control lfr-input-text') and @value='${key_testPriority}']</td>
+	<td></td>
+</tr>
+
+</tbody>
+</table>
+</body>
+</html>
