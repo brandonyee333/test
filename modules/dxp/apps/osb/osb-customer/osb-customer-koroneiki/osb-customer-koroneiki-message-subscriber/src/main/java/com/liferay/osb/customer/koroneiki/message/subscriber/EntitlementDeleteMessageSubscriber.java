@@ -76,21 +76,6 @@ public class EntitlementDeleteMessageSubscriber
 
 		userLocalService.unsetOrganizationUsers(
 			organization.getOrganizationId(), new long[] {user.getUserId()});
-
-		ExpandoBridge organizationExpandoBridge =
-			organization.getExpandoBridge();
-
-		boolean remote = (Boolean)organizationExpandoBridge.getAttribute(
-			"remote", false);
-
-		if (remote) {
-			userIdentityProvider.removeOrganizationMembership(
-				organization.getOrganizationId(), user.getUserId());
-		}
-
-		if (name.equals(EntitlementConstants.NAME_CUSTOMER_DXP)) {
-			_dxpCloudStatusPageSubscriptionUtil.unsubscribe(user);
-		}
 	}
 
 	@Reference

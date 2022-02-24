@@ -72,17 +72,6 @@ public class EntitlementCreateMessageSubscriber
 
 		userLocalService.addOrganizationUser(
 			organization.getOrganizationId(), user.getUserId());
-
-		ExpandoBridge organizationExpandoBridge =
-			organization.getExpandoBridge();
-
-		boolean remote = (Boolean)organizationExpandoBridge.getAttribute(
-			"remote", false);
-
-		if (remote) {
-			userIdentityProvider.addOrganizationMembership(
-				organization.getOrganizationId(), user.getUserId());
-		}
 	}
 
 }
