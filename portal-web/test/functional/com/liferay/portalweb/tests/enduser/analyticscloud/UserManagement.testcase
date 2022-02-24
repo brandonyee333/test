@@ -8,9 +8,9 @@ definition {
 
 	setUp {
 		task ("Launch AC") {
-			ACUtils.launchAC();
-
 			TestCase.setUpPortalInstance();
+
+			ACUtils.launchAC();
 		}
 	}
 

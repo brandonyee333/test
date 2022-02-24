@@ -7,9 +7,9 @@ definition {
 	property testray.main.component.name = "Analytics Cloud";
 
 	setUp {
-		ACUtils.launchAC();
-
 		TestCase.setUpPortalInstance();
+
+		ACUtils.launchAC();
 	}
 
 	tearDown {
