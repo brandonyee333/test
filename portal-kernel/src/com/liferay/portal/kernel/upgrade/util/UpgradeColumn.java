@@ -30,6 +30,8 @@ public interface UpgradeColumn {
 
 	public Integer getOldColumnType(Integer defaultType);
 
+	public String getOldName();
+
 	public Object getOldValue();
 
 	/**
