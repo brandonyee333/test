@@ -1499,13 +1499,6 @@ public class HttpImpl implements Http {
 		}
 	}
 
-	protected void processPostMethod(
-		RequestBuilder requestBuilder, Map<String, String> headers,
-		List<Http.FilePart> fileParts, Map<String, String> parts) {
-
-		processPostMethod(requestBuilder, headers, fileParts, null, parts);
-	}
-
 	protected org.apache.http.cookie.Cookie toHttpCookie(Cookie cookie) {
 		BasicClientCookie basicClientCookie = new BasicClientCookie(
 			cookie.getName(), cookie.getValue());
@@ -1632,30 +1625,6 @@ public class HttpImpl implements Http {
 
 			return FileUtil.getBytes(inputStream);
 		}
-	}
-
-	protected byte[] URLtoByteArray(
-			String location, Http.Method method, Map<String, String> headers,
-			Cookie[] cookies, Http.Auth auth, Http.Body body,
-			List<Http.FilePart> fileParts, Map<String, String> parts,
-			Http.Response response, boolean followRedirects)
-		throws IOException {
-
-		return URLtoByteArray(
-			location, method, headers, cookies, auth, body, fileParts, parts,
-			response, followRedirects, 0);
-	}
-
-	protected byte[] URLtoByteArray(
-			String location, Http.Method method, Map<String, String> headers,
-			Cookie[] cookies, Http.Auth auth, Http.Body body,
-			List<Http.FilePart> fileParts, Map<String, String> parts,
-			Http.Response response, boolean followRedirects, int timeout)
-		throws IOException {
-
-		return URLtoByteArray(
-			location, method, headers, cookies, auth, body, fileParts, null,
-			parts, response, followRedirects, timeout);
 	}
 
 	protected InputStream URLtoInputStream(
@@ -1949,30 +1918,6 @@ public class HttpImpl implements Http {
 				_log.error(exception, exception);
 			}
 		}
-	}
-
-	protected InputStream URLtoInputStream(
-			String location, Http.Method method, Map<String, String> headers,
-			Cookie[] cookies, Http.Auth auth, Http.Body body,
-			List<Http.FilePart> fileParts, Map<String, String> parts,
-			Http.Response response, boolean followRedirects)
-		throws IOException {
-
-		return URLtoInputStream(
-			location, method, headers, cookies, auth, body, fileParts, parts,
-			response, followRedirects, 0);
-	}
-
-	protected InputStream URLtoInputStream(
-			String location, Http.Method method, Map<String, String> headers,
-			Cookie[] cookies, Http.Auth auth, Http.Body body,
-			List<Http.FilePart> fileParts, Map<String, String> parts,
-			Http.Response response, boolean followRedirects, int timeout)
-		throws IOException {
-
-		return URLtoInputStream(
-			location, method, headers, cookies, auth, body, fileParts, null,
-			parts, response, followRedirects, timeout);
 	}
 
 	private URI _getURI(String uriString) throws URISyntaxException {
