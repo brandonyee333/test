@@ -1038,7 +1038,9 @@ definition {
 
 		Publications.gotoPublish(publicationName = "Publication 2 Name");
 
-		Publications.publishPublication(publicationName = "Publication 2 Name");
+		// Workaround LPS-133249
+
+		/*Publications.publishPublication(publicationName = "Publication 2 Name");*/
 	}
 
 	macro submitNewWorkflow {
