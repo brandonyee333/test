@@ -27,46 +27,7 @@ definition {
 		property portal.version = "7.3.10";
 		property test.run.environment = "EE";
 
-		AssertTextPresent(
-			key_publicationName = "Publication 2 Name",
-			locator1 = "Publications#PUBLICATIONS_INDICATOR_TITLE",
-			value1 = "Publication 2 Name");
-
-		ApplicationsMenu.gotoPortlet(
-			category = "Publications",
-			panel = "Applications",
-			portlet = "Publications");
-
-		Navigator.gotoNavTab(navTab = "History");
-
-		Publications.revertPublication(publicationName = "Publication 1 Name");
-
-		AssertTextPresent(
-			key_publicationName = "Revert &quot;Publication 1 Name&quot;",
-			locator1 = "Publications#PUBLICATIONS_INDICATOR_TITLE",
-			value1 = "Revert &quot;Publication 1 Name&quot;");
-
-		Publications.selectPublication(publicationName = "Publication 2 Name");
-
-		Publications.gotoReviewChanges();
-
-		PublicationsChanges.viewChangesViaChangesStyle(
-			changeCategory = "Web Content Article",
-			changeSite = "Guest",
-			changeTitle = "WC WebContent Title 2 Edit",
-			changeType = "Added",
-			changeUser = "Test Test");
-
-		PublicationsChanges.viewChangesViaChangesStyle(
-			changeCategory = "Page",
-			changeSite = "Guest",
-			changeTitle = "Test Page",
-			changeType = "Added",
-			changeUser = "Test Test");
-
-		Publications.gotoPublish(publicationName = "Publication 2 Name");
-
-		Publications.publishPublication(publicationName = "Publication 2 Name");
+		Upgrade.revertAndPublishPublications();
 	}
 
 }
