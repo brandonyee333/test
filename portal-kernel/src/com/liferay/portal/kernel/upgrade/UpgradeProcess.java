@@ -29,9 +29,11 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.upgrade.util.AlterColumnNameUpgradeColumnImpl;
 import com.liferay.portal.kernel.upgrade.util.UpgradeColumn;
 import com.liferay.portal.kernel.upgrade.util.UpgradeTable;
 import com.liferay.portal.kernel.upgrade.util.UpgradeTableFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
@@ -191,6 +193,13 @@ public abstract class UpgradeProcess
 		@Override
 		public boolean shouldDropIndex(Collection<String> columnNames) {
 			return Alterable.containsIgnoreCase(columnNames, _oldColumnName);
+		}
+
+		public AlterColumnNameUpgradeColumnImpl
+			toAlterColumnNameUpgradeColumnImpl() {
+
+			return new AlterColumnNameUpgradeColumnImpl(
+				_newColumnName, _oldColumnName);
 		}
 
 		private final String _newColumn;
@@ -411,7 +420,8 @@ public abstract class UpgradeProcess
 				upgradeTable(
 					tableName, (Object[][])tableColumnsField.get(null),
 					(String)tableSQLCreateField.get(null),
-					(String[])tableSQLAddIndexesField.get(null));
+					(String[])tableSQLAddIndexesField.get(null),
+					getUpgradeColumns(alterables));
 
 				if (_log.isWarnEnabled()) {
 					_log.warn(
@@ -534,6 +544,22 @@ public abstract class UpgradeProcess
 		Field tableNameField = tableClass.getField("TABLE_NAME");
 
 		return (String)tableNameField.get(null);
+	}
+
+	protected UpgradeColumn[] getUpgradeColumns(Alterable[] alterables) {
+		UpgradeColumn[] upgradeColumns = new UpgradeColumn[0];
+
+		for (Alterable alterable : alterables) {
+			if (alterable instanceof AlterColumnName) {
+				AlterColumnName alterColumnName = (AlterColumnName)alterable;
+
+				upgradeColumns = ArrayUtil.append(
+					upgradeColumns,
+					alterColumnName.toAlterColumnNameUpgradeColumnImpl());
+			}
+		}
+
+		return upgradeColumns;
 	}
 
 	protected long increment() {
