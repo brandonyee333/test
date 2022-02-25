@@ -258,6 +258,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>FIELD_BODY_IN_SPECIFIC_POSITION_2</td>
+	<td>//div[(@data-ddm-field-page='${key_formPageNumber}') and (@data-ddm-field-row = '${key_fieldPositionNumber}')]//label[contains(text(),'${key_fieldName}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>FIELD_LABEL</td>
 	<td>//div[@data-field-name='${key_fieldName}' and contains(@class,'ddm-field')]//label[contains(@class,'ddm-label')] | //div[contains(@class,'ddm-field-container')]//label[text()='${key_fieldName}'] | //div[@data-field-name='${key_fieldName}' and contains(@class,'ddm-field')]//legend[contains(@class,'lfr-ddm-legend')] | //div[contains(@class,'ddm-field-container')]//legend[text()='${key_fieldName}']</td>
 	<td></td>
