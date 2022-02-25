@@ -369,6 +369,15 @@ public class FieldDog {
 					List<Field> curOldFields = oldFieldNames.getOrDefault(
 						fieldName, new ArrayList<>());
 
+					if (curOldFields.isEmpty()) {
+						if (!Objects.isNull(curNewField.getValue())) {
+							updatedFields.add(curNewField);
+						}
+						else {
+							continue;
+						}
+					}
+
 					Field curOldField = curOldFields.get(0);
 
 					if (_isUpdateField(
