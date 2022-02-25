@@ -451,6 +451,22 @@
 	<td>//div[contains(@id,'permissionsContent')]//select[contains(@id,'inputPermissionsViewRole')]</td>
 	<td></td>
 </tr>
+<!--PAGE-->
+<tr>
+	<td>PAGE_MOVE_DISABLED</td>
+	<td>//input[contains(@class,'page-header-title') and @value='${key_formPageName}']/../../../../..//button[@disabled and @title='${key_movePage}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGE_MOVE_DOWN_ENABLED</td>
+	<td>//input[contains(@class,'page-header-title') and @value='${key_formPageName}']/../../../../..//button[*[name()='svg'][contains(@class,'lexicon-icon-angle-down')]]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGE_MOVE_UP_ENABLED</td>
+	<td>//input[contains(@class,'page-header-title') and @value='${key_formPageName}']/../../../../..//button[*[name()='svg'][contains(@class,'lexicon-icon-angle-up')]]</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
