@@ -66,10 +66,7 @@ public class VerifyAgreementMVCResourceCommand extends BaseMVCResourceCommand {
 
 			if (hasExpandoValue(
 					themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-					"osbCustomerESA", versionRequired) ||
-				hasExpandoValue(
-					themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-					"osbESA", versionRequired)) {
+					"osbCustomerESA", versionRequired)) {
 
 				acceptedAgreement = true;
 			}
@@ -80,10 +77,7 @@ public class VerifyAgreementMVCResourceCommand extends BaseMVCResourceCommand {
 
 			if (hasExpandoValue(
 					themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-					"osbCustomerEvaluationEULA", versionRequired) ||
-				hasExpandoValue(
-					themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-					"osbEvaluationEULA", versionRequired)) {
+					"osbCustomerEvaluationEULA", versionRequired)) {
 
 				acceptedAgreement = true;
 			}
@@ -94,10 +88,7 @@ public class VerifyAgreementMVCResourceCommand extends BaseMVCResourceCommand {
 
 			if (hasExpandoValue(
 					themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-					"osbCustomerStudioEULA", versionRequired) ||
-				hasExpandoValue(
-					themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-					"osbStudioEULA", versionRequired)) {
+					"osbCustomerStudioEULA", versionRequired)) {
 
 				acceptedAgreement = true;
 			}

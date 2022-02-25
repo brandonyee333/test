@@ -29,9 +29,7 @@ public class AgreementUtil {
 	public static boolean hasESA(long userId, double versionRequired)
 		throws PortalException {
 
-		if (hasExpandoValue(userId, "osbCustomerESA", versionRequired) ||
-			hasExpandoValue(userId, "osbESA", versionRequired)) {
-
+		if (hasExpandoValue(userId, "osbCustomerESA", versionRequired)) {
 			return true;
 		}
 
@@ -42,8 +40,7 @@ public class AgreementUtil {
 		throws PortalException {
 
 		if (hasExpandoValue(
-				userId, "osbCustomerEvaluationEULA", versionRequired) ||
-			hasExpandoValue(userId, "osbEvaluationEULA", versionRequired)) {
+				userId, "osbCustomerEvaluationEULA", versionRequired)) {
 
 			return true;
 		}
@@ -60,9 +57,7 @@ public class AgreementUtil {
 	public static boolean hasStudioEULA(long userId, double versionRequired)
 		throws PortalException {
 
-		if (hasExpandoValue(userId, "osbCustomerStudioEULA", versionRequired) ||
-			hasExpandoValue(userId, "osbStudioEULA", versionRequired)) {
-
+		if (hasExpandoValue(userId, "osbCustomerStudioEULA", versionRequired)) {
 			return true;
 		}
 
