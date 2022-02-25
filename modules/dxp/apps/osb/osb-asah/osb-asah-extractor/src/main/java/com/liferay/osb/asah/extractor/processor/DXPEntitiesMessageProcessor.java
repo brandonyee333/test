@@ -100,10 +100,12 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 			String projectId = attributesMap.get("projectId");
 
 			if (projectId != null) {
-				_processJSONArrayMessage(pubsubMessage, byteString, projectId);
+				_processJSONArrayMessage(
+					byteString.toStringUtf8(), projectId, pubsubMessage);
 			}
 			else {
-				_processJSONObjectMessage(pubsubMessage, byteString);
+				_processJSONObjectMessage(
+					byteString.toStringUtf8(), pubsubMessage);
 			}
 		}
 		catch (Exception exception) {
@@ -303,16 +305,17 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 	}
 
 	private void _processJSONArrayMessage(
-		PubsubMessage pubsubMessage, ByteString byteString, String projectId) {
+		String message, String projectId, PubsubMessage pubsubMessage) {
 
 		_runAsync(
 			() -> {
+				ProjectIdThreadLocal.setProjectId(projectId);
+
 				long start = System.currentTimeMillis();
 
-				JSONArray jsonArray = new JSONArray(byteString.toStringUtf8());
+				JSONArray jsonArray = new JSONArray(message);
 
 				for (int i = 0; i < jsonArray.length(); i++) {
-					ProjectIdThreadLocal.setProjectId(projectId);
 					_processMessage(jsonArray.getJSONObject(i));
 				}
 
@@ -328,17 +331,18 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 	}
 
 	private void _processJSONObjectMessage(
-		PubsubMessage pubsubMessage, ByteString byteString) {
+		String message, PubsubMessage pubsubMessage) {
 
-		JSONObject jsonObject = new JSONObject(byteString.toStringUtf8());
+		JSONObject jsonObject = new JSONObject(message);
 
 		String projectId = jsonObject.getString("projectId");
 
 		_runAsync(
 			() -> {
+				ProjectIdThreadLocal.setProjectId(projectId);
+
 				long start = System.currentTimeMillis();
 
-				ProjectIdThreadLocal.setProjectId(projectId);
 				_processMessage(jsonObject);
 
 				if (_log.isDebugEnabled()) {

@@ -143,6 +143,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 	public Individual addIndividual(
 		Individual individual, boolean updateMemberships) {
 
+		Set<Field> customFields = individual.getCustomFields();
+
 		Set<Field> fields = individual.getFields();
 
 		if (CollectionUtils.isNotEmpty(fields)) {
@@ -165,8 +167,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 				}
 			}
 		}
-
-		Set<Field> customFields = individual.getCustomFields();
 
 		individual = _individualRepository.save(individual);
 
@@ -1334,6 +1334,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			_boundedExecutor.runAsync(
 				() -> {
 					ProjectIdThreadLocal.setProjectId(projectId);
+
 					_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 						BoolQueryBuilderUtil.filter(
 							QueryBuilders.termQuery(
