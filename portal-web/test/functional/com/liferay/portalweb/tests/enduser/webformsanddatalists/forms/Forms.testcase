@@ -2749,6 +2749,77 @@ definition {
 			rowNumber = "3");
 	}
 
+	@description = "LPS-111551 - As a Forms admin, I want to reorder my form pages"
+	@ignore = "true"
+	@priority = "4"
+	test ReorderPagesAndVerifyFields {
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content & Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoAddForm();
+
+		Form.editName();
+
+		Form.editPageTitle(
+			formPageName = "Page A",
+			formTitleNumber = "1");
+
+		Form.addTextField(fieldPositionNumber = "1");
+
+		var fieldTextField = FormFields.getFieldName();
+
+		Form.editFieldLabelMetal(fieldValue = "Text Field 1");
+
+		Form.closeSidebar();
+
+		Form.addPage(formAddNewPageNumber = "1");
+
+		Form.editPageTitle(
+			formPageName = "Page B",
+			formTitleNumber = "2");
+
+		Form.addTextField(fieldPositionNumber = "3");
+
+		Form.editFieldLabelMetal(fieldValue = "Text Field 2");
+
+		Form.closeSidebar();
+
+		Form.movePageDown(formPageName = "Page A");
+
+		Form.viewButtonPageDisabled(
+			formPageName = "Page A",
+			pageMove = "Down");
+
+		Form.viewButtonPageDownEnabled(formPageName = "Page B");
+
+		Form.viewButtonPageUpEnabled(formPageName = "Page A");
+
+		Form.viewReorderPageAndVerifyField(
+			fieldName = "Text Field 2",
+			fieldPositionNumber = "0",
+			formPageNumber = "0");
+
+		Form.viewReorderPageAndVerifyField(
+			fieldName = "Text Field 1",
+			fieldPositionNumber = "0",
+			formPageNumber = "1");
+
+		Form.movePageUp(formPageName = "Page A");
+
+		Form.viewReorderPageAndVerifyField(
+			fieldName = "Text Field 1",
+			fieldPositionNumber = "0",
+			formPageNumber = "0");
+
+		Form.viewReorderPageAndVerifyField(
+			fieldName = "Text Field 2",
+			fieldPositionNumber = "0",
+			formPageNumber = "1");
+	}
+
 	@description = "This is a use case for LPS-59336."
 	@priority = "4"
 	test SearchFormRecordMultipleEntries {
