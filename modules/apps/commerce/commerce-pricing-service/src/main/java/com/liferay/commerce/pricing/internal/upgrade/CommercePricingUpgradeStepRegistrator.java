@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourceLocalService;
+import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -54,8 +55,10 @@ public class CommercePricingUpgradeStepRegistrator
 		registry.register(
 			"2.0.0", "2.0.1", new CommercePriceModifierUpgradeProcess());
 
+		registry.register("2.0.1", "2.0.2", new DummyUpgradeProcess());
+
 		registry.register(
-			"2.0.1", "2.1.0",
+			"2.0.2", "2.1.0",
 			new CommercePricingConfigurationUpgradeProcess(
 				_configurationProvider));
 
