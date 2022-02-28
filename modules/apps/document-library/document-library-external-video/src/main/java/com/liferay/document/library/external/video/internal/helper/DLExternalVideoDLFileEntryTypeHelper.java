@@ -86,8 +86,8 @@ public class DLExternalVideoDLFileEntryTypeHelper {
 
 		ServiceContext serviceContext = new ServiceContext();
 
-		serviceContext.setAddGroupPermissions(true);
 		serviceContext.setAddGuestPermissions(true);
+		serviceContext.setAddGroupPermissions(true);
 		serviceContext.setScopeGroupId(_company.getGroupId());
 		serviceContext.setUserId(defaultUserId);
 
@@ -100,8 +100,8 @@ public class DLExternalVideoDLFileEntryTypeHelper {
 	private DDMStructure _addExternalVideoDDMStructure() throws Exception {
 		ServiceContext serviceContext = new ServiceContext();
 
-		serviceContext.setAddGroupPermissions(true);
 		serviceContext.setAddGuestPermissions(true);
+		serviceContext.setAddGroupPermissions(true);
 		serviceContext.setScopeGroupId(_company.getGroupId());
 
 		long defaultUserId = _userLocalService.getDefaultUserId(

@@ -16,6 +16,10 @@
 
 <%@ include file="/init.jsp" %>
 
+<%
+String embeddableHTML = (String)request.getAttribute(DLExternalVideoWebKeys.EMBEDDABLE_HTML);
+%>
+
 <liferay-util:html-top
 	outputKey="document_library_external_video_preview_css"
 >
@@ -24,6 +28,6 @@
 
 <div class="preview-file">
 	<div class="preview-file-container preview-file-max-height">
-		<%= (String)request.getAttribute(DLExternalVideoWebKeys.EMBEDDABLE_HTML) %>
+		<%= embeddableHTML %>
 	</div>
 </div>
