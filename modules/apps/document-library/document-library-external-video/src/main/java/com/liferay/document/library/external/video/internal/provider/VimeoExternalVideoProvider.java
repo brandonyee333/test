@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -73,12 +71,6 @@ public class VimeoExternalVideoProvider implements ExternalVideoProvider {
 				@Override
 				public String getEmbeddableHTML() {
 					return jsonObject.getString("html");
-				}
-
-				@Override
-				public String getIconURL() {
-					return _servletContext.getContextPath() +
-						"/icons/vimeo.png";
 				}
 
 				@Override
@@ -125,10 +117,5 @@ public class VimeoExternalVideoProvider implements ExternalVideoProvider {
 
 	@Reference
 	private Http _http;
-
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.document.library.external.video)"
-	)
-	private ServletContext _servletContext;
 
 }

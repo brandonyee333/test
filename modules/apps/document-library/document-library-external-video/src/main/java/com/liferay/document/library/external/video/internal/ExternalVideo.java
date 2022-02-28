@@ -23,8 +23,6 @@ public interface ExternalVideo {
 
 	public String getEmbeddableHTML();
 
-	public String getIconURL();
-
 	public String getTitle();
 
 	public String getURL();
