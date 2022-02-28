@@ -1,9 +1,9 @@
-function DLExternalVideoPicker(callback) {
+function ExternalVideoPicker(callback) {
 	callback();
 }
 
-DLExternalVideoPicker.prototype = {
-	constructor: DLExternalVideoPicker,
+ExternalVideoPicker.prototype = {
+	constructor: ExternalVideoPicker,
 
 	openPicker: function() {
 		const url = prompt('Video URL')
