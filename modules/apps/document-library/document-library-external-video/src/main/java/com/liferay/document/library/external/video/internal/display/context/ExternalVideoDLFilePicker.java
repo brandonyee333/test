@@ -15,9 +15,9 @@
 package com.liferay.document.library.external.video.internal.display.context;
 
 import com.liferay.document.library.display.context.DLFilePicker;
-import com.liferay.document.library.external.video.internal.DLExternalVideo;
-import com.liferay.document.library.external.video.internal.constants.DLExternalVideoConstants;
-import com.liferay.document.library.external.video.internal.constants.DLExternalVideoPortletKeys;
+import com.liferay.document.library.external.video.internal.ExternalVideo;
+import com.liferay.document.library.external.video.internal.constants.ExternalVideoConstants;
+import com.liferay.document.library.external.video.internal.constants.ExternalVideoPortletKeys;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -38,21 +38,21 @@ import javax.servlet.http.HttpServletRequest;
  * @author Sergio González
  * @author Alejandro Tardín
  */
-public class DLExternalVideoDLFilePicker implements DLFilePicker {
+public class ExternalVideoDLFilePicker implements DLFilePicker {
 
-	public DLExternalVideoDLFilePicker(
-		HttpServletRequest httpServletRequest, DLExternalVideo dlExternalVideo,
+	public ExternalVideoDLFilePicker(
+		HttpServletRequest httpServletRequest, ExternalVideo externalVideo,
 		String onFilePickCallback) {
 
 		_httpServletRequest = httpServletRequest;
-		_dlExternalVideo = dlExternalVideo;
+		_externalVideo = externalVideo;
 		_onFilePickCallback = onFilePickCallback;
 	}
 
 	@Override
 	public String getCurrentIconURL() {
-		if (_dlExternalVideo != null) {
-			return _dlExternalVideo.getIconURL();
+		if (_externalVideo != null) {
+			return _externalVideo.getIconURL();
 		}
 
 		return StringPool.BLANK;
@@ -60,8 +60,8 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 
 	@Override
 	public String getCurrentTitle() {
-		if (_dlExternalVideo != null) {
-			return _dlExternalVideo.getTitle();
+		if (_externalVideo != null) {
+			return _externalVideo.getTitle();
 		}
 
 		return StringPool.BLANK;
@@ -69,7 +69,7 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 
 	@Override
 	public String getDescriptionFieldName() {
-		return DLExternalVideoConstants.DDM_FIELD_NAME_DESCRIPTION;
+		return ExternalVideoConstants.DDM_FIELD_NAME_DESCRIPTION;
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 		template.put(
 			"namespace",
 			PortalUtil.getPortletNamespace(
-				DLExternalVideoPortletKeys.DL_EXTERNAL_VIDEO));
+				ExternalVideoPortletKeys.EXTERNAL_VIDEO));
 		template.put("onFilePickCallback", _onFilePickCallback);
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
@@ -117,7 +117,7 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 
 	@Override
 	public String getTitleFieldName() {
-		return DLExternalVideoConstants.DDM_FIELD_NAME_TITLE;
+		return ExternalVideoConstants.DDM_FIELD_NAME_TITLE;
 	}
 
 	private String _getExternalVideoFieldsURL() {
@@ -126,7 +126,7 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 
 		ResourceURL getExternalVideoFieldsURL =
 			(ResourceURL)requestBackedPortletURLFactory.createResourceURL(
-				DLExternalVideoPortletKeys.DL_EXTERNAL_VIDEO);
+				ExternalVideoPortletKeys.EXTERNAL_VIDEO);
 
 		getExternalVideoFieldsURL.setResourceID(
 			"/document_library_external_video/get_external_video_fields");
@@ -134,7 +134,7 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 		return getExternalVideoFieldsURL.toString();
 	}
 
-	private final DLExternalVideo _dlExternalVideo;
+	private final ExternalVideo _externalVideo;
 	private final HttpServletRequest _httpServletRequest;
 	private final String _onFilePickCallback;
 

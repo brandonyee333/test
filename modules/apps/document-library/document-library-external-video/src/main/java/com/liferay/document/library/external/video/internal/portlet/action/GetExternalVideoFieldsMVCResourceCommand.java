@@ -14,9 +14,9 @@
 
 package com.liferay.document.library.external.video.internal.portlet.action;
 
-import com.liferay.document.library.external.video.internal.DLExternalVideo;
-import com.liferay.document.library.external.video.internal.constants.DLExternalVideoPortletKeys;
-import com.liferay.document.library.external.video.internal.resolver.DLExternalVideoResolver;
+import com.liferay.document.library.external.video.internal.ExternalVideo;
+import com.liferay.document.library.external.video.internal.constants.ExternalVideoPortletKeys;
+import com.liferay.document.library.external.video.internal.resolver.ExternalVideoResolver;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
@@ -36,12 +36,12 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"javax.portlet.name=" + DLExternalVideoPortletKeys.DL_EXTERNAL_VIDEO,
+		"javax.portlet.name=" + ExternalVideoPortletKeys.EXTERNAL_VIDEO,
 		"mvc.command.name=/document_library_external_video/get_external_video_fields"
 	},
 	service = MVCResourceCommand.class
 )
-public class GetDLExternalVideoFieldsMVCResourceCommand
+public class GetExternalVideoFieldsMVCResourceCommand
 	extends BaseMVCResourceCommand {
 
 	@Override
@@ -49,30 +49,29 @@ public class GetDLExternalVideoFieldsMVCResourceCommand
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		DLExternalVideo dlExternalVideo = _dlExternalVideoResolver.resolve(
+		ExternalVideo externalVideo = _externalVideoResolver.resolve(
 			ParamUtil.getString(resourceRequest, "externalVideoURL"));
 
-		if (dlExternalVideo != null) {
+		if (externalVideo != null) {
 			JSONPortletResponseUtil.writeJSON(
 				resourceRequest, resourceResponse,
 				JSONUtil.put(
 					"DESCRIPTION",
-					GetterUtil.getString(dlExternalVideo.getDescription())
+					GetterUtil.getString(externalVideo.getDescription())
 				).put(
 					"HTML",
-					GetterUtil.getString(dlExternalVideo.getEmbeddableHTML())
+					GetterUtil.getString(externalVideo.getEmbeddableHTML())
 				).put(
-					"ICON_URL",
-					GetterUtil.getString(dlExternalVideo.getIconURL())
+					"ICON_URL", GetterUtil.getString(externalVideo.getIconURL())
 				).put(
-					"TITLE", GetterUtil.getString(dlExternalVideo.getTitle())
+					"TITLE", GetterUtil.getString(externalVideo.getTitle())
 				).put(
-					"URL", GetterUtil.getString(dlExternalVideo.getURL())
+					"URL", GetterUtil.getString(externalVideo.getURL())
 				));
 		}
 	}
 
 	@Reference
-	private DLExternalVideoResolver _dlExternalVideoResolver;
+	private ExternalVideoResolver _externalVideoResolver;
 
 }

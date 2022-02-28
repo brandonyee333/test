@@ -17,8 +17,8 @@ package com.liferay.document.library.external.video.internal.display.context;
 import com.liferay.document.library.display.context.BaseDLEditFileEntryDisplayContext;
 import com.liferay.document.library.display.context.DLEditFileEntryDisplayContext;
 import com.liferay.document.library.display.context.DLFilePicker;
-import com.liferay.document.library.external.video.internal.DLExternalVideo;
-import com.liferay.document.library.external.video.internal.constants.DLExternalVideoConstants;
+import com.liferay.document.library.external.video.internal.ExternalVideo;
+import com.liferay.document.library.external.video.internal.constants.ExternalVideoConstants;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -33,10 +33,10 @@ import javax.servlet.http.HttpServletResponse;
  * @author Iván Zaera
  * @author Alejandro Tardín
  */
-public class DLExternalVideoDLEditFileEntryDisplayContext
+public class ExternalVideoDLEditFileEntryDisplayContext
 	extends BaseDLEditFileEntryDisplayContext {
 
-	public DLExternalVideoDLEditFileEntryDisplayContext(
+	public ExternalVideoDLEditFileEntryDisplayContext(
 		DLEditFileEntryDisplayContext parentDLEditFileEntryDisplayContext,
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse,
@@ -47,23 +47,23 @@ public class DLExternalVideoDLEditFileEntryDisplayContext
 			httpServletResponse, dlFileEntryType);
 	}
 
-	public DLExternalVideoDLEditFileEntryDisplayContext(
+	public ExternalVideoDLEditFileEntryDisplayContext(
 		DLEditFileEntryDisplayContext parentDLEditFileEntryDisplayContext,
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse, FileEntry fileEntry,
-		DLExternalVideo dlExternalVideo) {
+		ExternalVideo externalVideo) {
 
 		super(
 			_UUID, parentDLEditFileEntryDisplayContext, httpServletRequest,
 			httpServletResponse, fileEntry);
 
-		_dlExternalVideo = dlExternalVideo;
+		_externalVideo = externalVideo;
 	}
 
 	@Override
 	public DLFilePicker getDLFilePicker(String onFilePickCallback) {
-		return new DLExternalVideoDLFilePicker(
-			request, _dlExternalVideo, onFilePickCallback);
+		return new ExternalVideoDLFilePicker(
+			request, _externalVideo, onFilePickCallback);
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class DLExternalVideoDLEditFileEntryDisplayContext
 		String ddmStructureKey = ddmStructure.getStructureKey();
 
 		if (ddmStructureKey.equals(
-				DLExternalVideoConstants.DDM_STRUCTURE_KEY_EXTERNAL_VIDEO)) {
+				ExternalVideoConstants.DDM_STRUCTURE_KEY_EXTERNAL_VIDEO)) {
 
 			return false;
 		}
@@ -109,6 +109,6 @@ public class DLExternalVideoDLEditFileEntryDisplayContext
 	private static final UUID _UUID = UUID.fromString(
 		"f3dad960-a5ea-4499-badd-0d1a06ee1c93");
 
-	private DLExternalVideo _dlExternalVideo;
+	private ExternalVideo _externalVideo;
 
 }

@@ -18,10 +18,10 @@ import com.liferay.document.library.display.context.BaseDLDisplayContextFactory;
 import com.liferay.document.library.display.context.DLDisplayContextFactory;
 import com.liferay.document.library.display.context.DLEditFileEntryDisplayContext;
 import com.liferay.document.library.display.context.DLViewFileVersionDisplayContext;
-import com.liferay.document.library.external.video.internal.DLExternalVideo;
-import com.liferay.document.library.external.video.internal.constants.DLExternalVideoConstants;
-import com.liferay.document.library.external.video.internal.resolver.DLExternalVideoResolver;
-import com.liferay.document.library.external.video.internal.util.DLExternalVideoMetadataHelper;
+import com.liferay.document.library.external.video.internal.ExternalVideo;
+import com.liferay.document.library.external.video.internal.constants.ExternalVideoConstants;
+import com.liferay.document.library.external.video.internal.resolver.ExternalVideoResolver;
+import com.liferay.document.library.external.video.internal.util.ExternalVideoMetadataHelper;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.model.DLFileVersion;
@@ -53,7 +53,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true, property = "service.ranking:Integer=-100",
 	service = DLDisplayContextFactory.class
 )
-public class DLExternalVideoDLDisplayContextFactory
+public class ExternalVideoDLDisplayContextFactory
 	extends BaseDLDisplayContextFactory {
 
 	@Override
@@ -64,11 +64,11 @@ public class DLExternalVideoDLDisplayContextFactory
 		DLFileEntryType dlFileEntryType) {
 
 		DDMStructure externalVideoDDMStructure =
-			DLExternalVideoMetadataHelper.getExternalVideoDDMStructure(
+			ExternalVideoMetadataHelper.getExternalVideoDDMStructure(
 				dlFileEntryType);
 
 		if (externalVideoDDMStructure != null) {
-			return new DLExternalVideoDLEditFileEntryDisplayContext(
+			return new ExternalVideoDLEditFileEntryDisplayContext(
 				parentDLEditFileEntryDisplayContext, httpServletRequest,
 				httpServletResponse, dlFileEntryType);
 		}
@@ -88,17 +88,17 @@ public class DLExternalVideoDLDisplayContextFactory
 			return parentDLEditFileEntryDisplayContext;
 		}
 
-		DLExternalVideoMetadataHelper dlExternalVideoMetadataHelper =
-			new DLExternalVideoMetadataHelper(
+		ExternalVideoMetadataHelper externalVideoMetadataHelper =
+			new ExternalVideoMetadataHelper(
 				_ddmFormValuesToFieldsConverter, _ddmStructureLocalService,
 				(DLFileEntry)model, _dlFileEntryMetadataLocalService,
 				_fieldsToDDMFormValuesConverter, _storageEngine);
 
-		if (dlExternalVideoMetadataHelper.isExternalVideo()) {
-			return new DLExternalVideoDLEditFileEntryDisplayContext(
+		if (externalVideoMetadataHelper.isExternalVideo()) {
+			return new ExternalVideoDLEditFileEntryDisplayContext(
 				parentDLEditFileEntryDisplayContext, httpServletRequest,
 				httpServletResponse, fileEntry,
-				_getExternalVideo(dlExternalVideoMetadataHelper));
+				_getExternalVideo(externalVideoMetadataHelper));
 		}
 
 		return parentDLEditFileEntryDisplayContext;
@@ -139,31 +139,31 @@ public class DLExternalVideoDLDisplayContextFactory
 			return parentDLViewFileVersionDisplayContext;
 		}
 
-		DLExternalVideoMetadataHelper dlExternalVideoMetadataHelper =
-			new DLExternalVideoMetadataHelper(
+		ExternalVideoMetadataHelper externalVideoMetadataHelper =
+			new ExternalVideoMetadataHelper(
 				_ddmFormValuesToFieldsConverter, _ddmStructureLocalService,
 				(DLFileVersion)model, _dlFileEntryMetadataLocalService,
 				_fieldsToDDMFormValuesConverter, _storageEngine);
 
-		if (dlExternalVideoMetadataHelper.isExternalVideo()) {
-			return new DLExternalVideoDLViewFileVersionDisplayContext(
+		if (externalVideoMetadataHelper.isExternalVideo()) {
+			return new ExternalVideoDLViewFileVersionDisplayContext(
 				parentDLViewFileVersionDisplayContext, httpServletRequest,
-				httpServletResponse, fileVersion, dlExternalVideoMetadataHelper,
+				httpServletResponse, fileVersion, externalVideoMetadataHelper,
 				_servletContext);
 		}
 
 		return parentDLViewFileVersionDisplayContext;
 	}
 
-	private DLExternalVideo _getExternalVideo(
-		DLExternalVideoMetadataHelper dlExternalVideoMetadataHelper) {
+	private ExternalVideo _getExternalVideo(
+		ExternalVideoMetadataHelper externalVideoMetadataHelper) {
 
-		if (dlExternalVideoMetadataHelper.containsField(
-				DLExternalVideoConstants.DDM_FIELD_NAME_URL)) {
+		if (externalVideoMetadataHelper.containsField(
+				ExternalVideoConstants.DDM_FIELD_NAME_URL)) {
 
-			return _dlExternalVideoResolver.resolve(
-				dlExternalVideoMetadataHelper.getFieldValue(
-					DLExternalVideoConstants.DDM_FIELD_NAME_URL));
+			return _externalVideoResolver.resolve(
+				externalVideoMetadataHelper.getFieldValue(
+					ExternalVideoConstants.DDM_FIELD_NAME_URL));
 		}
 
 		return null;
@@ -179,10 +179,10 @@ public class DLExternalVideoDLDisplayContextFactory
 	private DLAppService _dlAppService;
 
 	@Reference
-	private DLExternalVideoResolver _dlExternalVideoResolver;
+	private DLFileEntryMetadataLocalService _dlFileEntryMetadataLocalService;
 
 	@Reference
-	private DLFileEntryMetadataLocalService _dlFileEntryMetadataLocalService;
+	private ExternalVideoResolver _externalVideoResolver;
 
 	@Reference
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;

@@ -15,7 +15,7 @@
 package com.liferay.document.library.external.video.internal.util;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
-import com.liferay.document.library.external.video.internal.constants.DLExternalVideoConstants;
+import com.liferay.document.library.external.video.internal.constants.ExternalVideoConstants;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
@@ -43,7 +43,7 @@ import java.util.Map;
  * @author Iván Zaera
  * @author Alejandro Tardín
  */
-public class DLExternalVideoMetadataHelper {
+public class ExternalVideoMetadataHelper {
 
 	public static DDMStructure getExternalVideoDDMStructure(
 		DLFileEntryType dlFileEntryType) {
@@ -58,8 +58,7 @@ public class DLExternalVideoMetadataHelper {
 			String structureKey = ddmStructure.getStructureKey();
 
 			if (structureKey.equals(
-					DLExternalVideoConstants.
-						DDM_STRUCTURE_KEY_EXTERNAL_VIDEO)) {
+					ExternalVideoConstants.DDM_STRUCTURE_KEY_EXTERNAL_VIDEO)) {
 
 				return ddmStructure;
 			}
@@ -68,7 +67,7 @@ public class DLExternalVideoMetadataHelper {
 		return null;
 	}
 
-	public DLExternalVideoMetadataHelper(
+	public ExternalVideoMetadataHelper(
 		DDMFormValuesToFieldsConverter ddmFormValuesToFieldsConverter,
 		DDMStructureLocalService ddmStructureLocalService,
 		DLFileEntry dlFileEntry,
@@ -92,7 +91,7 @@ public class DLExternalVideoMetadataHelper {
 		}
 	}
 
-	public DLExternalVideoMetadataHelper(
+	public ExternalVideoMetadataHelper(
 		DDMFormValuesToFieldsConverter ddmFormValuesToFieldsConverter,
 		DDMStructureLocalService ddmStructureLocalService,
 		DLFileVersion dlFileVersion,
@@ -163,18 +162,18 @@ public class DLExternalVideoMetadataHelper {
 			fields.put(
 				new Field(
 					ddmStructureId,
-					DLExternalVideoConstants.DDM_FIELD_NAME_DESCRIPTION, ""));
+					ExternalVideoConstants.DDM_FIELD_NAME_DESCRIPTION, ""));
 			fields.put(
 				new Field(
-					ddmStructureId,
-					DLExternalVideoConstants.DDM_FIELD_NAME_HTML, ""));
+					ddmStructureId, ExternalVideoConstants.DDM_FIELD_NAME_HTML,
+					""));
 			fields.put(
 				new Field(
-					ddmStructureId,
-					DLExternalVideoConstants.DDM_FIELD_NAME_TITLE, ""));
+					ddmStructureId, ExternalVideoConstants.DDM_FIELD_NAME_TITLE,
+					""));
 			fields.put(
 				new Field(
-					ddmStructureId, DLExternalVideoConstants.DDM_FIELD_NAME_URL,
+					ddmStructureId, ExternalVideoConstants.DDM_FIELD_NAME_URL,
 					""));
 
 			ServiceContext serviceContext = new ServiceContext();

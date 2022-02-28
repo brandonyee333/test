@@ -14,7 +14,7 @@
 
 package com.liferay.document.library.external.video.internal.provider;
 
-import com.liferay.document.library.external.video.internal.DLExternalVideo;
+import com.liferay.document.library.external.video.internal.ExternalVideo;
 import com.liferay.petra.string.StringBundler;
 
 import java.util.Arrays;
@@ -30,17 +30,16 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alejandro Tardín
  */
-@Component(service = DLExternalVideoProvider.class)
-public class FacebookDLExternalVideoProvider
-	implements DLExternalVideoProvider {
+@Component(service = ExternalVideoProvider.class)
+public class FacebookExternalVideoProvider implements ExternalVideoProvider {
 
 	@Override
-	public DLExternalVideo getDLExternalVideo(String url) {
+	public ExternalVideo getExternalVideo(String url) {
 		if (!_matches(url)) {
 			return null;
 		}
 
-		return new DLExternalVideo() {
+		return new ExternalVideo() {
 
 			@Override
 			public String getDescription() {

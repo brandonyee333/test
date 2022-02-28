@@ -16,10 +16,10 @@ package com.liferay.document.library.external.video.internal.display.context;
 
 import com.liferay.document.library.display.context.BaseDLViewFileVersionDisplayContext;
 import com.liferay.document.library.display.context.DLViewFileVersionDisplayContext;
-import com.liferay.document.library.external.video.internal.constants.DLExternalVideoConstants;
-import com.liferay.document.library.external.video.internal.constants.DLExternalVideoWebKeys;
-import com.liferay.document.library.external.video.internal.util.DLExternalVideoMetadataHelper;
-import com.liferay.document.library.external.video.internal.util.DLExternalVideoUIItemsUtil;
+import com.liferay.document.library.external.video.internal.constants.ExternalVideoConstants;
+import com.liferay.document.library.external.video.internal.constants.ExternalVideoWebKeys;
+import com.liferay.document.library.external.video.internal.util.ExternalVideoMetadataHelper;
+import com.liferay.document.library.external.video.internal.util.ExternalVideoUIItemsUtil;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileVersion;
@@ -42,21 +42,21 @@ import javax.servlet.http.HttpServletResponse;
  * @author Iván Zaera
  * @author Alejandro Tardín
  */
-public class DLExternalVideoDLViewFileVersionDisplayContext
+public class ExternalVideoDLViewFileVersionDisplayContext
 	extends BaseDLViewFileVersionDisplayContext {
 
-	public DLExternalVideoDLViewFileVersionDisplayContext(
+	public ExternalVideoDLViewFileVersionDisplayContext(
 		DLViewFileVersionDisplayContext parentDLDisplayContext,
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse, FileVersion fileVersion,
-		DLExternalVideoMetadataHelper dlExternalVideoMetadataHelper,
+		ExternalVideoMetadataHelper externalVideoMetadataHelper,
 		ServletContext servletContext) {
 
 		super(
 			_UUID, parentDLDisplayContext, httpServletRequest,
 			httpServletResponse, fileVersion);
 
-		_dlExternalVideoMetadataHelper = dlExternalVideoMetadataHelper;
+		_externalVideoMetadataHelper = externalVideoMetadataHelper;
 		_servletContext = servletContext;
 	}
 
@@ -72,8 +72,7 @@ public class DLExternalVideoDLViewFileVersionDisplayContext
 			String structureKey = ddmStructure.getStructureKey();
 
 			if (structureKey.equals(
-					DLExternalVideoConstants.
-						DDM_STRUCTURE_KEY_EXTERNAL_VIDEO)) {
+					ExternalVideoConstants.DDM_STRUCTURE_KEY_EXTERNAL_VIDEO)) {
 
 				iterator.remove();
 
@@ -88,7 +87,7 @@ public class DLExternalVideoDLViewFileVersionDisplayContext
 	public Menu getMenu() throws PortalException {
 		Menu menu = super.getMenu();
 
-		DLExternalVideoUIItemsUtil.processUIItems(menu.getMenuItems());
+		ExternalVideoUIItemsUtil.processUIItems(menu.getMenuItems());
 
 		return menu;
 	}
@@ -97,7 +96,7 @@ public class DLExternalVideoDLViewFileVersionDisplayContext
 	public List<ToolbarItem> getToolbarItems() throws PortalException {
 		List<ToolbarItem> toolbarItems = super.getToolbarItems();
 
-		DLExternalVideoUIItemsUtil.processUIItems(toolbarItems);
+		ExternalVideoUIItemsUtil.processUIItems(toolbarItems);
 
 		return toolbarItems;
 	}
@@ -123,13 +122,13 @@ public class DLExternalVideoDLViewFileVersionDisplayContext
 			HttpServletResponse httpServletResponse)
 		throws IOException, ServletException {
 
-		if (_dlExternalVideoMetadataHelper.containsField(
-				DLExternalVideoConstants.DDM_FIELD_NAME_HTML)) {
+		if (_externalVideoMetadataHelper.containsField(
+				ExternalVideoConstants.DDM_FIELD_NAME_HTML)) {
 
 			request.setAttribute(
-				DLExternalVideoWebKeys.EMBEDDABLE_HTML,
-				_dlExternalVideoMetadataHelper.getFieldValue(
-					DLExternalVideoConstants.DDM_FIELD_NAME_HTML));
+				ExternalVideoWebKeys.EMBEDDABLE_HTML,
+				_externalVideoMetadataHelper.getFieldValue(
+					ExternalVideoConstants.DDM_FIELD_NAME_HTML));
 		}
 
 		RequestDispatcher requestDispatcher =
@@ -141,7 +140,7 @@ public class DLExternalVideoDLViewFileVersionDisplayContext
 	private static final UUID _UUID = UUID.fromString(
 		"7deb426a-96b9-4db6-88ac-9afbc7fc2151");
 
-	private final DLExternalVideoMetadataHelper _dlExternalVideoMetadataHelper;
+	private final ExternalVideoMetadataHelper _externalVideoMetadataHelper;
 	private final ServletContext _servletContext;
 
 }
