@@ -63,11 +63,11 @@ public class DLExternalVideoDLDisplayContextFactory
 		HttpServletResponse httpServletResponse,
 		DLFileEntryType dlFileEntryType) {
 
-		DDMStructure dlExternalVideoDDMStructure =
+		DDMStructure externalVideoDDMStructure =
 			DLExternalVideoMetadataHelper.getDLExternalVideoDDMStructure(
 				dlFileEntryType);
 
-		if (dlExternalVideoDDMStructure != null) {
+		if (externalVideoDDMStructure != null) {
 			return new DLExternalVideoDLEditFileEntryDisplayContext(
 				parentDLEditFileEntryDisplayContext, httpServletRequest,
 				httpServletResponse, dlFileEntryType);
