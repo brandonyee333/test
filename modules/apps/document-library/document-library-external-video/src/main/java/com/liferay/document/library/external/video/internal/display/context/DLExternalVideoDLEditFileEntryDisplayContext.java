@@ -63,7 +63,7 @@ public class DLExternalVideoDLEditFileEntryDisplayContext
 	@Override
 	public DLFilePicker getDLFilePicker(String onFilePickCallback) {
 		return new DLExternalVideoDLFilePicker(
-			_dlExternalVideo, request, onFilePickCallback);
+			request, _dlExternalVideo, onFilePickCallback);
 	}
 
 	@Override
