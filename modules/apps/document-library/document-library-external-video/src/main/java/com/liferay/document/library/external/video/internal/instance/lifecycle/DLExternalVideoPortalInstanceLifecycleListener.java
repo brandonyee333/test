@@ -58,7 +58,7 @@ public class DLExternalVideoPortalInstanceLifecycleListener
 						_userLocalService);
 
 			dlExternalVideoDLFileEntryTypeHelper.
-				addDLExternalVideoDLFileEntryType();
+				addExternalVideoDLFileEntryType();
 		}
 		catch (PortalException portalException) {
 			throw new ModelListenerException(portalException);
