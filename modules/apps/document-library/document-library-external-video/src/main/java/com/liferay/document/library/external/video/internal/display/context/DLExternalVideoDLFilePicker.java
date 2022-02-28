@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.URLTemplateResource;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import javax.portlet.ResourceURL;
@@ -62,8 +61,7 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 	@Override
 	public String getCurrentTitle() {
 		if (_dlExternalVideo != null) {
-			return GetterUtil.getString(
-				_dlExternalVideo.getTitle(), _dlExternalVideo.getURL());
+			return _dlExternalVideo.getTitle();
 		}
 
 		return StringPool.BLANK;
