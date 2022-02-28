@@ -957,12 +957,12 @@ definition {
 			value1 = "${webContentTitle} is not approved.");
 	}
 
-	macro clickChangeDefaultLanguage {
+	macro changeDefaultLanguage {
 		Click(locator1 = "Button#CHANGE");
 
 		Select(
 			locator1 = "Select#DEFAULT_LANGUAGE",
-			value1 = "Spanish (Spain)");
+			value1 = "${defaultLanguage}");
 	}
 
 	macro copyCP {
@@ -1804,7 +1804,7 @@ definition {
 	macro viewDefaultLanguage {
 		AssertTextEquals(
 			locator1 = "WCEditWebContent#DEFAULT_LANGUAGE",
-			value1 = "${localizedLanguage}");
+			value1 = "${defaultLanguage}");
 	}
 
 	macro viewDefaultPGViaWCD {
