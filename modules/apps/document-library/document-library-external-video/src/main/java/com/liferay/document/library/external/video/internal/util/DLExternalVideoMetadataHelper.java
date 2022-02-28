@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.document.library.external.video.internal.helper;
+package com.liferay.document.library.external.video.internal.util;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.document.library.external.video.internal.constants.DLExternalVideoConstants;
