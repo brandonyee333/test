@@ -1270,7 +1270,10 @@ rerun this task.
 		<delete dir="${app.server.weblogic.dir}" />
 
 		<if>
-			<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+			<or>
+				<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+				<equals arg1="${app.server.weblogic.version.build}" arg2="14110" />
+			</or>
 			<then>
 				<unzip
 					dest="${app.server.weblogic.dir}-temp"
@@ -1286,7 +1289,10 @@ rerun this task.
 		</if>
 
 		<if>
-			<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+			<or>
+				<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+				<equals arg1="${app.server.weblogic.version.build}" arg2="14110" />
+			</or>
 			<then>
 				<java
 					fork="true"
@@ -1358,7 +1364,10 @@ closeTemplate()
 				</pathconvert>
 
 				<if>
-					<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+					<or>
+						<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+						<equals arg1="${app.server.weblogic.version.build}" arg2="14110" />
+					</or>
 					<then>
 						<exec dir="${app.server.weblogic.dir}/wlserver/server/bin" executable="cmd">
 							<env key="MW_HOME" value="${app.server.weblogic.dir.windows}" />
@@ -1456,7 +1465,10 @@ closeTemplate()
 					<os family="unix" />
 					<then>
 						<if>
-							<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+							<or>
+								<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+								<equals arg1="${app.server.weblogic.version.build}" arg2="14110" />
+							</or>
 							<then>
 								<replace
 									file="${app.server.weblogic.dir}/wlserver/server/bin/setWLSEnv.sh"
@@ -1486,7 +1498,10 @@ closeTemplate()
 				</if>
 
 				<if>
-					<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+					<or>
+						<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+						<equals arg1="${app.server.weblogic.version.build}" arg2="14110" />
+					</or>
 					<then>
 						<chmod
 							dir="${app.server.weblogic.dir}/wlserver/server/bin"
@@ -1507,7 +1522,10 @@ closeTemplate()
 					<os family="unix" />
 					<then>
 						<if>
-							<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+							<or>
+								<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+								<equals arg1="${app.server.weblogic.version.build}" arg2="14110" />
+							</or>
 							<then>
 								<exec dir="${app.server.weblogic.dir}/wlserver/server/bin" executable="./setWLSEnv.sh">
 									<env file="${app.server.weblogic.dir}" key="MW_HOME" />
@@ -1524,7 +1542,10 @@ closeTemplate()
 					</then>
 					<else>
 						<if>
-							<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+							<or>
+								<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+								<equals arg1="${app.server.weblogic.version.build}" arg2="14110" />
+							</or>
 							<then>
 								<exec dir="${app.server.weblogic.dir}/wlserver/server/bin" executable="sh">
 									<env file="${app.server.weblogic.dir}" key="MW_HOME" />
@@ -1542,7 +1563,10 @@ closeTemplate()
 				</if>
 
 				<if>
-					<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+					<or>
+						<equals arg1="${app.server.weblogic.version.build}" arg2="12213" />
+						<equals arg1="${app.server.weblogic.version.build}" arg2="14110" />
+					</or>
 					<then>
 						<echo file="${tstamp.value}/create-weblogic-domain.sh">
 							#!/bin/sh
