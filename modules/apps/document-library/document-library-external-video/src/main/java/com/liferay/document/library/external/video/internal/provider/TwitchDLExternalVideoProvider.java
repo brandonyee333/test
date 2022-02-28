@@ -15,14 +15,11 @@
 package com.liferay.document.library.external.video.internal.provider;
 
 import com.liferay.document.library.external.video.internal.DLExternalVideo;
-import com.liferay.frontend.editor.embed.EditorEmbedProvider;
-import com.liferay.frontend.editor.embed.constants.EditorEmbedProviderTypeConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.regex.Matcher;
@@ -37,12 +34,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alejandro Tardín
  */
-@Component(
-	property = "type=" + EditorEmbedProviderTypeConstants.VIDEO,
-	service = {DLExternalVideoProvider.class, EditorEmbedProvider.class}
-)
-public class TwitchDLExternalVideoProvider
-	implements DLExternalVideoProvider, EditorEmbedProvider {
+@Component(service = DLExternalVideoProvider.class)
+public class TwitchDLExternalVideoProvider implements DLExternalVideoProvider {
 
 	@Override
 	public DLExternalVideo getDLExternalVideo(String url) {
@@ -61,7 +54,12 @@ public class TwitchDLExternalVideoProvider
 
 			@Override
 			public String getEmbeddableHTML() {
-				return StringUtil.replace(getTpl(), "{embedId}", twitchVideoId);
+				return StringBundler.concat(
+					"<iframe allowfullscreen=\"true\" frameborder=\"0\" ",
+					"height=\"315\" ",
+					"src=\"https://player.twitch.tv/?autoplay=false&video=",
+					twitchVideoId, "&parent=", _getHost(),
+					"\" scrolling=\"no\" width=\"560\" ></iframe>");
 			}
 
 			@Override
@@ -80,26 +78,6 @@ public class TwitchDLExternalVideoProvider
 			}
 
 		};
-	}
-
-	@Override
-	public String getId() {
-		return "twitch";
-	}
-
-	@Override
-	public String getTpl() {
-		return StringBundler.concat(
-			"<iframe allowfullscreen=\"true\" frameborder=\"0\" ",
-			"height=\"315\" ",
-			"src=\"https://player.twitch.tv/?autoplay=false&video={embedId}",
-			"&parent=", _getHost(),
-			"\" scrolling=\"no\" width=\"560\" ></iframe>");
-	}
-
-	@Override
-	public String[] getURLSchemes() {
-		return new String[] {_urlPattern.pattern()};
 	}
 
 	private String _getHost() {
@@ -128,7 +106,7 @@ public class TwitchDLExternalVideoProvider
 	}
 
 	private static final Pattern _urlPattern = Pattern.compile(
-		"https?:\\/\\/(?:www\\.)?twitch\\.tv\\/videos\\/(\\S*)$");
+		"https?://(?:www\\.)?twitch.tv/videos/(\\S*)$");
 
 	@Reference
 	private Portal _portal;

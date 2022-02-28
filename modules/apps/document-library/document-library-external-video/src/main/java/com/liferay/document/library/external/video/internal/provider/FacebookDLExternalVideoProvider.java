@@ -15,16 +15,12 @@
 package com.liferay.document.library.external.video.internal.provider;
 
 import com.liferay.document.library.external.video.internal.DLExternalVideo;
-import com.liferay.frontend.editor.embed.EditorEmbedProvider;
-import com.liferay.frontend.editor.embed.constants.EditorEmbedProviderTypeConstants;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import javax.servlet.ServletContext;
 
@@ -34,12 +30,9 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alejandro Tardín
  */
-@Component(
-	property = "type=" + EditorEmbedProviderTypeConstants.VIDEO,
-	service = {DLExternalVideoProvider.class, EditorEmbedProvider.class}
-)
+@Component(service = DLExternalVideoProvider.class)
 public class FacebookDLExternalVideoProvider
-	implements DLExternalVideoProvider, EditorEmbedProvider {
+	implements DLExternalVideoProvider {
 
 	@Override
 	public DLExternalVideo getDLExternalVideo(String url) {
@@ -56,7 +49,15 @@ public class FacebookDLExternalVideoProvider
 
 			@Override
 			public String getEmbeddableHTML() {
-				return StringUtil.replace(getTpl(), "{embedId}", url);
+				return StringBundler.concat(
+					"<iframe allowFullScreen=\"true\" ",
+					"allowTransparency=\"true\" frameborder=\"0\" ",
+					"height=\"315\" ",
+					"src=\"https://www.facebook.com/plugins/video.php?",
+					"height=315&href=", url,
+					"&show_text=0&width=560\" scrolling=\"no\" ",
+					"style=\"border: none; overflow: hidden;\" width=\"560\">",
+					"</iframe>");
 			}
 
 			@Override
@@ -77,33 +78,6 @@ public class FacebookDLExternalVideoProvider
 		};
 	}
 
-	@Override
-	public String getId() {
-		return "facebook";
-	}
-
-	@Override
-	public String getTpl() {
-		return StringBundler.concat(
-			"<iframe allowFullScreen=\"true\" allowTransparency=\"true\" ",
-			"frameborder=\"0\" height=\"315\" ",
-			"src=\"https://www.facebook.com/plugins/video.php?",
-			"height=315&href={embedId}&show_text=0&width=560\" ",
-			"scrolling=\"no\" style=\"border: none;overflow: hidden;\" ",
-			"width=\"560\"></iframe>");
-	}
-
-	@Override
-	public String[] getURLSchemes() {
-		Stream<Pattern> stream = _urlPatterns.stream();
-
-		return stream.map(
-			Pattern::pattern
-		).toArray(
-			String[]::new
-		);
-	}
-
 	private boolean _matches(String url) {
 		for (Pattern urlPattern : _urlPatterns) {
 			Matcher matcher = urlPattern.matcher(url);
@@ -117,10 +91,9 @@ public class FacebookDLExternalVideoProvider
 	}
 
 	private static final List<Pattern> _urlPatterns = Arrays.asList(
-		Pattern.compile(
-			"(https?:\\/\\/(?:www\\.)?facebook\\.com\\/watch\\/?\\?v=\\S*)"),
-		Pattern.compile(
-			"(https?:\\/\\/(?:www\\.)?facebook\\.com\\/\\S*\\/videos\\/\\S*)"));
+		Pattern.compile("(https?://(?:www\\.)?facebook.com/watch/?v=\\S*)"),
+		Pattern.compile("(https?://(?:www\\.)?facebook.com/\\S*/videos/\\S*)"),
+		Pattern.compile("(https?://(?:www.)?facebook.com/watch/?\\?v=.*)"));
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.document.library.external.video)"
