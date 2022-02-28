@@ -64,7 +64,7 @@ public class DLExternalVideoDLDisplayContextFactory
 		DLFileEntryType dlFileEntryType) {
 
 		DDMStructure externalVideoDDMStructure =
-			DLExternalVideoMetadataHelper.getDLExternalVideoDDMStructure(
+			DLExternalVideoMetadataHelper.getExternalVideoDDMStructure(
 				dlFileEntryType);
 
 		if (externalVideoDDMStructure != null) {
