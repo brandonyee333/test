@@ -34,6 +34,7 @@ import com.google.cloud.bigquery.TimePartitioning;
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
 import java.io.InputStream;
 
@@ -42,7 +43,6 @@ import java.nio.charset.Charset;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -56,16 +56,11 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
+@ConditionalOnGoogleApplicationCredentials
 public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 	@Override
 	public void createSchema(Project project) {
-		if (StringUtils.isBlank(_location) && _log.isWarnEnabled()) {
-			_log.warn("Default location not configured");
-
-			return;
-		}
-
 		try {
 			Dataset dataset = _createDataset(project);
 
@@ -200,7 +195,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 	private BigQuery _bigQuery;
 
-	@Value("${gcloud.compute.region:}")
+	@Value("${gcloud.compute.region}")
 	private String _location;
 
 	private JSONObject _tablesJSONObject;
