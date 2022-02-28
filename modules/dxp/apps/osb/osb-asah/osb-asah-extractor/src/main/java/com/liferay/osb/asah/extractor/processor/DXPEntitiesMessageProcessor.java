@@ -527,7 +527,7 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"Individual %s has been fetched in %d ms", emailAddress,
+					"Individual %s was fetched in %d ms", emailAddress,
 					System.currentTimeMillis() - start));
 		}
 
@@ -542,7 +542,7 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						String.format(
-							"Individual %s has been added in %d ms",
+							"Individual %s was added in %d ms",
 							emailAddress, System.currentTimeMillis() - start));
 				}
 			}
@@ -554,7 +554,7 @@ public class DXPEntitiesMessageProcessor implements MessageReceiver {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						String.format(
-							"Individual %s has been updated in %d ms",
+							"Individual %s was updated in %d ms",
 							emailAddress, System.currentTimeMillis() - start));
 				}
 			}
