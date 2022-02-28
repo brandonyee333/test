@@ -57,7 +57,7 @@
 </tr>
 <tr>
 	<td>DEFAULT_LANGUAGE</td>
-	<td>//span[contains(@class,'locale-text')]</td>
+	<td>//span[contains(@class,'locale-text')][normalize-space(text())='${defaultLanguage}']</td>
 	<td></td>
 </tr>
 <tr>
