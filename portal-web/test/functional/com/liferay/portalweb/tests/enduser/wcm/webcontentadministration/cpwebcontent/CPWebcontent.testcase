@@ -1247,6 +1247,64 @@ definition {
 		Alert.viewExpireContentFailedMessage();
 	}
 
+	@description = "This is a use case for LPS-83319. The user could change default language of web content after enable Changeable Default Language."
+	@priority = "5"
+	test ChangeWebContentDefaultLanguage {
+		property test.name.skip.portal.instance = "CPWebcontent#ChangeWebContentDefaultLanguage";
+
+		JSONGroup.addGroup(groupName = "Test Site Name");
+
+		task ("Enable Changeable Default Language for Web Content") {
+			ProductMenu.gotoPortlet(
+				category = "Configuration",
+				panel = "Control Panel",
+				portlet = "System Settings");
+
+			SystemSettings.gotoCategory(category = "Web Experience");
+
+			SystemSettings.editConfiguration(configurationName = "Web Content Administration");
+
+			FormFields.enableCheckbox(fieldName = "changeableDefaultLanguage");
+
+			PortletEntry.save();
+		}
+
+		task ("Add a web content with translations") {
+			JSONWebcontent.addBasicWebContentLocalized(
+				contentMap = "en_US:Web Content Content,es_ES:Contenido de contenido web",
+				groupName = "Test Site Name",
+				titleMap = "en_US:Web Content Title,es_ES:Título del contenido web");
+		}
+
+		task ("Change the default language of web content to es-ES") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+			WebContent.viewDefaultLanguage(defaultLanguage = "English (United States)");
+
+			WebContent.changeDefaultLanguage(defaultLanguage = "Spanish (Spain)");
+
+			WebContent.viewDefaultLanguage(defaultLanguage = "Spanish (Spain)");
+
+			WebContent.viewCP(
+				webContentContent = "Contenido de contenido web",
+				webContentTitle = "Título del contenido web");
+
+			PortletEntry.publish();
+		}
+
+		task ("View the default language of web content is es-ES") {
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+			WebContent.viewCP(
+				webContentContent = "Contenido de contenido web",
+				webContentTitle = "Título del contenido web");
+
+			WebContent.viewDefaultLanguage(defaultLanguage = "Spanish (Spain)");
+		}
+	}
+
 	@priority = "4"
 	test CompareWebContentVersionsHistory {
 		ProductMenu.gotoPortlet(
@@ -2311,71 +2369,6 @@ definition {
 		WebContentStructures.viewTableEntryCP(
 			structureDescription = "Basic Web Content",
 			structureName = "Basic Web Content");
-	}
-
-	@description = "This is a use case for LPS-83319. This test is Set And View Web Content with two translations"
-	@priority = "5"
-	test ViewChangeWebContentLanguage {
-		task ("Check Changeable Default Language setting") {
-			ProductMenu.gotoPortlet(
-				category = "Configuration",
-				panel = "Control Panel",
-				portlet = "System Settings");
-
-			SystemSettings.gotoCategory(category = "Web Experience");
-
-			SystemSettings.editConfiguration(configurationName = "Web Content Administration");
-
-			FormFields.enableCheckbox(fieldName = "changeableDefaultLanguage");
-
-			SystemSettings.saveConfiguration();
-		}
-
-		task ("Set Web Content with two translations") {
-			ProductMenu.gotoPortlet(
-				category = "Content",
-				panel = "Site Administration",
-				portlet = "Web Content");
-
-			WebContentNavigator.gotoAddCP();
-
-			WebContent.addCP(
-				webContentContent = "WC WebContent Content",
-				webContentTitle = "WC WebContent Title");
-
-			AssertClick(
-				locator1 = "Button#PUBLISH",
-				value1 = "Publish");
-
-			WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
-
-			DDLRecord.addTranslation(localizedLanguage = "Spanish (Spain)");
-
-			WebContent.addCP(
-				webContentContent = "WC Contenido de la web Contenido",
-				webContentTitle = "WC Contenido de la web Titulo");
-
-			AssertClick(
-				locator1 = "Button#PUBLISH",
-				value1 = "Publish");
-		}
-
-		task ("View Web Content with two translations") {
-			ProductMenu.gotoPortlet(
-				category = "Content",
-				panel = "Site Administration",
-				portlet = "Web Content");
-
-			WebContent.viewTitle(webContentTitle = "WC WebContent Title");
-
-			WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
-
-			WebContent.clickChangeDefaultLanguage();
-
-			WebContent.viewCP(
-				webContentContent = "WC Contenido de la web Contenido",
-				webContentTitle = "WC Contenido de la web Titulo");
-		}
 	}
 
 	@priority = "4"
