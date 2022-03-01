@@ -216,7 +216,7 @@ definition {
 
 		PageEditor.assertFragmentSidebarLoaded();
 
-		AssertTextEquals(
+		AssertTextEquals.assertPartialText(
 			locator1 = "ControlMenu#HEADING",
 			value1 = "${pageName}");
 
