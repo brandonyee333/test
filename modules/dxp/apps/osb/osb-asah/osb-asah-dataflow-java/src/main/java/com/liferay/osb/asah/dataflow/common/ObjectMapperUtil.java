@@ -65,9 +65,11 @@ public class ObjectMapperUtil {
 				setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 				setSerializationInclusion(JsonInclude.Include.NON_NULL);
 				setVisibility(
-					PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+					PropertyAccessor.FIELD,
+					JsonAutoDetect.Visibility.PUBLIC_ONLY);
 				setVisibility(
-					PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
+					PropertyAccessor.GETTER,
+					JsonAutoDetect.Visibility.PUBLIC_ONLY);
 			}
 		};
 	}
