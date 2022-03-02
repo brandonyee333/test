@@ -92,8 +92,8 @@ public class ContentRecommendationDataprocMessageProcessor
 	}
 
 	private void _publishJobRun(JobRun jobRun) {
-		jobRun.setJobRunStatus(JobRunStatus.PUBLISHED);
 		jobRun.setCompletedDate(DateUtil.newDate());
+		jobRun.setJobRunStatus(JobRunStatus.PUBLISHED);
 		jobRun.setModifiedLocalDateTime(LocalDateTime.now(ZoneOffset.UTC));
 	}
 
