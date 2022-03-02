@@ -29,10 +29,9 @@ import com.liferay.osb.asah.common.model.JobStatus;
 import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.JobRepository;
+import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -88,13 +87,13 @@ public class JobDogTest
 		Assertions.assertEquals("Product Recommendation Job", job.getName());
 	}
 
-	@ElasticsearchIndex(
-		name = "job-runs", resourcePath = "job_runs_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = JobRepository.class,
 		resourcePath = "osbasahfaroinfo/jobs.json"
+	)
+	@RepositoryResource(
+		repositoryClass = JobRunRepository.class,
+		resourcePath = "osbasahfaroinfo/job_runs_1.json"
 	)
 	@Test
 	public void testDeleteJob() {
@@ -130,9 +129,13 @@ public class JobDogTest
 		Assertions.assertEquals("Related Content Job", job.getName());
 	}
 
-	@ElasticsearchIndex(
-		name = "job-runs", resourcePath = "job_runs_info_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = JobRepository.class,
+		resourcePath = "osbasahfaroinfo/jobs.json"
+	)
+	@RepositoryResource(
+		repositoryClass = JobRunRepository.class,
+		resourcePath = "osbasahfaroinfo/job_runs_2.json"
 	)
 	@Test
 	public void testGetJobRunDate() {
@@ -156,13 +159,13 @@ public class JobDogTest
 			expectedRunLocalDateTime.getYear(), runLocalDateTime.getYear());
 	}
 
-	@ElasticsearchIndex(
-		name = "job-runs", resourcePath = "job_runs_info_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = JobRepository.class,
 		resourcePath = "osbasahfaroinfo/jobs.json"
+	)
+	@RepositoryResource(
+		repositoryClass = JobRunRepository.class,
+		resourcePath = "osbasahfaroinfo/job_runs_2.json"
 	)
 	@Test
 	public void testGetJobRunResultBag() {
@@ -182,13 +185,13 @@ public class JobDogTest
 				jobRunPage.getContent(), JobRun::getJobRunStatus));
 	}
 
-	@ElasticsearchIndex(
-		name = "job-runs", resourcePath = "job_runs_info_4.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = JobRepository.class,
 		resourcePath = "osbasahfaroinfo/jobs.json"
+	)
+	@RepositoryResource(
+		repositoryClass = JobRunRepository.class,
+		resourcePath = "osbasahfaroinfo/job_runs_4.json"
 	)
 	@Test
 	public void testGetJobRunsMonthlyStatistics() {
@@ -211,9 +214,13 @@ public class JobDogTest
 			_countCurrentMonthJobRunsByStatus(jobRuns, JobRunStatus.RUNNING));
 	}
 
-	@ElasticsearchIndex(
-		name = "job-runs", resourcePath = "job_runs_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = JobRepository.class,
+		resourcePath = "osbasahfaroinfo/jobs.json"
+	)
+	@RepositoryResource(
+		repositoryClass = JobRunRepository.class,
+		resourcePath = "osbasahfaroinfo/job_runs_1.json"
 	)
 	@Test
 	public void testGetJobStatusFailed() {
@@ -231,18 +238,26 @@ public class JobDogTest
 			JobStatus.PENDING, _jobDog.getJobStatus(job.getId()));
 	}
 
-	@ElasticsearchIndex(
-		name = "job-runs", resourcePath = "job_runs_info_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = JobRepository.class,
+		resourcePath = "osbasahfaroinfo/jobs.json"
+	)
+	@RepositoryResource(
+		repositoryClass = JobRunRepository.class,
+		resourcePath = "osbasahfaroinfo/job_runs_2.json"
 	)
 	@Test
 	public void testGetJobStatusReady() {
 		Assertions.assertEquals(JobStatus.READY, _jobDog.getJobStatus(1L));
 	}
 
-	@ElasticsearchIndex(
-		name = "job-runs", resourcePath = "job_runs_info_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = JobRepository.class,
+		resourcePath = "osbasahfaroinfo/jobs.json"
+	)
+	@RepositoryResource(
+		repositoryClass = JobRunRepository.class,
+		resourcePath = "osbasahfaroinfo/job_runs_3.json"
 	)
 	@Test
 	public void testGetJobStatusRunning() {

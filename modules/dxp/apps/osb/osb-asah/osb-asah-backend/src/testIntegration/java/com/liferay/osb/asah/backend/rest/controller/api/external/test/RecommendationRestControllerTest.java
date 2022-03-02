@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.api.external.RecommendationRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.JobRepository;
+import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -53,10 +54,6 @@ public class RecommendationRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "job-runs", resourcePath = "job_runs_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "recommended-items",
 		resourcePath = "recommended_items_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -64,6 +61,10 @@ public class RecommendationRestControllerTest
 	@RepositoryResource(
 		repositoryClass = JobRepository.class,
 		resourcePath = "osbasahfaroinfo/jobs.json"
+	)
+	@RepositoryResource(
+		repositoryClass = JobRunRepository.class,
+		resourcePath = "osbasahfaroinfo/job_runs.json"
 	)
 	@Test
 	public void testGetPageRecommendationEntityModel() {
