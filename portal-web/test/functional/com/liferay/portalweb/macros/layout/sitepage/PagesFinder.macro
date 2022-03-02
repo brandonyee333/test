@@ -241,6 +241,17 @@ definition {
 			value1 = "${pageName}");
 	}
 
+	macro navigateToUnpublishedContentPage {
+		Click(
+			key_pageName = "${pageName}",
+			locator1 = "PagesFinder#PAGE_NAME",
+			value1 = "${pageName}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ControlMenu#HEADING",
+			value1 = "${pageName}");
+	}
+
 	macro selectPageType {
 		Select(
 			locator1 = "PagesFinder#PAGE_TYPE_SELECTOR",
