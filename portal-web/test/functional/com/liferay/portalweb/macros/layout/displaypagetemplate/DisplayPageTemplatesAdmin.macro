@@ -9,6 +9,10 @@ definition {
 		}
 
 		if (isSet(subType)) {
+			WaitForElementPresent(
+				locator1 = "//div[contains(.,'Subtype')]/select",
+				value1 = "${subType}");
+
 			Select(
 				locator1 = "//div[contains(.,'Subtype')]/select",
 				value1 = "${subType}");
