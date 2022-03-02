@@ -17,7 +17,6 @@ package com.liferay.document.library.external.video.internal.display.context;
 import com.liferay.document.library.display.context.BaseDLEditFileEntryDisplayContext;
 import com.liferay.document.library.display.context.DLEditFileEntryDisplayContext;
 import com.liferay.document.library.display.context.DLFilePicker;
-import com.liferay.document.library.external.video.internal.ExternalVideo;
 import com.liferay.document.library.external.video.internal.constants.ExternalVideoConstants;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
@@ -50,20 +49,16 @@ public class ExternalVideoDLEditFileEntryDisplayContext
 	public ExternalVideoDLEditFileEntryDisplayContext(
 		DLEditFileEntryDisplayContext parentDLEditFileEntryDisplayContext,
 		HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse, FileEntry fileEntry,
-		ExternalVideo externalVideo) {
+		HttpServletResponse httpServletResponse, FileEntry fileEntry) {
 
 		super(
 			_UUID, parentDLEditFileEntryDisplayContext, httpServletRequest,
 			httpServletResponse, fileEntry);
-
-		_externalVideo = externalVideo;
 	}
 
 	@Override
 	public DLFilePicker getDLFilePicker(String onFilePickCallback) {
-		return new ExternalVideoDLFilePicker(
-			request, _externalVideo, onFilePickCallback);
+		return new ExternalVideoDLFilePicker(request, onFilePickCallback);
 	}
 
 	@Override
@@ -108,7 +103,5 @@ public class ExternalVideoDLEditFileEntryDisplayContext
 
 	private static final UUID _UUID = UUID.fromString(
 		"f3dad960-a5ea-4499-badd-0d1a06ee1c93");
-
-	private ExternalVideo _externalVideo;
 
 }
