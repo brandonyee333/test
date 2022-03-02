@@ -63,7 +63,7 @@ export default function App({state}) {
 							<Toolbar />
 							<LayoutViewport />
 							<ShortcutManager />
-	
+
 							<StyleBookContextProvider>
 								<Sidebar />
 							</StyleBookContextProvider>
