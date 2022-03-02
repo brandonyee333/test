@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.dataflow.ingestion;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.beam.sdk.schemas.JavaFieldSchema;
@@ -35,11 +34,8 @@ public class AnalyticsEvent {
 	public String eventId;
 	public Map<String, String> eventProperties;
 	public String id;
-	public String individualId;
-	public boolean knownIndividual;
 	public String projectId;
 	public String projectTimeZoneId;
-	public List<String> segmentNames;
 	public String userId;
 
 }

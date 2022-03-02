@@ -504,10 +504,7 @@ public class StreamingIngestionPipeline {
 				analyticsEvent.eventProperties));
 		tableRow.set("experienceId", context.get("experienceId"));
 		tableRow.set("id", analyticsEvent.id);
-		tableRow.set(
-			"individualId", Long.parseLong(analyticsEvent.individualId));
 		tableRow.set("keywords", context.get("keywords"));
-		tableRow.set("knownIndividual", analyticsEvent.knownIndividual);
 		tableRow.set("languageId", context.get("languageId"));
 		tableRow.set("platformName", context.get("platformName"));
 		tableRow.set("projectId", analyticsEvent.projectId);
@@ -515,7 +512,6 @@ public class StreamingIngestionPipeline {
 		tableRow.set("referrer", context.get("referrer"));
 		tableRow.set("region", context.get("region"));
 		tableRow.set("sessionId", sessionId);
-		tableRow.set("segmentNames", analyticsEvent.segmentNames);
 		tableRow.set("timezoneOffset", context.get("timezoneOffset"));
 		tableRow.set("title", context.get("title"));
 		tableRow.set("url", context.get("url"));
