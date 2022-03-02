@@ -356,9 +356,11 @@ definition {
 
 		PagesFinder.goToFindAPage();
 
-		for (var pageName : list "Test Portlet Page,Test Content Page,Test Embedded Page,Test Full Page Application,Test Panel Page,Test Default Page 1,Test Default Page 2,Test Default Page 3,Test Default Page 4") {
+		for (var pageName : list "Test Portlet Page,Test Embedded Page,Test Full Page Application,Test Panel Page,Test Default Page 1,Test Default Page 2,Test Default Page 3,Test Default Page 4") {
 			PagesFinder.navigateToPage(pageName = "${pageName}");
 		}
+
+		PagesFinder.navigateToUnpublishedContentPage(pageName = "Test Content Page");
 	}
 
 	@description = "This is a test for LPS-116428. Can reorganize the pages via Page Tree panel."
