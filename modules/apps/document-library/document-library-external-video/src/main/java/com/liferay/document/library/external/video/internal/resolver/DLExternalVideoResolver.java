@@ -14,9 +14,8 @@
 
 package com.liferay.document.library.external.video.internal.resolver;
 
-import com.liferay.document.library.external.video.DLExternalVideo;
-import com.liferay.document.library.external.video.provider.DLExternalVideoProvider;
-import com.liferay.document.library.external.video.resolver.DLExternalVideoResolver;
+import com.liferay.document.library.external.video.internal.DLExternalVideo;
+import com.liferay.document.library.external.video.internal.provider.DLExternalVideoProvider;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 
@@ -29,9 +28,8 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Alejandro Tardín
  */
 @Component(service = DLExternalVideoResolver.class)
-public class DLExternalVideoResolverImpl implements DLExternalVideoResolver {
+public class DLExternalVideoResolver {
 
-	@Override
 	public DLExternalVideo resolve(String url) {
 		for (DLExternalVideoProvider dlExternalVideoProvider :
 				_dlExternalVideoProviders) {
