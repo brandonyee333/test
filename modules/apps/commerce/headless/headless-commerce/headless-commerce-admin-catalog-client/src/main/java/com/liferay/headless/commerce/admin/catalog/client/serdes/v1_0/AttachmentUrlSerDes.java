@@ -59,7 +59,7 @@ public class AttachmentUrlSerDes {
 		sb.append("{");
 
 		DateFormat liferayToJSONDateFormat = new SimpleDateFormat(
-			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+			"yyyy-MM-dd'T'HH:mm:ssXX");
 
 		if (attachmentUrl.getDisplayDate() != null) {
 			if (sb.length() > 1) {
@@ -200,7 +200,7 @@ public class AttachmentUrlSerDes {
 		Map<String, String> map = new TreeMap<>();
 
 		DateFormat liferayToJSONDateFormat = new SimpleDateFormat(
-			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+			"yyyy-MM-dd'T'HH:mm:ssXX");
 
 		if (attachmentUrl.getDisplayDate() == null) {
 			map.put("displayDate", null);
