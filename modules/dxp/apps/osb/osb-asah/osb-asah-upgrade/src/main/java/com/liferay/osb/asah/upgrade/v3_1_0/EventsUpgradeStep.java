@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -67,6 +68,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
+@ConditionalOnGoogleApplicationCredentials
 public class EventsUpgradeStep implements UpgradeStep {
 
 	@Override

@@ -316,7 +316,7 @@ public class UpgradeRestController {
 	private final Map<String, CompletableFuture<Void>>
 		_eventsCompletableFutures = new ConcurrentHashMap<>();
 
-	@Autowired
+	@Autowired(required = false)
 	private EventsUpgradeStep _eventsUpgradeStep;
 
 	private final ExecutorService _executorService =
