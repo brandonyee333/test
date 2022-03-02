@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
@@ -171,10 +173,16 @@ public class JsonHelperImpl implements JsonHelper {
 			return _jsonFactory.createJSONArray(jsonArrayString);
 		}
 		catch (JSONException jsonException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(jsonException);
+			}
+
 			throw new IllegalArgumentException(
 				jsonArrayString + " is not valid JSON array");
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(JsonHelperImpl.class);
 
 	@Reference
 	private JSONFactory _jsonFactory;

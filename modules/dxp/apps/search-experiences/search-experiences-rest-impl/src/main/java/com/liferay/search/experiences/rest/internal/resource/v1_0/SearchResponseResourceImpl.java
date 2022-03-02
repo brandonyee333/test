@@ -176,6 +176,10 @@ public class SearchResponseResourceImpl extends BaseSearchResponseResourceImpl {
 					return JSONFactoryUtil.createJSONObject(string);
 				}
 				catch (JSONException jsonException) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(jsonException);
+					}
+
 					return null;
 				}
 			}
