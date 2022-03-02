@@ -162,3 +162,23 @@ CREATE TABLE IF NOT EXISTS Job (
 	runFrequency TEXT,
 	type TEXT
 );
+
+CREATE TABLE IF NOT EXISTS JobParameter (
+	jobId BIGINT,
+	name TEXT,
+	value TEXT,
+	PRIMARY KEY (jobId, name)
+);
+
+CREATE TABLE IF NOT EXISTS JobRun (
+	id BIGSERIAL PRIMARY KEY,
+	completedDate TIMESTAMPTZ,
+	context JSON,
+	createDate TIMESTAMPTZ,
+	jobId BIGINT,
+	jobType TEXT,
+	modifiedDate TIMESTAMPTZ,
+	status TEXT,
+	step TEXT,
+	trigger TEXT
+);
