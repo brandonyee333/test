@@ -14,10 +14,14 @@
 
 package com.liferay.osb.asah.batch.curator.messaging;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.dog.JobRunDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.JobRun;
+import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.storage.impl.GoogleStorageArchiver;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -28,6 +32,9 @@ import java.io.FileInputStream;
 
 import java.nio.charset.StandardCharsets;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
@@ -37,8 +44,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -65,67 +70,46 @@ public class ContentRecommendationDataprocMessageProcessor
 		String operation = messageJSONObject.getString("operation");
 
 		if (Objects.equals(operation, "UpdateJobRun")) {
-			JSONObject jsonObject = messageJSONObject.getJSONObject("body");
+			JobRun jobRun = _objectMapper.convertValue(
+				messageJSONObject.getJSONObject("body"), JobRun.class);
 
-			jsonObject.put("lastUpdatedDate", DateUtil.newDateString());
+			jobRun.setModifiedLocalDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
-			_faroInfoElasticsearchInvoker.update(
-				"job-runs", messageJSONObject.getString("jobRunId"),
-				jsonObject);
+			_jobRunDog.updateJobRun(jobRun);
 		}
 		else if (Objects.equals(operation, "PublishJobRun")) {
 			_publishJobRun(
-				messageJSONObject.getString("jobId"),
-				messageJSONObject.getString("jobRunId"));
+				messageJSONObject.getLong("jobId"),
+				messageJSONObject.getLong("jobRunId"));
 		}
 	}
 
-	private void _completeJobRun(JSONObject jobRunJSONObject) {
-		_faroInfoElasticsearchInvoker.update(
-			"job-runs",
-			jobRunJSONObject.put(
-				"lastUpdatedDate", DateUtil.newDateString()
-			).put(
-				"status", "COMPLETED"
-			));
+	private void _completeJobRun(JobRun jobRun) {
+		jobRun.setJobRunStatus(JobRunStatus.COMPLETED);
+		jobRun.setModifiedLocalDateTime(LocalDateTime.now(ZoneOffset.UTC));
+
+		_jobRunDog.updateJobRun(jobRun);
 	}
 
-	private void _publishJobRun(JSONObject jobRunJSONObject) {
-		String dateString = DateUtil.newDateString();
-
-		_faroInfoElasticsearchInvoker.update(
-			"job-runs",
-			jobRunJSONObject.put(
-				"completedDate", dateString
-			).put(
-				"lastUpdatedDate", dateString
-			).put(
-				"status", "PUBLISHED"
-			));
+	private void _publishJobRun(JobRun jobRun) {
+		jobRun.setJobRunStatus(JobRunStatus.PUBLISHED);
+		jobRun.setCompletedDate(DateUtil.newDate());
+		jobRun.setModifiedLocalDateTime(LocalDateTime.now(ZoneOffset.UTC));
 	}
 
-	private void _publishJobRun(String jobId, String jobRunId) {
-		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.get(
-			"job-runs", jobRunId);
-
-		JSONObject lastPublishedJobRunJSONObject =
-			_faroInfoElasticsearchInvoker.fetch(
-				"job-runs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("job.id", jobId)
-				).filter(
-					QueryBuilders.termQuery("status", "PUBLISHED")
-				));
+	private void _publishJobRun(Long jobId, Long jobRunId) {
+		JobRun jobRun = _jobRunDog.getJobRun(jobRunId);
+		JobRun lastPublishedJobRun = _jobRunDog.fetchLatestJobRun(
+			jobId, JobRunStatus.PUBLISHED);
 
 		try {
 			File sparkJobResultFile = _googleStorageArchiver.readSparkJobResult(
 				StringUtils.replace(
 					_contentRecommendationsBucketTemplate, "{region}",
 					System.getenv("LCP_PROJECT_CLUSTER")),
-				String.format("%s/%s", jobId, jobRunId),
+				String.format("%d/%d", jobId, jobRunId),
 				ProjectIdThreadLocal.getProjectId(),
-				DateUtil.toUTCDate(jobRunJSONObject.getString("createdDate")),
-				"");
+				DateUtil.toUTCDate(jobRun.getCreateLocalDateTime()), "");
 
 			if (sparkJobResultFile == null) {
 				_log.error(
@@ -141,9 +125,9 @@ public class ContentRecommendationDataprocMessageProcessor
 			_log.error(exception, exception);
 		}
 
-		_completeJobRun(lastPublishedJobRunJSONObject);
+		_completeJobRun(lastPublishedJobRun);
 
-		_publishJobRun(jobRunJSONObject);
+		_publishJobRun(jobRun);
 	}
 
 	private void _replaceRecommendedItems(File sparkJobResultFile)
@@ -189,5 +173,11 @@ public class ContentRecommendationDataprocMessageProcessor
 
 	@Autowired
 	private GoogleStorageArchiver _googleStorageArchiver;
+
+	@Autowired
+	private JobRunDog _jobRunDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

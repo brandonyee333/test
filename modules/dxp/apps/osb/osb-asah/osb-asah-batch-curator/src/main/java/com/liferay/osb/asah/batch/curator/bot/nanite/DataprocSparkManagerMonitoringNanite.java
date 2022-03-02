@@ -16,18 +16,20 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocJobState;
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.JobRunDog;
+import com.liferay.osb.asah.common.entity.JobRun;
+import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,21 +44,18 @@ public class DataprocSparkManagerMonitoringNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
-			"job-runs",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("status", "RUNNING", "UNKNOWN")));
+		List<JobRun> jobRuns = _jobRunDog.getJobRuns(
+			Arrays.asList(
+				JobRunStatus.RUNNING.name(), JobRunStatus.UNKNOWN.name()));
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"There are %s running job executions", jsonArray.length()));
+					"There are %s running job executions", jobRuns.size()));
 		}
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jobRunJSONObject = jsonArray.getJSONObject(i);
-
-			_updateJobRun(jobRunJSONObject);
+		for (JobRun jobRun : jobRuns) {
+			_updateJobRun(jobRun);
 		}
 	}
 
@@ -65,30 +64,27 @@ public class DataprocSparkManagerMonitoringNanite extends BaseNanite {
 		return _log;
 	}
 
-	private void _updateJobRun(JSONObject jobRunJSONObject) {
-		JSONObject contextJSONObject = jobRunJSONObject.getJSONObject(
-			"context");
+	private void _updateJobRun(JobRun jobRun) {
+		JSONObject contextJSONObject = jobRun.getContextJSONObject();
 
 		String sparkJobId = contextJSONObject.optString("sparkJobId", null);
 
 		if (sparkJobId == null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"No sparkJobId for job-run ID" +
-						jobRunJSONObject.getString("id"));
+				_log.debug("No sparkJobId for job-run ID" + jobRun.getId());
 			}
 
 			return;
 		}
 
-		jobRunJSONObject.put("lastUpdatedDate", DateUtil.newDateString());
+		jobRun.setModifiedLocalDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
 		DataprocJobState dataprocJobState = _dataprocSparkManager.getJobState(
 			sparkJobId);
 
-		jobRunJSONObject.put("status", dataprocJobState.toString());
+		jobRun.setJobRunStatus(JobRunStatus.valueOf(dataprocJobState.name()));
 
-		_faroInfoElasticsearchInvoker.update("job-runs", jobRunJSONObject);
+		_jobRunDog.updateJobRun(jobRun);
 	}
 
 	private static final Log _log = LogFactory.getLog(
@@ -97,7 +93,7 @@ public class DataprocSparkManagerMonitoringNanite extends BaseNanite {
 	@Autowired
 	private DataprocSparkManager _dataprocSparkManager;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Autowired
+	private JobRunDog _jobRunDog;
 
 }

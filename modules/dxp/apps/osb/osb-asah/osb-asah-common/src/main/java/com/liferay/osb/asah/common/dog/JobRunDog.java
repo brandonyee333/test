@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.Job;
@@ -22,7 +24,9 @@ import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -44,6 +48,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Component;
 
@@ -89,6 +94,14 @@ public class JobRunDog {
 		return jobRunOptional.orElse(null);
 	}
 
+	public JobRun fetchLatestJobRun(Long jobId, JobRunStatus jobRunStatus) {
+		Optional<JobRun> jobRunOptional =
+			_jobRunRepository.findFirstByJobIdAndJobRunStatusOrderByIdDesc(
+				jobId, jobRunStatus);
+
+		return jobRunOptional.orElseGet(null);
+	}
+
 	public JobRun fetchLatestJobRun(Long jobId, String trigger) {
 		Optional<JobRun> jobRunOptional =
 			_jobRunRepository.findFirstByJobIdAndTriggerOrderByIdDesc(
@@ -109,6 +122,15 @@ public class JobRunDog {
 		).orElse(
 			null
 		);
+	}
+
+	public JobRun getJobRun(Long jobRunId) {
+		Optional<JobRun> jobRunOptional = _jobRunRepository.findById(jobRunId);
+
+		return jobRunOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no job run with ID " + jobRunId));
 	}
 
 	public Page<JobRun> getJobRunPage(
@@ -143,6 +165,10 @@ public class JobRunDog {
 					_countCurrentMonthScheduledJobRuns(jobRuns, job));
 			}
 		};
+	}
+
+	public void updateJobRun(JobRun jobRun) {
+		_jobRunRepository.save(jobRun);
 	}
 
 	private int _countCurrentMonthScheduledJobRuns(
@@ -234,10 +260,16 @@ public class JobRunDog {
 	}
 
 	@Autowired
+	private JobRepository _jobRepository;
+
+	@Autowired
 	private JobRunRepository _jobRunRepository;
 
 	@Value("${osb.asah.content.recommendation.max.monthly.job.runs:10}")
 	private int _maxMonthlyJobRuns;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
