@@ -30,6 +30,10 @@ import org.codehaus.jackson.map.util.ISO8601DateFormat;
  */
 public class ObjectMapperUtil {
 
+	public static <T> T convertValue(Class<T> clazz, Object value) {
+		return _objectMapper.convertValue(value, clazz);
+	}
+
 	public static <T> T readValue(Class<T> clazz, String json)
 		throws JsonProcessingException {
 
