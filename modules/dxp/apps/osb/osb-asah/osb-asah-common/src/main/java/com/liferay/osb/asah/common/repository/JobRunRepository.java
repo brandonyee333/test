@@ -59,6 +59,10 @@ public interface JobRunRepository extends Repository<JobRun, Long> {
 		JobRunStatus jobRunStatus, String jobType, String step);
 
 	@Cacheable
+	public List<JobRun> findByJobRunStatusIn(
+		@Param("jobRunStatus") List<String> jobRunStatus);
+
+	@Cacheable
 	public Optional<JobRun> findFirstByJobIdAndJobRunStatusOrderByIdDesc(
 		Long jobId, JobRunStatus jobRunStatus);
 

@@ -121,6 +121,10 @@ public class JobRunDog {
 			() -> _jobRunRepository.countByJobId(jobId));
 	}
 
+	public List<JobRun> getJobRuns(List<String> jobRunStatus) {
+		return _jobRunRepository.findByJobRunStatusIn(jobRunStatus);
+	}
+
 	public JobRunsMonthlyStatistics getJobRunsMonthlyStatistics(Job job) {
 		List<JobRun> jobRuns = _getCurrentMonthJobRunResultBag(job.getId());
 
