@@ -26,6 +26,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.query.Param;
 
 /**
  * @author Marcellus Tavares
@@ -37,7 +38,7 @@ public interface JobRunRepository extends Repository<JobRun, Long> {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void deleteByJobId(Long id);
+	public void deleteByJobId(@Param("jobId") Long jobId);
 
 	@Cacheable
 	public boolean existsByJobIdAndJobRunStatus(
@@ -48,8 +49,10 @@ public interface JobRunRepository extends Repository<JobRun, Long> {
 
 	@Cacheable
 	public List<JobRun> findByJobIdAndCreateLocalDateTimeBetween(
-		Long jobId, LocalDateTime endCreateLocalDateTime,
-		LocalDateTime startCreateLocalDateTime);
+		@Param("jobId") Long jobId,
+		@Param("endCreateLocalDateTime") LocalDateTime endCreateLocalDateTime,
+		@Param("startCreateLocalDateTime") LocalDateTime
+			startCreateLocalDateTime);
 
 	@Cacheable
 	public List<JobRun> findByJobRunStatusAndJobTypeAndStep(
