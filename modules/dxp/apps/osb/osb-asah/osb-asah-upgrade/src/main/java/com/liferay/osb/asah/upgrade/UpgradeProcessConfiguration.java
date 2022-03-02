@@ -29,6 +29,7 @@ import com.liferay.osb.asah.upgrade.v3_2_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DatabaseSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.JobRunMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.OrganizationUpgradeStep;
 
 import java.util.ArrayList;
@@ -86,8 +87,8 @@ public class UpgradeProcessConfiguration {
 
 		upgradeSteps.add(_asahMarkerMigrationUpgradeStep);
 		upgradeSteps.add(_asahTaskMigrationUpgradeStep);
-
 		upgradeSteps.add(_jobMigrationUpgradeStep);
+		upgradeSteps.add(_jobRunMigrationUpgradeStep);
 
 		upgradeSteps.add(_organizationUpgradeStep);
 
@@ -124,6 +125,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private JobMigrationUpgradeStep _jobMigrationUpgradeStep;
+
+	@Autowired
+	private JobRunMigrationUpgradeStep _jobRunMigrationUpgradeStep;
 
 	@Autowired
 	private OrganizationUpgradeStep _organizationUpgradeStep;
