@@ -234,15 +234,13 @@ public class JobDog {
 	}
 
 	private void _deleteJob(Long jobId) {
-		Job job = getJob(jobId);
-
-		_unscheduleAsahTask(job);
+		_unscheduleAsahTask(getJob(jobId));
 
 		_jobRunDog.deleteByJobId(jobId);
 
 		_recommendationDog.deleteItemRecommendationsByJobId(jobId);
 
-		_jobRepository.delete(job);
+		_jobRepository.deleteById(jobId);
 	}
 
 	private void _rescheduleAsahTask(
