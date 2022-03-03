@@ -363,7 +363,7 @@ definition {
 			locator1 = "MenuItem#ANY_MENU_ITEM",
 			value1 = "Assign Roles");
 
-		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
 
 		LexiconEntry.changeDisplayStyle(displayStyle = "cards");
 

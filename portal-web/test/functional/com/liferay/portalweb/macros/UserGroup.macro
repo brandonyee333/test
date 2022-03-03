@@ -87,7 +87,7 @@ definition {
 			key_text = "Add",
 			locator1 = "Button#ANY");
 
-		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
 
 		User.searchCP(searchTerm = "${userScreenName}");
 
