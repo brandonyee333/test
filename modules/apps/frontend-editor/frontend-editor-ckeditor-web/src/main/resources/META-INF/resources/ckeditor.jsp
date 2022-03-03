@@ -306,7 +306,11 @@ name = HtmlUtil.escapeJS(name);
 
 			var setHTML = function (data) {
 				if (instanceDataReady) {
-					ckEditorInstance.setData(data);
+					var ckEditorElement = ckEditorInstance.element.$.id;
+
+					if (document.getElementById(ckEditorElement)) {
+						ckEditorInstance.setData(data);
+					}
 				}
 				else {
 					instancePendingData = data;
@@ -315,11 +319,13 @@ name = HtmlUtil.escapeJS(name);
 				win._setStyles();
 			};
 
-			if (win.instanceReady) {
-				setHTML(value);
-			}
-			else {
-				instancePendingData = value;
+			if (win) {
+				if (win.instanceReady) {
+					setHTML(value);
+				}
+				else {
+					instancePendingData = value;
+				}
 			}
 		},
 	};
