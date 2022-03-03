@@ -56,7 +56,9 @@ public class PropertiesStylingCheck extends BaseFileCheck {
 		}
 
 		matcher = _sqlPattern4.matcher(content);
+
 		while (matcher.find()) {
+
 			String match = matcher.group();
 			String sqlClause = matcher.group(3);
 
@@ -74,6 +76,7 @@ public class PropertiesStylingCheck extends BaseFileCheck {
 		}
 
 		matcher = _sqlPattern2.matcher(content);
+
 		while (matcher.find()) {
 			int lineNumber = getLineNumber(content, matcher.start());
 
@@ -108,6 +111,7 @@ public class PropertiesStylingCheck extends BaseFileCheck {
 		StringBundler sb = new StringBundler(sqlClauses.length * 3);
 
 		for (String sqlClause : sqlClauses) {
+
 			sqlClause = sqlClause.trim();
 			if (sqlClause.startsWith(")")) {
 				indent = indent.substring(4);
