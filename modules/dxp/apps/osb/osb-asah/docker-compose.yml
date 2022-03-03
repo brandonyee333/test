@@ -5,11 +5,6 @@ services:
         env_file:
             - common.env
             - local.env
-        healthcheck:
-            interval: 10s
-            retries: 30
-            start_period: 120s
-            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
         ports:
             - "5013:5005"
             - "8090:8080"
