@@ -246,12 +246,6 @@ public class OSBAsahBatchCuratorBot {
 
 			_asahTaskManager.runNanites("DeleteTempFilesNanite");
 
-			_asahTaskManager.runNanites("InterestThresholdScoreNanite");
-
-			_asahTaskManager.runNanites("InterestTopicsNanite");
-
-			_asahTaskManager.runNanites("IndividualInterestScoresNanite");
-
 			_asahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
 
 			_asahTaskManager.scheduleAsahTasks();
