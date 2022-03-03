@@ -139,6 +139,8 @@ definition {
 				value1 = "Replace Certificate");
 		}
 
+		WaitForLiferayEvent.initializeLiferayEventLog();
+
 		SelectFrame(locator1 = "IFrame#MODAL_BODY");
 
 		Click(locator1 = "CPSAMLAdmin#IMPORT_CERTIFICATE");

@@ -411,7 +411,7 @@ definition {
 	macro assignUserGroupAsMemberCP {
 		Navigator.gotoNavItem(navItem = "User Groups");
 
-		Pause(locator1 = "5000");
+		WaitForLiferayEvent.initializeLiferayEventLog();
 
 		LexiconEntry.gotoAdd();
 
