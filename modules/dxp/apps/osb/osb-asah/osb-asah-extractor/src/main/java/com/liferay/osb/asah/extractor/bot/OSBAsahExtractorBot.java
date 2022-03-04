@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.extractor.bot;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.extractor.processor.AnalyticsEventsMessageProcessor;
 import com.liferay.osb.asah.extractor.processor.DXPEntitiesMessageProcessor;
 
 import org.apache.commons.logging.Log;
@@ -36,16 +35,6 @@ import org.springframework.stereotype.Component;
 public class OSBAsahExtractorBot {
 
 	@Scheduled(fixedDelay = DateUtil.SECOND, initialDelay = DateUtil.SECOND * 5)
-	public void processAnalyticsEvents() {
-		try {
-			_analyticsEventsMessageProcessor.processQueuedMessages();
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-	}
-
-	@Scheduled(fixedDelay = DateUtil.SECOND, initialDelay = DateUtil.SECOND * 5)
 	public void processDXPEntities() {
 		try {
 			_dxpEntitiesMessageProcessor.processQueuedMessages();
@@ -57,9 +46,6 @@ public class OSBAsahExtractorBot {
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahExtractorBot.class);
-
-	@Autowired
-	private AnalyticsEventsMessageProcessor _analyticsEventsMessageProcessor;
 
 	@Autowired
 	private DXPEntitiesMessageProcessor _dxpEntitiesMessageProcessor;
