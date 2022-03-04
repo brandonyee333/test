@@ -6,7 +6,10 @@ bootJar {
 }
 
 dependencies {
+	compile group: "com.blueconic", name: "browscap-java", version: "latest.release"
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
+
+	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
 
 jar {
