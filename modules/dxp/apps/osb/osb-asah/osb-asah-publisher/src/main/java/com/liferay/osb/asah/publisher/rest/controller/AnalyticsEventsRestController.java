@@ -17,19 +17,28 @@ package com.liferay.osb.asah.publisher.rest.controller;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.AnalyticsEventUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -44,6 +53,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -186,19 +196,8 @@ public class AnalyticsEventsRestController {
 					return false;
 				});
 
-			analyticsEventsMessage.setProjectId(
-				ProjectIdThreadLocal.getProjectId());
-
 			if (!events.isEmpty()) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Pushing analytics events message to the queue " +
-							analyticsEventsMessage.toJSON());
-				}
-
-				_messageBus.sendMessage(
-					Channel.ANALYTICS_EVENTS_MESSAGE,
-					analyticsEventsMessage.toJSON());
+				_sendAnalyticsEvents(analyticsEventsMessage);
 			}
 			else if (analyticsEventsMessageId != null) {
 				_analyticsEventMessageIds.invalidate(analyticsEventsMessageId);
@@ -229,6 +228,101 @@ public class AnalyticsEventsRestController {
 		return indices;
 	}
 
+	private boolean _isDataSourceActive(
+		AnalyticsEventsMessage analyticsEventsMessage) {
+
+		DataSource dataSource = _dataSourceDog.fetchDataSource(
+			Long.valueOf(analyticsEventsMessage.getDataSourceId()));
+
+		if ((dataSource != null) &&
+			Objects.equals(dataSource.getStatus(), "ACTIVE")) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private void _sendAnalyticsEvents(
+		AnalyticsEventsMessage analyticsEventsMessage) {
+
+		if (!_isDataSourceActive(analyticsEventsMessage)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Discarding message because data source is not active: " +
+						analyticsEventsMessage.toJSON());
+			}
+
+			return;
+		}
+
+		String channelId = analyticsEventsMessage.getChannelId();
+		String dataSourceId = analyticsEventsMessage.getDataSourceId();
+
+		if (StringUtil.isNull(channelId) || StringUtils.isBlank(channelId) ||
+			!NumberUtils.isCreatable(channelId)) {
+
+			channelId = String.valueOf(
+				_dataSourceDog.getDefaultChannelId(Long.valueOf(dataSourceId)));
+
+			if (StringUtil.isNull(channelId) ||
+				StringUtils.isBlank(channelId)) {
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Discarding message because channel ID is invalid: " +
+							analyticsEventsMessage.toJSON());
+				}
+
+				return;
+			}
+		}
+
+		String projectTimeZoneId = _timeZoneDog.getTimeZoneId();
+
+		for (AnalyticsEventsMessage.Event event :
+				analyticsEventsMessage.getEvents()) {
+
+			AnalyticsEvent analyticsEvent = new AnalyticsEvent();
+
+			analyticsEvent.setApplicationId(event.getApplicationId());
+			analyticsEvent.setChannelId(channelId);
+			analyticsEvent.setContext(analyticsEventsMessage.getContext());
+			analyticsEvent.setCreateDate(
+				analyticsEventsMessage.getCreateDate());
+			analyticsEvent.setDataSourceId(dataSourceId);
+			analyticsEvent.setEventDate(event.getEventDate());
+			analyticsEvent.setEventId(event.getEventId());
+			analyticsEvent.setEventProperties(event.getProperties());
+
+			analyticsEvent.setId(
+				AnalyticsEventUtil.generateAnalyticsEventId(
+					dataSourceId, event, analyticsEventsMessage.getProjectId(),
+					analyticsEventsMessage.getUserId()));
+
+			analyticsEvent.setProjectId(ProjectIdThreadLocal.getProjectId());
+			analyticsEvent.setProjectTimeZoneId(projectTimeZoneId);
+			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Pushing analytics event message to the queue " +
+						analyticsEvent.toJSON());
+			}
+
+			Map<String, String> messageAttributes = new HashMap<>();
+
+			messageAttributes.put(
+				"eventDate",
+				DateUtil.toUTCString(analyticsEvent.getEventDate()));
+			messageAttributes.put("id", analyticsEvent.getId());
+
+			_messageBus.sendMessage(
+				Channel.ANALYTICS_EVENTS, analyticsEvent.toJSON(),
+				messageAttributes);
+		}
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsRestController.class);
 
@@ -254,6 +348,12 @@ public class AnalyticsEventsRestController {
 		"^events\\[(\\d+)].*");
 
 	@Autowired
+	private DataSourceDog _dataSourceDog;
+
+	@Autowired
 	private MessageBus _messageBus;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
