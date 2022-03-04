@@ -17,7 +17,7 @@ RUNNER=DataflowRunner
 SESSION_WINDOW_ALLOWED_LATENESS=5
 SESSION_WINDOW_GAP_DURATION=30
 
-../gradlew clean compileJava execute \
+../gradlew clean assemble execute \
 -Dexec.args=" \
 	--inputSubscription=projects/${PROJECT_ID}/subscriptions/${DXP_CLOUD_PROJECT}_analytics_events_dataflow \
 	--jobName=streamingingestionpipeline-marcellustavares-20220214-155ebd6
