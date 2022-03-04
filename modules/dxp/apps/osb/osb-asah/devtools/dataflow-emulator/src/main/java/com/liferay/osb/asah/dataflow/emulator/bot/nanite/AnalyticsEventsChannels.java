@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.extractor.processor;
+package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;

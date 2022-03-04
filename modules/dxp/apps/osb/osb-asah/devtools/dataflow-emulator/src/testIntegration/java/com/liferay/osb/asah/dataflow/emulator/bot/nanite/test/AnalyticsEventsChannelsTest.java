@@ -12,14 +12,14 @@
  *
  */
 
-package com.liferay.osb.asah.extractor.processor.test;
+package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.extractor.OSBAsahExtractorSpringTestContext;
-import com.liferay.osb.asah.extractor.processor.AnalyticsEventsChannels;
+import com.liferay.osb.asah.dataflow.emulator.bot.nanite.AnalyticsEventsChannels;
+import com.liferay.osb.asah.dataflow.emulator.bot.nanite.OSBAsahDataflowEmulatorSpringTestContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Marcellus Tavares
  */
 public class AnalyticsEventsChannelsTest
-	implements OSBAsahExtractorSpringTestContext {
+	implements OSBAsahDataflowEmulatorSpringTestContext {
 
 	@Test
 	public void testAnalyticsEventsBlogChannel() throws Exception {

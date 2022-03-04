@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.extractor.browscap;
+package com.liferay.osb.asah.dataflow.emulator.browscap;
 
 import com.blueconic.browscap.BrowsCapField;
 import com.blueconic.browscap.ParseException;

@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.extractor.browscap;
+package com.liferay.osb.asah.dataflow.emulator.browscap;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
