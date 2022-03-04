@@ -817,14 +817,6 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro checkLastDocumentCheckboxCP {
-		ScrollBy(value1 = "0, 1000");
-
-		Check(
-			key_dmDocumentTitle = "${dmDocumentTitle}",
-			locator1 = "DocumentsAndMedia#ICON_DOCUMENT_CHECKBOX_LAST");
-	}
-
 	macro checkoutCP {
 		Click(
 			key_dmDocumentTitle = "${dmDocumentTitle}",
@@ -859,6 +851,13 @@ definition {
 		AssertTextEquals(
 			locator1 = "Message#CHECKOUT_SUCCESS",
 			value1 = "You now have a lock on this document. No one else can edit this document until you unlock it. This lock will automatically expire in 1 day.");
+	}
+
+	macro checkSpecificDocumentCheckboxCP {
+		Check(
+			key_dmDocumentTitle ="${dmDocumentTitle}",
+			key_position = "${widgetPosition}",
+			locator1 = "DocumentsAndMedia#ICON_DOCUMENT_CHECKBOX__SPECIFIC");
 	}
 
 	macro deleteCP {
