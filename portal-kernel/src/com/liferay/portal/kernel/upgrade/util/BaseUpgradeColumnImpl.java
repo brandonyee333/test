@@ -56,11 +56,6 @@ public abstract class BaseUpgradeColumnImpl implements UpgradeColumn {
 	}
 
 	@Override
-	public String getOldName() {
-		return _name;
-	}
-
-	@Override
 	public Object getOldValue() {
 		return _oldValue;
 	}
