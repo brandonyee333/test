@@ -344,16 +344,12 @@ public class IngestionNanite {
 			String.valueOf(analyticsEvent.getEventProperties()));
 		bqEvent.setExperienceId(context.get("experienceId"));
 		bqEvent.setId(analyticsEvent.getId());
-		bqEvent.setIndividualId(Long.valueOf(analyticsEvent.getIndividualId()));
 		bqEvent.setKeywords(context.get("keywords"));
-		bqEvent.setKnownIndividual(analyticsEvent.isKnownIndividual());
 		bqEvent.setLanguageId(context.get("languageId"));
 		bqEvent.setPlatformName(context.get("platformName"));
 		bqEvent.setProjectTimeZoneId(analyticsEvent.getProjectTimeZoneId());
 		bqEvent.setReferrer(context.get("referrer"));
 		bqEvent.setRegion(context.get("region"));
-		bqEvent.setSegmentNames(
-			new ArrayList<>(analyticsEvent.getSegmentNames()));
 		bqEvent.setSessionId(sessionContext.id);
 		bqEvent.setTimezoneOffset(context.get("timezoneOffset"));
 		bqEvent.setTitle(context.get("title"));
