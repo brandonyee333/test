@@ -20,22 +20,19 @@ import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
 import org.assertj.core.api.Assertions;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,6 +53,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Inácio Nery
@@ -82,33 +80,18 @@ public class AnalyticsEventsRestControllerTest
 		);
 	}
 
-	@Test
-	public void testGetStatusCode500() throws Exception {
-		Mockito.doThrow(
-			RuntimeException.class
-		).when(
-			_messageBus
-		).sendMessage(
-			ArgumentMatchers.any(), ArgumentMatchers.anyString()
-		);
-
-		ResponseEntity<String> responseEntity = _exchange(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies/analytics_events_message_3.json", this)));
-
-		Assertions.assertThat(
-			responseEntity.getStatusCode()
-		).isEqualTo(
-			HttpStatus.valueOf(500)
-		);
-	}
-
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
 	@Test
 	public void testPushAnalyticsEventsMessage() throws Exception {
+		String newDateString = DateUtil.newDateString();
+
 		String body = TestExecutionListenerUtil.replaceVariables(
 			ResourceUtil.readResourceToString(
-				"dependencies/analytics_events_message_1.json", this));
+				"dependencies/analytics_events_message_1.json", this),
+			newDateString);
 
 		ResponseEntity<String> responseEntity = _exchange(body);
 
@@ -118,16 +101,19 @@ public class AnalyticsEventsRestControllerTest
 			"[]"
 		);
 
-		ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(
+		ArgumentCaptor<String> messageArgumentCaptor = ArgumentCaptor.forClass(
 			String.class);
 
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			ArgumentMatchers.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), messageArgumentCaptor.capture(),
+			ArgumentMatchers.any()
 		);
 
-		JSONAssert.assertEquals(body, argumentCaptor.getValue(), false);
+		_verifyCapturedMessages(
+			messageArgumentCaptor.getAllValues(), newDateString,
+			"dependencies/analytics_events_message_1_events.json");
 	}
 
 	@Test
@@ -149,6 +135,10 @@ public class AnalyticsEventsRestControllerTest
 		}
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
 	@Test
 	public void testPushAnalyticsEventsMessageIfDuplicateEvents()
 		throws Exception {
@@ -188,18 +178,13 @@ public class AnalyticsEventsRestControllerTest
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			ArgumentMatchers.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture(),
+			ArgumentMatchers.any()
 		);
 
-		JSONAssert.assertEquals(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies" +
-						"/analytics_events_message_duplicated_events_removed." +
-							"json",
-					this),
-				newDateString),
-			argumentCaptor.getValue(), false);
+		_verifyCapturedMessages(
+			argumentCaptor.getAllValues(), newDateString,
+			"dependencies/analytics_events_duplicated_events_removed.json");
 	}
 
 	@Test
@@ -275,6 +260,10 @@ public class AnalyticsEventsRestControllerTest
 		);
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
 	@Test
 	public void testPushAnalyticsEventsMessageIfInvalidEvents()
 		throws Exception {
@@ -298,28 +287,32 @@ public class AnalyticsEventsRestControllerTest
 			String.class);
 
 		Mockito.verify(
-			_messageBus, Mockito.times(1)
+			_messageBus, Mockito.times(3)
 		).sendMessage(
-			ArgumentMatchers.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture(),
+			ArgumentMatchers.any()
 		);
 
-		JSONAssert.assertEquals(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies" +
-						"/analytics_events_message_invalid_events_removed.json",
-					this),
-				newDateString),
-			argumentCaptor.getValue(), false);
+		_verifyCapturedMessages(
+			argumentCaptor.getAllValues(), newDateString,
+			"dependencies/analytics_events_message_invalid_events_removed." +
+				"json");
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
 	@Test
 	public void testPushAnalyticsEventsMessageIfInvalidXForwardedFor()
 		throws Exception {
 
+		String newDateString = DateUtil.newDateString();
+
 		String body = TestExecutionListenerUtil.replaceVariables(
 			ResourceUtil.readResourceToString(
-				"dependencies/analytics_events_message_2.json", this));
+				"dependencies/analytics_events_message_2.json", this),
+			newDateString);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -340,19 +333,29 @@ public class AnalyticsEventsRestControllerTest
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			ArgumentMatchers.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture(),
+			ArgumentMatchers.any()
 		);
 
-		JSONAssert.assertEquals(body, argumentCaptor.getValue(), false);
+		_verifyCapturedMessages(
+			argumentCaptor.getAllValues(), newDateString,
+			"dependencies/analytics_events_message_2_events.json");
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
 	@Test
 	public void testPushAnalyticsEventsMessageIfMoreThanOneEvent()
 		throws Exception {
 
+		String newDateString = DateUtil.newDateString();
+
 		String body = TestExecutionListenerUtil.replaceVariables(
 			ResourceUtil.readResourceToString(
-				"dependencies/analytics_events_message_4.json", this));
+				"dependencies/analytics_events_message_4.json", this),
+			newDateString);
 
 		_exchange(body);
 
@@ -360,33 +363,15 @@ public class AnalyticsEventsRestControllerTest
 			String.class);
 
 		Mockito.verify(
-			_messageBus, Mockito.times(1)
+			_messageBus, Mockito.times(2)
 		).sendMessage(
-			ArgumentMatchers.any(), argumentCaptor.capture()
+			ArgumentMatchers.any(), argumentCaptor.capture(),
+			ArgumentMatchers.any()
 		);
 
-		JSONObject jsonObject = new JSONObject(argumentCaptor.getValue());
-
-		List<String> eventIds = JSONUtil.toList(
-			jsonObject.getJSONArray("events"),
-			eventJSONObject -> eventJSONObject.getString("id"));
-
-		Stream<String> stream = eventIds.stream();
-
-		Map<String, String> eventIdsMap = stream.collect(
-			Collectors.toMap(
-				Function.identity(), Function.identity(),
-				(oldEventId, newEventId) -> oldEventId));
-
-		Set<String> keySet = eventIdsMap.keySet();
-
-		Assertions.assertThat(
-			keySet
-		).as(
-			eventIdsMap.toString()
-		).hasSize(
-			2
-		);
+		_verifyCapturedMessages(
+			argumentCaptor.getAllValues(), newDateString,
+			"dependencies/analytics_events_message_4_events.json");
 	}
 
 	private <T> ResponseEntity<String> _exchange(T body) {
@@ -408,6 +393,24 @@ public class AnalyticsEventsRestControllerTest
 
 		return _testRestTemplate.exchange(
 			"/", HttpMethod.POST, requestEntity, String.class);
+	}
+
+	private void _verifyCapturedMessages(
+			List<String> actualCapturedMessages, @Nullable String newDateString,
+			String expectedCapturedMessagesResourceName)
+		throws Exception {
+
+		JSONArray jsonArray = new JSONArray(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					expectedCapturedMessagesResourceName, this),
+				newDateString));
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONAssert.assertEquals(
+				String.valueOf(jsonArray.getJSONObject(i)),
+				actualCapturedMessages.get(i), false);
+		}
 	}
 
 	@MockBean

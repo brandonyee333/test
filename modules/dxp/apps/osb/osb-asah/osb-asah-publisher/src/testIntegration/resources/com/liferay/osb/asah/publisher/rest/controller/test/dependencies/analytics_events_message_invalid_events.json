@@ -1,11 +1,12 @@
 {
+	"channelId": "52156245246325324825",
 	"clientIP": "localhost",
 	"context": {
 		"instanceId": 1234,
 		"languageId": "en_US",
 		"url": "http://www.liferay.com"
 	},
-	"dataSourceId": "370975939087274525",
+	"dataSourceId": "345085929068798696",
 	"events": [
 		{
 			"additionalInfo": null,

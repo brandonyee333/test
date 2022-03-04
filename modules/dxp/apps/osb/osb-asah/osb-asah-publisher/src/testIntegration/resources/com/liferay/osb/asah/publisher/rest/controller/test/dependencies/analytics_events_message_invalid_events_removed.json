@@ -1,60 +1,91 @@
-{
-	"clientIP": "localhost",
-	"context": {
-		"instanceId": "1234",
-		"languageId": "en_US",
-		"url": "http://www.liferay.com"
+[
+	{
+		"applicationId": "Page",
+		"channelId": "52156245246325324825",
+		"context": {
+			"instanceId": "1234",
+			"languageId": "en_US",
+			"url": "http://www.liferay.com"
+		},
+		"dataSourceId": "345085929068798696",
+		"eventDate": "${now}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+		},
+		"individualId": null,
+		"knownIndividual": false,
+		"projectId": "test",
+		"projectTimeZoneId": "UTC",
+		"segmentNames": [
+		],
+		"userId": "1234"
 	},
-	"dataSourceId": "370975939087274525",
-	"events": [
-		{
-			"applicationId": "Page",
-			"eventDate": "${now}",
-			"eventId": "pageViewed",
-			"properties": {
-			}
+	{
+		"applicationId": "Page",
+		"channelId": "52156245246325324825",
+		"context": {
+			"instanceId": "1234",
+			"languageId": "en_US",
+			"url": "http://www.liferay.com"
 		},
-		{
-			"applicationId": "Page",
-			"eventDate": "${now}",
-			"eventId": "pageViewed",
-			"properties": {
-				"test1": ""
-			}
+		"dataSourceId": "345085929068798696",
+		"eventDate": "${now}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"test1": ""
 		},
-		{
-			"applicationId": "Page",
-			"eventDate": "${now}",
-			"eventId": "pageViewed",
-			"properties": {
-				"key01": "value01",
-				"key02": "value02",
-				"key03": "value03",
-				"key04": "value04",
-				"key05": "value05",
-				"key06": "value06",
-				"key07": "value07",
-				"key08": "value08",
-				"key09": "value09",
-				"key10": "value10",
-				"key11": "value11",
-				"key12": "value12",
-				"key13": "value13",
-				"key14": "value14",
-				"key15": "value15",
-				"key16": "value16",
-				"key17": "value17",
-				"key18": "value18",
-				"key19": "value19",
-				"key20": "value20",
-				"key21": "value21",
-				"key22": "value22",
-				"key23": "value23",
-				"key24": "value24",
-				"key25": "value25"
-			}
-		}
-	],
-	"protocolVersion": "1.x",
-	"userId": "1234"
-}
+		"individualId": null,
+		"knownIndividual": false,
+		"projectId": "test",
+		"projectTimeZoneId": "UTC",
+		"segmentNames": [
+		],
+		"userId": "1234"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "52156245246325324825",
+		"context": {
+			"instanceId": "1234",
+			"languageId": "en_US",
+			"url": "http://www.liferay.com"
+		},
+		"dataSourceId": "345085929068798696",
+		"eventDate": "${now}",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"key01": "value01",
+			"key02": "value02",
+			"key03": "value03",
+			"key04": "value04",
+			"key05": "value05",
+			"key06": "value06",
+			"key07": "value07",
+			"key08": "value08",
+			"key09": "value09",
+			"key10": "value10",
+			"key11": "value11",
+			"key12": "value12",
+			"key13": "value13",
+			"key14": "value14",
+			"key15": "value15",
+			"key16": "value16",
+			"key17": "value17",
+			"key18": "value18",
+			"key19": "value19",
+			"key20": "value20",
+			"key21": "value21",
+			"key22": "value22",
+			"key23": "value23",
+			"key24": "value24",
+			"key25": "value25"
+		},
+		"individualId": null,
+		"knownIndividual": false,
+		"projectId": "test",
+		"projectTimeZoneId": "UTC",
+		"segmentNames": [
+		],
+		"userId": "1234"
+	}
+]
