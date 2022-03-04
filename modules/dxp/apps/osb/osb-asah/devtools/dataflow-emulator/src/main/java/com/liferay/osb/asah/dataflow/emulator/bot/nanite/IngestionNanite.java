@@ -14,12 +14,22 @@
 
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapDevice;
+import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapEngine;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQEvent;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQEventProperty;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQSession;
@@ -27,8 +37,8 @@ import com.liferay.osb.asah.dataflow.emulator.repository.BQEventPropertyReposito
 import com.liferay.osb.asah.dataflow.emulator.repository.BQEventRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQSessionRepository;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +52,8 @@ import java.util.stream.Stream;
 import javax.sql.DataSource;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -143,6 +155,35 @@ public class IngestionNanite {
 			));
 	}
 
+	private Individual _addIndividual(AnalyticsEvent analyticsEvent) {
+		Long channelId = Long.valueOf(analyticsEvent.getChannelId());
+
+		Long dataSourceId = Long.valueOf(analyticsEvent.getDataSourceId());
+
+		Individual individual = _individualDog.fetchIndividual(
+			dataSourceId, analyticsEvent.getUserId());
+
+		if (individual == null) {
+			individual = _individualDog.addIndividual(
+				channelId, dataSourceId, null, analyticsEvent.getUserId());
+		}
+		else {
+			Set<Long> channelIds = individual.getChannelIds();
+
+			if (CollectionUtils.isEmpty(channelIds)) {
+				channelIds = new HashSet<>();
+			}
+
+			if (channelIds.add(channelId)) {
+				individual.setChannelIds(channelIds);
+
+				individual = _individualDog.updateIndividual(individual);
+			}
+		}
+
+		return individual;
+	}
+
 	private void _advanceWatermark(List<AnalyticsEvent> analyticsEvents) {
 		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
@@ -193,6 +234,54 @@ public class IngestionNanite {
 			_dataSource);
 	}
 
+	private Map<String, String> _getContext(AnalyticsEvent analyticsEvent) {
+		Map<String, String> context = new HashMap<>();
+
+		Map<String, String> analyticsEventsContext =
+			analyticsEvent.getContext();
+
+		for (Map.Entry<String, String> entry :
+				analyticsEventsContext.entrySet()) {
+
+			context.put(entry.getKey(), entry.getValue());
+		}
+
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			MapUtil.getString(context, "userAgent"));
+
+		if (browscapDevice != null) {
+			Map<String, String> convertedValues = _objectMapper.convertValue(
+				browscapDevice, Map.class);
+
+			context.putAll(convertedValues);
+		}
+
+		if (StringUtils.isBlank(MapUtil.getString(context, "canonicalUrl"))) {
+			context.put("canonicalUrl", MapUtil.getString(context, "url"));
+		}
+
+		String screenHeight = MapUtil.getString(context, "screenHeight");
+
+		if (screenHeight != null) {
+			context.put("screenHeightSize", screenHeight);
+		}
+
+		String screenWidth = MapUtil.getString(context, "screenWidth");
+
+		if (screenWidth != null) {
+			context.put("screenWidthSize", screenWidth);
+		}
+
+		return context;
+	}
+
+	private Set<String> _getSegmentNames(
+		Long channelId, Individual individual) {
+
+		return new HashSet<>(
+			_segmentDog.getSegmentNames(channelId, individual.getSegmentIds()));
+	}
+
 	private String _getSessionKey(AnalyticsEvent analyticsEvent) {
 		return String.format(
 			"%s#%s#%s#%s", analyticsEvent.getProjectId(),
@@ -200,10 +289,38 @@ public class IngestionNanite {
 			analyticsEvent.getUserId());
 	}
 
+	private boolean _isCrawler(Map<String, String> context) {
+		if (Boolean.parseBoolean(context.getOrDefault("crawler", null))) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isKnownIndividual(Individual individual) {
+		if (_fieldRepository.existsByNameAndOwnerId(
+				"email", individual.getId())) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean _isLate(AnalyticsEvent analyticsEvent) {
 		Date eventDate = analyticsEvent.getEventDate();
 
 		if ((eventDate.getTime() - _watermarkTimestamp) >= 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean _isValidURL(Map<String, String> context) {
+		String url = context.get("url");
+
+		if ((url == null) || url.startsWith("file://")) {
 			return false;
 		}
 
@@ -235,6 +352,30 @@ public class IngestionNanite {
 
 	private void _processAnalyticsEvent(AnalyticsEvent analyticsEvent) {
 		try {
+			Map<String, String> context = _getContext(analyticsEvent);
+
+			if (_isCrawler(context)) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Discarding analytics event from crawler: " +
+							analyticsEvent.toJSON());
+				}
+
+				return;
+			}
+
+			if (!_isValidURL(context)) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Discarding analytics event from invalid host: " +
+							analyticsEvent.toJSON());
+				}
+
+				return;
+			}
+
+			analyticsEvent.setContext(context);
+
 			SessionContext sessionContext = _updateOrCreateSessionContext(
 				analyticsEvent);
 
@@ -254,6 +395,8 @@ public class IngestionNanite {
 
 			_writeBQEvent(analyticsEvent, sessionContext);
 			_writeBQEventProperties(analyticsEvent);
+
+			_sendAnalyticsEvent(analyticsEvent);
 		}
 		catch (Exception exception) {
 			_log.error(
@@ -275,6 +418,26 @@ public class IngestionNanite {
 			}
 
 			_processAnalyticsEvent(analyticsEvent);
+		}
+	}
+
+	private void _sendAnalyticsEvent(AnalyticsEvent analyticsEvent) {
+		Individual individual = _addIndividual(analyticsEvent);
+
+		analyticsEvent.setIndividualId(String.valueOf(individual.getId()));
+		analyticsEvent.setKnownIndividual(_isKnownIndividual(individual));
+
+		Set<String> segmentNames = _getSegmentNames(
+			Long.valueOf(analyticsEvent.getChannelId()), individual);
+
+		analyticsEvent.setSegmentNames(segmentNames);
+
+		String analyticsEventJSON = analyticsEvent.toJSON();
+
+		for (Channel channel :
+				_analyticsEventsChannels.getChannels(analyticsEvent)) {
+
+			_messageBus.sendMessage(channel, analyticsEventJSON);
 		}
 	}
 
@@ -330,10 +493,10 @@ public class IngestionNanite {
 		bqEvent.setBrowserName(context.get("browserName"));
 		bqEvent.setCanonicalUrl(context.get("canonicalUrl"));
 		bqEvent.setChannelId(Long.valueOf(analyticsEvent.getChannelId()));
-		bqEvent.setCity(context.get("city"));
+		bqEvent.setCity("Local Network");
 		bqEvent.setContentLanguageId(context.get("contentLanguageId"));
 		bqEvent.setContext(String.valueOf(context));
-		bqEvent.setCountry(context.get("country"));
+		bqEvent.setCountry("Local Network");
 		bqEvent.setCreateDate(analyticsEvent.getCreateDate());
 		bqEvent.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
 		bqEvent.setDescription(context.get("description"));
@@ -349,7 +512,7 @@ public class IngestionNanite {
 		bqEvent.setPlatformName(context.get("platformName"));
 		bqEvent.setProjectTimeZoneId(analyticsEvent.getProjectTimeZoneId());
 		bqEvent.setReferrer(context.get("referrer"));
-		bqEvent.setRegion(context.get("region"));
+		bqEvent.setRegion("Local Network");
 		bqEvent.setSessionId(sessionContext.id);
 		bqEvent.setTimezoneOffset(context.get("timezoneOffset"));
 		bqEvent.setTitle(context.get("title"));
@@ -398,6 +561,9 @@ public class IngestionNanite {
 	private long _allowedLateness;
 
 	@Autowired
+	private AnalyticsEventsChannels _analyticsEventsChannels;
+
+	@Autowired
 	private BQEventPropertyRepository _bqEventPropertyRepository;
 
 	@Autowired
@@ -407,14 +573,32 @@ public class IngestionNanite {
 	private BQSessionRepository _bqSessionRepository;
 
 	@Autowired
+	private BrowscapEngine _browscapEngine;
+
+	@Autowired
 	@Qualifier("postgreSQLDataSource")
 	private DataSource _dataSource;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
 
 	@Value("${session.window.gap.duration:3}")
 	private long _gapDuration;
 
+	@Autowired
+	private IndividualDog _individualDog;
+
+	@Autowired
+	private MessageBus _messageBus;
+
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS)
 	private MessageSubscriber _messageSubscriber;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 	private final Map<String, SessionContext> _sessions =
 		new ConcurrentHashMap<>();
