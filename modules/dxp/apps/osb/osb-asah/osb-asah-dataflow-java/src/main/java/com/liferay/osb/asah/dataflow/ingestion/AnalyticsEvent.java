@@ -27,6 +27,7 @@ public class AnalyticsEvent {
 
 	public String applicationId;
 	public String channelId;
+	public String clientIP;
 	public Map<String, String> context;
 	public String createDate;
 	public String dataSourceId;

@@ -18,11 +18,16 @@ import com.google.api.services.bigquery.model.TableRow;
 
 import com.liferay.osb.asah.dataflow.common.DateUtil;
 import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
+import com.liferay.osb.asah.dataflow.ingestion.browscap.BrowscapDevice;
+import com.liferay.osb.asah.dataflow.ingestion.browscap.BrowscapEngine;
+import com.liferay.osb.asah.dataflow.ingestion.ip.geocoder.IPGeocoder;
+import com.liferay.osb.asah.dataflow.ingestion.ip.geocoder.IPInfo;
 import com.liferay.osb.asah.dataflow.io.WriteToText;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.beam.sdk.Pipeline;
@@ -54,6 +59,7 @@ import org.apache.beam.sdk.values.PDone;
 import org.apache.beam.sdk.values.TypeDescriptor;
 import org.apache.beam.sdk.values.ValueInSingleWindow;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.joda.time.Duration;
 
@@ -100,6 +106,9 @@ public class StreamingIngestionPipeline {
 			).apply(
 				"Parse Analytics Events", ParDo.of(new AnalyticsEventParser())
 			).apply(
+				"Extract Geolocation/Device Information",
+				ParDo.of(new AnalyticsEventExtractor())
+			).apply(
 				"Create Sessions",
 				new Sessionizer(
 					streamingIngestionPipelineOptions.
@@ -118,6 +127,81 @@ public class StreamingIngestionPipeline {
 			"Write Sessions", new SessionBigQueryWriter());
 
 		return pipeline.run();
+	}
+
+	public static class AnalyticsEventExtractor
+		extends DoFn<AnalyticsEvent, AnalyticsEvent> {
+
+		@ProcessElement
+		public void processElement(ProcessContext processContext) {
+			AnalyticsEvent analyticsEvent = processContext.element();
+
+			analyticsEvent.context = _getExtractedContext(analyticsEvent);
+			analyticsEvent.eventProperties = _getSafeMap(
+				analyticsEvent.eventProperties);
+
+			processContext.output(analyticsEvent);
+		}
+
+		private Map<String, String> _getExtractedContext(
+			AnalyticsEvent analyticsEvent) {
+
+			Map<String, String> context = _getSafeMap(analyticsEvent.context);
+
+			BrowscapDevice browscapDevice = BrowscapEngine.getDevice(
+				context.get("userAgent"));
+
+			if (browscapDevice != null) {
+				Map<String, String> convertedValues =
+					ObjectMapperUtil.convertValue(Map.class, browscapDevice);
+
+				context.putAll(convertedValues);
+			}
+
+			IPInfo ipInfo = IPGeocoder.getIPInfo(analyticsEvent.clientIP);
+
+			if (ipInfo != null) {
+				Map<String, String> convertedValues =
+					ObjectMapperUtil.convertValue(Map.class, ipInfo);
+
+				context.putAll(convertedValues);
+			}
+
+			if (StringUtils.isBlank(context.get("canonicalUrl"))) {
+				context.put("canonicalUrl", context.get("url"));
+			}
+
+			String screenHeight = context.get("screenHeight");
+
+			if (screenHeight != null) {
+				context.put("screenHeightSize", screenHeight);
+			}
+
+			String screenWidth = context.get("screenWidth");
+
+			if (screenWidth != null) {
+				context.put("screenWidthSize", screenWidth);
+			}
+
+			return context;
+		}
+
+		private Map<String, String> _getSafeMap(Map<String, String> map) {
+			Map<String, String> safeMap = new HashMap<>();
+
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				String value = entry.getValue();
+
+				if (value == null) {
+					value = "";
+				}
+
+				safeMap.put(entry.getKey(), value);
+			}
+
+			return safeMap;
+		}
+
 	}
 
 	public static class AnalyticsEventParser

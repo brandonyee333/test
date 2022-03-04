@@ -287,6 +287,7 @@ public class AnalyticsEventsRestController {
 
 			analyticsEvent.setApplicationId(event.getApplicationId());
 			analyticsEvent.setChannelId(channelId);
+			analyticsEvent.setClientIP(analyticsEventsMessage.getClientIP());
 			analyticsEvent.setContext(analyticsEventsMessage.getContext());
 			analyticsEvent.setCreateDate(
 				analyticsEventsMessage.getCreateDate());
