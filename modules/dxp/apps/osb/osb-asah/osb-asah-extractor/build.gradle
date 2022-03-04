@@ -9,9 +9,6 @@ bootJar {
 }
 
 dependencies {
-	compile ext: "gz", group: "com.liferay", name: "com.maxmind.geoip.dat", version: "20180327"
-	compile group: "com.blueconic", name: "browscap-java", version: "latest.release"
-	compile group: "com.maxmind.geoip", name: "geoip-api", version: "1.3.1"
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
 
 	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
@@ -19,11 +16,4 @@ dependencies {
 
 jar {
 	enabled = true
-}
-
-processResources {
-	into("META-INF") {
-		from configurations.compile
-		include "**/*.gz"
-	}
 }
