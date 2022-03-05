@@ -34,10 +34,8 @@ export const PageHeader = ({
 	const prevEditingLanguageId = usePrevious(editingLanguageId);
 
 	useEffect(() => {
-		if (prevEditingLanguageId !== editingLanguageId) {
-			setDescription(initialDescription);
-			setTitle(initialTitle);
-		}
+		setDescription(initialDescription);
+		setTitle(initialTitle);
 	}, [
 		editingLanguageId,
 		initialDescription,
