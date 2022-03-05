@@ -25,12 +25,12 @@ import com.liferay.osb.asah.upgrade.v3_1_0.ChannelMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.DataSourceMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.ProjectMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_0.SchemaUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_1_3.OrganizationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DatabaseSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobRunMigrationUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_2_0.OrganizationUpgradeStep;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,6 +81,9 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"3.0.10", "3.1.0", upgradeSteps.toArray(new UpgradeStep[0]));
 
+		upgradeProcess.addUpgradeSteps(
+			"3.1.0", "3.1.3", _organizationUpgradeStep);
+
 		upgradeSteps = new ArrayList<>();
 
 		upgradeSteps.add(_databaseSchemaUpgradeStep);
@@ -90,10 +93,8 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_jobMigrationUpgradeStep);
 		upgradeSteps.add(_jobRunMigrationUpgradeStep);
 
-		upgradeSteps.add(_organizationUpgradeStep);
-
 		upgradeProcess.addUpgradeSteps(
-			"3.1.0", "3.2.0", upgradeSteps.toArray(new UpgradeStep[0]));
+			"3.1.3", "3.2.0", upgradeSteps.toArray(new UpgradeStep[0]));
 
 		return upgradeProcess;
 	}

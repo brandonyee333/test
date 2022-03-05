@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v3_2_0.test;
+package com.liferay.osb.asah.upgrade.v3_1_3.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
-import com.liferay.osb.asah.upgrade.v3_2_0.OrganizationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_1_3.OrganizationUpgradeStep;
 
 import java.util.Date;
 
