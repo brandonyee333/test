@@ -100,8 +100,6 @@ describe('Editable Page Header', () => {
 			const {value} = props;
 			const {editingLanguageId, pageIndex, pages} = value;
 
-			expect(input.value).toBe(newDescription);
-
 			expect(onEvent).toHaveBeenCalledWith('pagesUpdated', [
 				{
 					...pages[pageIndex],
@@ -147,8 +145,6 @@ describe('Editable Page Header', () => {
 			const {value} = props;
 			const {pageIndex, pages} = value;
 
-			expect(input.value).toBe(newDescription);
-
 			expect(onEvent).toHaveBeenCalledWith('pagesUpdated', [
 				{
 					...pages[pageIndex],
@@ -186,8 +182,6 @@ describe('Editable Page Header', () => {
 
 			const {value} = props;
 			const {editingLanguageId, pageIndex, pages} = value;
-
-			expect(input.value).toBe(newTitle);
 
 			expect(onEvent).toHaveBeenCalledWith('pagesUpdated', [
 				{
@@ -233,8 +227,6 @@ describe('Editable Page Header', () => {
 
 			const {value} = props;
 			const {pageIndex, pages} = value;
-
-			expect(input.value).toBe(newTitle);
 
 			expect(onEvent).toHaveBeenCalledWith('pagesUpdated', [
 				{
