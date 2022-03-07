@@ -100,6 +100,8 @@ public class StreamingIngestionPipeline {
 				PubsubIO.readStrings(
 				).fromSubscription(
 					streamingIngestionPipelineOptions.getInputSubscription()
+				).withIdAttribute(
+					"id"
 				).withTimestampAttribute(
 					"eventDate"
 				)
