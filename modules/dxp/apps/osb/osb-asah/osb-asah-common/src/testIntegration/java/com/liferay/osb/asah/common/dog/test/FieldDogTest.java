@@ -23,12 +23,18 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONObject;
 
@@ -120,6 +126,36 @@ public class FieldDogTest
 	@Test
 	public void testTimestamp() throws Exception {
 		_testDateField(2153192221164L, "2038-03-26T04:57:01.164Z");
+	}
+
+	@Test
+	public void testUpdateFields() throws Exception {
+		_fieldMappingDog.addFieldMapping(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				_dataSource.getId(), "test", "test", "Text"));
+
+		_fieldDog.addFields(
+			"demographics", JSONUtil.put("date", "1954/02/03"), _dataSource, 1L,
+			"individual");
+
+		_fieldDog.updateFields(
+			"demographics", JSONUtil.put("test", "test"), _dataSource,
+			Collections.singletonList(1L), "individual");
+
+		List<Field> fields = _fieldDog.getFields(
+			"demographics", Collections.singletonList(1L));
+
+		Stream<Field> stream = fields.stream();
+
+		Optional<Field> fieldOptional = stream.filter(
+			field -> StringUtils.equals(field.getName(), "test")
+		).findFirst();
+
+		Assertions.assertTrue(fieldOptional.isPresent());
+
+		Field field = fieldOptional.get();
+
+		Assertions.assertEquals(field.getValue(), "test");
 	}
 
 	@Test
