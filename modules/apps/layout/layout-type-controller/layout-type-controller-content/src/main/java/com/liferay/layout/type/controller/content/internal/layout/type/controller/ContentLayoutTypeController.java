@@ -111,6 +111,8 @@ public class ContentLayoutTypeController extends BaseLayoutTypeControllerImpl {
 		String layoutMode = ParamUtil.getString(
 			httpServletRequest, "p_l_mode", Constants.VIEW);
 
+		String page = getViewPage();
+
 		if (layoutMode.equals(Constants.EDIT)) {
 			if (hasUpdatePermissions == null) {
 				hasUpdatePermissions = _hasUpdatePermissions(
@@ -120,11 +122,7 @@ public class ContentLayoutTypeController extends BaseLayoutTypeControllerImpl {
 			if (!hasUpdatePermissions) {
 				layoutMode = Constants.VIEW;
 			}
-		}
 
-		String page = getViewPage();
-
-		if (layoutMode.equals(Constants.EDIT)) {
 			page = _EDIT_LAYOUT_PAGE;
 		}
 
