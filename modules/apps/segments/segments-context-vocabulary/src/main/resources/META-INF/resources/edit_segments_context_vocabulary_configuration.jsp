@@ -56,7 +56,7 @@ segmentsContextVocabularyConfigurationDisplayContext.addPortletBreadcrumbEntries
 					<ul class="nav nav-nested">
 						<li class="nav-item">
 							<a class="nav-link text-uppercase">
-								<liferay-ui:message key='<%= "scope.system" %>' />
+								<liferay-ui:message key="scope.system" />
 							</a>
 
 							<div>
