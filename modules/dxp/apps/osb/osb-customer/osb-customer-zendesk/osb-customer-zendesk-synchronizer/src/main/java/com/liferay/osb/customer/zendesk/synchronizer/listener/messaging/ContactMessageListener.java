@@ -256,9 +256,10 @@ public class ContactMessageListener extends BaseMessageListener {
 
 					_customerSynchronizer.update(user);
 
-					if (name.equals(ContactRoleConstants.NAME_ADMINISTRATOR) ||
+					if (name.equals(
+							ContactRoleConstants.NAME_SUPPORT_ADMINISTRATOR) ||
 						contactRoleName.equals(
-							ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
+							ContactRoleConstants.NAME_SUPPORT_REQUESTER)) {
 
 						_accountSynchronizer.reassignTickets(
 							account.getKey(), accountEntry, user);

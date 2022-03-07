@@ -349,9 +349,10 @@ public class AccountSynchronizer {
 				for (ContactRole contactRole : contactRoles) {
 					String name = contactRole.getName();
 
-					if (name.equals(ContactRoleConstants.NAME_ADMINISTRATOR) ||
+					if (name.equals(
+							ContactRoleConstants.NAME_SUPPORT_ADMINISTRATOR) ||
 						name.equals(
-							ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
+							ContactRoleConstants.NAME_SUPPORT_REQUESTER)) {
 
 						User curUser =
 							_userIdentityProvider.fetchUserByEmailAddress(

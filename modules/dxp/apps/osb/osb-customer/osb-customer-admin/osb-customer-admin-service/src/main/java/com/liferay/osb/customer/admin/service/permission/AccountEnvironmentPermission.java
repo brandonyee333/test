@@ -97,8 +97,9 @@ public class AccountEnvironmentPermission {
 			for (ContactRole contactRole : contactRoles) {
 				String name = contactRole.getName();
 
-				if (name.equals(ContactRoleConstants.NAME_ADMINISTRATOR) ||
-					name.equals(ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
+				if (name.equals(
+						ContactRoleConstants.NAME_SUPPORT_ADMINISTRATOR) ||
+					name.equals(ContactRoleConstants.NAME_SUPPORT_REQUESTER)) {
 
 					return true;
 				}

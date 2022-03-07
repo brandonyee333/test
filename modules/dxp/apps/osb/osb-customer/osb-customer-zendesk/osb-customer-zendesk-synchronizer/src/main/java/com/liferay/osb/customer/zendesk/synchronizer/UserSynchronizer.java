@@ -312,14 +312,14 @@ public class UserSynchronizer {
 				_zendeskMapperUtil.fetchZendeskOrganizationId(
 					accountEntry.getAccountEntryId());
 
-			boolean watcher = false;
+			boolean supportUser = false;
 			boolean closedWatcher = false;
 
 			for (ContactRole contactRole : contactRoles) {
 				String name = contactRole.getName();
 
-				if (name.equals(ContactRoleConstants.NAME_SUPPORT_WATCHER)) {
-					watcher = true;
+				if (name.equals(ContactRoleConstants.NAME_SUPPORT_USER)) {
+					supportUser = true;
 				}
 				else if (name.equals(
 							ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
@@ -329,7 +329,7 @@ public class UserSynchronizer {
 			}
 
 			if (accountEntry.isActiveTicketSupport()) {
-				if (watcher && (zendeskOrganizationId > 0)) {
+				if (supportUser && (zendeskOrganizationId > 0)) {
 					tags.add(
 						ZendeskTagConstants.getWatcherTag(
 							zendeskOrganizationId));
