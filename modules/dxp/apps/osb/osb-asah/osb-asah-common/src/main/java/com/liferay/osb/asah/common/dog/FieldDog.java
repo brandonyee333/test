@@ -373,9 +373,8 @@ public class FieldDog {
 						if (!Objects.isNull(curNewField.getValue())) {
 							updatedFields.add(curNewField);
 						}
-						else {
-							continue;
-						}
+
+						continue;
 					}
 
 					Field curOldField = curOldFields.get(0);
