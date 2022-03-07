@@ -316,7 +316,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 					request.setAttribute("view.jsp-entriesSearchContainer", entriesSearchContainer);
 					%>
 
-					<liferay-util:include page='<%= "/message_boards_admin/view_entries.jsp" %>' servletContext="<%= application %>" />
+					<liferay-util:include page="/message_boards_admin/view_entries.jsp" servletContext="<%= application %>" />
 
 					<%
 					if (category != null) {
@@ -367,7 +367,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 						/>
 					</c:if>
 
-					<liferay-util:include page='<%= "/message_boards_admin/view_entries.jsp" %>' servletContext="<%= application %>">
+					<liferay-util:include page="/message_boards_admin/view_entries.jsp" servletContext="<%= application %>">
 						<liferay-util:param name="showBreadcrumb" value="<%= Boolean.FALSE.toString() %>" />
 					</liferay-util:include>
 

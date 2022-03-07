@@ -209,7 +209,7 @@ request.setAttribute("view.jsp-entriesSearchContainer", searchContainer);
 			</c:if>
 		</div>
 
-		<liferay-util:include page='<%= "/message_boards_admin/view_entries.jsp" %>' servletContext="<%= application %>">
+		<liferay-util:include page="/message_boards_admin/view_entries.jsp" servletContext="<%= application %>">
 			<liferay-util:param name="showBreadcrumb" value="<%= Boolean.FALSE.toString() %>" />
 		</liferay-util:include>
 

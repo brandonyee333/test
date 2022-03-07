@@ -31,7 +31,7 @@ KaleoDraftDefinition kaleoDraftDefinition = (KaleoDraftDefinition)row.getObject(
 >
 	<c:if test="<%= KaleoDraftDefinitionPermission.contains(permissionChecker, kaleoDraftDefinition, ActionKeys.UPDATE) %>">
 		<portlet:renderURL var="editURL">
-			<portlet:param name="mvcPath" value='<%= "/designer/edit_kaleo_draft_definition.jsp" %>' />
+			<portlet:param name="mvcPath" value="/designer/edit_kaleo_draft_definition.jsp" />
 			<portlet:param name="name" value="<%= kaleoDraftDefinition.getName() %>" />
 			<portlet:param name="version" value="<%= String.valueOf(kaleoDraftDefinition.getVersion()) %>" />
 			<portlet:param name="draftVersion" value="<%= String.valueOf(kaleoDraftDefinition.getDraftVersion()) %>" />
