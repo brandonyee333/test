@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Layout Content Page Editor Web
 Bundle-SymbolicName: com.liferay.layout.content.page.editor.web
-Bundle-Version: 2.0.128
+Bundle-Version: 2.0.129
 Require-Capability:\
 	liferay.resource.bundle;\
 		filter:="(bundle.symbolic.name=com.liferay.frontend.editor.lang)"
