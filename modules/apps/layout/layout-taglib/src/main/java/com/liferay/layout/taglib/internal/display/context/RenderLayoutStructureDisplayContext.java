@@ -71,7 +71,9 @@ import com.liferay.style.book.util.DefaultStyleBookEntryUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -918,8 +920,19 @@ public class RenderLayoutStructureDisplayContext {
 		}
 
 		JSONObject frontendTokenDefinitionJSONObject =
-			JSONFactoryUtil.createJSONObject(
-				frontendTokenDefinition.getJSON(_themeDisplay.getLocale()));
+			_layoutSetThemeFrontendTokenDefinitionJSONObjectMap.computeIfAbsent(
+				layoutSet.getPrimaryKey() + layoutSet.getThemeId() +
+					_themeDisplay.getLocale(),
+				key -> {
+					try {
+						return JSONFactoryUtil.createJSONObject(
+							frontendTokenDefinition.getJSON(
+								_themeDisplay.getLocale()));
+					}
+					catch (Exception exception) {
+						throw new RuntimeException(exception);
+					}
+				});
 
 		JSONArray frontendTokenCategoriesJSONArray =
 			frontendTokenDefinitionJSONObject.getJSONArray(
@@ -1147,6 +1160,10 @@ public class RenderLayoutStructureDisplayContext {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RenderLayoutStructureDisplayContext.class);
+
+	private static final Map<String, JSONObject>
+		_layoutSetThemeFrontendTokenDefinitionJSONObjectMap =
+			new ConcurrentHashMap<>();
 
 	private final List<String> _collectionStyledLayoutStructureItemIds =
 		new ArrayList<>();
