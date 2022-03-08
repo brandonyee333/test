@@ -21,9 +21,11 @@ import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.io.File;
@@ -42,7 +44,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.AfterEach;
@@ -56,10 +57,6 @@ import org.springframework.data.domain.Page;
 /**
  * @author Matthew Kong
  */
-@ElasticsearchIndex(
-	name = "data-control-tasks", resourcePath = "data_control_tasks.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-)
 public class DataControlTaskDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
@@ -89,6 +86,10 @@ public class DataControlTaskDogTest
 		}
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
+	)
 	@Test
 	public void testAddDataControlTasksFile() throws Exception {
 		String content = "test1@liferay.com\ntest2@liferay.com";
@@ -101,22 +102,20 @@ public class DataControlTaskDogTest
 			null, Paths.get(_tempPath.toString(), "test.csv"), "1000",
 			Collections.singletonList(DataControlTaskType.SUPPRESS.toString()));
 
-		JSONArray jsonArray = _elasticsearchInvoker.get(
-			"data-control-tasks", QueryBuilders.matchAllQuery());
+		List<DataControlTask> dataControlTasks =
+			_dataControlTaskDog.getDataControlTasks(null, null, null);
 
-		Assertions.assertEquals(6, jsonArray.length());
+		Assertions.assertEquals(6, dataControlTasks.size());
 
-		JSONObject dataControlTaskJSONObject = jsonArray.getJSONObject(4);
-
-		Assertions.assertEquals(
-			"test1@liferay.com",
-			dataControlTaskJSONObject.getString("emailAddress"));
-
-		dataControlTaskJSONObject = jsonArray.getJSONObject(5);
+		DataControlTask dataControlTask = dataControlTasks.get(4);
 
 		Assertions.assertEquals(
-			"test2@liferay.com",
-			dataControlTaskJSONObject.getString("emailAddress"));
+			"test1@liferay.com", dataControlTask.getEmailAddress());
+
+		dataControlTask = dataControlTasks.get(5);
+
+		Assertions.assertEquals(
+			"test2@liferay.com", dataControlTask.getEmailAddress());
 
 		File file = path.toFile();
 
@@ -128,6 +127,10 @@ public class DataControlTaskDogTest
 	@ElasticsearchIndex(
 		name = "suppressions", resourcePath = "suppressions.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
 	)
 	@Test
 	public void testAddUnsuppressDataControlTasks() {
@@ -145,6 +148,10 @@ public class DataControlTaskDogTest
 			suppressionJSONObject.getString("dataControlTaskStatus"));
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
+	)
 	@Test
 	public void testGetDataControlTaskResultBagBatch() {
 		Page<DataControlTask> dataControlTaskPage =
@@ -156,6 +163,10 @@ public class DataControlTaskDogTest
 			dataControlTaskPage);
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
+	)
 	@Test
 	public void testGetDataControlTaskResultBagCombination() {
 		Page<DataControlTask> dataControlTaskPage =
@@ -171,6 +182,10 @@ public class DataControlTaskDogTest
 			dataControlTaskPage);
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
+	)
 	@Test
 	public void testGetDataControlTaskResultBagPagination() {
 		Page<DataControlTask> dataControlTaskPage =
@@ -182,6 +197,10 @@ public class DataControlTaskDogTest
 			dataControlTaskPage);
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
+	)
 	@Test
 	public void testGetDataControlTaskResultBagRange() {
 		Page<DataControlTask> dataControlTaskPage =
@@ -196,6 +215,10 @@ public class DataControlTaskDogTest
 			dataControlTaskPage);
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
+	)
 	@Test
 	public void testGetDataControlTaskResultBagSearch() {
 		Page<DataControlTask> dataControlTaskPage =
@@ -207,6 +230,10 @@ public class DataControlTaskDogTest
 			dataControlTaskPage);
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
+	)
 	@Test
 	public void testGetDataControlTaskResultBagStatus() {
 		Page<DataControlTask> dataControlTaskPage =
@@ -221,6 +248,10 @@ public class DataControlTaskDogTest
 			dataControlTaskPage);
 	}
 
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
+	)
 	@Test
 	public void testGetDataControlTaskResultBagTypes() {
 		Page<DataControlTask> dataControlTaskPage =

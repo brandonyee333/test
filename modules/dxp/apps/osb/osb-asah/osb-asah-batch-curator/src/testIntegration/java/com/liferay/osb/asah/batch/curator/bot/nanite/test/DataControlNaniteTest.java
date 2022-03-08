@@ -17,10 +17,13 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
+import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.io.File;
@@ -83,10 +86,6 @@ public class DataControlNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "data-control-tasks", resourcePath = "data_control_tasks.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -98,22 +97,23 @@ public class DataControlNaniteTest
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
+	@RepositoryResource(
+		repositoryClass = DataControlTaskRepository.class,
+		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
+	)
 	@Test
 	public void test() throws Exception {
 		_dataControlNanite.run(null);
 
-		JSONArray dataControlTasksJSONArray = faroInfoElasticsearchInvoker.get(
-			"data-control-tasks", QueryBuilders.matchAllQuery());
+		Iterable<DataControlTask> dataControlTasks =
+			_dataDataControlTaskRepository.findAll();
 
-		for (int i = 0; i < dataControlTasksJSONArray.length(); i++) {
-			JSONObject dataControlTask =
-				dataControlTasksJSONArray.getJSONObject(i);
-
-			Assertions.assertNotNull(dataControlTask.getString("completeDate"));
-			Assertions.assertNotNull(dataControlTask.getString("startDate"));
+		for (DataControlTask dataControlTask : dataControlTasks) {
+			Assertions.assertNotNull(dataControlTask.getCompleteDate());
+			Assertions.assertNotNull(dataControlTask.getStartDate());
 			Assertions.assertEquals(
 				DataControlTaskStatus.COMPLETED.toString(),
-				dataControlTask.getString("status"));
+				dataControlTask.getStatus());
 		}
 
 		JSONArray suppressionsJSONArray = faroInfoElasticsearchInvoker.get(
@@ -157,6 +157,9 @@ public class DataControlNaniteTest
 
 	@Autowired
 	private DataControlNanite _dataControlNanite;
+
+	@Autowired
+	private DataControlTaskRepository _dataDataControlTaskRepository;
 
 	@Autowired
 	private DXPEntityRepository _dxpEntityRepository;
