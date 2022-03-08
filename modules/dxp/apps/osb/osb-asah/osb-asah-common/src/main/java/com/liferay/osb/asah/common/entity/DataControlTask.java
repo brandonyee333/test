@@ -78,6 +78,7 @@ public final class DataControlTask implements Persistable<Long> {
 		return _batchId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
