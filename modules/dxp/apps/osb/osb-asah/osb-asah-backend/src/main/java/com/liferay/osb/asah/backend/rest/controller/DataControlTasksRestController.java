@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.dog.DataControlTaskDog;
+import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.util.CSVUtil;
 import com.liferay.osb.asah.common.zip.ZipFileBuilder;
@@ -24,13 +26,14 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,30 +53,23 @@ public class DataControlTasksRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity download(@PathVariable String id) {
-		JSONObject dataControlTaskJSONObject =
-			faroInfoElasticsearchInvoker.fetch(
-				"data-control-tasks",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termsQuery("id", id)
-				).filter(
-					QueryBuilders.termsQuery(
-						"status", DataControlTaskStatus.COMPLETED.toString())
-				));
+		DataControlTask dataControlTask =
+			_dataControlTaskDog.fetchDataControlTask(
+				Long.valueOf(id), DataControlTaskStatus.COMPLETED.toString());
 
-		if (dataControlTaskJSONObject == null) {
+		if (dataControlTask == null) {
 			return toNotFoundResponse();
 		}
 
 		File file = new File(
-			_exportPath + "/" + dataControlTaskJSONObject.getString("id") +
-				".zip");
+			_exportPath + "/" + dataControlTask.getId() + ".zip");
 
 		if (!file.exists()) {
 			return toNotFoundResponse();
 		}
 
 		return toDownloadResponse(
-			file, _getExportFileName(dataControlTaskJSONObject, file));
+			file, _getExportFileName(dataControlTask, file));
 	}
 
 	@GetMapping
@@ -86,32 +82,22 @@ public class DataControlTasksRestController extends BaseRestController {
 
 		file.deleteOnExit();
 
-		JSONArray dataControlTasksJSONArray = faroInfoElasticsearchInvoker.get(
-			"data-control-tasks",
-			BoolQueryBuilderUtil.filter(
-				FilterStringToQueryBuilderConverter.convert(filterString)
-			).filter(
-				QueryBuilders.termsQuery(
-					"status", DataControlTaskStatus.COMPLETED.toString())
-			));
+		List<DataControlTask> dataControlTasks =
+			_dataControlTaskDog.getDataControlTasks(
+				filterString, DataControlTaskStatus.COMPLETED.toString());
 
 		ZipFileBuilder zipFileBuilder = new ZipFileBuilder(file);
 
-		for (int i = 0; i < dataControlTasksJSONArray.length(); i++) {
-			JSONObject dataControlTaskJSONObject =
-				dataControlTasksJSONArray.getJSONObject(i);
-
+		for (DataControlTask dataControlTask : dataControlTasks) {
 			File dataControlTaskFile = new File(
-				_exportPath + "/" + dataControlTaskJSONObject.getString("id") +
-					".zip");
+				_exportPath + "/" + dataControlTask.getId() + ".zip");
 
 			if (!dataControlTaskFile.exists()) {
 				continue;
 			}
 
 			zipFileBuilder.addToZip(
-				_getExportFileName(
-					dataControlTaskJSONObject, dataControlTaskFile),
+				_getExportFileName(dataControlTask, dataControlTaskFile),
 				zipOutputStream -> {
 					try (FileInputStream fileInputStream = new FileInputStream(
 							dataControlTaskFile)) {
@@ -140,10 +126,19 @@ public class DataControlTasksRestController extends BaseRestController {
 				filterString)
 		throws Exception {
 
+		List<DataControlTask> dataControlTasks =
+			_dataControlTaskDog.getDataControlTasks(filterString, null);
+
+		Stream<DataControlTask> stream = dataControlTasks.stream();
+
 		File file = CSVUtil.createCSVFile(
-			"data-control-tasks", faroInfoElasticsearchInvoker, _fieldNames,
-			"data-control-task-logs-", new File(_tempPath),
-			FilterStringToQueryBuilderConverter.convert(filterString));
+			_fieldNames, "data-control-task-logs-", new File(_tempPath),
+			stream.map(
+				dataControlTask -> _objectMapper.convertValue(
+					dataControlTask, JSONObject.class)
+			).collect(
+				Collectors.toList()
+			));
 
 		return toDownloadResponse(file, "data-control-task-logs.csv");
 	}
@@ -164,10 +159,9 @@ public class DataControlTasksRestController extends BaseRestController {
 	}
 
 	private String _getExportFileName(
-		JSONObject dataControlTaskJSONObject, File file) {
+		DataControlTask dataControlTask, File file) {
 
-		return dataControlTaskJSONObject.getString("emailAddress") + "-" +
-			file.getName();
+		return dataControlTask.getEmailAddress() + "-" + file.getName();
 	}
 
 	private static final Map<String, String> _fieldNames =
@@ -183,8 +177,14 @@ public class DataControlTasksRestController extends BaseRestController {
 			}
 		};
 
+	@Autowired
+	private DataControlTaskDog _dataControlTaskDog;
+
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPath;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Value("${osb.asah.backend.temp.path:/temp}")
 	private String _tempPath;

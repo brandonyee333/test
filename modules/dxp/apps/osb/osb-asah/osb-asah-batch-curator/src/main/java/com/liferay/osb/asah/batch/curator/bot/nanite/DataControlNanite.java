@@ -24,16 +24,17 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.RawDataExport
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
+import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.EmailHttp;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -46,9 +47,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -73,36 +76,26 @@ public class DataControlNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		JSONArrayIterator.of(
-			"data-control-tasks", faroInfoElasticsearchInvoker,
-			this::_runDataControlTask
-		).setQueryBuilder(
-			QueryBuilders.termQuery(
-				"status", DataControlTaskStatus.PENDING.toString())
-		).setStopOnExceptions(
-			false
-		).iterate();
+		List<DataControlTask> pendingDataControlTasks =
+			_dataControlTaskDog.getDataControlTasks(
+				null, Arrays.asList(DataControlTaskStatus.PENDING.toString()),
+				null);
 
-		JSONArrayIterator.of(
-			"data-control-tasks", faroInfoElasticsearchInvoker,
-			this::_expireDataControlTask
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					"completeDate"
-				).lt(
-					DateUtil.addDays(DateUtil.newDateString(), -30)
-				)
-			).filter(
-				QueryBuilders.termQuery(
-					"status", DataControlTaskStatus.COMPLETED.toString())
-			).filter(
-				QueryBuilders.termsQuery(
-					"type", DataControlTaskType.ACCESS.toString())
-			)
-		).setStopOnExceptions(
-			false
-		).iterate();
+		Stream<DataControlTask> pendingDataControlTasksStream =
+			pendingDataControlTasks.stream();
+
+		pendingDataControlTasksStream.forEach(this::_runDataControlTask);
+
+		List<DataControlTask> completedDataControlTasks =
+			_dataControlTaskDog.getDataControlTasks(
+				DateUtil.addDays(DateUtil.newDate(), -30),
+				Arrays.asList(DataControlTaskStatus.COMPLETED.toString()),
+				Arrays.asList(DataControlTaskType.ACCESS.toString()));
+
+		Stream<DataControlTask> completedDataControlTasksStream =
+			completedDataControlTasks.stream();
+
+		completedDataControlTasksStream.forEach(this::_expireDataControlTask);
 	}
 
 	@Override
@@ -111,7 +104,7 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _addSuppression(
-		JSONObject dataControlTaskJSONObject, String emailAddress) {
+		DataControlTask dataControlTask, String emailAddress) {
 
 		emailAddress = StringUtils.lowerCase(emailAddress);
 
@@ -120,9 +113,7 @@ public class DataControlNanite extends BaseNanite {
 		}
 
 		_suppressionDog.addSuppression(
-			Long.valueOf(dataControlTaskJSONObject.getString("batchId")),
-			DateUtil.toUTCDate(
-				dataControlTaskJSONObject.getString("createDate")),
+			dataControlTask.getBatchId(), dataControlTask.getCreateDate(),
 			DataControlTaskStatus.COMPLETED.toString(), emailAddress);
 	}
 
@@ -198,32 +189,31 @@ public class DataControlNanite extends BaseNanite {
 		_suppressionDog.deleteByEmailAddress(emailAddress);
 	}
 
-	private JSONObject _expireDataControlTask(
-		JSONObject dataControlTaskJSONObject) {
+	private void _expireDataControlTask(DataControlTask dataControlTask) {
+		try {
+			Path zipFilePath = Paths.get(
+				_exportPathName, dataControlTask.getId() + ".zip");
 
-		Path zipFilePath = Paths.get(
-			_exportPathName,
-			dataControlTaskJSONObject.getString("id") + ".zip");
+			File file = zipFilePath.toFile();
 
-		File file = zipFilePath.toFile();
+			if (file.exists() && !file.delete()) {
+				_log.error("Unable to delete file " + file.getAbsolutePath());
+			}
 
-		if (file.exists() && !file.delete()) {
-			_log.error("Unable to delete file " + file.getAbsolutePath());
+			_updateDataControlTaskStatus(
+				dataControlTask, DataControlTaskStatus.EXPIRED);
 		}
-
-		_updateDataControlTaskStatus(
-			dataControlTaskJSONObject, DataControlTaskStatus.EXPIRED);
-
-		return dataControlTaskJSONObject;
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
 	}
 
 	private void _exportData(
-			JSONObject dataControlTaskJSONObject, String emailAddress)
+			DataControlTask dataControlTask, String emailAddress)
 		throws Exception {
 
 		ZipFileBuilder zipFileBuilder = new ZipFileBuilder(
-			_exportPathName + "/" + dataControlTaskJSONObject.getString("id") +
-				".zip");
+			_exportPathName + "/" + dataControlTask.getId() + ".zip");
 
 		zipFileBuilder.addToZip(
 			"dxp_users.json",
@@ -247,7 +237,7 @@ public class DataControlNanite extends BaseNanite {
 			emailAddress);
 
 		if (individual == null) {
-			_exportDataControlTask(dataControlTaskJSONObject, zipFileBuilder);
+			_exportDataControlTask(dataControlTask, zipFileBuilder);
 
 			return;
 		}
@@ -304,18 +294,22 @@ public class DataControlNanite extends BaseNanite {
 				"user-sessions", _cerebroInfoElasticsearchInvoker,
 				individualIdQueryBuilder, zipOutputStream));
 
-		_exportDataControlTask(dataControlTaskJSONObject, zipFileBuilder);
+		_exportDataControlTask(dataControlTask, zipFileBuilder);
 	}
 
 	private void _exportDataControlTask(
-			JSONObject dataControlTaskJSONObject, ZipFileBuilder zipFileBuilder)
+			DataControlTask dataControlTask, ZipFileBuilder zipFileBuilder)
 		throws Exception {
 
 		zipFileBuilder.addToZip(
 			"data-control-tasks.json",
 			zipOutputStream -> {
 				_updateDataControlTaskStatus(
-					dataControlTaskJSONObject, DataControlTaskStatus.COMPLETED);
+					dataControlTask, DataControlTaskStatus.COMPLETED);
+
+				JSONObject dataControlTaskJSONObject =
+					_objectMapper.convertValue(
+						dataControlTask, JSONObject.class);
 
 				String dataControlTaskJSON = dataControlTaskJSONObject.toString(
 					2);
@@ -354,100 +348,86 @@ public class DataControlNanite extends BaseNanite {
 		return dataSourceIdIndividualPKs;
 	}
 
-	private JSONObject _runDataControlTask(
-		JSONObject dataControlTaskJSONObject) {
-
-		_updateDataControlTaskStatus(
-			dataControlTaskJSONObject, DataControlTaskStatus.RUNNING);
-
-		String emailAddress = dataControlTaskJSONObject.getString(
-			"emailAddress");
-		String type = dataControlTaskJSONObject.getString("type");
-
+	private void _runDataControlTask(DataControlTask dataControlTask) {
 		try {
-			if (StringUtils.equals(
-					type, DataControlTaskType.ACCESS.toString())) {
+			_updateDataControlTaskStatus(
+				dataControlTask, DataControlTaskStatus.RUNNING);
 
-				_exportData(dataControlTaskJSONObject, emailAddress);
-			}
-			else if (StringUtils.equals(
-						type, DataControlTaskType.DELETE.toString())) {
+			String emailAddress = dataControlTask.getEmailAddress();
+			String type = dataControlTask.getType();
 
-				_deleteData(emailAddress);
-			}
-			else if (StringUtils.equals(
-						type, DataControlTaskType.SUPPRESS.toString())) {
+			try {
+				if (StringUtils.equals(
+						type, DataControlTaskType.ACCESS.toString())) {
 
-				_addSuppression(dataControlTaskJSONObject, emailAddress);
-			}
-			else if (StringUtils.equals(
-						type, DataControlTaskType.UNSUPPRESS.toString())) {
+					_exportData(dataControlTask, emailAddress);
+				}
+				else if (StringUtils.equals(
+							type, DataControlTaskType.DELETE.toString())) {
 
-				_deleteSuppression(emailAddress);
-			}
+					_deleteData(emailAddress);
+				}
+				else if (StringUtils.equals(
+							type, DataControlTaskType.SUPPRESS.toString())) {
 
-			if (!StringUtils.equals(
-					type, DataControlTaskType.ACCESS.toString())) {
+					_addSuppression(dataControlTask, emailAddress);
+				}
+				else if (StringUtils.equals(
+							type, DataControlTaskType.UNSUPPRESS.toString())) {
 
-				_exportDataControlTask(
-					dataControlTaskJSONObject,
-					new ZipFileBuilder(
-						_exportPathName + "/" +
-							dataControlTaskJSONObject.getString("id") +
+					_deleteSuppression(emailAddress);
+				}
+
+				if (!StringUtils.equals(
+						type, DataControlTaskType.ACCESS.toString())) {
+
+					_exportDataControlTask(
+						dataControlTask,
+						new ZipFileBuilder(
+							_exportPathName + "/" + dataControlTask.getId() +
 								".zip"));
+				}
 			}
+			catch (Exception exception) {
+				_log.error(exception, exception);
+
+				_updateDataControlTaskStatus(
+					dataControlTask, DataControlTaskStatus.ERROR);
+			}
+
+			_sendEmail(dataControlTask);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
-
-			_updateDataControlTaskStatus(
-				dataControlTaskJSONObject, DataControlTaskStatus.ERROR);
 		}
-
-		_sendEmail(dataControlTaskJSONObject);
-
-		return dataControlTaskJSONObject;
 	}
 
-	private void _sendEmail(JSONObject dataControlTaskJSONObject) {
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery(
-				"batchId", dataControlTaskJSONObject.getString("batchId"))
-		).filter(
-			BoolQueryBuilderUtil.should(
-				QueryBuilders.termQuery(
-					"status", DataControlTaskStatus.PENDING.toString())
-			).should(
-				QueryBuilders.termQuery(
-					"status", DataControlTaskStatus.RUNNING.toString())
-			)
-		);
+	private void _sendEmail(DataControlTask dataControlTask) {
+		if (!_dataControlTaskDog.existsDataControlTask(
+				dataControlTask.getBatchId(),
+				Arrays.asList(
+					DataControlTaskStatus.PENDING.toString(),
+					DataControlTaskStatus.RUNNING.toString()))) {
 
-		if (!faroInfoElasticsearchInvoker.exists(
-				"data-control-tasks", boolQueryBuilder)) {
-
-			_emailHttp.sendEmail(dataControlTaskJSONObject);
+			_emailHttp.sendEmail(
+				_objectMapper.convertValue(dataControlTask, JSONObject.class));
 		}
 	}
 
 	private void _updateDataControlTaskStatus(
-		JSONObject dataControlTaskJSONObject,
+		DataControlTask dataControlTask,
 		DataControlTaskStatus dataControlTaskStatus) {
 
 		if (dataControlTaskStatus == DataControlTaskStatus.COMPLETED) {
-			dataControlTaskJSONObject.put(
-				"completeDate", DateUtil.newDateString());
+			dataControlTask.setCompleteDate(DateUtil.newDate());
 		}
 		else if (dataControlTaskStatus == DataControlTaskStatus.RUNNING) {
-			dataControlTaskJSONObject.put(
-				"startDate", DateUtil.newDateString());
+			dataControlTask.setStartDate(DateUtil.newDate());
 		}
 
-		dataControlTaskJSONObject.put(
-			"status", dataControlTaskStatus.toString());
+		dataControlTask.setStatus(dataControlTaskStatus.toString());
 
-		faroInfoElasticsearchInvoker.update(
-			"data-control-tasks", dataControlTaskJSONObject);
+		_dataControlTaskDog.updateDataControlTask(dataControlTask);
 	}
 
 	private void _writeToZip(
@@ -481,6 +461,9 @@ public class DataControlNanite extends BaseNanite {
 
 	@Autowired
 	private CSVIndividualDog _csvIndividualDog;
+
+	@Autowired
+	private DataControlTaskDog _dataControlTaskDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;

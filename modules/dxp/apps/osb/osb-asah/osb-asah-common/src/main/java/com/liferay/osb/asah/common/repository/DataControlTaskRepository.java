@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DataControlTask;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,19 @@ public interface DataControlTaskRepository
 	public long countDataControlTasks(
 		Long batchId, String emailAddress, Date startCreateDate,
 		List<String> statuses, List<String> types);
+
+	public Boolean existsByBatchIdAndStatusIn(
+		Long batchId, List<String> status);
+
+	public DataControlTask findByIdAndStatus(Long id, String status);
+
+	@Cacheable
+	public List<DataControlTask> searchDataControlTasks(
+		Date endCompleteDate, List<String> statuses, List<String> types);
+
+	@Cacheable
+	public List<DataControlTask> searchDataControlTasks(
+		FilterHelper filterHelper, String status);
 
 	@Cacheable
 	public List<DataControlTask> searchDataControlTasks(

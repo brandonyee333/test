@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DataControlTask;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,7 @@ import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Marcellus Tavares
@@ -51,7 +53,7 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 			"DataControlTask"
 		).where(
 			_getConditions(
-				batchId, emailAddress, startCreateDate, statuses, types)
+				batchId, emailAddress, null, startCreateDate, statuses, types)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -59,9 +61,65 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public Boolean existsByBatchIdAndStatusIn(
+		@Nullable Long batchId, @Nullable List<String> statuses) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return _dslContext.fetchExists(
+			selectSelectStep.from(
+				"DataControlTask"
+			).where(
+				_getConditions(batchId, null, null, null, statuses, null)
+			));
+	}
+
 	public List<DataControlTask> searchDataControlTasks(
-		Long batchId, String emailAddress, Date startCreateDate,
-		List<String> statuses, List<String> types, Pageable pageable) {
+		@Nullable Date endCompleteDate, @Nullable List<String> statuses,
+		@Nullable List<String> types) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"DataControlTask"
+		).where(
+			_getConditions(null, null, endCompleteDate, null, statuses, types)
+		).fetch(
+			record -> new DataControlTask(record.intoMap())
+		);
+	}
+
+	public List<DataControlTask> searchDataControlTasks(
+		FilterHelper filterHelper, @Nullable String status) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(filterHelper.getCondition());
+
+		if ((status != null) && !status.isEmpty()) {
+			conditions.add(
+				DSL.field(
+					"status"
+				).in(
+					status
+				));
+		}
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"DataControlTask"
+		).where(
+			conditions
+		).fetch(
+			record -> new DataControlTask(record.intoMap())
+		);
+	}
+
+	public List<DataControlTask> searchDataControlTasks(
+		@Nullable Long batchId, @Nullable String emailAddress,
+		@Nullable Date startCreateDate, @Nullable List<String> statuses,
+		@Nullable List<String> types, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -69,7 +127,7 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 			"DataControlTask"
 		).where(
 			_getConditions(
-				batchId, emailAddress, startCreateDate, statuses, types)
+				batchId, emailAddress, null, startCreateDate, statuses, types)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -82,8 +140,9 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		Long batchId, String emailAddress, Date startCreateDate,
-		List<String> statuses, List<String> types) {
+		@Nullable Long batchId, @Nullable String emailAddress,
+		@Nullable Date endCompleteDate, @Nullable Date startCreateDate,
+		@Nullable List<String> statuses, @Nullable List<String> types) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -102,6 +161,15 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 					"emailAddress"
 				).containsIgnoreCase(
 					emailAddress
+				));
+		}
+
+		if (endCompleteDate != null) {
+			conditions.add(
+				DSL.field(
+					"completeDate"
+				).lessThan(
+					endCompleteDate
 				));
 		}
 

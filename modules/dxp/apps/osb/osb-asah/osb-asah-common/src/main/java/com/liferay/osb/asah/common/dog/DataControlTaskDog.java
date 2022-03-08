@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -105,6 +106,15 @@ public class DataControlTaskDog {
 		return true;
 	}
 
+	public Boolean existsDataControlTask(Long batchId, List<String> status) {
+		return _dataControlTaskRepository.existsByBatchIdAndStatusIn(
+			batchId, status);
+	}
+
+	public DataControlTask fetchDataControlTask(Long id, String status) {
+		return _dataControlTaskRepository.findByIdAndStatus(id, status);
+	}
+
 	public Page<DataControlTask> getDataControlTaskPage(
 		Long batchId, String keywords, Integer rangeKey, int page, int size,
 		Sort sort, List<String> statuses, List<String> types) {
@@ -124,6 +134,33 @@ public class DataControlTaskDog {
 			pageRequest,
 			() -> _dataControlTaskRepository.countDataControlTasks(
 				batchId, keywords, startCreateDate, statuses, types));
+	}
+
+	public List<DataControlTask> getDataControlTasks(
+		Date endCompleteDate, List<String> statuses, List<String> types) {
+
+		return _dataControlTaskRepository.searchDataControlTasks(
+			endCompleteDate, statuses, types);
+	}
+
+	public List<DataControlTask> getDataControlTasks(
+		String filterString, String status) {
+
+		FilterHelper filterHelper = new FilterHelper(filterString);
+
+		return _dataControlTaskRepository.searchDataControlTasks(
+			filterHelper, status);
+	}
+
+	public DataControlTask updateDataControlTask(
+		DataControlTask dataControlTask) {
+
+		if (dataControlTask.isNew()) {
+			throw new IllegalArgumentException(
+				"Unable to update Data Control Task");
+		}
+
+		return _dataControlTaskRepository.save(dataControlTask);
 	}
 
 	private Date _getStartCreateDate(Integer rangeKey) {
