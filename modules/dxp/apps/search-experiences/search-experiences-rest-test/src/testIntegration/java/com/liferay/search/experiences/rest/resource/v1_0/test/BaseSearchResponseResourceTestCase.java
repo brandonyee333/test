@@ -673,18 +673,21 @@ public abstract class BaseSearchResponseResourceTestCase {
 		}
 
 		if (entityFieldName.equals("maxScore")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
+			sb.append(String.valueOf(searchResponse.getMaxScore()));
+
+			return sb.toString();
 		}
 
 		if (entityFieldName.equals("page")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
+			sb.append(String.valueOf(searchResponse.getPage()));
+
+			return sb.toString();
 		}
 
 		if (entityFieldName.equals("pageSize")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
+			sb.append(String.valueOf(searchResponse.getPageSize()));
+
+			return sb.toString();
 		}
 
 		if (entityFieldName.equals("request")) {
@@ -719,8 +722,9 @@ public abstract class BaseSearchResponseResourceTestCase {
 		}
 
 		if (entityFieldName.equals("totalHits")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
+			sb.append(String.valueOf(searchResponse.getTotalHits()));
+
+			return sb.toString();
 		}
 
 		throw new IllegalArgumentException(

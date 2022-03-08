@@ -364,6 +364,18 @@ public abstract class BaseAccountRoleResourceTestCase {
 	}
 
 	@Test
+	public void testGetAccountRolesByExternalReferenceCodePageWithSortDouble()
+		throws Exception {
+
+		testGetAccountRolesByExternalReferenceCodePageWithSort(
+			EntityField.Type.DOUBLE,
+			(entityField, accountRole1, accountRole2) -> {
+				BeanUtils.setProperty(accountRole1, entityField.getName(), 0.1);
+				BeanUtils.setProperty(accountRole2, entityField.getName(), 0.5);
+			});
+	}
+
+	@Test
 	public void testGetAccountRolesByExternalReferenceCodePageWithSortInteger()
 		throws Exception {
 
@@ -614,6 +626,16 @@ public abstract class BaseAccountRoleResourceTestCase {
 				BeanUtils.setProperty(
 					accountRole1, entityField.getName(),
 					DateUtils.addMinutes(new Date(), -2));
+			});
+	}
+
+	@Test
+	public void testGetAccountRolesPageWithSortDouble() throws Exception {
+		testGetAccountRolesPageWithSort(
+			EntityField.Type.DOUBLE,
+			(entityField, accountRole1, accountRole2) -> {
+				BeanUtils.setProperty(accountRole1, entityField.getName(), 0.1);
+				BeanUtils.setProperty(accountRole2, entityField.getName(), 0.5);
 			});
 	}
 

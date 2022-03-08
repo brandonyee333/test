@@ -278,6 +278,16 @@ public abstract class BaseAppResourceTestCase {
 	}
 
 	@Test
+	public void testGetAppsPageWithSortDouble() throws Exception {
+		testGetAppsPageWithSort(
+			EntityField.Type.DOUBLE,
+			(entityField, app1, app2) -> {
+				BeanUtils.setProperty(app1, entityField.getName(), 0.1);
+				BeanUtils.setProperty(app2, entityField.getName(), 0.5);
+			});
+	}
+
+	@Test
 	public void testGetAppsPageWithSortInteger() throws Exception {
 		testGetAppsPageWithSort(
 			EntityField.Type.INTEGER,
@@ -657,6 +667,16 @@ public abstract class BaseAppResourceTestCase {
 	}
 
 	@Test
+	public void testGetDataDefinitionAppsPageWithSortDouble() throws Exception {
+		testGetDataDefinitionAppsPageWithSort(
+			EntityField.Type.DOUBLE,
+			(entityField, app1, app2) -> {
+				BeanUtils.setProperty(app1, entityField.getName(), 0.1);
+				BeanUtils.setProperty(app2, entityField.getName(), 0.5);
+			});
+	}
+
+	@Test
 	public void testGetDataDefinitionAppsPageWithSortInteger()
 		throws Exception {
 
@@ -881,6 +901,16 @@ public abstract class BaseAppResourceTestCase {
 				BeanUtils.setProperty(
 					app1, entityField.getName(),
 					DateUtils.addMinutes(new Date(), -2));
+			});
+	}
+
+	@Test
+	public void testGetSiteAppsPageWithSortDouble() throws Exception {
+		testGetSiteAppsPageWithSort(
+			EntityField.Type.DOUBLE,
+			(entityField, app1, app2) -> {
+				BeanUtils.setProperty(app1, entityField.getName(), 0.1);
+				BeanUtils.setProperty(app2, entityField.getName(), 0.5);
 			});
 	}
 

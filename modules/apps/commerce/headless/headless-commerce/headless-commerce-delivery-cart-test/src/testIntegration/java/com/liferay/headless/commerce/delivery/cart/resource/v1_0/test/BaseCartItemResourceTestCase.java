@@ -1109,8 +1109,9 @@ public abstract class BaseCartItemResourceTestCase {
 		}
 
 		if (entityFieldName.equals("quantity")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
+			sb.append(String.valueOf(cartItem.getQuantity()));
+
+			return sb.toString();
 		}
 
 		if (entityFieldName.equals("settings")) {

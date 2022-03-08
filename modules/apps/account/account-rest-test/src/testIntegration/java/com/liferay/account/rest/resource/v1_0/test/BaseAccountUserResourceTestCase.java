@@ -296,6 +296,42 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	@Test
+	public void testGetAccountUsersByExternalReferenceCodePageWithFilterDoubleEquals()
+		throws Exception {
+
+		List<EntityField> entityFields = getEntityFields(
+			EntityField.Type.DOUBLE);
+
+		if (entityFields.isEmpty()) {
+			return;
+		}
+
+		String externalReferenceCode =
+			testGetAccountUsersByExternalReferenceCodePage_getExternalReferenceCode();
+
+		AccountUser accountUser1 =
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
+				externalReferenceCode, randomAccountUser());
+
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		AccountUser accountUser2 =
+			testGetAccountUsersByExternalReferenceCodePage_addAccountUser(
+				externalReferenceCode, randomAccountUser());
+
+		for (EntityField entityField : entityFields) {
+			Page<AccountUser> page =
+				accountUserResource.getAccountUsersByExternalReferenceCodePage(
+					externalReferenceCode, null,
+					getFilterString(entityField, "eq", accountUser1),
+					Pagination.of(1, 2), null);
+
+			assertEquals(
+				Collections.singletonList(accountUser1),
+				(List<AccountUser>)page.getItems());
+		}
+	}
+
+	@Test
 	public void testGetAccountUsersByExternalReferenceCodePageWithFilterStringEquals()
 		throws Exception {
 
@@ -387,6 +423,18 @@ public abstract class BaseAccountUserResourceTestCase {
 				BeanUtils.setProperty(
 					accountUser1, entityField.getName(),
 					DateUtils.addMinutes(new Date(), -2));
+			});
+	}
+
+	@Test
+	public void testGetAccountUsersByExternalReferenceCodePageWithSortDouble()
+		throws Exception {
+
+		testGetAccountUsersByExternalReferenceCodePageWithSort(
+			EntityField.Type.DOUBLE,
+			(entityField, accountUser1, accountUser2) -> {
+				BeanUtils.setProperty(accountUser1, entityField.getName(), 0.1);
+				BeanUtils.setProperty(accountUser2, entityField.getName(), 0.5);
 			});
 	}
 
@@ -626,6 +674,38 @@ public abstract class BaseAccountUserResourceTestCase {
 	}
 
 	@Test
+	public void testGetAccountUsersPageWithFilterDoubleEquals()
+		throws Exception {
+
+		List<EntityField> entityFields = getEntityFields(
+			EntityField.Type.DOUBLE);
+
+		if (entityFields.isEmpty()) {
+			return;
+		}
+
+		Long accountId = testGetAccountUsersPage_getAccountId();
+
+		AccountUser accountUser1 = testGetAccountUsersPage_addAccountUser(
+			accountId, randomAccountUser());
+
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		AccountUser accountUser2 = testGetAccountUsersPage_addAccountUser(
+			accountId, randomAccountUser());
+
+		for (EntityField entityField : entityFields) {
+			Page<AccountUser> page = accountUserResource.getAccountUsersPage(
+				accountId, null,
+				getFilterString(entityField, "eq", accountUser1),
+				Pagination.of(1, 2), null);
+
+			assertEquals(
+				Collections.singletonList(accountUser1),
+				(List<AccountUser>)page.getItems());
+		}
+	}
+
+	@Test
 	public void testGetAccountUsersPageWithFilterStringEquals()
 		throws Exception {
 
@@ -702,6 +782,16 @@ public abstract class BaseAccountUserResourceTestCase {
 				BeanUtils.setProperty(
 					accountUser1, entityField.getName(),
 					DateUtils.addMinutes(new Date(), -2));
+			});
+	}
+
+	@Test
+	public void testGetAccountUsersPageWithSortDouble() throws Exception {
+		testGetAccountUsersPageWithSort(
+			EntityField.Type.DOUBLE,
+			(entityField, accountUser1, accountUser2) -> {
+				BeanUtils.setProperty(accountUser1, entityField.getName(), 0.1);
+				BeanUtils.setProperty(accountUser2, entityField.getName(), 0.5);
 			});
 	}
 
