@@ -195,10 +195,14 @@ public class CompositePasswordEncryptorTest extends PowerMockito {
 
 	@Test
 	public void testEncryptPBKDF2With720000RoundsAnd128Key() throws Exception {
-		runTests(
-			PasswordEncryptorUtil.TYPE_PBKDF2 + "WithHmacSHA1/128/720000",
-			"password", "AAAAoAAB9ADyaBP3fTtsBh8YlRn1CU7VLYR/mnH7ADMNMz2o",
-			PasswordEncryptorUtil.TYPE_PBKDF2 + "WithHmacSHA1");
+		String algorithm =
+			PasswordEncryptorUtil.TYPE_PBKDF2 + "WithHmacSHA1/128/720000";
+
+		testEncrypt(algorithm);
+
+		testEncrypt(
+			algorithm, "password",
+			"AAAAoAAB9ADyaBP3fTtsBh8YlRn1CU7VLYR/mnH7ADMNMz2o");
 	}
 
 	@Test
