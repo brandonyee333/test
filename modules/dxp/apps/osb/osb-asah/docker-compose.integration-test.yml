@@ -32,7 +32,7 @@ services:
             - "8095:8095"
         restart: always
     test_redis:
-        build: ./osb-asah-redis
+        build: ./devtools/osb-asah-redis
         container_name: test_redis
         ports:
             - "6379:6379"
