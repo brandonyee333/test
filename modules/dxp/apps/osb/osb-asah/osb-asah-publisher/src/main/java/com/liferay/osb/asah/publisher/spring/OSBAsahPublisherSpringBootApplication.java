@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.publisher.spring;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
@@ -52,7 +51,6 @@ import org.springframework.context.annotation.ComponentScan;
 	exclude = {
 		JooqAutoConfiguration.class,
 		ManagementWebSecurityAutoConfiguration.class,
-		MetricsAutoConfiguration.class,
 		RedisRepositoriesAutoConfiguration.class,
 		SecurityAutoConfiguration.class,
 		UserDetailsServiceAutoConfiguration.class
