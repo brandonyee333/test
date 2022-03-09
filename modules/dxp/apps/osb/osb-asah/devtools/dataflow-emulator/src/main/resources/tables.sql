@@ -7,11 +7,11 @@ CREATE TABLE IF NOT EXISTS BQEvent (
 	contentLanguageId TEXT,
 	context TEXT,
 	country TEXT,
-	createDate TIMESTAMP,
+	createDate TIMESTAMPTZ,
 	dataSourceId BIGINT,
 	description TEXT,
 	deviceType TEXT,
-	eventDate TIMESTAMP,
+	eventDate TIMESTAMPTZ,
 	eventId TEXT,
 	eventProperties TEXT,
 	experienceId TEXT,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS BQEvent (
 
 CREATE TABLE IF NOT EXISTS BQEventProperty (
 	channelId BIGINT,
-	eventDate TIMESTAMP,
+	eventDate TIMESTAMPTZ,
 	id TEXT,
 	name TEXT,
 	projectId TEXT,
@@ -42,6 +42,6 @@ CREATE TABLE IF NOT EXISTS BQEventProperty (
 CREATE TABLE IF NOT EXISTS BQSession (
 	channelId BIGINT,
 	id TEXT UNIQUE,
-	sessionEnd TIMESTAMP,
-	sessionStart TIMESTAMP
+	sessionEnd TIMESTAMPTZ,
+	sessionStart TIMESTAMPTZ
 );
