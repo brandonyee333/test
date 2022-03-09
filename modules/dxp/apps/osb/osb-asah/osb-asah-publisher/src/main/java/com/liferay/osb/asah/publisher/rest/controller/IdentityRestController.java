@@ -17,11 +17,7 @@ package com.liferay.osb.asah.publisher.rest.controller;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-
-import io.prometheus.client.Histogram;
-import io.prometheus.client.SimpleTimer;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,30 +41,23 @@ public class IdentityRestController {
 
 	@PostMapping
 	public void post(@RequestBody String json) {
-		SimpleTimer simpleTimer = new SimpleTimer();
+		JSONObject jsonObject = new JSONObject(json);
 
-		try {
-			JSONObject jsonObject = new JSONObject(json);
-
-			_messageBus.sendMessage(
-				Channel.IDENTITY_MESSAGE,
-				JSONUtil.put(
-					"analyticsData", _getAnalyticsDataJSONObject(jsonObject)
-				).put(
-					"channelId", jsonObject.optString("channelId")
-				).put(
-					"dataSourceId", jsonObject.getString("dataSourceId")
-				).put(
-					"emailAddressHashed", _getEmailAddressHashed(jsonObject)
-				).put(
-					"projectId", ProjectIdThreadLocal.getProjectId()
-				).put(
-					"userId", jsonObject.getString("userId")
-				).toString());
-		}
-		finally {
-			_identityRequestsHistogram.observe(simpleTimer.elapsedSeconds());
-		}
+		_messageBus.sendMessage(
+			Channel.IDENTITY_MESSAGE,
+			JSONUtil.put(
+				"analyticsData", _getAnalyticsDataJSONObject(jsonObject)
+			).put(
+				"channelId", jsonObject.optString("channelId")
+			).put(
+				"dataSourceId", jsonObject.getString("dataSourceId")
+			).put(
+				"emailAddressHashed", _getEmailAddressHashed(jsonObject)
+			).put(
+				"projectId", ProjectIdThreadLocal.getProjectId()
+			).put(
+				"userId", jsonObject.getString("userId")
+			).toString());
 	}
 
 	private JSONObject _getAnalyticsDataJSONObject(JSONObject jsonObject) {
@@ -101,11 +90,6 @@ public class IdentityRestController {
 		"systemFonts", "timezone", "touchSupport", "userAgent",
 		"webGLFingerPrint"
 	};
-
-	private static final Histogram _identityRequestsHistogram =
-		PrometheusUtil.histogram(
-			"publisher_identity_request_seconds",
-			"The number of seconds taken to process the identity requests");
 
 	@Autowired
 	private MessageBus _messageBus;

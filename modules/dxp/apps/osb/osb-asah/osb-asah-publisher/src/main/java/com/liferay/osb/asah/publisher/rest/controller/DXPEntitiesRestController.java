@@ -20,11 +20,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-
-import io.prometheus.client.Histogram;
-import io.prometheus.client.SimpleTimer;
 
 import java.util.Collections;
 import java.util.Date;
@@ -56,21 +52,14 @@ public class DXPEntitiesRestController {
 			String dataSourceId,
 		@RequestBody String json) {
 
-		SimpleTimer simpleTimer = new SimpleTimer();
+		JSONArray jsonArray = _processMessages(dataSourceId, json);
 
-		try {
-			JSONArray jsonArray = _processMessages(dataSourceId, json);
+		_messageBus.sendMessage(
+			Channel.DXP_ENTITIES_MESSAGE, jsonArray.toString(),
+			Collections.singletonMap(
+				"projectId", ProjectIdThreadLocal.getProjectId()));
 
-			_messageBus.sendMessage(
-				Channel.DXP_ENTITIES_MESSAGE, jsonArray.toString(),
-				Collections.singletonMap(
-					"projectId", ProjectIdThreadLocal.getProjectId()));
-
-			return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
-		}
-		finally {
-			_eventRequestsHistogram.observe(simpleTimer.elapsedSeconds());
-		}
+		return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
 	}
 
 	private JSONObject _processGenderField(JSONObject userJSONObject) {
@@ -180,11 +169,6 @@ public class DXPEntitiesRestController {
 
 		return jsonArray;
 	}
-
-	private static final Histogram _eventRequestsHistogram =
-		PrometheusUtil.histogram(
-			"publisher_dxp_entity_request_seconds",
-			"The number of seconds taken to process the DXP entity requests");
 
 	@Autowired
 	private MessageBus _messageBus;

@@ -25,13 +25,9 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.AnalyticsEventUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
-
-import io.prometheus.client.Histogram;
-import io.prometheus.client.SimpleTimer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,132 +82,119 @@ public class AnalyticsEventsRestController {
 		Errors errors, @RequestHeader HttpHeaders httpHeaders,
 		HttpServletRequest httpServletRequest) {
 
-		SimpleTimer simpleTimer = new SimpleTimer();
+		String analyticsEventsMessageId = analyticsEventsMessage.getId();
 
-		try {
-			String analyticsEventsMessageId = analyticsEventsMessage.getId();
+		if ((analyticsEventsMessageId != null) &&
+			BooleanUtils.isTrue(
+				_analyticsEventMessageIds.getIfPresent(
+					analyticsEventsMessageId))) {
 
-			if ((analyticsEventsMessageId != null) &&
-				BooleanUtils.isTrue(
-					_analyticsEventMessageIds.getIfPresent(
-						analyticsEventsMessageId))) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Discarding duplicate message: " +
+						analyticsEventsMessage.toJSON());
+			}
 
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Discarding duplicate message: " +
-							analyticsEventsMessage.toJSON());
+			return new ResponseEntity<>(
+				"Duplicate Message " + analyticsEventsMessageId, HttpStatus.OK);
+		}
+
+		if (analyticsEventsMessageId != null) {
+			_analyticsEventMessageIds.put(analyticsEventsMessageId, true);
+		}
+
+		String clientIP = httpHeaders.getFirst("X-Forwarded-For");
+
+		if (clientIP == null) {
+			clientIP = httpServletRequest.getRemoteAddr();
+		}
+		else {
+			String[] parts = clientIP.split(",");
+
+			clientIP = parts[0];
+		}
+
+		analyticsEventsMessage.setClientIP(clientIP);
+
+		List<AnalyticsEventsMessage.Event> events =
+			analyticsEventsMessage.getEvents();
+
+		int eventsSize = events.size();
+
+		List<FieldError> fieldErrors = new ArrayList<>(errors.getFieldErrors());
+
+		if (errors.hasErrors()) {
+			if (StringUtils.isEmpty(analyticsEventsMessage.getDataSourceId())) {
+				if (analyticsEventsMessageId != null) {
+					_analyticsEventMessageIds.invalidate(
+						analyticsEventsMessageId);
 				}
 
 				return new ResponseEntity<>(
-					"Duplicate Message " + analyticsEventsMessageId,
-					HttpStatus.OK);
+					errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 			}
 
-			if (analyticsEventsMessageId != null) {
-				_analyticsEventMessageIds.put(analyticsEventsMessageId, true);
+			Stream<FieldError> stream = fieldErrors.stream();
+
+			Optional<FieldError> fieldErrorOptional = stream.filter(
+				fieldError -> StringUtils.startsWith(
+					fieldError.getField(), "context")
+			).findAny();
+
+			if (fieldErrorOptional.isPresent()) {
+				return new ResponseEntity<>(
+					errors.getFieldError(), HttpStatus.BAD_REQUEST);
 			}
 
-			String clientIP = httpHeaders.getFirst("X-Forwarded-For");
-
-			if (clientIP == null) {
-				clientIP = httpServletRequest.getRemoteAddr();
+			for (int index : _getInvalidEventIndices(fieldErrors)) {
+				events.remove(index);
 			}
-			else {
-				String[] parts = clientIP.split(",");
+		}
 
-				clientIP = parts[0];
-			}
+		events.removeIf(
+			event -> {
+				String analyticsEventId =
+					AnalyticsEventUtil.generateAnalyticsEventId(
+						analyticsEventsMessage.getDataSourceId(), event,
+						analyticsEventsMessage.getProjectId(),
+						analyticsEventsMessage.getUserId());
 
-			analyticsEventsMessage.setClientIP(clientIP);
+				event.setId(analyticsEventId);
 
-			List<AnalyticsEventsMessage.Event> events =
-				analyticsEventsMessage.getEvents();
+				if (BooleanUtils.isTrue(
+						_analyticsEventIds.getIfPresent(analyticsEventId))) {
 
-			int eventsSize = events.size();
-
-			List<FieldError> fieldErrors = new ArrayList<>(
-				errors.getFieldErrors());
-
-			if (errors.hasErrors()) {
-				if (StringUtils.isEmpty(
-						analyticsEventsMessage.getDataSourceId())) {
-
-					if (analyticsEventsMessageId != null) {
-						_analyticsEventMessageIds.invalidate(
-							analyticsEventsMessageId);
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Discarding duplicate event: " + analyticsEventId);
 					}
 
-					return new ResponseEntity<>(
-						errors.getAllErrors(), HttpStatus.BAD_REQUEST);
+					fieldErrors.add(
+						new FieldError(
+							"analyticsEventsMessage", "analyticsEventId",
+							analyticsEventId, false, null, null,
+							"Duplicate event"));
+
+					return true;
 				}
 
-				Stream<FieldError> stream = fieldErrors.stream();
+				_analyticsEventIds.put(analyticsEventId, true);
 
-				Optional<FieldError> fieldErrorOptional = stream.filter(
-					fieldError -> StringUtils.startsWith(
-						fieldError.getField(), "context")
-				).findAny();
+				return false;
+			});
 
-				if (fieldErrorOptional.isPresent()) {
-					return new ResponseEntity<>(
-						errors.getFieldError(), HttpStatus.BAD_REQUEST);
-				}
-
-				for (int index : _getInvalidEventIndices(fieldErrors)) {
-					events.remove(index);
-				}
-			}
-
-			events.removeIf(
-				event -> {
-					String analyticsEventId =
-						AnalyticsEventUtil.generateAnalyticsEventId(
-							analyticsEventsMessage.getDataSourceId(), event,
-							analyticsEventsMessage.getProjectId(),
-							analyticsEventsMessage.getUserId());
-
-					event.setId(analyticsEventId);
-
-					if (BooleanUtils.isTrue(
-							_analyticsEventIds.getIfPresent(
-								analyticsEventId))) {
-
-						if (_log.isDebugEnabled()) {
-							_log.debug(
-								"Discarding duplicate event: " +
-									analyticsEventId);
-						}
-
-						fieldErrors.add(
-							new FieldError(
-								"analyticsEventsMessage", "analyticsEventId",
-								analyticsEventId, false, null, null,
-								"Duplicate event"));
-
-						return true;
-					}
-
-					_analyticsEventIds.put(analyticsEventId, true);
-
-					return false;
-				});
-
-			if (!events.isEmpty()) {
-				_sendAnalyticsEvents(analyticsEventsMessage);
-			}
-			else if (analyticsEventsMessageId != null) {
-				_analyticsEventMessageIds.invalidate(analyticsEventsMessageId);
-			}
-
-			if (eventsSize != events.size()) {
-				return new ResponseEntity<>(fieldErrors, HttpStatus.OK);
-			}
-
-			return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+		if (!events.isEmpty()) {
+			_sendAnalyticsEvents(analyticsEventsMessage);
 		}
-		finally {
-			_eventRequestsHistogram.observe(simpleTimer.elapsedSeconds());
+		else if (analyticsEventsMessageId != null) {
+			_analyticsEventMessageIds.invalidate(analyticsEventsMessageId);
 		}
+
+		if (eventsSize != events.size()) {
+			return new ResponseEntity<>(fieldErrors, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
 	}
 
 	private Set<Integer> _getInvalidEventIndices(List<FieldError> fieldErrors) {
@@ -339,10 +322,6 @@ public class AnalyticsEventsRestController {
 		).maximumSize(
 			5000000
 		).build();
-	private static final Histogram _eventRequestsHistogram =
-		PrometheusUtil.histogram(
-			"publisher_event_request_seconds",
-			"The number of seconds taken to process the event requests");
 	private static final Pattern _pattern = Pattern.compile(
 		"^events\\[(\\d+)].*");
 
