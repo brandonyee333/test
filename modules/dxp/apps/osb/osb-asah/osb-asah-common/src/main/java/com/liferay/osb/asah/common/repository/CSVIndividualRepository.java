@@ -20,14 +20,13 @@ import java.util.List;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.query.Param;
 
 /**
  * @author Marcellus Tavares
  */
-@Primary
 public interface CSVIndividualRepository
 	extends Repository<CSVIndividual, Long> {
 
@@ -36,12 +35,13 @@ public interface CSVIndividualRepository
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void deleteByDataSourceId(Long dataSourceId);
+	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByDataSourceIdAndDataSourceIndividualPKIn(
-		Long dataSourceId, List<String> dataSourceIndividualPKs);
+		@Param("dataSourceId") Long dataSourceId,
+		@Param("dataSourceIndividualPKs") List<String> dataSourceIndividualPKs);
 
 	@Cacheable
 	public List<CSVIndividual> findByDataSourceId(
