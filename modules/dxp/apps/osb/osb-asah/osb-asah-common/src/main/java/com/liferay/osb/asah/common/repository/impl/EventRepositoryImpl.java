@@ -37,6 +37,7 @@ import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -683,11 +684,19 @@ public class EventRepositoryImpl extends BaseRepository {
 					eventAnalysisFilter.getOperator(),
 					eventAnalysisFilter.getValues());
 
+				Field field = DSL.field("BQEventProperty.value");
+
+				if (Objects.equals(
+						eventAttributeDefinition.getType(),
+						EventAttributeDefinition.Type.GLOBAL)) {
+
+					field = _getGlobalAttributeField(
+						eventAttributeDefinition.getName());
+				}
+
 				condition = condition.and(
 					filterOperator.getCondition(
-						_getField(
-							eventAnalysisFilter, DSL.field("value"),
-							timeZoneId)));
+						_getField(eventAnalysisFilter, field, timeZoneId)));
 			}
 
 			conditions = conditions.or(condition);
@@ -825,6 +834,10 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return field;
+	}
+
+	private Field _getGlobalAttributeField(String name) {
+		return DSL.field("BQEvent." + _globalAttributes.get(name));
 	}
 
 	private String _getJoinFieldTableName(AttributeType attributeType) {
@@ -1010,6 +1023,18 @@ public class EventRepositoryImpl extends BaseRepository {
 				},
 				Record2::value2));
 	}
+
+	private static final Map<String, String> _globalAttributes =
+		new HashMap<String, String>() {
+			{
+				put("canonicalUrl", "url");
+				put("pageDescription", "description");
+				put("pageKeywords", "keywords");
+				put("pageTitle", "title");
+				put("referrer", "referrer");
+				put("url", "url");
+			}
+		};
 
 	private final DSLContext _dslContext;
 
