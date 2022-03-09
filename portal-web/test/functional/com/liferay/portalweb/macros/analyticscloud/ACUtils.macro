@@ -502,7 +502,7 @@ definition {
 
 		Form.editName(formTitle = "${formAcTitle}");
 
-		Form.addTextField(fieldPositionNumber = "0");
+		Form.addTextField(fieldPositionNumber = "1");
 
 		Form.closeSidebar();
 
