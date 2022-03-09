@@ -81,7 +81,8 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 		String requestURI = httpServletRequest.getRequestURI();
 
 		if ((method.equals(HttpMethod.GET.name()) &&
-			 (requestURI.equals("/") || requestURI.equals("/context"))) ||
+			 (requestURI.equals("/") || requestURI.equals("/context") ||
+			  requestURI.startsWith("/actuator"))) ||
 			(method.equals(HttpMethod.OPTIONS.name()) &&
 			 (requestURI.equals("/") || requestURI.equals("/identity")))) {
 
