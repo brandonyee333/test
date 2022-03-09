@@ -209,11 +209,23 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
 		String timeZoneId) {
 
+		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
+			_eventAttributeDefinitionRepository.findById(
+				Long.valueOf(eventAnalysisBreakdown.getAttributeId()));
+
+		EventAttributeDefinition eventAttributeDefinition =
+			eventAttributeDefinitionOptional.orElse(null);
+
+		if (eventAttributeDefinition == null) {
+			return Collections.emptyMap();
+		}
+
 		Map<Object, Number> eventAttributeValues = new LinkedHashMap<>();
 
-		Field<Number> selectField = _getSelectField(analysisType);
+		Field<Number> selectField = _getSelectField(
+			analysisType, eventAttributeDefinition);
 		Field valueField = _getValueField(
-			true, eventAnalysisBreakdown, timeZoneId);
+			true, eventAnalysisBreakdown, eventAttributeDefinition, timeZoneId);
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -926,10 +938,23 @@ public class EventRepositoryImpl extends BaseRepository {
 		return field.asc();
 	}
 
-	private Field _getSelectField(AnalysisType analysisType) {
+	private Field _getSelectField(
+		AnalysisType analysisType,
+		EventAttributeDefinition eventAttributeDefinition) {
+
+		Field field = DSL.field("BQEventProperty.value");
+
+		if (Objects.equals(
+				eventAttributeDefinition.getType(),
+				EventAttributeDefinition.Type.GLOBAL)) {
+
+			field = _getGlobalAttributeField(
+				eventAttributeDefinition.getName());
+		}
+
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
 			return DSL.count(
-				DSL.field("EventAttribute.value")
+				field
 			).cast(
 				SQLDataType.DECIMAL
 			).div(
@@ -941,7 +966,7 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		if (analysisType.equals(AnalysisType.TOTAL)) {
 			return DSL.count(
-				DSL.field("EventAttribute.value")
+				field
 			).as(
 				"count"
 			);
@@ -951,7 +976,7 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private Field<Integer> _getUniqueIndividualsField() {
-		return DSL.countDistinct(DSL.field("individualId"));
+		return DSL.countDistinct(DSL.field("BQEvent.individualId"));
 	}
 
 	private Condition _getValueCondition(
