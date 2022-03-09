@@ -143,14 +143,23 @@ public class EventRepositoryImpl extends BaseRepository {
 	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId) {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		Field<?> field = DSL.field("eventDate");
+		Field<?> eventDateField = DSL.field("eventDate");
+
+		Condition condition = DSL.noCondition();
+
+		if (eventDefinitionId != null) {
+			Field<Object> eventDefinitionIdField = DSL.field(
+				"Event.eventDefinitionId");
+
+			condition = eventDefinitionIdField.eq(eventDefinitionId);
+		}
 
 		return selectSelectStep.from(
 			"Event"
 		).where(
-			_getConditions(null, eventDefinitionId, null, null)
+			condition
 		).orderBy(
-			field.desc()
+			eventDateField.desc()
 		).limit(
 			1
 		).fetchOptional(
@@ -600,19 +609,19 @@ public class EventRepositoryImpl extends BaseRepository {
 		List<Condition> conditions = new ArrayList<>();
 
 		if (channelId != null) {
-			Field<Object> field = DSL.field("Event.channelId");
+			Field<Object> field = DSL.field("BQEvent.channelId");
 
 			conditions.add(field.eq(channelId));
 		}
 
 		if (eventDefinitionId != null) {
-			Field<Object> field = DSL.field("Event.eventDefinitionId");
+			Field<Object> field = DSL.field("EventDefinition.id");
 
 			conditions.add(field.eq(eventDefinitionId));
 		}
 
 		if ((rangeEndDate != null) && (rangeStartDate != null)) {
-			Field<Object> field = DSL.field("Event.eventDate");
+			Field<Object> field = DSL.field("BQEvent.eventDate");
 
 			conditions.add(field.between(rangeStartDate, rangeEndDate));
 		}
