@@ -15,7 +15,7 @@ create index IX_EF1F022A on AnnouncementsFlag (companyId);
 create index IX_9C7EB9F on AnnouncementsFlag (entryId);
 create unique index IX_4539A99C on AnnouncementsFlag (userId, entryId, value);
 
-create unique index IX_AE8DFA7 on AssetCategory (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create index IX_AE8DFA7 on AssetCategory (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_1757FA92 on AssetCategory (ctCollectionId);
 create index IX_62DC0D54 on AssetCategory (groupId, ctCollectionId);
 create index IX_3E49A228 on AssetCategory (groupId, name[$COLUMN_LENGTH:255$], vocabularyId, ctCollectionId);
@@ -68,7 +68,7 @@ create index IX_E7450E22 on AssetTag (uuid_[$COLUMN_LENGTH:75$], ctCollectionId)
 create unique index IX_A43FBC4 on AssetTag (uuid_[$COLUMN_LENGTH:75$], groupId, ctCollectionId);
 
 create index IX_F75DCEEA on AssetVocabulary (companyId, ctCollectionId);
-create unique index IX_6496D38F on AssetVocabulary (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create index IX_6496D38F on AssetVocabulary (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_49B3687A on AssetVocabulary (ctCollectionId);
 create index IX_4E99C46C on AssetVocabulary (groupId, ctCollectionId);
 create unique index IX_AE9F73AB on AssetVocabulary (groupId, name[$COLUMN_LENGTH:75$], ctCollectionId);
@@ -314,7 +314,7 @@ create index IX_AB044D1C on OrgGroupRole (roleId);
 create index IX_6AF0D434 on OrgLabor (organizationId);
 
 create index IX_2C1E7914 on Organization_ (companyId, ctCollectionId);
-create unique index IX_38F85A25 on Organization_ (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create index IX_38F85A25 on Organization_ (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
 create unique index IX_F1E40A53 on Organization_ (companyId, name[$COLUMN_LENGTH:100$], ctCollectionId);
 create index IX_7A5E9780 on Organization_ (companyId, parentOrganizationId, ctCollectionId);
 create index IX_DC36A7BF on Organization_ (companyId, parentOrganizationId, name[$COLUMN_LENGTH:100$], ctCollectionId);
@@ -502,7 +502,7 @@ create index IX_8BACD0AA on Ticket (companyId, classNameId, classPK, type_);
 create index IX_B2468446 on Ticket (key_[$COLUMN_LENGTH:75$]);
 
 create index IX_E8AD6A2C on UserGroup (companyId, ctCollectionId);
-create unique index IX_544FAE0D on UserGroup (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create index IX_544FAE0D on UserGroup (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
 create unique index IX_3F4FC96B on UserGroup (companyId, name[$COLUMN_LENGTH:255$], ctCollectionId);
 create index IX_FFCDFCE5 on UserGroup (companyId, parentUserGroupId, ctCollectionId);
 create index IX_9F5F49EC on UserGroup (uuid_[$COLUMN_LENGTH:75$], companyId, ctCollectionId);
@@ -554,7 +554,7 @@ create index IX_53E4FDAC on User_ (companyId, ctCollectionId);
 create index IX_DBE0B8AC on User_ (companyId, defaultUser, ctCollectionId);
 create index IX_16583D92 on User_ (companyId, defaultUser, status, ctCollectionId);
 create unique index IX_6C9F41D8 on User_ (companyId, emailAddress[$COLUMN_LENGTH:254$], ctCollectionId);
-create unique index IX_210A2A8D on User_ (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create index IX_210A2A8D on User_ (companyId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_F0BD8F61 on User_ (companyId, facebookId, ctCollectionId);
 create index IX_66712F3F on User_ (companyId, googleUserId[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_79724177 on User_ (companyId, modifiedDate, ctCollectionId);
