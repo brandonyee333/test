@@ -654,6 +654,12 @@ definition {
 		}
 	}
 
+	macro viewCurrentPage {
+		AssertVisible(
+			key_pageName = "${pageName}",
+			locator1 = "Home#PAGE_ACTIVE");
+	}
+
 	macro viewCurrentTheme {
 		ProductMenu.gotoPortlet(
 			category = "Site Builder",

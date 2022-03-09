@@ -49,6 +49,19 @@ return element.textContent;
 		return "${textContent}";
 	}
 
+	macro hardRefresh {
+		var mac = OSDetector.isApple();
+
+		if ("${mac}" == "true") {
+			RobotType.robotTypeShortcut(locator1 = "Shift + Command + r");
+		}
+		else {
+			RobotType.robotTypeShortcut(locator1 = "Ctrl + Shift + r");
+		}
+
+		WaitForPageLoad();
+	}
+
 	macro isGreaterThan {
 		echo("${expected}");
 
