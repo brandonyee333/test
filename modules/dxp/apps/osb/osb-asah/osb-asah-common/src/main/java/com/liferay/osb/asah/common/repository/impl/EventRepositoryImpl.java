@@ -944,27 +944,50 @@ public class EventRepositoryImpl extends BaseRepository {
 		boolean alias, EventAnalysisBreakdown eventAnalysisBreakdown,
 		String timeZoneId) {
 
-		Field field = null;
+		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
+			_eventAttributeDefinitionRepository.findById(
+				Long.valueOf(eventAnalysisBreakdown.getAttributeId()));
 
-		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
+		EventAttributeDefinition eventAttributeDefinition =
+			eventAttributeDefinitionOptional.orElse(null);
+
+		if (eventAttributeDefinition == null) {
+			return null;
+		}
+
+		Field field = null;
 
 		EventAttributeDefinition.DataType dataType =
 			eventAnalysisBreakdown.getDataType();
 
+		Field attributeField = null;
+
+		if (Objects.equals(
+				eventAttributeDefinition.getType(),
+				EventAttributeDefinition.Type.GLOBAL)) {
+
+			attributeField = _getGlobalAttributeField(
+				eventAttributeDefinition.getName());
+		}
+		else {
+			AttributeType attributeType =
+				eventAnalysisBreakdown.getAttributeType();
+
+			attributeField = DSL.field(
+				attributeType.getQualifiedAttributeValueFieldName(
+					"BQEventProperty"));
+		}
+
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
 			field = DSL.function(
-				"try_cast_boolean", Boolean.class,
-				DSL.field(
-					attributeType.getQualifiedAttributeValueFieldName(null)));
+				"try_cast_boolean", Boolean.class, attributeField);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			DateGrouping dateGrouping =
 				eventAnalysisBreakdown.getDateGrouping();
 
 			Field<OffsetDateTime> offsetDateTimeField = _getDateValueField(
-				DSL.field(
-					attributeType.getQualifiedAttributeValueFieldName(null)),
-				timeZoneId);
+				attributeField, timeZoneId);
 
 			if (dateGrouping.equals(DateGrouping.DAY)) {
 				field = DSL.concat(
@@ -990,10 +1013,7 @@ public class EventRepositoryImpl extends BaseRepository {
 					DSL.abs(
 						DSL.function(
 							"try_cast_bigint", BigInteger.class,
-							DSL.field(
-								attributeType.
-									getQualifiedAttributeValueFieldName(
-										null)))),
+							attributeField)),
 					-3
 				).div(
 					eventAnalysisBreakdown.getBinSize()
@@ -1006,10 +1026,7 @@ public class EventRepositoryImpl extends BaseRepository {
 			field = DSL.floor(
 				DSL.round(
 					DSL.function(
-						"try_cast_float", BigDecimal.class,
-						DSL.field(
-							attributeType.getQualifiedAttributeValueFieldName(
-								null)))
+						"try_cast_float", BigDecimal.class, attributeField)
 				).div(
 					eventAnalysisBreakdown.getBinSize()
 				)
@@ -1018,10 +1035,7 @@ public class EventRepositoryImpl extends BaseRepository {
 			);
 		}
 		else {
-			field = DSL.lower(
-				DSL.field(
-					attributeType.getQualifiedAttributeValueFieldName(null),
-					String.class));
+			field = DSL.lower(attributeField.cast(String.class));
 		}
 
 		if (alias) {
