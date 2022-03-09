@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
+import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -40,9 +41,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.AggregateFunction;
@@ -61,6 +64,7 @@ import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -653,6 +657,9 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		Condition conditions = DSL.noCondition();
 
+		Map<Long, EventAttributeDefinition> eventAttributeDefinitionMap =
+			_getEventAttributeDefinitionMap(eventAnalysisFilters);
+
 		Stream<EventAnalysisFilter> stream = eventAnalysisFilters.stream();
 
 		Map<String, List<EventAnalysisFilter>> eventAnalysisFiltersByField =
@@ -730,6 +737,31 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
+	}
+
+	private Map<Long, EventAttributeDefinition> _getEventAttributeDefinitionMap(
+		List<EventAnalysisFilter> eventAnalysisFilters) {
+
+		Stream<EventAnalysisFilter> eventAnalysisFiltersStream =
+			eventAnalysisFilters.stream();
+
+		List<EventAttributeDefinition> eventAttributeDefinitions =
+			IterableUtils.toList(
+				_eventAttributeDefinitionRepository.findAllById(
+					eventAnalysisFiltersStream.map(
+						EventAnalysisFilter::getAttributeId
+					).map(
+						Long::valueOf
+					).collect(
+						Collectors.toList()
+					)));
+
+		Stream<EventAttributeDefinition> eventAttributeDefinitionsStream =
+			eventAttributeDefinitions.stream();
+
+		return eventAttributeDefinitionsStream.collect(
+			Collectors.toMap(
+				EventAttributeDefinition::getId, Function.identity()));
 	}
 
 	private Integer _getEventsCount(
@@ -971,5 +1003,9 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private EventAttributeDefinitionRepository
+		_eventAttributeDefinitionRepository;
 
 }
