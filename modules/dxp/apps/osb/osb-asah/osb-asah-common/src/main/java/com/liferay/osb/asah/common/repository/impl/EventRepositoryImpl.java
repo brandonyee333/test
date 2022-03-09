@@ -109,8 +109,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
-			"Event");
+		SelectJoinStep<Record1<Integer>> selectJoinStep =
+			_getEventSelectJoinStep(eventDefinitionId, selectSelectStep);
 
 		return selectJoinStep.where(
 			_getConditions(
@@ -132,8 +132,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.select(_getUniqueIndividualsField());
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
-			"Event");
+		SelectJoinStep<Record1<Integer>> selectJoinStep =
+			_getEventSelectJoinStep(eventDefinitionId, selectSelectStep);
 
 		return selectJoinStep.where(
 			_getConditions(
@@ -186,8 +186,8 @@ public class EventRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record1<Number>> selectSelectStep = _dslContext.select(
 			totalEventCount.div(DSL.nullif(_getUniqueIndividualsField(), 0)));
 
-		SelectJoinStep<Record1<Number>> selectJoinStep = selectSelectStep.from(
-			"Event");
+		SelectJoinStep<Record1<Number>> selectJoinStep =
+			_getEventSelectJoinStep(eventDefinitionId, selectSelectStep);
 
 		return selectJoinStep.where(
 			_getConditions(
@@ -802,6 +802,27 @@ public class EventRepositoryImpl extends BaseRepository {
 				rangeStartLocalDateTime, timeZoneId)
 		).fetchOne(
 			countAggregateFunction
+		);
+	}
+
+	private <T> SelectJoinStep<Record1<T>> _getEventSelectJoinStep(
+		Long eventDefinitionId, SelectSelectStep<Record1<T>> selectSelectStep) {
+
+		SelectJoinStep<Record1<T>> selectJoinStep = selectSelectStep.from(
+			"BQEvent");
+
+		if (eventDefinitionId == null) {
+			return selectJoinStep;
+		}
+
+		return selectJoinStep.join(
+			"EventDefinition"
+		).on(
+			DSL.field(
+				"BQEvent.eventId"
+			).eq(
+				DSL.field("EventDefinition.name")
+			)
 		);
 	}
 
