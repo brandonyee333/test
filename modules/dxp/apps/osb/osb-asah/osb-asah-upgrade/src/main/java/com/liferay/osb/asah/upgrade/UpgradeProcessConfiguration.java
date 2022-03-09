@@ -21,6 +21,7 @@ import com.liferay.osb.asah.upgrade.v3_1_4.FieldMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.BlockedKeywordMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.CSVIndividualMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DataControlTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DataExportTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DatabaseSchemaUpgradeStep;
@@ -61,6 +62,7 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_asahMarkerMigrationUpgradeStep);
 		upgradeSteps.add(_asahTaskMigrationUpgradeStep);
 		upgradeSteps.add(_blockedKeywordMigrationUpgradeStep);
+		upgradeSteps.add(_csvIndividualMigrationUpgradeStep);
 		upgradeSteps.add(_dataControlTaskMigrationUpgradeStep);
 		upgradeSteps.add(_dataExportTaskMigrationUpgradeStep);
 		upgradeSteps.add(_experimentMigrationUpgradeStep);
@@ -82,6 +84,10 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private BlockedKeywordMigrationUpgradeStep
 		_blockedKeywordMigrationUpgradeStep;
+
+	@Autowired
+	private CSVIndividualMigrationUpgradeStep
+		_csvIndividualMigrationUpgradeStep;
 
 	@Autowired
 	private DatabaseSchemaUpgradeStep _databaseSchemaUpgradeStep;

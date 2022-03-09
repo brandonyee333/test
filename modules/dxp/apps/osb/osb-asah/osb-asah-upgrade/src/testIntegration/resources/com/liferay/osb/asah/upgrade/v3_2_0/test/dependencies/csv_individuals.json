@@ -1,0 +1,15 @@
+[
+	{
+		"dataSourceId": "337984445922213329",
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "337984445922213328",
+				"dataSourceType": "LIFERAY"
+			}
+		],
+		"fields": {
+			"name": "Guest"
+		},
+		"id": "321"
+	}
+]
