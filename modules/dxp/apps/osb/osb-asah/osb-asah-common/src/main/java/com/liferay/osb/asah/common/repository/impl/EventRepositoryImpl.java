@@ -709,6 +709,10 @@ public class EventRepositoryImpl extends BaseRepository {
 				field
 			).from(
 				attributeType.getTableName()
+			).join(
+				"BQEventProperty"
+			).on(
+				field.eq("BQEventProperty.id")
 			).where(
 				conditions
 			).groupBy(

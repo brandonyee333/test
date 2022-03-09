@@ -20,7 +20,7 @@ package com.liferay.osb.asah.common.model;
 public enum AttributeType {
 
 	ACCOUNT(null, null, "ownerId", "Field"),
-	EVENT("eventAttributeDefinitionId", "value", "eventId", "EventAttribute"),
+	EVENT("eventAttributeDefinitionId", "value", "BQEvent.id", "BQEvent"),
 	INDIVIDUAL(null, null, "ownerId", "Field"),
 	USER_SESSION(null, null, "individualId", "UserSession");
 
