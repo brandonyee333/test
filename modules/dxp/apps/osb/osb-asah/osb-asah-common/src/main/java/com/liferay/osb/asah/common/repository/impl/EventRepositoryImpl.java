@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -669,10 +670,12 @@ public class EventRepositoryImpl extends BaseRepository {
 		for (Map.Entry<String, List<EventAnalysisFilter>> entry :
 				eventAnalysisFiltersByField.entrySet()) {
 
-			String attributeId = entry.getKey();
+			EventAttributeDefinition eventAttributeDefinition =
+				eventAttributeDefinitionMap.get(Long.valueOf(entry.getKey()));
 
 			Condition condition = _getValueCondition(
-				attributeType, attributeId, rangeEndDate, rangeStartDate);
+				attributeType, eventAttributeDefinition, rangeEndDate,
+				rangeStartDate);
 
 			for (EventAnalysisFilter eventAnalysisFilter : entry.getValue()) {
 				FilterOperator filterOperator = FilterOperators.of(
@@ -869,21 +872,27 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private Condition _getValueCondition(
-		AttributeType attributeFilterType, String attributeId,
-		Date rangeEndDate, Date rangeStartDate) {
+		AttributeType attributeFilterType,
+		EventAttributeDefinition eventAttributeDefinition, Date rangeEndDate,
+		Date rangeStartDate) {
 
 		Condition condition = DSL.noCondition();
 
 		if (attributeFilterType.equals(AttributeType.EVENT)) {
-			Field<Long> eventAttributeDefinitionIdField = DSL.field(
-				"eventAttributeDefinitionId", Long.class);
+			if (!Objects.equals(
+					eventAttributeDefinition.getType(),
+					EventAttributeDefinition.Type.GLOBAL)) {
 
-			condition = condition.and(
-				eventAttributeDefinitionIdField.eq(Long.valueOf(attributeId)));
+				Field eventAttributeDefinitionIdField = DSL.field(
+					"BQEventProperty.name");
+
+				condition = condition.and(
+					eventAttributeDefinitionIdField.eq(
+						eventAttributeDefinition.getName()));
+			}
 
 			if ((rangeEndDate != null) && (rangeStartDate != null)) {
-				Field<Object> eventDateField = DSL.field(
-					"EventAttribute.eventDate");
+				Field<Object> eventDateField = DSL.field("BQEvent.eventDate");
 
 				condition = condition.and(
 					eventDateField.between(rangeStartDate, rangeEndDate));
