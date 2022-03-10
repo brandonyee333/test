@@ -62,7 +62,6 @@ import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.SelectHavingConditionStep;
 import org.jooq.SelectJoinStep;
-import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
@@ -210,12 +209,9 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
 		String timeZoneId) {
 
-		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
-			_eventAttributeDefinitionRepository.findById(
-				Long.valueOf(eventAnalysisBreakdown.getAttributeId()));
-
 		EventAttributeDefinition eventAttributeDefinition =
-			eventAttributeDefinitionOptional.orElse(null);
+			_getEventAttributeDefinition(
+				eventAnalysisBreakdown.getAttributeId());
 
 		if (eventAttributeDefinition == null) {
 			return Collections.emptyMap();
@@ -239,15 +235,9 @@ public class EventRepositoryImpl extends BaseRepository {
 			),
 			timeZoneId);
 
-		selectJoinStep.join(
-			"EventDefinition"
-		).on(
-			DSL.field(
-				"BQEvent.eventId"
-			).eq(
-				DSL.field("EventDefinition.name")
-			)
-		).where(
+		selectJoinStep = _joinEventDefinitionTable(selectJoinStep);
+
+		selectJoinStep.where(
 			_getConditions(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				rangeEndDate, rangeStartDate, timeZoneId)
@@ -276,12 +266,9 @@ public class EventRepositoryImpl extends BaseRepository {
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId) {
 
-		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
-			_eventAttributeDefinitionRepository.findById(
-				Long.valueOf(eventAnalysisBreakdown.getAttributeId()));
-
 		EventAttributeDefinition eventAttributeDefinition =
-			eventAttributeDefinitionOptional.orElse(null);
+			_getEventAttributeDefinition(
+				eventAnalysisBreakdown.getAttributeId());
 
 		if (eventAttributeDefinition == null) {
 			return 0;
@@ -301,42 +288,13 @@ public class EventRepositoryImpl extends BaseRepository {
 					DSL.count(DSL.when(valueField.isNull(), 1))
 				));
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
-			"BQEvent");
+		SelectJoinStep<Record1<Integer>> selectJoinStep =
+			_joinEventDefinitionTable(selectSelectStep.from("BQEvent"));
 
-		SelectOnConditionStep<Record1<Integer>> selectOnConditionStep =
-			selectJoinStep.join(
-				"EventDefinition"
-			).on(
-				DSL.field(
-					"BQEvent.eventId"
-				).eq(
-					DSL.field("EventDefinition.name")
-				)
-			);
+		selectJoinStep = _joinEventAttributeTable(
+			attributeType, eventAttributeDefinition, selectJoinStep);
 
-		if (!Objects.equals(
-				eventAttributeDefinition.getType(),
-				EventAttributeDefinition.Type.GLOBAL)) {
-
-			selectOnConditionStep = selectOnConditionStep.join(
-				attributeType.getTableName()
-			).on(
-				DSL.field(
-					_getJoinFieldTableName(attributeType)
-				).eq(
-					DSL.field(attributeType.getJoinFieldName())
-				)
-			).and(
-				DSL.field(
-					attributeType.getQualifiedAttributeIdFieldName(null)
-				).eq(
-					eventAttributeDefinition.getName()
-				)
-			);
-		}
-
-		return selectOnConditionStep.where(
+		return selectJoinStep.where(
 			_getConditions(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				rangeEndDate, rangeStartDate, timeZoneId)
@@ -494,26 +452,8 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
-		if (!Objects.equals(
-				eventAttributeDefinition.getType(),
-				EventAttributeDefinition.Type.GLOBAL)) {
-
-			selectJoinStep = selectJoinStep.join(
-				attributeType.getTableName()
-			).on(
-				DSL.field(
-					_getJoinFieldTableName(attributeType)
-				).eq(
-					DSL.field(attributeType.getJoinFieldName())
-				)
-			).and(
-				DSL.field(
-					attributeType.getQualifiedAttributeIdFieldName(null)
-				).eq(
-					eventAttributeDefinition.getName()
-				)
-			);
-		}
+		selectJoinStep = _joinEventAttributeTable(
+			attributeType, eventAttributeDefinition, selectJoinStep);
 
 		if (breakdownItem == null) {
 			return selectJoinStep;
@@ -549,9 +489,6 @@ public class EventRepositoryImpl extends BaseRepository {
 				eventAnalysisFilter.getDataType(),
 				eventAnalysisFilter.getOperator(),
 				eventAnalysisFilter.getValues());
-
-			eventAttributeDefinition = eventAttributeDefinitionMap.get(
-				Long.valueOf(eventAnalysisFilter.getAttributeId()));
 
 			Condition condition = DSL.noCondition();
 			Field attributeField = null;
@@ -850,6 +787,16 @@ public class EventRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
+	private EventAttributeDefinition _getEventAttributeDefinition(
+		String attributeId) {
+
+		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
+			_eventAttributeDefinitionRepository.findById(
+				Long.valueOf(attributeId));
+
+		return eventAttributeDefinitionOptional.orElse(null);
+	}
+
 	private Map<Long, EventAttributeDefinition> _getEventAttributeDefinitionMap(
 		List<EventAnalysisFilter> eventAnalysisFilters) {
 
@@ -914,15 +861,7 @@ public class EventRepositoryImpl extends BaseRepository {
 			return selectJoinStep;
 		}
 
-		return selectJoinStep.join(
-			"EventDefinition"
-		).on(
-			DSL.field(
-				"BQEvent.eventId"
-			).eq(
-				DSL.field("EventDefinition.name")
-			)
-		);
+		return _joinEventDefinitionTable(selectJoinStep);
 	}
 
 	private Field _getField(
@@ -1166,6 +1105,49 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return false;
+	}
+
+	private SelectJoinStep _joinEventAttributeTable(
+		AttributeType attributeType,
+		EventAttributeDefinition eventAttributeDefinition,
+		SelectJoinStep selectJoinStep) {
+
+		if (Objects.equals(
+				eventAttributeDefinition.getType(),
+				EventAttributeDefinition.Type.GLOBAL)) {
+
+			return selectJoinStep;
+		}
+
+		return selectJoinStep.join(
+			attributeType.getTableName()
+		).on(
+			DSL.field(
+				_getJoinFieldTableName(attributeType)
+			).eq(
+				DSL.field(attributeType.getJoinFieldName())
+			)
+		).and(
+			DSL.field(
+				attributeType.getQualifiedAttributeIdFieldName(null)
+			).eq(
+				eventAttributeDefinition.getName()
+			)
+		);
+	}
+
+	private SelectJoinStep _joinEventDefinitionTable(
+		SelectJoinStep selectJoinStep) {
+
+		return selectJoinStep.join(
+			"EventDefinition"
+		).on(
+			DSL.field(
+				"BQEvent.eventId"
+			).eq(
+				DSL.field("EventDefinition.name")
+			)
+		);
 	}
 
 	private Map<String, Integer> _toMap(
