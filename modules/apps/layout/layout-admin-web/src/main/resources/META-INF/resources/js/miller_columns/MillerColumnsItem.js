@@ -396,6 +396,9 @@ const MillerColumnsItem = ({
 									}}
 									small
 									symbol="plus"
+									title={Liferay.Language.get(
+										'add-child-page'
+									)}
 								/>
 							}
 						>
@@ -423,6 +426,7 @@ const MillerColumnsItem = ({
 							}}
 							small
 							symbol="plus"
+							title={Liferay.Language.get('add-child-page')}
 						/>
 					)}
 				</ClayLayout.ContentCol>
@@ -460,6 +464,9 @@ const MillerColumnsItem = ({
 									}}
 									small
 									symbol="ellipsis-v"
+									title={Liferay.Language.get(
+										'open-page-options-menu'
+									)}
 								/>
 							}
 						>
@@ -487,6 +494,9 @@ const MillerColumnsItem = ({
 							}}
 							small
 							symbol="ellipsis-v"
+							title={Liferay.Language.get(
+								'open-page-options-menu'
+							)}
 						/>
 					)}
 				</ClayLayout.ContentCol>
