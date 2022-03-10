@@ -788,18 +788,24 @@ public class EventRepositoryImpl extends BaseRepository {
 			conditions = conditions.or(condition);
 		}
 
-		Field<Object> field = DSL.field(attributeType.getJoinFieldName());
+		Field<Object> field = DSL.field(_getJoinFieldTableName(attributeType));
+
+		SelectJoinStep<Record1<Object>> selectJoinStep = _dslContext.select(
+			field
+		).from(
+			"BQEvent"
+		);
+
+		if (_hasNonglobalAttributes(eventAttributeDefinitionMap)) {
+			selectJoinStep = selectJoinStep.join(
+				attributeType.getTableName()
+			).on(
+				field.eq(DSL.field(attributeType.getJoinFieldName()))
+			);
+		}
 
 		SelectHavingConditionStep<Record1<Object>> selectHavingConditionStep =
-			_dslContext.select(
-				field
-			).from(
-				attributeType.getTableName()
-			).join(
-				"BQEvent"
-			).on(
-				field.eq(DSL.field(_getJoinFieldTableName(attributeType)))
-			).where(
+			selectJoinStep.where(
 				conditions
 			).groupBy(
 				field
@@ -1139,6 +1145,23 @@ public class EventRepositoryImpl extends BaseRepository {
 		}
 
 		return field;
+	}
+
+	private boolean _hasNonglobalAttributes(
+		Map<Long, EventAttributeDefinition> eventAttributeDefinitionMap) {
+
+		for (EventAttributeDefinition eventAttributeDefinition :
+				eventAttributeDefinitionMap.values()) {
+
+			if (!Objects.equals(
+					eventAttributeDefinition.getType(),
+					EventAttributeDefinition.Type.GLOBAL)) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private Map<String, Integer> _toMap(
