@@ -529,6 +529,9 @@ public class EventRepositoryImpl extends BaseRepository {
 			EventAnalysisFilter eventAnalysisFilter = eventAnalysisFilters.get(
 				i);
 
+			eventAttributeDefinition = eventAttributeDefinitionMap.get(
+				Long.valueOf(eventAnalysisFilter.getAttributeId()));
+
 			attributeType = eventAnalysisFilter.getAttributeType();
 
 			String tableName = attributeType.getTableName();
