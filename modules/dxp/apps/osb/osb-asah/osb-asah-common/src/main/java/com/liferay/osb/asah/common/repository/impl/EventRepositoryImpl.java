@@ -36,6 +36,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -230,15 +231,23 @@ public class EventRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectJoinStep<Record> selectJoinStep = _buildSelectJoinStep(
-			breakdownItem, eventAnalysisBreakdown,
+			breakdownItem, eventAnalysisBreakdown, eventAttributeDefinition,
 			selectSelectStep.select(
 				selectField, valueField
 			).from(
-				"Event"
+				"BQEvent"
 			),
 			timeZoneId);
 
-		selectJoinStep.where(
+		selectJoinStep.join(
+			"EventDefinition"
+		).on(
+			DSL.field(
+				"BQEvent.eventId"
+			).eq(
+				DSL.field("EventDefinition.name")
+			)
+		).where(
 			_getConditions(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				rangeEndDate, rangeStartDate, timeZoneId)
@@ -310,7 +319,7 @@ public class EventRepositoryImpl extends BaseRepository {
 				eventAttributeDefinition.getType(),
 				EventAttributeDefinition.Type.GLOBAL)) {
 
-			selectOnConditionStep.join(
+			selectOnConditionStep = selectOnConditionStep.join(
 				attributeType.getTableName()
 			).on(
 				DSL.field(
@@ -327,21 +336,7 @@ public class EventRepositoryImpl extends BaseRepository {
 			);
 		}
 
-		return selectJoinStep.join(
-			attributeType.getTableName()
-		).on(
-			DSL.field(
-				_getJoinFieldTableName(attributeType)
-			).eq(
-				DSL.field(attributeType.getJoinFieldName())
-			)
-		).and(
-			DSL.field(
-				attributeType.getQualifiedAttributeIdFieldName(null)
-			).eq(
-				Long.valueOf(eventAnalysisBreakdown.getAttributeId())
-			)
-		).where(
+		return selectOnConditionStep.where(
 			_getConditions(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				rangeEndDate, rangeStartDate, timeZoneId)
@@ -494,25 +489,31 @@ public class EventRepositoryImpl extends BaseRepository {
 	private SelectJoinStep _buildSelectJoinStep(
 		BreakdownItem breakdownItem,
 		EventAnalysisBreakdown eventAnalysisBreakdown,
+		EventAttributeDefinition eventAttributeDefinition,
 		SelectJoinStep selectJoinStep, String timeZoneId) {
 
 		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
-		selectJoinStep = selectJoinStep.join(
-			attributeType.getTableName()
-		).on(
-			DSL.field(
-				_getJoinFieldTableName(attributeType)
-			).eq(
-				DSL.field(attributeType.getQualifiedJoinFieldName(null))
+		if (!Objects.equals(
+				eventAttributeDefinition.getType(),
+				EventAttributeDefinition.Type.GLOBAL)) {
+
+			selectJoinStep = selectJoinStep.join(
+				attributeType.getTableName()
+			).on(
+				DSL.field(
+					_getJoinFieldTableName(attributeType)
+				).eq(
+					DSL.field(attributeType.getJoinFieldName())
+				)
 			).and(
 				DSL.field(
 					attributeType.getQualifiedAttributeIdFieldName(null)
 				).eq(
-					Long.valueOf(eventAnalysisBreakdown.getAttributeId())
+					eventAttributeDefinition.getName()
 				)
-			)
-		);
+			);
+		}
 
 		if (breakdownItem == null) {
 			return selectJoinStep;
@@ -521,45 +522,73 @@ public class EventRepositoryImpl extends BaseRepository {
 		List<EventAnalysisFilter> eventAnalysisFilters =
 			breakdownItem.getEventAnalysisFilters();
 
+		Map<Long, EventAttributeDefinition> eventAttributeDefinitionMap =
+			_getEventAttributeDefinitionMap(eventAnalysisFilters);
+
 		for (int i = 0; i < eventAnalysisFilters.size(); i++) {
 			EventAnalysisFilter eventAnalysisFilter = eventAnalysisFilters.get(
 				i);
 
 			attributeType = eventAnalysisFilter.getAttributeType();
 
-			String alias =
-				StringUtils.lowerCase(attributeType.getTableName()) + i;
+			String tableName = attributeType.getTableName();
+
+			if (Objects.equals(
+					eventAttributeDefinition.getType(),
+					EventAttributeDefinition.Type.GLOBAL)) {
+
+				tableName = "BQEvent";
+			}
+
+			String alias = StringUtils.lowerCase(tableName) + i;
 
 			FilterOperator filterOperator = FilterOperators.of(
 				eventAnalysisFilter.getDataType(),
 				eventAnalysisFilter.getOperator(),
 				eventAnalysisFilter.getValues());
 
+			eventAttributeDefinition = eventAttributeDefinitionMap.get(
+				Long.valueOf(eventAnalysisFilter.getAttributeId()));
+
+			Condition condition = DSL.noCondition();
+			Field attributeField = null;
+
+			if (Objects.equals(
+					eventAttributeDefinition.getType(),
+					EventAttributeDefinition.Type.GLOBAL)) {
+
+				attributeField = _getGlobalAttributeField(
+					alias, eventAttributeDefinition.getName());
+			}
+			else {
+				attributeField = DSL.field(
+					attributeType.getQualifiedAttributeValueFieldName(alias));
+
+				Field eventAttributeDefinitionIdField = DSL.field(
+					alias + ".name");
+
+				condition = eventAttributeDefinitionIdField.eq(
+					eventAttributeDefinition.getName());
+			}
+
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
-					attributeType.getTableName()
+					tableName
 				).as(
 					alias
 				)
 			).on(
 				DSL.field(
-					_getJoinFieldTableName(attributeType)
+					DSL.field(_getJoinFieldTableName(attributeType))
 				).eq(
-					DSL.field(attributeType.getQualifiedJoinFieldName(alias))
+					DSL.field(DSL.field(alias + ".id"))
 				)
 			).and(
 				DSL.and(
-					DSL.field(
-						attributeType.getQualifiedAttributeIdFieldName(alias)
-					).eq(
-						Long.valueOf(eventAnalysisFilter.getAttributeId())
-					),
+					condition,
 					filterOperator.getCondition(
 						_getField(
-							eventAnalysisFilter,
-							DSL.field(
-								attributeType.
-									getQualifiedAttributeValueFieldName(alias)),
+							eventAnalysisFilter, DSL.field(attributeField),
 							timeZoneId)))
 			);
 		}
@@ -769,7 +798,7 @@ public class EventRepositoryImpl extends BaseRepository {
 			).join(
 				"BQEvent"
 			).on(
-				field.eq("BQEvent.id")
+				field.eq(DSL.field(_getJoinFieldTableName(attributeType)))
 			).where(
 				conditions
 			).groupBy(
@@ -919,7 +948,16 @@ public class EventRepositoryImpl extends BaseRepository {
 	}
 
 	private Field _getGlobalAttributeField(String name) {
-		return DSL.field("BQEvent." + _globalAttributes.get(name));
+		return _getGlobalAttributeField("BQEvent", name);
+	}
+
+	private Field _getGlobalAttributeField(String alias, String name) {
+		return DSL.field(
+			alias.concat(
+				"."
+			).concat(
+				_globalAttributes.get(name)
+			));
 	}
 
 	private String _getJoinFieldTableName(AttributeType attributeType) {
