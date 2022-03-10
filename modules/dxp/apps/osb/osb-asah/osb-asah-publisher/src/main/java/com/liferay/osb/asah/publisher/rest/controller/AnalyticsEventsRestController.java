@@ -96,7 +96,7 @@ public class AnalyticsEventsRestController {
 			}
 
 			return new ResponseEntity<>(
-				"Duplicate Message " + analyticsEventsMessageId, HttpStatus.OK);
+				"Duplicate message " + analyticsEventsMessageId, HttpStatus.OK);
 		}
 
 		if (analyticsEventsMessageId != null) {
