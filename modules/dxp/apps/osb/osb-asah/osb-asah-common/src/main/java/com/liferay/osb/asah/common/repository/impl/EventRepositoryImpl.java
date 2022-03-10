@@ -1047,7 +1047,8 @@ public class EventRepositoryImpl extends BaseRepository {
 			}
 
 			if ((rangeEndDate != null) && (rangeStartDate != null)) {
-				Field<Object> eventDateField = DSL.field("BQEvent.eventDate");
+				Field<Object> eventDateField = DSL.field(
+					"BQEventProperty.eventDate");
 
 				condition = condition.and(
 					eventDateField.between(rangeStartDate, rangeEndDate));
