@@ -1,5 +1,6 @@
 [
 	{
+		"channelId": "1",
 		"createDate": "2019-06-14T16:58:24.000Z",
 		"dataSourceId": "333962835564819755",
 		"description": "An amazing experiment that will solve all of our problems",
@@ -21,6 +22,7 @@
 		"type": "AB"
 	},
 	{
+		"channelId": "1",
 		"confidenceLevel": 95,
 		"createDate": "${today-2d}",
 		"dataSourceId": "2",

@@ -24,9 +24,11 @@ import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
@@ -71,9 +73,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 )
 public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testDeleteExperiment() {
@@ -95,9 +97,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertNull(_experimentDog.fetchExperiment(2L));
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testDeleteExperimentNotAllowed() {
@@ -113,9 +115,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			() -> _experimentDog.deleteExperiment(1L, true));
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testExperimentNotFound() {
@@ -124,9 +126,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertNull(experiment);
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testExperimentNotFoundWhileEstimatingDaysDuration() {
@@ -136,9 +138,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 				95, null, 0L));
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
 	)
 	@Test
 	public void testGetEmptyExperimentMetricsRunningExperiment() {
@@ -165,9 +167,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			0, 0, 0, "2");
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testGetExperiment() {
@@ -176,9 +178,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertEquals("Regular test", experiment.getName());
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
 	)
 	@Test
 	public void testGetExperimentMetricsDraftExperiment() {
@@ -187,9 +189,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			() -> _experimentDog.getExperimentMetric(2L));
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
 	)
 	@Test
 	public void testGetExperimentMetricsRunningExperiment() {
@@ -216,14 +218,14 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			0.6, 0.6, 0.5, "2");
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testGetExperimentsAll() {
 		List<Experiment> experiments = _experimentDog.getExperiments(
-			1L, null, 0, 10, Sort.asc("name.raw"));
+			1L, null, 0, 10, Sort.asc("name"));
 
 		Assertions.assertNotNull(experiments);
 		Assertions.assertEquals(3, experiments.size(), experiments.toString());
@@ -232,12 +234,12 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testGetExperimentSessionHistogramMetrics() {
@@ -262,14 +264,14 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			experimentSessionHistogramMetrics.get(2));
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testGetExperimentsPaginated() {
 		List<Experiment> experiments = _experimentDog.getExperiments(
-			1L, null, 1, 1, Sort.asc("name.raw"));
+			1L, null, 1, 1, Sort.asc("name"));
 
 		Assertions.assertNotNull(experiments);
 		Assertions.assertEquals(1, experiments.size(), experiments.toString());
@@ -282,12 +284,12 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testGetExperimentVariant1SessionHistogramMetrics() {
@@ -313,12 +315,12 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testGetExperimentVariant2SessionHistogramMetrics() {

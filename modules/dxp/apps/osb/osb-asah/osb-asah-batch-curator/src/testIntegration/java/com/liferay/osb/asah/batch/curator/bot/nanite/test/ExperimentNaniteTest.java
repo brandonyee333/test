@@ -17,13 +17,18 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.ExperimentNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.DXPClient;
+import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.http.ExperimentHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
+import com.liferay.osb.asah.common.model.GoalMetric;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
+
+import java.util.Optional;
 
 import org.json.JSONObject;
 
@@ -53,16 +58,18 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		faroInfoElasticsearchInvoker.add(
-			"experiments",
-			FaroInfoTestUtil.buildExperimentJSONObject(
-				"1", "CLICK_RATE", "RUNNING"));
+		Experiment experiment = FaroInfoTestUtil.buildExperiment(
+			ExperimentStatus.RUNNING, GoalMetric.CLICK_RATE, 1L);
+
+		experiment.setIsNew(Boolean.TRUE);
+
+		_experimentRepository.save(experiment);
 	}
 
 	@Test
 	public void testFinishedExperimentNoWinner() throws Exception {
 		_testFinishedExperiment(
-			"FINISHED_NO_WINNER",
+			ExperimentStatus.FINISHED_NO_WINNER,
 			JSONUtil.put(
 				"estimatedDaysLeft", 0
 			).put(
@@ -89,7 +96,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 	@Test
 	public void testFinishedExperimentWinner() throws Exception {
 		_testFinishedExperiment(
-			"FINISHED_WINNER",
+			ExperimentStatus.FINISHED_WINNER,
 			JSONUtil.put(
 				"estimatedDaysLeft", 0
 			).put(
@@ -115,13 +122,13 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void testFinishedExperimentWinnerBounceRate() throws Exception {
-		faroInfoElasticsearchInvoker.update(
-			"experiments",
-			FaroInfoTestUtil.buildExperimentJSONObject(
-				"1", "BOUNCE_RATE", "RUNNING"));
+		Experiment experiment = FaroInfoTestUtil.buildExperiment(
+			ExperimentStatus.RUNNING, GoalMetric.BOUNCE_RATE, 1L);
+
+		_experimentRepository.save(experiment);
 
 		_testFinishedExperiment(
-			"FINISHED_WINNER",
+			ExperimentStatus.FINISHED_WINNER,
 			JSONUtil.put(
 				"estimatedDaysLeft", 0
 			).put(
@@ -156,13 +163,14 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 		_experimentNanite.run(null);
 
-		JSONObject experimentJSONObject = faroInfoElasticsearchInvoker.get(
-			"experiments", "1");
+		Optional<Experiment> experimentOptional =
+			_experimentRepository.findById(1L);
+
+		Experiment experiment = experimentOptional.get();
 
 		Assertions.assertEquals(
-			"RUNNING", experimentJSONObject.getString("status"));
-		Assertions.assertNull(
-			experimentJSONObject.optString("finishedDate", null));
+			ExperimentStatus.RUNNING, experiment.getExperimentStatus());
+		Assertions.assertNull(experiment.getFinishedDate());
 	}
 
 	private JSONObject _createExperimentVariantMetricJSONObject(
@@ -178,7 +186,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 	}
 
 	private void _testFinishedExperiment(
-			String expectedStatus, JSONObject responseBody,
+			ExperimentStatus expectedStatus, JSONObject responseBody,
 			String winnerDXPVariantId)
 		throws Exception {
 
@@ -191,16 +199,16 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 		_experimentNanite.run(null);
 
-		JSONObject experimentJSONObject = faroInfoElasticsearchInvoker.get(
-			"experiments", "1");
+		Optional<Experiment> experimentOptional =
+			_experimentRepository.findById(1L);
+
+		Experiment experiment = experimentOptional.get();
 
 		Assertions.assertEquals(
-			expectedStatus, experimentJSONObject.getString("status"));
+			expectedStatus, experiment.getExperimentStatus());
 		Assertions.assertEquals(
-			winnerDXPVariantId,
-			experimentJSONObject.optString("winnerDXPVariantId", null));
-		Assertions.assertNotNull(
-			experimentJSONObject.optString("finishedDate", null));
+			winnerDXPVariantId, experiment.getWinnerDXPVariantId());
+		Assertions.assertNotNull(experiment.getFinishedDate());
 	}
 
 	@MockBean
@@ -211,5 +219,8 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private ExperimentNanite _experimentNanite;
+
+	@Autowired
+	private ExperimentRepository _experimentRepository;
 
 }

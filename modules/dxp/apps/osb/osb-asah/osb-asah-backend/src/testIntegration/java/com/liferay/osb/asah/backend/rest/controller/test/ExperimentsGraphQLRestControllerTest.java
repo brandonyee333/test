@@ -14,15 +14,15 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 /**
  * @author Geyson Silva
  */
-@ElasticsearchIndex(
-	name = "experiments", resourcePath = "experiments_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+@RepositoryResource(
+	repositoryClass = ExperimentRepository.class,
+	resourcePath = "osbasahfaroinfo/experiments.json"
 )
 public class ExperimentsGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {

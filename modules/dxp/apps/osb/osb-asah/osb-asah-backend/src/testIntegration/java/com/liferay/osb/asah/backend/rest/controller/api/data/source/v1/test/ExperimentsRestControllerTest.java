@@ -29,9 +29,8 @@ import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
@@ -68,9 +67,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 public class ExperimentsRestControllerTest
 	implements OSBAsahBackendSpringTestContext {
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testDeleteExperiment() {
@@ -81,9 +80,9 @@ public class ExperimentsRestControllerTest
 		Mockito.verifyZeroInteractions(_dxpClient);
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testPatchExperiment() {
@@ -168,9 +167,9 @@ public class ExperimentsRestControllerTest
 					1L, experimentSettings));
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testPutExperimentVariants() {
@@ -200,9 +199,9 @@ public class ExperimentsRestControllerTest
 			actualExperimentDTO.getExperimentVariantDTOs());
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testPutGoal() {

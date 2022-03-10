@@ -19,8 +19,10 @@ import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataDog;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataPoint;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
@@ -42,12 +44,12 @@ public class ExperimentDataDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testExperienceContinuousDataPoints() {
@@ -73,12 +75,12 @@ public class ExperimentDataDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testExperienceDichotomousDataPoints() {
@@ -93,12 +95,12 @@ public class ExperimentDataDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testVariantContinuousDataPoints() {
@@ -130,12 +132,12 @@ public class ExperimentDataDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "experiment_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testVariantDichotomousDataPoints() {

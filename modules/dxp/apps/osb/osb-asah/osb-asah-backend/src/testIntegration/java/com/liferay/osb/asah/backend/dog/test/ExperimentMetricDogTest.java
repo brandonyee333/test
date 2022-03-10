@@ -22,8 +22,8 @@ import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
@@ -52,9 +52,9 @@ import org.springframework.test.context.TestExecutionListeners;
 public class ExperimentMetricDogTest
 	implements OSBAsahBackendSpringTestContext {
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
 	)
 	@Test
 	public void testEstimateDaysLeft() {
@@ -70,9 +70,9 @@ public class ExperimentMetricDogTest
 		Assertions.assertEquals(18, experimentMetric.getEstimatedDaysLeft());
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
 	)
 	@Test
 	public void testEstimateDaysLeftNoData() {
@@ -88,9 +88,9 @@ public class ExperimentMetricDogTest
 		Assertions.assertNull(experimentMetric.getEstimatedDaysLeft());
 	}
 
-	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
 	)
 	@Test
 	public void testEstimateDaysLeftVariantComplete() {
