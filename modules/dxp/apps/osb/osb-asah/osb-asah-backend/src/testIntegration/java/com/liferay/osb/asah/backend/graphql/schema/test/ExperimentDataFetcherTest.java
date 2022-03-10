@@ -43,6 +43,7 @@ public class ExperimentDataFetcherTest
 	public void testGet() {
 		Experiment experiment = new Experiment();
 
+		experiment.setChannelId(12345L);
 		experiment.setDataSourceId(331238757269547423L);
 		experiment.setDXPExperienceId("1");
 		experiment.setDXPExperienceName("Experience Name");
