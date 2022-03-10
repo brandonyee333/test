@@ -20,14 +20,12 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
 /**
  * @author Marcos Martins
  */
-@Primary
 public interface ExperimentRepository extends Repository<Experiment, Long> {
 
 	@Cacheable

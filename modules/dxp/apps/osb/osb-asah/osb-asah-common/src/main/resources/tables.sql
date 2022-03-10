@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
 CREATE TABLE IF NOT EXISTS Experiment (
 	id BIGSERIAL PRIMARY KEY,
 	channelId BIGINT NOT NULL,
-	confidenceLevel BIGINT,
+	confidenceLevel DOUBLE PRECISION,
 	createDate TIMESTAMPTZ,
 	dataSourceId TEXT,
 	description TEXT,
@@ -294,8 +294,8 @@ CREATE TABLE IF NOT EXISTS Experiment (
 CREATE TABLE IF NOT EXISTS ExperimentMetric (
 	id BIGSERIAL PRIMARY KEY,
 	experimentId BIGINT,
-	completion BIGINT,
-	confidenceLevel BIGINT,
+	completion DOUBLE PRECISION,
+	confidenceLevel DOUBLE PRECISION,
 	elapsedDays BIGINT,
 	estimatedDaysLeft BIGINT,
 	processedDate TIMESTAMPTZ
@@ -308,7 +308,7 @@ CREATE TABLE IF NOT EXISTS ExperimentVariant (
 	dxpVariantId TEXT,
 	dxpVariantName TEXT,
 	experimentId BIGINT,
-	trafficSplit BIGINT
+	trafficSplit DOUBLE PRECISION
 );
 
 CREATE TABLE IF NOT EXISTS ExperimentVariantMetric (
