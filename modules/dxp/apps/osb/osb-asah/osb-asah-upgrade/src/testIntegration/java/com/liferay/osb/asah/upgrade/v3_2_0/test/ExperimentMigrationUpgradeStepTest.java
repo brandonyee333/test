@@ -18,16 +18,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.AsahTask;
-import com.liferay.osb.asah.common.entity.Job;
-import com.liferay.osb.asah.common.repository.AsahTaskRepository;
-import com.liferay.osb.asah.common.repository.JobRepository;
+import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
-import com.liferay.osb.asah.upgrade.v3_2_0.JobMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.ExperimentMigrationUpgradeStep;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,39 +43,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Robson Pastor
  */
-public class JobMigrationUpgradeStepTest
+public class ExperimentMigrationUpgradeStepTest
 	implements OSBAsahUpgradeSpringTestContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {
 		ProjectIdThreadLocal.setProjectId("test");
 
-		_jobRepository.deleteAll();
-		_asahTaskRepository.deleteAll();
+		_experimentRepository.deleteAll();
 
-		_elasticsearchIndexManager.delete("test_osbasahfaroinfo_jobs");
+		_elasticsearchIndexManager.delete("test_osbasahfaroinfo_experiments");
 
 		_elasticsearchIndexManager.create(
 			ResourceUtil.readResourceToString(
-				"dependencies/jobs_index_configuration.json", this),
-			"test_osbasahfaroinfo_jobs");
+				"dependencies/experiments_index_configuration.json", this),
+			"test_osbasahfaroinfo_experiments");
 
 		_elasticsearchIndexManager.addAlias(
-			"test_osbasahfaroinfo_jobs_alias", "test_osbasahfaroinfo_jobs");
-
-		AsahTask asahTask = new AsahTask("Foo", null, "test");
-
-		asahTask.setId(450553576847486527L);
-		asahTask.setIsNew(Boolean.TRUE);
-
-		_asahTaskRepository.save(asahTask);
+			"test_osbasahfaroinfo_experiments_alias",
+			"test_osbasahfaroinfo_experiments");
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		_elasticsearchIndexManager.delete("test_osbasahfaroinfo_jobs");
-		_jobRepository.deleteAll();
-		_asahTaskRepository.deleteAll();
+		_elasticsearchIndexManager.delete("test_osbasahfaroinfo_experiments");
+		_experimentRepository.deleteAll();
 	}
 
 	@Test
@@ -85,13 +75,13 @@ public class JobMigrationUpgradeStepTest
 		JSONArray jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
-					"dependencies/jobs.json", this)));
+					"dependencies/experiments.json", this)));
 
 		Assertions.assertFalse(jsonArray.isEmpty());
 
-		_elasticsearchInvoker.add("jobs", jsonArray);
+		_elasticsearchInvoker.add("experiments", jsonArray);
 
-		_jobMigrationUpgradeStep.upgrade("");
+		_experimentMigrationUpgradeStep.upgrade("");
 
 		List<Object> jsonObjectList = jsonArray.toList();
 
@@ -99,15 +89,12 @@ public class JobMigrationUpgradeStepTest
 
 		Assertions.assertEquals(
 			stream.map(
-				object -> _objectMapper.convertValue(object, Job.class)
+				object -> _objectMapper.convertValue(object, Experiment.class)
 			).collect(
 				Collectors.toList()
 			),
-			_jobRepository.findAll());
+			_experimentRepository.findAll());
 	}
-
-	@Autowired
-	private AsahTaskRepository _asahTaskRepository;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
@@ -116,10 +103,10 @@ public class JobMigrationUpgradeStepTest
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
-	private JobMigrationUpgradeStep _jobMigrationUpgradeStep;
+	private ExperimentMigrationUpgradeStep _experimentMigrationUpgradeStep;
 
 	@Autowired
-	private JobRepository _jobRepository;
+	private ExperimentRepository _experimentRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
