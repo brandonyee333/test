@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -28,6 +29,9 @@ import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.ExperimentStatus;
+import com.liferay.osb.asah.common.model.Goal;
+import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -373,18 +377,22 @@ public class FaroInfoTestUtil {
 		return segment;
 	}
 
-	public static JSONObject buildExperimentJSONObject(
-		String id, String metric, String status) {
+	public static Experiment buildExperiment(
+		ExperimentStatus experimentStatus, GoalMetric goalMetric, Long id) {
 
-		return JSONUtil.put(
-			"dataSourceId", "1"
-		).put(
-			"goal", JSONUtil.put("metric", metric)
-		).put(
-			"id", id
-		).put(
-			"status", status
-		);
+		Goal goal = new Goal();
+
+		goal.setGoalMetric(goalMetric);
+
+		Experiment experiment = new Experiment();
+
+		experiment.setChannelId(1L);
+		experiment.setDataSourceId(1L);
+		experiment.setExperimentStatus(experimentStatus);
+		experiment.setId(id);
+		experiment.setGoal(goal);
+
+		return experiment;
 	}
 
 	public static JSONObject buildFieldJSONObject(
