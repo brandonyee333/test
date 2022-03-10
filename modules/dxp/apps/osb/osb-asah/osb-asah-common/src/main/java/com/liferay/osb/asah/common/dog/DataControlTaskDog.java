@@ -157,7 +157,7 @@ public class DataControlTaskDog {
 
 		if (dataControlTask.isNew()) {
 			throw new IllegalArgumentException(
-				"Unable to update Data Control Task");
+				"Unable to update data control task");
 		}
 
 		return _dataControlTaskRepository.save(dataControlTask);

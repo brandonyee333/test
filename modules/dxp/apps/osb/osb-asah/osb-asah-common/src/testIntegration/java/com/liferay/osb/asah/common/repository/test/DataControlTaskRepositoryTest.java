@@ -93,7 +93,6 @@ public class DataControlTaskRepositoryTest extends BaseRepositoryTestCase {
 				123457L, "jane.doe@liferay.com", null,
 				Arrays.asList(String.valueOf(DataControlTaskStatus.COMPLETED)),
 				null));
-
 		Assertions.assertEquals(
 			2,
 			_dataControlTaskRepository.countDataControlTasks(
