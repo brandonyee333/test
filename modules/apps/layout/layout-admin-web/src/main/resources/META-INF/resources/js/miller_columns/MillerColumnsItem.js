@@ -150,9 +150,13 @@ const MillerColumnsItem = ({
 	const ref = useRef();
 	const timeoutRef = useRef();
 
-	const [dropdownActionsActive, setDropdownActionsActive] = useState();
 	const [dropZone, setDropZone] = useState();
-	const [layoutActionsActive, setLayoutActionsActive] = useState();
+
+	const [dropdownActionsActive, setDropdownActionsActive] = useState(false);
+	const [dropdownActionsEnabled, setDropdownActionsEnabled] = useState(false);
+
+	const [layoutActionsActive, setLayoutActionsActive] = useState(false);
+	const [layoutActionsEnabled, setLayoutActionsEnabled] = useState(false);
 
 	const dropdownActions = useMemo(() => {
 		const dropdownActions = [];
@@ -365,32 +369,45 @@ const MillerColumnsItem = ({
 
 			{layoutActions.length > 0 && (
 				<ClayLayout.ContentCol className="miller-columns-item-actions">
-					<ClayDropDown
-						active={layoutActionsActive}
-						onActiveChange={setLayoutActionsActive}
-						trigger={
-							<ClayButtonWithIcon
-								borderless
-								displayType="secondary"
-								small
-								symbol="plus"
-							/>
-						}
-					>
-						<ClayDropDown.ItemList>
-							{layoutActions.map((action) => (
-								<ClayDropDown.Item
-									disabled={!action.url}
-									href={action.url}
-									id={action.id}
-									key={action.id}
-									onClick={action.handler}
-								>
-									{action.label}
-								</ClayDropDown.Item>
-							))}
-						</ClayDropDown.ItemList>
-					</ClayDropDown>
+					{layoutActionsEnabled ? (
+						<ClayDropDown
+							active={layoutActionsActive}
+							onActiveChange={setLayoutActionsActive}
+							trigger={
+								<ClayButtonWithIcon
+									borderless
+									displayType="secondary"
+									small
+									symbol="plus"
+								/>
+							}
+						>
+							<ClayDropDown.ItemList>
+								{layoutActions.map((action) => (
+									<ClayDropDown.Item
+										disabled={!action.url}
+										href={action.url}
+										id={action.id}
+										key={action.id}
+										onClick={action.handler}
+									>
+										{action.label}
+									</ClayDropDown.Item>
+								))}
+							</ClayDropDown.ItemList>
+						</ClayDropDown>
+					) : (
+						<ClayButtonWithIcon
+							borderless
+							displayType="secondary"
+							onClick={() => {
+								setLayoutActionsEnabled(true);
+								setLayoutActionsActive(true);
+							}}
+							small
+							symbol="plus"
+						/>
+					)}
 				</ClayLayout.ContentCol>
 			)}
 
@@ -413,32 +430,45 @@ const MillerColumnsItem = ({
 
 			{dropdownActions.length > 0 && (
 				<ClayLayout.ContentCol className="miller-columns-item-actions">
-					<ClayDropDown
-						active={dropdownActionsActive}
-						onActiveChange={setDropdownActionsActive}
-						trigger={
-							<ClayButtonWithIcon
-								borderless
-								displayType="secondary"
-								small
-								symbol="ellipsis-v"
-							/>
-						}
-					>
-						<ClayDropDown.ItemList>
-							{dropdownActions.map((action) => (
-								<ClayDropDown.Item
-									disabled={!action.url}
-									href={action.href}
-									id={action.id}
-									key={action.id}
-									onClick={action.handler}
-								>
-									{action.label}
-								</ClayDropDown.Item>
-							))}
-						</ClayDropDown.ItemList>
-					</ClayDropDown>
+					{dropdownActionsEnabled ? (
+						<ClayDropDown
+							active={dropdownActionsActive}
+							onActiveChange={setDropdownActionsActive}
+							trigger={
+								<ClayButtonWithIcon
+									borderless
+									displayType="secondary"
+									small
+									symbol="ellipsis-v"
+								/>
+							}
+						>
+							<ClayDropDown.ItemList>
+								{dropdownActions.map((action) => (
+									<ClayDropDown.Item
+										disabled={!action.url}
+										href={action.href}
+										id={action.id}
+										key={action.id}
+										onClick={action.handler}
+									>
+										{action.label}
+									</ClayDropDown.Item>
+								))}
+							</ClayDropDown.ItemList>
+						</ClayDropDown>
+					) : (
+						<ClayButtonWithIcon
+							borderless
+							displayType="secondary"
+							onClick={() => {
+								setDropdownActionsEnabled(true);
+								setDropdownActionsActive(true);
+							}}
+							small
+							symbol="ellipsis-v"
+						/>
+					)}
 				</ClayLayout.ContentCol>
 			)}
 
