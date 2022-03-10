@@ -154,9 +154,11 @@ const MillerColumnsItem = ({
 
 	const [dropdownActionsActive, setDropdownActionsActive] = useState(false);
 	const [dropdownActionsEnabled, setDropdownActionsEnabled] = useState(false);
+	const dropdownActionsTriggerRef = useRef();
 
 	const [layoutActionsActive, setLayoutActionsActive] = useState(false);
 	const [layoutActionsEnabled, setLayoutActionsEnabled] = useState(false);
+	const layoutActionsTriggerRef = useRef();
 
 	const dropdownActions = useMemo(() => {
 		const dropdownActions = [];
@@ -303,6 +305,18 @@ const MillerColumnsItem = ({
 		}
 	}, [active, dropZone, isOver, itemId, onItemStayHover]);
 
+	useEffect(() => {
+		if (dropdownActionsTriggerRef.current) {
+			dropdownActionsTriggerRef.current.focus();
+		}
+	}, [dropdownActionsEnabled]);
+
+	useEffect(() => {
+		if (layoutActionsTriggerRef.current) {
+			layoutActionsTriggerRef.current.focus();
+		}
+	}, [layoutActionsEnabled]);
+
 	return (
 		<ClayLayout.ContentRow
 			className={classNames('list-group-item-flex miller-columns-item', {
@@ -377,6 +391,9 @@ const MillerColumnsItem = ({
 								<ClayButtonWithIcon
 									borderless
 									displayType="secondary"
+									ref={(element) => {
+										layoutActionsTriggerRef.current = element;
+									}}
 									small
 									symbol="plus"
 								/>
@@ -438,6 +455,9 @@ const MillerColumnsItem = ({
 								<ClayButtonWithIcon
 									borderless
 									displayType="secondary"
+									ref={(element) => {
+										dropdownActionsTriggerRef.current = element;
+									}}
 									small
 									symbol="ellipsis-v"
 								/>
