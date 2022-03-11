@@ -17,6 +17,7 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_1_3.OrganizationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_1_4.FieldMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DatabaseSchemaUpgradeStep;
@@ -47,6 +48,9 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"3.1.0", "3.1.3", _organizationUpgradeStep);
 
+		upgradeProcess.addUpgradeSteps(
+			"3.1.3", "3.1.4", _fieldMappingUpgradeStep);
+
 		List<UpgradeStep> upgradeSteps = new ArrayList<>();
 
 		upgradeSteps.add(_databaseSchemaUpgradeStep);
@@ -58,7 +62,7 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_jobRunMigrationUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"3.1.3", "3.2.0", upgradeSteps.toArray(new UpgradeStep[0]));
+			"3.1.4", "3.2.0", upgradeSteps.toArray(new UpgradeStep[0]));
 
 		return upgradeProcess;
 	}
@@ -74,6 +78,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private ExperimentMigrationUpgradeStep _experExperimentMigrationUpgradeStep;
+
+	@Autowired
+	private FieldMappingUpgradeStep _fieldMappingUpgradeStep;
 
 	@Autowired
 	private JobMigrationUpgradeStep _jobMigrationUpgradeStep;
