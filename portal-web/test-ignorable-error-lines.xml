@@ -240,6 +240,10 @@
 			<contains>Store is not available</contains>
 			<matches></matches>
 		</ignore-error>
+		<ignore-error description="LPS-140679 - temporarily ignore until fixed">
+			<contains>Illegal 'domain' attribute "lax.liferay.com". Domain of origin: "localhost"</contains>
+			<matches></matches>
+		</ignore-error>
 		<ignore-error description="LRQA-24859">
 			<contains>No binary licenses found</contains>
 			<matches></matches>
