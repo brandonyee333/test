@@ -130,7 +130,7 @@ public class AnalyticsEventsRestControllerTest
 			Assertions.assertThat(
 				responseEntity.getBody()
 			).startsWith(
-				"Duplicate Message"
+				"Duplicate message"
 			);
 		}
 	}
