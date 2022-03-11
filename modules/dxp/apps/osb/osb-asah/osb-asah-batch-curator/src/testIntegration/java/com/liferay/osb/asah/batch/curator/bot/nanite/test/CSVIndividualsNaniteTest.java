@@ -14,14 +14,20 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.CSVIndividualsNanite;
+import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.HashMap;
 
 import org.elasticsearch.index.query.QueryBuilders;
+
+import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,15 +46,17 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 		addEmailFieldMapping();
 		addStandardFieldMappings();
 
-		faroInfoElasticsearchInvoker.add(
-			"csv-individuals",
-			JSONUtil.putAll(
-				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					String.valueOf(getDataSourceId()), getIndividual1PK(),
-					getIndividual1FieldsMap()),
-				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					String.valueOf(getDataSourceId()), getIndividual2PK(),
-					getIndividual2FieldsMap())));
+		_csvIndividualRepository.save(
+			FaroInfoTestUtil.buildCSVIndividual(
+				getDataSourceId(), getIndividual1PK(),
+				_objectMapper.convertValue(
+					getIndividual1FieldsMap(), JSONObject.class)));
+
+		_csvIndividualRepository.save(
+			FaroInfoTestUtil.buildCSVIndividual(
+				getDataSourceId(), getIndividual2PK(),
+				_objectMapper.convertValue(
+					getIndividual2FieldsMap(), JSONObject.class)));
 
 		_csvIndividualsNanite.run(
 			JSONUtil.put(
@@ -65,30 +73,38 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 		addDataSource("CSV");
 		addEmailFieldMapping();
 
-		faroInfoElasticsearchInvoker.add(
-			"csv-individuals",
-			JSONUtil.putAll(
-				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					String.valueOf(getDataSourceId()), generateIndividualPK(),
+		_csvIndividualRepository.save(
+			FaroInfoTestUtil.buildCSVIndividual(
+				getDataSourceId(), generateIndividualPK(),
+				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
 						{
 							put("email", "test@liferay.com");
 						}
-					}),
-				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					String.valueOf(getDataSourceId()), generateIndividualPK(),
+					},
+					JSONObject.class)));
+
+		_csvIndividualRepository.save(
+			FaroInfoTestUtil.buildCSVIndividual(
+				getDataSourceId(), generateIndividualPK(),
+				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
 						{
 							put("email", "TEST@LIFERAY.COM");
 						}
-					}),
-				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					String.valueOf(getDataSourceId()), generateIndividualPK(),
+					},
+					JSONObject.class)));
+
+		_csvIndividualRepository.save(
+			FaroInfoTestUtil.buildCSVIndividual(
+				getDataSourceId(), generateIndividualPK(),
+				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
 						{
 							put("email", "TeSt@LiFeRaY.CoM");
 						}
-					})));
+					},
+					JSONObject.class)));
 
 		_csvIndividualsNanite.run(
 			JSONUtil.put(
@@ -118,6 +134,12 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 	}
 
 	@Autowired
+	private CSVIndividualRepository _csvIndividualRepository;
+
+	@Autowired
 	private CSVIndividualsNanite _csvIndividualsNanite;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

@@ -19,8 +19,10 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -42,6 +44,13 @@ public class CSVIndividualDogTest
 
 	@Test
 	public void testAddCSVIndividuals() {
+		DataSource dataSource = new DataSource();
+
+		dataSource.setId(123L);
+		dataSource.setIsNew(Boolean.TRUE);
+
+		_dataSourceRepository.save(dataSource);
+
 		_csvIndividualDog.addCSVIndividuals(
 			Arrays.asList(new CSVIndividual(123L), new CSVIndividual(123L)));
 
@@ -78,5 +87,8 @@ public class CSVIndividualDogTest
 
 	@Autowired
 	private CSVIndividualDog _csvIndividualDog;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 }

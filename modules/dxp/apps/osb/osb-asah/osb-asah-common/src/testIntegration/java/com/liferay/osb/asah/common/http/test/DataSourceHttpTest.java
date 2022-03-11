@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.http.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
@@ -38,6 +39,7 @@ import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
@@ -194,46 +196,38 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testDeleteCSVDataSource() throws Exception {
-		JSONObject dataSourceJSONObject1 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(FaroInfoTestUtil.buildCSVDataSource()),
-			JSONObject.class);
-		JSONObject dataSourceJSONObject2 = _objectMapper.convertValue(
-			_dataSourceDog.addDataSource(FaroInfoTestUtil.buildCSVDataSource()),
-			JSONObject.class);
+		DataSource dataSource1 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildCSVDataSource());
 
-		String dataSourceId1 = dataSourceJSONObject1.getString("id");
-		String dataSourceId2 = dataSourceJSONObject2.getString("id");
+		dataSource1.setName("DataSource1");
 
-		faroInfoElasticsearchInvoker.add(
-			"csv-individuals",
-			JSONUtil.putAll(
-				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					dataSourceId1, RandomTestUtil.randomUUID(),
-					new HashMap<>()),
-				FaroInfoTestUtil.buildCSVIndividualJSONObject(
-					dataSourceId2, RandomTestUtil.randomUUID(),
-					new HashMap<>())));
+		_dataSourceRepository.save(dataSource1);
 
-		dataSourceJSONObject1.put("deletionDate", DateUtil.newDayDateString());
+		DataSource dataSource2 = _dataSourceDog.addDataSource(
+			FaroInfoTestUtil.buildCSVDataSource());
 
-		_dataSourceDog.deleteDataSource(
-			_objectMapper.convertValue(
-				dataSourceJSONObject1, DataSource.class));
+		dataSource2.setName("DataSource2");
+
+		_dataSourceRepository.save(dataSource2);
+
+		_csvIndividualRepository.save(
+			FaroInfoTestUtil.buildCSVIndividual(
+				dataSource1.getId(), RandomTestUtil.randomUUID(),
+				_objectMapper.convertValue(new HashMap<>(), JSONObject.class)));
+
+		_csvIndividualRepository.save(
+			FaroInfoTestUtil.buildCSVIndividual(
+				dataSource2.getId(), RandomTestUtil.randomUUID(),
+				_objectMapper.convertValue(new HashMap<>(), JSONObject.class)));
+
+		dataSource1.setDeletionDate(new Date());
+
+		_dataSourceRepository.delete(dataSource1);
 
 		Assertions.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"csv-individuals",
-				QueryBuilders.termQuery(
-					"dataSourceId", Long.valueOf(dataSourceId1))),
-			"Found entry in csv-individuals collection with data source ID " +
-				dataSourceId1);
+			_dataSourceRepository.existsByName("DataSource1"));
 		Assertions.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"csv-individuals",
-				QueryBuilders.termQuery(
-					"dataSourceId", Long.valueOf(dataSourceId2))),
-			"Unable to find entry in csv-individuals collection with data " +
-				"source ID " + dataSourceId2);
+			_dataSourceRepository.existsByName("DataSource2"));
 	}
 
 	@Test
@@ -815,8 +809,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	@Autowired
 	private AssetRepository _assetRepository;
 
-	@MockBean
-	private ChannelHttp _channelHttp;
+	@Autowired
+	private CSVIndividualRepository _csvIndividualRepository;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;

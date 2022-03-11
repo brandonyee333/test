@@ -19,11 +19,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
+import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -171,19 +173,20 @@ public class FieldDogTest
 	private void _testDateField(Object date, String expectedDateString)
 		throws Exception {
 
-		JSONObject csvIndividualJSONObject =
-			FaroInfoTestUtil.buildCSVIndividualJSONObject(
-				String.valueOf(_dataSource.getId()),
-				RandomTestUtil.randomUUID(),
-				new HashMap<String, Object>() {
-					{
-						put("date", date);
-					}
-				});
+		CSVIndividual csvIndividual = _csvIndividualRepository.save(
+			FaroInfoTestUtil.buildCSVIndividual(
+				_dataSource.getId(), RandomTestUtil.randomUUID(),
+				_objectMapper.convertValue(
+					new HashMap<String, Object>() {
+						{
+							put("date", date);
+						}
+					},
+					JSONObject.class)));
 
 		List<Field> fields = _fieldDog.addFields(
-			"demographics", csvIndividualJSONObject.getJSONObject("fields"),
-			_dataSource, null, "individual");
+			"demographics", csvIndividual.getFieldsJSONObject(), _dataSource,
+			null, "individual");
 
 		Field dateField = fields.get(0);
 
@@ -194,6 +197,9 @@ public class FieldDogTest
 			"Expected date to start with \"" + expectedDateString +
 				"\" instead of \"" + actualDateString + "\"");
 	}
+
+	@Autowired
+	private CSVIndividualRepository _csvIndividualRepository;
 
 	private DataSource _dataSource;
 

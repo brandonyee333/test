@@ -17,9 +17,14 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.CSVIndividualsRestController;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahTask;
+import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -27,7 +32,6 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -45,6 +49,13 @@ public class CSVIndividualsRestControllerTest
 
 	@Test
 	public void testPostCSVIndividuals() throws Exception {
+		DataSource dataSource = new DataSource();
+
+		dataSource.setId(123L);
+		dataSource.setIsNew(Boolean.TRUE);
+
+		_dataSourceRepository.save(dataSource);
+
 		JSONArray jsonArray = JSONUtil.putAll(
 			JSONUtil.put(
 				"dataSourceId", "123"
@@ -63,14 +74,9 @@ public class CSVIndividualsRestControllerTest
 
 		_csvIndividualsRestController.postCSVIndividuals(jsonArray.toString());
 
-		JSONArray csvIndividualsJSONArray = _elasticsearchInvoker.get(
-			"csv-individuals");
+		Assertions.assertEquals(2, _csvIndividualRepository.count());
 
-		Assertions.assertEquals(2, csvIndividualsJSONArray.length());
-
-		JSONAssert.assertEquals(jsonArray, csvIndividualsJSONArray, false);
-
-		_assertIds(csvIndividualsJSONArray);
+		_assertIds(_csvIndividualRepository.findAll());
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
@@ -92,11 +98,10 @@ public class CSVIndividualsRestControllerTest
 			asahTask.getContextJSONObject(), false);
 	}
 
-	private void _assertIds(JSONArray jsonArray) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			Assertions.assertNotNull(jsonObject.getString("id"));
+	private void _assertIds(Iterable<CSVIndividual> csvIndividuals) {
+		for (CSVIndividual csvIndividual : csvIndividuals) {
+			Assertions.assertEquals(123L, csvIndividual.getDataSourceId());
+			Assertions.assertNotNull(csvIndividual.getId());
 		}
 	}
 
@@ -104,9 +109,12 @@ public class CSVIndividualsRestControllerTest
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
+	private CSVIndividualRepository _csvIndividualRepository;
+
+	@Autowired
 	private CSVIndividualsRestController _csvIndividualsRestController;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 }

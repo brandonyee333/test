@@ -17,6 +17,7 @@ package com.liferay.osb.asah.test.util.faro;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Experiment;
@@ -312,21 +313,20 @@ public class FaroInfoTestUtil {
 		return dataSource;
 	}
 
-	public static JSONObject buildCSVIndividualJSONObject(
-		String dataSourceId, String dataSourceIndividualPK,
-		Map<String, Object> fieldsMap) {
+	public static CSVIndividual buildCSVIndividual(
+		Long dataSourceId, String dataSourceIndividualPK,
+		JSONObject fieldsMap) {
 
-		return JSONUtil.put(
-			"dataSourceId", dataSourceId
-		).put(
-			"dataSourceIndividualPK", dataSourceIndividualPK
-		).put(
-			"fields", new JSONObject(fieldsMap)
-		).put(
-			"individualSegmentIds", new JSONArray()
-		).put(
-			"projectId", _PROJECT_ID
-		);
+		CSVIndividual csvIndividual = new CSVIndividual();
+
+		csvIndividual.setDataSourceId(dataSourceId);
+		csvIndividual.setDataSourceIndividualPK(dataSourceIndividualPK);
+		csvIndividual.setFieldsJSONObject(fieldsMap);
+		csvIndividual.setId(
+			Long.valueOf(_timeOrderedUuidGenerator.generateId()));
+		csvIndividual.setIsNew(Boolean.TRUE);
+
+		return csvIndividual;
 	}
 
 	public static Segment buildDynamicSegment(
@@ -1101,8 +1101,6 @@ public class FaroInfoTestUtil {
 
 		return keywordsJSONArray;
 	}
-
-	private static final String _PROJECT_ID = RandomTestUtil.randomString();
 
 	private static final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
