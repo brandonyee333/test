@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.ingestion.ip.geocoder;
+package com.liferay.osb.asah.dataflow.ingestion.event.ip.geocoder;
 
 import com.maxmind.geoip.Location;
 import com.maxmind.geoip.LookupService;

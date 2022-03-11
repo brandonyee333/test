@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.ingestion.browscap;
+package com.liferay.osb.asah.dataflow.ingestion.event.browscap;
 
 import com.blueconic.browscap.BrowsCapField;
 import com.blueconic.browscap.Capabilities;

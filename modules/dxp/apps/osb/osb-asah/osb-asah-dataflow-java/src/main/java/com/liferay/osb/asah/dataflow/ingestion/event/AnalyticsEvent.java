@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.ingestion;
+package com.liferay.osb.asah.dataflow.ingestion.event;
 
 import java.util.Map;
 

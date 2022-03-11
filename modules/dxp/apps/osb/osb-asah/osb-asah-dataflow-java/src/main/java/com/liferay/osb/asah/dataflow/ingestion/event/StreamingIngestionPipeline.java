@@ -12,16 +12,16 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.ingestion;
+package com.liferay.osb.asah.dataflow.ingestion.event;
 
 import com.google.api.services.bigquery.model.TableRow;
 
 import com.liferay.osb.asah.dataflow.common.DateUtil;
 import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
-import com.liferay.osb.asah.dataflow.ingestion.browscap.BrowscapDevice;
-import com.liferay.osb.asah.dataflow.ingestion.browscap.BrowscapEngine;
-import com.liferay.osb.asah.dataflow.ingestion.ip.geocoder.IPGeocoder;
-import com.liferay.osb.asah.dataflow.ingestion.ip.geocoder.IPInfo;
+import com.liferay.osb.asah.dataflow.ingestion.event.browscap.BrowscapDevice;
+import com.liferay.osb.asah.dataflow.ingestion.event.browscap.BrowscapEngine;
+import com.liferay.osb.asah.dataflow.ingestion.event.ip.geocoder.IPGeocoder;
+import com.liferay.osb.asah.dataflow.ingestion.event.ip.geocoder.IPInfo;
 import com.liferay.osb.asah.dataflow.io.WriteToText;
 
 import java.time.ZoneId;
