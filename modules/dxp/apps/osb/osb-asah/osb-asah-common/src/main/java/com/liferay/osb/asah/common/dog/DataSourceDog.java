@@ -68,6 +68,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -566,13 +567,28 @@ public class DataSourceDog {
 	}
 
 	private void _deleteFieldMappings(Long dataSourceId) {
+		List<FieldMapping> fieldMappings = _fieldMappingDog.getFieldMappings(
+			dataSourceId);
+
+		_elasticsearchInvoker.updateByQueryWithRetry(
+			QueryBuilders.existsQuery("dataSourceFieldNames." + dataSourceId),
+			true,
+			new Script(
+				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+				"ctx._source.dataSourceFieldNames.remove(params.dataSourceId)",
+				Collections.singletonMap(
+					"dataSourceId", String.valueOf(dataSourceId))),
+			"field-mappings");
+
 		List<Long> disabledFieldMappingIds = new ArrayList<>();
 
-		for (FieldMapping fieldMapping :
-				_fieldMappingDog.getFieldMappings(dataSourceId)) {
+		for (FieldMapping fieldMapping : fieldMappings) {
+			fieldMapping = _fieldMappingDog.fetchFieldMapping(
+				fieldMapping.getId());
 
-			fieldMapping = _fieldMappingDog.removeDataSourceFieldName(
-				dataSourceId, fieldMapping);
+			if (fieldMapping == null) {
+				continue;
+			}
 
 			Map<String, String> dataSourceFieldNames =
 				fieldMapping.getDataSourceFieldNames();
