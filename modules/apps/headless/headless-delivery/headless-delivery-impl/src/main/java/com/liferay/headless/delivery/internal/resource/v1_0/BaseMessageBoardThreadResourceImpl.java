@@ -17,6 +17,7 @@ package com.liferay.headless.delivery.internal.resource.v1_0;
 import com.liferay.headless.delivery.dto.v1_0.MessageBoardThread;
 import com.liferay.headless.delivery.dto.v1_0.Rating;
 import com.liferay.headless.delivery.resource.v1_0.MessageBoardThreadResource;
+import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -1061,8 +1062,14 @@ public abstract class BaseMessageBoardThreadResourceImpl
 					(Long)parameters.get("siteId"), messageBoardThread);
 		}
 
-		for (MessageBoardThread messageBoardThread : messageBoardThreads) {
-			messageBoardThreadUnsafeConsumer.accept(messageBoardThread);
+		if (contextBatchUnsafeConsumer != null) {
+			contextBatchUnsafeConsumer.accept(
+				messageBoardThreads, messageBoardThreadUnsafeConsumer);
+		}
+		else {
+			for (MessageBoardThread messageBoardThread : messageBoardThreads) {
+				messageBoardThreadUnsafeConsumer.accept(messageBoardThread);
+			}
 		}
 	}
 
@@ -1151,6 +1158,15 @@ public abstract class BaseMessageBoardThreadResourceImpl
 
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
 		this.contextAcceptLanguage = contextAcceptLanguage;
+	}
+
+	public void setContextBatchUnsafeConsumer(
+		UnsafeBiConsumer
+			<java.util.Collection<MessageBoardThread>,
+			 UnsafeConsumer<MessageBoardThread, Exception>, Exception>
+				contextBatchUnsafeConsumer) {
+
+		this.contextBatchUnsafeConsumer = contextBatchUnsafeConsumer;
 	}
 
 	public void setContextCompany(
@@ -1306,6 +1322,10 @@ public abstract class BaseMessageBoardThreadResourceImpl
 	}
 
 	protected AcceptLanguage contextAcceptLanguage;
+	protected UnsafeBiConsumer
+		<java.util.Collection<MessageBoardThread>,
+		 UnsafeConsumer<MessageBoardThread, Exception>, Exception>
+			contextBatchUnsafeConsumer;
 	protected com.liferay.portal.kernel.model.Company contextCompany;
 	protected HttpServletRequest contextHttpServletRequest;
 	protected HttpServletResponse contextHttpServletResponse;

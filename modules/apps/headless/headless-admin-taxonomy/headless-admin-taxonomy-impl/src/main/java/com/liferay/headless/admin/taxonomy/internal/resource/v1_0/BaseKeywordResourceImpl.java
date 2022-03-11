@@ -16,6 +16,7 @@ package com.liferay.headless.admin.taxonomy.internal.resource.v1_0;
 
 import com.liferay.headless.admin.taxonomy.dto.v1_0.Keyword;
 import com.liferay.headless.admin.taxonomy.resource.v1_0.KeywordResource;
+import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -605,8 +606,13 @@ public abstract class BaseKeywordResourceImpl
 				(Long)parameters.get("siteId"), keyword);
 		}
 
-		for (Keyword keyword : keywords) {
-			keywordUnsafeConsumer.accept(keyword);
+		if (contextBatchUnsafeConsumer != null) {
+			contextBatchUnsafeConsumer.accept(keywords, keywordUnsafeConsumer);
+		}
+		else {
+			for (Keyword keyword : keywords) {
+				keywordUnsafeConsumer.accept(keyword);
+			}
 		}
 	}
 
@@ -695,6 +701,14 @@ public abstract class BaseKeywordResourceImpl
 
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
 		this.contextAcceptLanguage = contextAcceptLanguage;
+	}
+
+	public void setContextBatchUnsafeConsumer(
+		UnsafeBiConsumer
+			<java.util.Collection<Keyword>, UnsafeConsumer<Keyword, Exception>,
+			 Exception> contextBatchUnsafeConsumer) {
+
+		this.contextBatchUnsafeConsumer = contextBatchUnsafeConsumer;
 	}
 
 	public void setContextCompany(
@@ -845,6 +859,9 @@ public abstract class BaseKeywordResourceImpl
 	}
 
 	protected AcceptLanguage contextAcceptLanguage;
+	protected UnsafeBiConsumer
+		<java.util.Collection<Keyword>, UnsafeConsumer<Keyword, Exception>,
+		 Exception> contextBatchUnsafeConsumer;
 	protected com.liferay.portal.kernel.model.Company contextCompany;
 	protected HttpServletRequest contextHttpServletRequest;
 	protected HttpServletResponse contextHttpServletResponse;
