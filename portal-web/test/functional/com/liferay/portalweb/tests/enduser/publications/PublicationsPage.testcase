@@ -217,7 +217,7 @@ definition {
 		// Wrokaround LPS-129546
 
 		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
-	
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
