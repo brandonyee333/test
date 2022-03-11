@@ -1,0 +1,66 @@
+[
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"351238757269547426": "age",
+			"366573382114568984": "age"
+		},
+		"dateCreated": "2019-07-16T19:22:48.366Z",
+		"dateModified": "2019-07-16T19:23:33.867Z",
+		"fieldName": "age",
+		"fieldType": "Number",
+		"id": "366588394714972833",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"366573382114568984": "NumberOfEmployees"
+		},
+		"dateCreated": "2019-07-16T17:23:33.266Z",
+		"dateModified": "2019-07-16T17:23:34.917Z",
+		"fieldName": "numberOfEmployees",
+		"fieldType": "Number",
+		"id": "366573389382719637",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"366573382114568984": "ShippingPostalCode"
+		},
+		"dateCreated": "2019-07-16T17:23:33.906Z",
+		"dateModified": "2019-07-16T17:23:34.845Z",
+		"fieldName": "shippingPostalCode",
+		"fieldType": "Text",
+		"id": "366573390725218943",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	}
+]
