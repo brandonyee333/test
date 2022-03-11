@@ -39,7 +39,11 @@ definition {
 	@description = "Assert user can add/delete/publish publication with all permissions of Publications, can't add/publish a new publicaiton without add/publish publication permission."
 	@priority = "5"
 	test AllowPublicationsPermissionUserToAddAndPublishPublications {
+
+		// Wrokaround LPS-127348
+
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 
 		JSONRole.addRegularRole(
 			roleKey = "Publications Role",
@@ -226,6 +230,11 @@ definition {
 
 	@priority = "5"
 	test ConflictingPublicationsAutomaticallyResolved {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -311,6 +320,10 @@ definition {
 
 	@priority = "5"
 	test ConflictingPublicationsNeedManualResolution {
+
+		// Wrokaround LPS-129546
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property portal.acceptance = "true";
 
 		Navigator.openURL();
@@ -574,7 +587,10 @@ definition {
 
 	@priority = "5"
 	test PublishParallelPublications {
-		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property environment.acceptance = "true";
 		property portal.acceptance = "true";
 
@@ -659,6 +675,10 @@ definition {
 
 	@priority = "5"
 	test RescheduleAndCancelScheduledPublication {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property portal.acceptance = "true";
 
 		Publications.createNewPublication(publicationName = "Publication Name");
@@ -692,6 +712,10 @@ definition {
 
 	@priority = "5"
 	test RevertPublicationAndPublishNow {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property portal.acceptance = "true";
 
 		Publications.createNewPublication(publicationName = "Publication Name");
@@ -755,6 +779,11 @@ definition {
 
 	@priority = "5"
 	test SchedulePublication {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		Publications.createNewPublication(publicationName = "Publication Name 1");
 
 		Navigator.openURL();
@@ -828,6 +857,11 @@ definition {
 
 	@priority = "5"
 	test SearchPublishedPublications {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		Publications.createNewPublication(publicationName = "Apple");
 
 		Publications.createNewPublication(publicationName = "Banana");

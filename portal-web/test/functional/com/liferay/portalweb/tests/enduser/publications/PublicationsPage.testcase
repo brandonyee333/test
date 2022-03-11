@@ -38,6 +38,11 @@ definition {
 
 	@priority = "4"
 	test ConflictingPublicationsNeedManualResolution {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		JSONGroup.addGroup(groupName = "Site Name");
 
 		JSONLayout.addPublicLayout(
@@ -121,6 +126,10 @@ definition {
 
 	@priority = "4"
 	test DiscardConflictingChangesOnContentPage {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property test.assert.warning.exceptions = "true";
 
 		JSONGroup.addGroup(groupName = "Site Name");
@@ -204,6 +213,11 @@ definition {
 
 	@priority = "4"
 	test PublishDeletedPageWithTag {
+
+		// Wrokaround LPS-129546
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+	
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -259,6 +273,10 @@ definition {
 
 	@priority = "4"
 	test PublishPrivateContentPageWithFragment {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property test.assert.warning.exceptions = "true";
 
 		Publications.createNewPublication(publicationName = "Publication Name");
@@ -331,6 +349,11 @@ definition {
 
 	@priority = "5"
 	test ViewPageFriendlyURLAfterRevertingPublication {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(

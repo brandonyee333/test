@@ -38,6 +38,10 @@ definition {
 
 	@priority = "4"
 	test CheckoutAndCheckinDocumentInPublication {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property test.assert.warning.exceptions = "true";
 
 		Publications.createNewPublication(publicationName = "Publication Name");
@@ -92,6 +96,11 @@ definition {
 
 	@priority = "4"
 	test ConflictingPublicationsNeedManualResolution {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMDocument.addCP(
@@ -233,6 +242,11 @@ definition {
 
 	@priority = "4"
 	test PublishDocumentFolderWithEditedDocument {
+
+		// Wrokaround LPS-129546
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -319,6 +333,11 @@ definition {
 
 	@priority = "4"
 	test PublishDocumentWithNewDocumentType {
+
+		// Wrokaround LPS-129546
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		Publications.createNewPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
@@ -398,6 +417,11 @@ definition {
 	@description = "Assert Shortcut can add within Publications and publish to production."
 	@priority = "4"
 	test PublishWithShortcut {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		JSONGroup.addGroup(groupName = "Site Name");
 
 		Publications.createNewPublication(publicationName = "Publication Name");

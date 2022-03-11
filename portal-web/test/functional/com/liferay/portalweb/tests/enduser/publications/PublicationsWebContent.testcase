@@ -39,6 +39,11 @@ definition {
 	@description = "Manage Conflicting Web Content Folder changes and discard the changes."
 	@priority = "4"
 	test ManageConflictingWebContentFolderchanges {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		JSONGroup.addGroup(groupName = "Site Name");
 
 		JSONWebcontent.addFolder(
@@ -135,6 +140,11 @@ definition {
 
 	@priority = "4"
 	test PublishExpiredWebContentViaWCD {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		Publications.createNewPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
@@ -198,6 +208,11 @@ definition {
 
 	@priority = "4"
 	test PublishWebContentWithCategory {
+
+		// Wrokaround LPS-127348
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		Publications.createNewPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
@@ -370,6 +385,11 @@ definition {
 
 	@priority = "4"
 	test PublishWebContentWithFriendlyURL {
+
+		// Wrokaround LPS-129638
+
+		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
+
 		Publications.createNewPublication(publicationName = "Publication Name");
 
 		Navigator.openURL();
