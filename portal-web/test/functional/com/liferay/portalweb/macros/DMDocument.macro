@@ -855,7 +855,7 @@ definition {
 
 	macro checkSpecificDocumentCheckboxCP {
 		Check(
-			key_dmDocumentTitle ="${dmDocumentTitle}",
+			key_dmDocumentTitle = "${dmDocumentTitle}",
 			key_position = "${widgetPosition}",
 			locator1 = "DocumentsAndMedia#ICON_DOCUMENT_CHECKBOX__SPECIFIC");
 	}
