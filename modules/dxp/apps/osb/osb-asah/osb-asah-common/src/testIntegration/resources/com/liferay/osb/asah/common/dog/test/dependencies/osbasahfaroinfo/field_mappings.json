@@ -1,0 +1,92 @@
+[
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"405201047787757795": "emailAddress",
+			"405201047787757796": "emailAddress"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"fieldName": "email",
+		"fieldType": "http://schema.org/email",
+		"id": "331238757947565158",
+		"ownerType": "individual",
+		"restricted": true,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"405201047787757795": "favoritePokemon"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"fieldName": "favoritePokemon",
+		"fieldType": "Text",
+		"id": "340477857996688156",
+		"ownerType": "individual",
+		"restricted": false,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"405201047787757795": "BillingCountry",
+			"405201047787757796": "BillingCountry"
+		},
+		"dateCreated": "2019-10-16T21:25:15.802Z",
+		"dateModified": "2019-10-16T21:25:18.835Z",
+		"fieldName": "billingCountry",
+		"fieldType": "Text",
+		"id": "379649766567289722",
+		"ownerType": "account",
+		"restricted": false,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"405201047787757795": "BillingState"
+		},
+		"dateCreated": "2019-10-16T21:25:16.123Z",
+		"dateModified": "2019-10-16T21:25:18.497Z",
+		"fieldName": "billingState",
+		"fieldType": "Text",
+		"id": "379649767240351068",
+		"ownerType": "account",
+		"restricted": false,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	}
+]

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
@@ -24,12 +25,15 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -108,6 +112,41 @@ public class DataSourceDogTest
 
 		Assertions.assertEquals("DISCONNECTED", dataSource.getState());
 		Assertions.assertEquals("INACTIVE", dataSource.getStatus());
+	}
+
+	@ElasticsearchIndex(
+		name = "field-mappings", resourcePath = "field_mappings.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@Test
+	public void testFieldMappingsCleared() throws Exception {
+		DataSource dataSource = _dataSourceDog.fetchDataSource(
+			405201047787757795L);
+
+		_dataSourceDog.deleteDataSource(dataSource);
+
+		List<FieldMapping> fieldMappings = _fieldMappingDog.getFieldMappings(
+			405201047787757795L);
+
+		Assertions.assertTrue(fieldMappings.isEmpty());
+
+		fieldMappings = _fieldMappingDog.getFieldMappings(
+			Collections.singleton(340477857996688156L));
+
+		Assertions.assertTrue(fieldMappings.isEmpty());
+
+		fieldMappings = _fieldMappingDog.getFieldMappings(
+			Collections.singleton(379649767240351068L));
+
+		Assertions.assertEquals(1, fieldMappings.size());
+
+		fieldMappings = _fieldMappingDog.getFieldMappings(405201047787757796L);
+
+		Assertions.assertEquals(2, fieldMappings.size());
 	}
 
 	@RepositoryResource(
@@ -247,6 +286,9 @@ public class DataSourceDogTest
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
+
+	@Autowired
+	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private FieldRepository _fieldRepository;
