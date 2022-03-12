@@ -380,16 +380,17 @@ public class FaroInfoTestUtil {
 	public static Experiment buildExperiment(
 		ExperimentStatus experimentStatus, GoalMetric goalMetric, Long id) {
 
-		Goal goal = new Goal();
-
-		goal.setGoalMetric(goalMetric);
-
 		Experiment experiment = new Experiment();
 
 		experiment.setChannelId(1L);
 		experiment.setDataSourceId(1L);
 		experiment.setExperimentStatus(experimentStatus);
 		experiment.setId(id);
+
+		Goal goal = new Goal();
+
+		goal.setGoalMetric(goalMetric);
+
 		experiment.setGoal(goal);
 
 		return experiment;
