@@ -583,8 +583,12 @@ public class DataSourceDog {
 		List<Long> disabledFieldMappingIds = new ArrayList<>();
 
 		for (FieldMapping fieldMapping : fieldMappings) {
-			fieldMapping = _fieldMappingDog.fetchFieldMapping(
-				fieldMapping.getId());
+			Long fieldMappingId = fieldMapping.getId();
+
+			if (fieldMappingId != null) {
+				fieldMapping = _fieldMappingDog.fetchFieldMapping(
+					fieldMappingId);
+			}
 
 			if (fieldMapping == null) {
 				continue;
