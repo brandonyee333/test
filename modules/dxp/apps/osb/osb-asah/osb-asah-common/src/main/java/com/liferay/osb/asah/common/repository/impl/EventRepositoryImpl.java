@@ -1171,7 +1171,7 @@ public class EventRepositoryImpl extends BaseRepository {
 	private static final Map<String, String> _globalAttributes =
 		new HashMap<String, String>() {
 			{
-				put("canonicalUrl", "url");
+				put("canonicalUrl", "canonicalUrl");
 				put("pageDescription", "description");
 				put("pageKeywords", "keywords");
 				put("pageTitle", "title");
