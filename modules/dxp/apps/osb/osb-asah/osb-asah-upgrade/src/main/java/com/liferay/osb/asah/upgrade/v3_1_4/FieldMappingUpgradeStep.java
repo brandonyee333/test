@@ -16,6 +16,7 @@ package com.liferay.osb.asah.upgrade.v3_1_4;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -27,7 +28,6 @@ import java.util.Objects;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,24 +47,14 @@ public class FieldMappingUpgradeStep implements UpgradeStep {
 			_dataSourceDog.getDataSources(),
 			dataSource -> String.valueOf(dataSource.getId()));
 
-		int page = 0;
-
-		while (true) {
-			JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
-				"field-mappings", page++, QueryBuilders.matchAllQuery(), 500);
-
-			if (jsonArray.length() == 0) {
-				break;
-			}
-
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject jsonObject = jsonArray.getJSONObject(i);
-
+		JSONArrayIterator.of(
+			"field-mappings", _faroInfoElasticsearchInvoker,
+			jsonObject -> {
 				JSONObject dataSourceFieldNamesJSONObject =
 					jsonObject.optJSONObject("dataSourceFieldNames");
 
 				if (dataSourceFieldNamesJSONObject == null) {
-					continue;
+					return null;
 				}
 
 				Iterator<String> iterator =
@@ -89,15 +79,20 @@ public class FieldMappingUpgradeStep implements UpgradeStep {
 						deleteFieldMappingIds.add(jsonObject.getString("id"));
 					}
 				}
-			}
 
-			_faroInfoElasticsearchInvoker.save("field-mappings", jsonArray);
+				_faroInfoElasticsearchInvoker.save(
+					"field-mappings", jsonObject);
 
-			if (!deleteFieldMappingIds.isEmpty()) {
-				_faroInfoElasticsearchInvoker.delete(
-					"field-mappings",
-					QueryBuilders.termsQuery("id", deleteFieldMappingIds));
+				return null;
 			}
+		).setQueryBuilder(
+			QueryBuilders.matchAllQuery()
+		).iterate();
+
+		if (!deleteFieldMappingIds.isEmpty()) {
+			_faroInfoElasticsearchInvoker.delete(
+				"field-mappings",
+				QueryBuilders.termsQuery("id", deleteFieldMappingIds));
 		}
 	}
 
