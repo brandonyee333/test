@@ -105,7 +105,8 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 	}
 
 	@Override
-	public PortalInstance postPortalInstance(PortalInstance portalInstance)
+	public PortalInstance postPortalInstance(
+			String initializerKey, PortalInstance portalInstance)
 		throws Exception {
 
 		PortalInstanceInitializer portalInstanceInitializer = null;

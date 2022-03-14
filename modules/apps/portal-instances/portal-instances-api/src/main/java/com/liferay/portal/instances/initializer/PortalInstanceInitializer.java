@@ -30,6 +30,8 @@ public interface PortalInstanceInitializer {
 
 	public String getKey();
 
+	public void initialize(long companyId) throws InitializationException;
+
 	public void initialize(
 			long companyId, HttpServletRequest httpServletRequest,
 			Map<String, String> payload)
