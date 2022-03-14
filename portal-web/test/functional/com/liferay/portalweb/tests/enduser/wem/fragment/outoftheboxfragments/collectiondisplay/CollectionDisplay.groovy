@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.model.User;
@@ -41,6 +42,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.segments.constants.SegmentsExperienceConstants;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
@@ -301,14 +303,17 @@ class CollectionDisplayTest {
 
 		//Add a Collection Display to a content page
 
-		LayoutStructure layoutStructure = new LayoutStructure();
+		LayoutPageTemplateStructure layoutPageTemplateStructure =
+			LayoutPageTemplateStructureLocalServiceUtil.
+				fetchLayoutPageTemplateStructure(
+					groupId, draftLayout.getPlid());
+
+		String data = layoutPageTemplateStructure.getData(
+			SegmentsExperienceConstants.ID_DEFAULT);
+
+		LayoutStructure layoutStructure = LayoutStructure.of(data);
 
 		layoutStructure.addRootLayoutStructureItem();
-
-		LayoutPageTemplateStructureLocalServiceUtil.addLayoutPageTemplateStructure(
-				defaultUserId, groupId, draftLayout.getPlid(),
-				layoutStructure.toString(),
-				serviceContext);
 
 		CollectionStyledLayoutStructureItem collectionStyledLayoutStructureItem =
 				(CollectionStyledLayoutStructureItem)layoutStructure.addCollectionStyledLayoutStructureItem(
@@ -436,7 +441,7 @@ class CollectionDisplayTest {
 		serviceTracker1.close();
 
 		LayoutPageTemplateStructureLocalServiceUtil.updateLayoutPageTemplateStructureData(
-				groupId, draftLayout.getPlid(), layoutStructure.toString());
+				groupId, draftLayout.getPlid(), SegmentsExperienceConstants.ID_DEFAULT, layoutStructure.toString());
 
 		// Publish the content page
 
