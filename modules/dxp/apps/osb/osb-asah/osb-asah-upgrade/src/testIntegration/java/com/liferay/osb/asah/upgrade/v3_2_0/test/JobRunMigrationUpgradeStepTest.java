@@ -106,6 +106,8 @@ public class JobRunMigrationUpgradeStepTest
 				Collectors.toList()
 			),
 			_jobRunRepository.findAll());
+
+		Assertions.assertTrue(_jobRunMigrationUpgradeStep.isSequenceSync());
 	}
 
 	@Autowired

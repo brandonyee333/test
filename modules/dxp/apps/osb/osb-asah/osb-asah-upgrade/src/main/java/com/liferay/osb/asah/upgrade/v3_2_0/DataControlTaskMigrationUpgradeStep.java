@@ -54,6 +54,11 @@ public class DataControlTaskMigrationUpgradeStep
 		return "SELECT id FROM DataControlTask ORDER BY id DESC LIMIT 1";
 	}
 
+	@Override
+	protected String getSequenceName() {
+		return "DataControlTask_id_seq";
+	}
+
 	@Autowired
 	private DataControlTaskRepository _dataControlTaskRepository;
 

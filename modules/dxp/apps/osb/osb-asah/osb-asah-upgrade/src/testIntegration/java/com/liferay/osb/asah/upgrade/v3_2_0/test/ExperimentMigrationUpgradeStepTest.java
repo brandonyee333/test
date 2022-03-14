@@ -94,6 +94,8 @@ public class ExperimentMigrationUpgradeStepTest
 				Collectors.toList()
 			),
 			_experimentRepository.findAll());
+
+		Assertions.assertTrue(_experimentMigrationUpgradeStep.isSequenceSync());
 	}
 
 	@Autowired

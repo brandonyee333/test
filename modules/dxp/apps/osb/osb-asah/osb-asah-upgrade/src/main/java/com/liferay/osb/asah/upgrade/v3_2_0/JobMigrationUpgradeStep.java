@@ -52,6 +52,11 @@ public class JobMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 		return "SELECT id FROM job ORDER BY id DESC LIMIT 1";
 	}
 
+	@Override
+	protected String getSequenceName() {
+		return "job_id_seq";
+	}
+
 	@Autowired
 	private JobRepository _jobRepository;
 

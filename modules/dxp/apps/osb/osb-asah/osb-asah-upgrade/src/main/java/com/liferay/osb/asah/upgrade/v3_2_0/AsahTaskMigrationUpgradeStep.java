@@ -53,6 +53,11 @@ public class AsahTaskMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 		return "SELECT id FROM asahtask ORDER BY id DESC LIMIT 1";
 	}
 
+	@Override
+	protected String getSequenceName() {
+		return "asahtask_id_seq";
+	}
+
 	@Autowired
 	private AsahTaskRepository _asahTaskRepository;
 

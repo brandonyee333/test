@@ -99,6 +99,9 @@ public class DataControlTaskMigrationUpgradeStepTest
 				Collectors.toList()
 			),
 			_dataControlTaskRepository.findAll());
+
+		Assertions.assertTrue(
+			_dataControlTaskMigrationUpgradeStep.isSequenceSync());
 	}
 
 	@Autowired

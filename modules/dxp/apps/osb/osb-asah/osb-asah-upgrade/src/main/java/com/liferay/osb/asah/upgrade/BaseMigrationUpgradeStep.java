@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -44,6 +45,14 @@ import org.springframework.stereotype.Component;
 @Component
 public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 
+	public final boolean isSequenceSync() {
+		if (_getSequenceNextValue() > _getLatestId(true)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	@Override
 	public void upgrade(String version) {
 		JSONArray objectJSONArray = _faroInfoElasticsearchInvoker.get(
@@ -68,6 +77,8 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 	protected abstract String getElasticsearchCollectionName();
 
 	protected abstract String getSelectLatestIdSQL();
+
+	protected abstract String getSequenceName();
 
 	private Long _getLatestId(boolean retry) {
 		try {
@@ -106,10 +117,31 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 		}
 	}
 
+	private Long _getSequenceNextValue() {
+		return _namedParameterJdbcTemplate.queryForObject(
+			"SELECT nextval(:sequenceName) nextValue",
+			Collections.singletonMap("sequenceName", getSequenceName()),
+			Long.class);
+	}
+
 	@PostConstruct
 	private void _init() {
 		_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 			_dataSource);
+	}
+
+	private void _syncSequenceStart() {
+		Long currentValue = _getLatestId(true) + 1;
+
+		_namedParameterJdbcTemplate.queryForObject(
+			"SELECT setval(:sequenceName, :currentValue, true)",
+			new HashMap<String, Object>() {
+				{
+					put("currentValue", currentValue);
+					put("sequenceName", getSequenceName());
+				}
+			},
+			Long.class);
 	}
 
 	private static final Log _log = LogFactory.getLog(

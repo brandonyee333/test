@@ -95,6 +95,8 @@ public class AsahTaskMigrationUpgradeStepTest
 				Collectors.toList()
 			),
 			_asahTaskDog.getAsahTasks());
+
+		Assertions.assertTrue(_asahTaskMigrationUpgradeStep.isSequenceSync());
 	}
 
 	@Autowired

@@ -53,6 +53,11 @@ public class ExperimentMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 		return "SELECT id FROM experiment ORDER BY id DESC LIMIT 1";
 	}
 
+	@Override
+	protected String getSequenceName() {
+		return "experiment_id_seq";
+	}
+
 	@Autowired
 	private ExperimentRepository _experimentRepository;
 
