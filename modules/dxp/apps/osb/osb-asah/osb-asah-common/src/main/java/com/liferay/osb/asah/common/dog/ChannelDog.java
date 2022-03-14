@@ -46,6 +46,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -84,6 +86,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 		channel.setDefaultChannel(defaultChannel);
 		channel.setId(_timeOrderedUuidGenerator.generateIdAsLong());
 		channel.setIsNew(Boolean.TRUE);
+		channel.setState("READY");
 
 		channel = _channelRepository.save(channel);
 
@@ -214,10 +217,14 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 		if (name != null) {
 			return PageableExecutionUtils.getPage(
-				_channelRepository.findByNameContainingIgnoreCase(
-					name, PageRequest.of(page, size, _getSort(sorts))),
+				_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
+					name, PageRequest.of(page, size, _getSort(sorts)),
+					"IN_PROGRESS_DELETING"),
 				PageRequest.of(page, size, _getSort(sorts)),
-				() -> _channelRepository.countByNameContainingIgnoreCase(name));
+				() ->
+					_channelRepository.
+						countByNameContainingIgnoreCaseAndStateNot(
+							name, "IN_PROGRESS_DELETING"));
 		}
 
 		return _channelRepository.findAll(
@@ -290,6 +297,23 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	public Channel update(Channel channel) {
 		return _channelRepository.save(channel);
+	}
+
+	public void updateState(List<String> ids, String state) {
+		Stream<String> stream = ids.stream();
+
+		Iterable<Channel> channels = _channelRepository.findAllById(
+			stream.map(
+				Long::valueOf
+			).collect(
+				Collectors.toList()
+			));
+
+		for (Channel channel : channels) {
+			channel.setState(state);
+		}
+
+		_channelRepository.saveAll(channels);
 	}
 
 	private BoolQueryBuilder _buildBoolQueryBuilder(
