@@ -15,12 +15,21 @@
 package com.liferay.osb.asah.publisher.rest.controller;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import java.nio.charset.StandardCharsets;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -30,13 +39,11 @@ import java.time.format.DateTimeParseException;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipInputStream;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,7 +62,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Riccardo Ferrari
@@ -110,39 +119,25 @@ public class DXPBatchEntitiesRestController {
 	public ResponseEntity<?> post(
 			@RequestHeader(value = HeaderConstants.DATA_SOURCE_ID) String
 				dataSourceId,
-			HttpServletRequest httpServletRequest)
+			@RequestPart(value = "file") List<MultipartFile> files,
+			@RequestPart(required = false, value = "uploadType") String
+				uploadType)
 		throws Exception {
 
-		ServletFileUpload servletFileUpload = new ServletFileUpload();
-
-		long maxSize = 2L * 1024 * 1024 * 1024;
-
-		servletFileUpload.setFileSizeMax(maxSize);
-		servletFileUpload.setSizeMax(maxSize);
-
-		FileItemIterator fileItemIterator = servletFileUpload.getItemIterator(
-			httpServletRequest);
-
-		while (fileItemIterator.hasNext()) {
-			FileItemStream fileItemStream = fileItemIterator.next();
-
-			String name = fileItemStream.getName();
+		for (MultipartFile file : files) {
+			String name = file.getOriginalFilename();
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Received upload request " + name);
 			}
 
-			Storage storage = _storageFactory.getStorage(
-				_getStorageConfiguration(dataSourceId + "/" + name));
-
 			ZipInputStream zipInputStream = new ZipInputStream(
-				fileItemStream.openStream());
+				file.getInputStream());
 
 			zipInputStream.getNextEntry();
 
-			boolean success = storage.write(zipInputStream);
-
-			storage.close();
+			boolean success = _publishMessages(
+				dataSourceId, name, zipInputStream, uploadType);
 
 			if (!success) {
 				return new ResponseEntity(
@@ -199,9 +194,55 @@ public class DXPBatchEntitiesRestController {
 		}
 	}
 
+	private boolean _publishMessages(
+		String dataSourceId, String resourceName, InputStream inputStream,
+		String uploadType) {
+
+		boolean status = false;
+
+		Map<String, String> messageAttributes = new HashMap<>();
+
+		messageAttributes.put("dataSourceId", dataSourceId);
+		messageAttributes.put("projectId", ProjectIdThreadLocal.getProjectId());
+		messageAttributes.put("resourceName", resourceName);
+		messageAttributes.put("uploadTime", DateUtil.toUTCString(new Date()));
+		messageAttributes.put(
+			"uploadType", (uploadType != null) ? uploadType : "FULL");
+
+		try (BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+			long count = 1;
+
+			String line = bufferedReader.readLine();
+
+			while (line != null) {
+				String nextLine = bufferedReader.readLine();
+
+				messageAttributes.put("count", String.valueOf(count));
+				messageAttributes.put(
+					"last", (nextLine == null) ? "true" : "false");
+
+				_messageBus.sendMessage(_channel, line, messageAttributes);
+
+				count += 1;
+
+				line = nextLine;
+			}
+
+			status = true;
+		}
+		catch (IOException ioException) {
+			_log.error(ioException, ioException);
+		}
+
+		return status;
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		DXPBatchEntitiesRestController.class);
 
+	private static final Channel _channel = Channel.DXP_ENTITIES_DEFAULT;
 	private static final DateTimeFormatter _dateTimeFormatter =
 		DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz");
 
@@ -214,6 +255,9 @@ public class DXPBatchEntitiesRestController {
 		"${osb.asah.dxp.batch.entities.storage.path:/storage/{projectId}/dxp_batch_entities.json"
 	)
 	private String _dxpBatchEntitiesStoragePathTemplate;
+
+	@Autowired
+	private MessageBus _messageBus;
 
 	@Autowired
 	private StorageFactory _storageFactory;
