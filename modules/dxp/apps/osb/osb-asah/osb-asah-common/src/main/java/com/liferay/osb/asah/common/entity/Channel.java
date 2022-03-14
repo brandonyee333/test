@@ -66,7 +66,8 @@ public class Channel implements Persistable<Long> {
 		if (Objects.equals(_channelDataSources, channel._channelDataSources) &&
 			Objects.equals(_createDate, channel._createDate) &&
 			Objects.equals(_id, channel._id) &&
-			Objects.equals(_name, channel._name)) {
+			Objects.equals(_name, channel._name) &&
+			Objects.equals(_state, channel._state)) {
 
 			return true;
 		}
@@ -113,9 +114,15 @@ public class Channel implements Persistable<Long> {
 		return _name;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getState() {
+		return _state;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(_channelDataSources, _createDate, _id, _name);
+		return Objects.hash(
+			_channelDataSources, _createDate, _id, _name, _state);
 	}
 
 	public Boolean isDefaultChannel() {
@@ -160,6 +167,10 @@ public class Channel implements Persistable<Long> {
 		_name = name;
 	}
 
+	public void setState(String state) {
+		_state = state;
+	}
+
 	@Transient
 	private Set<ChannelDataSource> _channelDataSources = new HashSet<>();
 
@@ -177,5 +188,8 @@ public class Channel implements Persistable<Long> {
 
 	@Transient
 	private String _name;
+
+	@Transient
+	private String _state;
 
 }
