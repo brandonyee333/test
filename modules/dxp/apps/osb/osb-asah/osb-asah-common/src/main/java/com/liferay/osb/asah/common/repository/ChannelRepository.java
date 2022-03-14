@@ -33,6 +33,10 @@ public interface ChannelRepository extends Repository<Channel, Long> {
 	@Cacheable
 	public long countByNameContainingIgnoreCase(String name);
 
+	@Cacheable
+	public long countByNameContainingIgnoreCaseAndStateNot(
+		String name, String state);
+
 	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByIdIn(@Param("ids") Set<Long> ids);
@@ -60,5 +64,9 @@ public interface ChannelRepository extends Repository<Channel, Long> {
 	@Cacheable
 	public List<Channel> findByNameContainingIgnoreCase(
 		String name, Pageable pageable);
+
+	@Cacheable
+	public List<Channel> findByNameContainingIgnoreCaseAndStateNot(
+		String name, Pageable pageable, String state);
 
 }
