@@ -20,12 +20,12 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.BlockedKeywordDTO;
 import com.liferay.osb.asah.backend.rest.controller.BlockedKeywordsRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.BlockedKeywordDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -53,26 +53,26 @@ public class BlockedKeywordsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BlockedKeywordRepository.class,
+		resourcePath = "osbasahfaroinfo/blocked_keywords.json"
 	)
 	@Test
 	public void testDeleteBlockedKeywords() {
 		_blockedKeywordsRestController.deleteBlockedKeywords(
 			Arrays.asList(351238757269547424L, 351238757269547425L));
 
-		Assertions.assertFalse(
-			_elasticsearchInvoker.exists(
-				"blocked-keywords", "351238757269547424"));
-		Assertions.assertFalse(
-			_elasticsearchInvoker.exists(
-				"blocked-keywords", "351238757269547425"));
+		Assertions.assertThrows(
+			OSBAsahException.class,
+			() -> _blockedKeywordDog.getBlockedKeyword(351238757269547424L));
+		Assertions.assertThrows(
+			OSBAsahException.class,
+			() -> _blockedKeywordDog.getBlockedKeyword(351238757269547425L));
 	}
 
-	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BlockedKeywordRepository.class,
+		resourcePath = "osbasahfaroinfo/blocked_keywords.json"
 	)
 	@Test
 	public void testDeleteBlockedKeywordsWithEmptyIDs() {
@@ -86,9 +86,9 @@ public class BlockedKeywordsRestControllerTest
 		}
 	}
 
-	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BlockedKeywordRepository.class,
+		resourcePath = "osbasahfaroinfo/blocked_keywords.json"
 	)
 	@Test
 	public void testGetBlockedKeyword() {
@@ -104,9 +104,9 @@ public class BlockedKeywordsRestControllerTest
 		Assertions.assertEquals("liferay", blockedKeywordDTO.getKeyword());
 	}
 
-	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BlockedKeywordRepository.class,
+		resourcePath = "osbasahfaroinfo/blocked_keywords.json"
 	)
 	@Test
 	public void testGetBlockedKeywordsFilter() throws Exception {
@@ -138,9 +138,9 @@ public class BlockedKeywordsRestControllerTest
 			false);
 	}
 
-	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BlockedKeywordRepository.class,
+		resourcePath = "osbasahfaroinfo/blocked_keywords.json"
 	)
 	@Test
 	public void testGetBlockedKeywordsPagination() throws Exception {
@@ -162,9 +162,9 @@ public class BlockedKeywordsRestControllerTest
 			false);
 	}
 
-	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BlockedKeywordRepository.class,
+		resourcePath = "osbasahfaroinfo/blocked_keywords.json"
 	)
 	@Test
 	public void testGetBlockedKeywordsSort() throws Exception {
@@ -183,7 +183,7 @@ public class BlockedKeywordsRestControllerTest
 				this),
 			_objectMapper.convertValue(
 				_blockedKeywordsRestController.getBlockedKeywordDTOPageDTO(
-					null, 0, 8, new String[] {"keyword.raw,asc"}),
+					null, 0, 8, new String[] {"keyword,asc"}),
 				JSONObject.class),
 			false);
 	}
@@ -225,9 +225,9 @@ public class BlockedKeywordsRestControllerTest
 		}
 	}
 
-	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BlockedKeywordRepository.class,
+		resourcePath = "osbasahfaroinfo/blocked_keywords.json"
 	)
 	@Test
 	public void testPostExistingBlockedKeywords() {
@@ -287,10 +287,10 @@ public class BlockedKeywordsRestControllerTest
 	}
 
 	@Autowired
-	private BlockedKeywordsRestController _blockedKeywordsRestController;
+	private BlockedKeywordDog _blockedKeywordDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private BlockedKeywordsRestController _blockedKeywordsRestController;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

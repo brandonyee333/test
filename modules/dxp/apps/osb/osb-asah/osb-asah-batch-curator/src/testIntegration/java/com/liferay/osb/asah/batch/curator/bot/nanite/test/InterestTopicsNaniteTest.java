@@ -18,8 +18,7 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.InterestTopicsNanite;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.entity.InterestTopic;
 import com.liferay.osb.asah.common.repository.AssetRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -61,13 +60,13 @@ public class InterestTopicsNaniteTest
 			StringUtils.isNotEmpty(interestTopic.getTermType()));
 	}
 
-	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
 		resourcePath = "osbasahfaroinfo/assets.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BlockedKeywordRepository.class,
+		resourcePath = "osbasahfaroinfo/blocked_keywords.json"
 	)
 	@Test
 	public void testBlockedKeywords() throws Exception {
