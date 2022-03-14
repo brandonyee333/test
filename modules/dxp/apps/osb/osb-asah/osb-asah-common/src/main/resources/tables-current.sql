@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS Channel (
     id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
 	defaultChannel BOOLEAN DEFAULT false,
-	name TEXT
+	name TEXT,
+	state TEXT
 );
 
 CREATE TABLE IF NOT EXISTS ChannelDataSource (
