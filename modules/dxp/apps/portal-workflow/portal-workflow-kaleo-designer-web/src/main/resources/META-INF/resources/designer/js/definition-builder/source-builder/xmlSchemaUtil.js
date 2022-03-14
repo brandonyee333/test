@@ -96,7 +96,14 @@ function getLocationValue(field, context) {
 									for (const item of itemChild.childNodes) {
 										if (item.children) {
 											for (const item2 of item.children) {
-												childContent[item2.tagName] = item2.textContent;
+												let tagName = item2.tagName === 'name' ? `${item.tagName}-name` : item2.tagName;
+												if (!childContent[tagName]) {
+													childContent[tagName] = [];
+												}
+	
+												childContent[
+													tagName
+												].push(item2.textContent);
 											}
 										}
 									}

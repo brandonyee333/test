@@ -21,7 +21,7 @@ const populateNotificationsData = (initialElements, setElements) => {
 			const recipients = element.data.notifications.recipients;
 
 			recipients.map((recipient, index) => {
-				if (recipient.assignmentType[0] === 'roleId') {
+				if (recipient?.assignmentType?.[0] === 'roleId') {
 					retrieveRolesBy('roleId', recipient.roleId)
 						.then((response) => response.json())
 						.then((response) => {
@@ -35,7 +35,7 @@ const populateNotificationsData = (initialElements, setElements) => {
 
 							setElements([...initialElements]);
 						});
-				} else if (recipient.assignmentType[0] === 'user') {
+				} else if (recipient?.assignmentType?.[0] === 'user') {
 					const sectionsData = [];
 
 					retrieveUsersBy('emailAddress', recipient.emailAddress)

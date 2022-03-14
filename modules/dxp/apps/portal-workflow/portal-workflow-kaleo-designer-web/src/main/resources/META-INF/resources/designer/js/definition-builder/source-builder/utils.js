@@ -128,11 +128,21 @@ export function parseNotifications(node) {
 			};
 		} 
 		else if (item['role-type']) {
-			console.log(replaceTabSpaces(removeNewLine(item.roles[0])));
-			notifications.recipients[index] = {
-				assignmentType: ['roleType'],
-				roleId: replaceTabSpaces(removeNewLine(item.roles[0])),
-			};
+			item['role-type'].forEach((_, roleTypeIndex = index) => {
+				notifications.recipients[index] = [];
+				notifications.recipients[index].push({
+					assignmentType: ['roleType'],
+					roleType: item['role-type'][roleTypeIndex],
+				});
+				notifications.recipients[index].push({
+					assignmentType: ['name'],
+					name: item['role-name'][roleTypeIndex],
+				});
+				notifications.recipients[index].push({
+					assignmentType: ['roleType'],
+					autoCreate: item['auto-create'][roleTypeIndex],
+				});
+			});
 		} else if (item['scripted-recipient']) {
 			let script = item['scripted-recipient'][0];
 
