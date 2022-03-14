@@ -12,6 +12,12 @@ CREATE TABLE IF NOT EXISTS AsahTask (
 	projectId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS BlockedKeyword (
+	id BIGSERIAL PRIMARY KEY,
+	createDate TIMESTAMPTZ,
+	keyword TEXT
+);
+
 CREATE TABLE IF NOT EXISTS DataControlTask (
 	id BIGSERIAL PRIMARY KEY,
 	batchId BIGINT,

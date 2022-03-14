@@ -21,7 +21,6 @@ import java.util.Set;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
@@ -29,7 +28,6 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author André Miranda
  */
-@Primary
 public interface BlockedKeywordRepository
 	extends Repository<BlockedKeyword, Long> {
 
