@@ -40,7 +40,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author Marcellus Tavares
  */
 @Import(JDBCTestConfiguration.class)
-public class DataControlTaskRepositoryTest extends BaseRepositoryTestCase {
+public class DataControlTaskRepositoryTest
+	extends BaseRepositoryTestCase<DataControlTask, Long> {
 
 	@BeforeEach
 	public void setUp() {
@@ -82,7 +83,7 @@ public class DataControlTaskRepositoryTest extends BaseRepositoryTestCase {
 
 		setUpRepository(dataControlTask1, dataControlTask2, dataControlTask3);
 
-		_dataControlTask = (DataControlTask)entityModels.get(0);
+		_dataControlTask = entityModels.get(0);
 	}
 
 	@Test
