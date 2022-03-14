@@ -239,6 +239,8 @@ definition {
 	}
 
 	test AssertResultRankingsWithSynonyms {
+		property test.name.skip.portal.instance = "SearchTuningES7#AssertResultRankingsWithSynonyms";
+
 		JSONWebcontent.addWebContent(
 			content = "Article Article Article Article",
 			groupName = "Guest",
