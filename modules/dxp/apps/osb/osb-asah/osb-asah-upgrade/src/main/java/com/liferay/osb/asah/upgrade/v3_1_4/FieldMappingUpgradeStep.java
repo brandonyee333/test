@@ -15,18 +15,18 @@
 package com.liferay.osb.asah.upgrade.v3_1_4;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.action.support.WriteRequest;
 
 import org.json.JSONObject;
 
@@ -41,7 +41,12 @@ public class FieldMappingUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		List<String> deleteFieldMappingIds = new ArrayList<>();
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			_faroInfoElasticsearchInvoker.
+				createElasticsearchBulkRequestBuilder();
+
+		elasticsearchBulkRequestBuilder.refreshPolicy(
+			WriteRequest.RefreshPolicy.IMMEDIATE);
 
 		List<String> dataSourceIds = ListUtil.map(
 			_dataSourceDog.getDataSources(),
@@ -54,7 +59,7 @@ public class FieldMappingUpgradeStep implements UpgradeStep {
 					jsonObject.optJSONObject("dataSourceFieldNames");
 
 				if (dataSourceFieldNamesJSONObject == null) {
-					return null;
+					return elasticsearchBulkRequestBuilder;
 				}
 
 				Iterator<String> iterator =
@@ -76,24 +81,19 @@ public class FieldMappingUpgradeStep implements UpgradeStep {
 						!Objects.equals(
 							authorJSONObject.getString("id"), "FARO_SYSTEM")) {
 
-						deleteFieldMappingIds.add(jsonObject.getString("id"));
+						elasticsearchBulkRequestBuilder.delete(
+							"field-mappings", jsonObject.getString("id"));
+
+						return elasticsearchBulkRequestBuilder;
 					}
 				}
 
-				_faroInfoElasticsearchInvoker.save(
+				elasticsearchBulkRequestBuilder.replace(
 					"field-mappings", jsonObject);
 
-				return null;
+				return elasticsearchBulkRequestBuilder;
 			}
-		).setQueryBuilder(
-			QueryBuilders.matchAllQuery()
 		).iterate();
-
-		if (!deleteFieldMappingIds.isEmpty()) {
-			_faroInfoElasticsearchInvoker.delete(
-				"field-mappings",
-				QueryBuilders.termsQuery("id", deleteFieldMappingIds));
-		}
 	}
 
 	@Autowired
