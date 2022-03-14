@@ -56,12 +56,11 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 				_getLatestId(true)
 			));
 
-		objectJSONArray.forEach(
-			object -> {
-				Consumer<Object> consumer = getConsumer();
+		Consumer<Object> consumer = getConsumer();
 
-				consumer.accept(object);
-			});
+		objectJSONArray.forEach(consumer::accept);
+
+		_syncSequenceStart();
 	}
 
 	protected abstract Consumer<Object> getConsumer();
