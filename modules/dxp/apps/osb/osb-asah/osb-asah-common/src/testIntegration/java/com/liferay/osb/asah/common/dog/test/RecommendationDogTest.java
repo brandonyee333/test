@@ -18,8 +18,8 @@ import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.RecommendationDog;
 import com.liferay.osb.asah.common.entity.ItemRecommendation;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.ItemRecommendationRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -38,10 +38,9 @@ public class RecommendationDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "recommended-items",
-		resourcePath = "recommended_items_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ItemRecommendationRepository.class,
+		resourcePath = "osbasahfaroinfo/recommended_items_info.json"
 	)
 	@Test
 	public void testDeleteItemRecommendationsByJobId() {
@@ -54,10 +53,9 @@ public class RecommendationDogTest
 		Assertions.assertEquals(0, itemRecommendationPage.getTotalElements());
 	}
 
-	@ElasticsearchIndex(
-		name = "recommended-items",
-		resourcePath = "recommended_items_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ItemRecommendationRepository.class,
+		resourcePath = "osbasahfaroinfo/recommended_items_info.json"
 	)
 	@Test
 	public void testGetItemRecommendation() {
@@ -76,10 +74,9 @@ public class RecommendationDogTest
 			itemRecommendation.getRecommendedItemIds());
 	}
 
-	@ElasticsearchIndex(
-		name = "recommended-items",
-		resourcePath = "recommended_items_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ItemRecommendationRepository.class,
+		resourcePath = "osbasahfaroinfo/recommended_items_info.json"
 	)
 	@Test
 	public void testGetItemRecommendationResultBag() {

@@ -17,10 +17,9 @@ package com.liferay.osb.asah.backend.rest.controller.api.external.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.api.external.RecommendationRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.ItemRecommendationRepository;
 import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -53,10 +52,9 @@ public class RecommendationRestControllerTest
 		RequestContextHolder.resetRequestAttributes();
 	}
 
-	@ElasticsearchIndex(
-		name = "recommended-items",
-		resourcePath = "recommended_items_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ItemRecommendationRepository.class,
+		resourcePath = "osbasahfaroinfo/recommended_items_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = JobRepository.class,
