@@ -75,9 +75,15 @@ public class GCSWriterPTransform
 			).withNumShards(
 				_numShards
 			).withNaming(
-				(SerializableFunction<String, FileIO.Write.FileNaming>)
-					t -> FileIO.Write.defaultNaming(
-						t + _fileNamePrefix, _fileNameSuffix)
+				new SerializableFunction<String, FileIO.Write.FileNaming>() {
+
+					@Override
+					public FileIO.Write.FileNaming apply(String input) {
+						return FileIO.Write.defaultNaming(
+							input + _fileNamePrefix, _fileNameSuffix);
+					}
+
+				}
 			));
 	}
 
