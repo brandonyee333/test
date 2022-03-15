@@ -345,7 +345,7 @@ public class StructuredContentResourceTest
 
 	@Override
 	@Test
-	public void testGetStructuredContentRenderedContentTemplate()
+	public void testGetStructuredContentRenderedContentContentTemplate()
 		throws Exception {
 
 		StructuredContent structuredContent =
@@ -359,7 +359,7 @@ public class StructuredContentResourceTest
 		Assert.assertEquals(
 			"<div>" + contentFieldValue.getData() + "</div>",
 			structuredContentResource.
-				getStructuredContentRenderedContentTemplate(
+				getStructuredContentRenderedContentContentTemplate(
 					structuredContent.getId(), _ddmTemplate.getTemplateKey()));
 	}
 

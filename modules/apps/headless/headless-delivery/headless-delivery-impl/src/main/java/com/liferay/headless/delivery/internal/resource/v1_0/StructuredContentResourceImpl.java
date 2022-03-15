@@ -350,7 +350,7 @@ public class StructuredContentResourceImpl
 	}
 
 	@Override
-	public String getStructuredContentRenderedContentTemplate(
+	public String getStructuredContentRenderedContentContentTemplate(
 			Long structuredContentId, String templateId)
 		throws Exception {
 
@@ -1005,7 +1005,7 @@ public class StructuredContentResourceImpl
 					"get-rendered-content",
 					addAction(
 						"VIEW", journalArticle.getResourcePrimKey(),
-						"getStructuredContentRenderedContentTemplate",
+						"getStructuredContentRenderedContentContentTemplate",
 						journalArticle.getUserId(),
 						JournalArticle.class.getName(),
 						journalArticle.getGroupId())
