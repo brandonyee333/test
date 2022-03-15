@@ -21,14 +21,13 @@ import java.util.Optional;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.query.Param;
 
 /**
  * @author Marcellus Tavares
  */
-@Primary
 public interface SuppressionRepository extends Repository<Suppression, Long> {
 
 	@Cacheable
@@ -36,7 +35,8 @@ public interface SuppressionRepository extends Repository<Suppression, Long> {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void deleteByEmailAddress(String emailAddress);
+	public void deleteByEmailAddress(
+		@Param("emailAddress") String emailAddress);
 
 	@Cacheable
 	public boolean existsByEmailAddress(String emailAddress);

@@ -143,3 +143,13 @@ CREATE TABLE IF NOT EXISTS JobRun (
 	step TEXT,
 	trigger TEXT
 );
+
+CREATE TABLE IF NOT EXISTS Suppression (
+	id BIGSERIAL PRIMARY KEY,
+	createDate TIMESTAMPTZ,
+	dataControlTaskBatchId BIGINT,
+	dataControlTaskCreateDate TIMESTAMPTZ,
+	dataControlTaskStatus TEXT,
+	emailAddress TEXT,
+	emailAddressHashed TEXT
+);
