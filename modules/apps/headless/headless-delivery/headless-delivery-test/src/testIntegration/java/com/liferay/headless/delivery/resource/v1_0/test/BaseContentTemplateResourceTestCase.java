@@ -1000,19 +1000,19 @@ public abstract class BaseContentTemplateResourceTestCase {
 	}
 
 	@Test
-	public void testGetContentTemplate() throws Exception {
+	public void testGetSiteContentTemplate() throws Exception {
 		ContentTemplate postContentTemplate =
-			testGetContentTemplate_addContentTemplate();
+			testGetSiteContentTemplate_addContentTemplate();
 
 		ContentTemplate getContentTemplate =
-			contentTemplateResource.getContentTemplate(
+			contentTemplateResource.getSiteContentTemplate(
 				postContentTemplate.getSiteId(), postContentTemplate.getId());
 
 		assertEquals(postContentTemplate, getContentTemplate);
 		assertValid(getContentTemplate);
 	}
 
-	protected ContentTemplate testGetContentTemplate_addContentTemplate()
+	protected ContentTemplate testGetSiteContentTemplate_addContentTemplate()
 		throws Exception {
 
 		throw new UnsupportedOperationException(
@@ -1020,7 +1020,7 @@ public abstract class BaseContentTemplateResourceTestCase {
 	}
 
 	@Test
-	public void testGraphQLGetContentTemplate() throws Exception {
+	public void testGraphQLGetSiteContentTemplate() throws Exception {
 		ContentTemplate contentTemplate =
 			testGraphQLContentTemplate_addContentTemplate();
 
@@ -1049,7 +1049,7 @@ public abstract class BaseContentTemplateResourceTestCase {
 	}
 
 	@Test
-	public void testGraphQLGetContentTemplateNotFound() throws Exception {
+	public void testGraphQLGetSiteContentTemplateNotFound() throws Exception {
 		String irrelevantContentTemplateId =
 			"\"" + RandomTestUtil.randomString() + "\"";
 

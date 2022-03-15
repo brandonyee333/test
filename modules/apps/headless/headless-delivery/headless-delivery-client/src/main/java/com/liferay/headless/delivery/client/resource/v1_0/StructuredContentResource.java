@@ -30,6 +30,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -140,11 +142,13 @@ public interface StructuredContentResource {
 				Long siteId, String roleNames)
 		throws Exception;
 
-	public Page<Permission> putSiteStructuredContentPermission(Long siteId)
+	public Page<Permission> putSiteStructuredContentPermissionsPage(
+			Long siteId, Permission[] permissions)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			putSiteStructuredContentPermissionHttpResponse(Long siteId)
+			putSiteStructuredContentPermissionsPageHttpResponse(
+				Long siteId, Permission[] permissions)
 		throws Exception;
 
 	public Page<StructuredContent>
@@ -264,20 +268,21 @@ public interface StructuredContentResource {
 				Long structuredContentId, String roleNames)
 		throws Exception;
 
-	public Page<Permission> putStructuredContentPermission(
-			Long structuredContentId)
+	public Page<Permission> putStructuredContentPermissionsPage(
+			Long structuredContentId, Permission[] permissions)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse putStructuredContentPermissionHttpResponse(
-			Long structuredContentId)
+	public HttpInvoker.HttpResponse
+			putStructuredContentPermissionsPageHttpResponse(
+				Long structuredContentId, Permission[] permissions)
 		throws Exception;
 
-	public String getStructuredContentRenderedContentTemplate(
+	public String getStructuredContentRenderedContentContentTemplate(
 			Long structuredContentId, String contentTemplateId)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			getStructuredContentRenderedContentTemplateHttpResponse(
+			getStructuredContentRenderedContentContentTemplateHttpResponse(
 				Long structuredContentId, String contentTemplateId)
 		throws Exception;
 
@@ -1287,11 +1292,13 @@ public interface StructuredContentResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<Permission> putSiteStructuredContentPermission(Long siteId)
+		public Page<Permission> putSiteStructuredContentPermissionsPage(
+				Long siteId, Permission[] permissions)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				putSiteStructuredContentPermissionHttpResponse(siteId);
+				putSiteStructuredContentPermissionsPageHttpResponse(
+					siteId, permissions);
 
 			String content = httpResponse.getContent();
 
@@ -1331,10 +1338,21 @@ public interface StructuredContentResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				putSiteStructuredContentPermissionHttpResponse(Long siteId)
+				putSiteStructuredContentPermissionsPageHttpResponse(
+					Long siteId, Permission[] permissions)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(
+				Stream.of(
+					permissions
+				).map(
+					value -> String.valueOf(value)
+				).collect(
+					Collectors.toList()
+				).toString(),
+				"application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -2565,12 +2583,13 @@ public interface StructuredContentResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<Permission> putStructuredContentPermission(
-				Long structuredContentId)
+		public Page<Permission> putStructuredContentPermissionsPage(
+				Long structuredContentId, Permission[] permissions)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				putStructuredContentPermissionHttpResponse(structuredContentId);
+				putStructuredContentPermissionsPageHttpResponse(
+					structuredContentId, permissions);
 
 			String content = httpResponse.getContent();
 
@@ -2610,11 +2629,21 @@ public interface StructuredContentResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				putStructuredContentPermissionHttpResponse(
-					Long structuredContentId)
+				putStructuredContentPermissionsPageHttpResponse(
+					Long structuredContentId, Permission[] permissions)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(
+				Stream.of(
+					permissions
+				).map(
+					value -> String.valueOf(value)
+				).collect(
+					Collectors.toList()
+				).toString(),
+				"application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -2648,12 +2677,12 @@ public interface StructuredContentResource {
 			return httpInvoker.invoke();
 		}
 
-		public String getStructuredContentRenderedContentTemplate(
+		public String getStructuredContentRenderedContentContentTemplate(
 				Long structuredContentId, String contentTemplateId)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getStructuredContentRenderedContentTemplateHttpResponse(
+				getStructuredContentRenderedContentContentTemplateHttpResponse(
 					structuredContentId, contentTemplateId);
 
 			String content = httpResponse.getContent();
@@ -2694,7 +2723,7 @@ public interface StructuredContentResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				getStructuredContentRenderedContentTemplateHttpResponse(
+				getStructuredContentRenderedContentContentTemplateHttpResponse(
 					Long structuredContentId, String contentTemplateId)
 			throws Exception {
 

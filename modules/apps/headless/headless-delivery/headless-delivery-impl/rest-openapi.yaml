@@ -7267,7 +7267,7 @@ paths:
             tags: ["ContentTemplate"]
     "/sites/{siteId}/content-templates/{contentTemplateId}":
         get:
-            operationId: getContentTemplate
+            operationId: getSiteContentTemplate
             parameters:
                 - in: path
                   name: siteId
@@ -8286,7 +8286,7 @@ paths:
                         application/xml: {}
             tags: ["StructuredContent"]
         put:
-            operationId: putSiteStructuredContentPermission
+            operationId: putSiteStructuredContentPermissionsPage
             parameters:
                 - in: path
                   name: siteId
@@ -8995,7 +8995,7 @@ paths:
                         application/xml: {}
             tags: ["StructuredContent"]
         put:
-            operationId: putStructuredContentPermission
+            operationId: putStructuredContentPermissionsPage
             parameters:
                 - in: path
                   name: structuredContentId
@@ -9014,7 +9014,7 @@ paths:
             description:
                 Retrieves the structured content's rendered template (the result of applying the structure's values to a
                 template).
-            operationId: getStructuredContentRenderedContentTemplate
+            operationId: getStructuredContentRenderedContentContentTemplate
             parameters:
                 - in: path
                   name: structuredContentId
