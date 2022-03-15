@@ -28,6 +28,7 @@ import com.liferay.osb.asah.upgrade.v3_2_0.DatabaseSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.ExperimentMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobRunMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.SuppressionMigrationUpgradeStep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,7 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_experimentMigrationUpgradeStep);
 		upgradeSteps.add(_jobMigrationUpgradeStep);
 		upgradeSteps.add(_jobRunMigrationUpgradeStep);
+		upgradeSteps.add(_suppressionMigrationUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"3.1.4", "3.2.0", upgradeSteps.toArray(new UpgradeStep[0]));
@@ -117,5 +119,8 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
+
+	@Autowired
+	private SuppressionMigrationUpgradeStep _suppressionMigrationUpgradeStep;
 
 }
