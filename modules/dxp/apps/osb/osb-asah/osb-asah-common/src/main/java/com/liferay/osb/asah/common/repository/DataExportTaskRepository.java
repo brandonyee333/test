@@ -19,12 +19,10 @@ import com.liferay.osb.asah.common.entity.DataExportTask;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 
 /**
  * @author Inácio Nery
  */
-@Primary
 public interface DataExportTaskRepository
 	extends Repository<DataExportTask, Long> {
 

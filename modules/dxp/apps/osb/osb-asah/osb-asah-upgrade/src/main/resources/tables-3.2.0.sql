@@ -30,6 +30,15 @@ CREATE TABLE IF NOT EXISTS DataControlTask (
 	type TEXT
 );
 
+CREATE TABLE IF NOT EXISTS DataExportTask (
+	id BIGSERIAL PRIMARY KEY,
+	completedDate TIMESTAMPTZ,
+	createDate TIMESTAMPTZ,
+	startedDate TIMESTAMPTZ,
+	status TEXT,
+	type TEXT
+);
+
 CREATE TABLE IF NOT EXISTS Experiment (
 	id BIGSERIAL PRIMARY KEY,
 	channelId BIGINT NOT NULL,
