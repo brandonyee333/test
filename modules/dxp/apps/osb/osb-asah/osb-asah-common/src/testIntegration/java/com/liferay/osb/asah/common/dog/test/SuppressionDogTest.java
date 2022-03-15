@@ -18,9 +18,9 @@ import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -36,14 +36,14 @@ import org.springframework.data.domain.Page;
 /**
  * @author Matthew Kong
  */
-@ElasticsearchIndex(
-	name = "suppressions", resourcePath = "suppressions.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-)
 public class SuppressionDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@RepositoryResource(
+		repositoryClass = SuppressionRepository.class,
+		resourcePath = "osbasahfaroinfo/suppressions.json"
+	)
 	@Test
 	public void testGetSuppressionResultBag() {
 		Page<Suppression> suppressionPage = _suppressionDog.getSuppressionPage(
@@ -58,6 +58,10 @@ public class SuppressionDogTest
 				suppressionPage.getContent(), Suppression::getEmailAddress));
 	}
 
+	@RepositoryResource(
+		repositoryClass = SuppressionRepository.class,
+		resourcePath = "osbasahfaroinfo/suppressions.json"
+	)
 	@Test
 	public void testGetSuppressionResultBagSearch() {
 		Page<Suppression> suppressionPage = _suppressionDog.getSuppressionPage(
@@ -73,6 +77,10 @@ public class SuppressionDogTest
 			"test@liferay.com", suppression.getEmailAddress());
 	}
 
+	@RepositoryResource(
+		repositoryClass = SuppressionRepository.class,
+		resourcePath = "osbasahfaroinfo/suppressions.json"
+	)
 	@Test
 	public void testGetSuppressionResultBagWithCache() {
 		IntStream.range(

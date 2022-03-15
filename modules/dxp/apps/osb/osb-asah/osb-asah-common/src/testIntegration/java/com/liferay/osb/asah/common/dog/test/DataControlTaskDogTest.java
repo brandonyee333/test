@@ -16,15 +16,14 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataControlTask;
+import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
+import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -38,13 +37,10 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -124,9 +120,9 @@ public class DataControlTaskDogTest
 		}
 	}
 
-	@ElasticsearchIndex(
-		name = "suppressions", resourcePath = "suppressions.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = SuppressionRepository.class,
+		resourcePath = "osbasahfaroinfo/suppressions.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataControlTaskRepository.class,
@@ -139,13 +135,14 @@ public class DataControlTaskDogTest
 			Collections.singletonList(
 				DataControlTaskType.UNSUPPRESS.toString()));
 
-		JSONObject suppressionJSONObject = _elasticsearchInvoker.fetch(
-			"suppressions",
-			QueryBuilders.termQuery("emailAddress", "test@liferay.com"));
+		Optional<Suppression> suppressionOptional =
+			_suppressionRepository.findByEmailAddress("test@liferay.com");
+
+		Suppression suppression = suppressionOptional.get();
 
 		Assertions.assertEquals(
 			DataControlTaskStatus.PENDING.toString(),
-			suppressionJSONObject.getString("dataControlTaskStatus"));
+			suppression.getDataControlTaskStatus());
 	}
 
 	@RepositoryResource(
@@ -285,8 +282,8 @@ public class DataControlTaskDogTest
 	@Autowired
 	private DataControlTaskDog _dataControlTaskDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private SuppressionRepository _suppressionRepository;
 
 	private Path _tempPath;
 

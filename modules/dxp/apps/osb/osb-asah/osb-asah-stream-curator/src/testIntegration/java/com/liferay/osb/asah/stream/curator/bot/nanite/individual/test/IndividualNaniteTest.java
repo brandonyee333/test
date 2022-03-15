@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -372,16 +373,16 @@ public class IndividualNaniteTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "suppressions", resourcePath = "suppressions.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
 		channel = Channel.IDENTITY_MESSAGE,
 		resourcePath = "identity_message_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SuppressionRepository.class,
+		resourcePath = "osbasahfaroinfo/suppressions.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,

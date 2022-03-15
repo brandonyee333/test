@@ -18,9 +18,11 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataControlTask;
+import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
+import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -34,14 +36,12 @@ import java.nio.file.Paths;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -116,17 +116,12 @@ public class DataControlNaniteTest
 				dataControlTask.getStatus());
 		}
 
-		JSONArray suppressionsJSONArray = faroInfoElasticsearchInvoker.get(
-			"suppressions", QueryBuilders.matchAllQuery());
+		Assertions.assertEquals(1, _suppressionRepository.count());
 
-		Assertions.assertEquals(1, suppressionsJSONArray.length());
+		Optional<Suppression> suppressionOptional =
+			_suppressionRepository.findByEmailAddress("jane.doe@liferay.com");
 
-		JSONObject suppressionJSONObject = suppressionsJSONArray.getJSONObject(
-			0);
-
-		Assertions.assertEquals(
-			"jane.doe@liferay.com",
-			suppressionJSONObject.getString("emailAddress"));
+		Assertions.assertTrue(suppressionOptional.isPresent());
 
 		List<DXPEntity> dxpEntities = _dxpEntityRepository.findByFieldsAndType(
 			Collections.singletonMap(
@@ -168,5 +163,8 @@ public class DataControlNaniteTest
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
+
+	@Autowired
+	private SuppressionRepository _suppressionRepository;
 
 }
