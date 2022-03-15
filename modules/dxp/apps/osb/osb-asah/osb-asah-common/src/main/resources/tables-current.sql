@@ -246,6 +246,13 @@ CREATE TABLE IF NOT EXISTS ExperimentVariantMetric (
 	probabilityToWin REAL
 );
 
+CREATE TABLE IF NOT EXISTS ItemRecommendation (
+	id TEXT PRIMARY KEY,
+	itemId TEXT,
+	jobId BIGINT,
+	recommendedItemIds TEXT[]
+);
+
 CREATE TABLE IF NOT EXISTS Job (
 	id BIGSERIAL PRIMARY KEY,
 	asahTaskId BIGINT NULL,
