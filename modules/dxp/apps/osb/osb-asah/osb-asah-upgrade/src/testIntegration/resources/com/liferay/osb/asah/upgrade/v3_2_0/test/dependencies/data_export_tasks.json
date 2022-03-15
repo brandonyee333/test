@@ -1,0 +1,38 @@
+[
+	{
+		"completeDate": "${now-40d}",
+		"createDate": "${now-40d}",
+		"id": "1",
+		"startedDate": "${now-40d}",
+		"status": "COMPLETED",
+		"type": "ACCOUNT"
+	},
+	{
+		"createDate": "${now-39d}",
+		"id": "2",
+		"startedDate": "${now-39d}",
+		"status": "ERROR",
+		"type": "INDIVIDUAL"
+	},
+	{
+		"createDate": "${now-38d}",
+		"id": "3",
+		"status": "PENDING",
+		"type": "PAGE"
+	},
+	{
+		"createDate": "${now-37d}",
+		"id": "4",
+		"startedDate": "${now-37d}",
+		"status": "RUNNING",
+		"type": "SEGMENT"
+	},
+	{
+		"completeDate": "${now-1d}",
+		"createDate": "${now-1d}",
+		"id": "1978",
+		"startedDate": "${now-1d}",
+		"status": "COMPLETED",
+		"type": "ACCOUNT"
+	}
+]
