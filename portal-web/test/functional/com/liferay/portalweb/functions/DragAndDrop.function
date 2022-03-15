@@ -140,9 +140,15 @@ definition {
 
 		selenium.waitForVisible("${locator2}");
 
+		ScrollWebElementIntoView.scrollWebElementIntoView(locator1 = "${locator2}");
+
 		selenium.mouseOver("${locator2}");
 
-		selenium.dragAndDropToObject("${locator1}", "${locator2}");
+		selenium.mouseDown("${locator1}");
+
+		selenium.mouseMove("${locator2}");
+
+		selenium.mouseRelease();
 
 		selenium.assertJavaScriptErrors();
 
