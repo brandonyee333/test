@@ -315,7 +315,7 @@ public class LPKGIndexValidator {
 		boolean enabled = true;
 
 		if (properties != null) {
-			enabled = Boolean.valueOf((String)properties.get("enabled"));
+			enabled = GetterUtil.getBoolean(properties.get("enabled"));
 		}
 
 		if (enabled) {
