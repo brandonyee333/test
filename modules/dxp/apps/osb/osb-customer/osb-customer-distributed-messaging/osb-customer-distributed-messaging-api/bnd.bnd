@@ -3,6 +3,8 @@ Bundle-SymbolicName: com.liferay.osb.customer.distributed.messaging.api
 Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.osb.distributed.messaging,\
+	com.liferay.osb.distributed.messaging.google.pubsub.connector,\
+	com.liferay.osb.distributed.messaging.google.pubsub.connector.broker,\
 	com.liferay.osb.distributed.messaging.publishing,\
 	com.liferay.osb.distributed.messaging.publishing.broker,\
 	com.liferay.osb.distributed.messaging.rabbitmq.connector,\
@@ -11,4 +13,51 @@ Export-Package:\
 	com.liferay.osb.distributed.messaging.rabbitmq.connector.messaging,\
 	com.liferay.osb.distributed.messaging.subscribing,\
 	com.liferay.osb.distributed.messaging.subscribing.router
+Import-Package:\
+	!com.conversantmedia.util.concurrent.*,\
+	\
+	!com.github.luben.zstd,\
+	\
+	!com.google.protobuf.nano.*,\
+	\
+	!com.jcraft.jzlib,\
+	\
+	!com.lmax.disruptor.*,\
+	\
+	!com.ning.compress.*,\
+	\
+	!com.oracle.svm.core.annotate.*,\
+	\
+	!com.sun.msv.*,\
+	\
+	!lzma.sdk.*,\
+	\
+	!net.jpountz.*,\
+	\
+	!org.apache.avalon.framework.logger,\
+	!org.apache.commons.compress.*,\
+	!org.apache.commons.csv.*,\
+	!org.apache.kafka.clients.producer.*,\
+	!org.apache.log,\
+	\
+	!org.bouncycastle.*,\
+	\
+	!org.eclipse.jetty.*,\
+	\
+	!org.fusesource.*,\
+	\
+	!org.jboss.marshalling.*,\
+	\
+	!org.jctools.queues.*,\
+	\
+	!org.relaxng.datatype.*,\
+	\
+	!org.zeromq.*,\
+	\
+	!reactor.blockhound.*,\
+	\
+	!sun.security.x509,\
+	\
+	*
 -dsannotations-options: inherit
+-fixupmessages: Classes found in the wrong directory: ...;is:=ignore
