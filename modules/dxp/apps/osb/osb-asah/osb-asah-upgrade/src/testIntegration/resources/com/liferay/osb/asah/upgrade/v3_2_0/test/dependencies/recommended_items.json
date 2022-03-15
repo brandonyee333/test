@@ -1,0 +1,11 @@
+[
+	{
+		"id": "fd98459b712bf8a15c6f9a71e4ae52f641b25eb2",
+		"itemId": "https://www-prd.liferay.com/services/training/online",
+		"jobId": "1",
+		"recommendedItemIds": [
+			"https://www-prd.liferay.com/blog",
+			"https://www-prd.liferay.com/resource"
+		]
+	}
+]
