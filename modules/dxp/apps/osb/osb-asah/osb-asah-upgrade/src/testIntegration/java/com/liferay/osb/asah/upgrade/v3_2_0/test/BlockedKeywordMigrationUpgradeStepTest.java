@@ -67,9 +67,9 @@ public class BlockedKeywordMigrationUpgradeStepTest
 
 	@AfterEach
 	public void tearDown() throws Exception {
+		_blockedKeywordRepository.deleteAll();
 		_elasticsearchIndexManager.delete(
 			"test_osbasahfaroinfo_blocked-keywords");
-		_blockedKeywordRepository.deleteAll();
 	}
 
 	@Test

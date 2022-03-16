@@ -67,7 +67,6 @@ public class BlockedKeywordRepositoryTest
 			1,
 			_blockedKeywordRepository.countByKeywordContainingIgnoreCase(
 				"blocked"));
-
 		Assertions.assertEquals(
 			2,
 			_blockedKeywordRepository.countByKeywordContainingIgnoreCase("KE"));
