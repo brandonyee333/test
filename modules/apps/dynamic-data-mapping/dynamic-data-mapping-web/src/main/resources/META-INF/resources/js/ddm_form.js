@@ -1834,7 +1834,26 @@ AUI.add(
 							layoutValue && layoutValue.privateLayout
 						);
 
-						var groupId = themeDisplay.getScopeGroupIdOrLiveGroupId();
+						var groupId = themeDisplay.getScopeGroupId();
+
+						if (
+							themeDisplay.getScopeGroupId() !==
+							themeDisplay.getScopeGroupIdOrLiveGroupId()
+						) {
+							var groupIdNode = A.one(
+								'#' + this.get('portletNamespace') + 'groupId'
+							);
+
+							if (
+								groupIdNode &&
+								groupIdNode.getAttribute('value') !==
+									themeDisplay.getCompanyGroupId
+							) {
+								groupId =
+									groupIdNode.getAttribute('value') ||
+									themeDisplay.getScopeGroupId();
+							}
+						}
 
 						var layoutsRoot = {
 							groupId,
@@ -2220,7 +2239,26 @@ AUI.add(
 
 					var delta = instance.get('delta');
 
-					var groupId = themeDisplay.getScopeGroupIdOrLiveGroupId();
+					var groupId = themeDisplay.getScopeGroupId();
+
+					if (
+						themeDisplay.getScopeGroupId() !==
+						themeDisplay.getScopeGroupIdOrLiveGroupId()
+					) {
+						var groupIdNode = A.one(
+							'#' + this.get('portletNamespace') + 'groupId'
+						);
+
+						if (
+							groupIdNode &&
+							groupIdNode.getAttribute('value') !==
+								themeDisplay.getCompanyGroupId
+						) {
+							groupId =
+								groupIdNode.getAttribute('value') ||
+								themeDisplay.getScopeGroupId();
+						}
+					}
 
 					var parentLayoutId = instance._currentParentLayoutId;
 
@@ -2545,7 +2583,26 @@ AUI.add(
 
 					var selectedLayout = instance.get('selectedLayout');
 
-					var groupId = themeDisplay.getScopeGroupIdOrLiveGroupId();
+					var groupId = themeDisplay.getScopeGroupId();
+
+					if (
+						themeDisplay.getScopeGroupId() !==
+						themeDisplay.getScopeGroupIdOrLiveGroupId()
+					) {
+						var groupIdNode = A.one(
+							'#' + this.get('portletNamespace') + 'groupId'
+						);
+
+						if (
+							groupIdNode &&
+							groupIdNode.getAttribute('value') !==
+								themeDisplay.getCompanyGroupId()
+						) {
+							groupId =
+								groupIdNode.getAttribute('value') ||
+								themeDisplay.getScopeGroupId();
+						}
+					}
 
 					if (selectedLayout && selectedLayout.layoutId) {
 						instance._requestSiblingLayouts(
