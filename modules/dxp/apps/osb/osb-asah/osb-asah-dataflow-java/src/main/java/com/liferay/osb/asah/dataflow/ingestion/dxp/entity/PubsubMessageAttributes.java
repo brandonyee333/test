@@ -23,7 +23,9 @@ import java.util.Map;
 public class PubsubMessageAttributes extends HashMap<String, String> {
 
 	public PubsubMessageAttributes(Map<String, String> attributes) {
-		putAll(attributes);
+		if (attributes != null) {
+			putAll(attributes);
+		}
 	}
 
 	public long getCount() {
