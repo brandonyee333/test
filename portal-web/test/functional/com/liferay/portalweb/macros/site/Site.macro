@@ -770,7 +770,7 @@ definition {
 			LexiconList.viewListEntryNotPresent(listEntry = "${siteName}");
 		}
 		else if ("${membershipType}" == "Restricted") {
-			LexiconList.viewListEntryTitle(listEntry = "${siteName}");
+			LexiconList.viewListEntryPresent(listEntry = "${siteName}");
 
 			LexiconList.viewListEntrySubtitle(
 				listEntry = "${siteName}",
@@ -794,7 +794,7 @@ definition {
 				userRole = "${userRole}");
 		}
 		else {
-			LexiconList.viewListEntryTitle(listEntry = "${siteName}");
+			LexiconList.viewListEntryPresent(listEntry = "${siteName}");
 
 			LexiconList.viewListEntrySubtitle(
 				listEntry = "${siteName}",
@@ -807,7 +807,7 @@ definition {
 
 			Alert.viewSuccessMessage();
 
-			LexiconList.viewListEntryTitle(listEntry = "${siteName}");
+			LexiconList.viewListEntryPresent(listEntry = "${siteName}");
 
 			LexiconList.viewListEntrySubtitle(
 				listEntry = "${siteName}",
@@ -825,7 +825,7 @@ definition {
 	}
 
 	macro leaveViaMySitesPG {
-		LexiconList.viewListEntryTitle(listEntry = "${siteName}");
+		LexiconList.viewListEntryPresent(listEntry = "${siteName}");
 
 		LexiconList.viewListEntrySubtitle(
 			listEntry = "${siteName}",
@@ -833,7 +833,7 @@ definition {
 
 		Navigator.gotoNavItem(navItem = "Available Sites");
 
-		LexiconList.viewListEntryTitle(listEntry = "${siteName}");
+		LexiconList.viewListEntryPresent(listEntry = "${siteName}");
 
 		LexiconList.viewListEntrySubtitle(
 			listEntry = "${siteName}",
@@ -846,7 +846,7 @@ definition {
 
 		Alert.viewSuccessMessage();
 
-		LexiconList.viewListEntryTitle(listEntry = "${siteName}");
+		LexiconList.viewListEntryPresent(listEntry = "${siteName}");
 
 		LexiconList.viewListEntrySubtitle(
 			listEntry = "${siteName}",
@@ -1353,7 +1353,7 @@ definition {
 			locator1 = "NavBar#NAV_ITEM_LINK",
 			value1 = "My Sites");
 
-		LexiconList.viewListEntryTitle(listEntry = "${siteName}");
+		LexiconList.viewListEntryPresent(listEntry = "${siteName}");
 
 		LexiconList.viewListEntrySubtitle(
 			listEntry = "${siteName}",
@@ -1508,7 +1508,7 @@ definition {
 	macro viewSiteRoleViaSiteMembershipsCP {
 		LexiconEntry.changeDisplayStyle(displayStyle = "list");
 
-		LexiconList.viewListEntryTitle(listEntry = "${resourceName}");
+		LexiconList.viewListEntryPresent(listEntry = "${resourceName}");
 
 		LexiconList.viewListEntrySubtitle(
 			listEntry = "${resourceName}",
