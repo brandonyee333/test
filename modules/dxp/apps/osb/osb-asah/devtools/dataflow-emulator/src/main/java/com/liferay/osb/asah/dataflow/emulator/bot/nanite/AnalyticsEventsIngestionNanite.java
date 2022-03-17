@@ -36,6 +36,7 @@ import com.liferay.osb.asah.dataflow.emulator.entity.BQSession;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQEventRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQSessionRepository;
+import com.liferay.osb.asah.dataflow.emulator.util.DatabaseUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -60,10 +61,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.security.util.InMemoryResource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -129,7 +126,7 @@ public class AnalyticsEventsIngestionNanite {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					if (!_projectIds.contains(projectId)) {
-						_createTables(projectId);
+						DatabaseUtil.createTables(_dataSource, projectId);
 
 						_projectIds.add(projectId);
 					}
@@ -216,22 +213,6 @@ public class AnalyticsEventsIngestionNanite {
 			_watermarkTimestamp = newWatermarkTimestamp;
 			_watermarkModifiedTimestamp = System.currentTimeMillis();
 		}
-	}
-
-	private void _createTables(String projectId) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Initializing Ingestion Schema");
-		}
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new InMemoryResource(
-					"CREATE SCHEMA IF NOT EXISTS " + projectId)),
-			_dataSource);
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(new ClassPathResource("tables.sql")),
-			_dataSource);
 	}
 
 	private Map<String, String> _getContext(AnalyticsEvent analyticsEvent) {
