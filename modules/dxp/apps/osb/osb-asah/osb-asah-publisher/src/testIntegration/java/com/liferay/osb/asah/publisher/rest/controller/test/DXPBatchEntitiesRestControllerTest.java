@@ -16,15 +16,16 @@ package com.liferay.osb.asah.publisher.rest.controller.test;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
+import com.liferay.osb.asah.common.zip.ZipFileBuilder;
 import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
-import com.liferay.osb.asah.publisher.rest.controller.DXPBatchEntitiesRestController;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.io.File;
-import java.io.InputStream;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -33,23 +34,21 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import java.util.Date;
-import java.util.zip.ZipInputStream;
+import java.util.Map;
 
 import org.assertj.core.api.Assertions;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -66,11 +65,6 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 public class DXPBatchEntitiesRestControllerTest
 	implements OSBAsahPublisherSpringTestContext {
-
-	@BeforeEach
-	public void setUp() {
-		MockitoAnnotations.openMocks(this);
-	}
 
 	@Test
 	public void testGetNoContent() {
@@ -159,7 +153,7 @@ public class DXPBatchEntitiesRestControllerTest
 	public void testGetWithInvalidIfModifiedSince() throws Exception {
 		Mockito.when(
 			_storage.readSparkJobResult(
-				ArgumentMatchers.any(), ArgumentMatchers.anyString())
+				ArgumentMatchers.isNull(), ArgumentMatchers.anyString())
 		).thenReturn(
 			File.createTempFile(RandomTestUtil.randomString(), null)
 		);
@@ -188,26 +182,9 @@ public class DXPBatchEntitiesRestControllerTest
 
 	@Test
 	public void testPost() throws Exception {
-		Mockito.when(
-			_storage.write(ArgumentMatchers.any(InputStream.class))
-		).thenReturn(
-			true
-		);
-
-		Mockito.when(
-			_storageFactory.getStorage(
-				ArgumentMatchers.any(StorageConfiguration.class))
-		).thenReturn(
-			_storage
-		);
-
 		MultipartBodyBuilder multipartBodyBuilder = new MultipartBodyBuilder();
 
 		multipartBodyBuilder.part("file", _getInputStream());
-
-		UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(
-			String.format("http://localhost:%s/dxp-batch-entities", _serverPort)
-		).build();
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -216,7 +193,7 @@ public class DXPBatchEntitiesRestControllerTest
 		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 
 		ResponseEntity<Resource> responseEntity = _testRestTemplate.exchange(
-			uriComponents.toString(), HttpMethod.POST,
+			"/dxp-batch-entities", HttpMethod.POST,
 			new HttpEntity<>(multipartBodyBuilder.build(), httpHeaders),
 			Resource.class);
 
@@ -224,6 +201,24 @@ public class DXPBatchEntitiesRestControllerTest
 			responseEntity.getStatusCode()
 		).isEqualTo(
 			HttpStatus.valueOf(200)
+		);
+
+		ArgumentCaptor<Map<String, String>> argumentCaptor =
+			ArgumentCaptor.forClass(Map.class);
+
+		Mockito.verify(
+			_messageBus, Mockito.times(5)
+		).sendMessage(
+			ArgumentMatchers.any(), ArgumentMatchers.anyString(),
+			argumentCaptor.capture()
+		);
+
+		Map<String, String> attributes = argumentCaptor.getValue();
+
+		Assertions.assertThat(
+			attributes.get("uploadType")
+		).isEqualTo(
+			"FULL"
 		);
 	}
 
@@ -249,11 +244,33 @@ public class DXPBatchEntitiesRestControllerTest
 		return httpHeaders;
 	}
 
-	private InputStream _getInputStream() throws Exception {
-		ClassPathResource classPathResource = new ClassPathResource(
-			"dependencies/products.json", getClass());
+	private FileSystemResource _getInputStream() throws Exception {
+		File tempFile = File.createTempFile("export", ".zip");
 
-		return new ZipInputStream(classPathResource.getInputStream());
+		ZipFileBuilder export = new ZipFileBuilder(tempFile);
+
+		export.addToZip(
+			"export.json",
+			zipOutputStream -> {
+				for (int i = 0; i < 5; i++) {
+					String jsonString = String.valueOf(
+						JSONUtil.put(
+							"key1", RandomTestUtil.randomString()
+						).put(
+							"key2", RandomTestUtil.randomString()
+						).put(
+							"key3", RandomTestUtil.randomString()
+						));
+
+					zipOutputStream.write(jsonString.getBytes());
+
+					zipOutputStream.write("\n".getBytes());
+				}
+			});
+
+		export.build();
+
+		return new FileSystemResource(tempFile);
 	}
 
 	private String _getModifiedSince() {
@@ -268,17 +285,16 @@ public class DXPBatchEntitiesRestControllerTest
 	private static final DateTimeFormatter _dateTimeFormatter =
 		DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz");
 
-	@Autowired
-	@InjectMocks
-	private DXPBatchEntitiesRestController _dxpBatchEntitiesRestController;
+	@MockBean
+	private MessageBus _messageBus;
 
 	@LocalServerPort
 	private int _serverPort;
 
-	@Mock
+	@MockBean
 	private Storage _storage;
 
-	@Mock
+	@MockBean
 	private StorageFactory _storageFactory;
 
 	@Autowired
