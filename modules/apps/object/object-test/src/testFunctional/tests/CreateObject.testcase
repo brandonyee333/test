@@ -3489,7 +3489,7 @@ definition {
 
 		ObjectAdmin.addObjectFieldViaAPI(
 			fieldBusinessType = "Text",
-			fieldLabelName = "Text",
+			fieldLabelName = "Custom Field",
 			fieldName = "customObjectField",
 			fieldType = "String",
 			isRequired = "false",
@@ -3501,13 +3501,13 @@ definition {
 
 		ObjectAdmin.goToFieldsTab();
 
-		ObjectAdmin.goToFieldsDetails(label = "Text");
+		ObjectAdmin.goToFieldsDetails(label = "Custom Field");
 
 		ObjectField.selectType(fieldType = "Date");
 
 		ObjectField.save();
 
-		ObjectAdmin.goToFieldsDetails(label = "Text");
+		ObjectAdmin.goToFieldsDetails(label = "Custom Field");
 
 		ObjectField.assertType(fieldType = "Date");
 	}

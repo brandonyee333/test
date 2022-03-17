@@ -62,6 +62,11 @@
 		<td>//div[contains(@class,'lfr-objects__edit-object-field-buttons')]//button[@type='submit']</td>
 		<td></td>
 	</tr>
+	<tr>
+		<td>FIELD_DETAILS</td>
+		<td>//div[(@class='sheet')]</td>
+		<td></td>
+	</tr>
 </tbody>
 </table>
 </body>
