@@ -46,8 +46,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -299,15 +297,8 @@ public class ChannelDog extends BaseFaroInfoDog {
 		return _channelRepository.save(channel);
 	}
 
-	public void updateState(List<String> ids, String state) {
-		Stream<String> stream = ids.stream();
-
-		Iterable<Channel> channels = _channelRepository.findAllById(
-			stream.map(
-				Long::valueOf
-			).collect(
-				Collectors.toList()
-			));
+	public void updateState(List<Long> channelIds, String state) {
+		Iterable<Channel> channels = _channelRepository.findAllById(channelIds);
 
 		for (Channel channel : channels) {
 			channel.setState(state);

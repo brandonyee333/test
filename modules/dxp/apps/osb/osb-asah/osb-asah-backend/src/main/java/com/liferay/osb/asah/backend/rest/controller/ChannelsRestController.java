@@ -70,7 +70,8 @@ public class ChannelsRestController extends BaseRestController {
 
 	@DeleteMapping
 	public void deleteChannels(@RequestBody List<String> ids) {
-		_channelDog.updateState(ids, "IN_PROGRESS_DELETING");
+		_channelDog.updateState(
+			ListUtil.map(ids, Long::valueOf), "IN_PROGRESS_DELETING");
 
 		_asahTaskDog.scheduleAsahTask(
 			"DeleteChannelsNanite", JSONUtil.put("channelIds", ids));
