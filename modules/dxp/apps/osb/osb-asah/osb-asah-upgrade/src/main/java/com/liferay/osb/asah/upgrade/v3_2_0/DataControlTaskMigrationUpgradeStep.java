@@ -51,12 +51,12 @@ public class DataControlTaskMigrationUpgradeStep
 
 	@Override
 	protected String getSelectLatestIdSQL() {
-		return "SELECT id FROM DataControlTask ORDER BY id DESC LIMIT 1";
+		return "SELECT id FROM datacontroltask ORDER BY id DESC LIMIT 1";
 	}
 
 	@Override
 	protected String getSequenceName() {
-		return "DataControlTask_id_seq";
+		return "datacontroltask_id_seq";
 	}
 
 	@Autowired
