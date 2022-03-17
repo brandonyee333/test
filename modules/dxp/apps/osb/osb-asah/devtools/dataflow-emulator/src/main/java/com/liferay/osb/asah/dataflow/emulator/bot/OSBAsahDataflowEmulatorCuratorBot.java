@@ -15,7 +15,8 @@
 package com.liferay.osb.asah.dataflow.emulator.bot;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IngestionNanite;
+import com.liferay.osb.asah.dataflow.emulator.bot.nanite.AnalyticsEventsIngestionNanite;
+import com.liferay.osb.asah.dataflow.emulator.bot.nanite.DXPEntitiesIngestionNanite;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,18 +37,28 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void checkIngestionNaniteWatermark() {
-		_ingestionNanite.checkWatermark();
+		_analyticsEventsIngestionNanite.checkWatermark();
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void closeIngestionNaniteOpenSessions() {
-		_ingestionNanite.closeOpenSessions();
+		_analyticsEventsIngestionNanite.closeOpenSessions();
 	}
 
 	@Scheduled(fixedDelay = 10 * DateUtil.SECOND)
-	public void runIngestionNanite() {
+	public void runAnalyticsEventsIngestionNanite() {
 		try {
-			_ingestionNanite.run();
+			_analyticsEventsIngestionNanite.run();
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+	}
+
+	@Scheduled(fixedDelay = 5 * DateUtil.MINUTE)
+	public void runDXPEntitiesIngestionNanite() {
+		try {
+			_dxpEntitiesIngestionNanite.run();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -68,6 +79,9 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 		OSBAsahDataflowEmulatorCuratorBot.class);
 
 	@Autowired
-	private IngestionNanite _ingestionNanite;
+	private AnalyticsEventsIngestionNanite _analyticsEventsIngestionNanite;
+
+	@Autowired
+	private DXPEntitiesIngestionNanite _dxpEntitiesIngestionNanite;
 
 }
