@@ -54,6 +54,11 @@ public class CSVIndividualMigrationUpgradeStep
 		return "SELECT id FROM csvindividual ORDER BY id DESC LIMIT 1";
 	}
 
+	@Override
+	protected String getSequenceName() {
+		return "csvindividual_id_seq";
+	}
+
 	@Autowired
 	private CSVIndividualRepository _csvIndividualRepository;
 
