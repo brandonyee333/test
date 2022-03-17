@@ -45,11 +45,7 @@
 		"visited-pages"
 	],
 	"osbasahsalesforceraw": [
-		"account",
 		"audit-events",
-		"contact",
-		"individuals",
-		"lead",
 		"run-logs"
 	]
 }

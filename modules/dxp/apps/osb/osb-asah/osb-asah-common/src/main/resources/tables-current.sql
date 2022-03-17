@@ -290,6 +290,14 @@ CREATE TABLE IF NOT EXISTS Preference (
 	value TEXT
 );
 
+CREATE TABLE IF NOT EXISTS SalesforceEntity (
+	id TEXT,
+	dataSourceId BIGINT,
+	fields JSON,
+	type TEXT,
+	PRIMARY KEY (dataSourceId, id, type)
+);
+
 CREATE TABLE IF NOT EXISTS Suppression (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,

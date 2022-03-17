@@ -31,7 +31,6 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Marcellus Tavares
  */
-@Primary
 public interface SalesforceEntityRepository
 	extends Repository<SalesforceEntity, String> {
 

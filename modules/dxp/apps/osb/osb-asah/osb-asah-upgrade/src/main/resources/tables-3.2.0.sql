@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS AsahMarker (
 	context JSON
 );
 
-
 CREATE TABLE IF NOT EXISTS AsahTask (
 	id BIGSERIAL PRIMARY KEY,
 	className TEXT,
@@ -147,6 +146,14 @@ CREATE TABLE IF NOT EXISTS JobRun (
 CREATE TABLE IF NOT EXISTS Preference (
 	id TEXT PRIMARY KEY,
 	value TEXT
+);
+
+CREATE TABLE IF NOT EXISTS SalesforceEntity (
+	id TEXT,
+	dataSourceId BIGINT,
+	fields JSON,
+	type TEXT,
+	PRIMARY KEY (dataSourceId, id, type)
 );
 
 CREATE TABLE IF NOT EXISTS Suppression (
