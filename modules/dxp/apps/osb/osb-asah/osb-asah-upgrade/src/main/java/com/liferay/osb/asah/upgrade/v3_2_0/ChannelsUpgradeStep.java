@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.upgrade.v3_2_0;
 
-import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.sql.Connection;
@@ -24,7 +22,6 @@ import java.sql.PreparedStatement;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -35,27 +32,16 @@ public class ChannelsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		try (Connection connection = _postgreSQLDataSource.getConnection();
+		try (Connection connection = _dataSource.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"ALTER TABLE Channel ADD state TEXT")) {
+				"ALTER TABLE Channel ADD state TEXT; UPDATE Channel SET " +
+					"state = 'READY'")) {
 
 			preparedStatement.execute();
 		}
-
-		Iterable<Channel> channels = _channelRepository.findAll();
-
-		for (Channel channel : channels) {
-			channel.setState("READY");
-		}
-
-		_channelRepository.saveAll(channels);
 	}
 
 	@Autowired
-	private ChannelRepository _channelRepository;
-
-	@Autowired(required = false)
-	@Qualifier("postgreSQLDataSource")
-	private DataSource _postgreSQLDataSource;
+	private DataSource _dataSource;
 
 }

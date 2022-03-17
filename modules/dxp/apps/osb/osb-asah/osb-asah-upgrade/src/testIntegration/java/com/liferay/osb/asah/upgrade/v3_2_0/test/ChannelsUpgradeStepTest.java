@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 
 /**
@@ -42,7 +41,7 @@ public class ChannelsUpgradeStepTest
 	implements OSBAsahUpgradeSpringTestContext {
 
 	@AfterEach
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		_channelRepository.deleteAll();
 	}
 
@@ -50,11 +49,9 @@ public class ChannelsUpgradeStepTest
 	public void testUpgrade() throws Exception {
 		ProjectIdThreadLocal.setProjectId("test");
 
-		Channel channel1 = new Channel("name");
+		_channelRepository.save(new Channel("name"));
 
-		_channelRepository.save(channel1);
-
-		try (Connection connection = _postgreSQLDataSource.getConnection();
+		try (Connection connection = _dataSource.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"ALTER TABLE Channel DROP COLUMN state")) {
 
@@ -67,9 +64,9 @@ public class ChannelsUpgradeStepTest
 			_channelRepository.findByNameContainingIgnoreCase(
 				"name", PageRequest.of(0, 1));
 
-		Channel channel2 = channelsByName.get(0);
+		Channel channel = channelsByName.get(0);
 
-		Assertions.assertEquals("READY", channel2.getState());
+		Assertions.assertEquals("READY", channel.getState());
 	}
 
 	@Autowired
@@ -78,8 +75,7 @@ public class ChannelsUpgradeStepTest
 	@Autowired
 	private ChannelsUpgradeStep _channelsUpgradeStep;
 
-	@Autowired(required = false)
-	@Qualifier("postgreSQLDataSource")
-	private DataSource _postgreSQLDataSource;
+	@Autowired
+	private DataSource _dataSource;
 
 }
