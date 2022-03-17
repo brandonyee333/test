@@ -39,9 +39,101 @@ CREATE TABLE IF NOT EXISTS BQEventProperty (
 	value TEXT
 );
 
+CREATE TABLE IF NOT EXISTS BQExpandoColumn (
+	columnId BIGINT,
+	dataType TEXT,
+	id TEXT PRIMARY KEY,
+	modifiedDate TIMESTAMP,
+	name TEXT
+);
+
+CREATE TABLE IF NOT EXISTS BQExpandoValue (
+	classPK BIGINT,
+	classType TEXT,
+	columnId BIGINT,
+	entityId BIGINT,
+	id BIGSERIAL PRIMARY KEY,
+	modifiedDate TIMESTAMP,
+	value TEXT
+);
+
+CREATE TABLE IF NOT EXISTS BQGroup (
+	groupId BIGINT,
+	id TEXT PRIMARY KEY,
+	modifiedDate TIMESTAMP,
+	name TEXT
+);
+
+CREATE TABLE IF NOT EXISTS BQOrganization (
+	expandoColumnIds BIGINT[],
+	expandoValueIds BIGINT[],
+	id TEXT PRIMARY KEY,
+	modifiedDate TIMESTAMP,
+	name TEXT,
+	organizationId BIGINT,
+	organizationType TEXT,
+	parentOrganizationId BIGINT,
+	treePath TEXT
+);
+
+CREATE TABLE IF NOT EXISTS BQRole (
+	id TEXT PRIMARY KEY,
+	modifiedDate TIMESTAMP,
+	name TEXT,
+	roleId BIGINT
+);
+
 CREATE TABLE IF NOT EXISTS BQSession (
 	channelId BIGINT,
 	id TEXT UNIQUE,
 	sessionEnd TIMESTAMPTZ,
 	sessionStart TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS BQTeam (
+	groupId BIGINT,
+	id TEXT PRIMARY KEY,
+	modifiedDate TIMESTAMP,
+	name TEXT,
+	teamId BIGINT
+);
+
+CREATE TABLE IF NOT EXISTS BQUser (
+	accountId BIGINT,
+	birthday TIMESTAMP,
+	classNameId BIGINT,
+	classPK BIGINT,
+	expandoColumnIds BIGINT[],
+	expandoValueIds BIGINT[],
+	contactId BIGINT,
+	createDate TIMESTAMP,
+	emailAddress TEXT,
+	firstName TEXT,
+	groupIds BIGINT[],
+	id TEXT PRIMARY KEY,
+	jobTitle TEXT,
+	languageId TEXT,
+	lastName TEXT,
+	male BOOLEAN,
+	middleName TEXT,
+	modifiedDate TIMESTAMP,
+	organizationIds BIGINT[],
+	parentContactId BIGINT,
+	prefixId TEXT,
+	roleIds BIGINT[],
+	screenName TEXT,
+	suffixId TEXT,
+	teamIds BIGINT[],
+	timeZoneId TEXT,
+	userGroupIds BIGINT[],
+	userId BIGINT,
+	userName TEXT,
+	uuid TEXT
+);
+
+CREATE TABLE IF NOT EXISTS BQUserGroup (
+	id TEXT PRIMARY KEY,
+	modifiedDate TIMESTAMP,
+	name TEXT,
+	userGroupId BIGINT
 );
