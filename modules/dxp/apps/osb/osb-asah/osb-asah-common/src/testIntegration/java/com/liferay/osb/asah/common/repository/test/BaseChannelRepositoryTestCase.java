@@ -41,6 +41,7 @@ public abstract class BaseChannelRepositoryTestCase
 	@BeforeEach
 	public void setUp() {
 		setUpRepository(new Channel("name"));
+
 		_channel = entityModels.get(0);
 	}
 
@@ -76,7 +77,6 @@ public abstract class BaseChannelRepositoryTestCase
 
 		Assertions.assertTrue(
 			_channelRepository.existsByIdNotAndName(channel.getId(), "name"));
-
 		Assertions.assertFalse(
 			_channelRepository.existsByIdNotAndName(_channel.getId(), "name"));
 	}
@@ -106,7 +106,6 @@ public abstract class BaseChannelRepositoryTestCase
 
 		Assertions.assertEquals(
 			1, channelDataSources.size(), channelDataSources.toString());
-
 		Assertions.assertTrue(channelDataSources.contains(channelDataSource));
 	}
 
@@ -132,7 +131,6 @@ public abstract class BaseChannelRepositoryTestCase
 
 		Assertions.assertEquals(
 			1, channelDataSources.size(), channelDataSources.toString());
-
 		Assertions.assertTrue(channelDataSources.contains(channelDataSource));
 	}
 
@@ -143,7 +141,6 @@ public abstract class BaseChannelRepositoryTestCase
 				"NAME", PageRequest.of(0, 1));
 
 		Assertions.assertEquals(1, channels.size(), channels.toString());
-
 		Assertions.assertEquals(_channel, channels.get(0));
 	}
 
