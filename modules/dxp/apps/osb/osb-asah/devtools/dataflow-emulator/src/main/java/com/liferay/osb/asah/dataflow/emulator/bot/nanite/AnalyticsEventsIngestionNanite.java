@@ -70,7 +70,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class IngestionNanite {
+public class AnalyticsEventsIngestionNanite {
 
 	public void checkWatermark() {
 
@@ -553,7 +553,8 @@ public class IngestionNanite {
 		_bqSessionRepository.save(bqSession);
 	}
 
-	private static final Log _log = LogFactory.getLog(IngestionNanite.class);
+	private static final Log _log = LogFactory.getLog(
+		AnalyticsEventsIngestionNanite.class);
 
 	private static final Set<String> _projectIds = new HashSet<>();
 
