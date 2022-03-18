@@ -77,6 +77,7 @@ public abstract class BaseChannelRepositoryTestCase
 
 		Assertions.assertTrue(
 			_channelRepository.existsByIdNotAndName(channel.getId(), "name"));
+
 		Assertions.assertFalse(
 			_channelRepository.existsByIdNotAndName(_channel.getId(), "name"));
 	}
