@@ -507,6 +507,36 @@ public class SXPBlueprintSearchResultTest {
 	}
 
 	@Test
+	public void testHideByExactTermMatch() throws Exception {
+		_assetTag = AssetTestUtil.addTag(_group.getGroupId(), "hide");
+
+		_journalFolder = JournalFolderServiceUtil.addFolder(
+			_group.getGroupId(), 0, RandomTestUtil.randomString(),
+			StringPool.BLANK, _serviceContext);
+
+		_setUpJournalArticles(
+			new String[] {"", ""}, new String[] {"do not hide me", "hide me"});
+
+		_keywords = "hide me";
+
+		_updateElementInstancesJSON(
+			new Object[] {
+				HashMapBuilder.<String, Object>put(
+					"field", "folderId"
+				).put(
+					"value", String.valueOf(_journalFolder.getFolderId())
+				).build()
+			},
+			new String[] {"Hide by Exact Term Match"});
+
+		_assertSearch("[do not hide me]");
+
+		_updateElementInstancesJSON(null, null);
+
+		_assertSearchIgnoreRelevance("[do not hide me, hide me]");
+	}
+
+	@Test
 	public void testHideContentsInACategory() throws Exception {
 		_addAssetCategory("Promoted", _addGroupUser(_group, "employee"));
 
@@ -533,47 +563,7 @@ public class SXPBlueprintSearchResultTest {
 	}
 
 	@Test
-	public void testHideSearch() throws Exception {
-		_assetTag = AssetTestUtil.addTag(_group.getGroupId(), "hide");
-
-		_journalFolder = JournalFolderServiceUtil.addFolder(
-			_group.getGroupId(), 0, RandomTestUtil.randomString(),
-			StringPool.BLANK, _serviceContext);
-
-		_setUpJournalArticles(
-			new String[] {"", ""}, new String[] {"do not hide me", "hide me"});
-
-		_updateElementInstancesJSON(
-			new Object[] {
-				HashMapBuilder.<String, Object>put(
-					"asset_tag", "hide"
-				).build()
-			},
-			new String[] {"Hide Tagged Contents"});
-
-		_keywords = "hide me";
-
-		_assertSearch("[do not hide me]");
-
-		_updateElementInstancesJSON(
-			new Object[] {
-				HashMapBuilder.<String, Object>put(
-					"field", "folderId"
-				).put(
-					"value", String.valueOf(_journalFolder.getFolderId())
-				).build()
-			},
-			new String[] {"Hide by Exact Term Match"});
-
-		_assertSearch("[do not hide me]");
-
-		_updateElementInstancesJSON(null, null);
-
-		_assertSearchIgnoreRelevance("[do not hide me, hide me]");
-
-		_assetTag = null;
-		_journalFolder = null;
-
+	public void testHideHiddenContents() throws Exception {
 		_setUpJournalArticles(
 			new String[] {
 				"Los Angeles", "Orange County", "Los Angeles", "Los Angeles"
@@ -653,6 +643,30 @@ public class SXPBlueprintSearchResultTest {
 			});
 
 		_assertSearch("[Cafe Rio, Starbucks Cafe]");
+	}
+
+	@Test
+	public void testHideTaggedContents() throws Exception {
+		_assetTag = AssetTestUtil.addTag(_group.getGroupId(), "hide");
+
+		_journalFolder = JournalFolderServiceUtil.addFolder(
+			_group.getGroupId(), 0, RandomTestUtil.randomString(),
+			StringPool.BLANK, _serviceContext);
+
+		_setUpJournalArticles(
+			new String[] {"", ""}, new String[] {"do not hide me", "hide me"});
+
+		_keywords = "hide me";
+
+		_updateElementInstancesJSON(
+			new Object[] {
+				HashMapBuilder.<String, Object>put(
+					"asset_tag", "hide"
+				).build()
+			},
+			new String[] {"Hide Tagged Contents"});
+
+		_assertSearch("[do not hide me]");
 	}
 
 	@Test
