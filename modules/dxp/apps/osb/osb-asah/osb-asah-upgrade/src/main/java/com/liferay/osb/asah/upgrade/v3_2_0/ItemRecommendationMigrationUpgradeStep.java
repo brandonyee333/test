@@ -54,6 +54,11 @@ public class ItemRecommendationMigrationUpgradeStep
 		return "SELECT id FROM recommendeditems ORDER BY id DESC LIMIT 1";
 	}
 
+	@Override
+	protected String getSequenceName() {
+		return null;
+	}
+
 	@Autowired
 	private ItemRecommendationRepository _itemRecommendationRepository;
 

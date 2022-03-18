@@ -131,6 +131,12 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 	}
 
 	private void _syncSequenceStart() {
+		String sequenceName = getSequenceName();
+
+		if (sequenceName == null) {
+			return;
+		}
+
 		Long currentValue = _getLatestId(true) + 1;
 
 		_namedParameterJdbcTemplate.queryForObject(
@@ -138,7 +144,7 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 			new HashMap<String, Object>() {
 				{
 					put("currentValue", currentValue);
-					put("sequenceName", getSequenceName());
+					put("sequenceName", sequenceName);
 				}
 			},
 			Long.class);
