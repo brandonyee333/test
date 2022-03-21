@@ -28,13 +28,13 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Matthew Kong
  */
 @Table
-public class Preference implements Persistable<Long> {
+public class Preference implements Persistable<String> {
 
 	public Preference() {
 	}
 
-	public Preference(String key, String value) {
-		_key = key;
+	public Preference(String id, String value) {
+		_id = id;
 		_value = value;
 	}
 
@@ -51,7 +51,6 @@ public class Preference implements Persistable<Long> {
 		Preference preference = (Preference)obj;
 
 		if (Objects.equals(_id, preference._id) &&
-			Objects.equals(_key, preference._key) &&
 			Objects.equals(_value, preference._value)) {
 
 			return true;
@@ -63,13 +62,8 @@ public class Preference implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
-	public Long getId() {
+	public String getId() {
 		return _id;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getKey() {
-		return _key;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -79,7 +73,7 @@ public class Preference implements Persistable<Long> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_id, _key, _value);
+		return Objects.hash(_id, _value);
 	}
 
 	@JsonIgnore
@@ -92,7 +86,7 @@ public class Preference implements Persistable<Long> {
 		return false;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		_id = id;
 	}
 
@@ -100,22 +94,15 @@ public class Preference implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
-	public void setKey(String key) {
-		_key = key;
-	}
-
 	public void setValue(String value) {
 		_value = value;
 	}
 
 	@Transient
-	private Long _id;
+	private String _id;
 
 	@Transient
 	private Boolean _isNew;
-
-	@Transient
-	private String _key;
 
 	@Transient
 	private String _value;

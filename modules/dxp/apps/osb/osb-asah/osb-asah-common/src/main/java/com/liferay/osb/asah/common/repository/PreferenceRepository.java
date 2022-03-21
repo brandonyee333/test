@@ -16,16 +16,8 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Preference;
 
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
-
 /**
  * @author Inácio Nery
  */
-@Primary
-public interface PreferenceRepository extends Repository<Preference, Long> {
-
-	@Cacheable
-	public Preference findByKey(String key);
-
+public interface PreferenceRepository extends Repository<Preference, String> {
 }
