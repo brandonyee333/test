@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.repository.PreferenceRepository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,25 +31,36 @@ import org.springframework.stereotype.Component;
 @Component
 public class PreferenceDog {
 
-	public Preference getPreference(String key) {
-		Preference preference = _preferenceRepository.findByKey(key);
+	public synchronized Preference getPreference(String id) {
+		Optional<Preference> preferenceOptional =
+			_preferenceRepository.findById(id);
 
-		if (preference != null) {
-			return preference;
+		if (preferenceOptional.isPresent()) {
+			return preferenceOptional.get();
 		}
 
-		return _preferenceRepository.save(
-			new Preference(key, _defaultPreferences.get(key)));
+		Preference preference = new Preference(id, _defaultPreferences.get(id));
+
+		preference.setIsNew(Boolean.TRUE);
+
+		return _preferenceRepository.save(preference);
 	}
 
-	public Preference savePreference(String key, String value) {
-		Preference preference = _preferenceRepository.findByKey(key);
+	public synchronized Preference savePreference(String id, String value) {
+		Optional<Preference> preferenceOptional =
+			_preferenceRepository.findById(id);
 
-		if (preference == null) {
-			return _preferenceRepository.save(new Preference(key, value));
+		if (preferenceOptional.isPresent()) {
+			Preference preference = preferenceOptional.get();
+
+			preference.setValue(value);
+
+			return _preferenceRepository.save(preference);
 		}
 
-		preference.setValue(value);
+		Preference preference = new Preference(id, value);
+
+		preference.setIsNew(Boolean.TRUE);
 
 		return _preferenceRepository.save(preference);
 	}

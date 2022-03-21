@@ -16,6 +16,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.page.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
@@ -24,6 +25,7 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.page.PageNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import org.junit.jupiter.api.Test;
 
@@ -42,13 +44,13 @@ public class PageNaniteTest
 		name = "pages", resourcePath = "page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "preferences", resourcePath = "preferences_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_PAGE,
 		resourcePath = "analytics_events_page_channel.json"
+	)
+	@RepositoryResource(
+		repositoryClass = PreferenceRepository.class,
+		resourcePath = "osbasahfaroinfo/preferences.json"
 	)
 	@Test
 	public void testPageMetrics() throws Exception {

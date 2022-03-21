@@ -26,8 +26,10 @@ import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.TrendClassification;
+import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -160,10 +162,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_day_interval_time_zone_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "preferences",
-		resourcePath = "preference_time_zone_america_los_angeles.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = PreferenceRepository.class,
+		resourcePath = "osbasahfaroinfo/preference_time_zone_america_los_angeles.json"
 	)
 	@Test
 	public void testHistogramMetricsTimeZoneDayInterval() {
@@ -187,10 +188,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_month_interval_time_zone_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "preferences",
-		resourcePath = "preference_time_zone_america_los_angeles.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = PreferenceRepository.class,
+		resourcePath = "osbasahfaroinfo/preference_time_zone_america_los_angeles.json"
 	)
 	@Test
 	public void testHistogramMetricsTimeZoneMonthInterval() {
@@ -214,10 +214,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_week_interval_time_zone_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "preferences",
-		resourcePath = "preference_time_zone_america_los_angeles.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = PreferenceRepository.class,
+		resourcePath = "osbasahfaroinfo/preference_time_zone_america_los_angeles.json"
 	)
 	@Test
 	public void testHistogramMetricsTimeZoneWeekInterval() {
