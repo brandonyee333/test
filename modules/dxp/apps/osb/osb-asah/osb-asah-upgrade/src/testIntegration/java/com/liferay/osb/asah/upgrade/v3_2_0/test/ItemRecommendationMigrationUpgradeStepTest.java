@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.repository.ItemRecommendationRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_2_0.ItemRecommendationMigrationUpgradeStep;
 
@@ -68,19 +67,20 @@ public class ItemRecommendationMigrationUpgradeStepTest
 
 	@AfterEach
 	public void tearDown() throws Exception {
+		_elasticsearchIndexManager.delete(
+			"test_osbasahfaroinfo_recommended-items");
 		_itemRecommendationRepository.deleteAll();
 	}
 
 	@Test
 	public void testUpgrade() throws Exception {
 		JSONArray jsonArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies/recommended_items.json", this)));
+			ResourceUtil.readResourceToString(
+				"dependencies/recommended_items.json", this));
 
 		Assertions.assertFalse(jsonArray.isEmpty());
 
-		_elasticsearchInvoker.add("recommended-items", jsonArray);
+		_faroInfoElasticsearchInvoker.add("recommended-items", jsonArray);
 
 		_itemRecommendationMigrationUpgradeStep.upgrade("");
 
@@ -102,7 +102,7 @@ public class ItemRecommendationMigrationUpgradeStepTest
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ItemRecommendationMigrationUpgradeStep
