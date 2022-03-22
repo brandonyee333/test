@@ -19,16 +19,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Suppression;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_2_0.SuppressionMigrationUpgradeStep;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.json.JSONArray;
 
@@ -74,22 +71,15 @@ public class SuppressionMigrationUpgradeStepTest
 			ResourceUtil.readResourceToString(
 				"dependencies/suppressions.json", this));
 
-		Assertions.assertFalse(jsonArray.isEmpty());
-
 		_elasticsearchInvoker.add("suppressions", jsonArray);
 
 		_suppressionMigrationUpgradeStep.upgrade("");
 
-		List<Object> jsonObjectList = jsonArray.toList();
-
-		Stream<Object> stream = jsonObjectList.stream();
-
 		Assertions.assertEquals(
-			stream.map(
-				object -> _objectMapper.convertValue(object, Suppression.class)
-			).collect(
-				Collectors.toList()
-			),
+			JSONUtil.toList(
+				jsonArray,
+				jsonObject -> _objectMapper.convertValue(
+					jsonObject, Suppression.class)),
 			_suppressionRepository.findAll());
 
 		Assertions.assertTrue(
