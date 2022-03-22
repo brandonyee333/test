@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQExpandoColumn;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQExpandoValue;
@@ -108,12 +109,12 @@ public class DXPEntitiesIngestionNanite {
 	}
 
 	private String _generateDXPEntityId(
-		Long dataSourceId, Long entityPK, String projectId) {
+		Long classPK, Long dataSourceId, String projectId) {
 
 		return DigestUtils.sha256Hex(
 			String.join(
 				"#", projectId, String.valueOf(dataSourceId),
-				String.valueOf(entityPK)));
+				String.valueOf(classPK)));
 	}
 
 	private Long[] _getExpandoColumnIds(JSONArray expandoFieldsJSONArray) {
@@ -200,17 +201,17 @@ public class DXPEntitiesIngestionNanite {
 	}
 
 	private void _processMessage(Message<String> message) {
+		Map<String, String> attributes = message.getAttributes();
+
+		Long dataSourceId = MapUtil.getLong(attributes, "dataSourceId");
+		String projectId = MapUtil.getString(attributes, "projectId");
+
 		JSONObject jsonObject = new JSONObject(message.getObject());
 
-		Long dataSourceId = jsonObject.getLong("dataSourceId");
-		String projectId = jsonObject.getString("projectId");
-
-		JSONObject dxpEntityJSONObject = jsonObject.getJSONObject("dxpEntity");
-
-		String type = dxpEntityJSONObject.getString("type");
+		String type = jsonObject.getString("type");
 
 		Map<String, Object> fields = _parseFields(
-			dxpEntityJSONObject.getJSONArray("fields"));
+			jsonObject.getJSONArray("fields"));
 
 		if (StringUtils.equals(type, "expando-column")) {
 			BQExpandoColumn bqExpandoColumn = _objectMapper.convertValue(
@@ -218,7 +219,7 @@ public class DXPEntitiesIngestionNanite {
 
 			bqExpandoColumn.setId(
 				_generateDXPEntityId(
-					dataSourceId, bqExpandoColumn.getColumnId(), projectId));
+					bqExpandoColumn.getColumnId(), dataSourceId, projectId));
 
 			bqExpandoColumn.setIsNew(
 				_isNew(_bqExpandoColumnRepository, bqExpandoColumn.getId()));
@@ -230,7 +231,7 @@ public class DXPEntitiesIngestionNanite {
 
 			bqGroup.setId(
 				_generateDXPEntityId(
-					dataSourceId, bqGroup.getGroupId(), projectId));
+					bqGroup.getGroupId(), dataSourceId, projectId));
 
 			bqGroup.setIsNew(_isNew(_bqGroupRepository, bqGroup.getId()));
 
@@ -240,7 +241,7 @@ public class DXPEntitiesIngestionNanite {
 			BQOrganization bqOrganization = _objectMapper.convertValue(
 				fields, BQOrganization.class);
 
-			JSONArray expandFieldsJSONArray = dxpEntityJSONObject.getJSONArray(
+			JSONArray expandFieldsJSONArray = jsonObject.getJSONArray(
 				"expandoFields");
 
 			bqOrganization.setExpandoColumnIds(
@@ -258,7 +259,7 @@ public class DXPEntitiesIngestionNanite {
 
 			bqOrganization.setId(
 				_generateDXPEntityId(
-					dataSourceId, bqOrganization.getOrganizationId(),
+					bqOrganization.getOrganizationId(), dataSourceId,
 					projectId));
 
 			bqOrganization.setIsNew(
@@ -271,7 +272,7 @@ public class DXPEntitiesIngestionNanite {
 
 			bqRole.setId(
 				_generateDXPEntityId(
-					dataSourceId, bqRole.getRoleId(), projectId));
+					bqRole.getRoleId(), dataSourceId, projectId));
 
 			bqRole.setIsNew(_isNew(_bqRoleRepository, bqRole.getId()));
 
@@ -282,7 +283,7 @@ public class DXPEntitiesIngestionNanite {
 
 			bqTeam.setId(
 				_generateDXPEntityId(
-					dataSourceId, bqTeam.getTeamId(), projectId));
+					bqTeam.getTeamId(), dataSourceId, projectId));
 
 			bqTeam.setIsNew(_isNew(_bqTeamRepository, bqTeam.getId()));
 
@@ -291,7 +292,7 @@ public class DXPEntitiesIngestionNanite {
 		else if (StringUtils.equals(type, "user")) {
 			BQUser bqUser = _objectMapper.convertValue(fields, BQUser.class);
 
-			JSONArray expandFieldsJSONArray = dxpEntityJSONObject.getJSONArray(
+			JSONArray expandFieldsJSONArray = jsonObject.getJSONArray(
 				"expandoFields");
 
 			bqUser.setExpandoColumnIds(
@@ -307,7 +308,7 @@ public class DXPEntitiesIngestionNanite {
 
 			bqUser.setId(
 				_generateDXPEntityId(
-					dataSourceId, bqUser.getUserId(), projectId));
+					bqUser.getUserId(), dataSourceId, projectId));
 
 			bqUser.setIsNew(_isNew(_bqUserRepository, bqUser.getId()));
 
@@ -319,7 +320,7 @@ public class DXPEntitiesIngestionNanite {
 
 			bqUserGroup.setId(
 				_generateDXPEntityId(
-					dataSourceId, bqUserGroup.getUserGroupId(), projectId));
+					bqUserGroup.getUserGroupId(), dataSourceId, projectId));
 
 			bqUserGroup.setIsNew(
 				_isNew(_bqUserGroupRepository, bqUserGroup.getId()));
