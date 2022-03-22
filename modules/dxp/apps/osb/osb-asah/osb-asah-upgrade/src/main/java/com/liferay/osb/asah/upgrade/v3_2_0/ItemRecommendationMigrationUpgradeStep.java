@@ -18,8 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.ItemRecommendation;
+import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.repository.ItemRecommendationRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -35,9 +35,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-
-import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -50,29 +47,28 @@ import org.springframework.stereotype.Component;
 public class ItemRecommendationMigrationUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) {
+	public void upgrade(String version) throws Exception {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Migrating recommended-items");
 		}
 
-		JSONArray objectJSONArray = _faroInfoElasticsearchInvoker.get(
-			"recommended-items",
-			Collections.singletonList(
-				SortBuilderUtil.fieldSort("id", SortOrder.ASC)),
-			BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.termsQuery(
-					"id", _getItemRecommendationIds(true))));
-
-		objectJSONArray.forEach(
-			object -> {
+		JSONArrayIterator.of(
+			"recommended-items", _faroInfoElasticsearchInvoker,
+			jsonObject -> {
 				ItemRecommendation itemRecommendation =
 					_objectMapper.convertValue(
-						object, ItemRecommendation.class);
+						jsonObject, ItemRecommendation.class);
 
 				itemRecommendation.setIsNew(Boolean.TRUE);
 
 				_itemRecommendationRepository.save(itemRecommendation);
-			});
+
+				return null;
+			}
+		).setQueryBuilder(
+			BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.termsQuery("id", _getItemRecommendationIds(true)))
+		).iterate();
 	}
 
 	private List<String> _getItemRecommendationIds(boolean retry) {

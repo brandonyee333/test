@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
@@ -31,9 +31,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-
-import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -54,20 +51,23 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 	}
 
 	@Override
-	public void upgrade(String version) {
-		JSONArray objectJSONArray = _faroInfoElasticsearchInvoker.get(
-			getElasticsearchCollectionName(),
-			Collections.singletonList(
-				SortBuilderUtil.fieldSort("id", SortOrder.ASC)),
+	public void upgrade(String version) throws Exception {
+		JSONArrayIterator.of(
+			getElasticsearchCollectionName(), _faroInfoElasticsearchInvoker,
+			jsonObject -> {
+				Consumer<Object> consumer = getConsumer();
+
+				consumer.accept(jsonObject);
+
+				return null;
+			}
+		).setQueryBuilder(
 			QueryBuilders.rangeQuery(
 				"id"
 			).gt(
 				_getLatestId(true)
-			));
-
-		Consumer<Object> consumer = getConsumer();
-
-		objectJSONArray.forEach(consumer::accept);
+			)
+		).iterate();
 
 		_syncSequenceStart();
 	}
