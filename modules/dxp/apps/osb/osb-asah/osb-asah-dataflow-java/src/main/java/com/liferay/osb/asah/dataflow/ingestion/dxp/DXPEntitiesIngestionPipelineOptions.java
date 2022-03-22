@@ -24,15 +24,35 @@ import org.apache.beam.sdk.options.Validation;
 public interface DXPEntitiesIngestionPipelineOptions
 	extends DataflowPipelineOptions {
 
+	@Description(
+		"Return the default queue pubsub subscription name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
+	)
+	@Validation.Required
+	public String getDefaultPubsubSubscription();
+
 	@Description("Return the GCS output bucket")
 	@Validation.Required
 	public String getGCSBucket();
 
+	@Description("Return the order Bigquery table name.")
+	@Validation.Required
+	public String getOrderBigqueryTable();
+
 	@Description(
-		"Return the pubsub subscription name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
+		"Return the order queue pubsub subscription name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
 	)
 	@Validation.Required
-	public String getPubsubSubscription();
+	public String getOrderPubsubSubscription();
+
+	@Description("Return the product Bigquery table name.")
+	@Validation.Required
+	public String getProductBigqueryTable();
+
+	@Description(
+		"Return the product queue pubsub subscription name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
+	)
+	@Validation.Required
+	public String getProductPubsubSubscription();
 
 	@Description("Return the shard count")
 	@Validation.Required
@@ -46,9 +66,17 @@ public interface DXPEntitiesIngestionPipelineOptions
 	@Validation.Required
 	public long getTriggerIntervalDuration();
 
+	public void setDefaultPubsubSubscription(String pubsubSubscription);
+
 	public void setGCSBucket(String gcsBucket);
 
-	public void setPubsubSubscription(String pubsubSubscription);
+	public void setOrderBigqueryTable(String bugqueryTable);
+
+	public void setOrderPubsubSubscription(String pubsubSubscription);
+
+	public void setProductBigqueryTable(String bugqueryTable);
+
+	public void setProductPubsubSubscription(String pubsubSubscription);
 
 	public void setShardCount(int shardCount);
 
