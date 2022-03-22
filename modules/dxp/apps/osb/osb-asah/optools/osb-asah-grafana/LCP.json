@@ -1,6 +1,15 @@
 {
 	"cpu": 2,
 	"id": "osbasahgrafana",
+	"livenessProbe": {
+		"failureThreshold": 3,
+		"httpGet": {
+			"path": "/api/health",
+			"port": 3000
+		},
+		"initialDelaySeconds": 60,
+		"timeoutSeconds": 10
+	},
 	"loadBalancer": {
 		"cdn": false,
 		"targetPort": 3000
@@ -13,5 +22,14 @@
 			"protocol": "TCP",
 			"targetPort": 3000
 		}
-	]
+	],
+	"readinessProbe": {
+		"failureThreshold": 3,
+		"httpGet": {
+			"path": "/api/health",
+			"port": 3000
+		},
+		"initialDelaySeconds": 60,
+		"timeoutSeconds": 10
+	}
 }
