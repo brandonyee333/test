@@ -24,7 +24,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQExpandoValue implements Persistable<Long> {
+public class BQExpandoValue implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long getClassPK() {
@@ -44,7 +44,7 @@ public class BQExpandoValue implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
-	public Long getId() {
+	public String getId() {
 		return _id;
 	}
 
@@ -74,7 +74,7 @@ public class BQExpandoValue implements Persistable<Long> {
 		_columnId = columnId;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		_id = id;
 	}
 
@@ -102,7 +102,7 @@ public class BQExpandoValue implements Persistable<Long> {
 	private Long _columnId;
 
 	@Transient
-	private Long _id;
+	private String _id;
 
 	@Transient
 	private Boolean _isNew;

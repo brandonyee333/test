@@ -16,8 +16,6 @@ package com.liferay.osb.asah.dataflow.emulator.repository;
 
 import com.liferay.osb.asah.dataflow.emulator.entity.BQExpandoValue;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -26,9 +24,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQExpandoValueRepository
-	extends CrudRepository<BQExpandoValue, Long> {
-
-	public List<BQExpandoValue> findByClassTypeAndClassPK(
-		BQExpandoValue.ClassType classType, Long classPK);
-
+	extends CrudRepository<BQExpandoValue, String> {
 }

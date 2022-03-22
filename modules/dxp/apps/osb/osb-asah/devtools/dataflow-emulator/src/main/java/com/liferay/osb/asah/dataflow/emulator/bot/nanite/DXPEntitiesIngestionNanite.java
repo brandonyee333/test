@@ -98,12 +98,13 @@ public class DXPEntitiesIngestionNanite {
 			));
 	}
 
-	private void _deleteBQExpandoValues(
-		BQExpandoValue.ClassType classType, Long classPK) {
+	private String _generateBQExpandoValueId(
+		Long columnId, Long classPK, Long dataSourceId, String projectId) {
 
-		_bqExpandoValueRepository.deleteAll(
-			_bqExpandoValueRepository.findByClassTypeAndClassPK(
-				classType, classPK));
+		return DigestUtils.sha256Hex(
+			String.join(
+				"#", projectId, String.valueOf(dataSourceId),
+				String.valueOf(columnId), String.valueOf(classPK)));
 	}
 
 	private String _generateDXPEntityId(
@@ -131,7 +132,7 @@ public class DXPEntitiesIngestionNanite {
 		);
 	}
 
-	private Long[] _getExpandoValueIds(
+	private String[] _getExpandoValueIds(
 		Iterable<BQExpandoValue> bqExpandoValues) {
 
 		List<BQExpandoValue> bqExpandoValuesList = IterableUtils.toList(
@@ -142,13 +143,13 @@ public class DXPEntitiesIngestionNanite {
 		return stream.map(
 			BQExpandoValue::getId
 		).toArray(
-			Long[]::new
+			String[]::new
 		);
 	}
 
 	private Set<BQExpandoValue> _getExpandoValues(
-		Long classPK, BQExpandoValue.ClassType classType,
-		JSONArray expandoFieldsJSONArray) {
+		Long classPK, BQExpandoValue.ClassType classType, Long dataSourceId,
+		JSONArray expandoFieldsJSONArray, String projectId) {
 
 		Set<BQExpandoValue> bqExpandoValues = new HashSet<>();
 
@@ -161,6 +162,15 @@ public class DXPEntitiesIngestionNanite {
 				bqExpandoValue.setClassPK(classPK);
 				bqExpandoValue.setClassType(classType);
 				bqExpandoValue.setColumnId(jsonObject.getLong("columnId"));
+
+				bqExpandoValue.setId(
+					_generateBQExpandoValueId(
+						jsonObject.getLong("columnId"), classPK, dataSourceId,
+						projectId));
+
+				bqExpandoValue.setIsNew(
+					_isNew(_bqExpandoValueRepository, bqExpandoValue.getId()));
+
 				bqExpandoValue.setValue(jsonObject.getString("value"));
 
 				bqExpandoValues.add(bqExpandoValue);
@@ -236,16 +246,12 @@ public class DXPEntitiesIngestionNanite {
 			bqOrganization.setExpandoColumnIds(
 				_getExpandoColumnIds(expandFieldsJSONArray));
 
-			_deleteBQExpandoValues(
-				BQExpandoValue.ClassType.ORGANIZATION,
-				bqOrganization.getOrganizationId());
-
 			Iterable<BQExpandoValue> bqExpandoValues =
 				_bqExpandoValueRepository.saveAll(
 					_getExpandoValues(
 						bqOrganization.getOrganizationId(),
-						BQExpandoValue.ClassType.ORGANIZATION,
-						expandFieldsJSONArray));
+						BQExpandoValue.ClassType.ORGANIZATION, dataSourceId,
+						expandFieldsJSONArray, projectId));
 
 			bqOrganization.setExpandoValueIds(
 				_getExpandoValueIds(bqExpandoValues));
@@ -291,14 +297,11 @@ public class DXPEntitiesIngestionNanite {
 			bqUser.setExpandoColumnIds(
 				_getExpandoColumnIds(expandFieldsJSONArray));
 
-			_deleteBQExpandoValues(
-				BQExpandoValue.ClassType.INDIVIDUAL, bqUser.getUserId());
-
 			Iterable<BQExpandoValue> bqExpandoValues =
 				_bqExpandoValueRepository.saveAll(
 					_getExpandoValues(
 						bqUser.getUserId(), BQExpandoValue.ClassType.INDIVIDUAL,
-						expandFieldsJSONArray));
+						dataSourceId, expandFieldsJSONArray, projectId));
 
 			bqUser.setExpandoValueIds(_getExpandoValueIds(bqExpandoValues));
 
