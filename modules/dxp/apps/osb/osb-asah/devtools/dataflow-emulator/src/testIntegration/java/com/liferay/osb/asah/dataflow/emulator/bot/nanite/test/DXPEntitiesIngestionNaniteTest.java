@@ -149,6 +149,11 @@ public class DXPEntitiesIngestionNaniteTest
 		bqExpandoValue.setClassPK(123L);
 		bqExpandoValue.setColumnId(1L);
 		bqExpandoValue.setClassType(BQExpandoValue.ClassType.ORGANIZATION);
+
+		bqExpandoValue.setId(
+			DigestUtils.sha256Hex(String.join("#", "test", "1", "1", "123")));
+
+		bqExpandoValue.setIsNew(true);
 		bqExpandoValue.setValue("1234");
 
 		bqExpandoValue = _bqExpandoValueRepository.save(bqExpandoValue);
