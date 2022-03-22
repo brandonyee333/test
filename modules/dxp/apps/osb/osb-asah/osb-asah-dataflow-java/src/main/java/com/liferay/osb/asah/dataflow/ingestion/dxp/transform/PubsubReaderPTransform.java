@@ -15,11 +15,14 @@
 package com.liferay.osb.asah.dataflow.ingestion.dxp.transform;
 
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.PubsubMessageAttributes;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.function.PubsubMessageParserDoFn;
+
+import java.nio.charset.StandardCharsets;
 
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO;
+import org.apache.beam.sdk.io.gcp.pubsub.PubsubMessage;
+import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.transforms.PTransform;
-import org.apache.beam.sdk.transforms.ParDo;
+import org.apache.beam.sdk.transforms.SimpleFunction;
 import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PBegin;
 import org.apache.beam.sdk.values.PCollection;
@@ -45,7 +48,25 @@ public class PubsubReaderPTransform
 				_pubsubSubscription
 			)
 		).apply(
-			ParDo.of(new PubsubMessageParserDoFn())
+			MapElements.via(
+				new SimpleFunction
+					<PubsubMessage, KV<PubsubMessageAttributes, String>>() {
+
+					@Override
+					public KV<PubsubMessageAttributes, String> apply(
+						PubsubMessage pubsubMessage) {
+
+						PubsubMessageAttributes pubsubMessageAttributes =
+							new PubsubMessageAttributes(
+								pubsubMessage.getAttributeMap());
+
+						String payload = new String(
+							pubsubMessage.getPayload(), StandardCharsets.UTF_8);
+
+						return KV.of(pubsubMessageAttributes, payload);
+					}
+
+				})
 		);
 	}
 
