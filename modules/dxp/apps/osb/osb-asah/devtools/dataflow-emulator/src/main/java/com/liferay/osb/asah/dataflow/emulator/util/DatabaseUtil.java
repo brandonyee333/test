@@ -31,7 +31,7 @@ public class DatabaseUtil {
 
 	public static void createTables(DataSource dataSource, String projectId) {
 		if (_log.isInfoEnabled()) {
-			_log.info("Initializing Ingestion Schema");
+			_log.info("Creating Database Schema " + projectId);
 		}
 
 		DatabasePopulatorUtils.execute(
