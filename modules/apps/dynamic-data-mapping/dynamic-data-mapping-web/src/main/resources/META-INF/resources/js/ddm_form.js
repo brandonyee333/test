@@ -4594,7 +4594,12 @@ AUI.add(
 
 						editor.create();
 
-						CKEDITOR.on('instanceReady', () => {
+						var editorComponentName =
+							field.getInputName() + 'Editor';
+
+						var ckEditor = CKEDITOR.instances[editorComponentName];
+
+						ckEditor.on('instanceReady', () => {
 							editor.setHTML(html);
 						});
 					}
