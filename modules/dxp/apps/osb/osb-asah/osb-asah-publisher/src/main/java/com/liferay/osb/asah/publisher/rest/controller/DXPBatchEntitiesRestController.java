@@ -16,6 +16,7 @@ package com.liferay.osb.asah.publisher.rest.controller;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.storage.Storage;
@@ -139,6 +140,22 @@ public class DXPBatchEntitiesRestController {
 
 			boolean success = _publishMessages(
 				dataSourceId, name, zipInputStream, uploadType);
+
+			_messageBus.sendMessage(
+				Channel.COMPOSER,
+				JSONUtil.put(
+					"datasourceId", dataSourceId
+				).put(
+					"projectId", ProjectIdThreadLocal.getProjectId()
+				).put(
+					"resourceName", name
+				).put(
+					"uploadComplete", success
+				).put(
+					"uploadTime", DateUtil.toUTCString(new Date())
+				).put(
+					"uploadType", (uploadType != null) ? uploadType : "FULL"
+				).toString());
 
 			if (!success) {
 				return new ResponseEntity(
