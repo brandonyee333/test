@@ -15,6 +15,8 @@
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 
 import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.DXPEntitiesIngestionNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.OSBAsahDataflowEmulatorSpringTestContext;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQExpandoValue;
@@ -29,15 +31,17 @@ import com.liferay.osb.asah.dataflow.emulator.repository.BQTeamRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQUserGroupRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQUserRepository;
 import com.liferay.osb.asah.dataflow.emulator.util.DatabaseUtil;
-import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.IterableUtils;
+
+import org.json.JSONArray;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -52,12 +56,23 @@ public class DXPEntitiesIngestionNaniteTest
 	implements OSBAsahDataflowEmulatorSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@MessageBusChannel(
-		channel = Channel.DXP_ENTITIES_MESSAGE,
-		resourcePath = "dxp_entities1.json"
-	)
 	@Test
 	public void testRun() throws Exception {
+		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
+			"dependencies/dxp_entities1.json", this);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			_messageBus.sendMessage(
+				Channel.DXP_ENTITIES_MESSAGE,
+				String.valueOf(jsonArray.getJSONObject(i)),
+				new HashMap<String, String>() {
+					{
+						put("dataSourceId", "1");
+						put("projectId", "test");
+					}
+				});
+		}
+
 		_dxpEntitiesIngestionNanite.run();
 
 		Assertions.assertEquals(1, _bqExpandoColumnRepository.count());
@@ -97,17 +112,28 @@ public class DXPEntitiesIngestionNaniteTest
 
 		Assertions.assertEquals(1, expandoColumnIds2.length);
 
-		Long[] expandoValueIds2 = bqUser.getExpandoValueIds();
+		String[] expandoValueIds2 = bqUser.getExpandoValueIds();
 
 		Assertions.assertEquals(1, expandoValueIds2.length);
 	}
 
-	@MessageBusChannel(
-		channel = Channel.DXP_ENTITIES_MESSAGE,
-		resourcePath = "dxp_entities2.json"
-	)
 	@Test
 	public void testRunWithExistingDXPEntity() throws Exception {
+		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
+			"dependencies/dxp_entities2.json", this);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			_messageBus.sendMessage(
+				Channel.DXP_ENTITIES_MESSAGE,
+				String.valueOf(jsonArray.getJSONObject(i)),
+				new HashMap<String, String>() {
+					{
+						put("dataSourceId", "1");
+						put("projectId", "test");
+					}
+				});
+		}
+
 		DatabaseUtil.createTables(_dataSource, "test");
 
 		BQOrganization bqOrganization = new BQOrganization();
@@ -184,5 +210,8 @@ public class DXPEntitiesIngestionNaniteTest
 
 	@Autowired
 	private DXPEntitiesIngestionNanite _dxpEntitiesIngestionNanite;
+
+	@Autowired
+	private MessageBus _messageBus;
 
 }
