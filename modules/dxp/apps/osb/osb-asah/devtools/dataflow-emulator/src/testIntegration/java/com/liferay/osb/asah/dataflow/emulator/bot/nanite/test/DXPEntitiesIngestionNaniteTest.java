@@ -93,7 +93,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		Assertions.assertEquals(1, expandoColumnIds1.length);
 
-		Long[] expandoValueIds1 = bqOrganization.getExpandoValueIds();
+		String[] expandoValueIds1 = bqOrganization.getExpandoValueIds();
 
 		Assertions.assertEquals(1, expandoValueIds1.length);
 
@@ -153,7 +153,8 @@ public class DXPEntitiesIngestionNaniteTest
 
 		bqExpandoValue = _bqExpandoValueRepository.save(bqExpandoValue);
 
-		bqOrganization.setExpandoValueIds(new Long[] {bqExpandoValue.getId()});
+		bqOrganization.setExpandoValueIds(
+			new String[] {bqExpandoValue.getId()});
 
 		_bqOrganizationRepository.save(bqOrganization);
 
@@ -173,7 +174,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		Assertions.assertEquals(1, expandoColumnIds1.length);
 
-		Long[] expandoValueIds1 = bqOrganization.getExpandoValueIds();
+		String[] expandoValueIds1 = bqOrganization.getExpandoValueIds();
 
 		Assertions.assertEquals(1, expandoValueIds1.length);
 

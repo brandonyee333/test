@@ -78,7 +78,7 @@ public class BQUser implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long[] getExpandoValueIds() {
+	public String[] getExpandoValueIds() {
 		return Arrays.copyOf(_expandoValueIds, _expandoValueIds.length);
 	}
 
@@ -239,7 +239,7 @@ public class BQUser implements Persistable<String> {
 			expandoColumnIds, expandoColumnIds.length);
 	}
 
-	public void setExpandoValueIds(Long[] expandoValueIds) {
+	public void setExpandoValueIds(String[] expandoValueIds) {
 		_expandoValueIds = Arrays.copyOf(
 			expandoValueIds, expandoValueIds.length);
 	}
@@ -360,7 +360,7 @@ public class BQUser implements Persistable<String> {
 	private Long[] _expandoColumnIds = {};
 
 	@Transient
-	private Long[] _expandoValueIds = {};
+	private String[] _expandoValueIds = {};
 
 	@Transient
 	private String _firstName;
