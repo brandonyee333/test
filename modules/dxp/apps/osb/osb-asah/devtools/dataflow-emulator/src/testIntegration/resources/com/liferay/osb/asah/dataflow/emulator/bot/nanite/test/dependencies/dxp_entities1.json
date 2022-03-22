@@ -1,301 +1,273 @@
 [
 	{
-		"dataSourceId": 1,
-		"dxpEntity": {
-			"fields": [
-				{
-					"name": "columnId",
-					"value": "123"
-				},
-				{
-					"name": "dataType",
-					"value": "test"
-				},
-				{
-					"name": "modifiedDate",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "name",
-					"value": "Expando Column Name"
-				}
-			],
-			"id": "123",
-			"type": "expando-column"
-		},
-		"projectId": "test"
+		"fields": [
+			{
+				"name": "columnId",
+				"value": "123"
+			},
+			{
+				"name": "dataType",
+				"value": "test"
+			},
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "name",
+				"value": "Expando Column Name"
+			}
+		],
+		"id": "123",
+		"type": "expando-column"
 	},
 	{
-		"dataSourceId": 1,
-		"dxpEntity": {
-			"fields": [
-				{
-					"name": "groupId",
-					"value": "123"
-				},
-				{
-					"name": "modifiedDate",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "name",
-					"value": "Group Name"
-				}
-			],
-			"id": "123",
-			"type": "group"
-		},
-		"projectId": "test"
+		"fields": [
+			{
+				"name": "groupId",
+				"value": "123"
+			},
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "name",
+				"value": "Group Name"
+			}
+		],
+		"id": "123",
+		"type": "group"
 	},
 	{
-		"dataSourceId": 1,
-		"dxpEntity": {
-			"expandoFields": [
-				{
-					"columnId": 1,
-					"name": "custom_field_1",
-					"value": "123"
-				}
-			],
-			"fields": [
-				{
-					"name": "modifiedDate",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "name",
-					"value": "Organization Name"
-				},
-				{
-					"name": "organizationId",
-					"value": "123"
-				},
-				{
-					"name": "parentOrganizationId",
-					"value": "12"
-				},
-				{
-					"name": "treePath",
-					"value": "test"
-				},
-				{
-					"name": "type",
-					"value": "test"
-				}
-			],
-			"id": "123",
-			"type": "organization"
-		},
-		"projectId": "test"
+		"expandoFields": [
+			{
+				"columnId": 1,
+				"name": "custom_field_1",
+				"value": "123"
+			}
+		],
+		"fields": [
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "name",
+				"value": "Organization Name"
+			},
+			{
+				"name": "organizationId",
+				"value": "123"
+			},
+			{
+				"name": "parentOrganizationId",
+				"value": "12"
+			},
+			{
+				"name": "treePath",
+				"value": "test"
+			},
+			{
+				"name": "type",
+				"value": "test"
+			}
+		],
+		"id": "123",
+		"type": "organization"
 	},
 	{
-		"dataSourceId": 1,
-		"dxpEntity": {
-			"fields": [
-				{
-					"name": "modifiedDate",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "name",
-					"value": "Role Name"
-				},
-				{
-					"name": "roleId",
-					"value": "123"
-				}
-			],
-			"id": "123",
-			"type": "role"
-		},
-		"projectId": "test"
+		"fields": [
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "name",
+				"value": "Role Name"
+			},
+			{
+				"name": "roleId",
+				"value": "123"
+			}
+		],
+		"id": "123",
+		"type": "role"
 	},
 	{
-		"dataSourceId": 1,
-		"dxpEntity": {
-			"fields": [
-				{
-					"name": "groupId",
-					"value": "123"
-				},
-				{
-					"name": "modifiedDate",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "name",
-					"value": "Team Name"
-				},
-				{
-					"name": "teamId",
-					"value": "123"
-				}
-			],
-			"id": "123",
-			"type": "team"
-		},
-		"projectId": "test"
+		"fields": [
+			{
+				"name": "groupId",
+				"value": "123"
+			},
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "name",
+				"value": "Team Name"
+			},
+			{
+				"name": "teamId",
+				"value": "123"
+			}
+		],
+		"id": "123",
+		"type": "team"
 	},
 	{
-		"dataSourceId": 1,
-		"dxpEntity": {
-			"expandoFields": [
-				{
-					"columnId": 1,
-					"name": "custom_field_2",
-					"value": "124"
-				}
-			],
-			"fields": [
-				{
-					"name": "accountId",
-					"value": "1"
-				},
-				{
-					"name": "birthday",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "classNameId",
-					"value": "1"
-				},
-				{
-					"name": "classPK",
-					"value": "1"
-				},
-				{
-					"name": "contactId",
-					"value": "1"
-				},
-				{
-					"name": "createDate",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "emailAddress",
-					"value": "test@liferay.com"
-				},
-				{
-					"name": "firstName",
-					"value": "test"
-				},
-				{
-					"name": "groupIds",
-					"value": [
-						12,
-						23
-					]
-				},
-				{
-					"name": "jobTitle",
-					"value": "test"
-				},
-				{
-					"name": "languageId",
-					"value": "en-US"
-				},
-				{
-					"name": "lastName",
-					"value": "test"
-				},
-				{
-					"name": "male",
-					"value": "true"
-				},
-				{
-					"name": "middleName",
-					"value": "test"
-				},
-				{
-					"name": "modifiedDate",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "organizationIds",
-					"value": [
-						12,
-						23
-					]
-				},
-				{
-					"name": "parentContactId",
-					"value": "343"
-				},
-				{
-					"name": "prefixId",
-					"value": "test"
-				},
-				{
-					"name": "roleIds",
-					"value": [
-						12,
-						23
-					]
-				},
-				{
-					"name": "screenName",
-					"value": "test"
-				},
-				{
-					"name": "suffixId",
-					"value": "test"
-				},
-				{
-					"name": "teamIds",
-					"value": [
-						12,
-						23
-					]
-				},
-				{
-					"name": "timeZoneId",
-					"value": "America/Recife"
-				},
-				{
-					"name": "userGroupIds",
-					"value": [
-						12,
-						23
-					]
-				},
-				{
-					"name": "userId",
-					"value": "343"
-				},
-				{
-					"name": "userName",
-					"value": "test"
-				},
-				{
-					"name": "uuid",
-					"value": "test"
-				}
-			],
-			"id": "343",
-			"type": "user"
-		},
-		"projectId": "test"
+		"expandoFields": [
+			{
+				"columnId": 1,
+				"name": "custom_field_2",
+				"value": "124"
+			}
+		],
+		"fields": [
+			{
+				"name": "accountId",
+				"value": "1"
+			},
+			{
+				"name": "birthday",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "classNameId",
+				"value": "1"
+			},
+			{
+				"name": "classPK",
+				"value": "1"
+			},
+			{
+				"name": "contactId",
+				"value": "1"
+			},
+			{
+				"name": "createDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "emailAddress",
+				"value": "test@liferay.com"
+			},
+			{
+				"name": "firstName",
+				"value": "test"
+			},
+			{
+				"name": "groupIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "jobTitle",
+				"value": "test"
+			},
+			{
+				"name": "languageId",
+				"value": "en-US"
+			},
+			{
+				"name": "lastName",
+				"value": "test"
+			},
+			{
+				"name": "male",
+				"value": "true"
+			},
+			{
+				"name": "middleName",
+				"value": "test"
+			},
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "organizationIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "parentContactId",
+				"value": "343"
+			},
+			{
+				"name": "prefixId",
+				"value": "test"
+			},
+			{
+				"name": "roleIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "screenName",
+				"value": "test"
+			},
+			{
+				"name": "suffixId",
+				"value": "test"
+			},
+			{
+				"name": "teamIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "timeZoneId",
+				"value": "America/Recife"
+			},
+			{
+				"name": "userGroupIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "userId",
+				"value": "343"
+			},
+			{
+				"name": "userName",
+				"value": "test"
+			},
+			{
+				"name": "uuid",
+				"value": "test"
+			}
+		],
+		"id": "343",
+		"type": "user"
 	},
 	{
-		"dataSourceId": 1,
-		"dxpEntity": {
-			"fields": [
-				{
-					"name": "modifiedDate",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "name",
-					"value": "User Group Name"
-				},
-				{
-					"name": "userGroupId",
-					"value": "123"
-				}
-			],
-			"id": "123",
-			"type": "user-group"
-		},
-		"projectId": "test"
+		"fields": [
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "name",
+				"value": "User Group Name"
+			},
+			{
+				"name": "userGroupId",
+				"value": "123"
+			}
+		],
+		"id": "123",
+		"type": "user-group"
 	}
 ]

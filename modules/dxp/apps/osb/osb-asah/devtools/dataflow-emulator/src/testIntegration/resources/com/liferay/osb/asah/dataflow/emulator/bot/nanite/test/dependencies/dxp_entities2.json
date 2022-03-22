@@ -1,43 +1,39 @@
 [
 	{
-		"dataSourceId": 1,
-		"dxpEntity": {
-			"expandoFields": [
-				{
-					"columnId": 1,
-					"name": "custom_field_1",
-					"value": "123"
-				}
-			],
-			"fields": [
-				{
-					"name": "modifiedDate",
-					"value": "2022-03-16T12:00:00.000"
-				},
-				{
-					"name": "name",
-					"value": "Organization Name"
-				},
-				{
-					"name": "organizationId",
-					"value": "123"
-				},
-				{
-					"name": "parentOrganizationId",
-					"value": "12"
-				},
-				{
-					"name": "treePath",
-					"value": "test"
-				},
-				{
-					"name": "type",
-					"value": "test"
-				}
-			],
-			"id": "123",
-			"type": "organization"
-		},
-		"projectId": "test"
+		"expandoFields": [
+			{
+				"columnId": 1,
+				"name": "custom_field_1",
+				"value": "123"
+			}
+		],
+		"fields": [
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "name",
+				"value": "Organization Name"
+			},
+			{
+				"name": "organizationId",
+				"value": "123"
+			},
+			{
+				"name": "parentOrganizationId",
+				"value": "12"
+			},
+			{
+				"name": "treePath",
+				"value": "test"
+			},
+			{
+				"name": "type",
+				"value": "test"
+			}
+		],
+		"id": "123",
+		"type": "organization"
 	}
 ]
