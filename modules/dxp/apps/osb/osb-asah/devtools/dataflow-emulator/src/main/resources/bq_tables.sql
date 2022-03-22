@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS BQExpandoValue (
 	classType TEXT,
 	columnId BIGINT,
 	entityId BIGINT,
-	id BIGSERIAL PRIMARY KEY,
+	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
 	value TEXT
 );
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS BQGroup (
 
 CREATE TABLE IF NOT EXISTS BQOrganization (
 	expandoColumnIds BIGINT[],
-	expandoValueIds BIGINT[],
+	expandoValueIds TEXT[],
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
 	name TEXT,
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS BQUser (
 	classNameId BIGINT,
 	classPK BIGINT,
 	expandoColumnIds BIGINT[],
-	expandoValueIds BIGINT[],
+	expandoValueIds TEXT[],
 	contactId BIGINT,
 	createDate TIMESTAMP,
 	emailAddress TEXT,
