@@ -32,6 +32,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -55,7 +57,7 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 		JSONArrayIterator.of(
 			getElasticsearchCollectionName(), _faroInfoElasticsearchInvoker,
 			jsonObject -> {
-				Consumer<Object> consumer = getConsumer();
+				Consumer<JSONObject> consumer = getConsumer();
 
 				consumer.accept(jsonObject);
 
@@ -72,7 +74,7 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 		_syncSequenceStart();
 	}
 
-	protected abstract Consumer<Object> getConsumer();
+	protected abstract Consumer<JSONObject> getConsumer();
 
 	protected abstract String getElasticsearchCollectionName();
 

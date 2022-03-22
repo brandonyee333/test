@@ -22,6 +22,8 @@ import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 
 import java.util.function.Consumer;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,10 +34,10 @@ import org.springframework.stereotype.Component;
 public class AsahTaskMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 
 	@Override
-	protected Consumer<Object> getConsumer() {
-		return object -> {
+	protected Consumer<JSONObject> getConsumer() {
+		return jsonObject -> {
 			AsahTask asahTask = _objectMapper.convertValue(
-				object, AsahTask.class);
+				jsonObject, AsahTask.class);
 
 			asahTask.setIsNew(Boolean.TRUE);
 

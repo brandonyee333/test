@@ -22,6 +22,8 @@ import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 
 import java.util.function.Consumer;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,9 +34,9 @@ import org.springframework.stereotype.Component;
 public class JobMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 
 	@Override
-	protected Consumer<Object> getConsumer() {
-		return object -> {
-			Job job = _objectMapper.convertValue(object, Job.class);
+	protected Consumer<JSONObject> getConsumer() {
+		return jsonObject -> {
+			Job job = _objectMapper.convertValue(jsonObject, Job.class);
 
 			job.setIsNew(Boolean.TRUE);
 

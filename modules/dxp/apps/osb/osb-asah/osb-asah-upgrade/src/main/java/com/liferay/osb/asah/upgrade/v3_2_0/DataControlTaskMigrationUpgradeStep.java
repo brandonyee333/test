@@ -22,6 +22,8 @@ import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 
 import java.util.function.Consumer;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,10 +35,10 @@ public class DataControlTaskMigrationUpgradeStep
 	extends BaseMigrationUpgradeStep {
 
 	@Override
-	protected Consumer<Object> getConsumer() {
-		return object -> {
+	protected Consumer<JSONObject> getConsumer() {
+		return jsonObject -> {
 			DataControlTask dataControlTask = _objectMapper.convertValue(
-				object, DataControlTask.class);
+				jsonObject, DataControlTask.class);
 
 			dataControlTask.setIsNew(Boolean.TRUE);
 
