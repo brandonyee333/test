@@ -123,8 +123,8 @@ public abstract class BaseNaniteTestCase {
 
 		List<Message<AnalyticsEvent>> messages = stream.map(
 			analyticsEvent -> new Message<>(
-				RandomTestUtil.randomUUID(), RandomTestUtil.randomUUID(),
-				analyticsEvent)
+				RandomTestUtil.randomUUID(), Collections.emptyMap(),
+				RandomTestUtil.randomUUID(), analyticsEvent)
 		).collect(
 			Collectors.toList()
 		);

@@ -88,6 +88,7 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 				messages.add(
 					new Message<>(
 						receivedMessage.getAckId(),
+						pubsubMessage.getAttributesMap(),
 						pubsubMessage.getMessageId(),
 						modelMapperUnsafeFunction.apply(
 							byteString.toStringUtf8())));

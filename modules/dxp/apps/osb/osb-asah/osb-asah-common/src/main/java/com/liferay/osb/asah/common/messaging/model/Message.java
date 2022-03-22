@@ -14,19 +14,28 @@
 
 package com.liferay.osb.asah.common.messaging.model;
 
+import java.util.Map;
+
 /**
  * @author Robson Pastor
  */
 public class Message<T> {
 
-	public Message(String ackId, String id, T object) {
+	public Message(
+		String ackId, Map<String, String> attributes, String id, T object) {
+
 		_ackId = ackId;
+		_attributes = attributes;
 		_id = id;
 		_object = object;
 	}
 
 	public String getAckId() {
 		return _ackId;
+	}
+
+	public Map<String, String> getAttributes() {
+		return _attributes;
 	}
 
 	public String getId() {
@@ -38,6 +47,7 @@ public class Message<T> {
 	}
 
 	private final String _ackId;
+	private final Map<String, String> _attributes;
 	private final String _id;
 	private final T _object;
 
