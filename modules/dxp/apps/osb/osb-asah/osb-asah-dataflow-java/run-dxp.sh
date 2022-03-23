@@ -19,14 +19,14 @@ TRIGGER_ELEMENT_COUNT=200
 TRIGGER_INTERVAL_DURATION=60
 
 ../gradlew clean assemble execute \
--Dexec.args=" \
---GCSBucket=${GCS_BUCKET} \
-	--project=${PROJECT_ID} \
-	--pubsubSubscription=${PUBSUB_SUBSCRIPTION} \
-	--region=${REGION} \
-	--runner=${RUNNER} \
-	--shardCount=${SHARD_COUNT} \
-	--triggerElementCount=${TRIGGER_ELEMENT_COUNT} \
-	--triggerIntervalDuration=${TRIGGER_INTERVAL_DURATION}" \
--Dexec.cleanupDaemonThreads=false \
--Dexec.mainClass=${MAIN_CLASS_NAME}
+	-Dexec.args=" \
+	--GCSBucket=${GCS_BUCKET} \
+		--project=${PROJECT_ID} \
+		--pubsubSubscription=${PUBSUB_SUBSCRIPTION} \
+		--region=${REGION} \
+		--runner=${RUNNER} \
+		--shardCount=${SHARD_COUNT} \
+		--triggerElementCount=${TRIGGER_ELEMENT_COUNT} \
+		--triggerIntervalDuration=${TRIGGER_INTERVAL_DURATION}" \
+	-Dexec.cleanupDaemonThreads=false \
+	-Dexec.mainClass=${MAIN_CLASS_NAME}
