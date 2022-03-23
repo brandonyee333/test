@@ -29,7 +29,7 @@ public interface DXPEntitiesIngestionPipelineOptions
 	public String getGCSBucket();
 
 	@Description(
-		"Return the Pubsub subscription name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
+		"Return the pubsub subscription name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
 	)
 	@Validation.Required
 	public String getPubsubSubscription();

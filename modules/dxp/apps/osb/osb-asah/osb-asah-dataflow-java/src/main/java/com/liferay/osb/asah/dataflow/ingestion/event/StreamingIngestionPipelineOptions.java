@@ -26,20 +26,20 @@ public interface StreamingIngestionPipelineOptions
 	extends DataflowPipelineOptions {
 
 	@Description(
-		"Returns the pub/sub subscription input name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
+		"Return the pub/sub subscription input name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
 	)
 	@Validation.Required
 	public String getInputSubscription();
 
 	@Description(
-		"Returns the output directory for the files. The directory must end with a slash."
+		"Return the output directory for the files. The directory must end with a slash."
 	)
 	@Validation.Required
 	public String getOutputDirectory();
 
 	@Default.String("output")
 	@Description(
-		"Returns the output file name prefix. The default is 'output'."
+		"Return the output file name prefix. The default is 'output'."
 	)
 	public String getOutputFileNamePrefix();
 
@@ -54,7 +54,7 @@ public interface StreamingIngestionPipelineOptions
 
 	@Default.Long(5)
 	@Description(
-		"Returns the interval in minutes in which the data will be written. The default is 5 minutes."
+		"Return the interval in minutes in which the data will be written. The default is 5 minutes."
 	)
 	public long getWriteInterval();
 
