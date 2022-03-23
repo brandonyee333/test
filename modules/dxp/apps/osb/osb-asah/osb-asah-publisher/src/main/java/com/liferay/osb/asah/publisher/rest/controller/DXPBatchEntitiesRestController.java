@@ -124,7 +124,7 @@ public class DXPBatchEntitiesRestController {
 				uploadType)
 		throws Exception {
 
-		for (MultipartFile multipartFile : MultipartFile) {
+		for (MultipartFile multipartFile : multipartFiles) {
 			String name = multipartFile.getOriginalFilename();
 
 			if (_log.isDebugEnabled()) {
@@ -132,7 +132,7 @@ public class DXPBatchEntitiesRestController {
 			}
 
 			ZipInputStream zipInputStream = new ZipInputStream(
-				filmultipartFilee.getInputStream());
+				multipartFile.getInputStream());
 
 			zipInputStream.getNextEntry();
 
