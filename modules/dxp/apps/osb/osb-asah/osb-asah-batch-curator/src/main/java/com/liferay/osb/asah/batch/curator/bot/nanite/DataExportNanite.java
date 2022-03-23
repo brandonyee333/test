@@ -48,6 +48,11 @@ import org.springframework.stereotype.Component;
 public class DataExportNanite extends BaseNanite {
 
 	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
+	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		List<DataExportTask> dataExportTasks =
 			_dataExportTaskDog.getDataExportTasks(
