@@ -184,7 +184,7 @@ public class DXPBatchEntitiesRestControllerTest
 	public void testPost() throws Exception {
 		MultipartBodyBuilder multipartBodyBuilder = new MultipartBodyBuilder();
 
-		multipartBodyBuilder.part("file", _getInputStream());
+		multipartBodyBuilder.part("file", _getFileSystemResource());
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -244,7 +244,7 @@ public class DXPBatchEntitiesRestControllerTest
 		return httpHeaders;
 	}
 
-	private FileSystemResource _getInputStream() throws Exception {
+	private FileSystemResource _getFileSystemResource() throws Exception {
 		File tempFile = File.createTempFile("export", ".zip");
 
 		ZipFileBuilder export = new ZipFileBuilder(tempFile);
