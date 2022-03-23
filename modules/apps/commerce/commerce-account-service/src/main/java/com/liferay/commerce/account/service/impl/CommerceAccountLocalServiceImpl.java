@@ -230,17 +230,20 @@ public class CommerceAccountLocalServiceImpl
 			deleteCommerceAccountUserRelsByCommerceAccountId(commerceAccountId);
 
 		Group commerceAccountGroup =
-			commerceAccountLocalService.getCommerceAccountGroup(
+			commerceAccountLocalService.fetchCommerceAccountGroup(
 				commerceAccountId);
 
-		// Commerce account user roles
+		if (commerceAccountGroup != null) {
 
-		userGroupRoleLocalService.deleteUserGroupRolesByGroupId(
-			commerceAccountGroup.getGroupId());
+			// Commerce account user roles
 
-		// Commerce account group
+			userGroupRoleLocalService.deleteUserGroupRolesByGroupId(
+				commerceAccountGroup.getGroupId());
 
-		groupLocalService.deleteGroup(commerceAccountGroup);
+			// Commerce account group
+
+			groupLocalService.deleteGroup(commerceAccountGroup);
+		}
 
 		// Commerce account
 
@@ -302,6 +305,20 @@ public class CommerceAccountLocalServiceImpl
 
 		return commerceAccountPersistence.fetchByC_ERC(
 			companyId, externalReferenceCode);
+	}
+
+	@Override
+	public Group fetchCommerceAccountGroup(long commerceAccountId)
+		throws PortalException {
+
+		CommerceAccount commerceAccount =
+			commerceAccountLocalService.getCommerceAccount(commerceAccountId);
+
+		long classNameId = classNameLocalService.getClassNameId(
+			CommerceAccount.class.getName());
+
+		return groupLocalService.fetchGroup(
+			commerceAccount.getCompanyId(), classNameId, commerceAccountId);
 	}
 
 	@Override
