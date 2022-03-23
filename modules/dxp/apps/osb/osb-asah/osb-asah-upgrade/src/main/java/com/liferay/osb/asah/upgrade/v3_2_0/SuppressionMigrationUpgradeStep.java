@@ -22,6 +22,8 @@ import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 
 import java.util.function.Consumer;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,10 +34,10 @@ import org.springframework.stereotype.Component;
 public class SuppressionMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 
 	@Override
-	protected Consumer<Object> getConsumer() {
-		return object -> {
+	protected Consumer<JSONObject> getConsumer() {
+		return jsonObject -> {
 			Suppression suppression = _objectMapper.convertValue(
-				object, Suppression.class);
+				jsonObject, Suppression.class);
 
 			suppression.setIsNew(Boolean.TRUE);
 
