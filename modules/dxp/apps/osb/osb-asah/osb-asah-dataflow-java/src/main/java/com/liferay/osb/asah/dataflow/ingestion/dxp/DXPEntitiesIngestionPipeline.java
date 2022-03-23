@@ -65,7 +65,7 @@ public class DXPEntitiesIngestionPipeline {
 						getTriggerIntervalDuration()))
 		).apply(
 			String.format(
-				"Write To GCS Bucket %s Using %s Shard Count",
+				"Write to GCS Bucket %s Using %s Shard Count",
 				dxpEntitiesIngestionPipelineOptions.getGCSBucket(),
 				dxpEntitiesIngestionPipelineOptions.getShardCount()),
 			new GCSWriterPTransform(
