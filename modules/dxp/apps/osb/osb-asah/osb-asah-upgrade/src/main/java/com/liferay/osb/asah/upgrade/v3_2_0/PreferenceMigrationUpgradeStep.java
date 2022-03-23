@@ -18,8 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Preference;
+import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -35,9 +35,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-
-import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -50,27 +47,27 @@ import org.springframework.stereotype.Component;
 public class PreferenceMigrationUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) {
+	public void upgrade(String version) throws Exception {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Migrating preferences");
 		}
 
-		JSONArray objectJSONArray = _faroInfoElasticsearchInvoker.get(
-			"preferences",
-			Collections.singletonList(
-				SortBuilderUtil.fieldSort("id", SortOrder.ASC)),
-			BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.termsQuery("id", _getPreferenceIds(true))));
-
-		objectJSONArray.forEach(
-			object -> {
+		JSONArrayIterator.of(
+			"preferences", _faroInfoElasticsearchInvoker,
+			jsonObject -> {
 				Preference preference = _objectMapper.convertValue(
-					object, Preference.class);
+					jsonObject, Preference.class);
 
 				preference.setIsNew(Boolean.TRUE);
 
 				_preferenceRepository.save(preference);
-			});
+
+				return null;
+			}
+		).setQueryBuilder(
+			BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.termsQuery("id", _getPreferenceIds(true)))
+		).iterate();
 	}
 
 	private List<String> _getPreferenceIds(boolean retry) {

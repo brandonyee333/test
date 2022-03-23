@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Preference;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -26,10 +27,9 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_2_0.PreferenceMigrationUpgradeStep;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.json.JSONArray;
 
@@ -80,25 +80,20 @@ public class PreferenceMigrationUpgradeStepTest
 			ResourceUtil.readResourceToString(
 				"dependencies/osbasahfaroinfo/preferences.json", this));
 
-		Assertions.assertFalse(jsonArray.isEmpty());
-
 		_faroInfoElasticsearchInvoker.add("preferences", jsonArray);
 
 		_preferenceMigrationUpgradeStep.upgrade("");
 
-		List<Object> jsonObjectList = jsonArray.toList();
+		List<Preference> actualPreferences = JSONUtil.toList(
+			jsonArray,
+			jsonObject -> _objectMapper.convertValue(
+				jsonObject, Preference.class));
 
-		Stream<Object> stream = jsonObjectList.stream();
+		Collections.sort(
+			actualPreferences, Comparator.comparing(Preference::getId));
 
 		Assertions.assertEquals(
-			stream.map(
-				object -> _objectMapper.convertValue(object, Preference.class)
-			).sorted(
-				Comparator.comparing(Preference::getId)
-			).collect(
-				Collectors.toList()
-			),
-			_preferenceRepository.findAll());
+			actualPreferences, _preferenceRepository.findAll());
 	}
 
 	@Autowired
