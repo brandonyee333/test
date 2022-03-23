@@ -44,8 +44,8 @@ definition {
 	@description = "Feature ID: Legacy | Automation ID: LRAC-8668 | Test Summary: Check blogClicked is triggered when a blog is clicked within a widget"
 	@priority = "3"
 	test CheckBlogClickedTriggeredWhenBlogClicked {
-		property proxy.server.enabled = "true";
 		property portal.upstream = "quarantine";
+		property proxy.server.enabled = "true";
 
 		// AC Refactor ticket: LRAC-9599
 
