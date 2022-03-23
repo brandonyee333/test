@@ -234,22 +234,12 @@ public class DXPBatchEntitiesRestControllerTest
 			new HttpEntity<>(null, httpHeaders), Resource.class);
 	}
 
-	private HttpHeaders _getHttpHeaders() {
-		HttpHeaders httpHeaders = new HttpHeaders();
-
-		httpHeaders.add(HeaderConstants.DATA_SOURCE_ID, "test-data-source-id");
-		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
-		httpHeaders.add("If-Modified-Since", _getModifiedSince());
-
-		return httpHeaders;
-	}
-
 	private FileSystemResource _getFileSystemResource() throws Exception {
 		File tempFile = File.createTempFile("export", ".zip");
 
 		ZipFileBuilder zipFileBuilder = new ZipFileBuilder(tempFile);
 
-		ZipFileBuilder.addToZip(
+		zipFileBuilder.addToZip(
 			"export.json",
 			zipOutputStream -> {
 				for (int i = 0; i < 5; i++) {
@@ -268,9 +258,19 @@ public class DXPBatchEntitiesRestControllerTest
 				}
 			});
 
-		ZipFileBuilder.build();
+		zipFileBuilder.build();
 
 		return new FileSystemResource(tempFile);
+	}
+
+	private HttpHeaders _getHttpHeaders() {
+		HttpHeaders httpHeaders = new HttpHeaders();
+
+		httpHeaders.add(HeaderConstants.DATA_SOURCE_ID, "test-data-source-id");
+		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
+		httpHeaders.add("If-Modified-Since", _getModifiedSince());
+
+		return httpHeaders;
 	}
 
 	private String _getModifiedSince() {

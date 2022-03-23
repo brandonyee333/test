@@ -38,9 +38,7 @@ public interface StreamingIngestionPipelineOptions
 	public String getOutputDirectory();
 
 	@Default.String("output")
-	@Description(
-		"Return the output file name prefix. The default is 'output'."
-	)
+	@Description("Return the output file name prefix. The default is 'output'.")
 	public String getOutputFileNamePrefix();
 
 	@Default.Long(5)
