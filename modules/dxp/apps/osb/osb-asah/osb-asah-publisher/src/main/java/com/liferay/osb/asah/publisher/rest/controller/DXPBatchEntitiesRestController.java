@@ -119,20 +119,20 @@ public class DXPBatchEntitiesRestController {
 	public ResponseEntity<?> post(
 			@RequestHeader(value = HeaderConstants.DATA_SOURCE_ID) String
 				dataSourceId,
-			@RequestPart(value = "file") List<MultipartFile> files,
+			@RequestPart(value = "file") List<MultipartFile> multipartFiles,
 			@RequestPart(required = false, value = "uploadType") String
 				uploadType)
 		throws Exception {
 
-		for (MultipartFile file : files) {
-			String name = file.getOriginalFilename();
+		for (MultipartFile multipartFile : MultipartFile) {
+			String name = multipartFile.getOriginalFilename();
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Received upload request " + name);
 			}
 
 			ZipInputStream zipInputStream = new ZipInputStream(
-				file.getInputStream());
+				filmultipartFilee.getInputStream());
 
 			zipInputStream.getNextEntry();
 
