@@ -247,9 +247,9 @@ public class DXPBatchEntitiesRestControllerTest
 	private FileSystemResource _getFileSystemResource() throws Exception {
 		File tempFile = File.createTempFile("export", ".zip");
 
-		ZipFileBuilder export = new ZipFileBuilder(tempFile);
+		ZipFileBuilder zipFileBuilder = new ZipFileBuilder(tempFile);
 
-		export.addToZip(
+		ZipFileBuilder.addToZip(
 			"export.json",
 			zipOutputStream -> {
 				for (int i = 0; i < 5; i++) {
@@ -268,7 +268,7 @@ public class DXPBatchEntitiesRestControllerTest
 				}
 			});
 
-		export.build();
+		ZipFileBuilder.build();
 
 		return new FileSystemResource(tempFile);
 	}
