@@ -294,6 +294,13 @@ public class CommerceAccountLocalServiceUtil {
 			companyId, externalReferenceCode);
 	}
 
+	public static com.liferay.portal.kernel.model.Group
+			fetchCommerceAccountGroup(long commerceAccountId)
+		throws PortalException {
+
+		return getService().fetchCommerceAccountGroup(commerceAccountId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 

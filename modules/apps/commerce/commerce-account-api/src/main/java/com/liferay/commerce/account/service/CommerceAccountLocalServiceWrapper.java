@@ -335,6 +335,15 @@ public class CommerceAccountLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.Group fetchCommerceAccountGroup(
+			long commerceAccountId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commerceAccountLocalService.fetchCommerceAccountGroup(
+			commerceAccountId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
