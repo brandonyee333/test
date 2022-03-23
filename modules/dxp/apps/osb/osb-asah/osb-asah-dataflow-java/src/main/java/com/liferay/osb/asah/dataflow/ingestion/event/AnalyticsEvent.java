@@ -16,6 +16,8 @@ package com.liferay.osb.asah.dataflow.ingestion.event;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.apache.beam.sdk.schemas.JavaFieldSchema;
 import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 
@@ -27,7 +29,10 @@ public class AnalyticsEvent {
 
 	public String applicationId;
 	public String channelId;
+
+	@Nullable
 	public String clientIP;
+
 	public Map<String, String> context;
 	public String createDate;
 	public String dataSourceId;
