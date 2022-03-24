@@ -136,7 +136,7 @@
 <!--FORM-->
 <tr>
 	<td>FORM_BUILDER</td>
-	<td>//div[contains(@class,'property-builder-content-container')]//div[contains(@class,'property-builder-drop-container')]</td>
+	<td>//div[contains(@class,'property-builder-content-container')]</td>
 	<td></td>
 </tr>
 <tr>
