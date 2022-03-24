@@ -510,7 +510,7 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 				viewFullContentURL.toString());
 
 			if (Validator.isNotNull(viewURL)) {
-				return StringUtil.split(viewURL, "?")[0];
+				return _normalizeURL(viewURL);
 			}
 		}
 		catch (Exception exception) {
@@ -519,7 +519,7 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 			}
 		}
 
-		return StringUtil.split(viewFullContentURL.toString(), "?")[0];
+		return _normalizeURL(viewFullContentURL.toString());
 	}
 
 	@Override
@@ -1203,6 +1203,10 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 		}
 
 		return assetTagNames;
+	}
+
+	private String _normalizeURL(String url) {
+		return StringUtil.split(url, "?")[0];
 	}
 
 	private void _removeAndStoreSelection(
