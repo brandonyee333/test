@@ -18,10 +18,10 @@ import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,6 +38,13 @@ public class SalesforceEntityDog {
 
 	public void deleteSalesforceEntities(Long dataSourceId) {
 		_salesforceEntityRepository.deleteByDataSourceId(dataSourceId);
+	}
+
+	public void deleteSalesforceEntities(
+		String fieldKey, String fieldValue, SalesforceEntity.Type type) {
+
+		_salesforceEntityRepository.deleteByFieldKeyAndFieldValueAndType(
+			fieldKey, fieldValue, type);
 	}
 
 	public void deleteSalesforceEntity(SalesforceEntity salesforceEntity) {
@@ -68,6 +75,15 @@ public class SalesforceEntityDog {
 		return _salesforceEntityRepository.
 			findByDataSourceIdAndFieldKeyEqualsAndType(
 				dataSourceId, fieldKey, fieldValue, type);
+	}
+
+	public List<SalesforceEntity> getSalesforceEntities(
+		String after, String fieldKey, String fieldValue, int size,
+		SalesforceEntity.Type type) {
+
+		return _salesforceEntityRepository.
+			findByAfterAndFieldKeyAndFieldValueAndType(
+				after, fieldKey, fieldValue, size, type);
 	}
 
 	public long getSalesforceEntitiesCount(
@@ -116,41 +132,35 @@ public class SalesforceEntityDog {
 	public List<SalesforceEntity> saveSalesforceEntities(
 		List<SalesforceEntity> salesforceEntities) {
 
-		List<SalesforceEntity> savedSalesforceEntities = new ArrayList<>();
+		Stream<SalesforceEntity> stream = salesforceEntities.stream();
 
-		for (SalesforceEntity salesforceEntity : salesforceEntities) {
-			if (!_salesforceEntityRepository.existsByDataSourceIdAndIdAndType(
-					salesforceEntity.getDataSourceId(),
-					salesforceEntity.getId(), salesforceEntity.getType())) {
-
-				salesforceEntity.setIsNew(Boolean.TRUE);
-
-				savedSalesforceEntities.add(
-					_salesforceEntityRepository.save(salesforceEntity));
-			}
-			else {
-				_salesforceEntityRepository.updateSalesforceEntityFields(
-					salesforceEntity.getDataSourceId(),
-					salesforceEntity.getFieldsJSONObject(),
-					salesforceEntity.getId(), salesforceEntity.getType());
-
-				savedSalesforceEntities.add(
-					getSalesforceEntity(
-						salesforceEntity.getDataSourceId(),
-						salesforceEntity.getId(), salesforceEntity.getType()));
-			}
-		}
-
-		return savedSalesforceEntities;
+		return stream.map(
+			this::saveSalesforceEntity
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	public SalesforceEntity saveSalesforceEntity(
 		SalesforceEntity salesforceEntity) {
 
-		List<SalesforceEntity> salesforceEntities = saveSalesforceEntities(
-			Arrays.asList(salesforceEntity));
+		if (!_salesforceEntityRepository.existsByDataSourceIdAndIdAndType(
+				salesforceEntity.getDataSourceId(), salesforceEntity.getId(),
+				salesforceEntity.getType())) {
 
-		return salesforceEntities.get(0);
+			salesforceEntity.setIsNew(Boolean.TRUE);
+
+			return _salesforceEntityRepository.save(salesforceEntity);
+		}
+
+		_salesforceEntityRepository.updateSalesforceEntityFields(
+			salesforceEntity.getDataSourceId(),
+			salesforceEntity.getFieldsJSONObject(), salesforceEntity.getId(),
+			salesforceEntity.getType());
+
+		return getSalesforceEntity(
+			salesforceEntity.getDataSourceId(), salesforceEntity.getId(),
+			salesforceEntity.getType());
 	}
 
 	@Autowired

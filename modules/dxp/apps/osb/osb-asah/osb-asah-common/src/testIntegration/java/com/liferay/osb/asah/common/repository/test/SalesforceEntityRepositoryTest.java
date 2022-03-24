@@ -81,6 +81,31 @@ public class SalesforceEntityRepositoryTest
 	}
 
 	@Test
+	public void testDeleteByDataSourceId() {
+		_salesforceEntityRepository.deleteByDataSourceId(1L);
+
+		Assertions.assertEquals(0, _salesforceEntityRepository.count());
+	}
+
+	@Test
+	public void testDeleteByFieldKeyAndFieldValueAndType() {
+		_salesforceEntityRepository.deleteByFieldKeyAndFieldValueAndType(
+			"AccountId", "1", SalesforceEntity.Type.CONTACT);
+
+		Assertions.assertEquals(3, _salesforceEntityRepository.count());
+	}
+
+	@Test
+	public void testFindByAfterAndFieldKeyAndFieldValueAndType() {
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityRepository.
+				findByAfterAndFieldKeyAndFieldValueAndType(
+					null, "AccountId", "1", 10, SalesforceEntity.Type.CONTACT);
+
+		Assertions.assertEquals(2, salesforceEntities.size());
+	}
+
+	@Test
 	public void testFindByDataSourceIdAndFieldKeyEqualsAndType() {
 		List<SalesforceEntity> salesforceEntities =
 			_salesforceEntityRepository.
@@ -110,6 +135,26 @@ public class SalesforceEntityRepositoryTest
 
 		Assertions.assertEquals(2, accountIds.size(), accountIds.toString());
 		Assertions.assertEquals(Arrays.asList("1", "2"), accountIds);
+	}
+
+	@Test
+	public void testUpdateSalesforceEntityFields() {
+		_salesforceEntityRepository.updateSalesforceEntityFields(
+			1L,
+			JSONUtil.put(
+				"AccountId", "321"
+			).put(
+				"Email", "john.doe@liferay.com"
+			),
+			"1", SalesforceEntity.Type.CONTACT);
+
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityRepository.
+				findByAfterAndFieldKeyAndFieldValueAndType(
+					null, "AccountId", "321", 10,
+					SalesforceEntity.Type.CONTACT);
+
+		Assertions.assertEquals(1, salesforceEntities.size());
 	}
 
 	private DataSource _addDataSource() {

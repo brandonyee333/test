@@ -23,7 +23,6 @@ import org.json.JSONObject;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
@@ -42,9 +41,20 @@ public interface SalesforceEntityRepository
 	@Modifying
 	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void deleteByFieldKeyAndFieldValueAndType(
+		@Param("fieldKey") String fieldKey,
+		@Param("fieldValue") String fieldValue,
+		@Param("type") SalesforceEntity.Type type);
+
 	@Cacheable
 	public boolean existsByDataSourceIdAndIdAndType(
 		Long dataSourceId, String id, SalesforceEntity.Type type);
+
+	public List<SalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
+		String after, String fieldKey, String fieldValue, int size,
+		SalesforceEntity.Type type);
 
 	@Cacheable
 	public List<SalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(

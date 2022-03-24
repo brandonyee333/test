@@ -21,12 +21,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DXPEntityDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.RawDataExporter;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SalesforceEntityDataExporter;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -34,6 +36,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.http.EmailHttp;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
@@ -160,8 +163,8 @@ public class DataControlNanite extends BaseNanite {
 		_dxpEntityDog.deleteByFieldNameEqualsAndType(
 			"fields.emailAddress", emailAddress, DXPEntity.Type.USER);
 
-		_salesforceRawElasticsearchInvoker.delete(
-			"individuals", QueryBuilders.termQuery("email", emailAddress));
+		_salesforceEntityDog.deleteSalesforceEntities(
+			"email", emailAddress, SalesforceEntity.Type.INDIVIDUAL);
 
 		Individual individual = _individualDog.fetchIndividualByEmailAddress(
 			emailAddress);
@@ -229,8 +232,7 @@ public class DataControlNanite extends BaseNanite {
 		zipFileBuilder.addToZip(
 			"salesforce-individuals.json",
 			zipOutputStream -> _writeToZip(
-				"individuals", _salesforceRawElasticsearchInvoker,
-				QueryBuilders.termQuery("email", emailAddress),
+				"email", emailAddress, SalesforceEntity.Type.INDIVIDUAL,
 				zipOutputStream));
 
 		Individual individual = _individualDog.fetchIndividualByEmailAddress(
@@ -443,6 +445,18 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _writeToZip(
+			String fieldName, String fieldValue, SalesforceEntity.Type type,
+			ZipOutputStream zipOutputStream)
+		throws Exception {
+
+		DataExporter dataExporter = new SalesforceEntityDataExporter(
+			fieldName, fieldValue, _jsonFactory, _objectMapper, zipOutputStream,
+			_salesforceEntityDog, type);
+
+		dataExporter.export();
+	}
+
+	private void _writeToZip(
 			String collectionName, String fieldName, String fieldValue,
 			ZipOutputStream zipOutputStream)
 		throws Exception {
@@ -489,8 +503,8 @@ public class DataControlNanite extends BaseNanite {
 	@Autowired
 	private ObjectMapper _objectMapper;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SuppressionDog _suppressionDog;

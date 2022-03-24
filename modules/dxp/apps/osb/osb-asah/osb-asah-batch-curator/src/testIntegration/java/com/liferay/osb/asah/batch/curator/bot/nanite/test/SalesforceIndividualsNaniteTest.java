@@ -14,9 +14,13 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.SalesforceIndividualsNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
@@ -54,27 +58,31 @@ public class SalesforceIndividualsNaniteTest
 		addEmailFieldMapping();
 		addStandardFieldMappings();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"individuals",
-			JSONUtil.putAll(
-				_buildSalesforceIndividualJSONObject(
-					String.valueOf(getDataSourceId()),
-					getIndividual1FieldsMap(), getIndividual1PK()),
-				_buildSalesforceIndividualJSONObject(
-					String.valueOf(getDataSourceId()),
-					getIndividual2FieldsMap(), getIndividual2PK())));
+		SalesforceEntity salesforceEntity1 = _buildIndividualSalesforceEntity(
+			getDataSourceId(), getIndividual1FieldsMap(), getIndividual1PK());
+
+		salesforceEntity1.setIsNew(Boolean.TRUE);
+
+		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity1);
+
+		SalesforceEntity salesforceEntity2 = _buildIndividualSalesforceEntity(
+			getDataSourceId(), getIndividual2FieldsMap(), getIndividual2PK());
+
+		salesforceEntity2.setIsNew(Boolean.TRUE);
+
+		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity2);
 
 		_salesforceRawElasticsearchInvoker.add(
 			"audit-events",
 			JSONUtil.putAll(
 				_buildAuditEventJSONObject(
-					String.valueOf(getDataSourceId()),
-					_salesforceRawElasticsearchInvoker.get(
-						"individuals", getIndividual1PK())),
+					_salesforceEntityDog.getSalesforceEntity(
+						getDataSourceId(), getIndividual1PK(),
+						SalesforceEntity.Type.INDIVIDUAL)),
 				_buildAuditEventJSONObject(
-					String.valueOf(getDataSourceId()),
-					_salesforceRawElasticsearchInvoker.get(
-						"individuals", getIndividual2PK()))));
+					_salesforceEntityDog.getSalesforceEntity(
+						getDataSourceId(), getIndividual2PK(),
+						SalesforceEntity.Type.INDIVIDUAL))));
 
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
@@ -122,25 +130,26 @@ public class SalesforceIndividualsNaniteTest
 	}
 
 	private JSONObject _buildAuditEventJSONObject(
-		String dataSourceId, JSONObject individualJSONObject) {
+		SalesforceEntity salesforceEntity) {
 
 		return JSONUtil.put(
-			"additionalInfo", individualJSONObject
+			"additionalInfo",
+			_objectMapper.convertValue(salesforceEntity, JSONObject.class)
 		).put(
-			"dataSourceId", dataSourceId
+			"dataSourceId", salesforceEntity.getDataSourceId()
 		).put(
 			"dateCreated", DateUtil.newDateString()
 		).put(
 			"eventType", "UPDATE"
 		).put(
-			"recordId", individualJSONObject.getString("id")
+			"recordId", salesforceEntity.getId()
 		).put(
 			"typeName", "individuals"
 		);
 	}
 
-	private JSONObject _buildSalesforceIndividualJSONObject(
-		String dataSourceId, Map<String, Object> fieldsMap, String id) {
+	private SalesforceEntity _buildIndividualSalesforceEntity(
+		Long dataSourceId, Map<String, Object> fieldsMap, String id) {
 
 		JSONObject individualFieldsJSONObject = new JSONObject(fieldsMap);
 
@@ -149,14 +158,16 @@ public class SalesforceIndividualsNaniteTest
 		individualFieldsJSONObject.put(
 			"modifiedDate", DateUtil.newDateString());
 
-		return JSONUtil.put(
-			"dataSourceId", dataSourceId
-		).put(
-			"fields", individualFieldsJSONObject
-		).put(
-			"id", id
-		);
+		return new SalesforceEntity(
+			id, dataSourceId, individualFieldsJSONObject,
+			SalesforceEntity.Type.INDIVIDUAL);
 	}
+
+	@Autowired
+	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceIndividualsNanite _salesforceIndividualsNanite;

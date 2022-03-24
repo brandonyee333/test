@@ -15,9 +15,10 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataControlTask;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
@@ -135,10 +136,13 @@ public class DataControlNaniteTest
 				"individuals",
 				QueryBuilders.termQuery(
 					"demographics.email.value", "john.doe@liferay.com")));
-		Assertions.assertNull(
-			_salesforceRawElasticsearchInvoker.fetch(
-				"individuals",
-				QueryBuilders.termQuery("email", "john.doe@liferay.com")));
+
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityDog.getSalesforceEntities(
+				1L, "email", "john.doe@liferay.com",
+				SalesforceEntity.Type.INDIVIDUAL);
+
+		Assertions.assertTrue(salesforceEntities.isEmpty());
 
 		Path path = Paths.get(_exportPath.toString(), "1.zip");
 
@@ -161,8 +165,8 @@ public class DataControlNaniteTest
 
 	private Path _exportPath;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SuppressionRepository _suppressionRepository;

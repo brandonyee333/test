@@ -15,10 +15,11 @@
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 
 import com.liferay.osb.asah.common.dog.RunLogDog;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -39,11 +40,9 @@ import com.sforce.soap.partner.DeleteResult;
 import com.sforce.soap.partner.SaveResult;
 import com.sforce.soap.partner.sobject.SObject;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -105,8 +104,7 @@ public class SalesforceExtractorNaniteTest
 	public void tearDown() {
 		_asahMarkerRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
-		_salesforceRawElasticsearchInvoker.delete(
-			"Account", QueryBuilders.matchAllQuery());
+		_salesforceEntityDog.deleteSalesforceEntities(1L);
 		_salesforceRawElasticsearchInvoker.delete(
 			"audit-events", QueryBuilders.matchAllQuery());
 
@@ -168,17 +166,6 @@ public class SalesforceExtractorNaniteTest
 
 	}
 
-	private String[] _getIndexAliases(String... collectionNames) {
-		Stream<String> stream = Arrays.stream(collectionNames);
-
-		return stream.map(
-			collectionName -> ElasticsearchIndexUtil.getIndexAlias(
-				collectionName, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-		).toArray(
-			String[]::new
-		);
-	}
-
 	private void _testAddField() {
 		Iterable<AsahMarker> iterable = _asahMarkerRepository.findAll();
 
@@ -201,24 +188,25 @@ public class SalesforceExtractorNaniteTest
 
 		_asahMarkerRepository.save(asahMarker);
 
-		JSONArray tableJSONArray = _salesforceRawElasticsearchInvoker.get(
-			"Account");
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityDog.getSalesforceEntities(
+				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
 
-		for (int i = 0; i < tableJSONArray.length(); i++) {
-			JSONObject curTableJSONObject = tableJSONArray.getJSONObject(i);
+		for (SalesforceEntity salesforceEntity : salesforceEntities) {
+			JSONObject jsonObject = salesforceEntity.getFieldsJSONObject();
 
-			curTableJSONObject.remove("Name");
-
-			_salesforceRawElasticsearchInvoker.update(
-				"Account", curTableJSONObject);
+			jsonObject.remove("Name");
 		}
 
-		tableJSONArray = _salesforceRawElasticsearchInvoker.get("Account");
+		_salesforceEntityDog.saveSalesforceEntities(salesforceEntities);
 
-		for (int i = 0; i < tableJSONArray.length(); i++) {
-			JSONObject curTableJSONObject = tableJSONArray.getJSONObject(i);
+		salesforceEntities = _salesforceEntityDog.getSalesforceEntities(
+			1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
 
-			Assertions.assertNotNull(curTableJSONObject.opt("Name"));
+		for (SalesforceEntity salesforceEntity : salesforceEntities) {
+			JSONObject jsonObject = salesforceEntity.getFieldsJSONObject();
+
+			Assertions.assertNotNull(jsonObject.opt("Name"));
 		}
 	}
 
@@ -235,15 +223,15 @@ public class SalesforceExtractorNaniteTest
 
 		_asahMarkerRepository.save(asahMarker);
 
-		_salesforceRawElasticsearchInvoker.delete(
-			"Account", QueryBuilders.matchAllQuery());
-
-		_elasticsearchIndexManager.clear(_getIndexAliases("Account"));
+		_salesforceEntityDog.deleteSalesforceEntities(1L);
 
 		_salesforceExtractorNanite.run();
 
-		Assertions.assertNotNull(
-			_salesforceRawElasticsearchInvoker.get("Account"));
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityDog.getSalesforceEntities(
+				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+
+		Assertions.assertFalse(salesforceEntities.isEmpty());
 	}
 
 	private void _testAuditEventsTable() {
@@ -306,23 +294,27 @@ public class SalesforceExtractorNaniteTest
 
 		_asahMarkerRepository.save(asahMarker);
 
-		JSONArray tableJSONArray = _salesforceRawElasticsearchInvoker.get(
-			"Account");
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityDog.getSalesforceEntities(
+				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
 
-		for (int i = 0; i < tableJSONArray.length(); i++) {
-			JSONObject curTableJSONObject = tableJSONArray.getJSONObject(i);
+		for (SalesforceEntity salesforceEntity : salesforceEntities) {
+			JSONObject curTableJSONObject =
+				salesforceEntity.getFieldsJSONObject();
 
 			curTableJSONObject.put("OSBAsahTest__c", "test");
 		}
 
-		_salesforceRawElasticsearchInvoker.save("Account", tableJSONArray);
+		_salesforceEntityDog.saveSalesforceEntities(salesforceEntities);
 
 		_salesforceExtractorNanite.run();
 
-		tableJSONArray = _salesforceRawElasticsearchInvoker.get("Account");
+		salesforceEntities = _salesforceEntityDog.getSalesforceEntities(
+			1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
 
-		for (int i = 0; i < tableJSONArray.length(); i++) {
-			JSONObject curTableJSONObject = tableJSONArray.getJSONObject(i);
+		for (SalesforceEntity salesforceEntity : salesforceEntities) {
+			JSONObject curTableJSONObject =
+				salesforceEntity.getFieldsJSONObject();
 
 			Assertions.assertNull(curTableJSONObject.opt("OSBAsahTest__c"));
 		}
@@ -347,18 +339,13 @@ public class SalesforceExtractorNaniteTest
 
 		_asahMarkerRepository.save(asahMarker);
 
-		JSONArray tableJSONArray = _salesforceRawElasticsearchInvoker.get(
-			"Account");
-
-		_salesforceRawElasticsearchInvoker.add(
-			"OSBAsahTest__c", tableJSONArray);
-
 		_salesforceExtractorNanite.run();
 
-		JSONArray jsonArray = _salesforceRawElasticsearchInvoker.get(
-			"OSBAsahTest__c");
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityDog.getSalesforceEntities(
+				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
 
-		Assertions.assertEquals(0, jsonArray.length());
+		Assertions.assertEquals(0, salesforceEntities.size());
 	}
 
 	private void _testPopulateNewTables() throws Exception {
@@ -378,10 +365,11 @@ public class SalesforceExtractorNaniteTest
 
 		Assertions.assertNotNull(tableJSONObject);
 
-		JSONArray tableJSONArray = _salesforceRawElasticsearchInvoker.get(
-			"Account");
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityDog.getSalesforceEntities(
+				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
 
-		Assertions.assertTrue(tableJSONArray.length() > 0);
+		Assertions.assertFalse(salesforceEntities.isEmpty());
 	}
 
 	private void _testSyncExistingTable() throws Exception {
@@ -404,13 +392,12 @@ public class SalesforceExtractorNaniteTest
 		for (int i = 0; i < 3; i++) {
 			_salesforceExtractorNanite.run();
 
-			JSONArray jsonArray = _salesforceRawElasticsearchInvoker.get(
-				"Account");
+			List<SalesforceEntity> salesforceEntities =
+				_salesforceEntityDog.getSalesforceEntities(
+					1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
 
-			for (int j = 0; j < jsonArray.length(); j++) {
-				JSONObject jsonObject = jsonArray.getJSONObject(j);
-
-				if (Objects.equals(jsonObject.getString("id"), salesforceKey)) {
+			for (SalesforceEntity salesforceEntity : salesforceEntities) {
+				if (Objects.equals(salesforceEntity.getId(), salesforceKey)) {
 					added = true;
 
 					break;
@@ -440,16 +427,15 @@ public class SalesforceExtractorNaniteTest
 		for (int i = 0; i < 3; i++) {
 			_salesforceExtractorNanite.run();
 
-			JSONArray jsonArray = _salesforceRawElasticsearchInvoker.get(
-				"Account");
+			List<SalesforceEntity> salesforceEntities =
+				_salesforceEntityDog.getSalesforceEntities(
+					1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
 
 			boolean exists = false;
 
-			for (int j = 0; j < jsonArray.length(); j++) {
-				JSONObject jsonObject = jsonArray.getJSONObject(j);
-
+			for (SalesforceEntity salesforceEntity : salesforceEntities) {
 				if (Objects.equals(
-						jsonObject.getString("id"), deleteResult.getId())) {
+						salesforceEntity.getId(), deleteResult.getId())) {
 
 					exists = true;
 
@@ -481,6 +467,9 @@ public class SalesforceExtractorNaniteTest
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
+
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceExtractorNanite _salesforceExtractorNanite;

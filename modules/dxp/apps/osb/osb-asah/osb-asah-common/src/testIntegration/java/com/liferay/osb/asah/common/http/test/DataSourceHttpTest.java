@@ -21,9 +21,9 @@ import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DXPEntity;
@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
@@ -43,7 +44,6 @@ import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
@@ -616,18 +616,16 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 					"dataSourceId", String.valueOf(dataSourceId2))),
 			"Unable to find entry in fields collection with data source ID " +
 				dataSourceId2);
-		Assertions.assertFalse(
-			_salesforceRawElasticsearchInvoker.exists(
-				"individuals",
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId1))),
+		Assertions.assertEquals(
+			0,
+			_salesforceEntityDog.getSalesforceEntitiesCount(
+				dataSourceId1, SalesforceEntity.Type.INDIVIDUAL),
 			"Found entry in individuals collection with data source ID " +
 				dataSourceId1);
-		Assertions.assertTrue(
-			_salesforceRawElasticsearchInvoker.exists(
-				"individuals",
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId2))),
+		Assertions.assertEquals(
+			1,
+			_salesforceEntityDog.getSalesforceEntitiesCount(
+				dataSourceId2, SalesforceEntity.Type.INDIVIDUAL),
 			"Unable to find entry in individuals collection with data source " +
 				"ID " + dataSourceId2);
 	}
@@ -771,16 +769,14 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildFieldJSONObject(
 				dataSourceId, dataSourceName));
 
-		_salesforceRawElasticsearchInvoker.add(
-			"individuals",
+		SalesforceEntity salesforceEntity = new SalesforceEntity(
+			RandomTestUtil.randomUUID(), Long.valueOf(dataSourceId),
 			JSONUtil.put(
 				"dataSourceId", dataSourceId
 			).put(
 				"email", RandomTestUtil.randomEmailAddress()
 			).put(
 				"firstName", RandomTestUtil.randomString()
-			).put(
-				"id", RandomTestUtil.randomUUID()
 			).put(
 				"jobTitle", RandomTestUtil.randomString()
 			).put(
@@ -789,7 +785,12 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				"modifiedDate", DateUtil.newDayDateString()
 			).put(
 				"subscription", RandomTestUtil.randomString()
-			));
+			),
+			SalesforceEntity.Type.INDIVIDUAL);
+
+		salesforceEntity.setIsNew(Boolean.TRUE);
+
+		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity);
 	}
 
 	private void _mock() {
@@ -837,12 +838,12 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	@Autowired
 	private ObjectMapper _objectMapper;
 
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
+
 	@MockBean
 	private SalesforceExtractorConfigurationDog
 		_salesforceExtractorConfigurationDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 	@Autowired
 	private SegmentDog _segmentDog;

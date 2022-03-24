@@ -27,6 +27,8 @@ import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.lang.Nullable;
+
 /**
  * @author Marcellus Tavares
  */
@@ -34,6 +36,27 @@ public class SalesforceEntityRepositoryImpl extends BaseRepository {
 
 	public SalesforceEntityRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	public List<SalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
+		String after, String fieldKey, String fieldValue, int size,
+		SalesforceEntity.Type type) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"SalesforceEntity"
+		).where(
+			_getConditions(after, null, fieldKey, fieldValue, type)
+		).orderBy(
+			DSL.field(
+				"id"
+			).asc()
+		).limit(
+			size
+		).fetch(
+			record -> new SalesforceEntity(record.intoMap())
+		);
 	}
 
 	public List<SalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
@@ -45,7 +68,7 @@ public class SalesforceEntityRepositoryImpl extends BaseRepository {
 		return selectSelectStep.from(
 			"SalesforceEntity"
 		).where(
-			_getConditions(dataSourceId, fieldKey, fieldValue, type)
+			_getConditions(null, dataSourceId, fieldKey, fieldValue, type)
 		).fetch(
 			record -> new SalesforceEntity(record.intoMap())
 		);
@@ -65,7 +88,7 @@ public class SalesforceEntityRepositoryImpl extends BaseRepository {
 		return selectSelectStep.from(
 			"SalesforceEntity"
 		).where(
-			_getConditions(dataSourceId, fieldKey, fieldValue, type)
+			_getConditions(null, dataSourceId, fieldKey, fieldValue, type)
 		).groupBy(
 			groupByField
 		).fetch(
@@ -74,17 +97,28 @@ public class SalesforceEntityRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		Long dataSourceId, String fieldKey, String fieldValue,
-		SalesforceEntity.Type type) {
+		@Nullable String after, @Nullable Long dataSourceId, String fieldKey,
+		String fieldValue, SalesforceEntity.Type type) {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		conditions.add(
-			DSL.field(
-				"dataSourceId"
-			).eq(
-				dataSourceId
-			));
+		if (after != null) {
+			conditions.add(
+				DSL.field(
+					"id"
+				).gt(
+					after
+				));
+		}
+
+		if (dataSourceId != null) {
+			conditions.add(
+				DSL.field(
+					"dataSourceId"
+				).eq(
+					dataSourceId
+				));
+		}
 
 		conditions.add(DSL.condition("fields ->> ? = ?", fieldKey, fieldValue));
 

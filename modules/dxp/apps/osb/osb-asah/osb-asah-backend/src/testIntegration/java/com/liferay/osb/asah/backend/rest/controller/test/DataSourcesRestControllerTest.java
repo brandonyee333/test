@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
@@ -33,6 +34,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
@@ -635,13 +637,15 @@ public class DataSourcesRestControllerTest {
 			WeDeployServiceThreadLocal.remove();
 		}
 
-		_salesforceRawElasticsearchInvoker.add(
-			"Account",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"Name", "Test Account"
-			));
+		SalesforceEntity salesforceEntity = new SalesforceEntity();
+
+		salesforceEntity.setDataSourceId(salesforceDataSource.getId());
+		salesforceEntity.setFieldsJSONObject(
+			JSONUtil.put("Name", "Test Account"));
+		salesforceEntity.setId("1");
+		salesforceEntity.setType(SalesforceEntity.Type.ACCOUNT);
+
+		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity);
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -788,21 +792,25 @@ public class DataSourcesRestControllerTest {
 				"status", "STARTED"
 			));
 
-		_salesforceRawElasticsearchInvoker.add(
-			"Contact",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"Name", "Test Contact"
-			));
+		SalesforceEntity contactSalesforceEntity = new SalesforceEntity();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"Lead",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"Name", "Test Lead"
-			));
+		contactSalesforceEntity.setDataSourceId(salesforceDataSource.getId());
+		contactSalesforceEntity.setFieldsJSONObject(
+			JSONUtil.put("Name", "Test Contact"));
+		contactSalesforceEntity.setId("2");
+		contactSalesforceEntity.setType(SalesforceEntity.Type.CONTACT);
+
+		_salesforceEntityDog.saveSalesforceEntity(contactSalesforceEntity);
+
+		SalesforceEntity leadSalesforceEntity = new SalesforceEntity();
+
+		leadSalesforceEntity.setDataSourceId(salesforceDataSource.getId());
+		leadSalesforceEntity.setFieldsJSONObject(
+			JSONUtil.put("Name", "Test Lead"));
+		leadSalesforceEntity.setId("3");
+		leadSalesforceEntity.setType(SalesforceEntity.Type.LEAD);
+
+		_salesforceEntityDog.saveSalesforceEntity(leadSalesforceEntity);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -1417,6 +1425,9 @@ public class DataSourcesRestControllerTest {
 
 	@Autowired
 	private SalesforceAuditEventDog _salesforceAuditEventDog;
+
+	@Autowired
+	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Mock
 	private SalesforceExtractorConfigurationDog

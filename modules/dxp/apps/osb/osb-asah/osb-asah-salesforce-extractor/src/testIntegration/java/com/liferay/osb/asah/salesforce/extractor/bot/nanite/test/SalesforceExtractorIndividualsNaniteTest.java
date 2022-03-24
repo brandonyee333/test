@@ -18,9 +18,11 @@ import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
 import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
@@ -30,6 +32,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -67,6 +70,15 @@ public class SalesforceExtractorIndividualsNaniteTest
 		_elasticsearchIndexManager.clearIndices();
 
 		_elasticsearchIndexManager.checkIndices();
+		_salesforceEntityDog.deleteSalesforceEntities(0L);
+		_dataSourceRepository.deleteAll();
+
+		DataSource dataSource = new DataSource("Salesforce");
+
+		dataSource.setId(0L);
+		dataSource.setIsNew(Boolean.TRUE);
+
+		_dataSourceRepository.save(dataSource);
 
 		SalesforceEntity accountSalesforceEntity = new SalesforceEntity(
 			"1", 0L, JSONUtil.put("Name", "Liferay, Inc."),
@@ -161,14 +173,10 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 	@AfterEach
 	public void tearDown() {
-		_elasticsearchInvoker.delete("Account", QueryBuilders.matchAllQuery());
-		_elasticsearchInvoker.delete("Contact", QueryBuilders.matchAllQuery());
-		_elasticsearchInvoker.delete("Lead", QueryBuilders.matchAllQuery());
+		_salesforceEntityDog.deleteSalesforceEntities(0L);
+		_dataSourceRepository.deleteAll();
 		_elasticsearchInvoker.delete(
 			"audit-events", QueryBuilders.matchAllQuery());
-		_elasticsearchInvoker.delete(
-			"individuals", QueryBuilders.matchAllQuery());
-
 		_elasticsearchIndexManager.clearIndices();
 	}
 
@@ -228,16 +236,18 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 		_salesforceExtractorIndividualsNanite.run();
 
-		JSONArray individualsJSONArray = _elasticsearchInvoker.get(
-			"individuals");
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityDog.getSalesforceEntities(
+				0L, 0, 100, SalesforceEntity.Type.INDIVIDUAL);
 
-		Assertions.assertEquals(1, individualsJSONArray.length());
+		Assertions.assertEquals(1, salesforceEntities.size());
 
-		JSONObject individualJSONObject = individualsJSONArray.getJSONObject(0);
+		SalesforceEntity salesforceEntity = salesforceEntities.get(0);
 
-		Assertions.assertNull(individualJSONObject.optJSONArray("accountPKs"));
-		Assertions.assertNull(
-			individualJSONObject.optString("contactId", null));
+		JSONObject jsonObject = salesforceEntity.getFieldsJSONObject();
+
+		Assertions.assertNull(jsonObject.optJSONArray("accountPKs"));
+		Assertions.assertNull(jsonObject.optString("contactId", null));
 	}
 
 	private void _testDeleteLead() {
@@ -245,24 +255,28 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 		_salesforceExtractorIndividualsNanite.run();
 
-		JSONArray individualsJSONArray = _elasticsearchInvoker.get(
-			"individuals");
-
-		Assertions.assertEquals(0, individualsJSONArray.length());
+		Assertions.assertEquals(
+			0,
+			_salesforceEntityDog.getSalesforceEntitiesCount(
+				1L, SalesforceEntity.Type.INDIVIDUAL));
 	}
 
 	private void _testMergeIndividual() {
 		_salesforceExtractorIndividualsNanite.run();
 
-		JSONArray individualsJSONArray = _elasticsearchInvoker.get(
-			"individuals");
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityDog.getSalesforceEntities(
+				0L, 0, 100, SalesforceEntity.Type.INDIVIDUAL);
 
-		Assertions.assertEquals(1, individualsJSONArray.length());
+		Assertions.assertEquals(
+			1,
+			_salesforceEntityDog.getSalesforceEntitiesCount(
+				0L, SalesforceEntity.Type.INDIVIDUAL));
 
-		JSONObject individualJSONObject = individualsJSONArray.getJSONObject(0);
+		SalesforceEntity salesforceEntity = salesforceEntities.get(0);
 
 		JSONObject individualFieldsJSONObject =
-			individualJSONObject.getJSONObject("fields");
+			salesforceEntity.getFieldsJSONObject();
 
 		JSONArray accountPKsJSONArray = individualFieldsJSONObject.getJSONArray(
 			"accountPKs");
@@ -282,6 +296,9 @@ public class SalesforceExtractorIndividualsNaniteTest
 	}
 
 	private SalesforceEntity _contactSalesforceEntity;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;

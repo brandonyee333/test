@@ -7,6 +7,15 @@
 			DELETE FROM SalesforceEntity WHERE SalesforceEntity.dataSourceId = :dataSourceId
 		]]>
 	</entry>
+	<entry key="SalesforceEntity.deleteByFieldKeyAndFieldValueAndType">
+		<![CDATA[
+			DELETE FROM
+				SalesforceEntity
+			WHERE
+				SalesforceEntity.fields ->> :fieldKey = :fieldValue AND
+				SalesforceEntity.type = :type
+		]]>
+	</entry>
 	<entry key="SalesforceEntity.updateSalesforceEntityFields">
 		<![CDATA[
 			UPDATE
