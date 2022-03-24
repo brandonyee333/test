@@ -1368,25 +1368,16 @@ definition {
 	}
 
 	macro increaseDisplayDate {
-		var displayDateHour = selenium.getAttribute("//input[contains(@id,'displayDateHour')]@value");
-		var displayDateHourLength = StringUtil.length("${displayDateHour}");
+		var displayDateMinute = DateUtil.getFormattedCurrentDate("m");
+		var displayDateHour = DateUtil.getFormattedCurrentDate("H");
 
-		if ("${displayDateHourLength}" == "1") {
-			var displayDateHour = "0${displayDateHour}";
-		}
-
-		var displayDateAmpm = selenium.getAttribute("//input[contains(@id,'displayDateAmPm')]@value");
-		var displayDateAmpm = StringUtil.replace("${displayDateAmpm}", "0", "AM");
-		var displayDateAmpm = StringUtil.replace("${displayDateAmpm}", "1", "PM");
-		var displayDateMinute = selenium.getAttribute("//input[contains(@id,'displayDateMinute')]@value");
 		var displayDateMinuteFuture = ${displayDateMinute} + ${minuteIncrease};
+
 		var displayDateMinuteFutureLength = StringUtil.length("${displayDateMinuteFuture}");
 
 		if ("${displayDateMinuteFutureLength}" == "1") {
 			var displayDateMinuteFuture = "0${displayDateMinuteFuture}";
 		}
-
-		var displayTime = "${displayDateHour}:${displayDateMinuteFuture} ${displayDateAmpm}";
 
 		echo("${displayDateMinute}");
 		echo("${displayDateMinuteFuture}");
