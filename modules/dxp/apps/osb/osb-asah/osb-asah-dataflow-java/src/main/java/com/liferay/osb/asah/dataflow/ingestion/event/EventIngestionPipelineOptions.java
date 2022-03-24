@@ -22,8 +22,7 @@ import org.apache.beam.sdk.options.Validation;
 /**
  * @author Marcellus Tavares
  */
-public interface StreamingIngestionPipelineOptions
-	extends DataflowPipelineOptions {
+public interface EventIngestionPipelineOptions extends DataflowPipelineOptions {
 
 	@Description(
 		"Return the pub/sub subscription input name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."

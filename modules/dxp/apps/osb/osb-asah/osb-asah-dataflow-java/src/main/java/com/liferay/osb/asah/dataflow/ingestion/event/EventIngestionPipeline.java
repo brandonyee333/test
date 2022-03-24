@@ -69,7 +69,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Marcellus Tavares
  */
-public class StreamingIngestionPipeline {
+public class EventIngestionPipeline {
 
 	public static void main(String[] args) {
 		run(
@@ -77,29 +77,29 @@ public class StreamingIngestionPipeline {
 				args
 			).withValidation(
 			).as(
-				StreamingIngestionPipelineOptions.class
+				EventIngestionPipelineOptions.class
 			));
 	}
 
 	public static PipelineResult run(
-		StreamingIngestionPipelineOptions streamingIngestionPipelineOptions) {
+		EventIngestionPipelineOptions eventIngestionPipelineOptions) {
 
-		Pipeline pipeline = Pipeline.create(streamingIngestionPipelineOptions);
+		Pipeline pipeline = Pipeline.create(eventIngestionPipelineOptions);
 
 		pipeline.apply(
 			"Backup PubSub Messages",
 			new BackupPubsubMessages(
-				streamingIngestionPipelineOptions.getInputSubscription(),
-				streamingIngestionPipelineOptions.getOutputDirectory(),
-				streamingIngestionPipelineOptions.getOutputFileNamePrefix(),
-				streamingIngestionPipelineOptions.getWriteInterval()));
+				eventIngestionPipelineOptions.getInputSubscription(),
+				eventIngestionPipelineOptions.getOutputDirectory(),
+				eventIngestionPipelineOptions.getOutputFileNamePrefix(),
+				eventIngestionPipelineOptions.getWriteInterval()));
 
 		PCollection<KV<String, Iterable<AnalyticsEvent>>>
 			sessionizedAnalyticsEventsPCollection = pipeline.apply(
 				"Read PubSub Messages",
 				PubsubIO.readStrings(
 				).fromSubscription(
-					streamingIngestionPipelineOptions.getInputSubscription()
+					eventIngestionPipelineOptions.getInputSubscription()
 				).withIdAttribute(
 					"id"
 				).withTimestampAttribute(
@@ -113,12 +113,11 @@ public class StreamingIngestionPipeline {
 			).apply(
 				"Create Sessions",
 				new Sessionizer(
-					streamingIngestionPipelineOptions.
+					eventIngestionPipelineOptions.
 						getSessionWindowAllowedLateness(),
-					streamingIngestionPipelineOptions.
+					eventIngestionPipelineOptions.
 						getSessionWindowEarlyFiringsInterval(),
-					streamingIngestionPipelineOptions.
-						getSessionWindowGapDuration())
+					eventIngestionPipelineOptions.getSessionWindowGapDuration())
 			);
 
 		sessionizedAnalyticsEventsPCollection.apply(

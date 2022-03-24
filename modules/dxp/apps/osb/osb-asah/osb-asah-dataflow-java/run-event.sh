@@ -9,7 +9,7 @@ fi
 PROJECT_ID=$(gcloud config get-value project)
 
 DXP_CLOUD_PROJECT=${1}
-MAIN_CLASS_NAME=com.liferay.osb.asah.dataflow.ingestion.StreamingIngestionPipeline
+MAIN_CLASS_NAME=com.liferay.osb.asah.dataflow.ingestion.event.EventIngestionPipeline
 OUTPUT_FOLDER=gs://${PROJECT_ID}-analytics-events
 PIPELINE_FOLDER=gs://${PROJECT_ID}-dataflow
 REGION=$(gcloud config get-value compute/region)
@@ -20,7 +20,7 @@ SESSION_WINDOW_GAP_DURATION=30
 ../gradlew clean assemble execute \
 	-Dexec.args=" \
 		--inputSubscription=projects/${PROJECT_ID}/subscriptions/${DXP_CLOUD_PROJECT}_analytics_events_dataflow \
-		--jobName=streamingingestionpipeline-marcellustavares-20220214-155ebd6
+		--jobName=eventingestionpipeline-marcellustavares-20220214-155ebd6
 		--outputDirectory=${OUTPUT_FOLDER} \
 		--outputFileNamePrefix=analytics-events \
 		--project=${PROJECT_ID} \
