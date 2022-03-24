@@ -52,6 +52,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -65,6 +66,7 @@ public class DXPEntitiesMessageProcessorTest
 	implements OSBAsahExtractorSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@MessageBusChannel(
 		channel = Channel.DXP_ENTITIES_MESSAGE,
 		resourcePath = "dxp_entities_message_2.json"
