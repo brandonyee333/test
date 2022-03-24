@@ -591,7 +591,6 @@ definition {
 	}
 
 	@description = "This will be ignored until LPS-109144 is fixed. This is a use case for LPS-44719."
-	@ignore = "true"
 	@priority = "4"
 	test PublishMBWithoutSetup {
 		Navigator.gotoStagedSitePage(
