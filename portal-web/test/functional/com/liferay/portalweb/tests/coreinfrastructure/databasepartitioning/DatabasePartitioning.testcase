@@ -51,6 +51,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -94,6 +96,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -145,6 +149,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -199,6 +205,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -242,6 +250,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -293,6 +303,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -347,6 +359,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -390,6 +404,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -441,6 +457,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -495,6 +513,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -538,6 +558,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -589,6 +611,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -643,6 +667,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -686,6 +712,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -737,6 +765,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -791,6 +821,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -834,6 +866,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -885,6 +919,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -939,6 +975,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -982,6 +1020,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1033,6 +1073,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -1087,6 +1129,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1130,6 +1174,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1181,6 +1227,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -1235,6 +1283,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1278,6 +1328,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1329,6 +1381,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -1383,6 +1437,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1426,6 +1482,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1477,6 +1535,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -1531,6 +1591,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1574,6 +1636,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1625,6 +1689,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -1679,6 +1745,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1722,6 +1790,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1773,6 +1843,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -1827,6 +1899,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1870,6 +1944,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -1921,6 +1997,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -1975,6 +2053,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2018,6 +2098,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2069,6 +2151,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -2123,6 +2207,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2166,6 +2252,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2217,6 +2305,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -2271,6 +2361,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2314,6 +2406,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2365,6 +2459,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -2419,6 +2515,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2462,6 +2560,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2513,6 +2613,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
@@ -2567,6 +2669,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "8");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2610,6 +2714,8 @@ definition {
 			WebContent.increaseDisplayDate(minuteIncrease = "2");
 
 			PortletEntry.publish();
+
+			WebContent.getCurrentTime();
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
@@ -2661,6 +2767,8 @@ definition {
 			Pause(locator1 = "300000");
 
 			Refresh();
+
+			WebContent.getCurrentTime();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content New Company",
