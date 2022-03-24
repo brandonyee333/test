@@ -33,13 +33,13 @@ public class PreferenceRepositoryTest
 
 	@BeforeEach
 	public void setUp() {
-		Preference preference1 = new Preference("id1", "value1");
+		Preference preference = new Preference("id1", "value1");
 
-		preference1.setIsNew(Boolean.TRUE);
+		preference.setIsNew(Boolean.TRUE);
 
-		setUpRepository(preference1);
+		setUpRepository(preference);
 
-		preference1.setIsNew(Boolean.FALSE);
+		preference.setIsNew(Boolean.FALSE);
 	}
 
 	@Override
