@@ -162,7 +162,7 @@
 			"type": "DAY"
 		}
 	},
-	"eventProperty": {
+	"eventproperty": {
 		"clusteringFields": [
 			"channelId"
 		],
