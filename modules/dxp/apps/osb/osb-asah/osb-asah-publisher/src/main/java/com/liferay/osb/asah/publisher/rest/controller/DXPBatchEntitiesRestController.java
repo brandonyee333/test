@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.publisher.messaging.DXPEntitiesChannels;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -198,7 +199,7 @@ public class DXPBatchEntitiesRestController {
 		String dataSourceId, String resourceName, InputStream inputStream,
 		String uploadType) {
 
-		boolean status = false;
+		Channel channel = _dxpEntitiesChannels.getChannel(resourceName);
 
 		Map<String, String> messageAttributes = new HashMap<>();
 
@@ -208,6 +209,8 @@ public class DXPBatchEntitiesRestController {
 		messageAttributes.put("uploadTime", DateUtil.toUTCString(new Date()));
 		messageAttributes.put(
 			"uploadType", (uploadType != null) ? uploadType : "FULL");
+
+		boolean status = false;
 
 		try (BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
@@ -223,7 +226,7 @@ public class DXPBatchEntitiesRestController {
 				messageAttributes.put(
 					"last", (nextLine == null) ? "true" : "false");
 
-				_messageBus.sendMessage(_channel, line, messageAttributes);
+				_messageBus.sendMessage(channel, line, messageAttributes);
 
 				count += 1;
 
@@ -242,7 +245,6 @@ public class DXPBatchEntitiesRestController {
 	private static final Log _log = LogFactory.getLog(
 		DXPBatchEntitiesRestController.class);
 
-	private static final Channel _channel = Channel.DXP_ENTITIES_DEFAULT;
 	private static final DateTimeFormatter _dateTimeFormatter =
 		DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz");
 
@@ -255,6 +257,9 @@ public class DXPBatchEntitiesRestController {
 		"${osb.asah.dxp.batch.entities.storage.path:/storage/{projectId}/dxp_batch_entities.json"
 	)
 	private String _dxpBatchEntitiesStoragePathTemplate;
+
+	@Autowired
+	private DXPEntitiesChannels _dxpEntitiesChannels;
 
 	@Autowired
 	private MessageBus _messageBus;
