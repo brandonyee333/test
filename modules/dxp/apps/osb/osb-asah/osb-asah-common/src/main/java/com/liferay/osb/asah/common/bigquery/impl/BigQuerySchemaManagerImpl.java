@@ -137,6 +137,8 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	private Dataset _createDataset(Project project) {
 		DatasetInfo.Builder builder = DatasetInfo.newBuilder(project.getId());
 
+		builder = builder.setLocation(_location);
+
 		Dataset dataset = _bigQuery.create(builder.build());
 
 		if (_log.isInfoEnabled()) {
