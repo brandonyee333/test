@@ -422,17 +422,33 @@ definition {
 	}
 
 	macro selectPublication {
-		Click(locator1 = "Publications#PUBLICATIONS_INDICATOR_BUTTON");
+		if ("${gotoManagePublications}" == "true") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Publications",
+				panel = "Applications",
+				portlet = "Publications");
 
-		MenuItem.click(menuItem = "Select a Publication");
+			LexiconEntry.changeDisplayStyle(displayStyle = "list");
 
-		SelectFrame(locator1 = "IFrame#SELECT_PUBLICATION");
+			Click(
+				key_publicationName = "${publicationName}",
+				locator1 = "Publications#LIST_PUBLICATION_ELLIPSIS");
 
-		var key_publicationName = "${publicationName}";
+			MenuItem.click(menuItem = "Work on Publication");
+		}
+		else {
+			Click(locator1 = "Publications#PUBLICATIONS_INDICATOR_BUTTON");
 
-		Click(
-			locator1 = "Publications#SELECT_PUBLICATION_NAME",
-			value1 = "${publicationName}");
+			MenuItem.click(menuItem = "Select a Publication");
+
+			SelectFrame(locator1 = "IFrame#MODAL_BODY");
+
+			var key_publicationName = "${publicationName}";
+
+			Click(
+				locator1 = "Publications#SELECT_PUBLICATION_NAME",
+				value1 = "${publicationName}");
+		}
 
 		AssertTextPresent(
 			locator1 = "Publications#PUBLICATIONS_INDICATOR_TITLE",
@@ -471,6 +487,31 @@ definition {
 		AssertVisible(locator1 = "Publications#DISABLED_PUBLISH_BUTTON");
 	}
 
+	macro viewPublicationPublished {
+		ApplicationsMenu.gotoPortlet(
+			category = "Publications",
+			panel = "Applications",
+			portlet = "Publications");
+
+		var key_navBarTitle = "History";
+
+		Click(
+			locator1 = "Publications#MANGE_PUBLICATIONS_NAVBAR_TITLE",
+			value1 = "History");
+
+		LexiconEntry.changeDisplayStyle(displayStyle = "list");
+
+		// Workaround LPS-115320
+
+		Refresh();
+
+		var key_publicationName = "${publicationName}";
+
+		AssertTextEquals(
+			locator1 = "Publications#LIST_PUBLISHED_STATUS",
+			value1 = "Published");
+	}
+
 	macro viewPublicationsDiff {
 		if (contains("${entryTitle}", "modified")) {
 			AssertTextEquals.assertPartialText(
@@ -497,31 +538,6 @@ definition {
 				locator1 = "Publications#COLUMN_VALUE_IN_PUBLICATION",
 				value1 = "${columnValueInPublication}");
 		}
-	}
-
-	macro viewPublicationPublished {
-		ApplicationsMenu.gotoPortlet(
-			category = "Publications",
-			panel = "Applications",
-			portlet = "Publications");
-
-		var key_navBarTitle = "History";
-
-		Click(
-			locator1 = "Publications#MANGE_PUBLICATIONS_NAVBAR_TITLE",
-			value1 = "History");
-
-		LexiconEntry.changeDisplayStyle(displayStyle = "list");
-
-		// Workaround LPS-115320
-
-		Refresh();
-
-		var key_publicationsName = "${publicationsName}";
-
-		AssertTextEquals(
-			locator1 = "Publications#LIST_PUBLISHED_STATUS",
-			value1 = "Published");
 	}
 
 	macro workOnProduction {
