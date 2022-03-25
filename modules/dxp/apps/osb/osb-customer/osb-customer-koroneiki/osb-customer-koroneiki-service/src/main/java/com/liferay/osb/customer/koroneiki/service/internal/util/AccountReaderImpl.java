@@ -481,7 +481,7 @@ public class AccountReaderImpl implements AccountReader {
 			return true;
 		}
 
-		if (name.contains("DXP Cloud")) {
+		if (name.contains("DXP Cloud") || name.contains("LXC SM")) {
 			return true;
 		}
 

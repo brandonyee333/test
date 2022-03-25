@@ -227,6 +227,16 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return false;
 	}
 
+	public boolean isLXCSM() {
+		String name = getName();
+
+		if (name.contains(ProductEntryConstants.ROOT_LXC_SM)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isManagementTools() {
 		String name = getName();
 

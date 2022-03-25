@@ -75,7 +75,7 @@ public class DXPCloudStatusPageSubscriptionUtil {
 				continue;
 			}
 
-			if (productEntry.isDXPCloud()) {
+			if (productEntry.isDXPCloud() || productEntry.isLXCSM()) {
 				return true;
 			}
 		}

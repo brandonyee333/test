@@ -131,7 +131,8 @@ public class ProductEntryLocalServiceImpl
 				 (productEntry.isCommerceForDXPCloud() ||
 				  productEntry.isCommerceSubscription())) ||
 				(curProductEntry.isDXP() && productEntry.isDXP()) ||
-				(curProductEntry.isDXP() && productEntry.isDXPCloud()) ||
+				(curProductEntry.isDXP() &&
+				 (productEntry.isDXPCloud() || productEntry.isLXCSM())) ||
 				(curProductEntry.isPortal() && productEntry.isPortal())) {
 
 				return curProductEntry;

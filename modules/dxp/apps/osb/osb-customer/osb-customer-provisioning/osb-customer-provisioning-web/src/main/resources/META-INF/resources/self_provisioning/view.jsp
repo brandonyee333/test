@@ -39,7 +39,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		Map<String, Set<ProductEntry>> accountEntryProductEntriesMap = new HashMap<String, Set<ProductEntry>>();
 		Set<String> partnerAccountKeys = new HashSet<String>();
 
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(8);
 
 		sb.append("customerContactUuids/any(s:s eq '");
 		sb.append(user.getUuid());
@@ -47,6 +47,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		sb.append("or contains(name, 'Commerce for DXP Cloud') ");
 		sb.append("or contains(name, 'Commerce Subscription') ");
 		sb.append("or contains(name, 'DXP Cloud Subscription') ");
+		sb.append("or contains(name, 'LXC SM Subscription') ");
 		sb.append("or contains(name, 'Partnership'))");
 
 		List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
@@ -219,7 +220,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 										productEntryRootName = ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION;
 									}
 
-									if (productEntry.isDXP() || productEntry.isDXPCloud()) {
+									if (productEntry.isDXP() || productEntry.isDXPCloud() || productEntry.isLXCSM()) {
 										productEntryRootName = ProductEntryConstants.ROOT_NAME_DXP;
 									}
 
