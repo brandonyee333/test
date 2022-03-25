@@ -283,10 +283,14 @@ public class AdminRestController extends BaseRestController {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			Preference preference = new Preference(
-				jsonObject.getString("id"), jsonObject.getString("value"));
+			String id = jsonObject.getString("id");
 
-			preference.setIsNew(true);
+			Preference preference = new Preference(
+				id, jsonObject.getString("value"));
+
+			if (!_preferenceRepository.existsById(id)) {
+				preference.setIsNew(true);
+			}
 
 			_preferenceRepository.save(preference);
 		}
