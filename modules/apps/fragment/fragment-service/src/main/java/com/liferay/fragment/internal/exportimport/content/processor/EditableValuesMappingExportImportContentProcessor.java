@@ -65,13 +65,15 @@ public class EditableValuesMappingExportImportContentProcessor
 			boolean exportReferencedContent, boolean escapeContent)
 		throws Exception {
 
-		JSONObject editableProcessorJSONObject =
+		_replaceAllEditableExportContentReferences(
 			editableValuesJSONObject.getJSONObject(
-				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR);
+				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR),
+			exportReferencedContent, portletDataContext, stagedModel);
 
 		_replaceAllEditableExportContentReferences(
-			editableProcessorJSONObject, exportReferencedContent,
-			portletDataContext, stagedModel);
+			editableValuesJSONObject.getJSONObject(
+				_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR),
+			exportReferencedContent, portletDataContext, stagedModel);
 
 		return editableValuesJSONObject;
 	}
@@ -82,12 +84,15 @@ public class EditableValuesMappingExportImportContentProcessor
 			JSONObject editableValuesJSONObject)
 		throws Exception {
 
-		JSONObject editableProcessorJSONObject =
+		_replaceAllEditableImportContentReferences(
 			editableValuesJSONObject.getJSONObject(
-				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR);
+				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR),
+			portletDataContext);
 
 		_replaceAllEditableImportContentReferences(
-			editableProcessorJSONObject, portletDataContext);
+			editableValuesJSONObject.getJSONObject(
+				_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR),
+			portletDataContext);
 
 		return editableValuesJSONObject;
 	}
@@ -354,6 +359,10 @@ public class EditableValuesMappingExportImportContentProcessor
 	private static final String _KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR =
 		"com.liferay.fragment.entry.processor.editable." +
 			"EditableFragmentEntryProcessor";
+
+	private static final String _KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR =
+		"com.liferay.fragment.entry.processor.freemarker." +
+			"FreeMarkerFragmentEntryProcessor";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditableValuesMappingExportImportContentProcessor.class);
