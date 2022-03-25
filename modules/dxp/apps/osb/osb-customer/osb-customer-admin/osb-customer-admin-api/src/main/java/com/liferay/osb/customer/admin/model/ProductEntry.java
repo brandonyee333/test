@@ -114,6 +114,8 @@ public interface ProductEntry extends PersistedModel, ProductEntryModel {
 
 	public boolean isExtendedPremiumSupport();
 
+	public boolean isLXCSM();
+
 	public boolean isManagementTools();
 
 	public boolean isMobileExperience();

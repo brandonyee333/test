@@ -418,6 +418,11 @@ public class ProductEntryWrapper
 	}
 
 	@Override
+	public boolean isLXCSM() {
+		return _productEntry.isLXCSM();
+	}
+
+	@Override
 	public boolean isManagementTools() {
 		return _productEntry.isManagementTools();
 	}
