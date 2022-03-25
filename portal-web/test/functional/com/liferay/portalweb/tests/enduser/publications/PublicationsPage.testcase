@@ -197,6 +197,8 @@ definition {
 
 		PageEditor.clickPublish();
 
+		SitePages.openPagesAdmin(siteURLKey = "site-name");
+
 		JSONPublications.publishPublication(publicationName = "Publication Name 2");
 
 		Publications.viewPublicationPublished(publicationName = "Publication Name 2");
