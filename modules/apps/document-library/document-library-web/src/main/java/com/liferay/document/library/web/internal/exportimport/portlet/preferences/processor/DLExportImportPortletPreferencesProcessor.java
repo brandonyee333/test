@@ -116,13 +116,15 @@ public class DLExportImportPortletPreferencesProcessor
 				sb.append(" refers to an invalid root folder ID ");
 				sb.append(rootFolderId);
 
-				_log.error(sb.toString());
-
-				throw new PortletDataException(sb.toString(), portalException);
+				if (_log.isWarnEnabled()) {
+					_log.warn(sb.toString(), portalException);
+				}
 			}
 
-			StagedModelDataHandlerUtil.exportReferenceStagedModel(
-				portletDataContext, portletId, folder);
+			if (folder != null) {
+				StagedModelDataHandlerUtil.exportReferenceStagedModel(
+					portletDataContext, portletId, folder);
+			}
 
 			return portletPreferences;
 		}
