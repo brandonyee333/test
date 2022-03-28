@@ -17,12 +17,15 @@ package com.liferay.analytics.reports.web.internal.product.navigation.control.me
 import com.liferay.analytics.reports.constants.AnalyticsReportsWebKeys;
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItem;
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItemTracker;
+import com.liferay.analytics.reports.info.item.ClassNameClassPKInfoItemIdentifier;
 import com.liferay.analytics.reports.info.item.provider.AnalyticsReportsInfoItemObjectProvider;
 import com.liferay.analytics.reports.web.internal.constants.AnalyticsReportsPortletKeys;
 import com.liferay.analytics.reports.web.internal.info.item.provider.AnalyticsReportsInfoItemObjectProviderTracker;
 import com.liferay.analytics.reports.web.internal.util.AnalyticsReportsUtil;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
+import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
-import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -31,27 +34,36 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletURLFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Html;
+import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.template.react.renderer.ComponentDescriptor;
+import com.liferay.portal.template.react.renderer.ReactRenderer;
 import com.liferay.product.navigation.control.menu.BaseProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
-import com.liferay.taglib.aui.IconTag;
-import com.liferay.taglib.portletext.RuntimeTag;
+import com.liferay.taglib.ui.IconTag;
 import com.liferay.taglib.util.BodyBottomTag;
 
 import java.io.IOException;
 import java.io.Writer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -103,7 +115,19 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 		try {
 			bodyBottomTag.doBodyTag(
 				httpServletRequest, httpServletResponse,
-				this::_processBodyBottomTagBody);
+				pageContext -> {
+					try {
+						_processBodyBottomTagBody(pageContext);
+					}
+					catch (Exception exception) {
+						throw new ProcessBodyBottomTagBodyException(exception);
+					}
+				});
+		}
+		catch (ProcessBodyBottomTagBodyException
+					processBodyBottomTagBodyException) {
+
+			throw new IOException(processBodyBottomTagBodyException);
 		}
 		catch (JspException jspException) {
 			throw new IOException(jspException);
@@ -121,24 +145,9 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 		Map<String, String> values = new HashMap<>();
 
 		if (isPanelStateOpen(httpServletRequest)) {
-			values.put("analyticsReportsPanelURL", StringPool.BLANK);
 			values.put("cssClass", "active");
 		}
 		else {
-			InfoItemReference infoItemReference = _getInfoItemReference(
-				httpServletRequest);
-
-			try {
-				values.put(
-					"analyticsReportsPanelURL",
-					AnalyticsReportsUtil.getAnalyticsReportsPanelURL(
-						infoItemReference, httpServletRequest, _portal,
-						_portletURLFactory));
-			}
-			catch (Exception exception) {
-				ReflectionUtil.throwException(exception);
-			}
-
 			values.put("cssClass", StringPool.BLANK);
 		}
 
@@ -161,7 +170,7 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 				iconTag.doTagAsString(httpServletRequest, httpServletResponse));
 		}
 		catch (JspException jspException) {
-			ReflectionUtil.throwException(jspException);
+			throw new IOException(jspException);
 		}
 
 		values.put("portletNamespace", _portletNamespace);
@@ -240,10 +249,69 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 		SessionClicks.put(httpServletRequest, _SESSION_CLICKS_KEY, panelState);
 	}
 
+	public static class ProcessBodyBottomTagBodyException
+		extends RuntimeException {
+
+		public ProcessBodyBottomTagBodyException(Throwable throwable) {
+			super(throwable);
+		}
+
+	}
+
 	@Activate
 	protected void activate() {
 		_portletNamespace = _portal.getPortletNamespace(
 			AnalyticsReportsPortletKeys.ANALYTICS_REPORTS);
+	}
+
+	private String _getAnalyticsReportsURL(
+		HttpServletRequest httpServletRequest) {
+
+		InfoItemReference infoItemReference = _getInfoItemReference(
+			httpServletRequest);
+
+		if (infoItemReference.getInfoItemIdentifier() instanceof
+				ClassNameClassPKInfoItemIdentifier) {
+
+			ClassNameClassPKInfoItemIdentifier
+				classNameClassPKInfoItemIdentifier =
+					(ClassNameClassPKInfoItemIdentifier)
+						infoItemReference.getInfoItemIdentifier();
+
+			return PortletURLBuilder.create(
+				_portletURLFactory.create(
+					httpServletRequest,
+					AnalyticsReportsPortletKeys.ANALYTICS_REPORTS,
+					PortletRequest.RESOURCE_PHASE)
+			).setParameter(
+				"className", infoItemReference.getClassName()
+			).setParameter(
+				"classPK", classNameClassPKInfoItemIdentifier.getClassPK()
+			).setParameter(
+				"classTypeName",
+				classNameClassPKInfoItemIdentifier.getClassName()
+			).setParameter(
+				"p_p_resource_id", "/analytics_reports/get_data"
+			).buildString();
+		}
+		else if (infoItemReference.getInfoItemIdentifier() instanceof
+					ClassPKInfoItemIdentifier) {
+
+			return PortletURLBuilder.create(
+				_portletURLFactory.create(
+					httpServletRequest,
+					AnalyticsReportsPortletKeys.ANALYTICS_REPORTS,
+					PortletRequest.RESOURCE_PHASE)
+			).setParameter(
+				"className", infoItemReference.getClassName()
+			).setParameter(
+				"classPK", infoItemReference.getClassPK()
+			).setParameter(
+				"p_p_resource_id", "/analytics_reports/get_data"
+			).buildString();
+		}
+
+		return StringPool.BLANK;
 	}
 
 	private InfoItemReference _getInfoItemReference(
@@ -262,49 +330,179 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 		);
 	}
 
-	private void _processBodyBottomTagBody(PageContext pageContext) {
+	private void _processBodyBottomTagBody(PageContext pageContext)
+		throws IOException, JspException {
+
+		HttpServletRequest httpServletRequest =
+			(HttpServletRequest)pageContext.getRequest();
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			_portal.getLocale(httpServletRequest), getClass());
+
+		pageContext.setAttribute("resourceBundle", resourceBundle);
+
+		JspWriter jspWriter = pageContext.getOut();
+
 		try {
-			HttpServletRequest httpServletRequest =
-				(HttpServletRequest)pageContext.getRequest();
+			if (AnalyticsReportsUtil.isAnalyticsSynced(
+					_portal.getCompanyId(httpServletRequest),
+					_portal.getScopeGroupId(httpServletRequest))) {
 
-			ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
-				_portal.getLocale(httpServletRequest), getClass());
+				StringBundler sb = new StringBundler(6);
 
-			pageContext.setAttribute("resourceBundle", resourceBundle);
+				sb.append("<div id=\"");
+				sb.append(_portletNamespace);
+				sb.append("-analytics-reports-root\">");
+				sb.append("<span aria-hidden=\"true\"");
+				sb.append("class=\"loading-animation ");
+				sb.append("loading-animation-sm\"></span>");
 
-			JspWriter jspWriter = pageContext.getOut();
+				jspWriter.write(sb.toString());
 
-			jspWriter.write("<div class=\"");
+				String module = _npmResolver.resolveModuleName(
+					"analytics-reports-web/js/AnalyticsReportsApp");
 
-			if (isPanelStateOpen(httpServletRequest)) {
-				jspWriter.write(
-					"lfr-has-analytics-reports-panel open-admin-panel ");
+				_reactRenderer.renderReact(
+					new ComponentDescriptor(module),
+					Collections.singletonMap(
+						"context",
+						Collections.singletonMap(
+							"analyticsReportsDataURL",
+							String.valueOf(
+								_getAnalyticsReportsURL(httpServletRequest)))),
+					httpServletRequest, jspWriter);
 			}
+			else {
+				StringBundler sb = new StringBundler(13);
 
-			jspWriter.write(
-				StringBundler.concat(
-					"cadmin d-print-none lfr-admin-panel ",
-					"lfr-product-menu-panel lfr-analytics-reports-panel ",
-					"sidenav-fixed sidenav-menu-slider sidenav-right\" id=\""));
+				sb.append("<div class=\"p-3 pt-4 text-center\">");
 
-			jspWriter.write(_portletNamespace);
+				IconTag iconTag = new IconTag();
 
-			jspWriter.write("analyticsReportsPanelId\">");
-			jspWriter.write(
-				"<div class=\"sidebar sidebar-light sidenav-menu " +
-					"sidebar-sm\">");
+				iconTag.setSrc(
+					_portal.getPathContext(httpServletRequest) +
+						"/assets/ac-icon.svg");
+				iconTag.setAlt("connect-to-liferay-analytics-cloud");
 
-			RuntimeTag runtimeTag = new RuntimeTag();
+				sb.append(iconTag.doTagAsString(pageContext));
 
-			runtimeTag.setPortletName(
-				AnalyticsReportsPortletKeys.ANALYTICS_REPORTS);
+				if (AnalyticsReportsUtil.isAnalyticsConnected(
+						_portal.getCompanyId(httpServletRequest))) {
 
-			runtimeTag.doTag(pageContext);
+					sb.append("<h4 class=\"font-weight-semi-bold h5 mt-3\">");
+					sb.append(
+						_language.get(
+							_portal.getLocale(httpServletRequest),
+							"sync-to-analytics-cloud"));
+					sb.append("</h4>");
 
-			jspWriter.write("</div></div>");
+					sb.append("<p class=\"text-secondary\">");
+					sb.append(
+						_language.get(
+							_portal.getLocale(httpServletRequest),
+							StringBundler.concat(
+								"sync-your-liferay-dxp-instance-with-",
+								"analytics-cloud-to-view-content-performance-",
+								"metrics-and-build-a-successful-content-",
+								"strategy")));
+					sb.append("</p>");
+
+					IconTag openIconTag = new IconTag();
+
+					openIconTag.setLabel(true);
+					openIconTag.setLinkCssClass("btn btn-primary btn-sm mb-3");
+					openIconTag.setMarkupView("lexicon");
+					openIconTag.setTarget("_blank");
+					openIconTag.setUrl(
+						PrefsPropsUtil.getString(
+							_portal.getCompanyId(httpServletRequest),
+							"liferayAnalyticsURL"));
+
+					sb.append(openIconTag.doTagAsString(pageContext));
+				}
+				else {
+					sb.append("<h4 class=\"font-weight-semi-bold h5 mt-3\">");
+					sb.append(
+						_language.get(
+							_portal.getLocale(httpServletRequest),
+							"connect-to-liferay-analytics-cloud"));
+					sb.append("</h4>");
+
+					sb.append("<p class=\"text-secondary\">");
+					sb.append(
+						_language.get(
+							_portal.getLocale(httpServletRequest),
+							StringBundler.concat(
+								"liferay-dxp-instance-has-to-be-connected-",
+								"with-analytics-cloud-to-view-content-",
+								"performance-metrics-and-build-a-successful-",
+								"content-strategy")));
+					sb.append("</p>");
+
+					IconTag openIconTag = new IconTag();
+
+					openIconTag.setLabel(true);
+					openIconTag.setLinkCssClass("btn btn-secondary btn-sm");
+					openIconTag.setMarkupView("lexicon");
+					openIconTag.setTarget("_blank");
+					openIconTag.setUrl(
+						AnalyticsReportsUtil.ANALYTICS_CLOUD_TRIAL_URL);
+					openIconTag.setMessage("start-free-trial");
+
+					sb.append(openIconTag.doTagAsString(pageContext));
+				}
+
+				IconTag openIconTag = new IconTag();
+
+				openIconTag.setLabel(true);
+				openIconTag.setLinkCssClass(
+					"d-block font-weight-bold mb-2 mt-5");
+				openIconTag.setMarkupView("lexicon");
+				openIconTag.setTarget("_blank");
+				openIconTag.setUrl(
+					PortletURLBuilder.createActionURL(
+						_portal.getLiferayPortletResponse(
+							(PortletResponse)httpServletRequest.getAttribute(
+								JavaConstants.JAVAX_PORTLET_RESPONSE))
+					).setActionName(
+						"/analytics_reports/hide_panel"
+					).setRedirect(
+						() -> {
+							String redirect = ParamUtil.getString(
+								httpServletRequest, "redirect");
+
+							if (Validator.isNotNull(redirect)) {
+								return redirect;
+							}
+
+							return themeDisplay.getLayoutFriendlyURL(
+								themeDisplay.getLayout());
+						}
+					).buildString());
+
+				openIconTag.setMessage("do-not-show-me-this-again");
+
+				sb.append(openIconTag.doTagAsString(pageContext));
+
+				sb.append("<p class=\"text-secondary\">");
+				sb.append(
+					_language.get(
+						themeDisplay.getLocale(),
+						"do-not-show-me-this-again-help"));
+
+				sb.append("</p>");
+
+				jspWriter.write(sb.toString());
+
+				jspWriter.write("</div>");
+			}
 		}
-		catch (Exception exception) {
-			ReflectionUtil.throwException(exception);
+		catch (PortalException portalException) {
+			throw new IOException(portalException);
 		}
 	}
 
@@ -328,11 +526,17 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 	private Language _language;
 
 	@Reference
+	private NPMResolver _npmResolver;
+
+	@Reference
 	private Portal _portal;
 
 	private String _portletNamespace;
 
 	@Reference
 	private PortletURLFactory _portletURLFactory;
+
+	@Reference
+	private ReactRenderer _reactRenderer;
 
 }
