@@ -41,7 +41,7 @@ public abstract class BaseParserPTransform<T extends BaseDXPEntity>
 		PCollection<KV<PubsubMessageAttributes, String>> input) {
 
 		return input.apply(
-			"Parse to Product",
+			"Parse DXP Entity",
 			ParDo.of(
 				new DoFn
 					<KV<PubsubMessageAttributes, String>,
