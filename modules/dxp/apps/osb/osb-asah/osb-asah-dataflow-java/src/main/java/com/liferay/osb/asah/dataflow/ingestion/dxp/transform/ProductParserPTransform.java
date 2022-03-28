@@ -26,11 +26,6 @@ import org.apache.beam.sdk.values.KV;
 public class ProductParserPTransform extends BaseParserPTransform<Product> {
 
 	@Override
-	public Class<Product> getEntity() {
-		return Product.class;
-	}
-
-	@Override
 	protected Product doParse(KV<PubsubMessageAttributes, String> element)
 		throws Exception {
 

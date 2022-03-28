@@ -79,8 +79,6 @@ public abstract class BaseParserPTransform<T extends BaseDXPEntity>
 			));
 	}
 
-	public abstract Class<T> getEntity();
-
 	public TupleTag<KV<String, KV<PubsubMessageAttributes, String>>>
 		getFailTag() {
 

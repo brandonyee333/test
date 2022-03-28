@@ -26,11 +26,6 @@ import org.apache.beam.sdk.values.KV;
 public class OrderParserPTransform extends BaseParserPTransform<Order> {
 
 	@Override
-	public Class<Order> getEntity() {
-		return Order.class;
-	}
-
-	@Override
 	protected Order doParse(KV<PubsubMessageAttributes, String> element)
 		throws Exception {
 
