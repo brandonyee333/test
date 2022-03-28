@@ -22,6 +22,8 @@ Import-Package:\
 	\
 	!com.jcraft.jzlib,\
 	\
+	!com.liferay.portal.kernel.model.wrapper.*,\
+	\
 	!com.lmax.disruptor.*,\
 	\
 	!com.ning.compress.*,\
