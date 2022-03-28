@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
+import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
@@ -954,22 +955,22 @@ public class EventRepositoryTest
 	public void testSearchEventsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		List<Event> events = _eventRepository.searchEvents(
+		List<BQEvent> events = _eventRepository.searchEvents(
 			1L, 1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			_timeZoneDog.getTimeZoneId());
 
 		Assertions.assertEquals(3, events.size(), events.toString());
 
-		Stream<Event> stream = events.stream();
+		Stream<BQEvent> stream = events.stream();
 
 		Assertions.assertArrayEquals(
 			new String[] {"blogClicked", "formViewed", "assetClicked"},
 			stream.map(
-				event -> {
+				bqEvent -> {
 					Optional<EventDefinition> eventDefinitionOptional =
-						_eventDefinitionRepository.findById(
-							event.getEventDefinitionId());
+						_eventDefinitionRepository.findByName(
+							bqEvent.getEventId());
 
 					EventDefinition eventDefinition =
 						eventDefinitionOptional.get();
@@ -985,7 +986,7 @@ public class EventRepositoryTest
 	public void testSearchEventsWithKeywordsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		List<Event> events = _eventRepository.searchEvents(
+		List<BQEvent> events = _eventRepository.searchEvents(
 			1L, 1L, "form", PageRequest.of(0, 50),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			_timeZoneDog.getTimeZoneId());
