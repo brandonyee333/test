@@ -61,7 +61,8 @@
 			"osbAsahDataSourceId": "342837044336786766",
 			"rkpi2__DeletedFromRainKing__c": false
 		},
-		"id": "0016C00000BKWWLQA5"
+		"id": "0016C00000BKWWLQA5",
+		"type": "ACCOUNT"
 	},
 	{
 		"dataSourceId": "342837044336786766",
@@ -125,6 +126,7 @@
 			"osbAsahDataSourceId": "342837044336786766",
 			"rkpi2__DeletedFromRainKing__c": false
 		},
-		"id": "0016C00000BKWWLQA6"
+		"id": "0016C00000BKWWLQA6",
+		"type": "ACCOUNT"
 	}
 ]
