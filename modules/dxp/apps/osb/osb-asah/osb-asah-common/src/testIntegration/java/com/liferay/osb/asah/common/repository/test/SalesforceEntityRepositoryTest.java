@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * @author Marcellus Tavares
@@ -135,6 +136,15 @@ public class SalesforceEntityRepositoryTest
 
 		Assertions.assertEquals(2, accountIds.size(), accountIds.toString());
 		Assertions.assertEquals(Arrays.asList("1", "2"), accountIds);
+	}
+
+	@Test
+	public void testFindByDataSourceIdAndType() {
+		List<SalesforceEntity> salesforceEntities =
+			_salesforceEntityRepository.findByDataSourceIdAndType(
+				1L, SalesforceEntity.Type.CONTACT, PageRequest.of(0, 100));
+
+		Assertions.assertEquals(3, salesforceEntities.size());
 	}
 
 	@Test
