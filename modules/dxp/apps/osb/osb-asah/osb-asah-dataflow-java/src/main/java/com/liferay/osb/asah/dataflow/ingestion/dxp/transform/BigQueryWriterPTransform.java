@@ -55,15 +55,14 @@ public class BigQueryWriterPTransform<T>
 				_tableName
 			).withCreateDisposition(
 				BigQueryIO.Write.CreateDisposition.CREATE_NEVER
+			).withExtendedErrorInfo(
+			).withFailedInsertRetryPolicy(
+				InsertRetryPolicy.retryTransientErrors()
 			).withMethod(
 				BigQueryIO.Write.Method.STREAMING_INSERTS
 			).withWriteDisposition(
 				BigQueryIO.Write.WriteDisposition.WRITE_APPEND
-			).withoutValidation(
-			).withExtendedErrorInfo(
-			).withFailedInsertRetryPolicy(
-				InsertRetryPolicy.retryTransientErrors()
-			)
+			).withoutValidation()
 		);
 	}
 
