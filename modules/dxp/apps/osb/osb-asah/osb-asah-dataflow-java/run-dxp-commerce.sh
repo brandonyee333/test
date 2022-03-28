@@ -10,7 +10,7 @@ PROJECT_ID=$(gcloud config get-value project)
 
 DXP_CLOUD_PROJECT=${1}
 GCS_BUCKET=gs://${PROJECT_ID}-dataflow/
-MAIN_CLASS_NAME=com.liferay.osb.asah.dataflow.ingestion.dxp.DXPEntitiesIngestionPipeline
+MAIN_CLASS_NAME=com.liferay.osb.asah.dataflow.ingestion.dxp.DXPCommerceEntitiesIngestionPipeline
 DEFAULT_PUBSUB_SUBSCRIPTION=projects/${PROJECT_ID}/subscriptions/${DXP_CLOUD_PROJECT}_dxp_entities_default
 ORDER_BIGQUERY_TABLE=${PROJECT_ID}.riccardo.order
 ORDER_PUBSUB_SUBSCRIPTION=projects/${PROJECT_ID}/subscriptions/${DXP_CLOUD_PROJECT}_dxp_entities_order

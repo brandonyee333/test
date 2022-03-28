@@ -21,7 +21,7 @@ import org.apache.beam.sdk.options.Validation;
 /**
  * @author Riccardo Ferrari
  */
-public interface DXPEntitiesIngestionPipelineOptions
+public interface DXPCommerceEntitiesIngestionPipelineOptions
 	extends DataflowPipelineOptions {
 
 	@Description(
