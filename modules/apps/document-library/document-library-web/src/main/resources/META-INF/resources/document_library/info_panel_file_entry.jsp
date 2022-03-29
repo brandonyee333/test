@@ -144,7 +144,7 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 
 									<c:choose>
 										<c:when test="<%= conversions.length > 0 %>">
-											<div class="btn-group-item" data-analytics-file-entry-id="<%= String.valueOf(fileEntry.getFileEntryId()) %>">
+											<div class="btn-group-item" data-analytics-file-entry-id="<%= String.valueOf(fileEntry.getFileEntryId()) %>" data-analytics-file-entry-title="<%= String.valueOf(fileEntry.getTitle()) %>">
 												<clay:dropdown-menu
 													dropdownItems='<%=
 														new JSPDropdownItemList(pageContext) {
@@ -153,6 +153,8 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 
 																Map<String, Object> data = HashMapBuilder.<String, Object>put(
 																	"analytics-file-entry-id", String.valueOf(fileEntry.getFileEntryId())
+																).put(
+																	"analytics-file-entry-title", String.valueOf(fileEntry.getTitle())
 																).build();
 
 																add(
@@ -192,6 +194,7 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 											<div class="btn-group-item">
 												<clay:link
 													data-analytics-file-entry-id="<%= fileEntry.getFileEntryId() %>"
+													data-analytics-file-entry-title="<%= fileEntry.getTitle() %>"
 													displayType="primary"
 													href="<%= DLURLHelperUtil.getDownloadURL(fileEntry, fileVersion, themeDisplay, StringPool.BLANK, false, true) %>"
 													label="download"
@@ -204,7 +207,7 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 									</c:choose>
 								</c:when>
 								<c:otherwise>
-									<div class="btn-group-item" data-analytics-file-entry-id="<%= String.valueOf(fileEntry.getFileEntryId()) %>">
+									<div class="btn-group-item" data-analytics-file-entry-id="<%= String.valueOf(fileEntry.getFileEntryId()) %>" data-analytics-file-entry-title="<%= String.valueOf(fileEntry.getTitle()) %>">
 										<clay:link
 											displayType="primary"
 											href="<%= DLURLHelperUtil.getDownloadURL(fileEntry, fileVersion, themeDisplay, StringPool.BLANK, false, true) %>"

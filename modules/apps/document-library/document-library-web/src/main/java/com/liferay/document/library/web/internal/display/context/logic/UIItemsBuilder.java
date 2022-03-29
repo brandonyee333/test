@@ -487,6 +487,8 @@ public class UIItemsBuilder {
 			HashMapBuilder.<String, Object>put(
 				"analytics-file-entry-id", _fileEntry.getFileEntryId()
 			).put(
+				"analytics-file-entry-title", _fileEntry.getTitle()
+			).put(
 				"senna-off", "true"
 			).build());
 
@@ -508,6 +510,8 @@ public class UIItemsBuilder {
 		urlToolbarItem.setData(
 			HashMapBuilder.<String, Object>put(
 				"analytics-file-entry-id", _fileEntry.getFileEntryId()
+			).put(
+				"analytics-file-entry-title", _fileEntry.getTitle()
 			).build());
 
 		_addURLUIItem(
