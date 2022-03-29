@@ -44,7 +44,7 @@ public class BigQueryWriterPTransform<T>
 
 					@Override
 					public TableRow apply(T input) {
-						return TableRowConverter.asRow(input);
+						return TableRowConverter.asTableRow(input);
 					}
 
 				})

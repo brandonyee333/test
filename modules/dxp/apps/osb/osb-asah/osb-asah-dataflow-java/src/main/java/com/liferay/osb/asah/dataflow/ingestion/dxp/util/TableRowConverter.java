@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TableRowConverter {
 
-	public static TableRow asRow(final Object child) {
+	public static TableRow asTableRow(Object child) {
 		if (null == child) {
 			return null;
 		}
