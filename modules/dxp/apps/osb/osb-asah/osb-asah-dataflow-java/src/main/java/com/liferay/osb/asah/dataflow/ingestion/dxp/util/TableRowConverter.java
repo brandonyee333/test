@@ -36,7 +36,7 @@ public class TableRowConverter {
 			return null;
 		}
 
-		TableRow row = new TableRow();
+		TableRow tableRow = new TableRow();
 
 		Class<?> childClass = child.getClass();
 
@@ -62,7 +62,7 @@ public class TableRowConverter {
 						List<?> values = (List)value;
 
 						if (values.isEmpty()) {
-							row.set(name, tableRows);
+							tableRow.set(name, tableRows);
 						}
 						else {
 							Object item = values.get(0);
@@ -82,20 +82,20 @@ public class TableRowConverter {
 								}
 							}
 							else {
-								row.set(name, values);
+								tableRow.set(name, values);
 							}
 						}
 					}
 					else if (typeCanonicalName.equals("java.util.Map")) {
-						row.set(
+						tableRow.set(
 							name, ObjectMapperUtil.writeValueAsString(value));
 					}
 					else {
-						row.set(name, value);
+						tableRow.set(name, value);
 					}
 				}
 				else if (typeCanonicalName.startsWith(_PACKAGE_NAME)) {
-					row.set(name, asRow(value));
+					tableRow.set(name, asRow(value));
 				}
 				else {
 					_logger.warn(
@@ -109,7 +109,7 @@ public class TableRowConverter {
 			}
 		}
 
-		return row;
+		return tableRow;
 	}
 
 	private static final String _PACKAGE_NAME =
