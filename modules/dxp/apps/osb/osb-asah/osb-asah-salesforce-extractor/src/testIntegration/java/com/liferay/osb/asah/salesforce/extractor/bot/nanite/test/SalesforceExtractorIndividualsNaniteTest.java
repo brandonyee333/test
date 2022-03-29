@@ -34,8 +34,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -67,24 +65,19 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 	@BeforeEach
 	public void setUp() {
-		_dataSourceRepository.deleteAll();
-		_elasticsearchIndexManager.checkIndices();
-		_elasticsearchIndexManager.clearIndices();
-		_salesforceEntityDog.deleteSalesforceEntities(0L);
-
 		DataSource dataSource = new DataSource("Salesforce");
 
 		dataSource.setId(0L);
 		dataSource.setIsNew(Boolean.TRUE);
 
-		_dataSourceRepository.save(dataSource);
+		_dataSource = _dataSourceRepository.save(dataSource);
 
 		SalesforceEntity accountSalesforceEntity = new SalesforceEntity(
-			"1", 0L, JSONUtil.put("Name", "Liferay, Inc."),
+			"1", _dataSource.getId(), JSONUtil.put("Name", "Liferay, Inc."),
 			SalesforceEntity.Type.ACCOUNT);
 
 		_contactSalesforceEntity = new SalesforceEntity(
-			"2", 0L,
+			"2", _dataSource.getId(),
 			JSONUtil.put(
 				"AccountId", "1"
 			).put(
@@ -123,7 +116,7 @@ public class SalesforceExtractorIndividualsNaniteTest
 			SalesforceEntity.Type.CONTACT);
 
 		_leadSalesforceEntity = new SalesforceEntity(
-			"3", 0L,
+			"3", _dataSource.getId(),
 			JSONUtil.put(
 				"City", "Diamond Bar"
 			).put(
@@ -172,11 +165,9 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 	@AfterEach
 	public void tearDown() {
-		_dataSourceRepository.deleteAll();
+		_dataSourceRepository.delete(_dataSource);
 		_elasticsearchIndexManager.clearIndices();
-		_elasticsearchInvoker.delete(
-			"audit-events", QueryBuilders.matchAllQuery());
-		_salesforceEntityDog.deleteSalesforceEntities(0L);
+		_salesforceEntityDog.deleteSalesforceEntities(_dataSource.getId());
 	}
 
 	@Test
@@ -237,7 +228,7 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 		List<SalesforceEntity> salesforceEntities =
 			_salesforceEntityDog.getSalesforceEntities(
-				0L, 0, 100, SalesforceEntity.Type.INDIVIDUAL);
+				_dataSource.getId(), 0, 100, SalesforceEntity.Type.INDIVIDUAL);
 
 		Assertions.assertEquals(1, salesforceEntities.size());
 
@@ -265,12 +256,12 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 		List<SalesforceEntity> salesforceEntities =
 			_salesforceEntityDog.getSalesforceEntities(
-				0L, 0, 100, SalesforceEntity.Type.INDIVIDUAL);
+				_dataSource.getId(), 0, 100, SalesforceEntity.Type.INDIVIDUAL);
 
 		Assertions.assertEquals(
 			1,
 			_salesforceEntityDog.getSalesforceEntitiesCount(
-				0L, SalesforceEntity.Type.INDIVIDUAL));
+				_dataSource.getId(), SalesforceEntity.Type.INDIVIDUAL));
 
 		SalesforceEntity salesforceEntity = salesforceEntities.get(0);
 
@@ -295,6 +286,7 @@ public class SalesforceExtractorIndividualsNaniteTest
 	}
 
 	private SalesforceEntity _contactSalesforceEntity;
+	private DataSource _dataSource;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
