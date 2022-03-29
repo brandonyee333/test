@@ -67,11 +67,13 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 	@BeforeEach
 	public void setUp() {
+		_dataSourceRepository.deleteAll();
+
 		_elasticsearchIndexManager.clearIndices();
 
 		_elasticsearchIndexManager.checkIndices();
+
 		_salesforceEntityDog.deleteSalesforceEntities(0L);
-		_dataSourceRepository.deleteAll();
 
 		DataSource dataSource = new DataSource("Salesforce");
 
