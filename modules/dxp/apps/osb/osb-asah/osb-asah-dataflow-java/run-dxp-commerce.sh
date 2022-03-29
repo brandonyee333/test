@@ -25,12 +25,12 @@ TRIGGER_INTERVAL_DURATION=60
 ../gradlew clean assemble execute \
 	-Dexec.args=" \
 	--GCSBucket=${GCS_BUCKET} \
-		--project=${PROJECT_ID} \
 		--defaultPubsubSubscription=${DEFAULT_PUBSUB_SUBSCRIPTION} \
-		--orderPubsubSubscription=${ORDER_PUBSUB_SUBSCRIPTION} \
-		--productPubsubSubscription=${PRODUCT_PUBSUB_SUBSCRIPTION} \
 		--orderBigQueryTable=${ORDER_BIGQUERY_TABLE} \
+		--orderPubsubSubscription=${ORDER_PUBSUB_SUBSCRIPTION} \
 		--productBigQueryTable=${PRODUCT_BIGQUERY_TABLE} \
+		--productPubsubSubscription=${PRODUCT_PUBSUB_SUBSCRIPTION} \
+		--project=${PROJECT_ID} \
 		--region=${REGION} \
 		--runner=${RUNNER} \
 		--shardCount=${SHARD_COUNT} \
