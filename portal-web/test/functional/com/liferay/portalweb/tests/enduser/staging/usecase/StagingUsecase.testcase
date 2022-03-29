@@ -590,7 +590,7 @@ definition {
 			publishTemplateName = "Publish Template Name");
 	}
 
-	@description = "This will be ignored until LPS-109144 is fixed. This is a use case for LPS-44719."
+	@description = "This is a use case for LPS-44719."
 	@priority = "4"
 	test PublishMBWithoutSetup {
 		Navigator.gotoStagedSitePage(
