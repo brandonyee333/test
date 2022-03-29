@@ -7,5 +7,5 @@
 	commit = 569fd79257adc580e0950aaf61788f24bb69073b
 	mergebuttonmergecommits = false
 	mode = pull
-	parent = fee2f3d5ff8fc84509fe1f76dcaa50cf37b16d73
+	parent = 0000000000000000000000000000000000000000
 	remote = git@github.com:liferay/com-liferay-osb-asah-private.git
