@@ -48,15 +48,15 @@ public class TableRowConverter {
 			try {
 				Object value = field.get(child);
 
-				Class<?> type = field.getType();
+				Class<?> fieldClass = field.getType();
 
-				String typeCanonicalName = type.getCanonicalName();
+				String fieldClassName = fieldClass.getCanonicalName();
 
-				if (type.isPrimitive() ||
-					typeCanonicalName.startsWith("java.lang.") ||
-					typeCanonicalName.startsWith("java.util.")) {
+				if (fieldClass.isPrimitive() ||
+					fieldClassName.startsWith("java.lang.") ||
+					fieldClassName.startsWith("java.util.")) {
 
-					if (typeCanonicalName.equals("java.util.List")) {
+					if (fieldClassName.equals("java.util.List")) {
 						List<TableRow> tableRows = new ArrayList<>();
 
 						List<?> values = (List)value;
@@ -69,13 +69,11 @@ public class TableRowConverter {
 
 							Class<?> itemClass = item.getClass();
 
-							Package itemClassPackage = itemClass.getPackage();
+							Package itemPackage = itemClass.getPackage();
 
-							String itemClassPackageName =
-								itemClassPackage.getName();
+							String itemPackageName = itemPackage.getName();
 
-							if (itemClassPackageName.startsWith(
-									_PACKAGE_NAME)) {
+							if (itemPackageName.startsWith(_PACKAGE_NAME)) {
 
 								for (Object listValue : values) {
 									tableRows.add(asRow(listValue));
@@ -86,7 +84,7 @@ public class TableRowConverter {
 							}
 						}
 					}
-					else if (typeCanonicalName.equals("java.util.Map")) {
+					else if (fieldClassName.equals("java.util.Map")) {
 						tableRow.set(
 							name, ObjectMapperUtil.writeValueAsString(value));
 					}
@@ -94,12 +92,12 @@ public class TableRowConverter {
 						tableRow.set(name, value);
 					}
 				}
-				else if (typeCanonicalName.startsWith(_PACKAGE_NAME)) {
+				else if (fieldClassName.startsWith(_PACKAGE_NAME)) {
 					tableRow.set(name, asRow(value));
 				}
 				else {
 					_logger.warn(
-						String.format("Unknown type: %s", typeCanonicalName));
+						String.format("Unknown type: %s", fieldClassName));
 				}
 			}
 			catch (IllegalAccessException illegalAccessException) {
