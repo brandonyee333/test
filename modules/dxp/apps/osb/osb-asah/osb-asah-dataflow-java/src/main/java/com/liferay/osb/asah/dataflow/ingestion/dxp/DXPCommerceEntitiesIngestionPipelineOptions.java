@@ -34,9 +34,9 @@ public interface DXPCommerceEntitiesIngestionPipelineOptions
 	@Validation.Required
 	public String getGCSBucket();
 
-	@Description("Return the order Bigquery table name.")
+	@Description("Return the order BigQuery table name.")
 	@Validation.Required
-	public String getOrderBigqueryTable();
+	public String getOrderBigQueryTable();
 
 	@Description(
 		"Return the order queue pubsub subscription name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
@@ -44,9 +44,9 @@ public interface DXPCommerceEntitiesIngestionPipelineOptions
 	@Validation.Required
 	public String getOrderPubsubSubscription();
 
-	@Description("Return the product Bigquery table name.")
+	@Description("Return the product BigQuery table name.")
 	@Validation.Required
-	public String getProductBigqueryTable();
+	public String getProductBigQueryTable();
 
 	@Description(
 		"Return the product queue pubsub subscription name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
@@ -70,11 +70,11 @@ public interface DXPCommerceEntitiesIngestionPipelineOptions
 
 	public void setGCSBucket(String gcsBucket);
 
-	public void setOrderBigqueryTable(String bugqueryTable);
+	public void setOrderBigQueryTable(String bugqueryTable);
 
 	public void setOrderPubsubSubscription(String pubsubSubscription);
 
-	public void setProductBigqueryTable(String bugqueryTable);
+	public void setProductBigQueryTable(String bugqueryTable);
 
 	public void setProductPubsubSubscription(String pubsubSubscription);
 

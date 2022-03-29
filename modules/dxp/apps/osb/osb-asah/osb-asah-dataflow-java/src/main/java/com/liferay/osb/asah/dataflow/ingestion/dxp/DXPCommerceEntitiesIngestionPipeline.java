@@ -92,7 +92,7 @@ public class DXPCommerceEntitiesIngestionPipeline {
 				getTriggerIntervalDuration()
 		).<Order>withBigQueryWriter(
 			new OrderParserPTransform(),
-			dxpCommerceEntitiesIngestionPipelineOptions.getOrderBigqueryTable()
+			dxpCommerceEntitiesIngestionPipelineOptions.getOrderBigQueryTable()
 		).withFailedParsedItemsToGCS(
 			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
 				"failed",
@@ -121,7 +121,7 @@ public class DXPCommerceEntitiesIngestionPipeline {
 		).<Product>withBigQueryWriter(
 			new ProductParserPTransform(),
 			dxpCommerceEntitiesIngestionPipelineOptions.
-				getProductBigqueryTable()
+				getProductBigQueryTable()
 		).withFailedParsedItemsToGCS(
 			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
 				"failed",
