@@ -153,7 +153,7 @@ public class DXPCommerceEntitiesIngestionPipeline {
 			_parsedMessages = _pubsubMessages.apply(parser);
 
 			_parsedMessages.get(
-				parser.getSuccessTag()
+				parser.getSuccessTupleTag()
 			).apply(
 				new BigQueryWriterPTransform<>(table)
 			);
@@ -167,7 +167,7 @@ public class DXPCommerceEntitiesIngestionPipeline {
 
 			PCollection<DXPEntityPubsubMessage> failedParsePCollection =
 				_parsedMessages.get(
-					_parser.getFailTag()
+					_parser.getFailTupleTag()
 				).apply(
 					Values.create()
 				);

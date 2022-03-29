@@ -49,7 +49,7 @@ public abstract class BaseParserPTransform<T extends BaseDXPEntity>
 
 						try {
 							processContext.output(
-								_successTag, doParse(element));
+								_successTupleTag, doParse(element));
 						}
 						catch (Exception exception) {
 							_logger.error(
@@ -57,23 +57,23 @@ public abstract class BaseParserPTransform<T extends BaseDXPEntity>
 								exception.getMessage());
 
 							processContext.output(
-								_failTag,
+								_failTupleTag,
 								KV.of(exception.getMessage(), element));
 						}
 					}
 
 				}
 			).withOutputTags(
-				_successTag, TupleTagList.of(_failTag)
+				_successTupleTag, TupleTagList.of(_failTupleTag)
 			));
 	}
 
-	public TupleTag<KV<String, DXPEntityPubsubMessage>> getFailTag() {
-		return _failTag;
+	public TupleTag<KV<String, DXPEntityPubsubMessage>> getFailTupleTag() {
+		return _failTupleTag;
 	}
 
-	public TupleTag<T> getSuccessTag() {
-		return _successTag;
+	public TupleTag<T> getSuccessTupleTag() {
+		return _successTupleTag;
 	}
 
 	protected abstract T doParse(DXPEntityPubsubMessage dxpEntityPubsubMessage)
@@ -82,10 +82,10 @@ public abstract class BaseParserPTransform<T extends BaseDXPEntity>
 	private static final Logger _logger = LoggerFactory.getLogger(
 		BaseParserPTransform.class);
 
-	private final TupleTag<KV<String, DXPEntityPubsubMessage>> _failTag =
+	private final TupleTag<KV<String, DXPEntityPubsubMessage>> _failTupleTag =
 		new TupleTag<KV<String, DXPEntityPubsubMessage>>() {
 		};
-	private final TupleTag<T> _successTag = new TupleTag<T>() {
+	private final TupleTag<T> _successTupleTag = new TupleTag<T>() {
 	};
 
 }
