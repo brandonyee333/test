@@ -81,7 +81,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		try {
 			User user = getUser();
 
-			StringBundler sb = new StringBundler(10);
+			StringBundler sb = new StringBundler(11);
 
 			sb.append("accountKey eq '");
 			sb.append(accountEntry.getKoroneikiAccountKey());
@@ -89,6 +89,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			sb.append(user.getUuid());
 			sb.append("') and state eq 'active' and (property_type eq ");
 			sb.append("'primary' or contains(name, 'Commerce for DXP Cloud') ");
+			sb.append("or contains(name, 'Commerce for LXC SM') ");
 			sb.append("or contains(name, 'Commerce Subscription') ");
 			sb.append("or contains(name, 'DXP Cloud Subscription') ");
 			sb.append("or contains(name, 'LXC SM Subscription') ");

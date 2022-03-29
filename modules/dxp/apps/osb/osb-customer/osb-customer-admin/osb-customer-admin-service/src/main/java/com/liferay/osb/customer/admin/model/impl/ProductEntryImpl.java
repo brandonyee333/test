@@ -148,7 +148,9 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 	public boolean isCommerceForDXPCloud() {
 		String name = getName();
 
-		if (name.startsWith("Commerce for DXP Cloud")) {
+		if (name.startsWith("Commerce for DXP Cloud") ||
+			name.contains("Commerce for LXC SM")) {
+
 			return true;
 		}
 

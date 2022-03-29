@@ -39,12 +39,13 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		Map<String, Set<ProductEntry>> accountEntryProductEntriesMap = new HashMap<String, Set<ProductEntry>>();
 		Set<String> partnerAccountKeys = new HashSet<String>();
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("customerContactUuids/any(s:s eq '");
 		sb.append(user.getUuid());
 		sb.append("') and state eq 'active' and (property_type eq 'primary' ");
 		sb.append("or contains(name, 'Commerce for DXP Cloud') ");
+		sb.append("or contains(name, 'Commerce for LXC SM') ");
 		sb.append("or contains(name, 'Commerce Subscription') ");
 		sb.append("or contains(name, 'DXP Cloud Subscription') ");
 		sb.append("or contains(name, 'LXC SM Subscription') ");
