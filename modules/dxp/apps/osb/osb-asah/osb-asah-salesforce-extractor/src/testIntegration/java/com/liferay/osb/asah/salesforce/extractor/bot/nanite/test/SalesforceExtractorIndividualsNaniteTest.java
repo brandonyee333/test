@@ -68,11 +68,8 @@ public class SalesforceExtractorIndividualsNaniteTest
 	@BeforeEach
 	public void setUp() {
 		_dataSourceRepository.deleteAll();
-
-		_elasticsearchIndexManager.clearIndices();
-
 		_elasticsearchIndexManager.checkIndices();
-
+		_elasticsearchIndexManager.clearIndices();
 		_salesforceEntityDog.deleteSalesforceEntities(0L);
 
 		DataSource dataSource = new DataSource("Salesforce");
@@ -175,11 +172,11 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 	@AfterEach
 	public void tearDown() {
-		_salesforceEntityDog.deleteSalesforceEntities(0L);
 		_dataSourceRepository.deleteAll();
+		_elasticsearchIndexManager.clearIndices();
 		_elasticsearchInvoker.delete(
 			"audit-events", QueryBuilders.matchAllQuery());
-		_elasticsearchIndexManager.clearIndices();
+		_salesforceEntityDog.deleteSalesforceEntities(0L);
 	}
 
 	@Test
