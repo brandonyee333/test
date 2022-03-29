@@ -74,9 +74,8 @@ public class TableRowConverter {
 							String itemPackageName = itemPackage.getName();
 
 							if (itemPackageName.startsWith(_PACKAGE_NAME)) {
-
 								for (Object listValue : values) {
-									tableRows.add(asRow(listValue));
+									tableRows.add(asTableRow(listValue));
 								}
 							}
 							else {
@@ -93,11 +92,10 @@ public class TableRowConverter {
 					}
 				}
 				else if (fieldClassName.startsWith(_PACKAGE_NAME)) {
-					tableRow.set(name, asRow(value));
+					tableRow.set(name, asTableRow(value));
 				}
 				else {
-					_logger.warn(
-						String.format("Unknown type: %s", fieldClassName));
+					_logger.warn("Unknown field class: " + fieldClassName);
 				}
 			}
 			catch (IllegalAccessException illegalAccessException) {
