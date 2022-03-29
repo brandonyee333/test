@@ -75,7 +75,7 @@ public class TableRowConverter {
 								itemClassPackage.getName();
 
 							if (itemClassPackageName.startsWith(
-									_BASE_PACKAGE)) {
+									_PACKAGE_NAME)) {
 
 								for (Object listValue : values) {
 									tableRows.add(asRow(listValue));
@@ -94,7 +94,7 @@ public class TableRowConverter {
 						row.set(name, value);
 					}
 				}
-				else if (typeCanonicalName.startsWith(_BASE_PACKAGE)) {
+				else if (typeCanonicalName.startsWith(_PACKAGE_NAME)) {
 					row.set(name, asRow(value));
 				}
 				else {
@@ -112,7 +112,7 @@ public class TableRowConverter {
 		return row;
 	}
 
-	private static final String _BASE_PACKAGE =
+	private static final String _PACKAGE_NAME =
 		"com.liferay.osb.asah.dataflow.ingestion.dxp.entity";
 
 	private static final Logger _logger = LoggerFactory.getLogger(
