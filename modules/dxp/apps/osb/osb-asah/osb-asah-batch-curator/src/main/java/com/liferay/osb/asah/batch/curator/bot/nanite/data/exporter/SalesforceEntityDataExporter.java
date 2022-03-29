@@ -42,12 +42,11 @@ public class SalesforceEntityDataExporter extends BaseDataExporter {
 
 		_fieldName = fieldName;
 		_fieldValue = fieldValue;
-
-		jsonGenerator.useDefaultPrettyPrinter();
-
 		_objectMapper = objectMapper;
 		_salesforceEntityDog = salesforceEntityDog;
 		_type = type;
+
+		jsonGenerator.useDefaultPrettyPrinter();
 	}
 
 	@Override
