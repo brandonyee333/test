@@ -15,22 +15,24 @@
 package com.liferay.osb.asah.dataflow.ingestion.dxp;
 
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.BaseDXPEntity;
+import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.Order;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.Product;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.PubsubMessageAttributes;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BaseParserPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BigQueryWriterPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.FixedDurationOrCountWindowPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.GCSWriterPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.OrderParserPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.ProductParserPTransform;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.PubsubReaderPTransform;
 
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.PipelineResult;
+import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO;
+import org.apache.beam.sdk.io.gcp.pubsub.PubsubMessage;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
+import org.apache.beam.sdk.transforms.MapElements;
+import org.apache.beam.sdk.transforms.SimpleFunction;
 import org.apache.beam.sdk.transforms.Values;
-import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PCollectionTuple;
 
@@ -60,7 +62,7 @@ public class DXPCommerceEntitiesIngestionPipeline {
 		PipelineBuilder defaultPipelineBuilder = new PipelineBuilder(
 			Pipeline.create(dxpCommerceEntitiesIngestionPipelineOptions));
 
-		Pipeline pipeline = defaultPipelineBuilder.withPubsubMessageReader(
+		Pipeline pipeline = defaultPipelineBuilder.withPubsubSubscription(
 			"Default",
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getDefaultPubsubSubscription()
@@ -77,7 +79,7 @@ public class DXPCommerceEntitiesIngestionPipeline {
 
 		PipelineBuilder orderPipelineBuilder = new PipelineBuilder(pipeline);
 
-		pipeline = orderPipelineBuilder.withPubsubMessageReader(
+		pipeline = orderPipelineBuilder.withPubsubSubscription(
 			"Order",
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getOrderPubsubSubscription()
@@ -105,7 +107,7 @@ public class DXPCommerceEntitiesIngestionPipeline {
 
 		PipelineBuilder productPipelineBuilder = new PipelineBuilder(pipeline);
 
-		pipeline = productPipelineBuilder.withPubsubMessageReader(
+		pipeline = productPipelineBuilder.withPubsubSubscription(
 			"Product",
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getProductPubsubSubscription()
@@ -153,8 +155,6 @@ public class DXPCommerceEntitiesIngestionPipeline {
 			_parsedMessages.get(
 				parser.getSuccessTag()
 			).apply(
-				Values.<T>create()
-			).apply(
 				new BigQueryWriterPTransform<>(table)
 			);
 
@@ -165,8 +165,8 @@ public class DXPCommerceEntitiesIngestionPipeline {
 			String gcsBucket, int shardCount, int triggerElementCount,
 			long triggerInterval) {
 
-			PCollection<KV<PubsubMessageAttributes, String>>
-				failedParsePCollection = _parsedMessages.get(
+			PCollection<DXPEntityPubsubMessage> failedParsePCollection =
+				_parsedMessages.get(
 					_parser.getFailTag()
 				).apply(
 					Values.create()
@@ -190,19 +190,35 @@ public class DXPCommerceEntitiesIngestionPipeline {
 			return this;
 		}
 
-		public PipelineBuilder withPubsubMessageReader(
+		public PipelineBuilder withPubsubSubscription(
 			String title, String subscription) {
 
 			_pubsubMessages = _pipeline.apply(
 				"Read Pubsub Subscription " + title,
-				new PubsubReaderPTransform(subscription));
+				PubsubIO.readMessagesWithAttributes(
+				).fromSubscription(
+					subscription
+				)
+			).apply(
+				MapElements.via(
+					new SimpleFunction
+						<PubsubMessage, DXPEntityPubsubMessage>() {
+
+						@Override
+						public DXPEntityPubsubMessage apply(
+							PubsubMessage pubsubMessage) {
+
+							return new DXPEntityPubsubMessage(pubsubMessage);
+						}
+
+					})
+			);
 
 			return this;
 		}
 
 		private void _writeToGCS(
-			String gcsBucket,
-			PCollection<KV<PubsubMessageAttributes, String>> pCollection,
+			String gcsBucket, PCollection<DXPEntityPubsubMessage> pCollection,
 			int shardCount, int triggerElementCount, long triggerInterval) {
 
 			pCollection.apply(
@@ -223,8 +239,7 @@ public class DXPCommerceEntitiesIngestionPipeline {
 		private PCollectionTuple _parsedMessages;
 		private BaseParserPTransform<?> _parser;
 		private final Pipeline _pipeline;
-		private PCollection<KV<PubsubMessageAttributes, String>>
-			_pubsubMessages;
+		private PCollection<DXPEntityPubsubMessage> _pubsubMessages;
 
 	}
 

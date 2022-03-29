@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.dxp.transform;
 
-import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.PubsubMessageAttributes;
+import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage;
 
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 import org.apache.beam.sdk.io.FileIO;
@@ -22,7 +22,6 @@ import org.apache.beam.sdk.io.TextIO;
 import org.apache.beam.sdk.transforms.Contextful;
 import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.SerializableFunction;
-import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.POutput;
 
@@ -30,8 +29,7 @@ import org.apache.beam.sdk.values.POutput;
  * @author Riccardo Ferrari
  */
 public class GCSWriterPTransform
-	extends PTransform
-		<PCollection<KV<PubsubMessageAttributes, String>>, POutput> {
+	extends PTransform<PCollection<DXPEntityPubsubMessage>, POutput> {
 
 	public GCSWriterPTransform(
 		String fileNamePrefix, String fileNameSuffix, String gcsBucket,
@@ -44,29 +42,24 @@ public class GCSWriterPTransform
 	}
 
 	@Override
-	public POutput expand(
-		PCollection<KV<PubsubMessageAttributes, String>> input) {
-
+	public POutput expand(PCollection<DXPEntityPubsubMessage> input) {
 		return input.apply(
-			FileIO.<String, KV<PubsubMessageAttributes, String>>writeDynamic(
+			FileIO.<String, DXPEntityPubsubMessage>writeDynamic(
 			).by(
-				item -> {
-					PubsubMessageAttributes pubsubMessageAttributes =
-						item.getKey();
+				dxpEntityPubsubMessage -> {
+					DXPEntityPubsubMessage.Attributes attributes =
+						dxpEntityPubsubMessage.getAttributes();
 
 					return String.format(
-						"%s/%s/%s/%s/%s/",
-						pubsubMessageAttributes.getProjectId(),
-						pubsubMessageAttributes.getDataSourceId(),
-						pubsubMessageAttributes.getResourceName(),
-						pubsubMessageAttributes.getUploadType(),
-						pubsubMessageAttributes.getUploadTime());
+						"%s/%s/%s/%s/%s/", attributes.getProjectId(),
+						attributes.getDataSourceId(),
+						attributes.getResourceName(),
+						attributes.getUploadType(), attributes.getUploadTime());
 				}
 			).via(
 				Contextful.fn(
-					(SerializableFunction
-						<KV<PubsubMessageAttributes, String>, String>)
-							KV::getValue),
+					(SerializableFunction<DXPEntityPubsubMessage, String>)
+						DXPEntityPubsubMessage::getPayload),
 				TextIO.sink()
 			).to(
 				_gcsBucket

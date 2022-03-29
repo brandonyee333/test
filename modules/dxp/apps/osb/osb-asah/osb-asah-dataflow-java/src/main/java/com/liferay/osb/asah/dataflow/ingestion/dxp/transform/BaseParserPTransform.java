@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.dataflow.ingestion.dxp.transform;
 
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.BaseDXPEntity;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.PubsubMessageAttributes;
+import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage;
 
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.PTransform;
@@ -33,34 +33,23 @@ import org.slf4j.LoggerFactory;
  * @author Riccardo Ferrari
  */
 public abstract class BaseParserPTransform<T extends BaseDXPEntity>
-	extends PTransform
-		<PCollection<KV<PubsubMessageAttributes, String>>, PCollectionTuple> {
+	extends PTransform<PCollection<DXPEntityPubsubMessage>, PCollectionTuple> {
 
 	@Override
-	public PCollectionTuple expand(
-		PCollection<KV<PubsubMessageAttributes, String>> input) {
-
+	public PCollectionTuple expand(PCollection<DXPEntityPubsubMessage> input) {
 		return input.apply(
 			"Parse DXP Entity",
 			ParDo.of(
-				new DoFn
-					<KV<PubsubMessageAttributes, String>,
-					 KV<PubsubMessageAttributes, T>>() {
+				new DoFn<DXPEntityPubsubMessage, T>() {
 
 					@ProcessElement
 					public void processElement(ProcessContext processContext) {
-						KV<PubsubMessageAttributes, String> element =
+						DXPEntityPubsubMessage element =
 							processContext.element();
 
 						try {
-							PubsubMessageAttributes pubsubMessageAttributes =
-								element.getKey();
-
-							T product = doParse(element);
-
 							processContext.output(
-								_successTag,
-								KV.of(pubsubMessageAttributes, product));
+								_successTag, doParse(element));
 						}
 						catch (Exception exception) {
 							_logger.error(
@@ -79,28 +68,24 @@ public abstract class BaseParserPTransform<T extends BaseDXPEntity>
 			));
 	}
 
-	public TupleTag<KV<String, KV<PubsubMessageAttributes, String>>>
-		getFailTag() {
-
+	public TupleTag<KV<String, DXPEntityPubsubMessage>> getFailTag() {
 		return _failTag;
 	}
 
-	public TupleTag<KV<PubsubMessageAttributes, T>> getSuccessTag() {
+	public TupleTag<T> getSuccessTag() {
 		return _successTag;
 	}
 
-	protected abstract T doParse(KV<PubsubMessageAttributes, String> element)
+	protected abstract T doParse(DXPEntityPubsubMessage dxpEntityPubsubMessage)
 		throws Exception;
 
 	private static final Logger _logger = LoggerFactory.getLogger(
 		BaseParserPTransform.class);
 
-	private final TupleTag<KV<String, KV<PubsubMessageAttributes, String>>>
-		_failTag =
-			new TupleTag<KV<String, KV<PubsubMessageAttributes, String>>>() {
-			};
-	private final TupleTag<KV<PubsubMessageAttributes, T>> _successTag =
-		new TupleTag<KV<PubsubMessageAttributes, T>>() {
+	private final TupleTag<KV<String, DXPEntityPubsubMessage>> _failTag =
+		new TupleTag<KV<String, DXPEntityPubsubMessage>>() {
 		};
+	private final TupleTag<T> _successTag = new TupleTag<T>() {
+	};
 
 }

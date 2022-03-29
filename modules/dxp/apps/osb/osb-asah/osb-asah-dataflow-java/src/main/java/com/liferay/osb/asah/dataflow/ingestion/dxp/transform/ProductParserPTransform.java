@@ -15,10 +15,8 @@
 package com.liferay.osb.asah.dataflow.ingestion.dxp.transform;
 
 import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
+import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.Product;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.PubsubMessageAttributes;
-
-import org.apache.beam.sdk.values.KV;
 
 /**
  * @author Riccardo Ferrari
@@ -26,19 +24,20 @@ import org.apache.beam.sdk.values.KV;
 public class ProductParserPTransform extends BaseParserPTransform<Product> {
 
 	@Override
-	protected Product doParse(KV<PubsubMessageAttributes, String> element)
+	protected Product doParse(DXPEntityPubsubMessage dxpEntityPubsubMessage)
 		throws Exception {
 
 		Product product = ObjectMapperUtil.readValue(
-			Product.class, element.getValue());
+			Product.class, dxpEntityPubsubMessage.getPayload());
 
-		PubsubMessageAttributes pubsubMessageAttributes = element.getKey();
+		DXPEntityPubsubMessage.Attributes attributes =
+			dxpEntityPubsubMessage.getAttributes();
 
 		product.channelId = product.catalogId;
-		product.dataSourceId = pubsubMessageAttributes.getDataSourceId();
-		product.projectId = pubsubMessageAttributes.getProjectId();
-		product.uploadDate = pubsubMessageAttributes.getUploadTime();
-		product.uploadType = pubsubMessageAttributes.getUploadType();
+		product.dataSourceId = attributes.getDataSourceId();
+		product.projectId = attributes.getProjectId();
+		product.uploadDate = attributes.getUploadTime();
+		product.uploadType = attributes.getUploadType();
 
 		return product;
 	}

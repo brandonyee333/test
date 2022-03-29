@@ -15,10 +15,8 @@
 package com.liferay.osb.asah.dataflow.ingestion.dxp.transform;
 
 import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
+import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.Order;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.PubsubMessageAttributes;
-
-import org.apache.beam.sdk.values.KV;
 
 /**
  * @author Riccardo Ferrari
@@ -26,18 +24,19 @@ import org.apache.beam.sdk.values.KV;
 public class OrderParserPTransform extends BaseParserPTransform<Order> {
 
 	@Override
-	protected Order doParse(KV<PubsubMessageAttributes, String> element)
+	protected Order doParse(DXPEntityPubsubMessage dxpEntityPubsubMessage)
 		throws Exception {
 
 		Order order = ObjectMapperUtil.readValue(
-			Order.class, element.getValue());
+			Order.class, dxpEntityPubsubMessage.getPayload());
 
-		PubsubMessageAttributes pubsubMessageAttributes = element.getKey();
+		DXPEntityPubsubMessage.Attributes attributes =
+			dxpEntityPubsubMessage.getAttributes();
 
-		order.dataSourceId = pubsubMessageAttributes.getDataSourceId();
-		order.projectId = pubsubMessageAttributes.getProjectId();
-		order.uploadDate = pubsubMessageAttributes.getUploadTime();
-		order.uploadType = pubsubMessageAttributes.getUploadType();
+		order.dataSourceId = attributes.getDataSourceId();
+		order.projectId = attributes.getProjectId();
+		order.uploadDate = attributes.getUploadTime();
+		order.uploadType = attributes.getUploadType();
 
 		return order;
 	}
