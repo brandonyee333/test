@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.distributed.messaging.subscriber.router;
 
+import com.liferay.osb.customer.distributed.messaging.subscriber.google.pubsub.OktaUsersMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.AccountContactRoleMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.AccountTeamRoleAssignedMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.AccountTeamRoleUnassignedMessageSubscriber;
@@ -121,6 +122,14 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(entitlementDeleteMessageSubscriber, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setOktaUsersMessageSubscriber(
+		OktaUsersMessageSubscriber oktaUsersMessageSubscriber,
+		Map<String, Object> properties) {
+
+		addRoute(oktaUsersMessageSubscriber, properties);
 	}
 
 	@Reference(unbind = "-")
