@@ -88,7 +88,7 @@ public class OktaUserIdentityProvider implements UserIdentityProvider {
 
 		user = _userLocalService.addUser(
 			_defaultUserId, _companyId, true, StringPool.BLANK,
-			StringPool.BLANK, false, profileJSONObject.getString("screenName"),
+			StringPool.BLANK, false, profileJSONObject.getString("uuid"),
 			profileJSONObject.getString("email"), 0, StringPool.BLANK, locale,
 			profileJSONObject.getString("firstName"),
 			profileJSONObject.getString("middleName"),
