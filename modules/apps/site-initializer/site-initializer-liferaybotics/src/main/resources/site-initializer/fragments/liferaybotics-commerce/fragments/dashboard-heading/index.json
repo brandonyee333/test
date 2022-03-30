@@ -1,0 +1,92 @@
+{
+	"fieldSets": [
+		{
+			"label": "Header",
+			"fields": [
+				{
+					"name": "headerText",
+					"label": "Header Text",
+					"description": "The header text",
+					"type": "text",
+					"defaultValue": "Custom Header"
+				},
+				{
+					"name": "headingLevel",
+					"dataType": "string",
+					"defaultValue": "h1",
+					"label": "heading-level",
+					"type": "select",
+					"typeOptions": {
+						"validValues": [
+							{
+								"value": "h1"
+							},
+							{
+								"value": "h2"
+							},
+							{
+								"value": "h3"
+							},
+							{
+								"value": "h4"
+							},
+							{
+								"value": "h5"
+							},
+							{
+								"value": "h6"
+							}
+						]
+					}
+				},
+				{
+					"name": "showButton",
+					"label": "Show Button",
+					"description": "Determines if the header button is displayed",
+					"type": "checkbox",
+					"defaultValue": true
+				},
+				{
+					"dataType": "string",
+					"defaultValue": "link",
+					"label": "type",
+					"name": "buttonType",
+					"type": "select",
+					"typeOptions": {
+						"validValues": [
+							{
+								"value": "primary"
+							},
+							{
+								"value": "secondary"
+							},
+							{
+								"value": "link"
+							},
+							{
+								"value": "outline-primary"
+							},
+							{
+								"value": "outline-secondary"
+							}
+						]
+					}
+				},
+				{
+					"name": "buttonLink",
+					"label": "Button Link",
+					"description": "The button link",
+					"type": "text",
+					"defaultValue": "/group/liferaybotics/~/control_panel/manage?p_p_id=com_liferay_commerce_shipment_web_internal_portlet_CommerceShipmentPortlet&p_p_lifecycle=0&p_p_state=maximized&p_v_l_s_g_id=42754&p_p_auth=ga0ezFiN"
+				},
+				{
+					"name": "buttonText",
+					"label": "Button Text",
+					"description": "The button text",
+					"type": "text",
+					"defaultValue": "Show All"
+				}
+			]
+		}
+	]
+}
