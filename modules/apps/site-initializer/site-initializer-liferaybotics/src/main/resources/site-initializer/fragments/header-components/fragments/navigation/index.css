@@ -1,0 +1,29 @@
+.navbar-site {
+	align-items: center;
+	text-align: center;
+	text-transform: capitalize;
+	font-weight: inherit;
+	justify-content: left;
+	margin: 0 3rem;
+}
+
+.navbar-site .nav-item {
+	height: 70px;
+	border-color: transparent;
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+	margin: 0 1rem;
+}
+
+.navbar-site a {
+	color: inherit;
+}
+
+.navbar-site .nav-item:hover {
+  border-color: var(--color-brand-primary);
+  text-decoration: none;
+}
+
+.navbar-menu .portlet {
+	margin-bottom: unset;
+}

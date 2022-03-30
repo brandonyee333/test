@@ -1,0 +1,16 @@
+{
+	"fieldSets": [
+		{
+			"label": "Search",
+			"fields": [
+				{
+					"name": "useCommerceSearch",
+					"label": "Use Commerce Search",
+					"description": "Determines if Commerce search is used",
+					"type": "checkbox",
+					"defaultValue": false
+				}
+				]
+		}
+	]
+}

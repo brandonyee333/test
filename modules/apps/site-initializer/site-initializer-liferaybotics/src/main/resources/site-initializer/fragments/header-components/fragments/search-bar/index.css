@@ -1,0 +1,38 @@
+.commerce-search {
+	display: flex;
+}
+
+#portlet_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_templateSearch {
+	margin-bottom: unset;
+}
+
+.commerce-search .commerce-search__input {
+	flex-grow: 1;
+	padding: 20px;
+	background-color: #e0e5ee;
+	background-color: var(--body-bg, #e0e5ee);
+}
+
+.commerce-search .commerce-search__input input {
+	background-color: transparent;
+	border: 0;
+	caret-color: #71d2e8;
+	caret-color: var(--color-brand-primary, #71d2e8);
+	font-size: 14px;
+	height: 100%;
+	width: 100%;
+}
+
+.commerce-search .commerce-search__input input:focus {
+	outline: none;
+}
+.commerce-search .commerce-search__button {
+	height: 67px;
+	width: 67px;
+	border: unset;
+	align-items: center;
+	color: currentColor;
+	display: flex;
+	font-size: 21px;
+	justify-content: center;
+}

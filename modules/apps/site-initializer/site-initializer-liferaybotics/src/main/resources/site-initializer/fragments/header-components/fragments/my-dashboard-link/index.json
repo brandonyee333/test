@@ -1,0 +1,66 @@
+{
+	"fieldSets": [
+		{
+			"label": "General",
+			"fields": [
+				{
+					"defaultValue": false,
+					"label": "enable-debug",
+					"name": "enableDebug",
+					"type": "checkbox"
+				}
+			]
+		},
+		{
+			"label": "Navigation",
+			"fields": [
+				{
+					"defaultValue": true,
+					"label": "enable-menu-text",
+					"name": "enableMenuText",
+					"type": "checkbox"
+				},
+				{
+					"defaultValue": false,
+					"label": "run-menu-text-onload",
+					"name": "runMenuTextOnload",
+					"type": "checkbox"
+				},
+				{
+					"name": "menuText",
+					"label": "menu-text",
+					"description": "The menu item text which should be updated",
+					"type": "text",
+					"defaultValue": "My Dashboard"
+				},
+				{
+					"name": "pageLink",
+					"label": "page-link",
+					"description": "The friendly URL of the page",
+					"type": "text",
+					"defaultValue": "/dashboard"
+				},
+				{
+					"name": "pageLocation",
+					"dataType": "string",
+					"defaultValue": "group",
+				  "description": "The location of the page, i.e. public or private",
+					"label": "page-location",
+					"type": "select",
+					"typeOptions": {
+						"validValues": [
+							{
+								"label": "Private",
+								"value": "group"
+							},
+							{
+								"label": "Public",
+								"value": "web"
+							}
+						]
+					}
+				}
+			]
+		}
+	]
+}

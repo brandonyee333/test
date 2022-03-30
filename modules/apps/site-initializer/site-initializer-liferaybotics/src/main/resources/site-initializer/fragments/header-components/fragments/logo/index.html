@@ -1,0 +1,11 @@
+[#assign pageGroup = layout.getGroup() /]
+[#assign siteLogo = htmlUtil.escape(themeDisplay.getCompanyLogo()) /]
+[#assign siteName = htmlUtil.escape(pageGroup.getDescriptiveName()) /]
+[#assign logoLink = 
+	themeDisplay.getPortalURL() + '/web' + themeDisplay.layout.getGroup().friendlyURL /]
+<a href="${logoLink}" title="Go to" class="custom-logo">
+	<img alt="${siteName}" class="mr-2" height="24" src="${siteLogo}">
+	<h2 class="site-name d-sm-none d-none d-md-inline-flex" role="heading" aria-level="1">
+		${siteName}
+	</h2>
+</a>
