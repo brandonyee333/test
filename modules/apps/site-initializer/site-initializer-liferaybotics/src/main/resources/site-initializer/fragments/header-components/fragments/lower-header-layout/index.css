@@ -44,3 +44,29 @@
 		display: none !important;
 	}
 }
+
+.account-selector .btn-account-selector {
+	font-size: 0.75rem;
+	margin: 0 0.75rem;
+	max-width: 16rem;
+}
+
+.btn-account-selector {
+	align-items: center;
+	display: grid;
+	gap: 12px;
+	grid-template-columns: auto min-content;
+	height: 70px;
+	width: 300px;
+}
+
+.account-selector .btn-account-selector .account-name, .account-selector .btn-account-selector .no-account-selected-placeholder {
+	font-size: 0.875rem;
+	font-weight: 500;
+	text-transform: capitalize;
+}
+
+.btn-account-selector .no-account-selected-placeholder {
+	margin: 0;
+	text-align: left;
+}
