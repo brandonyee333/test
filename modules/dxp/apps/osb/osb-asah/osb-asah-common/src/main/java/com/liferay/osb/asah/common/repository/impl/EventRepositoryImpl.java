@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
@@ -147,30 +148,35 @@ public class EventRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId) {
+	public Optional<BQEvent> findLastSeenEvent(
+		@Nullable Long eventDefinitionId) {
+
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		Field<?> eventDateField = DSL.field("eventDate");
+		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
+			"BQEvent");
 
 		Condition condition = DSL.noCondition();
 
 		if (eventDefinitionId != null) {
+			selectJoinStep = _joinEventDefinitionTable(selectJoinStep);
+
 			Field<Object> eventDefinitionIdField = DSL.field(
-				"Event.eventDefinitionId");
+				"EventDefinition.id");
 
 			condition = eventDefinitionIdField.eq(eventDefinitionId);
 		}
 
-		return selectSelectStep.from(
-			"Event"
-		).where(
+		return selectJoinStep.where(
 			condition
 		).orderBy(
-			eventDateField.desc()
+			DSL.field(
+				"eventDate"
+			).desc()
 		).limit(
 			1
 		).fetchOptional(
-			record -> new Event(record.intoMap())
+			record -> new BQEvent(record.intoMap())
 		);
 	}
 

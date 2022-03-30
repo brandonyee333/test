@@ -15,8 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.constants.EventDefinitionConstants;
-import com.liferay.osb.asah.common.entity.Event;
-import com.liferay.osb.asah.common.entity.EventAttribute;
+import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
@@ -248,16 +247,13 @@ public class EventDefinitionDog {
 
 		eventDefinition.setBlocked(true);
 
-		Event lastSeenEvent = _fetchLastSeenEvent(eventDefinitionId);
+		BQEvent lastSeenEvent = _fetchLastSeenEvent(eventDefinitionId);
 
 		if (lastSeenEvent != null) {
-			EventAttribute eventAttribute =
-				_eventAttributeDog.getEventAttribute(
-					"canonicalUrl", lastSeenEvent.getId());
-
 			eventDefinition.setBlockedLastSeenDate(
 				lastSeenEvent.getEventDate());
-			eventDefinition.setBlockedLastSeenURL(eventAttribute.getValue());
+			eventDefinition.setBlockedLastSeenURL(
+				lastSeenEvent.getCanonicalUrl());
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
@@ -273,8 +269,8 @@ public class EventDefinitionDog {
 		_eventDefinitionRepository.save(eventDefinition);
 	}
 
-	private Event _fetchLastSeenEvent(Long eventDefinitionId) {
-		Optional<Event> lastSeenEventOptional =
+	private BQEvent _fetchLastSeenEvent(Long eventDefinitionId) {
+		Optional<BQEvent> lastSeenEventOptional =
 			_eventRepository.findLastSeenEvent(eventDefinitionId);
 
 		return lastSeenEventOptional.orElse(null);

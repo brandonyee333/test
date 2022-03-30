@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
@@ -68,7 +69,8 @@ public interface EventRepository
 
 	public boolean existsByAnalyticsEventId(String analyticsEventId);
 
-	public Optional<Event> findLastSeenEvent(@Nullable Long eventDefinitionId);
+	public Optional<BQEvent> findLastSeenEvent(
+		@Nullable Long eventDefinitionId);
 
 	public BigDecimal getAverageEventCountPerIndividual(
 		@Nullable Long channelId,
