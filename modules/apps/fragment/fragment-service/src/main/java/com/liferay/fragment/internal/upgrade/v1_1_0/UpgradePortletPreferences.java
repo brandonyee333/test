@@ -193,31 +193,31 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 
 		Map<Long, Long> portletPreferencesMap = new HashMap<>();
 
-		long companyControlPanelPlid = _companyControlPanelPlids.get(companyId);
-
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append("select PortletPreferences.portletPreferencesId, ");
 		sb.append("PortletPreferences.plid from PortletPreferences inner ");
 		sb.append("join Layout on PortletPreferences.plid = Layout.plid ");
 		sb.append("where PortletPreferences.portletId like ");
-		sb.append("CONCAT('%_INSTANCE_', '");
-		sb.append(namespace);
-		sb.append("') and (Layout.groupId = ");
-		sb.append(groupId);
-		sb.append(" or PortletPreferences.plid = ");
-		sb.append(companyControlPanelPlid);
-		sb.append(")");
+		sb.append("CONCAT('%_INSTANCE_', '?') and (Layout.groupId = ? or ");
+		sb.append("PortletPreferences.plid = ?)");
 
-		try (PreparedStatement ps = connection.prepareStatement(sb.toString());
-			ResultSet rs = ps.executeQuery()) {
+		try (PreparedStatement ps = connection.prepareStatement(
+				sb.toString())) {
 
-			while (rs.next()) {
-				long portletPreferencesId = rs.getLong("portletPreferencesId");
-				long portletPreferencesPlid = rs.getLong("plid");
+			ps.setString(1, namespace);
+			ps.setLong(2, groupId);
+			ps.setLong(3, _companyControlPanelPlids.get(companyId));
 
-				portletPreferencesMap.put(
-					portletPreferencesId, portletPreferencesPlid);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					long portletPreferencesId = rs.getLong(
+						"portletPreferencesId");
+					long portletPreferencesPlid = rs.getLong("plid");
+
+					portletPreferencesMap.put(
+						portletPreferencesId, portletPreferencesPlid);
+				}
 			}
 		}
 
