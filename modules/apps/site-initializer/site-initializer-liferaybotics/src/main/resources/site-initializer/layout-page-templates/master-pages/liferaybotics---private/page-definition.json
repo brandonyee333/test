@@ -93,7 +93,11 @@
   },
   "settings" : {
     "colorSchemeName" : "01",
-    "themeName" : "Classic",
+    "styleBook" : {
+      "key" : "liferaybotics",
+      "name" : "Liferaybotics"
+    },
+    "themeName" : "Dialect",
     "themeSettings" : {
       "lfr-theme:regular:show-header" : "false",
       "lfr-theme:regular:wrap-widget-page-content" : "false",
