@@ -35,7 +35,6 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
-import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
@@ -43,7 +42,6 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
-import com.liferay.osb.asah.common.util.WeDeployServiceThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.faro.backend.http.DataSourceHttpTestConfiguration;
@@ -57,8 +55,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -80,7 +76,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -247,34 +242,22 @@ public class DataSourcesRestControllerTest {
 
 		// CSV individuals nanite started
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
+		RunLog runLog1 = new RunLog();
 
-			_runLogRepository.save(
-				new RunLog() {
-					{
-						setContextJSONObject(
-							JSONUtil.put(
-								"processedOperations", 1
-							).put(
-								"reprocess", false
-							).put(
-								"totalOperations", 1
-							));
-						setDataSourceId(csvDataSource.getId());
-						setDateLogged(DateUtil.newDate());
-						setNaniteClassName("CSVIndividualsNanite");
-						setStatus("STARTED");
-					}
-				});
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		runLog1.setContextJSONObject(
+			JSONUtil.put(
+				"processedOperations", 1
+			).put(
+				"reprocess", false
+			).put(
+				"totalOperations", 1
+			));
+		runLog1.setDataSourceId(csvDataSource.getId());
+		runLog1.setDateLogged(DateUtil.newDate());
+		runLog1.setNaniteClassName("CSVIndividualsNanite");
+		runLog1.setStatus("STARTED");
+
+		_runLogRepository.save(runLog1);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(csvDataSource.getId()));
@@ -288,34 +271,22 @@ public class DataSourcesRestControllerTest {
 
 		Date loggedDate = DateUtil.newDate();
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
+		RunLog runLog2 = new RunLog();
 
-			_runLogRepository.save(
-				new RunLog() {
-					{
-						setContextJSONObject(
-							JSONUtil.put(
-								"processedOperations", 1
-							).put(
-								"reprocess", false
-							).put(
-								"totalOperations", 1
-							));
-						setDataSourceId(csvDataSource.getId());
-						setDateLogged(loggedDate);
-						setNaniteClassName("CSVIndividualsNanite");
-						setStatus("FAILED");
-					}
-				});
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		runLog2.setContextJSONObject(
+			JSONUtil.put(
+				"processedOperations", 1
+			).put(
+				"reprocess", false
+			).put(
+				"totalOperations", 1
+			));
+		runLog2.setDataSourceId(csvDataSource.getId());
+		runLog2.setDateLogged(loggedDate);
+		runLog2.setNaniteClassName("CSVIndividualsNanite");
+		runLog2.setStatus("FAILED");
+
+		_runLogRepository.save(runLog2);
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -386,26 +357,14 @@ public class DataSourcesRestControllerTest {
 
 		Date loggedDate = DateUtil.newDate();
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+		RunLog runLog1 = new RunLog();
 
-			_runLogRepository.save(
-				new RunLog() {
-					{
-						setDataSourceId(salesforceDataSource.getId());
-						setDateLogged(loggedDate);
-						setNaniteClassName("SalesforceExtractorNanite");
-						setStatus("IN_PROGRESS");
-					}
-				});
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		runLog1.setDataSourceId(salesforceDataSource.getId());
+		runLog1.setDateLogged(loggedDate);
+		runLog1.setNaniteClassName("SalesforceExtractorNanite");
+		runLog1.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog1);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -423,32 +382,20 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce accounts nanite is not null and date logged is earlier
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
+		RunLog runLog2 = new RunLog();
 
-			_runLogRepository.save(
-				new RunLog() {
-					{
-						setContextJSONObject(
-							JSONUtil.put(
-								"reprocess", false
-							).put(
-								"totalOperations", 1
-							));
-						setDataSourceId(salesforceDataSource.getId());
-						setDateLogged(DateUtil.addDays(loggedDate, -1));
-						setNaniteClassName("SalesforceAccountsNanite");
-						setStatus("FAILED");
-					}
-				});
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		runLog2.setContextJSONObject(
+			JSONUtil.put(
+				"reprocess", false
+			).put(
+				"totalOperations", 1
+			));
+		runLog2.setDataSourceId(salesforceDataSource.getId());
+		runLog2.setDateLogged(DateUtil.addDays(loggedDate, -1));
+		runLog2.setNaniteClassName("SalesforceAccountsNanite");
+		runLog2.setStatus("FAILED");
+
+		_runLogRepository.save(runLog2);
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -465,34 +412,20 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce accounts nanite is not null and date logged is after
 
-		RunLog runLog = null;
+		RunLog runLog3 = new RunLog();
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
+		runLog3.setContextJSONObject(
+			JSONUtil.put(
+				"reprocess", false
+			).put(
+				"totalOperations", 1
+			));
+		runLog3.setDataSourceId(salesforceDataSource.getId());
+		runLog3.setDateLogged(DateUtil.addDays(loggedDate, 1));
+		runLog3.setNaniteClassName("SalesforceAccountsNanite");
+		runLog3.setStatus("FAILED");
 
-			runLog = _runLogRepository.save(
-				new RunLog() {
-					{
-						setContextJSONObject(
-							JSONUtil.put(
-								"reprocess", false
-							).put(
-								"totalOperations", 1
-							));
-						setDataSourceId(salesforceDataSource.getId());
-						setDateLogged(DateUtil.addDays(loggedDate, 1));
-						setNaniteClassName("SalesforceAccountsNanite");
-						setStatus("FAILED");
-					}
-				});
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		runLog3 = _runLogRepository.save(runLog3);
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -506,47 +439,24 @@ public class DataSourcesRestControllerTest {
 		Assertions.assertEquals(
 			"FAILED", accountsJSONObject.getString("status"));
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
-
-			_runLogRepository.delete(runLog);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		_runLogRepository.delete(runLog3);
 
 		// Salesforce accounts nanite started
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_FARO_INFO);
+		RunLog runLog4 = new RunLog();
 
-			_runLogRepository.save(
-				new RunLog() {
-					{
-						setContextJSONObject(
-							JSONUtil.put(
-								"reprocess", false
-							).put(
-								"totalOperations", 1
-							));
-						setDataSourceId(salesforceDataSource.getId());
-						setDateLogged(DateUtil.newDate());
-						setNaniteClassName("SalesforceAccountsNanite");
-						setStatus("STARTED");
-					}
-				});
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		runLog4.setContextJSONObject(
+			JSONUtil.put(
+				"reprocess", false
+			).put(
+				"totalOperations", 1
+			));
+		runLog4.setDataSourceId(salesforceDataSource.getId());
+		runLog4.setDateLogged(DateUtil.newDate());
+		runLog4.setNaniteClassName("SalesforceAccountsNanite");
+		runLog4.setStatus("STARTED");
+
+		_runLogRepository.save(runLog4);
 
 		_salesforceAuditEventDog.addSalesforceAuditEvent(
 			new SalesforceAuditEvent() {
@@ -573,26 +483,14 @@ public class DataSourcesRestControllerTest {
 
 		Date newLoggedDate = DateUtil.newDate();
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+		RunLog runLog5 = new RunLog();
 
-			_runLogRepository.save(
-				new RunLog() {
-					{
-						setDataSourceId(salesforceDataSource.getId());
-						setDateLogged(newLoggedDate);
-						setNaniteClassName("SalesforceExtractorNanite");
-						setStatus("FAILED");
-					}
-				});
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		runLog5.setDataSourceId(salesforceDataSource.getId());
+		runLog5.setDateLogged(newLoggedDate);
+		runLog5.setNaniteClassName("SalesforceExtractorNanite");
+		runLog5.setStatus("FAILED");
+
+		_runLogRepository.save(runLog5);
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -610,32 +508,20 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce extractor nanite started and initial run is true
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+		RunLog runLog6 = new RunLog();
 
-			_runLogRepository.save(
-				new RunLog() {
-					{
-						setContextJSONObject(
-							JSONUtil.put(
-								"initialAccountRun", true
-							).put(
-								"totalAccountOperations", 1
-							));
-						setDataSourceId(salesforceDataSource.getId());
-						setDateLogged(DateUtil.newDate());
-						setNaniteClassName("SalesforceExtractorNanite");
-						setStatus("STARTED");
-					}
-				});
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		runLog6.setContextJSONObject(
+			JSONUtil.put(
+				"initialAccountRun", true
+			).put(
+				"totalAccountOperations", 1
+			));
+		runLog6.setDataSourceId(salesforceDataSource.getId());
+		runLog6.setDateLogged(DateUtil.newDate());
+		runLog6.setNaniteClassName("SalesforceExtractorNanite");
+		runLog6.setStatus("STARTED");
+
+		_runLogRepository.save(runLog6);
 
 		SalesforceEntity salesforceEntity = new SalesforceEntity();
 
@@ -662,32 +548,20 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce extractor nanite started and initial run is false
 
-		try {
-			WeDeployServiceThreadLocal.setWeDeployDataService(
-				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
+		RunLog runLog7 = new RunLog();
 
-			_runLogRepository.save(
-				new RunLog() {
-					{
-						setContextJSONObject(
-							JSONUtil.put(
-								"initialAccountRun", false
-							).put(
-								"totalAccountOperations", 1
-							));
-						setDataSourceId(salesforceDataSource.getId());
-						setDateLogged(DateUtil.newDate());
-						setNaniteClassName("SalesforceExtractorNanite");
-						setStatus("STARTED");
-					}
-				});
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-		finally {
-			WeDeployServiceThreadLocal.remove();
-		}
+		runLog7.setContextJSONObject(
+			JSONUtil.put(
+				"initialAccountRun", false
+			).put(
+				"totalAccountOperations", 1
+			));
+		runLog7.setDataSourceId(salesforceDataSource.getId());
+		runLog7.setDateLogged(DateUtil.newDate());
+		runLog7.setNaniteClassName("SalesforceExtractorNanite");
+		runLog7.setStatus("STARTED");
+
+		_runLogRepository.save(runLog7);
 
 		_salesforceAuditEventDog.addSalesforceAuditEvent(
 			new SalesforceAuditEvent() {
@@ -735,19 +609,16 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce extractor nanite failed
 
-		String loggedDateString = DateUtil.newDateString();
+		Date loggedDate = DateUtil.newDate();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", loggedDateString
-			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "FAILED"
-			));
+		RunLog runLog = new RunLog();
+
+		runLog.setDataSourceId(salesforceDataSource.getId());
+		runLog.setDateLogged(loggedDate);
+		runLog.setNaniteClassName("SalesforceExtractorNanite");
+		runLog.setStatus("FAILED");
+
+		_runLogRepository.save(runLog);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -755,7 +626,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
-				"dateRecorded", loggedDateString
+				"dateRecorded", DateUtil.toUTCString(loggedDate)
 			).put(
 				"status", "FAILED"
 			),
@@ -769,28 +640,26 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce extractor nanite started and initial run is true
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
+		Date loggedDate = DateUtil.newDate();
+
+		RunLog runLog1 = new RunLog();
+
+		runLog1.setContextJSONObject(
 			JSONUtil.put(
-				"context",
-				JSONUtil.put(
-					"initialContactRun", true
-				).put(
-					"initialLeadRun", true
-				).put(
-					"totalContactOperations", 1
-				).put(
-					"totalLeadOperations", 1
-				)
+				"initialContactRun", true
 			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
+				"initialLeadRun", true
 			).put(
-				"dateLogged", DateUtil.newDateString()
+				"totalContactOperations", 1
 			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "STARTED"
+				"totalLeadOperations", 1
 			));
+		runLog1.setDataSourceId(salesforceDataSource.getId());
+		runLog1.setDateLogged(loggedDate);
+		runLog1.setNaniteClassName("SalesforceExtractorNanite");
+		runLog1.setStatus("STARTED");
+
+		_runLogRepository.save(runLog1);
 
 		SalesforceEntity contactSalesforceEntity = new SalesforceEntity();
 
@@ -828,28 +697,24 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce extractor nanite started and initial run is false
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
+		RunLog runLog2 = new RunLog();
+
+		runLog2.setContextJSONObject(
 			JSONUtil.put(
-				"context",
-				JSONUtil.put(
-					"initialContactRun", true
-				).put(
-					"initialLeadRun", true
-				).put(
-					"totalContactOperations", 1
-				).put(
-					"totalLeadOperations", 1
-				)
+				"initialContactRun", true
 			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
+				"initialLeadRun", true
 			).put(
-				"dateLogged", DateUtil.newDateString()
+				"totalContactOperations", 1
 			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "STARTED"
+				"totalLeadOperations", 1
 			));
+		runLog2.setDataSourceId(salesforceDataSource.getId());
+		runLog2.setDateLogged(loggedDate);
+		runLog2.setNaniteClassName("SalesforceExtractorNanite");
+		runLog2.setStatus("STARTED");
+
+		_runLogRepository.save(runLog2);
 
 		_salesforceRawElasticsearchInvoker.add(
 			"audit-events",
@@ -889,17 +754,14 @@ public class DataSourcesRestControllerTest {
 		// Salesforce extractor nanite in progress and salesforce extractor
 		// individuals nanite is null
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.newDateString()
-			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		RunLog runLog = new RunLog();
+
+		runLog.setDataSourceId(salesforceDataSource.getId());
+		runLog.setDateLogged(DateUtil.newDate());
+		runLog.setNaniteClassName("SalesforceExtractorNanite");
+		runLog.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -924,33 +786,23 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce extractor individuals nanite started
 
-		String loggedDateString = DateUtil.newDateString();
+		RunLog runLog1 = new RunLog();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", loggedDateString
-			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		runLog1.setDataSourceId(salesforceDataSource.getId());
+		runLog1.setDateLogged(DateUtil.newDate());
+		runLog1.setNaniteClassName("SalesforceExtractorNanite");
+		runLog1.setStatus("IN_PROGRESS");
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 1)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"naniteClassName", "SalesforceExtractorIndividualsNanite"
-			).put(
-				"status", "STARTED"
-			).put(
-				"totalOperations", 1
-			));
+		_runLogRepository.save(runLog1);
+
+		RunLog runLog2 = new RunLog();
+
+		runLog2.setContextJSONObject(JSONUtil.put("totalOperations", 1));
+		runLog2.setDataSourceId(salesforceDataSource.getId());
+		runLog2.setNaniteClassName("SalesforceExtractorIndividualsNanite");
+		runLog2.setStatus("STARTED");
+
+		_runLogRepository.save(runLog2);
 
 		_salesforceAuditEventDog.addSalesforceAuditEvent(
 			new SalesforceAuditEvent() {
@@ -992,33 +844,26 @@ public class DataSourcesRestControllerTest {
 		// Salesforce extractor individuals nanite not started and date logged
 		// is earlier
 
-		String loggedDateString = DateUtil.newDateString();
+		Date loggedDate = DateUtil.newDate();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", loggedDateString
-			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		RunLog runLog1 = new RunLog();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 1)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.addDays(loggedDateString, -1)
-			).put(
-				"naniteClassName", "SalesforceExtractorIndividualsNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		runLog1.setDataSourceId(salesforceDataSource.getId());
+		runLog1.setDateLogged(loggedDate);
+		runLog1.setNaniteClassName("SalesforceExtractorNanite");
+		runLog1.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog1);
+
+		RunLog runLog2 = new RunLog();
+
+		runLog2.setContextJSONObject(JSONUtil.put("totalOperations", 1));
+		runLog2.setDataSourceId(salesforceDataSource.getId());
+		runLog2.setDateLogged(DateUtil.addDays(loggedDate, -1));
+		runLog2.setNaniteClassName("SalesforceExtractorIndividualsNanite");
+		runLog2.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog2);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -1044,33 +889,28 @@ public class DataSourcesRestControllerTest {
 		// Salesforce extractor individuals nanite failed and date logged
 		// is later
 
-		String loggedDateString = DateUtil.newDateString();
+		Date loggedDate = DateUtil.newDate();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.addHours(loggedDateString, -1)
-			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		RunLog runLog1 = new RunLog();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 1)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", loggedDateString
-			).put(
-				"naniteClassName", "SalesforceExtractorIndividualsNanite"
-			).put(
-				"status", "FAILED"
-			));
+		runLog1.setDataSourceId(salesforceDataSource.getId());
+		runLog1.setDateLogged(
+			DateUtil.toUTCDate(
+				DateUtil.addHours(DateUtil.toUTCString(loggedDate), -1)));
+		runLog1.setNaniteClassName("SalesforceExtractorNanite");
+		runLog1.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog1);
+
+		RunLog runLog2 = new RunLog();
+
+		runLog2.setContextJSONObject(JSONUtil.put("totalOperations", 1));
+		runLog2.setDataSourceId(salesforceDataSource.getId());
+		runLog2.setDateLogged(loggedDate);
+		runLog2.setNaniteClassName("SalesforceExtractorNanite");
+		runLog2.setStatus("FAILED");
+
+		_runLogRepository.save(runLog2);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -1081,7 +921,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
-				"dateRecorded", loggedDateString
+				"dateRecorded", DateUtil.toUTCString(loggedDate)
 			).put(
 				"status", "FAILED"
 			),
@@ -1093,33 +933,28 @@ public class DataSourcesRestControllerTest {
 		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
-		String loggedDateString = DateUtil.newDateString();
+		Date loggedDate = DateUtil.newDate();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.addHours(loggedDateString, -1)
-			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		RunLog runLog1 = new RunLog();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 1)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", loggedDateString
-			).put(
-				"naniteClassName", "SalesforceExtractorIndividualsNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		runLog1.setDataSourceId(salesforceDataSource.getId());
+		runLog1.setDateLogged(
+			DateUtil.toUTCDate(
+				DateUtil.addHours(DateUtil.toUTCString(loggedDate), -1)));
+		runLog1.setNaniteClassName("SalesforceExtractorNanite");
+		runLog1.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog1);
+
+		RunLog runLog2 = new RunLog();
+
+		runLog2.setContextJSONObject(JSONUtil.put("totalOperations", 1));
+		runLog2.setDataSourceId(salesforceDataSource.getId());
+		runLog2.setDateLogged(loggedDate);
+		runLog2.setNaniteClassName("SalesforceExtractorIndividualsNanite");
+		runLog2.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog2);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -1144,47 +979,39 @@ public class DataSourcesRestControllerTest {
 
 		// Salesforce individuals nanite started
 
-		String loggedDateString = DateUtil.newDateString();
+		Date loggedDate = DateUtil.newDate();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.addHours(loggedDateString, -1)
-			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		RunLog runLog1 = new RunLog();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 1)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", loggedDateString
-			).put(
-				"naniteClassName", "SalesforceExtractorIndividualsNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		runLog1.setDataSourceId(salesforceDataSource.getId());
+		runLog1.setDateLogged(
+			DateUtil.toUTCDate(
+				DateUtil.addHours(DateUtil.toUTCString(loggedDate), -1)));
+		runLog1.setNaniteClassName("SalesforceExtractorNanite");
+		runLog1.setStatus("IN_PROGRESS");
 
-		_faroInfoElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 2)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.newDayDateString()
-			).put(
-				"naniteClassName", "SalesforceIndividualsNanite"
-			).put(
-				"status", "STARTED"
-			));
+		_runLogRepository.save(runLog1);
+
+		RunLog runLog2 = new RunLog();
+
+		runLog2.setContextJSONObject(JSONUtil.put("totalOperations", 1));
+		runLog2.setDataSourceId(salesforceDataSource.getId());
+		runLog2.setDateLogged(loggedDate);
+		runLog2.setNaniteClassName("SalesforceExtractorIndividualsNanite");
+		runLog2.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog2);
+
+		RunLog runLog3 = new RunLog();
+
+		runLog3.setContextJSONObject(JSONUtil.put("totalOperations", 2));
+		runLog3.setDataSourceId(salesforceDataSource.getId());
+		runLog3.setDateLogged(
+			DateUtil.toUTCDate(DateUtil.toUTCString(loggedDate)));
+		runLog3.setNaniteClassName("SalesforceIndividualsNanite");
+		runLog3.setStatus("STARTED");
+
+		_runLogRepository.save(runLog3);
 
 		_salesforceAuditEventDog.addSalesforceAuditEvent(
 			new SalesforceAuditEvent() {
@@ -1220,47 +1047,40 @@ public class DataSourcesRestControllerTest {
 		// Salesforce individuals nanite not started and and date logged is
 		// earlier
 
-		String loggedDateString = DateUtil.newDateString();
+		Date loggedDate = DateUtil.newDate();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.addHours(loggedDateString, -1)
-			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		RunLog runLog1 = new RunLog();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 1)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.addHours(loggedDateString, 1)
-			).put(
-				"naniteClassName", "SalesforceExtractorIndividualsNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		runLog1.setDataSourceId(salesforceDataSource.getId());
+		runLog1.setDateLogged(
+			DateUtil.toUTCDate(
+				DateUtil.addHours(DateUtil.toUTCString(loggedDate), -1)));
+		runLog1.setNaniteClassName("SalesforceExtractorNanite");
+		runLog1.setStatus("IN_PROGRESS");
 
-		_faroInfoElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 2)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", loggedDateString
-			).put(
-				"naniteClassName", "SalesforceIndividualsNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		_runLogRepository.save(runLog1);
+
+		RunLog runLog2 = new RunLog();
+
+		runLog2.setContextJSONObject(JSONUtil.put("totalOperations", 1));
+		runLog2.setDataSourceId(salesforceDataSource.getId());
+		runLog2.setDateLogged(
+			DateUtil.toUTCDate(
+				DateUtil.addHours(DateUtil.toUTCString(loggedDate), 1)));
+		runLog2.setNaniteClassName("SalesforceExtractorIndividualsNanite");
+		runLog2.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog2);
+
+		RunLog runLog3 = new RunLog();
+
+		runLog3.setContextJSONObject(JSONUtil.put("totalOperations", 2));
+		runLog3.setDataSourceId(salesforceDataSource.getId());
+		runLog3.setDateLogged(loggedDate);
+		runLog3.setNaniteClassName("SalesforceIndividualsNanite");
+		runLog3.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog3);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -1288,47 +1108,40 @@ public class DataSourcesRestControllerTest {
 		// Salesforce individuals nanite not started and and date logged is
 		// later
 
-		String loggedDateString = DateUtil.newDateString();
+		Date loggedDate = DateUtil.newDate();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.addHours(loggedDateString, -1)
-			).put(
-				"naniteClassName", "SalesforceExtractorNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		RunLog runLog1 = new RunLog();
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 1)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", loggedDateString
-			).put(
-				"naniteClassName", "SalesforceExtractorIndividualsNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		runLog1.setDataSourceId(salesforceDataSource.getId());
+		runLog1.setDateLogged(
+			DateUtil.toUTCDate(
+				DateUtil.addHours(DateUtil.toUTCString(loggedDate), -1)));
+		runLog1.setNaniteClassName("SalesforceExtractorNanite");
+		runLog1.setStatus("IN_PROGRESS");
 
-		_faroInfoElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"context", JSONUtil.put("totalOperations", 2)
-			).put(
-				"dataSourceId", String.valueOf(salesforceDataSource.getId())
-			).put(
-				"dateLogged", DateUtil.addHours(loggedDateString, 2)
-			).put(
-				"naniteClassName", "SalesforceIndividualsNanite"
-			).put(
-				"status", "IN_PROGRESS"
-			));
+		_runLogRepository.save(runLog1);
+
+		RunLog runLog2 = new RunLog();
+
+		runLog2.setContextJSONObject(JSONUtil.put("totalOperations", 1));
+		runLog2.setDataSourceId(salesforceDataSource.getId());
+		runLog2.setDateLogged(loggedDate);
+		runLog2.setNaniteClassName("SalesforceExtractorIndividualsNanite");
+		runLog2.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog2);
+
+		RunLog runLog3 = new RunLog();
+
+		runLog3.setContextJSONObject(JSONUtil.put("totalOperations", 2));
+		runLog3.setDataSourceId(salesforceDataSource.getId());
+		runLog3.setDateLogged(
+			DateUtil.toUTCDate(
+				DateUtil.addHours(DateUtil.toUTCString(loggedDate), 2)));
+		runLog3.setNaniteClassName("SalesforceIndividualsNanite");
+		runLog3.setStatus("IN_PROGRESS");
+
+		_runLogRepository.save(runLog3);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -1381,9 +1194,6 @@ public class DataSourcesRestControllerTest {
 		deleteDataSourcesNanite.run(dataSourceJSONObject);
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		DataSourcesRestControllerTest.class);
-
 	@Autowired
 	private AccountDog _accountDog;
 
@@ -1401,9 +1211,6 @@ public class DataSourcesRestControllerTest {
 
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
-
-	@MockBean
-	private ChannelHttp _channelHttp;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

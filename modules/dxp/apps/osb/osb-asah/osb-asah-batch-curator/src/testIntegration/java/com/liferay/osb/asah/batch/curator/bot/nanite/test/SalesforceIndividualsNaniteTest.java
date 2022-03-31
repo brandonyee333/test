@@ -20,12 +20,15 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.SalesforceIndividualsNanite
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -84,17 +87,16 @@ public class SalesforceIndividualsNaniteTest
 						getDataSourceId(), getIndividual2PK(),
 						SalesforceEntity.Type.INDIVIDUAL))));
 
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs",
-			JSONUtil.put(
-				"dataSourceId", getDataSourceId()
-			).put(
-				"dateLogged", DateUtil.newDateString()
-			).put(
-				"naniteClassName", "SalesforceExtractorIndividualsNanite"
-			).put(
-				"status", "COMPLETED"
-			));
+		RunLog runLog = new RunLog();
+
+		runLog.setContextJSONObject(
+			JSONUtil.put("dataSourceId", getDataSourceId()));
+		runLog.setDataSourceId(getDataSourceId());
+		runLog.setDateLogged(new Date());
+		runLog.setNaniteClassName("SalesforceExtractorIndividualsNanite");
+		runLog.setStatus("COMPLETED");
+
+		_runLogRepository.save(runLog);
 
 		_salesforceIndividualsNanite.run(
 			JSONUtil.put(
@@ -165,6 +167,9 @@ public class SalesforceIndividualsNaniteTest
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private RunLogRepository _runLogRepository;
 
 	@Autowired
 	private SalesforceEntityDog _salesforceEntityDog;
