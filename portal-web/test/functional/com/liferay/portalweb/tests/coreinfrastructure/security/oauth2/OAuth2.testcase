@@ -1405,6 +1405,7 @@ definition {
 	@description = "This is a use case for LRQA-48782. Add and Edit OAuth SAP entries."
 	test OAuth2SAPEntriesCanBeAddedAndEdited {
 		property custom.properties = "access.control.sanitize.security.exception=false${line.separator}json.service.serialize.throwable=true";
+		property portal.upstream = "joyce";
 		property test.name.skip.portal.instance = "OAuth2#OAuth2SAPEntriesCanBeAddedAndEdited";
 
 		task ("Add SAP") {
