@@ -17,10 +17,8 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
-import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.entity.Event;
-import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.Tuple2;
@@ -54,11 +52,8 @@ public class EventsByUserSessionsDataFetcher
 
 		Comparator<UserSessionDTO> comparator = Comparator.comparing(
 			UserSessionDTO::getCreateDate);
-		Map<String, Long> eventAttributeDefinitionIds =
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionIdsByType(
-				EventAttributeDefinition.Type.GLOBAL);
 
-		Map<UserSession, List<Tuple2<Event, EventDefinition>>> tuple2s =
+		Map<UserSession, List<Tuple2<BQEvent, EventDefinition>>> tuple2s =
 			_eventDog.searchEventsGroupByUserSessionId(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				Long.valueOf(dataFetchingEnvironment.getArgument("entityId")),
@@ -67,17 +62,15 @@ public class EventsByUserSessionsDataFetcher
 				dataFetchingEnvironment.getArgument("size"),
 				searchQueryContext.getTimeRange());
 
-		Set<Map.Entry<UserSession, List<Tuple2<Event, EventDefinition>>>>
+		Set<Map.Entry<UserSession, List<Tuple2<BQEvent, EventDefinition>>>>
 			entrySet = tuple2s.entrySet();
 
-		Stream<Map.Entry<UserSession, List<Tuple2<Event, EventDefinition>>>>
+		Stream<Map.Entry<UserSession, List<Tuple2<BQEvent, EventDefinition>>>>
 			stream = entrySet.stream();
 
 		return new EventsByUserSessionDTO(
 			stream.map(
-				entry -> new UserSessionDTO(
-					eventAttributeDefinitionIds, entry.getValue(),
-					entry.getKey())
+				entry -> new UserSessionDTO(entry.getValue(), entry.getKey())
 			).sorted(
 				comparator.reversed()
 			).collect(
@@ -89,9 +82,6 @@ public class EventsByUserSessionsDataFetcher
 				dataFetchingEnvironment.getArgument("keywords"),
 				searchQueryContext.getTimeRange()));
 	}
-
-	@Autowired
-	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
 	private EventDog _eventDog;
