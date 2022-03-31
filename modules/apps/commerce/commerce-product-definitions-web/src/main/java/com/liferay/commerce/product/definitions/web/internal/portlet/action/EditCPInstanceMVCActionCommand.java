@@ -437,15 +437,6 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 		BigDecimal cost = (BigDecimal)ParamUtil.getNumber(
 			actionRequest, "cost", BigDecimal.ZERO);
 
-		BigDecimal maxValue = BigDecimal.valueOf(999999999.99);
-
-		if ((price.compareTo(maxValue) > 0) ||
-			(promoPrice.compareTo(maxValue) > 0) ||
-			(cost.compareTo(maxValue) > 0)) {
-
-			throw new CPPriceMaxValueException();
-		}
-
 		cpInstance = _cpInstanceService.updatePricingInfo(
 			cpInstance.getCPInstanceId(), price, promoPrice, cost,
 			serviceContext);
