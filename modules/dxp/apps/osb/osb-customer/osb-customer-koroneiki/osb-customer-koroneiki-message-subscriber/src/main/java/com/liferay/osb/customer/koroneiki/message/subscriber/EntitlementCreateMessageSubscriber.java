@@ -53,10 +53,19 @@ public class EntitlementCreateMessageSubscriber
 		JSONObject entitlementJSONObject = jsonObject.getJSONObject(
 			"entitlement");
 
-		Organization organization = organizationLocalService.fetchOrganization(
-			OSBCustomerConstants.COMPANY_ID,
-			EntitlementConstants.ORGANIZATION_NAME_PREFIX +
-				entitlementJSONObject.getString("name"));
+		String name = entitlementJSONObject.getString("name");
+
+		Organization organization = null;
+
+		if (name.equals(EntitlementConstants.NAME_LIFERAY_EMPLOYEE)) {
+			organization = organizationLocalService.fetchOrganization(
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID);
+		}
+		else {
+			organization = organizationLocalService.fetchOrganization(
+				OSBCustomerConstants.COMPANY_ID,
+				EntitlementConstants.ORGANIZATION_NAME_PREFIX + name);
+		}
 
 		if (organization == null) {
 			return;
