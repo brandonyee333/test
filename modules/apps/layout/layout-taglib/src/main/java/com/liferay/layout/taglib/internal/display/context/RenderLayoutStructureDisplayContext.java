@@ -916,24 +916,6 @@ public class RenderLayoutStructureDisplayContext {
 
 		_frontendTokensJSONObject = JSONFactoryUtil.createJSONObject();
 
-		StyleBookEntry styleBookEntry = null;
-
-		boolean styleBookEntryPreview = ParamUtil.getBoolean(
-			_httpServletRequest, "styleBookEntryPreview");
-
-		if (!styleBookEntryPreview) {
-			styleBookEntry = DefaultStyleBookEntryUtil.getDefaultStyleBookEntry(
-				_themeDisplay.getLayout());
-		}
-
-		JSONObject frontendTokenValuesJSONObject =
-			JSONFactoryUtil.createJSONObject();
-
-		if (styleBookEntry != null) {
-			frontendTokenValuesJSONObject = JSONFactoryUtil.createJSONObject(
-				styleBookEntry.getFrontendTokensValues());
-		}
-
 		FrontendTokenDefinitionRegistry frontendTokenDefinitionRegistry =
 			ServletContextUtil.getFrontendTokenDefinitionRegistry();
 
@@ -945,12 +927,30 @@ public class RenderLayoutStructureDisplayContext {
 				layoutSet.getThemeId());
 
 		if (frontendTokenDefinition == null) {
-			return JSONFactoryUtil.createJSONObject();
+			return _frontendTokensJSONObject;
+		}
+
+		StyleBookEntry styleBookEntry = null;
+
+		if (!ParamUtil.getBoolean(
+				_httpServletRequest, "styleBookEntryPreview")) {
+
+			styleBookEntry = DefaultStyleBookEntryUtil.getDefaultStyleBookEntry(
+				_themeDisplay.getLayout());
+		}
+
+		JSONObject frontendTokenValuesJSONObject = null;
+
+		if (styleBookEntry != null) {
+			frontendTokenValuesJSONObject = JSONFactoryUtil.createJSONObject(
+				styleBookEntry.getFrontendTokensValues());
+		}
+		else {
+			frontendTokenValuesJSONObject = JSONFactoryUtil.createJSONObject();
 		}
 
 		JSONObject frontendTokenDefinitionJSONObject =
-			JSONFactoryUtil.createJSONObject(
-				frontendTokenDefinition.getJSON(_themeDisplay.getLocale()));
+			frontendTokenDefinition.getJSONObject(_themeDisplay.getLocale());
 
 		JSONArray frontendTokenCategoriesJSONArray =
 			frontendTokenDefinitionJSONObject.getJSONArray(
