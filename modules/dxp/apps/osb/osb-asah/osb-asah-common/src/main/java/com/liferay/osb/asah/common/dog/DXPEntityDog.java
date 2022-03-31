@@ -51,7 +51,7 @@ public class DXPEntityDog {
 		dxpEntity.setId(null);
 		dxpEntity.setType(type);
 
-		return _mapDXPEntity(_dxpEntityRepository.save(dxpEntity));
+		return _mapDXPEntity(_dxpEntityRepository.save(dxpEntity), type);
 	}
 
 	public void delete(DXPEntity dxpEntity) {
@@ -79,7 +79,7 @@ public class DXPEntityDog {
 			return null;
 		}
 
-		return _mapDXPEntity(dxpEntities.get(0));
+		return _mapDXPEntity(dxpEntities.get(0), type);
 	}
 
 	public List<? extends DXPEntity> findByAfterAndFieldsAndType(
@@ -128,7 +128,8 @@ public class DXPEntityDog {
 	}
 
 	public DXPEntity updateDXPEntity(DXPEntity dxpEntity) {
-		return _mapDXPEntity(_dxpEntityRepository.save(dxpEntity));
+		return _mapDXPEntity(
+			_dxpEntityRepository.save(dxpEntity), dxpEntity.getType());
 	}
 
 	private List<Long> _getDataSourceIds(Long channelId) {
@@ -150,6 +151,8 @@ public class DXPEntityDog {
 	private List<? extends DXPEntity> _mapDXPEntities(
 		List<DXPEntity> dxpEntities, DXPEntity.Type type) {
 
+		dxpEntities.forEach(dxpEntity -> dxpEntity.setType(type));
+
 		if (type.isOrganization()) {
 			return _processDXPEntities(this::_mapDXPOrganization, dxpEntities);
 		}
@@ -161,8 +164,8 @@ public class DXPEntityDog {
 		return _processDXPEntities(this::_mapDXPEntity, dxpEntities);
 	}
 
-	private DXPEntity _mapDXPEntity(DXPEntity dxpEntity) {
-		DXPEntity.Type type = dxpEntity.getType();
+	private DXPEntity _mapDXPEntity(DXPEntity dxpEntity, DXPEntity.Type type) {
+		dxpEntity.setType(type);
 
 		if (type.isOrganization()) {
 			return _mapDXPOrganization(new HashMap<>(), dxpEntity);
