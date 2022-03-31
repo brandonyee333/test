@@ -38,9 +38,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -56,9 +56,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -101,9 +101,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -127,13 +125,12 @@ definition {
 			Pause(locator1 = "120000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
-			/*
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -163,7 +160,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -174,7 +170,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -196,9 +192,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -214,9 +210,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -259,9 +255,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -286,12 +280,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -321,7 +314,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -332,7 +324,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -354,9 +346,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -372,9 +364,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -417,9 +409,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -444,12 +434,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -479,7 +468,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -490,7 +478,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -512,9 +500,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -530,9 +518,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -575,9 +563,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -602,12 +588,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -637,7 +622,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -648,7 +632,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -670,9 +654,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -688,9 +672,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -733,9 +717,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -760,12 +742,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -795,7 +776,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -806,7 +786,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -828,9 +808,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -846,9 +826,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -891,9 +871,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -918,12 +896,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -953,7 +930,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -964,7 +940,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -986,9 +962,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -1004,9 +980,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1049,9 +1025,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1076,12 +1050,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -1111,7 +1084,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -1122,7 +1094,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -1144,9 +1116,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -1162,9 +1134,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1207,9 +1179,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1234,12 +1204,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -1269,7 +1238,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -1280,7 +1248,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -1302,9 +1270,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -1320,9 +1288,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1365,9 +1333,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1392,12 +1358,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -1427,7 +1392,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -1438,7 +1402,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -1460,9 +1424,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -1478,9 +1442,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1523,9 +1487,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1550,12 +1512,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -1585,7 +1546,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -1596,7 +1556,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -1618,9 +1578,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -1636,9 +1596,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1681,9 +1641,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1708,12 +1666,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -1743,7 +1700,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -1754,7 +1710,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -1776,9 +1732,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -1794,9 +1750,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1839,9 +1795,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1866,12 +1820,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -1901,7 +1854,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -1912,7 +1864,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -1934,9 +1886,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -1952,9 +1904,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -1997,9 +1949,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2024,12 +1974,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -2059,7 +2008,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -2070,7 +2018,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -2092,9 +2040,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -2110,9 +2058,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2155,9 +2103,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2182,12 +2128,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -2217,7 +2162,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -2228,7 +2172,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -2250,9 +2194,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -2268,9 +2212,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2313,9 +2257,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2340,12 +2282,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -2375,7 +2316,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -2386,7 +2326,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -2408,9 +2348,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -2426,9 +2366,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2471,9 +2411,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2498,12 +2436,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -2533,7 +2470,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -2544,7 +2480,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -2566,9 +2502,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -2584,9 +2520,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2629,9 +2565,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2656,12 +2590,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -2691,7 +2624,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -2702,7 +2634,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 	@priority = "4"
@@ -2724,9 +2656,9 @@ definition {
 		}
 
 		task ("Add a WebContent article on new Company") {
-			ProductMenu.gotoPortlet(
-				category = "Content & Data",
-				portlet = "Web Content");
+			WebContentNavigator.openWebContentAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			WebContentNavigator.gotoAddCP();
 
@@ -2742,9 +2674,9 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2787,9 +2719,7 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			ProductMenu.gotoPortlet(
-				category = "Site Builder",
-				portlet = "Pages");
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 
@@ -2814,12 +2744,11 @@ definition {
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
-			/*
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
-				webContentTitle = "WC WebContent Title Default Company");*/
+				webContentTitle = "WC WebContent Title Default Company");
 		}
 
 		task ("New Company publish it's WebContent Article") {
@@ -2849,7 +2778,6 @@ definition {
 
 		// Disable Check on Default company until LPS-116111 is resolved
 
-		/*
 		task ("WebContent Article not repulish on default Company") {
 			SignOut.signOut();
 
@@ -2860,7 +2788,7 @@ definition {
 			WebContentDisplayPortlet.viewContent(
 				webContentContent = "WC WebContent Content Default Company",
 				webContentTitle = "WC WebContent Title Default Company");
-		}*/
+		}
 	}
 
 }
