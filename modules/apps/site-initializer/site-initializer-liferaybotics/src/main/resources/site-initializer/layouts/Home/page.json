@@ -1,0 +1,21 @@
+{
+    "hidden": false,
+    "name_i18n": {
+        "en_US": "Home",
+        "en_GB": "Home"
+
+    },
+    "private": false,
+    "system": false,
+    "type": "content",
+    "typeSettings": [
+        {
+            "key": "layoutUpdateable",
+            "value": "true"
+        },
+        {
+            "key": "published",
+            "value": "true"
+        }
+    ]
+}

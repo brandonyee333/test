@@ -1,0 +1,543 @@
+{
+	"pageElement": {
+		"pageElements": [
+			{
+				"definition": {
+					"fragment": {
+						"key": "masthead"
+					},
+					"fragmentConfig": {},
+					"fragmentFields": [
+						{
+							"id": "mastheadHeadingDescriptionText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								}
+							}
+						},
+						{
+							"id": "mastheadHeadingText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Robotics power the future",
+										"en_US": "Robotics power the future"
+									}
+								}
+							}
+						},
+						{
+							"id": "mastheadLinkEditable",
+							"value": {
+								"fragmentLink": {
+									"value": {
+										"href": {
+											"value": "#about"
+										}
+									},
+									"value_i18n": {}
+								}
+							}
+						}
+					],
+					"fragmentStyle": {
+						"backgroundFragmentImage": {
+							"title": {
+								"value": "headline.png"
+							},
+							"url": {
+								"value": "[$DOCUMENT_URL:/site-initializer/documents/group/headline.png$]"
+							}
+						},
+						"marginBottom": "",
+						"marginLeft": "",
+						"marginRight": "",
+						"marginTop": "",
+						"opacity": "100",
+						"paddingBottom": "",
+						"paddingLeft": "",
+						"paddingRight": "",
+						"paddingTop": "",
+						"textAlign": ""
+					}
+				},
+				"type": "Fragment"
+			},
+			{
+				"definition": {
+					"fragment": {
+						"key": "services"
+					},
+					"fragmentConfig": {},
+					"fragmentFields": [
+						{
+							"id": "servicesHeadingOneText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Online Procurement",
+										"en_US": "Buy online"
+									}
+								}
+							}
+						},
+						{
+							"id": "servicesHeadingThreeText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Keep in control",
+										"en_US": "Knowledge"
+									}
+								}
+							}
+						},
+						{
+							"id": "servicesHeadingFourText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Automation joy",
+										"en_US": "Feedback"
+									}
+								}
+							}
+						},
+						{
+							"id": "servicesHeadingTwoText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "IOT parts reorder",
+										"en_US": "Delivery"
+									}
+								}
+							}
+						},
+						{
+							"id": "servicesParaFourText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Automate so you can concentrate on adding value to your business...",
+										"en_US": "Send us feedback about our stunning range of robotic devices"
+									}
+								}
+							}
+						},
+						{
+							"id": "servicesParaTwoText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Let the bot take the strain with automatic parts reordering...",
+										"en_US": "Learn about our delivery and assembly services"
+									}
+								}
+							}
+						},
+						{
+							"id": "servicesParaThreeText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Get the status of your robots immediately with realtime reports...",
+										"en_US": "Knowledge bases, Wiki, Content, Message boards and more"
+									}
+								}
+							}
+						},
+						{
+							"id": "servicesParaOneText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Procure your equipment with IOT refresh today...",
+										"en_US": "And we promise it won't cost the earth or even a diamond ring"
+									}
+								}
+							}
+						},
+						{
+							"id": "mainHeading",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								}
+							}
+						}
+					],
+					"fragmentStyle": {
+						"backgroundFragmentImage": {},
+						"marginBottom": "",
+						"marginLeft": "",
+						"marginRight": "",
+						"marginTop": "",
+						"opacity": "100",
+						"paddingBottom": "",
+						"paddingLeft": "",
+						"paddingRight": "",
+						"paddingTop": "",
+						"textAlign": ""
+					}
+				},
+				"type": "Fragment"
+			},
+			{
+				"definition": {
+					"fragment": {
+						"key": "call-to-action"
+					},
+					"fragmentConfig": {},
+					"fragmentFields": [
+						{
+							"id": "linkCallToAction",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Click me now",
+										"en_US": "Click for no reason"
+									}
+								}
+							}
+						},
+						{
+							"id": "headingCallToAction",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Robot clicks nice blue banner",
+										"en_US": "Even robots like blue banners"
+									}
+								}
+							}
+						},
+						{
+							"id": "callToActionText",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "In 90 out of 100 tests, robots were proved to prefer clicking blue banners. So click this and enjoy your soylent",
+										"en_US": "Blue banners are fabulous, they draw attention really well. Eight out of ten robots clicked this banner in simulation tests. Maybe you will click it as well, as you drink soylent..."
+									}
+								}
+							}
+						}
+					],
+					"fragmentStyle": {
+						"backgroundFragmentImage": {},
+						"marginBottom": "",
+						"marginLeft": "",
+						"marginRight": "",
+						"marginTop": "",
+						"opacity": "100",
+						"paddingBottom": "",
+						"paddingLeft": "",
+						"paddingRight": "",
+						"paddingTop": "",
+						"textAlign": ""
+					}
+				},
+				"type": "Fragment"
+			},
+			{
+				"definition": {
+					"fragment": {
+						"key": "slider"
+					},
+					"fragmentConfig": {},
+					"fragmentFields": [
+						{
+							"id": "03-01-image",
+							"value": {
+								"fragmentImage": {
+									"description": {
+										"value_i18n": {
+											"en_US": "robotic-arm.png"
+										}
+									},
+									"fragmentImageClassPKReference": {
+										"classPKReferences": {
+											"en_US": {
+												"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+												"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/robotic-arm.png$]"
+											}
+										},
+										"fragmentImageConfiguration": {
+											"landscapeMobile": "auto",
+											"portraitMobile": "auto",
+											"tablet": "auto"
+										}
+									}
+								},
+								"fragmentLink": {
+									"value_i18n": {
+									}
+								}
+							}
+						},
+						{
+							"id": "03-04-button",
+							"value": {
+								"fragmentLink": {
+									"value": {
+										"href": {
+											"value": "#about"
+										}
+									},
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Apologise today",
+										"en_US": "Clap now"
+									}
+								}
+							}
+						},
+						{
+							"id": "01-04-button",
+							"value": {
+								"fragmentLink": {
+									"value": {
+										"href": {
+											"value": "#about"
+										}
+									},
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Sign me up",
+										"en_US": "Get that ROI"
+									}
+								}
+							}
+						},
+						{
+							"id": "02-01-image",
+							"value": {
+								"fragmentImage": {
+									"description": {
+										"value_i18n": {
+											"en_US": "headline.png"
+										}
+									},
+									"fragmentImageClassPKReference": {
+										"classPKReferences": {
+											"en_US": {
+												"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+												"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/headline.png$]"
+											}
+										},
+										"fragmentImageConfiguration": {
+											"landscapeMobile": "auto",
+											"portraitMobile": "auto",
+											"tablet": "auto"
+										}
+									}
+								},
+								"fragmentLink": {
+									"value_i18n": {
+									}
+								}
+							}
+						},
+						{
+							"id": "02-03-subtitle",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Robots are better than you at every task possibly ever conceived, and if you don't believe this to be true then read \"the science\"...",
+										"en_US": "Multi-billionaires promise to share in the spoils automation can bring, allowing you to paint and play golf all on the state..."
+									}
+								}
+							}
+						},
+						{
+							"id": "02-02-title",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Robots are super fast",
+										"en_US": "Robotic Luxury Communism"
+									}
+								}
+							}
+						},
+						{
+							"id": "01-03-subtitle",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Billionaires promise to automate, create obscene profits and pay huge amounts of tax, so you can put your feet up and drink your soylent in peace...",
+										"en_US": "Proven ROI inside one year when compared to the hands of fifty year old ladies..."
+									}
+								}
+							}
+						},
+						{
+							"id": "01-02-title",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Fully Automated Luxury Communism",
+										"en_US": "Packaging solutions"
+									}
+								}
+							}
+						},
+						{
+							"id": "03-03-subtitle",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "Omron is crazy, he can bind 85 teddy eyes a second. Can you bind 10 teddy eyes in a second. Didn't think so. Go and drink your soylent green...",
+										"en_US": "An algorithm will allow our robots to order their own spare parts and consumables. Why even bother turning up to work at all..."
+									}
+								}
+							}
+						},
+						{
+							"id": "01-01-image",
+                            "value": {
+                                "fragmentImage": {
+                                    "description": {
+                                        "value_i18n": {
+                                            "en_US": "sewing.png"
+                                        }
+                                    },
+                                    "fragmentImageClassPKReference": {
+                                        "classPKReferences": {
+                                            "en_US": {
+                                                "className": "com.liferay.portal.kernel.repository.model.FileEntry",
+                                                "classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/sewing.png$]"
+                                            }
+                                        },
+                                        "fragmentImageConfiguration": {
+                                            "landscapeMobile": "auto",
+                                            "portraitMobile": "auto",
+                                            "tablet": "auto"
+                                        }
+                                    }
+                                },
+                                "fragmentLink": {
+                                    "value_i18n": {
+                                    }
+                                }
+                            }
+                        },
+						{
+							"id": "02-04-button",
+							"value": {
+								"fragmentLink": {
+									"value": {
+										"href": {
+											"value": "#about"
+										}
+									},
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "The science",
+										"en_US": "Trust billionaires today"
+									}
+								}
+							}
+						},
+						{
+							"id": "03-02-title",
+							"value": {
+								"fragmentLink": {
+									"value_i18n": {}
+								},
+								"text": {
+									"value_i18n": {
+										"en_GB": "You don't want to get on the wrong side of Omron",
+										"en_US": "Robots fix themselves"
+									}
+								}
+							}
+						}
+					],
+					"fragmentStyle": {
+						"backgroundFragmentImage": {},
+						"marginBottom": "",
+						"marginLeft": "",
+						"marginRight": "",
+						"marginTop": "",
+						"opacity": "100",
+						"paddingBottom": "",
+						"paddingLeft": "",
+						"paddingRight": "",
+						"paddingTop": "",
+						"textAlign": ""
+					}
+				},
+				"type": "Fragment"
+			}
+		],
+		"type": "Root"
+	},
+	"settings": {
+		"colorSchemeName": "01",
+		"themeName": "Dialect",
+		"masterPage": {
+			"key": "liferaybotics---public"
+		}
+	},
+	"version": 1.1
+}
