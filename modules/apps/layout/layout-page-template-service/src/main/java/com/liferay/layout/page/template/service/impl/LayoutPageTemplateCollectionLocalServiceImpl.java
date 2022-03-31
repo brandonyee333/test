@@ -97,7 +97,7 @@ public class LayoutPageTemplateCollectionLocalServiceImpl
 			LayoutPageTemplateCollection layoutPageTemplateCollection)
 		throws PortalException {
 
-		/// Layout page template collection
+		// Layout page template collection
 
 		layoutPageTemplateCollectionPersistence.remove(
 			layoutPageTemplateCollection);
