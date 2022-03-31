@@ -2,19 +2,23 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="EventAttribute.findEventAttributeValuesByEventAttributeDefinitionId">
+	<entry key="BQEventProperty.findEventAttributeValuesByEventAttributeDefinitionId">
 		<![CDATA[
 			SELECT
-				MAX(EventAttribute.eventDate) as lastSeenDate,
-				EventAttribute.value
+				MAX(BQEventProperty.eventDate) as lastSeenDate,
+				BQEventProperty.value
 			FROM
-				EventAttribute
+				BQEventProperty
+			JOIN
+				EventAttributeDefinition
+			ON
+				BQEventProperty.name = EventAttributeDefinition.name
 			WHERE
-				EventAttribute.eventAttributeDefinitionId =
+				EventAttributeDefinition.id =
 					:eventAttributeDefinitionId AND
-				EventAttribute.eventDate >= CURRENT_DATE - INTERVAL '7 days'
+				BQEventProperty.eventDate >= CURRENT_DATE - INTERVAL '7 days'
 			GROUP BY
-				EventAttribute.value
+				BQEventProperty.value
 			ORDER BY
 				lastSeenDate DESC
 			LIMIT

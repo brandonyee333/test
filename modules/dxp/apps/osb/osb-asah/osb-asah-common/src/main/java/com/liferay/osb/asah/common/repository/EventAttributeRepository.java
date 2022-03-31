@@ -14,10 +14,9 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.EventAttribute;
+import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,16 +28,14 @@ import org.springframework.data.repository.query.Param;
  * @author Marcellus Tavares
  */
 public interface EventAttributeRepository
-	extends PagingAndSortingRepository<EventAttribute, Long> {
+	extends PagingAndSortingRepository<BQEventProperty, String> {
 
 	public long countValues(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords);
 
-	public Optional<EventAttribute> findByEventAttributeDefinitionIdAndEventId(
+	public Optional<BQEventProperty> findByEventAttributeDefinitionIdAndEventId(
 		Long eventAttributeDefinitionId, Long eventId);
-
-	public List<EventAttribute> findByEventIdIn(Collection<Long> eventIds);
 
 	public List<EventAttributeValue>
 		findEventAttributeValuesByEventAttributeDefinitionId(

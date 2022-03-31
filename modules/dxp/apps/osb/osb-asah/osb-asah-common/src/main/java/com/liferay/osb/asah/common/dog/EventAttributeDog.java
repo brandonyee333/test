@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.entity.EventAttribute;
+import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.repository.EventAttributeRepository;
 
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventAttributeDog {
 
-	public EventAttribute getEventAttribute(
+	public BQEventProperty getEventAttribute(
 		String attributeName, Long eventId) {
 
 		EventAttributeDefinition eventAttributeDefinition =
@@ -45,7 +45,7 @@ public class EventAttributeDog {
 					attributeName);
 		}
 
-		Optional<EventAttribute> eventAttributeOptional =
+		Optional<BQEventProperty> eventAttributeOptional =
 			_eventAttributeRepository.
 				findByEventAttributeDefinitionIdAndEventId(
 					eventAttributeDefinition.getId(), eventId);
