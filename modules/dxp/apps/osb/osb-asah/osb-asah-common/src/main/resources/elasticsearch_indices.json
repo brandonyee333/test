@@ -21,7 +21,6 @@
 		"groups",
 		"organizations",
 		"roles",
-		"run-logs",
 		"teams",
 		"user-groups",
 		"users"
@@ -40,11 +39,9 @@
 		"membership-changes",
 		"memberships",
 		"organizations",
-		"run-logs",
 		"visited-pages"
 	],
 	"osbasahsalesforceraw": [
-		"audit-events",
-		"run-logs"
+		"audit-events"
 	]
 }
