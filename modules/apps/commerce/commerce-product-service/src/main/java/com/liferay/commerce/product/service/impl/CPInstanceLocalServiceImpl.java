@@ -19,6 +19,7 @@ import com.liferay.commerce.product.exception.CPInstanceDisplayDateException;
 import com.liferay.commerce.product.exception.CPInstanceExpirationDateException;
 import com.liferay.commerce.product.exception.CPInstanceReplacementCPInstanceUuidException;
 import com.liferay.commerce.product.exception.CPInstanceSkuException;
+import com.liferay.commerce.product.exception.CPPriceMaxValueException;
 import com.liferay.commerce.product.exception.NoSuchCPInstanceException;
 import com.liferay.commerce.product.exception.NoSuchSkuContributorCPDefinitionOptionRelException;
 import com.liferay.commerce.product.internal.util.SKUCombinationsIterator;
@@ -1223,6 +1224,8 @@ public class CPInstanceLocalServiceImpl extends CPInstanceLocalServiceBaseImpl {
 			BigDecimal cost, ServiceContext serviceContext)
 		throws PortalException {
 
+		_validatePrice(price, promoPrice, cost);
+
 		CPInstance cpInstance = cpInstancePersistence.findByPrimaryKey(
 			cpInstanceId);
 
@@ -1946,6 +1949,20 @@ public class CPInstanceLocalServiceImpl extends CPInstanceLocalServiceBaseImpl {
 		}
 
 		return cpDefinitionOptionRelIdCPDefinitionOptionValueRelIds;
+	}
+
+	private void _validatePrice(
+			BigDecimal price, BigDecimal promoPrice, BigDecimal cost)
+		throws CPPriceMaxValueException {
+
+		BigDecimal maxValue = BigDecimal.valueOf(999999999.99);
+
+		if ((price.compareTo(maxValue) > 0) ||
+			(promoPrice.compareTo(maxValue) > 0) ||
+			(cost.compareTo(maxValue) > 0)) {
+
+			throw new CPPriceMaxValueException();
+		}
 	}
 
 	private void _validateReplacementCPInstance(

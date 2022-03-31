@@ -27,6 +27,7 @@ import com.liferay.commerce.product.exception.CPDefinitionIgnoreSKUCombinationsE
 import com.liferay.commerce.product.exception.CPInstanceJsonException;
 import com.liferay.commerce.product.exception.CPInstanceReplacementCPInstanceUuidException;
 import com.liferay.commerce.product.exception.CPInstanceSkuException;
+import com.liferay.commerce.product.exception.CPPriceMaxValueException;
 import com.liferay.commerce.product.exception.NoSuchSkuContributorCPDefinitionOptionRelException;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
@@ -124,6 +125,7 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 				throwable instanceof
 					CPInstanceReplacementCPInstanceUuidException ||
 				throwable instanceof CPInstanceSkuException ||
+				throwable instanceof CPPriceMaxValueException ||
 				throwable instanceof
 					NoSuchSkuContributorCPDefinitionOptionRelException) {
 
