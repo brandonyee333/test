@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,8 +25,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
@@ -57,6 +60,25 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 			0, Long.class
 		).orElse(
 			0L
+		);
+	}
+
+	public List<EventDefinition> findByNameIn(Collection<String> names) {
+		Table<Record> eventDefinitionTable = DSL.table("EventDefinition");
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
+			eventDefinitionTable.asterisk());
+
+		return selectSelectStep.from(
+			"EventDefinition"
+		).where(
+			DSL.field(
+				"name"
+			).in(
+				names
+			)
+		).fetch(
+			record -> new EventDefinition(record.intoMap())
 		);
 	}
 

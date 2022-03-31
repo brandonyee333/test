@@ -45,10 +45,10 @@ public interface EventDefinitionRepository
 		String displayName);
 
 	@Cacheable
-	public List<EventDefinition> findByIdIn(Collection<Long> ids);
+	public Optional<EventDefinition> findByName(String name);
 
 	@Cacheable
-	public Optional<EventDefinition> findByName(String name);
+	public List<EventDefinition> findByNameIn(Collection<String> names);
 
 	@Cacheable
 	public List<EventDefinition> searchEventDefinitions(

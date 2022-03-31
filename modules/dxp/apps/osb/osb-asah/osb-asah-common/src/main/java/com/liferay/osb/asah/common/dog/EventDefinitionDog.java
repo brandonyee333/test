@@ -167,18 +167,18 @@ public class EventDefinitionDog {
 				blocked, null, hidden, keyword, type));
 	}
 
-	public Map<Long, EventDefinition> getEventDefinitions(
-		Set<Long> eventDefinitionIds) {
+	public Map<String, EventDefinition> getEventDefinitions(
+		Set<String> eventDefinitionNames) {
 
 		List<EventDefinition> eventDefinitions =
-			_eventDefinitionRepository.findByIdIn(eventDefinitionIds);
+			_eventDefinitionRepository.findByNameIn(eventDefinitionNames);
 
 		Stream<EventDefinition> eventDefinitionsStream =
 			eventDefinitions.stream();
 
 		return eventDefinitionsStream.collect(
 			Collectors.toMap(
-				EventDefinition::getId, eventDefinition -> eventDefinition));
+				EventDefinition::getName, eventDefinition -> eventDefinition));
 	}
 
 	public void hideEventDefinitions(List<Long> eventDefinitionIds) {
@@ -334,9 +334,6 @@ public class EventDefinitionDog {
 	}
 
 	private static final Log _log = LogFactory.getLog(EventDefinitionDog.class);
-
-	@Autowired
-	private EventAttributeDog _eventAttributeDog;
 
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
