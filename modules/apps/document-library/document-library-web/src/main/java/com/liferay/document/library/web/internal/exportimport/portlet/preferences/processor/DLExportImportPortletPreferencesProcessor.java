@@ -109,15 +109,13 @@ public class DLExportImportPortletPreferencesProcessor
 				folder = _dlAppLocalService.getFolder(rootFolderId);
 			}
 			catch (PortalException portalException) {
-				StringBundler sb = new StringBundler(4);
-
-				sb.append("Portlet ");
-				sb.append(portletId);
-				sb.append(" refers to an invalid root folder ID ");
-				sb.append(rootFolderId);
-
 				if (_log.isWarnEnabled()) {
-					_log.warn(sb.toString(), portalException);
+					_log.warn(
+						StringBundler.concat(
+							"Portlet ", portletId,
+							" refers to an invalid root folder ID ",
+							rootFolderId),
+						portalException);
 				}
 			}
 
