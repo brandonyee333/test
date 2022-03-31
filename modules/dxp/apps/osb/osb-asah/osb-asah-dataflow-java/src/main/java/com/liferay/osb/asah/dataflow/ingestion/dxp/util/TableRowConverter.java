@@ -22,6 +22,9 @@ import java.lang.reflect.Field;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,22 +34,22 @@ import org.slf4j.LoggerFactory;
  */
 public class TableRowConverter {
 
-	public static TableRow asTableRow(Object child) {
-		if (null == child) {
+	public static TableRow asTableRow(Object obj) {
+		if (null == obj) {
 			return null;
 		}
 
 		TableRow tableRow = new TableRow();
 
-		Class<?> childClass = child.getClass();
+		Class<?> objClass = obj.getClass();
 
-		Field[] publicFields = childClass.getFields();
+		Field[] fields = objClass.getFields();
 
-		for (Field field : publicFields) {
-			String name = field.getName();
+		for (Field field : fields) {
+			String fieldName = field.getName();
 
 			try {
-				Object value = field.get(child);
+				Object value = field.get(obj);
 
 				Class<?> fieldClass = field.getType();
 
@@ -57,45 +60,64 @@ public class TableRowConverter {
 					fieldClassName.startsWith("java.util.")) {
 
 					if (fieldClassName.equals("java.util.List")) {
-						List<TableRow> tableRows = new ArrayList<>();
-
 						List<?> values = (List)value;
 
-						if (values.isEmpty()) {
-							tableRow.set(name, tableRows);
+						if ((values == null) || values.isEmpty()) {
+							tableRow.set(fieldName, new ArrayList<>());
 						}
 						else {
 							Object item = values.get(0);
 
 							Class<?> itemClass = item.getClass();
 
-							Package itemPackage = itemClass.getPackage();
+							if (itemClass.isAnonymousClass()) {
+								itemClass = itemClass.getSuperclass();
+							}
 
-							String itemPackageName = itemPackage.getName();
+							String itemClassName = itemClass.getName();
 
-							if (itemPackageName.startsWith(_PACKAGE_NAME)) {
-								for (Object listValue : values) {
-									tableRows.add(asTableRow(listValue));
-								}
+							if (itemClassName.startsWith(_PACKAGE_NAME)) {
+								Stream<?> valuesStream = values.stream();
+
+								tableRow.set(
+									fieldName,
+									valuesStream.map(
+										TableRowConverter::asTableRow
+									).collect(
+										Collectors.toList()
+									));
+							}
+							else if (item instanceof Map) {
+								Stream<?> valuesStream = values.stream();
+
+								tableRow.set(
+									fieldName,
+									valuesStream.map(
+										ObjectMapperUtil::writeValueAsString
+									).collect(
+										Collectors.toList()
+									));
 							}
 							else {
-								tableRow.set(name, values);
+								tableRow.set(fieldName, values);
 							}
 						}
 					}
 					else if (fieldClassName.equals("java.util.Map")) {
 						tableRow.set(
-							name, ObjectMapperUtil.writeValueAsString(value));
+							fieldName,
+							ObjectMapperUtil.writeValueAsString(value));
 					}
 					else {
-						tableRow.set(name, value);
+						tableRow.set(fieldName, value);
 					}
 				}
 				else if (fieldClassName.startsWith(_PACKAGE_NAME)) {
-					tableRow.set(name, asTableRow(value));
+					tableRow.set(fieldName, asTableRow(value));
 				}
 				else {
-					_logger.warn("Unknown field class: " + fieldClassName);
+					_logger.warn(
+						String.format("Unknown fieldType: %s", fieldClassName));
 				}
 			}
 			catch (IllegalAccessException illegalAccessException) {
