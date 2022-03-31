@@ -18,15 +18,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.Event;
-import com.liferay.osb.asah.common.entity.EventAttribute;
+import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Alejo Ceballos
@@ -34,36 +29,18 @@ import java.util.stream.Stream;
  */
 @GraphQLType("Event")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class EventDTO {
+public class BQEventDTO {
 
-	public EventDTO(
-		Event event, Map<String, Long> eventAttributeDefinitionIds,
-		String name) {
-
+	public BQEventDTO(BQEvent bqEvent, String name) {
 		_name = name;
 
-		_createDate = event.getCreateDate();
-
-		Set<EventAttribute> eventAttributes = event.getEventAttributes();
-
-		Stream<EventAttribute> eventAttributesStream = eventAttributes.stream();
-
-		Map<Long, String> eventAttributeValues = eventAttributesStream.collect(
-			Collectors.toMap(
-				EventAttribute::getEventAttributeDefinitionId,
-				EventAttribute::getValue));
-
-		_canonicalUrl = eventAttributeValues.get(
-			eventAttributeDefinitionIds.get("canonicalUrl"));
-		_pageDescription = eventAttributeValues.get(
-			eventAttributeDefinitionIds.get("pageDescription"));
-		_pageKeywords = eventAttributeValues.get(
-			eventAttributeDefinitionIds.get("pageKeywords"));
-		_pageTitle = eventAttributeValues.get(
-			eventAttributeDefinitionIds.get("pageTitle"));
-		_referrer = eventAttributeValues.get(
-			eventAttributeDefinitionIds.get("referrer"));
-		_url = eventAttributeValues.get(eventAttributeDefinitionIds.get("url"));
+		_createDate = bqEvent.getCreateDate();
+		_canonicalUrl = bqEvent.getCanonicalUrl();
+		_pageDescription = bqEvent.getDescription();
+		_pageKeywords = bqEvent.getKeywords();
+		_pageTitle = bqEvent.getTitle();
+		_referrer = bqEvent.getReferrer();
+		_url = bqEvent.getUrl();
 	}
 
 	public String getCanonicalUrl() {

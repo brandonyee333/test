@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.Event;
+import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
@@ -31,7 +31,6 @@ import com.liferay.osb.asah.common.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Alejo Ceballos
@@ -43,8 +42,8 @@ import java.util.Map;
 public class UserSessionDTO {
 
 	public UserSessionDTO(
-		Map<String, Long> eventAttributeDefinitionIds,
-		List<Tuple2<Event, EventDefinition>> tuple2s, UserSession userSession) {
+		List<Tuple2<BQEvent, EventDefinition>> tuple2s,
+		UserSession userSession) {
 
 		_browserName = userSession.getBrowserName();
 		_completeDate = userSession.getCompleteDate();
@@ -61,11 +60,17 @@ public class UserSessionDTO {
 		_userAgent = StringUtil.get(userSession.getUserAgent(), "");
 
 		tuple2s.forEach(
-			tuple -> _eventDTOs.add(
-				new EventDTO(
-					tuple.getT1(), eventAttributeDefinitionIds,
+			tuple -> _bqEventDTOs.add(
+				new BQEventDTO(
+					tuple.getT1(),
 					tuple.getT2(
 					).getName())));
+	}
+
+	@GraphQLProperty("events")
+	@JsonProperty("events")
+	public List<BQEventDTO> getBQEventDTOs() {
+		return _bqEventDTOs;
 	}
 
 	public String getBrowserName() {
@@ -108,12 +113,6 @@ public class UserSessionDTO {
 		return _deviceType;
 	}
 
-	@GraphQLProperty("events")
-	@JsonProperty("events")
-	public List<EventDTO> getEventDTOs() {
-		return _eventDTOs;
-	}
-
 	public String getLanguageId() {
 		return _languageId;
 	}
@@ -134,13 +133,13 @@ public class UserSessionDTO {
 		return _userAgent;
 	}
 
+	private final List<BQEventDTO> _bqEventDTOs = new ArrayList<>();
 	private final String _browserName;
 	private final Date _completeDate;
 	private final String _contentLanguageId;
 	private final Date _createDate;
 	private final String _devicePixelRatio;
 	private final String _deviceType;
-	private final List<EventDTO> _eventDTOs = new ArrayList<>();
 	private final String _languageId;
 	private final String _screenHeight;
 	private final String _screenWidth;
