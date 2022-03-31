@@ -45,6 +45,6 @@ public class ProductSpecification implements Serializable {
 	public Long specificationId;
 
 	public String specificationKey;
-	public String value;
+	public Map<String, String> value;
 
 }

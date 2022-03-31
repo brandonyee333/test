@@ -17,6 +17,7 @@ package com.liferay.osb.asah.dataflow.ingestion.dxp.entity;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.beam.sdk.schemas.JavaFieldSchema;
 import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
@@ -29,6 +30,6 @@ public class ProductOption implements Serializable {
 
 	public String key;
 	public String optionKey;
-	public List<String> values;
+	public List<Map<String, String>> values;
 
 }
