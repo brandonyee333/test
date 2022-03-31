@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.dxp.entity;
 
+import java.io.Serializable;
+
 import java.nio.charset.StandardCharsets;
 
 import java.util.HashMap;
@@ -24,7 +26,7 @@ import org.apache.beam.sdk.io.gcp.pubsub.PubsubMessage;
 /**
  * @author Riccardo Ferrari
  */
-public class DXPEntityPubsubMessage {
+public class DXPEntityPubsubMessage implements Serializable {
 
 	public DXPEntityPubsubMessage(PubsubMessage pubsubMessage) {
 		_attributes = new Attributes(pubsubMessage.getAttributeMap());

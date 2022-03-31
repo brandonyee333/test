@@ -24,14 +24,11 @@ import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.FixedDurationOrCoun
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.GCSWriterPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.OrderParserPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.ProductParserPTransform;
+import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.PubsubReaderPTransform;
 
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.PipelineResult;
-import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO;
-import org.apache.beam.sdk.io.gcp.pubsub.PubsubMessage;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
-import org.apache.beam.sdk.transforms.MapElements;
-import org.apache.beam.sdk.transforms.SimpleFunction;
 import org.apache.beam.sdk.transforms.Values;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PCollectionTuple;
@@ -195,24 +192,7 @@ public class DXPCommerceEntitiesIngestionPipeline {
 
 			_pubsubMessages = _pipeline.apply(
 				"Read Pubsub Subscription " + title,
-				PubsubIO.readMessagesWithAttributes(
-				).fromSubscription(
-					subscription
-				)
-			).apply(
-				MapElements.via(
-					new SimpleFunction
-						<PubsubMessage, DXPEntityPubsubMessage>() {
-
-						@Override
-						public DXPEntityPubsubMessage apply(
-							PubsubMessage pubsubMessage) {
-
-							return new DXPEntityPubsubMessage(pubsubMessage);
-						}
-
-					})
-			);
+				new PubsubReaderPTransform(subscription));
 
 			return this;
 		}
