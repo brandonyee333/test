@@ -23,6 +23,8 @@ public class EntitlementConstants {
 
 	public static final String NAME_GOLD_SUBSCRIPTION = "Gold Subscription";
 
+	public static final String NAME_LIFERAY_EMPLOYEE = "Liferay Employee";
+
 	public static final String NAME_LIMITED_SUBSCRIPTION =
 		"Limited Subscription";
 
