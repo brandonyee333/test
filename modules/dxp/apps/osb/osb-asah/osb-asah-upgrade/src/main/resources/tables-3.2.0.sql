@@ -157,6 +157,15 @@ CREATE TABLE IF NOT EXISTS Preference (
 	value TEXT
 );
 
+CREATE TABLE IF NOT EXISTS RunLog (
+	id BIGSERIAL PRIMARY KEY,
+	context JSON,
+	dataSourceId BIGINT,
+	dateLogged TIMESTAMPTZ,
+	naniteClassName TEXT,
+	status TEXT
+);
+
 CREATE TABLE IF NOT EXISTS SalesforceEntity (
 	id TEXT,
 	dataSourceId BIGINT,
