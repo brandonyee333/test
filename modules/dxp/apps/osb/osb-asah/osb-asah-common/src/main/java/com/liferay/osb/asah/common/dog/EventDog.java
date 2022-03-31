@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventDefinition;
@@ -23,10 +24,9 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.model.UserSession;
-import com.liferay.osb.asah.common.repository.EventAttributeRepository;
+import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -95,63 +95,39 @@ public class EventDog {
 	public List<EventAttributeValue> getRecentEventAttributeValues(
 		Long eventAttributeDefinitionId, int size) {
 
-		return _eventAttributeRepository.
+		return _bqEventPropertyRepository.
 			findEventAttributeValuesByEventAttributeDefinitionId(
 				eventAttributeDefinitionId, size);
 	}
 
-	public List<Event> searchEvents(
+	public List<BQEvent> searchEvents(
 		Long channelId, Long individualId, String keywords, int page, int size,
 		TimeRange timeRange) {
 
-		List<Event> events = _eventRepository.searchEvents(
+		return _eventRepository.searchEvents(
 			channelId, individualId, keywords,
 			PageRequest.of(page, size, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			_timeZoneDog.getTimeZoneId());
-
-		Stream<Event> eventsStream = events.stream();
-
-		List<EventAttribute> eventAttributes =
-			_eventAttributeRepository.findByEventIdIn(
-				eventsStream.map(
-					Event::getId
-				).collect(
-					Collectors.toList()
-				));
-
-		Stream<EventAttribute> eventAttributesStream = eventAttributes.stream();
-
-		Map<Long, List<EventAttribute>> eventAttributeMap =
-			eventAttributesStream.collect(
-				Collectors.groupingBy(EventAttribute::getEventId));
-
-		events.forEach(
-			event -> event.setEventAttributes(
-				new HashSet<>(
-					eventAttributeMap.getOrDefault(
-						event.getId(), new ArrayList<>()))));
-
-		return events;
 	}
 
-	public Map<UserSession, List<Tuple2<Event, EventDefinition>>>
+	public Map<UserSession, List<Tuple2<BQEvent, EventDefinition>>>
 		searchEventsGroupByUserSessionId(
 			Long channelId, Long individualId, String keywords, int page,
 			int size, TimeRange timeRange) {
 
-		Set<Long> eventDefinitionIds = new HashSet<>();
+		Set<String> eventDefinitionNames = new HashSet<>();
 
 		Set<String> userSessionIds = new HashSet<>();
 
-		List<Event> events = searchEvents(
+		List<BQEvent> bqEvents = searchEvents(
 			channelId, individualId, keywords, page, size, timeRange);
 
-		events.forEach(
-			event -> {
-				eventDefinitionIds.add(event.getEventDefinitionId());
+		bqEvents.forEach(
+			bqEvent -> {
+				eventDefinitionNames.add(bqEvent.getEventId());
 
-				userSessionIds.add(event.getSessionId());
+				userSessionIds.add(bqEvent.getSessionId());
 			});
 
 		List<UserSession> userSessions = _userSessionDog.findByIds(
@@ -162,14 +138,14 @@ public class EventDog {
 		Map<String, UserSession> userSessionMap = userSessionsStream.collect(
 			Collectors.toMap(UserSession::getId, userSession -> userSession));
 
-		Map<Long, EventDefinition> eventDefinitions =
-			_eventDefinitionDog.getEventDefinitions(eventDefinitionIds);
+		Map<String, EventDefinition> eventDefinitions =
+			_eventDefinitionDog.getEventDefinitions(eventDefinitionNames);
 
-		Stream<Event> eventsStream = events.stream();
+		Stream<BQEvent> bqEventsStream = bqEvents.stream();
 
-		return eventsStream.map(
-			event -> new Tuple2<>(
-				event, eventDefinitions.get(event.getEventDefinitionId()))
+		return bqEventsStream.map(
+			bqEvent -> new Tuple2<>(
+				bqEvent, eventDefinitions.get(bqEvent.getEventId()))
 		).collect(
 			Collectors.groupingBy(
 				tuple -> userSessionMap.get(
@@ -186,7 +162,7 @@ public class EventDog {
 	}
 
 	@Autowired
-	private EventAttributeRepository _eventAttributeRepository;
+	private BQEventPropertyRepository _bqEventPropertyRepository;
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
