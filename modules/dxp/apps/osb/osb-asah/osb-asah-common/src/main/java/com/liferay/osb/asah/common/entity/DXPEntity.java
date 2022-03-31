@@ -105,7 +105,9 @@ public class DXPEntity implements Persistable<Long> {
 
 	@JsonIgnore
 	public String getIdFieldValue() {
-		return _fieldsJSONObject.getString(_type.getIdFieldName());
+		DXPEntity.Type type = getType();
+
+		return String.valueOf(_fieldsJSONObject.get(type.getIdFieldName()));
 	}
 
 	public String getName() {
