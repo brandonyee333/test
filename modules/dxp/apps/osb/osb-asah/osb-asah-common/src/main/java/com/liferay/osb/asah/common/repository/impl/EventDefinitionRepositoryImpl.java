@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.EventDefinition;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -64,6 +65,10 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public List<EventDefinition> findByNameIn(Collection<String> names) {
+		if (names.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		Table<Record> eventDefinitionTable = DSL.table("EventDefinition");
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select(

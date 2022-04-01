@@ -150,7 +150,10 @@ public class EventRepositoryImpl extends BaseRepository {
 	public Optional<BQEvent> findLastSeenEvent(
 		@Nullable Long eventDefinitionId) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+		Table<Record> eventTable = DSL.table("BQEvent");
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
+			eventTable.asterisk());
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
 			"BQEvent");
