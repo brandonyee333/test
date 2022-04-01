@@ -18,9 +18,8 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.entity.EventAttribute;
+import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -62,7 +61,7 @@ public class EventHistogramGraphQLRestControllerTest
 	}
 
 	@BeforeEach
-	public void setUp() {
+	public void setUp() throws Exception {
 		List<EventAttributeDefinition> eventAttributeDefinitions =
 			Arrays.asList(
 				_eventAttributeDefinitionDog.
@@ -98,25 +97,24 @@ public class EventHistogramGraphQLRestControllerTest
 	}
 
 	private void _createEvent(
-		List<EventAttributeDefinition> eventAttributeDefinitions,
-		Date eventDate, String eventDefinitionName) {
-
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName(eventDefinitionName);
+			List<EventAttributeDefinition> eventAttributeDefinitions,
+			Date eventDate, String eventDefinitionName)
+		throws Exception {
 
 		Stream<EventAttributeDefinition> stream =
 			eventAttributeDefinitions.stream();
 
-		_eventDog.addEvent(
-			RandomTestUtil.randomId(), "Page", 1L, eventDate, 1L,
+		_eventDog.addBQEvent(
+			"Page",
 			stream.map(
-				eventAttributeDefinition -> new EventAttribute(
-					null, eventAttributeDefinition.getId(),
+				eventAttributeDefinition -> new BQEventProperty(
+					null, eventDefinitionName,
 					eventAttributeDefinition.getName() + "Value")
 			).collect(
 				Collectors.toSet()
 			),
-			eventDate, eventDefinition.getId(), 1L, "sessionId", "userId");
+			1L, eventDate, 1L, eventDate, eventDefinitionName,
+			RandomTestUtil.randomId(), 1L, "sessionId", "userId");
 	}
 
 	@Autowired

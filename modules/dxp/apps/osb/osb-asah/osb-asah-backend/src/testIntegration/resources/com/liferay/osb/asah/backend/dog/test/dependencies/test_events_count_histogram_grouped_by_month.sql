@@ -1,4 +1,4 @@
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-1d}', (SELECT id FROM EventDefinition WHERE name = 'assetClicked'), 1, '1');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-1d}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '1');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-1d}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '2');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${now-2M}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${now-1d}', 'assetClicked', 1, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${now-1d}', 'blogClicked', 1, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${now-1d}', 'blogClicked', 1, '2');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${now-2M}', 'blogClicked', 1, '1');

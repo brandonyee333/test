@@ -14,18 +14,20 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
+import com.liferay.osb.asah.common.entity.BQEvent;
+import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.Event;
-import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.entity.EventDefinition;
-import com.liferay.osb.asah.common.model.EventAttributeValue;
+import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -35,7 +37,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -52,70 +53,7 @@ public class EventDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Test
-	public void testAddEvent() {
-		Date date = DateUtil.newDayDate();
-
-		Channel channel = _channelDog.addChannel("Test Channel");
-
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
-
-		Event event = _eventDog.addEvent(
-			"analyticsEventId", "Page", channel.getId(), date, 123456L,
-			Collections.emptySet(), date, eventDefinition.getId(), 1L,
-			"sessionId", "abcdef");
-
-		Assertions.assertEquals(
-			"analyticsEventId", event.getAnalyticsEventId());
-		Assertions.assertEquals("Page", event.getApplicationId());
-		Assertions.assertEquals(channel.getId(), event.getChannelId());
-		Assertions.assertEquals(date, event.getCreateDate());
-		Assertions.assertEquals(123456, event.getDataSourceId());
-		Assertions.assertEquals(date, event.getEventDate());
-		Assertions.assertEquals(
-			eventDefinition.getId(), event.getEventDefinitionId());
-		Assertions.assertEquals("sessionId", event.getSessionId());
-		Assertions.assertEquals("abcdef", event.getUserId());
-
-		Assertions.assertNotNull(event.getId());
-	}
-
-	@Test
-	public void testAddEventWithAttribute() {
-		Channel channel = _channelDog.addChannel("Test Channel");
-
-		Date date = DateUtil.newDayDate();
-
-		EventAttributeDefinition eventAttributeDefinition =
-			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
-				"viewDuration");
-
-		EventAttribute eventAttribute = new EventAttribute(
-			null, eventAttributeDefinition.getId(), "987654321");
-
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
-
-		Event event = _eventDog.addEvent(
-			"analyticsEventId", "Page", channel.getId(), date, 1L,
-			Collections.singleton(eventAttribute), date,
-			eventDefinition.getId(), 1L, "sessionId", "abcdef");
-
-		Assertions.assertEquals(
-			eventAttributeDefinition.getId(),
-			eventAttribute.getEventAttributeDefinitionId());
-		Assertions.assertEquals("987654321", eventAttribute.getValue());
-
-		Set<EventAttribute> eventAttributes = event.getEventAttributes();
-
-		Assertions.assertEquals(
-			1, eventAttributes.size(), eventAttributes.toString());
-
-		Assertions.assertNotNull(eventAttribute.getId());
-	}
-
-	@Test
-	public void testGetRecentEventAttributeValues() {
+	public void testGetRecentEventAttributeValues() throws Exception {
 		Date date1 = DateUtil.newDate();
 
 		EventAttributeDefinition eventAttributeDefinition =
@@ -124,123 +62,97 @@ public class EventDogTest
 
 		Channel channel = _channelDog.addChannel("Test Channel");
 
-		Long eventAttributeDefinitionId = eventAttributeDefinition.getId();
+		BQEventProperty bqEventProperty = new BQEventProperty(
+			null, "viewDuration", "testValue1");
 
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
+		bqEventProperty.setEventDate(date1);
 
-		EventAttribute eventAttribute = new EventAttribute(
-			null, eventAttributeDefinitionId, "testValue1");
-
-		eventAttribute.setEventDate(date1);
-
-		_eventDog.addEvent(
-			"analyticsEventId1", "Page", channel.getId(), date1, 1L,
-			Collections.singleton(eventAttribute), date1,
-			eventDefinition.getId(), 1L, "sessionId", "userId");
+		_eventDog.addBQEvent(
+			"Page", Collections.singleton(bqEventProperty), channel.getId(),
+			date1, 1L, date1, "pageUnloaded", "analyticsEventId1", 1L,
+			"sessionId", "userId");
 
 		Date date2 = DateUtil.newDate();
 
-		eventAttribute = new EventAttribute(
-			null, eventAttributeDefinitionId, "testValue2");
+		bqEventProperty = new BQEventProperty(
+			null, "viewDuration", "testValue2");
 
-		eventAttribute.setEventDate(date2);
+		bqEventProperty.setEventDate(date2);
 
-		_eventDog.addEvent(
-			"analyticsEventId2", "Page", channel.getId(), date2, 1L,
-			Collections.singleton(eventAttribute), date2,
-			eventDefinition.getId(), 1L, "sessionId", "userId");
+		_eventDog.addBQEvent(
+			"Page", Collections.singleton(bqEventProperty), channel.getId(),
+			date2, 1L, date2, "pageUnloaded", "analyticsEventId2", 1L,
+			"sessionId", "userId");
 
 		Assertions.assertEquals(
-			new ArrayList<EventAttributeValue>() {
+			new ArrayList<BQEventPropertyValue>() {
 				{
-					add(new EventAttributeValue(date2, "testValue2"));
-					add(new EventAttributeValue(date1, "testValue1"));
+					add(new BQEventPropertyValue(date2, "testValue2"));
+					add(new BQEventPropertyValue(date1, "testValue1"));
 				}
 			},
-			_eventDog.getRecentEventAttributeValues(
+			_eventDog.getRecentEventPropertyValues(
 				eventAttributeDefinition.getId(), 2));
 	}
 
 	@Test
-	public void testSearchEvents() {
+	public void testSearchEvents() throws Exception {
 		Date date = DateUtil.newDayDate();
-
-		EventAttributeDefinition eventAttributeDefinition =
-			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
-				"viewDuration");
 
 		Channel channel = _channelDog.addChannel("Test Channel");
 
-		Long eventAttributeDefinitionId = eventAttributeDefinition.getId();
-
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
-
-		_eventDog.addEvent(
-			"analyticsEventId1", "Page", channel.getId(), date, 1L,
-			new HashSet<EventAttribute>() {
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
 				{
 					add(
-						new EventAttribute(
-							null, eventAttributeDefinitionId, "testValue1"));
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
 					add(
-						new EventAttribute(
-							null, eventAttributeDefinitionId, "testValue2"));
+						new BQEventProperty(
+							null, "viewDuration", "testValue2"));
 				}
 			},
-			date, eventDefinition.getId(), 1L, "sessionId", "userId");
+			channel.getId(), date, 1L, date, "pageViewed", "analyticsEventId1",
+			1L, "sessionId", "userId");
 
-		_eventDog.addEvent(
-			"analyticsEventId2", "Page", channel.getId(), date, 1L,
-			new HashSet<EventAttribute>() {
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
 				{
 					add(
-						new EventAttribute(
-							null, eventAttributeDefinitionId, "testValue1"));
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
 					add(
-						new EventAttribute(
-							null, eventAttributeDefinitionId, "testValue2"));
+						new BQEventProperty(
+							null, "viewDuration", "testValue2"));
 				}
 			},
-			date, eventDefinition.getId(), 1L, "sessionId", "userId");
+			channel.getId(), date, 1L, date, "pageViewed", "analyticsEventId2",
+			1L, "sessionId", "userId");
 
-		List<Event> events = _eventDog.searchEvents(
-			channel.getId(), 1L, null, 0, 50, TimeRange.LAST_24_HOURS);
+		List<BQEvent> bqEvents = _eventDog.searchEvents(
+			channel.getId(), null, null, 0, 50, TimeRange.LAST_24_HOURS);
 
-		Assertions.assertEquals(2, events.size(), events.toString());
+		Assertions.assertEquals(2, bqEvents.size(), bqEvents.toString());
 
-		events.forEach(
-			event -> {
-				Set<EventAttribute> eventAttributes =
-					event.getEventAttributes();
+		bqEvents.forEach(
+			bqEvent -> {
+				try {
+					List<BQEventProperty> bqEventProperties =
+						_objectMapper.readValue(
+							bqEvent.getEventProperties(),
+							new TypeReference<List<BQEventProperty>>() {
+							});
 
-				Assertions.assertEquals(
-					2, eventAttributes.size(), eventAttributes.toString());
+					Assertions.assertEquals(
+						2, bqEventProperties.size(),
+						bqEventProperties.toString());
+				}
+				catch (Exception exception) {
+					Assertions.fail("Could not read event properties");
+				}
 			});
-	}
-
-	@Test
-	public void testUpdateEventsIndividualId() {
-		Date date = DateUtil.newDayDate();
-
-		Channel channel = _channelDog.addChannel("Test Channel");
-
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
-
-		Event originalEvent = _eventDog.addEvent(
-			"analyticsEventId", "Page", channel.getId(), date, 123456L,
-			Collections.emptySet(), date, eventDefinition.getId(), 1L,
-			"sessionId", "abcdef");
-
-		Assertions.assertEquals(1, originalEvent.getIndividualId());
-
-		_eventDog.updateEventsIndividualId(123456L, 2L, "abcdef");
-
-		Event updatedEvent = _eventDog.fetchEvent(originalEvent.getId());
-
-		Assertions.assertEquals(updatedEvent.getIndividualId(), 2);
 	}
 
 	@Autowired
@@ -254,5 +166,8 @@ public class EventDogTest
 
 	@Autowired
 	private EventDog _eventDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

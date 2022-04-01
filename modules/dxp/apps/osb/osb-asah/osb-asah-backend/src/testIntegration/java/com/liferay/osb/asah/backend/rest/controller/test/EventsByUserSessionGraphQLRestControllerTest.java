@@ -18,20 +18,14 @@ import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.EventAttribute;
-import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,26 +57,10 @@ public class EventsByUserSessionGraphQLRestControllerTest
 	}
 
 	@BeforeEach
-	public void setUp() {
-		List<EventAttributeDefinition> eventAttributeDefinitions =
-			Arrays.asList(
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("canonicalUrl"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("pageDescription"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("pageKeywords"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("pageTitle"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("referrer"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("url"));
-
-		_createEvent(eventAttributeDefinitions, "assetClicked", "sessionId1");
-		_createEvent(
-			eventAttributeDefinitions, "assetDownloaded", "sessionId1");
-		_createEvent(eventAttributeDefinitions, "pageViewed", "sessionId2");
+	public void setUp() throws Exception {
+		_createEvent("assetClicked", "sessionId1");
+		_createEvent("assetDownloaded", "sessionId1");
+		_createEvent("pageViewed", "sessionId2");
 
 		_createUserSession(
 			"sessionId1", "2021-10-08T01:00:00.000Z",
@@ -98,26 +76,15 @@ public class EventsByUserSessionGraphQLRestControllerTest
 		_eventRepository.deleteAll();
 	}
 
-	private void _createEvent(
-		List<EventAttributeDefinition> eventAttributeDefinitions,
-		String eventDefinitionName, String sessionId) {
+	private void _createEvent(String eventDefinitionName, String sessionId)
+		throws Exception {
 
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName(eventDefinitionName);
-
-		Stream<EventAttributeDefinition> stream =
-			eventAttributeDefinitions.stream();
-
-		_eventDog.addEvent(
-			RandomTestUtil.randomId(), "Page", 1L, new Date(), 1L,
-			stream.map(
-				eventAttributeDefinition -> new EventAttribute(
-					null, eventAttributeDefinition.getId(),
-					eventAttributeDefinition.getName() + "Value")
-			).collect(
-				Collectors.toSet()
-			),
-			new Date(), eventDefinition.getId(), 1L, sessionId, "userId");
+		_eventDog.addBQEvent(
+			"Page", Collections.emptySet(), null, "canonicalUrlValue", 1L, null,
+			null, null, null, new Date(), 1L, "pageDescriptionValue", null,
+			new Date(), eventDefinitionName, null, RandomTestUtil.randomId(),
+			1L, "pageKeywordsValue", null, null, null, "referrerValue", null,
+			sessionId, null, "pageTitleValue", "urlValue", "userId", null);
 	}
 
 	private void _createUserSession(

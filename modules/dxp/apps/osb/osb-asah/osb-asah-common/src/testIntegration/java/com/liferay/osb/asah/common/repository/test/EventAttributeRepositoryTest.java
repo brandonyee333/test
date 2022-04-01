@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.model.EventAttributeValue;
+import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
@@ -52,27 +52,28 @@ public class EventAttributeRepositoryTest
 		Date date = DateUtil.newDate();
 
 		Assertions.assertEquals(
-			new ArrayList<EventAttributeValue>() {
+			new ArrayList<BQEventPropertyValue>() {
 				{
 					add(
-						new EventAttributeValue(
+						new BQEventPropertyValue(
 							_getExpectedDate(date, -1), "Windshield Wipers"));
 					add(
-						new EventAttributeValue(
+						new BQEventPropertyValue(
 							_getExpectedDate(date, -2), "Wheels"));
 					add(
-						new EventAttributeValue(
+						new BQEventPropertyValue(
 							_getExpectedDate(date, -3), "Plates"));
 					add(
-						new EventAttributeValue(
+						new BQEventPropertyValue(
 							_getExpectedDate(date, -4), "Apples"));
 					add(
-						new EventAttributeValue(
+						new BQEventPropertyValue(
 							_getExpectedDate(date, -6), "Hair Dye"));
 				}
 			},
 			_bqEventPropertyRepository.
-				findEventAttributeValuesByEventAttributeDefinitionId(2001L, 5));
+				findBQEventPropertyValuesByEventAttributeDefinitionId(
+					2001L, 5));
 	}
 
 	@SQLResource(resourcePath = "test_event_attributes_1.sql")
@@ -81,7 +82,7 @@ public class EventAttributeRepositoryTest
 		Assertions.assertEquals(
 			Collections.emptyList(),
 			_bqEventPropertyRepository.
-				findEventAttributeValuesByEventAttributeDefinitionId(
+				findBQEventPropertyValuesByEventAttributeDefinitionId(
 					2001L, 10));
 	}
 

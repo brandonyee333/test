@@ -1,9 +1,9 @@
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${today-2d}', (SELECT id FROM EventDefinition WHERE name = 'assetClicked'), 1, '1');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${today-2d}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '1');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${today-20d}', (SELECT id FROM EventDefinition WHERE name = 'assetDownloaded'), 1, '1');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${today-20d}', (SELECT id FROM EventDefinition WHERE name = 'assetDownloaded'), 1, '2');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${today-20d}', (SELECT id FROM EventDefinition WHERE name = 'assetDownloaded'), 1, '3');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${today-35d}', (SELECT id FROM EventDefinition WHERE name = 'assetClicked'), 1, '2');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${today-10d}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '2');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${today-10d}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '1');
-INSERT INTO Event (channelId, eventDate, eventDefinitionId, individualId, sessionId) VALUES (1, timestamp '${today-10d}', (SELECT id FROM EventDefinition WHERE name = 'blogClicked'), 1, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${today-2d}', 'assetClicked', 1, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${today-2d}', 'blogClicked', 1, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${today-20d}', 'assetDownloaded', 1, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${today-20d}', 'assetDownloaded', 1, '2');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${today-20d}', 'assetDownloaded', 1, '3');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${today-35d}', 'assetClicked', 1, '2');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${today-10d}', 'blogClicked', 1, '2');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${today-10d}', 'blogClicked', 1, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, individualId, sessionId) VALUES (1, timestamp '${today-10d}', 'blogClicked', 1, '1');

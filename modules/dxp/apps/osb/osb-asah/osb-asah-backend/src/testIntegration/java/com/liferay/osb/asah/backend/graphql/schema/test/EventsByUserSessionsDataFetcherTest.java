@@ -16,17 +16,13 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.dto.EventDTO;
+import com.liferay.osb.asah.backend.dto.BQEventDTO;
 import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
 import com.liferay.osb.asah.backend.graphql.schema.EventsByUserSessionsDataFetcher;
-import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.EventAttribute;
-import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.entity.EventDefinition;
+import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.EventRepository;
@@ -62,20 +58,9 @@ public class EventsByUserSessionsDataFetcherTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
-	public void setUp() {
-		EventAttributeDefinition canonicalUrlEventAttributeDefinition =
-			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
-				"canonicalUrl");
-		EventAttributeDefinition viewDurationEventAttributeDefinition =
-			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
-				"viewDuration");
-
-		_createEvent(
-			"assetClicked", canonicalUrlEventAttributeDefinition.getId(),
-			viewDurationEventAttributeDefinition.getId());
-		_createEvent(
-			"assetDownloaded", canonicalUrlEventAttributeDefinition.getId(),
-			viewDurationEventAttributeDefinition.getId());
+	public void setUp() throws Exception {
+		_createEvent("assetClicked");
+		_createEvent("assetDownloaded");
 
 		_cerebroInfoElasticsearchInvoker.add(
 			"user-sessions",
@@ -115,37 +100,29 @@ public class EventsByUserSessionsDataFetcherTest
 
 		Assertions.assertEquals("pt-BR", userSessionDTO.getLanguageId());
 
-		List<EventDTO> eventDTOs = userSessionDTO.getEventDTOs();
+		List<BQEventDTO> bqEventDTOs = userSessionDTO.getBQEventDTOs();
 
-		Assertions.assertEquals(2, eventDTOs.size(), eventDTOs.toString());
+		Assertions.assertEquals(2, bqEventDTOs.size(), bqEventDTOs.toString());
 
-		eventDTOs.forEach(
-			eventDTO -> Assertions.assertEquals(
-				"canonicalUrlValue", eventDTO.getCanonicalUrl()));
+		bqEventDTOs.forEach(
+			bqEventDTO -> Assertions.assertEquals(
+				"canonicalUrlValue", bqEventDTO.getCanonicalUrl()));
 	}
 
-	private void _createEvent(
-		String eventDefinitionName, Long globalEventAttributeDefinitionId,
-		Long localEventAttributeDefinitionId) {
-
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName(eventDefinitionName);
-
-		_eventDog.addEvent(
-			RandomTestUtil.randomId(), "Page", 1L, new Date(), 1L,
-			new HashSet<EventAttribute>() {
+	private void _createEvent(String eventDefinitionName) throws Exception {
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
 				{
 					add(
-						new EventAttribute(
-							null, globalEventAttributeDefinitionId,
-							"canonicalUrlValue"));
-					add(
-						new EventAttribute(
-							null, localEventAttributeDefinitionId,
-							"viewDurationValue"));
+						new BQEventProperty(
+							null, "viewDuration", "viewDurationValue"));
 				}
 			},
-			new Date(), eventDefinition.getId(), 1L, "sessionId", "userId");
+			null, "canonicalUrlValue", 1L, null, null, null, null, new Date(),
+			1L, null, null, new Date(), eventDefinitionName, null,
+			RandomTestUtil.randomId(), 1L, null, null, null, null, null, null,
+			"sessionId", null, null, null, "userId", null);
 	}
 
 	private DataFetchingEnvironment _getDataFetchingEnvironment() {
@@ -168,12 +145,6 @@ public class EventsByUserSessionsDataFetcherTest
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
-	@Autowired
-	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
-
-	@Autowired
-	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
 	private EventDog _eventDog;

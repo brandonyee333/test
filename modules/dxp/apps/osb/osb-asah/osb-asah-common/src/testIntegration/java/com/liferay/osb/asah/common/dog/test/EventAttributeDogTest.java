@@ -21,8 +21,8 @@ import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.EventPropertyDog;
+import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -47,51 +47,46 @@ public class EventAttributeDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Test
-	public void testFindAttributeValuesByRelationshipIdsAndKeywords() {
+	public void testFindAttributeValuesByRelationshipIdsAndKeywords()
+		throws Exception {
+
 		Channel channel = _channelDog.addChannel("Test Channel");
 
 		Date date = DateUtil.newDayDate();
 
+		Set<BQEventProperty> bqEventProperties =
+			new HashSet<BQEventProperty>() {
+				{
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "Event Attribute Value 1"));
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "event attribute value 2"));
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "EVENT ATTRIBUTE VALUE 3"));
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "EvEnT AtTrIbuTe VaLuE 4"));
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "EvEnT AtTrIbuTe VaLuE 1"));
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "A totally different value"));
+				}
+			};
+
+		_eventDog.addBQEvent(
+			"Page", bqEventProperties, channel.getId(), date, 1L, date,
+			"pageUnloaded", "analyticsEventId", 1L, "sessionId", "abcdef");
+
 		EventAttributeDefinition eventAttributeDefinition =
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
 				"viewDuration");
-
-		Set<EventAttribute> eventAttributes = new HashSet<EventAttribute>() {
-			{
-				add(
-					new EventAttribute(
-						null, eventAttributeDefinition.getId(),
-						"Event Attribute Value 1"));
-				add(
-					new EventAttribute(
-						null, eventAttributeDefinition.getId(),
-						"event attribute value 2"));
-				add(
-					new EventAttribute(
-						null, eventAttributeDefinition.getId(),
-						"EVENT ATTRIBUTE VALUE 3"));
-				add(
-					new EventAttribute(
-						null, eventAttributeDefinition.getId(),
-						"EvEnT AtTrIbuTe VaLuE 4"));
-				add(
-					new EventAttribute(
-						null, eventAttributeDefinition.getId(),
-						"EvEnT AtTrIbuTe VaLuE 1"));
-				add(
-					new EventAttribute(
-						null, eventAttributeDefinition.getId(),
-						"A totally different value"));
-			}
-		};
-
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
-
-		_eventDog.addEvent(
-			"analyticsEventId", "Page", channel.getId(), date, 1L,
-			eventAttributes, date, eventDefinition.getId(), 1L, "sessionId",
-			"abcdef");
 
 		Page<String> eventAttributeValuePage =
 			_eventPropertyDog.getEventPropertyValuePage(
@@ -131,12 +126,12 @@ public class EventAttributeDogTest
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
-	private EventPropertyDog _eventPropertyDog;
-
-	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
 	private EventDog _eventDog;
+
+	@Autowired
+	private EventPropertyDog _eventPropertyDog;
 
 }
