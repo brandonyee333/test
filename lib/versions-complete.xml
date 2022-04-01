@@ -20,7 +20,7 @@
 				<file-name>com.liferay.adaptive.media.image.impl.jar!xmpcore.jar</file-name>
 				<version>6.0.6</version>
 				<project-name>XMP Library for Java</project-name>
-				<project-url>http://www.adobe.com/devnet/xmp.html</project-url>
+				<project-url>https://zerowing.corp.adobe.com/display/granite</project-url>
 				<licenses>
 					<license>
 						<license-name>The BSD License</license-name>
@@ -2156,25 +2156,37 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.cas.jar!bcpkix-jdk15on.jar</file-name>
-				<version>1.61</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs</project-name>
-				<project-url>http://www.bouncycastle.org/java.html</project-url>
+				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
 					<license>
 						<license-name>Bouncy Castle Licence</license-name>
-						<license-url>http://www.bouncycastle.org/licence.html</license-url>
+						<license-url>https://www.bouncycastle.org/licence.html</license-url>
 					</license>
 				</licenses>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.cas.jar!bcprov-jdk15on.jar</file-name>
-				<version>1.61</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle Provider</project-name>
-				<project-url>http://www.bouncycastle.org/java.html</project-url>
+				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
 					<license>
 						<license-name>Bouncy Castle Licence</license-name>
-						<license-url>http://www.bouncycastle.org/licence.html</license-url>
+						<license-url>https://www.bouncycastle.org/licence.html</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.portal.security.sso.cas.jar!bcutil-jdk15on.jar</file-name>
+				<version>1.69</version>
+				<project-name>Bouncy Castle ASN.1 Extension and Utility APIs</project-name>
+				<project-url>https://www.bouncycastle.org/java.html</project-url>
+				<licenses>
+					<license>
+						<license-name>Bouncy Castle Licence</license-name>
+						<license-url>https://www.bouncycastle.org/licence.html</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -3405,7 +3417,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.sync.service.jar!bcpg-jdk15on.jar</file-name>
-				<version>1.64</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle OpenPGP API</project-name>
 				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
@@ -3417,7 +3429,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.sync.service.jar!bcpkix-jdk15on.jar</file-name>
-				<version>1.64</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs</project-name>
 				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
@@ -3429,8 +3441,20 @@
 			</library>
 			<library>
 				<file-name>com.liferay.sync.service.jar!bcprov-jdk15on.jar</file-name>
-				<version>1.64</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle Provider</project-name>
+				<project-url>https://www.bouncycastle.org/java.html</project-url>
+				<licenses>
+					<license>
+						<license-name>Bouncy Castle Licence</license-name>
+						<license-url>https://www.bouncycastle.org/licence.html</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.sync.service.jar!bcutil-jdk15on.jar</file-name>
+				<version>1.69</version>
+				<project-name>Bouncy Castle ASN.1 Extension and Utility APIs</project-name>
 				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
 					<license>
@@ -3616,13 +3640,13 @@
 			</library>
 			<library>
 				<file-name>com.liferay.wsrp.service.jar!bcprov-jdk15on.jar</file-name>
-				<version>1.60</version>
+				<version>1.69</version>
 				<project-name>Bouncy Castle Provider</project-name>
-				<project-url>http://www.bouncycastle.org/java.html</project-url>
+				<project-url>https://www.bouncycastle.org/java.html</project-url>
 				<licenses>
 					<license>
 						<license-name>Bouncy Castle Licence</license-name>
-						<license-url>http://www.bouncycastle.org/licence.html</license-url>
+						<license-url>https://www.bouncycastle.org/licence.html</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -6594,7 +6618,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/spring-beans.jar</file-name>
-				<version>4.3.30</version>
+				<version>4.3.30.LIFERAY-PATCHED-1</version>
 				<project-name>Spring</project-name>
 				<project-url>http://www.springframework.org</project-url>
 				<licenses>
