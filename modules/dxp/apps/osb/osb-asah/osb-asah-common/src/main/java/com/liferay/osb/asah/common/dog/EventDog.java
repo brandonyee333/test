@@ -132,13 +132,6 @@ public class EventDog {
 		);
 	}
 
-	public boolean updateEventsIndividualId(
-		Long dataSourceId, Long individualId, String userId) {
-
-		return _eventRepository.updateIndividualIdByDataSourceIdAndUserId(
-			dataSourceId, individualId, userId);
-	}
-
 	@Autowired
 	private BQEventPropertyRepository _bqEventPropertyRepository;
 

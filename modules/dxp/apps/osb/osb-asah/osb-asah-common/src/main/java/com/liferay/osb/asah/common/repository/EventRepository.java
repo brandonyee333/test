@@ -31,9 +31,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 
 /**
@@ -105,11 +103,5 @@ public interface EventRepository
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
-
-	@Modifying
-	public boolean updateIndividualIdByDataSourceIdAndUserId(
-		@Param("dataSourceId") Long dataSourceId,
-		@Param("individualId") Long individualId,
-		@Param("userId") String userId);
 
 }

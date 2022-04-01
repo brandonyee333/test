@@ -422,13 +422,6 @@ public class IndividualNanite implements Nanite {
 		_activityGroupDog.updateActivityGroup(individual.getId(), userId);
 	}
 
-	private void _updateEvents(
-		Long dataSourceId, Individual individual, String userId) {
-
-		_eventDog.updateEventsIndividualId(
-			dataSourceId, individual.getId(), userId);
-	}
-
 	private Individual _updateIndividual(
 			Long channelId, Long dataSourceId, String emailAddressHashed,
 			String userId)
@@ -467,7 +460,6 @@ public class IndividualNanite implements Nanite {
 		}
 
 		_updateActivitiesAndActivityGroups(individual2, userId);
-		_updateEvents(dataSourceId, individual2, userId);
 
 		return individual2;
 	}
