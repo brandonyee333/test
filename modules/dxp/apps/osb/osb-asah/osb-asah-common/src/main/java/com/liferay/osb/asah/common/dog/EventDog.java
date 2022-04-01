@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
-import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -74,7 +74,7 @@ public class EventDog {
 			String userId, String variantId)
 		throws Exception {
 
-		BQEvent bqEvent = _eventRepository.save(
+		BQEvent bqEvent = _bqEventRepository.save(
 			new BQEvent(
 				applicationId, browserName, canonicalUrl, channelId, city,
 				contentLanguageId, context, country, createDate, dataSourceId,
@@ -95,23 +95,24 @@ public class EventDog {
 
 	public long countEvents(Long eventDefinitionId) {
 		if (eventDefinitionId != null) {
-			return _eventRepository.countByEventDefinitionId(eventDefinitionId);
+			return _bqEventRepository.countByEventDefinitionId(
+				eventDefinitionId);
 		}
 
-		return _eventRepository.count();
+		return _bqEventRepository.count();
 	}
 
 	public Integer countEvents(
 		Long channelId, Long individualId, String keywords,
 		TimeRange timeRange) {
 
-		return _eventRepository.countEvents(
+		return _bqEventRepository.countEvents(
 			channelId, individualId, keywords, timeRange.getEndLocalDateTime(),
 			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId());
 	}
 
 	public BQEvent fetchEvent(Long id) {
-		Optional<BQEvent> eventOptional = _eventRepository.findById(id);
+		Optional<BQEvent> eventOptional = _bqEventRepository.findById(id);
 
 		return eventOptional.orElse(null);
 	}
@@ -128,7 +129,7 @@ public class EventDog {
 		Long channelId, Long individualId, String keywords, int page, int size,
 		TimeRange timeRange) {
 
-		return _eventRepository.searchEvents(
+		return _bqEventRepository.searchEvents(
 			channelId, individualId, keywords,
 			PageRequest.of(page, size, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
@@ -182,10 +183,10 @@ public class EventDog {
 	private BQEventPropertyRepository _bqEventPropertyRepository;
 
 	@Autowired
-	private EventDefinitionDog _eventDefinitionDog;
+	private BQEventRepository _bqEventRepository;
 
 	@Autowired
-	private EventRepository _eventRepository;
+	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

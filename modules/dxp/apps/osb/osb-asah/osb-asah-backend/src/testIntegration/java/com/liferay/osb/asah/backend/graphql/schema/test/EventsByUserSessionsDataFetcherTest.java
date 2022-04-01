@@ -25,7 +25,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -74,7 +74,7 @@ public class EventsByUserSessionsDataFetcherTest
 	@AfterEach
 	public void tearDown() throws Exception {
 		_cerebroInfoElasticsearchInvoker.delete("user-sessions", "sessionId");
-		_eventRepository.deleteAll();
+		_bqEventRepository.deleteAll();
 	}
 
 	@Test
@@ -143,14 +143,14 @@ public class EventsByUserSessionsDataFetcherTest
 		return dataFetchingEnvironmentBuilder.build();
 	}
 
+	@Autowired
+	private BQEventRepository _bqEventRepository;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private EventDog _eventDog;
-
-	@Autowired
-	private EventRepository _eventRepository;
 
 	@Autowired
 	private EventsByUserSessionsDataFetcher _eventsByUserSessionsDataFetcher;

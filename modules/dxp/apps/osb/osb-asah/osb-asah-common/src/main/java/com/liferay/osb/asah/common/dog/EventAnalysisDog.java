@@ -28,8 +28,8 @@ import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAnalysisResult;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
-import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahDuplicateNameException;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahNameException;
@@ -369,21 +369,21 @@ public class EventAnalysisDog {
 		TimeRange timeRange) {
 
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
-			return _eventRepository.getAverageEventCountPerIndividual(
+			return _bqEventRepository.getAverageEventCountPerIndividual(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				timeRange.getEndDate(), timeRange.getStartDate(),
 				_timeZoneDog.getTimeZoneId());
 		}
 
 		if (analysisType.equals(AnalysisType.TOTAL)) {
-			return _eventRepository.countTotalEvents(
+			return _bqEventRepository.countTotalEvents(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				timeRange.getEndDate(), timeRange.getStartDate(),
 				_timeZoneDog.getTimeZoneId());
 		}
 
 		if (analysisType.equals(AnalysisType.UNIQUE)) {
-			return _eventRepository.countUniqueIndividuals(
+			return _bqEventRepository.countUniqueIndividuals(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				timeRange.getEndDate(), timeRange.getStartDate(),
 				_timeZoneDog.getTimeZoneId());
@@ -460,7 +460,7 @@ public class EventAnalysisDog {
 		List<BreakdownItem> breakdownItems = _createBreakdownItems(
 			analysisType, channelId, compareToPrevious, eventAnalysisBreakdown,
 			eventAnalysisFilters,
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				analysisType, parentBreakdownItem, channelId,
 				eventAnalysisBreakdown, eventAnalysisFilters, eventDefinitionId,
 				pageable, timeRange.getEndDate(), timeRange.getStartDate(),
@@ -544,7 +544,7 @@ public class EventAnalysisDog {
 			return 1;
 		}
 
-		return _eventRepository.getEventAttributeValuesCount(
+		return _bqEventRepository.getEventAttributeValuesCount(
 			channelId, eventAnalysisBreakdowns.get(0), eventAnalysisFilters,
 			eventDefinitionId, timeRange.getEndDate(), timeRange.getStartDate(),
 			_timeZoneDog.getTimeZoneId());
@@ -617,13 +617,13 @@ public class EventAnalysisDog {
 	private static final Log _log = LogFactory.getLog(EventAnalysisDog.class);
 
 	@Autowired
+	private BQEventRepository _bqEventRepository;
+
+	@Autowired
 	private EventAnalysisRepository _eventAnalysisRepository;
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
-
-	@Autowired
-	private EventRepository _eventRepository;
 
 	private final ExecutorService _executorService =
 		Executors.newFixedThreadPool(4);

@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -73,7 +73,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 	@AfterEach
 	public void tearDown() throws Exception {
 		_cerebroInfoElasticsearchInvoker.delete("user-sessions", "sessionId");
-		_eventRepository.deleteAll();
+		_bqEventRepository.deleteAll();
 	}
 
 	private void _createEvent(String eventDefinitionName, String sessionId)
@@ -120,6 +120,9 @@ public class EventsByUserSessionGraphQLRestControllerTest
 			));
 	}
 
+	@Autowired
+	private BQEventRepository _bqEventRepository;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
@@ -131,8 +134,5 @@ public class EventsByUserSessionGraphQLRestControllerTest
 
 	@Autowired
 	private EventDog _eventDog;
-
-	@Autowired
-	private EventRepository _eventRepository;
 
 }

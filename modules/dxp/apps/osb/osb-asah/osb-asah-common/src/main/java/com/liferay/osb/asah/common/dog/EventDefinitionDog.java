@@ -18,8 +18,8 @@ import com.liferay.osb.asah.common.constants.EventDefinitionConstants;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
-import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Date;
@@ -271,7 +271,7 @@ public class EventDefinitionDog {
 
 	private BQEvent _fetchLastSeenEvent(Long eventDefinitionId) {
 		Optional<BQEvent> lastSeenEventOptional =
-			_eventRepository.findLastSeenEvent(eventDefinitionId);
+			_bqEventRepository.findLastSeenEvent(eventDefinitionId);
 
 		return lastSeenEventOptional.orElse(null);
 	}
@@ -336,9 +336,9 @@ public class EventDefinitionDog {
 	private static final Log _log = LogFactory.getLog(EventDefinitionDog.class);
 
 	@Autowired
-	private EventDefinitionRepository _eventDefinitionRepository;
+	private BQEventRepository _bqEventRepository;
 
 	@Autowired
-	private EventRepository _eventRepository;
+	private EventDefinitionRepository _eventDefinitionRepository;
 
 }

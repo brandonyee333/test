@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 
 import java.time.Clock;
 
@@ -46,7 +46,7 @@ public class EventHistogramDog {
 
 		return _createHistogramBag(
 			EventMetricType.TOTAL_EVENTS, searchQueryContext,
-			_eventRepository.getEventsCountGroupByEventDate(
+			_bqEventRepository.getEventsCountGroupByEventDate(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				Long.valueOf(searchQueryContext.getEntityId()),
 				_getInterval(searchQueryContext),
@@ -63,7 +63,7 @@ public class EventHistogramDog {
 
 		return _createHistogramBag(
 			EventMetricType.TOTAL_SESSIONS, searchQueryContext,
-			_eventRepository.getEventSessionsCountGroupByEventDate(
+			_bqEventRepository.getEventSessionsCountGroupByEventDate(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				Long.valueOf(searchQueryContext.getEntityId()),
 				_getInterval(searchQueryContext),
@@ -110,7 +110,7 @@ public class EventHistogramDog {
 	}
 
 	@Autowired
-	private EventRepository _eventRepository;
+	private BQEventRepository _bqEventRepository;
 
 	@Autowired
 	private MetricHelper _metricHelper;

@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.repository.EventRepository;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -91,7 +91,7 @@ public class EventHistogramGraphQLRestControllerTest
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		_eventRepository.deleteAll();
+		_bqEventRepository.deleteAll();
 
 		TimeZone.setDefault(_timeZone);
 	}
@@ -118,6 +118,9 @@ public class EventHistogramGraphQLRestControllerTest
 	}
 
 	@Autowired
+	private BQEventRepository _bqEventRepository;
+
+	@Autowired
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
@@ -125,9 +128,6 @@ public class EventHistogramGraphQLRestControllerTest
 
 	@Autowired
 	private EventDog _eventDog;
-
-	@Autowired
-	private EventRepository _eventRepository;
 
 	private TimeZone _timeZone;
 

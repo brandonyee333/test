@@ -37,7 +37,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Leslie Wong
  */
-public interface EventRepository
+public interface BQEventRepository
 	extends PagingAndSortingRepository<BQEvent, Long> {
 
 	public long countByEventDefinitionId(long eventDefinitionId);

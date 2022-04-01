@@ -74,9 +74,9 @@ import org.springframework.lang.Nullable;
 /**
  * @author Leslie Wong
  */
-public class EventRepositoryImpl extends BaseRepository {
+public class BQEventRepositoryImpl extends BaseRepository {
 
-	public EventRepositoryImpl(DSLContext dslContext) {
+	public BQEventRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 

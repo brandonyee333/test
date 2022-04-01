@@ -30,8 +30,8 @@ import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
-import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -73,7 +73,7 @@ import org.springframework.data.domain.PageRequest;
  * @author Matthew Kong
  */
 @Import(JDBCTestConfiguration.class)
-public class EventRepositoryTest
+public class BQEventRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -89,7 +89,7 @@ public class EventRepositoryTest
 
 		Assertions.assertEquals(
 			3,
-			_eventRepository.countEvents(
+			_bqEventRepository.countEvents(
 				1L, 1L, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId()));
@@ -102,7 +102,7 @@ public class EventRepositoryTest
 
 		Assertions.assertEquals(
 			1,
-			_eventRepository.countEvents(
+			_bqEventRepository.countEvents(
 				1L, 1L, "form", timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId()));
@@ -113,7 +113,7 @@ public class EventRepositoryTest
 	public void testCountTotalEvents() {
 		Assertions.assertEquals(
 			8L,
-			_eventRepository.countTotalEvents(
+			_bqEventRepository.countTotalEvents(
 				1L,
 				Collections.singletonList(
 					new EventAnalysisFilter(
@@ -132,7 +132,7 @@ public class EventRepositoryTest
 	public void testCountTotalEventsWithTimeZone() {
 		Assertions.assertEquals(
 			6L,
-			_eventRepository.countTotalEvents(
+			_bqEventRepository.countTotalEvents(
 				1L,
 				Collections.singletonList(
 					new EventAnalysisFilter(
@@ -151,7 +151,7 @@ public class EventRepositoryTest
 	public void testCountUniqueIndividuals() {
 		Assertions.assertEquals(
 			6L,
-			_eventRepository.countUniqueIndividuals(
+			_bqEventRepository.countUniqueIndividuals(
 				1L,
 				Collections.singletonList(
 					new EventAnalysisFilter(
@@ -170,7 +170,7 @@ public class EventRepositoryTest
 	public void testCountUniqueIndividualsWithTimeZone() {
 		Assertions.assertEquals(
 			5L,
-			_eventRepository.countUniqueIndividuals(
+			_bqEventRepository.countUniqueIndividuals(
 				1L,
 				Collections.singletonList(
 					new EventAnalysisFilter(
@@ -192,7 +192,7 @@ public class EventRepositoryTest
 		MatcherAssert.assertThat(
 			BigDecimal.valueOf(2),
 			Matchers.comparesEqualTo(
-				_eventRepository.getAverageEventCountPerIndividual(
+				_bqEventRepository.getAverageEventCountPerIndividual(
 					1L,
 					Collections.singletonList(
 						new EventAnalysisFilter(
@@ -214,7 +214,7 @@ public class EventRepositoryTest
 		MatcherAssert.assertThat(
 			BigDecimal.valueOf(1.5),
 			Matchers.comparesEqualTo(
-				_eventRepository.getAverageEventCountPerIndividual(
+				_bqEventRepository.getAverageEventCountPerIndividual(
 					1L,
 					Collections.singletonList(
 						new EventAnalysisFilter(
@@ -232,7 +232,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesAverage() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.AVERAGE, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
@@ -266,7 +266,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesBoolean() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"67890", AttributeType.EVENT, 1,
@@ -292,7 +292,7 @@ public class EventRepositoryTest
 	public void testGetEventAttributeValuesCountBoolean() {
 		Assertions.assertEquals(
 			3,
-			_eventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"67890", AttributeType.EVENT, null,
@@ -309,7 +309,7 @@ public class EventRepositoryTest
 	public void testGetEventAttributeValuesCountDate() {
 		Assertions.assertEquals(
 			5,
-			_eventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, null,
@@ -326,7 +326,7 @@ public class EventRepositoryTest
 	public void testGetEventAttributeValuesCountDateWithTimeZone() {
 		Assertions.assertEquals(
 			2,
-			_eventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, null,
@@ -349,7 +349,7 @@ public class EventRepositoryTest
 	public void testGetEventAttributeValuesCountDuration() {
 		Assertions.assertEquals(
 			6,
-			_eventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"78901", AttributeType.EVENT, 2000,
@@ -366,7 +366,7 @@ public class EventRepositoryTest
 	public void testGetEventAttributeValuesCountNumber() {
 		Assertions.assertEquals(
 			8,
-			_eventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"45678", AttributeType.EVENT, 1,
@@ -383,7 +383,7 @@ public class EventRepositoryTest
 	public void testGetEventAttributeValuesCountString() {
 		Assertions.assertEquals(
 			3,
-			_eventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getEventAttributeValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
@@ -399,7 +399,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesDayGrouping() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
@@ -429,7 +429,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesDayGroupingWithTimeZone() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
@@ -460,7 +460,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesDuration() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"78901", AttributeType.EVENT, 2000,
@@ -491,7 +491,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesMonthGrouping() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
@@ -518,7 +518,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesNullValues() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"78901", AttributeType.EVENT, 10000,
@@ -546,7 +546,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesNumber() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"45678", AttributeType.EVENT, 3,
@@ -574,7 +574,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesTotal() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
@@ -603,7 +603,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesUnique() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.UNIQUE, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
@@ -641,7 +641,7 @@ public class EventRepositoryTest
 					"eq", Collections.singletonList("400"))));
 
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, breakdownItem, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
@@ -670,7 +670,7 @@ public class EventRepositoryTest
 	@Test
 	public void testGetEventAttributeValuesYearGrouping() {
 		Map<Object, Number> eventAttributeValues =
-			_eventRepository.getEventAttributeValues(
+			_bqEventRepository.getEventAttributeValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
@@ -700,7 +700,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
 		Map<String, Integer> eventsCountGroupByEventDate =
-			_eventRepository.getEventsCountGroupByEventDate(
+			_bqEventRepository.getEventsCountGroupByEventDate(
 				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
@@ -727,7 +727,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
 		Map<String, Integer> eventsCountGroupByEventDate =
-			_eventRepository.getEventsCountGroupByEventDate(
+			_bqEventRepository.getEventsCountGroupByEventDate(
 				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
@@ -765,7 +765,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Map<String, Integer> eventsCountGroupByEventDate =
-			_eventRepository.getEventsCountGroupByEventDate(
+			_bqEventRepository.getEventsCountGroupByEventDate(
 				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
@@ -791,7 +791,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Map<String, Integer> eventsCountGroupByEventDate =
-			_eventRepository.getEventsCountGroupByEventDate(
+			_bqEventRepository.getEventsCountGroupByEventDate(
 				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
@@ -820,7 +820,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
-			_eventRepository.getEventSessionsCountGroupByEventDate(
+			_bqEventRepository.getEventSessionsCountGroupByEventDate(
 				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
@@ -848,7 +848,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
-			_eventRepository.getEventSessionsCountGroupByEventDate(
+			_bqEventRepository.getEventSessionsCountGroupByEventDate(
 				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
@@ -887,7 +887,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
-			_eventRepository.getEventSessionsCountGroupByEventDate(
+			_bqEventRepository.getEventSessionsCountGroupByEventDate(
 				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
@@ -914,7 +914,7 @@ public class EventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
-			_eventRepository.getEventSessionsCountGroupByEventDate(
+			_bqEventRepository.getEventSessionsCountGroupByEventDate(
 				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
@@ -941,7 +941,7 @@ public class EventRepositoryTest
 	public void testSearchEventsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		List<BQEvent> events = _eventRepository.searchEvents(
+		List<BQEvent> events = _bqEventRepository.searchEvents(
 			1L, 1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			_timeZoneDog.getTimeZoneId());
@@ -972,7 +972,7 @@ public class EventRepositoryTest
 	public void testSearchEventsWithKeywordsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		List<BQEvent> events = _eventRepository.searchEvents(
+		List<BQEvent> events = _bqEventRepository.searchEvents(
 			1L, 1L, "form", PageRequest.of(0, 50),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			_timeZoneDog.getTimeZoneId());
@@ -1015,10 +1015,10 @@ public class EventRepositoryTest
 	}
 
 	@Autowired
-	private EventDefinitionRepository _eventDefinitionRepository;
+	private BQEventRepository _bqEventRepository;
 
 	@Autowired
-	private EventRepository _eventRepository;
+	private EventDefinitionRepository _eventDefinitionRepository;
 
 	@Autowired
 	private PreferenceDog _preferenceDog;
