@@ -44,50 +44,44 @@ public class TableRowConverter {
 		Class<?> objectClass = object.getClass();
 
 		for (Field field : objectClass.getFields()) {
-			Object fieldValue = _getFieldValue(field, object);
-
-			if (fieldValue != null) {
-				tableRow.set(field.getName(), fieldValue);
+			try {
+				tableRow.set(field.getName(), _getFieldValue(field, object));
+			}
+			catch (Exception exception) {
+				_logger.error(
+					"Unable to convert field " + field.getName(), exception);
 			}
 		}
 
 		return tableRow;
 	}
 
-	private static Object _getFieldValue(Field field, Object object) {
-		try {
-			Object value = field.get(object);
+	private static Object _getFieldValue(Field field, Object object)
+		throws IllegalAccessException {
 
-			Class<?> fieldTypeClass = field.getType();
+		Object value = field.get(object);
 
-			String fieldTypeClassName = fieldTypeClass.getCanonicalName();
+		Class<?> fieldTypeClass = field.getType();
 
-			if (fieldTypeClass.isPrimitive() ||
-				fieldTypeClassName.startsWith("java.lang")) {
+		String fieldTypeClassName = fieldTypeClass.getCanonicalName();
 
-				return value;
-			}
-			else if (fieldTypeClassName.equals("java.util.List")) {
-				return _getFieldValues((List)value);
-			}
-			else if (fieldTypeClassName.equals("java.util.Map")) {
-				return ObjectMapperUtil.writeValueAsString(value);
-			}
-			else if (fieldTypeClassName.startsWith(_PACKAGE_NAME)) {
-				return asTableRow(value);
-			}
-			else {
-				_logger.warn(
-					String.format("Unknown fieldType: %s", fieldTypeClassName));
+		if (fieldTypeClass.isPrimitive() ||
+			fieldTypeClassName.startsWith("java.lang")) {
 
-				return null;
-			}
+			return value;
 		}
-		catch (IllegalAccessException illegalAccessException) {
-			_logger.error(
-				illegalAccessException.getMessage(), illegalAccessException);
-
-			return null;
+		else if (fieldTypeClassName.equals("java.util.List")) {
+			return _getFieldValues((List)value);
+		}
+		else if (fieldTypeClassName.equals("java.util.Map")) {
+			return ObjectMapperUtil.writeValueAsString(value);
+		}
+		else if (fieldTypeClassName.startsWith(_PACKAGE_NAME)) {
+			return asTableRow(value);
+		}
+		else {
+			throw new IllegalStateException(
+				"Unknown field type class name " + fieldTypeClassName);
 		}
 	}
 
