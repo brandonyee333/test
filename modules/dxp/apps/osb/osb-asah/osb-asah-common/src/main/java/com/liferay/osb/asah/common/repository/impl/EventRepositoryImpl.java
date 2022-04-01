@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQEvent;
-import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
@@ -317,7 +316,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
 		Field<OffsetDateTime> eventDateField = DSL.field(
-			String.format("Event.eventDate AT TIME ZONE '%s'", timeZoneId),
+			String.format("BQEvent.eventDate AT TIME ZONE '%s'", timeZoneId),
 			OffsetDateTime.class);
 
 		if (interval == Interval.DAY) {
@@ -335,21 +334,17 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		eventDateField = eventDateField.as("eventDate");
 
-		SelectSelectStep<Record2<OffsetDateTime, Integer>> selectSelectStep =
-			_dslContext.select(eventDateField, DSL.count());
+		SelectJoinStep<Record2<OffsetDateTime, Integer>> selectJoinStep =
+			_dslContext.select(
+				eventDateField, DSL.count()
+			).from(
+				"BQEvent"
+			);
+
+		selectJoinStep = _joinEventDefinitionTable(selectJoinStep);
 
 		return _toMap(
-			selectSelectStep.from(
-				"Event"
-			).innerJoin(
-				DSL.table("EventDefinition")
-			).on(
-				DSL.field(
-					"EventDefinition.id"
-				).eq(
-					DSL.field("Event.eventDefinitionId")
-				)
-			).where(
+			selectJoinStep.where(
 				_createCondition(
 					channelId, individualId, keywords, rangeEndLocalDateTime,
 					rangeStartLocalDateTime, timeZoneId)
@@ -390,14 +385,14 @@ public class EventRepositoryImpl extends BaseRepository {
 			).from(
 				DSL.table(
 					selectSelectStep.from(
-						"Event"
+						"BQEvent"
 					).innerJoin(
 						DSL.table("EventDefinition")
 					).on(
 						DSL.field(
-							"Event.eventDefinitionId"
+							"BQEvent.eventId"
 						).eq(
-							DSL.field("EventDefinition.id")
+							DSL.field("EventDefinition.name")
 						)
 					).where(
 						_createCondition(
@@ -415,12 +410,12 @@ public class EventRepositoryImpl extends BaseRepository {
 			));
 	}
 
-	public List<Event> searchEvents(
+	public List<BQEvent> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		Table<Record> eventTable = DSL.table("Event");
+		Table<Record> eventTable = DSL.table("BQEvent");
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
 			eventTable.asterisk());
@@ -431,9 +426,9 @@ public class EventRepositoryImpl extends BaseRepository {
 			DSL.table("EventDefinition")
 		).on(
 			DSL.field(
-				"Event.eventDefinitionId"
+				"BQEvent.eventId"
 			).eq(
-				DSL.field("EventDefinition.id")
+				DSL.field("EventDefinition.name")
 			)
 		).where(
 			_createCondition(
@@ -446,7 +441,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		).offset(
 			pageable.getOffset()
 		).fetch(
-			record -> new Event(record.intoMap())
+			record -> new BQEvent(record.intoMap())
 		);
 	}
 
@@ -549,12 +544,12 @@ public class EventRepositoryImpl extends BaseRepository {
 
 		Condition condition = DSL.and(
 			DSL.field(
-				"Event.channelId"
+				"BQEvent.channelId"
 			).eq(
 				channelId
 			),
 			DSL.field(
-				"Event.eventDate"
+				"BQEvent.eventDate"
 			).between(
 				DateUtil.toUTCLocalDateTime(
 					rangeStartLocalDateTime, ZoneId.of(timeZoneId)),
@@ -569,40 +564,50 @@ public class EventRepositoryImpl extends BaseRepository {
 			condition = DSL.and(
 				condition,
 				DSL.field(
-					"Event.individualId"
+					"BQEvent.individualId"
 				).eq(
 					individualId
 				));
 		}
 
 		if (!StringUtils.isEmpty(keyword)) {
-			condition = condition.and(
-				DSL.or(
+			Condition keywordCondition = DSL.or(
+				DSL.field(
+					"EventDefinition.name"
+				).containsIgnoreCase(
+					keyword
+				),
+				DSL.exists(
+					DSL.select(
+						DSL.field("id")
+					).from(
+						DSL.table(
+							"BQEventProperty"
+						).where(
+							DSL.and(
+								DSL.field(
+									"BQEventProperty.id"
+								).eq(
+									DSL.field("BQEvent.id")
+								)),
+							DSL.field(
+								"BQEventProperty.value"
+							).containsIgnoreCase(
+								keyword
+							)
+						)
+					)));
+
+			for (String globalAttribute : _globalAttributes.values()) {
+				keywordCondition = keywordCondition.or(
 					DSL.field(
-						"EventDefinition.name"
+						"BQEvent." + globalAttribute
 					).containsIgnoreCase(
 						keyword
-					),
-					DSL.exists(
-						DSL.select(
-							DSL.field("id")
-						).from(
-							DSL.table(
-								"EventAttribute"
-							).where(
-								DSL.and(
-									DSL.field(
-										"EventAttribute.eventId"
-									).eq(
-										DSL.field("Event.id")
-									)),
-								DSL.field(
-									"EventAttribute.value"
-								).containsIgnoreCase(
-									keyword
-								)
-							)
-						))));
+					));
+			}
+
+			condition = condition.and(keywordCondition);
 		}
 
 		return condition;
@@ -833,7 +838,7 @@ public class EventRepositoryImpl extends BaseRepository {
 		Long individualId, String keywords, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		Table<Record> eventTable = DSL.table("Event");
+		Table<Record> eventTable = DSL.table("BQEvent");
 
 		SelectSelectStep<Record1<Integer>> selectCount = _dslContext.select(
 			countAggregateFunction);
@@ -844,9 +849,9 @@ public class EventRepositoryImpl extends BaseRepository {
 			DSL.table("EventDefinition")
 		).on(
 			DSL.field(
-				"Event.eventDefinitionId"
+				"BQEvent.eventId"
 			).eq(
-				DSL.field("EventDefinition.id")
+				DSL.field("EventDefinition.name")
 			)
 		).where(
 			_createCondition(

@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQEvent;
-import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
@@ -41,7 +40,7 @@ import org.springframework.lang.Nullable;
  * @author Leslie Wong
  */
 public interface EventRepository
-	extends PagingAndSortingRepository<Event, Long> {
+	extends PagingAndSortingRepository<BQEvent, Long> {
 
 	public long countByEventDefinitionId(long eventDefinitionId);
 
@@ -102,7 +101,7 @@ public interface EventRepository
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
-	public List<Event> searchEvents(
+	public List<BQEvent> searchEvents(
 		Long channelId, Long individualId, String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
