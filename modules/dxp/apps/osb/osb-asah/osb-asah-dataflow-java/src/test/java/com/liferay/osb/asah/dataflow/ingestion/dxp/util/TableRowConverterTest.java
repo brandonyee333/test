@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -38,21 +37,30 @@ import org.junit.jupiter.api.Test;
 public class TableRowConverterTest {
 
 	@Test
-	public void testList() {
-		TestEntity testEntity = _getTestEntity(false);
+	public void testIntegerFieldType() {
+		TestEntity testEntity = _newTestEntity(false);
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
-		Object strings = tableRow.get("strings");
-
-		Assertions.assertInstanceOf(List.class, strings);
-
-		Assertions.assertLinesMatch(testEntity.strings, (List)strings);
+		Assertions.assertEquals(testEntity.integer, tableRow.get("integer"));
 	}
 
 	@Test
-	public void testMap() {
-		TestEntity testEntity = _getTestEntity(false);
+	public void testListFieldType() {
+		TestEntity testEntity = _newTestEntity(false);
+
+		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
+
+		Object stringList = tableRow.get("stringList");
+
+		Assertions.assertInstanceOf(List.class, stringList);
+
+		Assertions.assertLinesMatch(testEntity.stringList, (List)stringList);
+	}
+
+	@Test
+	public void testMapFieldType() {
+		TestEntity testEntity = _newTestEntity(false);
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
@@ -65,22 +73,22 @@ public class TableRowConverterTest {
 	}
 
 	@Test
-	public void testMapList() {
-		TestEntity testEntity = _getTestEntity(false);
+	public void testMapListFieldType() {
+		TestEntity testEntity = _newTestEntity(false);
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
 		List<String> expectedResult = new ArrayList<>();
 
-		for (Map<String, String> map : testEntity.maps) {
+		for (Map<String, String> map : testEntity.mapList) {
 			expectedResult.add(ObjectMapperUtil.writeValueAsString(map));
 		}
 
-		Object maps = tableRow.get("maps");
+		Object mapList = tableRow.get("mapList");
 
-		Assertions.assertInstanceOf(List.class, maps);
+		Assertions.assertInstanceOf(List.class, mapList);
 
-		List<String> mapStrings = (List)maps;
+		List<String> mapStrings = (List)mapList;
 
 		Assertions.assertArrayEquals(
 			expectedResult.toArray(new String[0]),
@@ -88,8 +96,8 @@ public class TableRowConverterTest {
 	}
 
 	@Test
-	public void testNestedEntity() {
-		TestEntity testEntity = _getTestEntity(true);
+	public void testNestedEntityFieldType() {
+		TestEntity testEntity = _newTestEntity(true);
 
 		TestEntity nestedTestEntity = testEntity.testEntity;
 
@@ -106,55 +114,49 @@ public class TableRowConverterTest {
 	}
 
 	@Test
-	public void testNestedEntityList() {
-		TestEntity testEntity = _getTestEntity(true);
-
-		List<TestEntity> testEntities = testEntity.testEntities;
-
-		Stream<TestEntity> testEntityStream = testEntities.stream();
-
-		List<TableRow> expectedTableRowEntities = testEntityStream.map(
-			TableRowConverter::asTableRow
-		).collect(
-			Collectors.toList()
-		);
+	public void testNestedEntityListFieldType() {
+		TestEntity testEntity = _newTestEntity(true);
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
-		Object testEntitiesTableRow = tableRow.get("testEntities");
+		Object testEntitiesTableRows = tableRow.get("testEntityList");
 
-		Assertions.assertInstanceOf(List.class, testEntitiesTableRow);
+		Assertions.assertInstanceOf(List.class, testEntitiesTableRows);
 
-		List<TableRow> tableRows = (List)testEntitiesTableRow;
+		List<TableRow> tableRows = (List)testEntitiesTableRows;
+
+		Stream<TestEntity> testEntityStream =
+			testEntity.testEntityList.stream();
 
 		Assertions.assertArrayEquals(
-			expectedTableRowEntities.toArray(new TableRow[0]),
+			testEntityStream.map(
+				TableRowConverter::asTableRow
+			).toArray(
+				TableRow[]::new
+			),
 			tableRows.toArray(new TableRow[0]));
 	}
 
 	@Test
-	public void testObject() {
-		TestEntity testEntity = _getTestEntity(false);
-
-		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
-
-		Assertions.assertEquals(testEntity.integer, tableRow.get("integer"));
-
-		Assertions.assertEquals(testEntity.text, tableRow.get("text"));
-	}
-
-	@Test
-	public void testPrimitive() {
-		TestEntity testEntity = _getTestEntity(false);
+	public void testPrimitiveFieldType() {
+		TestEntity testEntity = _newTestEntity(false);
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
 		Assertions.assertEquals(testEntity.bool, tableRow.get("bool"));
-
 		Assertions.assertEquals(testEntity.number, tableRow.get("number"));
 	}
 
-	private TestEntity _getTestEntity(boolean includeNested) {
+	@Test
+	public void testStringFieldType() {
+		TestEntity testEntity = _newTestEntity(false);
+
+		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
+
+		Assertions.assertEquals(testEntity.string, tableRow.get("string"));
+	}
+
+	private TestEntity _newTestEntity(boolean includeNested) {
 		return new TestEntity() {
 			{
 				bool = RandomUtils.nextBoolean();
@@ -169,7 +171,7 @@ public class TableRowConverterTest {
 					}
 				};
 
-				maps = new ArrayList<Map<String, String>>() {
+				mapList = new ArrayList<Map<String, String>>() {
 					{
 						add(map);
 						add(map);
@@ -178,7 +180,9 @@ public class TableRowConverterTest {
 
 				number = RandomUtils.nextLong();
 
-				strings = new ArrayList<String>() {
+				string = RandomStringUtils.randomAlphanumeric(8);
+
+				stringList = new ArrayList<String>() {
 					{
 						add(RandomStringUtils.randomAlphanumeric(8));
 						add(RandomStringUtils.randomAlphanumeric(8));
@@ -187,17 +191,15 @@ public class TableRowConverterTest {
 				};
 
 				if (includeNested) {
-					testEntity = _getTestEntity(false);
+					testEntity = _newTestEntity(false);
 
-					testEntities = new ArrayList<TestEntity>() {
+					testEntityList = new ArrayList<TestEntity>() {
 						{
-							add(_getTestEntity(false));
-							add(_getTestEntity(false));
+							add(_newTestEntity(false));
+							add(_newTestEntity(false));
 						}
 					};
 				}
-
-				text = RandomStringUtils.randomAlphanumeric(8);
 			}
 		};
 	}

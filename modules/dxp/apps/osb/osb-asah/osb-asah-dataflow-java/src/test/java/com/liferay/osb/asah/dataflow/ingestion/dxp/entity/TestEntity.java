@@ -27,11 +27,11 @@ public class TestEntity implements Serializable {
 	public boolean bool;
 	public Integer integer;
 	public Map<String, String> map;
-	public List<Map<String, String>> maps;
+	public List<Map<String, String>> mapList;
 	public long number;
-	public List<String> strings;
-	public List<TestEntity> testEntities;
+	public String string;
+	public List<String> stringList;
 	public TestEntity testEntity;
-	public String text;
+	public List<TestEntity> testEntityList;
 
 }
