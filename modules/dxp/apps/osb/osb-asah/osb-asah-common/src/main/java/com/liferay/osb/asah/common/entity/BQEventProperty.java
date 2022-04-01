@@ -32,6 +32,18 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class BQEventProperty implements Persistable<String> {
 
+	public BQEventProperty() {
+	}
+
+	public BQEventProperty(Date eventDate, String name, String value) {
+		if (eventDate != null) {
+			_eventDate = new Date(eventDate.getTime());
+		}
+
+		_name = name;
+		_value = value;
+	}
+
 	public BQEventProperty(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
 	}

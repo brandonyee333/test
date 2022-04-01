@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
+import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.model.Sort;
@@ -25,6 +28,7 @@ import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +46,52 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EventDog {
+
+	public BQEvent addBQEvent(
+			String applicationId, Set<BQEventProperty> bqEventProperties,
+			Long channelId, Date createDate, Long dataSourceId, Date eventDate,
+			String eventId, String id, Long individualId, String sessionId,
+			String userId)
+		throws Exception {
+
+		return addBQEvent(
+			applicationId, bqEventProperties, null, null, channelId, null, null,
+			null, null, createDate, dataSourceId, null, null, eventDate,
+			eventId, null, id, individualId, null, null, null, null, null, null,
+			sessionId, null, null, null, userId, null);
+	}
+
+	public BQEvent addBQEvent(
+			String applicationId, Set<BQEventProperty> bqEventProperties,
+			String browserName, String canonicalUrl, Long channelId,
+			String city, String contentLanguageId, String context,
+			String country, Date createDate, Long dataSourceId,
+			String description, String deviceType, Date eventDate,
+			String eventId, String experienceId, String id, Long individualId,
+			String keywords, String languageId, String platformName,
+			String projectTimeZoneId, String referrer, String region,
+			String sessionId, String timezoneOffset, String title, String url,
+			String userId, String variantId)
+		throws Exception {
+
+		BQEvent bqEvent = _eventRepository.save(
+			new BQEvent(
+				applicationId, browserName, canonicalUrl, channelId, city,
+				contentLanguageId, context, country, createDate, dataSourceId,
+				description, deviceType, eventDate, eventId,
+				_objectMapper.writeValueAsString(bqEventProperties),
+				experienceId, id, individualId, keywords, languageId,
+				platformName, projectTimeZoneId, referrer, region, sessionId,
+				timezoneOffset, title, url, userId, variantId));
+
+		for (BQEventProperty bqEventProperty : bqEventProperties) {
+			bqEventProperty.setId(bqEvent.getId());
+
+			_bqEventPropertyRepository.save(bqEventProperty);
+		}
+
+		return bqEvent;
+	}
 
 	public long countEvents(Long eventDefinitionId) {
 		if (eventDefinitionId != null) {
@@ -140,6 +190,9 @@ public class EventDog {
 
 	@Autowired
 	private EventRepository _eventRepository;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
