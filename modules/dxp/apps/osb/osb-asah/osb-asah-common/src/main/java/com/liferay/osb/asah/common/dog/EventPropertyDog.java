@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.repository.EventAttributeRepository;
+import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 
 import java.util.Optional;
 
@@ -30,9 +30,9 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class EventAttributeDog {
+public class EventPropertyDog {
 
-	public BQEventProperty getEventAttribute(
+	public BQEventProperty getEventProperty(
 		String attributeName, Long eventId) {
 
 		EventAttributeDefinition eventAttributeDefinition =
@@ -46,7 +46,7 @@ public class EventAttributeDog {
 		}
 
 		Optional<BQEventProperty> eventAttributeOptional =
-			_eventAttributeRepository.
+			_bqEventPropertyRepository.
 				findByEventAttributeDefinitionIdAndEventId(
 					eventAttributeDefinition.getId(), eventId);
 
@@ -57,24 +57,24 @@ public class EventAttributeDog {
 					attributeName, eventId)));
 	}
 
-	public Page<String> getEventAttributeValuePage(
+	public Page<String> getEventPropertyValuePage(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Integer size, Integer start) {
 
 		PageRequest pageRequest = PageRequest.of(start, size);
 
 		return PageableExecutionUtils.getPage(
-			_eventAttributeRepository.searchValues(
+			_bqEventPropertyRepository.searchValues(
 				channelId, eventAttributeDefinitionId, eventDefinitionId,
 				keywords, pageRequest),
 			pageRequest,
-			() -> _eventAttributeRepository.countValues(
+			() -> _bqEventPropertyRepository.countValues(
 				channelId, eventAttributeDefinitionId, eventDefinitionId,
 				keywords));
 	}
 
 	@Autowired
-	private EventAttributeRepository _eventAttributeRepository;
+	private BQEventPropertyRepository _bqEventPropertyRepository;
 
 	@Autowired
 	private EventAttributeDefinitionDog _eventAttributionDefinitionDog;

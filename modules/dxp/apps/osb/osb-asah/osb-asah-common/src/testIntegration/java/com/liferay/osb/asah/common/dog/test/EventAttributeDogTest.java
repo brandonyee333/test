@@ -18,9 +18,9 @@ import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventAttributeDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
+import com.liferay.osb.asah.common.dog.EventPropertyDog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
@@ -94,7 +94,7 @@ public class EventAttributeDogTest
 			"abcdef");
 
 		Page<String> eventAttributeValuePage =
-			_eventAttributeDog.getEventAttributeValuePage(
+			_eventPropertyDog.getEventPropertyValuePage(
 				channel.getId(), eventAttributeDefinition.getId(),
 				eventDefinition.getId(), "Attribute Value", 100, 0);
 
@@ -113,7 +113,7 @@ public class EventAttributeDogTest
 			Assertions.assertTrue(eventAttributeValues.contains(value));
 		}
 
-		eventAttributeValuePage = _eventAttributeDog.getEventAttributeValuePage(
+		eventAttributeValuePage = _eventPropertyDog.getEventPropertyValuePage(
 			channel.getId(), eventAttributeDefinition.getId(),
 			eventDefinition.getId(), "Attribute Value", 3, 1);
 
@@ -131,7 +131,7 @@ public class EventAttributeDogTest
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
-	private EventAttributeDog _eventAttributeDog;
+	private EventPropertyDog _eventPropertyDog;
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;

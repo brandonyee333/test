@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
-import com.liferay.osb.asah.common.repository.EventAttributeRepository;
+import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -48,7 +48,7 @@ public class EventAttributeRepositoryTest
 
 	@SQLResource(resourcePath = "test_event_attributes.sql")
 	@Test
-	public void testfindEventAttributeValuesByEventAttributeDefinitionId() {
+	public void testFindEventAttributeValuesByEventAttributeDefinitionId() {
 		Date date = DateUtil.newDate();
 
 		Assertions.assertEquals(
@@ -71,16 +71,16 @@ public class EventAttributeRepositoryTest
 							_getExpectedDate(date, -6), "Hair Dye"));
 				}
 			},
-			_eventAttributeRepository.
+			_bqEventPropertyRepository.
 				findEventAttributeValuesByEventAttributeDefinitionId(2001L, 5));
 	}
 
 	@SQLResource(resourcePath = "test_event_attributes_1.sql")
 	@Test
-	public void testfindEventAttributeValuesByEventAttributeDefinitionIdNoMatchingValues() {
+	public void testFindEventAttributeValuesByEventAttributeDefinitionIdNoMatchingValues() {
 		Assertions.assertEquals(
 			Collections.emptyList(),
-			_eventAttributeRepository.
+			_bqEventPropertyRepository.
 				findEventAttributeValuesByEventAttributeDefinitionId(
 					2001L, 10));
 	}
@@ -88,7 +88,7 @@ public class EventAttributeRepositoryTest
 	@SQLResource(resourcePath = "test_event_attributes_2.sql")
 	@Test
 	public void testsearchValues() {
-		List<String> values = _eventAttributeRepository.searchValues(
+		List<String> values = _bqEventPropertyRepository.searchValues(
 			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 100));
 
 		Assertions.assertEquals(4, values.size());
@@ -101,19 +101,19 @@ public class EventAttributeRepositoryTest
 			Assertions.assertTrue(values.contains(value));
 		}
 
-		values = _eventAttributeRepository.searchValues(
+		values = _bqEventPropertyRepository.searchValues(
 			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 3));
 
 		Assertions.assertEquals(3, values.size());
 
-		values = _eventAttributeRepository.searchValues(
+		values = _bqEventPropertyRepository.searchValues(
 			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(1, 3));
 
 		Assertions.assertEquals(1, values.size());
 
 		Assertions.assertEquals(
 			4,
-			_eventAttributeRepository.countValues(
+			_bqEventPropertyRepository.countValues(
 				1L, 3001L, 3002L, "Attribute Value"));
 	}
 
@@ -133,6 +133,6 @@ public class EventAttributeRepositoryTest
 	}
 
 	@Autowired
-	private EventAttributeRepository _eventAttributeRepository;
+	private BQEventPropertyRepository _bqEventPropertyRepository;
 
 }

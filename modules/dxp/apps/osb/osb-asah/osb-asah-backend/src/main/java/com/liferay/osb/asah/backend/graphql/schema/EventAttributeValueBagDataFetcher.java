@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.common.dog.EventAttributeDog;
+import com.liferay.osb.asah.common.dog.EventPropertyDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.ResultBag;
 
@@ -37,8 +37,8 @@ public class EventAttributeValueBagDataFetcher
 	public ResultBag<String> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Page<String> eventAttributeValuePage =
-			_eventAttributeDog.getEventAttributeValuePage(
+		Page<String> eventPropertyValuePage =
+			_eventPropertyDog.getEventPropertyValuePage(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				Long.valueOf(
 					dataFetchingEnvironment.getArgument(
@@ -50,11 +50,11 @@ public class EventAttributeValueBagDataFetcher
 				dataFetchingEnvironment.getArgument("start"));
 
 		return new ResultBag<>(
-			eventAttributeValuePage.getContent(),
-			eventAttributeValuePage.getTotalElements());
+			eventPropertyValuePage.getContent(),
+			eventPropertyValuePage.getTotalElements());
 	}
 
 	@Autowired
-	private EventAttributeDog _eventAttributeDog;
+	private EventPropertyDog _eventPropertyDog;
 
 }

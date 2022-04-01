@@ -27,7 +27,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Marcellus Tavares
  */
-public interface EventAttributeRepository
+public interface BQEventPropertyRepository
 	extends PagingAndSortingRepository<BQEventProperty, String> {
 
 	public long countValues(
