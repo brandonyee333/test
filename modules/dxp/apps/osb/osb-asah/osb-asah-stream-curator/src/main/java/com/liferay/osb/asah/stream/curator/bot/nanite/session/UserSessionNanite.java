@@ -508,7 +508,7 @@ public class UserSessionNanite implements Nanite {
 
 			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
 				try {
-					_eventStorageDog.store(analyticsEvent, sessionId);
+					_eventStorageDog.storeEventDefinition(analyticsEvent);
 				}
 				catch (Exception exception) {
 					_log.error(

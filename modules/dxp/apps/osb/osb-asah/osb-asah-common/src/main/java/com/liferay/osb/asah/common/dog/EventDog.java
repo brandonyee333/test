@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.Event;
-import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.model.Sort;
@@ -27,7 +26,6 @@ import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +33,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.collections4.IterableUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -47,23 +43,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EventDog {
-
-	public Event addEvent(
-		String analyticsEventId, String applicationId, Long channelId,
-		Date createDate, Long dataSourceId, Set<EventAttribute> eventAttributes,
-		Date eventDate, Long eventDefinitionId, Long individualId,
-		String sessionId, String userId) {
-
-		return _eventRepository.save(
-			new Event(
-				analyticsEventId, applicationId, channelId, createDate,
-				dataSourceId, eventAttributes, eventDate, eventDefinitionId,
-				individualId, sessionId, userId));
-	}
-
-	public List<Event> addEvents(List<Event> events) {
-		return IterableUtils.toList(_eventRepository.saveAll(events));
-	}
 
 	public long countEvents(Long eventDefinitionId) {
 		if (eventDefinitionId != null) {
