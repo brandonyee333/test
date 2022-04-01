@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.model.EventAttributeValue;
+import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 
 /**
  * @author Leslie Wong
@@ -31,10 +31,10 @@ public class EventAttributeValueDTO {
 	public EventAttributeValueDTO() {
 	}
 
-	public EventAttributeValueDTO(EventAttributeValue eventAttributeValue) {
+	public EventAttributeValueDTO(BQEventPropertyValue bqEventPropertyValue) {
 		_lastSeenDate = DateUtil.toUTCString(
-			eventAttributeValue.getLastSeenDate());
-		_value = eventAttributeValue.getValue();
+			bqEventPropertyValue.getLastSeenDate());
+		_value = bqEventPropertyValue.getValue();
 	}
 
 	@JsonProperty("lastSeenDate")

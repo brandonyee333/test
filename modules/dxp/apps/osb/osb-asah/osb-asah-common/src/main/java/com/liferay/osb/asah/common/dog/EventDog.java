@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventDefinition;
-import com.liferay.osb.asah.common.model.EventAttributeValue;
+import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
@@ -71,11 +71,11 @@ public class EventDog {
 		return eventOptional.orElse(null);
 	}
 
-	public List<EventAttributeValue> getRecentEventAttributeValues(
+	public List<BQEventPropertyValue> getRecentEventPropertyValues(
 		Long eventAttributeDefinitionId, int size) {
 
 		return _bqEventPropertyRepository.
-			findEventAttributeValuesByEventAttributeDefinitionId(
+			findBQEventPropertyValuesByEventAttributeDefinitionId(
 				eventAttributeDefinitionId, size);
 	}
 

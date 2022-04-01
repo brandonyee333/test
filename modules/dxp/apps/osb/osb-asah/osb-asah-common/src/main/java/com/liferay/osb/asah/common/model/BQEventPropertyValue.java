@@ -20,12 +20,12 @@ import java.util.Objects;
 /**
  * @author Leslie Wong
  */
-public class EventAttributeValue {
+public class BQEventPropertyValue {
 
-	public EventAttributeValue() {
+	public BQEventPropertyValue() {
 	}
 
-	public EventAttributeValue(Date lastSeenDate, String value) {
+	public BQEventPropertyValue(Date lastSeenDate, String value) {
 		if (lastSeenDate != null) {
 			_lastSeenDate = new Date(lastSeenDate.getTime());
 		}
@@ -39,11 +39,11 @@ public class EventAttributeValue {
 			return true;
 		}
 
-		if (!(obj instanceof EventAttributeValue)) {
+		if (!(obj instanceof BQEventPropertyValue)) {
 			return false;
 		}
 
-		EventAttributeValue recentValue = (EventAttributeValue)obj;
+		BQEventPropertyValue recentValue = (BQEventPropertyValue)obj;
 
 		if (Objects.equals(_lastSeenDate, recentValue._lastSeenDate) &&
 			Objects.equals(_value, recentValue._value)) {

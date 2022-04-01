@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQEventProperty;
-import com.liferay.osb.asah.common.model.EventAttributeValue;
+import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,14 +34,14 @@ public interface BQEventPropertyRepository
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords);
 
-	public Optional<BQEventProperty> findByEventAttributeDefinitionIdAndEventId(
-		Long eventAttributeDefinitionId, Long eventId);
-
-	public List<EventAttributeValue>
-		findEventAttributeValuesByEventAttributeDefinitionId(
+	public List<BQEventPropertyValue>
+		findBQEventPropertyValuesByEventAttributeDefinitionId(
 			@Param("eventAttributeDefinitionId") Long
 				eventAttributeDefinitionId,
 			@Param("size") int size);
+
+	public Optional<BQEventProperty> findByEventAttributeDefinitionIdAndEventId(
+		Long eventAttributeDefinitionId, Long eventId);
 
 	public List<String> searchValues(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
