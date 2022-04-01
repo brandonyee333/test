@@ -17,6 +17,7 @@ package com.liferay.portal.dao.orm.hibernate;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
 import com.liferay.portal.spring.hibernate.PortletHibernateConfiguration;
 
@@ -70,6 +71,10 @@ public class PortletSessionFactoryImpl extends SessionFactoryImpl {
 	@Deprecated
 	protected DataSource getDataSource() {
 		return _dataSource;
+	}
+
+	protected ClassLoader getDefaultSessionFactoryClassLoader() {
+		return PortletClassLoaderUtil.getClassLoader();
 	}
 
 	/**
