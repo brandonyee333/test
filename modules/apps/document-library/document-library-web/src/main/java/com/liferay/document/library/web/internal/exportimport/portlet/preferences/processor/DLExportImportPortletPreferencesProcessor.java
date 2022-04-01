@@ -21,6 +21,7 @@ import com.liferay.document.library.kernel.model.DLFileShortcut;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
+import com.liferay.document.library.kernel.service.DLFolderLocalService;
 import com.liferay.exportimport.kernel.lar.ExportImportHelper;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
@@ -107,6 +108,13 @@ public class DLExportImportPortletPreferencesProcessor
 
 			try {
 				folder = _dlAppLocalService.getFolder(rootFolderId);
+
+				DLFolder dlFolder = _dlFolderLocalService.getDLFolder(
+					rootFolderId);
+
+				if (dlFolder.isInTrash()) {
+					folder = null;
+				}
 			}
 			catch (PortalException portalException) {
 				if (_log.isWarnEnabled()) {
@@ -416,6 +424,9 @@ public class DLExportImportPortletPreferencesProcessor
 	@Reference
 	private DLCommentsAndRatingsExporterImporterCapability
 		_dlCommentsAndRatingsExporterImporterCapability;
+
+	@Reference
+	private DLFolderLocalService _dlFolderLocalService;
 
 	@Reference(
 		target = "(javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY + ")"
