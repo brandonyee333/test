@@ -160,9 +160,7 @@ public class TableRowConverterTest {
 		return new TestEntity() {
 			{
 				bool = RandomUtils.nextBoolean();
-
 				integer = RandomUtils.nextInt();
-
 				map = new HashMap<String, String>() {
 					{
 						put("k1", RandomStringUtils.randomAlphanumeric(8));
@@ -170,18 +168,14 @@ public class TableRowConverterTest {
 						put("k3", RandomStringUtils.randomAlphanumeric(8));
 					}
 				};
-
 				mapList = new ArrayList<Map<String, String>>() {
 					{
 						add(map);
 						add(map);
 					}
 				};
-
 				number = RandomUtils.nextLong();
-
 				string = RandomStringUtils.randomAlphanumeric(8);
-
 				stringList = new ArrayList<String>() {
 					{
 						add(RandomStringUtils.randomAlphanumeric(8));
@@ -192,7 +186,6 @@ public class TableRowConverterTest {
 
 				if (includeNested) {
 					testEntity = _newTestEntity(false);
-
 					testEntityList = new ArrayList<TestEntity>() {
 						{
 							add(_newTestEntity(false));
