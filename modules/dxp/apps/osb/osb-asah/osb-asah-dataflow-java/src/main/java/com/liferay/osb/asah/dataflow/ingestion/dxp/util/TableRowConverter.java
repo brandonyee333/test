@@ -20,7 +20,7 @@ import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
 
 import java.lang.reflect.Field;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,100 +34,103 @@ import org.slf4j.LoggerFactory;
  */
 public class TableRowConverter {
 
-	public static TableRow asTableRow(Object obj) {
-		if (null == obj) {
+	public static TableRow asTableRow(Object object) {
+		if (object == null) {
 			return null;
 		}
 
 		TableRow tableRow = new TableRow();
 
-		Class<?> objClass = obj.getClass();
+		Class<?> objectClass = object.getClass();
 
-		Field[] fields = objClass.getFields();
+		for (Field field : objectClass.getFields()) {
+			Object fieldValue = _getFieldValue(field, object);
 
-		for (Field field : fields) {
-			String fieldName = field.getName();
-
-			try {
-				Object value = field.get(obj);
-
-				Class<?> fieldClass = field.getType();
-
-				String fieldClassName = fieldClass.getCanonicalName();
-
-				if (fieldClass.isPrimitive() ||
-					fieldClassName.startsWith("java.lang.") ||
-					fieldClassName.startsWith("java.util.")) {
-
-					if (fieldClassName.equals("java.util.List")) {
-						List<?> values = (List)value;
-
-						if ((values == null) || values.isEmpty()) {
-							tableRow.set(fieldName, new ArrayList<>());
-						}
-						else {
-							Object item = values.get(0);
-
-							Class<?> itemClass = item.getClass();
-
-							if (itemClass.isAnonymousClass()) {
-								itemClass = itemClass.getSuperclass();
-							}
-
-							String itemClassName = itemClass.getName();
-
-							if (itemClassName.startsWith(_PACKAGE_NAME)) {
-								Stream<?> valuesStream = values.stream();
-
-								tableRow.set(
-									fieldName,
-									valuesStream.map(
-										TableRowConverter::asTableRow
-									).collect(
-										Collectors.toList()
-									));
-							}
-							else if (item instanceof Map) {
-								Stream<?> valuesStream = values.stream();
-
-								tableRow.set(
-									fieldName,
-									valuesStream.map(
-										ObjectMapperUtil::writeValueAsString
-									).collect(
-										Collectors.toList()
-									));
-							}
-							else {
-								tableRow.set(fieldName, values);
-							}
-						}
-					}
-					else if (fieldClassName.equals("java.util.Map")) {
-						tableRow.set(
-							fieldName,
-							ObjectMapperUtil.writeValueAsString(value));
-					}
-					else {
-						tableRow.set(fieldName, value);
-					}
-				}
-				else if (fieldClassName.startsWith(_PACKAGE_NAME)) {
-					tableRow.set(fieldName, asTableRow(value));
-				}
-				else {
-					_logger.warn(
-						String.format("Unknown fieldType: %s", fieldClassName));
-				}
-			}
-			catch (IllegalAccessException illegalAccessException) {
-				_logger.error(
-					illegalAccessException.getMessage(),
-					illegalAccessException);
+			if (fieldValue != null) {
+				tableRow.set(field.getName(), fieldValue);
 			}
 		}
 
 		return tableRow;
+	}
+
+	private static Object _getFieldValue(Field field, Object object) {
+		try {
+			Object value = field.get(object);
+
+			Class<?> fieldTypeClass = field.getType();
+
+			String fieldTypeClassName = fieldTypeClass.getCanonicalName();
+
+			if (fieldTypeClass.isPrimitive() ||
+				fieldTypeClassName.startsWith("java.lang")) {
+
+				return value;
+			}
+			else if (fieldTypeClassName.equals("java.util.List")) {
+				return _getFieldValues((List)value);
+			}
+			else if (fieldTypeClassName.equals("java.util.Map")) {
+				return ObjectMapperUtil.writeValueAsString(value);
+			}
+			else if (fieldTypeClassName.startsWith(_PACKAGE_NAME)) {
+				return asTableRow(value);
+			}
+			else {
+				_logger.warn(
+					String.format("Unknown fieldType: %s", fieldTypeClassName));
+
+				return null;
+			}
+		}
+		catch (IllegalAccessException illegalAccessException) {
+			_logger.error(
+				illegalAccessException.getMessage(), illegalAccessException);
+
+			return null;
+		}
+	}
+
+	private static Object _getFieldValues(List<?> values) {
+		if ((values == null) || values.isEmpty()) {
+			return Collections.<TableRow>emptyList();
+		}
+
+		Object listElement = values.get(0);
+
+		String listElementClassName = _getObjectClassName(listElement);
+
+		if (listElementClassName.startsWith(_PACKAGE_NAME)) {
+			Stream<?> valuesStream = values.stream();
+
+			return valuesStream.map(
+				TableRowConverter::asTableRow
+			).collect(
+				Collectors.toList()
+			);
+		}
+		else if (listElement instanceof Map) {
+			Stream<?> valuesStream = values.stream();
+
+			return valuesStream.map(
+				ObjectMapperUtil::writeValueAsString
+			).collect(
+				Collectors.toList()
+			);
+		}
+		else {
+			return values;
+		}
+	}
+
+	private static String _getObjectClassName(Object object) {
+		Class<?> clazz = object.getClass();
+
+		if (clazz.isAnonymousClass()) {
+			clazz = clazz.getSuperclass();
+		}
+
+		return clazz.getName();
 	}
 
 	private static final String _PACKAGE_NAME =
