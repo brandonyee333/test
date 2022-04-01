@@ -33,8 +33,6 @@
 		},
 	};
 
-	var REGEX_SUB = /\{\s*([^|}]+?)\s*(?:\|([^}]*))?\s*\}/g;
-
 	var SRC_HIDE_LINK = {
 		src: 'hideLink',
 	};
@@ -439,26 +437,6 @@
 			return Liferay.Util.sub(TPL_LEXICON_ICON, icon, cssClass || '');
 		},
 
-		getOpener() {
-			var openingWindow = Window._opener;
-
-			if (!openingWindow) {
-				var topUtil = Liferay.Util.getTop().Liferay.Util;
-
-				var windowName = window.name;
-
-				var dialog = topUtil.Window.getById(windowName);
-
-				if (dialog) {
-					openingWindow = dialog._opener;
-
-					Window._opener = openingWindow;
-				}
-			}
-
-			return openingWindow || window.opener || window.parent;
-		},
-
 		getTop() {
 			var topWindow = Util._topWindow;
 
@@ -855,21 +833,6 @@
 			}
 
 			return 0;
-		},
-
-		sub(string, data) {
-			if (
-				arguments.length > 2 ||
-				(typeof data !== 'object' && typeof data !== 'function')
-			) {
-				data = Array.prototype.slice.call(arguments, 1);
-			}
-
-			return string.replace
-				? string.replace(REGEX_SUB, (match, key) => {
-						return data[key] === undefined ? match : data[key];
-				  })
-				: string;
 		},
 
 		submitCountdown: 0,
