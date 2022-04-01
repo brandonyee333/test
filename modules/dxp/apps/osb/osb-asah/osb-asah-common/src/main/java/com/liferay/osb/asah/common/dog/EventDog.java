@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
-import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.model.Sort;
@@ -65,8 +64,8 @@ public class EventDog {
 		return _eventRepository.existsByAnalyticsEventId(analyticsEventId);
 	}
 
-	public Event fetchEvent(Long eventId) {
-		Optional<Event> eventOptional = _eventRepository.findById(eventId);
+	public BQEvent fetchEvent(Long id) {
+		Optional<BQEvent> eventOptional = _eventRepository.findById(id);
 
 		return eventOptional.orElse(null);
 	}
