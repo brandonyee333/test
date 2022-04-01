@@ -24,7 +24,7 @@
 			{
 				"mode": "REQUIRED",
 				"name": "channelId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -54,7 +54,7 @@
 			{
 				"mode": "REQUIRED",
 				"name": "dataSourceId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -170,7 +170,7 @@
 			{
 				"mode": "REQUIRED",
 				"name": "channelId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",
@@ -219,12 +219,12 @@
 			{
 				"mode": "REQUIRED",
 				"name": "datasourceId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",
 				"name": "channelId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -239,7 +239,7 @@
 			{
 				"mode": "NULLABLE",
 				"name": "accountId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -259,7 +259,7 @@
 			{
 				"mode": "NULLABLE",
 				"name": "id",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -276,7 +276,7 @@
 					{
 						"mode": "NULLABLE",
 						"name": "cpDefinitionId",
-						"type": "INTEGER"
+						"type": "INT64"
 					},
 					{
 						"mode": "NULLABLE",
@@ -301,7 +301,7 @@
 					{
 						"mode": "NULLABLE",
 						"name": "id",
-						"type": "INTEGER"
+						"type": "INT64"
 					},
 					{
 						"mode": "NULLABLE",
@@ -321,12 +321,12 @@
 					{
 						"mode": "NULLABLE",
 						"name": "parentOrderItemId",
-						"type": "INTEGER"
+						"type": "INT64"
 					},
 					{
 						"mode": "NULLABLE",
 						"name": "quantity",
-						"type": "INTEGER"
+						"type": "INT64"
 					},
 					{
 						"mode": "NULLABLE",
@@ -351,7 +351,7 @@
 					{
 						"mode": "NULLABLE",
 						"name": "userId",
-						"type": "INTEGER"
+						"type": "INT64"
 					}
 				],
 				"mode": "REPEATED",
@@ -361,7 +361,7 @@
 			{
 				"mode": "NULLABLE",
 				"name": "orderStatus",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -371,7 +371,7 @@
 			{
 				"mode": "NULLABLE",
 				"name": "orderTypeId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -381,12 +381,12 @@
 			{
 				"mode": "NULLABLE",
 				"name": "paymentStatus",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
 				"name": "status",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -396,7 +396,7 @@
 			{
 				"mode": "NULLABLE",
 				"name": "userId",
-				"type": "INTEGER"
+				"type": "INT64"
 			}
 		]
 	},
@@ -411,12 +411,12 @@
 			{
 				"mode": "REQUIRED",
 				"name": "channelId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",
 				"name": "datasourceId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",
@@ -436,12 +436,12 @@
 			{
 				"mode": "NULLABLE",
 				"name": "catalogId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "REPEATED",
 				"name": "categoryIds",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -471,7 +471,7 @@
 			{
 				"mode": "NULLABLE",
 				"name": "id",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -501,12 +501,12 @@
 			{
 				"mode": "REPEATED",
 				"name": "productChannelIds",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
 				"name": "productId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"fields": [
@@ -535,7 +535,7 @@
 					{
 						"mode": "NULLABLE",
 						"name": "id",
-						"type": "INTEGER"
+						"type": "INT64"
 					},
 					{
 						"mode": "NULLABLE",
@@ -545,7 +545,7 @@
 					{
 						"mode": "NULLABLE",
 						"name": "optionCategoryId",
-						"type": "INTEGER"
+						"type": "INT64"
 					},
 					{
 						"mode": "NULLABLE",
@@ -555,7 +555,7 @@
 					{
 						"mode": "NULLABLE",
 						"name": "specificationId",
-						"type": "INTEGER"
+						"type": "INT64"
 					},
 					{
 						"mode": "NULLABLE",
@@ -612,7 +612,7 @@
 					{
 						"mode": "NULLABLE",
 						"name": "id",
-						"type": "INTEGER"
+						"type": "INT64"
 					},
 					{
 						"mode": "NULLABLE",
@@ -642,7 +642,7 @@
 			{
 				"mode": "NULLABLE",
 				"name": "status",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -669,7 +669,7 @@
 			{
 				"mode": "REQUIRED",
 				"name": "channelId",
-				"type": "INTEGER"
+				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",
