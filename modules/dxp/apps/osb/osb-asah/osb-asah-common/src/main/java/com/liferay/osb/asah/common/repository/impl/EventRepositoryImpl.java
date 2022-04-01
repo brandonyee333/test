@@ -80,6 +80,22 @@ public class EventRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
+	public long countByEventDefinitionId(long eventDefinitionId) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		SelectJoinStep<Record1<Integer>> selectJoinStep =
+			_getEventSelectJoinStep(eventDefinitionId, selectSelectStep);
+
+		return selectJoinStep.where(
+			_getConditions(null, eventDefinitionId, null, null)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public Integer countEvents(
 		Long channelId, Long individualId, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
