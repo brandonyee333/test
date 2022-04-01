@@ -243,20 +243,6 @@ CREATE TABLE IF NOT EXISTS DXPEntity (
 	type TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Event (
-	id BIGSERIAL PRIMARY KEY,
-	analyticsEventId TEXT UNIQUE,
-	applicationId TEXT,
-	channelId BIGINT NOT NULL,
-	createDate TIMESTAMPTZ,
-	dataSourceId BIGINT,
-	eventDate TIMESTAMPTZ,
-	eventDefinitionId BIGINT,
-	individualId BIGINT,
-	sessionId TEXT NOT NULL,
-	userId TEXT
-);
-
 CREATE TABLE IF NOT EXISTS EventAnalysis (
 	id BIGSERIAL PRIMARY KEY,
 	breakdowns JSON,
@@ -275,14 +261,6 @@ CREATE TABLE IF NOT EXISTS EventAnalysis (
 	rangeEnd TIMESTAMPTZ,
 	rangeKey INTEGER,
 	rangeStart TIMESTAMPTZ
-);
-
-CREATE TABLE IF NOT EXISTS EventAttribute (
-	id BIGSERIAL PRIMARY KEY,
-	eventAttributeDefinitionId BIGINT,
-	eventDate TIMESTAMPTZ,
-	eventId BIGINT REFERENCES Event,
-	value TEXT
 );
 
 CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
