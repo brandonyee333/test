@@ -110,10 +110,6 @@ public class EventDog {
 			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId());
 	}
 
-	public boolean existsEvent(String analyticsEventId) {
-		return _eventRepository.existsByAnalyticsEventId(analyticsEventId);
-	}
-
 	public BQEvent fetchEvent(Long id) {
 		Optional<BQEvent> eventOptional = _eventRepository.findById(id);
 

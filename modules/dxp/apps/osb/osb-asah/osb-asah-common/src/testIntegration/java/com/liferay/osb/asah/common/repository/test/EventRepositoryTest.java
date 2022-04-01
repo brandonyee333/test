@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
-import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
@@ -183,19 +182,6 @@ public class EventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
 				"America/Los_Angeles"));
-	}
-
-	@Test
-	public void testExistsByAnalyticsEventId() {
-		Event event = new Event();
-
-		event.setAnalyticsEventId("1");
-		event.setChannelId(1L);
-		event.setSessionId("1");
-
-		_eventRepository.save(event);
-
-		Assertions.assertTrue(_eventRepository.existsByAnalyticsEventId("1"));
 	}
 
 	@SQLResource(
