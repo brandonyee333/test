@@ -58,11 +58,15 @@ public class BQEvent implements Persistable<String> {
 		_contentLanguageId = contentLanguageId;
 		_context = context;
 		_country = country;
-		_createDate = createDate;
+
+		setCreateDate(createDate);
+
 		_dataSourceId = dataSourceId;
 		_description = description;
 		_deviceType = deviceType;
-		_eventDate = eventDate;
+
+		setEventDate(eventDate);
+
 		_eventId = eventId;
 		_eventProperties = eventProperties;
 		_experienceId = experienceId;

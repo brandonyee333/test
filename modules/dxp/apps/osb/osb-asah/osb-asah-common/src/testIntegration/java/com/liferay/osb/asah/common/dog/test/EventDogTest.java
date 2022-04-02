@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -149,7 +150,7 @@ public class EventDogTest
 						2, bqEventProperties.size(),
 						bqEventProperties.toString());
 				}
-				catch (Exception exception) {
+				catch (JsonProcessingException jsonProcessingException) {
 					Assertions.fail("Could not read event properties");
 				}
 			});
