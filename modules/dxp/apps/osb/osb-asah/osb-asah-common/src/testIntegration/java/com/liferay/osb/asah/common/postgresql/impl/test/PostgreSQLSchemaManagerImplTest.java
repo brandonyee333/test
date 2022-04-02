@@ -39,8 +39,6 @@ public class PostgreSQLSchemaManagerImplTest
 		Project project = new Project("test");
 
 		Assertions.assertTrue(
-			_postgreSQLSchemaManager.existsTable(project, "Event"));
-		Assertions.assertTrue(
 			_postgreSQLSchemaManager.existsTable(project, "EventAnalysis"));
 		Assertions.assertTrue(
 			_postgreSQLSchemaManager.existsTable(project, "EventDefinition"));
