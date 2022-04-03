@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -258,12 +259,12 @@ public class InterestsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "interest-topics", resourcePath = "interest_topics.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "interests", resourcePath = "interests.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = InterestTopicRepository.class,
+		resourcePath = "osbasahfaroinfo/interest_topics.json"
 	)
 	@Test
 	public void testGetTerms() throws Exception {
@@ -289,9 +290,9 @@ public class InterestsRestControllerTest
 		}
 	}
 
-	@ElasticsearchIndex(
-		name = "interest-topics", resourcePath = "interest_topics.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestTopicRepository.class,
+		resourcePath = "osbasahfaroinfo/interest_topics.json"
 	)
 	@Test
 	public void testGetTermsRelated() throws Exception {
@@ -317,9 +318,9 @@ public class InterestsRestControllerTest
 		}
 	}
 
-	@ElasticsearchIndex(
-		name = "interest-topics", resourcePath = "interest_topics.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestTopicRepository.class,
+		resourcePath = "osbasahfaroinfo/interest_topics.json"
 	)
 	@Test
 	public void testGetTermsRelatedPaged() throws Exception {
@@ -330,9 +331,9 @@ public class InterestsRestControllerTest
 			"css", "canvas", "sql-server", "python", "multithreading");
 	}
 
-	@ElasticsearchIndex(
-		name = "interest-topics", resourcePath = "interest_topics.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestTopicRepository.class,
+		resourcePath = "osbasahfaroinfo/interest_topics.json"
 	)
 	@Test
 	public void testGetTermsRelatedWithSizeGreaterThanTheDefaultBucketSize()
