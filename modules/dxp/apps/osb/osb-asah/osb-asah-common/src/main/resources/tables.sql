@@ -443,9 +443,9 @@ CREATE TABLE IF NOT EXISTS InterestTopic (
 	id BIGSERIAL PRIMARY KEY,
 	term TEXT,
 	termType TEXT,
-	termWeight REAL,
+	termWeight DOUBLE PRECISION,
 	topic INTEGER,
-	topicWeight REAL
+	topicWeight DOUBLE PRECISION
 );
 
 CREATE TABLE IF NOT EXISTS ItemRecommendation (

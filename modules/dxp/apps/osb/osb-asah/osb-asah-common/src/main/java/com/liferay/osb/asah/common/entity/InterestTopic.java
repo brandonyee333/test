@@ -48,8 +48,8 @@ public class InterestTopic implements Persistable<Long> {
 		InterestTopic interestTopic = (InterestTopic)obj;
 
 		if (Objects.equals(_id, interestTopic._id) &&
+			Objects.equals(_term, interestTopic._term) &&
 			Objects.equals(_termType, interestTopic._termType) &&
-			Objects.equals(_term, interestTopic._termType) &&
 			Objects.equals(_termWeight, interestTopic._termWeight) &&
 			Objects.equals(_topic, interestTopic._topic) &&
 			Objects.equals(_topicWeight, interestTopic._topicWeight)) {

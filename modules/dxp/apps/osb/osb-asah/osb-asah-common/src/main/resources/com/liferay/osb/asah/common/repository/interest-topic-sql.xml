@@ -44,7 +44,7 @@
 	<entry key="InterestTopic.findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn">
 		<![CDATA[
 			SELECT
-				*
+				term
 			FROM
 				(
 					SELECT

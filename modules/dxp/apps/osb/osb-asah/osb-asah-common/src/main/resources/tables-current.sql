@@ -247,6 +247,15 @@ CREATE TABLE IF NOT EXISTS ExperimentVariantMetric (
 	probabilityToWin REAL
 );
 
+CREATE TABLE IF NOT EXISTS InterestTopic (
+	id BIGSERIAL PRIMARY KEY,
+	term TEXT,
+	termType TEXT,
+	termWeight DOUBLE PRECISION,
+	topic INTEGER,
+	topicWeight DOUBLE PRECISION
+);
+
 CREATE TABLE IF NOT EXISTS ItemRecommendation (
 	id TEXT PRIMARY KEY,
 	itemId TEXT,
