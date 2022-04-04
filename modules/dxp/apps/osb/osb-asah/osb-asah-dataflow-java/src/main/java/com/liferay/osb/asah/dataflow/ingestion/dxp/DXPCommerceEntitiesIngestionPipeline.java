@@ -14,26 +14,15 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.dxp;
 
-import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.BaseDXPEntity;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.Order;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.Product;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BaseParserPTransform;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BigQueryWriterPTransform;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.FixedDurationOrCountWindowPTransform;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.GCSWriterPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.OrderParserPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.ProductParserPTransform;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.PubsubReaderPTransform;
+import com.liferay.osb.asah.dataflow.ingestion.dxp.util.PipelineBuilder;
 
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
-import org.apache.beam.sdk.transforms.Values;
-import org.apache.beam.sdk.values.PCollection;
-import org.apache.beam.sdk.values.PCollectionTuple;
-
-import org.joda.time.Duration;
 
 /**
  * @author Riccardo Ferrari
@@ -130,97 +119,6 @@ public class DXPCommerceEntitiesIngestionPipeline {
 		).build();
 
 		return pipeline.run();
-	}
-
-	public static class PipelineBuilder {
-
-		public PipelineBuilder(Pipeline pipeline) {
-			_pipeline = pipeline;
-		}
-
-		public Pipeline build() {
-			return _pipeline;
-		}
-
-		public <T extends BaseDXPEntity> PipelineBuilder withBigQueryWriter(
-			BaseParserPTransform<T> parser, String table) {
-
-			_parser = parser;
-
-			_parsedMessages = _pubsubMessages.apply(parser);
-
-			_parsedMessages.get(
-				parser.getSuccessTupleTag()
-			).apply(
-				new BigQueryWriterPTransform<>(table)
-			);
-
-			return this;
-		}
-
-		public PipelineBuilder withFailedParsedItemsToGCS(
-			String gcsBucket, int shardCount, int triggerElementCount,
-			long triggerInterval) {
-
-			PCollection<DXPEntityPubsubMessage> failedParsePCollection =
-				_parsedMessages.get(
-					_parser.getFailTupleTag()
-				).apply(
-					Values.create()
-				);
-
-			_writeToGCS(
-				gcsBucket, failedParsePCollection, shardCount,
-				triggerElementCount, triggerInterval);
-
-			return this;
-		}
-
-		public PipelineBuilder withGCSWriter(
-			String gcsBucket, int shardCount, int triggerElementCount,
-			long triggerInterval) {
-
-			_writeToGCS(
-				gcsBucket, _pubsubMessages, shardCount, triggerElementCount,
-				triggerInterval);
-
-			return this;
-		}
-
-		public PipelineBuilder withPubsubSubscription(
-			String title, String subscription) {
-
-			_pubsubMessages = _pipeline.apply(
-				"Read Pubsub Subscription " + title,
-				new PubsubReaderPTransform(subscription));
-
-			return this;
-		}
-
-		private void _writeToGCS(
-			String gcsBucket, PCollection<DXPEntityPubsubMessage> pCollection,
-			int shardCount, int triggerElementCount, long triggerInterval) {
-
-			pCollection.apply(
-				String.format(
-					"Window By %s Elements Count Or %s Seconds",
-					triggerElementCount, triggerInterval),
-				new FixedDurationOrCountWindowPTransform<>(
-					triggerElementCount,
-					Duration.standardSeconds(triggerInterval))
-			).apply(
-				String.format(
-					"Write to GCS Bucket %s Using %s Shard Count", gcsBucket,
-					shardCount),
-				new GCSWriterPTransform("part", ".json", gcsBucket, shardCount)
-			);
-		}
-
-		private PCollectionTuple _parsedMessages;
-		private BaseParserPTransform<?> _parser;
-		private final Pipeline _pipeline;
-		private PCollection<DXPEntityPubsubMessage> _pubsubMessages;
-
 	}
 
 }
