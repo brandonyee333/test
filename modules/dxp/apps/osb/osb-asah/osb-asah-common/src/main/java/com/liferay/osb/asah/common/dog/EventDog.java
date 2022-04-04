@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 
+import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +48,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventDog {
 
+	@VisibleForTestingOnly
 	public BQEvent addBQEvent(
 			String applicationId, Set<BQEventProperty> bqEventProperties,
 			Long channelId, Date createDate, Long dataSourceId, Date eventDate,
@@ -61,6 +63,7 @@ public class EventDog {
 			sessionId, null, null, null, userId, null);
 	}
 
+	@VisibleForTestingOnly
 	public BQEvent addBQEvent(
 			String applicationId, Set<BQEventProperty> bqEventProperties,
 			String browserName, String canonicalUrl, Long channelId,
