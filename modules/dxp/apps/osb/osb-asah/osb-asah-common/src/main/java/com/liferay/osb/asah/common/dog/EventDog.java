@@ -27,8 +27,8 @@ import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
-
 import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
