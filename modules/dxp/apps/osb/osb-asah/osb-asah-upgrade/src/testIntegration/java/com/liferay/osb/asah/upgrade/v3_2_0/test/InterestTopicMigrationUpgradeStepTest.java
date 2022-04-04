@@ -19,16 +19,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.InterestTopic;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_2_0.InterestTopicMigrationUpgradeStep;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.json.JSONArray;
 
@@ -65,7 +62,7 @@ public class InterestTopicMigrationUpgradeStepTest
 	}
 
 	@AfterEach
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		_elasticsearchIndexManager.delete("interest-topics");
 
 		_interestTopicRepository.deleteAll();
@@ -77,23 +74,15 @@ public class InterestTopicMigrationUpgradeStepTest
 			ResourceUtil.readResourceToString(
 				"dependencies/interest_topics.json", this));
 
-		Assertions.assertFalse(jsonArray.isEmpty());
-
 		_elasticsearchInvoker.add("interest-topics", jsonArray);
 
 		_interestTopicMigrationUpgradeStep.upgrade("");
 
-		List<Object> jsonObjectList = jsonArray.toList();
-
-		Stream<Object> stream = jsonObjectList.stream();
-
 		Assertions.assertEquals(
-			stream.map(
-				object -> _objectMapper.convertValue(
-					object, InterestTopic.class)
-			).collect(
-				Collectors.toList()
-			),
+			JSONUtil.toList(
+				jsonArray,
+				jsonObject -> _objectMapper.convertValue(
+					jsonObject, InterestTopic.class)),
 			_interestTopicRepository.findAll());
 
 		Assertions.assertTrue(
