@@ -70,11 +70,11 @@ public interface DXPCommerceEntitiesIngestionPipelineOptions
 
 	public void setGCSBucket(String gcsBucket);
 
-	public void setOrderBigQueryTable(String bugqueryTable);
+	public void setOrderBigQueryTable(String orderBigQueryTable);
 
 	public void setOrderPubsubSubscription(String pubsubSubscription);
 
-	public void setProductBigQueryTable(String bugqueryTable);
+	public void setProductBigQueryTable(String productBigQueryTable);
 
 	public void setProductPubsubSubscription(String pubsubSubscription);
 
