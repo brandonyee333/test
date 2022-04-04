@@ -1,4 +1,75 @@
 {
+	"dxpentity": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "classPK",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"expandoFields": [
+					{
+						"name": "columnId",
+						"type": "INT64"
+					},
+					{
+						"name": "name",
+						"type": "STRING"
+					},
+					{
+						"name": "value",
+						"type": "STRING"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "expandoFields",
+				"type": "RECORD"
+			},
+			{
+				"fields": [
+					{
+						"name": "name",
+						"type": "STRING"
+					},
+					{
+						"name": "value",
+						"type": "STRING"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "fields",
+				"type": "RECORD"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "type",
+				"type": "STRING"
+			}
+		]
+	},
 	"event": {
 		"clusteringFields": [
 			"channelId",
