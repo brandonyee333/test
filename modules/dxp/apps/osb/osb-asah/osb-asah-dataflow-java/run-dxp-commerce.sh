@@ -2,7 +2,7 @@
 
 if [ "$#" -ne 1 ]
 then
-	echo "Usage: run-dxp.sh [dxp-cloud-project]"
+	echo "Usage: run-dxp-commerce.sh [dxp-cloud-project]"
 	exit 1
 fi
 
