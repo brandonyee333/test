@@ -83,7 +83,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 			"Page", Collections.emptySet(), null, "canonicalUrlValue", 1L, null,
 			null, null, null, new Date(), 1L, "pageDescriptionValue", null,
 			new Date(), eventDefinitionName, null, RandomTestUtil.randomId(),
-			1L, "pageKeywordsValue", null, null, null, "referrerValue", null,
+			"pageKeywordsValue", null, null, null, "referrerValue", null,
 			sessionId, null, "pageTitleValue", "urlValue", "userId", null);
 	}
 

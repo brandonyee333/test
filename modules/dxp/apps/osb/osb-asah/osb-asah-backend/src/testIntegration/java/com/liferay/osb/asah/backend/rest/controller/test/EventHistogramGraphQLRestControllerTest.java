@@ -114,7 +114,7 @@ public class EventHistogramGraphQLRestControllerTest
 				Collectors.toSet()
 			),
 			1L, eventDate, 1L, eventDate, eventDefinitionName,
-			RandomTestUtil.randomId(), 1L, "sessionId", "userId");
+			RandomTestUtil.randomId(), "sessionId", "userId");
 	}
 
 	@Autowired

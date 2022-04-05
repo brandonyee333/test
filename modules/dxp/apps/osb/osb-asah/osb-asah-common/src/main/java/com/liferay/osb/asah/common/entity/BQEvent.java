@@ -44,11 +44,10 @@ public class BQEvent implements Persistable<String> {
 		Long channelId, String city, String contentLanguageId, String context,
 		String country, Date createDate, Long dataSourceId, String description,
 		String deviceType, Date eventDate, String eventId,
-		String eventProperties, String experienceId, String id,
-		Long individualId, String keywords, String languageId,
-		String platformName, String projectTimeZoneId, String referrer,
-		String region, String sessionId, String timezoneOffset, String title,
-		String url, String userId, String variantId) {
+		String eventProperties, String experienceId, String id, String keywords,
+		String languageId, String platformName, String projectTimeZoneId,
+		String referrer, String region, String sessionId, String timezoneOffset,
+		String title, String url, String userId, String variantId) {
 
 		_applicationId = applicationId;
 		_browserName = browserName;
@@ -71,7 +70,6 @@ public class BQEvent implements Persistable<String> {
 		_eventProperties = eventProperties;
 		_experienceId = experienceId;
 		_id = id;
-		_individualId = individualId;
 		_keywords = keywords;
 		_languageId = languageId;
 		_platformName = platformName;
@@ -115,7 +113,6 @@ public class BQEvent implements Persistable<String> {
 			Objects.equals(_eventProperties, bqEvent._eventProperties) &&
 			Objects.equals(_experienceId, bqEvent._experienceId) &&
 			Objects.equals(_id, bqEvent._id) &&
-			Objects.equals(_individualId, bqEvent._individualId) &&
 			Objects.equals(_keywords, bqEvent._keywords) &&
 			Objects.equals(_languageId, bqEvent._languageId) &&
 			Objects.equals(_platformName, bqEvent._platformName) &&
@@ -228,11 +225,6 @@ public class BQEvent implements Persistable<String> {
 	@Override
 	public String getId() {
 		return _id;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Long getIndividualId() {
-		return _individualId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -389,10 +381,6 @@ public class BQEvent implements Persistable<String> {
 		_id = id;
 	}
 
-	public void setIndividualId(Long individualId) {
-		_individualId = individualId;
-	}
-
 	public void setKeywords(String keywords) {
 		_keywords = keywords;
 	}
@@ -491,9 +479,6 @@ public class BQEvent implements Persistable<String> {
 
 	@Transient
 	private String _id;
-
-	@Transient
-	private Long _individualId;
 
 	@Transient
 	private String _keywords;

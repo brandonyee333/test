@@ -121,7 +121,7 @@ public class EventsByUserSessionsDataFetcherTest
 			},
 			null, "canonicalUrlValue", 1L, null, null, null, null, new Date(),
 			1L, null, null, new Date(), eventDefinitionName, null,
-			RandomTestUtil.randomId(), 1L, null, null, null, null, null, null,
+			RandomTestUtil.randomId(), null, null, null, null, null, null,
 			"sessionId", null, null, null, "userId", null);
 	}
 

@@ -4,17 +4,17 @@ INSERT INTO EventAttributeDefinition(dataType, description, displayName, id, nam
 
 INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES(2001, 2002, 'Toy Robot');
 
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1001, 1, timestamp '${now-18d}', 'addedToCart', 1, '1');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1002, 1, timestamp '${now-17d}', 'addedToCart', 1, '2');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1003, 1, timestamp '${now-16d}', 'addedToCart', 1, '3');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1004, 1, timestamp '${now-15d}', 'addedToCart', 1, '4');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1005, 1, timestamp '${now-14d}', 'addedToCart', 1, '5');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1006, 1, timestamp '${now-13d}', 'addedToCart', 1, '6');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1007, 1, timestamp '${now-12d}', 'addedToCart', 1, '7');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1008, 1, timestamp '${now-11d}', 'addedToCart', 1, '8');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1009, 1, timestamp '${now-10d}', 'addedToCart', 1, '9');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1010, 1, timestamp '${now-9d}', 'addedToCart', 1, '10');
-INSERT INTO BQEvent (id, channelId, eventDate, eventId, individualId, sessionId) VALUES (1011, 1, timestamp '${now-8d}', 'addedToCart', 1, '11');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1001, 1, timestamp '${now-18d}', 'addedToCart', '1', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1002, 1, timestamp '${now-17d}', 'addedToCart', '2', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1003, 1, timestamp '${now-16d}', 'addedToCart', '3', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1004, 1, timestamp '${now-15d}', 'addedToCart', '4', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1005, 1, timestamp '${now-14d}', 'addedToCart', '5', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1006, 1, timestamp '${now-13d}', 'addedToCart', '6', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1007, 1, timestamp '${now-12d}', 'addedToCart', '7', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1008, 1, timestamp '${now-11d}', 'addedToCart', '8', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1009, 1, timestamp '${now-10d}', 'addedToCart', '9', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1010, 1, timestamp '${now-9d}', 'addedToCart', '10', '1');
+INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, userId) VALUES (1011, 1, timestamp '${now-8d}', 'addedToCart', '11', '1');
 
 INSERT INTO BQEventProperty(eventDate, id, name, value) VALUES(timestamp '${now-18d}', 1001, 'itemName', 'Toy Robot');
 INSERT INTO BQEventProperty(eventDate, id, name, value) VALUES(timestamp '${now-17d}', 1002, 'itemName', 'Cellular Phone');

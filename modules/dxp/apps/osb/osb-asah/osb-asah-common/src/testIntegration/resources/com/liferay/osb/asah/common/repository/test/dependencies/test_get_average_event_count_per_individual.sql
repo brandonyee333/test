@@ -4,20 +4,20 @@ INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VAL
 
 INSERT INTO EventDefinition (id, blocked, description, displayName, name, type) VALUES (246810, false, 'Test Description 1', 'Test Display Name 1', 'testEvent1', 'CUSTOM');
 
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-14', 'testEvent1', 1, 9);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-17', 'testEvent1', 6, 4);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-17', 'testEvent1', 7, 5);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-18', 'testEvent1', 8, 7);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-19', 'testEvent1', 9, 8);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-20', 'testEvent1', 10, 11);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-21', 'testEvent1', 11, 11);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-21', 'testEvent1', 12, 8);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-22', 'testEvent1', 13, 9);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-22', 'testEvent1', 14, 11);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-23', 'testEvent1', 15, 1);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-24', 'testEvent1', 16, 11);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-13', 'testEvent1', 32, 1);
-INSERT INTO BQEvent (channelId, eventDate, eventId, id, individualId) VALUES (1, '2021-05-13', 'testEvent1', 33, 1);
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-14', 'testEvent1', 1, '9');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-17', 'testEvent1', 6, '4');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-17', 'testEvent1', 7, '5');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-18', 'testEvent1', 8, '7');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-19', 'testEvent1', 9, '8');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-20', 'testEvent1', 10, '11');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-21', 'testEvent1', 11, '11');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-21', 'testEvent1', 12, '8');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-22', 'testEvent1', 13, '9');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-22', 'testEvent1', 14, '11');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-23', 'testEvent1', 15, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-24', 'testEvent1', 16, '11');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-13', 'testEvent1', 32, '1');
+INSERT INTO BQEvent (channelId, eventDate, eventId, id, userId) VALUES (1, '2021-05-13', 'testEvent1', 33, '1');
 
 INSERT INTO BQEventProperty (eventDate, id, name, value) VALUES ('2021-05-13 10:00:00', 1, 'testDate', '2021-05-13 10:00:00');
 INSERT INTO BQEventProperty (eventDate, id, name, value) VALUES ('2021-05-13 10:00:00', 6, 'testDate', '2020-05-13 11:00:00');

@@ -70,8 +70,8 @@ public class EventDogTest
 
 		_eventDog.addBQEvent(
 			"Page", Collections.singleton(bqEventProperty), channel.getId(),
-			date1, 1L, date1, "pageUnloaded", "analyticsEventId1", 1L,
-			"sessionId", "userId");
+			date1, 1L, date1, "pageUnloaded", "analyticsEventId1", "sessionId",
+			"userId");
 
 		Date date2 = DateUtil.newDate();
 
@@ -82,8 +82,8 @@ public class EventDogTest
 
 		_eventDog.addBQEvent(
 			"Page", Collections.singleton(bqEventProperty), channel.getId(),
-			date2, 1L, date2, "pageUnloaded", "analyticsEventId2", 1L,
-			"sessionId", "userId");
+			date2, 1L, date2, "pageUnloaded", "analyticsEventId2", "sessionId",
+			"userId");
 
 		Assertions.assertEquals(
 			new ArrayList<BQEventPropertyValue>() {
@@ -115,7 +115,7 @@ public class EventDogTest
 				}
 			},
 			channel.getId(), date, 1L, date, "pageViewed", "analyticsEventId1",
-			1L, "sessionId", "userId");
+			"sessionId", "userId");
 
 		_eventDog.addBQEvent(
 			"Page",
@@ -130,7 +130,7 @@ public class EventDogTest
 				}
 			},
 			channel.getId(), date, 1L, date, "pageViewed", "analyticsEventId2",
-			1L, "sessionId", "userId");
+			"sessionId", "userId");
 
 		List<BQEvent> bqEvents = _eventDog.searchEvents(
 			channel.getId(), null, null, 0, 50, TimeRange.LAST_24_HOURS);

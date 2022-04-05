@@ -80,7 +80,7 @@ public class EventAttributeDogTest
 
 		_eventDog.addBQEvent(
 			"Page", bqEventProperties, channel.getId(), date, 1L, date,
-			"pageUnloaded", "analyticsEventId", 1L, "sessionId", "abcdef");
+			"pageUnloaded", "analyticsEventId", "sessionId", "abcdef");
 
 		EventAttributeDefinition eventAttributeDefinition =
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(

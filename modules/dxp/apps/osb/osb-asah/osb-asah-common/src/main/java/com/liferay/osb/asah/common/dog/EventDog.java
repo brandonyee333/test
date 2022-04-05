@@ -52,15 +52,14 @@ public class EventDog {
 	public BQEvent addBQEvent(
 			String applicationId, Set<BQEventProperty> bqEventProperties,
 			Long channelId, Date createDate, Long dataSourceId, Date eventDate,
-			String eventId, String id, Long individualId, String sessionId,
-			String userId)
+			String eventId, String id, String sessionId, String userId)
 		throws Exception {
 
 		return addBQEvent(
 			applicationId, bqEventProperties, null, null, channelId, null, null,
 			null, null, createDate, dataSourceId, null, null, eventDate,
-			eventId, null, id, individualId, null, null, null, null, null, null,
-			sessionId, null, null, null, userId, null);
+			eventId, null, id, null, null, null, null, null, null, sessionId,
+			null, null, null, userId, null);
 	}
 
 	@VisibleForTestingOnly
@@ -70,11 +69,11 @@ public class EventDog {
 			String city, String contentLanguageId, String context,
 			String country, Date createDate, Long dataSourceId,
 			String description, String deviceType, Date eventDate,
-			String eventId, String experienceId, String id, Long individualId,
-			String keywords, String languageId, String platformName,
-			String projectTimeZoneId, String referrer, String region,
-			String sessionId, String timezoneOffset, String title, String url,
-			String userId, String variantId)
+			String eventId, String experienceId, String id, String keywords,
+			String languageId, String platformName, String projectTimeZoneId,
+			String referrer, String region, String sessionId,
+			String timezoneOffset, String title, String url, String userId,
+			String variantId)
 		throws Exception {
 
 		BQEvent bqEvent = _bqEventRepository.save(
@@ -83,9 +82,9 @@ public class EventDog {
 				contentLanguageId, context, country, createDate, dataSourceId,
 				description, deviceType, eventDate, eventId,
 				_objectMapper.writeValueAsString(bqEventProperties),
-				experienceId, id, individualId, keywords, languageId,
-				platformName, projectTimeZoneId, referrer, region, sessionId,
-				timezoneOffset, title, url, userId, variantId));
+				experienceId, id, keywords, languageId, platformName,
+				projectTimeZoneId, referrer, region, sessionId, timezoneOffset,
+				title, url, userId, variantId));
 
 		for (BQEventProperty bqEventProperty : bqEventProperties) {
 			bqEventProperty.setId(bqEvent.getId());

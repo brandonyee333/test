@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -90,9 +91,9 @@ public class BQEventRepositoryTest
 		Assertions.assertEquals(
 			3,
 			_bqEventRepository.countEvents(
-				1L, 1L, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId()));
+				1L, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				SetUtil.of("1")));
 	}
 
 	@SQLResource(resourcePath = "test_events.sql")
@@ -103,9 +104,9 @@ public class BQEventRepositoryTest
 		Assertions.assertEquals(
 			1,
 			_bqEventRepository.countEvents(
-				1L, 1L, "form", timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId()));
+				1L, "form", timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				SetUtil.of("1")));
 	}
 
 	@SQLResource(resourcePath = "test_event_attribute_values.sql")
@@ -701,9 +702,9 @@ public class BQEventRepositoryTest
 
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_bqEventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
+				1L, Interval.DAY, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				Collections.emptySet());
 
 		Assertions.assertEquals(
 			2, eventsCountGroupByEventDate.size(),
@@ -728,9 +729,9 @@ public class BQEventRepositoryTest
 
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_bqEventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
+				1L, Interval.DAY, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				Collections.emptySet());
 
 		Assertions.assertEquals(
 			2, eventsCountGroupByEventDate.size(),
@@ -766,9 +767,9 @@ public class BQEventRepositoryTest
 
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_bqEventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
+				1L, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				Collections.emptySet());
 
 		Assertions.assertEquals(
 			1, eventsCountGroupByEventDate.size(),
@@ -792,9 +793,9 @@ public class BQEventRepositoryTest
 
 		Map<String, Integer> eventsCountGroupByEventDate =
 			_bqEventRepository.getEventsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
+				1L, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				Collections.emptySet());
 
 		Assertions.assertEquals(
 			1, eventsCountGroupByEventDate.size(),
@@ -821,9 +822,9 @@ public class BQEventRepositoryTest
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_bqEventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
+				1L, Interval.DAY, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				Collections.emptySet());
 
 		Assertions.assertEquals(
 			2, eventSessionsCountGroupByEventDate.size(),
@@ -849,9 +850,9 @@ public class BQEventRepositoryTest
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_bqEventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.DAY, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
+				1L, Interval.DAY, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				Collections.emptySet());
 
 		Assertions.assertEquals(
 			2, eventSessionsCountGroupByEventDate.size(),
@@ -888,9 +889,9 @@ public class BQEventRepositoryTest
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_bqEventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
+				1L, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				Collections.emptySet());
 
 		Assertions.assertEquals(
 			1, eventSessionsCountGroupByEventDate.size(),
@@ -915,9 +916,9 @@ public class BQEventRepositoryTest
 
 		Map<String, Integer> eventSessionsCountGroupByEventDate =
 			_bqEventRepository.getEventSessionsCountGroupByEventDate(
-				1L, null, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
+				1L, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				Collections.emptySet());
 
 		Assertions.assertEquals(
 			1, eventSessionsCountGroupByEventDate.size(),
@@ -942,9 +943,9 @@ public class BQEventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		List<BQEvent> events = _bqEventRepository.searchEvents(
-			1L, 1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
+			1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
-			_timeZoneDog.getTimeZoneId());
+			_timeZoneDog.getTimeZoneId(), SetUtil.of("1"));
 
 		Assertions.assertEquals(3, events.size(), events.toString());
 
@@ -973,9 +974,9 @@ public class BQEventRepositoryTest
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		List<BQEvent> events = _bqEventRepository.searchEvents(
-			1L, 1L, "form", PageRequest.of(0, 50),
-			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
-			_timeZoneDog.getTimeZoneId());
+			1L, "form", PageRequest.of(0, 50), timeRange.getEndLocalDateTime(),
+			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+			SetUtil.of("1"));
 
 		Assertions.assertEquals(1, events.size(), events.toString());
 	}
