@@ -44,14 +44,15 @@ public class PipelineBuilder {
 	}
 
 	public <T extends BaseDXPEntity> PipelineBuilder withBigQueryWriter(
-		BaseParserPTransform<T> parser, String table) {
+		BaseParserPTransform<T> baseParserPTransform, String table) {
 
-		_parser = parser;
+		_baseParserPTransform = baseParserPTransform;
 
-		_parsedMessages = _pubsubMessages.apply(parser);
+		_parsedMessagesPCollectionTuple = _pubsubMessagesPCollection.apply(
+			baseParserPTransform);
 
-		_parsedMessages.get(
-			parser.getSuccessTupleTag()
+		_parsedMessagesPCollectionTuple.get(
+			baseParserPTransform.getSuccessTupleTag()
 		).apply(
 			new BigQueryWriterPTransform<>(table)
 		);
@@ -64,8 +65,8 @@ public class PipelineBuilder {
 		long triggerInterval) {
 
 		PCollection<DXPEntityPubsubMessage> failedParsePCollection =
-			_parsedMessages.get(
-				_parser.getFailTupleTag()
+			_parsedMessagesPCollectionTuple.get(
+				_baseParserPTransform.getFailTupleTag()
 			).apply(
 				Values.create()
 			);
@@ -82,8 +83,8 @@ public class PipelineBuilder {
 		long triggerInterval) {
 
 		_writeToGCS(
-			gcsBucket, _pubsubMessages, shardCount, triggerElementCount,
-			triggerInterval);
+			gcsBucket, _pubsubMessagesPCollection, shardCount,
+			triggerElementCount, triggerInterval);
 
 		return this;
 	}
@@ -91,7 +92,7 @@ public class PipelineBuilder {
 	public PipelineBuilder withPubsubSubscription(
 		String title, String subscription) {
 
-		_pubsubMessages = _pipeline.apply(
+		_pubsubMessagesPCollection = _pipeline.apply(
 			"Read Pubsub Subscription " + title,
 			new PubsubReaderPTransform(subscription));
 
@@ -116,9 +117,9 @@ public class PipelineBuilder {
 		);
 	}
 
-	private PCollectionTuple _parsedMessages;
-	private BaseParserPTransform<?> _parser;
+	private BaseParserPTransform<?> _baseParserPTransform;
+	private PCollectionTuple _parsedMessagesPCollectionTuple;
 	private final Pipeline _pipeline;
-	private PCollection<DXPEntityPubsubMessage> _pubsubMessages;
+	private PCollection<DXPEntityPubsubMessage> _pubsubMessagesPCollection;
 
 }

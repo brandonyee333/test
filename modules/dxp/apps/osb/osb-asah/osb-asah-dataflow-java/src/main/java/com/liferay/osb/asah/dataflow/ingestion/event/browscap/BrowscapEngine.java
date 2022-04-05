@@ -38,14 +38,15 @@ public class BrowscapEngine {
 			return null;
 		}
 
-		return new BrowscapDevice(_browscapEngine._parser.parse(userAgent));
+		return new BrowscapDevice(
+			_browscapEngine._userAgentParser.parse(userAgent));
 	}
 
 	private BrowscapEngine() {
 		try {
 			UserAgentService userAgentService = new UserAgentService();
 
-			_parser = userAgentService.loadParser(
+			_userAgentParser = userAgentService.loadParser(
 				Arrays.asList(
 					BrowsCapField.BROWSER, BrowsCapField.BROWSER_TYPE,
 					BrowsCapField.DEVICE_TYPE, BrowsCapField.IS_CRAWLER,
@@ -66,6 +67,6 @@ public class BrowscapEngine {
 
 	private static final BrowscapEngine _browscapEngine = new BrowscapEngine();
 
-	private final UserAgentParser _parser;
+	private final UserAgentParser _userAgentParser;
 
 }
