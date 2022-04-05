@@ -64,6 +64,16 @@ CREATE TABLE IF NOT EXISTS BQGroup (
 	name TEXT
 );
 
+
+CREATE TABLE IF NOT EXISTS BQIdentity (
+	channelId BIGINT,
+	dataSourceId BIGINT,
+	createDate TIMESTAMP,
+	emailAddressHashed TEXT,
+	id TEXT PRIMARY KEY,
+	userId TEXT
+);
+
 CREATE TABLE IF NOT EXISTS BQOrganization (
 	expandoColumnIds BIGINT[],
 	expandoValueIds TEXT[],
