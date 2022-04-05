@@ -673,7 +673,7 @@ public abstract class BaseKeywordResourceTestCase {
 
 	@Test
 	public void testGraphQLDeleteKeyword() throws Exception {
-		Keyword keyword = testGraphQLKeyword_addKeyword();
+		Keyword keyword = testGraphQLDeleteKeyword_addKeyword();
 
 		Assert.assertTrue(
 			JSONUtil.getValueAsBoolean(
@@ -686,7 +686,6 @@ public abstract class BaseKeywordResourceTestCase {
 							}
 						})),
 				"JSONObject/data", "Object/deleteKeyword"));
-
 		JSONArray errorsJSONArray = JSONUtil.getValueAsJSONArray(
 			invokeGraphQLQuery(
 				new GraphQLField(
@@ -700,6 +699,10 @@ public abstract class BaseKeywordResourceTestCase {
 			"JSONArray/errors");
 
 		Assert.assertTrue(errorsJSONArray.length() > 0);
+	}
+
+	protected Keyword testGraphQLDeleteKeyword_addKeyword() throws Exception {
+		return testGraphQLKeyword_addKeyword();
 	}
 
 	@Test
@@ -719,7 +722,7 @@ public abstract class BaseKeywordResourceTestCase {
 
 	@Test
 	public void testGraphQLGetKeyword() throws Exception {
-		Keyword keyword = testGraphQLKeyword_addKeyword();
+		Keyword keyword = testGraphQLGetKeyword_addKeyword();
 
 		Assert.assertTrue(
 			equals(
@@ -756,6 +759,10 @@ public abstract class BaseKeywordResourceTestCase {
 						getGraphQLFields())),
 				"JSONArray/errors", "Object/0", "JSONObject/extensions",
 				"Object/code"));
+	}
+
+	protected Keyword testGraphQLGetKeyword_addKeyword() throws Exception {
+		return testGraphQLKeyword_addKeyword();
 	}
 
 	@Test
@@ -1119,8 +1126,8 @@ public abstract class BaseKeywordResourceTestCase {
 
 		Assert.assertEquals(0, keywordsJSONObject.get("totalCount"));
 
-		Keyword keyword1 = testGraphQLKeyword_addKeyword();
-		Keyword keyword2 = testGraphQLKeyword_addKeyword();
+		Keyword keyword1 = testGraphQLGetSiteKeywordsPage_addKeyword();
+		Keyword keyword2 = testGraphQLGetSiteKeywordsPage_addKeyword();
 
 		keywordsJSONObject = JSONUtil.getValueAsJSONObject(
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
@@ -1132,6 +1139,12 @@ public abstract class BaseKeywordResourceTestCase {
 			Arrays.asList(keyword1, keyword2),
 			Arrays.asList(
 				KeywordSerDes.toDTOs(keywordsJSONObject.getString("items"))));
+	}
+
+	protected Keyword testGraphQLGetSiteKeywordsPage_addKeyword()
+		throws Exception {
+
+		return testGraphQLKeyword_addKeyword();
 	}
 
 	@Test

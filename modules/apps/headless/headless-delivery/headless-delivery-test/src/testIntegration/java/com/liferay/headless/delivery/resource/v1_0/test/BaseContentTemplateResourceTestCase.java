@@ -981,9 +981,9 @@ public abstract class BaseContentTemplateResourceTestCase {
 		Assert.assertEquals(0, contentTemplatesJSONObject.get("totalCount"));
 
 		ContentTemplate contentTemplate1 =
-			testGraphQLContentTemplate_addContentTemplate();
+			testGraphQLGetSiteContentTemplatesPage_addContentTemplate();
 		ContentTemplate contentTemplate2 =
-			testGraphQLContentTemplate_addContentTemplate();
+			testGraphQLGetSiteContentTemplatesPage_addContentTemplate();
 
 		contentTemplatesJSONObject = JSONUtil.getValueAsJSONObject(
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
@@ -997,6 +997,13 @@ public abstract class BaseContentTemplateResourceTestCase {
 			Arrays.asList(
 				ContentTemplateSerDes.toDTOs(
 					contentTemplatesJSONObject.getString("items"))));
+	}
+
+	protected ContentTemplate
+			testGraphQLGetSiteContentTemplatesPage_addContentTemplate()
+		throws Exception {
+
+		return testGraphQLContentTemplate_addContentTemplate();
 	}
 
 	@Test
@@ -1022,7 +1029,7 @@ public abstract class BaseContentTemplateResourceTestCase {
 	@Test
 	public void testGraphQLGetSiteContentTemplate() throws Exception {
 		ContentTemplate contentTemplate =
-			testGraphQLContentTemplate_addContentTemplate();
+			testGraphQLGetSiteContentTemplate_addContentTemplate();
 
 		Assert.assertTrue(
 			equals(
@@ -1072,6 +1079,13 @@ public abstract class BaseContentTemplateResourceTestCase {
 						getGraphQLFields())),
 				"JSONArray/errors", "Object/0", "JSONObject/extensions",
 				"Object/code"));
+	}
+
+	protected ContentTemplate
+			testGraphQLGetSiteContentTemplate_addContentTemplate()
+		throws Exception {
+
+		return testGraphQLContentTemplate_addContentTemplate();
 	}
 
 	@Rule

@@ -969,9 +969,9 @@ public abstract class BaseContentElementResourceTestCase {
 		Assert.assertEquals(0, contentElementsJSONObject.get("totalCount"));
 
 		ContentElement contentElement1 =
-			testGraphQLContentElement_addContentElement();
+			testGraphQLGetSiteContentElementsPage_addContentElement();
 		ContentElement contentElement2 =
-			testGraphQLContentElement_addContentElement();
+			testGraphQLGetSiteContentElementsPage_addContentElement();
 
 		contentElementsJSONObject = JSONUtil.getValueAsJSONObject(
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
@@ -984,6 +984,13 @@ public abstract class BaseContentElementResourceTestCase {
 			Arrays.asList(
 				ContentElementSerDes.toDTOs(
 					contentElementsJSONObject.getString("items"))));
+	}
+
+	protected ContentElement
+			testGraphQLGetSiteContentElementsPage_addContentElement()
+		throws Exception {
+
+		return testGraphQLContentElement_addContentElement();
 	}
 
 	@Rule

@@ -945,8 +945,10 @@ public abstract class BaseAccountUserResourceTestCase {
 
 		Assert.assertEquals(0, accountUsersJSONObject.get("totalCount"));
 
-		AccountUser accountUser1 = testGraphQLAccountUser_addAccountUser();
-		AccountUser accountUser2 = testGraphQLAccountUser_addAccountUser();
+		AccountUser accountUser1 =
+			testGraphQLGetAccountUsersPage_addAccountUser();
+		AccountUser accountUser2 =
+			testGraphQLGetAccountUsersPage_addAccountUser();
 
 		accountUsersJSONObject = JSONUtil.getValueAsJSONObject(
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
@@ -959,6 +961,12 @@ public abstract class BaseAccountUserResourceTestCase {
 			Arrays.asList(
 				AccountUserSerDes.toDTOs(
 					accountUsersJSONObject.getString("items"))));
+	}
+
+	protected AccountUser testGraphQLGetAccountUsersPage_addAccountUser()
+		throws Exception {
+
+		return testGraphQLAccountUser_addAccountUser();
 	}
 
 	@Test

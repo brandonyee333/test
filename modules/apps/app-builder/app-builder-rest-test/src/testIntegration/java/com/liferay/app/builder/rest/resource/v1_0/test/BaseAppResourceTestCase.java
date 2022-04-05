@@ -412,8 +412,8 @@ public abstract class BaseAppResourceTestCase {
 
 		long totalCount = appsJSONObject.getLong("totalCount");
 
-		App app1 = testGraphQLApp_addApp();
-		App app2 = testGraphQLApp_addApp();
+		App app1 = testGraphQLGetAppsPage_addApp();
+		App app2 = testGraphQLGetAppsPage_addApp();
 
 		appsJSONObject = JSONUtil.getValueAsJSONObject(
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
@@ -428,6 +428,10 @@ public abstract class BaseAppResourceTestCase {
 		assertContains(
 			app2,
 			Arrays.asList(AppSerDes.toDTOs(appsJSONObject.getString("items"))));
+	}
+
+	protected App testGraphQLGetAppsPage_addApp() throws Exception {
+		return testGraphQLApp_addApp();
 	}
 
 	@Test
@@ -451,7 +455,7 @@ public abstract class BaseAppResourceTestCase {
 
 	@Test
 	public void testGraphQLDeleteApp() throws Exception {
-		App app = testGraphQLApp_addApp();
+		App app = testGraphQLDeleteApp_addApp();
 
 		Assert.assertTrue(
 			JSONUtil.getValueAsBoolean(
@@ -464,7 +468,6 @@ public abstract class BaseAppResourceTestCase {
 							}
 						})),
 				"JSONObject/data", "Object/deleteApp"));
-
 		JSONArray errorsJSONArray = JSONUtil.getValueAsJSONArray(
 			invokeGraphQLQuery(
 				new GraphQLField(
@@ -478,6 +481,10 @@ public abstract class BaseAppResourceTestCase {
 			"JSONArray/errors");
 
 		Assert.assertTrue(errorsJSONArray.length() > 0);
+	}
+
+	protected App testGraphQLDeleteApp_addApp() throws Exception {
+		return testGraphQLApp_addApp();
 	}
 
 	@Test
@@ -497,7 +504,7 @@ public abstract class BaseAppResourceTestCase {
 
 	@Test
 	public void testGraphQLGetApp() throws Exception {
-		App app = testGraphQLApp_addApp();
+		App app = testGraphQLGetApp_addApp();
 
 		Assert.assertTrue(
 			equals(
@@ -534,6 +541,10 @@ public abstract class BaseAppResourceTestCase {
 						getGraphQLFields())),
 				"JSONArray/errors", "Object/0", "JSONObject/extensions",
 				"Object/code"));
+	}
+
+	protected App testGraphQLGetApp_addApp() throws Exception {
+		return testGraphQLApp_addApp();
 	}
 
 	@Test

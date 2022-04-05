@@ -314,9 +314,9 @@ public abstract class BaseWorkflowInstanceResourceTestCase {
 		long totalCount = workflowInstancesJSONObject.getLong("totalCount");
 
 		WorkflowInstance workflowInstance1 =
-			testGraphQLWorkflowInstance_addWorkflowInstance();
+			testGraphQLGetWorkflowInstancesPage_addWorkflowInstance();
 		WorkflowInstance workflowInstance2 =
-			testGraphQLWorkflowInstance_addWorkflowInstance();
+			testGraphQLGetWorkflowInstancesPage_addWorkflowInstance();
 
 		workflowInstancesJSONObject = JSONUtil.getValueAsJSONObject(
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
@@ -335,6 +335,13 @@ public abstract class BaseWorkflowInstanceResourceTestCase {
 			Arrays.asList(
 				WorkflowInstanceSerDes.toDTOs(
 					workflowInstancesJSONObject.getString("items"))));
+	}
+
+	protected WorkflowInstance
+			testGraphQLGetWorkflowInstancesPage_addWorkflowInstance()
+		throws Exception {
+
+		return testGraphQLWorkflowInstance_addWorkflowInstance();
 	}
 
 	@Test
@@ -388,7 +395,7 @@ public abstract class BaseWorkflowInstanceResourceTestCase {
 	@Test
 	public void testGraphQLDeleteWorkflowInstance() throws Exception {
 		WorkflowInstance workflowInstance =
-			testGraphQLWorkflowInstance_addWorkflowInstance();
+			testGraphQLDeleteWorkflowInstance_addWorkflowInstance();
 
 		Assert.assertTrue(
 			JSONUtil.getValueAsBoolean(
@@ -403,7 +410,6 @@ public abstract class BaseWorkflowInstanceResourceTestCase {
 							}
 						})),
 				"JSONObject/data", "Object/deleteWorkflowInstance"));
-
 		JSONArray errorsJSONArray = JSONUtil.getValueAsJSONArray(
 			invokeGraphQLQuery(
 				new GraphQLField(
@@ -417,6 +423,13 @@ public abstract class BaseWorkflowInstanceResourceTestCase {
 			"JSONArray/errors");
 
 		Assert.assertTrue(errorsJSONArray.length() > 0);
+	}
+
+	protected WorkflowInstance
+			testGraphQLDeleteWorkflowInstance_addWorkflowInstance()
+		throws Exception {
+
+		return testGraphQLWorkflowInstance_addWorkflowInstance();
 	}
 
 	@Test
@@ -442,7 +455,7 @@ public abstract class BaseWorkflowInstanceResourceTestCase {
 	@Test
 	public void testGraphQLGetWorkflowInstance() throws Exception {
 		WorkflowInstance workflowInstance =
-			testGraphQLWorkflowInstance_addWorkflowInstance();
+			testGraphQLGetWorkflowInstance_addWorkflowInstance();
 
 		Assert.assertTrue(
 			equals(
@@ -483,6 +496,13 @@ public abstract class BaseWorkflowInstanceResourceTestCase {
 						getGraphQLFields())),
 				"JSONArray/errors", "Object/0", "JSONObject/extensions",
 				"Object/code"));
+	}
+
+	protected WorkflowInstance
+			testGraphQLGetWorkflowInstance_addWorkflowInstance()
+		throws Exception {
+
+		return testGraphQLWorkflowInstance_addWorkflowInstance();
 	}
 
 	@Test

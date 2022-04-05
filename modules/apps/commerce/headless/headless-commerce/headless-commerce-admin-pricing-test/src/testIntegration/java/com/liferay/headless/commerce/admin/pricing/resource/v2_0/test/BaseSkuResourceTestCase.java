@@ -196,10 +196,16 @@ public abstract class BaseSkuResourceTestCase {
 	public void testGetPriceEntryIdSku() throws Exception {
 		Sku postSku = testGetPriceEntryIdSku_addSku();
 
-		Sku getSku = skuResource.getPriceEntryIdSku(null);
+		Sku getSku = skuResource.getPriceEntryIdSku(
+			testGetPriceEntryIdSku_getPriceEntryId());
 
 		assertEquals(postSku, getSku);
 		assertValid(getSku);
+	}
+
+	protected Long testGetPriceEntryIdSku_getPriceEntryId() throws Exception {
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	protected Sku testGetPriceEntryIdSku_addSku() throws Exception {
@@ -209,7 +215,7 @@ public abstract class BaseSkuResourceTestCase {
 
 	@Test
 	public void testGraphQLGetPriceEntryIdSku() throws Exception {
-		Sku sku = testGraphQLSku_addSku();
+		Sku sku = testGraphQLGetPriceEntryIdSku_addSku();
 
 		Assert.assertTrue(
 			equals(
@@ -221,11 +227,20 @@ public abstract class BaseSkuResourceTestCase {
 								"priceEntryIdSku",
 								new HashMap<String, Object>() {
 									{
-										put("priceEntryId", null);
+										put(
+											"priceEntryId",
+											testGraphQLGetPriceEntryIdSku_getPriceEntryId());
 									}
 								},
 								getGraphQLFields())),
 						"JSONObject/data", "Object/priceEntryIdSku"))));
+	}
+
+	protected Long testGraphQLGetPriceEntryIdSku_getPriceEntryId()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Test
@@ -246,6 +261,10 @@ public abstract class BaseSkuResourceTestCase {
 						getGraphQLFields())),
 				"JSONArray/errors", "Object/0", "JSONObject/extensions",
 				"Object/code"));
+	}
+
+	protected Sku testGraphQLGetPriceEntryIdSku_addSku() throws Exception {
+		return testGraphQLSku_addSku();
 	}
 
 	protected Sku testGraphQLSku_addSku() throws Exception {

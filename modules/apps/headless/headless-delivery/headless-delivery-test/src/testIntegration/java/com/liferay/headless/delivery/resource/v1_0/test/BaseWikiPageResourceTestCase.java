@@ -659,7 +659,7 @@ public abstract class BaseWikiPageResourceTestCase {
 
 	@Test
 	public void testGraphQLDeleteWikiPage() throws Exception {
-		WikiPage wikiPage = testGraphQLWikiPage_addWikiPage();
+		WikiPage wikiPage = testGraphQLDeleteWikiPage_addWikiPage();
 
 		Assert.assertTrue(
 			JSONUtil.getValueAsBoolean(
@@ -672,7 +672,6 @@ public abstract class BaseWikiPageResourceTestCase {
 							}
 						})),
 				"JSONObject/data", "Object/deleteWikiPage"));
-
 		JSONArray errorsJSONArray = JSONUtil.getValueAsJSONArray(
 			invokeGraphQLQuery(
 				new GraphQLField(
@@ -686,6 +685,12 @@ public abstract class BaseWikiPageResourceTestCase {
 			"JSONArray/errors");
 
 		Assert.assertTrue(errorsJSONArray.length() > 0);
+	}
+
+	protected WikiPage testGraphQLDeleteWikiPage_addWikiPage()
+		throws Exception {
+
+		return testGraphQLWikiPage_addWikiPage();
 	}
 
 	@Test
@@ -706,7 +711,7 @@ public abstract class BaseWikiPageResourceTestCase {
 
 	@Test
 	public void testGraphQLGetWikiPage() throws Exception {
-		WikiPage wikiPage = testGraphQLWikiPage_addWikiPage();
+		WikiPage wikiPage = testGraphQLGetWikiPage_addWikiPage();
 
 		Assert.assertTrue(
 			equals(
@@ -743,6 +748,10 @@ public abstract class BaseWikiPageResourceTestCase {
 						getGraphQLFields())),
 				"JSONArray/errors", "Object/0", "JSONObject/extensions",
 				"Object/code"));
+	}
+
+	protected WikiPage testGraphQLGetWikiPage_addWikiPage() throws Exception {
+		return testGraphQLWikiPage_addWikiPage();
 	}
 
 	@Test

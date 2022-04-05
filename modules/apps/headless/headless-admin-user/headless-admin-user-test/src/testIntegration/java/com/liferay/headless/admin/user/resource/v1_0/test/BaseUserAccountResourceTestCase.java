@@ -238,7 +238,7 @@ public abstract class BaseUserAccountResourceTestCase {
 
 	@Test
 	public void testGraphQLGetMyUserAccount() throws Exception {
-		UserAccount userAccount = testGraphQLUserAccount_addUserAccount();
+		UserAccount userAccount = testGraphQLGetMyUserAccount_addUserAccount();
 
 		Assert.assertTrue(
 			equals(
@@ -259,6 +259,12 @@ public abstract class BaseUserAccountResourceTestCase {
 	@Test
 	public void testGraphQLGetMyUserAccountNotFound() throws Exception {
 		Assert.assertTrue(true);
+	}
+
+	protected UserAccount testGraphQLGetMyUserAccount_addUserAccount()
+		throws Exception {
+
+		return testGraphQLUserAccount_addUserAccount();
 	}
 
 	@Test
@@ -1259,8 +1265,10 @@ public abstract class BaseUserAccountResourceTestCase {
 
 		long totalCount = userAccountsJSONObject.getLong("totalCount");
 
-		UserAccount userAccount1 = testGraphQLUserAccount_addUserAccount();
-		UserAccount userAccount2 = testGraphQLUserAccount_addUserAccount();
+		UserAccount userAccount1 =
+			testGraphQLGetUserAccountsPage_addUserAccount();
+		UserAccount userAccount2 =
+			testGraphQLGetUserAccountsPage_addUserAccount();
 
 		userAccountsJSONObject = JSONUtil.getValueAsJSONObject(
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
@@ -1279,6 +1287,12 @@ public abstract class BaseUserAccountResourceTestCase {
 			Arrays.asList(
 				UserAccountSerDes.toDTOs(
 					userAccountsJSONObject.getString("items"))));
+	}
+
+	protected UserAccount testGraphQLGetUserAccountsPage_addUserAccount()
+		throws Exception {
+
+		return testGraphQLUserAccount_addUserAccount();
 	}
 
 	@Test
@@ -1328,7 +1342,7 @@ public abstract class BaseUserAccountResourceTestCase {
 
 	@Test
 	public void testGraphQLDeleteUserAccount() throws Exception {
-		UserAccount userAccount = testGraphQLUserAccount_addUserAccount();
+		UserAccount userAccount = testGraphQLDeleteUserAccount_addUserAccount();
 
 		Assert.assertTrue(
 			JSONUtil.getValueAsBoolean(
@@ -1341,7 +1355,6 @@ public abstract class BaseUserAccountResourceTestCase {
 							}
 						})),
 				"JSONObject/data", "Object/deleteUserAccount"));
-
 		JSONArray errorsJSONArray = JSONUtil.getValueAsJSONArray(
 			invokeGraphQLQuery(
 				new GraphQLField(
@@ -1355,6 +1368,12 @@ public abstract class BaseUserAccountResourceTestCase {
 			"JSONArray/errors");
 
 		Assert.assertTrue(errorsJSONArray.length() > 0);
+	}
+
+	protected UserAccount testGraphQLDeleteUserAccount_addUserAccount()
+		throws Exception {
+
+		return testGraphQLUserAccount_addUserAccount();
 	}
 
 	@Test
@@ -1375,7 +1394,7 @@ public abstract class BaseUserAccountResourceTestCase {
 
 	@Test
 	public void testGraphQLGetUserAccount() throws Exception {
-		UserAccount userAccount = testGraphQLUserAccount_addUserAccount();
+		UserAccount userAccount = testGraphQLGetUserAccount_addUserAccount();
 
 		Assert.assertTrue(
 			equals(
@@ -1414,6 +1433,12 @@ public abstract class BaseUserAccountResourceTestCase {
 						getGraphQLFields())),
 				"JSONArray/errors", "Object/0", "JSONObject/extensions",
 				"Object/code"));
+	}
+
+	protected UserAccount testGraphQLGetUserAccount_addUserAccount()
+		throws Exception {
+
+		return testGraphQLUserAccount_addUserAccount();
 	}
 
 	@Test

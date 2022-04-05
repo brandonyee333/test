@@ -210,7 +210,25 @@ public abstract class BaseAccountRoleResourceTestCase {
 			204,
 			accountRoleResource.
 				deleteAccountRoleUserAssociationByExternalReferenceCodeHttpResponse(
-					null, accountRole.getId(), null));
+					testDeleteAccountRoleUserAssociationByExternalReferenceCode_getAccountExternalReferenceCode(),
+					accountRole.getId(),
+					testDeleteAccountRoleUserAssociationByExternalReferenceCode_getAccountUserExternalReferenceCode()));
+	}
+
+	protected String
+			testDeleteAccountRoleUserAssociationByExternalReferenceCode_getAccountExternalReferenceCode()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected String
+			testDeleteAccountRoleUserAssociationByExternalReferenceCode_getAccountUserExternalReferenceCode()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	protected AccountRole
@@ -789,8 +807,10 @@ public abstract class BaseAccountRoleResourceTestCase {
 
 		Assert.assertEquals(0, accountRolesJSONObject.get("totalCount"));
 
-		AccountRole accountRole1 = testGraphQLAccountRole_addAccountRole();
-		AccountRole accountRole2 = testGraphQLAccountRole_addAccountRole();
+		AccountRole accountRole1 =
+			testGraphQLGetAccountRolesPage_addAccountRole();
+		AccountRole accountRole2 =
+			testGraphQLGetAccountRolesPage_addAccountRole();
 
 		accountRolesJSONObject = JSONUtil.getValueAsJSONObject(
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
@@ -803,6 +823,12 @@ public abstract class BaseAccountRoleResourceTestCase {
 			Arrays.asList(
 				AccountRoleSerDes.toDTOs(
 					accountRolesJSONObject.getString("items"))));
+	}
+
+	protected AccountRole testGraphQLGetAccountRolesPage_addAccountRole()
+		throws Exception {
+
+		return testGraphQLAccountRole_addAccountRole();
 	}
 
 	@Test
@@ -833,7 +859,15 @@ public abstract class BaseAccountRoleResourceTestCase {
 		assertHttpResponseStatusCode(
 			204,
 			accountRoleResource.deleteAccountRoleUserAssociationHttpResponse(
-				accountRole.getAccountId(), accountRole.getId(), null));
+				accountRole.getAccountId(), accountRole.getId(),
+				testDeleteAccountRoleUserAssociation_getAccountUserId()));
+	}
+
+	protected Long testDeleteAccountRoleUserAssociation_getAccountUserId()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	protected AccountRole testDeleteAccountRoleUserAssociation_addAccountRole()
