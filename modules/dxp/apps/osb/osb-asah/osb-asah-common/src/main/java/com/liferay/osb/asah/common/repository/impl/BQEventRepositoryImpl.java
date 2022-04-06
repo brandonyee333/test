@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -97,24 +98,24 @@ public class BQEventRepositoryImpl extends BaseRepository {
 	}
 
 	public Integer countEvents(
-		Long channelId, Long individualId, String keywords,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds) {
 
 		return _getEventsCount(
-			channelId, DSL.count(), individualId, keywords,
-			rangeEndLocalDateTime, rangeStartLocalDateTime, timeZoneId);
+			channelId, DSL.count(), keywords, rangeEndLocalDateTime,
+			rangeStartLocalDateTime, timeZoneId, userIds);
 	}
 
 	public Integer countEventSessions(
-		Long channelId, Long individualId, String keywords,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds) {
 
 		return _getEventsCount(
-			channelId, DSL.countDistinct(DSL.field("sessionId")), individualId,
-			keywords, rangeEndLocalDateTime, rangeStartLocalDateTime,
-			timeZoneId);
+			channelId, DSL.countDistinct(DSL.field("sessionId")), keywords,
+			rangeEndLocalDateTime, rangeStartLocalDateTime, timeZoneId,
+			userIds);
 	}
 
 	public long countTotalEvents(
@@ -330,9 +331,10 @@ public class BQEventRepositoryImpl extends BaseRepository {
 	}
 
 	public Map<String, Integer> getEventsCountGroupByEventDate(
-		Long channelId, Long individualId, Interval interval, String keywords,
+		Long channelId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds) {
 
 		Field<OffsetDateTime> eventDateField = DSL.field(
 			String.format("BQEvent.eventDate AT TIME ZONE '%s'", timeZoneId),
@@ -365,8 +367,8 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		return _toMap(
 			selectJoinStep.where(
 				_createCondition(
-					channelId, individualId, keywords, rangeEndLocalDateTime,
-					rangeStartLocalDateTime, timeZoneId)
+					channelId, keywords, rangeEndLocalDateTime,
+					rangeStartLocalDateTime, timeZoneId, userIds)
 			).groupBy(
 				eventDateField
 			).fetch(
@@ -375,9 +377,10 @@ public class BQEventRepositoryImpl extends BaseRepository {
 	}
 
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
-		Long channelId, Long individualId, Interval interval, String keywords,
+		Long channelId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds) {
 
 		Field<OffsetDateTime> eventDateField = DSL.field(
 			String.format("eventDate AT TIME ZONE '%s'", timeZoneId),
@@ -415,9 +418,8 @@ public class BQEventRepositoryImpl extends BaseRepository {
 						)
 					).where(
 						_createCondition(
-							channelId, individualId, keywords,
-							rangeEndLocalDateTime, rangeStartLocalDateTime,
-							timeZoneId)
+							channelId, keywords, rangeEndLocalDateTime,
+							rangeStartLocalDateTime, timeZoneId, userIds)
 					)
 				).as(
 					"event1"
@@ -430,9 +432,10 @@ public class BQEventRepositoryImpl extends BaseRepository {
 	}
 
 	public List<BQEvent> searchEvents(
-		Long channelId, Long individualId, String keywords, Pageable pageable,
+		Long channelId, String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds) {
 
 		Table<Record> eventTable = DSL.table("BQEvent");
 
@@ -451,8 +454,8 @@ public class BQEventRepositoryImpl extends BaseRepository {
 			)
 		).where(
 			_createCondition(
-				channelId, individualId, keywords, rangeEndLocalDateTime,
-				rangeStartLocalDateTime, timeZoneId)
+				channelId, keywords, rangeEndLocalDateTime,
+				rangeStartLocalDateTime, timeZoneId, userIds)
 		).orderBy(
 			getSortFields(pageable.getSort(), eventTable)
 		).limit(
@@ -557,9 +560,9 @@ public class BQEventRepositoryImpl extends BaseRepository {
 	}
 
 	private Condition _createCondition(
-		Long channelId, Long individualId, String keyword,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+		Long channelId, String keyword, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds) {
 
 		Condition condition = DSL.and(
 			DSL.field(
@@ -579,13 +582,13 @@ public class BQEventRepositoryImpl extends BaseRepository {
 				"EventDefinition.hidden", Boolean.class
 			).isFalse());
 
-		if (individualId != null) {
+		if ((userIds != null) && !userIds.isEmpty()) {
 			condition = DSL.and(
 				condition,
 				DSL.field(
-					"BQEvent.individualId"
-				).eq(
-					individualId
+					"BQEvent.userId"
+				).in(
+					userIds
 				));
 		}
 
@@ -854,8 +857,9 @@ public class BQEventRepositoryImpl extends BaseRepository {
 
 	private Integer _getEventsCount(
 		Long channelId, AggregateFunction<Integer> countAggregateFunction,
-		Long individualId, String keywords, LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+		String keywords, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds) {
 
 		Table<Record> eventTable = DSL.table("BQEvent");
 
@@ -874,8 +878,8 @@ public class BQEventRepositoryImpl extends BaseRepository {
 			)
 		).where(
 			_createCondition(
-				channelId, individualId, keywords, rangeEndLocalDateTime,
-				rangeStartLocalDateTime, timeZoneId)
+				channelId, keywords, rangeEndLocalDateTime,
+				rangeStartLocalDateTime, timeZoneId, userIds)
 		).fetchOne(
 			countAggregateFunction
 		);
@@ -992,7 +996,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 	}
 
 	private Field<Integer> _getUniqueIndividualsField() {
-		return DSL.countDistinct(DSL.field("BQEvent.individualId"));
+		return DSL.countDistinct(DSL.field("BQEvent.userId"));
 	}
 
 	private Condition _getValueCondition(

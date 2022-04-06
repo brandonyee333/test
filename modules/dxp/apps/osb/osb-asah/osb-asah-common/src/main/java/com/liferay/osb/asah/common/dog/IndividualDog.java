@@ -802,6 +802,27 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return ListUtil.map(individuals, this::_populateIndividual);
 	}
 
+	public Set<String> getIndividualUserIds(Long id) {
+		Individual individual = fetchIndividual(id);
+
+		if (individual == null) {
+			return null;
+		}
+
+		Set<String> userIds = new HashSet<>();
+
+		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
+			individual.getDataSourceIndividualPKs();
+
+		for (Individual.DataSourceIndividualPK dataSourceIndividualPK :
+				dataSourceIndividualPKs) {
+
+			userIds.addAll(dataSourceIndividualPK.getIndividualPKs());
+		}
+
+		return userIds;
+	}
+
 	public List<Long> getKnownIndividualIds(
 		String filterString, Long segmentId) {
 

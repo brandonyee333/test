@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -43,14 +44,14 @@ public interface BQEventRepository
 	public long countByEventDefinitionId(long eventDefinitionId);
 
 	public Integer countEvents(
-		Long channelId, Long individualId, String keywords,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
+		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds);
 
 	public Integer countEventSessions(
-		Long channelId, Long individualId, String keywords,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
+		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds);
 
 	public long countTotalEvents(
 		@Nullable Long channelId,
@@ -88,18 +89,21 @@ public interface BQEventRepository
 		@Nullable Date rangeStartDate, String timeZoneId);
 
 	public Map<String, Integer> getEventsCountGroupByEventDate(
-		Long channelId, Long individualId, Interval interval, String keywords,
+		Long channelId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds);
 
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
-		Long channelId, Long individualId, Interval interval, String keywords,
+		Long channelId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds);
 
 	public List<BQEvent> searchEvents(
-		Long channelId, Long individualId, String keywords, Pageable pageable,
+		Long channelId, String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds);
 
 }

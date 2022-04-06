@@ -109,8 +109,9 @@ public class EventDog {
 		TimeRange timeRange) {
 
 		return _bqEventRepository.countEvents(
-			channelId, individualId, keywords, timeRange.getEndLocalDateTime(),
-			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId());
+			channelId, keywords, timeRange.getEndLocalDateTime(),
+			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+			_individualDog.getIndividualUserIds(individualId));
 	}
 
 	public BQEvent fetchEvent(Long id) {
@@ -132,10 +133,11 @@ public class EventDog {
 		TimeRange timeRange) {
 
 		return _bqEventRepository.searchEvents(
-			channelId, individualId, keywords,
+			channelId, keywords,
 			PageRequest.of(page, size, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
-			_timeZoneDog.getTimeZoneId());
+			_timeZoneDog.getTimeZoneId(),
+			_individualDog.getIndividualUserIds(individualId));
 	}
 
 	public Map<UserSession, List<Tuple2<BQEvent, EventDefinition>>>
@@ -189,6 +191,9 @@ public class EventDog {
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

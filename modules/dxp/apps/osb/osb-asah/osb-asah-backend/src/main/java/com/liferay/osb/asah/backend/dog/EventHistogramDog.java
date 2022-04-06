@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.model.EventMetricType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -48,12 +49,12 @@ public class EventHistogramDog {
 			EventMetricType.TOTAL_EVENTS, searchQueryContext,
 			_bqEventRepository.getEventsCountGroupByEventDate(
 				Long.valueOf(searchQueryContext.getChannelId()),
-				Long.valueOf(searchQueryContext.getEntityId()),
 				_getInterval(searchQueryContext),
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId()));
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				_individualDog.getIndividualUserIds(
+					Long.valueOf(searchQueryContext.getEntityId()))));
 	}
 
 	public HistogramMetricBag getSessionsCountHistogram(
@@ -65,12 +66,12 @@ public class EventHistogramDog {
 			EventMetricType.TOTAL_SESSIONS, searchQueryContext,
 			_bqEventRepository.getEventSessionsCountGroupByEventDate(
 				Long.valueOf(searchQueryContext.getChannelId()),
-				Long.valueOf(searchQueryContext.getEntityId()),
 				_getInterval(searchQueryContext),
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId()));
+				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
+				_individualDog.getIndividualUserIds(
+					Long.valueOf(searchQueryContext.getEntityId()))));
 	}
 
 	private HistogramMetricBag _createHistogramBag(
@@ -111,6 +112,9 @@ public class EventHistogramDog {
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
+
+	@Autowired
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private MetricHelper _metricHelper;
