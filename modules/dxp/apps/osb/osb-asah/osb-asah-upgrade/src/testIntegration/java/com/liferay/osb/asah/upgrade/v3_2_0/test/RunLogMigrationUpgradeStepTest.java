@@ -70,42 +70,32 @@ public class RunLogMigrationUpgradeStepTest
 		_elasticsearchIndexManager.delete("test_osbasahfaroinfo_run-logs");
 		_elasticsearchIndexManager.delete("test_osbasahsalesforceraw_run-logs");
 
-		_runLogRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
+		_runLogRepository.deleteAll();
 	}
 
 	@Test
 	public void testUpgrade() throws Exception {
 		JSONArray dxpRawJSONArray = _getJSONArray("osbasahdxpraw");
 
+		_dxpRawElasticsearchInvoker.add("run-logs", dxpRawJSONArray);
+
 		JSONArray faroInfoJSONArray = _getJSONArray("osbasahfaroinfo");
+
+		_faroInfoElasticsearchInvoker.add("run-logs", faroInfoJSONArray);
+
 		JSONArray salesForceRawJSONArray = _getJSONArray(
 			"osbasahsalesforceraw");
 
-		_dxpRawElasticsearchInvoker.add("run-logs", dxpRawJSONArray);
-		_faroInfoElasticsearchInvoker.add("run-logs", faroInfoJSONArray);
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs", salesForceRawJSONArray);
-
-		JSONArray jsonArray = new JSONArray();
-
-		for (Object dxpRawObject : dxpRawJSONArray) {
-			jsonArray.put(dxpRawObject);
-		}
-
-		for (Object faroInfoObject : faroInfoJSONArray) {
-			jsonArray.put(faroInfoObject);
-		}
-
-		for (Object salesForceRawObject : salesForceRawJSONArray) {
-			jsonArray.put(salesForceRawObject);
-		}
 
 		_runLogMigrationUpgradeStep.upgrade("");
 
 		Assertions.assertEquals(
 			JSONUtil.toList(
-				jsonArray,
+				_toJSONArray(
+					dxpRawJSONArray, faroInfoJSONArray, salesForceRawJSONArray),
 				jsonObject -> _objectMapper.convertValue(
 					jsonObject, RunLog.class)),
 			_runLogRepository.findAll());
@@ -134,6 +124,18 @@ public class RunLogMigrationUpgradeStepTest
 
 		_elasticsearchIndexManager.addAlias(
 			String.format("%s_alias", indexName), indexName);
+	}
+
+	private JSONArray _toJSONArray(JSONArray... jsonArrays) {
+		JSONArray jsonArray = new JSONArray();
+
+		for (JSONArray jsonArrayTmp : jsonArrays) {
+			for (Object object : jsonArrayTmp) {
+				jsonArray.put(object);
+			}
+		}
+
+		return jsonArray;
 	}
 
 	@Autowired
