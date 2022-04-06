@@ -2750,7 +2750,6 @@ definition {
 	}
 
 	@description = "LPS-111551 - As a Forms admin, I want to reorder my form pages"
-	@ignore = "true"
 	@priority = "4"
 	test ReorderPagesAndVerifyFields {
 		Navigator.openURL();
