@@ -48,7 +48,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -122,7 +122,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 			
@@ -202,7 +202,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -276,7 +276,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -356,7 +356,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -430,7 +430,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -510,7 +510,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -584,7 +584,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -664,7 +664,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -738,7 +738,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -818,7 +818,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -892,7 +892,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -972,7 +972,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -1046,7 +1046,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -1126,7 +1126,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -1200,7 +1200,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -1280,7 +1280,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -1354,7 +1354,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -1434,7 +1434,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -1508,7 +1508,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -1588,7 +1588,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -1662,7 +1662,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -1742,7 +1742,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -1816,7 +1816,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -1896,7 +1896,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -1970,7 +1970,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -2050,7 +2050,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -2124,7 +2124,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -2204,7 +2204,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -2278,7 +2278,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -2358,7 +2358,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -2432,7 +2432,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -2512,7 +2512,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -2586,7 +2586,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
@@ -2666,7 +2666,7 @@ definition {
 				webContentContent = "WC WebContent Content New Company",
 				webContentTitle = "WC WebContent Title New Company");
 
-			WebContent.increaseDisplayDate(minuteIncrease = "8");
+			WebContent.increaseDisplayDate(minuteIncrease = "7");
 
 			PortletEntry.publish();
 
@@ -2740,7 +2740,7 @@ definition {
 			value1 = "WC WebContent Title Default Company is scheduled and will be displayed");
 
 		task ("View WebContent Article Publish on default Company") {
-			Pause(locator1 = "120000");
+			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
 
