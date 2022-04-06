@@ -16,7 +16,6 @@
 		"user-sessions"
 	],
 	"osbasahdxpraw": [
-		"audit-events",
 		"faro-audit-events",
 		"groups",
 		"organizations",
@@ -42,6 +41,5 @@
 		"visited-pages"
 	],
 	"osbasahsalesforceraw": [
-		"audit-events"
 	]
 }
