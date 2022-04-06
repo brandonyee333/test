@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -84,7 +85,7 @@ public class AccountEntrySearchDisplayContext {
 			sb.append("'))");
 		}
 
-		if (!isLiferayContractorOrg() && !isLiferayIncOrg()) {
+		if (!isAdminOrSubscriptionServices()) {
 			User user = _themeDisplay.getUser();
 
 			if (sb.length() > 0) {
@@ -146,21 +147,18 @@ public class AccountEntrySearchDisplayContext {
 		return _accountReader.getState(accountKey);
 	}
 
-	public boolean isLiferayContractorOrg() {
-		if (OrganizationLocalServiceUtil.hasUserOrganization(
+	public boolean isAdminOrSubscriptionServices() {
+		if (RoleLocalServiceUtil.hasUserRole(
 				_themeDisplay.getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID)) {
+				OSBCustomerConstants.ROLE_ADMINISTRATOR_ID)) {
 
 			return true;
 		}
 
-		return false;
-	}
-
-	public boolean isLiferayIncOrg() {
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
 				_themeDisplay.getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				OSBCustomerConstants.
+					ORGANIZATION_DIVISION_SUBSCRIPTION_SERVICES_ID)) {
 
 			return true;
 		}

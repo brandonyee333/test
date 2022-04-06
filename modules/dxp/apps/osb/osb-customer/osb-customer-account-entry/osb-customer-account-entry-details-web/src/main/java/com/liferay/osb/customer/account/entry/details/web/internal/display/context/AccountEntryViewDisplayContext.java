@@ -60,6 +60,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -408,7 +409,7 @@ public class AccountEntryViewDisplayContext {
 		sb.append(_account.getKey());
 		sb.append("'");
 
-		if (!isLiferayContractorOrg() && !isLiferayIncOrg() &&
+		if (!isAdminOrSubscriptionServices() &&
 			!isPartnerManagedSupportWorker()) {
 
 			sb.append(" and state eq 'active'");
@@ -498,21 +499,18 @@ public class AccountEntryViewDisplayContext {
 		return searchContainer;
 	}
 
-	public boolean isLiferayContractorOrg() {
-		if (OrganizationLocalServiceUtil.hasUserOrganization(
+	public boolean isAdminOrSubscriptionServices() {
+		if (RoleLocalServiceUtil.hasUserRole(
 				_user.getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID)) {
+				OSBCustomerConstants.ROLE_ADMINISTRATOR_ID)) {
 
 			return true;
 		}
 
-		return false;
-	}
-
-	public boolean isLiferayIncOrg() {
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
 				_user.getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				OSBCustomerConstants.
+					ORGANIZATION_DIVISION_SUBSCRIPTION_SERVICES_ID)) {
 
 			return true;
 		}

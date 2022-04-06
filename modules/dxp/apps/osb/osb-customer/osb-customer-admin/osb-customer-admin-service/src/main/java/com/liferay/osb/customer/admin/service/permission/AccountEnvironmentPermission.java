@@ -69,7 +69,8 @@ public class AccountEnvironmentPermission {
 			String actionId)
 		throws PortalException {
 
-		if (_roleLocalService.hasUserRole(
+		if (permissionChecker.isOmniadmin() ||
+			_roleLocalService.hasUserRole(
 				permissionChecker.getUserId(),
 				OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 
@@ -78,10 +79,8 @@ public class AccountEnvironmentPermission {
 
 		if (_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) ||
-			_organizationLocalService.hasUserOrganization(
-				permissionChecker.getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				OSBCustomerConstants.
+					ORGANIZATION_DIVISION_SUBSCRIPTION_SERVICES_ID)) {
 
 			return true;
 		}

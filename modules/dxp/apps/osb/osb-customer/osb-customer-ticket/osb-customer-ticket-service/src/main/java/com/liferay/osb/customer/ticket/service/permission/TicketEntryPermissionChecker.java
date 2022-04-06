@@ -57,12 +57,11 @@ public class TicketEntryPermissionChecker {
 			String actionId)
 		throws PortalException {
 
-		if (_organizationLocalService.hasUserOrganization(
-				permissionChecker.getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) ||
+		if (permissionChecker.isOmniadmin() ||
 			_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				OSBCustomerConstants.
+					ORGANIZATION_DIVISION_SUBSCRIPTION_SERVICES_ID)) {
 
 			return true;
 		}

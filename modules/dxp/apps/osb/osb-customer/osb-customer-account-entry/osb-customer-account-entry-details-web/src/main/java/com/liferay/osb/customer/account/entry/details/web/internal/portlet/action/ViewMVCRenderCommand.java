@@ -104,9 +104,7 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 			AccountEntrySearchDisplayContext accountEntrySearchDisplayContext)
 		throws Exception {
 
-		if (accountEntrySearchDisplayContext.isLiferayContractorOrg() ||
-			accountEntrySearchDisplayContext.isLiferayIncOrg()) {
-
+		if (accountEntrySearchDisplayContext.isAdminOrSubscriptionServices()) {
 			return null;
 		}
 

@@ -42,6 +42,9 @@ public class OSBCustomerConstants {
 
 	public static final long ORGANIZATION_CUSTOMER_PORTAL_ID = 2844836;
 
+	public static final long ORGANIZATION_DIVISION_SUBSCRIPTION_SERVICES_ID =
+		121344151;
+
 	public static final long ORGANIZATION_LIFERAY_CONTRACTOR_ID = 119362231;
 
 	public static final long ORGANIZATION_LIFERAY_INC_ID = 1747318;
@@ -50,6 +53,8 @@ public class OSBCustomerConstants {
 
 	public static final long PRODUCT_ENTRY_DIGITAL_ENTERPRISE_DEVELOPER_ID =
 		81815275;
+
+	public static final long ROLE_ADMINISTRATOR_ID = 10164;
 
 	public static final long
 		ROLE_CUSTOMER_COMMERCE_CONNECTOR_TO_PUNCHOUT2GO_ID = 120129734;

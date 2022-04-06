@@ -23,11 +23,14 @@ public class OktaConstants {
 
 	public static final String GROUP_DATA_ACCESS_US_NAME = "Data Access US";
 
+	public static final String GROUP_DIVISION_SUBSCRIPTION_SERVICES =
+		"Division - Subscription Services";
+
 	public static final String GROUP_EMPLOYEES_NAME = "Employees";
 
 	public static final String[] GROUPS = {
 		GROUP_DATA_ACCESS_EU_NAME, GROUP_DATA_ACCESS_US_NAME,
-		GROUP_EMPLOYEES_NAME
+		GROUP_DIVISION_SUBSCRIPTION_SERVICES, GROUP_EMPLOYEES_NAME
 	};
 
 }

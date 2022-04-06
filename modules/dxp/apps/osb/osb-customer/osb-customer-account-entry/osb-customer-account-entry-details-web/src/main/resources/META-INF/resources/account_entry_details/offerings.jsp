@@ -53,7 +53,7 @@
 			value="<%= productPurchaseViewDisplay.getCurrentProvisionedCount() %>"
 		/>
 
-		<c:if test="<%= accountEntryViewDisplayContext.isLiferayContractorOrg() || accountEntryViewDisplayContext.isLiferayIncOrg() || accountEntryViewDisplayContext.isPartnerManagedSupportWorker() %>">
+		<c:if test="<%= accountEntryViewDisplayContext.isAdminOrSubscriptionServices() || accountEntryViewDisplayContext.isPartnerManagedSupportWorker() %>">
 			<liferay-ui:search-container-column-text
 				name="state"
 			>

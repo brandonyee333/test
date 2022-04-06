@@ -94,9 +94,7 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 			AccountEntryViewDisplayContext.class.getName(),
 			accountEntryViewDisplayContext);
 
-		if (accountEntryViewDisplayContext.isLiferayContractorOrg() ||
-			accountEntryViewDisplayContext.isLiferayIncOrg()) {
-
+		if (accountEntryViewDisplayContext.isAdminOrSubscriptionServices()) {
 			return "/account_entry_details/worker/view_account_entry.jsp";
 		}
 
