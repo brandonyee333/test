@@ -19,13 +19,11 @@ import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 
 /**
  * @author Marcellus Tavares
  */
-@Primary
 public interface SalesforceAuditEventRepository
 	extends Repository<SalesforceAuditEvent, Long> {
 
