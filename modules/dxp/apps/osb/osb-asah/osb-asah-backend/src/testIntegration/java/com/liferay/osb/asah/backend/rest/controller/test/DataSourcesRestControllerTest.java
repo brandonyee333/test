@@ -41,6 +41,7 @@ import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
+import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -458,13 +459,12 @@ public class DataSourcesRestControllerTest {
 
 		_runLogRepository.save(runLog4);
 
-		_salesforceAuditEventDog.addSalesforceAuditEvent(
-			new SalesforceAuditEvent() {
-				{
-					setDataSourceId(salesforceDataSource.getId());
-					setEntityTypeName("Account");
-				}
-			});
+		SalesforceAuditEvent salesforceAuditEvent1 = new SalesforceAuditEvent();
+
+		salesforceAuditEvent1.setDataSourceId(salesforceDataSource.getId());
+		salesforceAuditEvent1.setEntityTypeName("Account");
+
+		_salesforceAuditEventRepository.save(salesforceAuditEvent1);
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -563,13 +563,12 @@ public class DataSourcesRestControllerTest {
 
 		_runLogRepository.save(runLog7);
 
-		_salesforceAuditEventDog.addSalesforceAuditEvent(
-			new SalesforceAuditEvent() {
-				{
-					setDataSourceId(salesforceDataSource.getId());
-					setEntityTypeName("Account");
-				}
-			});
+		SalesforceAuditEvent salesforceAuditEvent2 = new SalesforceAuditEvent();
+
+		salesforceAuditEvent2.setDataSourceId(salesforceDataSource.getId());
+		salesforceAuditEvent2.setEntityTypeName("Account");
+
+		_salesforceAuditEventRepository.save(salesforceAuditEvent2);
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -804,21 +803,19 @@ public class DataSourcesRestControllerTest {
 
 		_runLogRepository.save(runLog2);
 
-		_salesforceAuditEventDog.addSalesforceAuditEvent(
-			new SalesforceAuditEvent() {
-				{
-					setDataSourceId(salesforceDataSource.getId());
-					setEntityTypeName("Contact");
-				}
-			});
+		SalesforceAuditEvent salesforceAuditEvent1 = new SalesforceAuditEvent();
 
-		_salesforceAuditEventDog.addSalesforceAuditEvent(
-			new SalesforceAuditEvent() {
-				{
-					setDataSourceId(salesforceDataSource.getId());
-					setEntityTypeName("Lead");
-				}
-			});
+		salesforceAuditEvent1.setDataSourceId(salesforceDataSource.getId());
+		salesforceAuditEvent1.setEntityTypeName("Contact");
+
+		_salesforceAuditEventRepository.save(salesforceAuditEvent1);
+
+		SalesforceAuditEvent salesforceAuditEvent2 = new SalesforceAuditEvent();
+
+		salesforceAuditEvent2.setDataSourceId(salesforceDataSource.getId());
+		salesforceAuditEvent2.setEntityTypeName("Lead");
+
+		_salesforceAuditEventRepository.save(salesforceAuditEvent2);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -1013,13 +1010,12 @@ public class DataSourcesRestControllerTest {
 
 		_runLogRepository.save(runLog3);
 
-		_salesforceAuditEventDog.addSalesforceAuditEvent(
-			new SalesforceAuditEvent() {
-				{
-					setDataSourceId(salesforceDataSource.getId());
-					setEntityTypeName("individuals");
-				}
-			});
+		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
+
+		salesforceAuditEvent.setDataSourceId(salesforceDataSource.getId());
+		salesforceAuditEvent.setEntityTypeName("individuals");
+
+		_salesforceAuditEventRepository.save(salesforceAuditEvent);
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
@@ -1232,6 +1228,9 @@ public class DataSourcesRestControllerTest {
 
 	@Autowired
 	private SalesforceAuditEventDog _salesforceAuditEventDog;
+
+	@Autowired
+	private SalesforceAuditEventRepository _salesforceAuditEventRepository;
 
 	@Autowired
 	private SalesforceEntityDog _salesforceEntityDog;

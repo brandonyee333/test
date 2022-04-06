@@ -14,19 +14,17 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.batch.curator.bot.nanite.SalesforceIndividualsNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.RunLog;
+import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
+import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
 import java.util.Map;
@@ -75,17 +73,23 @@ public class SalesforceIndividualsNaniteTest
 
 		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity2);
 
-		_salesforceRawElasticsearchInvoker.add(
-			"audit-events",
-			JSONUtil.putAll(
-				_buildAuditEventJSONObject(
-					_salesforceEntityDog.getSalesforceEntity(
-						getDataSourceId(), getIndividual1PK(),
-						SalesforceEntity.Type.INDIVIDUAL)),
-				_buildAuditEventJSONObject(
-					_salesforceEntityDog.getSalesforceEntity(
-						getDataSourceId(), getIndividual2PK(),
-						SalesforceEntity.Type.INDIVIDUAL))));
+		SalesforceAuditEvent salesforceAuditEvent1 = _buildAuditEvent(
+			_salesforceEntityDog.getSalesforceEntity(
+				getDataSourceId(), getIndividual1PK(),
+				SalesforceEntity.Type.INDIVIDUAL));
+
+		salesforceAuditEvent1.setIsNew(Boolean.TRUE);
+
+		_salesforceAuditEventRepository.save(salesforceAuditEvent1);
+
+		SalesforceAuditEvent salesforceAuditEvent2 = _buildAuditEvent(
+			_salesforceEntityDog.getSalesforceEntity(
+				getDataSourceId(), getIndividual2PK(),
+				SalesforceEntity.Type.INDIVIDUAL));
+
+		salesforceAuditEvent2.setIsNew(Boolean.TRUE);
+
+		_salesforceAuditEventRepository.save(salesforceAuditEvent2);
 
 		RunLog runLog = new RunLog();
 
@@ -131,23 +135,21 @@ public class SalesforceIndividualsNaniteTest
 		return "email";
 	}
 
-	private JSONObject _buildAuditEventJSONObject(
+	private SalesforceAuditEvent _buildAuditEvent(
 		SalesforceEntity salesforceEntity) {
 
-		return JSONUtil.put(
-			"additionalInfo",
-			_objectMapper.convertValue(salesforceEntity, JSONObject.class)
-		).put(
-			"dataSourceId", salesforceEntity.getDataSourceId()
-		).put(
-			"dateCreated", DateUtil.newDateString()
-		).put(
-			"eventType", "UPDATE"
-		).put(
-			"recordId", salesforceEntity.getId()
-		).put(
-			"typeName", "individuals"
-		);
+		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
+
+		salesforceAuditEvent.setAdditionalInfoJSONObject(
+			salesforceEntity.getFieldsJSONObject());
+		salesforceAuditEvent.setCreateDate(DateUtil.newDate());
+		salesforceAuditEvent.setDataSourceId(
+			salesforceEntity.getDataSourceId());
+		salesforceAuditEvent.setEntityTypeName("individuals");
+		salesforceAuditEvent.setRecordId(salesforceEntity.getId());
+		salesforceAuditEvent.setType(SalesforceAuditEvent.Type.UPDATE);
+
+		return salesforceAuditEvent;
 	}
 
 	private SalesforceEntity _buildIndividualSalesforceEntity(
@@ -166,19 +168,16 @@ public class SalesforceIndividualsNaniteTest
 	}
 
 	@Autowired
-	private ObjectMapper _objectMapper;
+	private RunLogRepository _runLogRepository;
 
 	@Autowired
-	private RunLogRepository _runLogRepository;
+	private SalesforceAuditEventRepository _salesforceAuditEventRepository;
 
 	@Autowired
 	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceIndividualsNanite _salesforceIndividualsNanite;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();

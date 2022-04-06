@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
+import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -44,10 +45,6 @@ public class SalesforceAccountsNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
-		name = "audit-events", resourcePath = "audit_events.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_SALESFORCE_RAW
-	)
-	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -58,6 +55,10 @@ public class SalesforceAccountsNaniteTest
 	@RepositoryResource(
 		repositoryClass = RunLogRepository.class,
 		resourcePath = "osbasahsalesforceraw/run_logs.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SalesforceAuditEventRepository.class,
+		resourcePath = "osbasahsalesforceraw/audit_events.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SalesforceEntityRepository.class,
