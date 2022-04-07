@@ -83,6 +83,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -802,11 +803,15 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return ListUtil.map(individuals, this::_populateIndividual);
 	}
 
-	public Set<String> getIndividualUserIds(Long id) {
+	public Set<String> getIndividualUserIds(@Nullable Long id) {
+		if (id == null) {
+			return Collections.emptySet();
+		}
+
 		Individual individual = fetchIndividual(id);
 
 		if (individual == null) {
-			return null;
+			return Collections.emptySet();
 		}
 
 		Set<String> userIds = new HashSet<>();

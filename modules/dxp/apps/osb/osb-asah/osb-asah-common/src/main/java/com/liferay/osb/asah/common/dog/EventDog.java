@@ -40,6 +40,7 @@ import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -105,7 +106,7 @@ public class EventDog {
 	}
 
 	public Integer countEvents(
-		Long channelId, Long individualId, String keywords,
+		Long channelId, @Nullable Long individualId, @Nullable String keywords,
 		TimeRange timeRange) {
 
 		return _bqEventRepository.countEvents(
@@ -129,8 +130,8 @@ public class EventDog {
 	}
 
 	public List<BQEvent> searchEvents(
-		Long channelId, Long individualId, String keywords, int page, int size,
-		TimeRange timeRange) {
+		Long channelId, @Nullable Long individualId, @Nullable String keywords,
+		int page, int size, TimeRange timeRange) {
 
 		return _bqEventRepository.searchEvents(
 			channelId, keywords,

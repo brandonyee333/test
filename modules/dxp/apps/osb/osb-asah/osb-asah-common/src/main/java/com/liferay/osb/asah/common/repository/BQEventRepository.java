@@ -44,7 +44,8 @@ public interface BQEventRepository
 	public long countByEventDefinitionId(long eventDefinitionId);
 
 	public Integer countEvents(
-		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, @Nullable String keywords,
+		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds);
 
@@ -101,7 +102,7 @@ public interface BQEventRepository
 		Set<String> userIds);
 
 	public List<BQEvent> searchEvents(
-		Long channelId, String keywords, Pageable pageable,
+		Long channelId, @Nullable String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds);

@@ -98,7 +98,8 @@ public class BQEventRepositoryImpl extends BaseRepository {
 	}
 
 	public Integer countEvents(
-		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, @Nullable String keywords,
+		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds) {
 
@@ -432,7 +433,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 	}
 
 	public List<BQEvent> searchEvents(
-		Long channelId, String keywords, Pageable pageable,
+		Long channelId, @Nullable String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds) {
