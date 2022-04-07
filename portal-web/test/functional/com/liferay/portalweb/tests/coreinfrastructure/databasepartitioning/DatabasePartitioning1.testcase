@@ -31,10 +31,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -56,12 +66,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -101,10 +105,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -185,10 +185,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -210,12 +220,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -255,10 +259,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -279,7 +279,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -339,10 +339,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -364,12 +374,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -409,10 +413,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -433,7 +433,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -480,7 +480,7 @@ definition {
 				webContentTitle = "WC WebContent Title Default Company");
 		}
 	}
-
+	
 	@priority = "4"
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies4 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
@@ -493,10 +493,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -518,12 +528,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -563,10 +567,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -587,7 +587,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -647,10 +647,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -672,12 +682,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -717,10 +721,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -741,7 +741,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -801,10 +801,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -826,12 +836,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -871,10 +875,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -895,7 +895,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -955,10 +955,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -980,12 +990,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -1025,10 +1029,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -1049,7 +1049,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -1109,10 +1109,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -1134,12 +1144,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -1179,10 +1183,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -1203,7 +1203,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -1263,10 +1263,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -1288,12 +1298,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -1333,10 +1337,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -1357,7 +1357,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -1417,10 +1417,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -1442,12 +1452,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -1487,10 +1491,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -1511,7 +1511,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -1571,10 +1571,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -1596,12 +1606,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -1641,10 +1645,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -1665,7 +1665,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -1725,10 +1725,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -1750,12 +1760,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -1795,10 +1799,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -1819,7 +1819,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -1879,10 +1879,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -1904,12 +1914,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -1949,10 +1953,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -1973,7 +1973,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -2033,10 +2033,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -2058,12 +2068,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -2103,10 +2107,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -2127,7 +2127,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -2187,10 +2187,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -2212,12 +2222,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -2257,10 +2261,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -2281,7 +2281,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -2341,10 +2341,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -2366,12 +2376,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -2411,10 +2415,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -2435,7 +2435,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -2495,10 +2495,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -2520,12 +2530,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -2565,10 +2569,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -2589,7 +2589,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
@@ -2649,10 +2649,20 @@ definition {
 				portalInstanceId = "www.able.com",
 				virtualHost = "www.able.com");
 
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
+
+			PagesAdmin.openPagesAdmin(
+				baseURL = "http://www.able.com:8080",
+				siteURLKey = "guest");
+
+			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
 		}
 
 		task ("Add a WebContent article on new Company") {
@@ -2674,12 +2684,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(
-				baseURL = "http://www.able.com:8080",
-				siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(
 				baseURL = "www.able.com:8080",
 				pageName = "Web Content Display Page");
@@ -2719,10 +2723,6 @@ definition {
 		}
 
 		task ("Add a page and WebContent display select a WebContent article") {
-			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
-
-			PagesAdmin.addPublicPage(pageName = "Web Content Display Page");
-
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -2743,7 +2743,7 @@ definition {
 			Pause(locator1 = "180000");
 
 			// Disable Check on Default company until LPS-116111 is resolved
-
+			
 			Refresh();
 
 			WebContentDisplayPortlet.viewContent(
