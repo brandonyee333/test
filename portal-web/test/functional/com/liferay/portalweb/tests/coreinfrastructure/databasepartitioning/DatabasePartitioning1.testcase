@@ -23,7 +23,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -177,7 +177,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies2 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies2";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies2";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -331,7 +331,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies3 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies3";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies3";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -485,7 +485,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies4 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies4";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies4";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -639,7 +639,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies5 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies5";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies5";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -793,7 +793,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies6 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies6";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies6";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -947,7 +947,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies7 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies7";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies7";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -1101,7 +1101,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies8 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies8";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies8";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -1255,7 +1255,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies9 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies9";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies9";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -1409,7 +1409,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies10 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies10";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies10";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -1563,7 +1563,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies11 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies11";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies11";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -1717,7 +1717,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies12 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies12";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies12";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -1871,7 +1871,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies13 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies13";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies13";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -2025,7 +2025,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies14 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies14";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies14";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -2179,7 +2179,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies15 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies15";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies15";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -2333,7 +2333,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies16 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies16";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies16";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -2487,7 +2487,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies17 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies17";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies17";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
@@ -2641,7 +2641,7 @@ definition {
 	test ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies18 {
 		property osgi.module.configuration.file.names = "com.liferay.journal.configuration.JournalServiceConfiguration.config";
 		property osgi.module.configurations = "checkInterval=I&quot;1&quot;";
-		property test.name.skip.portal.instance = "DatabasePartitioning#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies18";
+		property test.name.skip.portal.instance = "DatabasePartitioning1#ScheduleWebContentChangesWithDBPartitioningActivatedAcrossVariousCompanies18";
 
 		task ("Add a new Company") {
 			HeadlessPortalInstanceAPI.addPortalInstance(

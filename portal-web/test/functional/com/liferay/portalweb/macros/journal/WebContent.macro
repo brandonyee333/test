@@ -1086,6 +1086,8 @@ definition {
 				locator1 = "TextInput#DISPLAY_DATE_TIME",
 				value1 = "${displayTime}");
 		}
+
+		takeScreenshot();
 	}
 
 	macro editDisplayPage {
@@ -1375,11 +1377,28 @@ definition {
 		var displayDateAmpm = StringUtil.replace("${displayDateAmpm}", "1", "PM");
 		var displayDateMinute = selenium.getAttribute("//input[contains(@id,'displayDateMinute')]@value");
 		var displayDateMinuteFuture = ${displayDateMinute} + ${minuteIncrease};
+		var displayDateMinuteFutureLength = StringUtil.length("${displayDateMinuteFuture}");
 		var displayTime = "${displayDateHour}:${displayDateMinuteFuture} ${displayDateAmpm}";
+
+		echo("UI Time = ${displayDateHour}:${displayDateMinute} ${displayDateAmpm}");
+		echo("UI display time = ${displayTime}");
+
+		WebContent.getCurrentTime();
 
 		WebContent.editDisplayDate(
 			displayDate = "${displayDate}",
 			displayTime = "${displayTime}");
+	}
+
+	macro getCurrentTime {
+		var currentHour = DateUtil.getFormattedCurrentDate("H");
+		var currentMinute = DateUtil.getFormattedCurrentDate("m");
+
+		var currentTime = "${currentHour}:${currentMinute}";
+
+		echo("Current Hour = ${currentHour}");
+		echo("Current Minute = ${currentMinute}");
+		echo("Current Time = ${currentTime}");
 	}
 
 	macro moveArticlesToFolderCP {
