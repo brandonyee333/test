@@ -36,9 +36,11 @@ public class DataExportTaskDTO {
 	public DataExportTaskDTO(DataExportTask dataExportTask) {
 		_completedDate = dataExportTask.getCompletedDate();
 		_createDate = dataExportTask.getCreateDate();
+		_fromDate = dataExportTask.getFromDate();
 		_id = StringUtil.get(dataExportTask.getId(), null);
 		_startedDate = dataExportTask.getStartedDate();
 		_status = StringUtil.get(dataExportTask.getStatus(), null);
+		_toDate = dataExportTask.getToDate();
 		_type = StringUtil.get(dataExportTask.getType(), null);
 	}
 
@@ -69,6 +71,19 @@ public class DataExportTaskDTO {
 		return new Date(_createDate.getTime());
 	}
 
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("fromDate")
+	public Date getFromDate() {
+		if (_fromDate == null) {
+			return null;
+		}
+
+		return new Date(_fromDate.getTime());
+	}
+
 	@JsonProperty("id")
 	public String getId() {
 		return _id;
@@ -92,6 +107,19 @@ public class DataExportTaskDTO {
 		return _status;
 	}
 
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("toDate")
+	public Date getToDate() {
+		if (_toDate == null) {
+			return null;
+		}
+
+		return new Date(_toDate.getTime());
+	}
+
 	@JsonProperty("type")
 	public String getType() {
 		return _type;
@@ -109,6 +137,12 @@ public class DataExportTaskDTO {
 		}
 	}
 
+	public void setFromDate(Date fromDate) {
+		if (fromDate != null) {
+			_fromDate = new Date(fromDate.getTime());
+		}
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
@@ -123,15 +157,23 @@ public class DataExportTaskDTO {
 		_status = status;
 	}
 
+	public void setToDate(Date toDate) {
+		if (toDate != null) {
+			_toDate = new Date(toDate.getTime());
+		}
+	}
+
 	public void setType(String type) {
 		_type = type;
 	}
 
 	private Date _completedDate;
 	private Date _createDate;
+	private Date _fromDate;
 	private String _id;
 	private Date _startedDate;
 	private String _status;
+	private Date _toDate;
 	private String _type;
 
 }
