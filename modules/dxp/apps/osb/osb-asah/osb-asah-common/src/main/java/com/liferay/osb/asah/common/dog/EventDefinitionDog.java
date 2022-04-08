@@ -247,13 +247,13 @@ public class EventDefinitionDog {
 
 		eventDefinition.setBlocked(true);
 
-		BQEvent lastSeenEvent = _fetchLastSeenEvent(eventDefinitionId);
+		BQEvent lastSeenBQEvent = _fetchLastSeenBQEvent(eventDefinitionId);
 
-		if (lastSeenEvent != null) {
+		if (lastSeenBQEvent != null) {
 			eventDefinition.setBlockedLastSeenDate(
-				lastSeenEvent.getEventDate());
+				lastSeenBQEvent.getEventDate());
 			eventDefinition.setBlockedLastSeenURL(
-				lastSeenEvent.getCanonicalUrl());
+				lastSeenBQEvent.getCanonicalUrl());
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
@@ -269,11 +269,11 @@ public class EventDefinitionDog {
 		_eventDefinitionRepository.save(eventDefinition);
 	}
 
-	private BQEvent _fetchLastSeenEvent(Long eventDefinitionId) {
-		Optional<BQEvent> lastSeenEventOptional =
-			_bqEventRepository.findLastSeenEvent(eventDefinitionId);
+	private BQEvent _fetchLastSeenBQEvent(Long eventDefinitionId) {
+		Optional<BQEvent> lastSeenBQEventOptional =
+			_bqEventRepository.findLastSeenBQEvent(eventDefinitionId);
 
-		return lastSeenEventOptional.orElse(null);
+		return lastSeenBQEventOptional.orElse(null);
 	}
 
 	private String _getDisplayName(String displayName, String name) {

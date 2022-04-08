@@ -41,20 +41,20 @@ import org.springframework.lang.Nullable;
 public interface BQEventRepository
 	extends PagingAndSortingRepository<BQEvent, Long> {
 
-	public long countByEventDefinitionId(long eventDefinitionId);
-
-	public Integer countEvents(
+	public Integer countBQEvents(
 		Long channelId, @Nullable String keywords,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds);
+
+	public long countByEventDefinitionId(long eventDefinitionId);
 
 	public Integer countEventSessions(
 		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds);
 
-	public long countTotalEvents(
+	public long countTotalBQEvents(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
@@ -66,16 +66,16 @@ public interface BQEventRepository
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId);
 
-	public Optional<BQEvent> findLastSeenEvent(
+	public Optional<BQEvent> findLastSeenBQEvent(
 		@Nullable Long eventDefinitionId);
 
-	public BigDecimal getAverageEventCountPerIndividual(
+	public BigDecimal getAverageBQEventCountPerIndividual(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId);
 
-	public Map<Object, Number> getEventAttributeValues(
+	public Map<Object, Number> getBQEventPropertyValues(
 		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
@@ -83,13 +83,13 @@ public interface BQEventRepository
 		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
 		String timeZoneId);
 
-	public long getEventAttributeValuesCount(
+	public long getBQEventPropertyValuesCount(
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId);
 
-	public Map<String, Integer> getEventsCountGroupByEventDate(
+	public Map<String, Integer> getBQEventsCountGroupByEventDate(
 		Long channelId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
@@ -101,7 +101,7 @@ public interface BQEventRepository
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds);
 
-	public List<BQEvent> searchEvents(
+	public List<BQEvent> searchBQEvents(
 		Long channelId, @Nullable String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,

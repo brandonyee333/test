@@ -132,7 +132,7 @@ public class EventDogTest
 			channel.getId(), date, 1L, date, "pageViewed", "analyticsEventId2",
 			"sessionId", "userId");
 
-		List<BQEvent> bqEvents = _eventDog.searchEvents(
+		List<BQEvent> bqEvents = _eventDog.searchBQEvents(
 			channel.getId(), null, null, 0, 50, TimeRange.LAST_24_HOURS);
 
 		Assertions.assertEquals(2, bqEvents.size(), bqEvents.toString());

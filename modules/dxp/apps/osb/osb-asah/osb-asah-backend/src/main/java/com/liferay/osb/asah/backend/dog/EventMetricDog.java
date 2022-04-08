@@ -45,7 +45,7 @@ public class EventMetricDog {
 			Long.valueOf(searchQueryContext.getEntityId()));
 
 		totalEventsMetric.setValue(
-			(double)_bqEventRepository.countEvents(
+			(double)_bqEventRepository.countBQEvents(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),

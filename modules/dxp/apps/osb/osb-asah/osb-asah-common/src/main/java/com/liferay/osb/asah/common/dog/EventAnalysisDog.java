@@ -369,14 +369,14 @@ public class EventAnalysisDog {
 		TimeRange timeRange) {
 
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
-			return _bqEventRepository.getAverageEventCountPerIndividual(
+			return _bqEventRepository.getAverageBQEventCountPerIndividual(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				timeRange.getEndDate(), timeRange.getStartDate(),
 				_timeZoneDog.getTimeZoneId());
 		}
 
 		if (analysisType.equals(AnalysisType.TOTAL)) {
-			return _bqEventRepository.countTotalEvents(
+			return _bqEventRepository.countTotalBQEvents(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				timeRange.getEndDate(), timeRange.getStartDate(),
 				_timeZoneDog.getTimeZoneId());
@@ -460,7 +460,7 @@ public class EventAnalysisDog {
 		List<BreakdownItem> breakdownItems = _createBreakdownItems(
 			analysisType, channelId, compareToPrevious, eventAnalysisBreakdown,
 			eventAnalysisFilters,
-			_bqEventRepository.getEventAttributeValues(
+			_bqEventRepository.getBQEventPropertyValues(
 				analysisType, parentBreakdownItem, channelId,
 				eventAnalysisBreakdown, eventAnalysisFilters, eventDefinitionId,
 				pageable, timeRange.getEndDate(), timeRange.getStartDate(),
@@ -544,7 +544,7 @@ public class EventAnalysisDog {
 			return 1;
 		}
 
-		return _bqEventRepository.getEventAttributeValuesCount(
+		return _bqEventRepository.getBQEventPropertyValuesCount(
 			channelId, eventAnalysisBreakdowns.get(0), eventAnalysisFilters,
 			eventDefinitionId, timeRange.getEndDate(), timeRange.getStartDate(),
 			_timeZoneDog.getTimeZoneId());

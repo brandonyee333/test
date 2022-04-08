@@ -96,7 +96,7 @@ public class EventDog {
 		return bqEvent;
 	}
 
-	public long countEvents(Long eventDefinitionId) {
+	public long countBQEvents(Long eventDefinitionId) {
 		if (eventDefinitionId != null) {
 			return _bqEventRepository.countByEventDefinitionId(
 				eventDefinitionId);
@@ -105,17 +105,17 @@ public class EventDog {
 		return _bqEventRepository.count();
 	}
 
-	public Integer countEvents(
+	public Integer countBQEvents(
 		Long channelId, @Nullable Long individualId, @Nullable String keywords,
 		TimeRange timeRange) {
 
-		return _bqEventRepository.countEvents(
+		return _bqEventRepository.countBQEvents(
 			channelId, keywords, timeRange.getEndLocalDateTime(),
 			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
 			_individualDog.getIndividualUserIds(individualId));
 	}
 
-	public BQEvent fetchEvent(Long id) {
+	public BQEvent fetchBQEvent(Long id) {
 		Optional<BQEvent> eventOptional = _bqEventRepository.findById(id);
 
 		return eventOptional.orElse(null);
@@ -129,11 +129,11 @@ public class EventDog {
 				eventAttributeDefinitionId, size);
 	}
 
-	public List<BQEvent> searchEvents(
+	public List<BQEvent> searchBQEvents(
 		Long channelId, @Nullable Long individualId, @Nullable String keywords,
 		int page, int size, TimeRange timeRange) {
 
-		return _bqEventRepository.searchEvents(
+		return _bqEventRepository.searchBQEvents(
 			channelId, keywords,
 			PageRequest.of(page, size, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
@@ -142,7 +142,7 @@ public class EventDog {
 	}
 
 	public Map<UserSession, List<Tuple2<BQEvent, EventDefinition>>>
-		searchEventsGroupByUserSessionId(
+		searchBQEventsGroupByUserSessionId(
 			Long channelId, Long individualId, String keywords, int page,
 			int size, TimeRange timeRange) {
 
@@ -150,7 +150,7 @@ public class EventDog {
 
 		Set<String> userSessionIds = new HashSet<>();
 
-		List<BQEvent> bqEvents = searchEvents(
+		List<BQEvent> bqEvents = searchBQEvents(
 			channelId, individualId, keywords, page, size, timeRange);
 
 		bqEvents.forEach(

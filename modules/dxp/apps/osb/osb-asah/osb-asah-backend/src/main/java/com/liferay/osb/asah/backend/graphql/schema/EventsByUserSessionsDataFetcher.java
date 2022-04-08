@@ -54,7 +54,7 @@ public class EventsByUserSessionsDataFetcher
 			UserSessionDTO::getCreateDate);
 
 		Map<UserSession, List<Tuple2<BQEvent, EventDefinition>>> tuple2s =
-			_eventDog.searchEventsGroupByUserSessionId(
+			_eventDog.searchBQEventsGroupByUserSessionId(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				Long.valueOf(dataFetchingEnvironment.getArgument("entityId")),
 				dataFetchingEnvironment.getArgument("keywords"),
@@ -76,7 +76,7 @@ public class EventsByUserSessionsDataFetcher
 			).collect(
 				Collectors.toList()
 			),
-			_eventDog.countEvents(
+			_eventDog.countBQEvents(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				Long.valueOf(dataFetchingEnvironment.getArgument("entityId")),
 				dataFetchingEnvironment.getArgument("keywords"),

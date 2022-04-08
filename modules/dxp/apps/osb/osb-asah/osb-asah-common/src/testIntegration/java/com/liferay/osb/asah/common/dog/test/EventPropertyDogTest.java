@@ -42,7 +42,7 @@ import org.springframework.data.domain.Page;
 /**
  * @author Alejo Ceballos
  */
-public class EventAttributeDogTest
+public class EventPropertyDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 

@@ -42,13 +42,13 @@ import org.springframework.data.domain.PageRequest;
  * @author Leslie Wong
  */
 @Import(JDBCTestConfiguration.class)
-public class EventAttributeRepositoryTest
+public class BQEventPropertyRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@SQLResource(resourcePath = "test_event_attributes.sql")
+	@SQLResource(resourcePath = "test_bq_event_properties.sql")
 	@Test
-	public void testFindEventAttributeValuesByEventAttributeDefinitionId() {
+	public void testFindBQEventPropertyValuesByEventAttributeDefinitionId() {
 		Date date = DateUtil.newDate();
 
 		Assertions.assertEquals(
@@ -76,9 +76,9 @@ public class EventAttributeRepositoryTest
 					2001L, 5));
 	}
 
-	@SQLResource(resourcePath = "test_event_attributes_1.sql")
+	@SQLResource(resourcePath = "test_bq_event_properties_1.sql")
 	@Test
-	public void testFindEventAttributeValuesByEventAttributeDefinitionIdNoMatchingValues() {
+	public void testFindBQEventPropertyValuesByEventAttributeDefinitionIdNoMatchingValues() {
 		Assertions.assertEquals(
 			Collections.emptyList(),
 			_bqEventPropertyRepository.
@@ -86,9 +86,9 @@ public class EventAttributeRepositoryTest
 					2001L, 10));
 	}
 
-	@SQLResource(resourcePath = "test_event_attributes_2.sql")
+	@SQLResource(resourcePath = "test_bq_event_properties_2.sql")
 	@Test
-	public void testsearchValues() {
+	public void testSearchValues() {
 		List<String> values = _bqEventPropertyRepository.searchValues(
 			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 100));
 

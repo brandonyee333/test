@@ -81,6 +81,17 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
+	public Integer countBQEvents(
+		Long channelId, @Nullable String keywords,
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
+		Set<String> userIds) {
+
+		return _getEventsCount(
+			channelId, DSL.count(), keywords, rangeEndLocalDateTime,
+			rangeStartLocalDateTime, timeZoneId, userIds);
+	}
+
 	public long countByEventDefinitionId(long eventDefinitionId) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -97,17 +108,6 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public Integer countEvents(
-		Long channelId, @Nullable String keywords,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds) {
-
-		return _getEventsCount(
-			channelId, DSL.count(), keywords, rangeEndLocalDateTime,
-			rangeStartLocalDateTime, timeZoneId, userIds);
-	}
-
 	public Integer countEventSessions(
 		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
@@ -119,7 +119,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 			userIds);
 	}
 
-	public long countTotalEvents(
+	public long countTotalBQEvents(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
@@ -165,7 +165,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public Optional<BQEvent> findLastSeenEvent(
+	public Optional<BQEvent> findLastSeenBQEvent(
 		@Nullable Long eventDefinitionId) {
 
 		Table<Record> eventTable = DSL.table("BQEvent");
@@ -200,7 +200,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public BigDecimal getAverageEventCountPerIndividual(
+	public BigDecimal getAverageBQEventCountPerIndividual(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
@@ -227,7 +227,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public Map<Object, Number> getEventAttributeValues(
+	public Map<Object, Number> getBQEventPropertyValues(
 		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
@@ -286,7 +286,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		return eventAttributeValues;
 	}
 
-	public long getEventAttributeValuesCount(
+	public long getBQEventPropertyValuesCount(
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
@@ -331,7 +331,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public Map<String, Integer> getEventsCountGroupByEventDate(
+	public Map<String, Integer> getBQEventsCountGroupByEventDate(
 		Long channelId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
@@ -432,7 +432,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 			));
 	}
 
-	public List<BQEvent> searchEvents(
+	public List<BQEvent> searchBQEvents(
 		Long channelId, @Nullable String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,

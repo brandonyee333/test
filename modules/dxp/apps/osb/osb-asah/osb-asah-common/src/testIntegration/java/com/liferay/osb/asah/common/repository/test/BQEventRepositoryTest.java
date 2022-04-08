@@ -83,38 +83,38 @@ public class BQEventRepositoryTest
 		_preferenceDog.savePreference("time-zone-id", "UTC");
 	}
 
-	@SQLResource(resourcePath = "test_events.sql")
+	@SQLResource(resourcePath = "test_bq_events.sql")
 	@Test
-	public void testCountEventsLast24Hours() {
+	public void testCountBQEventsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Assertions.assertEquals(
 			3,
-			_bqEventRepository.countEvents(
+			_bqEventRepository.countBQEvents(
 				1L, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
 				SetUtil.of("1")));
 	}
 
-	@SQLResource(resourcePath = "test_events.sql")
+	@SQLResource(resourcePath = "test_bq_events.sql")
 	@Test
-	public void testCountEventsWithKeywordsLast24Hours() {
+	public void testCountBQEventsWithKeywordsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
 		Assertions.assertEquals(
 			1,
-			_bqEventRepository.countEvents(
+			_bqEventRepository.countBQEvents(
 				1L, "form", timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
 				SetUtil.of("1")));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testCountTotalEvents() {
+	public void testCountTotalBQEvents() {
 		Assertions.assertEquals(
 			8L,
-			_bqEventRepository.countTotalEvents(
+			_bqEventRepository.countTotalBQEvents(
 				1L,
 				Collections.singletonList(
 					new EventAnalysisFilter(
@@ -128,12 +128,12 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testCountTotalEventsWithTimeZone() {
+	public void testCountTotalBQEventsWithTimeZone() {
 		Assertions.assertEquals(
 			6L,
-			_bqEventRepository.countTotalEvents(
+			_bqEventRepository.countTotalBQEvents(
 				1L,
 				Collections.singletonList(
 					new EventAnalysisFilter(
@@ -147,7 +147,7 @@ public class BQEventRepositoryTest
 				"America/Los_Angeles"));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testCountUniqueIndividuals() {
 		Assertions.assertEquals(
@@ -166,7 +166,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testCountUniqueIndividualsWithTimeZone() {
 		Assertions.assertEquals(
@@ -186,14 +186,14 @@ public class BQEventRepositoryTest
 	}
 
 	@SQLResource(
-		resourcePath = "test_get_average_event_count_per_individual.sql"
+		resourcePath = "test_get_average_bq_event_count_per_individual.sql"
 	)
 	@Test
-	public void testGetAverageEventCountPerIndividual() {
+	public void testGetAverageBQEventCountPerIndividual() {
 		MatcherAssert.assertThat(
 			BigDecimal.valueOf(2),
 			Matchers.comparesEqualTo(
-				_bqEventRepository.getAverageEventCountPerIndividual(
+				_bqEventRepository.getAverageBQEventCountPerIndividual(
 					1L,
 					Collections.singletonList(
 						new EventAnalysisFilter(
@@ -208,14 +208,14 @@ public class BQEventRepositoryTest
 	}
 
 	@SQLResource(
-		resourcePath = "test_get_average_event_count_per_individual.sql"
+		resourcePath = "test_get_average_bq_event_count_per_individual.sql"
 	)
 	@Test
-	public void testGetAverageEventCountPerIndividualWithTimeZone() {
+	public void testGetAverageBQEventCountPerIndividualWithTimeZone() {
 		MatcherAssert.assertThat(
 			BigDecimal.valueOf(1.5),
 			Matchers.comparesEqualTo(
-				_bqEventRepository.getAverageEventCountPerIndividual(
+				_bqEventRepository.getAverageBQEventCountPerIndividual(
 					1L,
 					Collections.singletonList(
 						new EventAnalysisFilter(
@@ -229,11 +229,11 @@ public class BQEventRepositoryTest
 					"America/Los_Angeles")));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesAverage() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesAverage() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.AVERAGE, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
@@ -244,7 +244,7 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new String[] {
@@ -253,7 +253,7 @@ public class BQEventRepositoryTest
 			},
 			keys.toArray());
 
-		Collection<Number> numbers = eventAttributeValues.values();
+		Collection<Number> numbers = bqEventPropertyValues.values();
 
 		_assertBigDecimalEquals(
 			new BigDecimal[] {
@@ -263,11 +263,11 @@ public class BQEventRepositoryTest
 			numbers.toArray(new BigDecimal[0]), 2);
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesBoolean() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesBoolean() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"67890", AttributeType.EVENT, 1,
@@ -278,22 +278,22 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new Boolean[] {true, false, null}, keys.toArray());
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(new Integer[] {6, 4, 1}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesCountBoolean() {
+	public void testGetBQEventPropertyValuesCountBoolean() {
 		Assertions.assertEquals(
 			3,
-			_bqEventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getBQEventPropertyValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"67890", AttributeType.EVENT, null,
@@ -305,12 +305,12 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesCountDate() {
+	public void testGetBQEventPropertyValuesCountDate() {
 		Assertions.assertEquals(
 			5,
-			_bqEventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getBQEventPropertyValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, null,
@@ -322,12 +322,12 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesCountDateWithTimeZone() {
+	public void testGetBQEventPropertyValuesCountDateWithTimeZone() {
 		Assertions.assertEquals(
 			2,
-			_bqEventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getBQEventPropertyValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, null,
@@ -345,12 +345,12 @@ public class BQEventRepositoryTest
 				"America/Los_Angeles"));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesCountDuration() {
+	public void testGetBQEventPropertyValuesCountDuration() {
 		Assertions.assertEquals(
 			6,
-			_bqEventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getBQEventPropertyValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"78901", AttributeType.EVENT, 2000,
@@ -362,12 +362,12 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesCountNumber() {
+	public void testGetBQEventPropertyValuesCountNumber() {
 		Assertions.assertEquals(
 			8,
-			_bqEventRepository.getEventAttributeValuesCount(
+			_bqEventRepository.getBQEventPropertyValuesCount(
 				1L,
 				new EventAnalysisBreakdown(
 					"45678", AttributeType.EVENT, 1,
@@ -379,58 +379,11 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesCountString() {
-		Assertions.assertEquals(
-			3,
-			_bqEventRepository.getEventAttributeValuesCount(
-				1L,
-				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, null,
-					"testUrl", "DESC"),
-				null, 246810L,
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId()));
-	}
-
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
-	@Test
-	public void testGetEventAttributeValuesDayGrouping() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"56789", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
-					null, "testDate", "DESC"),
-				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
-				_timeZoneDog.getTimeZoneId());
-
-		Set<Object> keys = eventAttributeValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new String[] {
-				"2021-5-13", "2021-5-10", "2019-5-10", "2020-5-13", "2021-1-13",
-				"2021-5-1", null
-			},
-			keys.toArray());
-
-		Collection<Number> values = eventAttributeValues.values();
-
-		Assertions.assertArrayEquals(
-			new Integer[] {4, 2, 1, 1, 1, 1, 1}, values.toArray());
-	}
-
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
-	@Test
-	public void testGetEventAttributeValuesDayGroupingWithTimeZone() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesDayGroupingWithTimeZone() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
@@ -447,21 +400,21 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
 				"America/Los_Angeles");
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new String[] {"2021-5-12", "2021-5-13"}, keys.toArray());
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(new Integer[] {5, 1}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesDuration() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesDuration() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"78901", AttributeType.EVENT, 2000,
@@ -472,7 +425,7 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new BigInteger[] {
@@ -482,17 +435,17 @@ public class BQEventRepositoryTest
 			},
 			keys.toArray());
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(
 			new Integer[] {3, 3, 2, 1, 1, 1}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesMonthGrouping() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesMonthGrouping() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
@@ -503,23 +456,23 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new String[] {"2021-5", "2019-5", "2020-5", "2021-1", null},
 			keys.toArray());
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(
 			new Integer[] {7, 1, 1, 1, 1}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesNullValues() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesNullValues() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"78901", AttributeType.EVENT, 10000,
@@ -530,7 +483,7 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new BigInteger[] {
@@ -538,16 +491,16 @@ public class BQEventRepositoryTest
 			},
 			keys.toArray());
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(new Integer[] {9, 1, 1}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesNumber() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesNumber() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"45678", AttributeType.EVENT, 3,
@@ -558,7 +511,7 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		_assertBigDecimalEquals(
 			new BigDecimal[] {
@@ -566,16 +519,16 @@ public class BQEventRepositoryTest
 			},
 			keys.toArray(new BigDecimal[0]), 0);
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(new Integer[] {6, 3, 2}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesTotal() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesTotal() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
@@ -586,7 +539,7 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new String[] {
@@ -595,16 +548,16 @@ public class BQEventRepositoryTest
 			},
 			keys.toArray());
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(new Integer[] {4, 4, 3}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesUnique() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesUnique() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.UNIQUE, null, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
@@ -615,7 +568,7 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new String[] {
@@ -624,14 +577,14 @@ public class BQEventRepositoryTest
 			},
 			keys.toArray());
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(new Integer[] {4, 4, 2}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesWithBreakdownItem() {
+	public void testGetBQEventPropertyValuesWithBreakdownItem() {
 		BreakdownItem breakdownItem = new BreakdownItem();
 
 		breakdownItem.setEventAnalysisFilters(
@@ -641,8 +594,8 @@ public class BQEventRepositoryTest
 					EventAttributeDefinition.DataType.STRING, null, "testCode",
 					"eq", Collections.singletonList("400"))));
 
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.TOTAL, breakdownItem, 1L,
 				new EventAnalysisBreakdown(
 					"12345", AttributeType.EVENT, 0,
@@ -653,7 +606,7 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new String[] {
@@ -662,16 +615,16 @@ public class BQEventRepositoryTest
 			},
 			keys.toArray());
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(new Integer[] {4, 2, 1}, values.toArray());
 	}
 
-	@SQLResource(resourcePath = "test_event_attribute_values.sql")
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testGetEventAttributeValuesYearGrouping() {
-		Map<Object, Number> eventAttributeValues =
-			_bqEventRepository.getEventAttributeValues(
+	public void testGetBQEventPropertyValuesYearGrouping() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
 				AnalysisType.TOTAL, null, 1L,
 				new EventAnalysisBreakdown(
 					"56789", AttributeType.EVENT, 0,
@@ -682,35 +635,35 @@ public class BQEventRepositoryTest
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = eventAttributeValues.keySet();
+		Set<Object> keys = bqEventPropertyValues.keySet();
 
 		Assertions.assertArrayEquals(
 			new Integer[] {2021, 2019, 2020, null}, keys.toArray());
 
-		Collection<Number> values = eventAttributeValues.values();
+		Collection<Number> values = bqEventPropertyValues.values();
 
 		Assertions.assertArrayEquals(
 			new Integer[] {8, 1, 1, 1}, values.toArray());
 	}
 
 	@SQLResource(
-		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
+		resourcePath = "test_bq_event_count_grouped_by_event_date_last_7_days.sql"
 	)
 	@Test
-	public void testGetEventsCountGroupByEventDateLast7Days() {
+	public void testGetBQEventsCountGroupByEventDateLast7Days() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
-		Map<String, Integer> eventsCountGroupByEventDate =
-			_bqEventRepository.getEventsCountGroupByEventDate(
+		Map<String, Integer> bqEventsCountGroupByEventDate =
+			_bqEventRepository.getBQEventsCountGroupByEventDate(
 				1L, Interval.DAY, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
 				Collections.emptySet());
 
 		Assertions.assertEquals(
-			2, eventsCountGroupByEventDate.size(),
-			eventsCountGroupByEventDate.toString());
+			2, bqEventsCountGroupByEventDate.size(),
+			bqEventsCountGroupByEventDate.toString());
 
-		Collection<Integer> values = eventsCountGroupByEventDate.values();
+		Collection<Integer> values = bqEventsCountGroupByEventDate.values();
 
 		MatcherAssert.assertThat(
 			new Integer[] {1, 2},
@@ -719,23 +672,23 @@ public class BQEventRepositoryTest
 
 	@Disabled
 	@SQLResource(
-		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
+		resourcePath = "test_bq_event_count_grouped_by_event_date_last_7_days.sql"
 	)
 	@Test
-	public void testGetEventsCountGroupByEventDateLast7DaysWithTimeZone() {
+	public void testGetBQEventsCountGroupByEventDateLast7DaysWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
 
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
-		Map<String, Integer> eventsCountGroupByEventDate =
-			_bqEventRepository.getEventsCountGroupByEventDate(
+		Map<String, Integer> bqEventsCountGroupByEventDate =
+			_bqEventRepository.getBQEventsCountGroupByEventDate(
 				1L, Interval.DAY, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
 				Collections.emptySet());
 
 		Assertions.assertEquals(
-			2, eventsCountGroupByEventDate.size(),
-			eventsCountGroupByEventDate.toString());
+			2, bqEventsCountGroupByEventDate.size(),
+			bqEventsCountGroupByEventDate.toString());
 
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
@@ -755,27 +708,27 @@ public class BQEventRepositoryTest
 			};
 
 		Assertions.assertEquals(
-			expectedCountGroupByEventDate, eventsCountGroupByEventDate);
+			expectedCountGroupByEventDate, bqEventsCountGroupByEventDate);
 	}
 
 	@SQLResource(
-		resourcePath = "test_event_count_grouped_by_event_date_last_24_hours.sql"
+		resourcePath = "test_bq_event_count_grouped_by_event_date_last_24_hours.sql"
 	)
 	@Test
-	public void testGetEventsCountGroupByEventDateLast24Hours() {
+	public void testGetBQEventsCountGroupByEventDateLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		Map<String, Integer> eventsCountGroupByEventDate =
-			_bqEventRepository.getEventsCountGroupByEventDate(
+		Map<String, Integer> bqEventsCountGroupByEventDate =
+			_bqEventRepository.getBQEventsCountGroupByEventDate(
 				1L, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
 				Collections.emptySet());
 
 		Assertions.assertEquals(
-			1, eventsCountGroupByEventDate.size(),
-			eventsCountGroupByEventDate.toString());
+			1, bqEventsCountGroupByEventDate.size(),
+			bqEventsCountGroupByEventDate.toString());
 
-		Collection<Integer> values = eventsCountGroupByEventDate.values();
+		Collection<Integer> values = bqEventsCountGroupByEventDate.values();
 
 		Iterator<Integer> iterator = values.iterator();
 
@@ -783,38 +736,86 @@ public class BQEventRepositoryTest
 	}
 
 	@SQLResource(
-		resourcePath = "test_event_count_grouped_by_event_date_last_24_hours.sql"
+		resourcePath = "test_bq_event_count_grouped_by_event_date_last_24_hours.sql"
 	)
 	@Test
-	public void testGetEventsCountGroupByEventDateLast24HoursWithTimeZone() {
+	public void testGetBQEventsCountGroupByEventDateLast24HoursWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
 
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		Map<String, Integer> eventsCountGroupByEventDate =
-			_bqEventRepository.getEventsCountGroupByEventDate(
+		Map<String, Integer> bqEventsCountGroupByEventDate =
+			_bqEventRepository.getBQEventsCountGroupByEventDate(
 				1L, Interval.HOUR, null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
 				Collections.emptySet());
 
 		Assertions.assertEquals(
-			1, eventsCountGroupByEventDate.size(),
-			eventsCountGroupByEventDate.toString());
+			1, bqEventsCountGroupByEventDate.size(),
+			bqEventsCountGroupByEventDate.toString());
 
 		ZonedDateTime zonedDateTime = ZonedDateTime.now(
 			_timeZoneDog.getZoneId());
 
-		Map<String, Integer> expectedEventsCountGroupByEventDate =
+		Map<String, Integer> expectedBQEventsCountGroupByEventDate =
 			Collections.singletonMap(
 				_getLocalDateString(ChronoUnit.HOURS, null, -1, zonedDateTime),
 				4);
 
 		Assertions.assertEquals(
-			expectedEventsCountGroupByEventDate, eventsCountGroupByEventDate);
+			expectedBQEventsCountGroupByEventDate,
+			bqEventsCountGroupByEventDate);
+	}
+
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
+	@Test
+	public void testGetEventPropertyValuesCountString() {
+		Assertions.assertEquals(
+			3,
+			_bqEventRepository.getBQEventPropertyValuesCount(
+				1L,
+				new EventAnalysisBreakdown(
+					"12345", AttributeType.EVENT, 0,
+					EventAttributeDefinition.DataType.STRING, null, null,
+					"testUrl", "DESC"),
+				null, 246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
+	}
+
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
+	@Test
+	public void testGetEventPropertyValuesDayGrouping() {
+		Map<Object, Number> bqEventPropertyValues =
+			_bqEventRepository.getBQEventPropertyValues(
+				AnalysisType.TOTAL, null, 1L,
+				new EventAnalysisBreakdown(
+					"56789", AttributeType.EVENT, 0,
+					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
+					null, "testDate", "DESC"),
+				null, 246810L, PageRequest.of(0, 10),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
+
+		Set<Object> keys = bqEventPropertyValues.keySet();
+
+		Assertions.assertArrayEquals(
+			new String[] {
+				"2021-5-13", "2021-5-10", "2019-5-10", "2020-5-13", "2021-1-13",
+				"2021-5-1", null
+			},
+			keys.toArray());
+
+		Collection<Number> values = bqEventPropertyValues.values();
+
+		Assertions.assertArrayEquals(
+			new Integer[] {4, 2, 1, 1, 1, 1, 1}, values.toArray());
 	}
 
 	@SQLResource(
-		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
+		resourcePath = "test_bq_event_count_grouped_by_event_date_last_7_days.sql"
 	)
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast7Days() {
@@ -840,7 +841,7 @@ public class BQEventRepositoryTest
 
 	@Disabled
 	@SQLResource(
-		resourcePath = "test_event_count_grouped_by_event_date_last_7_days.sql"
+		resourcePath = "test_bq_event_count_grouped_by_event_date_last_7_days.sql"
 	)
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast7DaysWithTimeZone() {
@@ -881,7 +882,7 @@ public class BQEventRepositoryTest
 	}
 
 	@SQLResource(
-		resourcePath = "test_event_count_grouped_by_event_date_last_24_hours.sql"
+		resourcePath = "test_bq_event_count_grouped_by_event_date_last_24_hours.sql"
 	)
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast24Hours() {
@@ -906,7 +907,7 @@ public class BQEventRepositoryTest
 	}
 
 	@SQLResource(
-		resourcePath = "test_event_count_grouped_by_event_date_last_24_hours.sql"
+		resourcePath = "test_bq_event_count_grouped_by_event_date_last_24_hours.sql"
 	)
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast24HoursWithTimeZone() {
@@ -937,19 +938,19 @@ public class BQEventRepositoryTest
 			eventSessionsCountGroupByEventDate);
 	}
 
-	@SQLResource(resourcePath = "test_events.sql")
+	@SQLResource(resourcePath = "test_bq_events.sql")
 	@Test
-	public void testSearchEventsLast24Hours() {
+	public void testSearchBQEventsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		List<BQEvent> events = _bqEventRepository.searchEvents(
+		List<BQEvent> bqEvents = _bqEventRepository.searchBQEvents(
 			1L, null, PageRequest.of(0, 50, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			_timeZoneDog.getTimeZoneId(), SetUtil.of("1"));
 
-		Assertions.assertEquals(3, events.size(), events.toString());
+		Assertions.assertEquals(3, bqEvents.size(), bqEvents.toString());
 
-		Stream<BQEvent> stream = events.stream();
+		Stream<BQEvent> stream = bqEvents.stream();
 
 		Assertions.assertArrayEquals(
 			new String[] {"blogClicked", "formViewed", "assetClicked"},
@@ -968,17 +969,17 @@ public class BQEventRepositoryTest
 	}
 
 	@Disabled
-	@SQLResource(resourcePath = "test_events.sql")
+	@SQLResource(resourcePath = "test_bq_events.sql")
 	@Test
-	public void testSearchEventsWithKeywordsLast24Hours() {
+	public void testSearchBQEventsWithKeywordsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
-		List<BQEvent> events = _bqEventRepository.searchEvents(
+		List<BQEvent> bqEvents = _bqEventRepository.searchBQEvents(
 			1L, "form", PageRequest.of(0, 50), timeRange.getEndLocalDateTime(),
 			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
 			SetUtil.of("1"));
 
-		Assertions.assertEquals(1, events.size(), events.toString());
+		Assertions.assertEquals(1, bqEvents.size(), bqEvents.toString());
 	}
 
 	private void _assertBigDecimalEquals(

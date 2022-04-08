@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventPropertyDog {
 
-	public BQEventProperty getEventProperty(
+	public BQEventProperty getBQEventProperty(
 		String attributeName, Long eventId) {
 
 		EventAttributeDefinition eventAttributeDefinition =
