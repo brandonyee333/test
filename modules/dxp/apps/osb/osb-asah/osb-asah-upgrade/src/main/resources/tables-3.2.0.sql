@@ -40,8 +40,10 @@ CREATE TABLE IF NOT EXISTS DataExportTask (
 	id BIGSERIAL PRIMARY KEY,
 	completedDate TIMESTAMPTZ,
 	createDate TIMESTAMPTZ,
+	fromDate TIMESTAMPTZ,
 	startedDate TIMESTAMPTZ,
 	status TEXT,
+	toDate TIMESTAMPTZ,
 	type TEXT
 );
 
