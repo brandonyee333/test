@@ -50,9 +50,11 @@ public class DataExportTask implements Persistable<Long> {
 
 		if (Objects.equals(_completedDate, dataExportTask._completedDate) &&
 			Objects.equals(_createDate, dataExportTask._createDate) &&
+			Objects.equals(_fromDate, dataExportTask._fromDate) &&
 			Objects.equals(_id, dataExportTask._id) &&
 			Objects.equals(_startedDate, dataExportTask._startedDate) &&
 			Objects.equals(_status, dataExportTask._status) &&
+			Objects.equals(_toDate, dataExportTask._toDate) &&
 			Objects.equals(_type, dataExportTask._type)) {
 
 			return true;
@@ -80,6 +82,15 @@ public class DataExportTask implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Date getFromDate() {
+		if (_fromDate == null) {
+			return null;
+		}
+
+		return new Date(_fromDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
@@ -102,6 +113,15 @@ public class DataExportTask implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Date getToDate() {
+		if (_toDate == null) {
+			return null;
+		}
+
+		return new Date(_toDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Type getType() {
 		return _type;
 	}
@@ -109,7 +129,8 @@ public class DataExportTask implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_completedDate, _createDate, _id, _startedDate, _status, _type);
+			_completedDate, _createDate, _fromDate, _id, _startedDate, _status,
+			_toDate, _type);
 	}
 
 	@JsonIgnore
@@ -134,6 +155,12 @@ public class DataExportTask implements Persistable<Long> {
 		}
 	}
 
+	public void setFromDate(Date fromDate) {
+		if (fromDate != null) {
+			_fromDate = new Date(fromDate.getTime());
+		}
+	}
+
 	public void setId(Long id) {
 		_id = id;
 	}
@@ -150,6 +177,12 @@ public class DataExportTask implements Persistable<Long> {
 
 	public void setStatus(Status status) {
 		_status = status;
+	}
+
+	public void setToDate(Date toDate) {
+		if (toDate != null) {
+			_toDate = new Date(toDate.getTime());
+		}
 	}
 
 	public void setType(Type type) {
@@ -175,6 +208,9 @@ public class DataExportTask implements Persistable<Long> {
 	private Date _createDate;
 
 	@Transient
+	private Date _fromDate;
+
+	@Transient
 	private Long _id;
 
 	@Transient
@@ -185,6 +221,9 @@ public class DataExportTask implements Persistable<Long> {
 
 	@Transient
 	private Status _status;
+
+	@Transient
+	private Date _toDate;
 
 	@Transient
 	private Type _type;
