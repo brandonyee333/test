@@ -121,7 +121,7 @@ public class EventDog {
 		return eventOptional.orElse(null);
 	}
 
-	public List<BQEventPropertyValue> getRecentEventPropertyValues(
+	public List<BQEventPropertyValue> getRecentBQEventPropertyValues(
 		Long eventAttributeDefinitionId, int size) {
 
 		return _bqEventPropertyRepository.

@@ -43,10 +43,10 @@ public class BQEventPropertyValue {
 			return false;
 		}
 
-		BQEventPropertyValue recentValue = (BQEventPropertyValue)obj;
+		BQEventPropertyValue bqEventPropertyValue = (BQEventPropertyValue)obj;
 
-		if (Objects.equals(_lastSeenDate, recentValue._lastSeenDate) &&
-			Objects.equals(_value, recentValue._value)) {
+		if (Objects.equals(_lastSeenDate, bqEventPropertyValue._lastSeenDate) &&
+			Objects.equals(_value, bqEventPropertyValue._value)) {
 
 			return true;
 		}

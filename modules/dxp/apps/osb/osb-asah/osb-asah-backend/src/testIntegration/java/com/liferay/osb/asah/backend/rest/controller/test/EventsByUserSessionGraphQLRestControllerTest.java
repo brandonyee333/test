@@ -58,9 +58,9 @@ public class EventsByUserSessionGraphQLRestControllerTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		_createEvent("assetClicked", "sessionId1");
-		_createEvent("assetDownloaded", "sessionId1");
-		_createEvent("pageViewed", "sessionId2");
+		_createBQEvent("assetClicked", "sessionId1");
+		_createBQEvent("assetDownloaded", "sessionId1");
+		_createBQEvent("pageViewed", "sessionId2");
 
 		_createUserSession(
 			"sessionId1", "2021-10-08T01:00:00.000Z",
@@ -76,7 +76,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 		_bqEventRepository.deleteAll();
 	}
 
-	private void _createEvent(String eventDefinitionName, String sessionId)
+	private void _createBQEvent(String eventDefinitionName, String sessionId)
 		throws Exception {
 
 		_eventDog.addBQEvent(

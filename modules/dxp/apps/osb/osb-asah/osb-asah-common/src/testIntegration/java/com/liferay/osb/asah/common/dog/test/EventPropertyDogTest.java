@@ -88,15 +88,15 @@ public class EventPropertyDogTest
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
 
-		Page<String> eventAttributeValuePage =
-			_eventPropertyDog.getEventPropertyValuePage(
+		Page<String> bqEventPropertyValuePage =
+			_eventPropertyDog.getBQEventPropertyValuePage(
 				channel.getId(), eventAttributeDefinition.getId(),
 				eventDefinition.getId(), "Attribute Value", 100, 0);
 
-		Assertions.assertEquals(4, eventAttributeValuePage.getTotalElements());
+		Assertions.assertEquals(4, bqEventPropertyValuePage.getTotalElements());
 
 		List<String> eventAttributeValues =
-			eventAttributeValuePage.getContent();
+			bqEventPropertyValuePage.getContent();
 
 		Assertions.assertEquals(4, eventAttributeValues.size());
 
@@ -108,13 +108,14 @@ public class EventPropertyDogTest
 			Assertions.assertTrue(eventAttributeValues.contains(value));
 		}
 
-		eventAttributeValuePage = _eventPropertyDog.getEventPropertyValuePage(
-			channel.getId(), eventAttributeDefinition.getId(),
-			eventDefinition.getId(), "Attribute Value", 3, 1);
+		bqEventPropertyValuePage =
+			_eventPropertyDog.getBQEventPropertyValuePage(
+				channel.getId(), eventAttributeDefinition.getId(),
+				eventDefinition.getId(), "Attribute Value", 3, 1);
 
-		Assertions.assertEquals(4, eventAttributeValuePage.getTotalElements());
+		Assertions.assertEquals(4, bqEventPropertyValuePage.getTotalElements());
 
-		eventAttributeValues = eventAttributeValuePage.getContent();
+		eventAttributeValues = bqEventPropertyValuePage.getContent();
 
 		Assertions.assertEquals(1, eventAttributeValues.size());
 	}

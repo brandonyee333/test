@@ -277,14 +277,14 @@ public class EventAnalysisDog {
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
 		EventAnalysisBreakdown eventAnalysisBreakdown,
 		List<EventAnalysisFilter> eventAnalysisFilters,
-		Map<Object, Number> eventAttributeValues, Long eventDefinitionId,
+		Map<Object, Number> bqEventPropertyValues, Long eventDefinitionId,
 		String eventDefinitionName, boolean lastBreakdown,
 		BreakdownItem parentBreakdownItem, TimeRange timeRange) {
 
 		List<BreakdownItem> breakdownItems = new ArrayList<>();
 
 		for (Map.Entry<Object, Number> entry :
-				eventAttributeValues.entrySet()) {
+				bqEventPropertyValues.entrySet()) {
 
 			BreakdownItem breakdownItem = new BreakdownItem();
 

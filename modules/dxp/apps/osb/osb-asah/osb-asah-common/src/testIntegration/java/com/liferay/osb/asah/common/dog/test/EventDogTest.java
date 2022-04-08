@@ -54,7 +54,7 @@ public class EventDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Test
-	public void testGetRecentEventAttributeValues() throws Exception {
+	public void testGetRecentBQEventPropertyValues() throws Exception {
 		Date date1 = DateUtil.newDate();
 
 		EventAttributeDefinition eventAttributeDefinition =
@@ -92,7 +92,7 @@ public class EventDogTest
 					add(new BQEventPropertyValue(date1, "testValue1"));
 				}
 			},
-			_eventDog.getRecentEventPropertyValues(
+			_eventDog.getRecentBQEventPropertyValues(
 				eventAttributeDefinition.getId(), 2));
 	}
 

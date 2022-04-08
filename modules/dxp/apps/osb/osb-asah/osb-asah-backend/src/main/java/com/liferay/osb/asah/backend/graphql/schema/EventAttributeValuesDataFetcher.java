@@ -46,7 +46,7 @@ public class EventAttributeValuesDataFetcher
 			environment.getSource();
 
 		return ListUtil.map(
-			_eventDog.getRecentEventPropertyValues(
+			_eventDog.getRecentBQEventPropertyValues(
 				Long.valueOf(eventAttributeDefinitionDTO.getId()), 10),
 			EventAttributeValueDTO::new);
 	}

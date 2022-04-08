@@ -45,19 +45,19 @@ public class EventPropertyDog {
 					attributeName);
 		}
 
-		Optional<BQEventProperty> eventAttributeOptional =
+		Optional<BQEventProperty> bqEventPropertyOptional =
 			_bqEventPropertyRepository.
 				findByEventAttributeDefinitionIdAndEventId(
 					eventAttributeDefinition.getId(), eventId);
 
-		return eventAttributeOptional.orElseThrow(
+		return bqEventPropertyOptional.orElseThrow(
 			() -> new IllegalArgumentException(
 				String.format(
 					"There is no event attribute with name %s and event ID %s",
 					attributeName, eventId)));
 	}
 
-	public Page<String> getEventPropertyValuePage(
+	public Page<String> getBQEventPropertyValuePage(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Integer size, Integer start) {
 

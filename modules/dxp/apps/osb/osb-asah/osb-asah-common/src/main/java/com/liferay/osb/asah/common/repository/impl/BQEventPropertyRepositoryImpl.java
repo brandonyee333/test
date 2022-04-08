@@ -93,12 +93,12 @@ public class BQEventPropertyRepositoryImpl extends BaseRepository {
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Pageable pageable) {
 
-		SelectConditionStep<Record1<String>> eventAttributeSelectStep =
+		SelectConditionStep<Record1<String>> eventPropertySelectStep =
 			_getEventPropertySelectStep(
 				channelId, eventAttributeDefinitionId, eventDefinitionId,
 				keywords);
 
-		return eventAttributeSelectStep.orderBy(
+		return eventPropertySelectStep.orderBy(
 			DSL.lower(
 				DSL.field("value", String.class)
 			).asc()
