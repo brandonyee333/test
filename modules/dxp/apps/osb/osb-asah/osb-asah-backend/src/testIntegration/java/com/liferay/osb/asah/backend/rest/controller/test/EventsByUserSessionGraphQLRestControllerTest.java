@@ -72,8 +72,8 @@ public class EventsByUserSessionGraphQLRestControllerTest
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		_cerebroInfoElasticsearchInvoker.delete("user-sessions", "sessionId");
 		_bqEventRepository.deleteAll();
+		_cerebroInfoElasticsearchInvoker.delete("user-sessions", "sessionId");
 	}
 
 	private void _createBQEvent(String eventDefinitionName, String sessionId)
