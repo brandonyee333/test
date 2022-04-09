@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Blob;
@@ -301,34 +300,6 @@ public class CommerceBOMFolderApplicationRelModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
-	}
-
-	private static Function<InvocationHandler, CommerceBOMFolderApplicationRel>
-		_getProxyProviderFunction() {
-
-		Class<?> proxyClass = ProxyUtil.getProxyClass(
-			CommerceBOMFolderApplicationRel.class.getClassLoader(),
-			CommerceBOMFolderApplicationRel.class, ModelWrapper.class);
-
-		try {
-			Constructor<CommerceBOMFolderApplicationRel> constructor =
-				(Constructor<CommerceBOMFolderApplicationRel>)
-					proxyClass.getConstructor(InvocationHandler.class);
-
-			return invocationHandler -> {
-				try {
-					return constructor.newInstance(invocationHandler);
-				}
-				catch (ReflectiveOperationException
-							reflectiveOperationException) {
-
-					throw new InternalError(reflectiveOperationException);
-				}
-			};
-		}
-		catch (NoSuchMethodException noSuchMethodException) {
-			throw new InternalError(noSuchMethodException);
-		}
 	}
 
 	private static final Map
@@ -870,7 +841,9 @@ public class CommerceBOMFolderApplicationRelModelImpl
 		private static final Function
 			<InvocationHandler, CommerceBOMFolderApplicationRel>
 				_escapedModelProxyProviderFunction =
-					_getProxyProviderFunction();
+					ProxyUtil.getProxyProviderFunction(
+						CommerceBOMFolderApplicationRel.class,
+						ModelWrapper.class);
 
 	}
 

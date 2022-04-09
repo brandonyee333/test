@@ -40,7 +40,6 @@ import com.liferay.remote.app.model.RemoteAppEntryModel;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Blob;
@@ -242,34 +241,6 @@ public class RemoteAppEntryModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
-	}
-
-	private static Function<InvocationHandler, RemoteAppEntry>
-		_getProxyProviderFunction() {
-
-		Class<?> proxyClass = ProxyUtil.getProxyClass(
-			RemoteAppEntry.class.getClassLoader(), RemoteAppEntry.class,
-			ModelWrapper.class);
-
-		try {
-			Constructor<RemoteAppEntry> constructor =
-				(Constructor<RemoteAppEntry>)proxyClass.getConstructor(
-					InvocationHandler.class);
-
-			return invocationHandler -> {
-				try {
-					return constructor.newInstance(invocationHandler);
-				}
-				catch (ReflectiveOperationException
-							reflectiveOperationException) {
-
-					throw new InternalError(reflectiveOperationException);
-				}
-			};
-		}
-		catch (NoSuchMethodException noSuchMethodException) {
-			throw new InternalError(noSuchMethodException);
-		}
 	}
 
 	private static final Map<String, Function<RemoteAppEntry, Object>>
@@ -1015,7 +986,9 @@ public class RemoteAppEntryModelImpl
 	private static class EscapedModelProxyProviderFunctionHolder {
 
 		private static final Function<InvocationHandler, RemoteAppEntry>
-			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+			_escapedModelProxyProviderFunction =
+				ProxyUtil.getProxyProviderFunction(
+					RemoteAppEntry.class, ModelWrapper.class);
 
 	}
 
