@@ -129,7 +129,7 @@ public class DXPEntitiesUpgradeStep implements UpgradeStep {
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						String.format(
-							"Retrying %d dxp entities", insertErrors.size()));
+							"Retrying %d DXP entities", insertErrors.size()));
 				}
 
 				_sleep(1000);
@@ -148,13 +148,13 @@ public class DXPEntitiesUpgradeStep implements UpgradeStep {
 			}
 		}
 		catch (BigQueryException bigQueryException) {
-			_log.error("Unable to save dxp entities batch", bigQueryException);
+			_log.error("Unable to save DXP entities batch", bigQueryException);
 		}
 		finally {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"It took " + (System.currentTimeMillis() - startTime) +
-						"ms to insert " + successfulWrites + " dxp entities");
+						"ms to insert " + successfulWrites + " DXP entities");
 			}
 		}
 	}

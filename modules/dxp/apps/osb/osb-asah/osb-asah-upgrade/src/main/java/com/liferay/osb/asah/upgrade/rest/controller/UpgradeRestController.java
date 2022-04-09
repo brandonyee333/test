@@ -74,7 +74,7 @@ public class UpgradeRestController {
 						}
 						catch (Exception exception) {
 							_log.error(
-								"Unable to upgrade dxp entities for " +
+								"Unable to upgrade DXP entities for " +
 									projectId,
 								exception);
 						}
