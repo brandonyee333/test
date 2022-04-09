@@ -70,7 +70,7 @@ public class UpgradeRestController {
 					projectId,
 					() -> {
 						try {
-							_dxpEntitiesUpgradeStep.upgrade("3.1.0");
+							_dxpEntitiesUpgradeStep.upgrade("3.2.0");
 						}
 						catch (Exception exception) {
 							_log.error(
