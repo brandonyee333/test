@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
-import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
@@ -35,7 +34,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,34 +58,69 @@ public class DXPEntitiesUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		long startTime = System.currentTimeMillis();
+		_importDXPEntities(DXPEntity.Type.GROUP);
+		_importDXPEntities(DXPEntity.Type.ORGANIZATION);
+		_importDXPEntities(DXPEntity.Type.ROLE);
+		_importDXPEntities(DXPEntity.Type.TEAM);
+		_importDXPEntities(DXPEntity.Type.USER);
+		_importDXPEntities(DXPEntity.Type.USER_GROUP);
+	}
 
-		List<Map<String, Object>> dxpEntities = _getDXPEntities();
+	private List<InsertAllRequest.RowToInsert> _createRowsToInsert(
+		List<? extends DXPEntity> dxpEntities) {
+
+		Stream<? extends DXPEntity> stream = dxpEntities.stream();
+
+		return stream.map(
+			this::_toMap
+		).map(
+			dxpEntityMap -> InsertAllRequest.RowToInsert.of(dxpEntityMap)
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private String _generateId(DXPEntity dxpEntity) {
+		return DigestUtils.sha256Hex(
+			String.join(
+				"#", ProjectIdThreadLocal.getProjectId(),
+				String.valueOf(dxpEntity.getDataSourceId()),
+				String.valueOf(dxpEntity.getType()),
+				dxpEntity.getIdFieldValue()));
+	}
+
+	private void _importDXPEntities(DXPEntity.Type type) {
+		int page = 0;
+
+		while (true) {
+			Page<? extends DXPEntity> dxpEntitiesPage =
+				_dxpEntityDog.getDXPEntityPage(
+					null, null, _DXP_ENTITY_PAGE_SIZE, Sort.asc("id"),
+					_DXP_ENTITY_PAGE_SIZE * page++, type);
+
+			if (dxpEntitiesPage.isEmpty()) {
+				break;
+			}
+
+			_importDXPEntities(dxpEntitiesPage.getContent());
+		}
+	}
+
+	private void _importDXPEntities(List<? extends DXPEntity> dxpEntities) {
+		long startTime = System.currentTimeMillis();
 
 		int successfulWrites = dxpEntities.size();
 
 		try {
-			if (dxpEntities.isEmpty()) {
-				return;
-			}
-
-			TableId tableId = TableId.of(
-				ProjectIdThreadLocal.getProjectId(), _DXP_ENTITY_TABLE_NAME);
-
-			InsertAllRequest.Builder builder = InsertAllRequest.newBuilder(
-				tableId);
-
-			Stream<Map<String, Object>> stream = dxpEntities.stream();
-
-			stream.map(
-				dxpEntityMap -> InsertAllRequest.RowToInsert.of(
-					MapUtil.get(dxpEntityMap, "id"), dxpEntityMap)
-			).forEach(
-				builder::addRow
-			);
+			List<InsertAllRequest.RowToInsert> rowToInserts =
+				_createRowsToInsert(dxpEntities);
 
 			InsertAllResponse insertAllResponse = _bigQuery.insertAll(
-				builder.build());
+				InsertAllRequest.newBuilder(
+					_tableId
+				).setRows(
+					rowToInserts
+				).build());
 
 			if (insertAllResponse.hasErrors()) {
 				Map<Long, List<BigQueryError>> insertErrors =
@@ -101,8 +134,15 @@ public class DXPEntitiesUpgradeStep implements UpgradeStep {
 
 				_sleep(1000);
 
-				int failedWrites = _retry(
-					insertErrors.keySet(), dxpEntities, tableId);
+				List<InsertAllRequest.RowToInsert> failedRowsToInsert =
+					new ArrayList<>();
+
+				for (Long errorIndex : insertErrors.keySet()) {
+					failedRowsToInsert.add(
+						rowToInserts.get(errorIndex.intValue()));
+				}
+
+				int failedWrites = _retry(failedRowsToInsert);
 
 				successfulWrites = successfulWrites - failedWrites;
 			}
@@ -116,59 +156,7 @@ public class DXPEntitiesUpgradeStep implements UpgradeStep {
 					"It took " + (System.currentTimeMillis() - startTime) +
 						"ms to insert " + successfulWrites + " dxp entities");
 			}
-
-			dxpEntities.clear();
 		}
-	}
-
-	private String _generateId(DXPEntity dxpEntity) {
-		return DigestUtils.sha256Hex(
-			String.join(
-				"#", ProjectIdThreadLocal.getProjectId(),
-				String.valueOf(dxpEntity.getDataSourceId()),
-				String.valueOf(dxpEntity.getType()),
-				dxpEntity.getIdFieldValue()));
-	}
-
-	private List<Map<String, Object>> _getDXPEntities() {
-		List<DXPEntity> dxpEntities = new ArrayList<>();
-
-		dxpEntities.addAll(_getDXPEntities(DXPEntity.Type.GROUP));
-		dxpEntities.addAll(_getDXPEntities(DXPEntity.Type.ORGANIZATION));
-		dxpEntities.addAll(_getDXPEntities(DXPEntity.Type.ROLE));
-		dxpEntities.addAll(_getDXPEntities(DXPEntity.Type.TEAM));
-		dxpEntities.addAll(_getDXPEntities(DXPEntity.Type.USER));
-		dxpEntities.addAll(_getDXPEntities(DXPEntity.Type.USER_GROUP));
-
-		Stream<DXPEntity> stream = dxpEntities.stream();
-
-		return stream.map(
-			this::_toMap
-		).collect(
-			Collectors.toList()
-		);
-	}
-
-	private List<DXPEntity> _getDXPEntities(DXPEntity.Type type) {
-		List<DXPEntity> dxpEntities = new ArrayList<>();
-
-		Page<? extends DXPEntity> dxpEntitiesPage = null;
-
-		int page = 0;
-
-		while (true) {
-			dxpEntitiesPage = _dxpEntityDog.getDXPEntityPage(
-				null, null, _DXP_ENTITY_PAGE_SIZE, Sort.asc("id"),
-				_DXP_ENTITY_PAGE_SIZE * page++, type);
-
-			if (dxpEntitiesPage.isEmpty()) {
-				break;
-			}
-
-			dxpEntities.addAll(dxpEntitiesPage.getContent());
-		}
-
-		return dxpEntities;
 	}
 
 	@PostConstruct
@@ -178,23 +166,15 @@ public class DXPEntitiesUpgradeStep implements UpgradeStep {
 		_bigQuery = bigQueryOptions.getService();
 	}
 
-	private int _retry(
-		Set<Long> errorIndexes, List<Map<String, Object>> dxpEntities,
-		TableId tableId) {
-
+	private int _retry(List<InsertAllRequest.RowToInsert> rowToInserts) {
 		int failedWrites = 0;
 
-		InsertAllRequest.Builder builder = InsertAllRequest.newBuilder(tableId);
-
-		for (Long errorIndex : errorIndexes) {
-			Map<String, Object> dxpEntitiy = dxpEntities.get(
-				errorIndex.intValue());
-
-			builder.addRow(InsertAllRequest.RowToInsert.of(dxpEntitiy));
-		}
-
 		InsertAllResponse insertAllResponse = _bigQuery.insertAll(
-			builder.build());
+			InsertAllRequest.newBuilder(
+				_tableId
+			).setRows(
+				rowToInserts
+			).build());
 
 		if (insertAllResponse.hasErrors()) {
 			Map<Long, List<BigQueryError>> insertErrors =
@@ -207,8 +187,8 @@ public class DXPEntitiesUpgradeStep implements UpgradeStep {
 
 				_log.error(
 					String.format(
-						"Unable to insert %s. Reason: %s",
-						dxpEntities.get(key.intValue()), entry.getValue()));
+						"Unable to insert row %s. Reason: %s",
+						rowToInserts.get(key.intValue()), entry.getValue()));
 			}
 
 			failedWrites = insertErrors.size();
@@ -287,9 +267,7 @@ public class DXPEntitiesUpgradeStep implements UpgradeStep {
 		return dxpEntityMap;
 	}
 
-	private static final int _DXP_ENTITY_PAGE_SIZE = 500;
-
-	private static final String _DXP_ENTITY_TABLE_NAME = "dxp-entity-import";
+	private static final int _DXP_ENTITY_PAGE_SIZE = 1000;
 
 	private static final Log _log = LogFactory.getLog(
 		DXPEntitiesUpgradeStep.class);
@@ -298,5 +276,7 @@ public class DXPEntitiesUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
+
+	private final TableId _tableId = TableId.of("osbasah", "dxp-entity-import");
 
 }
