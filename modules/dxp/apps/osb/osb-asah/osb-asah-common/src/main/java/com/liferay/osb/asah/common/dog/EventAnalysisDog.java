@@ -274,10 +274,10 @@ public class EventAnalysisDog {
 	}
 
 	private List<BreakdownItem> _createBreakdownItems(
-		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
+		AnalysisType analysisType, Map<Object, Number> bqEventPropertyValues,
+		Long channelId, boolean compareToPrevious,
 		EventAnalysisBreakdown eventAnalysisBreakdown,
-		List<EventAnalysisFilter> eventAnalysisFilters,
-		Map<Object, Number> bqEventPropertyValues, Long eventDefinitionId,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
 		String eventDefinitionName, boolean lastBreakdown,
 		BreakdownItem parentBreakdownItem, TimeRange timeRange) {
 
@@ -458,14 +458,15 @@ public class EventAnalysisDog {
 		}
 
 		List<BreakdownItem> breakdownItems = _createBreakdownItems(
-			analysisType, channelId, compareToPrevious, eventAnalysisBreakdown,
-			eventAnalysisFilters,
+			analysisType,
 			_bqEventRepository.getBQEventPropertyValues(
 				analysisType, parentBreakdownItem, channelId,
 				eventAnalysisBreakdown, eventAnalysisFilters, eventDefinitionId,
 				pageable, timeRange.getEndDate(), timeRange.getStartDate(),
 				_timeZoneDog.getTimeZoneId()),
-			eventDefinitionId, eventDefinition.getDisplayName(), lastBreakdown,
+			channelId, compareToPrevious, eventAnalysisBreakdown,
+			eventAnalysisFilters, eventDefinitionId,
+			eventDefinition.getDisplayName(), lastBreakdown,
 			parentBreakdownItem, timeRange);
 
 		if (!lastBreakdown) {
