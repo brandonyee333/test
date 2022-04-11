@@ -1022,7 +1022,7 @@
 
 		<echo append="true" file="${lpkg.dir}/liferay-marketplace.properties">${line.separator}</echo>
 
-		<echo append="true" file="${lpkg.dir}/liferay-marketplace.properties" message="description=${title}" />
+		<echo append="true" file="${lpkg.dir}/liferay-marketplace.properties">description=${title}</echo>
 
 		<echo append="true" file="${lpkg.dir}/liferay-marketplace.properties">${line.separator}</echo>
 

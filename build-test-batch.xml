@@ -5027,7 +5027,7 @@ ${output.content}</echo>
 						</antcall>
 					</then>
 					<else>
-						<echo message="No modified Java files. Skipping PMD check." />
+						<echo>No modified Java files. Skipping PMD check.</echo>
 					</else>
 				</if>
 			</else>
