@@ -73,7 +73,7 @@ public class SalesforceIndividualsNaniteTest
 
 		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity2);
 
-		SalesforceAuditEvent salesforceAuditEvent1 = _buildAuditEvent(
+		SalesforceAuditEvent salesforceAuditEvent1 = _buildSalesforceAuditEvent(
 			_salesforceEntityDog.getSalesforceEntity(
 				getDataSourceId(), getIndividual1PK(),
 				SalesforceEntity.Type.INDIVIDUAL));
@@ -82,7 +82,7 @@ public class SalesforceIndividualsNaniteTest
 
 		_salesforceAuditEventRepository.save(salesforceAuditEvent1);
 
-		SalesforceAuditEvent salesforceAuditEvent2 = _buildAuditEvent(
+		SalesforceAuditEvent salesforceAuditEvent2 = _buildSalesforceAuditEvent(
 			_salesforceEntityDog.getSalesforceEntity(
 				getDataSourceId(), getIndividual2PK(),
 				SalesforceEntity.Type.INDIVIDUAL));
@@ -135,7 +135,7 @@ public class SalesforceIndividualsNaniteTest
 		return "email";
 	}
 
-	private SalesforceAuditEvent _buildAuditEvent(
+	private SalesforceAuditEvent _buildSalesforceAuditEvent(
 		SalesforceEntity salesforceEntity) {
 
 		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
