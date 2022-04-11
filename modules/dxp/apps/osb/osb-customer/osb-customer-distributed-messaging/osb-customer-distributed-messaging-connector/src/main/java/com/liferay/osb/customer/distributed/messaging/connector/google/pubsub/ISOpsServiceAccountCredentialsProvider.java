@@ -16,12 +16,7 @@ package com.liferay.osb.customer.distributed.messaging.connector.google.pubsub;
 
 import com.liferay.osb.distributed.messaging.google.pubsub.connector.BaseServiceAccountCredentialsProvider;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 
 /**
  * @author Jenny Chen
