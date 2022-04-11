@@ -58,7 +58,7 @@ public class SalesforceAuditEventMigrationUpgradeStep implements UpgradeStep {
 	@Override
 	public void upgrade(String version) throws Exception {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Migrating Audit Events");
+			_log.debug("Migrating Salesforce Audit Events");
 		}
 
 		JSONArrayIterator.of(

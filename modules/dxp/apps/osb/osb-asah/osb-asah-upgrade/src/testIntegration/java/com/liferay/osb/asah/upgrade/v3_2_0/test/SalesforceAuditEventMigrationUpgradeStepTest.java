@@ -49,6 +49,7 @@ public class SalesforceAuditEventMigrationUpgradeStepTest
 		ProjectIdThreadLocal.setProjectId("test");
 
 		_salesforceAuditEventRepository.deleteAll();
+
 		_dataSourceRepository.deleteAll();
 
 		DataSource dataSource = new DataSource();
@@ -72,11 +73,12 @@ public class SalesforceAuditEventMigrationUpgradeStepTest
 	}
 
 	@AfterEach
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		_elasticsearchIndexManager.delete(
 			"test_osbasahsalesforceraw_audit-events");
 
 		_salesforceAuditEventRepository.deleteAll();
+
 		_dataSourceRepository.deleteAll();
 	}
 
