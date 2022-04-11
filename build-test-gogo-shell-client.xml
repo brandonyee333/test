@@ -14,12 +14,12 @@
 			<redirector inputstring="telnet 127.0.0.1 11312" />
 		</exec>
 
-		<echo message="${gogo.shell.content.out}" />
+		<echo>${gogo.shell.content.out}</echo>
 
 		<if>
 			<contains string="${gogo.shell.content.out}" substring="Connected to 127.0.0.1." />
 			<then>
-				<echo message="'Connected to 127.0.0.1.' is present." />
+				<echo>'Connected to 127.0.0.1.' is present.</echo>
 			</then>
 			<else>
 				<fail message="'Connected to 127.0.0.1.' is not present." />
