@@ -98,11 +98,11 @@ public class EventsByUserSessionsDataFetcherTest
 
 		UserSessionDTO userSessionDTO = userSessionDTOs.get(0);
 
-		Assertions.assertEquals("pt-BR", userSessionDTO.getLanguageId());
-
 		List<BQEventDTO> bqEventDTOs = userSessionDTO.getBQEventDTOs();
 
 		Assertions.assertEquals(2, bqEventDTOs.size(), bqEventDTOs.toString());
+
+		Assertions.assertEquals("pt-BR", userSessionDTO.getLanguageId());
 
 		bqEventDTOs.forEach(
 			bqEventDTO -> Assertions.assertEquals(
