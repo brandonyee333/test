@@ -14,12 +14,16 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 
 import java.util.Date;
 import java.util.List;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,21 +44,56 @@ public class DataExportTaskRepositoryTest
 	public void setUp() {
 		DataExportTask dataExportTask1 = new DataExportTask();
 
-		dataExportTask1.setCompletedDate(new Date());
-		dataExportTask1.setCreateDate(new Date());
-		dataExportTask1.setStartedDate(new Date());
+		dataExportTask1.setCompletedDate(
+			DateUtil.toUTCDate("2022-03-03T00:00:00.000Z"));
+		dataExportTask1.setCreateDate(
+			DateUtil.toUTCDate("2022-03-01T00:00:00.000Z"));
+		dataExportTask1.setFromDate(
+			DateUtil.toUTCDate("2022-02-01T12:00:00.000Z"));
+		dataExportTask1.setStartedDate(
+			DateUtil.toUTCDate("2022-03-02T12:00:00.000Z"));
 		dataExportTask1.setStatus(DataExportTask.Status.COMPLETED);
+		dataExportTask1.setToDate(
+			DateUtil.toUTCDate("2022-02-31T12:00:00.000Z"));
 		dataExportTask1.setType(DataExportTask.Type.PAGE);
 
 		DataExportTask dataExportTask2 = new DataExportTask();
 
-		dataExportTask2.setCompletedDate(new Date());
-		dataExportTask2.setCreateDate(new Date());
-		dataExportTask2.setStartedDate(new Date());
-		dataExportTask2.setStatus(DataExportTask.Status.ERROR);
+		dataExportTask2.setCompletedDate(
+			DateUtil.toUTCDate("2022-04-03T00:00:00.000Z"));
+		dataExportTask2.setCreateDate(
+			DateUtil.toUTCDate("2022-04-01T00:00:00.000Z"));
+		dataExportTask2.setFromDate(
+			DateUtil.toUTCDate("2022-03-01T12:00:00.000Z"));
+		dataExportTask2.setStartedDate(
+			DateUtil.toUTCDate("2022-04-02T12:00:00.000Z"));
+		dataExportTask2.setStatus(DataExportTask.Status.COMPLETED);
+		dataExportTask2.setToDate(
+			DateUtil.toUTCDate("2022-03-31T12:00:00.000Z"));
 		dataExportTask2.setType(DataExportTask.Type.PAGE);
 
-		setUpRepository(dataExportTask1, dataExportTask2);
+		DataExportTask dataExportTask3 = new DataExportTask();
+
+		dataExportTask3.setCompletedDate(new Date());
+		dataExportTask3.setCreateDate(new Date());
+		dataExportTask3.setFromDate(new Date());
+		dataExportTask3.setStartedDate(new Date());
+		dataExportTask3.setStatus(DataExportTask.Status.COMPLETED);
+		dataExportTask3.setToDate(new Date());
+		dataExportTask3.setType(DataExportTask.Type.PAGE);
+
+		DataExportTask dataExportTask4 = new DataExportTask();
+
+		dataExportTask4.setCompletedDate(new Date());
+		dataExportTask4.setCreateDate(new Date());
+		dataExportTask4.setFromDate(new Date());
+		dataExportTask4.setStartedDate(new Date());
+		dataExportTask4.setStatus(DataExportTask.Status.ERROR);
+		dataExportTask4.setToDate(new Date());
+		dataExportTask4.setType(DataExportTask.Type.PAGE);
+
+		setUpRepository(
+			dataExportTask1, dataExportTask2, dataExportTask3, dataExportTask4);
 	}
 
 	@Test
@@ -64,9 +103,24 @@ public class DataExportTaskRepositoryTest
 				DataExportTask.Status.COMPLETED);
 
 		Assertions.assertEquals(
-			1, dataExportTasks.size(), dataExportTasks.toString());
+			3, dataExportTasks.size(), dataExportTasks.toString());
 
-		Assertions.assertEquals(entityModels.get(0), dataExportTasks.get(0));
+		MatcherAssert.assertThat(
+			dataExportTasks,
+			Matchers.containsInAnyOrder(
+				entityModels.get(0), entityModels.get(1), entityModels.get(2)));
+	}
+
+	@Test
+	public void testFindFirstByFromDateAndToDateAndTypeOrderByIdDesc() {
+		DataExportTask dataExportTask =
+			_dataExportTaskRepository.
+				findFirstByFromDateAndToDateAndTypeOrderByIdDesc(
+					DateUtil.toUTCDate("2022-03-01T12:00:00.000Z"),
+					DateUtil.toUTCDate("2022-03-31T12:00:00.000Z"),
+					DataExportTask.Type.PAGE);
+
+		Assertions.assertEquals(entityModels.get(1), dataExportTask);
 	}
 
 	@Test
@@ -75,7 +129,7 @@ public class DataExportTaskRepositoryTest
 			_dataExportTaskRepository.findFirstByTypeOrderByIdDesc(
 				DataExportTask.Type.PAGE);
 
-		Assertions.assertEquals(entityModels.get(1), dataExportTask);
+		Assertions.assertEquals(entityModels.get(3), dataExportTask);
 	}
 
 	@Override
