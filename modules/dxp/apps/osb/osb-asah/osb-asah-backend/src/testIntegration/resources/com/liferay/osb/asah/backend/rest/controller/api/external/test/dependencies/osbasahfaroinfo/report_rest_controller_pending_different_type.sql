@@ -1,0 +1,1 @@
+INSERT INTO dataexporttask(completeddate, createdate, fromdate, id, starteddate, status, todate, type) VALUES(null, '${now-1d}', '${now-10d}', 1000, null, 'PENDING', '${now-2d}', 'ACCOUNT');
