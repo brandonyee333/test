@@ -41,11 +41,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataExportTaskDog {
 
-	public DataExportTask addDataExportTask(DataExportTask.Type type) {
+	public DataExportTask addDataExportTask(
+		Date fromDate, Date toDate, DataExportTask.Type type) {
+
 		DataExportTask dataExportTask = new DataExportTask();
 
 		dataExportTask.setCreateDate(new Date());
+		dataExportTask.setFromDate(fromDate);
 		dataExportTask.setStatus(DataExportTask.Status.PENDING);
+		dataExportTask.setToDate(toDate);
 		dataExportTask.setType(type);
 
 		return _dataExportTaskRepository.save(dataExportTask);
