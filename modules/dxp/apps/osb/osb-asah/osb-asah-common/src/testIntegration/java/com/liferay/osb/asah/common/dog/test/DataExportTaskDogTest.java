@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Date;
@@ -61,6 +62,19 @@ public class DataExportTaskDogTest
 
 		Assertions.assertNotNull(dataExportTask2);
 		Assertions.assertEquals(dataExportTask1, dataExportTask2);
+	}
+
+	@SQLResource(resourcePath = "test_fetch_last_data_export_task_by_range.sql")
+	@Test
+	public void testFetchLastDataExportTaskByRange() {
+		DataExportTask dataExportTask =
+			_daDataExportTaskDog.fetchLastDataExportTaskByRange(
+				DateUtil.toUTCDate("2022-03-03T12:00:00.000Z"),
+				DateUtil.toUTCDate("2022-04-02T12:00:00.000Z"),
+				DataExportTask.Type.PAGE);
+
+		Assertions.assertNotNull(dataExportTask);
+		Assertions.assertEquals(1002, dataExportTask.getId());
 	}
 
 	@Autowired
