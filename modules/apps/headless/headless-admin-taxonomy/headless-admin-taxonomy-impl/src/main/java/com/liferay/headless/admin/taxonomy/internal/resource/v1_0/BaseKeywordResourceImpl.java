@@ -642,6 +642,10 @@ public abstract class BaseKeywordResourceImpl
 		return null;
 	}
 
+	public String getVersion() {
+		return "v1.0";
+	}
+
 	@Override
 	public Page<Keyword> read(
 			Filter filter, Pagination pagination, Sort[] sorts,

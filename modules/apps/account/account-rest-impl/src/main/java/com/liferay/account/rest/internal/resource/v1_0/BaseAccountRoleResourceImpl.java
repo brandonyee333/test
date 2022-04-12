@@ -476,6 +476,10 @@ public abstract class BaseAccountRoleResourceImpl
 		return null;
 	}
 
+	public String getVersion() {
+		return "v1.0";
+	}
+
 	@Override
 	public Page<AccountRole> read(
 			Filter filter, Pagination pagination, Sort[] sorts,
