@@ -59,6 +59,14 @@ public class DataExportTaskDog {
 		return _dataExportTaskRepository.findFirstByTypeOrderByIdDesc(type);
 	}
 
+	public DataExportTask fetchLastDataExportTaskByRange(
+		Date fromDate, Date toDate, DataExportTask.Type type) {
+
+		return _dataExportTaskRepository.
+			findFirstByFromDateAndToDateAndTypeOrderByIdDesc(
+				fromDate, toDate, type);
+	}
+
 	public DataExportTask getDataExportTask(Long dataExportTaskId) {
 		Optional<DataExportTask> dataExportTaskOptional =
 			_dataExportTaskRepository.findById(dataExportTaskId);
