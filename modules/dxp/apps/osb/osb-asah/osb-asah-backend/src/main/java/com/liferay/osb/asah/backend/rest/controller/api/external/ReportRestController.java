@@ -189,14 +189,23 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/export/{type}")
 	public ResponseEntity<DataExportTaskDTO> getDataExportTask(
+		@RequestParam Date fromDate, @RequestParam Date toDate,
 		@PathVariable String type) {
+
+		if ((fromDate == null) || (toDate == null)) {
+			throw new IllegalArgumentException("Date range is mandatory");
+		}
+
+		if (fromDate.after(toDate)) {
+			throw new IllegalArgumentException("Wrong range date");
+		}
 
 		DataExportTask dataExportTask =
 			_dataExportTaskDog.fetchLastDataExportTask(
 				DataExportTask.Type.valueOf(StringUtils.upperCase(type)));
 
 		if (dataExportTask == null) {
-			return _addDataExportTask(type);
+			return _addDataExportTask(fromDate, toDate, type);
 		}
 
 		DataExportTask.Status status = dataExportTask.getStatus();
@@ -210,23 +219,7 @@ public class ReportRestController extends BaseRestController {
 						dataExportTask.getId()));
 			}
 
-			return _addDataExportTask(type);
-		}
-
-		if ((status == DataExportTask.Status.PENDING) ||
-			(status == DataExportTask.Status.RUNNING)) {
-
-			return _buildAcceptedResponseEntity(
-				new DataExportTaskDTO(dataExportTask));
-		}
-
-		long elapsedCompletedTime = DateUtil.getDeltaMilliseconds(
-			dataExportTask.getCompletedDate(), new Date());
-
-		if (elapsedCompletedTime >
-				(_dataExportTaskExpirationMinutes * DateUtil.MINUTE)) {
-
-			return _addDataExportTask(type);
+			return _addDataExportTask(fromDate, toDate, type);
 		}
 
 		return _buildAcceptedResponseEntity(
@@ -782,10 +775,13 @@ public class ReportRestController extends BaseRestController {
 			this::_toReportIndividualDTOEntityModel);
 	}
 
-	private ResponseEntity<DataExportTaskDTO> _addDataExportTask(String type) {
+	private ResponseEntity<DataExportTaskDTO> _addDataExportTask(
+		Date fromDate, Date toDate, String type) {
+
 		return _buildAcceptedResponseEntity(
 			new DataExportTaskDTO(
 				_dataExportTaskDog.addDataExportTask(
+					fromDate, toDate,
 					DataExportTask.Type.valueOf(StringUtils.upperCase(type)))));
 	}
 
