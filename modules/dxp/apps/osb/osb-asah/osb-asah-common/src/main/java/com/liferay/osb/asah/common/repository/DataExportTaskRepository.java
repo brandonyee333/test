@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DataExportTask;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -28,6 +29,10 @@ public interface DataExportTaskRepository
 
 	@Cacheable
 	public List<DataExportTask> findByStatus(DataExportTask.Status status);
+
+	@Cacheable
+	public DataExportTask findFirstByFromDateAndToDateAndTypeOrderByIdDesc(
+		Date fromDate, Date toDate, DataExportTask.Type type);
 
 	@Cacheable
 	public DataExportTask findFirstByTypeOrderByIdDesc(
