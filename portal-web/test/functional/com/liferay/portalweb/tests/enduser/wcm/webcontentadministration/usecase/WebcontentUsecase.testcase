@@ -1493,6 +1493,10 @@ definition {
 			userScreenName = "test1test"
 		);
 
+		JSONRole.assignRoleToUser(
+			roleName = "Power User",
+			userEmailAddress = "test1@liferay.com");
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
