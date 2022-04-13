@@ -67,6 +67,7 @@ import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -201,11 +202,12 @@ public class ReportRestController extends BaseRestController {
 		}
 
 		DataExportTask dataExportTask =
-			_dataExportTaskDog.fetchLastDataExportTask(
+			_dataExportTaskDog.fetchLastDataExportTaskByRange(
+				fromDate, toDate,
 				DataExportTask.Type.valueOf(StringUtils.upperCase(type)));
 
 		if (dataExportTask == null) {
-			return _addDataExportTask(fromDate, toDate, type);
+			return _addDataExportTask(fromDate, toDate, null, type);
 		}
 
 		DataExportTask.Status status = dataExportTask.getStatus();
@@ -219,7 +221,7 @@ public class ReportRestController extends BaseRestController {
 						dataExportTask.getId()));
 			}
 
-			return _addDataExportTask(fromDate, toDate, type);
+			return _addDataExportTask(fromDate, toDate, status, type);
 		}
 
 		return _buildAcceptedResponseEntity(
@@ -776,13 +778,18 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	private ResponseEntity<DataExportTaskDTO> _addDataExportTask(
-		Date fromDate, Date toDate, String type) {
+		Date fromDate, Date toDate, DataExportTask.Status previousStatus,
+		String type) {
 
-		return _buildAcceptedResponseEntity(
-			new DataExportTaskDTO(
-				_dataExportTaskDog.addDataExportTask(
-					fromDate, toDate,
-					DataExportTask.Type.valueOf(StringUtils.upperCase(type)))));
+		DataExportTaskDTO dataExportTaskDTO = new DataExportTaskDTO(
+			_dataExportTaskDog.addDataExportTask(
+				fromDate, toDate,
+				DataExportTask.Type.valueOf(StringUtils.upperCase(type))));
+
+		dataExportTaskDTO.setPreviousStatus(
+			StringUtil.get(previousStatus, null));
+
+		return _buildAcceptedResponseEntity(dataExportTaskDTO);
 	}
 
 	private <T> ResponseEntity<T> _buildAcceptedResponseEntity(T body) {

@@ -89,6 +89,11 @@ public class DataExportTaskDTO {
 		return _id;
 	}
 
+	@JsonProperty("previousStatus")
+	public String getPreviousStatus() {
+		return _previousStatus;
+	}
+
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -147,6 +152,10 @@ public class DataExportTaskDTO {
 		_id = id;
 	}
 
+	public void setPreviousStatus(String previousStatus) {
+		_previousStatus = previousStatus;
+	}
+
 	public void setStartedDate(Date startedDate) {
 		if (startedDate != null) {
 			_startedDate = new Date(startedDate.getTime());
@@ -171,6 +180,7 @@ public class DataExportTaskDTO {
 	private Date _createDate;
 	private Date _fromDate;
 	private String _id;
+	private String _previousStatus;
 	private Date _startedDate;
 	private String _status;
 	private Date _toDate;
