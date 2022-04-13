@@ -48,78 +48,6 @@ public class ReportRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@SQLResource(
-		resourcePath = "osbasahfaroinfo/report_rest_controller_completed_same_type.sql"
-	)
-	@Test
-	public void testGetDataExportTaskWhenDateRangeAndTypeHasBeenAlreadyExported() {
-		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
-		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
-
-		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(fromDate, toDate, "page");
-
-		Assertions.assertNotNull(responseEntity);
-
-		_assertDataExportTaskDTO(
-			DateUtil.toUTCDate("2022-04-03T00:00:00.000Z"),
-			DateUtil.toUTCDate("2022-04-01T00:00:00.000Z"),
-			responseEntity.getBody(),
-			DateUtil.toUTCDate("2022-03-01T12:00:00.000Z"),
-			DateUtil.toUTCDate("2022-04-02T12:00:00.000Z"),
-			DataExportTask.Status.COMPLETED,
-			DateUtil.toUTCDate("2022-03-31T12:00:00.000Z"),
-			DataExportTask.Type.PAGE);
-	}
-
-	@Test
-	public void testGetDataExportTaskWhenLastStatusIsCompleted() {
-	}
-
-	@SQLResource(
-		resourcePath = "osbasahfaroinfo/report_rest_controller_last_error_same_type.sql"
-	)
-	@Test
-	public void testGetDataExportTaskWhenLastStatusIsErrorOfSameType() {
-		Date date = DateUtil.newDayDate();
-
-		Date toDate = DateUtil.addDays(date, -1);
-
-		Date fromDate = DateUtil.addDays(toDate, -1);
-
-		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(fromDate, toDate, "page");
-
-		Assertions.assertNotNull(responseEntity);
-
-		_assertDataExportTaskDTO(
-			null, date, responseEntity.getBody(), fromDate, null,
-			DataExportTask.Status.PENDING, toDate, DataExportTask.Type.PAGE);
-	}
-
-	@SQLResource(
-		resourcePath = "osbasahfaroinfo/report_rest_controller_running_same_type.sql"
-	)
-	@Test
-	public void testGetDataExportTaskWhenLastStatusIsRunningOfSameType() {
-		Date date = DateUtil.newDayDate();
-
-		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(
-				DateUtil.addDays(date, -2), DateUtil.addDays(date, -1), "page");
-
-		Assertions.assertNotNull(responseEntity);
-
-		_assertDataExportTaskDTO(
-			null, DateUtil.toUTCDate("2022-04-01T00:00:00.000Z"),
-			responseEntity.getBody(),
-			DateUtil.toUTCDate("2022-03-01T12:00:00.000Z"),
-			DateUtil.toUTCDate("2022-04-02T12:00:00.000Z"),
-			DataExportTask.Status.RUNNING,
-			DateUtil.toUTCDate("2022-03-31T12:00:00.000Z"),
-			DataExportTask.Type.PAGE);
-	}
-
 	@Test
 	public void testGetDataExportTaskWithNoFromDate() {
 		Exception exception = Assertions.assertThrows(
@@ -145,7 +73,7 @@ public class ReportRestControllerTest
 		Assertions.assertNotNull(responseEntity);
 
 		_assertDataExportTaskDTO(
-			null, date, responseEntity.getBody(), fromDate, null,
+			null, date, responseEntity.getBody(), fromDate, null, null, null,
 			DataExportTask.Status.PENDING, toDate, DataExportTask.Type.PAGE);
 	}
 
@@ -161,7 +89,7 @@ public class ReportRestControllerTest
 	}
 
 	@Test
-	public void testGetDataExportTaskWithNoToDateLesserThanFromDate() {
+	public void testGetDataExportTaskWithToDateLesserThanFromDate() {
 		Exception exception = Assertions.assertThrows(
 			IllegalArgumentException.class,
 			() -> _reportRestController.getDataExportTask(
@@ -169,49 +97,6 @@ public class ReportRestControllerTest
 				DateUtil.addDays(DateUtil.newDayDate(), -1), "page"));
 
 		Assertions.assertEquals("Wrong range date", exception.getMessage());
-	}
-
-	@SQLResource(
-		resourcePath = "osbasahfaroinfo/report_rest_controller_pending_different_type.sql"
-	)
-	@Test
-	public void testGetDataExportTaskWithPendingTaskOfDifferentType() {
-		Date date = DateUtil.newDayDate();
-
-		Date toDate = DateUtil.addDays(date, -1);
-
-		Date fromDate = DateUtil.addDays(toDate, -1);
-
-		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(fromDate, toDate, "page");
-
-		Assertions.assertNotNull(responseEntity);
-
-		_assertDataExportTaskDTO(
-			null, date, responseEntity.getBody(), fromDate, null,
-			DataExportTask.Status.PENDING, toDate, DataExportTask.Type.PAGE);
-	}
-
-	@SQLResource(
-		resourcePath = "osbasahfaroinfo/report_rest_controller_pending_same_type.sql"
-	)
-	@Test
-	public void testGetDataExportTaskWithPendingTaskOfSameType() {
-		Date date = DateUtil.newDayDate();
-
-		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(
-				DateUtil.addDays(date, -2), DateUtil.addDays(date, -1), "page");
-
-		Assertions.assertNotNull(responseEntity);
-
-		_assertDataExportTaskDTO(
-			null, DateUtil.toUTCDate("2022-04-01T00:00:00.000Z"),
-			responseEntity.getBody(),
-			DateUtil.toUTCDate("2022-03-01T12:00:00.000Z"), null,
-			DataExportTask.Status.PENDING,
-			DateUtil.toUTCDate("2022-03-31T12:00:00.000Z"),
-			DataExportTask.Type.PAGE);
 	}
 
 	@ElasticsearchIndex(
@@ -278,9 +163,108 @@ public class ReportRestControllerTest
 				resultBag.getResults(), "billingCountry"));
 	}
 
+	@SQLResource(
+		resourcePath = "osbasahfaroinfo/test_report_rest_controller_data_export_task_1.sql"
+	)
+	@Test
+	public void testNoPreviousExportProcessForTheSameTypeAndDateRange() {
+		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
+		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
+
+		ResponseEntity<DataExportTaskDTO> responseEntity =
+			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+
+		Assertions.assertNotNull(responseEntity);
+
+		_assertDataExportTaskDTO(
+			null, DateUtil.newDayDate(), responseEntity.getBody(), fromDate,
+			null, null, null, DataExportTask.Status.PENDING, toDate,
+			DataExportTask.Type.PAGE);
+	}
+
+	@SQLResource(
+		resourcePath = "osbasahfaroinfo/test_report_rest_controller_data_export_task_2.sql"
+	)
+	@Test
+	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeAndIsCompleted() {
+		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
+		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
+
+		ResponseEntity<DataExportTaskDTO> responseEntity =
+			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+
+		Assertions.assertNotNull(responseEntity);
+
+		_assertDataExportTaskDTO(
+			DateUtil.toUTCDate("2022-04-03T12:00:00.000Z"),
+			DateUtil.toUTCDate("2022-04-01T12:00:00.000Z"),
+			responseEntity.getBody(), fromDate, "1003", null,
+			DateUtil.toUTCDate("2022-04-02T12:00:00.000Z"),
+			DataExportTask.Status.COMPLETED, toDate, DataExportTask.Type.PAGE);
+	}
+
+	@SQLResource(
+		resourcePath = "osbasahfaroinfo/test_report_rest_controller_data_export_task_3.sql"
+	)
+	@Test
+	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeButIsPending() {
+		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
+		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
+
+		ResponseEntity<DataExportTaskDTO> responseEntity =
+			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+
+		Assertions.assertNotNull(responseEntity);
+
+		_assertDataExportTaskDTO(
+			null, DateUtil.toUTCDate("2022-04-01T12:00:00.000Z"),
+			responseEntity.getBody(), fromDate, "1000", null, null,
+			DataExportTask.Status.PENDING, toDate, DataExportTask.Type.PAGE);
+	}
+
+	@SQLResource(
+		resourcePath = "osbasahfaroinfo/test_report_rest_controller_data_export_task_4.sql"
+	)
+	@Test
+	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeButIsRunning() {
+		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
+		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
+
+		ResponseEntity<DataExportTaskDTO> responseEntity =
+			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+
+		Assertions.assertNotNull(responseEntity);
+
+		_assertDataExportTaskDTO(
+			null, DateUtil.toUTCDate("2022-04-01T12:00:00.000Z"),
+			responseEntity.getBody(), fromDate, "1002", null,
+			DateUtil.toUTCDate("2022-04-02T12:00:00.000Z"),
+			DataExportTask.Status.RUNNING, toDate, DataExportTask.Type.PAGE);
+	}
+
+	@SQLResource(
+		resourcePath = "osbasahfaroinfo/test_report_rest_controller_data_export_task_5.sql"
+	)
+	@Test
+	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeButResultedInError() {
+		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
+		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
+
+		ResponseEntity<DataExportTaskDTO> responseEntity =
+			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+
+		Assertions.assertNotNull(responseEntity);
+
+		_assertDataExportTaskDTO(
+			null, DateUtil.newDayDate(), responseEntity.getBody(), fromDate,
+			null, DataExportTask.Status.ERROR, null,
+			DataExportTask.Status.PENDING, toDate, DataExportTask.Type.PAGE);
+	}
+
 	private void _assertDataExportTaskDTO(
 		Date completedDate, Date createDate,
-		DataExportTaskDTO dataExportTaskDTO, Date fromDate, Date startedDate,
+		DataExportTaskDTO dataExportTaskDTO, Date fromDate, String id,
+		DataExportTask.Status previousStatus, Date startedDate,
 		DataExportTask.Status status, Date toDate, DataExportTask.Type type) {
 
 		Assertions.assertNotNull(dataExportTaskDTO);
@@ -297,6 +281,19 @@ public class ReportRestControllerTest
 			dataExportTaskDTO.getCreateDate(), createDate);
 
 		Assertions.assertEquals(dataExportTaskDTO.getFromDate(), fromDate);
+
+		if (id != null) {
+			Assertions.assertEquals(id, dataExportTaskDTO.getId());
+		}
+
+		if (previousStatus == null) {
+			Assertions.assertNull(dataExportTaskDTO.getPreviousStatus());
+		}
+		else {
+			Assertions.assertEquals(
+				dataExportTaskDTO.getPreviousStatus(),
+				previousStatus.toString());
+		}
 
 		if (startedDate == null) {
 			Assertions.assertNull(dataExportTaskDTO.getStartedDate());
