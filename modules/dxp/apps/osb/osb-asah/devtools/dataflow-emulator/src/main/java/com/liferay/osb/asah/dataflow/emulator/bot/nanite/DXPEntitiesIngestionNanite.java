@@ -352,7 +352,7 @@ public class DXPEntitiesIngestionNanite {
 	@Qualifier("postgreSQLDataSource")
 	private DataSource _dataSource;
 
-	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
+	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_DEFAULT)
 	private MessageSubscriber _messageSubscriber;
 
 	@Autowired

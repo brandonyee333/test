@@ -62,7 +62,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			_messageBus.sendMessage(
-				Channel.DXP_ENTITIES_MESSAGE,
+				Channel.DXP_ENTITIES_DEFAULT,
 				String.valueOf(jsonArray.getJSONObject(i)),
 				new HashMap<String, String>() {
 					{
@@ -123,7 +123,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			_messageBus.sendMessage(
-				Channel.DXP_ENTITIES_MESSAGE,
+				Channel.DXP_ENTITIES_DEFAULT,
 				String.valueOf(jsonArray.getJSONObject(i)),
 				new HashMap<String, String>() {
 					{
