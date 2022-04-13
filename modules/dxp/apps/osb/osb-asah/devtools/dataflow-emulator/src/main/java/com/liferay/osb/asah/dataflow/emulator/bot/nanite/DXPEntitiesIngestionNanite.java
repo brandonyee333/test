@@ -236,21 +236,23 @@ public class DXPEntitiesIngestionNanite {
 			BQOrganization bqOrganization = _objectMapper.convertValue(
 				fields, BQOrganization.class);
 
-			JSONArray expandFieldsJSONArray = jsonObject.getJSONArray(
+			JSONArray expandFieldsJSONArray = jsonObject.optJSONArray(
 				"expandoFields");
 
-			bqOrganization.setExpandoColumnIds(
-				_getExpandoColumnIds(expandFieldsJSONArray));
+			if (expandFieldsJSONArray != null) {
+				bqOrganization.setExpandoColumnIds(
+					_getExpandoColumnIds(expandFieldsJSONArray));
 
-			Iterable<BQExpandoValue> bqExpandoValues =
-				_bqExpandoValueRepository.saveAll(
-					_getExpandoValues(
-						bqOrganization.getOrganizationId(),
-						BQExpandoValue.ClassType.ORGANIZATION, dataSourceId,
-						expandFieldsJSONArray, projectId));
+				Iterable<BQExpandoValue> bqExpandoValues =
+					_bqExpandoValueRepository.saveAll(
+						_getExpandoValues(
+							bqOrganization.getOrganizationId(),
+							BQExpandoValue.ClassType.ORGANIZATION, dataSourceId,
+							expandFieldsJSONArray, projectId));
 
-			bqOrganization.setExpandoValueIds(
-				_getExpandoValueIds(bqExpandoValues));
+				bqOrganization.setExpandoValueIds(
+					_getExpandoValueIds(bqExpandoValues));
+			}
 
 			bqOrganization.setId(
 				_generateDXPEntityId(
@@ -287,19 +289,22 @@ public class DXPEntitiesIngestionNanite {
 		else if (StringUtils.equals(type, "user")) {
 			BQUser bqUser = _objectMapper.convertValue(fields, BQUser.class);
 
-			JSONArray expandFieldsJSONArray = jsonObject.getJSONArray(
+			JSONArray expandFieldsJSONArray = jsonObject.optJSONArray(
 				"expandoFields");
 
-			bqUser.setExpandoColumnIds(
-				_getExpandoColumnIds(expandFieldsJSONArray));
+			if (expandFieldsJSONArray != null) {
+				bqUser.setExpandoColumnIds(
+					_getExpandoColumnIds(expandFieldsJSONArray));
 
-			Iterable<BQExpandoValue> bqExpandoValues =
-				_bqExpandoValueRepository.saveAll(
-					_getExpandoValues(
-						bqUser.getUserId(), BQExpandoValue.ClassType.INDIVIDUAL,
-						dataSourceId, expandFieldsJSONArray, projectId));
+				Iterable<BQExpandoValue> bqExpandoValues =
+					_bqExpandoValueRepository.saveAll(
+						_getExpandoValues(
+							bqUser.getUserId(),
+							BQExpandoValue.ClassType.INDIVIDUAL, dataSourceId,
+							expandFieldsJSONArray, projectId));
 
-			bqUser.setExpandoValueIds(_getExpandoValueIds(bqExpandoValues));
+				bqUser.setExpandoValueIds(_getExpandoValueIds(bqExpandoValues));
+			}
 
 			bqUser.setId(
 				_generateDXPEntityId(
