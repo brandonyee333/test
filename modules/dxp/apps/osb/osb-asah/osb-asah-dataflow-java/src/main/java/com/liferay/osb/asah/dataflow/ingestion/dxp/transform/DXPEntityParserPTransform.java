@@ -17,11 +17,6 @@ package com.liferay.osb.asah.dataflow.ingestion.dxp.transform;
 import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntity;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage;
-import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.Field;
-
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Marcos Martins
@@ -41,18 +36,6 @@ public class DXPEntityParserPTransform extends BaseParserPTransform<DXPEntity> {
 
 		dxpEntity.classPK = Long.parseLong(dxpEntity.id);
 		dxpEntity.dataSourceId = attributes.getDataSourceId();
-
-		List<Field> fields = dxpEntity.fields;
-
-		if ((fields != null) && !fields.isEmpty()) {
-			fields.forEach(
-				field -> {
-					if (StringUtils.equals("modifiedDate", field.name)) {
-						dxpEntity.modifiedDate = field.value;
-					}
-				});
-		}
-
 		dxpEntity.projectId = attributes.getProjectId();
 		dxpEntity.uploadDate = attributes.getUploadTime();
 		dxpEntity.uploadType = attributes.getUploadType();
