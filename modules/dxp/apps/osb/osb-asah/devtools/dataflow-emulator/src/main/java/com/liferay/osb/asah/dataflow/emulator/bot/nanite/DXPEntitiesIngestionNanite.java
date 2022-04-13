@@ -208,7 +208,9 @@ public class DXPEntitiesIngestionNanite {
 		Map<String, Object> fields = _parseFields(
 			jsonObject.getJSONArray("fields"));
 
-		if (StringUtils.equals(type, "expando-column")) {
+		if (StringUtils.equals(
+				type, "com.liferay.expando.kernel.model.ExpandoColumn")) {
+
 			BQExpandoColumn bqExpandoColumn = _objectMapper.convertValue(
 				fields, BQExpandoColumn.class);
 
@@ -221,7 +223,9 @@ public class DXPEntitiesIngestionNanite {
 
 			_bqExpandoColumnRepository.save(bqExpandoColumn);
 		}
-		else if (StringUtils.equals(type, "group")) {
+		else if (StringUtils.equals(
+					type, "com.liferay.portal.kernel.model.Group")) {
+
 			BQGroup bqGroup = _objectMapper.convertValue(fields, BQGroup.class);
 
 			bqGroup.setId(
@@ -232,7 +236,9 @@ public class DXPEntitiesIngestionNanite {
 
 			_bqGroupRepository.save(bqGroup);
 		}
-		else if (StringUtils.equals(type, "organization")) {
+		else if (StringUtils.equals(
+					type, "com.liferay.portal.kernel.model.Organization")) {
+
 			BQOrganization bqOrganization = _objectMapper.convertValue(
 				fields, BQOrganization.class);
 
@@ -264,7 +270,9 @@ public class DXPEntitiesIngestionNanite {
 
 			_bqOrganizationRepository.save(bqOrganization);
 		}
-		else if (StringUtils.equals(type, "role")) {
+		else if (StringUtils.equals(
+					type, "com.liferay.portal.kernel.model.Role")) {
+
 			BQRole bqRole = _objectMapper.convertValue(fields, BQRole.class);
 
 			bqRole.setId(
@@ -275,7 +283,9 @@ public class DXPEntitiesIngestionNanite {
 
 			_bqRoleRepository.save(bqRole);
 		}
-		else if (StringUtils.equals(type, "team")) {
+		else if (StringUtils.equals(
+					type, "com.liferay.portal.kernel.model.Team")) {
+
 			BQTeam bqTeam = _objectMapper.convertValue(fields, BQTeam.class);
 
 			bqTeam.setId(
@@ -286,7 +296,9 @@ public class DXPEntitiesIngestionNanite {
 
 			_bqTeamRepository.save(bqTeam);
 		}
-		else if (StringUtils.equals(type, "user")) {
+		else if (StringUtils.equals(
+					type, "com.liferay.portal.kernel.model.User")) {
+
 			BQUser bqUser = _objectMapper.convertValue(fields, BQUser.class);
 
 			JSONArray expandFieldsJSONArray = jsonObject.optJSONArray(
@@ -314,7 +326,9 @@ public class DXPEntitiesIngestionNanite {
 
 			_bqUserRepository.save(bqUser);
 		}
-		else if (StringUtils.equals(type, "user-group")) {
+		else if (StringUtils.equals(
+					type, "com.liferay.portal.kernel.model.UserGroup")) {
+
 			BQUserGroup bqUserGroup = _objectMapper.convertValue(
 				fields, BQUserGroup.class);
 
