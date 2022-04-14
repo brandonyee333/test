@@ -135,6 +135,21 @@ public class SalesforceIndividualsNaniteTest
 		return "email";
 	}
 
+	private SalesforceEntity _buildIndividualSalesforceEntity(
+		Long dataSourceId, Map<String, Object> fieldsMap, String id) {
+
+		JSONObject individualFieldsJSONObject = new JSONObject(fieldsMap);
+
+		individualFieldsJSONObject.put("dataSourceId", dataSourceId);
+		individualFieldsJSONObject.put("id", id);
+		individualFieldsJSONObject.put(
+			"modifiedDate", DateUtil.newDateString());
+
+		return new SalesforceEntity(
+			id, dataSourceId, individualFieldsJSONObject,
+			SalesforceEntity.Type.INDIVIDUAL);
+	}
+
 	private SalesforceAuditEvent _buildSalesforceAuditEvent(
 		SalesforceEntity salesforceEntity) {
 
@@ -150,21 +165,6 @@ public class SalesforceIndividualsNaniteTest
 		salesforceAuditEvent.setType(SalesforceAuditEvent.Type.UPDATE);
 
 		return salesforceAuditEvent;
-	}
-
-	private SalesforceEntity _buildIndividualSalesforceEntity(
-		Long dataSourceId, Map<String, Object> fieldsMap, String id) {
-
-		JSONObject individualFieldsJSONObject = new JSONObject(fieldsMap);
-
-		individualFieldsJSONObject.put("dataSourceId", dataSourceId);
-		individualFieldsJSONObject.put("id", id);
-		individualFieldsJSONObject.put(
-			"modifiedDate", DateUtil.newDateString());
-
-		return new SalesforceEntity(
-			id, dataSourceId, individualFieldsJSONObject,
-			SalesforceEntity.Type.INDIVIDUAL);
 	}
 
 	@Autowired
