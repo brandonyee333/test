@@ -1,0 +1,1 @@
+INSERT INTO EventDefinition (blocked, description, displayName, name, type) VALUES (true, 'This event is blocked', 'Blocked Event', 'blockedEvent', 'CUSTOM');
