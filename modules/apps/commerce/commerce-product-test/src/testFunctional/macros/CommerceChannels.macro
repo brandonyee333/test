@@ -22,6 +22,28 @@ definition {
 		Click(locator1 = "Icon#CLOSE");
 	}
 
+	macro activateShippingMethod {
+		CommerceEntry.clickTableEntryEditButton(
+			entryName = "${shippingMethod}",
+			table = "Shipping Methods");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
+
+		if (isSet(shippingMethodDescription)) {
+			Type(
+				locator1 = "TextInput#DESCRIPTION",
+				value1 = "${shippingMethodDescription}");
+		}
+
+		Check.checkToggleSwitch(locator1 = "CommerceEntry#ACTIVE_CHECKBOX");
+
+		Button.clickSave();
+
+		Click(locator1 = "Icon#CLOSE");
+
+		SelectFrame.selectFrameTop();
+	}
+
 	macro addCategory {
 		if ("${edit}" != "true") {
 			Click(locator1 = "Button#PLUS");
