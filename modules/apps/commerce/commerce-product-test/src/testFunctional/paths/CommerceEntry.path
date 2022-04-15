@@ -541,7 +541,7 @@
 </tr>
 <tr>
 	<td>TABLE_ENTRY_NAME</td>
-	<td>//h4[contains(.,'${key_table}')]//..//div/a[contains(.,'${key_entryName}')]</td>
+	<td>//h4[contains(.,'${key_table}')]//..//div/a[contains(.,'${key_entryName}')] | //h4[contains(.,'${key_table}')]//..//div[@class='dnd-td'][contains(.,'${key_entryName}')] </td>
 	<td></td>
 </tr>
 <tr>
@@ -756,6 +756,11 @@
 <tr>
 	<td>SEARCH_ORDER_ID</td>
 	<td>//input[@type='text'][contains(@class,'form-control')][contains(@placeholder,'Search Order')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEARCH_ORDER_TYPE</td>
+	<td>//input[@type='text'][contains(@class,'form-control')][contains(@placeholder,'Find an Order Type')]</td>
 	<td></td>
 </tr>
 <tr>
