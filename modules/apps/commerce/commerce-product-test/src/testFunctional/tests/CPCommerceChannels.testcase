@@ -314,6 +314,79 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	@description = "This is a test for COMMERCE-8326. Verify users can configure which order types are eligible for specific shipping options."
+	@priority = "3"
+	test AddShippingOptionOrderTypeEligibility {
+		property custom.properties = "jsonws.web.service.paths.excludes=${line.separator}company.security.strangers.verify=false";
+		property portal.acceptance = "false";
+
+		/*task ("Given a Minium site with a buyer user") {
+			CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
+		}
+
+		task ("And given two active order types") {
+			CommerceJSONOrdersAPI._addOrderType(
+				active = "true",
+				orderTypeDescription = "Test Descripiton",
+				orderTypeName = "Test Order Type 1");
+
+			CommerceJSONOrdersAPI._addOrderType(
+				active = "true",
+				orderTypeDescription = "Test Descripiton",
+				orderTypeName = "Test Order Type 2");
+		}*/
+
+		task ("And given an active shipping method") {
+			CommerceChannels.openChannelsAdmin();
+
+			CommerceNavigator.gotoEntry(entryName = "Minium Portal");
+
+			//CommerceChannels.activateShippingMethod(shippingMethod = "Flat Rate");
+
+		}
+
+		task ("And given a shipping method's edit view is opened and a shipping option's detail view is open") {
+			CommerceEntry.clickTableEntryEditButton(
+				entryName = "Flat Rate",
+				table = "Shipping Methods");
+
+			SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
+		}
+
+		task ("And given the shipping options tab is clicked a shipping option's detail view is open") {
+			CommerceEntry.gotoMenuTab(menuTab = "Shipping Options");
+
+			CommerceNavigator.gotoEntry(entryName = "Standard Delivery");
+		}
+
+		task ("And given the Eligibility tab is clicked") {
+			SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
+
+			Click(
+				key_panel = "Details",
+				locator1 = "Panel#PANEL_COLLAPSED");
+
+			CommerceEntry.gotoMenuTab(menuTab = "Eligibility");
+
+			Click(
+				key_radioOption = "Specific Order Types",
+				locator1 = "CommerceEntry#RADIO_BUTTON");
+
+			Type(
+				locator1 = "CommerceEntry#SEARCH_ORDER_TYPE",
+				value1 = "Test Order Type 1");
+
+			Button.clickSelect();
+
+			Button.clickSave();
+
+			AssertElementPresent(
+				key_entryName = "Test Order Type 1",
+				key_table = "Order Types",
+				locator1 = "CommerceEntry#TABLE_ENTRY_NAME");
+		}
+	}
+
 	@description = "This is a test for COMMERCE-6113. AddShippingOptionSettingVariableRate"
 	@priority = "3"
 	test AddShippingOptionSettingVariableRate {
