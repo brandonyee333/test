@@ -37,44 +37,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class EventStorageDog {
 
 	@Transactional
-	public void store(AnalyticsEvent analyticsEvent) {
-		EventDefinition eventDefinition = storeEventDefinition(analyticsEvent);
+	public void storeEventDefinition(AnalyticsEvent analyticsEvent) {
+		EventDefinition eventDefinition = _storeEventDefinition(analyticsEvent);
 
 		if (eventDefinition.isBlocked()) {
 			return;
 		}
 
-		storeEventAttributes(analyticsEvent, eventDefinition.getId());
-	}
-
-	public void storeEventAttributes(
-		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
-
-		_resolveGlobalEventAttributes(
-			analyticsEvent.getContext(), eventDefinitionId);
-		_resolveLocalEventAttributes(
-			eventDefinitionId, analyticsEvent.getEventProperties());
-	}
-
-	public EventDefinition storeEventDefinition(AnalyticsEvent analyticsEvent) {
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName(
-				analyticsEvent.getEventId());
-
-		if (eventDefinition == null) {
-			eventDefinition = _eventDefinitionDog.addEventDefinition(
-				null, null, analyticsEvent.getEventDate(),
-				analyticsEvent.getEventId(), EventDefinition.Type.CUSTOM,
-				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
-		}
-		else if (eventDefinition.isBlocked()) {
-			eventDefinition = _eventDefinitionDog.updateEventDefinition(
-				analyticsEvent.getEventDate(),
-				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"),
-				null, null, eventDefinition.getId());
-		}
-
-		return eventDefinition;
+		_storeEventAttributeDefinitions(
+			analyticsEvent, eventDefinition.getId());
 	}
 
 	private Set<Long> _getEventDefinitionIds(
@@ -94,7 +65,7 @@ public class EventStorageDog {
 		);
 	}
 
-	private void _resolveEventAttribute(
+	private void _resolveEventAttributeDefinition(
 		String eventAttributeName, String eventAttributeValue,
 		Long eventDefinitionId) {
 
@@ -138,25 +109,57 @@ public class EventStorageDog {
 		}
 	}
 
-	private void _resolveGlobalEventAttributes(
+	private void _resolveGlobalEventAttributeDefinitions(
 		Map<String, String> eventContext, Long eventDefinitionId) {
 
 		for (Map.Entry<String, String> entry :
 				_globalEventAttributeDefinitionNames.entrySet()) {
 
-			_resolveEventAttribute(
+			_resolveEventAttributeDefinition(
 				entry.getKey(), eventContext.get(entry.getValue()),
 				eventDefinitionId);
 		}
 	}
 
-	private void _resolveLocalEventAttributes(
+	private void _resolveLocalEventAttributeDefinitions(
 		Long eventDefinitionId, Map<String, String> eventProperties) {
 
 		for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
-			_resolveEventAttribute(
+			_resolveEventAttributeDefinition(
 				entry.getKey(), entry.getValue(), eventDefinitionId);
 		}
+	}
+
+	private void _storeEventAttributeDefinitions(
+		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
+
+		_resolveGlobalEventAttributeDefinitions(
+			analyticsEvent.getContext(), eventDefinitionId);
+		_resolveLocalEventAttributeDefinitions(
+			eventDefinitionId, analyticsEvent.getEventProperties());
+	}
+
+	private EventDefinition _storeEventDefinition(
+		AnalyticsEvent analyticsEvent) {
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName(
+				analyticsEvent.getEventId());
+
+		if (eventDefinition == null) {
+			eventDefinition = _eventDefinitionDog.addEventDefinition(
+				null, null, analyticsEvent.getEventDate(),
+				analyticsEvent.getEventId(), EventDefinition.Type.CUSTOM,
+				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
+		}
+		else if (eventDefinition.isBlocked()) {
+			eventDefinition = _eventDefinitionDog.updateEventDefinition(
+				analyticsEvent.getEventDate(),
+				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"),
+				null, null, eventDefinition.getId());
+		}
+
+		return eventDefinition;
 	}
 
 	private static final Map<String, String>

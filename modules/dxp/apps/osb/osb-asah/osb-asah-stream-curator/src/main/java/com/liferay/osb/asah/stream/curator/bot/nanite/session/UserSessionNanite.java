@@ -169,7 +169,7 @@ public class UserSessionNanite implements Nanite {
 			getCollectionName(),
 			_objectMapper.convertValue(userSession, JSONObject.class));
 
-		_storeEvent(
+		_storeEventDefinitions(
 			analyticsEvents.getAnalyticsEventsList(),
 			jsonObject.getString("id"));
 	}
@@ -500,7 +500,7 @@ public class UserSessionNanite implements Nanite {
 			KeyReentrantLock.getReentrantLock(getClass(), tuple2));
 	}
 
-	private void _storeEvent(
+	private void _storeEventDefinitions(
 		List<AnalyticsEvent> analyticsEvents, String sessionId) {
 
 		try {
@@ -508,11 +508,12 @@ public class UserSessionNanite implements Nanite {
 
 			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
 				try {
-					_eventStorageDog.store(analyticsEvent);
+					_eventStorageDog.storeEventDefinition(analyticsEvent);
 				}
 				catch (Exception exception) {
 					_log.error(
-						"Unable to store event " + analyticsEvent.toJSON(),
+						"Unable to store event definition " +
+							analyticsEvent.toJSON(),
 						exception);
 				}
 			}
@@ -571,7 +572,7 @@ public class UserSessionNanite implements Nanite {
 			QueryBuilders.termQuery(
 				"id", userSessionJSONObject.getString("id")));
 
-		_storeEvent(
+		_storeEventDefinitions(
 			analyticsEvents.getAnalyticsEventsList(),
 			userSessionJSONObject.getString("id"));
 	}

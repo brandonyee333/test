@@ -81,7 +81,7 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, null, EventDefinition.Type.CUSTOM);
 
-		_storeAnalyticsEvent(
+		_storeAnalyticsEventDefinition(
 			"blockedEvent",
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.emptyMap());
@@ -108,7 +108,7 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, null, EventDefinition.Type.CUSTOM);
 
-		_storeAnalyticsEvent(
+		_storeAnalyticsEventDefinition(
 			"newEventDefinition",
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.emptyMap());
@@ -141,7 +141,7 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
 
-		_storeAnalyticsEvent(
+		_storeAnalyticsEventDefinition(
 			"pageViewed",
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.singletonMap("newTestEventAttribute", "testValue"));
@@ -178,7 +178,7 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 
 		expectedEventDefinitionIds.add(eventDefinition.getId());
 
-		_storeAnalyticsEvent(
+		_storeAnalyticsEventDefinition(
 			"pageViewed",
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.singletonMap("category", "testValue"));
@@ -206,7 +206,7 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, null, EventDefinition.Type.CUSTOM);
 
-		_storeAnalyticsEvent(
+		_storeAnalyticsEventDefinition(
 			"pageViewed",
 			Collections.singletonMap("canonicalUrl", "http://127.0.0.1"),
 			Collections.singletonMap("title", "My First Site"));
@@ -245,7 +245,7 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 		);
 	}
 
-	private void _storeAnalyticsEvent(
+	private void _storeAnalyticsEventDefinition(
 		String eventId, Map<String, String> eventContext,
 		Map<String, String> eventProperties) {
 
@@ -265,7 +265,7 @@ public class EventStorageDogTest implements OSBAsahCommonSpringTestContext {
 		analyticsEvent.setSegmentNames(Collections.emptySet());
 		analyticsEvent.setUserId(RandomTestUtil.randomUUID());
 
-		_eventStorageDog.store(analyticsEvent);
+		_eventStorageDog.storeEventDefinition(analyticsEvent);
 	}
 
 	private Channel _channel;
