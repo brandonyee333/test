@@ -1,0 +1,117 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.batch.curator.bot.nanite.test;
+
+import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
+import com.liferay.osb.asah.batch.curator.bot.nanite.DXPEntityNanite;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
+
+import org.json.JSONObject;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+
+/**
+ * @author Marcos Martins
+ */
+@Import(JDBCTestConfiguration.class)
+public class DXPEntityNaniteTest
+	implements OSBAsahBatchCuratorSpringTestContext {
+
+	@BeforeEach
+	public void setUp() {
+		ProjectIdThreadLocal.setProjectId("test");
+
+		DataSource dataSource = new DataSource("Liferay Brazil");
+
+		dataSource.setCredentialType("Token Authentication");
+		dataSource.setFaroBackendSecuritySignature(
+			"faroBackendSecuritySignature");
+		dataSource.setProviderType("LIFERAY");
+		dataSource.setState("READY");
+		dataSource.setStatus("STARTED");
+		dataSource.setURL("");
+
+		dataSource = _dataSourceDog.addDataSource(dataSource);
+
+		_dataSourceId = dataSource.getId();
+	}
+
+	@Test
+	public void testRun() throws Exception {
+		DXPEntity dxpEntity = new DXPEntity();
+
+		dxpEntity.setDataSourceId(_dataSourceId);
+		dxpEntity.setFieldsJSONObject(
+			JSONUtil.put(
+				"firstName", "Test"
+			).put(
+				"lastName", "Test"
+			).put(
+				"userId", 123
+			));
+
+		_dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.USER);
+
+		_dxpEntityNanite.run(null);
+
+		ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(
+			String.class);
+
+		Mockito.verify(
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			ArgumentMatchers.any(), argumentCaptor.capture(),
+			ArgumentMatchers.any()
+		);
+
+		JSONObject jsonObject = new JSONObject(argumentCaptor.getValue());
+
+		Assertions.assertTrue(jsonObject.has("fields"));
+		Assertions.assertTrue(jsonObject.has("modifiedDate"));
+		Assertions.assertTrue(jsonObject.has("type"));
+	}
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
+	private Long _dataSourceId;
+
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
+
+	@Autowired
+	private DXPEntityNanite _dxpEntityNanite;
+
+	@MockBean
+	private MessageBus _messageBus;
+
+}

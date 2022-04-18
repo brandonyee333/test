@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -25,6 +26,7 @@ import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -75,6 +77,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 		dxpEntity1.setFieldsJSONObject(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/user_fields1.json", this));
+		dxpEntity1.setModifiedDate(DateUtil.newDate());
 		dxpEntity1.setType(DXPEntity.Type.USER);
 
 		DXPEntity dxpEntity2 = new DXPEntity();
@@ -83,6 +86,7 @@ public abstract class BaseDXPEntityRepositoryTestCase
 		dxpEntity2.setFieldsJSONObject(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/user_fields2.json", this));
+		dxpEntity2.setModifiedDate(DateUtil.newDate());
 		dxpEntity2.setType(DXPEntity.Type.USER);
 
 		setUpRepository(dxpEntity1, dxpEntity2);
@@ -98,6 +102,38 @@ public abstract class BaseDXPEntityRepositoryTestCase
 	public void testCount() {
 		Assertions.assertThrows(
 			UnsupportedOperationException.class, super::testCount);
+	}
+
+	@Test
+	public void testCountByTypeAndModifiedDateBetween() {
+		Date newDate = DateUtil.newDate();
+
+		Assertions.assertEquals(
+			2,
+			_dxpEntityRepository.countByTypeAndModifiedDateBetween(
+				null, newDate, DXPEntity.Type.USER));
+
+		DXPEntity dxpEntity1 = new DXPEntity();
+
+		dxpEntity1.setDataSourceId(123L);
+		dxpEntity1.setType(DXPEntity.Type.USER);
+
+		Date yesterdayDate = DateUtil.addDays(newDate, -1);
+
+		dxpEntity1.setModifiedDate(yesterdayDate);
+
+		DXPEntity dxpEntity2 = new DXPEntity();
+
+		dxpEntity2.setDataSourceId(123L);
+		dxpEntity2.setType(DXPEntity.Type.USER);
+		dxpEntity2.setModifiedDate(DateUtil.addDays(newDate, 1));
+
+		_dxpEntityRepository.saveAll(Arrays.asList(dxpEntity1, dxpEntity2));
+
+		Assertions.assertEquals(
+			3,
+			_dxpEntityRepository.countByTypeAndModifiedDateBetween(
+				yesterdayDate, newDate, DXPEntity.Type.USER));
 	}
 
 	@Override
@@ -246,6 +282,41 @@ public abstract class BaseDXPEntityRepositoryTestCase
 				DXPEntity.Type.GROUP.getClassName(), 20121L);
 
 		Assertions.assertEquals(1, dxpEntities.size(), dxpEntities.toString());
+	}
+
+	@Test
+	public void testFindByTypeAndModifiedDateBetween() {
+		Date newDate = DateUtil.newDate();
+
+		List<DXPEntity> dxpEntities =
+			_dxpEntityRepository.findByTypeAndModifiedDateBetween(
+				null, newDate, DXPEntity.Type.USER,
+				PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name")));
+
+		Assertions.assertEquals(2, dxpEntities.size(), dxpEntities.toString());
+
+		DXPEntity dxpEntity1 = new DXPEntity();
+
+		dxpEntity1.setDataSourceId(123L);
+		dxpEntity1.setType(DXPEntity.Type.USER);
+
+		Date yesterdayDate = DateUtil.addDays(newDate, -1);
+
+		dxpEntity1.setModifiedDate(yesterdayDate);
+
+		DXPEntity dxpEntity2 = new DXPEntity();
+
+		dxpEntity2.setDataSourceId(123L);
+		dxpEntity2.setType(DXPEntity.Type.USER);
+		dxpEntity2.setModifiedDate(DateUtil.addDays(newDate, 1));
+
+		_dxpEntityRepository.saveAll(Arrays.asList(dxpEntity1, dxpEntity2));
+
+		dxpEntities = _dxpEntityRepository.findByTypeAndModifiedDateBetween(
+			yesterdayDate, newDate, DXPEntity.Type.USER,
+			PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name")));
+
+		Assertions.assertEquals(3, dxpEntities.size(), dxpEntities.toString());
 	}
 
 	@Test

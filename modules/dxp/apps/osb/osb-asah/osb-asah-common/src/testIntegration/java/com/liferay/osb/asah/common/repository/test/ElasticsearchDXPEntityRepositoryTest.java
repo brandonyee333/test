@@ -26,6 +26,14 @@ public class ElasticsearchDXPEntityRepositoryTest
 
 	@Override
 	@Test
+	public void testCountByTypeAndModifiedDateBetween() {
+		Assertions.assertThrows(
+			UnsupportedOperationException.class,
+			super::testCountByTypeAndModifiedDateBetween);
+	}
+
+	@Override
+	@Test
 	public void testExistsById() {
 		Assertions.assertThrows(
 			UnsupportedOperationException.class, super::testExistsById);
@@ -36,6 +44,14 @@ public class ElasticsearchDXPEntityRepositoryTest
 	public void testFindById() {
 		Assertions.assertThrows(
 			UnsupportedOperationException.class, super::testFindById);
+	}
+
+	@Override
+	@Test
+	public void testFindByTypeAndModifiedDateBetween() {
+		Assertions.assertThrows(
+			UnsupportedOperationException.class,
+			super::testFindByTypeAndModifiedDateBetween);
 	}
 
 }
