@@ -28,6 +28,7 @@ import com.google.cloud.bigquery.storage.v1.WriteStream;
 import com.google.common.util.concurrent.MoreExecutors;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
@@ -46,7 +47,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -89,6 +89,23 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 		_messageSubscriber.sendAckIds(ids);
 	}
 
+	private CreateWriteStreamRequest _buildCreateWriteStreamRequest(
+		String datasetName) {
+
+		CreateWriteStreamRequest.Builder builder =
+			CreateWriteStreamRequest.newBuilder();
+
+		return builder.setParent(
+			String.valueOf(
+				TableName.of(_googleProjectId, datasetName, _TABLE_NAME))
+		).setWriteStream(
+			WriteStream.newBuilder(
+			).setType(
+				WriteStream.Type.COMMITTED
+			).build()
+		).build();
+	}
+
 	@PostConstruct
 	private void _init() {
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
@@ -103,23 +120,9 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 		try (BigQueryWriteClient bigQueryWriteClient =
 				BigQueryWriteClient.create()) {
 
-			WriteStream writeStream = WriteStream.newBuilder(
-			).setType(
-				WriteStream.Type.COMMITTED
-			).build();
-			TableName tableName = TableName.of(
-				_googleProjectId, datasetName, _TABLE_NAME);
-
-			CreateWriteStreamRequest createWriteStreamRequest =
-				CreateWriteStreamRequest.newBuilder(
-				).setParent(
-					tableName.toString()
-				).setWriteStream(
-					writeStream
-				).build();
-
 			WriteStream clientWriteStream =
-				bigQueryWriteClient.createWriteStream(createWriteStreamRequest);
+				bigQueryWriteClient.createWriteStream(
+					_buildCreateWriteStreamRequest(datasetName));
 
 			try (JsonStreamWriter jsonStreamWriter =
 					JsonStreamWriter.newBuilder(
@@ -128,7 +131,8 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 					).build()) {
 
 				ApiFuture<AppendRowsResponse> apiFuture =
-					jsonStreamWriter.append(_toJSONArray(messages));
+					jsonStreamWriter.append(
+						JSONUtil.toJSONArray(messages, this::_toJSONObject));
 
 				ApiFutures.addCallback(
 					apiFuture,
@@ -211,16 +215,6 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 
 			_acknowledgeMessages(messages);
 		}
-	}
-
-	private JSONArray _toJSONArray(List<Message<JSONObject>> messages) {
-		JSONArray jsonArray = new JSONArray();
-
-		for (Message<JSONObject> message : messages) {
-			jsonArray.put(_toJSONObject(message));
-		}
-
-		return jsonArray;
 	}
 
 	private JSONObject _toJSONObject(Message<JSONObject> message) {
