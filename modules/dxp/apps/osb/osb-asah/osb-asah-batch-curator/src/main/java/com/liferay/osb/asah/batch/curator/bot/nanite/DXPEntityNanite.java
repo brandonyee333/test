@@ -1,0 +1,255 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.batch.curator.bot.nanite;
+
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
+import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.PreDestroy;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author Marcos Martins
+ */
+@Component
+public class DXPEntityNanite extends BaseNanite {
+
+	@Override
+	public void run(JSONObject contextJSONObject) throws Exception {
+		AsahMarker asahMarker = getAsahMarker();
+
+		JSONObject asahMarkerContextJSONObject =
+			asahMarker.getContextJSONObject();
+
+		Date lastSuccessfulDate = null;
+
+		String lastSuccessfulDateString = asahMarkerContextJSONObject.optString(
+			"lastSuccessfulDate", null);
+
+		if (lastSuccessfulDateString != null) {
+			lastSuccessfulDate = DateUtil.toUTCDate(lastSuccessfulDateString);
+		}
+
+		String projectId = ProjectIdThreadLocal.getProjectId();
+
+		Date currentDate = DateUtil.newDate();
+
+		_run(currentDate, lastSuccessfulDate, projectId, DXPEntity.Type.GROUP);
+		_run(
+			currentDate, lastSuccessfulDate, projectId,
+			DXPEntity.Type.ORGANIZATION);
+		_run(currentDate, lastSuccessfulDate, projectId, DXPEntity.Type.ROLE);
+		_run(currentDate, lastSuccessfulDate, projectId, DXPEntity.Type.TEAM);
+		_run(currentDate, lastSuccessfulDate, projectId, DXPEntity.Type.USER);
+		_run(
+			currentDate, lastSuccessfulDate, projectId,
+			DXPEntity.Type.USER_GROUP);
+
+		_boundedExecutor.awaitPendingTasks();
+
+		asahMarkerContextJSONObject.put(
+			"lastSuccessfulDate", DateUtil.toString(currentDate));
+
+		asahMarkerDog.updateAsahMarker(asahMarker);
+	}
+
+	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_boundedExecutor.shutdown();
+	}
+
+	private JSONArray _getExpandoFieldsJSONArray(DXPEntity dxpEntity) {
+		JSONArray jsonArray = new JSONArray();
+
+		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
+
+		JSONObject expandoJSONObject = fieldsJSONObject.optJSONObject(
+			"expando");
+
+		if (expandoJSONObject != null) {
+			Map<String, Object> map = expandoJSONObject.toMap();
+
+			for (Map.Entry<String, Object> entry : map.entrySet()) {
+				jsonArray.put(
+					JSONUtil.put(
+						"name",
+						StringUtils.substringBeforeLast(entry.getKey(), "-")
+					).put(
+						"value", entry.getValue()
+					));
+			}
+		}
+
+		return jsonArray;
+	}
+
+	private JSONArray _getFieldsJSONArray(DXPEntity dxpEntity) {
+		JSONArray jsonArray = new JSONArray();
+
+		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
+
+		DXPEntity.Type type = dxpEntity.getType();
+
+		if (type == DXPEntity.Type.ORGANIZATION) {
+			if (fieldsJSONObject.has("nameTreePath") &&
+				fieldsJSONObject.has("treePath")) {
+
+				fieldsJSONObject.put(
+					"treePath", fieldsJSONObject.get("nameTreePath"));
+			}
+		}
+		else if (type == DXPEntity.Type.USER) {
+			if (!fieldsJSONObject.has("createDate")) {
+				fieldsJSONObject.put("createDate", DateUtil.newDateString());
+			}
+
+			if (fieldsJSONObject.has("memberships")) {
+				JSONObject membershipJSONObject =
+					fieldsJSONObject.getJSONObject("memberships");
+
+				for (String key : membershipJSONObject.keySet()) {
+					DXPEntity.Type membershipType = DXPEntity.Type.of(key);
+
+					if (membershipType == null) {
+						continue;
+					}
+
+					fieldsJSONObject.put(
+						membershipType.getIndividualFieldName(),
+						membershipJSONObject.get(key));
+				}
+			}
+		}
+
+		Map<String, Object> map = fieldsJSONObject.toMap();
+
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			jsonArray.put(
+				JSONUtil.put(
+					"name", entry.getKey()
+				).put(
+					"value", entry.getValue()
+				));
+		}
+
+		return jsonArray;
+	}
+
+	private void _run(
+		Date currentDate, Date lastSuccessfulDate, String projectId,
+		DXPEntity.Type type) {
+
+		Map<String, String> messageAttributes = new HashMap<>();
+
+		messageAttributes.put("projectId", ProjectIdThreadLocal.getProjectId());
+		messageAttributes.put(
+			"resourceName",
+			"com.liferay.analytics.dxp.entity.rest.dto.v1_0.DXPEntity");
+		messageAttributes.put("uploadTime", DateUtil.toUTCString(new Date()));
+		messageAttributes.put("uploadType", "FULL");
+
+		_boundedExecutor.runAsync(
+			() -> {
+				ProjectIdThreadLocal.setProjectId(projectId);
+
+				int page = 0;
+				long count = 1;
+
+				while (true) {
+					Page<? extends DXPEntity> dxpEntitiesPage =
+						_dxpEntityDog.getDXPEntityPage(
+							lastSuccessfulDate, currentDate, type,
+							PageRequest.of(
+								page++, 500,
+								Sort.by(Sort.Direction.ASC, "id")));
+
+					if (dxpEntitiesPage.isEmpty()) {
+						break;
+					}
+
+					for (DXPEntity dxpEntity : dxpEntitiesPage.getContent()) {
+						messageAttributes.put("count", String.valueOf(count));
+						messageAttributes.put(
+							"dataSourceId",
+							String.valueOf(dxpEntity.getDataSourceId()));
+						messageAttributes.put(
+							"last",
+							(count++ < dxpEntitiesPage.getTotalElements()) ?
+								"false" : "true");
+
+						_messageBus.sendMessage(
+							Channel.DXP_ENTITIES_DEFAULT,
+							_toJSONString(dxpEntity), messageAttributes);
+					}
+				}
+			});
+	}
+
+	private String _toJSONString(DXPEntity dxpEntity) {
+		DXPEntity.Type type = dxpEntity.getType();
+
+		return JSONUtil.put(
+			"expandoFields", _getExpandoFieldsJSONArray(dxpEntity)
+		).put(
+			"fields", _getFieldsJSONArray(dxpEntity)
+		).put(
+			"id", dxpEntity.getIdFieldValue()
+		).put(
+			"modifiedDate", DateUtil.toUTCString(dxpEntity.getModifiedDate())
+		).put(
+			"type", type.getClassName()
+		).toString();
+	}
+
+	private static final Log _log = LogFactory.getLog(DXPEntityNanite.class);
+
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(6, 6);
+
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
+
+	@Autowired
+	private MessageBus _messageBus;
+
+}
