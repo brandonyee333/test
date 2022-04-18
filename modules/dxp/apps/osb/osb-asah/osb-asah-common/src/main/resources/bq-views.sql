@@ -12,4 +12,4 @@ CREATE OR REPLACE VIEW BQPageReferrers AS (
 	GROUP BY
 		dataSourceId, channelId, date, canonicalUrl, referrer,
 	    acquisitionChannel
-	);
+);
