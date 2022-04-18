@@ -1,0 +1,48 @@
+{
+	"results": [
+		{
+			"author": {
+				"id": "20139",
+				"name": "Test Test"
+			},
+			"dateCreated": "2018-12-15T16:02:01.824Z",
+			"dateModified": "2018-12-15T16:02:01.824Z",
+			"filter": "(((demographics/favoritePokemon/value ne null)))",
+			"filterMetadata": "32906",
+			"id": "327968823603500655",
+			"individualCount": 434,
+			"name": "Account: 342313459339515838",
+			"referencedAssetDataSourceIds": [
+			],
+			"referencedAssetIds": [
+			],
+			"referencedFieldMappingIds": [
+				"340477857996688156"
+			],
+			"scope": "PROJECT",
+			"segmentType": "DYNAMIC",
+			"state": "READY",
+			"status": "INACTIVE"
+		},
+		{
+			"author": {
+				"id": "20139",
+				"name": "Test Test"
+			},
+			"dateCreated": "2018-12-15T16:02:01.824Z",
+			"dateModified": "2018-12-15T16:02:01.824Z",
+			"filter": "(((activities/ever eq 'Page#pageViewed#352610350661254489')))",
+			"filterMetadata": "32906",
+			"id": "327968823603500666",
+			"includeAnonymousUsers": true,
+			"individualCount": 2,
+			"knownIndividualCount": 1,
+			"name": "includeAnonymous",
+			"scope": "PROJECT",
+			"segmentType": "DYNAMIC",
+			"state": "READY",
+			"status": "ACTIVE"
+		}
+	],
+	"total": 2
+}

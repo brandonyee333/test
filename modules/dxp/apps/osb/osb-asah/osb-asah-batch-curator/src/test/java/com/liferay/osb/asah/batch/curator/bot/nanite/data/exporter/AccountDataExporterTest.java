@@ -16,10 +16,13 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.http.ReportHttp;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 
 import java.io.ByteArrayOutputStream;
+
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,32 +41,36 @@ public class AccountDataExporterTest {
 		ReportHttp reportHttp = Mockito.mock(ReportHttp.class);
 
 		Mockito.when(
-			reportHttp.getAccountsJSONObject(ArgumentMatchers.eq("0"))
+			reportHttp.getAccountsJSONObject(
+				ArgumentMatchers.eq("0"), ArgumentMatchers.anyString(),
+				ArgumentMatchers.anyString())
 		).thenReturn(
 			ResourceUtil.readResourceToJSONObject("accounts_report.json", this)
 		);
 
 		Mockito.when(
 			reportHttp.getAccountsJSONObject(
-				ArgumentMatchers.eq("388160510048870753"))
+				ArgumentMatchers.eq("388160510048870753"),
+				ArgumentMatchers.anyString(), ArgumentMatchers.anyString())
 		).thenReturn(
 			ResourceUtil.readResourceToJSONObject("empty_report.json", this)
 		);
 
-		ByteArrayOutputStream byteArrayOutputStream =
-			new ByteArrayOutputStream();
+		try (ByteArrayOutputStream byteArrayOutputStream =
+				new ByteArrayOutputStream()) {
 
-		AccountDataExporter accountDataExporter = new AccountDataExporter(
-			new JsonFactory(), byteArrayOutputStream, reportHttp);
+			AccountDataExporter accountDataExporter = new AccountDataExporter(
+				DateUtil.toUTCDate("2019-01-01T12:00:00.000Z"),
+				new JsonFactory(), byteArrayOutputStream, reportHttp,
+				DateUtil.newDate());
 
-		accountDataExporter.export();
+			accountDataExporter.export();
 
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToString(
-				"expected_accounts_export.json", this),
-			byteArrayOutputStream.toString("UTF-8"), false);
-
-		byteArrayOutputStream.close();
+			JSONAssert.assertEquals(
+				ResourceUtil.readResourceToString(
+					"expected_accounts_export.json", this),
+				byteArrayOutputStream.toString(StandardCharsets.UTF_8), false);
+		}
 	}
 
 }

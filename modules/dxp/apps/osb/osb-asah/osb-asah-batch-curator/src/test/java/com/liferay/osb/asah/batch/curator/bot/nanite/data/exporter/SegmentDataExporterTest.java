@@ -37,55 +37,53 @@ import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 /**
- * @author Marcellus Tavares
+ * @author Alejo Ceballos
  */
-public class IndividualDataExporterTest {
+public class SegmentDataExporterTest {
 
 	@Test
 	public void testExport() throws Exception {
 		ReportHttp reportHttp = Mockito.mock(ReportHttp.class);
 
 		Mockito.when(
-			reportHttp.getIndividualsJSONObject(
+			reportHttp.getSegmentsJSONObject(
 				ArgumentMatchers.eq("0"), ArgumentMatchers.anyString(),
 				ArgumentMatchers.anyString())
 		).thenReturn(
-			ResourceUtil.readResourceToJSONObject(
-				"individuals_report.json", this)
+			ResourceUtil.readResourceToJSONObject("segments_report.json", this)
 		);
 
 		Mockito.when(
-			reportHttp.getIndividualsJSONObject(
-				ArgumentMatchers.eq("379649990292756725"),
+			reportHttp.getSegmentsJSONObject(
+				ArgumentMatchers.eq("327968823603500666"),
 				ArgumentMatchers.anyString(), ArgumentMatchers.anyString())
 		).thenReturn(
 			ResourceUtil.readResourceToJSONObject("empty_report.json", this)
 		);
 
-		String[] actualIndividualsExportLines;
+		String[] actualSegmentsExportLines;
 
 		try (ByteArrayOutputStream byteArrayOutputStream =
 				new ByteArrayOutputStream()) {
 
-			IndividualDataExporter individualDataExporter =
-				new IndividualDataExporter(
-					DateUtil.toUTCDate("2019-01-01T12:00:00.000Z"),
-					new JsonFactory(), byteArrayOutputStream, reportHttp,
-					DateUtil.newDate());
+			SegmentDataExporter segmentDataExporter = new SegmentDataExporter(
+				DateUtil.toUTCDate("2018-12-15T16:02:01.824Z"),
+				new JsonFactory(), byteArrayOutputStream, reportHttp,
+				DateUtil.newDate());
 
-			individualDataExporter.export();
+			segmentDataExporter.export();
 
-			actualIndividualsExportLines = StringUtils.split(
+			actualSegmentsExportLines = StringUtils.split(
 				byteArrayOutputStream.toString(StandardCharsets.UTF_8), "\n");
 		}
 
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
-			"expected_individuals_export.json", this);
+			"expected_segments_export.json", this);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONAssert.assertEquals(
 				jsonArray.getJSONObject(i),
-				new JSONObject(actualIndividualsExportLines[i]), false);
+				new JSONObject(actualSegmentsExportLines[i]), false);
 		}
 	}
 
