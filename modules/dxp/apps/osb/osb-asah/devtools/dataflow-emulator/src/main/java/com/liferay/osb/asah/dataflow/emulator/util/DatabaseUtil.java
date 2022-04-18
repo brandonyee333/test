@@ -42,7 +42,9 @@ public class DatabaseUtil {
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
-				new ClassPathResource("bq_tables.sql")),
+				new ClassPathResource("bq_functions.sql"),
+				new ClassPathResource("bq_tables.sql"),
+				new ClassPathResource("bq_views.sql")),
 			dataSource);
 	}
 
