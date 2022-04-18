@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQIdentity;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQIdentityRepository;
-import com.liferay.osb.asah.dataflow.emulator.util.DatabaseUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -81,8 +80,6 @@ public class IdentityIngestionNanite {
 		JSONObject jsonObject = new JSONObject(message.getObject());
 
 		String projectId = jsonObject.getString("projectId");
-
-		DatabaseUtil.createTables(_dataSource, projectId);
 
 		BQIdentity bqIdentity = new BQIdentity();
 

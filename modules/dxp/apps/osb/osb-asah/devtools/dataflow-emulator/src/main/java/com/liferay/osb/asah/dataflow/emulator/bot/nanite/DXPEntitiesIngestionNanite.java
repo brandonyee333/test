@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.util.MapUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQExpandoColumn;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQExpandoValue;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQGroup;
@@ -37,7 +36,6 @@ import com.liferay.osb.asah.dataflow.emulator.repository.BQRoleRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQTeamRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQUserGroupRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQUserRepository;
-import com.liferay.osb.asah.dataflow.emulator.util.DatabaseUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,9 +74,6 @@ public class DXPEntitiesIngestionNanite {
 			if (messages.isEmpty()) {
 				break;
 			}
-
-			DatabaseUtil.createTables(
-				_dataSource, ProjectIdThreadLocal.getProjectId());
 
 			Stream<Message<String>> stream = messages.stream();
 

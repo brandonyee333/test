@@ -32,6 +32,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -122,6 +124,15 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 					new ClassPathResource("indexes-current.sql")),
 				_dataSource);
 
+			if (_environment.acceptsProfiles(Profiles.of("dev"))) {
+				DatabasePopulatorUtils.execute(
+					new ResourceDatabasePopulator(
+						new ClassPathResource("bq_functions.sql"),
+						new ClassPathResource("bq_tables.sql"),
+						new ClassPathResource("bq_views.sql")),
+					_dataSource);
+			}
+
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource("data.sql")),
@@ -168,5 +179,8 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 	@Autowired
 	@Qualifier("postgreSQLDataSource")
 	private DataSource _dataSource;
+
+	@Autowired
+	private Environment _environment;
 
 }

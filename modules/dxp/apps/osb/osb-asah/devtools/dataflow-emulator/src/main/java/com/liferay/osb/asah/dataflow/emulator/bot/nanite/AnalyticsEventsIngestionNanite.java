@@ -36,7 +36,6 @@ import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapDevice;
 import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapEngine;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQSession;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQSessionRepository;
-import com.liferay.osb.asah.dataflow.emulator.util.DatabaseUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -126,8 +125,6 @@ public class AnalyticsEventsIngestionNanite {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					if (!_projectIds.contains(projectId)) {
-						DatabaseUtil.createTables(_dataSource, projectId);
-
 						_projectIds.add(projectId);
 					}
 
