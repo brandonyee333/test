@@ -14,15 +14,17 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
+import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.Tuple2;
-import com.liferay.osb.asah.common.model.UserSession;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -53,7 +55,7 @@ public class EventsByUserSessionsDataFetcher
 		Comparator<UserSessionDTO> comparator = Comparator.comparing(
 			UserSessionDTO::getCreateDate);
 
-		Map<UserSession, List<Tuple2<BQEvent, EventDefinition>>> tuple2s =
+		Map<BQSession, List<Tuple2<BQEvent, EventDefinition>>> tuple2s =
 			_eventDog.searchBQEventsGroupByUserSessionId(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				Long.valueOf(dataFetchingEnvironment.getArgument("entityId")),
@@ -62,15 +64,16 @@ public class EventsByUserSessionsDataFetcher
 				dataFetchingEnvironment.getArgument("size"),
 				searchQueryContext.getTimeRange());
 
-		Set<Map.Entry<UserSession, List<Tuple2<BQEvent, EventDefinition>>>>
+		Set<Map.Entry<BQSession, List<Tuple2<BQEvent, EventDefinition>>>>
 			entrySet = tuple2s.entrySet();
 
-		Stream<Map.Entry<UserSession, List<Tuple2<BQEvent, EventDefinition>>>>
+		Stream<Map.Entry<BQSession, List<Tuple2<BQEvent, EventDefinition>>>>
 			stream = entrySet.stream();
 
 		return new EventsByUserSessionDTO(
 			stream.map(
-				entry -> new UserSessionDTO(entry.getValue(), entry.getKey())
+				entry -> new UserSessionDTO(
+					entry.getValue(), entry.getKey(), _objectMapper)
 			).sorted(
 				comparator.reversed()
 			).collect(
@@ -85,5 +88,8 @@ public class EventsByUserSessionsDataFetcher
 
 	@Autowired
 	private EventDog _eventDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

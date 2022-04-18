@@ -19,12 +19,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
+import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
-import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
@@ -141,7 +141,7 @@ public class EventDog {
 			_individualDog.getIndividualUserIds(individualId));
 	}
 
-	public Map<UserSession, List<Tuple2<BQEvent, EventDefinition>>>
+	public Map<BQSession, List<Tuple2<BQEvent, EventDefinition>>>
 		searchBQEventsGroupByUserSessionId(
 			Long channelId, Long individualId, String keywords, int page,
 			int size, TimeRange timeRange) {
@@ -160,13 +160,12 @@ public class EventDog {
 				userSessionIds.add(bqEvent.getSessionId());
 			});
 
-		List<UserSession> userSessions = _userSessionDog.findByIds(
-			userSessionIds);
+		List<BQSession> bqSessions = _userSessionDog.findByIds(userSessionIds);
 
-		Stream<UserSession> userSessionsStream = userSessions.stream();
+		Stream<BQSession> bqSessionsStream = bqSessions.stream();
 
-		Map<String, UserSession> userSessionMap = userSessionsStream.collect(
-			Collectors.toMap(UserSession::getId, userSession -> userSession));
+		Map<String, BQSession> bqSessionMap = bqSessionsStream.collect(
+			Collectors.toMap(BQSession::getId, bqSession -> bqSession));
 
 		Map<String, EventDefinition> eventDefinitions =
 			_eventDefinitionDog.getEventDefinitions(eventDefinitionNames);
@@ -178,7 +177,7 @@ public class EventDog {
 				bqEvent, eventDefinitions.get(bqEvent.getEventId()))
 		).collect(
 			Collectors.groupingBy(
-				tuple -> userSessionMap.get(
+				tuple -> bqSessionMap.get(
 					tuple.getT1(
 					).getSessionId()))
 		);

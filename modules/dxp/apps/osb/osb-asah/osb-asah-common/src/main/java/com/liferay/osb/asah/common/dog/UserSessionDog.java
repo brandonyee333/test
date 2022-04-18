@@ -19,14 +19,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoSessionsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.entity.BQSession;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.IterableUtils;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -35,8 +37,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-
-import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,18 +48,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserSessionDog {
 
-	public List<UserSession> findByIds(Collection<String> ids) {
-		JSONArray userSessionJSONArray = _cerebroInfoElasticsearchInvoker.get(
-			"user-sessions", QueryBuilders.termsQuery("id", ids));
-
-		return userSessionJSONArray.toList(
-		).stream(
-		).map(
-			userSessionJSONObject -> _objectMapper.convertValue(
-				userSessionJSONObject, UserSession.class)
-		).collect(
-			Collectors.toList()
-		);
+	public List<BQSession> findByIds(Collection<String> ids) {
+		return IterableUtils.toList(_bqSessionRepository.findAllById(ids));
 	}
 
 	public List<Long> getIndividualIds(String filterString) {
@@ -112,6 +102,9 @@ public class UserSessionDog {
 
 		return boolQueryBuilder;
 	}
+
+	@Autowired
+	private BQSessionRepository _bqSessionRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
