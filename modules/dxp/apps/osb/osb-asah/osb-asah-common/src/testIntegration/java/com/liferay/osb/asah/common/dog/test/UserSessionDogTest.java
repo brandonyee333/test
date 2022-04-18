@@ -15,10 +15,11 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.UserSessionDog;
+import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
-import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -37,28 +38,25 @@ public class UserSessionDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_sessions_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
+	@SQLResource(resourcePath = "test_bq_sessions.sql")
 	@Test
 	public void testFindByIds() {
-		List<UserSession> userSessions1 = _userSessionDog.findByIds(
+		List<BQSession> bqSessions1 = _userSessionDog.findByIds(
 			Arrays.asList("366909399944213421"));
 
-		Assertions.assertEquals(1, userSessions1.size());
+		Assertions.assertEquals(1, bqSessions1.size());
 
-		List<UserSession> userSessions2 = _userSessionDog.findByIds(
+		List<BQSession> bqSessions2 = _userSessionDog.findByIds(
 			Arrays.asList("366909399944213421", "366909399944215919"));
 
-		Assertions.assertEquals(2, userSessions2.size());
+		Assertions.assertEquals(2, bqSessions2.size());
 
-		List<UserSession> userSessions3 = _userSessionDog.findByIds(
+		List<BQSession> bqSessions3 = _userSessionDog.findByIds(
 			Arrays.asList(
 				"366909399944213421", "366909399944215919",
 				"366909399944215920"));
 
-		Assertions.assertEquals(2, userSessions3.size());
+		Assertions.assertEquals(2, bqSessions3.size());
 	}
 
 	@ElasticsearchIndex(

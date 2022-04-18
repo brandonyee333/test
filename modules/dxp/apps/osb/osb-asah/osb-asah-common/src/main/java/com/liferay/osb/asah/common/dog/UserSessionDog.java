@@ -21,11 +21,13 @@ import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBu
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoSessionsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
+import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections4.IterableUtils;
@@ -47,6 +49,20 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UserSessionDog {
+
+	@VisibleForTestingOnly
+	public BQSession addBQSession(
+		long channelId, String id, Date sessionEndDate, Date sessionStartDate) {
+
+		BQSession bqSession = new BQSession();
+
+		bqSession.setChannelId(channelId);
+		bqSession.setId(id);
+		bqSession.setSessionEnd(sessionEndDate);
+		bqSession.setSessionStart(sessionStartDate);
+
+		return _bqSessionRepository.save(bqSession);
+	}
 
 	public List<BQSession> findByIds(Collection<String> ids) {
 		return IterableUtils.toList(_bqSessionRepository.findAllById(ids));

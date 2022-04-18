@@ -21,12 +21,11 @@ import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
 import com.liferay.osb.asah.backend.graphql.schema.EventsByUserSessionsDataFetcher;
 import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -61,20 +60,13 @@ public class EventsByUserSessionsDataFetcherTest
 	public void setUp() throws Exception {
 		_createEvent("assetClicked");
 		_createEvent("assetDownloaded");
-
-		_cerebroInfoElasticsearchInvoker.add(
-			"user-sessions",
-			JSONUtil.put(
-				"id", "sessionId"
-			).put(
-				"languageId", "pt-BR"
-			));
+		_userSessionDog.addBQSession(1L, "sessionId", new Date(), new Date());
 	}
 
 	@AfterEach
-	public void tearDown() throws Exception {
-		_cerebroInfoElasticsearchInvoker.delete("user-sessions", "sessionId");
+	public void tearDown() {
 		_bqEventRepository.deleteAll();
+		_bqSessionRepository.deleteAll();
 	}
 
 	@Test
@@ -121,7 +113,7 @@ public class EventsByUserSessionsDataFetcherTest
 			},
 			null, "canonicalUrlValue", 1L, null, null, null, null, new Date(),
 			1L, null, null, new Date(), eventDefinitionName, null,
-			RandomTestUtil.randomId(), null, null, null, null, null, null,
+			RandomTestUtil.randomId(), null, "pt-BR", null, null, null, null,
 			"sessionId", null, null, null, "userId", null);
 	}
 
@@ -146,13 +138,16 @@ public class EventsByUserSessionsDataFetcherTest
 	@Autowired
 	private BQEventRepository _bqEventRepository;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+	@Autowired
+	private BQSessionRepository _bqSessionRepository;
 
 	@Autowired
 	private EventDog _eventDog;
 
 	@Autowired
 	private EventsByUserSessionsDataFetcher _eventsByUserSessionsDataFetcher;
+
+	@Autowired
+	private UserSessionDog _userSessionDog;
 
 }
