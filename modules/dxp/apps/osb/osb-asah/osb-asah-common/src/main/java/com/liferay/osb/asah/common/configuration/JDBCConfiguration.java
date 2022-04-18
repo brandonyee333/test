@@ -152,21 +152,25 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
+				new ClassPathResource("bq_functions.sql"),
 				new ClassPathResource("functions.sql")),
 			pgSimpleDataSource);
 
 		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(new ClassPathResource("tables.sql")),
-			pgSimpleDataSource);
-
-		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
+				new ClassPathResource("bq_tables.sql"),
+				new ClassPathResource("tables.sql"),
 				new ClassPathResource("tables-global.sql")),
 			pgSimpleDataSource);
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
 				new ClassPathResource("sequences.sql")),
+			pgSimpleDataSource);
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				new ClassPathResource("bq_views.sql")),
 			pgSimpleDataSource);
 
 		DatabasePopulatorUtils.execute(

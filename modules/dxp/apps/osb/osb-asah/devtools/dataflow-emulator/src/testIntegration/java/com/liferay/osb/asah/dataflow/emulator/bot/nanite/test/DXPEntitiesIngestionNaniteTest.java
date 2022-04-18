@@ -30,7 +30,6 @@ import com.liferay.osb.asah.dataflow.emulator.repository.BQRoleRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQTeamRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQUserGroupRepository;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQUserRepository;
-import com.liferay.osb.asah.dataflow.emulator.util.DatabaseUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.HashMap;
@@ -133,8 +132,6 @@ public class DXPEntitiesIngestionNaniteTest
 					}
 				});
 		}
-
-		DatabaseUtil.createTables(_dataSource, "test");
 
 		BQOrganization bqOrganization = new BQOrganization();
 
