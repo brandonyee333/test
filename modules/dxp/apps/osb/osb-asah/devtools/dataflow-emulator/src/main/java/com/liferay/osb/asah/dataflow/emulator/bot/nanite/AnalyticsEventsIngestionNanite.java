@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
@@ -21,6 +22,7 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
+import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -34,7 +36,6 @@ import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapDevice;
 import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapEngine;
-import com.liferay.osb.asah.dataflow.emulator.entity.BQSession;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQSessionRepository;
 
 import java.util.Date;
@@ -473,7 +474,14 @@ public class AnalyticsEventsIngestionNanite {
 		bqEvent.setChannelId(Long.valueOf(analyticsEvent.getChannelId()));
 		bqEvent.setCity("Local Network");
 		bqEvent.setContentLanguageId(context.get("contentLanguageId"));
-		bqEvent.setContext(String.valueOf(context));
+
+		try {
+			bqEvent.setContext(_objectMapper.writeValueAsString(context));
+		}
+		catch (JsonProcessingException jsonProcessingException) {
+			throw new RuntimeException(jsonProcessingException);
+		}
+
 		bqEvent.setCountry("Local Network");
 		bqEvent.setCreateDate(analyticsEvent.getCreateDate());
 		bqEvent.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
