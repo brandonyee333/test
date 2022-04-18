@@ -17,6 +17,7 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.entity.BQIdentity;
 import com.liferay.osb.asah.dataflow.emulator.repository.BQIdentityRepository;
 
@@ -80,6 +81,8 @@ public class IdentityIngestionNanite {
 		JSONObject jsonObject = new JSONObject(message.getObject());
 
 		String projectId = jsonObject.getString("projectId");
+
+		ProjectIdThreadLocal.setProjectId(projectId);
 
 		BQIdentity bqIdentity = new BQIdentity();
 
