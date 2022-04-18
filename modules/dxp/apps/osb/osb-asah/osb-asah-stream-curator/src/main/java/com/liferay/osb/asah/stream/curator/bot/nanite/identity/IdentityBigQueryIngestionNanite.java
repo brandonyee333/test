@@ -232,7 +232,7 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 
 	private String _googleProjectId;
 
-	@Value("${osb.asah.identity.nanite.pull.messages.size:10}")
+	@Value("${osb.asah.identity.nanite.pull.messages.size:1000}")
 	private int _identityNanitePullMessagesSize;
 
 	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
