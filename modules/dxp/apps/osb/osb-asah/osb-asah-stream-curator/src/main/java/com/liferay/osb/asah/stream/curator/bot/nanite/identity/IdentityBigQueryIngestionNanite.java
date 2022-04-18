@@ -37,9 +37,10 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -189,23 +190,15 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 				break;
 			}
 
-			Map<String, List<Message<JSONObject>>> messagesMap =
-				new HashMap<>();
+			Stream<Message<JSONObject>> stream = messages.stream();
 
-			for (Message<JSONObject> message : messages) {
-				JSONObject jsonObject = message.getObject();
+			Map<String, List<Message<JSONObject>>> messagesMap = stream.collect(
+				Collectors.groupingBy(
+					message -> {
+						JSONObject jsonObject = message.getObject();
 
-				String projectId = jsonObject.getString("projectId");
-
-				List<Message<JSONObject>> messageList =
-					messagesMap.getOrDefault(projectId, new ArrayList<>());
-
-				if (messageList.isEmpty()) {
-					messagesMap.put(projectId, messageList);
-				}
-
-				messageList.add(message);
-			}
+						return jsonObject.getString("projectId");
+					}));
 
 			for (Map.Entry<String, List<Message<JSONObject>>> entry :
 					messagesMap.entrySet()) {
