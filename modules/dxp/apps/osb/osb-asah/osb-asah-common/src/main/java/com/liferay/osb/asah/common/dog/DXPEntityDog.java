@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -49,6 +51,7 @@ public class DXPEntityDog {
 
 	public DXPEntity addDXPEntity(DXPEntity dxpEntity, DXPEntity.Type type) {
 		dxpEntity.setId(null);
+		dxpEntity.setModifiedDate(new Date());
 		dxpEntity.setType(type);
 
 		return _mapDXPEntity(_dxpEntityRepository.save(dxpEntity), type);
@@ -110,6 +113,20 @@ public class DXPEntityDog {
 	}
 
 	public Page<? extends DXPEntity> getDXPEntityPage(
+		Date fromModifiedDate, Date toModifiedDate, DXPEntity.Type type,
+		Pageable pageable) {
+
+		return PageableExecutionUtils.getPage(
+			_mapDXPEntities(
+				_dxpEntityRepository.findByTypeAndModifiedDateBetween(
+					fromModifiedDate, toModifiedDate, type, pageable),
+				type),
+			pageable,
+			() -> _dxpEntityRepository.countByTypeAndModifiedDateBetween(
+				fromModifiedDate, toModifiedDate, type));
+	}
+
+	public Page<? extends DXPEntity> getDXPEntityPage(
 		@Nullable Long channelId, @Nullable String keywords, int size,
 		Sort sort, int start, DXPEntity.Type type) {
 
@@ -128,6 +145,8 @@ public class DXPEntityDog {
 	}
 
 	public DXPEntity updateDXPEntity(DXPEntity dxpEntity) {
+		dxpEntity.setModifiedDate(new Date());
+
 		return _mapDXPEntity(
 			_dxpEntityRepository.save(dxpEntity), dxpEntity.getType());
 	}
@@ -228,6 +247,7 @@ public class DXPEntityDog {
 
 		dxpOrganization.setDataSourceId(dxpEntity.getDataSourceId());
 		dxpOrganization.setFieldsJSONObject(fieldsJSONObject);
+		dxpOrganization.setModifiedDate(dxpEntity.getModifiedDate());
 		dxpOrganization.setName(fieldsJSONObject.optString("name"));
 		dxpOrganization.setParentName(fieldsJSONObject.optString("parentName"));
 
@@ -260,6 +280,7 @@ public class DXPEntityDog {
 		dxpUser.setFirstName(fieldsJSONObject.optString("firstName"));
 		dxpUser.setId(dxpEntity.getId());
 		dxpUser.setLastName(fieldsJSONObject.optString("lastName"));
+		dxpUser.setModifiedDate(dxpEntity.getModifiedDate());
 		dxpUser.setScreenName(fieldsJSONObject.optString("screenName"));
 
 		return dxpUser;
