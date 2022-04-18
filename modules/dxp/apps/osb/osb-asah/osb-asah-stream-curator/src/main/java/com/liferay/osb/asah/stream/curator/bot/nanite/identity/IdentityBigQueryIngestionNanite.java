@@ -212,7 +212,6 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 		JSONObject jsonObject = message.getObject();
 
 		jsonObject.put("createDate", new Date());
-
 		jsonObject.put(
 			"id",
 			DigestUtils.sha256Hex(
