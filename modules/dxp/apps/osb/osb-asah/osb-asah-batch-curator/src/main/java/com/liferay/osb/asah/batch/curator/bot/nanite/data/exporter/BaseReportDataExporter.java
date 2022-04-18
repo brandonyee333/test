@@ -16,30 +16,35 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.http.ReportHttp;
 
 import java.io.OutputStream;
 
 import java.util.Date;
 
-import org.json.JSONObject;
-
 /**
- * @author Marcellus Tavares
+ * @author Alejo Ceballos
  */
-public class IndividualDataExporter extends BaseReportDataExporter {
+public abstract class BaseReportDataExporter extends BaseDataExporter {
 
-	public IndividualDataExporter(
+	public BaseReportDataExporter(
 			Date fromDate, JsonFactory jsonFactory, OutputStream outputStream,
 			ReportHttp reportHttp, Date toDate)
 		throws Exception {
 
-		super(fromDate, jsonFactory, outputStream, reportHttp, toDate);
+		super(jsonFactory, outputStream, reportHttp);
+
+		if (fromDate != null) {
+			this.fromDate = DateUtil.toUTCString(fromDate);
+		}
+
+		if (toDate != null) {
+			this.toDate = DateUtil.toUTCString(toDate);
+		}
 	}
 
-	@Override
-	protected JSONObject doGetResultPageJSONObject(String after) {
-		return reportHttp.getIndividualsJSONObject(after, fromDate, toDate);
-	}
+	protected String fromDate;
+	protected String toDate;
 
 }

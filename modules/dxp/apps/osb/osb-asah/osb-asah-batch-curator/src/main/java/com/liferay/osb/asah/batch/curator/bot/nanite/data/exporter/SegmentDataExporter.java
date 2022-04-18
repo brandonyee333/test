@@ -20,24 +20,26 @@ import com.liferay.osb.asah.common.http.ReportHttp;
 
 import java.io.OutputStream;
 
+import java.util.Date;
+
 import org.json.JSONObject;
 
 /**
  * @author Marcellus Tavares
  */
-public class SegmentDataExporter extends BaseDataExporter {
+public class SegmentDataExporter extends BaseReportDataExporter {
 
 	public SegmentDataExporter(
-			JsonFactory jsonFactory, OutputStream outputStream,
-			ReportHttp reportHttp)
+			Date fromDate, JsonFactory jsonFactory, OutputStream outputStream,
+			ReportHttp reportHttp, Date toDate)
 		throws Exception {
 
-		super(jsonFactory, outputStream, reportHttp);
+		super(fromDate, jsonFactory, outputStream, reportHttp, toDate);
 	}
 
 	@Override
 	protected JSONObject doGetResultPageJSONObject(String after) {
-		return reportHttp.getSegmentsJSONObject(after);
+		return reportHttp.getSegmentsJSONObject(after, fromDate, toDate);
 	}
 
 }
