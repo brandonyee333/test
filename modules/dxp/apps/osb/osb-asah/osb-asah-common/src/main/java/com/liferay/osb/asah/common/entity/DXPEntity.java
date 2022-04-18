@@ -15,14 +15,17 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -110,6 +113,19 @@ public class DXPEntity implements Persistable<Long> {
 		return String.valueOf(_fieldsJSONObject.get(type.getIdFieldName()));
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
 	public String getName() {
 		if (_name == null) {
 			return _fieldsJSONObject.optString("name", null);
@@ -157,6 +173,12 @@ public class DXPEntity implements Persistable<Long> {
 
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
 	}
 
 	public void setName(String name) {
@@ -426,6 +448,9 @@ public class DXPEntity implements Persistable<Long> {
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private Date _modifiedDate;
 
 	@Transient
 	private String _name;
