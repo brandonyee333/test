@@ -189,6 +189,7 @@ CREATE TABLE IF NOT EXISTS DXPEntity (
 	id BIGSERIAL PRIMARY KEY,
 	dataSourceId BIGINT,
 	fields JSON,
+	modifiedDate TIMESTAMPTZ,
 	type TEXT
 );
 
