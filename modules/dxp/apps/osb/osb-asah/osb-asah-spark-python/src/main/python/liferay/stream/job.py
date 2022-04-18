@@ -17,8 +17,7 @@ from liferay.stream.processor.form import FormDataFrameProcessor, \
 	FormFieldDataFrameProcessor, \
 	FormPageDataFrameProcessor
 from liferay.stream.processor.journal import JournalDataFrameProcessor
-from liferay.stream.processor.page import PageDataFrameProcessor, \
-	PageReferrerDataFrameProcessor
+from liferay.stream.processor.page import PageDataFrameProcessor
 
 from pyspark.sql import types as T
 
@@ -37,8 +36,7 @@ class CuratorSparkJob(BaseSparkJob):
 			FormFieldDataFrameProcessor(batch_id, 'form-fields', self),
 			FormPageDataFrameProcessor(batch_id, 'form-pages', self),
 			JournalDataFrameProcessor(batch_id, 'journals', self),
-			PageDataFrameProcessor(batch_id, 'pages', self),
-			PageReferrerDataFrameProcessor(batch_id, 'page-referrers', self),
+			PageDataFrameProcessor(batch_id, 'pages', self)
 		]
 
 		for processor in processors:

@@ -1,25 +1,3 @@
-acquisition:
-    channel:
-        paid-host-names:
-            - googleadservices.com
-        search-host-names:
-            - ask.com
-            - baidu.com
-            - bing.com
-            - duckduckgo.com
-            - google.com
-            - yahoo.com
-            - yandex.com
-        social-host-names:
-            - facebook.com
-            - instagram.com
-            - linkedin.com
-            - pinterest.com
-            - snapchat.com
-            - t.co
-            - tiktok.com
-            - twitter.com
-            - youtube.com"
 google:
     storage:
         path:

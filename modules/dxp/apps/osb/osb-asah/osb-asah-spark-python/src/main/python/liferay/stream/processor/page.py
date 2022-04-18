@@ -369,38 +369,3 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		page_time_on_page_data_frame.unpersist()
 
 		return data_frame
-
-class PageReferrerDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
-
-	def _filter(self, analytics_events_data_frame):
-		return analytics_events_data_frame.filter(
-			"""
-				(applicationId = 'Page') AND
-				(eventId = 'pageViewed') AND
-				(context.url != '')
-			"""
-		)
-
-	def _get_asset_id_column(self):
-		return F.col('context.url')
-
-	def _process(self, data_frame):
-		data_frame = data_frame.withColumn(
-			'access', F.lit(1)
-		).withColumn(
-			'referrer', F.col('context.referrer')
-		).groupBy(
-			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
-			'normalized_event_date', 'primaryKey', 'referrer'
-		).agg(
-			F.sum('access').alias('access')
-		).fillna(
-			'', subset=['referrer']
-		)
-
-		return data_frame.withColumnRenamed(
-			'assetId', 'url'
-		).withColumn(
-			'acquisition_channel',
-			F.expr('acquisition_channel(url, referrer)')
-		)
