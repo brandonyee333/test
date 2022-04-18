@@ -30,22 +30,41 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportHttpImpl implements ReportHttp {
 
-	@Override
-	public JSONObject getAccountsJSONObject(String after) {
-		return _httpGetJSONObject(
-			String.format("/reports/accounts?after=%s", after));
+	@Autowired
+	public ReportHttpImpl(Http http) {
+		_http = http;
 	}
 
 	@Override
-	public JSONObject getIndividualsJSONObject(String after) {
+	public JSONObject getAccountsJSONObject(
+		String after, String fromDate, String toDate) {
+
 		return _httpGetJSONObject(
-			String.format("/reports/individuals?after=%s", after));
+			_getPath(after, fromDate, toDate, "accounts"));
 	}
 
 	@Override
-	public JSONObject getSegmentsJSONObject(String after) {
+	public JSONObject getIndividualsJSONObject(
+		String after, String fromDate, String toDate) {
+
 		return _httpGetJSONObject(
-			String.format("/reports/segments?after=%s", after));
+			_getPath(after, fromDate, toDate, "individuals"));
+	}
+
+	@Override
+	public JSONObject getSegmentsJSONObject(
+		String after, String fromDate, String toDate) {
+
+		return _httpGetJSONObject(
+			_getPath(after, fromDate, toDate, "segments"));
+	}
+
+	private String _getPath(
+		String after, String fromDate, String toDate, String type) {
+
+		return String.format(
+			"/reports/%s?after=%s&fromDate=%s&toDate=%s", type, after, fromDate,
+			toDate);
 	}
 
 	private JSONObject _httpGetJSONObject(String path) {
@@ -55,7 +74,6 @@ public class ReportHttpImpl implements ReportHttp {
 		return new JSONObject(response);
 	}
 
-	@Autowired
-	private Http _http;
+	private final Http _http;
 
 }
