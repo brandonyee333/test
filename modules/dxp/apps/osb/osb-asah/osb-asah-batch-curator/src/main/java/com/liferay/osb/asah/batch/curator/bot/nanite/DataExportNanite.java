@@ -16,15 +16,12 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.AccountDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
-import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.IndividualDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
-import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SegmentDataExporter;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.ReportDataExporterFactory;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataExportTask;
-import com.liferay.osb.asah.common.http.ReportHttp;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.FileOutputStream;
@@ -47,6 +44,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataExportNanite extends BaseNanite {
 
+	@Autowired
+	public DataExportNanite(
+		DataExportTaskDog dataExportTaskDog,
+		ReportDataExporterFactory reportDataExporterFactory) {
+
+		_dataExportTaskDog = dataExportTaskDog;
+		_reportDataExporterFactory = reportDataExporterFactory;
+	}
+
 	@Override
 	public boolean isLogRunEnabled() {
 		return true;
@@ -67,30 +73,15 @@ public class DataExportNanite extends BaseNanite {
 	}
 
 	private DataExporter _createDataExporter(
-			OutputStream outputStream, DataExportTask.Type type)
+			OutputStream outputStream, DataExportTask dataExportTask)
 		throws Exception {
 
-		if (type == DataExportTask.Type.ACCOUNT) {
-			return new AccountDataExporter(
-				_jsonFactory, outputStream, _reportHttp);
-		}
-
-		if (type == DataExportTask.Type.INDIVIDUAL) {
-			return new IndividualDataExporter(
-				_jsonFactory, outputStream, _reportHttp);
-		}
-
-		if (type == DataExportTask.Type.PAGE) {
+		if (dataExportTask.getType() == DataExportTask.Type.PAGE) {
 			return new PageDataExporter(
 				_jsonFactory, outputStream, _cerebroInfoElasticsearchInvoker);
 		}
 
-		if (type == DataExportTask.Type.SEGMENT) {
-			return new SegmentDataExporter(
-				_jsonFactory, outputStream, _reportHttp);
-		}
-
-		throw new IllegalArgumentException("Invalid data export task type");
+		return _reportDataExporterFactory.create(dataExportTask, outputStream);
 	}
 
 	private void _runDataExportTask(DataExportTask dataExportTask) {
@@ -101,7 +92,7 @@ public class DataExportNanite extends BaseNanite {
 				_exportPath + "/" + dataExportTask.getId() + ".json")) {
 
 			DataExporter dataExporter = _createDataExporter(
-				outputStream, dataExportTask.getType());
+				outputStream, dataExportTask);
 
 			dataExporter.export();
 		}
@@ -123,15 +114,12 @@ public class DataExportNanite extends BaseNanite {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
-	@Autowired
-	private DataExportTaskDog _dataExportTaskDog;
+	private final DataExportTaskDog _dataExportTaskDog;
 
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPath;
 
 	private final JsonFactory _jsonFactory = new JsonFactory();
-
-	@Autowired
-	private ReportHttp _reportHttp;
+	private final ReportDataExporterFactory _reportDataExporterFactory;
 
 }
