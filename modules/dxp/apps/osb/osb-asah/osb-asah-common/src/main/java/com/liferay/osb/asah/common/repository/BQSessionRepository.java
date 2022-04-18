@@ -12,18 +12,14 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.repository;
+package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.dataflow.emulator.entity.BQSession;
+import com.liferay.osb.asah.common.entity.BQSession;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcellus Tavares
  */
-@Repository(
-	"com.liferay.osb.asah.dataflow.emulator.repository.SessionRepository"
-)
 public interface BQSessionRepository extends CrudRepository<BQSession, String> {
 }

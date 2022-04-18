@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.entity;
+package com.liferay.osb.asah.common.entity;
 
 import java.util.Date;
 

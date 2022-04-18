@@ -31,12 +31,12 @@ import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapDevice;
 import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapEngine;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQSessionRepository;
 
 import java.util.Date;
 import java.util.HashMap;
