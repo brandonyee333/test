@@ -160,8 +160,6 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 					},
 					MoreExecutors.directExecutor());
 
-				_acknowledgeMessages(messages);
-
 				FinalizeWriteStreamRequest finalizeWriteStreamRequest =
 					FinalizeWriteStreamRequest.newBuilder(
 					).setName(
