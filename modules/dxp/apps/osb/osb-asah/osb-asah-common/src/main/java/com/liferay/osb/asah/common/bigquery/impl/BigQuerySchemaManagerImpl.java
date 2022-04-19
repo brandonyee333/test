@@ -110,15 +110,22 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		StandardTableDefinition.Builder builder =
 			StandardTableDefinition.newBuilder();
 
-		return builder.setClustering(
-			_buildClustering(tableJSONObject.getJSONArray("clusteringFields"))
-		).setLocation(
+		if (tableJSONObject.has("clusteringFields")) {
+			builder.setClustering(
+				_buildClustering(
+					tableJSONObject.getJSONArray("clusteringFields")));
+		}
+
+		if (tableJSONObject.has("timePartitioning")) {
+			builder.setTimePartitioning(
+				_buildTimePartitioning(
+					tableJSONObject.getJSONObject("timePartitioning")));
+		}
+
+		return builder.setLocation(
 			_location
 		).setSchema(
 			_buildSchema(tableJSONObject.getJSONArray("fields"))
-		).setTimePartitioning(
-			_buildTimePartitioning(
-				tableJSONObject.getJSONObject("timePartitioning"))
 		).build();
 	}
 
