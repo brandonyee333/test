@@ -155,7 +155,7 @@ const DocumentLibrary = ({
 			)}
 
 			<input
-				id={id}
+				id={id ?? name}
 				name={name}
 				placeholder={placeholder}
 				type="hidden"
