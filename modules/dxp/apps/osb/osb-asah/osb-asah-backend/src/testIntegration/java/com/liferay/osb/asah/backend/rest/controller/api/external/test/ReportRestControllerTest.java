@@ -168,17 +168,14 @@ public class ReportRestControllerTest
 	)
 	@Test
 	public void testNoPreviousExportProcessForTheSameTypeAndDateRange() {
-		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
-		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
-
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
 
 		Assertions.assertNotNull(responseEntity);
 
 		_assertDataExportTaskDTO(
-			null, DateUtil.newDayDate(), responseEntity.getBody(), fromDate,
-			null, null, null, DataExportTask.Status.PENDING, toDate,
+			null, DateUtil.newDayDate(), responseEntity.getBody(), _fromDate,
+			null, null, null, DataExportTask.Status.PENDING, _toDate,
 			DataExportTask.Type.PAGE);
 	}
 
@@ -187,20 +184,15 @@ public class ReportRestControllerTest
 	)
 	@Test
 	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeAndIsCompleted() {
-		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
-		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
-
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
 
 		Assertions.assertNotNull(responseEntity);
 
 		_assertDataExportTaskDTO(
-			DateUtil.toUTCDate("2022-04-03T12:00:00.000Z"),
-			DateUtil.toUTCDate("2022-04-01T12:00:00.000Z"),
-			responseEntity.getBody(), fromDate, "1003", null,
-			DateUtil.toUTCDate("2022-04-02T12:00:00.000Z"),
-			DataExportTask.Status.COMPLETED, toDate, DataExportTask.Type.PAGE);
+			DateUtil.toUTCDate("2022-04-03T12:00:00.000Z"), _createDate,
+			responseEntity.getBody(), _fromDate, "1003", null, _startedDate,
+			DataExportTask.Status.COMPLETED, _toDate, DataExportTask.Type.PAGE);
 	}
 
 	@SQLResource(
@@ -208,18 +200,15 @@ public class ReportRestControllerTest
 	)
 	@Test
 	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeButIsPending() {
-		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
-		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
-
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
 
 		Assertions.assertNotNull(responseEntity);
 
 		_assertDataExportTaskDTO(
-			null, DateUtil.toUTCDate("2022-04-01T12:00:00.000Z"),
-			responseEntity.getBody(), fromDate, "1000", null, null,
-			DataExportTask.Status.PENDING, toDate, DataExportTask.Type.PAGE);
+			null, _createDate, responseEntity.getBody(), _fromDate, "1000",
+			null, null, DataExportTask.Status.PENDING, _toDate,
+			DataExportTask.Type.PAGE);
 	}
 
 	@SQLResource(
@@ -227,19 +216,15 @@ public class ReportRestControllerTest
 	)
 	@Test
 	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeButIsRunning() {
-		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
-		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
-
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
 
 		Assertions.assertNotNull(responseEntity);
 
 		_assertDataExportTaskDTO(
-			null, DateUtil.toUTCDate("2022-04-01T12:00:00.000Z"),
-			responseEntity.getBody(), fromDate, "1002", null,
-			DateUtil.toUTCDate("2022-04-02T12:00:00.000Z"),
-			DataExportTask.Status.RUNNING, toDate, DataExportTask.Type.PAGE);
+			null, _createDate, responseEntity.getBody(), _fromDate, "1002",
+			null, _startedDate, DataExportTask.Status.RUNNING, _toDate,
+			DataExportTask.Type.PAGE);
 	}
 
 	@SQLResource(
@@ -247,18 +232,15 @@ public class ReportRestControllerTest
 	)
 	@Test
 	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeButResultedInError() {
-		Date fromDate = DateUtil.toUTCDate("2022-03-01T12:00:00.000Z");
-		Date toDate = DateUtil.toUTCDate("2022-03-31T12:00:00.000Z");
-
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
 
 		Assertions.assertNotNull(responseEntity);
 
 		_assertDataExportTaskDTO(
-			null, DateUtil.newDayDate(), responseEntity.getBody(), fromDate,
+			null, DateUtil.newDayDate(), responseEntity.getBody(), _fromDate,
 			null, DataExportTask.Status.ERROR, null,
-			DataExportTask.Status.PENDING, toDate, DataExportTask.Type.PAGE);
+			DataExportTask.Status.PENDING, _toDate, DataExportTask.Type.PAGE);
 	}
 
 	private void _assertDataExportTaskDTO(
@@ -280,7 +262,7 @@ public class ReportRestControllerTest
 		_assertEqualsTruncatedDates(
 			dataExportTaskDTO.getCreateDate(), createDate);
 
-		Assertions.assertEquals(dataExportTaskDTO.getFromDate(), fromDate);
+		Assertions.assertEquals(fromDate, dataExportTaskDTO.getFromDate());
 
 		if (id != null) {
 			Assertions.assertEquals(id, dataExportTaskDTO.getId());
@@ -291,8 +273,8 @@ public class ReportRestControllerTest
 		}
 		else {
 			Assertions.assertEquals(
-				dataExportTaskDTO.getPreviousStatus(),
-				previousStatus.toString());
+				previousStatus.toString(),
+				dataExportTaskDTO.getPreviousStatus());
 		}
 
 		if (startedDate == null) {
@@ -304,9 +286,9 @@ public class ReportRestControllerTest
 		}
 
 		Assertions.assertEquals(
-			dataExportTaskDTO.getStatus(), status.toString());
-		Assertions.assertEquals(dataExportTaskDTO.getToDate(), toDate);
-		Assertions.assertEquals(dataExportTaskDTO.getType(), type.toString());
+			status.toString(), dataExportTaskDTO.getStatus());
+		Assertions.assertEquals(toDate, dataExportTaskDTO.getToDate());
+		Assertions.assertEquals(type.toString(), dataExportTaskDTO.getType());
 	}
 
 	private void _assertEqualsTruncatedDates(
@@ -340,6 +322,15 @@ public class ReportRestControllerTest
 			Collectors.toSet()
 		);
 	}
+
+	private static final Date _createDate = DateUtil.toUTCDate(
+		"2022-04-01T12:00:00.000Z");
+	private static final Date _fromDate = DateUtil.toUTCDate(
+		"2022-03-01T12:00:00.000Z");
+	private static final Date _startedDate = DateUtil.toUTCDate(
+		"2022-04-02T12:00:00.000Z");
+	private static final Date _toDate = DateUtil.toUTCDate(
+		"2022-03-31T12:00:00.000Z");
 
 	@Autowired
 	private ReportRestController _reportRestController;
