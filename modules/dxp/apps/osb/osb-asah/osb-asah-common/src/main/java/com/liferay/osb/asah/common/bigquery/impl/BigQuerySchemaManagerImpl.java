@@ -22,6 +22,8 @@ import com.google.cloud.bigquery.Dataset;
 import com.google.cloud.bigquery.DatasetId;
 import com.google.cloud.bigquery.DatasetInfo;
 import com.google.cloud.bigquery.Field;
+import com.google.cloud.bigquery.FieldList;
+import com.google.cloud.bigquery.LegacySQLTypeName;
 import com.google.cloud.bigquery.Schema;
 import com.google.cloud.bigquery.StandardSQLTypeName;
 import com.google.cloud.bigquery.StandardTableDefinition;
@@ -39,6 +41,10 @@ import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicat
 import java.io.InputStream;
 
 import java.nio.charset.Charset;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
@@ -86,13 +92,40 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	}
 
 	private Field _buildField(JSONObject fieldJSONObject) {
-		Field.Builder builder = Field.newBuilder(
-			fieldJSONObject.getString("name"),
-			StandardSQLTypeName.valueOf(fieldJSONObject.getString("type")));
+		Field.Builder builder;
+
+		if (Objects.equals(fieldJSONObject.getString("type"), "RECORD")) {
+			builder = Field.newBuilder(
+				fieldJSONObject.getString("name"), LegacySQLTypeName.RECORD,
+				_buildFieldList(fieldJSONObject.getJSONArray("fields")));
+		}
+		else {
+			builder = Field.newBuilder(
+				fieldJSONObject.getString("name"),
+				StandardSQLTypeName.valueOf(fieldJSONObject.getString("type")));
+		}
+
+		if (fieldJSONObject.has("mode")) {
+			return builder.setMode(
+				Field.Mode.valueOf(fieldJSONObject.getString("mode"))
+			).build();
+		}
 
 		return builder.setMode(
-			Field.Mode.valueOf(fieldJSONObject.getString("mode"))
+			Field.Mode.NULLABLE
 		).build();
+	}
+
+	private FieldList _buildFieldList(JSONArray fieldsJSONArray) {
+		List<Field> fields = new ArrayList<>();
+
+		for (int i = 0; i < fieldsJSONArray.length(); i++) {
+			JSONObject fieldJSONObject = fieldsJSONArray.getJSONObject(i);
+
+			fields.add(_buildField(fieldJSONObject));
+		}
+
+		return FieldList.of(fields);
 	}
 
 	private Schema _buildSchema(JSONArray fieldsJSONArray) {
