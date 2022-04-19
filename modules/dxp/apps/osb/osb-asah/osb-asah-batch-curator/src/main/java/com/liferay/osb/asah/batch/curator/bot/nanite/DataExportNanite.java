@@ -73,7 +73,7 @@ public class DataExportNanite extends BaseNanite {
 	}
 
 	private DataExporter _createDataExporter(
-			OutputStream outputStream, DataExportTask dataExportTask)
+			DataExportTask dataExportTask, OutputStream outputStream)
 		throws Exception {
 
 		if (dataExportTask.getType() == DataExportTask.Type.PAGE) {
@@ -92,7 +92,7 @@ public class DataExportNanite extends BaseNanite {
 				_exportPath + "/" + dataExportTask.getId() + ".json")) {
 
 			DataExporter dataExporter = _createDataExporter(
-				outputStream, dataExportTask);
+				dataExportTask, outputStream);
 
 			dataExporter.export();
 		}

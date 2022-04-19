@@ -207,7 +207,7 @@ public class ReportRestController extends BaseRestController {
 				DataExportTask.Type.valueOf(StringUtils.upperCase(type)));
 
 		if (dataExportTask == null) {
-			return _addDataExportTask(fromDate, toDate, null, type);
+			return _addDataExportTask(fromDate, null, toDate, type);
 		}
 
 		DataExportTask.Status status = dataExportTask.getStatus();
@@ -221,7 +221,7 @@ public class ReportRestController extends BaseRestController {
 						dataExportTask.getId()));
 			}
 
-			return _addDataExportTask(fromDate, toDate, status, type);
+			return _addDataExportTask(fromDate, status, toDate, type);
 		}
 
 		return _buildAcceptedResponseEntity(
@@ -778,7 +778,7 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	private ResponseEntity<DataExportTaskDTO> _addDataExportTask(
-		Date fromDate, Date toDate, DataExportTask.Status previousStatus,
+		Date fromDate, DataExportTask.Status previousStatus, Date toDate,
 		String type) {
 
 		DataExportTaskDTO dataExportTaskDTO = new DataExportTaskDTO(
