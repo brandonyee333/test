@@ -69,7 +69,9 @@ public class AccountDataExporterTest {
 			JSONAssert.assertEquals(
 				ResourceUtil.readResourceToString(
 					"expected_accounts_export.json", this),
-				byteArrayOutputStream.toString(StandardCharsets.UTF_8), false);
+				byteArrayOutputStream.toString(
+					StandardCharsets.UTF_8.toString()),
+				false);
 		}
 	}
 

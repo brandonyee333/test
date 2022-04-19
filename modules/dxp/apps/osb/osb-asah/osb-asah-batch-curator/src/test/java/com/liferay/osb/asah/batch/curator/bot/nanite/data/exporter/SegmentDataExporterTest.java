@@ -74,7 +74,9 @@ public class SegmentDataExporterTest {
 			segmentDataExporter.export();
 
 			actualSegmentsExportLines = StringUtils.split(
-				byteArrayOutputStream.toString(StandardCharsets.UTF_8), "\n");
+				byteArrayOutputStream.toString(
+					StandardCharsets.UTF_8.toString()),
+				"\n");
 		}
 
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(

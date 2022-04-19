@@ -76,7 +76,9 @@ public class IndividualDataExporterTest {
 			individualDataExporter.export();
 
 			actualIndividualsExportLines = StringUtils.split(
-				byteArrayOutputStream.toString(StandardCharsets.UTF_8), "\n");
+				byteArrayOutputStream.toString(
+					StandardCharsets.UTF_8.toString()),
+				"\n");
 		}
 
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
