@@ -14,18 +14,13 @@
 
 package com.liferay.osb.asah.backend.dog.page;
 
-import com.liferay.osb.asah.backend.dog.DataDog;
-import com.liferay.osb.asah.backend.dog.DogUtil;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.dog.title.TitleDog;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.PageReferrerMetric;
 import com.liferay.osb.asah.backend.model.PageReferrerMetricType;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.petra.string.StringPool;
+import com.liferay.osb.asah.backend.repository.PageReferrerRepository;
 
 import java.math.BigDecimal;
 
@@ -37,25 +32,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.BucketOrder;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.Sum;
-import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -67,42 +51,24 @@ public class PageReferrerDog {
 	public Map<String, Double> getAcquisitionChannels(
 		SearchQueryContext searchQueryContext) {
 
-		Aggregations aggregations = _dataDog.queryAggregations(
-			"page-referrers",
-			_buildAcquisitionChannelSearchSourceBuilder(searchQueryContext));
-
-		if (DogUtil.isEmpty(aggregations)) {
-			return Collections.emptyMap();
-		}
-
-		Terms terms = aggregations.get("acquisition");
-
-		if (terms == null) {
-			return Collections.emptyMap();
-		}
-
-		Map<String, Double> acquisitions = new HashMap<>();
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			acquisitions.put(bucket.getKeyAsString(), _getAccessValue(bucket));
-		}
-
-		return acquisitions;
+		return _pageReferrerRepository.getAcquisitionChannelAccesses(
+			searchQueryContext.getCanonicalUrl(),
+			Long.valueOf(searchQueryContext.getChannelId()),
+			Long.valueOf(searchQueryContext.getDataSourceId()),
+			searchQueryContext.getTimeRange());
 	}
 
 	public List<PageReferrerMetric> getPageReferrerMetrics(
 		SearchQueryContext searchQueryContext) {
 
-		Aggregations aggregations = _dataDog.queryAggregations(
-			"page-referrers", _buildSearchSourceBuilder(searchQueryContext));
+		Map<String, Double> pageReferrerAccesses =
+			_pageReferrerRepository.getPageReferrerAccesses(
+				searchQueryContext.getCanonicalUrl(),
+				Long.valueOf(searchQueryContext.getChannelId()),
+				Long.valueOf(searchQueryContext.getDataSourceId()),
+				searchQueryContext.getTimeRange());
 
-		if (DogUtil.isEmpty(aggregations)) {
-			return Collections.emptyList();
-		}
-
-		Terms terms = aggregations.get("referrer");
-
-		if (terms == null) {
+		if (pageReferrerAccesses.isEmpty()) {
 			return Collections.emptyList();
 		}
 
@@ -110,11 +76,13 @@ public class PageReferrerDog {
 
 		BigDecimal partial = BigDecimal.ZERO;
 
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			Metric accessMetric = _getAccessMetric(bucket);
+		for (Map.Entry<String, Double> entry :
+				pageReferrerAccesses.entrySet()) {
+
+			Metric accessMetric = _getAccessMetric(entry.getValue());
 
 			PageReferrerMetric pageReferrerMetric = _createPageReferrerMetric(
-				accessMetric, bucket);
+				accessMetric, entry.getKey());
 
 			partial = partial.add(BigDecimal.valueOf(accessMetric.getValue()));
 
@@ -130,64 +98,65 @@ public class PageReferrerDog {
 	public Map<String, Double> getPageReferrers(
 		String fieldName, SearchQueryContext searchQueryContext, int size) {
 
-		Aggregations aggregations = _dataDog.queryAggregations(
-			"page-referrers",
-			_buildSearchSourceBuilder(fieldName, searchQueryContext, size));
-
-		if (DogUtil.isEmpty(aggregations)) {
-			return Collections.emptyMap();
+		if (Objects.equals(fieldName, "referrerHost")) {
+			return _pageReferrerRepository.
+				getSocialPageReferrerAccessesByReferrerHost(
+					searchQueryContext.getCanonicalUrl(),
+					Long.valueOf(searchQueryContext.getChannelId()),
+					Long.valueOf(searchQueryContext.getDataSourceId()),
+					PageRequest.of(0, size), searchQueryContext.getTimeRange());
 		}
 
-		Terms terms = aggregations.get("pageReferrers");
-
-		if (terms == null) {
-			return Collections.emptyMap();
-		}
-
-		Map<String, Double> pageReferrers = new LinkedHashMap<>();
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			pageReferrers.put(bucket.getKeyAsString(), _getAccessValue(bucket));
-		}
-
-		return pageReferrers;
+		return _pageReferrerRepository.
+			getSocialPageReferrerAccessesByReferrerCanonicalUrl(
+				searchQueryContext.getCanonicalUrl(),
+				Long.valueOf(searchQueryContext.getChannelId()),
+				Long.valueOf(searchQueryContext.getDataSourceId()),
+				PageRequest.of(0, size), searchQueryContext.getTimeRange());
 	}
 
 	public Map<String, Double> getSocialPageReferrers(
 		SearchQueryContext searchQueryContext) {
 
-		Map<String, Double> socialReferrers = new HashMap<>();
+		Map<String, Double> socialPageReferrerAccessesByReferrerHost =
+			_pageReferrerRepository.getSocialPageReferrerAccessesByReferrerHost(
+				searchQueryContext.getCanonicalUrl(),
+				Long.valueOf(searchQueryContext.getChannelId()),
+				Long.valueOf(searchQueryContext.getDataSourceId()),
+				PageRequest.of(0, 20), searchQueryContext.getTimeRange());
+
+		Map<String, Double> starredSocialReferrers = new HashMap<>();
 
 		for (Map.Entry<String, List<String>> entry :
 				_socialHostNames.entrySet()) {
 
-			Aggregations aggregations = _dataDog.queryAggregations(
-				"page-referrers",
-				_buildSocialSearchSourceBuilder(
-					entry.getValue(), searchQueryContext));
+			for (String referrerHost : entry.getValue()) {
+				Double accesses = socialPageReferrerAccessesByReferrerHost.get(
+					referrerHost);
 
-			if (!DogUtil.isEmpty(aggregations)) {
-				Sum sum = aggregations.get("access");
+				if ((accesses != null) && (accesses != 0)) {
+					Double value = starredSocialReferrers.getOrDefault(
+						entry.getKey(), 0D);
 
-				if ((sum != null) && (sum.getValue() != 0)) {
-					socialReferrers.put(entry.getKey(), sum.getValue());
+					starredSocialReferrers.put(
+						entry.getKey(), value + accesses);
 				}
 			}
 		}
 
-		Aggregations aggregations = _dataDog.queryAggregations(
-			"page-referrers",
-			_buildOtherSocialSearchSourceBuilder(searchQueryContext));
+		Double socialReferrersAccessesSum = _sumMapValues(
+			socialPageReferrerAccessesByReferrerHost);
 
-		if (!DogUtil.isEmpty(aggregations)) {
-			Sum sum = aggregations.get("access");
+		Double starredSocialReferrersAccessesSum = _sumMapValues(
+			starredSocialReferrers);
 
-			if ((sum != null) && (sum.getValue() != 0)) {
-				socialReferrers.put("other", sum.getValue());
-			}
+		if (socialReferrersAccessesSum > starredSocialReferrersAccessesSum) {
+			starredSocialReferrers.put(
+				"other",
+				socialReferrersAccessesSum - starredSocialReferrersAccessesSum);
 		}
 
-		Set<Map.Entry<String, Double>> set = socialReferrers.entrySet();
+		Set<Map.Entry<String, Double>> set = starredSocialReferrers.entrySet();
 
 		Stream<Map.Entry<String, Double>> stream = set.stream();
 
@@ -200,236 +169,31 @@ public class PageReferrerDog {
 		);
 	}
 
-	private SearchSourceBuilder _buildAcquisitionChannelSearchSourceBuilder(
-		SearchQueryContext searchQueryContext) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.aggregation(
-			AggregationBuilders.terms(
-				"acquisition"
-			).field(
-				"acquisitionChannel"
-			).size(
-				Integer.MAX_VALUE
-			).subAggregation(
-				_createAccessesAggregationBuilder()
-			));
-		searchSourceBuilder.query(
-			_searchQueryHelper.createFilterBoolQueryBuilder(
-				Optional.empty(), searchQueryContext,
-				_timeZoneDog.getTimeZoneId()));
-		searchSourceBuilder.size(0);
-
-		return searchSourceBuilder;
-	}
-
-	private SearchSourceBuilder _buildOtherSocialSearchSourceBuilder(
-		SearchQueryContext searchQueryContext) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.aggregation(
-			_createAccessesAggregationBuilder()
-		).size(
-			Integer.MAX_VALUE
-		);
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		for (List<String> socialHostNames : _socialHostNames.values()) {
-			for (String socialHostName : socialHostNames) {
-				boolQueryBuilder.mustNot(
-					QueryBuilders.termsQuery(
-						"referrerHost", socialHostName,
-						"www." + socialHostName));
-			}
-		}
-
-		searchSourceBuilder.query(
-			BoolQueryBuilderUtil.filter(
-				_searchQueryHelper.createFilterBoolQueryBuilder(
-					Optional.empty(), searchQueryContext,
-					_timeZoneDog.getTimeZoneId())
-			).filter(
-				QueryBuilders.termQuery("acquisitionChannel", "social")
-			).filter(
-				boolQueryBuilder
-			));
-
-		searchSourceBuilder.size(0);
-
-		return searchSourceBuilder;
-	}
-
-	private SearchSourceBuilder _buildSearchSourceBuilder(
-		SearchQueryContext searchQueryContext) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.aggregation(_createReferrerAggregationBuilder());
-		searchSourceBuilder.query(_createQueryBuilder(searchQueryContext));
-		searchSourceBuilder.size(0);
-
-		return searchSourceBuilder;
-	}
-
-	private SearchSourceBuilder _buildSearchSourceBuilder(
-		String fieldName, SearchQueryContext searchQueryContext, int size) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.aggregation(
-			AggregationBuilders.terms(
-				"pageReferrers"
-			).field(
-				fieldName
-			).size(
-				size
-			).subAggregation(
-				_createAccessesAggregationBuilder()
-			).order(
-				BucketOrder.aggregation("access", false)
-			));
-		searchSourceBuilder.query(
-			BoolQueryBuilderUtil.filter(
-				_searchQueryHelper.createFilterBoolQueryBuilder(
-					Optional.empty(), searchQueryContext,
-					_timeZoneDog.getTimeZoneId())
-			).filter(
-				QueryBuilders.existsQuery("acquisitionChannel")
-			).mustNot(
-				QueryBuilders.termsQuery(
-					"acquisitionChannel", "organic", "social")
-			).filter(
-				QueryBuilders.existsQuery("referrerHost")
-			).mustNot(
-				QueryBuilders.matchQuery(fieldName, "")
-			));
-		searchSourceBuilder.size(0);
-
-		return searchSourceBuilder;
-	}
-
-	private SearchSourceBuilder _buildSocialSearchSourceBuilder(
-		List<String> referrerHosts, SearchQueryContext searchQueryContext) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.aggregation(
-			_createAccessesAggregationBuilder()
-		).size(
-			Integer.MAX_VALUE
-		);
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		for (String referrerHost : referrerHosts) {
-			boolQueryBuilder.should(
-				QueryBuilders.termsQuery(
-					"referrerHost", referrerHost, "www." + referrerHost));
-		}
-
-		searchSourceBuilder.query(
-			BoolQueryBuilderUtil.filter(
-				_searchQueryHelper.createFilterBoolQueryBuilder(
-					Optional.empty(), searchQueryContext,
-					_timeZoneDog.getTimeZoneId())
-			).filter(
-				QueryBuilders.termQuery("acquisitionChannel", "social")
-			).filter(
-				boolQueryBuilder
-			));
-
-		searchSourceBuilder.size(0);
-
-		return searchSourceBuilder;
-	}
-
-	private AggregationBuilder _createAccessesAggregationBuilder() {
-		PageReferrerMetricType pageReferrerMetric =
-			PageReferrerMetricType.ACCESS;
-
-		SumAggregationBuilder sumAggregationBuilder = AggregationBuilders.sum(
-			pageReferrerMetric.getAggregationName());
-
-		sumAggregationBuilder.field(pageReferrerMetric.getFieldName());
-
-		return sumAggregationBuilder;
-	}
-
 	private PageReferrerMetric _createPageReferrerMetric(
-		Metric accessMetric, Terms.Bucket termsBucket) {
+		Metric accessMetric, String referrer) {
 
 		PageReferrerMetric pageReferrerMetric = new PageReferrerMetric();
 
 		pageReferrerMetric.setAccessMetric(accessMetric);
 
-		String key = termsBucket.getKeyAsString();
+		boolean external = _isPageExternal(referrer);
 
-		boolean external = _isPageExternal(key);
-
-		String title = _getPageTitle(external, key);
+		String title = _getPageTitle(external, referrer);
 
 		pageReferrerMetric.setAssetTitle(title);
 
 		pageReferrerMetric.setExternal(external);
-		pageReferrerMetric.setReferrer(key);
+		pageReferrerMetric.setReferrer(referrer);
 
 		return pageReferrerMetric;
 	}
 
-	private QueryBuilder _createQueryBuilder(
-		SearchQueryContext searchQueryContext) {
-
-		BoolQueryBuilder boolQueryBuilder =
-			_searchQueryHelper.createFilterBoolQueryBuilder(
-				Optional.empty(), searchQueryContext,
-				_timeZoneDog.getTimeZoneId());
-
-		boolQueryBuilder.mustNot(
-			QueryBuilders.termQuery("referrer", StringPool.BLANK));
-
-		return boolQueryBuilder;
-	}
-
-	private AggregationBuilder _createReferrerAggregationBuilder() {
-		TermsAggregationBuilder termsAggregationBuilder =
-			AggregationBuilders.terms("referrer");
-
-		termsAggregationBuilder.field("referrer");
-		termsAggregationBuilder.order(
-			BucketOrder.aggregation(
-				PageReferrerMetricType.ACCESS.getAggregationName(), false));
-		termsAggregationBuilder.size(3);
-		termsAggregationBuilder.subAggregation(
-			_createAccessesAggregationBuilder());
-
-		return termsAggregationBuilder;
-	}
-
-	private Metric _getAccessMetric(Terms.Bucket bucket) {
+	private Metric _getAccessMetric(Double accesses) {
 		Metric metric = new Metric(PageReferrerMetricType.ACCESS);
 
-		metric.setValue(_getAccessValue(bucket));
+		metric.setValue(accesses);
 
 		return metric;
-	}
-
-	private Double _getAccessValue(Terms.Bucket bucket) {
-		PageReferrerMetricType pageReferrerMetric =
-			PageReferrerMetricType.ACCESS;
-
-		Aggregations aggregations = bucket.getAggregations();
-
-		Sum sum = aggregations.get(pageReferrerMetric.getAggregationName());
-
-		return sum.getValue();
 	}
 
 	private PageReferrerMetric _getOthersPageReferrerMetrics(
@@ -475,6 +239,16 @@ public class PageReferrerDog {
 		return false;
 	}
 
+	private Double _sumMapValues(Map<String, Double> map) {
+		Double sum = 0D;
+
+		for (Double value : map.values()) {
+			sum += value;
+		}
+
+		return sum;
+	}
+
 	private static final Map<String, List<String>> _socialHostNames =
 		new HashMap<String, List<String>>() {
 			{
@@ -490,16 +264,10 @@ public class PageReferrerDog {
 		};
 
 	@Autowired
-	private DataDog _dataDog;
-
-	@Autowired
 	private PageDog _pageDog;
 
 	@Autowired
-	private SearchQueryHelper _searchQueryHelper;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
+	private PageReferrerRepository _pageReferrerRepository;
 
 	@Autowired
 	private TitleDog _titleDog;
