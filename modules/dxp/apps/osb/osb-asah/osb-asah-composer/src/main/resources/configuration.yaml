@@ -1,0 +1,6 @@
+pubsub_dag_trigger:
+  pubsub:
+    subscription: ac-{{ dag.default_args['lcp_project_id'] }}_composer
+  trigger:
+    dag:
+      id:
