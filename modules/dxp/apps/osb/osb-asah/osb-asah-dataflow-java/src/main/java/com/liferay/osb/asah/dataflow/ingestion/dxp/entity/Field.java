@@ -16,6 +16,8 @@ package com.liferay.osb.asah.dataflow.ingestion.dxp.entity;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.apache.beam.sdk.schemas.JavaFieldSchema;
 import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 
@@ -25,7 +27,9 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 @DefaultSchema(JavaFieldSchema.class)
 public class Field implements Serializable {
 
+	@Nullable
 	public Long columnId;
+
 	public String name;
 	public String value;
 

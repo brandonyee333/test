@@ -16,12 +16,16 @@ package com.liferay.osb.asah.dataflow.ingestion.dxp.entity;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Riccardo Ferrari
  */
 public class BaseDXPEntity implements Serializable {
 
-	public long channelId;
+	@Nullable
+	public Long channelId;
+
 	public String dataSourceId;
 	public String projectId;
 	public String uploadDate;
