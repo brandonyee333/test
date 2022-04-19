@@ -15,16 +15,19 @@
 				"type": "INT64"
 			},
 			{
-				"expandoFields": [
+				"fields": [
 					{
+						"mode": "REQUIRED",
 						"name": "columnId",
 						"type": "INT64"
 					},
 					{
+						"mode": "REQUIRED",
 						"name": "name",
 						"type": "STRING"
 					},
 					{
+						"mode": "REQUIRED",
 						"name": "value",
 						"type": "STRING"
 					}
@@ -36,10 +39,12 @@
 			{
 				"fields": [
 					{
+						"mode": "REQUIRED",
 						"name": "name",
 						"type": "STRING"
 					},
 					{
+						"mode": "REQUIRED",
 						"name": "value",
 						"type": "STRING"
 					}
@@ -66,6 +71,16 @@
 			{
 				"mode": "REQUIRED",
 				"name": "type",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "uploadDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "uploadType",
 				"type": "STRING"
 			}
 		]
