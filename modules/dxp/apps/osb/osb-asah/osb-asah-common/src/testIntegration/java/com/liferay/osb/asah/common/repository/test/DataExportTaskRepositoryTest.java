@@ -54,7 +54,7 @@ public class DataExportTaskRepositoryTest
 			DateUtil.toUTCDate("2022-03-02T12:00:00.000Z"));
 		dataExportTask1.setStatus(DataExportTask.Status.COMPLETED);
 		dataExportTask1.setToDate(
-			DateUtil.toUTCDate("2022-02-31T12:00:00.000Z"));
+			DateUtil.toUTCDate("2022-02-28T12:00:00.000Z"));
 		dataExportTask1.setType(DataExportTask.Type.PAGE);
 
 		DataExportTask dataExportTask2 = new DataExportTask();

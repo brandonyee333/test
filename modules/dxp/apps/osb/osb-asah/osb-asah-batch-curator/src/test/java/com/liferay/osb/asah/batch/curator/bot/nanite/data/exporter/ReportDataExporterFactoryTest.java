@@ -64,17 +64,17 @@ public class ReportDataExporterFactoryTest {
 
 	private void _assertMatchInstance(
 		BaseReportDataExporter baseReportDataExporter,
-		DataExportTask.Type type) {
+		DataExportTask.Type expectedType) {
 
 		Class<?> dataExporterClass = null;
 
-		if (type == DataExportTask.Type.ACCOUNT) {
+		if (expectedType == DataExportTask.Type.ACCOUNT) {
 			dataExporterClass = AccountDataExporter.class;
 		}
-		else if (type == DataExportTask.Type.INDIVIDUAL) {
+		else if (expectedType == DataExportTask.Type.INDIVIDUAL) {
 			dataExporterClass = IndividualDataExporter.class;
 		}
-		else if (type == DataExportTask.Type.SEGMENT) {
+		else if (expectedType == DataExportTask.Type.SEGMENT) {
 			dataExporterClass = SegmentDataExporter.class;
 		}
 

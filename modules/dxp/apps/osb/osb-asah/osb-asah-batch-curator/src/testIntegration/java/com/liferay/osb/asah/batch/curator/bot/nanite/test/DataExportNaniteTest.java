@@ -122,18 +122,20 @@ public class DataExportNaniteTest
 	}
 
 	private void _assertDataExportTaskStatus(
-		Long id, DataExportTask.Status status) {
+		Long id, DataExportTask.Status expectedStatus) {
 
 		Optional<DataExportTask> dataExportTaskOptional =
 			_dataExportTaskRepository.findById(id);
 
-		DataExportTask dataExportTask = dataExportTaskOptional.orElseThrow();
+		Assertions.assertTrue(dataExportTaskOptional.isPresent());
+
+		DataExportTask dataExportTask = dataExportTaskOptional.get();
 
 		MatcherAssert.assertThat(
 			dataExportTask.getStartedDate(),
 			Matchers.lessThanOrEqualTo(new Date()));
 
-		if (status == DataExportTask.Status.COMPLETED) {
+		if (expectedStatus == DataExportTask.Status.COMPLETED) {
 			MatcherAssert.assertThat(
 				dataExportTask.getCompletedDate(),
 				Matchers.lessThanOrEqualTo(new Date()));
@@ -142,7 +144,7 @@ public class DataExportNaniteTest
 			Assertions.assertNull(dataExportTask.getCompletedDate());
 		}
 
-		Assertions.assertEquals(dataExportTask.getStatus(), status);
+		Assertions.assertEquals(expectedStatus, dataExportTask.getStatus());
 	}
 
 	private BaseReportDataExporter _createBaseReportDataExporterMock()

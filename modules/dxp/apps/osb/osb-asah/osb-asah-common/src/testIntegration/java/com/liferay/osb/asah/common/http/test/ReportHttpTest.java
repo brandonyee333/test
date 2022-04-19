@@ -64,9 +64,9 @@ public class ReportHttpTest implements OSBAsahCommonSpringTestContext {
 			"0", "2022-03-01T12:00:00.000Z", "2022-03-31T12:00:00.000Z");
 
 		Assertions.assertEquals(
-			jsonObject.get("result"),
 			"/reports/accounts?after=0&fromDate=2022-03-01T12:00:00.000Z&" +
-				"toDate=2022-03-31T12:00:00.000Z");
+				"toDate=2022-03-31T12:00:00.000Z",
+			jsonObject.get("result"));
 	}
 
 	@Test
@@ -77,9 +77,9 @@ public class ReportHttpTest implements OSBAsahCommonSpringTestContext {
 			"0", "2022-03-01T12:00:00.000Z", "2022-03-31T12:00:00.000Z");
 
 		Assertions.assertEquals(
-			jsonObject.get("result"),
 			"/reports/individuals?after=0&fromDate=2022-03-01T12:00:00.000Z&" +
-				"toDate=2022-03-31T12:00:00.000Z");
+				"toDate=2022-03-31T12:00:00.000Z",
+			jsonObject.get("result"));
 	}
 
 	@Test
@@ -90,9 +90,9 @@ public class ReportHttpTest implements OSBAsahCommonSpringTestContext {
 			"0", "2022-03-01T12:00:00.000Z", "2022-03-31T12:00:00.000Z");
 
 		Assertions.assertEquals(
-			jsonObject.get("result"),
 			"/reports/segments?after=0&fromDate=2022-03-01T12:00:00.000Z&" +
-				"toDate=2022-03-31T12:00:00.000Z");
+				"toDate=2022-03-31T12:00:00.000Z",
+			jsonObject.get("result"));
 	}
 
 	@Test

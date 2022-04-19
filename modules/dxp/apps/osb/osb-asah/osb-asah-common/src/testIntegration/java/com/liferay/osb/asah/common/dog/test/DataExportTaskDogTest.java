@@ -44,23 +44,24 @@ public class DataExportTaskDogTest
 
 		Date tomorrowDate = DateUtil.addDays(todayDate, 1);
 
-		DataExportTask dataExportTask1 = _daDataExportTaskDog.addDataExportTask(
+		DataExportTask dataExportTask1 = _dataExportTaskDog.addDataExportTask(
 			todayDate, tomorrowDate, DataExportTask.Type.PAGE);
 
 		MatcherAssert.assertThat(
 			dataExportTask1.getCreateDate(),
 			Matchers.lessThanOrEqualTo(new Date()));
-		Assertions.assertEquals(dataExportTask1.getFromDate(), todayDate);
+		Assertions.assertEquals(todayDate, dataExportTask1.getFromDate());
 		Assertions.assertEquals(
-			dataExportTask1.getStatus(), DataExportTask.Status.PENDING);
-		Assertions.assertEquals(dataExportTask1.getToDate(), tomorrowDate);
+			DataExportTask.Status.PENDING, dataExportTask1.getStatus());
+		Assertions.assertEquals(tomorrowDate, dataExportTask1.getToDate());
 		Assertions.assertEquals(
-			dataExportTask1.getType(), DataExportTask.Type.PAGE);
+			DataExportTask.Type.PAGE, dataExportTask1.getType());
 
-		DataExportTask dataExportTask2 = _daDataExportTaskDog.getDataExportTask(
+		DataExportTask dataExportTask2 = _dataExportTaskDog.getDataExportTask(
 			dataExportTask1.getId());
 
 		Assertions.assertNotNull(dataExportTask2);
+
 		Assertions.assertEquals(dataExportTask1, dataExportTask2);
 	}
 
@@ -68,7 +69,7 @@ public class DataExportTaskDogTest
 	@Test
 	public void testFetchLastDataExportTaskByRange() {
 		DataExportTask dataExportTask =
-			_daDataExportTaskDog.fetchLastDataExportTaskByRange(
+			_dataExportTaskDog.fetchLastDataExportTaskByRange(
 				DateUtil.toUTCDate("2022-03-03T12:00:00.000Z"),
 				DateUtil.toUTCDate("2022-04-02T12:00:00.000Z"),
 				DataExportTask.Type.PAGE);
@@ -78,6 +79,6 @@ public class DataExportTaskDogTest
 	}
 
 	@Autowired
-	private DataExportTaskDog _daDataExportTaskDog;
+	private DataExportTaskDog _dataExportTaskDog;
 
 }
