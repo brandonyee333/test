@@ -465,7 +465,7 @@
 					{
 						"mode": "NULLABLE",
 						"name": "subscription",
-						"type": "BOOLEAN"
+						"type": "BOOL"
 					},
 					{
 						"mode": "NULLABLE",
@@ -716,7 +716,7 @@
 					{
 						"mode": "NULLABLE",
 						"name": "discontinued",
-						"type": "BOOLEAN"
+						"type": "BOOL"
 					},
 					{
 						"mode": "NULLABLE",
@@ -751,12 +751,12 @@
 					{
 						"mode": "NULLABLE",
 						"name": "published",
-						"type": "BOOLEAN"
+						"type": "BOOL"
 					},
 					{
 						"mode": "NULLABLE",
 						"name": "purchasable",
-						"type": "BOOLEAN"
+						"type": "BOOL"
 					},
 					{
 						"mode": "NULLABLE",
@@ -776,7 +776,7 @@
 			{
 				"mode": "NULLABLE",
 				"name": "subscriptionEnabled",
-				"type": "BOOLEAN"
+				"type": "BOOL"
 			},
 			{
 				"mode": "REPEATED",
