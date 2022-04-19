@@ -18,7 +18,6 @@ import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.exception.EmailAddressDomainException;
 import com.liferay.osb.customer.exception.SubscriptionException;
 import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
-import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.service.AuditFormLocalService;
 import com.liferay.osb.customer.service.TrainingBaseWebService;
@@ -26,8 +25,6 @@ import com.liferay.osb.customer.web.internal.constants.PassportAccessPortletKeys
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredFieldException;
 import com.liferay.portal.kernel.log.Log;
@@ -45,10 +42,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -181,69 +176,20 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 				}
 			}
 
-			if (hasPartnerAccessCountry) {
-				Entitlement[] entitlements = account.getEntitlements();
+			Entitlement[] entitlements = account.getEntitlements();
 
-				if (entitlements != null) {
-					for (Entitlement entitlement : entitlements) {
-						String entitlementName = entitlement.getName();
+			if (entitlements != null) {
+				for (Entitlement entitlement : entitlements) {
+					String entitlementName = entitlement.getName();
 
-						if (entitlementName.equals(
-								EntitlementConstants.NAME_PARTNER)) {
+					if ((hasCustomerAccessCountry &&
+						 entitlementName.equals(
+							 EntitlementConstants.NAME_CUSTOMER)) ||
+						(hasPartnerAccessCountry &&
+						 entitlementName.equals(
+							 EntitlementConstants.NAME_PARTNER))) {
 
-							return true;
-						}
-					}
-				}
-			}
-
-			if (!hasCustomerAccessCountry) {
-				continue;
-			}
-
-			Date now = new Date();
-
-			ProductPurchase[] productPurchases = account.getProductPurchases();
-
-			if (productPurchases != null) {
-				for (ProductPurchase productPurchase : productPurchases) {
-					if (productPurchase.getStatus() ==
-							ProductPurchase.Status.CANCELLED) {
-
-						continue;
-					}
-
-					if ((productPurchase.getEndDate() != null) &&
-						now.after(productPurchase.getEndDate())) {
-
-						continue;
-					}
-
-					if ((productPurchase.getStartDate() != null) &&
-						now.before(productPurchase.getStartDate())) {
-
-						continue;
-					}
-
-					Product product = productPurchase.getProduct();
-
-					Map<String, String> properties = product.getProperties();
-
-					String type = properties.get(
-						ProductConstants.PROPERTY_TYPE);
-
-					if (Validator.isNotNull(type) &&
-						type.equals(ProductConstants.TYPE_PRIMARY)) {
-
-						String productName = product.getName();
-
-						if (productName.startsWith(
-								ProductConstants.NAME_PREFIX_DXP) ||
-							productName.startsWith(
-								ProductConstants.NAME_PREFIX_PORTAL)) {
-
-							return true;
-						}
+						return true;
 					}
 				}
 			}
