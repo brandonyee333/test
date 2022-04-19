@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -66,6 +67,48 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		).where(
 			_getConditions(dataSourceIds, keywords, type)
 		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	public long countByTypeAndModifiedDateBetween(
+		@Nullable Date fromModifiedDate, Date toModifiedDate,
+		DXPEntity.Type type) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		SelectConditionStep<Record1<Integer>> selectConditionStep =
+			selectSelectStep.from(
+				DSL.table(DXPEntity.class.getSimpleName())
+			).where(
+				DSL.field(
+					"type"
+				).eq(
+					type.toString()
+				)
+			);
+
+		if (fromModifiedDate != null) {
+			selectConditionStep = selectConditionStep.and(
+				DSL.field(
+					"modifiedDate"
+				).between(
+					fromModifiedDate, toModifiedDate
+				));
+		}
+		else {
+			selectConditionStep = selectConditionStep.and(
+				DSL.field(
+					"modifiedDate"
+				).le(
+					toModifiedDate
+				));
+		}
+
+		return selectConditionStep.fetchOptional(
 			0, Long.class
 		).orElse(
 			0L
@@ -238,6 +281,50 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			).contains(
 				String.valueOf(membershipId)
 			)
+		).fetch(
+			record -> new DXPEntity(record.intoMap())
+		);
+	}
+
+	public List<DXPEntity> findByTypeAndModifiedDateBetween(
+		@Nullable Date fromModifiedDate, Date toModifiedDate,
+		DXPEntity.Type type, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		SelectConditionStep<Record> selectConditionStep = selectSelectStep.from(
+			DSL.table(DXPEntity.class.getSimpleName())
+		).where(
+			DSL.field(
+				"type"
+			).eq(
+				type.toString()
+			)
+		);
+
+		if (fromModifiedDate != null) {
+			selectConditionStep = selectConditionStep.and(
+				DSL.field(
+					"modifiedDate"
+				).between(
+					fromModifiedDate, toModifiedDate
+				));
+		}
+		else {
+			selectConditionStep = selectConditionStep.and(
+				DSL.field(
+					"modifiedDate"
+				).le(
+					toModifiedDate
+				));
+		}
+
+		return selectConditionStep.orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
 		).fetch(
 			record -> new DXPEntity(record.intoMap())
 		);

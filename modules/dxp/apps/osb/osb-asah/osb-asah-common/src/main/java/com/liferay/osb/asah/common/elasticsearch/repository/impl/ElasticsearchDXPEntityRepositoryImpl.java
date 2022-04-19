@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -83,6 +84,14 @@ public class ElasticsearchDXPEntityRepositoryImpl
 			type.getCollectionName(),
 			_createQueryBuilder(
 				type.getCollectionName(), dataSourceIds, keywords));
+	}
+
+	@Override
+	public long countByTypeAndModifiedDateBetween(
+		@Nullable Date fromModifiedDate, Date toModifiedDate,
+		DXPEntity.Type type) {
+
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -197,6 +206,14 @@ public class ElasticsearchDXPEntityRepositoryImpl
 				QueryBuilders.termQuery(
 					"fields.memberships." + membershipClassName,
 					membershipId)));
+	}
+
+	@Override
+	public List<DXPEntity> findByTypeAndModifiedDateBetween(
+		@Nullable Date fromModifiedDate, Date toModifiedDate,
+		DXPEntity.Type type, Pageable pageable) {
+
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

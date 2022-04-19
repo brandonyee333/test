@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,11 @@ public interface DXPEntityRepository extends Repository<DXPEntity, Long> {
 	@Cacheable
 	public long countByDataSourceIdsAndKeywordsAndType(
 		List<Long> dataSourceIds, @Nullable String keywords,
+		DXPEntity.Type type);
+
+	@Cacheable
+	public long countByTypeAndModifiedDateBetween(
+		@Nullable Date fromModifiedDate, Date toModifiedDate,
 		DXPEntity.Type type);
 
 	@CacheEvict(allEntries = true)
@@ -58,6 +64,11 @@ public interface DXPEntityRepository extends Repository<DXPEntity, Long> {
 	@Cacheable
 	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
 		String membershipClassName, Long membershipId);
+
+	@Cacheable
+	public List<DXPEntity> findByTypeAndModifiedDateBetween(
+		@Nullable Date fromModifiedDate, Date toModifiedDate,
+		DXPEntity.Type type, Pageable pageable);
 
 	@Cacheable
 	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndType(
