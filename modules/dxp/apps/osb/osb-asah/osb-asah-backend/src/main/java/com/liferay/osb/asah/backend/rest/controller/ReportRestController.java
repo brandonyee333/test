@@ -27,6 +27,8 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,11 +58,13 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/individuals")
 	public PageDTO<ReportIndividualDTO> getReportIndividualDTOPageDTO(
-		@RequestParam(defaultValue = "") String after) {
+		@RequestParam(defaultValue = "") String after,
+		@RequestParam Date fromDate, @RequestParam Date toDate) {
 
 		return _toReportIndividualDTOPageDTO(
 			_individualDog.getIndividualPage(
-				_getId(after), _PAGE_SIZE, Sort.by(Sort.Order.asc("id"))));
+				fromDate, _getId(after), _PAGE_SIZE,
+				Sort.by(Sort.Order.asc("id")), toDate));
 	}
 
 	@GetMapping("/segments")
