@@ -1,6 +1,8 @@
 @component-name = "portal-solutions"
 definition {
 
+	property osgi.module.configuration.file.names = "com.liferay.release.feature.flag.web.internal.configuration.ReleaseFeatureFlagConfiguration.config";
+	property osgi.module.configurations = "disabledReleaseFeatureFlags=[&quot;DISABLE_PRIVATE_LAYOUTS&quot;]";
 	property osgi.modules.includes = "site-initializer-testray";
 	property portal.release = "false";
 	property portal.upstream = "true";
@@ -35,7 +37,7 @@ definition {
 
 		Testray.createProjectTestray(key_name = "Liferay Portal 7.4");
 
-		Testray.goToProjectPage(projectName = "Liferay Portal 7.0");
+		Testray.goToProjectPage(projectName = "Liferay Portal 7.4");
 
 		Testray.projectTabNavigator(navTabName = "Cases");
 
@@ -59,15 +61,15 @@ definition {
 
 		Testray.assertItemsPerPageValue(itemValue = "20");
 
-		Testray.changeItemsPerPage(itemValue = "50");
+		Testray.changeItemsPerPage(itemValue = "50 Items");
 
 		Testray.assertItemsPerPageValue(itemValue = "50 Items");
 
-		Testray.changeItemsPerPage(itemValue = "75");
+		Testray.changeItemsPerPage(itemValue = "75 Items");
 
 		Testray.assertItemsPerPageValue(itemValue = "75 Items");
 
-		Testray.changeItemsPerPage(itemValue = "100");
+		Testray.changeItemsPerPage(itemValue = "100 Items");
 
 		Testray.assertItemsPerPageValue(itemValue = "100 Items");
 

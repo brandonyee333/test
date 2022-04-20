@@ -50,9 +50,25 @@ public class IncorrectFilePahCheck extends BaseFileCheck {
 						"Do not add leading/trailing spaces in file or folder ",
 						"names '", path, "'"));
 			}
+
+			for (String illegalCharacter : _ILLEGAL_CHARACTERS) {
+				if (path.contains(illegalCharacter)) {
+					addMessage(
+						fileName,
+						StringBundler.concat(
+							"Do not use '", illegalCharacter, "' in file or ",
+							"folder names '", path, "'"));
+				}
+			}
 		}
 
 		return content;
 	}
+
+	private static final String[] _ILLEGAL_CHARACTERS = {
+		StringPool.BACK_SLASH, StringPool.COLON, StringPool.FORWARD_SLASH,
+		StringPool.GREATER_THAN, StringPool.LESS_THAN, StringPool.PIPE,
+		StringPool.QUESTION, StringPool.QUOTE, StringPool.STAR
+	};
 
 }

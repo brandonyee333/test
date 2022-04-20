@@ -35,7 +35,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.lang.WordUtils;
@@ -337,6 +339,10 @@ public class BatchTestrayCaseResult extends TestrayCaseResult {
 
 		AxisBuild axisBuild = getAxisBuild();
 
+		if (axisBuild == null) {
+			return null;
+		}
+
 		File jenkinsConsoleFile = new File(
 			_testrayUploadBaseDir, "jenkins-console.txt");
 		File jenkinsConsoleGzFile = new File(
@@ -360,14 +366,25 @@ public class BatchTestrayCaseResult extends TestrayCaseResult {
 			return null;
 		}
 
+		if (_testrayAttachments.containsKey(key)) {
+			return _testrayAttachments.get(key);
+		}
+
 		testrayAttachment = _uploadDefaultTestrayAttachment(
 			name, key, jenkinsConsoleGzFile);
 
-		if (testrayAttachment != null) {
+		if (testrayAttachment == null) {
+			testrayAttachment = _uploadS3TestrayAttachment(
+				name, key, jenkinsConsoleGzFile);
+		}
+
+		if (testrayAttachment == null) {
 			return testrayAttachment;
 		}
 
-		return _uploadS3TestrayAttachment(name, key, jenkinsConsoleGzFile);
+		_testrayAttachments.put(key, testrayAttachment);
+
+		return testrayAttachment;
 	}
 
 	private TestrayAttachment _getJenkinsConsoleTopLevelTestrayAttachment() {
@@ -523,6 +540,9 @@ public class BatchTestrayCaseResult extends TestrayCaseResult {
 			return null;
 		}
 	}
+
+	private static final Map<String, TestrayAttachment> _testrayAttachments =
+		new HashMap<>();
 
 	private final AxisTestClassGroup _axisTestClassGroup;
 	private final File _testrayUploadBaseDir;

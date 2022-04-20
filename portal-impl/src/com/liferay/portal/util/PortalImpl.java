@@ -3036,7 +3036,7 @@ public class PortalImpl implements Portal {
 		Company company = CompanyLocalServiceUtil.getCompany(
 			layoutSet.getCompanyId());
 
-		String defaultVirtualHostName = _getDefaultVirtualHostName(company);
+		String defaultVirtualHostname = _getDefaultVirtualHostname(company);
 
 		int portalPort = getPortalServerPort(secureConnection);
 
@@ -3047,14 +3047,14 @@ public class PortalImpl implements Portal {
 			layoutSet);
 
 		if (!virtualHostnames.isEmpty() &&
-			!virtualHostnames.containsKey(defaultVirtualHostName)) {
+			!virtualHostnames.containsKey(defaultVirtualHostname)) {
 
 			int index = portalURL.indexOf("://");
 
 			String portalDomain = portalURL.substring(index + 3);
 
 			String virtualHostname = getCanonicalDomain(
-				virtualHostnames, portalDomain, defaultVirtualHostName);
+				virtualHostnames, portalDomain, defaultVirtualHostname);
 
 			virtualHostname = getPortalURL(
 				virtualHostname, portalPort, secureConnection);
@@ -3097,7 +3097,7 @@ public class PortalImpl implements Portal {
 			LayoutSet layoutSet, ThemeDisplay themeDisplay)
 		throws PortalException {
 
-		String defaultVirtualHostName = _getDefaultVirtualHostName(
+		String defaultVirtualHostname = _getDefaultVirtualHostname(
 			themeDisplay.getCompany());
 
 		String virtualHostname = null;
@@ -3111,7 +3111,7 @@ public class PortalImpl implements Portal {
 
 		if (Validator.isNotNull(virtualHostname) &&
 			!StringUtil.equalsIgnoreCase(
-				virtualHostname, defaultVirtualHostName)) {
+				virtualHostname, defaultVirtualHostname)) {
 
 			String portalURL = getPortalURL(
 				virtualHostname, themeDisplay.getServerPort(),
@@ -4261,140 +4261,16 @@ public class PortalImpl implements Portal {
 				Map<String, Object> requestContext)
 		throws PortalException {
 
-		boolean foundFriendlyURLMapper = false;
-
-		String friendlyURL = url;
-		String queryString = StringPool.BLANK;
-
-		List<Portlet> portlets =
-			PortletLocalServiceUtil.getFriendlyURLMapperPortlets();
-
-		for (Portlet portlet : portlets) {
-			FriendlyURLMapper friendlyURLMapper =
-				portlet.getFriendlyURLMapperInstance();
-
-			if (url.endsWith(
-					StringPool.SLASH + friendlyURLMapper.getMapping())) {
-
-				url += StringPool.SLASH;
-			}
-
-			int pos = -1;
-
-			if (friendlyURLMapper.isCheckMappingWithPrefix()) {
-				pos = url.indexOf(
-					FRIENDLY_URL_SEPARATOR + friendlyURLMapper.getMapping() +
-						StringPool.SLASH);
-			}
-			else {
-				pos = url.indexOf(
-					StringPool.SLASH + friendlyURLMapper.getMapping() +
-						StringPool.SLASH);
-			}
-
-			if (pos == -1) {
-				continue;
-			}
-
-			foundFriendlyURLMapper = true;
-
-			friendlyURL = url.substring(0, pos);
-
-			InheritableMap<String, String[]> actualParams =
-				new InheritableMap<>();
-
-			if (params != null) {
-				actualParams.setParentMap(params);
-			}
-
-			Map<String, String> prpIdentifiers = new HashMap<>();
-
-			Set<PublicRenderParameter> publicRenderParameters =
-				portlet.getPublicRenderParameters();
-
-			for (PublicRenderParameter publicRenderParameter :
-					publicRenderParameters) {
-
-				QName qName = publicRenderParameter.getQName();
-
-				String publicRenderParameterIdentifier = qName.getLocalPart();
-
-				prpIdentifiers.put(
-					publicRenderParameterIdentifier,
-					PortletQNameUtil.getPublicRenderParameterName(qName));
-			}
-
-			FriendlyURLMapperThreadLocal.setPRPIdentifiers(prpIdentifiers);
-
-			if (friendlyURLMapper.isCheckMappingWithPrefix()) {
-				friendlyURLMapper.populateParams(
-					url.substring(pos + 2), actualParams, requestContext);
-			}
-			else {
-				friendlyURLMapper.populateParams(
-					url.substring(pos), actualParams, requestContext);
-			}
-
-			String actualParamsString = HttpComponentsUtil.parameterMapToString(
-				actualParams, false);
-
-			queryString = StringPool.AMPERSAND + actualParamsString;
-
-			break;
-		}
-
-		if (!foundFriendlyURLMapper) {
-			int x = url.indexOf(FRIENDLY_URL_SEPARATOR);
-
-			if (x != -1) {
-				int y = url.indexOf(CharPool.SLASH, x + 3);
-
-				if (y == -1) {
-					y = url.length();
-				}
-
-				String ppid = url.substring(x + 3, y);
-
-				if (Validator.isNotNull(ppid)) {
-					friendlyURL = url.substring(0, x);
-
-					Map<String, String[]> actualParams = null;
-
-					if (params != null) {
-						actualParams = new HashMap<>(params);
-					}
-					else {
-						actualParams = new HashMap<>();
-					}
-
-					actualParams.put("p_p_id", new String[] {ppid});
-					actualParams.put("p_p_lifecycle", new String[] {"0"});
-					actualParams.put(
-						"p_p_mode", new String[] {PortletMode.VIEW.toString()});
-					actualParams.put(
-						"p_p_state",
-						new String[] {WindowState.MAXIMIZED.toString()});
-
-					String result = HttpComponentsUtil.parameterMapToString(
-						actualParams, false);
-
-					queryString = StringPool.AMPERSAND + result;
-				}
-			}
-		}
-
-		friendlyURL = StringUtil.replace(
-			friendlyURL, StringPool.DOUBLE_SLASH, StringPool.SLASH);
-
-		if (friendlyURL.endsWith(StringPool.SLASH)) {
-			friendlyURL = friendlyURL.substring(0, friendlyURL.length() - 1);
-		}
+		LayoutQueryStringComposite layoutQueryStringComposite =
+			_getPortletFriendlyURLMapperLayoutQueryStringComposite(
+				url, params, requestContext);
 
 		Layout layout = null;
 
-		if (Validator.isNotNull(friendlyURL)) {
+		if (Validator.isNotNull(layoutQueryStringComposite.getFriendlyURL())) {
 			layout = LayoutLocalServiceUtil.getFriendlyURLLayout(
-				groupId, privateLayout, friendlyURL);
+				groupId, privateLayout,
+				layoutQueryStringComposite.getFriendlyURL());
 
 			if (Validator.isNotNull(layout.getSourcePrototypeLayoutUuid())) {
 				layout = LayoutLocalServiceUtil.getLayout(layout.getPlid());
@@ -4407,7 +4283,19 @@ public class PortalImpl implements Portal {
 			layout = LayoutLocalServiceUtil.getLayout(defaultPlid);
 		}
 
-		return new LayoutQueryStringComposite(layout, friendlyURL, queryString);
+		layoutQueryStringComposite.setLayout(layout);
+
+		return layoutQueryStringComposite;
+	}
+
+	@Override
+	public LayoutQueryStringComposite
+		getPortletFriendlyURLMapperLayoutQueryStringComposite(
+			String url, Map<String, String[]> params,
+			Map<String, Object> requestContext) {
+
+		return _getPortletFriendlyURLMapperLayoutQueryStringComposite(
+			url, params, requestContext);
 	}
 
 	@Override
@@ -7466,11 +7354,11 @@ public class PortalImpl implements Portal {
 
 	protected String getCanonicalDomain(
 		TreeMap<String, String> virtualHostnames, String portalDomain,
-		String defaultVirtualHostName) {
+		String defaultVirtualHostname) {
 
 		if (Validator.isBlank(portalDomain) ||
-			StringUtil.equalsIgnoreCase(portalDomain, defaultVirtualHostName) ||
-			!virtualHostnames.containsKey(defaultVirtualHostName)) {
+			StringUtil.equalsIgnoreCase(portalDomain, defaultVirtualHostname) ||
+			!virtualHostnames.containsKey(defaultVirtualHostname)) {
 
 			return virtualHostnames.firstKey();
 		}
@@ -8172,7 +8060,7 @@ public class PortalImpl implements Portal {
 			Set<Locale> availableLocales)
 		throws PortalException {
 
-		String defaultVirtualHostName = _getDefaultVirtualHostName(
+		String defaultVirtualHostname = _getDefaultVirtualHostname(
 			themeDisplay.getCompany());
 		String portalDomain = themeDisplay.getPortalDomain();
 
@@ -8184,9 +8072,9 @@ public class PortalImpl implements Portal {
 
 		if ((!Validator.isBlank(portalDomain) &&
 			 !StringUtil.equalsIgnoreCase(
-				 portalDomain, defaultVirtualHostName) &&
+				 portalDomain, defaultVirtualHostname) &&
 			 StringUtil.equalsIgnoreCase(
-				 virtualHostname, defaultVirtualHostName)) ||
+				 virtualHostname, defaultVirtualHostname)) ||
 			virtualHostnames.containsKey(portalDomain)) {
 
 			virtualHostname = portalDomain;
@@ -8212,6 +8100,11 @@ public class PortalImpl implements Portal {
 		// www.liferay.com:8080/ctx/page to www.liferay.com:8080/ctx/es/page
 
 		int pos = canonicalURL.indexOf(virtualHostname);
+
+		if (pos < 0) {
+			pos = canonicalURL.indexOf(portalDomain);
+			virtualHostname = portalDomain;
+		}
 
 		if (pos > 0) {
 			pos = canonicalURL.indexOf(
@@ -8348,7 +8241,7 @@ public class PortalImpl implements Portal {
 		return alternateURLs;
 	}
 
-	private String _getDefaultVirtualHostName(Company company) {
+	private String _getDefaultVirtualHostname(Company company) {
 		if ((company != null) &&
 			Validator.isNotNull(company.getVirtualHostname())) {
 
@@ -8369,19 +8262,19 @@ public class PortalImpl implements Portal {
 
 		boolean useGroupVirtualHostname = false;
 
-		String defaultVirtualHostName = _LOCALHOST;
+		String defaultVirtualHostname = _LOCALHOST;
 
 		Company company = themeDisplay.getCompany();
 
 		if ((company != null) &&
 			Validator.isNotNull(company.getVirtualHostname())) {
 
-			defaultVirtualHostName = company.getVirtualHostname();
+			defaultVirtualHostname = company.getVirtualHostname();
 		}
 
 		if (canonicalURL ||
 			!StringUtil.equalsIgnoreCase(
-				themeDisplay.getServerName(), defaultVirtualHostName)) {
+				themeDisplay.getServerName(), defaultVirtualHostname)) {
 
 			useGroupVirtualHostname = true;
 		}
@@ -8408,7 +8301,7 @@ public class PortalImpl implements Portal {
 		if (useGroupVirtualHostname) {
 			if (!virtualHostnames.isEmpty() &&
 				(canonicalURL ||
-				 !virtualHostnames.containsKey(defaultVirtualHostName))) {
+				 !virtualHostnames.containsKey(defaultVirtualHostname))) {
 
 				if (!controlPanel || !privateLayoutSet) {
 					if (canonicalURL) {
@@ -8419,7 +8312,7 @@ public class PortalImpl implements Portal {
 						}
 
 						if (!virtualHostnames.containsKey(
-								defaultVirtualHostName) &&
+								defaultVirtualHostname) &&
 							!_containsHostname(
 								virtualHostnames, portalDomain)) {
 
@@ -8461,7 +8354,7 @@ public class PortalImpl implements Portal {
 						String serverName = themeDisplay.getServerName();
 
 						if (Validator.isNotNull(serverName) &&
-							!serverName.equals(defaultVirtualHostName)) {
+							!serverName.equals(defaultVirtualHostname)) {
 
 							virtualHostnames.put(serverName, StringPool.BLANK);
 						}
@@ -8477,19 +8370,19 @@ public class PortalImpl implements Portal {
 					}
 
 					if (virtualHostnames.isEmpty() ||
-						virtualHostnames.containsKey(defaultVirtualHostName)) {
+						virtualHostnames.containsKey(defaultVirtualHostname)) {
 
 						virtualHostnames = TreeMapBuilder.put(
-							company::getVirtualHostname, StringPool.BLANK
+							defaultVirtualHostname, StringPool.BLANK
 						).build();
 					}
 
 					if (canonicalURL ||
-						!virtualHostnames.containsKey(defaultVirtualHostName)) {
+						!virtualHostnames.containsKey(defaultVirtualHostname)) {
 
 						String virtualHostname = getCanonicalDomain(
 							virtualHostnames, portalDomain,
-							defaultVirtualHostName);
+							defaultVirtualHostname);
 
 						portalURL = getPortalURL(
 							virtualHostname, themeDisplay.getServerPort(),
@@ -8529,7 +8422,7 @@ public class PortalImpl implements Portal {
 					group.getGroupKey(),
 					PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME) ||
 				 (!StringUtil.equalsIgnoreCase(
-					 portalDomain, defaultVirtualHostName) &&
+					 portalDomain, defaultVirtualHostname) &&
 				  !_containsHostname(virtualHostnames, portalDomain))) {
 
 			sb.append(_PUBLIC_GROUP_SERVLET_MAPPING);
@@ -8609,6 +8502,143 @@ public class PortalImpl implements Portal {
 		}
 
 		return null;
+	}
+
+	private LayoutQueryStringComposite
+		_getPortletFriendlyURLMapperLayoutQueryStringComposite(
+			String url, Map<String, String[]> params,
+			Map<String, Object> requestContext) {
+
+		boolean foundFriendlyURLMapper = false;
+
+		String friendlyURL = url;
+		String queryString = StringPool.BLANK;
+
+		List<Portlet> portlets =
+			PortletLocalServiceUtil.getFriendlyURLMapperPortlets();
+
+		for (Portlet portlet : portlets) {
+			FriendlyURLMapper friendlyURLMapper =
+				portlet.getFriendlyURLMapperInstance();
+
+			if (url.endsWith(
+					StringPool.SLASH + friendlyURLMapper.getMapping())) {
+
+				url += StringPool.SLASH;
+			}
+
+			int pos = -1;
+
+			if (friendlyURLMapper.isCheckMappingWithPrefix()) {
+				pos = url.indexOf(
+					FRIENDLY_URL_SEPARATOR + friendlyURLMapper.getMapping() +
+						StringPool.SLASH);
+			}
+			else {
+				pos = url.indexOf(
+					StringPool.SLASH + friendlyURLMapper.getMapping() +
+						StringPool.SLASH);
+			}
+
+			if (pos == -1) {
+				continue;
+			}
+
+			foundFriendlyURLMapper = true;
+
+			friendlyURL = url.substring(0, pos);
+
+			InheritableMap<String, String[]> actualParams =
+				new InheritableMap<>();
+
+			if (params != null) {
+				actualParams.setParentMap(params);
+			}
+
+			Map<String, String> prpIdentifiers = new HashMap<>();
+
+			Set<PublicRenderParameter> publicRenderParameters =
+				portlet.getPublicRenderParameters();
+
+			for (PublicRenderParameter publicRenderParameter :
+					publicRenderParameters) {
+
+				QName qName = publicRenderParameter.getQName();
+
+				String publicRenderParameterIdentifier = qName.getLocalPart();
+
+				prpIdentifiers.put(
+					publicRenderParameterIdentifier,
+					PortletQNameUtil.getPublicRenderParameterName(qName));
+			}
+
+			FriendlyURLMapperThreadLocal.setPRPIdentifiers(prpIdentifiers);
+
+			if (friendlyURLMapper.isCheckMappingWithPrefix()) {
+				friendlyURLMapper.populateParams(
+					url.substring(pos + 2), actualParams, requestContext);
+			}
+			else {
+				friendlyURLMapper.populateParams(
+					url.substring(pos), actualParams, requestContext);
+			}
+
+			String actualParamsString = HttpComponentsUtil.parameterMapToString(
+				actualParams, false);
+
+			queryString = StringPool.AMPERSAND + actualParamsString;
+
+			break;
+		}
+
+		if (!foundFriendlyURLMapper) {
+			int x = url.indexOf(FRIENDLY_URL_SEPARATOR);
+
+			if (x != -1) {
+				int y = url.indexOf(CharPool.SLASH, x + 3);
+
+				if (y == -1) {
+					y = url.length();
+				}
+
+				String ppid = url.substring(x + 3, y);
+
+				if (Validator.isNotNull(ppid)) {
+					friendlyURL = url.substring(0, x);
+
+					Map<String, String[]> actualParams = null;
+
+					if (params != null) {
+						actualParams = new HashMap<>(params);
+					}
+					else {
+						actualParams = new HashMap<>();
+					}
+
+					actualParams.put("p_p_id", new String[] {ppid});
+					actualParams.put("p_p_lifecycle", new String[] {"0"});
+					actualParams.put(
+						"p_p_mode", new String[] {PortletMode.VIEW.toString()});
+					actualParams.put(
+						"p_p_state",
+						new String[] {WindowState.MAXIMIZED.toString()});
+
+					String result = HttpComponentsUtil.parameterMapToString(
+						actualParams, false);
+
+					queryString = StringPool.AMPERSAND + result;
+				}
+			}
+		}
+
+		friendlyURL = StringUtil.replace(
+			friendlyURL, StringPool.DOUBLE_SLASH, StringPool.SLASH);
+
+		if (friendlyURL.endsWith(StringPool.SLASH)) {
+			friendlyURL = friendlyURL.substring(0, friendlyURL.length() - 1);
+		}
+
+		return new LayoutQueryStringComposite(null, friendlyURL, queryString);
 	}
 
 	private String _getPortletTitle(

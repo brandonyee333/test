@@ -99,6 +99,7 @@ definition {
 	@priority = "5"
 	test ApproveInDMFolderCustomWorkflow {
 		property test.name.skip.portal.instance = "WorkflowDocumentsAndMedia#ApproveInDMFolderCustomWorkflow";
+		property test.run.environment = "EE";
 
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 

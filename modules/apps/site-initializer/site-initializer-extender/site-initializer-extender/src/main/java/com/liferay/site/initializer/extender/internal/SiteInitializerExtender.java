@@ -42,6 +42,7 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocal
 import com.liferay.layout.util.LayoutCopyHelper;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectRelationshipResource;
+import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -57,14 +58,24 @@ import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.remote.app.service.RemoteAppEntryLocalService;
+import com.liferay.site.initializer.extender.internal.file.backed.osgi.FileBackedBundleDelegate;
+import com.liferay.site.initializer.extender.internal.file.backed.servlet.FileBackedServletContextDelegate;
 import com.liferay.site.navigation.service.SiteNavigationMenuItemLocalService;
 import com.liferay.site.navigation.service.SiteNavigationMenuLocalService;
 import com.liferay.site.navigation.type.SiteNavigationMenuItemTypeRegistry;
 import com.liferay.style.book.zip.processor.StyleBookEntryZipProcessor;
 
+import java.io.File;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -102,24 +113,24 @@ public class SiteInitializerExtender
 			new SiteInitializerExtension(
 				_accountResourceFactory, _accountRoleLocalService,
 				_accountRoleResourceFactory, _assetCategoryLocalService,
-				_assetListEntryLocalService, bundle, _bundleContext,
-				_ddmStructureLocalService, _ddmTemplateLocalService,
-				_defaultDDMStructureHelper, _dlURLHelper,
-				_documentFolderResourceFactory, _documentResourceFactory,
-				_fragmentsImporter, _groupLocalService,
-				_journalArticleLocalService, _jsonFactory, _layoutCopyHelper,
-				_layoutLocalService, _layoutPageTemplateEntryLocalService,
+				_assetListEntryLocalService, bundle, _ddmStructureLocalService,
+				_ddmTemplateLocalService, _defaultDDMStructureHelper,
+				_dlURLHelper, _documentFolderResourceFactory,
+				_documentResourceFactory, _fragmentsImporter,
+				_groupLocalService, _journalArticleLocalService, _jsonFactory,
+				_layoutCopyHelper, _layoutLocalService,
+				_layoutPageTemplateEntryLocalService,
 				_layoutPageTemplatesImporter,
 				_layoutPageTemplateStructureLocalService,
 				_layoutSetLocalService, _listTypeDefinitionResource,
 				_listTypeDefinitionResourceFactory, _listTypeEntryResource,
-				_listTypeEntryResourceFactory, _objectDefinitionLocalService,
-				_objectDefinitionResourceFactory,
+				_listTypeEntryResourceFactory, _objectActionLocalService,
+				_objectDefinitionLocalService, _objectDefinitionResourceFactory,
 				_objectRelationshipResourceFactory, _objectEntryLocalService,
 				_organizationResourceFactory, _portal, _portletSettingsImporter,
 				_remoteAppEntryLocalService, _resourceActionLocalService,
 				_resourcePermissionLocalService, _roleLocalService,
-				_sapEntryLocalService, _settingsFactory,
+				_sapEntryLocalService, null, _settingsFactory,
 				_siteNavigationMenuItemLocalService,
 				_siteNavigationMenuItemTypeRegistry,
 				_siteNavigationMenuLocalService,
@@ -150,18 +161,87 @@ public class SiteInitializerExtender
 	}
 
 	@Activate
-	protected void activate(BundleContext bundleContext) {
+	protected void activate(BundleContext bundleContext) throws Exception {
 		_bundleContext = bundleContext;
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE, this);
 
 		_bundleTracker.open();
+
+		File siteInitializersDirectoryFile = new File(
+			PropsValues.LIFERAY_HOME, "site-initializers");
+
+		if (siteInitializersDirectoryFile.isDirectory()) {
+			for (File file : siteInitializersDirectoryFile.listFiles()) {
+				_addFile(file);
+			}
+		}
 	}
 
 	@Deactivate
 	protected void deactivate() {
+		for (SiteInitializerExtension siteInitializerExtension :
+				_fileSiteInitializerExtensions) {
+
+			siteInitializerExtension.destroy();
+		}
+
 		_bundleTracker.close();
+	}
+
+	private void _addFile(File file) throws Exception {
+		if (!file.isDirectory()) {
+			return;
+		}
+
+		String symbolicName =
+			"Liferay Site Initializer - File - " + StringUtil.randomString();
+
+		SiteInitializerExtension siteInitializerExtension =
+			new SiteInitializerExtension(
+				_accountResourceFactory, _accountRoleLocalService,
+				_accountRoleResourceFactory, _assetCategoryLocalService,
+				_assetListEntryLocalService,
+				ProxyUtil.newDelegateProxyInstance(
+					Bundle.class.getClassLoader(), Bundle.class,
+					new FileBackedBundleDelegate(
+						_bundleContext, file, _jsonFactory, symbolicName),
+					null),
+				_ddmStructureLocalService, _ddmTemplateLocalService,
+				_defaultDDMStructureHelper, _dlURLHelper,
+				_documentFolderResourceFactory, _documentResourceFactory,
+				_fragmentsImporter, _groupLocalService,
+				_journalArticleLocalService, _jsonFactory, _layoutCopyHelper,
+				_layoutLocalService, _layoutPageTemplateEntryLocalService,
+				_layoutPageTemplatesImporter,
+				_layoutPageTemplateStructureLocalService,
+				_layoutSetLocalService, _listTypeDefinitionResource,
+				_listTypeDefinitionResourceFactory, _listTypeEntryResource,
+				_listTypeEntryResourceFactory, _objectActionLocalService,
+				_objectDefinitionLocalService, _objectDefinitionResourceFactory,
+				_objectRelationshipResourceFactory, _objectEntryLocalService,
+				_organizationResourceFactory, _portal, _portletSettingsImporter,
+				_remoteAppEntryLocalService, _resourceActionLocalService,
+				_resourcePermissionLocalService, _roleLocalService,
+				_sapEntryLocalService,
+				ProxyUtil.newDelegateProxyInstance(
+					ServletContext.class.getClassLoader(), ServletContext.class,
+					new FileBackedServletContextDelegate(file, symbolicName),
+					null),
+				_settingsFactory, _siteNavigationMenuItemLocalService,
+				_siteNavigationMenuItemTypeRegistry,
+				_siteNavigationMenuLocalService,
+				_structuredContentFolderResourceFactory,
+				_styleBookEntryZipProcessor, _taxonomyCategoryResourceFactory,
+				_taxonomyVocabularyResourceFactory, _themeLocalService,
+				_userAccountResourceFactory, _userLocalService,
+				_workflowDefinitionLinkLocalService,
+				_workflowDefinitionResourceFactory);
+
+		siteInitializerExtension.start();
+
+		_fileSiteInitializerExtensions.add(siteInitializerExtension);
 	}
 
 	@Reference
@@ -199,6 +279,9 @@ public class SiteInitializerExtender
 
 	@Reference
 	private DocumentResource.Factory _documentResourceFactory;
+
+	private final List<SiteInitializerExtension>
+		_fileSiteInitializerExtensions = new ArrayList<>();
 
 	@Reference
 	private FragmentsImporter _fragmentsImporter;
@@ -244,6 +327,9 @@ public class SiteInitializerExtender
 
 	@Reference
 	private ListTypeEntryResource.Factory _listTypeEntryResourceFactory;
+
+	@Reference
+	private ObjectActionLocalService _objectActionLocalService;
 
 	@Reference
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
