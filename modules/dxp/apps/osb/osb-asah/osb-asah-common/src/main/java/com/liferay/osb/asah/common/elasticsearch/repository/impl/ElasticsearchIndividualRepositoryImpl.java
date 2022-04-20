@@ -203,6 +203,38 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
+	public long countByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Date toCreateDate, Long id) {
+
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
+
+		searchSourceBuilder.query(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.rangeQuery(
+					"dateCreated"
+				).gte(
+					DateUtil.toString(fromCreateDate)
+				).lte(
+					DateUtil.toString(toCreateDate)
+				)
+			).filter(
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					id
+				)
+			));
+		searchSourceBuilder.size(0);
+		searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			_getCollectionName(), searchSourceBuilder);
+
+		return HitsUtil.getTotalHitsCount(searchResponse.getHits());
+	}
+
+	@Override
 	public long countByFieldNamesAndQueryAndSegmentId(
 		List<String> fieldNames, @Nullable String query,
 		@Nullable Long segmentId) {
@@ -649,6 +681,32 @@ public class ElasticsearchIndividualRepositoryImpl
 		return _toIndividuals(
 			_faroInfoElasticsearchInvoker.get(
 				_getCollectionName(), boolQueryBuilder));
+	}
+
+	@Override
+	public List<Individual> findByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Long id, Pageable pageable, Date toCreateDate) {
+
+		return _toIndividuals(
+			_faroInfoElasticsearchInvoker.get(
+				_getCollectionName(), _getFieldSortBuilders(pageable.getSort()),
+				(int)pageable.getOffset(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"dateCreated"
+					).gte(
+						DateUtil.toString(fromCreateDate)
+					).lte(
+						DateUtil.toString(toCreateDate)
+					)
+				).filter(
+					QueryBuilders.rangeQuery(
+						"id"
+					).gt(
+						id
+					)
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override

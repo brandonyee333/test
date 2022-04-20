@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Individual;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -33,6 +34,9 @@ public interface IndividualRepository
 	extends CustomIndividualRepository,
 			PagingAndSortingRepository<Individual, Long> {
 
+	public long countByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Date toCreateDate, Long id);
+
 	public long countByIdAfter(Long id);
 
 	public long countKnownIndividualsByAnySegmentIds(
@@ -42,6 +46,9 @@ public interface IndividualRepository
 
 	@Modifying
 	public void deleteByIdIn(@Param("ids") List<Long> ids);
+
+	public List<Individual> findByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Long id, Pageable pageable, Date toCreateDate);
 
 	public Individual findByEmailAddressHashed(String emailAddressHashed);
 
