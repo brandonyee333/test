@@ -685,7 +685,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public List<Individual> findByCreateDateBetweenAndIdAfter(
-		Date fromCreateDate, Long id, Pageable pageable, Date toCreateDate) {
+		Date fromCreateDate, Date toCreateDate, Long id, Pageable pageable) {
 
 		return _toIndividuals(
 			_faroInfoElasticsearchInvoker.get(

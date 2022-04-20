@@ -48,7 +48,7 @@ public interface IndividualRepository
 	public void deleteByIdIn(@Param("ids") List<Long> ids);
 
 	public List<Individual> findByCreateDateBetweenAndIdAfter(
-		Date fromCreateDate, Long id, Pageable pageable, Date toCreateDate);
+		Date fromCreateDate, Date toCreateDate, Long id, Pageable pageable);
 
 	public Individual findByEmailAddressHashed(String emailAddressHashed);
 

@@ -481,8 +481,8 @@ public abstract class BaseIndividualRepositoryTestCase
 	public void testFindByCreateDateBetweenAndIdAfter() {
 		List<Individual> individuals =
 			individualRepository.findByCreateDateBetweenAndIdAfter(
-				DateUtil.addDays(new Date(), -1), _individual1Id - 1L,
-				PageRequest.of(0, 1), new Date());
+				DateUtil.addDays(new Date(), -1), new Date(),
+				_individual1Id - 1L, PageRequest.of(0, 1));
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 

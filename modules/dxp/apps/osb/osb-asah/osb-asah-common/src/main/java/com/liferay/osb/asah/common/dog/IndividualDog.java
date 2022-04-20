@@ -759,8 +759,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		List<Individual> individuals = ListUtil.map(
 			_individualRepository.findByCreateDateBetweenAndIdAfter(
-				fromCreateDate, individualId, PageRequest.of(0, size, sort),
-				toCreateDate),
+				fromCreateDate, toCreateDate, individualId,
+				PageRequest.of(0, size, sort)),
 			this::_populateIndividual);
 
 		return PageableExecutionUtils.getPage(
