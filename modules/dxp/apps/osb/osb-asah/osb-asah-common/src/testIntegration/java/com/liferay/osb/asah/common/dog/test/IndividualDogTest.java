@@ -33,6 +33,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
@@ -513,6 +514,32 @@ public class IndividualDogTest
 			SetUtil.of("Charmander"),
 			_getIndividualsDemographicsFieldValues(
 				individualPage.getContent(), "favoritePokemon"));
+	}
+
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_4.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetIndividualPage3() {
+		Page<Individual> individualPage = _individualDog.getIndividualPage(
+			DateUtil.toUTCDate("2019-02-10T10:00:00.000Z"), -1L, 2,
+			Sort.by(Sort.Order.asc("id")),
+			DateUtil.toUTCDate("2019-02-12T14:00:00.000Z"));
+
+		Assertions.assertEquals(3, individualPage.getTotalElements());
+
+		List<Individual> individuals = individualPage.getContent();
+
+		Assertions.assertEquals(2, individuals.size());
+
+		Individual individual = individuals.get(0);
+
+		Assertions.assertEquals(4L, individual.getId());
+
+		individual = individuals.get(1);
+
+		Assertions.assertEquals(6L, individual.getId());
 	}
 
 	@Test
