@@ -11,23 +11,8 @@
 
 <tbody>
 <tr>
-	<td>TESTFLOW_SIDEBAR</td>
-	<td>//a[contains(@href, '#/testflow')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>RESULTS_SIDEBAR</td>
-	<td>//span[contains(text(),'Results')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>TESTRAY_LOGO_SIDEBAR</td>
 	<td>//a[contains(@class,'testray-logo')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>MANAGE_SIDEBAR</td>
-	<td>//div[contains(@class,'testray-sidebar-footer')]//span[contains(text(),'Manage')]</td>
 	<td></td>
 </tr>
 <tr>

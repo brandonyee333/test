@@ -15,15 +15,15 @@ definition {
 	}
 
 	macro clickManageOnSidebar {
-		Click(locator1 = "TestrayLayout#MANAGE_SIDEBAR");
+		Click(locator1 = "TestrayManage#MANAGE_SIDEBAR");
 	}
 
 	macro clickResultsOnSidebar {
-		Click(locator1 = "TestrayLayout#RESULTS_SIDEBAR");
+		Click(locator1 = "Testray#RESULTS_SIDEBAR");
 	}
 
 	macro clickTestfowOnSidebar {
-		Click(locator1 = "TestrayLayout#TESTFLOW_SIDEBAR");
+		Click(locator1 = "TestrayTestflow#TESTFLOW_SIDEBAR");
 	}
 
 	macro clickUserOnSidebar {

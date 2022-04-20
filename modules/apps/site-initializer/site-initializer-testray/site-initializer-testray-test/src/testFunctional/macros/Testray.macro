@@ -24,6 +24,12 @@ definition {
 			locator1 = "Testray#ITEMS_PER_PAGE_DESCRIPTION");
 	}
 
+	macro assertCreatedRoutine{
+		AssertElementPresent(
+			key_projectName = "${key_name}",
+			locator1 = "Testray#PROJECT_NAME_BUTTON");
+	}
+
 	macro changeItemsPerPage {
 		Click(locator1 = "Testray#ITEMS_PER_PAGE_BUTTON");
 

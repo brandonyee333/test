@@ -31,11 +31,13 @@ definition {
 	test CanAcessOverviewTab {
 		ApplicationsMenu.gotoSite(site = "Testray 2");
 
+		Testray.createProjectTestray(key_name = "Liferay Portal 7.3");
+
 		Testray.goToProjectPage(projectName = "Liferay Portal 7.3");
 
 		Testray.projectTabNavigator(navTabName = "Overview");
 
-		TestrayHeader.assertTabPageTitle(pageTabTilte = "Overview");
+		TestrayHeader.assertTabPageTitle(pageTabTitle = "Overview");
 	}
 
 	@description = "LPS-150231 - Verify if the user can see the creation date."
@@ -43,11 +45,11 @@ definition {
 	test CanSeeCreationDate {
 		ApplicationsMenu.gotoSite(site = "Testray 2");
 
+		Testray.createProjectTestray(key_name = "Liferay Portal 7.3");
+
 		Testray.goToProjectPage(projectName = "Liferay Portal 7.3");
 
 		Testray.projectTabNavigator(navTabName = "Overview");
-
-		Refresh();
 
 		Testray.viewOverviewTab(rowValue = "Date  Created");
 	}
@@ -57,11 +59,11 @@ definition {
 	test CanSeeCreationUser {
 		ApplicationsMenu.gotoSite(site = "Testray 2");
 
+		Testray.createProjectTestray(key_name = "Liferay Portal 7.3");
+
 		Testray.goToProjectPage(projectName = "Liferay Portal 7.3");
 
 		Testray.projectTabNavigator(navTabName = "Overview");
-
-		Refresh();
 
 		Testray.viewOverviewTab(rowValue = "Created By");
 	}
@@ -71,11 +73,11 @@ definition {
 	test CanSeeProjectDescription {
 		ApplicationsMenu.gotoSite(site = "Testray 2");
 
+		Testray.createProjectTestray(key_name = "Liferay Portal 7.3");
+
 		Testray.goToProjectPage(projectName = "Liferay Portal 7.3");
 
 		Testray.projectTabNavigator(navTabName = "Overview");
-
-		Refresh();
 
 		Testray.viewOverviewTab(rowValue = "Description");
 	}
