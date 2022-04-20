@@ -357,4 +357,55 @@ definition {
 		AssertElementPresent(locator1 = "Message#SUCCESS");
 	}
 
+	macro setShippingOptionOrderTypeEligibility {
+		CommerceEntry.clickTableEntryEditButton(
+			entryName = "${shippingMethod}",
+			table = "Shipping Methods");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
+
+		CommerceEntry.gotoMenuTab(menuTab = "Shipping Options");
+
+		CommerceNavigator.gotoEntry(entryName = "${shippingOption}");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
+
+		Click(
+			key_panel = "Details",
+			locator1 = "Panel#PANEL_COLLAPSED");
+
+		CommerceEntry.gotoMenuTab(menuTab = "Eligibility");
+
+		if ("${orderTypeEligibility}" == "All") {
+			Click(
+				key_radioOption = "All Order Types",
+				locator1 = "CommerceEntry#RADIO_BUTTON");
+		}
+
+		if ("${orderTypeEligibility}" == "Specific") {
+			Click(
+				key_radioOption = "Specific Order Types",
+				locator1 = "CommerceEntry#RADIO_BUTTON");
+
+			Type(
+				locator1 = "CommerceEntry#SEARCH_ORDER_TYPE",
+				value1 = "${orderType}");
+
+			Click(
+				key_entryName = "${orderType}",
+				locator1 = "CommerceEntry#SELECT_ENTRY_BUTTON");
+
+			WaitForElementPresent(
+				key_entryName = "${orderType}",
+				key_table = "Order Types",
+				locator1 = "CommerceEntry#TABLE_ENTRY_NAME");
+		}
+
+		Button.clickSave();
+
+		SelectFrame.selectFrameTop();
+
+		Refresh();
+	}
+
 }
