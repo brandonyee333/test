@@ -99,7 +99,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 					fromModifiedDate
 				));
 		}
-		
+
 		selectConditionStep = selectConditionStep.and(
 			DSL.field(
 				"modifiedDate"
@@ -309,7 +309,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 					fromModifiedDate
 				));
 		}
-		
+
 		selectConditionStep = selectConditionStep.and(
 			DSL.field(
 				"modifiedDate"
