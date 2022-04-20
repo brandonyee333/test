@@ -125,9 +125,17 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 				_dataSource);
 
 			if (_environment.acceptsProfiles(Profiles.of("dev"))) {
+				ResourceDatabasePopulator resourceDatabasePopulator =
+					new ResourceDatabasePopulator(
+						new ClassPathResource("bq-functions.sql"));
+
+				resourceDatabasePopulator.setSeparator("COMMIT;");
+
+				DatabasePopulatorUtils.execute(
+					resourceDatabasePopulator, _dataSource);
+
 				DatabasePopulatorUtils.execute(
 					new ResourceDatabasePopulator(
-						new ClassPathResource("bq-functions.sql"),
 						new ClassPathResource("bq-tables.sql"),
 						new ClassPathResource("bq-views.sql")),
 					_dataSource);
