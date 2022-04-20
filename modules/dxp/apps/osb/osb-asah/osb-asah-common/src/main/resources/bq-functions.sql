@@ -1,8 +1,5 @@
-CREATE OR REPLACE FUNCTION acquisition_channel(referrer TEXT, url TEXT) RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION acquisition_channel(referrer_url TEXT, url TEXT) RETURNS TEXT AS $$
 DECLARE
-	gclid TEXT;
-	hostname TEXT;
-	hostname_regex TEXT :=  ':\/\/(www[0-9]?\.)?(.[^/:]+)';
 	medium TEXT;
 	paid_mediums TEXT[] := ARRAY['cpc', 'paidsearch', 'ppc'];
 	paid_hostnames TEXT[] :=  ARRAY['googleadservices.com'];
@@ -20,16 +17,15 @@ DECLARE
 		'snapchat.com', 't.co', 'tiktok.com', 'twitter.com', 'youtube.com'
 		];
 BEGIN
-	hostname := (regexp_matches(url, hostname_regex))[2];
-	referrer_hostname := (regexp_matches(referrer, hostname_regex))[2];
-	gclid := url_decode((regexp_matches(url, 'gclid=(.[^&]+)'))[1]);
-	medium := url_decode((regexp_matches(referrer, 'utm_medium=(.[^&]+)'))[1]);
+	medium = url_decode(extract_query_param('medium', url));
+	referrer_hostname = hostname(referrer_url);
 
 	IF (medium = 'organic') OR (referrer_hostname = ANY(search_hostnames)) THEN
 
 		RETURN 'organic';
 
-	ELSIF (medium = ANY (paid_mediums)) OR (gclid IS NOT NULL) OR
+	ELSIF (medium = ANY (paid_mediums)) OR
+		  (extract_query_param('gclid', url) IS NOT NULL) OR
 		  (referrer_hostname = ANY(paid_hostnames)) THEN
 
 		RETURN 'paid';
@@ -43,18 +39,41 @@ BEGIN
 
 		RETURN 'direct';
 
-	ELSIF (medium = 'referral') OR (hostname != referrer_hostname) THEN
+	ELSIF (medium = 'referral') OR (hostname(url) != referrer_hostname) THEN
 
 		RETURN 'referral';
 
 	END IF;
 
-
 	RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION url_decode(input text) RETURNS TEXT AS $$
+COMMIT;
+
+CREATE OR REPLACE FUNCTION canonical_url(url TEXT) RETURNS TEXT AS $$
+BEGIN
+	RETURN REGEXP_REPLACE(url, '\?.[^#]+(#.*)?', '\1');
+END;
+$$ LANGUAGE plpgsql;
+
+COMMIT;
+
+CREATE OR REPLACE FUNCTION extract_query_param(param TEXT, url TEXT) RETURNS TEXT AS $$
+BEGIN
+	RETURN (regexp_matches(url, concat(param, '=(.[^&]+)') ))[1];
+END;
+$$ LANGUAGE plpgsql;
+
+COMMIT;
+
+CREATE OR REPLACE FUNCTION hostname(url TEXT) RETURNS TEXT AS $$
+BEGIN
+	RETURN (regexp_matches(url, ':\/\/(www[0-9]?\.)?(.[^/:]+)'))[2];
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION url_decode(input TEXT) RETURNS TEXT AS $$
 DECLARE
 	bin BYTEA = '';
 	byte TEXT;
@@ -73,3 +92,5 @@ BEGIN
 	RETURN convert_from(bin, 'UTF8');
 END;
 $$ LANGUAGE plpgsql;
+
+COMMIT;

@@ -1,15 +1,21 @@
 CREATE OR REPLACE VIEW BQPageReferrers AS (
 	SELECT
-		dataSourceId, channelId, DATE_TRUNC('HOUR', eventDate) AS eventDate,
-		canonicalUrl, (ARRAY_AGG(title order by eventDate desc))[1] AS title,
-		referrer, acquisition_channel(referrer, url) as acquisitionChannel,
-		COUNT(id) as access
+		dataSourceId,
+		channelId,
+		DATE_TRUNC('HOUR', eventDate) AS eventDate,
+		canonicalUrl,
+		referrer,
+		userId,
+		hostname(referrer) AS referrerHost,
+	    canonical_url(referrer) AS referrerCanonicalUrl,
+		acquisition_channel(referrer, url) AS acquisitionChannel,
+		SUM(1) as access
 	FROM
-		BQEvent
+	     BQEvent
 	WHERE
 		applicationId = 'Page' AND
-		eventid = 'pageViewed'
+	    eventId = 'pageViewed'
 	GROUP BY
-		dataSourceId, channelId, date, canonicalUrl, referrer,
-	    acquisitionChannel
+	    dataSourceId, channelId, DATE_TRUNC('HOUR', eventDate), canonicalUrl,
+	    userId, referrer, acquisitionChannel, referrerHost, referrerCanonicalUrl
 );
