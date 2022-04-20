@@ -18,9 +18,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQEvent;
@@ -29,13 +26,12 @@ import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.model.Tuple2;
-import com.liferay.osb.asah.common.util.MapUtil;
-import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
+import org.json.JSONObject;
 
 /**
  * @author Alejo Ceballos
@@ -47,42 +43,33 @@ import java.util.Map;
 public class UserSessionDTO {
 
 	public UserSessionDTO(
-		List<Tuple2<BQEvent, EventDefinition>> tuple2s, BQSession bqSession,
-		ObjectMapper objectMapper) {
+		List<Tuple2<BQEvent, EventDefinition>> tuple2s, BQSession bqSession) {
 
 		Tuple2<BQEvent, EventDefinition> tuple2 = tuple2s.get(0);
 
 		BQEvent bqEvent = tuple2.getT1();
 
-		try {
-			Map<String, String> context = objectMapper.readValue(
-				StringUtil.get(bqEvent.getContext(), "{}"),
-				new TypeReference<Map<String, String>>() {
-				});
+		JSONObject contextJSONObject = new JSONObject(bqEvent.getContext());
 
-			_browserName = bqEvent.getBrowserName();
-			_completeDate = bqSession.getSessionEnd();
-			_contentLanguageId = bqEvent.getContentLanguageId();
-			_createDate = bqSession.getSessionStart();
-			_devicePixelRatio = MapUtil.getString(
-				context, "devicePixelRatio", "");
-			_deviceType = bqEvent.getDeviceType();
-			_languageId = bqEvent.getLanguageId();
-			_screenHeight = MapUtil.getString(context, "screenHeight", "");
-			_screenWidth = MapUtil.getString(context, "screenWidth", "");
-			_timezoneOffset = MapUtil.getString(context, "timezoneOffset", "");
-			_userAgent = MapUtil.getString(context, "userAgent", "");
+		_browserName = bqEvent.getBrowserName();
 
-			tuple2s.forEach(
-				tuple -> _bqEventDTOs.add(
-					new BQEventDTO(
-						tuple.getT1(),
-						tuple.getT2(
-						).getName())));
-		}
-		catch (JsonProcessingException jsonProcessingException) {
-			throw new RuntimeException(jsonProcessingException);
-		}
+		_completeDate = bqSession.getSessionEnd();
+		_contentLanguageId = bqEvent.getContentLanguageId();
+		_createDate = bqSession.getSessionStart();
+		_devicePixelRatio = contextJSONObject.optString("devicePixelRatio", "");
+		_deviceType = bqEvent.getDeviceType();
+		_languageId = bqEvent.getLanguageId();
+		_screenHeight = contextJSONObject.optString("screenHeight", "");
+		_screenWidth = contextJSONObject.optString("screenWidth", "");
+		_timezoneOffset = bqEvent.getTimezoneOffset();
+		_userAgent = contextJSONObject.optString("userAgent", "");
+
+		tuple2s.forEach(
+			tuple -> _bqEventDTOs.add(
+				new BQEventDTO(
+					tuple.getT1(),
+					tuple.getT2(
+					).getName())));
 	}
 
 	@GraphQLProperty("events")

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
@@ -72,8 +70,7 @@ public class EventsByUserSessionsDataFetcher
 
 		return new EventsByUserSessionDTO(
 			stream.map(
-				entry -> new UserSessionDTO(
-					entry.getValue(), entry.getKey(), _objectMapper)
+				entry -> new UserSessionDTO(entry.getValue(), entry.getKey())
 			).sorted(
 				comparator.reversed()
 			).collect(
@@ -88,8 +85,5 @@ public class EventsByUserSessionsDataFetcher
 
 	@Autowired
 	private EventDog _eventDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }
