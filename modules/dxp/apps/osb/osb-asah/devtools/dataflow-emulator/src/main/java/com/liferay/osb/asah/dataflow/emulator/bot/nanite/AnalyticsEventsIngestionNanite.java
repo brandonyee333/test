@@ -489,8 +489,16 @@ public class AnalyticsEventsIngestionNanite {
 		bqEvent.setDeviceType(context.get("deviceType"));
 		bqEvent.setEventDate(analyticsEvent.getEventDate());
 		bqEvent.setEventId(analyticsEvent.getEventId());
-		bqEvent.setEventProperties(
-			String.valueOf(analyticsEvent.getEventProperties()));
+
+		try {
+			bqEvent.setEventProperties(
+				_objectMapper.writeValueAsString(
+					analyticsEvent.getEventProperties()));
+		}
+		catch (JsonProcessingException jsonProcessingException) {
+			throw new RuntimeException(jsonProcessingException);
+		}
+
 		bqEvent.setExperienceId(context.get("experienceId"));
 		bqEvent.setId(analyticsEvent.getId());
 		bqEvent.setKeywords(context.get("keywords"));
