@@ -60,6 +60,7 @@ public class EventsByUserSessionsDataFetcherTest
 	public void setUp() throws Exception {
 		_createEvent("assetClicked");
 		_createEvent("assetDownloaded");
+
 		_userSessionDog.addBQSession(1L, "sessionId", new Date(), new Date());
 	}
 
@@ -111,7 +112,7 @@ public class EventsByUserSessionsDataFetcherTest
 							null, "viewDuration", "viewDurationValue"));
 				}
 			},
-			null, "canonicalUrlValue", 1L, null, null, null, null, new Date(),
+			null, "canonicalUrlValue", 1L, null, null, "{}", null, new Date(),
 			1L, null, null, new Date(), eventDefinitionName, null,
 			RandomTestUtil.randomId(), null, "pt-BR", null, null, null, null,
 			"sessionId", null, null, null, "userId", null);
