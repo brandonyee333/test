@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +123,41 @@ public class OktaUsersMessageSubscriber
 		if (user == null) {
 			return;
 		}
+
+		String emailAddress = jsonObject.getString("email");
+		String firstName = jsonObject.getString("firstName");
+		String lastName = jsonObject.getString("lastName");
+
+		if (Validator.isNull(emailAddress)) {
+			emailAddress = user.getEmailAddress();
+		}
+
+		if (Validator.isNull(firstName)) {
+			firstName = user.getFirstName();
+		}
+
+		if (Validator.isNull(lastName)) {
+			lastName = user.getLastName();
+		}
+
+		Contact contact = user.getContact();
+
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(contact.getBirthday());
+
+		user = _userLocalService.updateUser(
+			user.getUserId(), null, null, null, false, null, null,
+			user.getScreenName(), emailAddress, user.getFacebookId(),
+			user.getOpenId(), true, null, user.getLanguageId(),
+			user.getTimeZoneId(), user.getGreeting(), user.getComments(),
+			firstName, user.getMiddleName(), lastName, contact.getPrefixId(),
+			contact.getSuffixId(), contact.isMale(),
+			calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
+			calendar.get(Calendar.YEAR), contact.getSmsSn(),
+			contact.getFacebookSn(), contact.getJabberSn(),
+			contact.getSkypeSn(), contact.getTwitterSn(), user.getJobTitle(),
+			null, null, null, null, null, null);
 
 		long businessTypeId = 0;
 		long mobileTypeId = 0;
