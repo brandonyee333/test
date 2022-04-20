@@ -2,12 +2,12 @@
 	{
 		"bounce": 1,
 		"browserName": "Chrome",
-		"canonicalUrl": "http://liferay.com/home",
+		"canonicalUrl": "http://liferay.com",
 		"channelId": "1",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
-		"dataSourceId": "438676646604695862",
+		"dataSourceId": "1",
 		"deviceType": "Desktop",
 		"directAccess": 1,
 		"directAccessDates": [
