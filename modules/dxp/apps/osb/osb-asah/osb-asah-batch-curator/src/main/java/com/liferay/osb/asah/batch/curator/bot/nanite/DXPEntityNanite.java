@@ -193,7 +193,6 @@ public class DXPEntityNanite extends BaseNanite {
 				ProjectIdThreadLocal.setProjectId(projectId);
 
 				int page = 0;
-				long count = 1;
 
 				while (true) {
 					Page<? extends DXPEntity> dxpEntitiesPage =
@@ -208,14 +207,9 @@ public class DXPEntityNanite extends BaseNanite {
 					}
 
 					for (DXPEntity dxpEntity : dxpEntitiesPage.getContent()) {
-						messageAttributes.put("count", String.valueOf(count));
 						messageAttributes.put(
 							"dataSourceId",
 							String.valueOf(dxpEntity.getDataSourceId()));
-						messageAttributes.put(
-							"last",
-							(count++ < dxpEntitiesPage.getTotalElements()) ?
-								"false" : "true");
 
 						_messageBus.sendMessage(
 							Channel.DXP_ENTITIES_DEFAULT,
