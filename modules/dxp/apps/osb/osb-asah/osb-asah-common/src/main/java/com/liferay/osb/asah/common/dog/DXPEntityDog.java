@@ -113,7 +113,7 @@ public class DXPEntityDog {
 	}
 
 	public Page<? extends DXPEntity> getDXPEntityPage(
-		Date fromModifiedDate, Date toModifiedDate, DXPEntity.Type type,
+		@Nullable Date fromModifiedDate, Date toModifiedDate, DXPEntity.Type type,
 		Pageable pageable) {
 
 		return PageableExecutionUtils.getPage(

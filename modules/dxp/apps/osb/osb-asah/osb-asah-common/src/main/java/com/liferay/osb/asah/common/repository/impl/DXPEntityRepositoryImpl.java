@@ -63,7 +63,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
-			DSL.table(DXPEntity.class.getSimpleName())
+			"DXPEntity"
 		).where(
 			_getConditions(dataSourceIds, keywords, type)
 		).fetchOptional(
@@ -82,7 +82,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 
 		SelectConditionStep<Record1<Integer>> selectConditionStep =
 			selectSelectStep.from(
-				DSL.table(DXPEntity.class.getSimpleName())
+				"DXPEntity"
 			).where(
 				DSL.field(
 					"type"
@@ -95,18 +95,17 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			selectConditionStep = selectConditionStep.and(
 				DSL.field(
 					"modifiedDate"
-				).between(
-					fromModifiedDate, toModifiedDate
+				).gt(
+					fromModifiedDate
 				));
 		}
-		else {
-			selectConditionStep = selectConditionStep.and(
-				DSL.field(
-					"modifiedDate"
-				).le(
-					toModifiedDate
-				));
-		}
+		
+		selectConditionStep = selectConditionStep.and(
+			DSL.field(
+				"modifiedDate"
+			).le(
+				toModifiedDate
+			));
 
 		return selectConditionStep.fetchOptional(
 			0, Long.class
@@ -198,7 +197,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectConditionStep<Record> selectConditionStep = selectSelectStep.from(
-			DSL.table(DXPEntity.class.getSimpleName())
+			"DXPEntity"
 		).where(
 			DSL.field(
 				"type"
@@ -237,7 +236,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectConditionStep<Record> selectConditionStep = selectSelectStep.from(
-			DSL.table(DXPEntity.class.getSimpleName())
+			"DXPEntity"
 		).where(
 			DSL.field(
 				"type"
@@ -267,7 +266,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
-			DSL.table(DXPEntity.class.getSimpleName())
+			"DXPEntity"
 		).where(
 			DSL.field(
 				"type"
@@ -293,7 +292,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectConditionStep<Record> selectConditionStep = selectSelectStep.from(
-			DSL.table(DXPEntity.class.getSimpleName())
+			"DXPEntity"
 		).where(
 			DSL.field(
 				"type"
@@ -306,18 +305,17 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			selectConditionStep = selectConditionStep.and(
 				DSL.field(
 					"modifiedDate"
-				).between(
-					fromModifiedDate, toModifiedDate
+				).gt(
+					fromModifiedDate
 				));
 		}
-		else {
-			selectConditionStep = selectConditionStep.and(
-				DSL.field(
-					"modifiedDate"
-				).le(
-					toModifiedDate
-				));
-		}
+		
+		selectConditionStep = selectConditionStep.and(
+			DSL.field(
+				"modifiedDate"
+			).le(
+				toModifiedDate
+			));
 
 		return selectConditionStep.orderBy(
 			getSortFields(pageable.getSort(), null)
@@ -337,7 +335,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
-			DSL.table(DXPEntity.class.getSimpleName())
+			"DXPEntity"
 		).where(
 			_getConditions(dataSourceIds, keywords, type)
 		).orderBy(
