@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
-import com.liferay.osb.asah.upgrade.v3_2_0.DXPEntities2UpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.DXPEntitiesUpgradeStep;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,11 +34,11 @@ import org.springframework.data.domain.PageRequest;
 /**
  * @author Marcos Martins
  */
-public class DXPEntities2UpgradeStepTest
+public class DXPEntitiesUpgradeStepTest
 	implements OSBAsahUpgradeSpringTestContext {
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	public void setUp() {
 		ProjectIdThreadLocal.setProjectId("test");
 
 		DXPEntity dxpEntity = new DXPEntity();
@@ -50,7 +50,7 @@ public class DXPEntities2UpgradeStepTest
 	}
 
 	@AfterEach
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		_dxpEntityRepository.delete(_dxpEntity);
 	}
 
@@ -67,7 +67,7 @@ public class DXPEntities2UpgradeStepTest
 
 		Assertions.assertNull(dxpEntity.getModifiedDate());
 
-		_dxpEntities2UpgradeStep.upgrade(null);
+		_dxpEntitiesUpgradeStep.upgrade(null);
 
 		dxpEntities =
 			_dxpEntityRepository.searchByDataSourceIdsAndKeywordsAndType(
@@ -82,7 +82,7 @@ public class DXPEntities2UpgradeStepTest
 	}
 
 	@Autowired
-	private DXPEntities2UpgradeStep _dxpEntities2UpgradeStep;
+	private DXPEntitiesUpgradeStep _dxpEntitiesUpgradeStep;
 
 	private DXPEntity _dxpEntity;
 

@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
  * @author Marcos Martins
  */
 @Component
-public class DXPEntities2UpgradeStep implements UpgradeStep {
+public class DXPEntitiesUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
