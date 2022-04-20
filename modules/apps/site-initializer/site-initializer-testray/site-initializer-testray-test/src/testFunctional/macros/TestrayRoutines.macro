@@ -1,5 +1,17 @@
 definition {
 
+	macro assertStatusBuildDisabled {
+		AssertElementPresent(
+			key_item = "${key_item}",
+			locator1 = "TestrayRoutines#STATUS_BUILD_HISTORY_DISABLED");
+	}
+
+	macro clickStatusBuildHistory {
+		Click(
+			key_item = "${key_item}",
+			locator1 = "TestrayRoutines#STATUS_BUILD_HISTORY");
+	}
+
 	macro createRoutineTestray {
 		Click(locator1 = "Testray#ADD_PROJECT");
 
@@ -14,18 +26,6 @@ definition {
 		Click(
 			key_projectName = "${key_projectName}",
 			locator1 = "Testray#PROJECT_NAME_BUTTON");
-	}
-
-	macro clickStatusBuildHistory {
-		Click(
-			key_item = "${key_item}",
-			locator1 = "TestrayRoutines#STATUS_BUILD_HISTORY");
-	}
-
-	macro assertStatusBuildDisabled {
-		AssertElementPresent(
-			key_item = "${key_item}",
-			locator1 = "TestrayRoutines#STATUS_BUILD_HISTORY_DISABLED");
 	}
 
 }

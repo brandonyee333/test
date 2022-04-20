@@ -52,7 +52,7 @@ definition {
 	@priority = "3"
 	test CanChangeItemsShownOnPage {
 		property portal.upstream = "quarantine";
-		
+
 		ApplicationsMenu.gotoSite(site = "Testray 2");
 
 		Testray.createProjectTestray(key_name = "Liferay Portal 7.4");

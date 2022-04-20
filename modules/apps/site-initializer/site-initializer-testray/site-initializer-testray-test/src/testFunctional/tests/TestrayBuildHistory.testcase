@@ -42,7 +42,6 @@ definition {
 		TestrayRoutines.clickStatusBuildHistory(key_item = "BLOCKED");
 
 		TestrayRoutines.assertStatusBuildDisabled(key_item = "BLOCKED");
-
 	}
 
 	@description = "LPS-151099 - Verify that clicking on Failed in the subtitle makes it disabled"
@@ -95,7 +94,6 @@ definition {
 		TestrayRoutines.clickStatusBuildHistory(key_item = "INCOMPLETE");
 
 		TestrayRoutines.assertStatusBuildDisabled(key_item = "INCOMPLETE");
-
 	}
 
 	@description = "LPS-151100 - Verify that clicking on Passed in the subtitle makes it disabled"
@@ -132,7 +130,6 @@ definition {
 		TestrayRoutines.clickStatusBuildHistory(key_item = "TEST FIX");
 
 		TestrayRoutines.assertStatusBuildDisabled(key_item = "TEST FIX");
-
 	}
 
 }

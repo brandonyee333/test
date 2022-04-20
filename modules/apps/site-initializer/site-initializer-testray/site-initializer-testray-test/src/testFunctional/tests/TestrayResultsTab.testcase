@@ -52,7 +52,6 @@ definition {
 		Testray.projectTabNavigator(navTabName = "Requirements");
 
 		Testray.viewOverviewTab(rowValue = "Requirements");
-
 	}
 
 	@description = "LPS-150342 - Verify if when you click on the Suites tab, the Suites page is shown."
@@ -67,7 +66,6 @@ definition {
 		Testray.projectTabNavigator(navTabName = "Suites");
 
 		Testray.viewOverviewTab(rowValue = "Suites");
-
 	}
 
 }

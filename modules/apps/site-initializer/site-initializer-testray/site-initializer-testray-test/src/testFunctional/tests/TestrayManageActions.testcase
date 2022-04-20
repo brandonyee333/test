@@ -58,7 +58,7 @@ definition {
 	@priority = "5"
 	test CanAcessServerAdministrationPage {
 		property portal.upstream = "quarantine";
-		
+
 		ApplicationsMenu.gotoSite(site = "Testray 2");
 
 		TestrayLayout.clickManageOnSidebar();
