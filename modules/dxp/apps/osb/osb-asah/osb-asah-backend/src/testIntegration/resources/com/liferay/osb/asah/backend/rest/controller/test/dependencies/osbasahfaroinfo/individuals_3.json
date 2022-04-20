@@ -1,0 +1,220 @@
+[
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWKQA5"
+				],
+				"dataSourceId": "342312716287315687"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "337984445922213329",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"953be104-5540-abf8-59b8-55f895200acc"
+				]
+			}
+		],
+		"dateCreated": "2019-02-08T12:00:00.000Z",
+		"dateModified": "2019-02-08T12:00:00.000Z",
+		"id": "1008",
+		"individualSegmentIds": [
+			"327968823603500655"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "337984445922213329"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "337984445922213329",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"953be104-5540-abf8-59b8-5wer32200acc"
+				]
+			}
+		],
+		"dateCreated": "2019-02-09T12:00:00.000Z",
+		"dateModified": "2019-02-09T12:00:00.000Z",
+		"id": "1009",
+		"individualSegmentIds": [
+			"366637689379787789"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "1000",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"db1ed215-9ed2-46a4-90de-535604c02c65"
+				]
+			}
+		],
+		"dateCreated": "2019-02-10T12:00:00.000Z",
+		"dateModified": "2019-02-10T12:00:00.000Z",
+		"id": "1010",
+		"individualSegmentIds": [
+			"327968823603500666"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "351238757269547424",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"5666a530-7021-11e9-9f43-21e859277aa6"
+				]
+			}
+		],
+		"dateCreated": "2019-02-11T12:00:00.000Z",
+		"dateModified": "2019-02-11T12:00:00.000Z",
+		"id": "1011",
+		"individualSegmentIds": [
+			"327968823603500666"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5",
+					"0016C00000BKWWKQA6"
+				],
+				"dataSourceId": "337984445922213329"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "337984445922213329",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"5666a530-7021-11e9-9f43-21e859277abc"
+				]
+			}
+		],
+		"dateCreated": "2019-02-12T12:00:00.000Z",
+		"dateModified": "2019-02-12T12:00:00.000Z",
+		"id": "1012",
+		"individualSegmentIds": [
+			"366637689379787789"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "351238757269547424",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"db1ed215-9ed2-46a4-90de-535604c02abc"
+				]
+			}
+		],
+		"dateCreated": "2019-02-13T12:00:00.000Z",
+		"dateModified": "2019-02-13T12:00:00.000Z",
+		"id": "1013",
+		"individualSegmentIds": [
+			"327968823603500677"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "351238757269547424",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"5666a530-7021-11e9-9f43-21e859277abc"
+				]
+			}
+		],
+		"dateCreated": "2019-02-14T12:00:00.000Z",
+		"dateModified": "2019-02-14T12:00:00.000Z",
+		"id": "1014",
+		"individualSegmentIds": [
+			"327968823603500677"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"channelIds": [
+			"2"
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016g000005azRsAAI"
+				],
+				"dataSourceId": "414985450066315739"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "351238757269547424",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"5aab8eb3-767c-4919-90de-90963de7e54c"
+				]
+			}
+		],
+		"dateCreated": "2019-02-15T12:00:00.000Z",
+		"dateModified": "2019-02-15T12:00:00.000Z",
+		"id": "1015",
+		"individualSegmentIds": [
+			"366637689379787789"
+		]
+	}
+]
