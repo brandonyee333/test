@@ -337,6 +337,21 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
+	public void testCountByCreateDateBetweenAndIdAfter() {
+		Date todayDate = new Date();
+		Date yesterdayDate = DateUtil.addDays(new Date(), -1);
+
+		Assertions.assertEquals(
+			1,
+			individualRepository.countByCreateDateBetweenAndIdAfter(
+				yesterdayDate, todayDate, 0L));
+		Assertions.assertEquals(
+			0,
+			individualRepository.countByCreateDateBetweenAndIdAfter(
+				yesterdayDate, todayDate, _individual1Id));
+	}
+
+	@Test
 	public void testCountByFieldNamesAndQueryAndSegmentId() {
 		List<String> fieldNames =
 			_fieldMappingRepository.
@@ -460,6 +475,20 @@ public abstract class BaseIndividualRepositoryTestCase
 					1234L, 1L, "organizationIds", "23432-cd-3242-asf23");
 
 		Assertions.assertNotNull(individual);
+	}
+
+	@Test
+	public void testFindByCreateDateBetweenAndIdAfter() {
+		List<Individual> individuals =
+			individualRepository.findByCreateDateBetweenAndIdAfter(
+				DateUtil.addDays(new Date(), -1), _individual1Id - 1L,
+				PageRequest.of(0, 1), new Date());
+
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
+
+		Individual individual = individuals.get(0);
+
+		Assertions.assertEquals(_individual1Id, individual.getId());
 	}
 
 	@Test
