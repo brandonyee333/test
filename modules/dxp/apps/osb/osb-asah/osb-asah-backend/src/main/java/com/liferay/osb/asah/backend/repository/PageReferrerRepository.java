@@ -16,6 +16,8 @@ package com.liferay.osb.asah.backend.repository;
 
 import com.liferay.osb.asah.common.model.TimeRange;
 
+import java.time.ZoneId;
+
 import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
@@ -27,19 +29,19 @@ public interface PageReferrerRepository {
 
 	public Map<String, Double> getAcquisitionChannelAccesses(
 		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange);
+		TimeRange timeRange, ZoneId zoneId);
 
 	public Map<String, Double> getPageReferrerAccesses(
 		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange);
+		TimeRange timeRange, ZoneId zoneId);
 
 	public Map<String, Double>
 		getSocialPageReferrerAccessesByReferrerCanonicalUrl(
 			String canonicalUrl, Long channelId, Long dataSourceId,
-			Pageable pageable, TimeRange timeRange);
+			Pageable pageable, TimeRange timeRange, ZoneId zoneId);
 
 	public Map<String, Double> getSocialPageReferrerAccessesByReferrerHost(
 		String canonicalUrl, Long channelId, Long dataSourceId,
-		Pageable pageable, TimeRange timeRange);
+		Pageable pageable, TimeRange timeRange, ZoneId zoneId);
 
 }

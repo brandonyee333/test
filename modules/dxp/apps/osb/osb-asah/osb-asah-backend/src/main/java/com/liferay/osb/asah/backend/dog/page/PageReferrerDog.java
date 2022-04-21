@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.PageReferrerMetric;
 import com.liferay.osb.asah.backend.model.PageReferrerMetricType;
 import com.liferay.osb.asah.backend.repository.PageReferrerRepository;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 
 import java.math.BigDecimal;
 
@@ -55,7 +56,7 @@ public class PageReferrerDog {
 			searchQueryContext.getCanonicalUrl(),
 			Long.valueOf(searchQueryContext.getChannelId()),
 			Long.valueOf(searchQueryContext.getDataSourceId()),
-			searchQueryContext.getTimeRange());
+			searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 	}
 
 	public List<PageReferrerMetric> getPageReferrerMetrics(
@@ -66,7 +67,7 @@ public class PageReferrerDog {
 				searchQueryContext.getCanonicalUrl(),
 				Long.valueOf(searchQueryContext.getChannelId()),
 				Long.valueOf(searchQueryContext.getDataSourceId()),
-				searchQueryContext.getTimeRange());
+				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
 		if (pageReferrerAccesses.isEmpty()) {
 			return Collections.emptyList();
@@ -104,7 +105,8 @@ public class PageReferrerDog {
 					searchQueryContext.getCanonicalUrl(),
 					Long.valueOf(searchQueryContext.getChannelId()),
 					Long.valueOf(searchQueryContext.getDataSourceId()),
-					PageRequest.of(0, size), searchQueryContext.getTimeRange());
+					PageRequest.of(0, size), searchQueryContext.getTimeRange(),
+					_timeZoneDog.getZoneId());
 		}
 
 		return _pageReferrerRepository.
@@ -112,7 +114,8 @@ public class PageReferrerDog {
 				searchQueryContext.getCanonicalUrl(),
 				Long.valueOf(searchQueryContext.getChannelId()),
 				Long.valueOf(searchQueryContext.getDataSourceId()),
-				PageRequest.of(0, size), searchQueryContext.getTimeRange());
+				PageRequest.of(0, size), searchQueryContext.getTimeRange(),
+				_timeZoneDog.getZoneId());
 	}
 
 	public Map<String, Double> getSocialPageReferrers(
@@ -123,7 +126,8 @@ public class PageReferrerDog {
 				searchQueryContext.getCanonicalUrl(),
 				Long.valueOf(searchQueryContext.getChannelId()),
 				Long.valueOf(searchQueryContext.getDataSourceId()),
-				PageRequest.of(0, 20), searchQueryContext.getTimeRange());
+				PageRequest.of(0, 20), searchQueryContext.getTimeRange(),
+				_timeZoneDog.getZoneId());
 
 		Map<String, Double> starredSocialReferrers = new HashMap<>();
 
@@ -268,6 +272,9 @@ public class PageReferrerDog {
 
 	@Autowired
 	private PageReferrerRepository _pageReferrerRepository;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 	@Autowired
 	private TitleDog _titleDog;

@@ -16,10 +16,11 @@ package com.liferay.osb.asah.backend.repository.impl;
 
 import com.liferay.osb.asah.backend.repository.PageReferrerRepository;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
+
+import java.time.ZoneId;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	@Override
 	public Map<String, Double> getAcquisitionChannelAccesses(
 		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange) {
+		TimeRange timeRange, ZoneId zoneId) {
 
 		Map<String, Double> result = new LinkedHashMap<>();
 
@@ -60,7 +61,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		).from(
 			"BQPageReferrers"
 		).where(
-			_createWhereClause(canonicalUrl, channelId, dataSourceId, timeRange)
+			_createWhereClause(
+				canonicalUrl, channelId, dataSourceId, timeRange, zoneId)
 		).groupBy(
 			acquisitionChannelField
 		).orderBy(
@@ -80,7 +82,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	@Override
 	public Map<String, Double> getPageReferrerAccesses(
 		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange) {
+		TimeRange timeRange, ZoneId zoneId) {
 
 		Map<String, Double> result = new LinkedHashMap<>();
 
@@ -99,7 +101,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		).where(
 			DSL.and(
 				_createWhereClause(
-					canonicalUrl, channelId, dataSourceId, timeRange),
+					canonicalUrl, channelId, dataSourceId, timeRange, zoneId),
 				DSL.field(
 					"referrer"
 				).notEqual(
@@ -127,7 +129,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	public Map<String, Double>
 		getSocialPageReferrerAccessesByReferrerCanonicalUrl(
 			String canonicalUrl, Long channelId, Long dataSourceId,
-			Pageable pageable, TimeRange timeRange) {
+			Pageable pageable, TimeRange timeRange, ZoneId zoneId) {
 
 		Map<String, Double> result = new LinkedHashMap<>();
 
@@ -147,7 +149,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		).where(
 			DSL.and(
 				_createWhereClause(
-					canonicalUrl, channelId, dataSourceId, timeRange),
+					canonicalUrl, channelId, dataSourceId, timeRange, zoneId),
 				DSL.not(
 					DSL.field(
 						"acquisitionChannel"
@@ -178,7 +180,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	@Override
 	public Map<String, Double> getSocialPageReferrerAccessesByReferrerHost(
 		String canonicalUrl, Long channelId, Long dataSourceId,
-		Pageable pageable, TimeRange timeRange) {
+		Pageable pageable, TimeRange timeRange, ZoneId zoneId) {
 
 		Map<String, Double> result = new LinkedHashMap<>();
 
@@ -198,7 +200,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		).where(
 			DSL.and(
 				_createWhereClause(
-					canonicalUrl, channelId, dataSourceId, timeRange),
+					canonicalUrl, channelId, dataSourceId, timeRange, zoneId),
 				DSL.not(
 					DSL.field(
 						"acquisitionChannel"
@@ -231,7 +233,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 	private Condition _createWhereClause(
 		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange) {
+		TimeRange timeRange, ZoneId zoneId) {
 
 		return DSL.and(
 			DSL.field(
@@ -253,14 +255,10 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 				"eventDate"
 			).between(
 				DateUtil.toUTCLocalDateTime(
-					timeRange.getStartLocalDateTime(),
-					_timeZoneDog.getZoneId()),
+					timeRange.getStartLocalDateTime(), zoneId),
 				DateUtil.toUTCLocalDateTime(
-					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
+					timeRange.getEndLocalDateTime(), zoneId)
 			));
 	}
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }
