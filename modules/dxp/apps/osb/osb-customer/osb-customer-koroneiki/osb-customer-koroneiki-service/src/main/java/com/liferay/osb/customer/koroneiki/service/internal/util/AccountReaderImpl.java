@@ -480,8 +480,8 @@ public class AccountReaderImpl implements AccountReader {
 			return true;
 		}
 
-		if (name.startsWith("DXP") || name.startsWith("Commerce") ||
-			name.startsWith("Portal")) {
+		if (name.startsWith("Commerce") || name.startsWith("DXP") ||
+			name.startsWith("LXC") || name.startsWith("Portal")) {
 
 			return true;
 		}
