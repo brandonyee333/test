@@ -31,8 +31,8 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BQEventDTO {
 
-	public BQEventDTO(BQEvent bqEvent, String name) {
-		_name = name;
+	public BQEventDTO(BQEvent bqEvent) {
+		_name = bqEvent.getEventId();
 
 		_createDate = bqEvent.getCreateDate();
 		_canonicalUrl = bqEvent.getCanonicalUrl();

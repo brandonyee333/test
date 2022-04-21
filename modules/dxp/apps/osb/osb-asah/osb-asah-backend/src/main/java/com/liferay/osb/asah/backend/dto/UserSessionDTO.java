@@ -22,12 +22,12 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQSession;
-import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
-import com.liferay.osb.asah.common.model.Tuple2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -42,34 +42,33 @@ import org.json.JSONObject;
 @JsonRootName("userSessions")
 public class UserSessionDTO {
 
-	public UserSessionDTO(
-		List<Tuple2<BQEvent, EventDefinition>> tuple2s, BQSession bqSession) {
+	public UserSessionDTO(List<BQEvent> bqEvents, BQSession bqSession) {
+		Comparator<BQEvent> comparator = Comparator.comparing(
+			BQEvent::getEventDate);
 
-		Tuple2<BQEvent, EventDefinition> tuple2 = tuple2s.get(0);
+		Collections.sort(bqEvents, comparator.reversed());
 
-		BQEvent bqEvent = tuple2.getT1();
+		BQEvent firstBQEvent = bqEvents.get(bqEvents.size() - 1);
 
-		JSONObject contextJSONObject = new JSONObject(bqEvent.getContext());
+		JSONObject contextJSONObject = new JSONObject(
+			firstBQEvent.getContext());
 
-		_browserName = bqEvent.getBrowserName();
+		_browserName = firstBQEvent.getBrowserName();
 
 		_completeDate = bqSession.getSessionEnd();
-		_contentLanguageId = bqEvent.getContentLanguageId();
+		_contentLanguageId = firstBQEvent.getContentLanguageId();
 		_createDate = bqSession.getSessionStart();
 		_devicePixelRatio = contextJSONObject.optString("devicePixelRatio", "");
-		_deviceType = bqEvent.getDeviceType();
-		_languageId = bqEvent.getLanguageId();
+		_deviceType = firstBQEvent.getDeviceType();
+		_languageId = firstBQEvent.getLanguageId();
 		_screenHeight = contextJSONObject.optString("screenHeight", "");
 		_screenWidth = contextJSONObject.optString("screenWidth", "");
-		_timezoneOffset = bqEvent.getTimezoneOffset();
+		_timezoneOffset = firstBQEvent.getTimezoneOffset();
 		_userAgent = contextJSONObject.optString("userAgent", "");
 
-		tuple2s.forEach(
-			tuple -> _bqEventDTOs.add(
-				new BQEventDTO(
-					tuple.getT1(),
-					tuple.getT2(
-					).getName())));
+		for (BQEvent bqEvent : bqEvents) {
+			_bqEventDTOs.add(new BQEventDTO(bqEvent));
+		}
 	}
 
 	@GraphQLProperty("events")

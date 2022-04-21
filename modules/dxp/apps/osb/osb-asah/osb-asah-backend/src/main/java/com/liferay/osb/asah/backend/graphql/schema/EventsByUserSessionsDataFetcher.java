@@ -20,9 +20,7 @@ import com.liferay.osb.asah.backend.dto.UserSessionDTO;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQSession;
-import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.Tuple2;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -53,7 +51,7 @@ public class EventsByUserSessionsDataFetcher
 		Comparator<UserSessionDTO> comparator = Comparator.comparing(
 			UserSessionDTO::getCreateDate);
 
-		Map<BQSession, List<Tuple2<BQEvent, EventDefinition>>> tuple2s =
+		Map<BQSession, List<BQEvent>> bqSessions =
 			_eventDog.searchBQEventsGroupByUserSessionId(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				Long.valueOf(dataFetchingEnvironment.getArgument("entityId")),
@@ -62,11 +60,10 @@ public class EventsByUserSessionsDataFetcher
 				dataFetchingEnvironment.getArgument("size"),
 				searchQueryContext.getTimeRange());
 
-		Set<Map.Entry<BQSession, List<Tuple2<BQEvent, EventDefinition>>>>
-			entrySet = tuple2s.entrySet();
+		Set<Map.Entry<BQSession, List<BQEvent>>> entrySet =
+			bqSessions.entrySet();
 
-		Stream<Map.Entry<BQSession, List<Tuple2<BQEvent, EventDefinition>>>>
-			stream = entrySet.stream();
+		Stream<Map.Entry<BQSession, List<BQEvent>>> stream = entrySet.stream();
 
 		return new EventsByUserSessionDTO(
 			stream.map(

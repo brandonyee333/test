@@ -20,11 +20,9 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.BQSession;
-import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
@@ -135,30 +133,22 @@ public class EventDog {
 
 		return _bqEventRepository.searchBQEvents(
 			channelId, keywords,
-			PageRequest.of(page, size, Sort.desc("eventDate")),
+			PageRequest.of(page, size, Sort.asc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			_timeZoneDog.getTimeZoneId(),
 			_individualDog.getIndividualUserIds(individualId));
 	}
 
-	public Map<BQSession, List<Tuple2<BQEvent, EventDefinition>>>
-		searchBQEventsGroupByUserSessionId(
-			Long channelId, Long individualId, String keywords, int page,
-			int size, TimeRange timeRange) {
-
-		Set<String> eventDefinitionNames = new HashSet<>();
+	public Map<BQSession, List<BQEvent>> searchBQEventsGroupByUserSessionId(
+		Long channelId, Long individualId, String keywords, int page, int size,
+		TimeRange timeRange) {
 
 		Set<String> userSessionIds = new HashSet<>();
 
 		List<BQEvent> bqEvents = searchBQEvents(
 			channelId, individualId, keywords, page, size, timeRange);
 
-		bqEvents.forEach(
-			bqEvent -> {
-				eventDefinitionNames.add(bqEvent.getEventId());
-
-				userSessionIds.add(bqEvent.getSessionId());
-			});
+		bqEvents.forEach(bqEvent -> userSessionIds.add(bqEvent.getSessionId()));
 
 		List<BQSession> bqSessions = _userSessionDog.findByIds(userSessionIds);
 
@@ -167,20 +157,20 @@ public class EventDog {
 		Map<String, BQSession> bqSessionMap = bqSessionsStream.collect(
 			Collectors.toMap(BQSession::getId, bqSession -> bqSession));
 
-		Map<String, EventDefinition> eventDefinitions =
-			_eventDefinitionDog.getEventDefinitions(eventDefinitionNames);
-
 		Stream<BQEvent> bqEventsStream = bqEvents.stream();
 
-		return bqEventsStream.map(
-			bqEvent -> new Tuple2<>(
-				bqEvent, eventDefinitions.get(bqEvent.getEventId()))
-		).collect(
+		return bqEventsStream.collect(
 			Collectors.groupingBy(
-				tuple -> bqSessionMap.get(
-					tuple.getT1(
-					).getSessionId()))
-		);
+				bqEvent -> bqSessionMap.computeIfAbsent(
+					bqEvent.getSessionId(),
+					sessionId -> {
+						BQSession bqSession1 = new BQSession();
+
+						bqSession1.setId(bqEvent.getSessionId());
+						bqSession1.setSessionStart(bqEvent.getEventDate());
+
+						return bqSession1;
+					})));
 	}
 
 	@Autowired
