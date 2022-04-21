@@ -95,7 +95,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			selectConditionStep = selectConditionStep.and(
 				DSL.field(
 					"modifiedDate"
-				).gt(
+				).ge(
 					fromModifiedDate
 				));
 		}
@@ -305,7 +305,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			selectConditionStep = selectConditionStep.and(
 				DSL.field(
 					"modifiedDate"
-				).gt(
+				).ge(
 					fromModifiedDate
 				));
 		}
