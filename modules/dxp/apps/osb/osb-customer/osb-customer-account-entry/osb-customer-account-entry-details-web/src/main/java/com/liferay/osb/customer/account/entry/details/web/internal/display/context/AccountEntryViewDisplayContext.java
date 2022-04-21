@@ -34,6 +34,7 @@ import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalServiceUtil;
+import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
@@ -497,6 +498,31 @@ public class AccountEntryViewDisplayContext {
 				_accountEntry.getAccountEntryId()));
 
 		return searchContainer;
+	}
+
+	public boolean hasOnlyLXC() throws Exception {
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("accountKey eq '");
+		sb.append(_account.getKey());
+		sb.append("' and state eq 'active'");
+
+		List<ProductPurchase> productPurchases =
+			_productPurchaseWebService.search(sb.toString(), 1, 1000);
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			Product product = productPurchase.getProduct();
+
+			String name = product.getName();
+
+			if (name.contains(ProductConstants.NAME_PREFIX_DXP) ||
+				name.contains(ProductConstants.NAME_PREFIX_PORTAL)) {
+
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public boolean isAdminOrSubscriptionServices() {

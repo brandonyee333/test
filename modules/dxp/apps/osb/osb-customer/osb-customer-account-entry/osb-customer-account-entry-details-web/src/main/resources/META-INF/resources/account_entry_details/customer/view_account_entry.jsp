@@ -31,7 +31,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project
 
 String tabNames = "overview,team-members,liferay-contacts,offerings,attachments";
 
-if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
+if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED && !accountEntryViewDisplayContext.hasOnlyLXC()) {
 	tabNames += ",source-code-access";
 }
 %>
@@ -82,7 +82,7 @@ if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
 	<c:when test='<%= tabs1.equals("offerings") %>'>
 		<liferay-util:include page="/account_entry_details/offerings.jsp" servletContext="<%= application %>" />
 	</c:when>
-	<c:when test='<%= tabs1.equals("source-code-access") && GitHubConfigurationValues.GITHUB_FEATURE_ENABLED %>'>
+	<c:when test='<%= tabs1.equals("source-code-access") && GitHubConfigurationValues.GITHUB_FEATURE_ENABLED && !accountEntryViewDisplayContext.hasOnlyLXC() %>'>
 		<liferay-util:include page="/account_entry_details/source_code_access.jsp" servletContext="<%= application %>" />
 	</c:when>
 	<c:when test='<%= tabs1.equals("team-members") %>'>
