@@ -35,6 +35,8 @@ public class ProductConstants {
 
 	public static final String NAME_PREFIX_PORTAL = "Portal";
 
+	public static final String NAME_PREMIUM = "Premium Subscription";
+
 	public static final String NAME_RESELLER_PARTNERSHIP =
 		"Reseller Partnership";
 
@@ -63,7 +65,7 @@ public class ProductConstants {
 	};
 
 	public static final String[] NAMES_SUBSCRIPTION = {
-		NAME_GOLD, NAME_LIMITED, NAME_PLATINUM, NAME_SILVER
+		NAME_GOLD, NAME_LIMITED, NAME_PLATINUM, NAME_PREMIUM, NAME_SILVER
 	};
 
 	public static final String PROPERTY_TYPE = "type";

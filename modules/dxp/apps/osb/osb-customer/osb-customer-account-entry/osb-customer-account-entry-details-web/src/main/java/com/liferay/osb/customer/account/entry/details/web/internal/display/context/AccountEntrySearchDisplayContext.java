@@ -190,6 +190,13 @@ public class AccountEntrySearchDisplayContext {
 			products.add(product);
 		}
 
+		product = _productWebService.fetchProductByName(
+			ProductConstants.NAME_PREMIUM);
+
+		if (product != null) {
+			products.add(product);
+		}
+
 		for (String name : ProductConstants.NAMES_PARTNERSHIP) {
 			product = _productWebService.fetchProductByName(name);
 

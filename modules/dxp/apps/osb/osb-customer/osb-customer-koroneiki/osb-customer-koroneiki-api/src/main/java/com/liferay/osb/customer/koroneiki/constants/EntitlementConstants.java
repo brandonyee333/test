@@ -33,15 +33,19 @@ public class EntitlementConstants {
 	public static final String NAME_PLATINUM_SUBSCRIPTION =
 		"Platinum Subscription";
 
+	public static final String NAME_PREMIUM_SUBSCRIPTION =
+		"Premium Subscription";
+
 	public static final String ORGANIZATION_NAME_PREFIX = "Koroneiki ";
 
 	public static final String[] SUPPORT_ENTITLEMENTS = {
 		NAME_GOLD_SUBSCRIPTION, NAME_LIMITED_SUBSCRIPTION,
-		NAME_PLATINUM_SUBSCRIPTION
+		NAME_PLATINUM_SUBSCRIPTION, NAME_PREMIUM_SUBSCRIPTION
 	};
 
 	public static final String[] TICKET_SUPPORT_ENTITLEMENTS = {
-		NAME_GOLD_SUBSCRIPTION, NAME_PLATINUM_SUBSCRIPTION
+		NAME_GOLD_SUBSCRIPTION, NAME_PLATINUM_SUBSCRIPTION,
+		NAME_PREMIUM_SUBSCRIPTION
 	};
 
 }

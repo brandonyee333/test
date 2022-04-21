@@ -221,7 +221,8 @@ public class AccountReaderImpl implements AccountReader {
 
 			if (name.equals(ProductConstants.NAME_GOLD) ||
 				name.equals(ProductConstants.NAME_LIMITED) ||
-				name.equals(ProductConstants.NAME_PLATINUM)) {
+				name.equals(ProductConstants.NAME_PLATINUM) ||
+				name.equals(ProductConstants.NAME_PREMIUM)) {
 
 				if (_getProductPurchaseState(productPurchase) ==
 						ProductPurchaseConstants.STATE_UNACTIVATED) {
@@ -257,7 +258,8 @@ public class AccountReaderImpl implements AccountReader {
 			String name = product.getName();
 
 			if (name.equals(ProductConstants.NAME_GOLD) ||
-				name.equals(ProductConstants.NAME_PLATINUM)) {
+				name.equals(ProductConstants.NAME_PLATINUM) ||
+				name.equals(ProductConstants.NAME_PREMIUM)) {
 
 				if (_getProductPurchaseState(productPurchase) ==
 						ProductPurchaseConstants.STATE_UNACTIVATED) {
@@ -371,6 +373,9 @@ public class AccountReaderImpl implements AccountReader {
 		}
 		else if (name.equals(ProductConstants.NAME_PLATINUM)) {
 			return 4;
+		}
+		else if (name.equals(ProductConstants.NAME_PREMIUM)) {
+			return 5;
 		}
 		else if (name.equals(ProductConstants.NAME_SILVER)) {
 			return 2;
