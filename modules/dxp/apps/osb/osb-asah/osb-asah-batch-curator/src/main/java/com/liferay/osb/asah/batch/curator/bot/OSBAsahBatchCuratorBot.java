@@ -203,10 +203,6 @@ public class OSBAsahBatchCuratorBot {
 		_boundedExecutor.shutdown();
 	}
 
-	private Runnable _getDataRetentionRunnable() {
-		return () -> _asahTaskManager.runNanites("DataRetentionNanite");
-	}
-
 	private Runnable _getDeleteDXPBatchEntitiesRunnable() {
 		if (_deleteDXPBatchEntitiesNaniteRunnable == null) {
 			return () -> {
@@ -246,8 +242,6 @@ public class OSBAsahBatchCuratorBot {
 					"ctx._source.status = 'INTERRUPTED'",
 					Collections.emptyMap()),
 				"run-logs");
-
-			_asahTaskManager.runNanites("DataRetentionNanite");
 
 			_asahTaskManager.runNanites("DeleteTempFilesNanite");
 
@@ -292,7 +286,6 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private void _scheduleNanites() {
-		_scheduleNanite(_getDataRetentionRunnable(), "DataRetentionNanite");
 		_scheduleNanite(
 			_getDeleteDXPBatchEntitiesRunnable(),
 			"DeleteDXPBatchEntitiesNanite");
