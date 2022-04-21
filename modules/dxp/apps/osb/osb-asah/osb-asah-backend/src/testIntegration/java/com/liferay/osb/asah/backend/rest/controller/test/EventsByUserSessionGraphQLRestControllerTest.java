@@ -57,12 +57,13 @@ public class EventsByUserSessionGraphQLRestControllerTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		_createBQEvent("assetClicked", "sessionId1");
-		_createBQEvent("assetDownloaded", "sessionId1");
-		_createBQEvent("pageViewed", "sessionId2");
+		_createBQEvent(new Date(), "assetClicked", "sessionId1");
+		_createBQEvent(new Date(), "assetDownloaded", "sessionId1");
+		_createBQEvent(new Date(), "pageViewed", "sessionId2");
 
-		_createUserSession("sessionId1", "2021-10-08T01:00:00.000Z");
-		_createUserSession("sessionId2", "2021-10-08T01:27:00.000Z");
+		_createUserSession(
+			"sessionId1", "2021-10-08T01:30:15.000Z",
+			"2021-10-08T01:00:00.000Z");
 	}
 
 	@AfterEach
@@ -71,7 +72,8 @@ public class EventsByUserSessionGraphQLRestControllerTest
 		_bqSessionRepository.deleteAll();
 	}
 
-	private void _createBQEvent(String eventDefinitionName, String sessionId)
+	private void _createBQEvent(
+			Date eventDate, String eventDefinitionName, String sessionId)
 		throws Exception {
 
 		_eventDog.addBQEvent(
@@ -86,17 +88,19 @@ public class EventsByUserSessionGraphQLRestControllerTest
 			).put(
 				"userAgent", "UserAgent"
 			).toString(),
-			null, new Date(), 1L, "pageDescriptionValue", "Chrome", new Date(),
+			null, new Date(), 1L, "pageDescriptionValue", "Chrome", eventDate,
 			eventDefinitionName, null, RandomTestUtil.randomId(),
 			"pageKeywordsValue", "pt-BR", null, null, "referrerValue", null,
 			sessionId, "-3", "pageTitleValue", "urlValue", "userId", null);
 	}
 
 	private void _createUserSession(
-		String sessionId, String firstEventDateString) {
+		String sessionId, String sessionEndDateString,
+		String sessionStartDateString) {
 
 		_userSessionDog.addBQSession(
-			1L, sessionId, null, DateUtil.toUTCDate(firstEventDateString));
+			1L, sessionId, DateUtil.toUTCDate(sessionEndDateString),
+			DateUtil.toUTCDate(sessionStartDateString));
 	}
 
 	@Autowired

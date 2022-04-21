@@ -9,7 +9,6 @@
 					"browserName": "Chrome",
 					"completeDate": null,
 					"contentLanguageId": "contentLanguageId",
-					"createDate": "Fri Oct 08 01:27:00 UTC 2021",
 					"devicePixelRatio": "1",
 					"deviceType": "Chrome",
 					"events": [
@@ -33,7 +32,7 @@
 				{
 					"__typename": "UserSession",
 					"browserName": "Chrome",
-					"completeDate": null,
+					"completeDate": "Fri Oct 08 01:30:15 UTC 2021",
 					"contentLanguageId": "contentLanguageId",
 					"createDate": "Fri Oct 08 01:00:00 UTC 2021",
 					"devicePixelRatio": "1",
