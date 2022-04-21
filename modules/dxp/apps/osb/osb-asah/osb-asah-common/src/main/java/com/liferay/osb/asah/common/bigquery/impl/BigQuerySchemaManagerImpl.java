@@ -92,7 +92,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	}
 
 	private Field _buildField(JSONObject fieldJSONObject) {
-		Field.Builder builder;
+		Field.Builder builder = null;
 
 		if (Objects.equals(fieldJSONObject.getString("type"), "RECORD")) {
 			builder = Field.newBuilder(
