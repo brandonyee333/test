@@ -15,47 +15,28 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.FieldMapping;
-import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
  */
 @Primary
-public interface FieldMappingRepository extends Repository<FieldMapping, Long> {
+public interface FieldMappingRepository
+	extends FieldMappingRepositoryCustom, Repository<FieldMapping, Long> {
 
 	@Cacheable
 	public long countByFieldNameAndOwnerType(
 		String fieldName, String ownerType);
 
 	@Cacheable
-	public long countFieldMappings(FilterHelper filterHelper);
-
-	@Cacheable
-	public long countIndividualFieldMappings(@Nullable String name);
-
-	@Cacheable
 	public boolean existsByContextAndFieldNameAndOwnerType(
 		String context, String fieldName, String ownerType);
-
-	@Cacheable
-	public List<FieldMapping>
-		findByContextAndDataSourceIdAndFieldNameAndOwnerType(
-			String context, Long dataSourceId, String fieldName,
-			String ownerType);
-
-	@Cacheable
-	public List<FieldMapping> findByContextAndDataSourceIdAndOwnerType(
-		String context, Long dataSourceId, String ownerType);
 
 	@Cacheable
 	public List<FieldMapping> findByContextAndDisplayNameAndOwnerType(
@@ -66,28 +47,8 @@ public interface FieldMappingRepository extends Repository<FieldMapping, Long> {
 		String context, String fieldName, String ownerType);
 
 	@Cacheable
-	public List<FieldMapping>
-		findByDataSourceFieldNameAndDataSourceIdAndOwnerType(
-			String dataSourceFieldName, Long dataSourceId, String ownerType);
-
-	@Cacheable
-	public List<FieldMapping> findByDataSourceId(Long dataSourceId);
-
-	@Cacheable
 	public List<String> findFieldNameByContextAndFieldTypeAndOwnerType(
 		@Param("context") String context, @Param("fieldType") String fieldType,
 		@Param("ownerType") String ownerType);
-
-	@Cacheable
-	public List<Transformation> getFieldMappingTransformations(
-		String apply, FilterHelper filterHelper, Pageable pageable);
-
-	@Cacheable
-	public List<FieldMapping> searchFieldMappings(
-		FilterHelper filterHelper, Pageable pageable);
-
-	@Cacheable
-	public List<FieldMapping> searchIndividualFieldMappings(
-		@Nullable String name, Pageable pageable);
 
 }

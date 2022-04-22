@@ -20,20 +20,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Leslie Wong
  */
 public interface EventAttributeDefinitionRepository
-	extends Repository<EventAttributeDefinition, Long> {
-
-	@Cacheable
-	public long countEventAttributeDefinitions(
-		@Nullable Long eventDefinitionId, @Nullable String keyword,
-		@Nullable EventAttributeDefinition.Type type);
+	extends EventAttributeDefinitionRepositoryCustom,
+			Repository<EventAttributeDefinition, Long> {
 
 	@Cacheable
 	public Optional<EventAttributeDefinition> findByDisplayNameIgnoreCase(
@@ -49,10 +43,5 @@ public interface EventAttributeDefinitionRepository
 	@Cacheable
 	public List<EventAttributeDefinition> findByType(
 		EventAttributeDefinition.Type type);
-
-	@Cacheable
-	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		@Nullable Long eventDefinitionId, @Nullable String keyword,
-		Pageable pageable, @Nullable EventAttributeDefinition.Type type);
 
 }

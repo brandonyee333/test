@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.AccountRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -54,12 +55,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
-public class AccountRepositoryImpl extends BaseRepository {
+public class AccountRepositoryImpl
+	extends BaseRepository implements AccountRepositoryCustom {
 
 	public AccountRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countAccounts(
 		@Nullable Set<String> accountPKs, FilterHelper filterHelper) {
 
@@ -99,6 +102,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Distribution> getAccountDistributions(
 		List<String> accountPKs, String fieldName, String fieldType,
 		FilterHelper filterHelper, Pageable pageable) {
@@ -212,6 +216,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Transformation> getAccountTransformations(
 		String apply, @Nullable Long channelId, FilterHelper filterHelper,
 		Pageable pageable) {
@@ -298,6 +303,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Account> searchAccounts(
 		FilterHelper filterHelper, Pageable pageable) {
 
@@ -337,6 +343,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 			record -> new Account(record.intoMap()));
 	}
 
+	@Override
 	public List<Account> searchAccounts(
 		@Nullable Set<String> accountPKs, @Nullable Long channelId,
 		FilterHelper filterHelper, Pageable pageable,

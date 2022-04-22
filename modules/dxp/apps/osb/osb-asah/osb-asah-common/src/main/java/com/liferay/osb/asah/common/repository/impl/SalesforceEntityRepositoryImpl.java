@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.repository.SalesforceEntityRepositoryCustom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +33,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcellus Tavares
  */
-public class SalesforceEntityRepositoryImpl extends BaseRepository {
+public class SalesforceEntityRepositoryImpl
+	extends BaseRepository implements SalesforceEntityRepositoryCustom {
 
 	public SalesforceEntityRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public List<SalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
 		String after, String fieldKey, String fieldValue, int size,
 		SalesforceEntity.Type type) {
@@ -59,6 +62,7 @@ public class SalesforceEntityRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<SalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
 		Long dataSourceId, String fieldKey, String fieldValue,
 		SalesforceEntity.Type type) {
@@ -74,6 +78,7 @@ public class SalesforceEntityRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<String>
 		findByDataSourceIdAndFieldKeyEqualsAndTypeGroupByFieldKey(
 			Long dataSourceId, String fieldKey, String fieldValue,

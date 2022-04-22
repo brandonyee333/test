@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.EventDefinition;
+import com.liferay.osb.asah.common.repository.EventDefinitionRepositoryCustom;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,12 +39,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Leslie Wong
  */
-public class EventDefinitionRepositoryImpl extends BaseRepository {
+public class EventDefinitionRepositoryImpl
+	extends BaseRepository implements EventDefinitionRepositoryCustom {
 
 	public EventDefinitionRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countEventDefinitions(
 		@Nullable Boolean blocked,
 		@Nullable EventDefinition.BlockedReasonType blockedReasonType,
@@ -64,6 +67,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<EventDefinition> findByNameIn(Collection<String> names) {
 		if (names.isEmpty()) {
 			return Collections.emptyList();
@@ -87,6 +91,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<EventDefinition> searchEventDefinitions(
 		@Nullable Boolean blocked,
 		@Nullable EventDefinition.BlockedReasonType blockedReasonType,

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQEventProperty;
+import com.liferay.osb.asah.common.repository.BQEventPropertyRepositoryCustom;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,12 +33,14 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Alejo Ceballos
  */
-public class BQEventPropertyRepositoryImpl extends BaseRepository {
+public class BQEventPropertyRepositoryImpl
+	extends BaseRepository implements BQEventPropertyRepositoryCustom {
 
 	public BQEventPropertyRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countValues(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords) {
@@ -56,6 +59,7 @@ public class BQEventPropertyRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public Optional<BQEventProperty> findByEventAttributeDefinitionIdAndEventId(
 		Long eventAttributeDefinitionId, Long eventId) {
 
@@ -89,6 +93,7 @@ public class BQEventPropertyRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<String> searchValues(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Pageable pageable) {

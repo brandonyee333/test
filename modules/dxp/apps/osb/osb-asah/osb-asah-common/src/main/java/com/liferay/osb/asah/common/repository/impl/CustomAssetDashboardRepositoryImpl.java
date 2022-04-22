@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepositoryCustom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,14 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author André Miranda
  */
-public class CustomAssetDashboardRepositoryImpl extends BaseRepository {
+public class CustomAssetDashboardRepositoryImpl
+	extends BaseRepository implements CustomAssetDashboardRepositoryCustom {
 
 	public CustomAssetDashboardRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countCustomAssetDashboards(Long channelId, String keywords) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -55,6 +58,7 @@ public class CustomAssetDashboardRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<CustomAssetDashboard> searchCustomAssetDashboards(
 		Long channelId, String keywords, Pageable pageable) {
 

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.repository.ActivityGroupRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
@@ -29,12 +30,14 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Inácio Nery
  */
-public class ActivityGroupRepositoryImpl extends BaseRepository {
+public class ActivityGroupRepositoryImpl
+	extends BaseRepository implements ActivityGroupRepositoryCustom {
 
 	public ActivityGroupRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countActivityGroups(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -50,6 +53,7 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<ActivityGroup> searchActivityGroups(
 		FilterHelper filterHelper, Pageable pageable) {
 

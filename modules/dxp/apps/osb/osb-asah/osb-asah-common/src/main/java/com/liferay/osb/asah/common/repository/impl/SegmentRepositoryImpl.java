@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.SegmentRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -46,12 +47,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Inácio Nery
  */
-public class SegmentRepositoryImpl extends BaseRepository {
+public class SegmentRepositoryImpl
+	extends BaseRepository implements SegmentRepositoryCustom {
 
 	public SegmentRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countPreviewDisabledSegments(
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
 		FilterHelper filterHelper) {
@@ -71,6 +74,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countSegments(
 		FilterHelper filterHelper, @Nullable List<Long> segmentIds) {
 
@@ -88,6 +92,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countSegments(
 		List<Long> channelIds, FilterHelper filterHelper) {
 
@@ -105,6 +110,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Transformation> getSegmentTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable,
 		@Nullable List<Long> segmentIds) {
@@ -164,6 +170,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Segment> searchDynamicSegments(
 		FilterHelper filterHelper, Pageable pageable) {
 
@@ -191,6 +198,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Segment> searchDynamicSegments(
 		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
 		FilterHelper filterHelper, @Nullable Boolean includeAnonymousUsers,
@@ -314,6 +322,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Segment> searchPreviewDisabledSegments(
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
 		FilterHelper filterHelper, Pageable pageable) {
@@ -337,6 +346,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Segment> searchSegments(
 		FilterHelper filterHelper, @Nullable List<Long> segmentIds,
 		Pageable pageable) {
@@ -359,6 +369,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Segment> searchSegments(
 		List<Long> channelIds, FilterHelper filterHelper, Pageable pageable) {
 
@@ -380,6 +391,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Segment> searchSegments(
 		Long dxpEntityId, DXPEntity.Type dxpEntityType, String state,
 		Segment.Type type) {
@@ -395,6 +407,7 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Segment> searchSegments(
 		String filter, String state, String status, Pageable pageable) {
 

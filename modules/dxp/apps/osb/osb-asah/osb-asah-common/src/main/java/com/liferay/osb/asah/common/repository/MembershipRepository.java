@@ -24,13 +24,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Inácio Nery
  */
 @Primary
-public interface MembershipRepository extends Repository<Membership, Long> {
+public interface MembershipRepository
+	extends MembershipRepositoryCustom, Repository<Membership, Long> {
 
 	@Cacheable
 	public long countByIndividualIdInAndIndividualSegmentIdAndStatus(
@@ -87,15 +87,6 @@ public interface MembershipRepository extends Repository<Membership, Long> {
 		@Param("status") String status);
 
 	@Cacheable
-	public List<Long> findIndividualIdByIndividualSegmentIdIn(
-		List<Long> individualSegmentIds, int max, int min, boolean ascending);
-
-	@Cacheable
-	public List<Long> findIndividualIdByIndividualSegmentIdIn(
-		Long individualId, List<Long> individualSegmentIds, int max, int min,
-		boolean ascending);
-
-	@Cacheable
 	public List<Long> findIndividualSegmentIdByIndividualIdAndStatus(
 		@Param("individualId") Long individualId,
 		@Param("status") String status);
@@ -108,9 +99,5 @@ public interface MembershipRepository extends Repository<Membership, Long> {
 	@Cacheable
 	public List<Long> findTop20IndividualSegmentIdByIndividualId(
 		@Param("individualId") Long individualId);
-
-	@Cacheable
-	public List<Membership> searchMemberships(
-		@Nullable Long id, Long individualSegmentId, int size, String status);
 
 }

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.repository.DXPEntityRepositoryCustom;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,12 +46,14 @@ import org.springframework.lang.Nullable;
  * @author Marcos Martins
  * @author Alejo Ceballos
  */
-public class DXPEntityRepositoryImpl extends BaseRepository {
+public class DXPEntityRepositoryImpl
+	extends BaseRepository implements DXPEntityRepositoryCustom {
 
 	public DXPEntityRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long count() {
 		throw new UnsupportedOperationException();
 	}
@@ -73,6 +76,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countByTypeAndModifiedDateBetween(
 		@Nullable Date fromModifiedDate, Date toModifiedDate,
 		DXPEntity.Type type) {
@@ -114,6 +118,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public void delete(DXPEntity dxpEntity) {
 		if (dxpEntity.getId() == null) {
 			return;
@@ -130,14 +135,17 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		).execute();
 	}
 
+	@Override
 	public void deleteAll() {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void deleteAll(Iterable<? extends DXPEntity> dxpEntities) {
 		dxpEntities.forEach(this::delete);
 	}
 
+	@Override
 	public void deleteByFieldNameAndFieldValueAndType(
 		String fieldName, String fieldValue, DXPEntity.Type type) {
 
@@ -154,6 +162,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		).execute();
 	}
 
+	@Override
 	public void deleteById(Long id) {
 		throw new UnsupportedOperationException();
 	}
@@ -170,26 +179,32 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		).execute();
 	}
 
+	@Override
 	public boolean existsById(Long id) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public Iterable<DXPEntity> findAll() {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public Page<DXPEntity> findAll(Pageable pageable) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public Iterable<DXPEntity> findAll(Sort sort) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public Iterable<DXPEntity> findAllById(Iterable<Long> ids) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public List<DXPEntity> findByAfterAndFieldsAndType(
 		@Nullable Long after, Map<String, Object> fields, int size,
 		DXPEntity.Type type) {
@@ -230,6 +245,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			record -> new DXPEntity(record.intoMap()));
 	}
 
+	@Override
 	public List<DXPEntity> findByFieldsAndType(
 		Map<String, Object> fields, DXPEntity.Type type) {
 
@@ -256,10 +272,12 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 			record -> new DXPEntity(record.intoMap()));
 	}
 
+	@Override
 	public Optional<DXPEntity> findById(Long id) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
 		String memebershipClassName, Long membershipId) {
 
@@ -285,6 +303,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<DXPEntity> findByTypeAndModifiedDateBetween(
 		@Nullable Date fromModifiedDate, Date toModifiedDate,
 		DXPEntity.Type type, Pageable pageable) {
@@ -328,6 +347,7 @@ public class DXPEntityRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndType(
 		List<Long> dataSourceIds, @Nullable String keywords,
 		DXPEntity.Type type, Pageable pageable) {

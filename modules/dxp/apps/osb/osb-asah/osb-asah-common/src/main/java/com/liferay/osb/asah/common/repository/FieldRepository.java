@@ -15,13 +15,10 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -32,9 +29,7 @@ import org.springframework.lang.Nullable;
  */
 @Primary
 public interface FieldRepository
-	extends PagingAndSortingRepository<Field, Long> {
-
-	public long countFields(FilterHelper filterHelper);
+	extends FieldRepositoryCustom, PagingAndSortingRepository<Field, Long> {
 
 	@Modifying
 	public void deleteByContextAndDataSourceIdAndNameAndOwnerIdInAndOwnerType(
@@ -92,15 +87,5 @@ public interface FieldRepository
 
 	public List<Field> findByFieldTypeAndOwnerTypeAndValueIn(
 		String fieldType, String ownerType, List<String> values);
-
-	public List<Transformation> getFieldTransformations(
-		String apply, FilterHelper filterHelper, Pageable pageable);
-
-	public List<Field> searchFields(
-		FilterHelper filterHelper, Pageable pageable);
-
-	@Modifying
-	public void updateDataSourceNameByDataSourceId(
-		Long dataSourceId, String dataSourceName);
 
 }

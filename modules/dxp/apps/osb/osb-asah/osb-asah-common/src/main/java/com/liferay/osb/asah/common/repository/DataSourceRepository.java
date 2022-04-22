@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
@@ -26,10 +25,8 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Inácio Nery
  */
-public interface DataSourceRepository extends Repository<DataSource, Long> {
-
-	@Cacheable
-	public long countDataSources(FilterHelper filterHelper);
+public interface DataSourceRepository
+	extends DataSourceRepositoryCustom, Repository<DataSource, Long> {
 
 	@Cacheable
 	public boolean existsByFaroBackendSecuritySignature(
@@ -63,9 +60,5 @@ public interface DataSourceRepository extends Repository<DataSource, Long> {
 	@Cacheable
 	public List<DataSource> findByProviderTypeAndStatus(
 		String providerType, String status);
-
-	@Cacheable
-	public List<DataSource> searchDataSources(
-		FilterHelper filterHelper, Pageable pageable);
 
 }

@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceOrganization;
 import com.liferay.osb.asah.common.entity.DataSourceSite;
 import com.liferay.osb.asah.common.entity.DataSourceUserGroup;
+import com.liferay.osb.asah.common.repository.DataSourceRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
@@ -42,12 +43,14 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Inácio Nery
  */
-public class DataSourceRepositoryImpl extends BaseRepository {
+public class DataSourceRepositoryImpl
+	extends BaseRepository implements DataSourceRepositoryCustom {
 
 	public DataSourceRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countDataSources(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -63,6 +66,7 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<DataSource> searchDataSources(
 		FilterHelper filterHelper, Pageable pageable) {
 

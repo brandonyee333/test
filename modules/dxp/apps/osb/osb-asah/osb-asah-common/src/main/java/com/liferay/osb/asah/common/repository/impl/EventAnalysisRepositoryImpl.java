@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.EventAnalysis;
+import com.liferay.osb.asah.common.repository.EventAnalysisRepositoryCustom;
 
 import java.util.List;
 import java.util.Map;
@@ -35,12 +36,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
-public class EventAnalysisRepositoryImpl extends BaseRepository {
+public class EventAnalysisRepositoryImpl
+	extends BaseRepository implements EventAnalysisRepositoryCustom {
 
 	public EventAnalysisRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countEventAnalyses(Long channelId, @Nullable String keywords) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -56,6 +59,7 @@ public class EventAnalysisRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<EventAnalysis> searchEventAnalyses(
 		Long channelId, @Nullable String keywords, Pageable pageable) {
 

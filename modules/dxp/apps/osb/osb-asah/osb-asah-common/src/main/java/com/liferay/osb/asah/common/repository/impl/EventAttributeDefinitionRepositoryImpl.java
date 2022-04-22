@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
+import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepositoryCustom;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,12 +41,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Leslie Wong
  */
-public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
+public class EventAttributeDefinitionRepositoryImpl
+	extends BaseRepository implements EventAttributeDefinitionRepositoryCustom {
 
 	public EventAttributeDefinitionRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countEventAttributeDefinitions(
 		@Nullable Long eventDefinitionId, @Nullable String keyword,
 		@Nullable EventAttributeDefinition.Type type) {
@@ -63,6 +66,7 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
 		@Nullable Long eventDefinitionId, @Nullable String keyword,
 		Pageable pageable, @Nullable EventAttributeDefinition.Type type) {

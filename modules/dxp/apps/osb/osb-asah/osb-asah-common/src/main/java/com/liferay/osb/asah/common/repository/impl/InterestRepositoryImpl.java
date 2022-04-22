@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.repository.InterestRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.math.BigDecimal;
@@ -50,12 +51,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Robson Pastor
  */
-public class InterestRepositoryImpl extends BaseRepository {
+public class InterestRepositoryImpl
+	extends BaseRepository implements InterestRepositoryCustom {
 
 	public InterestRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countByFilterStringAndScoreGreaterThanEqual(
 		FilterHelper filterHelper, @Nullable Double score) {
 
@@ -73,6 +76,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countInterestDistributions(
 		String keyword, List<Long> ownerIds, String ownerType,
 		Date recordedDate, Double score) {
@@ -105,6 +109,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Interest> findByFilterStringAndScoreGreaterThanEqual(
 		@Nullable FilterHelper filterHelper, @Nullable Double score,
 		Pageable pageable) {
@@ -127,6 +132,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Interest> findByOwnerTypeAndRecordedDate(
 		@Nullable Long interestId, @Nullable String ownerType,
 		@Nullable Date recordedDate, int size) {
@@ -148,6 +154,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Distribution> getInterestDistributions(
 		@Nullable String keyword, @Nullable List<Long> ownerIds,
 		@Nullable String ownerType, @Nullable Date recordedDate,
@@ -181,6 +188,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<String> getTopNamesByOwnerIdAndOwnerType(
 		Long ownerId, String ownerType, int size) {
 
@@ -214,6 +222,7 @@ public class InterestRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Map<String, Object>> getTransformations(
 		Date fromDate, @Nullable FilterHelper filterHelper, String period,
 		Date toDate) {

@@ -20,20 +20,15 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Marcos Martins
  */
-public interface ExperimentRepository extends Repository<Experiment, Long> {
+public interface ExperimentRepository
+	extends ExperimentRepositoryCustom, Repository<Experiment, Long> {
 
 	@Cacheable
 	public List<Experiment> findByExperimentStatus(
 		ExperimentStatus experimentStatus);
-
-	@Cacheable
-	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
-		Long channelId, @Nullable String keywords, Pageable pageable);
 
 }

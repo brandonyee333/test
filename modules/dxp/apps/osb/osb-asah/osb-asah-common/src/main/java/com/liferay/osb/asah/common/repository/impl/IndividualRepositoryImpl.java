@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.IndividualRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -66,12 +67,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
-public class IndividualRepositoryImpl extends BaseRepository {
+public class IndividualRepositoryImpl
+	extends BaseRepository implements IndividualRepositoryCustom {
 
 	public IndividualRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long
 		countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(
 			Long channelId, @Nullable Date endLastActivityDate,
@@ -158,6 +161,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countByFieldNamesAndQueryAndSegmentId(
 		List<String> fieldNames, @Nullable String query,
 		@Nullable Long segmentId) {
@@ -234,6 +238,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countByIdInAndKeywords(
 		List<Long> ids, @Nullable String keywords) {
 
@@ -261,6 +266,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
@@ -324,6 +330,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public boolean existsByChannelIdAndFilterStringAndId(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		@Nullable Long id) {
@@ -356,12 +363,14 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		return _dslContext.fetchExists(selectOnConditionStep.where(condition));
 	}
 
+	@Override
 	public boolean existsByFilterStringAndId(
 		FilterHelper filterHelper, @Nullable Long id) {
 
 		return existsByChannelIdAndFilterStringAndId(null, filterHelper, id);
 	}
 
+	@Override
 	public List<String> findAccountPKsByChannelIdAndSegmentId(
 		@Nullable Long channelId, @Nullable Long segmentId) {
 
@@ -424,6 +433,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Individual.ActivitiesCount> findActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
@@ -480,6 +490,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Individual> findAnonymousByCreateDateAndLastActivityDateAndId(
 		Date date, @Nullable Long id, int size) {
 
@@ -539,6 +550,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public Individual findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
 		Long associatedId, Long dataSourceId, String fieldName,
 		String individualPK) {
@@ -585,6 +597,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Individual> findByChannelIdAndFilterStringAndIdIn(
 		@Nullable Long channelId, FilterHelper filterHelper, List<Long> ids) {
 
@@ -636,6 +649,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public Individual findByDataSourceIdAndIndividualPK(
 		Long dataSourceId, String individualPK) {
 
@@ -674,6 +688,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public Individual findByEmailAddress(String emailAddress) {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
@@ -707,6 +722,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Individual> findByFieldNamesAndQueryAndSegmentId(
 		List<String> fieldNames, @Nullable String query,
 		@Nullable Long segmentId, Pageable pageable) {
@@ -795,6 +811,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<Individual> findByIdInAndKeywords(
 		List<Long> ids, @Nullable String keywords, Pageable pageable) {
 
@@ -831,6 +848,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<Individual> findBySegmentIds(Long segmentId) {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -860,6 +878,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<Long>
 		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 			@Nullable Long channelId, @Nullable Date lastActivityDate,
@@ -923,6 +942,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public Map<Long, Long> findIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
@@ -979,6 +999,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		return individualCounts;
 	}
 
+	@Override
 	public List<Long> findKnownIndividualIds(
 		FilterHelper filterHelper, Long segmentId) {
 
@@ -1053,6 +1074,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Distribution> getIndividualDistributions(
 		String fieldName, String fieldType, FilterHelper filterHelper,
 		Pageable pageable) {
@@ -1131,6 +1153,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Transformation> getIndividualTransformations(
 		String apply, @Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
@@ -1265,6 +1288,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Individual> searchIndividualIds(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long id, int size) {
@@ -1322,6 +1346,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<Individual> searchIndividuals(
 		FilterHelper filterHelper, Pageable pageable) {
 
@@ -1351,6 +1376,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		Boolean includeAnonymousUsers, @Nullable Long segmentChannelId,
@@ -1423,6 +1449,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper, List<Long> ids,
 		Boolean includeAnonymousUsers) {
@@ -1478,6 +1505,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<Individual> searchIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper, @Nullable Long id,
 		Boolean includeAnonymousUsers, int size) {
@@ -1535,6 +1563,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<Individual> searchIndividuals(
 		Long dataSourceId, @Nullable Long id, int size) {
 
@@ -1584,6 +1613,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public void updateAssociatedIds(String fieldName, Set<Long> ids, Long id) {
 		UpdateSetFirstStep<Record> update = _dslContext.update(
 			DSL.table("Individual"));
@@ -1599,6 +1629,7 @@ public class IndividualRepositoryImpl extends BaseRepository {
 		).execute();
 	}
 
+	@Override
 	public void updateDataSourceNameByDataSourceId(
 		Long dataSourceId, String dataSourceName) {
 

@@ -15,14 +15,11 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.ActivityGroup;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -32,9 +29,8 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface ActivityGroupRepository
-	extends PagingAndSortingRepository<ActivityGroup, Long> {
-
-	public long countActivityGroups(FilterHelper filterHelper);
+	extends ActivityGroupRepositoryCustom,
+			PagingAndSortingRepository<ActivityGroup, Long> {
 
 	@Modifying
 	public void deleteByChannelIdIn(@Param("channelIds") Set<Long> channelIds);
@@ -43,9 +39,6 @@ public interface ActivityGroupRepository
 		findByActivityTypeAndChannelIdAndDataSourceIdAndDayDateAndUserId(
 			String activityType, Long channelId, Long dataSourceId,
 			Date dayDate, String userId);
-
-	public List<ActivityGroup> searchActivityGroups(
-		FilterHelper filterHelper, Pageable pageable);
 
 	@Modifying
 	public boolean updateOwnerId(

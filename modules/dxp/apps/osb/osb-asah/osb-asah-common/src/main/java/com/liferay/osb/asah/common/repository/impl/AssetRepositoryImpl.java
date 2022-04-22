@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.AssetRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -48,12 +49,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcellus Tavares
  */
-public class AssetRepositoryImpl extends BaseRepository {
+public class AssetRepositoryImpl
+	extends BaseRepository implements AssetRepositoryCustom {
 
 	public AssetRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countAssetKeywords(String keyword) {
 		SelectSelectStep<Record1<Integer>> selectCount =
 			_dslContext.selectCount();
@@ -67,6 +70,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countByAssetTypeAndFilterStringAndKeywords(
 		String assetType, FilterHelper filterHelper,
 		@Nullable String keywords) {
@@ -83,6 +87,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countByFilterString(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -96,6 +101,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
 		Long assetId, String assetType, int size) {
 
@@ -115,6 +121,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Asset> findByAssetTypeAndFilterString(
 		String assetType, FilterHelper filterHelper) {
 
@@ -126,6 +133,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		return selectJoinStep.fetch(this::_toAsset);
 	}
 
+	@Override
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
 		String assetType, FilterHelper filterHelper, String keywords,
 		Pageable pageable) {
@@ -146,6 +154,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Asset> findByChannelIds(
 		List<Long> channelIds, Pageable pageable) {
 
@@ -172,6 +181,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Asset> findByFilterString(
 		FilterHelper filterHelper, Pageable pageable) {
 
@@ -190,6 +200,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<String> getAssetKeywords(String keyword, Pageable pageable) {
 		return _getAssetKeywordSelectStep(
 			keyword
@@ -205,6 +216,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Transformation> getAssetTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable) {
 
@@ -254,6 +266,7 @@ public class AssetRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public Map<String, Set<String>> getByAssetTypeAndChannelIdAndDatasourceId(
 		String assetType, @Nullable Long channelId,
 		@Nullable Long dataSourceId) {

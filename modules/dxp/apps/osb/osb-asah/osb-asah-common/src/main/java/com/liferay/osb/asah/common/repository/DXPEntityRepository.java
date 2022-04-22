@@ -16,63 +16,17 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Marcos Martins
  */
 @Primary
-public interface DXPEntityRepository extends Repository<DXPEntity, Long> {
+public interface DXPEntityRepository
+	extends DXPEntityRepositoryCustom, Repository<DXPEntity, Long> {
 
-	@Cacheable
-	public long countByDataSourceIdsAndKeywordsAndType(
-		List<Long> dataSourceIds, @Nullable String keywords,
-		DXPEntity.Type type);
+	public void delete(DXPEntity dxpEntity);
 
-	@Cacheable
-	public long countByTypeAndModifiedDateBetween(
-		@Nullable Date fromModifiedDate, Date toModifiedDate,
-		DXPEntity.Type type);
-
-	@CacheEvict(allEntries = true)
-	@Modifying
-	public void deleteByFieldNameAndFieldValueAndType(
-		String fieldName, String fieldValue, DXPEntity.Type type);
-
-	@CacheEvict(allEntries = true)
-	@Modifying
-	public void deleteByType(DXPEntity.Type type);
-
-	@Cacheable
-	public List<DXPEntity> findByAfterAndFieldsAndType(
-		@Nullable Long after, Map<String, Object> fields, int size,
-		DXPEntity.Type type);
-
-	@Cacheable
-	public List<DXPEntity> findByFieldsAndType(
-		Map<String, Object> fields, DXPEntity.Type type);
-
-	@Cacheable
-	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
-		String membershipClassName, Long membershipId);
-
-	@Cacheable
-	public List<DXPEntity> findByTypeAndModifiedDateBetween(
-		@Nullable Date fromModifiedDate, Date toModifiedDate,
-		DXPEntity.Type type, Pageable pageable);
-
-	@Cacheable
-	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndType(
-		List<Long> dataSourceIds, @Nullable String keywords,
-		DXPEntity.Type type, Pageable pageable);
+	public Iterable<DXPEntity> findAll();
 
 }

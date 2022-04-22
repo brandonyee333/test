@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DataControlTask;
+import com.liferay.osb.asah.common.repository.DataControlTaskRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
@@ -36,12 +37,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcellus Tavares
  */
-public class DataControlTaskRepositoryImpl extends BaseRepository {
+public class DataControlTaskRepositoryImpl
+	extends BaseRepository implements DataControlTaskRepositoryCustom {
 
 	public DataControlTaskRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countDataControlTasks(
 		Long batchId, String emailAddress, Date startCreateDate,
 		List<String> statuses, List<String> types) {
@@ -61,6 +64,7 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public Boolean existsByBatchIdAndStatusIn(
 		@Nullable Long batchId, @Nullable List<String> statuses) {
 
@@ -74,6 +78,7 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<DataControlTask> searchDataControlTasks(
 		@Nullable Date endCompleteDate, @Nullable List<String> statuses,
 		@Nullable List<String> types) {
@@ -89,6 +94,7 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<DataControlTask> searchDataControlTasks(
 		FilterHelper filterHelper, @Nullable String status) {
 
@@ -116,6 +122,7 @@ public class DataControlTaskRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<DataControlTask> searchDataControlTasks(
 		@Nullable Long batchId, @Nullable String emailAddress,
 		@Nullable Date startCreateDate, @Nullable List<String> statuses,

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.OrganizationRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -41,12 +42,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
-public class OrganizationRepositoryImpl extends BaseRepository {
+public class OrganizationRepositoryImpl
+	extends BaseRepository implements OrganizationRepositoryCustom {
 
 	public OrganizationRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countByName(@Nullable String name) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -62,6 +65,7 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Organization> findByName(
 		@Nullable String name, Pageable pageable) {
 
@@ -80,6 +84,7 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Transformation> getOrganizationTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable) {
 
@@ -165,6 +170,7 @@ public class OrganizationRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Organization> searchOrganizations(
 		FilterHelper filterHelper, Pageable pageable) {
 

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.RunLog;
+import com.liferay.osb.asah.common.repository.RunLogRepositoryCustom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +34,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcellus Tavares
  */
-public class RunLogRepositoryImpl extends BaseRepository {
+public class RunLogRepositoryImpl
+	extends BaseRepository implements RunLogRepositoryCustom {
 
 	public RunLogRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public Optional<RunLog>
 		findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
 			@Nullable Long dataSourceId, String naniteClassName,

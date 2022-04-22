@@ -14,11 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,28 +26,16 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Inácio Nery
  */
 @Primary
-public interface SegmentRepository extends Repository<Segment, Long> {
+public interface SegmentRepository
+	extends Repository<Segment, Long>, SegmentRepositoryCustom {
 
 	@Cacheable
 	public long countByIdAfter(Long id);
-
-	@Cacheable
-	public long countPreviewDisabledSegments(
-		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
-		FilterHelper filterHelper);
-
-	@Cacheable
-	public long countSegments(
-		FilterHelper filterHelper, @Nullable List<Long> segmentIds);
-
-	@Cacheable
-	public long countSegments(List<Long> channelIds, FilterHelper filterHelper);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -112,44 +96,6 @@ public interface SegmentRepository extends Repository<Segment, Long> {
 
 	@Cacheable
 	public List<Long> findReferencedAssetIds();
-
-	@Cacheable
-	public List<Transformation> getSegmentTransformations(
-		String apply, FilterHelper filterHelper, Pageable pageable,
-		@Nullable List<Long> segmentIds);
-
-	@Cacheable
-	public List<Segment> searchDynamicSegments(
-		FilterHelper filterHelper, Pageable pageable);
-
-	@Cacheable
-	public List<Segment> searchDynamicSegments(
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
-		FilterHelper filterHelper, @Nullable Boolean includeAnonymousUsers,
-		Pageable pageable, Set<Long> segmentIds);
-
-	@Cacheable
-	public List<Segment> searchPreviewDisabledSegments(
-		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
-		FilterHelper filterHelper, Pageable pageable);
-
-	@Cacheable
-	public List<Segment> searchSegments(
-		FilterHelper filterHelper, @Nullable List<Long> segmentIds,
-		Pageable pageable);
-
-	@Cacheable
-	public List<Segment> searchSegments(
-		List<Long> channelIds, FilterHelper filterHelper, Pageable pageable);
-
-	@Cacheable
-	public List<Segment> searchSegments(
-		Long dxpEntityId, DXPEntity.Type dxpEntityType, String state,
-		Segment.Type type);
-
-	@Cacheable
-	public List<Segment> searchSegments(
-		String filter, String state, String status, Pageable pageable);
 
 	@CacheEvict(allEntries = true)
 	@Modifying

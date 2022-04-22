@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.MembershipChange;
+import com.liferay.osb.asah.common.repository.MembershipChangeRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
@@ -39,12 +40,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
-public class MembershipChangeRepositoryImpl {
+public class MembershipChangeRepositoryImpl
+	implements MembershipChangeRepositoryCustom {
 
 	public MembershipChangeRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countMembershipChanges(
 		FilterHelper filterHelper, Boolean includeAnonymousUsers,
 		Long segmentId) {
@@ -63,6 +66,7 @@ public class MembershipChangeRepositoryImpl {
 		);
 	}
 
+	@Override
 	public List<MembershipChange>
 		searchLastByModifiedDateAndIndividualSegmentId(
 			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
@@ -117,6 +121,7 @@ public class MembershipChangeRepositoryImpl {
 		);
 	}
 
+	@Override
 	public List<MembershipChange> searchMembershipChanges(
 		FilterHelper filterHelper, Boolean includeAnonymousUsers,
 		Long segmentId, Pageable pageable) {

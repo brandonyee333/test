@@ -18,9 +18,7 @@ import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -28,23 +26,13 @@ import org.springframework.data.repository.query.Param;
  * @author Marcellus Tavares
  */
 public interface BQEventPropertyRepository
-	extends PagingAndSortingRepository<BQEventProperty, String> {
-
-	public long countValues(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords);
+	extends BQEventPropertyRepositoryCustom,
+			PagingAndSortingRepository<BQEventProperty, String> {
 
 	public List<BQEventPropertyValue>
 		findBQEventPropertyValuesByEventAttributeDefinitionId(
 			@Param("eventAttributeDefinitionId") Long
 				eventAttributeDefinitionId,
 			@Param("size") int size);
-
-	public Optional<BQEventProperty> findByEventAttributeDefinitionIdAndEventId(
-		Long eventAttributeDefinitionId, Long eventId);
-
-	public List<String> searchValues(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords, Pageable pageable);
 
 }

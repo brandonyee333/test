@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.repository.CSVIndividualRepositoryCustom;
 
 import java.util.List;
 
@@ -26,12 +27,14 @@ import org.jooq.impl.DSL;
 /**
  * @author Marcellus Tavares
  */
-public class CSVIndividualRepositoryImpl extends BaseRepository {
+public class CSVIndividualRepositoryImpl
+	extends BaseRepository implements CSVIndividualRepositoryCustom {
 
 	public CSVIndividualRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public List<CSVIndividual> findByDataSourceIdAndFieldKeyEquals(
 		Long dataSourceId, String fieldKey, String fieldValue) {
 

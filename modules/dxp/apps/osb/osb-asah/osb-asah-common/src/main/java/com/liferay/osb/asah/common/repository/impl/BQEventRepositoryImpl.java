@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
+import com.liferay.osb.asah.common.repository.BQEventRepositoryCustom;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 
 import java.math.BigDecimal;
@@ -75,12 +76,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Leslie Wong
  */
-public class BQEventRepositoryImpl extends BaseRepository {
+public class BQEventRepositoryImpl
+	extends BaseRepository implements BQEventRepositoryCustom {
 
 	public BQEventRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public Integer countBQEvents(
 		Long channelId, @Nullable String keywords,
 		LocalDateTime rangeEndLocalDateTime,
@@ -92,6 +95,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 			rangeStartLocalDateTime, timeZoneId, userIds);
 	}
 
+	@Override
 	public long countByEventDefinitionId(long eventDefinitionId) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -108,6 +112,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public Integer countEventSessions(
 		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
@@ -119,6 +124,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 			userIds);
 	}
 
+	@Override
 	public long countTotalBQEvents(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
@@ -142,6 +148,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countUniqueIndividuals(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
@@ -165,6 +172,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public Optional<BQEvent> findLastSeenBQEvent(
 		@Nullable Long eventDefinitionId) {
 
@@ -200,6 +208,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public BigDecimal getAverageBQEventCountPerIndividual(
 		@Nullable Long channelId,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
@@ -227,6 +236,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public Map<Object, Number> getBQEventPropertyValues(
 		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
@@ -286,6 +296,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		return eventAttributeValues;
 	}
 
+	@Override
 	public long getBQEventPropertyValuesCount(
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
@@ -331,6 +342,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public Map<String, Integer> getBQEventsCountGroupByEventDate(
 		Long channelId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
@@ -377,6 +389,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
 		Long channelId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
@@ -432,6 +445,7 @@ public class BQEventRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<BQEvent> searchBQEvents(
 		Long channelId, @Nullable String keywords, Pageable pageable,
 		LocalDateTime rangeEndLocalDateTime,

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.repository.MembershipRepositoryCustom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +33,13 @@ import org.springframework.lang.Nullable;
 /**
  * @author Inácio Nery
  */
-public class MembershipRepositoryImpl {
+public class MembershipRepositoryImpl implements MembershipRepositoryCustom {
 
 	public MembershipRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public List<Long> findIndividualIdByIndividualSegmentIdIn(
 		List<Long> individualSegmentIds, int max, int min, boolean ascending) {
 
@@ -67,6 +69,7 @@ public class MembershipRepositoryImpl {
 		);
 	}
 
+	@Override
 	public List<Long> findIndividualIdByIndividualSegmentIdIn(
 		Long individualId, List<Long> individualSegmentIds, int max, int min,
 		boolean ascending) {
@@ -94,6 +97,7 @@ public class MembershipRepositoryImpl {
 		);
 	}
 
+	@Override
 	public List<Membership> searchMemberships(
 		@Nullable Long id, Long individualSegmentId, int size, String status) {
 

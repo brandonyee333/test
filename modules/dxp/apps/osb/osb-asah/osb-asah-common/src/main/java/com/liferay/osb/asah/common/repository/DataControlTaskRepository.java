@@ -15,41 +15,18 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DataControlTask;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
-import java.util.Date;
 import java.util.List;
-
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
 
 /**
  * @author Marcellus Tavares
  */
 public interface DataControlTaskRepository
-	extends Repository<DataControlTask, Long> {
-
-	@Cacheable
-	public long countDataControlTasks(
-		Long batchId, String emailAddress, Date startCreateDate,
-		List<String> statuses, List<String> types);
+	extends DataControlTaskRepositoryCustom, Repository<DataControlTask, Long> {
 
 	public Boolean existsByBatchIdAndStatusIn(
 		Long batchId, List<String> status);
 
 	public DataControlTask findByIdAndStatus(Long id, String status);
-
-	@Cacheable
-	public List<DataControlTask> searchDataControlTasks(
-		Date endCompleteDate, List<String> statuses, List<String> types);
-
-	@Cacheable
-	public List<DataControlTask> searchDataControlTasks(
-		FilterHelper filterHelper, String status);
-
-	@Cacheable
-	public List<DataControlTask> searchDataControlTasks(
-		Long batchId, String emailAddress, Date startCreateDate,
-		List<String> statuses, List<String> types, Pageable pageable);
 
 }

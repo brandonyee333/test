@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.FieldRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -36,12 +37,14 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Rachael Koestartyo
  */
-public class FieldRepositoryImpl extends BaseRepository {
+public class FieldRepositoryImpl
+	extends BaseRepository implements FieldRepositoryCustom {
 
 	public FieldRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countFields(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -57,6 +60,7 @@ public class FieldRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Transformation> getFieldTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable) {
 
@@ -110,6 +114,7 @@ public class FieldRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<Field> searchFields(
 		FilterHelper filterHelper, Pageable pageable) {
 
@@ -130,6 +135,7 @@ public class FieldRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public void updateDataSourceNameByDataSourceId(
 		Long dataSourceId, String dataSourceName) {
 

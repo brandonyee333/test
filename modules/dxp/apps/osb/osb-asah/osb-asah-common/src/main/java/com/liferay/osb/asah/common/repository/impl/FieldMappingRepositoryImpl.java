@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.FieldMappingRepositoryCustom;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -46,12 +47,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
-public class FieldMappingRepositoryImpl extends BaseRepository {
+public class FieldMappingRepositoryImpl
+	extends BaseRepository implements FieldMappingRepositoryCustom {
 
 	public FieldMappingRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countFieldMappings(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -67,6 +70,7 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public long countIndividualFieldMappings(@Nullable String name) {
 		Condition condition = DSL.field(
 			"ownerType"
@@ -112,6 +116,7 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<FieldMapping>
 		findByContextAndDataSourceIdAndFieldNameAndOwnerType(
 			String context, Long dataSourceId, String fieldName,
@@ -160,6 +165,7 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<FieldMapping> findByContextAndDataSourceIdAndOwnerType(
 		String context, Long dataSourceId, String ownerType) {
 
@@ -208,6 +214,7 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<FieldMapping>
 		findByDataSourceFieldNameAndDataSourceIdAndOwnerType(
 			String dataSourceFieldName, Long dataSourceId, String ownerType) {
@@ -250,6 +257,7 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<FieldMapping> findByDataSourceId(Long dataSourceId) {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
@@ -278,6 +286,7 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<Transformation> getFieldMappingTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable) {
 
@@ -329,6 +338,7 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<FieldMapping> searchFieldMappings(
 		FilterHelper filterHelper, Pageable pageable) {
 
@@ -381,6 +391,7 @@ public class FieldMappingRepositoryImpl extends BaseRepository {
 			));
 	}
 
+	@Override
 	public List<FieldMapping> searchIndividualFieldMappings(
 		@Nullable String name, Pageable pageable) {
 

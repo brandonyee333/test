@@ -16,24 +16,13 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 
-import java.util.List;
-
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.domain.Pageable;
 
 /**
  * @author André Miranda
  */
 @Primary
 public interface CustomAssetDashboardRepository
-	extends Repository<CustomAssetDashboard, String> {
-
-	@Cacheable
-	public long countCustomAssetDashboards(Long channelId, String keywords);
-
-	@Cacheable
-	public List<CustomAssetDashboard> searchCustomAssetDashboards(
-		Long channelId, String keywords, Pageable pageable);
-
+	extends CustomAssetDashboardRepositoryCustom,
+			Repository<CustomAssetDashboard, String> {
 }

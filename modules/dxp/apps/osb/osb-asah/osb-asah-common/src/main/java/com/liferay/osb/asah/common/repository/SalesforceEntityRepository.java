@@ -31,7 +31,8 @@ import org.springframework.data.repository.query.Param;
  * @author Marcellus Tavares
  */
 public interface SalesforceEntityRepository
-	extends Repository<SalesforceEntity, String> {
+	extends Repository<SalesforceEntity, String>,
+			SalesforceEntityRepositoryCustom {
 
 	@Cacheable
 	public long countByDataSourceIdAndType(
@@ -51,21 +52,6 @@ public interface SalesforceEntityRepository
 	@Cacheable
 	public boolean existsByDataSourceIdAndIdAndType(
 		Long dataSourceId, String id, SalesforceEntity.Type type);
-
-	public List<SalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
-		String after, String fieldKey, String fieldValue, int size,
-		SalesforceEntity.Type type);
-
-	@Cacheable
-	public List<SalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
-		Long dataSourceId, String fieldKey, String fieldValue,
-		SalesforceEntity.Type type);
-
-	@Cacheable
-	public List<String>
-		findByDataSourceIdAndFieldKeyEqualsAndTypeGroupByFieldKey(
-			Long dataSourceId, String fieldKey, String fieldValue,
-			SalesforceEntity.Type type, String groupByFieldKey);
 
 	@Cacheable
 	public Optional<SalesforceEntity> findByDataSourceIdAndIdAndType(

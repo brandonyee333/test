@@ -16,25 +16,17 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.RunLog;
 
-import java.util.Optional;
-
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Marcellus Tavares
  */
 public interface RunLogRepository
-	extends PagingAndSortingRepository<RunLog, Long> {
+	extends PagingAndSortingRepository<RunLog, Long>, RunLogRepositoryCustom {
 
 	@Modifying
 	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
-
-	public Optional<RunLog>
-		findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-			@Nullable Long dataSourceId, String naniteClassName,
-			@Nullable String status);
 
 }

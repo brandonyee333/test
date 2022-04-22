@@ -16,25 +16,19 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.EventAnalysis;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
  */
 public interface EventAnalysisRepository
-	extends Repository<EventAnalysis, Long> {
-
-	@Cacheable
-	public long countEventAnalyses(Long channelId, @Nullable String keywords);
+	extends EventAnalysisRepositoryCustom, Repository<EventAnalysis, Long> {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -43,9 +37,5 @@ public interface EventAnalysisRepository
 	@Cacheable
 	public Optional<EventAnalysis> findByChannelIdAndNameIgnoreCase(
 		Long channelId, String name);
-
-	@Cacheable
-	public List<EventAnalysis> searchEventAnalyses(
-		Long channelId, @Nullable String keywords, Pageable pageable);
 
 }

@@ -15,96 +15,12 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQEvent;
-import com.liferay.osb.asah.common.model.AnalysisType;
-import com.liferay.osb.asah.common.model.BreakdownItem;
-import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
-import com.liferay.osb.asah.common.model.EventAnalysisFilter;
-import com.liferay.osb.asah.common.model.Interval;
 
-import java.math.BigDecimal;
-
-import java.time.LocalDateTime;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Leslie Wong
  */
 public interface BQEventRepository
-	extends PagingAndSortingRepository<BQEvent, Long> {
-
-	public Integer countBQEvents(
-		Long channelId, @Nullable String keywords,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
-
-	public long countByEventDefinitionId(long eventDefinitionId);
-
-	public Integer countEventSessions(
-		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
-
-	public long countTotalBQEvents(
-		@Nullable Long channelId,
-		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate, String timeZoneId);
-
-	public long countUniqueIndividuals(
-		@Nullable Long channelId,
-		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate, String timeZoneId);
-
-	public Optional<BQEvent> findLastSeenBQEvent(
-		@Nullable Long eventDefinitionId);
-
-	public BigDecimal getAverageBQEventCountPerIndividual(
-		@Nullable Long channelId,
-		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate, String timeZoneId);
-
-	public Map<Object, Number> getBQEventPropertyValues(
-		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
-		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
-		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		@Nullable Long eventDefinitionId, Pageable pageable,
-		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
-		String timeZoneId);
-
-	public long getBQEventPropertyValuesCount(
-		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
-		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate, String timeZoneId);
-
-	public Map<String, Integer> getBQEventsCountGroupByEventDate(
-		Long channelId, Interval interval, String keywords,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
-
-	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
-		Long channelId, Interval interval, String keywords,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
-
-	public List<BQEvent> searchBQEvents(
-		Long channelId, @Nullable String keywords, Pageable pageable,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
-
+	extends BQEventRepositoryCustom, PagingAndSortingRepository<BQEvent, Long> {
 }

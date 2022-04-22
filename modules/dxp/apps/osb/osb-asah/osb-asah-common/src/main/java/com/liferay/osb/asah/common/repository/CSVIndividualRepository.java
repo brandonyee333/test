@@ -28,7 +28,7 @@ import org.springframework.data.repository.query.Param;
  * @author Marcellus Tavares
  */
 public interface CSVIndividualRepository
-	extends Repository<CSVIndividual, Long> {
+	extends CSVIndividualRepositoryCustom, Repository<CSVIndividual, Long> {
 
 	@Cacheable
 	public long countByDataSourceId(Long dataSourceId);
@@ -46,9 +46,5 @@ public interface CSVIndividualRepository
 	@Cacheable
 	public List<CSVIndividual> findByDataSourceId(
 		Long dataSourceId, Pageable pageable);
-
-	@Cacheable
-	public List<CSVIndividual> findByDataSourceIdAndFieldKeyEquals(
-		Long dataSourceId, String fieldKey, String fieldValue);
 
 }

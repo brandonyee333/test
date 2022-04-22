@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
+import com.liferay.osb.asah.common.repository.ExperimentRepositoryCustom;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,12 +44,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcos Martins
  */
-public class ExperimentRepositoryImpl extends BaseRepository {
+public class ExperimentRepositoryImpl
+	extends BaseRepository implements ExperimentRepositoryCustom {
 
 	public ExperimentRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
 		Long channelId, @Nullable String keywords, Pageable pageable) {
 
