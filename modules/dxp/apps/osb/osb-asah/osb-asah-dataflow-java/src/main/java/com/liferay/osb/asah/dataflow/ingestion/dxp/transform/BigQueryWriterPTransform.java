@@ -20,11 +20,14 @@ import com.liferay.osb.asah.dataflow.ingestion.dxp.util.TableRowConverter;
 
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.io.gcp.bigquery.InsertRetryPolicy;
+import org.apache.beam.sdk.io.gcp.bigquery.TableDestination;
 import org.apache.beam.sdk.io.gcp.bigquery.WriteResult;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.transforms.PTransform;
+import org.apache.beam.sdk.transforms.SerializableFunction;
 import org.apache.beam.sdk.transforms.SimpleFunction;
 import org.apache.beam.sdk.values.PCollection;
+import org.apache.beam.sdk.values.ValueInSingleWindow;
 
 /**
  * @author Riccardo Ferrari
@@ -52,7 +55,22 @@ public class BigQueryWriterPTransform<T>
 			String.format("Write to BigQuery table: %s", _tableName),
 			BigQueryIO.writeTableRows(
 			).to(
-				_tableName
+				new SerializableFunction
+					<ValueInSingleWindow<TableRow>, TableDestination>() {
+
+					@Override
+					public TableDestination apply(
+						ValueInSingleWindow<TableRow> valueInSingleWindow) {
+
+						TableRow tableRow = valueInSingleWindow.getValue();
+
+						return new TableDestination(
+							String.format(
+								"%s.%s", tableRow.get("projectId"), _tableName),
+							null);
+					}
+
+				}
 			).withCreateDisposition(
 				BigQueryIO.Write.CreateDisposition.CREATE_NEVER
 			).withExtendedErrorInfo(
