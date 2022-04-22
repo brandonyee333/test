@@ -2,7 +2,7 @@
 
 if [ "$#" -ne 1 ]
 then
-	echo "Usage: run [dxp-cloud-project]"
+	echo "Usage: run-event.sh [dxp-cloud-project]"
 	exit 1
 fi
 

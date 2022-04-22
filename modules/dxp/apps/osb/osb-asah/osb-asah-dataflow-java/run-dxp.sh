@@ -18,9 +18,9 @@ RUNNER=DataflowRunner
 ../gradlew clean assemble execute \
 	-Dexec.args=" \
 	--GCSBucket=${GCS_BUCKET} \
-		--defaultPubSubSubscription=${DEFAULT_PUBSUB_SUBSCRIPTION} \
+		--pubsubSubscription=${DEFAULT_PUBSUB_SUBSCRIPTION} \
 		--project=${PROJECT_ID} \
 		--region=${REGION} \
-		--runner=${RUNNER}
+		--runner=${RUNNER}" \
 	-Dexec.cleanupDaemonThreads=false \
 	-Dexec.mainClass=${MAIN_CLASS_NAME}
