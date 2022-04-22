@@ -196,8 +196,9 @@ function generate_wedeploy_profiles {
 
 		generate_wedeploy_profile ${profile_name} ${service_name} ${file_path}
 
-		if [ ${profile_name} != "prd" ] &&
-		   [ ${profile_name} != "uat" ]
+		if [ ${profile_name} != "uat" ] &&
+		   [ ${profile_name} != "dev" ] &&
+		   [ ${profile_name} != "prd" ]
 		then
 			continue;
 		fi
