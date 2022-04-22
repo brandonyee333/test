@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Account;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,10 @@ public interface AccountRepository
 	extends CustomAccountRepository, Repository<Account, Long> {
 
 	@Cacheable
+	public long countByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Date toCreateDate, Long id);
+
+	@Cacheable
 	public long countByIdAfter(Long accountId);
 
 	@Cacheable
@@ -42,6 +47,10 @@ public interface AccountRepository
 	@Cacheable
 	public Optional<Account> findByAccountPKAndDataSourceId(
 		String accountPK, Long dataSourceId);
+
+	@Cacheable
+	public List<Account> findByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Date toCreateDate, Long id, Pageable pageable);
 
 	@Cacheable
 	public List<Account> findByIdAfter(Long accountId, Pageable pageable);

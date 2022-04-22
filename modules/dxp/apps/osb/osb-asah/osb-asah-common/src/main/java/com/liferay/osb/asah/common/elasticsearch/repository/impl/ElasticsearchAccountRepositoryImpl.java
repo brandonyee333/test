@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
@@ -35,6 +36,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,6 +85,38 @@ public class ElasticsearchAccountRepositoryImpl
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(), _getQueryBuilder(accountPKs, filterHelper));
+	}
+
+	@Override
+	public long countByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Date toCreateDate, Long id) {
+
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
+
+		searchSourceBuilder.query(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.rangeQuery(
+					"dateCreated"
+				).gte(
+					DateUtil.toString(fromCreateDate)
+				).lte(
+					DateUtil.toString(toCreateDate)
+				)
+			).filter(
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					id
+				)
+			));
+		searchSourceBuilder.size(0);
+		searchSourceBuilder.sort(SortBuilders.fieldSort("id"));
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			getCollectionName(), searchSourceBuilder);
+
+		return HitsUtil.getTotalHitsCount(searchResponse.getHits());
 	}
 
 	@Override
@@ -140,6 +174,34 @@ public class ElasticsearchAccountRepositoryImpl
 		).map(
 			this::toEntity
 		);
+	}
+
+	@Override
+	public List<Account> findByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Date toCreateDate, Long id, Pageable pageable) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				getFieldSortBuilders(
+					getSortFieldNameConversionMap(), pageable.getSort()),
+				getFrom(pageable),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.rangeQuery(
+						"dateCreated"
+					).gte(
+						DateUtil.toString(fromCreateDate)
+					).lte(
+						DateUtil.toString(toCreateDate)
+					)
+				).filter(
+					QueryBuilders.rangeQuery(
+						"id"
+					).gt(
+						id
+					)
+				),
+				pageable.getPageSize()));
 	}
 
 	@Override
