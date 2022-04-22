@@ -241,12 +241,17 @@ public class AccountDog {
 		return accountNamesJSONObjects;
 	}
 
-	public Page<Account> getAccountPage(Long accountId, int size, Sort sort) {
+	public Page<Account> getAccountPage(
+		Date fromCreateDate, Long accountId, int size, Sort sort,
+		Date toCreateDate) {
+
 		return PageableExecutionUtils.getPage(
-			_accountRepository.findByIdAfter(
-				accountId, PageRequest.of(0, size, sort)),
+			_accountRepository.findByCreateDateBetweenAndIdAfter(
+				fromCreateDate, toCreateDate, accountId,
+				PageRequest.of(0, size, sort)),
 			PageRequest.of(0, size, sort),
-			() -> _accountRepository.countByIdAfter(accountId));
+			() -> _accountRepository.countByCreateDateBetweenAndIdAfter(
+				fromCreateDate, toCreateDate, accountId));
 	}
 
 	public List<Account> getAccounts(int size, int start) {
