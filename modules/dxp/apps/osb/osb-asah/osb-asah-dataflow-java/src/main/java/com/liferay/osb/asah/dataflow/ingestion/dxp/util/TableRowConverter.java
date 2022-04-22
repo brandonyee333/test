@@ -20,6 +20,7 @@ import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
 
 import java.lang.reflect.Field;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,10 @@ public class TableRowConverter {
 
 		if (fieldTypeClass.isPrimitive() ||
 			fieldTypeClassName.startsWith("java.lang")) {
+
+			if (value instanceof Object[]) {
+				return Arrays.toString((Object[])value);
+			}
 
 			return value;
 		}
