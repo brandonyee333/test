@@ -101,6 +101,23 @@ public class OSBAsahBatchCuratorBot {
 			});
 	}
 
+	@Scheduled(fixedDelay = DateUtil.HOUR)
+	public void runBigQueryDXPEntitiesNanite() {
+		if (_bigQueryDXPEntitiesNaniteRunnable == null) {
+			return;
+		}
+
+		try {
+			ProjectIdThreadLocal.forProjects(
+				_projectDog.getProjects(), _bigQueryDXPEntitiesNaniteRunnable);
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to execute BigQueryDXPEntitiesNaniteRunnable",
+				exception);
+		}
+	}
+
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void runContentRecommendationDataSolutionNanite() {
 		if (_contentRecommendationDataSolutionNaniteRunnable == null) {
@@ -321,6 +338,10 @@ public class OSBAsahBatchCuratorBot {
 
 	@Autowired
 	private AsahTaskScheduler _asahTaskScheduler;
+
+	@Autowired(required = false)
+	@Qualifier("bigQueryDXPEntitiesNaniteRunnable")
+	private Runnable _bigQueryDXPEntitiesNaniteRunnable;
 
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(50, 40);
