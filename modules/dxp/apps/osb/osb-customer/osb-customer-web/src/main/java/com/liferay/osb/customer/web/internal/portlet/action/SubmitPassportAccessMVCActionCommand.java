@@ -183,8 +183,9 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 					String entitlementName = entitlement.getName();
 
 					if ((hasCustomerAccessCountry &&
-						 entitlementName.equals(
-							 EntitlementConstants.NAME_CUSTOMER)) ||
+						 ArrayUtil.contains(
+							 EntitlementConstants.SUPPORT_ENTITLEMENTS,
+							 entitlementName)) ||
 						(hasPartnerAccessCountry &&
 						 entitlementName.equals(
 							 EntitlementConstants.NAME_PARTNER))) {
