@@ -1136,6 +1136,14 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
+	public List<Individual> searchIndividualIds(
+		Long channelId, FilterHelper filterHelper,
+		Boolean includeAnonymousUsers, Long id, int size) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public List<Individual> searchIndividuals(
 		FilterHelper filterHelper, Pageable pageable) {
 
