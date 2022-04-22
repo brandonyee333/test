@@ -32,10 +32,9 @@ import java.util.Date;
 public class BQEventDTO {
 
 	public BQEventDTO(BQEvent bqEvent) {
-		_name = bqEvent.getEventId();
-
 		_createDate = bqEvent.getCreateDate();
 		_canonicalUrl = bqEvent.getCanonicalUrl();
+		_name = bqEvent.getEventId();
 		_pageDescription = bqEvent.getDescription();
 		_pageKeywords = bqEvent.getKeywords();
 		_pageTitle = bqEvent.getTitle();
