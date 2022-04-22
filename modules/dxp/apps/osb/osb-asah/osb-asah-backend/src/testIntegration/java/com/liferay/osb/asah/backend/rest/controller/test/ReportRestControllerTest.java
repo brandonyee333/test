@@ -40,6 +40,23 @@ public class ReportRestControllerTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
+		name = "accounts", resourcePath = "accounts_4.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetReportAccountDTOPageDTO() throws Exception {
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_accounts_2.json", this),
+			_objectMapper.convertValue(
+				_reportRestController.getReportAccountDTOPageDTO(
+					"0", DateUtil.toUTCDate("2019-03-03T13:00:00.000Z"),
+					DateUtil.toUTCDate("2019-03-05T11:00:00.000Z")),
+				JSONObject.class),
+			false);
+	}
+
+	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -48,7 +65,7 @@ public class ReportRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void test() throws Exception {
+	public void testGetReportIndividualDTOPageDTO() throws Exception {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_individuals.json", this),
