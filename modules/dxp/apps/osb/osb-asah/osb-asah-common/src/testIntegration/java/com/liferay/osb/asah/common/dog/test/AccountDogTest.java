@@ -25,12 +25,14 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +46,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Vishal Reddy
@@ -115,6 +118,35 @@ public class AccountDogTest
 
 		_assertOSBTasksContextAfterUpdate(
 			"contains(filter, 'accounts.filterByCount(')");
+	}
+
+	@Test
+	public void testGetAccountPage() throws Exception {
+		for (int i = 1; i <= 5; i++) {
+			Account account = _accountDog.addAccount(
+				String.valueOf(i), new JSONObject(), _salesforceDataSource);
+
+			_asahTaskDog.deleteAsahTasks();
+
+			Date date = DateUtil.toUTCDate(
+				String.format("2022-04-0%dT12:00:00.000Z", i));
+
+			account.setCreateDate(date);
+			account.setModifiedDate(date);
+
+			_accountRepository.save(account);
+		}
+
+		Page<Account> accountPage = _accountDog.getAccountPage(
+			DateUtil.toUTCDate("2022-04-02T11:00:00.000Z"), -1L, 2,
+			Sort.by(Sort.Order.asc("id")),
+			DateUtil.toUTCDate("2022-04-04T13:00:00.000Z"));
+
+		Assertions.assertEquals(3, accountPage.getTotalElements());
+
+		List<Account> accounts = accountPage.getContent();
+
+		Assertions.assertEquals(2, accounts.size());
 	}
 
 	@Test
