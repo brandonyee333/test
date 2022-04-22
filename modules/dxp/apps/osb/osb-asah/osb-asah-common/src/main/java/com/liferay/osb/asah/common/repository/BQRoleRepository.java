@@ -12,9 +12,9 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.repository;
+package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.dataflow.emulator.entity.BQExpandoValue;
+import com.liferay.osb.asah.common.entity.BQRole;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -23,6 +23,5 @@ import org.springframework.stereotype.Repository;
  * @author Marcos Martins
  */
 @Repository
-public interface BQExpandoValueRepository
-	extends CrudRepository<BQExpandoValue, String> {
+public interface BQRoleRepository extends CrudRepository<BQRole, String> {
 }

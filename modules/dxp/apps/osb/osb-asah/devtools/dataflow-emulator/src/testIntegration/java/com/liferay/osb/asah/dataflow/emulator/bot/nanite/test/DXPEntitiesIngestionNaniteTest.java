@@ -14,22 +14,22 @@
 
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 
+import com.liferay.osb.asah.common.entity.BQExpandoValue;
+import com.liferay.osb.asah.common.entity.BQOrganization;
+import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
+import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
+import com.liferay.osb.asah.common.repository.BQGroupRepository;
+import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
+import com.liferay.osb.asah.common.repository.BQRoleRepository;
+import com.liferay.osb.asah.common.repository.BQTeamRepository;
+import com.liferay.osb.asah.common.repository.BQUserGroupRepository;
+import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.DXPEntitiesIngestionNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.OSBAsahDataflowEmulatorSpringTestContext;
-import com.liferay.osb.asah.dataflow.emulator.entity.BQExpandoValue;
-import com.liferay.osb.asah.dataflow.emulator.entity.BQOrganization;
-import com.liferay.osb.asah.dataflow.emulator.entity.BQUser;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQExpandoColumnRepository;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQExpandoValueRepository;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQGroupRepository;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQOrganizationRepository;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQRoleRepository;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQTeamRepository;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQUserGroupRepository;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQUserRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.HashMap;

@@ -12,9 +12,9 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.repository;
+package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.dataflow.emulator.entity.BQExpandoColumn;
+import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

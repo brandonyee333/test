@@ -12,17 +12,17 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.repository;
+package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.dataflow.emulator.entity.BQOrganization;
+import com.liferay.osb.asah.common.entity.BQIdentity;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author Marcos Martins
+ * @author Marcellus Tavares
  */
 @Repository
-public interface BQOrganizationRepository
-	extends CrudRepository<BQOrganization, String> {
+public interface BQIdentityRepository
+	extends CrudRepository<BQIdentity, String> {
 }

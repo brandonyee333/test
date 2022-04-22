@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.entity;
+package com.liferay.osb.asah.common.entity;
 
 import java.util.Date;
 
@@ -26,16 +26,30 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQExpandoColumn implements Persistable<String> {
+public class BQIdentity implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getColumnId() {
-		return _columnId;
+	public Long getChannelId() {
+		return _channelId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getDataType() {
-		return _dataType;
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getEmailAddressHashed() {
+		return _emailAddressHashed;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -43,20 +57,6 @@ public class BQExpandoColumn implements Persistable<String> {
 	@Override
 	public String getId() {
 		return _id;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Date getModifiedDate() {
-		if (_modifiedDate == null) {
-			return null;
-		}
-
-		return new Date(_modifiedDate.getTime());
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getName() {
-		return _name;
 	}
 
 	@Override
@@ -68,12 +68,22 @@ public class BQExpandoColumn implements Persistable<String> {
 		return false;
 	}
 
-	public void setColumnId(Long columnId) {
-		_columnId = columnId;
+	public void setChannelId(Long channelId) {
+		_channelId = channelId;
 	}
 
-	public void setDataType(String type) {
-		_dataType = type;
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
+	}
+
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
+	public void setEmailAddressHashed(String emailAddressHashed) {
+		_emailAddressHashed = emailAddressHashed;
 	}
 
 	public void setId(String id) {
@@ -84,21 +94,21 @@ public class BQExpandoColumn implements Persistable<String> {
 		_isNew = isNew;
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
-		if (modifiedDate != null) {
-			_modifiedDate = new Date(modifiedDate.getTime());
-		}
-	}
-
-	public void setName(String name) {
-		_name = name;
+	public void setUserId(String userId) {
+		_userId = userId;
 	}
 
 	@Transient
-	private Long _columnId;
+	private Long _channelId;
 
 	@Transient
-	private String _dataType;
+	private Date _createDate;
+
+	@Transient
+	private Long _dataSourceId;
+
+	@Transient
+	private String _emailAddressHashed;
 
 	@Transient
 	private String _id;
@@ -107,9 +117,6 @@ public class BQExpandoColumn implements Persistable<String> {
 	private Boolean _isNew;
 
 	@Transient
-	private Date _modifiedDate;
-
-	@Transient
-	private String _name;
+	private String _userId;
 
 }

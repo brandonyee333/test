@@ -12,33 +12,21 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.entity;
+package com.liferay.osb.asah.common.entity;
 
-import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Marcos Martins
  */
 @Table
-public class BQOrganization implements Persistable<String> {
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Long[] getExpandoColumnIds() {
-		return Arrays.copyOf(_expandoColumnIds, _expandoColumnIds.length);
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String[] getExpandoValueIds() {
-		return Arrays.copyOf(_expandoValueIds, _expandoValueIds.length);
-	}
+public class BQRole implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
@@ -62,24 +50,8 @@ public class BQOrganization implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getOrganizationId() {
-		return _organizationId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Long getParentOrganizationId() {
-		return _parentOrganizationId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getTreePath() {
-		return _treePath;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@Column("organizationtype")
-	public String getType() {
-		return _type;
+	public Long getRoleId() {
+		return _roleId;
 	}
 
 	@Override
@@ -89,16 +61,6 @@ public class BQOrganization implements Persistable<String> {
 		}
 
 		return false;
-	}
-
-	public void setExpandoColumnIds(Long[] expandoColumnIds) {
-		_expandoColumnIds = Arrays.copyOf(
-			expandoColumnIds, expandoColumnIds.length);
-	}
-
-	public void setExpandoValueIds(String[] expandoValueIds) {
-		_expandoValueIds = Arrays.copyOf(
-			expandoValueIds, expandoValueIds.length);
 	}
 
 	public void setId(String id) {
@@ -119,27 +81,9 @@ public class BQOrganization implements Persistable<String> {
 		_name = name;
 	}
 
-	public void setOrganizationId(Long organizationId) {
-		_organizationId = organizationId;
+	public void setRoleId(Long roleId) {
+		_roleId = roleId;
 	}
-
-	public void setParentOrganizationId(Long parentOrganizationId) {
-		_parentOrganizationId = parentOrganizationId;
-	}
-
-	public void setTreePath(String treePath) {
-		_treePath = treePath;
-	}
-
-	public void setType(String type) {
-		_type = type;
-	}
-
-	@Transient
-	private Long[] _expandoColumnIds = {};
-
-	@Transient
-	private String[] _expandoValueIds = {};
 
 	@Transient
 	private String _id;
@@ -154,15 +98,6 @@ public class BQOrganization implements Persistable<String> {
 	private String _name;
 
 	@Transient
-	private Long _organizationId;
-
-	@Transient
-	private Long _parentOrganizationId;
-
-	@Transient
-	private String _treePath;
-
-	@Transient
-	private String _type;
+	private Long _roleId;
 
 }

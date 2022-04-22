@@ -12,7 +12,9 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.entity;
+package com.liferay.osb.asah.common.entity;
+
+import java.util.Date;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -24,21 +26,11 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQExpandoValue implements Persistable<String> {
+public class BQGroup implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getClassPK() {
-		return _classPK;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public ClassType getClassType() {
-		return _classType;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Long getColumnId() {
-		return _columnId;
+	public Long getGroupId() {
+		return _groupId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -49,8 +41,17 @@ public class BQExpandoValue implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getValue() {
-		return _value;
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getName() {
+		return _name;
 	}
 
 	@Override
@@ -62,16 +63,8 @@ public class BQExpandoValue implements Persistable<String> {
 		return false;
 	}
 
-	public void setClassPK(Long classPK) {
-		_classPK = classPK;
-	}
-
-	public void setClassType(ClassType classType) {
-		_classType = classType;
-	}
-
-	public void setColumnId(Long columnId) {
-		_columnId = columnId;
+	public void setGroupId(Long groupId) {
+		_groupId = groupId;
 	}
 
 	public void setId(String id) {
@@ -82,24 +75,18 @@ public class BQExpandoValue implements Persistable<String> {
 		_isNew = isNew;
 	}
 
-	public void setValue(String value) {
-		_value = value;
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
 	}
 
-	public enum ClassType {
-
-		ACCOUNT, INDIVIDUAL, ORGANIZATION
-
+	public void setName(String name) {
+		_name = name;
 	}
 
 	@Transient
-	private Long _classPK;
-
-	@Transient
-	private ClassType _classType;
-
-	@Transient
-	private Long _columnId;
+	private Long _groupId;
 
 	@Transient
 	private String _id;
@@ -108,6 +95,9 @@ public class BQExpandoValue implements Persistable<String> {
 	private Boolean _isNew;
 
 	@Transient
-	private String _value;
+	private Date _modifiedDate;
+
+	@Transient
+	private String _name;
 
 }

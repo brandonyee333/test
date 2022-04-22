@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.dataflow.emulator.entity.BQIdentity;
-import com.liferay.osb.asah.dataflow.emulator.repository.BQIdentityRepository;
 
 import java.util.Date;
 import java.util.List;

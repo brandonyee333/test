@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.entity;
+package com.liferay.osb.asah.common.entity;
 
 import java.util.Date;
 
@@ -26,11 +26,16 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQGroup implements Persistable<String> {
+public class BQExpandoColumn implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getGroupId() {
-		return _groupId;
+	public Long getColumnId() {
+		return _columnId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getDataType() {
+		return _dataType;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -63,8 +68,12 @@ public class BQGroup implements Persistable<String> {
 		return false;
 	}
 
-	public void setGroupId(Long groupId) {
-		_groupId = groupId;
+	public void setColumnId(Long columnId) {
+		_columnId = columnId;
+	}
+
+	public void setDataType(String type) {
+		_dataType = type;
 	}
 
 	public void setId(String id) {
@@ -86,7 +95,10 @@ public class BQGroup implements Persistable<String> {
 	}
 
 	@Transient
-	private Long _groupId;
+	private Long _columnId;
+
+	@Transient
+	private String _dataType;
 
 	@Transient
 	private String _id;

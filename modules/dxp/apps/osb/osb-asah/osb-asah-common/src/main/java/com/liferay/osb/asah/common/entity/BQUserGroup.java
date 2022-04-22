@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.entity;
+package com.liferay.osb.asah.common.entity;
 
 import java.util.Date;
 
@@ -26,7 +26,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQRole implements Persistable<String> {
+public class BQUserGroup implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
@@ -50,8 +50,8 @@ public class BQRole implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getRoleId() {
-		return _roleId;
+	public Long getUserGroupId() {
+		return _userGroupId;
 	}
 
 	@Override
@@ -81,8 +81,8 @@ public class BQRole implements Persistable<String> {
 		_name = name;
 	}
 
-	public void setRoleId(Long roleId) {
-		_roleId = roleId;
+	public void setUserGroupId(Long userGroupId) {
+		_userGroupId = userGroupId;
 	}
 
 	@Transient
@@ -98,6 +98,6 @@ public class BQRole implements Persistable<String> {
 	private String _name;
 
 	@Transient
-	private Long _roleId;
+	private Long _userGroupId;
 
 }

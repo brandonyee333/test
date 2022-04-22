@@ -12,9 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.dataflow.emulator.entity;
-
-import java.util.Date;
+package com.liferay.osb.asah.common.entity;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -26,11 +24,21 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQTeam implements Persistable<String> {
+public class BQExpandoValue implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getGroupId() {
-		return _groupId;
+	public Long getClassPK() {
+		return _classPK;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public ClassType getClassType() {
+		return _classType;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getColumnId() {
+		return _columnId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -41,22 +49,8 @@ public class BQTeam implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Date getModifiedDate() {
-		if (_modifiedDate == null) {
-			return null;
-		}
-
-		return new Date(_modifiedDate.getTime());
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getName() {
-		return _name;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Long getTeamId() {
-		return _teamId;
+	public String getValue() {
+		return _value;
 	}
 
 	@Override
@@ -68,8 +62,16 @@ public class BQTeam implements Persistable<String> {
 		return false;
 	}
 
-	public void setGroupId(Long groupId) {
-		_groupId = groupId;
+	public void setClassPK(Long classPK) {
+		_classPK = classPK;
+	}
+
+	public void setClassType(ClassType classType) {
+		_classType = classType;
+	}
+
+	public void setColumnId(Long columnId) {
+		_columnId = columnId;
 	}
 
 	public void setId(String id) {
@@ -80,22 +82,24 @@ public class BQTeam implements Persistable<String> {
 		_isNew = isNew;
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
-		if (modifiedDate != null) {
-			_modifiedDate = new Date(modifiedDate.getTime());
-		}
+	public void setValue(String value) {
+		_value = value;
 	}
 
-	public void setName(String name) {
-		_name = name;
-	}
+	public enum ClassType {
 
-	public void setTeamId(Long teamId) {
-		_teamId = teamId;
+		ACCOUNT, INDIVIDUAL, ORGANIZATION
+
 	}
 
 	@Transient
-	private Long _groupId;
+	private Long _classPK;
+
+	@Transient
+	private ClassType _classType;
+
+	@Transient
+	private Long _columnId;
 
 	@Transient
 	private String _id;
@@ -104,12 +108,6 @@ public class BQTeam implements Persistable<String> {
 	private Boolean _isNew;
 
 	@Transient
-	private Date _modifiedDate;
-
-	@Transient
-	private String _name;
-
-	@Transient
-	private Long _teamId;
+	private String _value;
 
 }
