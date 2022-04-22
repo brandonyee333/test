@@ -164,12 +164,12 @@ public class EventDog {
 				bqEvent -> bqSessionMap.computeIfAbsent(
 					bqEvent.getSessionId(),
 					sessionId -> {
-						BQSession bqSession1 = new BQSession();
+						BQSession bqSession = new BQSession();
 
-						bqSession1.setId(bqEvent.getSessionId());
-						bqSession1.setSessionStart(bqEvent.getEventDate());
+						bqSession.setId(bqEvent.getSessionId());
+						bqSession.setSessionStart(bqEvent.getEventDate());
 
-						return bqSession1;
+						return bqSession;
 					})));
 	}
 
