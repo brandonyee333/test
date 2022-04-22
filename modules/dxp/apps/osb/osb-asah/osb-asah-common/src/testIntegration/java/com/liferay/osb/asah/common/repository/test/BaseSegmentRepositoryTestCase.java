@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -61,7 +62,7 @@ public abstract class BaseSegmentRepositoryTestCase
 
 		segment1.setActivitiesCount(1L);
 		segment1.setAuthorName("Test Test");
-		segment1.setCreateDate(new Date());
+		segment1.setCreateDate(DateUtil.addDays(new Date(), -5));
 		segment1.setFilter("(channelId eq '1')");
 		segment1.setLastActivityDate(new Date());
 		segment1.setName("Segment 1");
@@ -79,7 +80,7 @@ public abstract class BaseSegmentRepositoryTestCase
 		segment2.setChannelId(channel2.getId());
 
 		segment2.setAuthorName("Marcos Martins");
-		segment2.setCreateDate(new Date());
+		segment2.setCreateDate(DateUtil.addDays(new Date(), -3));
 		segment2.setFilter("(channelId eq '2')");
 		segment2.setName("Segment 2");
 		segment2.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
@@ -118,7 +119,7 @@ public abstract class BaseSegmentRepositoryTestCase
 
 		segment3.setAuthorName("Test Test");
 		segment3.setChannelId(channel2.getId());
-		segment3.setCreateDate(new Date());
+		segment3.setCreateDate(DateUtil.addDays(new Date(), -1));
 		segment3.setFilter(
 			"((dataSourceAccountPKs/accountPKs eq 'testAccount'))");
 		segment3.setName("Account: 123");
@@ -135,6 +136,10 @@ public abstract class BaseSegmentRepositoryTestCase
 		segment1 = entityModels.get(0);
 
 		_segment1Id = segment1.getId();
+
+		segment2 = entityModels.get(1);
+
+		_segment2Id = segment2.getId();
 
 		segment3 = entityModels.get(2);
 
@@ -177,6 +182,21 @@ public abstract class BaseSegmentRepositoryTestCase
 	}
 
 	@Test
+	public void testCountByCreateDateBetweenAndIdAfter() {
+		Date fromDate = DateUtil.addDays(new Date(), -4);
+		Date toDate = DateUtil.addDays(new Date(), -2);
+
+		Assertions.assertEquals(
+			1,
+			_segmentRepository.countByCreateDateBetweenAndIdAfter(
+				fromDate, toDate, 0L));
+		Assertions.assertEquals(
+			0,
+			_segmentRepository.countByCreateDateBetweenAndIdAfter(
+				fromDate, toDate, _segment2Id));
+	}
+
+	@Test
 	public void testCountByIdAfter() {
 		Assertions.assertEquals(4, _segmentRepository.countByIdAfter(0L));
 
@@ -212,6 +232,20 @@ public abstract class BaseSegmentRepositoryTestCase
 			entityModels,
 			_segmentRepository.findByChannelIdIsNotNullOrNameStartingWith(
 				"Account: ", PageRequest.of(0, 10, Sort.by("id"))));
+	}
+
+	@Test
+	public void testFindByCreateDateBetweenAndIdAfter() {
+		List<Segment> segments =
+			_segmentRepository.findByCreateDateBetweenAndIdAfter(
+				DateUtil.addDays(new Date(), -10), new Date(), _segment1Id - 1L,
+				PageRequest.of(0, 1));
+
+		Assertions.assertEquals(1, segments.size(), segments.toString());
+
+		Segment segment = segments.get(0);
+
+		Assertions.assertEquals(_segment1Id, segment.getId());
 	}
 
 	@Test
@@ -339,6 +373,7 @@ public abstract class BaseSegmentRepositoryTestCase
 	private IndividualRepository _individualRepository;
 
 	private Long _segment1Id;
+	private Long _segment2Id;
 	private Long _segment3Id;
 
 	@Autowired
