@@ -138,7 +138,17 @@ public class OSBAsahRepositoryTestExecutionListener
 	private Class<?> _getEntityClass(Class<?> repositoryClass) {
 		Type[] types = repositoryClass.getGenericInterfaces();
 
-		ParameterizedType parameterizedType = (ParameterizedType)types[0];
+		ParameterizedType parameterizedType = null;
+
+		for (Type type : types) {
+			if (type instanceof ParameterizedType) {
+				parameterizedType = (ParameterizedType)type;
+			}
+		}
+
+		if (parameterizedType == null) {
+			throw new IllegalArgumentException();
+		}
 
 		Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
 
