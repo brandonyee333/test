@@ -20,6 +20,7 @@ import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.TestEntity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +139,17 @@ public class TableRowConverterTest {
 	}
 
 	@Test
+	public void testObjectArrayFieldType() {
+		TestEntity testEntity = _newTestEntity(false);
+
+		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
+
+		Assertions.assertEquals(
+			Arrays.toString(testEntity.objectArray),
+			tableRow.get("objectArray"));
+	}
+
+	@Test
 	public void testPrimitiveFieldType() {
 		TestEntity testEntity = _newTestEntity(false);
 
@@ -178,6 +190,7 @@ public class TableRowConverterTest {
 				};
 
 				number = RandomUtils.nextLong();
+				objectArray = new Object[] {1, 2};
 				string = RandomStringUtils.randomAlphanumeric(8);
 				stringList = new ArrayList<String>() {
 					{

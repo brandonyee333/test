@@ -29,6 +29,7 @@ public class TestEntity implements Serializable {
 	public Map<String, String> map;
 	public List<Map<String, String>> mapList;
 	public long number;
+	public Object[] objectArray;
 	public String string;
 	public List<String> stringList;
 	public TestEntity testEntity;
