@@ -289,6 +289,140 @@
 			"type": "DAY"
 		}
 	},
+	"expandocolumn": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "className",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "columnId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataType",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "name",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			}
+		],
+		"timePartitioning": {
+			"field": "modifiedDate",
+			"type": "DAY"
+		}
+	},
+	"expandovalue": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "classPK",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "classType",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "columnId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "value",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			}
+		]
+	},
+	"group": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "groupId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "name",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			}
+		],
+		"timePartitioning": {
+			"field": "modifiedDate",
+			"type": "DAY"
+		}
+	},
 	"identity": {
 		"clusteringFields": [
 			"datasourceId",
@@ -528,6 +662,67 @@
 				"type": "INT64"
 			}
 		]
+	},
+	"organization": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "expandoColumnIds",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "name",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "organizationId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "parentOrganizationId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "treePath",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "type",
+				"type": "STRING"
+			}
+		],
+		"timePartitioning": {
+			"field": "modifiedDate",
+			"type": "DAY"
+		}
 	},
 	"product": {
 		"clusteringFields": [
@@ -790,6 +985,47 @@
 			}
 		]
 	},
+	"role": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "name",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "roleId",
+				"type": "INT64"
+			}
+		],
+		"timePartitioning": {
+			"field": "modifiedDate",
+			"type": "DAY"
+		}
+	},
 	"session": {
 		"clusteringFields": [
 			"channelId"
@@ -823,6 +1059,259 @@
 		],
 		"timePartitioning": {
 			"field": "sessionStart",
+			"type": "DAY"
+		}
+	},
+	"team": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "groupId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "name",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "teamId",
+				"type": "INT64"
+			}
+		],
+		"timePartitioning": {
+			"field": "modifiedDate",
+			"type": "DAY"
+		}
+	},
+	"user": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "NULLABLE",
+				"name": "accountId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "birthday",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "classNameId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "classPK",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "contactId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "createDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "emailAddress",
+				"type": "STRING"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "expandoColumnIds",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "firstName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "groupIds",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "jobTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "languageId",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "lastName",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "male",
+				"type": "BOOL"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "middleName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "organizationIds",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "parentContactId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "prefixId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "roleIds",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "screenName",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "suffixId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "teamIds",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "timeZoneId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "userGroupIds",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "userName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "uuid",
+				"type": "STRING"
+			}
+		],
+		"timePartitioning": {
+			"field": "modifiedDate",
+			"type": "DAY"
+		}
+	},
+	"usergroup": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "name",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userGroupId",
+				"type": "INT64"
+			}
+		],
+		"timePartitioning": {
+			"field": "modifiedDate",
 			"type": "DAY"
 		}
 	}
