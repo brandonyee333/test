@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Segment;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -35,6 +36,10 @@ public interface SegmentRepository
 	extends CustomSegmentRepository, Repository<Segment, Long> {
 
 	@Cacheable
+	public long countByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Date toCreateDate, Long id);
+
+	@Cacheable
 	public long countByIdAfter(Long id);
 
 	@CacheEvict(allEntries = true)
@@ -51,6 +56,10 @@ public interface SegmentRepository
 	@Cacheable
 	public List<Segment> findByChannelIdIsNotNullOrNameStartingWith(
 		String name, Pageable pageable);
+
+	@Cacheable
+	public List<Segment> findByCreateDateBetweenAndIdAfter(
+		Date fromCreateDate, Date toCreateDate, Long id, Pageable pageable);
 
 	@Cacheable
 	public List<Segment> findByIdAfter(Long id, Pageable pageable);
