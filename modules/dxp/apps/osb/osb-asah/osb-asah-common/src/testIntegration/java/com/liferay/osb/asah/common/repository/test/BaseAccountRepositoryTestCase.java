@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -181,6 +182,35 @@ public abstract class BaseAccountRepositoryTestCase
 					_defaultFilterStringConverterHelper,
 					"organization/field1/value eq 'field two'",
 					_accountsFilterStringConverterHelper)));
+	}
+
+	@Test
+	public void testCountByCreateDateBetweenAndIdAfter() {
+		Date todayDate = new Date();
+		Date yesterdayDate = DateUtil.addDays(new Date(), -1);
+
+		Assertions.assertEquals(
+			1,
+			accountRepository.countByCreateDateBetweenAndIdAfter(
+				yesterdayDate, todayDate, 0L));
+		Assertions.assertEquals(
+			0,
+			accountRepository.countByCreateDateBetweenAndIdAfter(
+				yesterdayDate, todayDate, _accountId));
+	}
+
+	@Test
+	public void testFindByCreateDateBetweenAndIdAfter() {
+		List<Account> accounts =
+			accountRepository.findByCreateDateBetweenAndIdAfter(
+				DateUtil.addDays(new Date(), -1), new Date(), _accountId - 1L,
+				PageRequest.of(0, 1));
+
+		Assertions.assertEquals(1, accounts.size(), accounts.toString());
+
+		Account account = accounts.get(0);
+
+		Assertions.assertEquals(_accountId, account.getId());
 	}
 
 	@Test
