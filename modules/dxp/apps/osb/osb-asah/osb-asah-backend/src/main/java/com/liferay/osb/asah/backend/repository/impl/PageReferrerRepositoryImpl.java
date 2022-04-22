@@ -86,16 +86,16 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 		Map<String, Double> result = new LinkedHashMap<>();
 
-		Field<String> referrerField = DSL.field("referrer", String.class);
-
 		Field<BigDecimal> accessesField = DSL.sum(
 			DSL.field("access", Long.class)
 		).as(
 			"accesses"
 		);
 
+		Field<String> referrerField = DSL.field("referrer", String.class);
+
 		dslContext.select(
-			referrerField, accessesField
+			accessesField, referrerField
 		).from(
 			"BQPageReferrers"
 		).where(
@@ -116,9 +116,9 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		).fetch(
 		).forEach(
 			record -> {
-				BigDecimal accessesBigDecimal = record.value2();
+				BigDecimal accessesBigDecimal = record.value1();
 
-				result.put(record.value1(), accessesBigDecimal.doubleValue());
+				result.put(record.value2(), accessesBigDecimal.doubleValue());
 			}
 		);
 
