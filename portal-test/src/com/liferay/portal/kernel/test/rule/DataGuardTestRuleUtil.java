@@ -511,6 +511,44 @@ public class DataGuardTestRuleUtil {
 		};
 	}
 
+	private static boolean _isOrphanResourcePermission(
+			Map<String, PersistedModelLocalService> persistedModelLocalServices,
+			ResourcePermission resourcePermission)
+		throws PortalException {
+
+		if ((resourcePermission.getScope() !=
+				ResourceConstants.SCOPE_INDIVIDUAL) ||
+			(resourcePermission.getPrimKeyId() == 0)) {
+
+			return false;
+		}
+
+		String className = resourcePermission.getName();
+
+		if (className.contains(
+				ResourceActionsUtil.getCompositeModelNameSeparator())) {
+
+			return true;
+		}
+
+		PersistedModelLocalService persistedModelLocalService =
+			persistedModelLocalServices.get(className);
+
+		if (persistedModelLocalService == null) {
+			return false;
+		}
+
+		PersistedModel persistedModel =
+			persistedModelLocalService.getPersistedModel(
+				resourcePermission.getPrimKeyId());
+
+		if (persistedModel == null) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private static void _orphanDetection(
 			String testClassName,
 			Map<String, List<BaseModel<?>>> previousDataMap,
@@ -542,18 +580,8 @@ public class DataGuardTestRuleUtil {
 			ResourcePermissionLocalServiceUtil.deleteResourcePermission(
 				resourcePermission);
 
-			if ((resourcePermission.getScope() !=
-					ResourceConstants.SCOPE_INDIVIDUAL) ||
-				(resourcePermission.getPrimKeyId() == 0)) {
-
-				continue;
-			}
-
-			String className = resourcePermission.getName();
-
-			if ((persistedModelLocalServices.get(className) != null) ||
-				className.contains(
-					ResourceActionsUtil.getCompositeModelNameSeparator())) {
+			if (_isOrphanResourcePermission(
+					persistedModelLocalServices, resourcePermission)) {
 
 				orphanResourcePermissions.add(resourcePermission);
 			}
