@@ -49,11 +49,13 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/accounts")
 	public PageDTO<ReportAccountDTO> getReportAccountDTOPageDTO(
-		@RequestParam(defaultValue = "") String after) {
+		@RequestParam(defaultValue = "") String after,
+		@RequestParam Date fromDate, @RequestParam Date toDate) {
 
 		return _toReportAccountDTOPageDTO(
 			_accountDog.getAccountPage(
-				_getId(after), _PAGE_SIZE, Sort.by(Sort.Order.asc("id"))));
+				fromDate, _getId(after), _PAGE_SIZE,
+				Sort.by(Sort.Order.asc("id")), toDate));
 	}
 
 	@GetMapping("/individuals")
