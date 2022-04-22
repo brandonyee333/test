@@ -62,7 +62,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 		_createBQEvent(new Date(), "pageViewed", "sessionId2");
 
 		_createUserSession(
-			"sessionId1", "2021-10-08T01:30:15.000Z",
+			"2021-10-08T01:30:15.000Z", "sessionId1",
 			"2021-10-08T01:00:00.000Z");
 	}
 
@@ -95,7 +95,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 	}
 
 	private void _createUserSession(
-		String sessionId, String sessionEndDateString,
+		String sessionEndDateString, String sessionId,
 		String sessionStartDateString) {
 
 		_userSessionDog.addBQSession(
