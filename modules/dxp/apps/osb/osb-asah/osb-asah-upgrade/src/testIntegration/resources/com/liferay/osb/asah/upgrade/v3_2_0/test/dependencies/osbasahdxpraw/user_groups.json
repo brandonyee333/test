@@ -1,0 +1,11 @@
+[
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"name": "Mac Users",
+			"userGroupId": "35452"
+		},
+		"id": "405057436532876741",
+		"type": "USER_GROUP"
+	}
+]

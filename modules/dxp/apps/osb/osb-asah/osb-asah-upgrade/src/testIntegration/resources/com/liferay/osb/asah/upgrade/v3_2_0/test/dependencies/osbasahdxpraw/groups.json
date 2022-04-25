@@ -1,0 +1,20 @@
+[
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": "20121",
+			"name": "Guest"
+		},
+		"id": "405057435148143169",
+		"type": "GROUP"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": "20125",
+			"name": "Global"
+		},
+		"id": "405057436480425079",
+		"type": "GROUP"
+	}
+]

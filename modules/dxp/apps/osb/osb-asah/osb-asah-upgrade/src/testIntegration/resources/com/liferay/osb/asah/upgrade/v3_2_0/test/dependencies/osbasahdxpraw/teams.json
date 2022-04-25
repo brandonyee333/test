@@ -1,0 +1,52 @@
+[
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": 20121,
+			"name": "teamA",
+			"teamId": "35472"
+		},
+		"id": "405057437515771690",
+		"type": "TEAM"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": 20121,
+			"name": "teamB",
+			"teamId": "35473"
+		},
+		"id": "405057437515771691",
+		"type": "TEAM"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": 20121,
+			"name": "teamC",
+			"teamId": "35474"
+		},
+		"id": "405057437515771692",
+		"type": "TEAM"
+	},
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"groupId": 20123,
+			"name": "teamD",
+			"teamId": "35475"
+		},
+		"id": "405057437515771693",
+		"type": "TEAM"
+	},
+	{
+		"dataSourceId": "405057430327289649",
+		"fields": {
+			"groupId": 20122,
+			"name": "teamE",
+			"teamId": "35476"
+		},
+		"id": "405057437515771694",
+		"type": "TEAM"
+	}
+]
