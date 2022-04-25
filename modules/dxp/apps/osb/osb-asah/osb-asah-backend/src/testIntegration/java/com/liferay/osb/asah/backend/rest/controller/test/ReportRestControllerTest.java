@@ -77,6 +77,24 @@ public class ReportRestControllerTest
 			false);
 	}
 
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_4.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetReportSegmentDTOPageDTO() throws Exception {
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_segments.json", this),
+			_objectMapper.convertValue(
+				_reportRestController.getReportSegmentDTOPageDTO(
+					"0", DateUtil.toUTCDate("2019-02-03T10:00:00.000Z"),
+					DateUtil.toUTCDate("2019-02-06T13:00:00.000Z")),
+				JSONObject.class),
+			false);
+	}
+
 	@Autowired
 	private ObjectMapper _objectMapper;
 
