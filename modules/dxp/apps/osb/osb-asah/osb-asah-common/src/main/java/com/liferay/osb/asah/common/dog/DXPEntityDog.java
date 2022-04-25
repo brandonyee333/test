@@ -62,7 +62,7 @@ public class DXPEntityDog {
 	}
 
 	public void deleteByFieldNameEqualsAndType(
-		String fieldName, String fieldValue, DXPEntity.Type type) {
+		String fieldName, Object fieldValue, DXPEntity.Type type) {
 
 		_dxpEntityRepository.deleteByFieldNameAndFieldValueAndType(
 			fieldName, fieldValue, type);

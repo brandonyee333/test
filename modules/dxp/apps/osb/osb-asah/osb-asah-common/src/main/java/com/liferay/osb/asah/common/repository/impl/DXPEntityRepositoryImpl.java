@@ -34,7 +34,6 @@ import org.jooq.Record1;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
-import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Page;
@@ -375,7 +374,9 @@ public class DXPEntityRepositoryImpl
 			return field.in((Collection)fieldValue);
 		}
 
-		return field.eq(fieldValue);
+		Field<String> castField = field.cast(String.class);
+
+		return castField.eq(DSL.cast(fieldValue, String.class));
 	}
 
 	private String _createFieldPath(String fieldName) {
@@ -424,12 +425,12 @@ public class DXPEntityRepositoryImpl
 				conditions.add(
 					DSL.or(
 						DSL.field(
-							"fields->firstName", String.class
+							"fields->>'firstName'", String.class
 						).contains(
 							keywords
 						),
 						DSL.field(
-							"fields->lastName", String.class
+							"fields->>'lastName'", String.class
 						).contains(
 							keywords
 						)));
@@ -439,7 +440,7 @@ public class DXPEntityRepositoryImpl
 
 			conditions.add(
 				DSL.field(
-					"fields->name", String.class
+					"fields->>'name'", String.class
 				).contains(
 					keywords
 				));
@@ -447,12 +448,13 @@ public class DXPEntityRepositoryImpl
 			return conditions;
 		}
 
-		if ((type.isGroup() || type.isTeam()) &&
+		if ((type.isGroup() || type.isOrganization() || type.isRole() ||
+			 type.isTeam() || type.isUserGroup()) &&
 			StringUtils.isNotBlank(keywords)) {
 
 			conditions.add(
 				DSL.field(
-					"fields->name", String.class
+					"fields->>'name'", String.class
 				).contains(
 					keywords
 				));
@@ -461,13 +463,13 @@ public class DXPEntityRepositoryImpl
 			conditions.add(
 				DSL.or(
 					DSL.field(
-						"fields->firstName", String.class
-					).contains(
+						"fields->>'firstName'", String.class
+					).containsIgnoreCase(
 						keywords
 					),
 					DSL.field(
-						"fields->lastName", String.class
-					).contains(
+						"fields->>'lastName'", String.class
+					).containsIgnoreCase(
 						keywords
 					)));
 		}
