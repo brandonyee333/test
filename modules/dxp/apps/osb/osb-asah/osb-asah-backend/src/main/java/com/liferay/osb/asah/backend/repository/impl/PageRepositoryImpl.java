@@ -34,6 +34,7 @@ import org.jooq.Field;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -89,6 +90,25 @@ public class PageRepositoryImpl implements PageRepository {
 		);
 	}
 
+	@Override
+	public PageVisitorBehaviorMetric getPageVisitorBehaviorMetrics(
+		Long channelId, Pageable pageable, TimeRange timeRange, ZoneId zoneId) {
+
+		List<Field<BigDecimal>> metricFields = _getMetricFields(
+			"bounces", "entrances", "exits", "sessions", "timeonpage", "views",
+			"visitors");
+
+		return dslContext.select(
+			metricFields.toArray(new Field[0])
+		).from(
+			"BQPages"
+		).where(
+			_createWhereClause(null, channelId, timeRange, null, zoneId)
+		).fetchOne(
+			record -> new PageVisitorBehaviorMetric(record.intoMap())
+		);
+	}
+
 	@Autowired
 	protected DSLContext dslContext;
 
@@ -96,12 +116,7 @@ public class PageRepositoryImpl implements PageRepository {
 		String canonicalUrl, Long channelId, TimeRange timeRange, String title,
 		ZoneId zoneId) {
 
-		return DSL.and(
-			DSL.field(
-				"canonicalUrl"
-			).eq(
-				canonicalUrl
-			),
+		Condition condition = DSL.and(
 			DSL.field(
 				"channelId"
 			).eq(
@@ -114,12 +129,27 @@ public class PageRepositoryImpl implements PageRepository {
 					timeRange.getStartLocalDateTime(), zoneId),
 				DateUtil.toUTCLocalDateTime(
 					timeRange.getEndLocalDateTime(), zoneId)
-			),
-			DSL.field(
-				"title"
-			).eq(
-				title
 			));
+
+		if (canonicalUrl != null) {
+			condition = condition.and(
+				DSL.field(
+					"canonicalUrl"
+				).eq(
+					canonicalUrl
+				));
+		}
+
+		if (title != null) {
+			condition = condition.and(
+				DSL.field(
+					"title"
+				).eq(
+					title
+				));
+		}
+
+		return condition;
 	}
 
 	private List<Field<?>> _getAvgMetricFields(Map<String, String> fieldNames) {
