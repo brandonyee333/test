@@ -516,10 +516,7 @@ public class DataGuardTestRuleUtil {
 			ResourcePermission resourcePermission)
 		throws PortalException {
 
-		if ((resourcePermission.getScope() !=
-				ResourceConstants.SCOPE_INDIVIDUAL) ||
-			(resourcePermission.getPrimKeyId() == 0)) {
-
+		if (resourcePermission.getPrimKeyId() == 0) {
 			return false;
 		}
 
