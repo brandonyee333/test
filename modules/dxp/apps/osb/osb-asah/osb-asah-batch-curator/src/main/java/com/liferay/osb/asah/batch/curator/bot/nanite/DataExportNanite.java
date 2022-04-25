@@ -14,15 +14,10 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.fasterxml.jackson.core.JsonFactory;
-
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
-import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.ReportDataExporterFactory;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataExportTask;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -76,11 +71,6 @@ public class DataExportNanite extends BaseNanite {
 			DataExportTask dataExportTask, OutputStream outputStream)
 		throws Exception {
 
-		if (dataExportTask.getType() == DataExportTask.Type.PAGE) {
-			return new PageDataExporter(
-				_jsonFactory, outputStream, _cerebroInfoElasticsearchInvoker);
-		}
-
 		return _reportDataExporterFactory.create(dataExportTask, outputStream);
 	}
 
@@ -111,15 +101,11 @@ public class DataExportNanite extends BaseNanite {
 
 	private static final Log _log = LogFactory.getLog(DataExportNanite.class);
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
 	private final DataExportTaskDog _dataExportTaskDog;
 
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPath;
 
-	private final JsonFactory _jsonFactory = new JsonFactory();
 	private final ReportDataExporterFactory _reportDataExporterFactory;
 
 }
