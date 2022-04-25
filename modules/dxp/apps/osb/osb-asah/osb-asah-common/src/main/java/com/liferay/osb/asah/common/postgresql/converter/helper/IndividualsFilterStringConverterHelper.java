@@ -180,7 +180,7 @@ public class IndividualsFilterStringConverterHelper
 		if (fieldName.equals("userId") && _isEqualityOperator(operator)) {
 			return _getUserIdCondition(
 				operator.equalsIgnoreCase("ne"),
-				(String)StringUtil.toObject(valueString));
+				Long.valueOf((String)StringUtil.toObject(valueString)));
 		}
 
 		return null;

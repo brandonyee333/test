@@ -163,7 +163,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		if (fieldName.equals("userId") && _isEqualityOperator(operator)) {
 			return _getUserIdQueryBuilder(
 				operator.equalsIgnoreCase("ne"),
-				(String)StringUtil.toObject(valueString));
+				Long.valueOf((String)StringUtil.toObject(valueString)));
 		}
 
 		return null;
@@ -889,7 +889,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		return boolQueryBuilder;
 	}
 
-	private QueryBuilder _getUserIdQueryBuilder(boolean negate, String userId) {
+	private QueryBuilder _getUserIdQueryBuilder(boolean negate, Long userId) {
 		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
 			Collections.singletonMap("id", userId), DXPEntity.Type.USER);
 

@@ -554,7 +554,7 @@ public class DataSourceDog {
 			}
 
 			_dxpEntityDog.deleteByFieldNameEqualsAndType(
-				"dataSourceId", String.valueOf(dataSourceId),
+				"dataSourceId", dataSourceId,
 				DXPEntity.Type.ofCollectionName(collectionName));
 
 			if (StringUtils.equals(collectionName, "organizations")) {

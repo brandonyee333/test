@@ -453,8 +453,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 			List<? extends DXPEntity> dxpEntities =
 				_dxpEntityDog.findByFieldsAndType(
-					Collections.singletonMap(
-						"id", ListUtil.map(referencedIds, String::valueOf)),
+					Collections.singletonMap("id", referencedIds),
 					DXPEntity.Type.ofCollectionName(collectionName));
 
 			jsonArray = JSONUtil.toJSONArray(
