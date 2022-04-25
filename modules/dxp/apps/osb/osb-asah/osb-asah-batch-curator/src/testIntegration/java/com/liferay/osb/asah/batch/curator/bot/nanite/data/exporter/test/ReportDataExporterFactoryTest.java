@@ -12,8 +12,15 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
+package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.test;
 
+import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.AccountDataExporter;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.BaseReportDataExporter;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.IndividualDataExporter;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.ReportDataExporterFactory;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SegmentDataExporter;
 import com.liferay.osb.asah.common.entity.DataExportTask;
 
 import java.io.ByteArrayOutputStream;
@@ -26,17 +33,27 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
 /**
  * @author Alejo Ceballos
  */
-public class ReportDataExporterFactoryTest {
+@TestExecutionListeners(
+	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
+	value = DependencyInjectionTestExecutionListener.class
+)
+public class ReportDataExporterFactoryTest
+	implements OSBAsahBatchCuratorSpringTestContext {
 
 	@EnumSource(
 		names = {"ACCOUNT", "INDIVIDUAL", "SEGMENT"},
 		value = DataExportTask.Type.class
 	)
 	@ParameterizedTest
-	public void testCreateReportDataExporter(DataExportTask.Type type)
+	public void testCreateReportDataExporterForAccountIndividualAndSegment(
+			DataExportTask.Type type)
 		throws Exception {
 
 		DataExportTask dataExportTask = new DataExportTask();
@@ -51,7 +68,20 @@ public class ReportDataExporterFactoryTest {
 	}
 
 	@Test
-	public void testCreateReportDataExporterWithInvalidType() {
+	public void testCreateReportDataExporterForPage() throws Exception {
+		DataExportTask dataExportTask = new DataExportTask();
+
+		dataExportTask.setType(DataExportTask.Type.PAGE);
+
+		BaseReportDataExporter baseReportDataExporter =
+			_injectedReportDataExporterFactory.create(
+				dataExportTask, new ByteArrayOutputStream());
+
+		_assertMatchInstance(baseReportDataExporter, DataExportTask.Type.PAGE);
+	}
+
+	@Test
+	public void testCreateReportDataExporterForPageWithoutInvokerBreaks() {
 		DataExportTask dataExportTask = new DataExportTask();
 
 		dataExportTask.setType(DataExportTask.Type.PAGE);
@@ -74,6 +104,9 @@ public class ReportDataExporterFactoryTest {
 		else if (expectedType == DataExportTask.Type.INDIVIDUAL) {
 			dataExporterClass = IndividualDataExporter.class;
 		}
+		else if (expectedType == DataExportTask.Type.PAGE) {
+			dataExporterClass = PageDataExporter.class;
+		}
 		else if (expectedType == DataExportTask.Type.SEGMENT) {
 			dataExporterClass = SegmentDataExporter.class;
 		}
@@ -81,6 +114,9 @@ public class ReportDataExporterFactoryTest {
 		MatcherAssert.assertThat(
 			baseReportDataExporter, Matchers.instanceOf(dataExporterClass));
 	}
+
+	@Autowired
+	private ReportDataExporterFactory _injectedReportDataExporterFactory;
 
 	private final ReportDataExporterFactory _reportDataExporterFactory =
 		new ReportDataExporterFactory(null);
