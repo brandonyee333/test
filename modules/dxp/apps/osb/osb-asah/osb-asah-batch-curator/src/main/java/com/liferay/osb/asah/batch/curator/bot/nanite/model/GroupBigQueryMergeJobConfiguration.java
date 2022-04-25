@@ -22,9 +22,10 @@ import java.util.Map;
 /**
  * @author Rachael Koestartyo
  */
-public class GroupMergeInfo extends MergeInfo {
+public class GroupBigQueryMergeJobConfiguration
+	extends BigQueryMergeJobConfiguration {
 
-	public GroupMergeInfo(String projectId) {
+	public GroupBigQueryMergeJobConfiguration(String projectId) {
 		super(projectId);
 	}
 

@@ -15,31 +15,36 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.model;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.text.StringSubstitutor;
+
 /**
  * @author Rachael Koestartyo
  */
-public class UserGroupMergeInfo extends MergeInfo {
+public class ExpandoValueBigQueryMergeJobConfiguration
+	extends BigQueryMergeJobConfiguration {
 
-	public UserGroupMergeInfo(String projectId) {
+	public ExpandoValueBigQueryMergeJobConfiguration(String projectId) {
 		super(projectId);
 	}
 
 	@Override
 	public List<String> getInsertFields() {
 		return Arrays.asList(
-			"dataSourceId", "id.sha256HexId", "modifiedDate", "name",
-			"projectId", "userGroupId");
+			"classPK", "classType.type", "columnId", "dataSourceId",
+			"id.sha256HexId", "projectId", "value");
 	}
 
 	@Override
 	public Map<String, String> getJoinFields() {
 		Map<String, String> joinFields = new HashMap<>();
 
-		joinFields.put("classPK", "userGroupId");
+		joinFields.put("classPK", "classPK");
+		joinFields.put("columnId", "columnId");
 		joinFields.put("dataSourceId", "dataSourceId");
 		joinFields.put("projectId", "projectId");
 
@@ -48,28 +53,30 @@ public class UserGroupMergeInfo extends MergeInfo {
 
 	@Override
 	public String getReplicaTable() {
-		return getProjectId() + ".usergroup";
+		return getProjectId() + ".expandovalue";
 	}
 
 	@Override
 	public String getStagingTableSQL(String previousRunDateString) {
-		return buildStagingTableSQL(
-			previousRunDateString,
-			String.join(
-				"", "*, ",
-				buildSelectFields(
-					new HashMap<String, String>() {
-						{
-							put("name", "STRING");
-							put("userGroupId", "INT64");
-						}
-					})),
-			"com.liferay.portal.kernel.model.Team");
+		Map<String, String> mergeQueryValues = new HashMap<>();
+
+		mergeQueryValues.put(
+			"organizationType", "com.liferay.portal.kernel.model.Organization");
+		mergeQueryValues.put("previousRunDateString", previousRunDateString);
+		mergeQueryValues.put(
+			"sha256HexId", getQueryTemplate("expandoValueSHA256HexId"));
+		mergeQueryValues.put("stagingTable", getProjectId() + ".dxpentity");
+		mergeQueryValues.put(
+			"userType", "com.liferay.portal.kernel.model.User");
+
+		return StringSubstitutor.replace(
+			getQueryTemplate("expandoValueStaging"), mergeQueryValues, "{",
+			"}");
 	}
 
 	@Override
 	public List<String> getUpdateFields() {
-		return Arrays.asList("modifiedDate", "name");
+		return Collections.singletonList("value");
 	}
 
 }

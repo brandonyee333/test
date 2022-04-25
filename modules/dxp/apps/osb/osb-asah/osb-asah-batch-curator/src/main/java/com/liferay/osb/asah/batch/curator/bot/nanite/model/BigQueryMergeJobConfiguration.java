@@ -33,9 +33,9 @@ import org.apache.commons.text.StringSubstitutor;
 /**
  * @author Rachael Koestartyo
  */
-public abstract class MergeInfo implements Serializable {
+public abstract class BigQueryMergeJobConfiguration implements Serializable {
 
-	public MergeInfo(String projectId) {
+	public BigQueryMergeJobConfiguration(String projectId) {
 		_projectId = projectId;
 	}
 

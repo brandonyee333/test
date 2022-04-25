@@ -22,24 +22,25 @@ import java.util.Map;
 /**
  * @author Rachael Koestartyo
  */
-public class RoleMergeInfo extends MergeInfo {
+public class TeamBigQueryMergeJobConfiguration
+	extends BigQueryMergeJobConfiguration {
 
-	public RoleMergeInfo(String projectId) {
+	public TeamBigQueryMergeJobConfiguration(String projectId) {
 		super(projectId);
 	}
 
 	@Override
 	public List<String> getInsertFields() {
 		return Arrays.asList(
-			"dataSourceId", "id.sha256HexId", "modifiedDate", "name",
-			"projectId", "roleId");
+			"dataSourceId", "groupId", "id.sha256HexId", "modifiedDate", "name",
+			"projectId", "teamId");
 	}
 
 	@Override
 	public Map<String, String> getJoinFields() {
 		Map<String, String> joinFields = new HashMap<>();
 
-		joinFields.put("classPK", "roleId");
+		joinFields.put("classPK", "teamId");
 		joinFields.put("dataSourceId", "dataSourceId");
 		joinFields.put("projectId", "projectId");
 
@@ -48,7 +49,7 @@ public class RoleMergeInfo extends MergeInfo {
 
 	@Override
 	public String getReplicaTable() {
-		return getProjectId() + ".role";
+		return getProjectId() + ".team";
 	}
 
 	@Override
@@ -60,16 +61,17 @@ public class RoleMergeInfo extends MergeInfo {
 				buildSelectFields(
 					new HashMap<String, String>() {
 						{
+							put("groupId", "INT64");
 							put("name", "STRING");
-							put("roleId", "INT64");
+							put("teamId", "INT64");
 						}
 					})),
-			"com.liferay.portal.kernel.model.Role");
+			"com.liferay.portal.kernel.model.Team");
 	}
 
 	@Override
 	public List<String> getUpdateFields() {
-		return Arrays.asList("modifiedDate", "name");
+		return Arrays.asList("groupId", "modifiedDate", "name");
 	}
 
 }

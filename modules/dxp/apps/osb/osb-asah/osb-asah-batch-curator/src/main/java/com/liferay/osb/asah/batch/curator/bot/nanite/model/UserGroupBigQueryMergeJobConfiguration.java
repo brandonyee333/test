@@ -22,24 +22,25 @@ import java.util.Map;
 /**
  * @author Rachael Koestartyo
  */
-public class TeamMergeInfo extends MergeInfo {
+public class UserGroupBigQueryMergeJobConfiguration
+	extends BigQueryMergeJobConfiguration {
 
-	public TeamMergeInfo(String projectId) {
+	public UserGroupBigQueryMergeJobConfiguration(String projectId) {
 		super(projectId);
 	}
 
 	@Override
 	public List<String> getInsertFields() {
 		return Arrays.asList(
-			"dataSourceId", "groupId", "id.sha256HexId", "modifiedDate", "name",
-			"projectId", "teamId");
+			"dataSourceId", "id.sha256HexId", "modifiedDate", "name",
+			"projectId", "userGroupId");
 	}
 
 	@Override
 	public Map<String, String> getJoinFields() {
 		Map<String, String> joinFields = new HashMap<>();
 
-		joinFields.put("classPK", "teamId");
+		joinFields.put("classPK", "userGroupId");
 		joinFields.put("dataSourceId", "dataSourceId");
 		joinFields.put("projectId", "projectId");
 
@@ -48,7 +49,7 @@ public class TeamMergeInfo extends MergeInfo {
 
 	@Override
 	public String getReplicaTable() {
-		return getProjectId() + ".team";
+		return getProjectId() + ".usergroup";
 	}
 
 	@Override
@@ -60,9 +61,8 @@ public class TeamMergeInfo extends MergeInfo {
 				buildSelectFields(
 					new HashMap<String, String>() {
 						{
-							put("groupId", "INT64");
 							put("name", "STRING");
-							put("teamId", "INT64");
+							put("userGroupId", "INT64");
 						}
 					})),
 			"com.liferay.portal.kernel.model.Team");
@@ -70,7 +70,7 @@ public class TeamMergeInfo extends MergeInfo {
 
 	@Override
 	public List<String> getUpdateFields() {
-		return Arrays.asList("groupId", "modifiedDate", "name");
+		return Arrays.asList("modifiedDate", "name");
 	}
 
 }

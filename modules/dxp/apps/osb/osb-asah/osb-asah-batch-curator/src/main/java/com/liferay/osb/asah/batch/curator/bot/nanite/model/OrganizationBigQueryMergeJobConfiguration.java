@@ -22,24 +22,26 @@ import java.util.Map;
 /**
  * @author Rachael Koestartyo
  */
-public class ExpandoColumnMergeInfo extends MergeInfo {
+public class OrganizationBigQueryMergeJobConfiguration
+	extends BigQueryMergeJobConfiguration {
 
-	public ExpandoColumnMergeInfo(String projectId) {
+	public OrganizationBigQueryMergeJobConfiguration(String projectId) {
 		super(projectId);
 	}
 
 	@Override
 	public List<String> getInsertFields() {
 		return Arrays.asList(
-			"className", "columnId", "dataSourceId", "dataType",
-			"id.sha256HexId", "modifiedDate", "name", "projectId");
+			"dataSourceId", "expandoColumnIds", "id.sha256HexId",
+			"modifiedDate", "name", "organizationId", "parentOrganizationId",
+			"projectId", "treePath", "type.organizationType");
 	}
 
 	@Override
 	public Map<String, String> getJoinFields() {
 		Map<String, String> joinFields = new HashMap<>();
 
-		joinFields.put("classPK", "columnId");
+		joinFields.put("classPK", "organizationId");
 		joinFields.put("dataSourceId", "dataSourceId");
 		joinFields.put("projectId", "projectId");
 
@@ -48,7 +50,7 @@ public class ExpandoColumnMergeInfo extends MergeInfo {
 
 	@Override
 	public String getReplicaTable() {
-		return getProjectId() + ".expandocolumn";
+		return getProjectId() + ".organization";
 	}
 
 	@Override
@@ -60,18 +62,22 @@ public class ExpandoColumnMergeInfo extends MergeInfo {
 				buildSelectFields(
 					new HashMap<String, String>() {
 						{
-							put("className", "STRING");
-							put("columnId", "INT64");
-							put("dataType", "STRING");
 							put("name", "STRING");
+							put("organizationId", "INT64");
+							put("parentOrganizationId", "INT64");
+							put("treePath", "STRING");
+							put("type.organizationType", "STRING");
 						}
-					})),
-			"com.liferay.expando.kernel.model.ExpandoColumn");
+					}),
+				", ", buildSelectExpandoColumnIds()),
+			"com.liferay.portal.kernel.model.Organization");
 	}
 
 	@Override
 	public List<String> getUpdateFields() {
-		return Arrays.asList("className", "dataType", "modifiedDate", "name");
+		return Arrays.asList(
+			"expandoColumnIds", "modifiedDate", "name", "type.organizationType",
+			"parentOrganizationId", "treePath");
 	}
 
 }

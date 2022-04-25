@@ -19,15 +19,15 @@ import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.JobId;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.ExpandoColumnMergeInfo;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.ExpandoValueMergeInfo;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.GroupMergeInfo;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.MergeInfo;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.OrganizationMergeInfo;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.RoleMergeInfo;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.TeamMergeInfo;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.UserGroupMergeInfo;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.UserMergeInfo;
+import com.liferay.osb.asah.batch.curator.bot.nanite.model.BigQueryMergeJobConfiguration;
+import com.liferay.osb.asah.batch.curator.bot.nanite.model.ExpandoColumnBigQueryMergeJobConfiguration;
+import com.liferay.osb.asah.batch.curator.bot.nanite.model.ExpandoValueBigQueryMergeJobConfiguration;
+import com.liferay.osb.asah.batch.curator.bot.nanite.model.GroupBigQueryMergeJobConfiguration;
+import com.liferay.osb.asah.batch.curator.bot.nanite.model.OrganizationBigQueryMergeJobConfiguration;
+import com.liferay.osb.asah.batch.curator.bot.nanite.model.RoleBigQueryMergeJobConfiguration;
+import com.liferay.osb.asah.batch.curator.bot.nanite.model.TeamBigQueryMergeJobConfiguration;
+import com.liferay.osb.asah.batch.curator.bot.nanite.model.UserBigQueryMergeJobConfiguration;
+import com.liferay.osb.asah.batch.curator.bot.nanite.model.UserGroupBigQueryMergeJobConfiguration;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -81,20 +81,24 @@ public class BigQueryDXPEntitiesNanite extends BaseNanite {
 
 		String projectId = ProjectIdThreadLocal.getProjectId();
 
-		List<MergeInfo> mergeInfos = Arrays.asList(
-			new ExpandoColumnMergeInfo(projectId),
-			new ExpandoValueMergeInfo(projectId), new GroupMergeInfo(projectId),
-			new OrganizationMergeInfo(projectId), new RoleMergeInfo(projectId),
-			new TeamMergeInfo(projectId), new UserGroupMergeInfo(projectId),
-			new UserMergeInfo(projectId));
+		List<BigQueryMergeJobConfiguration> bigQueryMergeJobConfigurations =
+			Arrays.asList(
+				new ExpandoColumnBigQueryMergeJobConfiguration(projectId),
+				new ExpandoValueBigQueryMergeJobConfiguration(projectId),
+				new GroupBigQueryMergeJobConfiguration(projectId),
+				new OrganizationBigQueryMergeJobConfiguration(projectId),
+				new RoleBigQueryMergeJobConfiguration(projectId),
+				new TeamBigQueryMergeJobConfiguration(projectId),
+				new UserGroupBigQueryMergeJobConfiguration(projectId),
+				new UserBigQueryMergeJobConfiguration(projectId));
 
-		for (MergeInfo mergeInfo : mergeInfos) {
-			String mergeStatement = mergeInfo.getMergeStatement(
-				previousRunDateString);
+		for (BigQueryMergeJobConfiguration bigQueryMergeJobConfiguration :
+				bigQueryMergeJobConfigurations) {
 
 			_bigQuery.query(
 				QueryJobConfiguration.newBuilder(
-					mergeStatement
+					bigQueryMergeJobConfiguration.getMergeStatement(
+						previousRunDateString)
 				).build(),
 				JobId.of(_createJobId()));
 		}

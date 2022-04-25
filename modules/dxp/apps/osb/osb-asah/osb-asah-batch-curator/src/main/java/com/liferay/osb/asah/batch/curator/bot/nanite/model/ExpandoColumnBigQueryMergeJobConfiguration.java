@@ -22,25 +22,25 @@ import java.util.Map;
 /**
  * @author Rachael Koestartyo
  */
-public class OrganizationMergeInfo extends MergeInfo {
+public class ExpandoColumnBigQueryMergeJobConfiguration
+	extends BigQueryMergeJobConfiguration {
 
-	public OrganizationMergeInfo(String projectId) {
+	public ExpandoColumnBigQueryMergeJobConfiguration(String projectId) {
 		super(projectId);
 	}
 
 	@Override
 	public List<String> getInsertFields() {
 		return Arrays.asList(
-			"dataSourceId", "expandoColumnIds", "id.sha256HexId",
-			"modifiedDate", "name", "organizationId", "parentOrganizationId",
-			"projectId", "treePath", "type.organizationType");
+			"className", "columnId", "dataSourceId", "dataType",
+			"id.sha256HexId", "modifiedDate", "name", "projectId");
 	}
 
 	@Override
 	public Map<String, String> getJoinFields() {
 		Map<String, String> joinFields = new HashMap<>();
 
-		joinFields.put("classPK", "organizationId");
+		joinFields.put("classPK", "columnId");
 		joinFields.put("dataSourceId", "dataSourceId");
 		joinFields.put("projectId", "projectId");
 
@@ -49,7 +49,7 @@ public class OrganizationMergeInfo extends MergeInfo {
 
 	@Override
 	public String getReplicaTable() {
-		return getProjectId() + ".organization";
+		return getProjectId() + ".expandocolumn";
 	}
 
 	@Override
@@ -61,22 +61,18 @@ public class OrganizationMergeInfo extends MergeInfo {
 				buildSelectFields(
 					new HashMap<String, String>() {
 						{
+							put("className", "STRING");
+							put("columnId", "INT64");
+							put("dataType", "STRING");
 							put("name", "STRING");
-							put("organizationId", "INT64");
-							put("parentOrganizationId", "INT64");
-							put("treePath", "STRING");
-							put("type.organizationType", "STRING");
 						}
-					}),
-				", ", buildSelectExpandoColumnIds()),
-			"com.liferay.portal.kernel.model.Organization");
+					})),
+			"com.liferay.expando.kernel.model.ExpandoColumn");
 	}
 
 	@Override
 	public List<String> getUpdateFields() {
-		return Arrays.asList(
-			"expandoColumnIds", "modifiedDate", "name", "type.organizationType",
-			"parentOrganizationId", "treePath");
+		return Arrays.asList("className", "dataType", "modifiedDate", "name");
 	}
 
 }
