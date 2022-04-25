@@ -163,7 +163,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		if (fieldName.equals("userId") && _isEqualityOperator(operator)) {
 			return _getUserIdQueryBuilder(
 				operator.equalsIgnoreCase("ne"),
-				Long.valueOf((String)StringUtil.toObject(valueString)));
+				Long.parseLong((String)StringUtil.toObject(valueString)));
 		}
 
 		return null;
