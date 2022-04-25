@@ -16,12 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
 
-import org.springframework.context.annotation.Primary;
-
 /**
  * @author Marcos Martins
  */
-@Primary
 public interface DXPEntityRepository
 	extends CustomDXPEntityRepository, Repository<DXPEntity, Long> {
 
