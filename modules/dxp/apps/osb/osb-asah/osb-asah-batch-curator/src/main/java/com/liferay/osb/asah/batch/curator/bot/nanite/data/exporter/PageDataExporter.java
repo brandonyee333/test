@@ -16,11 +16,14 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.io.OutputStream;
+
+import java.util.Date;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -30,14 +33,19 @@ import org.json.JSONObject;
 /**
  * @author Marcellus Tavares
  */
-public class PageDataExporter extends BaseDataExporter {
+public class PageDataExporter extends BaseReportDataExporter {
 
 	public PageDataExporter(
-			JsonFactory jsonFactory, OutputStream outputStream,
-			ElasticsearchInvoker elasticsearchInvoker)
+			Date fromDate, JsonFactory jsonFactory, OutputStream outputStream,
+			Date toDate, ElasticsearchInvoker elasticsearchInvoker)
 		throws Exception {
 
-		super(jsonFactory, outputStream, null);
+		super(fromDate, jsonFactory, outputStream, null, toDate);
+
+		if (elasticsearchInvoker == null) {
+			throw new IllegalArgumentException(
+				"ElasticsearchInvoker cannot be null");
+		}
 
 		_elasticsearchInvoker = elasticsearchInvoker;
 	}
@@ -46,10 +54,20 @@ public class PageDataExporter extends BaseDataExporter {
 	protected JSONObject doGetResultPageJSONObject(String after) {
 		JSONArray jsonArray = _elasticsearchInvoker.get(
 			"pages", SortBuilderUtil.fieldSort("id"),
-			QueryBuilders.rangeQuery(
-				"id"
-			).gt(
-				after
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.rangeQuery(
+					"eventDate"
+				).gte(
+					fromDate
+				).lte(
+					toDate
+				)
+			).filter(
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					after
+				)
 			),
 			50);
 
