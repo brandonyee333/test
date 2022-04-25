@@ -71,11 +71,13 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/segments")
 	public PageDTO<ReportSegmentDTO> getReportSegmentDTOPageDTO(
-		@RequestParam(defaultValue = "") String after) {
+		@RequestParam(defaultValue = "") String after,
+		@RequestParam Date fromDate, @RequestParam Date toDate) {
 
 		return _toReportSegmentDTOPageDTO(
 			_segmentDog.getSegmentPage(
-				_getId(after), _PAGE_SIZE, Sort.by(Sort.Order.asc("id"))));
+				fromDate, _getId(after), _PAGE_SIZE,
+				Sort.by(Sort.Order.asc("id")), toDate));
 	}
 
 	private Long _getId(String id) {
