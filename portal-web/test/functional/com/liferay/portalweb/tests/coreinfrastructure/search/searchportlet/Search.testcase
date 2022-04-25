@@ -3055,6 +3055,7 @@ definition {
 
 	test ViewSortWidgetConfigurationFeatureFlagUI {
 		property custom.properties = "feature.flag.LPS-134052=false";
+		property portal.acceptance = "brooke";
 
 		for (var title : list "Banana,Apple,Cherry") {
 			JSONWebcontent.addWebContent(
