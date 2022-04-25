@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -27,6 +28,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -54,6 +56,8 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Michael Bowerman
@@ -714,6 +718,25 @@ public class SegmentDogTest
 		_assertAddSetsReferencedObjectIds(
 			new String[0], new String[0], new String[0],
 			"street eq 'Broadway'");
+	}
+
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_info_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetSegmentPage() {
+		Page<Segment> segmentPage = _segmentDog.getSegmentPage(
+			DateUtil.toUTCDate("2022-04-02T11:00:00.000Z"), -1L, 1,
+			Sort.by(Sort.Order.asc("id")),
+			DateUtil.toUTCDate("2022-04-03T13:00:00.000Z"));
+
+		Assertions.assertEquals(2, segmentPage.getTotalElements());
+
+		List<Segment> segments = segmentPage.getContent();
+
+		Assertions.assertEquals(1, segments.size());
 	}
 
 	@ElasticsearchIndex(
