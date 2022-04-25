@@ -18,10 +18,13 @@ import com.liferay.osb.asah.backend.dog.DataDog;
 import com.liferay.osb.asah.backend.dog.DogUtil;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
+import com.liferay.osb.asah.backend.model.PageVisitorBehaviorMetric;
+import com.liferay.osb.asah.backend.repository.PageRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.petra.string.StringPool;
 
 import java.util.Optional;
@@ -74,6 +77,15 @@ public class PageDog {
 		}
 
 		return _getMetricValue(pageMetricType, boolQueryBuilder);
+	}
+
+	public PageVisitorBehaviorMetric getPageVisitorBehaviorMetric(
+		String canonicalUrl, Long channelId, TimeRange timeRange,
+		String title) {
+
+		return _pageRepository.getPageVisitorBehaviorMetric(
+			canonicalUrl, channelId, timeRange, title,
+			_timeZoneDog.getZoneId());
 	}
 
 	public long getViewsMetricValue(
@@ -156,6 +168,9 @@ public class PageDog {
 
 	@Autowired
 	private DataDog _dataDog;
+
+	@Autowired
+	private PageRepository _pageRepository;
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;

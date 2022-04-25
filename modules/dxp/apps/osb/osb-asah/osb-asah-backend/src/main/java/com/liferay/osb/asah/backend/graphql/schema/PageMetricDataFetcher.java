@@ -14,43 +14,42 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.model.AssetMetric;
+import com.liferay.osb.asah.backend.dog.page.PageDog;
+import com.liferay.osb.asah.backend.model.PageMetric;
+import com.liferay.osb.asah.backend.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.Map;
-import java.util.Set;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Inácio Nery
+ * @author Leslie Wong
  */
 @Component
-@GraphQLTypeWiring(fieldName = "blog", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "custom", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "document", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "form", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "journal", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "site", typeName = "QueryType")
-public class AssetMetricDataFetcher extends BaseDataFetcher<AssetMetric> {
+@GraphQLTypeWiring(fieldName = "page", typeName = "QueryType")
+public class PageMetricDataFetcher extends BaseDataFetcher<PageMetric> {
 
 	@Override
-	public AssetMetric get(
+	public PageMetric get(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		Map<String, Object> context = dataFetchingEnvironment.getContext();
+		PageVisitorBehaviorMetric pageVisitorBehaviorMetric =
+			_pageDog.getPageVisitorBehaviorMetric(
+				searchQueryContext.getCanonicalUrl(),
+				NumberUtils.createLong(searchQueryContext.getChannelId()),
+				searchQueryContext.getTimeRange(),
+				searchQueryContext.getTitle());
 
-		return _metricDog.getAssetMetric(
-			searchQueryContext, (Set<String>)context.get("selectedMetrics"));
+		return new PageMetric(pageVisitorBehaviorMetric);
 	}
 
 	@Autowired
-	private MetricDog _metricDog;
+	private PageDog _pageDog;
 
 }

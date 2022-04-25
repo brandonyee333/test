@@ -31,6 +31,26 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PageMetric implements AssetMetric {
 
+	public PageMetric() {
+	}
+
+	public PageMetric(PageVisitorBehaviorMetric pageVisitorBehaviorMetric) {
+		_avgTimeOnPageMetric.setValue(
+			(double)pageVisitorBehaviorMetric.getAvgTimeOnPage());
+		_bounceRateMetric.setValue(pageVisitorBehaviorMetric.getBounceRate());
+		_bounceMetric.setValue((double)pageVisitorBehaviorMetric.getBounces());
+		_entrancesMetric.setValue(
+			(double)pageVisitorBehaviorMetric.getEntrances());
+		_exitRateMetric.setValue(pageVisitorBehaviorMetric.getExitRate());
+		_sessionsMetric.setValue(
+			(double)pageVisitorBehaviorMetric.getSessions());
+		_timeOnPageMetric.setValue(
+			(double)pageVisitorBehaviorMetric.getTimeOnPage());
+		_viewsMetric.setValue((double)pageVisitorBehaviorMetric.getViews());
+		_visitorsMetric.setValue(
+			(double)pageVisitorBehaviorMetric.getVisitors());
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
