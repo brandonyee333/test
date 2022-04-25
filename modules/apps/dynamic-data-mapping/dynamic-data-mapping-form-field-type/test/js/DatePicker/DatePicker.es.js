@@ -127,7 +127,7 @@ describe('DatePicker', () => {
 		expect(onChange).toHaveBeenLastCalledWith('');
 	});
 
-	xit('fills the input date and time according to the locale', () => {
+	it('fills the input date and time according to the locale', () => {
 		const {container} = render(
 			<DatePicker locale="pt_BR" onChange={() => {}} type="date_time" />
 		);
@@ -149,7 +149,7 @@ describe('DatePicker', () => {
 		);
 	});
 
-	xit('calls the onChange callback with a valid date and time', () => {
+	it('calls the onChange callback with a valid date and time', () => {
 		const onChange = jest.fn();
 
 		render(<DatePicker onChange={onChange} type="date_time" />);
