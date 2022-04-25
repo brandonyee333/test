@@ -14,20 +14,21 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.model;
 
+import java.io.InputStream;
 import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
  * @author Rachael Koestartyo
@@ -58,7 +59,8 @@ public abstract class MergeInfo implements Serializable {
 			"updateSQL", _buildUpdateStatement(getUpdateFields()));
 
 		return StringSubstitutor.replace(
-			applicationContext.getBean("merge"), mergeQueryValues, "{", "}");
+			_templateProperties.getProperty("merge"), mergeQueryValues, "{",
+			"}");
 	}
 
 	public String getProjectId() {
@@ -101,19 +103,14 @@ public abstract class MergeInfo implements Serializable {
 	}
 
 	protected String getQueryTemplate(String key) {
-		return (String)applicationContext.getBean(key);
+		return _templateProperties.getProperty(key);
 	}
-
-	protected final ApplicationContext applicationContext =
-		new FileSystemXmlApplicationContext(
-			"classpath*:/com/liferay/osb/asah/batch/curator/bot/nanite" +
-				"/bq-dxp-entities-merge-template.xml");
 
 	private String _buildInsertStatement(List<String> insertFields) {
 		Stream<String> stream = insertFields.stream();
 
 		return String.format(
-			(String)applicationContext.getBean("insert"),
+			_templateProperties.getProperty("insert"),
 			String.join(", ", _joinFields(insertFields)),
 			String.join(
 				", ",
@@ -150,7 +147,7 @@ public abstract class MergeInfo implements Serializable {
 		Stream<String> stream = updateFields.stream();
 
 		return String.format(
-			(String)applicationContext.getBean("update"),
+			_templateProperties.getProperty("update"),
 			String.join(
 				", ",
 				stream.map(
@@ -172,6 +169,11 @@ public abstract class MergeInfo implements Serializable {
 				)));
 	}
 
+	@PostConstruct
+	private void _init() {
+		_templateProperties = _loadTemplateProperties();
+	}
+
 	private String _joinFields(List<String> joinFields) {
 		List<String> quotedFields = new ArrayList<>();
 
@@ -182,6 +184,23 @@ public abstract class MergeInfo implements Serializable {
 		}
 
 		return String.join(",", quotedFields);
+	}
+
+	private Properties _loadTemplateProperties() {
+		Class<?> clazz = getClass();
+
+		try (InputStream inputStream = clazz.getResourceAsStream(
+				"bq-dxp-entities-merge-template.xml")) {
+
+			Properties properties = new Properties();
+
+			properties.load(inputStream);
+
+			return properties;
+		}
+		catch (Exception exception) {
+			throw new IllegalStateException(exception);
+		}
 	}
 
 	private String _selectField(String fieldName, String fieldType) {
@@ -230,5 +249,6 @@ public abstract class MergeInfo implements Serializable {
 	private static final String _STAGING_TABLE_ALIAS = "staging";
 
 	private final String _projectId;
+	private Properties _templateProperties;
 
 }
