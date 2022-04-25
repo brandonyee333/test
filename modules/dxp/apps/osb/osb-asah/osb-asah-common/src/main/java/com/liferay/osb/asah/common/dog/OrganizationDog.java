@@ -105,7 +105,9 @@ public class OrganizationDog {
 
 		_organizationRepository.delete(organization);
 
-		_dxpEntityDog.delete(_buildDXPOrganization(organization));
+		_dxpEntityDog.deleteByFieldNameEqualsAndType(
+			"fields.organizationPK", organization.getOrganizationPK(),
+			DXPEntity.Type.ORGANIZATION);
 
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
@@ -230,7 +232,15 @@ public class OrganizationDog {
 		dxpOrganization.setDataSourceId(organization.getDataSourceId());
 		dxpOrganization.setFieldsJSONObject(
 			_objectMapper.convertValue(organization, JSONObject.class));
-		dxpOrganization.setId(organization.getId());
+
+		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
+			Collections.singletonMap(
+				"fields.organizationPK", organization.getOrganizationPK()),
+			DXPEntity.Type.ORGANIZATION);
+
+		if (dxpEntity != null) {
+			dxpOrganization.setId(dxpEntity.getId());
+		}
 
 		return dxpOrganization;
 	}

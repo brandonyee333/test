@@ -218,7 +218,8 @@ public class OrganizationDogTest
 		Assertions.assertNotNull(dateFoundedField.getValue());
 
 		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
-			Collections.singletonMap("id", organization.getId()),
+			Collections.singletonMap(
+				"fields.organizationPK", organization.getOrganizationPK()),
 			DXPEntity.Type.ORGANIZATION);
 
 		Assertions.assertEquals(
