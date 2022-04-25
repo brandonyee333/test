@@ -55,7 +55,7 @@ public interface CustomDXPEntityRepository {
 	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteByFieldNameAndFieldValueAndType(
-		String fieldName, String fieldValue, DXPEntity.Type type);
+		String fieldName, Object fieldValue, DXPEntity.Type type);
 
 	public void deleteById(Long id);
 

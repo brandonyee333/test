@@ -147,7 +147,7 @@ public class DXPEntityRepositoryImpl
 
 	@Override
 	public void deleteByFieldNameAndFieldValueAndType(
-		String fieldName, String fieldValue, DXPEntity.Type type) {
+		String fieldName, Object fieldValue, DXPEntity.Type type) {
 
 		_dslContext.delete(
 			DSL.table("DXPEntity")
