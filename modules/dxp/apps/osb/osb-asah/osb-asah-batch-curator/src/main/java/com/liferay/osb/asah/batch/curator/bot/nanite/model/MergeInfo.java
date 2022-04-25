@@ -190,7 +190,7 @@ public abstract class MergeInfo implements Serializable {
 		Class<?> clazz = getClass();
 
 		try (InputStream inputStream = clazz.getResourceAsStream(
-				"bq-dxp-entities-merge-template.xml")) {
+				"bq-dxp-entities-merge-sql.xml")) {
 
 			Properties properties = new Properties();
 
