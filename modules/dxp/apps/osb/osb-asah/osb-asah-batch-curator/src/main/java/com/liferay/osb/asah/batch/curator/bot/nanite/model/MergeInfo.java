@@ -110,7 +110,7 @@ public abstract class MergeInfo implements Serializable {
 		Stream<String> stream = insertFields.stream();
 
 		return String.format(
-			_templateProperties.getProperty("insert"),
+			"INSERT (%s) VALUES (%s)",
 			String.join(", ", _joinFields(insertFields)),
 			String.join(
 				", ",
@@ -147,7 +147,7 @@ public abstract class MergeInfo implements Serializable {
 		Stream<String> stream = updateFields.stream();
 
 		return String.format(
-			_templateProperties.getProperty("update"),
+			"UPDATE SET %s",
 			String.join(
 				", ",
 				stream.map(

@@ -2,14 +2,13 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="insert">
-		<![CDATA[
-			INSERT (%s) VALUES (%s)
-		]]>
-	</entry>
 	<entry key="expandoValueSHA256HexId">
 		<![CDATA[
-			TO_HEX(SHA256(CONCAT(projectId, '#', dataSourceId, '#', columnId, '#', classPK))) AS sha256HexId
+			TO_HEX(
+				SHA256(
+					CONCAT(projectId, '#', dataSourceId, '#', columnId, '#', classPK)
+				)
+			) AS sha256HexId
 		]]>
 	</entry>
 	<entry key="expandoValueStaging">
@@ -41,7 +40,11 @@
 	</entry>
 	<entry key="sha256HexId">
 		<![CDATA[
-			TO_HEX(SHA256(CONCAT(projectId, '#', dataSourceId, '#', classPK))) AS sha256HexId
+			TO_HEX(
+				SHA256(
+					CONCAT(projectId, '#', dataSourceId, '#', classPK)
+				)
+			) AS sha256HexId
 		]]>
 	</entry>
 	<entry key="staging">
@@ -59,12 +62,26 @@
 	</entry>
 	<entry key="unnestExpandoFields">
 		<![CDATA[
-			(SELECT ARRAY(SELECT DISTINCT columnId FROM UNNEST(expandoFields))) AS expandoColumnIds
+			(
+				SELECT ARRAY(
+					SELECT
+						DISTINCT columnId
+					FROM
+						UNNEST(expandoFields)
+				)
+			) AS expandoColumnIds
 		]]>
 	</entry>
 	<entry key="unnestFields">
 		<![CDATA[
-			(SELECT SAFE_CAST(value AS {fieldType}) FROM UNNEST(fields) WHERE name = '{fieldName}') AS {fieldAlias}
+			(
+				SELECT
+					SAFE_CAST(value AS {fieldType})
+				FROM
+					UNNEST(fields)
+				WHERE
+					name = '{fieldName}'
+			) AS {fieldAlias}
 		]]>
 	</entry>
 	<entry key="unnestJSONArrayFields">
@@ -72,20 +89,22 @@
 			(
 				SELECT
 					ARRAY (
-						SELECT SAFE_CAST(number AS INT64)
-						FROM UNNEST(arrayField.{fieldName}) AS number
+						SELECT
+							SAFE_CAST(number AS INT64)
+						FROM
+							UNNEST(arrayField.{fieldName}) AS number
 					)
 				FROM (
 					SELECT (
-						SELECT JSON_EXTRACT_ARRAY(value)
-						FROM UNNEST(fields)
-						WHERE name = '{fieldName}'
+						SELECT
+							JSON_EXTRACT_ARRAY(value)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = '{fieldName}'
 					) {fieldName}
 				) arrayField
 			) {fieldName}
 		]]>
-	</entry>
-	<entry key="update">
-		<![CDATA[UPDATE SET %s]]>
 	</entry>
 </properties>
