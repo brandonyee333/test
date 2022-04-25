@@ -15,7 +15,9 @@
 package com.liferay.osb.asah.upgrade.v3_2_0.test;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_2_0.DXPEntitiesUpgradeStep;
@@ -40,6 +42,14 @@ public class DXPEntitiesUpgradeStepTest
 	@BeforeEach
 	public void setUp() {
 		ProjectIdThreadLocal.setProjectId("test");
+
+		DataSource dataSource = new DataSource("Liferay Brazil");
+
+		dataSource.setId(123L);
+		dataSource.setIsNew(true);
+		dataSource.setProviderType("LIFERAY");
+
+		_dataSourceRepository.save(dataSource);
 
 		DXPEntity dxpEntity = new DXPEntity();
 
@@ -80,6 +90,9 @@ public class DXPEntitiesUpgradeStepTest
 
 		Assertions.assertNotNull(dxpEntity.getModifiedDate());
 	}
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private DXPEntitiesUpgradeStep _dxpEntitiesUpgradeStep;

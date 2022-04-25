@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.test.util.faro.DXPRawTestUtil;
@@ -61,6 +62,8 @@ public class OrganizationDogTest
 		_liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource();
 
 		_liferayDataSource.setId(RandomTestUtil.randomNumber());
+
+		_dataSourceRepository.save(_liferayDataSource);
 
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildFieldMapping(
@@ -236,6 +239,9 @@ public class OrganizationDogTest
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
