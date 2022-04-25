@@ -18,9 +18,13 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 
 import java.util.Objects;
 
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
+
 /**
  * @author Matthew Kong
  */
+@Table("dxpentity")
 public class DXPOrganization extends DXPEntity {
 
 	@Override
@@ -66,7 +70,10 @@ public class DXPOrganization extends DXPEntity {
 		_parentName = parentName;
 	}
 
+	@Transient
 	private String _parentName;
+
+	@Transient
 	private String _type;
 
 }

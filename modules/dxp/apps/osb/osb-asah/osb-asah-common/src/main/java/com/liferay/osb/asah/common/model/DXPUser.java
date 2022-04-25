@@ -18,9 +18,13 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 
 import java.util.Objects;
 
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
+
 /**
  * @author Matthew Kong
  */
+@Table("dxpentity")
 public class DXPUser extends DXPEntity {
 
 	@Override
@@ -79,8 +83,13 @@ public class DXPUser extends DXPEntity {
 		_screenName = screenName;
 	}
 
+	@Transient
 	private String _firstName;
+
+	@Transient
 	private String _lastName;
+
+	@Transient
 	private String _screenName;
 
 }
