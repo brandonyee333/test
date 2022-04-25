@@ -16,8 +16,10 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.http.ReportHttp;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.OutputStream;
 
@@ -51,6 +53,12 @@ public class ReportDataExporterFactory {
 				_reportHttp, dataExportTask.getToDate());
 		}
 
+		if (dataExportTask.getType() == DataExportTask.Type.PAGE) {
+			return new PageDataExporter(
+				dataExportTask.getFromDate(), _jsonFactory, outputStream,
+				dataExportTask.getToDate(), _cerebroInfoElasticsearchInvoker);
+		}
+
 		if (dataExportTask.getType() == DataExportTask.Type.SEGMENT) {
 			return new SegmentDataExporter(
 				dataExportTask.getFromDate(), _jsonFactory, outputStream,
@@ -61,6 +69,9 @@ public class ReportDataExporterFactory {
 			String.format(
 				"Invalid data export task type: %s", dataExportTask.getType()));
 	}
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	private final JsonFactory _jsonFactory = new JsonFactory();
 	private final ReportHttp _reportHttp;
