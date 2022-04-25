@@ -354,7 +354,7 @@ public class DXPEntityRepositoryImpl
 		).where(
 			_getConditions(dataSourceIds, keywords, type)
 		).orderBy(
-			getSortFields(pageable.getSort(), null)
+			_getSortFields(pageable.getSort(), type)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -362,36 +362,6 @@ public class DXPEntityRepositoryImpl
 		).fetch(
 			record -> new DXPEntity(record.intoMap())
 		);
-	}
-
-	@Override
-	protected Collection<SortField<?>> getSortFields(
-		Sort sort, Table<?> table) {
-
-		List<Sort.Order> orders = new ArrayList<>();
-
-		for (Sort.Order order : sort) {
-			String property = order.getProperty();
-
-			if (StringUtils.endsWith(property, "name")) {
-				orders.add(
-					new Sort.Order(
-						order.getDirection(),
-						_createFieldPath("fields.firstName")));
-				orders.add(
-					new Sort.Order(
-						order.getDirection(),
-						_createFieldPath("fields.lastName")));
-
-				continue;
-			}
-
-			orders.add(
-				new Sort.Order(
-					order.getDirection(), _createFieldPath(property)));
-		}
-
-		return super.getSortFields(Sort.by(orders), table);
 	}
 
 	private Condition _createCondition(String fieldKey, Object fieldValue) {
@@ -514,6 +484,37 @@ public class DXPEntityRepositoryImpl
 			));
 
 		return conditions;
+	}
+
+	private Collection<SortField<?>> _getSortFields(
+		Sort sort, DXPEntity.Type type) {
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (Sort.Order order : sort) {
+			String property = order.getProperty();
+
+			if ((type == DXPEntity.Type.USER) &&
+				StringUtils.endsWith(property, "name")) {
+
+				orders.add(
+					new Sort.Order(
+						order.getDirection(),
+						_createFieldPath("fields.firstName")));
+				orders.add(
+					new Sort.Order(
+						order.getDirection(),
+						_createFieldPath("fields.lastName")));
+
+				continue;
+			}
+
+			orders.add(
+				new Sort.Order(
+					order.getDirection(), _createFieldPath(property)));
+		}
+
+		return getSortFields(Sort.by(orders), null);
 	}
 
 	private final DSLContext _dslContext;
