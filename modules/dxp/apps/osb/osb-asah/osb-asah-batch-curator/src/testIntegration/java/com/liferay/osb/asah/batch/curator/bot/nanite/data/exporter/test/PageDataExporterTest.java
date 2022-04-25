@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 
 import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -26,11 +27,14 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import java.io.ByteArrayOutputStream;
 
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -42,8 +46,18 @@ public class PageDataExporterTest
 	implements OSBAsahBatchCuratorSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Test
+	public void testCannotBeInstantiatedWithoutInvoker() {
+		Assertions.assertThrows(
+			IllegalArgumentException.class,
+			() -> new PageDataExporter(
+				DateUtil.toUTCDate("2022-01-04T11:00:00.000Z"),
+				new JsonFactory(), new ByteArrayOutputStream(),
+				DateUtil.toUTCDate("2022-01-06T13:00:00.000Z"), null));
+	}
+
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -52,17 +66,21 @@ public class PageDataExporterTest
 			new ByteArrayOutputStream();
 
 		PageDataExporter pageDataExporter = new PageDataExporter(
-			new JsonFactory(), byteArrayOutputStream, _elasticsearchInvoker);
+			DateUtil.toUTCDate("2022-01-04T11:00:00.000Z"), new JsonFactory(),
+			byteArrayOutputStream,
+			DateUtil.toUTCDate("2022-01-06T13:00:00.000Z"),
+			_elasticsearchInvoker);
 
 		pageDataExporter.export();
 
 		String[] actualPagesExportLines = StringUtils.split(
-			byteArrayOutputStream.toString("UTF-8"), "\n");
+			byteArrayOutputStream.toString(StandardCharsets.UTF_8.toString()),
+			"\n");
 
 		byteArrayOutputStream.close();
 
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
-			"dependencies/expected_pages_export.json", this);
+			"dependencies/expected_pages_export_1.json", this);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONAssert.assertEquals(

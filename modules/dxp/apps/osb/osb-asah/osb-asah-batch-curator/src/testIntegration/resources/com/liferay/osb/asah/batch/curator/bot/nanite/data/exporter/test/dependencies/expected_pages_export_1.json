@@ -1,0 +1,143 @@
+[
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Mobile Safari",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Tablet",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 0,
+		"eventDate": "2022-01-06T12:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-18T00:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1005",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-08-29T00:00:00.000Z"
+		],
+		"individualId": "379649770809258946",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-18T00:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:04.559Z",
+		"pageScrolls": [
+		],
+		"platformName": "iOS",
+		"primaryKey": "9978fed87b5abaed505b6800cbfbfd2b37e4a524834af5a7b6faeb2651c83428",
+		"region": "Oregon",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650200518188188",
+		"timeOnPage": 54000000,
+		"title": "orchestrate rich e-commerce",
+		"url": "https://www.rolanda-lang.com",
+		"userId": "48b0c1a6-1240-4a18-bf46-7f3c10aa7bdf",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Chrome",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 1,
+		"eventDate": "2022-01-05T12:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-17T21:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1006",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-08-28T21:00:00.000Z"
+		],
+		"individualId": "379649770809258946",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-17T21:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:04.139Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "22a72757da7bca39b428d874f3ed9d010d13004480430c4413fe650493744655",
+		"region": "Oregon",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650200518188188",
+		"timeOnPage": 180000000,
+		"title": "incentivize cutting-edge platforms",
+		"url": "https://www.ike-schneider.net",
+		"userId": "48b0c1a6-1240-4a18-bf46-7f3c10aa7bdf",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Internet Explorer",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 1,
+		"eventDate": "2022-01-04T12:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-10-12T18:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1007",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-09-22T18:00:00.000Z"
+		],
+		"individualId": "379649770809258946",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-10-12T18:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:04.307Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "6189ea476980842b718bb3f295975488fb167990a241bc8c1c795543a53d7b61",
+		"region": "Oregon",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650200518188188",
+		"timeOnPage": 0,
+		"title": "innovate dot-com methodologies",
+		"url": "https://www.debra-huel.name",
+		"userId": "48b0c1a6-1240-4a18-bf46-7f3c10aa7bdf",
+		"variantId": "",
+		"views": 1
+	}
+]

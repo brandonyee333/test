@@ -1,0 +1,429 @@
+[
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Safari",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 1,
+		"eventDate": "2022-01-01T12:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2022-01-01T12:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1010",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-09-26T09:00:00.000Z"
+		],
+		"individualId": "379649770112917173",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2022-01-01T12:00:00.000Z",
+		"modifiedDate": "2022-01-01T12:00:00.000Z",
+		"pageScrolls": [
+		],
+		"platformName": "macOS",
+		"primaryKey": "492d7713cabc1972a19b26782bce7fc250732be6894a471aaabb53bdfe8e20ce",
+		"region": "Oregon",
+		"searchTerm": "International Trade and Development",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650171237159992",
+		"timeOnPage": 0,
+		"title": "mesh synergistic schemas",
+		"url": "https://www.cedric-rodriguez.net?q=International%20Trade%20and%20Development",
+		"userId": "6e02855a-6c3d-4873-a034-e1078a64b479",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Mobile Safari",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "SmartPhone",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 0,
+		"eventDate": "2022-01-02T12:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2022-01-02T12:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1009",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-09-01T13:00:00.000Z"
+		],
+		"individualId": "379649770112917173",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2022-01-02T12:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:28:59.992Z",
+		"pageScrolls": [
+		],
+		"platformName": "iOS",
+		"primaryKey": "df11d06a7a5d37f644cb1bc2ad5470df49a87463bc46a8ce7a2d2da5963c2b67",
+		"region": "Oregon",
+		"searchTerm": "Plastics",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650171237159992",
+		"timeOnPage": 7200000,
+		"title": "enhance open-source e-tailers",
+		"url": "https://www.cherelle-ullrich.org?q=Plastics",
+		"userId": "6e02855a-6c3d-4873-a034-e1078a64b479",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Chrome",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 0,
+		"eventDate": "2022-01-03T12:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-24T21:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1008",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-09-04T21:00:00.000Z"
+		],
+		"individualId": "379649770112917173",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-24T21:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:04.308Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "e1c65c7d166bb23481924587eca0545de0de01f655214b007905e38c0c83596e",
+		"region": "Oregon",
+		"searchTerm": "Automotive",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650171237159992",
+		"timeOnPage": 118800000,
+		"title": "recontextualize value-added channels",
+		"url": "https://www.dino-boyer.com?q=Automotive",
+		"userId": "6e02855a-6c3d-4873-a034-e1078a64b479",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Internet Explorer",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 1,
+		"eventDate": "2022-01-04T12:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-10-12T18:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1007",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-09-22T18:00:00.000Z"
+		],
+		"individualId": "379649770809258946",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-10-12T18:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:04.307Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "6189ea476980842b718bb3f295975488fb167990a241bc8c1c795543a53d7b61",
+		"region": "Oregon",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650200518188188",
+		"timeOnPage": 0,
+		"title": "innovate dot-com methodologies",
+		"url": "https://www.debra-huel.name",
+		"userId": "48b0c1a6-1240-4a18-bf46-7f3c10aa7bdf",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Chrome",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 1,
+		"eventDate": "2022-01-05T12:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-17T21:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1006",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-08-28T21:00:00.000Z"
+		],
+		"individualId": "379649770809258946",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-17T21:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:04.139Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "22a72757da7bca39b428d874f3ed9d010d13004480430c4413fe650493744655",
+		"region": "Oregon",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650200518188188",
+		"timeOnPage": 180000000,
+		"title": "incentivize cutting-edge platforms",
+		"url": "https://www.ike-schneider.net",
+		"userId": "48b0c1a6-1240-4a18-bf46-7f3c10aa7bdf",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Mobile Safari",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Tablet",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 0,
+		"eventDate": "2022-01-06T12:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-18T00:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1005",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-08-29T00:00:00.000Z"
+		],
+		"individualId": "379649770809258946",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-18T00:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:04.559Z",
+		"pageScrolls": [
+		],
+		"platformName": "iOS",
+		"primaryKey": "9978fed87b5abaed505b6800cbfbfd2b37e4a524834af5a7b6faeb2651c83428",
+		"region": "Oregon",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650200518188188",
+		"timeOnPage": 54000000,
+		"title": "orchestrate rich e-commerce",
+		"url": "https://www.rolanda-lang.com",
+		"userId": "48b0c1a6-1240-4a18-bf46-7f3c10aa7bdf",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Chrome",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 1,
+		"eventDate": "2022-01-07T12:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-24T23:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1004",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-09-04T23:00:00.000Z"
+		],
+		"individualId": "379649775949971561",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-24T23:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:30.477Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "4fb3c37098133bbaaa61e1826552677d6b591151445dec86e1276d71294e445f",
+		"region": "Oregon",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650221152128615",
+		"timeOnPage": 28800000,
+		"title": "incentivize cutting-edge platforms",
+		"url": "https://www.ike-schneider.net",
+		"userId": "8ce8d986-75e7-4235-ab97-f5e9c6272029",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Mobile Safari",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "SmartPhone",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 1,
+		"eventDate": "2022-01-08T12:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-29T08:00:00.000Z",
+		"formSubmissions": 1,
+		"id": "1003",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-09-09T08:00:00.000Z"
+		],
+		"individualId": "379649777540967931",
+		"interactionDates": [
+			"2019-09-09T08:00:00.000Z"
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-29T08:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:30.563Z",
+		"pageScrolls": [
+		],
+		"platformName": "iOS",
+		"primaryKey": "92c383af41713b8a272eed4f3c8f47922c0982e367276a5146c41b0f58626380",
+		"region": "Oregon",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650225979802114",
+		"timeOnPage": 486000000,
+		"title": "streamline web-enabled interfaces",
+		"url": "https://www.hallie-denesik.io",
+		"userId": "ffb0aa63-d845-459e-87f3-804668622494",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Mobile Safari",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaclicks": 0,
+		"dataSourceId": "379649744154928491",
+		"deviceType": "Tablet",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"entrances": 1,
+		"eventDate": "2022-01-09T12:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-17T18:00:00.000Z",
+		"formSubmissions": 0,
+		"id": "1002",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-08-28T18:00:00.000Z"
+		],
+		"individualId": "379649777540967931",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-17T18:00:00.000Z",
+		"modifiedDate": "2019-10-16T21:29:32.816Z",
+		"pageScrolls": [
+		],
+		"platformName": "iOS",
+		"primaryKey": "4057061f825bd283c1da29be64489a8b57a4931ecee972145ab49a3b4ef9f53e",
+		"region": "Oregon",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "379650225979802114",
+		"timeOnPage": 684000000,
+		"title": "orchestrate rich e-commerce",
+		"url": "https://www.rolanda-lang.com",
+		"userId": "ffb0aa63-d845-459e-87f3-804668622494",
+		"variantId": "",
+		"views": 1
+	}
+]
