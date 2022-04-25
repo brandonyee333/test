@@ -19,13 +19,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -68,6 +71,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class IndividualSegmentsRestControllerTest
 	extends BaseRestControllerTestCase {
 
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
 	@Test
 	public void testExpandReferencedObjects() throws Exception {
 		Asset asset = _assetRepository.save(
@@ -81,13 +88,7 @@ public class IndividualSegmentsRestControllerTest
 		FieldMapping individualFieldMapping = _fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				1L, "email", "email", "Text"));
-		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
-			"groups",
-			JSONUtil.put(
-				"dataSourceId", 1L
-			).put(
-				"fields", JSONUtil.put("name", "groupName")
-			));
+
 		JSONObject organizationJSONObject = _faroInfoElasticsearchInvoker.add(
 			"organizations",
 			JSONUtil.put(
@@ -95,34 +96,53 @@ public class IndividualSegmentsRestControllerTest
 			).put(
 				"name", "organizationName"
 			));
-		JSONObject roleJSONObject = _dxpRawElasticsearchInvoker.add(
-			"roles",
-			JSONUtil.put(
-				"dataSourceId", 1L
-			).put(
-				"fields", JSONUtil.put("name", "roleName")
-			));
-		JSONObject teamJSONObject = _dxpRawElasticsearchInvoker.add(
-			"teams",
-			JSONUtil.put(
-				"dataSourceId", 1L
-			).put(
-				"fields", JSONUtil.put("name", "teamName")
-			));
-		JSONObject userGroupJSONObject = _dxpRawElasticsearchInvoker.add(
-			"user-groups",
-			JSONUtil.put(
-				"dataSourceId", 1L
-			).put(
-				"fields", JSONUtil.put("name", "userGroupName")
-			));
-		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.add(
-			"users",
-			JSONUtil.put(
-				"dataSourceId", 1L
-			).put(
-				"fields", JSONUtil.put("name", "userName")
-			));
+
+		DXPEntity groupDXPEntity = new DXPEntity();
+
+		groupDXPEntity.setDataSourceId(331238757269547423L);
+		groupDXPEntity.setFieldsJSONObject(JSONUtil.put("name", "groupName"));
+		groupDXPEntity.setType(DXPEntity.Type.GROUP);
+
+		groupDXPEntity = _dxpEntityDog.addDXPEntity(
+			groupDXPEntity, DXPEntity.Type.GROUP);
+
+		DXPEntity roleDXPEntity = new DXPEntity();
+
+		roleDXPEntity.setDataSourceId(331238757269547423L);
+		roleDXPEntity.setFieldsJSONObject(JSONUtil.put("name", "roleName"));
+		roleDXPEntity.setType(DXPEntity.Type.ROLE);
+
+		roleDXPEntity = _dxpEntityDog.addDXPEntity(
+			roleDXPEntity, DXPEntity.Type.ROLE);
+
+		DXPEntity teamDXPEntity = new DXPEntity();
+
+		teamDXPEntity.setDataSourceId(331238757269547423L);
+		teamDXPEntity.setFieldsJSONObject(JSONUtil.put("name", "teamName"));
+		teamDXPEntity.setType(DXPEntity.Type.TEAM);
+
+		teamDXPEntity = _dxpEntityDog.addDXPEntity(
+			teamDXPEntity, DXPEntity.Type.TEAM);
+
+		DXPEntity userDXPEntity = new DXPEntity();
+
+		userDXPEntity.setDataSourceId(331238757269547423L);
+		userDXPEntity.setFieldsJSONObject(
+			JSONUtil.put("firstName", "userName"));
+		userDXPEntity.setType(DXPEntity.Type.USER);
+
+		userDXPEntity = _dxpEntityDog.addDXPEntity(
+			userDXPEntity, DXPEntity.Type.USER);
+
+		DXPEntity userGroupDXPEntity = new DXPEntity();
+
+		userGroupDXPEntity.setDataSourceId(331238757269547423L);
+		userGroupDXPEntity.setFieldsJSONObject(
+			JSONUtil.put("name", "userGroupName"));
+		userGroupDXPEntity.setType(DXPEntity.Type.USER_GROUP);
+
+		userGroupDXPEntity = _dxpEntityDog.addDXPEntity(
+			userGroupDXPEntity, DXPEntity.Type.USER_GROUP);
 
 		Segment segment = new Segment();
 
@@ -132,23 +152,18 @@ public class IndividualSegmentsRestControllerTest
 			SetUtil.of(
 				accountFieldMapping.getId(), individualFieldMapping.getId()));
 		segment.setReferencedGroupIds(
-			Collections.singleton(
-				Long.valueOf(groupJSONObject.getString("id"))));
+			Collections.singleton(groupDXPEntity.getId()));
 		segment.setReferencedOrganizationIds(
 			Collections.singleton(
 				Long.valueOf(organizationJSONObject.getString("id"))));
 		segment.setReferencedRoleIds(
-			Collections.singleton(
-				Long.valueOf(roleJSONObject.getString("id"))));
+			Collections.singleton(roleDXPEntity.getId()));
 		segment.setReferencedTeamIds(
-			Collections.singleton(
-				Long.valueOf(teamJSONObject.getString("id"))));
+			Collections.singleton(teamDXPEntity.getId()));
 		segment.setReferencedUserGroupIds(
-			Collections.singleton(
-				Long.valueOf(userGroupJSONObject.getString("id"))));
+			Collections.singleton(userGroupDXPEntity.getId()));
 		segment.setReferencedUserIds(
-			Collections.singleton(
-				Long.valueOf(userJSONObject.getString("id"))));
+			Collections.singleton(userDXPEntity.getId()));
 
 		segment = _segmentRepository.save(segment);
 
@@ -172,27 +187,27 @@ public class IndividualSegmentsRestControllerTest
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("field-mappings", referencedObjectsJSONObject)));
 		MatcherAssert.assertThat(
-			new String[] {groupJSONObject.getString("id")},
+			new String[] {String.valueOf(groupDXPEntity.getId())},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("groups", referencedObjectsJSONObject)));
 		MatcherAssert.assertThat(
-			new String[] {organizationJSONObject.getString("id")},
+			new String[] {String.valueOf(organizationJSONObject.getLong("id"))},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("organizations", referencedObjectsJSONObject)));
 		MatcherAssert.assertThat(
-			new String[] {roleJSONObject.getString("id")},
+			new String[] {String.valueOf(roleDXPEntity.getId())},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("roles", referencedObjectsJSONObject)));
 		MatcherAssert.assertThat(
-			new String[] {teamJSONObject.getString("id")},
+			new String[] {String.valueOf(teamDXPEntity.getId())},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("teams", referencedObjectsJSONObject)));
 		MatcherAssert.assertThat(
-			new String[] {userGroupJSONObject.getString("id")},
+			new String[] {String.valueOf(userGroupDXPEntity.getId())},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("user-groups", referencedObjectsJSONObject)));
 		MatcherAssert.assertThat(
-			new String[] {userJSONObject.getString("id")},
+			new String[] {String.valueOf(userDXPEntity.getId())},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("users", referencedObjectsJSONObject)));
 	}
@@ -216,13 +231,13 @@ public class IndividualSegmentsRestControllerTest
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
-	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@Test
 	public void testGetIndividualSegments() {
@@ -524,8 +539,8 @@ public class IndividualSegmentsRestControllerTest
 	@Autowired
 	private AssetRepository _assetRepository;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

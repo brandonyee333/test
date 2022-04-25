@@ -20,10 +20,9 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -42,10 +41,6 @@ import org.springframework.data.domain.Page;
 /**
  * @author Matthew Kong
  */
-@RepositoryResource(
-	repositoryClass = DataSourceRepository.class,
-	resourcePath = "osbasahfaroinfo/data_sources.json"
-)
 public class DXPEntityDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
@@ -62,9 +57,13 @@ public class DXPEntityDogTest
 		_dxpEntityDog.deleteByType(DXPEntity.Type.USER_GROUP);
 	}
 
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@Test
 	public void testFindByAfterAndFieldsAndType() {
@@ -83,9 +82,13 @@ public class DXPEntityDogTest
 		);
 	}
 
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@Test
 	public void testFindByFieldsAndType() {
@@ -99,9 +102,13 @@ public class DXPEntityDogTest
 		Assertions.assertEquals("Bruno Admin", dxpEntity.getName());
 	}
 
-	@ElasticsearchIndex(
-		name = "groups", resourcePath = "groups.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/groups.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
@@ -120,9 +127,13 @@ public class DXPEntityDogTest
 			Sort.asc("fields.name"));
 	}
 
-	@ElasticsearchIndex(
-		name = "organizations", resourcePath = "organizations.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/organizations.json"
 	)
 	@Test
 	public void testGetOrganizations() {
@@ -132,9 +143,13 @@ public class DXPEntityDogTest
 			null, Sort.asc("fields.name"));
 	}
 
-	@ElasticsearchIndex(
-		name = "organizations", resourcePath = "organizations.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/organizations.json"
 	)
 	@Test
 	public void testGetOrganizationsSearch() {
@@ -144,9 +159,13 @@ public class DXPEntityDogTest
 			Sort.asc("fields.name"));
 	}
 
-	@ElasticsearchIndex(
-		name = "roles", resourcePath = "roles.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/roles.json"
 	)
 	@Test
 	public void testGetRoles() {
@@ -156,9 +175,13 @@ public class DXPEntityDogTest
 			null, Sort.asc("fields.name"));
 	}
 
-	@ElasticsearchIndex(
-		name = "teams", resourcePath = "teams.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/teams.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
@@ -175,9 +198,13 @@ public class DXPEntityDogTest
 			Sort.asc("fields.name"));
 	}
 
-	@ElasticsearchIndex(
-		name = "user-groups", resourcePath = "user_groups.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/user_groups.json"
 	)
 	@Test
 	public void testGetUserGroups() {
@@ -186,9 +213,13 @@ public class DXPEntityDogTest
 			Sort.asc("fields.name"));
 	}
 
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
@@ -212,9 +243,13 @@ public class DXPEntityDogTest
 			Sort.asc("fields.name"));
 	}
 
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@Test
 	public void testGetUsersCaseInsensitiveSearch() {
@@ -224,9 +259,13 @@ public class DXPEntityDogTest
 			"test", Sort.asc("fields.name"));
 	}
 
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
@@ -244,9 +283,13 @@ public class DXPEntityDogTest
 			Sort.asc("fields.name"));
 	}
 
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@Test
 	public void testGetUsersSearchAndSort() {

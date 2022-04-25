@@ -14,7 +14,8 @@
 
 package com.liferay.osb.asah.common.postgresql.converter.helper;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import org.jooq.Condition;
@@ -33,26 +34,26 @@ public class IndividualsFilterStringConverterHelperTest {
 
 	@Test
 	public void testGetUserIdCondition() {
-		ElasticsearchInvoker elasticsearchInvoker = Mockito.mock(
-			ElasticsearchInvoker.class);
+		DXPEntityDog dxpEntityDog = Mockito.mock(DXPEntityDog.class);
 
 		Mockito.when(
-			elasticsearchInvoker.fetch(Mockito.eq("users"), Mockito.eq("1"))
+			dxpEntityDog.fetchByFieldsAndType(Mockito.anyMap(), Mockito.any())
 		).thenReturn(
-			JSONUtil.put(
-				"dataSourceId", "1"
-			).put(
-				"fields", JSONUtil.put("uuid", "1")
-			)
+			new DXPEntity() {
+				{
+					setDataSourceId(1L);
+					setFieldsJSONObject(JSONUtil.put("uuid", "1"));
+				}
+			}
 		);
 
 		ReflectionTestUtils.setField(
-			_individualsFilterStringConverterHelper,
-			"_dxpRawElasticsearchInvoker", elasticsearchInvoker);
+			_individualsFilterStringConverterHelper, "_dxpEntityDog",
+			dxpEntityDog);
 
 		Condition condition = (Condition)ReflectionTestUtils.invokeMethod(
 			_individualsFilterStringConverterHelper, "_getUserIdCondition",
-			false, "1");
+			false, 1L);
 
 		Assertions.assertNotNull(condition);
 		Assertions.assertEquals(

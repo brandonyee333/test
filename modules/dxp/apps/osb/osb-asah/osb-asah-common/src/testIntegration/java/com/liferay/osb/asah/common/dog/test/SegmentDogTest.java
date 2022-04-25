@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -395,18 +395,17 @@ public class SegmentDogTest
 		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
-		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
-			"groups",
-			JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"type", DXPEntity.Type.GROUP
-			));
+		DXPEntity dxpEntity = new DXPEntity();
+
+		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
+		dxpEntity.setType(DXPEntity.Type.GROUP);
+
+		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.GROUP);
 
 		_assertAddSetsReferencedObjectIds(
 			new String[] {dataSourceId},
-			new String[] {groupJSONObject.getString("id")},
-			"groupIds eq '" + groupJSONObject.getString("id") + "'",
+			new String[] {String.valueOf(dxpEntity.getId())},
+			"groupIds eq '" + String.valueOf(dxpEntity.getId()) + "'",
 			"referencedGroupIds");
 	}
 
@@ -596,18 +595,17 @@ public class SegmentDogTest
 		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
-		JSONObject roleJSONObject = _dxpRawElasticsearchInvoker.add(
-			"roles",
-			JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"type", DXPEntity.Type.ROLE
-			));
+		DXPEntity dxpEntity = new DXPEntity();
+
+		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
+		dxpEntity.setType(DXPEntity.Type.ROLE);
+
+		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.ROLE);
 
 		_assertAddSetsReferencedObjectIds(
 			new String[] {dataSourceId},
-			new String[] {roleJSONObject.getString("id")},
-			"roleIds eq '" + roleJSONObject.getString("id") + "'",
+			new String[] {String.valueOf(dxpEntity.getId())},
+			"roleIds eq '" + String.valueOf(dxpEntity.getId()) + "'",
 			"referencedRoleIds");
 	}
 
@@ -650,18 +648,17 @@ public class SegmentDogTest
 		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
-		JSONObject teamJSONObject = _dxpRawElasticsearchInvoker.add(
-			"teams",
-			JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"type", DXPEntity.Type.TEAM.name()
-			));
+		DXPEntity dxpEntity = new DXPEntity();
+
+		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
+		dxpEntity.setType(DXPEntity.Type.TEAM);
+
+		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.TEAM);
 
 		_assertAddSetsReferencedObjectIds(
 			new String[] {dataSourceId},
-			new String[] {teamJSONObject.getString("id")},
-			"teamIds eq '" + teamJSONObject.getString("id") + "'",
+			new String[] {String.valueOf(dxpEntity.getId())},
+			"teamIds eq '" + String.valueOf(dxpEntity.getId()) + "'",
 			"referencedTeamIds");
 	}
 
@@ -670,18 +667,18 @@ public class SegmentDogTest
 		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
-		JSONObject userGroupJSONObject = _dxpRawElasticsearchInvoker.add(
-			"user-groups",
-			JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"type", DXPEntity.Type.USER_GROUP
-			));
+		DXPEntity dxpEntity = new DXPEntity();
+
+		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
+		dxpEntity.setType(DXPEntity.Type.USER_GROUP);
+
+		dxpEntity = _dxpEntityDog.addDXPEntity(
+			dxpEntity, DXPEntity.Type.USER_GROUP);
 
 		_assertAddSetsReferencedObjectIds(
 			new String[] {dataSourceId},
-			new String[] {userGroupJSONObject.getString("id")},
-			"userGroupIds eq '" + userGroupJSONObject.getString("id") + "'",
+			new String[] {String.valueOf(dxpEntity.getId())},
+			"userGroupIds eq '" + String.valueOf(dxpEntity.getId()) + "'",
 			"referencedUserGroupIds");
 	}
 
@@ -690,18 +687,17 @@ public class SegmentDogTest
 		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
-		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.add(
-			"users",
-			JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"type", DXPEntity.Type.USER
-			));
+		DXPEntity dxpEntity = new DXPEntity();
+
+		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
+		dxpEntity.setType(DXPEntity.Type.USER);
+
+		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.USER);
 
 		_assertAddSetsReferencedObjectIds(
 			new String[] {dataSourceId},
-			new String[] {userJSONObject.getString("id")},
-			"userId eq '" + userJSONObject.getString("id") + "'",
+			new String[] {String.valueOf(dxpEntity.getId())},
+			"userId eq '" + String.valueOf(dxpEntity.getId()) + "'",
 			"referencedUserIds");
 	}
 
@@ -1181,8 +1177,8 @@ public class SegmentDogTest
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	private final JSONObject _fieldMappingNameIds = new JSONObject();
 

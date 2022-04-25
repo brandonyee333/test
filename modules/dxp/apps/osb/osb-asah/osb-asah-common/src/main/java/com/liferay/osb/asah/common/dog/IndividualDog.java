@@ -1805,9 +1805,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 

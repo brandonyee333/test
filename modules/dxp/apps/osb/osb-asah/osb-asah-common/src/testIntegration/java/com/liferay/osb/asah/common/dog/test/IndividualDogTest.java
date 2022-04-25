@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
@@ -378,9 +379,13 @@ public class IndividualDogTest
 		name = "organizations", resourcePath = "organizations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@Test
 	public void testAddIndividualAssociation() {
@@ -422,9 +427,13 @@ public class IndividualDogTest
 		name = "organizations", resourcePath = "organizations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@Test
 	public void testDeleteIndividualAssociation() {
@@ -897,9 +906,13 @@ public class IndividualDogTest
 		Assertions.assertEquals(3, membershipJSONArray.length());
 	}
 
-	@ElasticsearchIndex(
-		name = "users", resourcePath = "users.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
+	@RepositoryResource(
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = DXPEntityRepository.class,
+		resourcePath = "osbasahdxpraw/users.json"
 	)
 	@Test
 	public void testUpdateIndividualAssociation() throws Exception {

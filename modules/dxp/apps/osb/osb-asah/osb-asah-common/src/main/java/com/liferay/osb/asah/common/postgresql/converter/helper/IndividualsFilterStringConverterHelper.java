@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverter
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -30,6 +31,7 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoInterestsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -47,6 +49,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -965,21 +968,21 @@ public class IndividualsFilterStringConverterHelper
 		return boolQueryBuilder;
 	}
 
-	private Condition _getUserIdCondition(boolean negate, String userId) {
-		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.fetch(
-			"users", userId);
+	private Condition _getUserIdCondition(boolean negate, long userId) {
+		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
+			Collections.singletonMap("id", userId), DXPEntity.Type.USER);
 
-		if (userJSONObject == null) {
+		if (dxpEntity == null) {
 			return null;
 		}
 
-		JSONObject fieldsJSONObject = userJSONObject.getJSONObject("fields");
+		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
 		Condition condition = DSL.and(
 			DSL.field(
 				"datasourceindividual.datasourceid"
 			).eq(
-				userJSONObject.getLong("dataSourceId")
+				dxpEntity.getDataSourceId()
 			),
 			DSL.field(
 				DSL.cast(
@@ -1040,8 +1043,8 @@ public class IndividualsFilterStringConverterHelper
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@Autowired
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private FaroInfoActivitiesFilterStringConverterHelper
