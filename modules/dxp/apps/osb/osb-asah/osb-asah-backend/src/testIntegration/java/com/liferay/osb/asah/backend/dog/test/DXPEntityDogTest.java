@@ -47,8 +47,6 @@ public class DXPEntityDogTest
 
 	@AfterEach
 	public void tearDown() {
-		_channelRepository.deleteAll();
-
 		_dxpEntityDog.deleteByType(DXPEntity.Type.GROUP);
 		_dxpEntityDog.deleteByType(DXPEntity.Type.ORGANIZATION);
 		_dxpEntityDog.deleteByType(DXPEntity.Type.ROLE);
@@ -315,9 +313,6 @@ public class DXPEntityDogTest
 			expectedNames,
 			ListUtil.map(dxpEntityPage.getContent(), DXPEntity::getName));
 	}
-
-	@Autowired
-	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
