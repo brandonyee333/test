@@ -291,16 +291,21 @@ public class SegmentDog extends BaseFaroInfoDog {
 			new ArrayList<>(segmentIds), "ACTIVE");
 	}
 
-	public Page<Segment> getSegmentPage(int page, int size) {
-		return _segmentRepository.findAll(PageRequest.of(page, size));
+	public Page<Segment> getSegmentPage(
+		Date fromCreateDate, Long segmentId, int size, Sort sort,
+		Date toCreateDate) {
+
+		return PageableExecutionUtils.getPage(
+			_segmentRepository.findByCreateDateBetweenAndIdAfter(
+				fromCreateDate, toCreateDate, segmentId,
+				PageRequest.of(0, size, sort)),
+			PageRequest.of(0, size, sort),
+			() -> _segmentRepository.countByCreateDateBetweenAndIdAfter(
+				fromCreateDate, toCreateDate, segmentId));
 	}
 
-	public Page<Segment> getSegmentPage(Long segmentId, int size, Sort sort) {
-		return PageableExecutionUtils.getPage(
-			_segmentRepository.findByIdAfter(
-				segmentId, PageRequest.of(0, size, sort)),
-			PageRequest.of(0, size, sort),
-			() -> _segmentRepository.countByIdAfter(segmentId));
+	public Page<Segment> getSegmentPage(int page, int size) {
+		return _segmentRepository.findAll(PageRequest.of(page, size));
 	}
 
 	public List<Segment> getSegments(Iterable<Long> segmentIds) {
