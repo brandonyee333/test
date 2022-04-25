@@ -48,8 +48,6 @@ public interface CustomDXPEntityRepository {
 
 	public void delete(DXPEntity dxpEntity);
 
-	public void deleteAll();
-
 	public void deleteAll(Iterable<? extends DXPEntity> dxpEntities);
 
 	@CacheEvict(allEntries = true)

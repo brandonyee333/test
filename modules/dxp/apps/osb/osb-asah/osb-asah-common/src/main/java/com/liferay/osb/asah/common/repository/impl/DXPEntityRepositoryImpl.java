@@ -136,11 +136,6 @@ public class DXPEntityRepositoryImpl
 	}
 
 	@Override
-	public void deleteAll() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public void deleteAll(Iterable<? extends DXPEntity> dxpEntities) {
 		dxpEntities.forEach(this::delete);
 	}
