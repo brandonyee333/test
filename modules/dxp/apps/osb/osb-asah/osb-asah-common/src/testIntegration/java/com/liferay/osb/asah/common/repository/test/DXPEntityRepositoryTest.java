@@ -55,27 +55,27 @@ public class DXPEntityRepositoryTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		DataSource dataSource1 = new DataSource("Liferay Brazil");
+		DataSource dataSource = new DataSource("Liferay Brazil");
 
-		dataSource1.setCredentialType("Token Authentication");
+		dataSource.setCredentialType("Token Authentication");
 
-		Channel channel1 = new Channel("channel1");
+		Channel channel = new Channel("channel1");
 
-		channel1.setId(11L);
-		channel1.setIsNew(true);
+		channel.setId(11L);
+		channel.setIsNew(true);
 
-		_channelRepository.save(channel1);
+		_channelRepository.save(channel);
 
-		dataSource1.setFaroBackendSecuritySignature(
+		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
-		dataSource1.setId(123L);
-		dataSource1.setIsNew(true);
-		dataSource1.setProviderType("LIFERAY");
-		dataSource1.setState("READY");
-		dataSource1.setStatus("STARTED");
-		dataSource1.setURL("");
+		dataSource.setId(123L);
+		dataSource.setIsNew(true);
+		dataSource.setProviderType("LIFERAY");
+		dataSource.setState("READY");
+		dataSource.setStatus("STARTED");
+		dataSource.setURL("");
 
-		_dataSourceRepository.save(dataSource1);
+		_dataSourceRepository.save(dataSource);
 
 		DXPEntity dxpEntity1 = new DXPEntity();
 
