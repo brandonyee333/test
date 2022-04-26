@@ -18,7 +18,12 @@ import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverter
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.jooq.Condition;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 
@@ -48,6 +53,49 @@ public class ConditionUtil {
 		}
 
 		return condition;
+	}
+
+	public static List<Condition> toConditions(
+		List<Long> dataSourceIds, String keywords,
+		String[] keywordsFieldNames) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"dataSourceId"
+			).in(
+				dataSourceIds
+			));
+
+		if (keywords != null) {
+			List<Condition> orConditions = new ArrayList<>();
+
+			for (String keywordsFieldName : keywordsFieldNames) {
+				orConditions.add(
+					DSL.field(
+						keywordsFieldName, String.class
+					).containsIgnoreCase(
+						keywords
+					));
+			}
+
+			conditions.add(DSL.or(orConditions));
+		}
+
+		return conditions;
+	}
+
+	public static List<Condition> toConditions(Map<String, Object> fields) {
+		List<Condition> conditions = new ArrayList<>();
+
+		for (Map.Entry<String, Object> entry : fields.entrySet()) {
+			Field<Object> field = DSL.field(entry.getKey());
+
+			conditions.add(field.eq(entry.getValue()));
+		}
+
+		return conditions;
 	}
 
 }
