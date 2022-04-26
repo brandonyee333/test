@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS BQGroup (
 
 CREATE TABLE IF NOT EXISTS BQIdentity (
 	channelId BIGINT,
-	dataSourceId BIGINT,
 	createDate TIMESTAMP,
+	dataSourceId BIGINT,
 	emailAddressHashed TEXT,
 	id TEXT PRIMARY KEY,
 	userId TEXT
