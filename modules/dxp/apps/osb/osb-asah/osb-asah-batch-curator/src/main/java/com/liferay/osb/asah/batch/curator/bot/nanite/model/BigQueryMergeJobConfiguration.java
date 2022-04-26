@@ -190,7 +190,7 @@ public abstract class BigQueryMergeJobConfiguration implements Serializable {
 		Class<?> clazz = getClass();
 
 		try (InputStream inputStream = clazz.getResourceAsStream(
-				"bq-dxp-entities-merge-sql.xml")) {
+				"/bq-dxp-entities-merge-sql.xml")) {
 
 			Properties properties = new Properties();
 
