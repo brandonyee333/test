@@ -14,10 +14,12 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.annotation.AccessType;
@@ -91,6 +93,10 @@ public class BQUser implements Persistable<String> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long[] getExpandoColumnIds() {
 		return Arrays.copyOf(_expandoColumnIds, _expandoColumnIds.length);
+	}
+
+	public List<ExpandoField> getExpandoFields() {
+		return _expandoFields;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -259,6 +265,10 @@ public class BQUser implements Persistable<String> {
 			expandoColumnIds, expandoColumnIds.length);
 	}
 
+	public void setExpandoFields(List<ExpandoField> expandoFields) {
+		_expandoFields = expandoFields;
+	}
+
 	public void setExpandoValueIds(String[] expandoValueIds) {
 		_expandoValueIds = Arrays.copyOf(
 			expandoValueIds, expandoValueIds.length);
@@ -381,6 +391,9 @@ public class BQUser implements Persistable<String> {
 
 	@Transient
 	private Long[] _expandoColumnIds = {};
+
+	@Transient
+	private List<ExpandoField> _expandoFields;
 
 	@Transient
 	private String[] _expandoValueIds = {};
