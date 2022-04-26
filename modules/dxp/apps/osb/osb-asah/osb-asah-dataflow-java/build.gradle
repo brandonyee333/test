@@ -4,9 +4,10 @@ ext {
 
 configurations.all {
 	resolutionStrategy.eachDependency {
-		DependencyResolveDetails details ->
-		if (details.requested.group == 'org.apache.logging.log4j') {
-			details.useVersion '2.17.0'
+		DependencyResolveDetails dependencyResolveDetails ->
+
+		if (dependencyResolveDetails.requested.group == 'org.apache.logging.log4j') {
+			dependencyResolveDetails.useVersion '2.17.0'
 		}
 	}
 }
