@@ -157,6 +157,12 @@ public class AccountEntrySearchDisplayContext {
 
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
 				_themeDisplay.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_DATA_ACCESS_EU_ID) ||
+			OrganizationLocalServiceUtil.hasUserOrganization(
+				_themeDisplay.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_DATA_ACCESS_US_ID) ||
+			OrganizationLocalServiceUtil.hasUserOrganization(
+				_themeDisplay.getUserId(),
 				OSBCustomerConstants.
 					ORGANIZATION_DIVISION_SUBSCRIPTION_SERVICES_ID)) {
 

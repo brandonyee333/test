@@ -42,6 +42,10 @@ public class OSBCustomerConstants {
 
 	public static final long ORGANIZATION_CUSTOMER_PORTAL_ID = 2844836;
 
+	public static final long ORGANIZATION_DATA_ACCESS_EU_ID = 120797992;
+
+	public static final long ORGANIZATION_DATA_ACCESS_US_ID = 120797980;
+
 	public static final long ORGANIZATION_DIVISION_SUBSCRIPTION_SERVICES_ID =
 		121344151;
 

@@ -79,6 +79,12 @@ public class AccountEnvironmentPermission {
 
 		if (_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_DATA_ACCESS_EU_ID) ||
+			_organizationLocalService.hasUserOrganization(
+				permissionChecker.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_DATA_ACCESS_US_ID) ||
+			_organizationLocalService.hasUserOrganization(
+				permissionChecker.getUserId(),
 				OSBCustomerConstants.
 					ORGANIZATION_DIVISION_SUBSCRIPTION_SERVICES_ID)) {
 

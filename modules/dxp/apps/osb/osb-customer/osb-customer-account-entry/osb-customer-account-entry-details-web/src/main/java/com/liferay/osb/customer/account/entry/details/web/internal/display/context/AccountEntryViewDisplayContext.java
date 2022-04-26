@@ -535,6 +535,12 @@ public class AccountEntryViewDisplayContext {
 
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
 				_user.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_DATA_ACCESS_EU_ID) ||
+			OrganizationLocalServiceUtil.hasUserOrganization(
+				_user.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_DATA_ACCESS_US_ID) ||
+			OrganizationLocalServiceUtil.hasUserOrganization(
+				_user.getUserId(),
 				OSBCustomerConstants.
 					ORGANIZATION_DIVISION_SUBSCRIPTION_SERVICES_ID)) {
 
