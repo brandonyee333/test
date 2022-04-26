@@ -17,8 +17,8 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.dog.DXPEntityDog;
-import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.dog.BQUserDog;
+import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -29,23 +29,24 @@ import java.util.Collections;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.data.domain.PageRequest;
+
 /**
  * @author Marcos Martins
  */
 public class DXPEntityDataExporter extends BaseDataExporter {
 
 	public DXPEntityDataExporter(
-			String collectionName, String fieldName, String fieldValue,
-			JsonFactory jsonFactory, DXPEntityDog dxpEntityDog,
-			ObjectMapper objectMapper, OutputStream outputStream)
+			BQUserDog bqUserDog, String fieldName, String fieldValue,
+			JsonFactory jsonFactory, ObjectMapper objectMapper,
+			OutputStream outputStream)
 		throws Exception {
 
 		super(jsonFactory, outputStream, null);
 
-		_collectionName = collectionName;
+		_bqUserDog = bqUserDog;
 		_fieldName = fieldName;
 		_fieldValue = fieldValue;
-		_dxpEntityDog = dxpEntityDog;
 
 		jsonGenerator.useDefaultPrettyPrinter();
 
@@ -53,27 +54,45 @@ public class DXPEntityDataExporter extends BaseDataExporter {
 	}
 
 	@Override
-	protected JSONObject doGetResultPageJSONObject(String after) {
+	public void export() throws Exception {
+		int page = 0;
+
+		while (true) {
+			JSONObject resultPageJSONObject = doGetResultPageJSONObject(
+				String.valueOf(page++));
+
+			JSONArray resultsJSONArray = resultPageJSONObject.getJSONArray(
+				"results");
+
+			if (resultsJSONArray.length() == 0) {
+				break;
+			}
+
+			exportResults(resultsJSONArray);
+		}
+
+		jsonGenerator.close();
+	}
+
+	@Override
+	protected JSONObject doGetResultPageJSONObject(String page) {
 		return JSONUtil.put(
 			"results",
 			new JSONArray(
 				ListUtil.map(
-					_dxpEntityDog.findByAfterAndFieldsAndType(
-						Long.valueOf(after),
+					_bqUserDog.findByFields(
 						Collections.singletonMap(_fieldName, _fieldValue),
-						_PAGE_SIZE,
-						DXPEntity.Type.ofCollectionName(_collectionName)),
+						PageRequest.of(Integer.parseInt(page), _PAGE_SIZE)),
 					this::_toJSONObject)));
 	}
 
-	private JSONObject _toJSONObject(DXPEntity dxpEntity) {
-		return _objectMapper.convertValue(dxpEntity, JSONObject.class);
+	private JSONObject _toJSONObject(BQUser bqUser) {
+		return _objectMapper.convertValue(bqUser, JSONObject.class);
 	}
 
 	private static final int _PAGE_SIZE = 50;
 
-	private final String _collectionName;
-	private final DXPEntityDog _dxpEntityDog;
+	private final BQUserDog _bqUserDog;
 	private final String _fieldName;
 	private final String _fieldValue;
 	private final ObjectMapper _objectMapper;

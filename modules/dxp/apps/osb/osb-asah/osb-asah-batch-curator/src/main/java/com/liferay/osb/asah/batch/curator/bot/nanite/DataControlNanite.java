@@ -23,8 +23,8 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.RawDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SalesforceEntityDataExporter;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQUserDog;
 import com.liferay.osb.asah.common.dog.CSVIndividualDog;
-import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
@@ -32,7 +32,6 @@ import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -160,9 +159,6 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _deleteData(String emailAddress) {
-		_dxpEntityDog.deleteByFieldNameEqualsAndType(
-			"fields.emailAddress", emailAddress, DXPEntity.Type.USER);
-
 		_salesforceEntityDog.deleteSalesforceEntities(
 			"email", emailAddress, SalesforceEntity.Type.INDIVIDUAL);
 
@@ -220,8 +216,8 @@ public class DataControlNanite extends BaseNanite {
 
 		zipFileBuilder.addToZip(
 			"dxp_users.json",
-			zipOutputStream -> _writeToZip(
-				"users", "fields.emailAddress", emailAddress, zipOutputStream));
+			zipOutputStream -> _writeUsersToZip(
+				"emailAddress", emailAddress, zipOutputStream));
 		zipFileBuilder.addToZip(
 			"individuals.json",
 			zipOutputStream -> _writeToZip(
@@ -456,19 +452,22 @@ public class DataControlNanite extends BaseNanite {
 		dataExporter.export();
 	}
 
-	private void _writeToZip(
-			String collectionName, String fieldName, String fieldValue,
+	private void _writeUsersToZip(
+			String fieldName, String fieldValue,
 			ZipOutputStream zipOutputStream)
 		throws Exception {
 
 		DataExporter dataExporter = new DXPEntityDataExporter(
-			collectionName, fieldName, fieldValue, _jsonFactory, _dxpEntityDog,
-			_objectMapper, zipOutputStream);
+			_bqUserDog, fieldName, fieldValue, _jsonFactory, _objectMapper,
+			zipOutputStream);
 
 		dataExporter.export();
 	}
 
 	private static final Log _log = LogFactory.getLog(DataControlNanite.class);
+
+	@Autowired
+	private BQUserDog _bqUserDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
@@ -481,9 +480,6 @@ public class DataControlNanite extends BaseNanite {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private EmailHttp _emailHttp;
