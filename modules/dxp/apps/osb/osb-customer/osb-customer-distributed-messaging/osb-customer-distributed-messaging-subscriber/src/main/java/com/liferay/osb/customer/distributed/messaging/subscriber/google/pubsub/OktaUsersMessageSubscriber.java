@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.distributed.messaging.subscriber.google.pubsub;
 
+import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Company;
@@ -54,6 +55,21 @@ public class OktaUsersMessageSubscriber
 		if (eventType.equals(_EVENT_TYPE_UPDATE)) {
 			_updateUser(jsonObject.getJSONObject("user"));
 		}
+		else if (eventType.equals(_EVENT_TYPE_GROUP_REMOVE)) {
+			if (_isGroupEmployee(jsonObject)) {
+				_downgradeZendeskAgent(jsonObject.getJSONObject("user"));
+			}
+		}
+	}
+
+	private void _downgradeZendeskAgent(JSONObject jsonObject)
+		throws Exception {
+
+		User user = _fetchUser(jsonObject);
+
+		if (user != null) {
+			_userSynchronizer.removeAgentRole(user);
+		}
 	}
 
 	private User _fetchUser(JSONObject jsonObject) throws Exception {
@@ -75,6 +91,18 @@ public class OktaUsersMessageSubscriber
 		}
 
 		return null;
+	}
+
+	private boolean _isGroupEmployee(JSONObject jsonObject) {
+		JSONObject groupJSONObject = jsonObject.getJSONObject("group");
+
+		String name = groupJSONObject.getString("displayName");
+
+		if (name.equals(_GROUP_NAME_EMPLOYEES)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _syncPhone(
@@ -206,8 +234,13 @@ public class OktaUsersMessageSubscriber
 		}
 	}
 
+	private static final String _EVENT_TYPE_GROUP_REMOVE =
+		"group.user_membership.remove";
+
 	private static final String _EVENT_TYPE_UPDATE =
 		"user.account.update_profile";
+
+	private static final String _GROUP_NAME_EMPLOYEES = "Employees";
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
@@ -220,5 +253,8 @@ public class OktaUsersMessageSubscriber
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private UserSynchronizer _userSynchronizer;
 
 }

@@ -27,7 +27,6 @@ import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -192,14 +191,7 @@ public class ContactMessageListener extends BaseMessageListener {
 		ContactRole contactRole) {
 
 		try {
-			String accountName = account.getName();
 			String contactRoleName = contactRole.getName();
-
-			if (accountName.equals("Liferay, Inc.") &&
-				contactRoleName.equals(ContactRoleConstants.NAME_MEMBER)) {
-
-				_userSynchronizer.removeAgentRole(user);
-			}
 
 			if (!ArrayUtil.contains(
 					ContactRoleConstants.SUPPORT_CONTACT_ROLES,
@@ -335,9 +327,6 @@ public class ContactMessageListener extends BaseMessageListener {
 
 	@Reference(target = "(provider=okta)")
 	private UserIdentityProvider _userIdentityProvider;
-
-	@Reference
-	private UserSynchronizer _userSynchronizer;
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;

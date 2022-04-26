@@ -9,6 +9,7 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-message-subscriber")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-legacy:osb-customer-legacy-message-subscriber")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk:osb-customer-zendesk-message-subscriber")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk:osb-customer-zendesk-synchronizer")
 }
 
 deployDependencies {
