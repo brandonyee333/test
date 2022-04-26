@@ -26,6 +26,9 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class BQExpandoValue implements Persistable<String> {
 
+	public BQExpandoValue() {
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long getClassPK() {
 		return _classPK;

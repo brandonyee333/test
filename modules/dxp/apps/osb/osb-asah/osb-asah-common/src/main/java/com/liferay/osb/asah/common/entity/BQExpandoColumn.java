@@ -28,6 +28,9 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class BQExpandoColumn implements Persistable<String> {
 
+	public BQExpandoColumn() {
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long getColumnId() {
 		return _columnId;

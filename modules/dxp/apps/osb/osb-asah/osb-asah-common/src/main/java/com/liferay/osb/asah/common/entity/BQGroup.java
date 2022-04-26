@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -27,6 +30,13 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class BQGroup implements Persistable<String> {
+
+	public BQGroup() {
+	}
+
+	public BQGroup(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Override
