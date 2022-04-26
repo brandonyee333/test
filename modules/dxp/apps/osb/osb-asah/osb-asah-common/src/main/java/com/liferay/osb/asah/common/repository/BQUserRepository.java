@@ -16,6 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQUser;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +28,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQUserRepository extends CrudRepository<BQUser, String> {
+
+	public long countByDataSourceIdsAndKeywords(
+		List<Long> dataSourceIds, String keywords);
+
+	public List<BQUser> findByFields(
+		Map<String, Object> fields, Pageable pageable);
+
+	public List<BQUser> searchByDataSourceIdsAndKeywords(
+		List<Long> dataSourceIds, String keywords, Pageable pageable);
+
 }

@@ -16,6 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQRole;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +27,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQRoleRepository extends CrudRepository<BQRole, String> {
+
+	public long countByDataSourceIdsAndKeywords(
+		List<Long> dataSourceIds, String keywords);
+
+	public List<BQRole> searchByDataSourceIdsAndKeywords(
+		List<Long> dataSourceIds, String keywords, Pageable pageable);
+
 }
