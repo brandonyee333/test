@@ -14,10 +14,16 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.BQDXPEntity;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -29,7 +35,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQRole implements Persistable<String> {
+public class BQRole implements BQDXPEntity, Persistable<String> {
 
 	public BQRole() {
 	}
@@ -44,12 +50,41 @@ public class BQRole implements Persistable<String> {
 		return _dataSourceId;
 	}
 
+	@Override
+	public String getDataSourceName() {
+		return _dataSourceName;
+	}
+
+	@Override
+	public String getDXPEntityType() {
+		return DXPEntity.Type.ROLE.name();
+	}
+
+	@JsonProperty("fields")
+	@Override
+	public JSONObject getFieldsJSONObject() {
+		return JSONUtil.put(
+			"name", _name
+		).put(
+			"roleId", _roleId
+		);
+	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
 	public String getId() {
 		return _id;
+	}
+
+	@Override
+	public String getIdFieldName() {
+		return "roleId";
+	}
+
+	@Override
+	public Long getIdFieldValue() {
+		return _roleId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -84,6 +119,11 @@ public class BQRole implements Persistable<String> {
 		_dataSourceId = dataSourceId;
 	}
 
+	@Override
+	public void setDataSourceName(String dataSourceName) {
+		_dataSourceName = dataSourceName;
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
@@ -108,6 +148,9 @@ public class BQRole implements Persistable<String> {
 
 	@Transient
 	private Long _dataSourceId;
+
+	@Transient
+	private String _dataSourceName;
 
 	@Transient
 	private String _id;

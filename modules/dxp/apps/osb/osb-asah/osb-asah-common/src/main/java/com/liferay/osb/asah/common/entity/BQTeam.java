@@ -14,10 +14,16 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.BQDXPEntity;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -29,7 +35,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQTeam implements Persistable<String> {
+public class BQTeam implements BQDXPEntity, Persistable<String> {
 
 	public BQTeam() {
 	}
@@ -44,6 +50,28 @@ public class BQTeam implements Persistable<String> {
 		return _dataSourceId;
 	}
 
+	@Override
+	public String getDataSourceName() {
+		return _dataSourceName;
+	}
+
+	@Override
+	public String getDXPEntityType() {
+		return DXPEntity.Type.TEAM.name();
+	}
+
+	@JsonProperty("fields")
+	@Override
+	public JSONObject getFieldsJSONObject() {
+		return JSONUtil.put(
+			"groupId", _groupId
+		).put(
+			"name", _name
+		).put(
+			"teamId", _teamId
+		);
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long getGroupId() {
 		return _groupId;
@@ -54,6 +82,16 @@ public class BQTeam implements Persistable<String> {
 	@Override
 	public String getId() {
 		return _id;
+	}
+
+	@Override
+	public String getIdFieldName() {
+		return "teamId";
+	}
+
+	@Override
+	public Long getIdFieldValue() {
+		return _teamId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -87,6 +125,12 @@ public class BQTeam implements Persistable<String> {
 	public void setDataSourceId(Long dataSourceId) {
 		_dataSourceId = dataSourceId;
 	}
+
+	@Override
+	public void setDataSourceName(String dataSourceName) {
+		_dataSourceName = dataSourceName;
+	}
+
 	public void setGroupId(Long groupId) {
 		_groupId = groupId;
 	}
@@ -115,6 +159,9 @@ public class BQTeam implements Persistable<String> {
 
 	@Transient
 	private Long _dataSourceId;
+
+	@Transient
+	private String _dataSourceName;
 
 	@Transient
 	private Long _groupId;

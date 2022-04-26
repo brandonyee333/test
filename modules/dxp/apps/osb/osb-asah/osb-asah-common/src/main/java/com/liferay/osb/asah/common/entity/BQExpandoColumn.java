@@ -14,7 +14,14 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.BQDXPEntity;
+
 import java.util.Date;
+
+import org.json.JSONObject;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -26,7 +33,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQExpandoColumn implements Persistable<String> {
+public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 
 	public BQExpandoColumn() {
 	}
@@ -42,9 +49,31 @@ public class BQExpandoColumn implements Persistable<String> {
 		return _dataSourceId;
 	}
 
+	@Override
+	public String getDataSourceName() {
+		return _dataSourceName;
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getDataType() {
 		return _dataType;
+	}
+
+	@Override
+	public String getDXPEntityType() {
+		return DXPEntity.Type.EXPANDO_COLUMN.name();
+	}
+
+	@JsonProperty("fields")
+	@Override
+	public JSONObject getFieldsJSONObject() {
+		return JSONUtil.put(
+			"columnId", _columnId
+		).put(
+			"dataType", _dataType
+		).put(
+			"name", _name
+		);
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -52,6 +81,16 @@ public class BQExpandoColumn implements Persistable<String> {
 	@Override
 	public String getId() {
 		return _id;
+	}
+
+	@Override
+	public String getIdFieldName() {
+		return "columnId";
+	}
+
+	@Override
+	public Long getIdFieldValue() {
+		return _columnId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -85,6 +124,11 @@ public class BQExpandoColumn implements Persistable<String> {
 		_dataSourceId = dataSourceId;
 	}
 
+	@Override
+	public void setDataSourceName(String dataSourceName) {
+		_dataSourceName = dataSourceName;
+	}
+
 	public void setDataType(String type) {
 		_dataType = type;
 	}
@@ -112,6 +156,9 @@ public class BQExpandoColumn implements Persistable<String> {
 
 	@Transient
 	private Long _dataSourceId;
+
+	@Transient
+	private String _dataSourceName;
 
 	@Transient
 	private String _dataType;

@@ -14,6 +14,11 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.BQDXPEntity;
 import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
@@ -21,6 +26,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -32,7 +39,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQUser implements Persistable<String> {
+public class BQUser implements BQDXPEntity, Persistable<String> {
 
 	public BQUser() {
 	}
@@ -85,6 +92,16 @@ public class BQUser implements Persistable<String> {
 		return _dataSourceId;
 	}
 
+	@Override
+	public String getDataSourceName() {
+		return _dataSourceName;
+	}
+
+	@Override
+	public String getDXPEntityType() {
+		return DXPEntity.Type.USER.name();
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddress() {
 		return _emailAddress;
@@ -104,6 +121,70 @@ public class BQUser implements Persistable<String> {
 		return Arrays.copyOf(_expandoValueIds, _expandoValueIds.length);
 	}
 
+	@JsonProperty("fields")
+	@Override
+	public JSONObject getFieldsJSONObject() {
+		return JSONUtil.put(
+			"accountId", _accountId
+		).put(
+			"birthday", DateUtil.toString(_birthday)
+		).put(
+			"classNameId", _classNameId
+		).put(
+			"classPK", _classPK
+		).put(
+			"contactId", _contactId
+		).put(
+			"createDate", DateUtil.toString(_createDate)
+		).put(
+			"emailAddress", _emailAddress
+		).put(
+			"expandoColumnIds", _expandoColumnIds
+		).put(
+			"expandoValueIds", _expandoValueIds
+		).put(
+			"firstName", _firstName
+		).put(
+			"groupIds", _groupIds
+		).put(
+			"jobTitle", _jobTitle
+		).put(
+			"languageId", _languageId
+		).put(
+			"lastName", _lastName
+		).put(
+			"male", _male
+		).put(
+			"middleName", _middleName
+		).put(
+			"modifiedDate", DateUtil.toString(_modifiedDate)
+		).put(
+			"organizationIds", _organizationIds
+		).put(
+			"parentContactId", _parentContactId
+		).put(
+			"prefixId", _prefixId
+		).put(
+			"roleIds", _roleIds
+		).put(
+			"screenName", _screenName
+		).put(
+			"suffixId", _suffixId
+		).put(
+			"teamIds", _teamIds
+		).put(
+			"timeZoneId", _timeZoneId
+		).put(
+			"userGroupIds", _userGroupIds
+		).put(
+			"userId", _userId
+		).put(
+			"userNam", _userName
+		).put(
+			"uuid", _uuid
+		);
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getFirstName() {
 		return _firstName;
@@ -119,6 +200,16 @@ public class BQUser implements Persistable<String> {
 	@Override
 	public String getId() {
 		return _id;
+	}
+
+	@Override
+	public String getIdFieldName() {
+		return "userId";
+	}
+
+	@Override
+	public Long getIdFieldValue() {
+		return _userId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -153,6 +244,11 @@ public class BQUser implements Persistable<String> {
 		}
 
 		return new Date(_modifiedDate.getTime());
+	}
+
+	@Override
+	public String getName() {
+		return _firstName + " " + _lastName;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -254,6 +350,11 @@ public class BQUser implements Persistable<String> {
 
 	public void setDataSourceId(Long dataSourceId) {
 		_dataSourceId = dataSourceId;
+	}
+
+	@Override
+	public void setDataSourceName(String dataSourceName) {
+		_dataSourceName = dataSourceName;
 	}
 
 	public void setEmailAddress(String emailAddress) {
@@ -385,6 +486,9 @@ public class BQUser implements Persistable<String> {
 
 	@Transient
 	private Long _dataSourceId;
+
+	@Transient
+	private String _dataSourceName;
 
 	@Transient
 	private String _emailAddress;

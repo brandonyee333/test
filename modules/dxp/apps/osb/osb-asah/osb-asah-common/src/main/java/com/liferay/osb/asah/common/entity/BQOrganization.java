@@ -14,6 +14,10 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.BQDXPEntity;
 import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
@@ -21,6 +25,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -33,7 +39,8 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQOrganization implements Persistable<String> {
+public class BQOrganization implements BQDXPEntity, Persistable<String> {
+
 	public BQOrganization() {
 	}
 
@@ -47,6 +54,15 @@ public class BQOrganization implements Persistable<String> {
 		return _dataSourceId;
 	}
 
+	@Override
+	public String getDataSourceName() {
+		return _dataSourceName;
+	}
+
+	@Override
+	public String getDXPEntityType() {
+		return DXPEntity.Type.ORGANIZATION.name();
+	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long[] getExpandoColumnIds() {
@@ -62,11 +78,43 @@ public class BQOrganization implements Persistable<String> {
 		return Arrays.copyOf(_expandoValueIds, _expandoValueIds.length);
 	}
 
+	@JsonProperty("fields")
+	@Override
+	public JSONObject getFieldsJSONObject() {
+		return JSONUtil.put(
+			"expandoColumnIds", _expandoColumnIds
+		).put(
+			"expandoValueIds", _expandoValueIds
+		).put(
+			"name", _name
+		).put(
+			"organizationId", _organizationId
+		).put(
+			"parentOrganizationId", _parentOrganizationId
+		).put(
+			"parentOrganizationName", _parentOrganizationName
+		).put(
+			"treePath", _treePath
+		).put(
+			"type", _type
+		);
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
 	public String getId() {
 		return _id;
+	}
+
+	@Override
+	public String getIdFieldName() {
+		return "organizationId";
+	}
+
+	@Override
+	public Long getIdFieldValue() {
+		return _organizationId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -94,6 +142,11 @@ public class BQOrganization implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getParentOrganizationName() {
+		return _parentOrganizationName;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getTreePath() {
 		return _treePath;
 	}
@@ -115,6 +168,11 @@ public class BQOrganization implements Persistable<String> {
 
 	public void setDataSourceId(Long dataSourceId) {
 		_dataSourceId = dataSourceId;
+	}
+
+	@Override
+	public void setDataSourceName(String dataSourceName) {
+		_dataSourceName = dataSourceName;
 	}
 
 	public void setExpandoColumnIds(Long[] expandoColumnIds) {
@@ -157,6 +215,10 @@ public class BQOrganization implements Persistable<String> {
 		_parentOrganizationId = parentOrganizationId;
 	}
 
+	public void setParentOrganizationName(String parentOrganizationName) {
+		_parentOrganizationName = parentOrganizationName;
+	}
+
 	public void setTreePath(String treePath) {
 		_treePath = treePath;
 	}
@@ -167,6 +229,9 @@ public class BQOrganization implements Persistable<String> {
 
 	@Transient
 	private Long _dataSourceId;
+
+	@Transient
+	private String _dataSourceName;
 
 	@Transient
 	private Long[] _expandoColumnIds = {};
@@ -194,6 +259,9 @@ public class BQOrganization implements Persistable<String> {
 
 	@Transient
 	private Long _parentOrganizationId;
+
+	@Transient
+	private String _parentOrganizationName;
 
 	@Transient
 	private String _treePath;
