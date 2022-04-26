@@ -50,9 +50,7 @@ public class OSBAsahCacheResolver implements CacheResolver {
 
 		Class<?> clazz = OSBAsahCacheUtil.extractTargetClass(target);
 
-		sb.append(
-			StringUtils.replace(
-				clazz.getName(), "RepositoryCustom", "Repository"));
+		sb.append(StringUtils.replace(clazz.getName(), "Custom", ""));
 
 		caches.add(_cacheManager.getCache(sb.toString()));
 
