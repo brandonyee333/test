@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.dto;
 
-import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
+import com.liferay.osb.asah.common.model.BQDXPEntity;
 
 /**
  * @author Matthew Kong
@@ -23,17 +23,17 @@ import com.liferay.osb.asah.common.graphql.GraphQLType;
 @GraphQLType
 public class DXPEntityDTO {
 
-	public DXPEntityDTO(DXPEntity dxpEntity) {
-		_dataSourceName = dxpEntity.getDataSourceName();
-		_id = dxpEntity.getId();
-		_name = dxpEntity.getName();
+	public DXPEntityDTO(BQDXPEntity bqDXPEntity) {
+		_dataSourceName = bqDXPEntity.getDataSourceName();
+		_id = bqDXPEntity.getId();
+		_name = bqDXPEntity.getName();
 	}
 
 	public String getDataSourceName() {
 		return _dataSourceName;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return _id;
 	}
 
@@ -42,7 +42,7 @@ public class DXPEntityDTO {
 	}
 
 	private final String _dataSourceName;
-	private final Long _id;
+	private final String _id;
 	private final String _name;
 
 }

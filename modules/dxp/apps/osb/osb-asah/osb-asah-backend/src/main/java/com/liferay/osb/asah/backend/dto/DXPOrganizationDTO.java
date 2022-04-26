@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.dto;
 
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
-import com.liferay.osb.asah.common.model.DXPOrganization;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 /**
@@ -24,11 +24,11 @@ import com.liferay.osb.asah.common.util.StringUtil;
 @GraphQLType
 public class DXPOrganizationDTO extends DXPEntityDTO {
 
-	public DXPOrganizationDTO(DXPOrganization dxpOrganization) {
-		super(dxpOrganization);
+	public DXPOrganizationDTO(BQOrganization bqOrganization) {
+		super(bqOrganization);
 
-		_parentName = dxpOrganization.getParentName();
-		_type = StringUtil.get(dxpOrganization.getType());
+		_parentName = bqOrganization.getParentOrganizationName();
+		_type = StringUtil.get(bqOrganization.getType());
 	}
 
 	public String getParentName() {
