@@ -79,13 +79,19 @@ public abstract class BaseDataExporter implements DataExporter {
 
 			lastDocumentId = _getLastDocumentId(resultsJSONArray);
 
-			_exportResults(resultsJSONArray);
+			exportResults(resultsJSONArray);
 		}
 
 		jsonGenerator.close();
 	}
 
 	protected abstract JSONObject doGetResultPageJSONObject(String after);
+
+	protected void exportResults(JSONArray resultsJSONArray) {
+		for (int i = 0; i < resultsJSONArray.length(); i++) {
+			_exportResult(resultsJSONArray.getJSONObject(i));
+		}
+	}
 
 	protected JsonGenerator jsonGenerator;
 	protected ReportHttp reportHttp;
@@ -99,12 +105,6 @@ public abstract class BaseDataExporter implements DataExporter {
 			if (_log.isWarnEnabled()) {
 				_log.warn(exception, exception);
 			}
-		}
-	}
-
-	private void _exportResults(JSONArray resultsJSONArray) {
-		for (int i = 0; i < resultsJSONArray.length(); i++) {
-			_exportResult(resultsJSONArray.getJSONObject(i));
 		}
 	}
 
