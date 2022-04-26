@@ -17,11 +17,15 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dto.DXPEntityDTO;
 import com.liferay.osb.asah.backend.dto.DXPOrganizationDTO;
 import com.liferay.osb.asah.backend.dto.DXPUserDTO;
-import com.liferay.osb.asah.common.dog.DXPEntityDog;
-import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.dog.BQGroupDog;
+import com.liferay.osb.asah.common.dog.BQRoleDog;
+import com.liferay.osb.asah.common.dog.BQTeamDog;
+import com.liferay.osb.asah.common.dog.BQUserDog;
+import com.liferay.osb.asah.common.dog.BQUserGroupDog;
+import com.liferay.osb.asah.common.entity.BQOrganization;
+import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.DXPOrganization;
-import com.liferay.osb.asah.common.model.DXPUser;
+import com.liferay.osb.asah.common.model.BQDXPEntity;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -32,6 +36,7 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLFieldDefinition;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,36 +59,62 @@ public class DXPEntityBagDataFetcher
 	public ResultBag<? extends DXPEntityDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Page<? extends DXPEntity> dxpEntityPage =
-			_dxpEntityDog.getDXPEntityPage(
-				NumberUtils.createLong(
-					dataFetchingEnvironment.getArgument("channelId")),
-				dataFetchingEnvironment.getArgument("keywords"),
-				dataFetchingEnvironment.getArgument("size"),
-				Sort.of(dataFetchingEnvironment.getArgument("sort")),
-				dataFetchingEnvironment.getArgument("start"),
-				DXPEntity.Type.ofCollectionName(
-					_getCollectionName(dataFetchingEnvironment)));
+		Page<? extends BQDXPEntity> bqDXPEntityPage = _getDXPEntityPage(
+			NumberUtils.createLong(
+				dataFetchingEnvironment.getArgument("channelId")),
+			_getGraphQLFieldDefinitionName(dataFetchingEnvironment),
+			dataFetchingEnvironment.getArgument("keywords"),
+			dataFetchingEnvironment.getArgument("size"),
+			Sort.of(dataFetchingEnvironment.getArgument("sort")),
+			dataFetchingEnvironment.getArgument("start"));
 
 		return new ResultBag<>(
 			ListUtil.map(
-				dxpEntityPage.getContent(),
-				dxpEntity -> {
-					if (dxpEntity instanceof DXPOrganization) {
+				bqDXPEntityPage.getContent(),
+				bqDXPEntity -> {
+					if (bqDXPEntity instanceof BQOrganization) {
 						return new DXPOrganizationDTO(
-							(DXPOrganization)dxpEntity);
+							(BQOrganization)bqDXPEntity);
 					}
 
-					if (dxpEntity instanceof DXPUser) {
-						return new DXPUserDTO((DXPUser)dxpEntity);
+					if (bqDXPEntity instanceof BQUser) {
+						return new DXPUserDTO((BQUser)bqDXPEntity);
 					}
 
-					return new DXPEntityDTO(dxpEntity);
+					return new DXPEntityDTO(bqDXPEntity);
 				}),
-			dxpEntityPage.getTotalElements());
+			bqDXPEntityPage.getTotalElements());
 	}
 
-	private String _getCollectionName(
+	private Page<? extends BQDXPEntity> _getDXPEntityPage(
+		Long channelId, String graphQLFieldDefinitionName, String keywords,
+		int size, Sort sort, int start) {
+
+		if (StringUtils.equals(graphQLFieldDefinitionName, "groups")) {
+			return _bqGroupDog.getBQGroupPage(
+				channelId, keywords, size, sort, start);
+		}
+		else if (StringUtils.equals(graphQLFieldDefinitionName, "roles")) {
+			return _bqRoleDog.getBQRolePage(
+				channelId, keywords, size, sort, start);
+		}
+		else if (StringUtils.equals(graphQLFieldDefinitionName, "teams")) {
+			return _bqTeamDog.getBQTeamPage(
+				channelId, keywords, size, sort, start);
+		}
+		else if (StringUtils.equals(graphQLFieldDefinitionName, "userGroups")) {
+			return _bqUserGroupDog.getBQUserGroupPage(
+				channelId, keywords, size, sort, start);
+		}
+		else if (StringUtils.equals(graphQLFieldDefinitionName, "users")) {
+			return _bqUserDog.getBQUserPage(
+				channelId, keywords, size, sort, start);
+		}
+
+		return null;
+	}
+
+	private String _getGraphQLFieldDefinitionName(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		ExecutionTypeInfo executionTypeInfo =
@@ -92,16 +123,22 @@ public class DXPEntityBagDataFetcher
 		GraphQLFieldDefinition graphQLFieldDefinition =
 			executionTypeInfo.getFieldDefinition();
 
-		String name = graphQLFieldDefinition.getName();
-
-		if (name.equals("userGroups")) {
-			return "user-groups";
-		}
-
-		return name;
+		return graphQLFieldDefinition.getName();
 	}
 
 	@Autowired
-	private DXPEntityDog _dxpEntityDog;
+	private BQGroupDog _bqGroupDog;
+
+	@Autowired
+	private BQRoleDog _bqRoleDog;
+
+	@Autowired
+	private BQTeamDog _bqTeamDog;
+
+	@Autowired
+	private BQUserDog _bqUserDog;
+
+	@Autowired
+	private BQUserGroupDog _bqUserGroupDog;
 
 }
