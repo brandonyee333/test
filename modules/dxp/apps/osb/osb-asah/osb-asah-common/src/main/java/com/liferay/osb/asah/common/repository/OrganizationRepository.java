@@ -28,7 +28,7 @@ import org.springframework.lang.Nullable;
  */
 @Primary
 public interface OrganizationRepository
-	extends OrganizationRepositoryCustom, Repository<Organization, Long> {
+	extends CustomOrganizationRepository, Repository<Organization, Long> {
 
 	@Cacheable
 	public long countByName(@Nullable String name);

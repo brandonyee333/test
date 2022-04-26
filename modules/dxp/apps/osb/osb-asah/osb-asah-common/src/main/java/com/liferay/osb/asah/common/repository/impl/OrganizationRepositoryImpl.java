@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.OrganizationRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomOrganizationRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -43,7 +43,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 public class OrganizationRepositoryImpl
-	extends BaseRepository implements OrganizationRepositoryCustom {
+	extends BaseRepository implements CustomOrganizationRepository {
 
 	public OrganizationRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Primary;
  */
 @Primary
 public interface DXPEntityRepository
-	extends DXPEntityRepositoryCustom, Repository<DXPEntity, Long> {
+	extends CustomDXPEntityRepository, Repository<DXPEntity, Long> {
 
 	public void delete(DXPEntity dxpEntity);
 

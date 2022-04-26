@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.CSVIndividual;
-import com.liferay.osb.asah.common.repository.CSVIndividualRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomCSVIndividualRepository;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ import org.jooq.impl.DSL;
  * @author Marcellus Tavares
  */
 public class CSVIndividualRepositoryImpl
-	extends BaseRepository implements CSVIndividualRepositoryCustom {
+	extends BaseRepository implements CustomCSVIndividualRepository {
 
 	public CSVIndividualRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
-import com.liferay.osb.asah.common.repository.InterestRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomInterestRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.math.BigDecimal;
@@ -52,7 +52,7 @@ import org.springframework.lang.Nullable;
  * @author Robson Pastor
  */
 public class InterestRepositoryImpl
-	extends BaseRepository implements InterestRepositoryCustom {
+	extends BaseRepository implements CustomInterestRepository {
 
 	public InterestRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

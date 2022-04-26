@@ -14,23 +14,32 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
+import com.liferay.osb.asah.common.entity.Organization;
+import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Ivica Cardic
  */
-public interface CustomAssetDashboardRepositoryCustom {
+public interface CustomOrganizationRepository {
+
+	public long countByName(@Nullable String name);
 
 	@Cacheable
-	public long countCustomAssetDashboards(Long channelId, String keywords);
+	public List<Organization> findByName(
+		@Nullable String name, Pageable pageable);
+
+	public List<Transformation> getOrganizationTransformations(
+		String apply, FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
-	public List<CustomAssetDashboard> searchCustomAssetDashboards(
-		Long channelId, String keywords, Pageable pageable);
+	public List<Organization> searchOrganizations(
+		FilterHelper filterHelper, Pageable pageable);
 
 }

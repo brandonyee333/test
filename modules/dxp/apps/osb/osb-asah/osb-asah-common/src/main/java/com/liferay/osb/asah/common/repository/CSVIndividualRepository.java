@@ -28,7 +28,7 @@ import org.springframework.data.repository.query.Param;
  * @author Marcellus Tavares
  */
 public interface CSVIndividualRepository
-	extends CSVIndividualRepositoryCustom, Repository<CSVIndividual, Long> {
+	extends CustomCSVIndividualRepository, Repository<CSVIndividual, Long> {
 
 	@Cacheable
 	public long countByDataSourceId(Long dataSourceId);

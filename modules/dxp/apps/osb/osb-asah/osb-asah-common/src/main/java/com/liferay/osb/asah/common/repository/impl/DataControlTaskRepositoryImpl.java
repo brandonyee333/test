@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DataControlTask;
-import com.liferay.osb.asah.common.repository.DataControlTaskRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomDataControlTaskRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ import org.springframework.lang.Nullable;
  * @author Marcellus Tavares
  */
 public class DataControlTaskRepositoryImpl
-	extends BaseRepository implements DataControlTaskRepositoryCustom {
+	extends BaseRepository implements CustomDataControlTaskRepository {
 
 	public DataControlTaskRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

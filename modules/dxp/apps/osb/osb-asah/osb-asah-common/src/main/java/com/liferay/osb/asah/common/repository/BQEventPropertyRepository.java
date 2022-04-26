@@ -26,7 +26,7 @@ import org.springframework.data.repository.query.Param;
  * @author Marcellus Tavares
  */
 public interface BQEventPropertyRepository
-	extends BQEventPropertyRepositoryCustom,
+	extends CustomBQEventPropertyRepository,
 			PagingAndSortingRepository<BQEventProperty, String> {
 
 	public List<BQEventPropertyValue>

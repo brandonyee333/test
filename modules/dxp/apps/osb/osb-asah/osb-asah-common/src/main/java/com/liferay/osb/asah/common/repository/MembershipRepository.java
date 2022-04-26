@@ -30,7 +30,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface MembershipRepository
-	extends MembershipRepositoryCustom, Repository<Membership, Long> {
+	extends CustomMembershipRepository, Repository<Membership, Long> {
 
 	@Cacheable
 	public long countByIndividualIdInAndIndividualSegmentIdAndStatus(

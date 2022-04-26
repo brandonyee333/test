@@ -14,27 +14,19 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.CSVIndividual;
 
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Ivica Cardic
  */
-public interface EventAttributeDefinitionRepositoryCustom {
+public interface CustomCSVIndividualRepository {
 
 	@Cacheable
-	public long countEventAttributeDefinitions(
-		@Nullable Long eventDefinitionId, @Nullable String keyword,
-		@Nullable EventAttributeDefinition.Type type);
-
-	@Cacheable
-	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		@Nullable Long eventDefinitionId, @Nullable String keyword,
-		Pageable pageable, @Nullable EventAttributeDefinition.Type type);
+	public List<CSVIndividual> findByDataSourceIdAndFieldKeyEquals(
+		Long dataSourceId, String fieldKey, String fieldValue);
 
 }

@@ -37,7 +37,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface BQEventRepositoryCustom {
+public interface CustomBQEventRepository {
 
 	public Integer countBQEvents(
 		Long channelId, @Nullable String keywords,

@@ -30,7 +30,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface InterestRepository
-	extends InterestRepositoryCustom,
+	extends CustomInterestRepository,
 			PagingAndSortingRepository<Interest, Long> {
 
 	public long countByOwnerIdAndOwnerType(Long ownerId, String ownerType);

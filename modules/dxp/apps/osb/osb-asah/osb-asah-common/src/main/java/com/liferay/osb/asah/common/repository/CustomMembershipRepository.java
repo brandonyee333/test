@@ -14,30 +14,29 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.entity.Membership;
 
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Ivica Cardic
  */
-public interface SalesforceEntityRepositoryCustom {
-
-	public List<SalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
-		String after, String fieldKey, String fieldValue, int size,
-		SalesforceEntity.Type type);
+public interface CustomMembershipRepository {
 
 	@Cacheable
-	public List<SalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
-		Long dataSourceId, String fieldKey, String fieldValue,
-		SalesforceEntity.Type type);
+	public List<Long> findIndividualIdByIndividualSegmentIdIn(
+		List<Long> individualSegmentIds, int max, int min, boolean ascending);
 
 	@Cacheable
-	public List<String>
-		findByDataSourceIdAndFieldKeyEqualsAndTypeGroupByFieldKey(
-			Long dataSourceId, String fieldKey, String fieldValue,
-			SalesforceEntity.Type type, String groupByFieldKey);
+	public List<Long> findIndividualIdByIndividualSegmentIdIn(
+		Long individualId, List<Long> individualSegmentIds, int max, int min,
+		boolean ascending);
+
+	@Cacheable
+	public List<Membership> searchMemberships(
+		@Nullable Long id, Long individualSegmentId, int size, String status);
 
 }

@@ -28,7 +28,7 @@ import org.springframework.data.repository.query.Param;
  * @author Rachael Koestartyo
  */
 public interface EventAnalysisRepository
-	extends EventAnalysisRepositoryCustom, Repository<EventAnalysis, Long> {
+	extends CustomEventAnalysisRepository, Repository<EventAnalysis, Long> {
 
 	@CacheEvict(allEntries = true)
 	@Modifying

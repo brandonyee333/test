@@ -14,28 +14,21 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.entity.Experiment;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Ivica Cardic
  */
-public interface FieldRepositoryCustom {
+public interface CustomExperimentRepositor {
 
-	public long countFields(FilterHelper filterHelper);
-
-	public List<Transformation> getFieldTransformations(
-		String apply, FilterHelper filterHelper, Pageable pageable);
-
-	public List<Field> searchFields(
-		FilterHelper filterHelper, Pageable pageable);
-
-	public void updateDataSourceNameByDataSourceId(
-		Long dataSourceId, String dataSourceName);
+	@Cacheable
+	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
+		Long channelId, @Nullable String keywords, Pageable pageable);
 
 }

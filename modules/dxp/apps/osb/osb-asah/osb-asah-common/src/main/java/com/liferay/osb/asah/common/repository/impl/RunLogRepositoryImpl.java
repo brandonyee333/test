@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.RunLog;
-import com.liferay.osb.asah.common.repository.RunLogRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomRunLogRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ import org.springframework.lang.Nullable;
  * @author Marcellus Tavares
  */
 public class RunLogRepositoryImpl
-	extends BaseRepository implements RunLogRepositoryCustom {
+	extends BaseRepository implements CustomRunLogRepository {
 
 	public RunLogRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

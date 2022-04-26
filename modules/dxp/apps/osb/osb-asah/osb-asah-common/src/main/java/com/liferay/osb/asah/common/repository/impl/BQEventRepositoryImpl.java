@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
-import com.liferay.osb.asah.common.repository.BQEventRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomBQEventRepository;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 
 import java.math.BigDecimal;
@@ -77,7 +77,7 @@ import org.springframework.lang.Nullable;
  * @author Leslie Wong
  */
 public class BQEventRepositoryImpl
-	extends BaseRepository implements BQEventRepositoryCustom {
+	extends BaseRepository implements CustomBQEventRepository {
 
 	public BQEventRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

@@ -29,7 +29,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface ActivityGroupRepository
-	extends ActivityGroupRepositoryCustom,
+	extends CustomActivityGroupRepository,
 			PagingAndSortingRepository<ActivityGroup, Long> {
 
 	@Modifying

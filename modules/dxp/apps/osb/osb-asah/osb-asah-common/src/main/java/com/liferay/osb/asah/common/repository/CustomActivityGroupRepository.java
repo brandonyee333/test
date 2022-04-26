@@ -14,20 +14,21 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.RunLog;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
-import java.util.Optional;
+import java.util.List;
 
-import org.springframework.lang.Nullable;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Ivica Cardic
  */
-public interface RunLogRepositoryCustom {
+public interface CustomActivityGroupRepository {
 
-	public Optional<RunLog>
-		findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-			@Nullable Long dataSourceId, String naniteClassName,
-			@Nullable String status);
+	public long countActivityGroups(FilterHelper filterHelper);
+
+	public List<ActivityGroup> searchActivityGroups(
+		FilterHelper filterHelper, Pageable pageable);
 
 }

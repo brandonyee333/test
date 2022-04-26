@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.SegmentRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomSegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -48,7 +48,7 @@ import org.springframework.lang.Nullable;
  * @author Inácio Nery
  */
 public class SegmentRepositoryImpl
-	extends BaseRepository implements SegmentRepositoryCustom {
+	extends BaseRepository implements CustomSegmentRepository {
 
 	public SegmentRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

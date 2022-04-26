@@ -28,7 +28,7 @@ import org.springframework.data.repository.query.Param;
  * @author Leslie Wong
  */
 public interface EventDefinitionRepository
-	extends EventDefinitionRepositoryCustom, Repository<EventDefinition, Long> {
+	extends CustomEventDefinitionRepository, Repository<EventDefinition, Long> {
 
 	@Cacheable
 	public Optional<EventDefinition> findByDisplayNameIgnoreCase(

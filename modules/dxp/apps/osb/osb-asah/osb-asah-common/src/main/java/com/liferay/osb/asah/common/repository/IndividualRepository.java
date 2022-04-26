@@ -30,7 +30,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface IndividualRepository
-	extends IndividualRepositoryCustom,
+	extends CustomIndividualRepository,
 			PagingAndSortingRepository<Individual, Long> {
 
 	public long countByIdAfter(Long id);

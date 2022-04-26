@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
  */
 @Primary
 public interface FieldRepository
-	extends FieldRepositoryCustom, PagingAndSortingRepository<Field, Long> {
+	extends CustomFieldRepository, PagingAndSortingRepository<Field, Long> {
 
 	@Modifying
 	public void deleteByContextAndDataSourceIdAndNameAndOwnerIdInAndOwnerType(

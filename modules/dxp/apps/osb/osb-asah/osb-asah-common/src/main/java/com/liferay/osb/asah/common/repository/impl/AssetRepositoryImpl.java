@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.AssetRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomAssetRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -50,7 +50,7 @@ import org.springframework.lang.Nullable;
  * @author Marcellus Tavares
  */
 public class AssetRepositoryImpl
-	extends BaseRepository implements AssetRepositoryCustom {
+	extends BaseRepository implements CustomAssetRepository {
 
 	public AssetRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

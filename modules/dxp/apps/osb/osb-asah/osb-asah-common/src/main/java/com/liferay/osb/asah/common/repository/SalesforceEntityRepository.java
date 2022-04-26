@@ -31,8 +31,8 @@ import org.springframework.data.repository.query.Param;
  * @author Marcellus Tavares
  */
 public interface SalesforceEntityRepository
-	extends Repository<SalesforceEntity, String>,
-			SalesforceEntityRepositoryCustom {
+	extends CustomSalesforceEntityRepository,
+			Repository<SalesforceEntity, String> {
 
 	@Cacheable
 	public long countByDataSourceIdAndType(

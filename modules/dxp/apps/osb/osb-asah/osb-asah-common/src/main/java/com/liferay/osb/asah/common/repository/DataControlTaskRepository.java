@@ -22,7 +22,7 @@ import java.util.List;
  * @author Marcellus Tavares
  */
 public interface DataControlTaskRepository
-	extends DataControlTaskRepositoryCustom, Repository<DataControlTask, Long> {
+	extends CustomDataControlTaskRepository, Repository<DataControlTask, Long> {
 
 	public Boolean existsByBatchIdAndStatusIn(
 		Long batchId, List<String> status);

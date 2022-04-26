@@ -28,7 +28,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface InterestRepositoryCustom {
+public interface CustomInterestRepository {
 
 	public long countByFilterStringAndScoreGreaterThanEqual(
 		FilterHelper filterHelper, @Nullable Double score);

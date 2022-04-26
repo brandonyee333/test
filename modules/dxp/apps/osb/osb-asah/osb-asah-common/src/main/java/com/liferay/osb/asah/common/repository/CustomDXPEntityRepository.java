@@ -32,7 +32,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface DXPEntityRepositoryCustom {
+public interface CustomDXPEntityRepository {
 
 	public long count();
 

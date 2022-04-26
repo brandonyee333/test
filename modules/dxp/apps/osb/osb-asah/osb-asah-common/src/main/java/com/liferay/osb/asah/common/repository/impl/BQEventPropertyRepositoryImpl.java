@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQEventProperty;
-import com.liferay.osb.asah.common.repository.BQEventPropertyRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +34,7 @@ import org.springframework.data.domain.Pageable;
  * @author Alejo Ceballos
  */
 public class BQEventPropertyRepositoryImpl
-	extends BaseRepository implements BQEventPropertyRepositoryCustom {
+	extends BaseRepository implements CustomBQEventPropertyRepository {
 
 	public BQEventPropertyRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

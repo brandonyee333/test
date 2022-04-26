@@ -14,19 +14,27 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.BQEventProperty;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Ivica Cardic
  */
-public interface CSVIndividualRepositoryCustom {
+public interface CustomBQEventPropertyRepository {
 
-	@Cacheable
-	public List<CSVIndividual> findByDataSourceIdAndFieldKeyEquals(
-		Long dataSourceId, String fieldKey, String fieldValue);
+	public long countValues(
+		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
+		String keywords);
+
+	public Optional<BQEventProperty> findByEventAttributeDefinitionIdAndEventId(
+		Long eventAttributeDefinitionId, Long eventId);
+
+	public List<String> searchValues(
+		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
+		String keywords, Pageable pageable);
 
 }

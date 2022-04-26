@@ -28,7 +28,7 @@ import org.springframework.data.domain.Pageable;
  */
 @Primary
 public interface AccountRepository
-	extends AccountRepositoryCustom, Repository<Account, Long> {
+	extends CustomAccountRepository, Repository<Account, Long> {
 
 	@Cacheable
 	public long countByIdAfter(Long accountId);

@@ -26,7 +26,7 @@ import org.springframework.data.repository.query.Param;
  * @author Inácio Nery
  */
 public interface DataSourceRepository
-	extends DataSourceRepositoryCustom, Repository<DataSource, Long> {
+	extends CustomDataSourceRepository, Repository<DataSource, Long> {
 
 	@Cacheable
 	public boolean existsByFaroBackendSecuritySignature(

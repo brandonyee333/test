@@ -24,7 +24,7 @@ import org.springframework.data.repository.query.Param;
  * @author Marcellus Tavares
  */
 public interface RunLogRepository
-	extends PagingAndSortingRepository<RunLog, Long>, RunLogRepositoryCustom {
+	extends CustomRunLogRepository, PagingAndSortingRepository<RunLog, Long> {
 
 	@Modifying
 	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);

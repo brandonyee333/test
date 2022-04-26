@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.FieldMappingRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -48,7 +48,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 public class FieldMappingRepositoryImpl
-	extends BaseRepository implements FieldMappingRepositoryCustom {
+	extends BaseRepository implements CustomFieldMappingRepository {
 
 	public FieldMappingRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

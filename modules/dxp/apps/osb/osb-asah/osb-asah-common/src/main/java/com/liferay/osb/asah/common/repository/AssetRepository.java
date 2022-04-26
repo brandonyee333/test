@@ -29,7 +29,7 @@ import org.springframework.data.domain.Pageable;
  */
 @Primary
 public interface AssetRepository
-	extends AssetRepositoryCustom, Repository<Asset, Long> {
+	extends CustomAssetRepository, Repository<Asset, Long> {
 
 	@Cacheable
 	public long countByAssetTypeAndCanonicalURLIn(

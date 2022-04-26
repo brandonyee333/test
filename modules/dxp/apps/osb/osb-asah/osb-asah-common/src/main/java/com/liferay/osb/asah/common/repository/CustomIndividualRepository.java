@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface IndividualRepositoryCustom {
+public interface CustomIndividualRepository {
 
 	public long
 		countByChannelIdsAndLastActivityDatesAndPreviousActivityDatesAndSegmentIdsIn(

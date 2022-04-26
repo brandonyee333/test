@@ -14,27 +14,28 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.BQEventProperty;
+import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 
 /**
  * @author Ivica Cardic
  */
-public interface BQEventPropertyRepositoryCustom {
+public interface CustomFieldRepository {
 
-	public long countValues(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords);
+	public long countFields(FilterHelper filterHelper);
 
-	public Optional<BQEventProperty> findByEventAttributeDefinitionIdAndEventId(
-		Long eventAttributeDefinitionId, Long eventId);
+	public List<Transformation> getFieldTransformations(
+		String apply, FilterHelper filterHelper, Pageable pageable);
 
-	public List<String> searchValues(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords, Pageable pageable);
+	public List<Field> searchFields(
+		FilterHelper filterHelper, Pageable pageable);
+
+	public void updateDataSourceNameByDataSourceId(
+		Long dataSourceId, String dataSourceName);
 
 }

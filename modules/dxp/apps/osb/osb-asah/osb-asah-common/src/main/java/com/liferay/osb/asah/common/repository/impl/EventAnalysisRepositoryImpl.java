@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.EventAnalysis;
-import com.liferay.osb.asah.common.repository.EventAnalysisRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomEventAnalysisRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 public class EventAnalysisRepositoryImpl
-	extends BaseRepository implements EventAnalysisRepositoryCustom {
+	extends BaseRepository implements CustomEventAnalysisRepository {
 
 	public EventAnalysisRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

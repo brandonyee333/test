@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface SegmentRepositoryCustom {
+public interface CustomSegmentRepository {
 
 	@Cacheable
 	public long countPreviewDisabledSegments(

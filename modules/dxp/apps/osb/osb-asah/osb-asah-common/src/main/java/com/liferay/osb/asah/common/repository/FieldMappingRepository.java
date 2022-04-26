@@ -28,7 +28,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface FieldMappingRepository
-	extends FieldMappingRepositoryCustom, Repository<FieldMapping, Long> {
+	extends CustomFieldMappingRepository, Repository<FieldMapping, Long> {
 
 	@Cacheable
 	public long countByFieldNameAndOwnerType(

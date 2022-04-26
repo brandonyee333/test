@@ -14,29 +14,24 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.lang.Nullable;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Ivica Cardic
  */
-public interface MembershipRepositoryCustom {
+public interface CustomDataSourceRepository {
 
 	@Cacheable
-	public List<Long> findIndividualIdByIndividualSegmentIdIn(
-		List<Long> individualSegmentIds, int max, int min, boolean ascending);
+	public long countDataSources(FilterHelper filterHelper);
 
 	@Cacheable
-	public List<Long> findIndividualIdByIndividualSegmentIdIn(
-		Long individualId, List<Long> individualSegmentIds, int max, int min,
-		boolean ascending);
-
-	@Cacheable
-	public List<Membership> searchMemberships(
-		@Nullable Long id, Long individualSegmentId, int size, String status);
+	public List<DataSource> searchDataSources(
+		FilterHelper filterHelper, Pageable pageable);
 
 }

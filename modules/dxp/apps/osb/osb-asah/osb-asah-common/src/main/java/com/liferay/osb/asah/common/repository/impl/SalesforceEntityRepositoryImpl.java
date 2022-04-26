@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
-import com.liferay.osb.asah.common.repository.SalesforceEntityRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomSalesforceEntityRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import org.springframework.lang.Nullable;
  * @author Marcellus Tavares
  */
 public class SalesforceEntityRepositoryImpl
-	extends BaseRepository implements SalesforceEntityRepositoryCustom {
+	extends BaseRepository implements CustomSalesforceEntityRepository {
 
 	public SalesforceEntityRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

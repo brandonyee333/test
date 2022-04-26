@@ -27,7 +27,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface FieldMappingRepositoryCustom {
+public interface CustomFieldMappingRepository {
 
 	@Cacheable
 	public long countFieldMappings(FilterHelper filterHelper);

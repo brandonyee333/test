@@ -14,10 +14,8 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.MembershipChange;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -27,22 +25,16 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface MembershipChangeRepositoryCustom {
+public interface CustomEventAttributeDefinitionRepository {
 
 	@Cacheable
-	public long countMembershipChanges(
-		FilterHelper filterHelper, Boolean includeAnonymousUsers,
-		Long segmentId);
+	public long countEventAttributeDefinitions(
+		@Nullable Long eventDefinitionId, @Nullable String keyword,
+		@Nullable EventAttributeDefinition.Type type);
 
 	@Cacheable
-	public List<MembershipChange>
-		searchLastByModifiedDateAndIndividualSegmentId(
-			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
-			List<Long> individualSegmentIds, Date toModifiedDate);
-
-	@Cacheable
-	public List<MembershipChange> searchMembershipChanges(
-		FilterHelper filterHelper, Boolean includeAnonymousUsers,
-		Long segmentId, Pageable pageable);
+	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
+		@Nullable Long eventDefinitionId, @Nullable String keyword,
+		Pageable pageable, @Nullable EventAttributeDefinition.Type type);
 
 }

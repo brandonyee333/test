@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.MembershipChange;
-import com.liferay.osb.asah.common.repository.MembershipChangeRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 public class MembershipChangeRepositoryImpl
-	implements MembershipChangeRepositoryCustom {
+	implements CustomMembershipChangeRepository {
 
 	public MembershipChangeRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.ActivityGroup;
-import com.liferay.osb.asah.common.repository.ActivityGroupRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
@@ -31,7 +31,7 @@ import org.springframework.data.domain.Pageable;
  * @author Inácio Nery
  */
 public class ActivityGroupRepositoryImpl
-	extends BaseRepository implements ActivityGroupRepositoryCustom {
+	extends BaseRepository implements CustomActivityGroupRepository {
 
 	public ActivityGroupRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

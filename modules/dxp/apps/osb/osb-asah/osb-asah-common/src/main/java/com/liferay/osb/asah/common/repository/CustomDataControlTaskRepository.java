@@ -27,7 +27,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface DataControlTaskRepositoryCustom {
+public interface CustomDataControlTaskRepository {
 
 	@Cacheable
 	public long countDataControlTasks(

@@ -32,7 +32,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface SegmentRepository
-	extends Repository<Segment, Long>, SegmentRepositoryCustom {
+	extends CustomSegmentRepository, Repository<Segment, Long> {
 
 	@Cacheable
 	public long countByIdAfter(Long id);

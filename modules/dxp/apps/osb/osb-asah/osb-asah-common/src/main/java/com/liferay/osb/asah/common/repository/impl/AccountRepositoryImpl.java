@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.AccountRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomAccountRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -56,7 +56,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 public class AccountRepositoryImpl
-	extends BaseRepository implements AccountRepositoryCustom {
+	extends BaseRepository implements CustomAccountRepository {
 
 	public AccountRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

@@ -26,7 +26,7 @@ import org.springframework.data.repository.query.Param;
  * @author Leslie Wong
  */
 public interface EventAttributeDefinitionRepository
-	extends EventAttributeDefinitionRepositoryCustom,
+	extends CustomEventAttributeDefinitionRepository,
 			Repository<EventAttributeDefinition, Long> {
 
 	@Cacheable

@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.FieldRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomFieldRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -38,7 +38,7 @@ import org.springframework.data.domain.Pageable;
  * @author Rachael Koestartyo
  */
 public class FieldRepositoryImpl
-	extends BaseRepository implements FieldRepositoryCustom {
+	extends BaseRepository implements CustomFieldRepository {
 
 	public FieldRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

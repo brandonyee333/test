@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Membership;
-import com.liferay.osb.asah.common.repository.MembershipRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomMembershipRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Inácio Nery
  */
-public class MembershipRepositoryImpl implements MembershipRepositoryCustom {
+public class MembershipRepositoryImpl implements CustomMembershipRepository {
 
 	public MembershipRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

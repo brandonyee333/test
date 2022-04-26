@@ -23,6 +23,6 @@ import org.springframework.context.annotation.Primary;
  */
 @Primary
 public interface CustomAssetDashboardRepository
-	extends CustomAssetDashboardRepositoryCustom,
+	extends CustomCustomAssetDashboardRepository,
 			Repository<CustomAssetDashboard, String> {
 }

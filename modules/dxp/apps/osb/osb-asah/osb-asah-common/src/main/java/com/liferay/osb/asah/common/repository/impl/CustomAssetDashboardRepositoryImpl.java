@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
-import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomCustomAssetDashboardRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ import org.springframework.data.domain.Pageable;
  * @author André Miranda
  */
 public class CustomAssetDashboardRepositoryImpl
-	extends BaseRepository implements CustomAssetDashboardRepositoryCustom {
+	extends BaseRepository implements CustomCustomAssetDashboardRepository {
 
 	public CustomAssetDashboardRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.EventDefinition;
-import com.liferay.osb.asah.common.repository.EventDefinitionRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomEventDefinitionRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +40,7 @@ import org.springframework.lang.Nullable;
  * @author Leslie Wong
  */
 public class EventDefinitionRepositoryImpl
-	extends BaseRepository implements EventDefinitionRepositoryCustom {
+	extends BaseRepository implements CustomEventDefinitionRepository {
 
 	public EventDefinitionRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

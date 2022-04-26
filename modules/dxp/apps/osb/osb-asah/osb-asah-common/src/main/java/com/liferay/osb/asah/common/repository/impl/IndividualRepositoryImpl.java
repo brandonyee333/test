@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.IndividualRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomIndividualRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
@@ -68,7 +68,7 @@ import org.springframework.lang.Nullable;
  * @author Rachael Koestartyo
  */
 public class IndividualRepositoryImpl
-	extends BaseRepository implements IndividualRepositoryCustom {
+	extends BaseRepository implements CustomIndividualRepository {
 
 	public IndividualRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

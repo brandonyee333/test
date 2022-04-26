@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.repository.DXPEntityRepositoryCustom;
+import com.liferay.osb.asah.common.repository.CustomDXPEntityRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,7 +47,7 @@ import org.springframework.lang.Nullable;
  * @author Alejo Ceballos
  */
 public class DXPEntityRepositoryImpl
-	extends BaseRepository implements DXPEntityRepositoryCustom {
+	extends BaseRepository implements CustomDXPEntityRepository {
 
 	public DXPEntityRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;

@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface AssetRepositoryCustom {
+public interface CustomAssetRepository {
 
 	@Cacheable
 	public long countAssetKeywords(String keyword);

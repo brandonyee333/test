@@ -14,21 +14,30 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.entity.SalesforceEntity;
 
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Ivica Cardic
  */
-public interface ExperimentRepositoryCustom {
+public interface CustomSalesforceEntityRepository {
+
+	public List<SalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
+		String after, String fieldKey, String fieldValue, int size,
+		SalesforceEntity.Type type);
 
 	@Cacheable
-	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
-		Long channelId, @Nullable String keywords, Pageable pageable);
+	public List<SalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
+		Long dataSourceId, String fieldKey, String fieldValue,
+		SalesforceEntity.Type type);
+
+	@Cacheable
+	public List<String>
+		findByDataSourceIdAndFieldKeyEqualsAndTypeGroupByFieldKey(
+			Long dataSourceId, String fieldKey, String fieldValue,
+			SalesforceEntity.Type type, String groupByFieldKey);
 
 }

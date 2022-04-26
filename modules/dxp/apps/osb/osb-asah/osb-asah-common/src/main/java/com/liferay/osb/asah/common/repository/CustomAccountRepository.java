@@ -14,32 +14,40 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.Organization;
+import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 
 /**
  * @author Ivica Cardic
  */
-public interface OrganizationRepositoryCustom {
+public interface CustomAccountRepository {
 
-	public long countByName(@Nullable String name);
+	public long countAccounts(
+		@Nullable Set<String> accountPKs, FilterHelper filterHelper);
 
-	@Cacheable
-	public List<Organization> findByName(
-		@Nullable String name, Pageable pageable);
-
-	public List<Transformation> getOrganizationTransformations(
-		String apply, FilterHelper filterHelper, Pageable pageable);
-
-	@Cacheable
-	public List<Organization> searchOrganizations(
+	public List<Distribution> getAccountDistributions(
+		List<String> accountPKs, String fieldName, String fieldType,
 		FilterHelper filterHelper, Pageable pageable);
+
+	public List<Transformation> getAccountTransformations(
+		String apply, @Nullable Long channelId, FilterHelper filterHelper,
+		Pageable pageable);
+
+	public List<Account> searchAccounts(
+		FilterHelper filterHelper, Pageable pageable);
+
+	public List<Account> searchAccounts(
+		@Nullable Set<String> accountPKs, @Nullable Long channelId,
+		FilterHelper filterHelper, Pageable pageable,
+		@Nullable Sort segmentSort);
 
 }

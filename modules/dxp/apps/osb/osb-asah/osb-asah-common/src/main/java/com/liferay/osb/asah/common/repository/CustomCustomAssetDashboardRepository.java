@@ -14,21 +14,23 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.ActivityGroup;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 
 /**
  * @author Ivica Cardic
  */
-public interface ActivityGroupRepositoryCustom {
+public interface CustomCustomAssetDashboardRepository {
 
-	public long countActivityGroups(FilterHelper filterHelper);
+	@Cacheable
+	public long countCustomAssetDashboards(Long channelId, String keywords);
 
-	public List<ActivityGroup> searchActivityGroups(
-		FilterHelper filterHelper, Pageable pageable);
+	@Cacheable
+	public List<CustomAssetDashboard> searchCustomAssetDashboards(
+		Long channelId, String keywords, Pageable pageable);
 
 }

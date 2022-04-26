@@ -30,7 +30,7 @@ import org.springframework.data.repository.query.Param;
  */
 @Primary
 public interface MembershipChangeRepository
-	extends MembershipChangeRepositoryCustom,
+	extends CustomMembershipChangeRepository,
 			Repository<MembershipChange, Long> {
 
 	@CacheEvict(allEntries = true)
