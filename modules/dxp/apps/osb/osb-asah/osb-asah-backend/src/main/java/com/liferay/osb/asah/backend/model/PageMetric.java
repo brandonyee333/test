@@ -35,10 +35,19 @@ public class PageMetric implements AssetMetric {
 	}
 
 	public PageMetric(PageVisitorBehaviorMetric pageVisitorBehaviorMetric) {
+		_assetTitle = pageVisitorBehaviorMetric.getTitle();
+
 		_avgTimeOnPageMetric.setValue(
 			(double)pageVisitorBehaviorMetric.getAvgTimeOnPage());
 		_bounceRateMetric.setValue(pageVisitorBehaviorMetric.getBounceRate());
 		_bounceMetric.setValue((double)pageVisitorBehaviorMetric.getBounces());
+
+		String canonicalUrl = pageVisitorBehaviorMetric.getCanonicalUrl();
+
+		if (canonicalUrl != null) {
+			_canonicalUrls = Collections.singletonList(canonicalUrl);
+		}
+
 		_entrancesMetric.setValue(
 			(double)pageVisitorBehaviorMetric.getEntrances());
 		_exitRateMetric.setValue(pageVisitorBehaviorMetric.getExitRate());

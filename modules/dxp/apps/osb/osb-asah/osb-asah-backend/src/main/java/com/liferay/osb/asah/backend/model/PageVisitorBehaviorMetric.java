@@ -60,6 +60,10 @@ public class PageVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		return _bounces.longValue();
 	}
 
+	public String getCanonicalUrl() {
+		return _canonicalUrl;
+	}
+
 	public long getEntrances() {
 		if (_entrances == null) {
 			return 0;
@@ -94,6 +98,10 @@ public class PageVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		return _timeOnPage.longValue();
 	}
 
+	public String getTitle() {
+		return _title;
+	}
+
 	@Override
 	public long getViews() {
 		if (_views == null) {
@@ -115,6 +123,10 @@ public class PageVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		_bounces = bounces;
 	}
 
+	public void setCanonicalUrl(String canonicalUrl) {
+		_canonicalUrl = canonicalUrl;
+	}
+
 	public void setEntrances(BigDecimal entrances) {
 		_entrances = entrances;
 	}
@@ -131,6 +143,10 @@ public class PageVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		_timeOnPage = timeOnPage;
 	}
 
+	public void setTitle(String title) {
+		_title = title;
+	}
+
 	public void setViews(BigDecimal views) {
 		_views = views;
 	}
@@ -140,10 +156,12 @@ public class PageVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 	}
 
 	private BigDecimal _bounces;
+	private String _canonicalUrl;
 	private BigDecimal _entrances;
 	private BigDecimal _exits;
 	private BigDecimal _sessions;
 	private BigDecimal _timeOnPage;
+	private String _title;
 	private BigDecimal _views;
 	private BigDecimal _visitors;
 
