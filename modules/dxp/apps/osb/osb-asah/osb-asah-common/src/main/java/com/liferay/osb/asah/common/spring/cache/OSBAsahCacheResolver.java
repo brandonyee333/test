@@ -19,6 +19,8 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.CacheOperationInvocationContext;
@@ -48,7 +50,9 @@ public class OSBAsahCacheResolver implements CacheResolver {
 
 		Class<?> clazz = OSBAsahCacheUtil.extractTargetClass(target);
 
-		sb.append(clazz.getName());
+		sb.append(
+			StringUtils.replace(
+				clazz.getName(), "RepositoryCustom", "Repository"));
 
 		caches.add(_cacheManager.getCache(sb.toString()));
 
