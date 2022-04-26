@@ -247,6 +247,8 @@ public class DXPEntitiesIngestionNanite {
 			BQExpandoColumn bqExpandoColumn = _objectMapper.convertValue(
 				fields, BQExpandoColumn.class);
 
+			bqExpandoColumn.setDataSourceId(dataSourceId);
+
 			bqExpandoColumn.setId(
 				_generateDXPEntityId(
 					bqExpandoColumn.getColumnId(), dataSourceId, projectId));
@@ -261,6 +263,8 @@ public class DXPEntitiesIngestionNanite {
 
 			BQGroup bqGroup = _objectMapper.convertValue(fields, BQGroup.class);
 
+			bqGroup.setDataSourceId(dataSourceId);
+
 			bqGroup.setId(
 				_generateDXPEntityId(
 					bqGroup.getGroupId(), dataSourceId, projectId));
@@ -274,6 +278,8 @@ public class DXPEntitiesIngestionNanite {
 
 			BQOrganization bqOrganization = _objectMapper.convertValue(
 				fields, BQOrganization.class);
+
+			bqOrganization.setDataSourceId(dataSourceId);
 
 			JSONArray expandFieldsJSONArray = jsonObject.optJSONArray(
 				"expandoFields");
@@ -308,6 +314,8 @@ public class DXPEntitiesIngestionNanite {
 
 			BQRole bqRole = _objectMapper.convertValue(fields, BQRole.class);
 
+			bqRole.setDataSourceId(dataSourceId);
+
 			bqRole.setId(
 				_generateDXPEntityId(
 					bqRole.getRoleId(), dataSourceId, projectId));
@@ -321,6 +329,8 @@ public class DXPEntitiesIngestionNanite {
 
 			BQTeam bqTeam = _objectMapper.convertValue(fields, BQTeam.class);
 
+			bqTeam.setDataSourceId(dataSourceId);
+
 			bqTeam.setId(
 				_generateDXPEntityId(
 					bqTeam.getTeamId(), dataSourceId, projectId));
@@ -333,6 +343,8 @@ public class DXPEntitiesIngestionNanite {
 					type, "com.liferay.portal.kernel.model.User")) {
 
 			BQUser bqUser = _objectMapper.convertValue(fields, BQUser.class);
+
+			bqUser.setDataSourceId(dataSourceId);
 
 			JSONArray expandFieldsJSONArray = jsonObject.optJSONArray(
 				"expandoFields");
@@ -364,6 +376,8 @@ public class DXPEntitiesIngestionNanite {
 
 			BQUserGroup bqUserGroup = _objectMapper.convertValue(
 				fields, BQUserGroup.class);
+
+			bqUserGroup.setDataSourceId(dataSourceId);
 
 			bqUserGroup.setId(
 				_generateDXPEntityId(

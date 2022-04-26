@@ -34,6 +34,12 @@ public class BQExpandoColumn implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@Override
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getDataType() {
 		return _dataType;
 	}
@@ -72,6 +78,10 @@ public class BQExpandoColumn implements Persistable<String> {
 		_columnId = columnId;
 	}
 
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
 	public void setDataType(String type) {
 		_dataType = type;
 	}
@@ -96,6 +106,9 @@ public class BQExpandoColumn implements Persistable<String> {
 
 	@Transient
 	private Long _columnId;
+
+	@Transient
+	private Long _dataSourceId;
 
 	@Transient
 	private String _dataType;

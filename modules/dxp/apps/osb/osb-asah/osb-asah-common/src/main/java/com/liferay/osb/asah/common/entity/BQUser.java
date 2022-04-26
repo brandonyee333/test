@@ -68,6 +68,12 @@ public class BQUser implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@Override
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddress() {
 		return _emailAddress;
 	}
@@ -230,6 +236,10 @@ public class BQUser implements Persistable<String> {
 		}
 	}
 
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
 	public void setEmailAddress(String emailAddress) {
 		_emailAddress = emailAddress;
 	}
@@ -352,6 +362,9 @@ public class BQUser implements Persistable<String> {
 
 	@Transient
 	private Date _createDate;
+
+	@Transient
+	private Long _dataSourceId;
 
 	@Transient
 	private String _emailAddress;

@@ -29,6 +29,13 @@ import org.springframework.data.relational.core.mapping.Table;
 public class BQGroup implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@Override
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Long getGroupId() {
 		return _groupId;
 	}
@@ -63,6 +70,10 @@ public class BQGroup implements Persistable<String> {
 		return false;
 	}
 
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
 	public void setGroupId(Long groupId) {
 		_groupId = groupId;
 	}
@@ -85,6 +96,8 @@ public class BQGroup implements Persistable<String> {
 		_name = name;
 	}
 
+	@Transient
+	private Long _dataSourceId;
 	@Transient
 	private Long _groupId;
 

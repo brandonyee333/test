@@ -27,6 +27,12 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class BQRole implements Persistable<String> {
+	@AccessType(AccessType.Type.PROPERTY)
+	@Override
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
@@ -63,6 +69,10 @@ public class BQRole implements Persistable<String> {
 		return false;
 	}
 
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
@@ -84,6 +94,9 @@ public class BQRole implements Persistable<String> {
 	public void setRoleId(Long roleId) {
 		_roleId = roleId;
 	}
+
+	@Transient
+	private Long _dataSourceId;
 
 	@Transient
 	private String _id;

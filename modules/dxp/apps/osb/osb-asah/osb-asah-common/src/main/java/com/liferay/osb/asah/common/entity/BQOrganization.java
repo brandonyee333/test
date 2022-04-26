@@ -29,6 +29,12 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class BQOrganization implements Persistable<String> {
+	@AccessType(AccessType.Type.PROPERTY)
+	@Override
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long[] getExpandoColumnIds() {
@@ -91,6 +97,10 @@ public class BQOrganization implements Persistable<String> {
 		return false;
 	}
 
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
 	public void setExpandoColumnIds(Long[] expandoColumnIds) {
 		_expandoColumnIds = Arrays.copyOf(
 			expandoColumnIds, expandoColumnIds.length);
@@ -134,6 +144,9 @@ public class BQOrganization implements Persistable<String> {
 	public void setType(String type) {
 		_type = type;
 	}
+
+	@Transient
+	private Long _dataSourceId;
 
 	@Transient
 	private Long[] _expandoColumnIds = {};

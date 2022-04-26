@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS BQEventProperty (
 
 CREATE TABLE IF NOT EXISTS BQExpandoColumn (
 	columnId BIGINT,
+	dataSourceId BIGINT,
 	dataType TEXT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
@@ -58,6 +59,7 @@ CREATE TABLE IF NOT EXISTS BQExpandoValue (
 );
 
 CREATE TABLE IF NOT EXISTS BQGroup (
+	dataSourceId BIGINT,
 	groupId BIGINT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
@@ -99,6 +101,7 @@ CREATE TABLE IF NOT EXISTS BQMembershipChange (
 );
 
 CREATE TABLE IF NOT EXISTS BQOrganization (
+	dataSourceId BIGINT,
 	expandoColumnIds BIGINT[],
 	expandoValueIds TEXT[],
 	id TEXT PRIMARY KEY,
@@ -107,10 +110,12 @@ CREATE TABLE IF NOT EXISTS BQOrganization (
 	organizationId BIGINT,
 	organizationType TEXT,
 	parentOrganizationId BIGINT,
+	parentOrganizationName TEXT,
 	treePath TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQRole (
+	dataSourceId BIGINT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
 	name TEXT,
@@ -125,6 +130,7 @@ CREATE TABLE IF NOT EXISTS BQSession (
 );
 
 CREATE TABLE IF NOT EXISTS BQTeam (
+	dataSourceId BIGINT,
 	groupId BIGINT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
@@ -137,6 +143,7 @@ CREATE TABLE IF NOT EXISTS BQUser (
 	birthday TIMESTAMP,
 	classNameId BIGINT,
 	classPK BIGINT,
+	dataSourceId BIGINT,
 	expandoColumnIds BIGINT[],
 	expandoValueIds TEXT[],
 	contactId BIGINT,
@@ -166,6 +173,7 @@ CREATE TABLE IF NOT EXISTS BQUser (
 );
 
 CREATE TABLE IF NOT EXISTS BQUserGroup (
+	dataSourceId BIGINT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
 	name TEXT,
