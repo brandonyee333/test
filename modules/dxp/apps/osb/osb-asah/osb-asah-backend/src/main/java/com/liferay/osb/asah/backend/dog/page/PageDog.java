@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.petra.string.StringPool;
 
@@ -41,6 +42,9 @@ import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -86,6 +90,19 @@ public class PageDog {
 		return _pageRepository.getPageVisitorBehaviorMetric(
 			canonicalUrl, channelId, timeRange, title,
 			_timeZoneDog.getZoneId());
+	}
+
+	public Page<PageVisitorBehaviorMetric> getPageVisitorBehaviorMetricPage(
+		Long channelId, int page, int size, Sort sort, TimeRange timeRange) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+		return PageableExecutionUtils.getPage(
+			_pageRepository.searchPageVisitorBehaviorMetrics(
+				channelId, pageRequest, timeRange, _timeZoneDog.getZoneId()),
+			pageRequest,
+			() -> _pageRepository.countPageVisitorBehaviorMetric(
+				channelId, timeRange, _timeZoneDog.getZoneId()));
 	}
 
 	public long getViewsMetricValue(
