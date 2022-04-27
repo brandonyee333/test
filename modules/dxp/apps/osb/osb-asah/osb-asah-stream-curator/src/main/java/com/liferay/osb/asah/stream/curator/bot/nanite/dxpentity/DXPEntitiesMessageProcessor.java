@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.extractor.processor;
+package com.liferay.osb.asah.stream.curator.bot.nanite.dxpentity;
 
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.cloud.pubsub.v1.MessageReceiver;

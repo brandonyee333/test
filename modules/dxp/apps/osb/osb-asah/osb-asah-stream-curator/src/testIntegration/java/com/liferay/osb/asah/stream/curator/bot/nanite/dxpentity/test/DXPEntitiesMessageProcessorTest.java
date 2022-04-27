@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.extractor.processor.test;
+package com.liferay.osb.asah.stream.curator.bot.nanite.dxpentity.test;
 
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.entity.DXPEntity;
