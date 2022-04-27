@@ -19,33 +19,27 @@ import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.JobId;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.BigQueryMergeJobConfiguration;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.ExpandoColumnBigQueryMergeJobConfiguration;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.ExpandoValueBigQueryMergeJobConfiguration;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.GroupBigQueryMergeJobConfiguration;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.OrganizationBigQueryMergeJobConfiguration;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.RoleBigQueryMergeJobConfiguration;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.TeamBigQueryMergeJobConfiguration;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.UserBigQueryMergeJobConfiguration;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.UserGroupBigQueryMergeJobConfiguration;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+
+import java.io.InputStream;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.text.StringSubstitutor;
 
 import org.json.JSONObject;
 
@@ -79,26 +73,17 @@ public class BigQueryDXPEntitiesNanite extends BaseNanite {
 
 		String newDateString = DateUtil.newDateString();
 
-		String projectId = ProjectIdThreadLocal.getProjectId();
+		Map<String, String> mergeQueryValues = new HashMap<>();
 
-		List<BigQueryMergeJobConfiguration> bigQueryMergeJobConfigurations =
-			Arrays.asList(
-				new ExpandoColumnBigQueryMergeJobConfiguration(projectId),
-				new ExpandoValueBigQueryMergeJobConfiguration(projectId),
-				new GroupBigQueryMergeJobConfiguration(projectId),
-				new OrganizationBigQueryMergeJobConfiguration(projectId),
-				new RoleBigQueryMergeJobConfiguration(projectId),
-				new TeamBigQueryMergeJobConfiguration(projectId),
-				new UserGroupBigQueryMergeJobConfiguration(projectId),
-				new UserBigQueryMergeJobConfiguration(projectId));
+		mergeQueryValues.put("previousRunDateString", previousRunDateString);
+		mergeQueryValues.put("projectId", ProjectIdThreadLocal.getProjectId());
 
-		for (BigQueryMergeJobConfiguration bigQueryMergeJobConfiguration :
-				bigQueryMergeJobConfigurations) {
-
+		for (String propertyName : _templateProperties.stringPropertyNames()) {
 			_bigQuery.query(
 				QueryJobConfiguration.newBuilder(
-					bigQueryMergeJobConfiguration.getMergeStatement(
-						previousRunDateString)
+					StringSubstitutor.replace(
+						_templateProperties.getProperty(propertyName),
+						mergeQueryValues, "{", "}")
 				).build(),
 				JobId.of(_createJobId()));
 		}
@@ -106,23 +91,6 @@ public class BigQueryDXPEntitiesNanite extends BaseNanite {
 		asahMarkerContextJSONObject.put("previousRunDateString", newDateString);
 
 		asahMarkerDog.updateAsahMarker(asahMarker);
-	}
-
-	protected AsahMarker getAsahMarker() {
-		Class<?> clazz = getClass();
-
-		AsahMarker asahMarker = asahMarkerDog.fetchAsahMarker(
-			clazz.getSimpleName());
-
-		if (asahMarker == null) {
-			asahMarker = asahMarkerDog.addAsahMarker(
-				new AsahMarker(
-					clazz.getSimpleName(), JSONUtil.put("type", "nanite")));
-
-			asahMarker.setIsNew(Boolean.FALSE);
-		}
-
-		return asahMarker;
 	}
 
 	@Override
@@ -144,11 +112,31 @@ public class BigQueryDXPEntitiesNanite extends BaseNanite {
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
 
 		_bigQuery = bigQueryOptions.getService();
+
+		_templateProperties = _loadTemplateProperties();
+	}
+
+	private Properties _loadTemplateProperties() {
+		Class<?> clazz = getClass();
+
+		try (InputStream inputStream = clazz.getResourceAsStream(
+				"/bq-dxp-entities-merge-sql.xml")) {
+
+			Properties properties = new Properties();
+
+			properties.loadFromXML(inputStream);
+
+			return properties;
+		}
+		catch (Exception exception) {
+			throw new IllegalStateException(exception);
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		BigQueryDXPEntitiesNanite.class);
 
 	private BigQuery _bigQuery;
+	private Properties _templateProperties;
 
 }
