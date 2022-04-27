@@ -440,6 +440,8 @@ definition {
 	@description = "This is a use case for LPS-48990. View roles."
 	@priority = "4"
 	test NoXSSVulnerabilityInRoles {
+		property portal.upstream = "gabor";
+
 		task ("Add role") {
 			Role.openRolesAdmin();
 
