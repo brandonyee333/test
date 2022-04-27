@@ -15,9 +15,7 @@
 package com.liferay.osb.asah.stream.curator.bot;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.stream.curator.bot.constants.CuratorConstants;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.stream.curator.bot.nanite.dxpentity.DXPEntitiesNanite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,20 +54,6 @@ public class OSBAsahCuratorBot {
 			(collectionName, nanites) -> _addScheduledExecutorFactoryBeans(
 				collectionName, nanites.get(0))
 		);
-
-		ScheduledExecutorFactoryBean scheduledExecutorFactoryBean =
-			new ScheduledExecutorFactoryBean();
-
-		scheduledExecutorFactoryBean.
-			setContinueScheduledExecutionAfterException(true);
-		scheduledExecutorFactoryBean.setScheduledExecutorTasks(
-			new ScheduledExecutorTask(_dxpEntitiesNanite, DateUtil.SECOND));
-		scheduledExecutorFactoryBean.setThreadNamePrefix(
-			String.format("osb-asah-stream-curator-bot[%s]", "DXPEntity"));
-
-		scheduledExecutorFactoryBean.initialize();
-
-		_scheduledExecutorFactoryBeans.add(scheduledExecutorFactoryBean);
 	}
 
 	private void _addScheduledExecutorFactoryBeans(
@@ -82,8 +66,7 @@ public class OSBAsahCuratorBot {
 			setContinueScheduledExecutionAfterException(true);
 		scheduledExecutorFactoryBean.setScheduledExecutorTasks(
 			new ScheduledExecutorTask(
-				nanite, DateUtil.SECOND * 5, _getNaniteInterval(nanite),
-				false));
+				nanite, DateUtil.SECOND * 5, nanite.getInterval(), false));
 		scheduledExecutorFactoryBean.setThreadNamePrefix(
 			String.format("osb-asah-cerebro-curator-bot[%s]", collectionName));
 
@@ -91,17 +74,6 @@ public class OSBAsahCuratorBot {
 
 		_scheduledExecutorFactoryBeans.add(scheduledExecutorFactoryBean);
 	}
-
-	private Long _getNaniteInterval(Nanite nanite) {
-		if (CuratorConstants.NANITE_INTERVAL != null) {
-			return Long.parseLong(CuratorConstants.NANITE_INTERVAL);
-		}
-
-		return nanite.getInterval();
-	}
-
-	@Autowired
-	private DXPEntitiesNanite _dxpEntitiesNanite;
 
 	@Autowired
 	private List<Nanite> _nanites;

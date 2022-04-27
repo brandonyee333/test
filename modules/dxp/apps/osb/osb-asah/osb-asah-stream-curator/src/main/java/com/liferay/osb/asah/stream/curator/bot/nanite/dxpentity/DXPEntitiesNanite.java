@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageStreamingSubscriber;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +50,17 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class DXPEntitiesNanite implements MessageReceiver, Runnable {
+public class DXPEntitiesNanite implements MessageReceiver, Nanite {
+
+	@Override
+	public String getCollectionName() {
+		return "DXPEntity";
+	}
+
+	@Override
+	public long getInterval() {
+		return -1;
+	}
 
 	public void processQueuedMessages() {
 		try {
