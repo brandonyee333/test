@@ -9,15 +9,15 @@
 # distribution rights of the Software.
 #
 
-import json
-import time
-
 from airflow import DAG
 from airflow.api.client.local_client import Client
 from airflow.exceptions import AirflowSkipException
 from airflow.providers.google.cloud.hooks.pubsub import PubSubHook
 
 from liferay.common import BaseOperator
+
+import json
+import time
 
 class PubSubDagTriggerOperator(BaseOperator):
 
@@ -32,7 +32,7 @@ class PubSubDagTriggerOperator(BaseOperator):
 		pubsub_subscription = dag_configuration['pubsub.subscription']
 
 		self.log.info(
-			'Pulling from subscription {}'.format(pubsub_subscription)
+			'Pulling messges from subscription {}'.format(pubsub_subscription)
 		)
 
 		messages = self._pub_sub_hook.pull(

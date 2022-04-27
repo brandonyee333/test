@@ -23,15 +23,15 @@ commerce_dataproc_trigger:
       configuration: commerce_application.yaml
       properties: !!str >
         {
-          "spark.executorEnv.DATASOURCEID": "{{ dag_run.conf['datasourceId'] }}",
-          "spark.yarn.appMasterEnv.DATASOURCEID": "{{ dag_run.conf['datasourceId'] }}",
-          "spark.executorEnv.GOOGLE_STORAGE_BUCKET": "{{ dag.default_args['project_id'] }}-dataflow",
-          "spark.yarn.appMasterEnv.GOOGLE_STORAGE_BUCKET": "{{ dag.default_args['project_id'] }}-dataflow",
           "spark.executor.extraJavaOptions": "-XX:ThreadStackSize=8192",
-          "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
           "spark.executor.instances": "8",
           "spark.executor.memory": "8g",
-          "spark.executor.memoryOverhead": "1536"
+          "spark.executor.memoryOverhead": "1536",
+          "spark.executorEnv.DATASOURCEID": "{{ dag_run.conf['datasourceId'] }}",
+          "spark.executorEnv.GOOGLE_STORAGE_BUCKET": "{{ dag.default_args['project_id'] }}-dataflow",
+          "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
+          "spark.yarn.appMasterEnv.DATASOURCEID": "{{ dag_run.conf['datasourceId'] }}",
+          "spark.yarn.appMasterEnv.GOOGLE_STORAGE_BUCKET": "{{ dag.default_args['project_id'] }}-dataflow"
         }
 pubsub_dag_trigger:
   pubsub:

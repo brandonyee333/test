@@ -28,42 +28,43 @@ from airflow.utils.types import DagRunType
 from liferay.common import BaseOperator
 
 DATA_INTERVAL_START = pendulum.datetime(year=2022, month=4, day=23)
+
 DATA_INTERVAL_END = DATA_INTERVAL_START + datetime.timedelta(days=1)
 
 TEST_TASK_ID = "test_base_operator_task"
 
+class TestBaseOperator(BaseOperator):
+
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
+
+	def do_execute(self, dag: DAG, **kwargs):
+		dag_configuration = kwargs[dag.dag_id]
+
+		nested_property = dag_configuration['nested.property']
+
+		assert nested_property == 'nested_property'
 
 def test_base_operator(reset_db):
-	class TestBaseOperator(BaseOperator):
-
-		def __init__(self, **kwargs):
-			super().__init__(**kwargs)
-
-		def do_execute(self, dag: DAG, **kwargs):
-			dag_configuration = kwargs[dag.dag_id]
-
-			nested_property = dag_configuration['nested.property']
-
-			assert(nested_property == 'nested_property')
-
 	with DAG(
-			dag_id="test_operator_dag",
-			schedule_interval="@daily",
-			start_date=DATA_INTERVAL_START,
+		dag_id="test_operator_dag",
+		schedule_interval="@daily",
+		start_date=DATA_INTERVAL_START,
 	) as dag:
 		TestBaseOperator(task_id=TEST_TASK_ID)
 
-	dagrun = dag.create_dagrun(
-		state=DagRunState.RUNNING,
-		execution_date=DATA_INTERVAL_START,
+	dag_run = dag.create_dagrun(
 		data_interval=(DATA_INTERVAL_START, DATA_INTERVAL_END),
-		start_date=DATA_INTERVAL_END,
+		execution_date=DATA_INTERVAL_START,
 		run_id=str(int(time.time())),
 		run_type=DagRunType.MANUAL,
+		start_date=DATA_INTERVAL_END,
+		state=DagRunState.RUNNING
 	)
 
-	ti = dagrun.get_task_instance(task_id=TEST_TASK_ID)
-	ti.task = dag.get_task(task_id=TEST_TASK_ID)
-	ti.run(ignore_ti_state=True)
+	task_instance = dag_run.get_task_instance(task_id=TEST_TASK_ID)
+	task_instance.task = dag.get_task(task_id=TEST_TASK_ID)
 
-	assert ti.state == State.SUCCESS
+	task_instance.run(ignore_ti_state=True)
+
+	assert task_instance.state == State.SUCCESS

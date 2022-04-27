@@ -12,10 +12,10 @@
 from abc import abstractmethod
 
 from airflow.operators.python import PythonOperator
+from airflow.utils.context import Context
 
 import json
 import yaml
-from airflow.utils.context import Context
 
 class BaseOperator(PythonOperator):
 
@@ -27,7 +27,8 @@ class BaseOperator(PythonOperator):
 			templates_dict=None,
 			templates_exts=None,
 			provide_context=True,
-			**kwargs)
+			**kwargs
+		)
 
 	@abstractmethod
 	def do_execute(self, *args, **kwargs):
@@ -39,7 +40,7 @@ class BaseOperator(PythonOperator):
 		dags_folder = conf.get('core', 'dags_folder')
 
 		with open(
-				dags_folder + '/resources/configuration.yaml', 'r'
+			dags_folder + '/resources/configuration.yaml', 'r'
 		) as yaml_file:
 			configuration = yaml.safe_load(yaml_file)
 

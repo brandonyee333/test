@@ -9,12 +9,12 @@
 # distribution rights of the Software.
 #
 
-import airflow
-import datetime
-
 from liferay.dataproc import DataprocClusterGetOrCreateOperator, \
 	DataprocShortCircuitOperator, \
 	DataprocSubmitCommercePySparkJobOperator
+
+import airflow
+import datetime
 
 with airflow.DAG(
 	dag_id='commerce_dataproc_trigger',
@@ -29,17 +29,17 @@ with airflow.DAG(
 	},
 	render_template_as_native_obj=True
 ) as dag:
-	dataproc_short_circuit = DataprocShortCircuitOperator(
+	short_circuit_operator = DataprocShortCircuitOperator(
 		task_id='dataproc_short_circuit'
 	)
 
-	dataproc_cluster_get_or_create = DataprocClusterGetOrCreateOperator(
+	cluster_get_or_create = DataprocClusterGetOrCreateOperator(
 		task_id='dataproc_cluster_get_or_create'
 	)
 
-	dataproc_submit_commerce_pyspark_job = DataprocSubmitCommercePySparkJobOperator(
+	submit_commerce_pyspark_job = DataprocSubmitCommercePySparkJobOperator(
 		task_id='dataproc_submit_commerce_pyspark_job',
 		cluster_name="{{ ti.xcom_pull(task_ids='dataproc_cluster_get_or_create')['cluster_name'] }}"
 	)
 
-	dataproc_short_circuit >> dataproc_cluster_get_or_create >> dataproc_submit_commerce_pyspark_job
+	short_circuit_operator >> cluster_get_or_create >> submit_commerce_pyspark_job

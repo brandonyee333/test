@@ -13,7 +13,8 @@ from airflow import DAG
 from airflow.models import DagRun
 from airflow.operators.python import ShortCircuitOperator
 from airflow.providers.google.cloud.hooks.dataproc import DataprocHook
-from airflow.providers.google.cloud.operators.dataproc import ClusterGenerator, \
+from airflow.providers.google.cloud.operators.dataproc import \
+	ClusterGenerator, \
 	DataprocCreateClusterOperator, \
 	DataprocSubmitPySparkJobOperator
 from airflow.utils.context import Context
@@ -25,10 +26,7 @@ import time
 
 class DataprocClusterGetOrCreateOperator(BaseOperator):
 
-	def __init__(
-			self,
-			**kwargs
-	):
+	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 
 		self.dataproc_hook = DataprocHook()
@@ -44,36 +42,46 @@ class DataprocClusterGetOrCreateOperator(BaseOperator):
 			kwargs['ds_nodash']
 		)
 
-		project_id = dag.default_args['project_id']
-
-		region = dag.default_args['region']
-
 		self.log.info("cluster_name: {}".format(cluster_name))
 
 		cluster_config = ClusterGenerator(
-			project_id=project_id,
-			idle_delete_ttl=dag_configuration['dataproc.cluster.idle_delete_ttl'],
+			project_id=dag.default_args['project_id'],
+			idle_delete_ttl=dag_configuration[
+				'dataproc.cluster.idle_delete_ttl'
+			],
 			image_version=dag_configuration['dataproc.cluster.image_version'],
 			num_masters=dag_configuration['dataproc.cluster.master.count'],
 			num_workers=dag_configuration['dataproc.cluster.worker.count'],
-			master_disk_size=dag_configuration['dataproc.cluster.master.disk_size'],
-			master_disk_type=dag_configuration['dataproc.cluster.master.disk_type'],
-			master_machine_type=dag_configuration['dataproc.cluster.master.machine_type'],
+			master_disk_size=dag_configuration[
+				'dataproc.cluster.master.disk_size'
+			],
+			master_disk_type=dag_configuration[
+				'dataproc.cluster.master.disk_type'
+			],
+			master_machine_type=dag_configuration[
+				'dataproc.cluster.master.machine_type'
+			],
 			metadata=json.loads(dag_configuration['dataproc.cluster.metadata']),
-			worker_disk_size=dag_configuration['dataproc.cluster.worker.disk_size'],
-			worker_disk_type=dag_configuration['dataproc.cluster.worker.disk_type'],
-			worker_machine_type=dag_configuration['dataproc.cluster.worker.machine_type'],
+			worker_disk_size=dag_configuration[
+				'dataproc.cluster.worker.disk_size'
+			],
+			worker_disk_type=dag_configuration[
+				'dataproc.cluster.worker.disk_type'
+			],
+			worker_machine_type=dag_configuration[
+				'dataproc.cluster.worker.machine_type'
+			],
 			use_if_exists=True
 		).make()
 
-		dataproc_cluster_create_operator = DataprocCreateClusterOperator(
+		dataproc_create_cluster_operator = DataprocCreateClusterOperator(
 			task_id='dataproc_cluster_create',
-			region=region,
+			region=dag.default_args['region'],
 			cluster_name=cluster_name,
 			cluster_config=cluster_config
 		)
 
-		return dataproc_cluster_create_operator.execute(Context(kwargs))
+		return dataproc_create_cluster_operator.execute(Context(kwargs))
 
 
 class DataprocShortCircuitOperator(ShortCircuitOperator):
@@ -100,14 +108,7 @@ class DataprocShortCircuitOperator(ShortCircuitOperator):
 
 class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 
-	template_fields = (
-		'_cluster_name',
-		'templates_dict',
-		'op_args',
-		'op_kwargs'
-	)
-
-	APPLICATION_MAP = {
+	RESOURCE_NAME_APPLICATION_MAP = {
 		'com.liferay.headless.commerce.admin.order.dto.v1_0.Order':
 			'liferay.commerce.recommend.UserInteractionRecommendationApplication',
 		'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product':
@@ -124,7 +125,9 @@ class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 		self._cluster_name = cluster_name
 
 	def do_execute(self, dag: DAG, dag_run: DagRun, **kwargs):
-		cluster_name = self.render_template(content=self._cluster_name, context=Context(kwargs))
+		cluster_name = self.render_template(
+			content=self._cluster_name, context=Context(kwargs)
+		)
 
 		dag_configuration = kwargs[dag.dag_id]
 
@@ -134,13 +137,17 @@ class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 			cluster_name=cluster_name,
 			region=dag.default_args['region'],
 			job_name=self._get_application_name(
+				datasource_id=dag_run.conf['datasourceId'],
 				lcp_project_id=dag.default_args['lcp_project_id'],
-				resource_name=dag_run.conf['resourceName'],
-				datasource_id=dag_run.conf['datasourceId']
+				resource_name=dag_run.conf['resourceName']
 			),
-			main='gs://{}/osb-asah-spark-python-driver.py'.format(dag_configuration['dataproc.bucket']),
+			main='gs://{}/osb-asah-spark-python-driver.py'.format(
+				dag_configuration['dataproc.bucket']
+			),
 			arguments=[
-				self.APPLICATION_MAP.get(dag_run.conf['resourceName']),
+				self.RESOURCE_NAME_APPLICATION_MAP.get(
+					dag_run.conf['resourceName']
+				),
 				'--lcp-project-id',
 				dag.default_args['lcp_project_id'],
 				'--configuration',
@@ -156,19 +163,19 @@ class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 				dag_configuration['dataproc.pyspark.properties']
 			),
 			pyfiles=[
-				'gs://{}/osb-asah-spark-python.zip'.format(dag_configuration['dataproc.bucket'])
+				'gs://{}/osb-asah-spark-python.zip'.format(
+					dag_configuration['dataproc.bucket']
+				)
 			]
 		)
 
 		dataproc_submit_pyspark_job_operator.execute(Context(kwargs))
 
 	def _get_application_name(
-			self,
-			lcp_project_id: str,
-			resource_name: str,
-			datasource_id: str
+		self, datasource_id: str, lcp_project_id: str, resource_name: str
 	):
-		application_name = self.APPLICATION_MAP.get(resource_name)
+
+		application_name = self.RESOURCE_NAME_APPLICATION_MAP.get(resource_name)
 
 		if application_name is not None:
 			application_name = application_name.split('.')[-1]

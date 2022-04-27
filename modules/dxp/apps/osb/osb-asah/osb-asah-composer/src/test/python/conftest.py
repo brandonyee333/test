@@ -13,7 +13,9 @@ import os
 import pytest
 import sys
 
-assert "airflow" not in sys.modules, "No airflow module can be imported before these lines"
+assert "airflow" not in sys.modules, \
+	"No airflow module can be imported before these lines"
+
 tests_directory = os.path.dirname(os.path.realpath(__file__))
 
 os.environ["AIRFLOW__CORE__DAGS_FOLDER"] = os.path.join(tests_directory, "..")
@@ -21,11 +23,8 @@ os.environ["AIRFLOW__CORE__UNIT_TEST_MODE"] = "True"
 
 @pytest.fixture()
 def reset_db():
-	"""
-    Resets Airflow db.
-    """
-
 	from airflow.utils import db
 
 	db.resetdb()
+
 	yield
