@@ -41,7 +41,6 @@ function build_docker_image {
 
 	if [ ${file_name} == osb-asah-backend ] ||
 	   [ ${file_name} == osb-asah-batch-curator ] ||
-	   [ ${file_name} == osb-asah-extractor ] ||
 	   [ ${file_name} == osb-asah-publisher ] ||
 	   [ ${file_name} == osb-asah-salesforce-extractor ] ||
 	   [ ${file_name} == osb-asah-stream-curator ] ||
