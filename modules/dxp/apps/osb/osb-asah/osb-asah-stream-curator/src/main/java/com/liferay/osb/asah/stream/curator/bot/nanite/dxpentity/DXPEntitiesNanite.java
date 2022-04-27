@@ -49,7 +49,7 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class DXPEntitiesNanite implements MessageReceiver {
+public class DXPEntitiesNanite implements MessageReceiver, Runnable {
 
 	public void processQueuedMessages() {
 		try {
@@ -87,6 +87,11 @@ public class DXPEntitiesNanite implements MessageReceiver {
 
 			ackReplyConsumer.ack();
 		}
+	}
+
+	@Override
+	public void run() {
+		processQueuedMessages();
 	}
 
 	@PreDestroy
@@ -250,8 +255,7 @@ public class DXPEntitiesNanite implements MessageReceiver {
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		DXPEntitiesNanite.class);
+	private static final Log _log = LogFactory.getLog(DXPEntitiesNanite.class);
 
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(15, 10);

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.stream.curator.bot.constants.CuratorConstants;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.dxpentity.DXPEntitiesNanite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,20 @@ public class OSBAsahCuratorBot {
 			(collectionName, nanites) -> _addScheduledExecutorFactoryBeans(
 				collectionName, nanites.get(0))
 		);
+
+		ScheduledExecutorFactoryBean scheduledExecutorFactoryBean =
+			new ScheduledExecutorFactoryBean();
+
+		scheduledExecutorFactoryBean.
+			setContinueScheduledExecutionAfterException(true);
+		scheduledExecutorFactoryBean.setScheduledExecutorTasks(
+			new ScheduledExecutorTask(_dxpEntitiesNanite, DateUtil.SECOND));
+		scheduledExecutorFactoryBean.setThreadNamePrefix(
+			String.format("osb-asah-stream-curator-bot[%s]", "DXPEntity"));
+
+		scheduledExecutorFactoryBean.initialize();
+
+		_scheduledExecutorFactoryBeans.add(scheduledExecutorFactoryBean);
 	}
 
 	private void _addScheduledExecutorFactoryBeans(
@@ -84,6 +99,9 @@ public class OSBAsahCuratorBot {
 
 		return nanite.getInterval();
 	}
+
+	@Autowired
+	private DXPEntitiesNanite _dxpEntitiesNanite;
 
 	@Autowired
 	private List<Nanite> _nanites;
