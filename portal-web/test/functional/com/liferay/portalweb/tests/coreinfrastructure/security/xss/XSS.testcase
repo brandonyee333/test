@@ -476,7 +476,7 @@ definition {
 
 			var javascript = '''return document.documentElement.innerHTML''';
 
-            var htmlDom = selenium.getEval("${javascript}");
+			var htmlDom = selenium.getEval("${javascript}");
 
 			AssertHTMLSourceTextNotPresent(value1 = "${actualScript}");
 
