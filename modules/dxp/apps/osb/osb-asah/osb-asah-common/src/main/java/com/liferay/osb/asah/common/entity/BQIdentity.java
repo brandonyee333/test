@@ -59,6 +59,11 @@ public class BQIdentity implements Persistable<String> {
 		return _id;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getUserId() {
+		return _userId;
+	}
+
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {
