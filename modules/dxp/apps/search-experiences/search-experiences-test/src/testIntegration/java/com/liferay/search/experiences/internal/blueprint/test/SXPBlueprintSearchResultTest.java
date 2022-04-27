@@ -167,8 +167,6 @@ public class SXPBlueprintSearchResultTest {
 					"com.liferay.journal.model.JournalArticle",
 					"com.liferay.journal.model.JournalFolder")));
 
-		_updateSXPBlueprint();
-
 		_journalFolder = JournalFolderServiceUtil.addFolder(
 			_group.getGroupId(), 0, "Folder cola", StringPool.BLANK,
 			_serviceContext);
@@ -856,8 +854,6 @@ public class SXPBlueprintSearchResultTest {
 				"parameters",
 				JSONUtil.put("myparam", JSONUtil.put("type", "String"))));
 
-		_updateSXPBlueprint();
-
 		_setUpJournalArticles(
 			new String[] {"cola cola", ""},
 			new String[] {"Coca Cola", "liferay"});
@@ -1242,6 +1238,56 @@ public class SXPBlueprintSearchResultTest {
 
 		_assertSearchIgnoreRelevance(
 			"[Article file 1, Article file 2, PDF file]");
+	}
+
+	@Test
+	public void testLimitSearchToPublishedContents() throws Exception {
+		_updateConfigurationJSON(
+			"queryConfiguration", JSONUtil.put("applyIndexerClauses", false));
+
+		_journalArticles.add(
+			JournalTestUtil.addArticle(
+				_group.getGroupId(), 0,
+				PortalUtil.getClassNameId(JournalArticle.class),
+				HashMapBuilder.put(
+					LocaleUtil.US, "Draft Article"
+				).build(),
+				null,
+				HashMapBuilder.put(
+					LocaleUtil.US, ""
+				).build(),
+				LocaleUtil.getSiteDefault(), true, false, _serviceContext));
+
+		_updateElementInstancesJSON(
+			new Object[] {
+				HashMapBuilder.<String, Object>put(
+					"boost", 1
+				).put(
+					"fields", SXPBlueprintSearchResultTestUtil.FIELDS
+				).put(
+					"fuzziness", "AUTO"
+				).put(
+					"keywords", "${keywords}"
+				).put(
+					"minimum_should_match", 0
+				).put(
+					"operator", "or"
+				).put(
+					"slop", 0
+				).put(
+					"type", "best_fields"
+				).build()
+			},
+			new String[] {"Text Match Over Multiple Fields"});
+
+		_keywords = "Article";
+
+		_assertSearch("[Draft Article]");
+
+		_updateElementInstancesJSON(
+			null, new String[] {"Limit Search to Published Contents"});
+
+		_assertSearch("[]");
 	}
 
 	@Test
@@ -2106,12 +2152,15 @@ public class SXPBlueprintSearchResultTest {
 	}
 
 	private void _updateConfigurationJSON(
-		String configurationName, JSONObject jsonObject) {
+			String configurationName, JSONObject jsonObject)
+		throws Exception {
 
 		_sxpBlueprint.setConfigurationJSON(
 			_configurationJSONObject.put(
 				configurationName, jsonObject
 			).toString());
+
+		_updateSXPBlueprint();
 	}
 
 	private void _updateElementInstancesJSON(
