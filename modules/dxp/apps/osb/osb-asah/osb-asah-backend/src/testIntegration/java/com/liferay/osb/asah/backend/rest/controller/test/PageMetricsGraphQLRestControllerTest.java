@@ -14,16 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
 /**
  * @author André Miranda
  */
-@ElasticsearchIndex(
-	name = "pages", resourcePath = "pages_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-)
+@SQLResource(resourcePath = "page_metrics_graphql_rest_controller_test.sql")
 public class PageMetricsGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 

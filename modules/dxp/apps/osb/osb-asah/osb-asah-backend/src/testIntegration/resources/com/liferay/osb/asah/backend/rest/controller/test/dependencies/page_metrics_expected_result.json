@@ -15,7 +15,7 @@
 						"value": 1
 					},
 					"exitRateMetric": {
-						"value": 1
+						"value": 0
 					},
 					"viewsMetric": {
 						"value": 1
@@ -37,7 +37,7 @@
 						"value": 0
 					},
 					"exitRateMetric": {
-						"value": 0
+						"value": 1
 					},
 					"viewsMetric": {
 						"value": 1
