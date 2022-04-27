@@ -16,12 +16,10 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
 import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
-import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
-import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -38,7 +36,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -130,13 +127,6 @@ public class DataControlNaniteTest
 
 		Assertions.assertTrue(suppressionOptional.isPresent());
 
-		List<DXPEntity> dxpEntities = _dxpEntityRepository.findByFieldsAndType(
-			Collections.singletonMap(
-				"fields.emailAddress", "john.doe@liferay.com"),
-			DXPEntity.Type.USER);
-
-		Assertions.assertTrue(dxpEntities.isEmpty());
-
 		Assertions.assertNull(
 			faroInfoElasticsearchInvoker.fetch(
 				"individuals",
@@ -161,13 +151,13 @@ public class DataControlNaniteTest
 		DataControlNaniteTest.class);
 
 	@Autowired
+	private BQUserRepository _bqUserRepository;
+
+	@Autowired
 	private DataControlNanite _dataControlNanite;
 
 	@Autowired
 	private DataControlTaskRepository _dataDataControlTaskRepository;
-
-	@Autowired
-	private DXPEntityRepository _dxpEntityRepository;
 
 	private Path _exportPath;
 
