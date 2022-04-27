@@ -217,22 +217,25 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 			"emailAddressHashed");
 		String projectId = messageJSONObject.getString("projectId");
 
-		JSONObject jsonObject = new JSONObject();
-
-		jsonObject.put("channelId", Long.parseLong(channelId));
-		jsonObject.put("createDate", new Date());
-		jsonObject.put("dataSourceId", Long.parseLong(dataSourceId));
-		jsonObject.put("emailAddressHashed", emailAddressHashed);
-		jsonObject.put(
+		return JSONUtil.put(
+			"channelId", Long.parseLong(channelId)
+		).put(
+			"createDate", new Date()
+		).put(
+			"dataSourceId", Long.parseLong(dataSourceId)
+		).put(
+			"emailAddressHashed", emailAddressHashed
+		).put(
 			"id",
 			DigestUtils.sha256Hex(
 				String.join(
 					"#", projectId, dataSourceId, channelId,
-					emailAddressHashed)));
-		jsonObject.put("projectId", projectId);
-		jsonObject.put("userId", messageJSONObject.getString("userId"));
-
-		return jsonObject;
+					emailAddressHashed))
+		).put(
+			"projectId", projectId
+		).put(
+			"userId", messageJSONObject.getString("userId")
+		);
 	}
 
 	private static final String _TABLE_NAME = "identity";
