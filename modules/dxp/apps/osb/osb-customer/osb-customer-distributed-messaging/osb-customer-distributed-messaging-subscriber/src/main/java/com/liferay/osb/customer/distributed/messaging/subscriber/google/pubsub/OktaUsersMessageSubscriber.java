@@ -52,13 +52,13 @@ public class OktaUsersMessageSubscriber
 	protected void doReceive(JSONObject jsonObject) throws Exception {
 		String eventType = jsonObject.getString("eventType");
 
-		if (eventType.equals(_EVENT_TYPE_UPDATE)) {
-			_updateUser(jsonObject.getJSONObject("user"));
-		}
-		else if (eventType.equals(_EVENT_TYPE_GROUP_REMOVE)) {
+		if (eventType.equals(_EVENT_TYPE_GROUP_REMOVE)) {
 			if (_isGroupEmployee(jsonObject)) {
 				_downgradeZendeskAgent(jsonObject.getJSONObject("user"));
 			}
+		}
+		else if (eventType.equals(_EVENT_TYPE_UPDATE)) {
+			_updateUser(jsonObject.getJSONObject("user"));
 		}
 	}
 
