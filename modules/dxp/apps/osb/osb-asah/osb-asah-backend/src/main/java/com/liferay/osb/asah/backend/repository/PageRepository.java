@@ -16,20 +16,26 @@ package com.liferay.osb.asah.backend.repository;
 
 import com.liferay.osb.asah.backend.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
-import org.springframework.data.domain.Pageable;
 
 import java.time.ZoneId;
+
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Leslie Wong
  */
 public interface PageRepository {
 
+	public long countPageVisitorBehaviorMetric(
+		Long channelId, TimeRange timeRange, ZoneId zoneId);
+
 	public PageVisitorBehaviorMetric getPageVisitorBehaviorMetric(
 		String canonicalUrl, Long channelId, TimeRange timeRange, String title,
 		ZoneId zoneId);
 
-	public PageVisitorBehaviorMetric getPageVisitorBehaviorMetrics(
+	public List<PageVisitorBehaviorMetric> searchPageVisitorBehaviorMetrics(
 		Long channelId, Pageable pageable, TimeRange timeRange, ZoneId zoneId);
 
 }
