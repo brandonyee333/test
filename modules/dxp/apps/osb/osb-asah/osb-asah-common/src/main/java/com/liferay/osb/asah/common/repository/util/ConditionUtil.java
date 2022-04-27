@@ -22,10 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
-import org.jooq.tools.StringUtils;
 
 /**
  * @author Rachael Koestartyo
@@ -90,7 +91,8 @@ public class ConditionUtil {
 		List<Condition> conditions = new ArrayList<>();
 
 		for (Map.Entry<String, Object> entry : fields.entrySet()) {
-			Field<Object> field = DSL.field(entry.getKey());
+			Field<Object> field = DSL.field(
+				StringUtils.lowerCase(entry.getKey()));
 
 			conditions.add(field.eq(entry.getValue()));
 		}
