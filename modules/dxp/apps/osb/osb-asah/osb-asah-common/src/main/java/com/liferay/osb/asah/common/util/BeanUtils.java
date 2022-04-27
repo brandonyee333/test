@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -136,10 +137,54 @@ public class BeanUtils {
 					}
 				}
 				else if (targetPropertyValue instanceof Array) {
+					Class<?> rawClass =
+						targetPropertyResolvableType.getRawClass();
+
+					if (rawClass == null) {
+						return;
+					}
+
 					Array array = (Array)targetPropertyValue;
 
-					targetPropertyValue = new LinkedHashSet<>(
-						Arrays.asList((Long[])array.getArray()));
+					Class<?> componentType = rawClass.getComponentType();
+
+					if (componentType != null) {
+						if (StringUtils.equals(
+								componentType.getName(),
+								String.class.getName())) {
+
+							targetPropertyValue = (String[])array.getArray();
+						}
+						else if (StringUtils.equals(
+									componentType.getName(),
+									Long.class.getName())) {
+
+							targetPropertyValue = (Long[])array.getArray();
+						}
+					}
+					else {
+						ResolvableType resolvableType =
+							targetPropertyResolvableType.getGeneric(0);
+
+						Class<?> clazz = resolvableType.getRawClass();
+
+						if (clazz == null) {
+							return;
+						}
+
+						if (StringUtils.equals(
+								clazz.getName(), String.class.getName())) {
+
+							targetPropertyValue = new LinkedHashSet<>(
+								Arrays.asList((String[])array.getArray()));
+						}
+						else if (StringUtils.equals(
+									clazz.getName(), Long.class.getName())) {
+
+							targetPropertyValue = new LinkedHashSet<>(
+								Arrays.asList((Long[])array.getArray()));
+						}
+					}
 				}
 				else if (targetPropertyValue instanceof JSON) {
 					String json = String.valueOf(targetPropertyValue);
