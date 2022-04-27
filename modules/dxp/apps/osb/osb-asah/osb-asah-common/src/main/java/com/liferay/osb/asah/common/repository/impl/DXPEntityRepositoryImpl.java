@@ -57,6 +57,7 @@ public class DXPEntityRepositoryImpl
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public long countByDataSourceIdsAndKeywordsAndType(
 		List<Long> dataSourceIds, @Nullable String keywords,
 		DXPEntity.Type type) {
@@ -161,6 +162,7 @@ public class DXPEntityRepositoryImpl
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void deleteByType(DXPEntity.Type type) {
 		_dslContext.delete(
 			DSL.table("DXPEntity")
