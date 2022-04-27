@@ -1007,7 +1007,7 @@ definition {
 		if (isSet(dmDocumentTagName)) {
 			Panel.expandPanel(panelHeading = "Categorization");
 
-			Type(
+			Type.clickAtType(
 				locator1 = "AssetCategorization#TAGS_FIELD",
 				value1 = "${dmDocumentTagName}");
 		}
