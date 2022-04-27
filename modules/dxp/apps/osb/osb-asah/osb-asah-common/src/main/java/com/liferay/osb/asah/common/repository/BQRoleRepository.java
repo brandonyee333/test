@@ -19,14 +19,15 @@ import com.liferay.osb.asah.common.entity.BQRole;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcos Martins
  */
 @Repository
-public interface BQRoleRepository extends CrudRepository<BQRole, String> {
+public interface BQRoleRepository
+	extends PagingAndSortingRepository<BQRole, String> {
 
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords);

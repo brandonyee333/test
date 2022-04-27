@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.entity.BQGroup;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +27,8 @@ import org.springframework.stereotype.Repository;
  * @author Marcos Martins
  */
 @Repository
-public interface BQGroupRepository extends CrudRepository<BQGroup, String> {
+public interface BQGroupRepository
+	extends PagingAndSortingRepository<BQGroup, String> {
 
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, @Nullable String keywords);

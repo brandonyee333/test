@@ -20,14 +20,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcos Martins
  */
 @Repository
-public interface BQUserRepository extends CrudRepository<BQUser, String> {
+public interface BQUserRepository
+	extends PagingAndSortingRepository<BQUser, String> {
 
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords);

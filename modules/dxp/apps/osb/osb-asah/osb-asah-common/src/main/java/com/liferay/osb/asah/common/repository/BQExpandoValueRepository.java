@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -24,5 +24,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQExpandoValueRepository
-	extends CrudRepository<BQExpandoValue, String> {
+	extends PagingAndSortingRepository<BQExpandoValue, String> {
 }

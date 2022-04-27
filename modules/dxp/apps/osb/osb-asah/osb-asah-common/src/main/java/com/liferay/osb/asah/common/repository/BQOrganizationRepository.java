@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -24,5 +24,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQOrganizationRepository
-	extends CrudRepository<BQOrganization, String> {
+	extends PagingAndSortingRepository<BQOrganization, String> {
 }
