@@ -68,7 +68,7 @@ public class OSBAsahStreamCuratorBot {
 			new ScheduledExecutorTask(
 				nanite, DateUtil.SECOND * 5, nanite.getInterval(), false));
 		scheduledExecutorFactoryBean.setThreadNamePrefix(
-			String.format("osb-asah-cerebro-curator-bot[%s]", collectionName));
+			String.format("osb-asah-stream-curator-bot[%s]", collectionName));
 
 		scheduledExecutorFactoryBean.initialize();
 
