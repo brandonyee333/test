@@ -2,109 +2,875 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="expandoValueSHA256HexId">
-		<![CDATA[
-			TO_HEX(
-				SHA256(
-					CONCAT(projectId, '#', dataSourceId, '#', columnId, '#', classPK)
-				)
-			) AS sha256HexId
-		]]>
-	</entry>
-	<entry key="expandoValueStaging">
-		<![CDATA[
-			(
-				SELECT
-					*, {sha256HexId}
-				FROM
-					`{stagingTable}`, UNNEST(expandoFields)
-				WHERE
-					uploadDate >= '{previousRunDateString}' AND
-					(type = '{organizationType}' OR type = '{userType}')
-			)
-		]]>
-	</entry>
-	<entry key="merge">
+	<entry key="ExpandoColumnMergeStatement">
 		<![CDATA[
 			MERGE INTO
-				`{replicaTable}` AS {replicaTableAlias}
-			USING
-				{stagingTableSQL} AS {stagingTableAlias}
-			ON
-				{joinConditions}
-			WHEN MATCHED THEN
-				{updateSQL}
-			WHEN NOT MATCHED BY TARGET THEN
-				{insertSQL}
-		]]>
-	</entry>
-	<entry key="sha256HexId">
-		<![CDATA[
-			TO_HEX(
-				SHA256(
-					CONCAT(projectId, '#', dataSourceId, '#', classPK)
-				)
-			) AS sha256HexId
-		]]>
-	</entry>
-	<entry key="staging">
-		<![CDATA[
-			(
+				`{projectId}.expandocolumn` AS replica
+			USING (
 				SELECT
-					{selectFields}, {sha256HexId}
-				FROM
-					`{stagingTable}`
-				WHERE
-					uploadDate >= '{previousRunDateString}' AND
-					type = '{type}'
-			)
-		]]>
-	</entry>
-	<entry key="unnestExpandoFields">
-		<![CDATA[
-			(
-				SELECT ARRAY(
-					SELECT
-						DISTINCT columnId
-					FROM
-						UNNEST(expandoFields)
-				)
-			) AS expandoColumnIds
-		]]>
-	</entry>
-	<entry key="unnestFields">
-		<![CDATA[
-			(
-				SELECT
-					SAFE_CAST(value AS {fieldType})
-				FROM
-					UNNEST(fields)
-				WHERE
-					name = '{fieldName}'
-			) AS {fieldAlias}
-		]]>
-	</entry>
-	<entry key="unnestJSONArrayFields">
-		<![CDATA[
-			(
-				SELECT
-					ARRAY (
+					*,
+					(
 						SELECT
-							SAFE_CAST(number AS INT64)
-						FROM
-							UNNEST(arrayField.{fieldName}) AS number
-					)
-				FROM (
-					SELECT (
-						SELECT
-							JSON_EXTRACT_ARRAY(value)
+							SAFE_CAST(value AS STRING)
 						FROM
 							UNNEST(fields)
 						WHERE
-							name = '{fieldName}'
-					) {fieldName}
-				) arrayField
-			) {fieldName}
+							name = 'className'
+					) AS className,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'columnId'
+					) AS columnId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'dataType'
+					) AS dataType,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'name'
+					) AS name,
+					TO_HEX(
+						SHA256(
+							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+						)
+					) AS sha256HexId
+				FROM
+					`{projectId}.dxpentity`
+				WHERE
+					uploadDate >= '{previousRunDateString}' AND
+					type = 'com.liferay.expando.kernel.model.ExpandoColumn'
+			) AS staging
+			ON
+				staging.classPK = replica.columnId AND
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.projectId = replica.projectId
+			WHEN MATCHED THEN
+				UPDATE SET
+					replica.className = staging.className,
+					replica.dataType = staging.dataType,
+					replica.modifiedDate = staging.modifiedDate,
+					replica.name = staging.name
+			WHEN NOT MATCHED BY TARGET THEN
+				INSERT (
+					`className`,
+					`columnId`,
+					`dataSourceId`,
+					`dataType`,
+					`id`,
+					`modifiedDate`,
+					`name`,
+					`projectId`
+				)
+				VALUES (
+					staging.className,
+					staging.columnId,
+					staging.dataSourceId,
+					staging.dataType,
+					staging.sha256HexId,
+					staging.modifiedDate,
+					staging.name,
+					staging.projectId
+				)
+		]]>
+	</entry>
+	<entry key="ExpandoValueMergeStatement">
+		<![CDATA[
+			MERGE INTO
+				`{projectId}.expandovalue` AS replica
+			USING (
+				SELECT
+					*,
+					TO_HEX(
+						SHA256(
+							CONCAT(projectId, '#', dataSourceId, '#', columnId, '#', classPK)
+						)
+					) AS sha256HexId
+				FROM
+					`{projectId}.dxpentity`, UNNEST(expandoFields)
+				WHERE
+					uploadDate >= '{previousRunDateString}' AND
+					(
+						type = 'com.liferay.portal.kernel.model.Organization' OR
+						type = 'com.liferay.portal.kernel.model.User'
+					)
+			) AS staging
+			ON
+				staging.classPK = replica.classPK AND
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.columnId = replica.columnId AND
+				staging.projectId = replica.projectId
+			WHEN MATCHED THEN
+				UPDATE SET
+					replica.value = staging.value
+			WHEN NOT MATCHED BY TARGET THEN
+				INSERT (
+					`classPK`,
+					`classType`,
+					`columnId`,
+					`dataSourceId`,
+					`id`,
+					`projectId`,
+					`value`
+				)
+				VALUES (
+					staging.classPK,
+					staging.type,
+					staging.columnId,
+					staging.dataSourceId,
+					staging.sha256HexId,
+					staging.projectId,
+					staging.value
+				)
+		]]>
+	</entry>
+	<entry key="GroupMergeStatement">
+		<![CDATA[
+			MERGE INTO
+				`{projectId}.group` AS replica
+			USING (
+				SELECT
+					*,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'groupId'
+					) AS groupId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'name'
+					) AS name,
+					TO_HEX(
+						SHA256(
+							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+						)
+					) AS sha256HexId
+				FROM
+					`{projectId}.dxpentity`
+				WHERE
+					uploadDate >= '{previousRunDateString}' AND
+					type = 'com.liferay.portal.kernel.model.Group'
+			) AS staging
+			ON
+				staging.classPK = replica.groupId AND
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.projectId = replica.projectId
+			WHEN MATCHED THEN
+				UPDATE SET
+					replica.modifiedDate = staging.modifiedDate,
+					replica.name = staging.name
+			WHEN NOT MATCHED BY TARGET THEN
+				INSERT (
+					`dataSourceId`,
+					`groupId`,
+					`id`,
+					`modifiedDate`,
+					`name`,
+					`projectId`
+				)
+				VALUES (
+					staging.dataSourceId,
+					staging.groupId,
+					staging.sha256HexId,
+					staging.modifiedDate,
+					staging.name,
+					staging.projectId
+				)
+		]]>
+	</entry>
+	<entry key="OrganizationMergeStatement">
+		<![CDATA[
+			MERGE INTO
+				`{projectId}.organization` AS replica
+			USING (
+				SELECT
+					*,
+					(
+						SELECT ARRAY(
+							SELECT
+								DISTINCT columnId
+							FROM
+								UNNEST(expandoFields)
+						)
+					) AS expandoColumnIds,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'name'
+					) AS name,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'organizationId'
+					) AS organizationId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'type'
+					) AS organizationType,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'parentOrganizationId'
+					) AS parentOrganizationId,
+					TO_HEX(
+						SHA256(
+							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+						)
+					) AS sha256HexId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'treePath'
+					) AS treePath
+				FROM
+					`{projectId}.dxpentity`
+				WHERE
+					uploadDate >= '{previousRunDateString}' AND
+					type = 'com.liferay.portal.kernel.model.Organization'
+			) AS staging
+			ON
+				staging.classPK = replica.organizationId AND
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.projectId = replica.projectId
+			WHEN MATCHED THEN
+				UPDATE SET
+					replica.expandoColumnIds = staging.expandoColumnIds,
+					replica.modifiedDate = staging.modifiedDate,
+					replica.name = staging.name,
+					replica.type = staging.organizationType,
+					replica.parentOrganizationId = staging.parentOrganizationId,
+					replica.treePath = staging.treePath
+			WHEN NOT MATCHED BY TARGET THEN
+				INSERT (
+					`dataSourceId`,
+					`expandoColumnIds`,
+					`id`,
+					`modifiedDate`,
+					`name`,
+					`organizationId`,
+					`parentOrganizationId`,
+					`projectId`,
+					`treePath`,
+					`type`
+				)
+				VALUES (
+					staging.dataSourceId,
+					staging.expandoColumnIds,
+					staging.sha256HexId,
+					staging.modifiedDate,
+					staging.name,
+					staging.organizationId,
+					staging.parentOrganizationId,
+					staging.projectId,
+					staging.treePath,
+					staging.organizationType
+				)
+		]]>
+	</entry>
+	<entry key="RoleMergeStatement">
+		<![CDATA[
+			MERGE INTO
+				`{projectId}.role` AS replica
+			USING (
+				SELECT
+					*,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'name'
+					) AS name,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'roleId'
+					) AS roleId,
+					TO_HEX(
+						SHA256(
+							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+						)
+					) AS sha256HexId
+				FROM
+					`{projectId}.dxpentity`
+				WHERE
+					uploadDate >= '{previousRunDateString}' AND
+					type = 'com.liferay.portal.kernel.model.Role'
+			) AS staging
+			ON
+				staging.classPK = replica.roleId AND
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.projectId = replica.projectId
+			WHEN MATCHED THEN
+				UPDATE SET
+					replica.modifiedDate = staging.modifiedDate,
+					replica.name = staging.name
+			WHEN NOT MATCHED BY TARGET THEN
+				INSERT (
+					`dataSourceId`,
+					`id`,
+					`modifiedDate`,
+					`name`,
+					`projectId`,
+					`roleId`
+				)
+				VALUES (
+					staging.dataSourceId,
+					staging.sha256HexId,
+					staging.modifiedDate,
+					staging.name,
+					staging.projectId,
+					staging.roleId
+				)
+		]]>
+	</entry>
+	<entry key="TeamMergeStatement">
+		<![CDATA[
+			MERGE INTO
+				`{projectId}.team` AS replica
+			USING (
+				SELECT
+					*,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'groupId'
+					) AS groupId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'name'
+					) AS name,
+					TO_HEX(
+						SHA256(
+							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+						)
+					) AS sha256HexId,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'teamId'
+					) AS teamId
+				FROM
+					`{projectId}.dxpentity`
+				WHERE
+					uploadDate >= '{previousRunDateString}' AND
+					type = 'com.liferay.portal.kernel.model.Team'
+			) AS staging
+			ON
+				staging.classPK = replica.teamId AND
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.projectId = replica.projectId
+			WHEN MATCHED THEN
+				UPDATE SET
+					replica.groupId = staging.groupId,
+					replica.modifiedDate = staging.modifiedDate,
+					replica.name = staging.name
+			WHEN NOT MATCHED BY TARGET THEN
+				INSERT (
+					`dataSourceId`,
+					`groupId`,
+					`id`,
+					`modifiedDate`,
+					`name`,
+					`projectId`,
+					`teamId`
+				)
+				VALUES (
+					staging.dataSourceId,
+					staging.groupId,
+					staging.sha256HexId,
+					staging.modifiedDate,
+					staging.name,
+					staging.projectId,
+					staging.teamId
+				)
+		]]>
+	</entry>
+	<entry key="UserGroupMergeStatement">
+		<![CDATA[
+			MERGE INTO
+				`{projectId}.usergroup` AS replica
+			USING (
+				SELECT
+					*,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'name'
+					) AS name,
+					TO_HEX(
+						SHA256(
+							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+						)
+					) AS sha256HexId,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'userGroupId'
+					) AS userGroupId
+				FROM
+					`{projectId}.dxpentity`
+				WHERE
+					uploadDate >= '{previousRunDateString}' AND
+					type = 'com.liferay.portal.kernel.model.Team'
+			) AS staging
+			ON
+				staging.classPK = replica.userGroupId AND
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.projectId = replica.projectId
+			WHEN MATCHED THEN
+				UPDATE SET
+					replica.modifiedDate = staging.modifiedDate,
+					replica.name = staging.name
+			WHEN NOT MATCHED BY TARGET THEN
+				INSERT (
+					`dataSourceId`,
+					`id`,
+					`modifiedDate`,
+					`name`,
+					`projectId`,
+					`userGroupId`
+				)
+				VALUES (
+					staging.dataSourceId,
+					staging.sha256HexId,
+					staging.modifiedDate,
+					staging.name,
+					staging.projectId,
+					staging.userGroupId
+				)
+		]]>
+	</entry>
+	<entry key="UserMergeStatement">
+		<![CDATA[
+			MERGE INTO
+				`{projectId}.user` AS replica
+			USING (
+				SELECT
+					*,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'accountId'
+					) AS accountId,
+					(
+						SELECT
+							SAFE_CAST(value AS TIMESTAMP)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'birthday'
+					) AS birthday,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'classNameId'
+					) AS classNameId,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'contactId'
+					) AS contactId,
+					(
+						SELECT
+							SAFE_CAST(value AS TIMESTAMP)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'createDate'
+					) AS createDate,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'emailAddress'
+					) AS emailAddress,
+					(
+						SELECT ARRAY(
+							SELECT
+								DISTINCT columnId
+							FROM
+								UNNEST(expandoFields)
+						)
+					) AS expandoColumnIds,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'firstName'
+					) AS firstName,
+					(
+						SELECT
+							ARRAY (
+								SELECT
+									SAFE_CAST(number AS INT64)
+								FROM
+									UNNEST(arrayField.groupIds) AS number
+							)
+						FROM (
+							SELECT (
+								SELECT
+									JSON_EXTRACT_ARRAY(value)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'groupIds'
+							) groupIds
+						) arrayField
+					) AS groupIds,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'jobTitle'
+					) AS jobTitle,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'languageId'
+					) AS languageId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'lastName'
+					) AS lastName,
+					(
+						SELECT
+							SAFE_CAST(value AS BOOL)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'male'
+					) AS male,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'middleName'
+					) AS middleName,
+					(
+						SELECT
+							ARRAY (
+								SELECT
+									SAFE_CAST(number AS INT64)
+								FROM
+									UNNEST(arrayField.organizationIds) AS number
+							)
+						FROM (
+							SELECT (
+								SELECT
+									JSON_EXTRACT_ARRAY(value)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'organizationIds'
+							) organizationIds
+						) arrayField
+					) AS organizationIds,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'parentContactId'
+					) AS parentContactId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'prefixId'
+					) AS prefixId,
+					(
+						SELECT
+							ARRAY (
+								SELECT
+									SAFE_CAST(number AS INT64)
+								FROM
+									UNNEST(arrayField.roleIds) AS number
+							)
+						FROM (
+							SELECT (
+								SELECT
+									JSON_EXTRACT_ARRAY(value)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'roleIds'
+							) roleIds
+						) arrayField
+					) AS roleIds,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'screenName'
+					) AS screenName,
+					TO_HEX(
+						SHA256(
+							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+						)
+					) AS sha256HexId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'suffixId'
+					) AS suffixId,
+					(
+						SELECT
+							ARRAY (
+								SELECT
+									SAFE_CAST(number AS INT64)
+								FROM
+									UNNEST(arrayField.teamIds) AS number
+							)
+						FROM (
+							SELECT (
+								SELECT
+									JSON_EXTRACT_ARRAY(value)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'teamIds'
+							) teamIds
+						) arrayField
+					) AS teamIds,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'timeZoneId'
+					) AS timeZoneId,
+					(
+						SELECT
+							ARRAY (
+								SELECT
+									SAFE_CAST(number AS INT64)
+								FROM
+									UNNEST(arrayField.userGroupIds) AS number
+							)
+						FROM (
+							SELECT (
+								SELECT
+									JSON_EXTRACT_ARRAY(value)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'userGroupIds'
+							) userGroupIds
+						) arrayField
+					) AS userGroupIds,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'userId'
+					) AS userId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'userName'
+					) AS userName,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'uuid'
+					) AS uuid
+				FROM
+					`{projectId}.dxpentity`
+				WHERE
+					uploadDate >= '{previousRunDateString}' AND
+					type = 'com.liferay.portal.kernel.model.User'
+			) AS staging
+			ON
+				staging.classPK = replica.userId AND
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.projectId = replica.projectId
+			WHEN MATCHED THEN
+				UPDATE SET
+					replica.accountId = staging.accountId,
+					replica.birthday = staging.birthday,
+					replica.emailAddress = staging.emailAddress,
+					replica.expandoColumnIds = staging.expandoColumnIds,
+					replica.firstName = staging.firstName,
+					replica.groupIds = staging.groupIds,
+					replica.jobTitle = staging.jobTitle,
+					replica.languageId = staging.languageId,
+					replica.lastName = staging.lastName,
+					replica.male = staging.male,
+					replica.middleName = staging.middleName,
+					replica.modifiedDate = staging.modifiedDate,
+					replica.organizationIds = staging.organizationIds,
+					replica.parentContactId = staging.parentContactId,
+					replica.prefixId = staging.prefixId,
+					replica.roleIds = staging.roleIds,
+					replica.screenName = staging.screenName,
+					replica.suffixId = staging.suffixId,
+					replica.teamIds = staging.teamIds,
+					replica.timeZoneId = staging.timeZoneId,
+					replica.userGroupIds = staging.userGroupIds,
+					replica.userName = staging.userName
+			WHEN NOT MATCHED BY TARGET THEN
+				INSERT (
+					`accountId`,
+					`birthday`,
+					`classNameId`,
+					`classPK`,
+					`contactId`,
+					`createDate`,
+					`dataSourceId`,
+					`emailAddress`,
+					`expandoColumnIds`,
+					`firstName`,
+					`groupIds`,
+					`id`,
+					`jobTitle`,
+					`languageId`,
+					`lastName`,
+					`male`,
+					`middleName`,
+					`modifiedDate`,
+					`organizationIds`,
+					`parentContactId`,
+					`prefixId`,
+					`projectId`,
+					`roleIds`,
+					`screenName`,
+					`suffixId`,
+					`teamIds`,
+					`timeZoneId`,
+					`userGroupIds`,
+					`userId`,
+					`userName`,
+					`uuid`
+				)
+				VALUES (
+					staging.accountId,
+					staging.birthday,
+					staging.classNameId,
+					staging.classPK,
+					staging.contactId,
+					staging.createDate,
+					staging.dataSourceId,
+					staging.emailAddress,
+					staging.expandoColumnIds,
+					staging.firstName,
+					staging.groupIds,
+					staging.sha256HexId,
+					staging.jobTitle,
+					staging.languageId,
+					staging.lastName,
+					staging.male,
+					staging.middleName,
+					staging.modifiedDate,
+					staging.organizationIds,
+					staging.parentContactId,
+					staging.prefixId,
+					staging.projectId,
+					staging.roleIds,
+					staging.screenName,
+					staging.suffixId,
+					staging.teamIds,
+					staging.timeZoneId,
+					staging.userGroupIds,
+					staging.userId,
+					staging.userName,
+					staging.uuid
+				)
 		]]>
 	</entry>
 </properties>
