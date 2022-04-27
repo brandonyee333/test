@@ -115,7 +115,7 @@ public class DXPEntitiesNaniteTest
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 		Future<?> future = executorService.submit(
-			_dxpEntitiesNanite::processQueuedMessages);
+			_dxpEntitiesNanite::addMessageStreamingSubscriber);
 
 		try {
 			future.get(8, TimeUnit.SECONDS);

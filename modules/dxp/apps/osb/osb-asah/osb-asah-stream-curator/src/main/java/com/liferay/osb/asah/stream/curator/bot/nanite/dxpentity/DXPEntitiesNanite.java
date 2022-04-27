@@ -52,6 +52,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 
+	public void addMessageStreamingSubscriber() {
+		try {
+			_messageStreamingSubscriber.subscribe(
+				_maxOutstandingMessages, this);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+
+		_boundedExecutor.awaitPendingTasks();
+	}
+
 	@Override
 	public String getCollectionName() {
 		return "DXPEntity";
@@ -60,17 +72,6 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 	@Override
 	public long getInterval() {
 		return -1;
-	}
-
-	public void processQueuedMessages() {
-		try {
-			_messageStreaming.subscribe(_maxOutstandingMessages, this);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-
-		_boundedExecutor.awaitPendingTasks();
 	}
 
 	@Override
@@ -102,7 +103,7 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 
 	@Override
 	public void run() {
-		processQueuedMessages();
+		addMessageStreamingSubscriber();
 	}
 
 	@PreDestroy
@@ -282,7 +283,7 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 	@MessageStreamingSubscriber.Autowired(
 		channel = Channel.DXP_ENTITIES_MESSAGE
 	)
-	private MessageStreamingSubscriber _messageStreaming;
+	private MessageStreamingSubscriber _messageStreamingSubscriber;
 
 	@Autowired
 	private SuppressionDog _suppressionDog;
