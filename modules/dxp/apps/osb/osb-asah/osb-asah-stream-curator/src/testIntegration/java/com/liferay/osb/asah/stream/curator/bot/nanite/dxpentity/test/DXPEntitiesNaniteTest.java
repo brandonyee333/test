@@ -23,8 +23,8 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.extractor.OSBAsahExtractorSpringTestContext;
-import com.liferay.osb.asah.extractor.processor.DXPEntitiesMessageProcessor;
+import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
+import com.liferay.osb.asah.stream.curator.bot.nanite.dxpentity.DXPEntitiesNanite;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -51,8 +51,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Rachael Koestartyo
  */
-public class DXPEntitiesMessageProcessorTest
-	implements OSBAsahExtractorSpringTestContext,
+public class DXPEntitiesNaniteTest
+	implements OSBAsahStreamCuratorSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
 	@Disabled
@@ -62,7 +62,7 @@ public class DXPEntitiesMessageProcessorTest
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources.json"
+		resourcePath = "data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessagesAddEntities() throws Exception {
@@ -83,7 +83,7 @@ public class DXPEntitiesMessageProcessorTest
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources.json"
+		resourcePath = "data_sources.json"
 	)
 	@Test
 	public void testProcessQueuedMessagesRetainsOrder() throws Exception {
@@ -115,7 +115,7 @@ public class DXPEntitiesMessageProcessorTest
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 		Future<?> future = executorService.submit(
-			_dxpEntitiesMessageProcessor::processQueuedMessages);
+			_dxpEntitiesNanite::processQueuedMessages);
 
 		try {
 			future.get(8, TimeUnit.SECONDS);
@@ -129,7 +129,7 @@ public class DXPEntitiesMessageProcessorTest
 	}
 
 	@Autowired
-	private DXPEntitiesMessageProcessor _dxpEntitiesMessageProcessor;
+	private DXPEntitiesNanite _dxpEntitiesNanite;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
