@@ -78,30 +78,6 @@ services:
         volumes:
             - export:/export
             - temp:/temp
-    osbasahextractor:
-        build:
-            args:
-                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
-                LABEL_VCS_REF: ${LABEL_VCS_REF}
-            context: ./osb-asah-extractor
-        container_name: osbasahextractor
-        depends_on:
-            - osbasahpublisher
-            - osbasahupgrade
-            - pubsubemulator
-        env_file:
-            - common.env
-            - local.env
-        environment:
-            - JAVA_OPTS=-Xms2765m -Xmx2765m -XX:MaxMetaspaceSize=96m
-        healthcheck:
-            interval: 10s
-            retries: 30
-            start_period: 120s
-            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
-        ports:
-            - "5007:5005"
-            - "8083:8080"
     osbasahpublisher:
         build:
             args:

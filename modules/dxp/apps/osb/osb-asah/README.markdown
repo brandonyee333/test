@@ -11,14 +11,12 @@ For example, these services serve the data of an Analytics Cloud customer named 
 
 - `osbasahbackend-acme.liferay.cloud`
 - `osbasahbatchcurator-acme.liferay.cloud`
-- `osbasahextractor-acme.liferay.cloud`
 - And so on...
 
 As another example, these services serve the data of an Analytics Cloud customer named BOOBOO:
 
 - `osbasahbackend-booboo.liferay.cloud`
 - `osbasahbatchcurator-booboo.liferay.cloud`
-- `osbasahextractor-booboo.liferay.cloud`
 - And so on...
 
 ## Services
@@ -38,10 +36,6 @@ This service exposes additional endpoints related to SEO features (integrates wi
 ### osb-asah-batch-curator
 
 This service processes raw data into intelligent information using scheduled routines (e.g., once a day).
-
-### osb-asah-extractor
-
-This service extracts and saves events from [osb-asah-queue](#osb-asah-queue).
 
 ### [osb-asah-publisher](osb-asah-publisher/README.markdown)
 
