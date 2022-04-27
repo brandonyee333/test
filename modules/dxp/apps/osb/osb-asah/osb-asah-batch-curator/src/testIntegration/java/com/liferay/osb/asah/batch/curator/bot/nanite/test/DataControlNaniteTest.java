@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
+import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
@@ -93,12 +94,11 @@ public class DataControlNaniteTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources.json"
+		repositoryClass = BQUserRepository.class, resourcePath = "bq_users.json"
 	)
 	@RepositoryResource(
-		repositoryClass = DXPEntityRepository.class,
-		resourcePath = "osbasahdxpraw/users.json"
+		repositoryClass = DataSourceRepository.class,
+		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SalesforceEntityRepository.class,
