@@ -25,123 +25,135 @@ COMMIT;
 CREATE OR REPLACE VIEW BQPages AS (
     WITH
         FinalizedEvent AS
-            (SELECT
-                BQEvent.*
-            FROM
-                BQEvent
-            INNER JOIN
-                BQSession ON
-                    BQEvent.sessionId = BQSession.id),
+            (
+                SELECT
+                	BQEvent.*
+            	FROM
+                	BQEvent
+            	INNER JOIN
+                	BQSession ON
+                    	BQEvent.sessionId = BQSession.id
+			),
         Bounces AS
-            (SELECT
-                channelId,
-                COUNT(*) as count,
-                SUM(CASE WHEN applicationId = 'Page' AND eventId = 'pageViewed' THEN 1 ELSE 0 END) as pageViews,
-                sessionId,
-                userId
-            FROM
-                FinalizedEvent
-            WHERE
-                eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed')
-            GROUP BY
-                channelId,
-                sessionId,
-                userId),
+            (
+                SELECT
+					channelId,
+					COUNT(*) as count,
+					SUM(CASE WHEN applicationId = 'Page' AND eventId = 'pageViewed' THEN 1 ELSE 0 END) as pageViews,
+					sessionId,
+					userId
+				FROM
+					FinalizedEvent
+				WHERE
+					eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed')
+				GROUP BY
+					channelId,
+					sessionId,
+					userId
+			),
         Entrances AS
-            (SELECT
-                canonicalUrl,
-                channelId,
-                rank AS entrance,
-                DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-                sessionId,
-                title,
-                userId
-            FROM (
+            (
                 SELECT
-                    canonicalUrl,
-                    channelId,
-                    eventDate,
-                    ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate ASC) AS rank,
-                    sessionId,
-                    title,
-                    userId
-                FROM
-                    FinalizedEvent
-            ) AS EventEntrance
-            WHERE
-                rank = 1),
+					canonicalUrl,
+					channelId,
+					rank AS entrance,
+					DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
+					sessionId,
+					title,
+					userId
+				FROM (
+					SELECT
+						canonicalUrl,
+						channelId,
+						eventDate,
+						ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate ASC) AS rank,
+						sessionId,
+						title,
+						userId
+					FROM
+						FinalizedEvent
+				) AS EventEntrance
+				WHERE
+					rank = 1
+			),
         Exits AS
-            (SELECT
-                canonicalUrl,
-                channelId,
-                rank AS exit,
-                DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-                sessionId,
-                title,
-                userId
-            FROM (
+            (
                 SELECT
-                    canonicalUrl,
-                    channelId,
-                    eventDate,
-                    ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate DESC) AS rank,
-                    sessionId,
-                    title,
-                    userId
-                FROM
-                    FinalizedEvent
-            ) AS EventExit
-            WHERE
-                rank = 1),
+					canonicalUrl,
+					channelId,
+					rank AS exit,
+					DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
+					sessionId,
+					title,
+					userId
+				FROM (
+					SELECT
+						canonicalUrl,
+						channelId,
+						eventDate,
+						ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate DESC) AS rank,
+						sessionId,
+						title,
+						userId
+					FROM
+						FinalizedEvent
+				) AS EventExit
+				WHERE
+					rank = 1
+			),
         TimeOnPages AS
-            (SELECT
-                canonicalUrl,
-                channelId,
-                DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-                sessionId,
-                SUM(EXTRACT(EPOCH FROM nextTime) - EXTRACT(EPOCH FROM eventDate)) * 1000 AS timeOnPage,
-                title,
-                userId
-            FROM (
+            (
                 SELECT
-                    canonicalUrl,
-                    channelId,
-                    eventDate,
-                    LEAD(eventDate) OVER (PARTITION BY sessionId, userId, channelId ORDER BY eventDate) AS nextTime,
-                    sessionId,
-                    title,
-                    userId
-                FROM
-                    FinalizedEvent
-            ) AS EventTimeOnPage
-            GROUP BY
-                canonicalUrl,
-                channelId,
-                normalizedEventDate,
-                sessionId,
-                title,
-                userId),
+					canonicalUrl,
+					channelId,
+					DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
+					sessionId,
+					SUM(EXTRACT(EPOCH FROM nextTime) - EXTRACT(EPOCH FROM eventDate)) * 1000 AS timeOnPage,
+					title,
+					userId
+				FROM (
+					SELECT
+						canonicalUrl,
+						channelId,
+						eventDate,
+						LEAD(eventDate) OVER (PARTITION BY sessionId, userId, channelId ORDER BY eventDate) AS nextTime,
+						sessionId,
+						title,
+						userId
+					FROM
+						FinalizedEvent
+				) AS EventTimeOnPage
+				GROUP BY
+					canonicalUrl,
+					channelId,
+					normalizedEventDate,
+					sessionId,
+					title,
+					userId
+			),
         Views AS
-            (SELECT
-                canonicalUrl,
-                channelId,
-                DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-                COUNT(*) as pageViews,
-                sessionId,
-                title,
-                userId
-            FROM
-                FinalizedEvent
-            WHERE
-                applicationId = 'Page' AND
-                eventId = 'pageViewed'
-            GROUP BY
-                canonicalUrl,
-                channelId,
-                normalizedEventDate,
-                sessionId,
-                title,
-                userId)
+            (
+                SELECT
+					canonicalUrl,
+					channelId,
+					DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
+					COUNT(*) as pageViews,
+					sessionId,
+					title,
+					userId
+				FROM
+					FinalizedEvent
+				WHERE
+					applicationId = 'Page' AND
+					eventId = 'pageViewed'
+				GROUP BY
+					canonicalUrl,
+					channelId,
+					normalizedEventDate,
+					sessionId,
+					title,
+					userId
+			)
     SELECT
         (CASE WHEN Bounces.count > 2 OR Bounces.pageViews > 1 THEN 0 ELSE 1 END) AS bounce,
         TimeOnPages.canonicalUrl AS canonicalUrl,
