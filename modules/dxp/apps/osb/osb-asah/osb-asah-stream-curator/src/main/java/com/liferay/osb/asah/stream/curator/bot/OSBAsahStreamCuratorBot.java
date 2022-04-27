@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Profile("!test")
-public class OSBAsahCuratorBot {
+public class OSBAsahStreamCuratorBot {
 
 	@PreDestroy
 	public void destroy() {
