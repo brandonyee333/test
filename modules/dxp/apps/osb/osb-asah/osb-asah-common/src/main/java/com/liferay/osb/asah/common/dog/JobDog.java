@@ -298,24 +298,6 @@ public class JobDog {
 		new HashMap<JobType, String>() {
 			{
 				put(
-					JobType.COMMERCE_DEMAND_FORECAST_PRODUCT,
-					"CommerceProductRecommendationNanite");
-				put(
-					JobType.COMMERCE_PRODUCT_RECOMMENDATION_FREQUENT_PATTERN,
-					"CommerceProductRecommendationNanite");
-				put(
-					JobType.COMMERCE_PRODUCT_RECOMMENDATION_PRODUCT_CONTENT,
-					"CommerceProductRecommendationNanite");
-				put(
-					JobType.COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION,
-					"CommerceProductRecommendationNanite");
-				put(
-					JobType.COMMERCE_REVENUE_FORECAST_ACCOUNT,
-					"CommerceProductRecommendationNanite");
-				put(
-					JobType.COMMERCE_REVENUE_FORECAST_ACCOUNT_CATEGORY,
-					"CommerceProductRecommendationNanite");
-				put(
 					JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 					"ContentRecommendationDataPreparationNanite");
 			}
