@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoAssetFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
@@ -113,10 +112,6 @@ public class AssetDog {
 					));
 			}
 		}
-
-		_asahTaskDog.scheduleAsahTask(
-			"IndividualInterestScoresNanite",
-			JSONUtil.put("reprocessDay", deletionDayDateString));
 	}
 
 	public Asset fetchAsset(String dataSourceAssetPK, Long dataSourceId) {
