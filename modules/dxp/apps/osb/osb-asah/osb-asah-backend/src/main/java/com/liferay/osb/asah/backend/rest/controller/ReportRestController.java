@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.ReportAccountDTO;
 import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -26,8 +27,6 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
-
-import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,34 +49,40 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/accounts")
 	public PageDTO<ReportAccountDTO> getReportAccountDTOPageDTO(
 		@RequestParam(defaultValue = "") String after,
-		@RequestParam Date fromDate, @RequestParam Date toDate) {
+		@RequestParam("fromDate") String fromDateString,
+		@RequestParam("toDate") String toDateString) {
 
 		return _toReportAccountDTOPageDTO(
 			_accountDog.getAccountPage(
-				fromDate, _getId(after), _PAGE_SIZE,
-				Sort.by(Sort.Order.asc("id")), toDate));
+				DateUtil.toUTCDate(fromDateString), _getId(after), _PAGE_SIZE,
+				Sort.by(Sort.Order.asc("id")),
+				DateUtil.toUTCDate(toDateString)));
 	}
 
 	@GetMapping("/individuals")
 	public PageDTO<ReportIndividualDTO> getReportIndividualDTOPageDTO(
 		@RequestParam(defaultValue = "") String after,
-		@RequestParam Date fromDate, @RequestParam Date toDate) {
+		@RequestParam("fromDate") String fromDateString,
+		@RequestParam("toDate") String toDateString) {
 
 		return _toReportIndividualDTOPageDTO(
 			_individualDog.getIndividualPage(
-				fromDate, _getId(after), _PAGE_SIZE,
-				Sort.by(Sort.Order.asc("id")), toDate));
+				DateUtil.toUTCDate(fromDateString), _getId(after), _PAGE_SIZE,
+				Sort.by(Sort.Order.asc("id")),
+				DateUtil.toUTCDate(toDateString)));
 	}
 
 	@GetMapping("/segments")
 	public PageDTO<ReportSegmentDTO> getReportSegmentDTOPageDTO(
 		@RequestParam(defaultValue = "") String after,
-		@RequestParam Date fromDate, @RequestParam Date toDate) {
+		@RequestParam("fromDate") String fromDateString,
+		@RequestParam("toDate") String toDateString) {
 
 		return _toReportSegmentDTOPageDTO(
 			_segmentDog.getSegmentPage(
-				fromDate, _getId(after), _PAGE_SIZE,
-				Sort.by(Sort.Order.asc("id")), toDate));
+				DateUtil.toUTCDate(fromDateString), _getId(after), _PAGE_SIZE,
+				Sort.by(Sort.Order.asc("id")),
+				DateUtil.toUTCDate(toDateString)));
 	}
 
 	private Long _getId(String id) {

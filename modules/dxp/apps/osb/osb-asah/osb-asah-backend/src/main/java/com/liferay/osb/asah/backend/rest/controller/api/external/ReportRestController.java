@@ -190,15 +190,30 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/export/{type}")
 	public ResponseEntity<DataExportTaskDTO> getDataExportTask(
-		@RequestParam Date fromDate, @RequestParam Date toDate,
+		@RequestParam(required = false, value = "fromDate") String
+			fromDateString,
+		@RequestParam(required = false, value = "toDate") String toDateString,
 		@PathVariable String type) {
 
-		if ((fromDate == null) || (toDate == null)) {
+		if ((fromDateString == null) || (toDateString == null)) {
 			throw new IllegalArgumentException("Date range is mandatory");
 		}
 
+		Date fromDate;
+		Date toDate;
+
+		try {
+			fromDate = DateUtil.toUTCDate(fromDateString);
+			toDate = DateUtil.toUTCDate(toDateString);
+		}
+		catch (Exception exception) {
+			throw new IllegalArgumentException(
+				"Wrong date format. Cannot convert to UTC date.", exception);
+		}
+
 		if (fromDate.after(toDate)) {
-			throw new IllegalArgumentException("Wrong range date");
+			throw new IllegalArgumentException(
+				"Wrong range date. \"fromDate\" cannot be after \"toDate\"");
 		}
 
 		DataExportTask dataExportTask =

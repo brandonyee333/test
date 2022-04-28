@@ -53,7 +53,7 @@ public class ReportRestControllerTest
 		Exception exception = Assertions.assertThrows(
 			IllegalArgumentException.class,
 			() -> _reportRestController.getDataExportTask(
-				null, DateUtil.newDayDate(), "page"));
+				null, DateUtil.toUTCString(DateUtil.newDayDate()), "page"));
 
 		Assertions.assertEquals(
 			"Date range is mandatory", exception.getMessage());
@@ -68,7 +68,9 @@ public class ReportRestControllerTest
 		Date fromDate = DateUtil.addDays(toDate, -1);
 
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(fromDate, toDate, "page");
+			_reportRestController.getDataExportTask(
+				DateUtil.toUTCString(fromDate), DateUtil.toUTCString(toDate),
+				"page");
 
 		Assertions.assertNotNull(responseEntity);
 
@@ -82,7 +84,7 @@ public class ReportRestControllerTest
 		Exception exception = Assertions.assertThrows(
 			IllegalArgumentException.class,
 			() -> _reportRestController.getDataExportTask(
-				DateUtil.newDayDate(), null, "page"));
+				DateUtil.toUTCString(DateUtil.newDayDate()), null, "page"));
 
 		Assertions.assertEquals(
 			"Date range is mandatory", exception.getMessage());
@@ -93,8 +95,10 @@ public class ReportRestControllerTest
 		Exception exception = Assertions.assertThrows(
 			IllegalArgumentException.class,
 			() -> _reportRestController.getDataExportTask(
-				DateUtil.newDayDate(),
-				DateUtil.addDays(DateUtil.newDayDate(), -1), "page"));
+				DateUtil.toUTCString(DateUtil.newDayDate()),
+				DateUtil.toUTCString(
+					DateUtil.addDays(DateUtil.newDayDate(), -1)),
+				"page"));
 
 		Assertions.assertEquals("Wrong range date", exception.getMessage());
 	}
@@ -169,7 +173,9 @@ public class ReportRestControllerTest
 	@Test
 	public void testNoPreviousExportProcessForTheSameTypeAndDateRange() {
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
+			_reportRestController.getDataExportTask(
+				DateUtil.toUTCString(_fromDate), DateUtil.toUTCString(_toDate),
+				"page");
 
 		Assertions.assertNotNull(responseEntity);
 
@@ -185,7 +191,9 @@ public class ReportRestControllerTest
 	@Test
 	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeAndIsCompleted() {
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
+			_reportRestController.getDataExportTask(
+				DateUtil.toUTCString(_fromDate), DateUtil.toUTCString(_toDate),
+				"page");
 
 		Assertions.assertNotNull(responseEntity);
 
@@ -201,7 +209,9 @@ public class ReportRestControllerTest
 	@Test
 	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeButIsPending() {
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
+			_reportRestController.getDataExportTask(
+				DateUtil.toUTCString(_fromDate), DateUtil.toUTCString(_toDate),
+				"page");
 
 		Assertions.assertNotNull(responseEntity);
 
@@ -217,7 +227,9 @@ public class ReportRestControllerTest
 	@Test
 	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeButIsRunning() {
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
+			_reportRestController.getDataExportTask(
+				DateUtil.toUTCString(_fromDate), DateUtil.toUTCString(_toDate),
+				"page");
 
 		Assertions.assertNotNull(responseEntity);
 
@@ -233,7 +245,9 @@ public class ReportRestControllerTest
 	@Test
 	public void testThereIsPreviousExportProcessForTheSameTypeAndDateRangeButResultedInError() {
 		ResponseEntity<DataExportTaskDTO> responseEntity =
-			_reportRestController.getDataExportTask(_fromDate, _toDate, "page");
+			_reportRestController.getDataExportTask(
+				DateUtil.toUTCString(_fromDate), DateUtil.toUTCString(_toDate),
+				"page");
 
 		Assertions.assertNotNull(responseEntity);
 

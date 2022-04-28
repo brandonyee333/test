@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.ReportRestController;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -50,8 +49,8 @@ public class ReportRestControllerTest
 				"dependencies/expected_accounts_2.json", this),
 			_objectMapper.convertValue(
 				_reportRestController.getReportAccountDTOPageDTO(
-					"0", DateUtil.toUTCDate("2019-03-03T13:00:00.000Z"),
-					DateUtil.toUTCDate("2019-03-05T11:00:00.000Z")),
+					"0", "2019-03-03T13:00:00.000Z",
+					"2019-03-05T11:00:00.000Z"),
 				JSONObject.class),
 			false);
 	}
@@ -71,8 +70,8 @@ public class ReportRestControllerTest
 				"dependencies/expected_individuals.json", this),
 			_objectMapper.convertValue(
 				_reportRestController.getReportIndividualDTOPageDTO(
-					"0", DateUtil.toUTCDate("2019-02-09T10:00:00.000Z"),
-					DateUtil.toUTCDate("2019-02-14T13:00:00.000Z")),
+					"0", "2019-02-09T10:00:00.000Z",
+					"2019-02-14T13:00:00.000Z"),
 				JSONObject.class),
 			false);
 	}
@@ -89,8 +88,8 @@ public class ReportRestControllerTest
 				"dependencies/expected_segments.json", this),
 			_objectMapper.convertValue(
 				_reportRestController.getReportSegmentDTOPageDTO(
-					"0", DateUtil.toUTCDate("2019-02-03T10:00:00.000Z"),
-					DateUtil.toUTCDate("2019-02-06T13:00:00.000Z")),
+					"0", "2019-02-03T10:00:00.000Z",
+					"2019-02-06T13:00:00.000Z"),
 				JSONObject.class),
 			false);
 	}
