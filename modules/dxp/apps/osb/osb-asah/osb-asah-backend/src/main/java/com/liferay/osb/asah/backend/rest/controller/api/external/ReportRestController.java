@@ -195,26 +195,10 @@ public class ReportRestController extends BaseRestController {
 		@RequestParam(required = false, value = "toDate") String toDateString,
 		@PathVariable String type) {
 
-		if ((fromDateString == null) || (toDateString == null)) {
-			throw new IllegalArgumentException("Date range is mandatory");
-		}
+		_validateDateRange(fromDateString, toDateString);
 
-		Date fromDate;
-		Date toDate;
-
-		try {
-			fromDate = DateUtil.toUTCDate(fromDateString);
-			toDate = DateUtil.toUTCDate(toDateString);
-		}
-		catch (Exception exception) {
-			throw new IllegalArgumentException(
-				"Wrong date format. Cannot convert to UTC date.", exception);
-		}
-
-		if (fromDate.after(toDate)) {
-			throw new IllegalArgumentException(
-				"Wrong range date. \"fromDate\" cannot be after \"toDate\"");
-		}
+		Date fromDate = DateUtil.toUTCDate(fromDateString);
+		Date toDate = DateUtil.toUTCDate(toDateString);
 
 		DataExportTask dataExportTask =
 			_dataExportTaskDog.fetchLastDataExportTaskByRange(
@@ -245,10 +229,16 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/export/{type}/file")
 	public ResponseEntity<FileSystemResource> getDataExportTaskFile(
+		@RequestParam("fromDate") String fromDateString,
+		@RequestParam("toDate") String toDateString,
 		@PathVariable String type) {
 
+		_validateDateRange(fromDateString, toDateString);
+
 		DataExportTask dataExportTask =
-			_dataExportTaskDog.fetchLastDataExportTask(
+			_dataExportTaskDog.fetchLastDataExportTaskByRange(
+				DateUtil.toUTCDate(fromDateString),
+				DateUtil.toUTCDate(toDateString),
 				DataExportTask.Type.valueOf(StringUtils.upperCase(type)));
 
 		if (dataExportTask == null) {
@@ -1403,6 +1393,31 @@ public class ReportRestController extends BaseRestController {
 			nextPageMethodInvocation, page, prevPageMethodInvocation,
 			resultBag.getResults(), resultBag.getTotal(),
 			resultEntityModelMapperFunction);
+	}
+
+	private void _validateDateRange(
+		String fromDateString, String toDateString) {
+
+		if ((fromDateString == null) || (toDateString == null)) {
+			throw new IllegalArgumentException("Date range is mandatory");
+		}
+
+		Date fromDate;
+		Date toDate;
+
+		try {
+			fromDate = DateUtil.toUTCDate(fromDateString);
+			toDate = DateUtil.toUTCDate(toDateString);
+		}
+		catch (Exception exception) {
+			throw new IllegalArgumentException(
+				"Wrong date format. Cannot convert to UTC date.", exception);
+		}
+
+		if (fromDate.after(toDate)) {
+			throw new IllegalArgumentException(
+				"Wrong range date. \"fromDate\" cannot be after \"toDate\"");
+		}
 	}
 
 	private static final int _PAGE_SIZE = 20;
