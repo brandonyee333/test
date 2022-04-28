@@ -138,7 +138,7 @@ public class AccountDogTest
 		}
 
 		Page<Account> accountPage = _accountDog.getAccountPage(
-			DateUtil.toUTCDate("2022-04-02T11:00:00.000Z"), -1L, 2,
+			-1L, DateUtil.toUTCDate("2022-04-02T11:00:00.000Z"), 2,
 			Sort.by(Sort.Order.asc("id")),
 			DateUtil.toUTCDate("2022-04-04T13:00:00.000Z"));
 

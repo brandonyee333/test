@@ -242,7 +242,7 @@ public class AccountDog {
 	}
 
 	public Page<Account> getAccountPage(
-		Date fromCreateDate, Long accountId, int size, Sort sort,
+		Long accountId, Date fromCreateDate, int size, Sort sort,
 		Date toCreateDate) {
 
 		return PageableExecutionUtils.getPage(

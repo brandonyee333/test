@@ -54,7 +54,7 @@ public class ReportRestController extends BaseRestController {
 
 		return _toReportAccountDTOPageDTO(
 			_accountDog.getAccountPage(
-				DateUtil.toUTCDate(fromDateString), _getId(after), _PAGE_SIZE,
+				_getId(after), DateUtil.toUTCDate(fromDateString), _PAGE_SIZE,
 				Sort.by(Sort.Order.asc("id")),
 				DateUtil.toUTCDate(toDateString)));
 	}
