@@ -8,12 +8,12 @@
 				`{projectId}.expandocolumn` AS replica
 			USING (
 				SELECT
-					*,
+					expandoColumn.*,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(expandoColumn.fields)
 						WHERE
 							name = 'className'
 					) AS className,
@@ -21,7 +21,7 @@
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(expandoColumn.fields)
 						WHERE
 							name = 'columnId'
 					) AS columnId,
@@ -29,7 +29,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(expandoColumn.fields)
 						WHERE
 							name = 'dataType'
 					) AS dataType,
@@ -37,20 +37,20 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(expandoColumn.fields)
 						WHERE
 							name = 'name'
 					) AS name,
 					TO_HEX(
 						SHA256(
-							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+							CONCAT(expandoColumn.projectId, '#', expandoColumn.dataSourceId, '#', expandoColumn.classPK)
 						)
 					) AS sha256HexId
 				FROM
-					`{projectId}.dxpentity`
+					`{projectId}.dxpentity` AS expandoColumn
 				WHERE
-					uploadDate >= '{previousRunDateString}' AND
-					type = 'com.liferay.expando.kernel.model.ExpandoColumn'
+					expandoColumn.uploadDate >= '{previousRunDateString}' AND
+					expandoColumn.type = 'com.liferay.expando.kernel.model.ExpandoColumn'
 			) AS staging
 			ON
 				staging.classPK = replica.columnId AND
@@ -91,19 +91,20 @@
 				`{projectId}.expandovalue` AS replica
 			USING (
 				SELECT
-					*,
+					dxpEntity.*,
+					expandoField.*,
 					TO_HEX(
 						SHA256(
-							CONCAT(projectId, '#', dataSourceId, '#', columnId, '#', classPK)
+							CONCAT(dxpEntity.projectId, '#', dxpEntity.dataSourceId, '#', expandoField.columnId, '#', dxpEntity.classPK)
 						)
 					) AS sha256HexId
 				FROM
-					`{projectId}.dxpentity`, UNNEST(expandoFields)
+					`{projectId}.dxpentity` AS dxpEntity, UNNEST(expandoFields) AS expandoField
 				WHERE
-					uploadDate >= '{previousRunDateString}' AND
+					dxpEntity.uploadDate >= '{previousRunDateString}' AND
 					(
-						type = 'com.liferay.portal.kernel.model.Organization' OR
-						type = 'com.liferay.portal.kernel.model.User'
+						dxpEntity.type = 'com.liferay.portal.kernel.model.Organization' OR
+						dxpEntity.type = 'com.liferay.portal.kernel.model.User'
 					)
 			) AS staging
 			ON
@@ -141,12 +142,12 @@
 				`{projectId}.group` AS replica
 			USING (
 				SELECT
-					*,
+					group.*,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(group.fields)
 						WHERE
 							name = 'groupId'
 					) AS groupId,
@@ -154,20 +155,21 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(group.fields)
 						WHERE
 							name = 'name'
 					) AS name,
 					TO_HEX(
 						SHA256(
-							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+							CONCAT(group.projectId, '#', group.dataSourceId, '#', group.classPK)
 						)
 					) AS sha256HexId
 				FROM
-					`{projectId}.dxpentity`
+					`{projectId}.dxpentity` AS group
+
 				WHERE
-					uploadDate >= '{previousRunDateString}' AND
-					type = 'com.liferay.portal.kernel.model.Group'
+					group.uploadDate >= '{previousRunDateString}' AND
+					group.type = 'com.liferay.portal.kernel.model.Group'
 			) AS staging
 			ON
 				staging.classPK = replica.groupId AND
@@ -202,20 +204,20 @@
 				`{projectId}.organization` AS replica
 			USING (
 				SELECT
-					*,
+					organization.*,
 					(
 						SELECT ARRAY(
 							SELECT
 								DISTINCT columnId
 							FROM
-								UNNEST(expandoFields)
+								UNNEST(organization.expandoFields)
 						)
 					) AS expandoColumnIds,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(organization.fields)
 						WHERE
 							name = 'name'
 					) AS name,
@@ -223,7 +225,7 @@
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(organization.fields)
 						WHERE
 							name = 'organizationId'
 					) AS organizationId,
@@ -231,7 +233,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(organization.fields)
 						WHERE
 							name = 'type'
 					) AS organizationType,
@@ -239,28 +241,28 @@
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(organization.fields)
 						WHERE
 							name = 'parentOrganizationId'
 					) AS parentOrganizationId,
 					TO_HEX(
 						SHA256(
-							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+							CONCAT(organization.projectId, '#', organization.dataSourceId, '#', organization.classPK)
 						)
 					) AS sha256HexId,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(organization.fields)
 						WHERE
 							name = 'treePath'
 					) AS treePath
 				FROM
-					`{projectId}.dxpentity`
+					`{projectId}.dxpentity` AS organization
 				WHERE
-					uploadDate >= '{previousRunDateString}' AND
-					type = 'com.liferay.portal.kernel.model.Organization'
+					organization.uploadDate >= '{previousRunDateString}' AND
+					organization.type = 'com.liferay.portal.kernel.model.Organization'
 			) AS staging
 			ON
 				staging.classPK = replica.organizationId AND
@@ -307,12 +309,12 @@
 				`{projectId}.role` AS replica
 			USING (
 				SELECT
-					*,
+					role.*,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(role.fields)
 						WHERE
 							name = 'name'
 					) AS name,
@@ -320,20 +322,20 @@
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(role.fields)
 						WHERE
 							name = 'roleId'
 					) AS roleId,
 					TO_HEX(
 						SHA256(
-							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+							CONCAT(role.projectId, '#', role.dataSourceId, '#', role.classPK)
 						)
 					) AS sha256HexId
 				FROM
-					`{projectId}.dxpentity`
+					`{projectId}.dxpentity` AS role
 				WHERE
-					uploadDate >= '{previousRunDateString}' AND
-					type = 'com.liferay.portal.kernel.model.Role'
+					role.uploadDate >= '{previousRunDateString}' AND
+					role.type = 'com.liferay.portal.kernel.model.Role'
 			) AS staging
 			ON
 				staging.classPK = replica.roleId AND
@@ -368,12 +370,12 @@
 				`{projectId}.team` AS replica
 			USING (
 				SELECT
-					*,
+					team.*,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(team.fields)
 						WHERE
 							name = 'groupId'
 					) AS groupId,
@@ -381,28 +383,28 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(team.fields)
 						WHERE
 							name = 'name'
 					) AS name,
 					TO_HEX(
 						SHA256(
-							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+							CONCAT(team.projectId, '#', team.dataSourceId, '#', team.classPK)
 						)
 					) AS sha256HexId,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(team.fields)
 						WHERE
 							name = 'teamId'
 					) AS teamId
 				FROM
-					`{projectId}.dxpentity`
+					`{projectId}.dxpentity` AS team
 				WHERE
-					uploadDate >= '{previousRunDateString}' AND
-					type = 'com.liferay.portal.kernel.model.Team'
+					team.uploadDate >= '{previousRunDateString}' AND
+					team.type = 'com.liferay.portal.kernel.model.Team'
 			) AS staging
 			ON
 				staging.classPK = replica.teamId AND
@@ -440,33 +442,33 @@
 				`{projectId}.usergroup` AS replica
 			USING (
 				SELECT
-					*,
+					userGroup.*,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(userGroup.fields)
 						WHERE
 							name = 'name'
 					) AS name,
 					TO_HEX(
 						SHA256(
-							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+							CONCAT(userGroup.projectId, '#', userGroup.dataSourceId, '#', userGroup.classPK)
 						)
 					) AS sha256HexId,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(userGroup.fields)
 						WHERE
 							name = 'userGroupId'
 					) AS userGroupId
 				FROM
-					`{projectId}.dxpentity`
+					`{projectId}.dxpentity` AS userGroup
 				WHERE
-					uploadDate >= '{previousRunDateString}' AND
-					type = 'com.liferay.portal.kernel.model.Team'
+					userGroup.uploadDate >= '{previousRunDateString}' AND
+					userGroup.type = 'com.liferay.portal.kernel.model.Team'
 			) AS staging
 			ON
 				staging.classPK = replica.userGroupId AND
@@ -501,12 +503,12 @@
 				`{projectId}.user` AS replica
 			USING (
 				SELECT
-					*,
+					user.*,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'accountId'
 					) AS accountId,
@@ -514,7 +516,7 @@
 						SELECT
 							SAFE_CAST(value AS TIMESTAMP)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'birthday'
 					) AS birthday,
@@ -522,7 +524,7 @@
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'classNameId'
 					) AS classNameId,
@@ -530,7 +532,7 @@
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'contactId'
 					) AS contactId,
@@ -538,7 +540,7 @@
 						SELECT
 							SAFE_CAST(value AS TIMESTAMP)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'createDate'
 					) AS createDate,
@@ -546,7 +548,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'emailAddress'
 					) AS emailAddress,
@@ -555,14 +557,14 @@
 							SELECT
 								DISTINCT columnId
 							FROM
-								UNNEST(expandoFields)
+								UNNEST(user.expandoFields)
 						)
 					) AS expandoColumnIds,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'firstName'
 					) AS firstName,
@@ -579,7 +581,7 @@
 								SELECT
 									JSON_EXTRACT_ARRAY(value)
 								FROM
-									UNNEST(fields)
+									UNNEST(user.fields)
 								WHERE
 									name = 'groupIds'
 							) groupIds
@@ -589,7 +591,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'jobTitle'
 					) AS jobTitle,
@@ -597,7 +599,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'languageId'
 					) AS languageId,
@@ -605,7 +607,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'lastName'
 					) AS lastName,
@@ -613,7 +615,7 @@
 						SELECT
 							SAFE_CAST(value AS BOOL)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'male'
 					) AS male,
@@ -621,7 +623,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'middleName'
 					) AS middleName,
@@ -638,7 +640,7 @@
 								SELECT
 									JSON_EXTRACT_ARRAY(value)
 								FROM
-									UNNEST(fields)
+									UNNEST(user.fields)
 								WHERE
 									name = 'organizationIds'
 							) organizationIds
@@ -648,7 +650,7 @@
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'parentContactId'
 					) AS parentContactId,
@@ -656,7 +658,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'prefixId'
 					) AS prefixId,
@@ -673,7 +675,7 @@
 								SELECT
 									JSON_EXTRACT_ARRAY(value)
 								FROM
-									UNNEST(fields)
+									UNNEST(user.fields)
 								WHERE
 									name = 'roleIds'
 							) roleIds
@@ -683,20 +685,20 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'screenName'
 					) AS screenName,
 					TO_HEX(
 						SHA256(
-							CONCAT(projectId, '#', dataSourceId, '#', classPK)
+							CONCAT(user.projectId, '#', user.dataSourceId, '#', user.classPK)
 						)
 					) AS sha256HexId,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'suffixId'
 					) AS suffixId,
@@ -713,7 +715,7 @@
 								SELECT
 									JSON_EXTRACT_ARRAY(value)
 								FROM
-									UNNEST(fields)
+									UNNEST(user.fields)
 								WHERE
 									name = 'teamIds'
 							) teamIds
@@ -723,7 +725,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'timeZoneId'
 					) AS timeZoneId,
@@ -740,7 +742,7 @@
 								SELECT
 									JSON_EXTRACT_ARRAY(value)
 								FROM
-									UNNEST(fields)
+									UNNEST(user.fields)
 								WHERE
 									name = 'userGroupIds'
 							) userGroupIds
@@ -750,7 +752,7 @@
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'userId'
 					) AS userId,
@@ -758,7 +760,7 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'userName'
 					) AS userName,
@@ -766,15 +768,15 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(fields)
+							UNNEST(user.fields)
 						WHERE
 							name = 'uuid'
 					) AS uuid
 				FROM
-					`{projectId}.dxpentity`
+					`{projectId}.dxpentity` AS user
 				WHERE
-					uploadDate >= '{previousRunDateString}' AND
-					type = 'com.liferay.portal.kernel.model.User'
+					user.uploadDate >= '{previousRunDateString}' AND
+					user.type = 'com.liferay.portal.kernel.model.User'
 			) AS staging
 			ON
 				staging.classPK = replica.userId AND
