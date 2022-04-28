@@ -116,6 +116,14 @@ CREATE TABLE IF NOT EXISTS DataSourceUserGroup (
 	userGroupIds BIGINT[]
 );
 
+CREATE TABLE IF NOT EXISTS DXPEntity (
+	id BIGSERIAL PRIMARY KEY,
+	dataSourceId BIGINT,
+	fields JSON,
+	modifiedDate TIMESTAMPTZ,
+	type TEXT
+);
+
 CREATE TABLE IF NOT EXISTS Event (
 	id BIGSERIAL PRIMARY KEY,
 	analyticsEventId TEXT UNIQUE,
