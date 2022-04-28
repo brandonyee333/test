@@ -17,6 +17,7 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.BQUser;
+import com.liferay.osb.asah.common.entity.BQUserGroup;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
@@ -34,6 +35,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -114,6 +116,40 @@ public class DXPEntitiesIngestionNaniteTest
 		String[] expandoValueIds2 = bqUser.getExpandoValueIds();
 
 		Assertions.assertEquals(1, expandoValueIds2.length);
+	}
+
+	@Test
+	public void testRunAnalyticsDeleteMessage() throws Exception {
+		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
+			"dependencies/dxp_entities3.json", this);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			_messageBus.sendMessage(
+				Channel.DXP_ENTITIES_DEFAULT,
+				String.valueOf(jsonArray.getJSONObject(i)),
+				new HashMap<String, String>() {
+					{
+						put("dataSourceId", "1");
+						put("projectId", "test");
+					}
+				});
+		}
+
+		BQUserGroup bqUserGroup = new BQUserGroup();
+
+		bqUserGroup.setId(
+			DigestUtils.sha256Hex(String.join("#", "test", "1", "123")));
+		bqUserGroup.setIsNew(true);
+		bqUserGroup.setName("test");
+
+		bqUserGroup = _bqUserGroupRepository.save(bqUserGroup);
+
+		_dxpEntitiesIngestionNanite.run();
+
+		Optional<BQUserGroup> bqUserGroupOptional =
+			_bqUserGroupRepository.findById(bqUserGroup.getId());
+
+		Assertions.assertFalse(bqUserGroupOptional.isPresent());
 	}
 
 	@Test

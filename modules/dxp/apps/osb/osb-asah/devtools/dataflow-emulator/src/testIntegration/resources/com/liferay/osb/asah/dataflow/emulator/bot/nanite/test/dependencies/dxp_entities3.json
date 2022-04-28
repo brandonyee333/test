@@ -1,0 +1,27 @@
+[
+	{
+		"expandoFields": [
+			{
+				"columnId": 1,
+				"name": "custom_field_1",
+				"value": "123"
+			}
+		],
+		"fields": [
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "className",
+				"value": "com.liferay.portal.kernel.model.UserGroup"
+			},
+			{
+				"name": "classPK",
+				"value": "123"
+			}
+		],
+		"id": "1",
+		"type": "com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage"
+	}
+]
