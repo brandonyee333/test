@@ -36,6 +36,7 @@ import com.liferay.osb.asah.common.repository.BQTeamRepository;
 import com.liferay.osb.asah.common.repository.BQUserGroupRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.dataflow.emulator.model.AnalyticsDeleteMessage;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,13 +52,17 @@ import javax.sql.DataSource;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -209,7 +214,36 @@ public class DXPEntitiesIngestionNanite {
 			jsonObject.getJSONArray("fields"));
 
 		if (StringUtils.equals(
-				type, "com.liferay.expando.kernel.model.ExpandoColumn")) {
+				type,
+				"com.liferay.analytics.message.storage.model." +
+					"AnalyticsDeleteMessage")) {
+
+			try {
+				AnalyticsDeleteMessage analyticsDeleteMessage =
+					_objectMapper.convertValue(
+						fields, AnalyticsDeleteMessage.class);
+
+				PagingAndSortingRepository pagingAndSortingRepository =
+					(PagingAndSortingRepository)_applicationContext.getBean(
+						Class.forName(
+							String.format(
+								"com.liferay.osb.asah.common.repository." +
+									"BQ%sRepository",
+								StringUtils.substringAfterLast(
+									analyticsDeleteMessage.getClassName(),
+									"."))));
+
+				pagingAndSortingRepository.deleteById(
+					_generateDXPEntityId(
+						analyticsDeleteMessage.getClassPK(), dataSourceId,
+						projectId));
+			}
+			catch (Exception exception) {
+				_log.error(exception, exception);
+			}
+		}
+		else if (StringUtils.equals(
+					type, "com.liferay.expando.kernel.model.ExpandoColumn")) {
 
 			BQExpandoColumn bqExpandoColumn = _objectMapper.convertValue(
 				fields, BQExpandoColumn.class);
@@ -342,6 +376,12 @@ public class DXPEntitiesIngestionNanite {
 			_bqUserGroupRepository.save(bqUserGroup);
 		}
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		DXPEntitiesIngestionNanite.class);
+
+	@Autowired
+	private ApplicationContext _applicationContext;
 
 	@Autowired
 	private BQExpandoColumnRepository _bqExpandoColumnRepository;
