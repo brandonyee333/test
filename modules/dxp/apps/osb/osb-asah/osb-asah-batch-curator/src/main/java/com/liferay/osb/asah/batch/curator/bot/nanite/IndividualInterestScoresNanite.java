@@ -110,7 +110,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			interestId = lastInterest.getId();
 
 			for (Interest interest : interests) {
-				if (ownerIds.contains(interest.getOwnerId())) {
+				if (!keywordInfosMap.containsKey(interest.getName()) ||
+					ownerIds.contains(interest.getOwnerId())) {
+
 					continue;
 				}
 
