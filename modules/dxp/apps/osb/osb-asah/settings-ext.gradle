@@ -13,6 +13,10 @@ rootDir.eachDirRecurse {
 		return
 	}
 
+	if (gradle.startParameter.taskNames.contains("assemble") && subprojectDir.name.equals("osb-asah-composer")) {
+		return
+	}
+
 	if (gradle.startParameter.taskNames.contains("assemble") && subprojectDir.name.equals("osb-asah-spark-python")) {
 		return
 	}
