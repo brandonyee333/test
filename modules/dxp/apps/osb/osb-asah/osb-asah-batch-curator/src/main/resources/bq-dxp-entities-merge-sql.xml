@@ -8,6 +8,7 @@
 				`{projectId}.expandocolumn` AS replica
 			USING (
 				SELECT
+					analyticsDeleteMessage.deleted,
 					expandoColumn.*,
 					(
 						SELECT
@@ -48,21 +49,53 @@
 					) AS sha256HexId
 				FROM
 					`{projectId}.dxpentity` AS expandoColumn
+			 	LEFT JOIN (
+					SELECT
+						*,
+						TRUE AS deleted,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'classPK'
+						) AS columnId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM `{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+				) AS analyticsDeleteMessage
+				ON
+					analyticsDeleteMessage.className = expandoColumn.type AND
+					analyticsDeleteMessage.columnId = expandoColumn.classPK
 				WHERE
-					expandoColumn.uploadDate >= '{previousRunDateString}' AND
+					(
+						analyticsDeleteMessage.columnId IS NOT NULL OR
+						expandoColumn.uploadDate >= '{previousRunDateString}'
+					) AND
 					expandoColumn.type = 'com.liferay.expando.kernel.model.ExpandoColumn'
 			) AS staging
 			ON
 				staging.classPK = replica.columnId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
-			WHEN MATCHED THEN
+			WHEN MATCHED AND staging.deleted IS NULL THEN
 				UPDATE SET
 					replica.className = staging.className,
 					replica.dataType = staging.dataType,
 					replica.modifiedDate = staging.modifiedDate,
 					replica.name = staging.name
-			WHEN NOT MATCHED BY TARGET THEN
+			WHEN MATCHED AND staging.deleted = true THEN
+				DELETE
+			WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 				INSERT (
 					`className`,
 					`columnId`,
@@ -91,6 +124,7 @@
 				`{projectId}.expandovalue` AS replica
 			USING (
 				SELECT
+					analyticsDeleteMessage.deleted,
 					dxpEntity.*,
 					expandoField.*,
 					TO_HEX(
@@ -100,8 +134,38 @@
 					) AS sha256HexId
 				FROM
 					`{projectId}.dxpentity` AS dxpEntity, UNNEST(expandoFields) AS expandoField
+			 	LEFT JOIN (
+					SELECT
+						*,
+						TRUE AS deleted,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'classPK'
+						) AS entityId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM `{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+				) AS analyticsDeleteMessage
+				ON
+					analyticsDeleteMessage.className = dxpEntity.type AND
+					analyticsDeleteMessage.entityId = dxpEntity.classPK
 				WHERE
-					dxpEntity.uploadDate >= '{previousRunDateString}' AND
+					(
+						analyticsDeleteMessage.entityId IS NOT NULL OR
+						dxpEntity.uploadDate >= '{previousRunDateString}'
+					) AND
 					(
 						dxpEntity.type = 'com.liferay.portal.kernel.model.Organization' OR
 						dxpEntity.type = 'com.liferay.portal.kernel.model.User'
@@ -112,10 +176,12 @@
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.columnId = replica.columnId AND
 				staging.projectId = replica.projectId
-			WHEN MATCHED THEN
+			WHEN MATCHED AND staging.deleted IS NULL THEN
 				UPDATE SET
 					replica.value = staging.value
-			WHEN NOT MATCHED BY TARGET THEN
+			WHEN MATCHED AND staging.deleted = true THEN
+				DELETE
+			WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 				INSERT (
 					`classPK`,
 					`classType`,
@@ -142,6 +208,7 @@
 				`{projectId}.group` AS replica
 			USING (
 				SELECT
+					analyticsDeleteMessage.deleted,
 					group.*,
 					(
 						SELECT
@@ -166,20 +233,51 @@
 					) AS sha256HexId
 				FROM
 					`{projectId}.dxpentity` AS group
-
+				LEFT JOIN (
+					SELECT
+						*,
+						TRUE AS deleted,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'classPK'
+						) AS groupId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM `{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+				) AS analyticsDeleteMessage
+				ON
+					analyticsDeleteMessage.className = group.type AND
+					analyticsDeleteMessage.groupId = group.classPK
 				WHERE
-					group.uploadDate >= '{previousRunDateString}' AND
+					(
+						analyticsDeleteMessage.groupId IS NOT NULL OR
+						group.uploadDate >= '{previousRunDateString}'
+					) AND
 					group.type = 'com.liferay.portal.kernel.model.Group'
 			) AS staging
 			ON
 				staging.classPK = replica.groupId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
-			WHEN MATCHED THEN
+			WHEN MATCHED AND staging.deleted IS NULL THEN
 				UPDATE SET
 					replica.modifiedDate = staging.modifiedDate,
 					replica.name = staging.name
-			WHEN NOT MATCHED BY TARGET THEN
+			WHEN MATCHED AND staging.deleted = true THEN
+				DELETE
+			WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 				INSERT (
 					`dataSourceId`,
 					`groupId`,
@@ -204,6 +302,7 @@
 				`{projectId}.organization` AS replica
 			USING (
 				SELECT
+					analyticsDeleteMessage.deleted,
 					organization.*,
 					(
 						SELECT ARRAY(
@@ -260,15 +359,45 @@
 					) AS treePath
 				FROM
 					`{projectId}.dxpentity` AS organization
+				LEFT JOIN (
+					SELECT
+						*,
+						TRUE AS deleted,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'classPK'
+						) AS organizationId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM `{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+				) AS analyticsDeleteMessage
+				ON
+					analyticsDeleteMessage.className = organization.type AND
+					analyticsDeleteMessage.organizationId = organization.classPK
 				WHERE
-					organization.uploadDate >= '{previousRunDateString}' AND
+					(
+						analyticsDeleteMessage.organizationId IS NOT NULL OR
+						organization.uploadDate >= '{previousRunDateString}'
+					) AND
 					organization.type = 'com.liferay.portal.kernel.model.Organization'
 			) AS staging
 			ON
 				staging.classPK = replica.organizationId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
-			WHEN MATCHED THEN
+			WHEN MATCHED AND staging.deleted IS NULL THEN
 				UPDATE SET
 					replica.expandoColumnIds = staging.expandoColumnIds,
 					replica.modifiedDate = staging.modifiedDate,
@@ -276,7 +405,9 @@
 					replica.type = staging.organizationType,
 					replica.parentOrganizationId = staging.parentOrganizationId,
 					replica.treePath = staging.treePath
-			WHEN NOT MATCHED BY TARGET THEN
+			WHEN MATCHED AND staging.deleted = true THEN
+				DELETE
+			WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 				INSERT (
 					`dataSourceId`,
 					`expandoColumnIds`,
@@ -309,6 +440,7 @@
 				`{projectId}.role` AS replica
 			USING (
 				SELECT
+					analyticsDeleteMessage.deleted,
 					role.*,
 					(
 						SELECT
@@ -333,19 +465,51 @@
 					) AS sha256HexId
 				FROM
 					`{projectId}.dxpentity` AS role
+				LEFT JOIN (
+					SELECT
+						*,
+						TRUE AS deleted,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'classPK'
+						) AS roleId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM `{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+				) AS analyticsDeleteMessage
+				ON
+					analyticsDeleteMessage.className = role.type AND
+					analyticsDeleteMessage.roleId = role.classPK
 				WHERE
-					role.uploadDate >= '{previousRunDateString}' AND
+					(
+						analyticsDeleteMessage.roleId IS NOT NULL OR
+						role.uploadDate >= '{previousRunDateString}'
+					) AND
 					role.type = 'com.liferay.portal.kernel.model.Role'
 			) AS staging
 			ON
 				staging.classPK = replica.roleId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
-			WHEN MATCHED THEN
+			WHEN MATCHED AND staging.deleted IS NULL THEN
 				UPDATE SET
 					replica.modifiedDate = staging.modifiedDate,
 					replica.name = staging.name
-			WHEN NOT MATCHED BY TARGET THEN
+			WHEN MATCHED AND staging.deleted = true THEN
+				DELETE
+			WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 				INSERT (
 					`dataSourceId`,
 					`id`,
@@ -370,6 +534,7 @@
 				`{projectId}.team` AS replica
 			USING (
 				SELECT
+					analyticsDeleteMessage.deleted,
 					team.*,
 					(
 						SELECT
@@ -402,20 +567,52 @@
 					) AS teamId
 				FROM
 					`{projectId}.dxpentity` AS team
+				LEFT JOIN (
+					SELECT
+						*,
+						TRUE AS deleted,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'classPK'
+						) AS teamId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM `{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+				) AS analyticsDeleteMessage
+				ON
+					analyticsDeleteMessage.className = team.type AND
+					analyticsDeleteMessage.teamId = team.classPK
 				WHERE
-					team.uploadDate >= '{previousRunDateString}' AND
+					(
+						analyticsDeleteMessage.teamId IS NOT NULL OR
+						team.uploadDate >= '{previousRunDateString}'
+					) AND
 					team.type = 'com.liferay.portal.kernel.model.Team'
 			) AS staging
 			ON
 				staging.classPK = replica.teamId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
-			WHEN MATCHED THEN
+			WHEN MATCHED AND staging.deleted IS NULL THEN
 				UPDATE SET
 					replica.groupId = staging.groupId,
 					replica.modifiedDate = staging.modifiedDate,
 					replica.name = staging.name
-			WHEN NOT MATCHED BY TARGET THEN
+			WHEN MATCHED AND staging.deleted = true THEN
+				DELETE
+			WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 				INSERT (
 					`dataSourceId`,
 					`groupId`,
@@ -442,6 +639,7 @@
 				`{projectId}.usergroup` AS replica
 			USING (
 				SELECT
+					analyticsDeleteMessage.deleted,
 					userGroup.*,
 					(
 						SELECT
@@ -466,19 +664,51 @@
 					) AS userGroupId
 				FROM
 					`{projectId}.dxpentity` AS userGroup
+				LEFT JOIN (
+					SELECT
+						*,
+						TRUE AS deleted,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'classPK'
+						) AS userGroupId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM `{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+				) AS analyticsDeleteMessage
+				ON
+					analyticsDeleteMessage.className = userGroup.type AND
+					analyticsDeleteMessage.userGroupId = userGroup.classPK
 				WHERE
-					userGroup.uploadDate >= '{previousRunDateString}' AND
-					userGroup.type = 'com.liferay.portal.kernel.model.Team'
+					(
+						analyticsDeleteMessage.userGroupId IS NOT NULL OR
+						userGroup.uploadDate >= '{previousRunDateString}'
+					) AND
+					userGroup.type = 'com.liferay.portal.kernel.model.UserGroup'
 			) AS staging
 			ON
 				staging.classPK = replica.userGroupId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
-			WHEN MATCHED THEN
+			WHEN MATCHED AND staging.deleted IS NULL THEN
 				UPDATE SET
 					replica.modifiedDate = staging.modifiedDate,
 					replica.name = staging.name
-			WHEN NOT MATCHED BY TARGET THEN
+			WHEN MATCHED AND staging.deleted = true THEN
+				DELETE
+			WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 				INSERT (
 					`dataSourceId`,
 					`id`,
@@ -503,6 +733,7 @@
 				`{projectId}.user` AS replica
 			USING (
 				SELECT
+					analyticsDeleteMessage.deleted,
 					user.*,
 					(
 						SELECT
@@ -774,15 +1005,45 @@
 					) AS uuid
 				FROM
 					`{projectId}.dxpentity` AS user
+				LEFT JOIN (
+					SELECT
+						*,
+						TRUE AS deleted,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'classPK'
+						) AS userId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM `{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+				) AS analyticsDeleteMessage
+				ON
+					analyticsDeleteMessage.className = user.type AND
+					analyticsDeleteMessage.userId = user.classPK
 				WHERE
-					user.uploadDate >= '{previousRunDateString}' AND
+					(
+						analyticsDeleteMessage.userId IS NOT NULL OR
+						user.uploadDate >= '{previousRunDateString}'
+					) AND
 					user.type = 'com.liferay.portal.kernel.model.User'
 			) AS staging
 			ON
 				staging.classPK = replica.userId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
-			WHEN MATCHED THEN
+			WHEN MATCHED AND staging.deleted IS NULL THEN
 				UPDATE SET
 					replica.accountId = staging.accountId,
 					replica.birthday = staging.birthday,
@@ -807,7 +1068,9 @@
 					replica.timeZoneId = staging.timeZoneId,
 					replica.userGroupIds = staging.userGroupIds,
 					replica.userName = staging.userName
-			WHEN NOT MATCHED BY TARGET THEN
+			WHEN MATCHED AND staging.deleted = true THEN
+				DELETE
+			WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 				INSERT (
 					`accountId`,
 					`birthday`,
