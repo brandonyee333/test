@@ -20,6 +20,8 @@ import {nodeTreeArrayMapper as clayTreeNodeArrayMapper} from './TreeFilter/ClayT
 import FrontendTreeFilter from './TreeFilter/FrontendTreeFilter/TreeFilter';
 import {nodeTreeArrayMapper} from './TreeFilter/FrontendTreeFilter/treeUtils';
 
+import '../../css/tree.scss';
+
 const SelectTypeAndSubtype = ({
 	contentDashboardItemTypes,
 	itemSelectorSaveEvent,
