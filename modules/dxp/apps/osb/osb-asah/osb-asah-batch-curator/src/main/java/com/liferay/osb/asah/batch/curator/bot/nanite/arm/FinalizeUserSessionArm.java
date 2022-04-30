@@ -79,8 +79,6 @@ public class FinalizeUserSessionArm {
 
 		updateActivitiesAndAssets(userSession);
 
-		_deleteUserSessionAnalyticsEvents(userSession);
-
 		JSONObject partialUserSessionJSONObject = new JSONObject();
 
 		if (!userSession.getCompleted()) {
@@ -172,12 +170,6 @@ public class FinalizeUserSessionArm {
 
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			boolQueryBuilder, true, script, "pages");
-	}
-
-	private void _deleteUserSessionAnalyticsEvents(UserSession userSession) {
-		_cerebroInfoElasticsearchInvoker.deleteByQuery(
-			QueryBuilders.termQuery("sessionId", userSession.getId()), false,
-			"user-session-analytics-events");
 	}
 
 	private String _getCompleteReason(UserSession userSession) {
