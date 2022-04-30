@@ -48,7 +48,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -126,9 +125,6 @@ public class FinalizeUserSessionArm {
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			_cerebroInfoElasticsearchInvoker.
 				createElasticsearchBulkRequestBuilder();
-
-		elasticsearchBulkRequestBuilder.refreshPolicy(
-			WriteRequest.RefreshPolicy.IMMEDIATE);
 
 		_updatePageTimeOnPage(elasticsearchBulkRequestBuilder, userSession);
 
