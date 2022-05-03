@@ -74,6 +74,30 @@ CREATE TABLE IF NOT EXISTS BQIdentity (
 	userId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS BQMembership (
+    id BIGSERIAL PRIMARY KEY,
+    createDate TIMESTAMPTZ,
+    individualId BIGINT,
+    individualSegmentId BIGINT,
+    modifiedDate TIMESTAMPTZ,
+    removedDate TIMESTAMPTZ,
+    status TEXT
+);
+
+CREATE TABLE IF NOT EXISTS BQMembershipChange (
+    id BIGSERIAL PRIMARY KEY,
+    individualDeleted BOOLEAN,
+    individualId BIGINT,
+    individualEmail TEXT,
+    individualName TEXT,
+    individualsCount BIGINT,
+    individualSegmentId BIGINT,
+    joinedDate TIMESTAMPTZ,
+    knownIndividualsCount BIGINT,
+    modifiedDate TIMESTAMPTZ,
+    operation TEXT
+);
+
 CREATE TABLE IF NOT EXISTS BQOrganization (
 	expandoColumnIds BIGINT[],
 	expandoValueIds TEXT[],

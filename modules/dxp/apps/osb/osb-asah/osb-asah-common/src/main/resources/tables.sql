@@ -414,30 +414,6 @@ CREATE TABLE IF NOT EXISTS JobRun (
 	trigger TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Membership (
-	id BIGSERIAL PRIMARY KEY,
-	createDate TIMESTAMPTZ,
-	individualId BIGINT,
-	individualSegmentId BIGINT,
-	modifiedDate TIMESTAMPTZ,
-	removedDate TIMESTAMPTZ,
-	status TEXT
-);
-
-CREATE TABLE IF NOT EXISTS MembershipChange (
-	id BIGSERIAL PRIMARY KEY,
-	individualDeleted BOOLEAN,
-	individualId BIGINT,
-	individualEmail TEXT,
-	individualName TEXT,
-	individualsCount BIGINT,
-	individualSegmentId BIGINT,
-	joinedDate TIMESTAMPTZ,
-	knownIndividualsCount BIGINT,
-	modifiedDate TIMESTAMPTZ,
-	operation TEXT
-);
-
 CREATE TABLE IF NOT EXISTS Organization (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
