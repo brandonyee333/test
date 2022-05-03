@@ -20,8 +20,8 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -221,7 +221,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 						break;
 					}
 
-					List<Membership> newMemberships = new ArrayList<>();
+					List<BQMembership> newBQMemberships = new ArrayList<>();
 					List<Individual> deactivateIndividuals = new ArrayList<>();
 
 					Date deletionDate = new Date();
@@ -245,18 +245,19 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 							if (individualMembers.contains(individual) &&
 								!oldMember) {
 
-								Membership membership = new Membership();
+								BQMembership bqMembership = new BQMembership();
 
-								membership.setCreateDate(
+								bqMembership.setCreateDate(
 									individual.getModifiedDate());
-								membership.setIndividualId(individual.getId());
-								membership.setIndividualSegmentId(
+								bqMembership.setIndividualId(
+									individual.getId());
+								bqMembership.setIndividualSegmentId(
 									segment.getId());
-								membership.setModifiedDate(
+								bqMembership.setModifiedDate(
 									individual.getModifiedDate());
-								membership.setStatus("ACTIVE");
+								bqMembership.setStatus("ACTIVE");
 
-								newMemberships.add(membership);
+								newBQMemberships.add(bqMembership);
 							}
 							else if (!newMember && oldMember) {
 								deactivateIndividuals.add(individual);
@@ -266,12 +267,12 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 						}
 					}
 
-					if (!newMemberships.isEmpty()) {
-						_membershipDog.addMemberships(newMemberships);
+					if (!newBQMemberships.isEmpty()) {
+						_membershipDog.addBQMemberships(newBQMemberships);
 					}
 
 					if (!deactivateIndividuals.isEmpty()) {
-						_membershipDog.deactivateMembershipByIndividuals(
+						_membershipDog.deactivateBQMembershipByIndividuals(
 							deletionDate, deactivateIndividuals);
 					}
 
@@ -386,14 +387,14 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		boolean oldMember = segmentIds.contains(segment.getId());
 
 		if (newMember && !oldMember) {
-			_membershipDog.addMembership(
+			_membershipDog.addBQMembership(
 				_objectMapper.convertValue(
 					baseMembershipJSONObject.put(
 						"individualSegmentId", segment.getId()),
-					Membership.class));
+					BQMembership.class));
 		}
 		else if (!newMember && oldMember) {
-			_membershipDog.deactivateMembership(
+			_membershipDog.deactivateBQMembership(
 				modifiedDate, individual.getId(), segment.getId());
 		}
 	}

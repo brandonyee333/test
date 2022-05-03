@@ -52,9 +52,9 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 		_visitedPageDog.deleteVisitedPages(individualSegmentIds);
 
-		membershipChangeDog.deleteMembershipChanges(individualSegmentIds);
+		membershipChangeDog.deleteBQMembershipChanges(individualSegmentIds);
 
-		membershipDog.deleteMemberships(individualSegmentIds);
+		membershipDog.deleteBQMemberships(individualSegmentIds);
 
 		_individualDog.removeSegmentIds(individualSegmentIds);
 	}
