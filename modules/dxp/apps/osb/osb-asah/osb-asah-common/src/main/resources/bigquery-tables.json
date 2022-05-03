@@ -1154,6 +1154,11 @@
 				"type": "STRING"
 			},
 			{
+				"mode": "REQUIRED",
+				"name": "emailAddressHashed",
+				"type": "STRING"
+			},
+			{
 				"mode": "REPEATED",
 				"name": "expandoColumnIds",
 				"type": "INT64"
