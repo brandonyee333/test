@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -27,6 +28,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -39,6 +41,8 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -53,6 +57,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -65,6 +70,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class IndividualNaniteTest
 	extends BaseNaniteTestCase
 	implements OSBAsahStreamCuratorSpringTestContext {
+
+	@BeforeEach
+	public void setUp() {
+		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(Long.parseLong(RandomTestUtil.randomId()));
+
+		dataSource = _dataSourceRepository.save(dataSource);
+
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				dataSource.getId(), "email", "email", "Text"));
+	}
 
 	@MessageBusChannel(
 		channel = Channel.IDENTITY_MESSAGE,
@@ -488,6 +506,9 @@ public class IndividualNaniteTest
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
@@ -495,6 +516,9 @@ public class IndividualNaniteTest
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

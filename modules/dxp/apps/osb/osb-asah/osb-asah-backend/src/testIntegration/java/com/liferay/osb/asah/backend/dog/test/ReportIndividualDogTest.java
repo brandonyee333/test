@@ -20,15 +20,20 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.Individual;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +44,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ReportIndividualDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
+
+	@BeforeEach
+	public void setUp() {
+		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		_dataSourceRepository.save(dataSource);
+
+		for (String fieldName : _FIELD_NAMES) {
+			_fieldMappingRepository.save(
+				FaroInfoTestUtil.buildIndividualFieldMapping(
+					dataSource.getId(), fieldName, fieldName, "Text"));
+		}
+	}
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
@@ -148,6 +166,16 @@ public class ReportIndividualDogTest
 		Assertions.assertEquals("1", individual.getId());
 		Assertions.assertEquals("john@acme.com", individual.getEmailAddress());
 	}
+
+	private static final String[] _FIELD_NAMES = {
+		"email", "familyName", "givenName"
+	};
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private ReportIndividualDog _reportIndividualDog;

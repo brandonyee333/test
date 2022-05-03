@@ -435,6 +435,7 @@ public class FaroInfoTestUtil {
 		fieldMapping.setContext(context);
 		fieldMapping.setCreateDate(date);
 		fieldMapping.setDataSourceFieldNames(dataSourceFieldNames);
+		fieldMapping.setDisplayName(fieldName);
 		fieldMapping.setFieldName(fieldName);
 		fieldMapping.setFieldType(fieldType);
 		fieldMapping.setModifiedDate(date);
@@ -550,6 +551,17 @@ public class FaroInfoTestUtil {
 
 		return buildFieldMapping(
 			_getFieldMappingAuthor(), "demographics", dataSourceFieldNames,
+			fieldName, fieldType, "individual");
+	}
+
+	public static FieldMapping buildIndividualFieldMapping(
+		String context, Long dataSourceId, String dataSourceFieldName,
+		String fieldName, String fieldType) {
+
+		return buildFieldMapping(
+			_getFieldMappingAuthor(), context,
+			Collections.singletonMap(
+				String.valueOf(dataSourceId), dataSourceFieldName),
 			fieldName, fieldType, "individual");
 	}
 

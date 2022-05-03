@@ -21,16 +21,20 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
@@ -191,6 +195,16 @@ public class MembershipDogTest
 
 		_segmentDog.addSegment(segment1);
 
+		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
+
+		dataSource.setId(338486009405470846L);
+
+		dataSource = _dataSourceRepository.save(dataSource);
+
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				dataSource.getId(), "email", "email", "Text"));
+
 		Individual individual1 = new Individual();
 
 		individual1.setId(338486041327913341L);
@@ -201,7 +215,7 @@ public class MembershipDogTest
 		Field field1 = new Field();
 
 		field1.setContext("demographics");
-		field1.setDataSourceId(338486009405470846L);
+		field1.setDataSourceId(dataSource.getId());
 		field1.setDataSourceName("Test Data Source");
 		field1.setFieldType("Text");
 		field1.setModifiedDate(DateUtil.toUTCDate("2019-02-11T17:05:06.814Z"));
@@ -227,7 +241,7 @@ public class MembershipDogTest
 		Field field2 = new Field();
 
 		field2.setContext("demographics");
-		field2.setDataSourceId(338486009405470846L);
+		field2.setDataSourceId(dataSource.getId());
 		field2.setDataSourceName("Test Data Source");
 		field2.setFieldType("Text");
 		field2.setModifiedDate(DateUtil.toUTCDate("2019-02-11T17:05:06.814Z"));
@@ -416,6 +430,12 @@ public class MembershipDogTest
 		Assertions.assertTrue(
 			_membershipDog.isMember(338486041327913341L, 338511398116723458L));
 	}
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

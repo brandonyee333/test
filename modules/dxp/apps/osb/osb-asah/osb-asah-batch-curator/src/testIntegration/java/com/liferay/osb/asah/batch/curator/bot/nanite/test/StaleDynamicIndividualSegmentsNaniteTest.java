@@ -34,6 +34,8 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -91,6 +93,8 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 		_dataSource.setId(Long.parseLong(RandomTestUtil.randomId()));
 
+		_dataSource = _dataSourceRepository.save(_dataSource);
+
 		_assetJSONObject = _objectMapper.convertValue(
 			_assetRepository.save(
 				_objectMapper.convertValue(
@@ -98,6 +102,10 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 						_dataSource.getId()),
 					Asset.class)),
 			JSONObject.class);
+
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				_dataSource.getId(), "email", "email", "Text"));
 
 		Individual individual = FaroInfoTestUtil.buildIndividual(_dataSource);
 
@@ -402,6 +410,12 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	private AssetRepository _assetRepository;
 
 	private DataSource _dataSource;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

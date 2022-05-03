@@ -455,6 +455,15 @@ public class IndividualDogTest
 	)
 	@Test
 	public void testGetIndividualPage1() {
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				"custom", _liferayDataSource.getId(), "client_id", "client_id",
+				"Text"));
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				_liferayDataSource.getId(), "favoritePokemon",
+				"favoritePokemon", "Text"));
+
 		Page<Individual> individualPage = _individualDog.getIndividualPage(
 			"", null, 0, 10);
 
@@ -483,6 +492,11 @@ public class IndividualDogTest
 	)
 	@Test
 	public void testGetIndividualPage2() {
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				_liferayDataSource.getId(), "favoritePokemon",
+				"favoritePokemon", "Text"));
+
 		Page<Individual> individualPage = _individualDog.getIndividualPage(
 			"mander", null, 0, 10);
 
@@ -571,6 +585,10 @@ public class IndividualDogTest
 	)
 	@Test
 	public void testSearchIndividuals1() {
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				_liferayDataSource.getId(), "givenName", "givenName", "Text"));
+
 		List<Individual> individuals = _individualDog.searchIndividuals(
 			100L, null, false, 0, 10,
 			new String[] {"demographics/givenName/value,asc"});

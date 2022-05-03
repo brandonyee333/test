@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -57,6 +58,10 @@ public class DeleteIndividualSegmentTasksNaniteTest
 	public void testDeleteIndividualSegmentTasks() throws Exception {
 		DataSource dataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildLiferayDataSource());
+
+		_fieldMappingRepository.save(
+			FaroInfoTestUtil.buildIndividualFieldMapping(
+				dataSource.getId(), "email", "email", "Text"));
 
 		String dayDateString = DateUtil.newDayDateString();
 		Long segmentId = RandomTestUtil.randomNumber();
@@ -138,6 +143,9 @@ public class DeleteIndividualSegmentTasksNaniteTest
 	@Autowired
 	private DeleteIndividualSegmentTasksNanite
 		_deleteIndividualSegmentTasksNanite;
+
+	@Autowired
+	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;
