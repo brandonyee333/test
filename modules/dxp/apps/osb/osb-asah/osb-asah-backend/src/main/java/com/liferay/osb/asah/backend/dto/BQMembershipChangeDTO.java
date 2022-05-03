@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.MembershipChange;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -37,35 +37,37 @@ import org.apache.commons.lang3.BooleanUtils;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName("membership-changes")
-public class MembershipChangeDTO {
+public class BQMembershipChangeDTO {
 
-	public MembershipChangeDTO() {
+	public BQMembershipChangeDTO() {
 	}
 
-	public MembershipChangeDTO(List<MembershipChange> membershipChanges) {
-		_membershipChangeDTOs = SetUtil.map(
-			membershipChanges, MembershipChangeDTO::new);
-	}
-
-	public MembershipChangeDTO(MembershipChange membershipChange) {
-		_id = StringUtil.get(membershipChange.getId(), null);
+	public BQMembershipChangeDTO(BQMembershipChange bqMembershipChange) {
+		_id = StringUtil.get(bqMembershipChange.getId(), null);
 		_individualDeleted = BooleanUtils.toBoolean(
-			membershipChange.getIndividualDeleted());
-		_individualEmail = membershipChange.getIndividualEmail();
+			bqMembershipChange.getIndividualDeleted());
+		_individualEmail = bqMembershipChange.getIndividualEmail();
 		_individualId = StringUtil.get(
-			membershipChange.getIndividualId(), null);
-		_individualName = membershipChange.getIndividualName();
-		_individualsCount = membershipChange.getIndividualsCount();
-		_joinedDate = membershipChange.getJoinedDate();
-		_knownIndividualsCount = membershipChange.getKnownIndividualsCount();
-		_modifiedDate = membershipChange.getModifiedDate();
-		_operation = membershipChange.getOperation();
+			bqMembershipChange.getIndividualId(), null);
+		_individualName = bqMembershipChange.getIndividualName();
+		_individualsCount = bqMembershipChange.getIndividualsCount();
+		_joinedDate = bqMembershipChange.getJoinedDate();
+		_knownIndividualsCount = bqMembershipChange.getKnownIndividualsCount();
+		_modifiedDate = bqMembershipChange.getModifiedDate();
+		_operation = bqMembershipChange.getOperation();
 		_segmentId = StringUtil.get(
-			membershipChange.getIndividualSegmentId(), null);
+			bqMembershipChange.getIndividualSegmentId(), null);
 	}
 
-	public MembershipChangeDTO(Set<MembershipChangeDTO> membershipChangeDTOs) {
-		_membershipChangeDTOs = membershipChangeDTOs;
+	public BQMembershipChangeDTO(List<BQMembershipChange> bqMembershipChanges) {
+		_bqMembershipChangeDTOs = SetUtil.map(
+			bqMembershipChanges, BQMembershipChangeDTO::new);
+	}
+
+	public BQMembershipChangeDTO(
+		Set<BQMembershipChangeDTO> bqMembershipChangeDTOs) {
+
+		_bqMembershipChangeDTOs = bqMembershipChangeDTOs;
 	}
 
 	@JsonProperty("_embedded")
@@ -123,8 +125,8 @@ public class MembershipChangeDTO {
 	}
 
 	@JsonProperty("membership-changes")
-	public Set<MembershipChangeDTO> getMembershipChangeDTOs() {
-		return _membershipChangeDTOs;
+	public Set<BQMembershipChangeDTO> getMembershipChangeDTOs() {
+		return _bqMembershipChangeDTOs;
 	}
 
 	@JsonAlias("modifiedDate")
@@ -190,9 +192,9 @@ public class MembershipChangeDTO {
 	}
 
 	public void setMembershipChangeDTOs(
-		Set<MembershipChangeDTO> membershipChangeDTOs) {
+		Set<BQMembershipChangeDTO> bqMembershipChangeDTOs) {
 
-		_membershipChangeDTOs = membershipChangeDTOs;
+		_bqMembershipChangeDTOs = bqMembershipChangeDTOs;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
@@ -209,6 +211,7 @@ public class MembershipChangeDTO {
 		_segmentId = segmentId;
 	}
 
+	private Set<BQMembershipChangeDTO> _bqMembershipChangeDTOs;
 	private Map<String, Object> _embedded;
 	private String _id;
 	private Boolean _individualDeleted;
@@ -218,7 +221,6 @@ public class MembershipChangeDTO {
 	private Long _individualsCount;
 	private Date _joinedDate;
 	private Long _knownIndividualsCount;
-	private Set<MembershipChangeDTO> _membershipChangeDTOs;
 	private Date _modifiedDate;
 	private String _operation;
 	private String _segmentId;

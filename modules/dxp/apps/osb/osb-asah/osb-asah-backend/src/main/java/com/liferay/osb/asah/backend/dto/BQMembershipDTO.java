@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -34,24 +34,29 @@ import java.util.Set;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName("memberships")
-public class MembershipDTO {
+public class BQMembershipDTO {
 
-	public MembershipDTO() {
+	public BQMembershipDTO() {
 	}
 
-	public MembershipDTO(List<Membership> memberships) {
-		_membershipDTOs = SetUtil.map(memberships, MembershipDTO::new);
-	}
-
-	public MembershipDTO(Membership membership) {
-		_createDate = membership.getCreateDate();
-		_id = StringUtil.get(membership.getId(), null);
-		_individualId = StringUtil.get(membership.getIndividualId(), null);
+	public BQMembershipDTO(BQMembership bqMembership) {
+		_createDate = bqMembership.getCreateDate();
+		_id = StringUtil.get(bqMembership.getId(), null);
+		_individualId = StringUtil.get(bqMembership.getIndividualId(), null);
 		_individualSegmentId = StringUtil.get(
-			membership.getIndividualSegmentId(), null);
-		_modifiedDate = membership.getModifiedDate();
-		_removedDate = membership.getRemovedDate();
-		_status = membership.getStatus();
+			bqMembership.getIndividualSegmentId(), null);
+		_modifiedDate = bqMembership.getModifiedDate();
+		_removedDate = bqMembership.getRemovedDate();
+		_status = bqMembership.getStatus();
+	}
+
+	public BQMembershipDTO(List<BQMembership> bqMemberships) {
+		_bqMembershipDTOs = SetUtil.map(bqMemberships, BQMembershipDTO::new);
+	}
+
+	@JsonProperty("memberships")
+	public Set<BQMembershipDTO> getBQMembershipDTOs() {
+		return _bqMembershipDTOs;
 	}
 
 	@JsonAlias("createDate")
@@ -81,11 +86,6 @@ public class MembershipDTO {
 	@JsonProperty("individualSegmentId")
 	public String getIndividualSegmentId() {
 		return _individualSegmentId;
-	}
-
-	@JsonProperty("memberships")
-	public Set<MembershipDTO> getMembershipDTOs() {
-		return _membershipDTOs;
 	}
 
 	@JsonAlias("modifiedDate")
@@ -155,11 +155,11 @@ public class MembershipDTO {
 		_status = status;
 	}
 
+	private Set<BQMembershipDTO> _bqMembershipDTOs;
 	private Date _createDate;
 	private String _id;
 	private String _individualId;
 	private String _individualSegmentId;
-	private Set<MembershipDTO> _membershipDTOs;
 	private Date _modifiedDate;
 	private Date _removedDate;
 	private String _status;

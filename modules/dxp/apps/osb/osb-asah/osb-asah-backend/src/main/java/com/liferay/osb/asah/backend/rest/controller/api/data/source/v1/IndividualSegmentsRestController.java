@@ -16,9 +16,9 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.dto.BQMembershipChangeDTO;
+import com.liferay.osb.asah.backend.dto.BQMembershipDTO;
 import com.liferay.osb.asah.backend.dto.IndividualDTO;
-import com.liferay.osb.asah.backend.dto.MembershipChangeDTO;
-import com.liferay.osb.asah.backend.dto.MembershipDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
@@ -33,10 +33,10 @@ import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Membership;
-import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -110,31 +110,32 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply", value = "/{id}/membership-changes")
-	public PageDTO<MembershipChangeDTO> getMembershipChangeDTOPageDTO(
+	public PageDTO<BQMembershipChangeDTO> getMembershipChangeDTOPageDTO(
 		@PathVariable Long id, @RequestParam(required = false) String expand,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		Page<MembershipChange> membershipChangesPages =
-			_membershipChangeDog.searchMembershipChangePages(
+		Page<BQMembershipChange> bqMembershipChangesPages =
+			_bqMembershipChangeDog.searchBQMembershipChangePages(
 				filterString, id, page, size, sorts);
 
 		if (StringUtils.isEmpty(expand)) {
-			return _toMembershipChangeDTOPageDTO(membershipChangesPages);
+			return _toMembershipChangeDTOPageDTO(bqMembershipChangesPages);
 		}
 
-		List<MembershipChange> membershipChanges =
-			membershipChangesPages.getContent();
+		List<BQMembershipChange> bqMembershipChanges =
+			bqMembershipChangesPages.getContent();
 
-		Set<MembershipChangeDTO> membershipChangeDTOs = new LinkedHashSet<>();
+		Set<BQMembershipChangeDTO> bqMembershipChangeDTOs =
+			new LinkedHashSet<>();
 
-		Stream<MembershipChange> stream = membershipChanges.stream();
+		Stream<BQMembershipChange> stream = bqMembershipChanges.stream();
 
 		stream.forEachOrdered(
-			membershipChange -> membershipChangeDTOs.add(
-				new MembershipChangeDTO(membershipChange)));
+			membershipChange -> bqMembershipChangeDTOs.add(
+				new BQMembershipChangeDTO(membershipChange)));
 
 		Map<Long, JSONObject> accountNamesJSONObjects = new HashMap<>();
 
@@ -143,19 +144,21 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		for (String expandPart : expandParts) {
 			if (expandPart.equals("account-names")) {
 				accountNamesJSONObjects =
-					_membershipChangeDog.getAccountNamesJSONObjects(
-						membershipChanges);
+					_bqMembershipChangeDog.getAccountNamesJSONObjects(
+						bqMembershipChanges);
 			}
 			else if (_log.isWarnEnabled()) {
 				_log.warn("Invalid expand: " + expandPart);
 			}
 		}
 
-		for (MembershipChangeDTO membershipChangeDTO : membershipChangeDTOs) {
+		for (BQMembershipChangeDTO bqMembershipChangeDTO :
+				bqMembershipChangeDTOs) {
+
 			Map<String, Object> expandMap = new HashMap<>();
 
 			JSONObject accountNamesJSONObject = accountNamesJSONObjects.get(
-				Long.valueOf(membershipChangeDTO.getId()));
+				Long.valueOf(bqMembershipChangeDTO.getId()));
 
 			if (accountNamesJSONObject != null) {
 				expandMap.put(
@@ -164,13 +167,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			}
 
 			if (!expandMap.isEmpty()) {
-				membershipChangeDTO.setEmbedded(expandMap);
+				bqMembershipChangeDTO.setEmbedded(expandMap);
 			}
 		}
 
 		return _toMembershipChangeDTOPageDTO(
-			new MembershipChangeDTO(membershipChangeDTOs),
-			membershipChangesPages);
+			new BQMembershipChangeDTO(bqMembershipChangeDTOs),
+			bqMembershipChangesPages);
 	}
 
 	@Cacheable
@@ -194,7 +197,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}/memberships")
-	public PageDTO<MembershipDTO> getMembershipDTOPageDTO(
+	public PageDTO<BQMembershipDTO> getMembershipDTOPageDTO(
 		@PathVariable Long id,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
@@ -203,13 +206,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		if (!segmentDog.isIncludeAnonymousUsers(id)) {
 			return _toMembershipDTOPageDTO(
-				membershipDog.getMembershipPage(
+				membershipDog.getBQMembershipPage(
 					_individualDog.getKnownIndividualIds(filterString, id), id,
 					"ACTIVE", page, size, sorts));
 		}
 
 		return _toMembershipDTOPageDTO(
-			membershipDog.getMembershipPage(id, "ACTIVE", page, size, sorts));
+			membershipDog.getBQMembershipPage(id, "ACTIVE", page, size, sorts));
 	}
 
 	@GetMapping("/{id}")
@@ -223,13 +226,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		if (segment.getType() == Segment.Type.DYNAMIC) {
 			segment = _resetIndividualsCount(segmentDog.getSegment(id));
 
-			List<MembershipChange> membershipsChanges =
-				_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
+			List<BQMembershipChange> bqMembershipsChanges =
+				_bqMembershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					Collections.singletonList(segment.getId()));
 
-			if (!membershipsChanges.isEmpty()) {
-				_updateSegmentCounts(membershipsChanges.get(0), segment);
+			if (!bqMembershipsChanges.isEmpty()) {
+				_updateSegmentCounts(bqMembershipsChanges.get(0), segment);
 			}
 
 			segment.setActiveIndividualsCount(
@@ -278,14 +281,15 @@ public class IndividualSegmentsRestController extends BaseRestController {
 				Collectors.toMap(Segment::getId, this::_resetIndividualsCount)
 			);
 
-			List<MembershipChange> membershipsChanges =
-				_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
+			List<BQMembershipChange> bqMembershipsChanges =
+				_bqMembershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
 					new ArrayList<>(segmentsMap.keySet()));
 
-			for (MembershipChange membershipChange : membershipsChanges) {
+			for (BQMembershipChange bqMembershipChange : bqMembershipsChanges) {
 				_updateSegmentCounts(
-					membershipChange,
-					segmentsMap.get(membershipChange.getIndividualSegmentId()));
+					bqMembershipChange,
+					segmentsMap.get(
+						bqMembershipChange.getIndividualSegmentId()));
 			}
 		}
 
@@ -337,43 +341,43 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		Date date = new Date();
 
 		if (json.startsWith("{")) {
-			Membership membership = objectMapper.convertValue(
-				new JSONObject(json), Membership.class);
+			BQMembership bqMembership = objectMapper.convertValue(
+				new JSONObject(json), BQMembership.class);
 
-			membership.setIndividualSegmentId(id);
+			bqMembership.setIndividualSegmentId(id);
 
 			if (_isMember(
-					membership.getIndividualId(),
-					membership.getIndividualSegmentId())) {
+					bqMembership.getIndividualId(),
+					bqMembership.getIndividualSegmentId())) {
 
 				return null;
 			}
 
-			membership.setCreateDate(date);
-			membership.setModifiedDate(date);
+			bqMembership.setCreateDate(date);
+			bqMembership.setModifiedDate(date);
 
-			membership = membershipDog.addMembership(membership);
+			bqMembership = membershipDog.addBQMembership(bqMembership);
 
-			membership.setId(null);
+			bqMembership.setId(null);
 
-			JSONObject membershipJSONObject = objectMapper.convertValue(
-				membership, JSONObject.class);
+			JSONObject bqMembershipJSONObject = objectMapper.convertValue(
+				bqMembership, JSONObject.class);
 
-			return membershipJSONObject.toString();
+			return bqMembershipJSONObject.toString();
 		}
 
 		Stream<Object> stream = JSONUtil.toObjectStream(new JSONArray(json));
 
-		List<Membership> memberships = stream.map(
+		List<BQMembership> bqMemberships = stream.map(
 			jsonObject -> objectMapper.convertValue(
-				jsonObject, Membership.class)
+				jsonObject, BQMembership.class)
 		).map(
-			membership -> {
-				membership.setCreateDate(date);
-				membership.setIndividualSegmentId(id);
-				membership.setModifiedDate(date);
+			bqMembership -> {
+				bqMembership.setCreateDate(date);
+				bqMembership.setIndividualSegmentId(id);
+				bqMembership.setModifiedDate(date);
 
-				return membership;
+				return bqMembership;
 			}
 		).filter(
 			membership -> !_isMember(
@@ -383,20 +387,20 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			Collectors.toList()
 		);
 
-		if (memberships.isEmpty()) {
+		if (bqMemberships.isEmpty()) {
 			return null;
 		}
 
-		memberships = membershipDog.addMemberships(memberships);
+		bqMemberships = membershipDog.addBQMemberships(bqMemberships);
 
-		memberships.forEach(membership -> membership.setId(null));
+		bqMemberships.forEach(bqMembership -> bqMembership.setId(null));
 
-		JSONArray membershipJSONArray = JSONUtil.toJSONArray(
-			memberships,
+		JSONArray bqMembershipJSONArray = JSONUtil.toJSONArray(
+			bqMemberships,
 			membership -> objectMapper.convertValue(
 				membership, JSONObject.class));
 
-		return membershipJSONArray.toString();
+		return bqMembershipJSONArray.toString();
 	}
 
 	@PostMapping
@@ -562,36 +566,38 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			individualsPage.getTotalPages());
 	}
 
-	private PageDTO<MembershipChangeDTO> _toMembershipChangeDTOPageDTO(
-		MembershipChangeDTO membershipChangeDTO,
-		Page<MembershipChange> membershipChangesPage) {
+	private PageDTO<BQMembershipChangeDTO> _toMembershipChangeDTOPageDTO(
+		BQMembershipChangeDTO bqMembershipChangeDTO,
+		Page<BQMembershipChange> bqMembershipChangesPage) {
 
 		return new PageDTO<>(
-			"_embedded", membershipChangeDTO, membershipChangesPage.getNumber(),
-			membershipChangesPage.getSize(),
-			membershipChangesPage.getTotalElements(),
-			membershipChangesPage.getTotalPages());
+			"_embedded", bqMembershipChangeDTO,
+			bqMembershipChangesPage.getNumber(),
+			bqMembershipChangesPage.getSize(),
+			bqMembershipChangesPage.getTotalElements(),
+			bqMembershipChangesPage.getTotalPages());
 	}
 
-	private PageDTO<MembershipChangeDTO> _toMembershipChangeDTOPageDTO(
-		Page<MembershipChange> membershipChangesPage) {
+	private PageDTO<BQMembershipChangeDTO> _toMembershipChangeDTOPageDTO(
+		Page<BQMembershipChange> bqMembershipChangesPage) {
 
 		return new PageDTO<>(
 			"_embedded",
-			new MembershipChangeDTO(membershipChangesPage.getContent()),
-			membershipChangesPage.getNumber(), membershipChangesPage.getSize(),
-			membershipChangesPage.getTotalElements(),
-			membershipChangesPage.getTotalPages());
+			new BQMembershipChangeDTO(bqMembershipChangesPage.getContent()),
+			bqMembershipChangesPage.getNumber(),
+			bqMembershipChangesPage.getSize(),
+			bqMembershipChangesPage.getTotalElements(),
+			bqMembershipChangesPage.getTotalPages());
 	}
 
-	private PageDTO<MembershipDTO> _toMembershipDTOPageDTO(
-		Page<Membership> membershipsPage) {
+	private PageDTO<BQMembershipDTO> _toMembershipDTOPageDTO(
+		Page<BQMembership> bqMembershipsPage) {
 
 		return new PageDTO<>(
-			"_embedded", new MembershipDTO(membershipsPage.getContent()),
-			membershipsPage.getNumber(), membershipsPage.getSize(),
-			membershipsPage.getTotalElements(),
-			membershipsPage.getTotalPages());
+			"_embedded", new BQMembershipDTO(bqMembershipsPage.getContent()),
+			bqMembershipsPage.getNumber(), bqMembershipsPage.getSize(),
+			bqMembershipsPage.getTotalElements(),
+			bqMembershipsPage.getTotalPages());
 	}
 
 	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
@@ -614,18 +620,18 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	private void _updateSegmentCounts(
-		MembershipChange membershipChange, Segment segment) {
+		BQMembershipChange bqMembershipChange, Segment segment) {
 
-		if (membershipChange == null) {
+		if (bqMembershipChange == null) {
 			return;
 		}
 
 		segment.setAnonymousIndividualsCount(
-			membershipChange.getIndividualsCount() -
-				membershipChange.getKnownIndividualsCount());
-		segment.setIndividualsCount(membershipChange.getIndividualsCount());
+			bqMembershipChange.getIndividualsCount() -
+				bqMembershipChange.getKnownIndividualsCount());
+		segment.setIndividualsCount(bqMembershipChange.getIndividualsCount());
 		segment.setKnownIndividualsCount(
-			membershipChange.getKnownIndividualsCount());
+			bqMembershipChange.getKnownIndividualsCount());
 	}
 
 	private static final Log _log = LogFactory.getLog(
@@ -635,6 +641,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	private AssetDog _assetDog;
 
 	@Autowired
+	private MembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
 	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
@@ -642,9 +651,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

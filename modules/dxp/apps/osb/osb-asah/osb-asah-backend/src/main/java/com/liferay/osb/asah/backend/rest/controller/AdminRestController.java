@@ -23,13 +23,13 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.Membership;
-import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.http.NanitesHttp;
@@ -37,13 +37,13 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
-import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
-import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
@@ -135,10 +135,10 @@ public class AdminRestController extends BaseRestController {
 			_segmentRepository.deleteAll();
 		}
 		else if (collectionName.equals("membership-changes")) {
-			_membershipChangeRepository.deleteAll();
+			_bqMembershipChangeRepository.deleteAll();
 		}
 		else if (collectionName.equals("memberships")) {
-			_membershipRepository.deleteAll();
+			_bqMembershipRepository.deleteAll();
 		}
 		else if (collectionName.equals("preferences")) {
 			_preferenceRepository.deleteAll();
@@ -221,10 +221,10 @@ public class AdminRestController extends BaseRestController {
 		}
 		else if (collectionName.equals("membership-changes")) {
 			_addEntities(
-				_membershipChangeRepository, json, MembershipChange.class);
+				_bqMembershipChangeRepository, json, BQMembershipChange.class);
 		}
 		else if (collectionName.equals("memberships")) {
-			_addEntities(_membershipRepository, json, Membership.class);
+			_addEntities(_bqMembershipRepository, json, BQMembership.class);
 		}
 		else if (collectionName.equals("preferences")) {
 			_addPreferences(new JSONArray(json));
@@ -382,6 +382,12 @@ public class AdminRestController extends BaseRestController {
 	private BlockedKeywordRepository _blockedKeywordRepository;
 
 	@Autowired
+	private BQMembershipChangeRepository _bqMembershipChangeRepository;
+
+	@Autowired
+	private BQMembershipRepository _bqMembershipRepository;
+
+	@Autowired
 	private ChannelRepository _channelRepository;
 
 	@Autowired
@@ -401,12 +407,6 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private ExperimentRepository _experimentRepository;
-
-	@Autowired
-	private MembershipChangeRepository _membershipChangeRepository;
-
-	@Autowired
-	private MembershipRepository _membershipRepository;
 
 	private Schema _naniteListSchema;
 
