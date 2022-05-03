@@ -43,7 +43,7 @@ public interface CustomFieldMappingRepository {
 
 	@Cacheable
 	public List<FieldMapping> findByContextAndDataSourceIdAndOwnerType(
-		String context, Long dataSourceId, String ownerType);
+		String context, @Nullable Long dataSourceId, String ownerType);
 
 	@Cacheable
 	public List<FieldMapping>

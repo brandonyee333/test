@@ -167,12 +167,33 @@ public class FieldMappingRepositoryImpl
 
 	@Override
 	public List<FieldMapping> findByContextAndDataSourceIdAndOwnerType(
-		String context, Long dataSourceId, String ownerType) {
+		String context, @Nullable Long dataSourceId, String ownerType) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
 				"FieldMapping"
 			).asterisk());
+
+		Condition condition = DSL.and(
+			DSL.field(
+				"fieldmapping.context"
+			).eq(
+				context
+			),
+			DSL.field(
+				"fieldmapping.ownertype"
+			).eq(
+				ownerType
+			));
+
+		if (dataSourceId != null) {
+			condition = condition.and(
+				DSL.field(
+					"datasourcefieldmapping.datasourceid"
+				).eq(
+					dataSourceId
+				));
+		}
 
 		return _populateFieldMappings(
 			selectSelectStep.from(
@@ -186,22 +207,7 @@ public class FieldMappingRepositoryImpl
 					DSL.field("datasourcefieldmapping.fieldmappingid")
 				)
 			).where(
-				DSL.and(
-					DSL.field(
-						"datasourcefieldmapping.datasourceid"
-					).eq(
-						dataSourceId
-					),
-					DSL.field(
-						"fieldmapping.context"
-					).eq(
-						context
-					),
-					DSL.field(
-						"fieldmapping.ownertype"
-					).eq(
-						ownerType
-					))
+				condition
 			).orderBy(
 				DSL.field(
 					"fieldmapping.displayName"

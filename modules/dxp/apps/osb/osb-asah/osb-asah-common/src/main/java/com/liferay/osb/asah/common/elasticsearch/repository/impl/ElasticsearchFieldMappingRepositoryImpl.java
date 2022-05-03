@@ -135,7 +135,19 @@ public class ElasticsearchFieldMappingRepositoryImpl
 
 	@Override
 	public List<FieldMapping> findByContextAndDataSourceIdAndOwnerType(
-		String context, Long dataSourceId, String ownerType) {
+		String context, @Nullable Long dataSourceId, String ownerType) {
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("context", context)
+		).filter(
+			QueryBuilders.termQuery("ownerType", ownerType)
+		);
+
+		if (dataSourceId != null) {
+			boolQueryBuilder = boolQueryBuilder.filter(
+				QueryBuilders.existsQuery(
+					"dataSourceFieldNames." + dataSourceId));
+		}
 
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
@@ -143,14 +155,7 @@ public class ElasticsearchFieldMappingRepositoryImpl
 				Arrays.asList(
 					SortBuilderUtil.fieldSort("displayName"),
 					SortBuilderUtil.fieldSort("dateModified", SortOrder.DESC)),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("context", context)
-				).filter(
-					QueryBuilders.existsQuery(
-						"dataSourceFieldNames." + dataSourceId)
-				).filter(
-					QueryBuilders.termQuery("ownerType", ownerType)
-				)));
+				boolQueryBuilder));
 	}
 
 	@Override
