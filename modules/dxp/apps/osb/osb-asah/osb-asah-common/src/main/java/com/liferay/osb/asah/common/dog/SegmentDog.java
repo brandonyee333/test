@@ -1092,7 +1092,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			if (!CollectionUtils.containsAny(
 					individual.getChannelIds(), segment.getChannelId())) {
 
-				_membershipDog.deactivateMembership(
+				_membershipDog.deactivateBQMembership(
 					new Date(), individualId, segment.getId());
 			}
 		}

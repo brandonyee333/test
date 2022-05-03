@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.entity.Membership;
-import com.liferay.osb.asah.common.repository.CustomMembershipRepository;
+import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.repository.CustomBQMembershipRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +33,10 @@ import org.springframework.lang.Nullable;
 /**
  * @author Inácio Nery
  */
-public class MembershipRepositoryImpl implements CustomMembershipRepository {
+public class BQMembershipRepositoryImpl
+	implements CustomBQMembershipRepository {
 
-	public MembershipRepositoryImpl(DSLContext dslContext) {
+	public BQMembershipRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
@@ -55,7 +56,7 @@ public class MembershipRepositoryImpl implements CustomMembershipRepository {
 			individualSegmentIdField);
 
 		return selectSelectStep.from(
-			"Membership"
+			"BQMembership"
 		).where(
 			individualSegmentIdField.in(individualSegmentIds)
 		).groupBy(
@@ -83,7 +84,7 @@ public class MembershipRepositoryImpl implements CustomMembershipRepository {
 			"individualSegmentId");
 
 		return selectSelectStep.from(
-			"Membership"
+			"BQMembership"
 		).where(
 			DSL.and(
 				individualSegmentIdField.in(individualSegmentIds),
@@ -98,7 +99,7 @@ public class MembershipRepositoryImpl implements CustomMembershipRepository {
 	}
 
 	@Override
-	public List<Membership> searchMemberships(
+	public List<BQMembership> searchBQMemberships(
 		@Nullable Long id, Long individualSegmentId, int size, String status) {
 
 		Condition condition = DSL.and(
@@ -124,7 +125,7 @@ public class MembershipRepositoryImpl implements CustomMembershipRepository {
 
 		return _dslContext.select(
 		).from(
-			"Membership"
+			"BQMembership"
 		).where(
 			condition
 		).orderBy(
@@ -134,7 +135,7 @@ public class MembershipRepositoryImpl implements CustomMembershipRepository {
 		).limit(
 			size
 		).fetch(
-			record -> new Membership(record.intoMap())
+			record -> new BQMembership(record.intoMap())
 		);
 	}
 

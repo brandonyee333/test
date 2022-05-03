@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.MembershipChange;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
@@ -27,22 +27,22 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface CustomMembershipChangeRepository {
+public interface CustomBQMembershipChangeRepository {
 
 	@Cacheable
-	public long countMembershipChanges(
+	public long countBQMembershipChanges(
 		FilterHelper filterHelper, Boolean includeAnonymousUsers,
 		Long segmentId);
 
 	@Cacheable
-	public List<MembershipChange>
+	public List<BQMembershipChange> searchBQMembershipChanges(
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
+		Long segmentId, Pageable pageable);
+
+	@Cacheable
+	public List<BQMembershipChange>
 		searchLastByModifiedDateAndIndividualSegmentId(
 			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
 			List<Long> individualSegmentIds, Date toModifiedDate);
-
-	@Cacheable
-	public List<MembershipChange> searchMembershipChanges(
-		FilterHelper filterHelper, Boolean includeAnonymousUsers,
-		Long segmentId, Pageable pageable);
 
 }

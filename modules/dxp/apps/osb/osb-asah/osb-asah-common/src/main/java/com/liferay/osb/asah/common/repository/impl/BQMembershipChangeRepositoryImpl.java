@@ -14,11 +14,12 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.entity.MembershipChange;
-import com.liferay.osb.asah.common.repository.CustomMembershipChangeRepository;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
+import com.liferay.osb.asah.common.repository.CustomBQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -40,15 +41,15 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
-public class MembershipChangeRepositoryImpl
-	implements CustomMembershipChangeRepository {
+public class BQMembershipChangeRepositoryImpl
+	implements CustomBQMembershipChangeRepository {
 
-	public MembershipChangeRepositoryImpl(DSLContext dslContext) {
+	public BQMembershipChangeRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
 	@Override
-	public long countMembershipChanges(
+	public long countBQMembershipChanges(
 		FilterHelper filterHelper, Boolean includeAnonymousUsers,
 		Long segmentId) {
 
@@ -56,7 +57,7 @@ public class MembershipChangeRepositoryImpl
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
-			"MembershipChange"
+			"BQMembershipChange"
 		).where(
 			_getConditions(filterHelper, includeAnonymousUsers, segmentId)
 		).fetchOptional(
@@ -67,10 +68,34 @@ public class MembershipChangeRepositoryImpl
 	}
 
 	@Override
-	public List<MembershipChange>
+	public List<BQMembershipChange> searchBQMembershipChanges(
+		FilterHelper filterHelper, Boolean includeAnonymousUsers,
+		Long segmentId, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"BQMembershipChange"
+		).where(
+			_getConditions(filterHelper, includeAnonymousUsers, segmentId)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+			record -> new BQMembershipChange(record.intoMap())
+		);
+	}
+
+	@Override
+	public List<BQMembershipChange>
 		searchLastByModifiedDateAndIndividualSegmentId(
 			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
 			List<Long> individualSegmentIds, Date toModifiedDate) {
+
+		if (individualSegmentIds.isEmpty()) {
+			return Collections.emptyList();
+		}
 
 		Field<Object> individualSegmentIdField = DSL.field(
 			"individualsegmentid");
@@ -93,10 +118,10 @@ public class MembershipChangeRepositoryImpl
 				).isNotNull());
 		}
 
-		Table<Record> membershipChangeTable = DSL.table("membershipchange");
+		Table<Record> bqMembershipChangeTable = DSL.table("BQMembershipChange");
 
 		SelectWhereStep<Record> selectWhereStep = _dslContext.selectFrom(
-			membershipChangeTable);
+			bqMembershipChangeTable);
 
 		Field<Object> individualsCountField = DSL.field("individualscount");
 
@@ -109,7 +134,7 @@ public class MembershipChangeRepositoryImpl
 					individualSegmentIdField, DSL.max(individualsCountField),
 					DSL.max(modifiedDateField)
 				).from(
-					membershipChangeTable
+					bqMembershipChangeTable
 				).where(
 					condition
 				).groupBy(
@@ -117,27 +142,7 @@ public class MembershipChangeRepositoryImpl
 				)
 			)
 		).fetch(
-			record -> new MembershipChange(record.intoMap())
-		);
-	}
-
-	@Override
-	public List<MembershipChange> searchMembershipChanges(
-		FilterHelper filterHelper, Boolean includeAnonymousUsers,
-		Long segmentId, Pageable pageable) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.from(
-			"MembershipChange"
-		).where(
-			_getConditions(filterHelper, includeAnonymousUsers, segmentId)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new MembershipChange(record.intoMap())
+			record -> new BQMembershipChange(record.intoMap())
 		);
 	}
 
@@ -155,7 +160,7 @@ public class MembershipChangeRepositoryImpl
 					segmentId
 				));
 
-			if (!includeAnonymousUsers) {
+			if ((includeAnonymousUsers != null) && !includeAnonymousUsers) {
 				conditions.add(
 					DSL.field(
 						"individualEmail"

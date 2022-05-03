@@ -16,12 +16,12 @@ package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.MembershipRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -55,158 +55,165 @@ import org.springframework.stereotype.Component;
 @Component
 public class MembershipDog extends BaseFaroInfoDog {
 
-	public Membership addMembership(Membership membership) {
-		membership = _membershipRepository.save(membership);
+	public BQMembership addBQMembership(BQMembership bqMembership) {
+		bqMembership = _bqMembershipRepository.save(bqMembership);
 
-		String status = membership.getStatus();
+		String status = bqMembership.getStatus();
 
 		if (!status.equals("ACTIVE")) {
-			return membership;
+			return bqMembership;
 		}
 
 		Individual individual = _individualDog.addSegmentId(
-			membership.getIndividualId(), membership.getIndividualSegmentId());
+			bqMembership.getIndividualId(),
+			bqMembership.getIndividualSegmentId());
 
 		if (individual == null) {
 			return null;
 		}
 
 		Segment segment = _segmentDog.updateSegment(
-			membership.getIndividualSegmentId());
+			bqMembership.getIndividualSegmentId());
 
-		_membershipChangeDog.addMembershipChange(
+		_membershipChangeDog.addBQMembershipChange(
 			individual, segment.getIndividualsCount(),
-			segment.getKnownIndividualsCount(), membership, "ADDED");
+			segment.getKnownIndividualsCount(), bqMembership, "ADDED");
 
-		return membership;
+		return bqMembership;
 	}
 
-	public void addMemberships(
+	public void addBQMemberships(
 		Date createDate, List<Individual> individuals,
 		Long individualSegmentId) {
 
-		List<Membership> memberships = new ArrayList<>();
+		List<BQMembership> bqMemberships = new ArrayList<>();
 
 		for (Individual individual : individuals) {
-			Membership membership = new Membership();
+			BQMembership bqMembership = new BQMembership();
 
-			membership.setCreateDate(createDate);
-			membership.setIndividualId(individual.getId());
-			membership.setIndividualSegmentId(individualSegmentId);
-			membership.setModifiedDate(createDate);
-			membership.setStatus("ACTIVE");
+			bqMembership.setCreateDate(createDate);
+			bqMembership.setIndividualId(individual.getId());
+			bqMembership.setIndividualSegmentId(individualSegmentId);
+			bqMembership.setModifiedDate(createDate);
+			bqMembership.setStatus("ACTIVE");
 
-			memberships.add(membership);
+			bqMemberships.add(bqMembership);
 		}
 
-		_membershipRepository.saveAll(memberships);
+		_bqMembershipRepository.saveAll(bqMemberships);
 
 		_individualDog.addSegmentId(individuals, individualSegmentId);
 
 		Segment segment = _segmentDog.updateSegment(individualSegmentId);
 
-		_membershipChangeDog.addMembershipChanges(
+		_membershipChangeDog.addBQMembershipChanges(
 			createDate, individuals, segment.getIndividualsCount(),
 			individualSegmentId, segment.getKnownIndividualsCount(), "ADDED");
 	}
 
-	public List<Membership> addMemberships(List<Membership> memberships) {
-		if (memberships.isEmpty()) {
-			return memberships;
+	public List<BQMembership> addBQMemberships(
+		List<BQMembership> bqMemberships) {
+
+		if (bqMemberships.isEmpty()) {
+			return bqMemberships;
 		}
 
-		_membershipRepository.saveAll(memberships);
+		_bqMembershipRepository.saveAll(bqMemberships);
 
-		Membership membership = memberships.get(0);
+		BQMembership bqMembership = bqMemberships.get(0);
 
 		_individualDog.addIndividualSegmentIds(
-			ListUtil.map(memberships, Membership::getIndividualId),
-			membership.getIndividualSegmentId());
+			ListUtil.map(bqMemberships, BQMembership::getIndividualId),
+			bqMembership.getIndividualSegmentId());
 
 		Segment segment = _segmentDog.updateSegment(
-			membership.getIndividualSegmentId());
+			bqMembership.getIndividualSegmentId());
 
 		long knownIndividualsCount = _individualDog.getKnownIndividualsCount(
-			ListUtil.map(memberships, Membership::getIndividualId));
+			ListUtil.map(bqMemberships, BQMembership::getIndividualId));
 
-		_membershipChangeDog.addMembershipChanges(
+		_membershipChangeDog.addBQMembershipChanges(
 			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-			segment.getIndividualsCount() - memberships.size(),
+			segment.getIndividualsCount() - bqMemberships.size(),
 			segment.getKnownIndividualsCount() - knownIndividualsCount,
-			memberships);
+			bqMemberships);
 
-		return memberships;
+		return bqMemberships;
 	}
 
-	public void deactivateMembership(
+	public void deactivateBQMembership(
+		Date deletionDate, BQMembership bqMembership) {
+
+		if (bqMembership == null) {
+			return;
+		}
+
+		bqMembership.setModifiedDate(deletionDate);
+		bqMembership.setRemovedDate(deletionDate);
+		bqMembership.setStatus("INACTIVE");
+
+		bqMembership = _bqMembershipRepository.save(bqMembership);
+
+		_individualDog.removeSegmentId(
+			bqMembership.getIndividualId(),
+			bqMembership.getIndividualSegmentId());
+
+		Individual individual = _individualDog.fetchIndividual(
+			bqMembership.getIndividualId());
+
+		Segment segment = _segmentDog.updateSegment(
+			bqMembership.getIndividualSegmentId());
+
+		if (individual == null) {
+			_membershipChangeDog.addBQMembershipChangeForDeletedIndividual(
+				bqMembership.getCreateDate(), bqMembership.getIndividualId(),
+				segment.getIndividualsCount(),
+				segment.getKnownIndividualsCount(), deletionDate,
+				bqMembership.getIndividualSegmentId());
+		}
+		else {
+			_membershipChangeDog.addBQMembershipChange(
+				individual, segment.getIndividualsCount(),
+				segment.getKnownIndividualsCount(), bqMembership, "REMOVED");
+		}
+	}
+
+	public void deactivateBQMembership(
 		Date deletionDate, Long individualId, Long individualSegmentId) {
 
-		deactivateMembership(
+		deactivateBQMembership(
 			deletionDate,
-			_membershipRepository.
+			_bqMembershipRepository.
 				findByIndividualIdAndIndividualSegmentIdAndStatus(
 					individualId, individualSegmentId, "ACTIVE"));
 	}
 
-	public void deactivateMembership(Date deletionDate, Membership membership) {
-		if (membership == null) {
-			return;
-		}
-
-		membership.setModifiedDate(deletionDate);
-		membership.setRemovedDate(deletionDate);
-		membership.setStatus("INACTIVE");
-
-		membership = _membershipRepository.save(membership);
-
-		_individualDog.removeSegmentId(
-			membership.getIndividualId(), membership.getIndividualSegmentId());
-
-		Individual individual = _individualDog.fetchIndividual(
-			membership.getIndividualId());
-
-		Segment segment = _segmentDog.updateSegment(
-			membership.getIndividualSegmentId());
-
-		if (individual == null) {
-			_membershipChangeDog.addMembershipChangeForDeletedIndividual(
-				membership.getCreateDate(), membership.getIndividualId(),
-				segment.getIndividualsCount(),
-				segment.getKnownIndividualsCount(), deletionDate,
-				membership.getIndividualSegmentId());
-		}
-		else {
-			_membershipChangeDog.addMembershipChange(
-				individual, segment.getIndividualsCount(),
-				segment.getKnownIndividualsCount(), membership, "REMOVED");
-		}
-	}
-
-	public void deactivateMembershipByIndividuals(
+	public void deactivateBQMembershipByIndividuals(
 		Date deletionDate, List<Individual> individuals) {
 
-		List<Membership> memberships =
-			_membershipRepository.findByIndividualIdInAndStatus(
+		List<BQMembership> bqMemberships =
+			_bqMembershipRepository.findByIndividualIdInAndStatus(
 				ListUtil.map(individuals, Individual::getId), "ACTIVE");
 
-		for (Membership membership : memberships) {
-			membership.setModifiedDate(deletionDate);
-			membership.setRemovedDate(deletionDate);
-			membership.setStatus("INACTIVE");
+		for (BQMembership bqMembership : bqMemberships) {
+			bqMembership.setModifiedDate(deletionDate);
+			bqMembership.setRemovedDate(deletionDate);
+			bqMembership.setStatus("INACTIVE");
 		}
 
-		_membershipRepository.saveAll(memberships);
+		_bqMembershipRepository.saveAll(bqMemberships);
 
-		Stream<Membership> membershipsStream = memberships.stream();
+		Stream<BQMembership> bqMembershipsStream = bqMemberships.stream();
 
-		Map<Long, List<Membership>> membershipsMap = membershipsStream.collect(
-			Collectors.groupingBy(Membership::getIndividualSegmentId));
+		Map<Long, List<BQMembership>> bqMembershipsMap =
+			bqMembershipsStream.collect(
+				Collectors.groupingBy(BQMembership::getIndividualSegmentId));
 
-		for (Map.Entry<Long, List<Membership>> entry :
-				membershipsMap.entrySet()) {
+		for (Map.Entry<Long, List<BQMembership>> entry :
+				bqMembershipsMap.entrySet()) {
 
 			List<Long> individualIdsByMembership = ListUtil.map(
-				entry.getValue(), Membership::getIndividualId);
+				entry.getValue(), BQMembership::getIndividualId);
 
 			Stream<Individual> individualsStream = individuals.stream();
 
@@ -223,148 +230,149 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 			Segment segment = _segmentDog.updateSegment(entry.getKey());
 
-			_membershipChangeDog.addMembershipChanges(
+			_membershipChangeDog.addBQMembershipChanges(
 				deletionDate, individualsByMembership,
 				segment.getIndividualsCount(), entry.getKey(),
 				segment.getKnownIndividualsCount(), "REMOVED");
 		}
 	}
 
-	public void deactivateMemberships(
-		Date deletionDate, List<Membership> memberships) {
+	public void deactivateBQMemberships(
+		Date deletionDate, List<BQMembership> bqMemberships) {
 
-		for (Membership membership : memberships) {
-			membership.setModifiedDate(deletionDate);
-			membership.setRemovedDate(deletionDate);
-			membership.setStatus("INACTIVE");
+		for (BQMembership bqMembership : bqMemberships) {
+			bqMembership.setModifiedDate(deletionDate);
+			bqMembership.setRemovedDate(deletionDate);
+			bqMembership.setStatus("INACTIVE");
 		}
 
-		_membershipRepository.saveAll(memberships);
+		_bqMembershipRepository.saveAll(bqMemberships);
 
-		Stream<Membership> stream = memberships.stream();
+		Stream<BQMembership> stream = bqMemberships.stream();
 
-		Map<Long, List<Membership>> membershipsMap = stream.collect(
-			Collectors.groupingBy(Membership::getIndividualSegmentId));
+		Map<Long, List<BQMembership>> bqMembershipsMap = stream.collect(
+			Collectors.groupingBy(BQMembership::getIndividualSegmentId));
 
-		for (Map.Entry<Long, List<Membership>> entry :
-				membershipsMap.entrySet()) {
+		for (Map.Entry<Long, List<BQMembership>> entry :
+				bqMembershipsMap.entrySet()) {
 
 			_individualDog.removeSegmentId(
-				SetUtil.map(entry.getValue(), Membership::getIndividualId),
+				SetUtil.map(entry.getValue(), BQMembership::getIndividualId),
 				entry.getKey());
 
 			Segment segment = _segmentDog.updateSegment(entry.getKey());
 
-			for (Membership membership : entry.getValue()) {
-				_membershipChangeDog.addMembershipChangeForDeletedIndividual(
-					membership.getCreateDate(), membership.getIndividualId(),
+			for (BQMembership bqMembership : entry.getValue()) {
+				_membershipChangeDog.addBQMembershipChangeForDeletedIndividual(
+					bqMembership.getCreateDate(),
+					bqMembership.getIndividualId(),
 					segment.getIndividualsCount(),
 					segment.getKnownIndividualsCount(), deletionDate,
-					membership.getIndividualSegmentId());
+					bqMembership.getIndividualSegmentId());
 			}
 		}
 	}
 
-	public void deactivateMemberships(Date deletionDate, Long individualId) {
-		for (Membership membership :
-				_membershipRepository.findByIndividualIdAndStatus(
+	public void deactivateBQMemberships(Date deletionDate, Long individualId) {
+		for (BQMembership bqMembership :
+				_bqMembershipRepository.findByIndividualIdAndStatus(
 					individualId, "ACTIVE")) {
 
-			deactivateMembership(deletionDate, membership);
+			deactivateBQMembership(deletionDate, bqMembership);
 		}
 	}
 
-	public void deleteMemberships(List<Long> individualSegmentIds) {
-		_membershipRepository.deleteByIndividualSegmentIdIn(
+	public void deleteBQMemberships(List<Long> individualSegmentIds) {
+		_bqMembershipRepository.deleteByIndividualSegmentIdIn(
 			individualSegmentIds);
 	}
 
+	public List<BQMembership> getActiveBQMemberships(
+		Long individualId, List<Long> individualSegmentIds) {
+
+		return _bqMembershipRepository.
+			findByIndividualIdAndIndividualSegmentIdInAndStatus(
+				individualId, individualSegmentIds, "ACTIVE");
+	}
+
 	public List<Long> getActiveIndividualIds(Long individualSegmentId) {
-		return _membershipRepository.
+		return _bqMembershipRepository.
 			findIndividualIdByIndividualSegmentIdAndStatus(
 				individualSegmentId, "ACTIVE");
 	}
 
 	public List<Long> getActiveIndividualSegmentIds(List<Long> individualIds) {
-		return _membershipRepository.
+		return _bqMembershipRepository.
 			findIndividualSegmentIdByIndividualIdInAndStatus(
 				individualIds, "ACTIVE");
 	}
 
 	public List<Long> getActiveIndividualSegmentIds(Long individualId) {
-		return _membershipRepository.
+		return _bqMembershipRepository.
 			findIndividualSegmentIdByIndividualIdAndStatus(
 				individualId, "ACTIVE");
 	}
 
-	public List<Membership> getActiveMemberships(
-		Long individualId, List<Long> individualSegmentIds) {
-
-		return _membershipRepository.
-			findByIndividualIdAndIndividualSegmentIdInAndStatus(
-				individualId, individualSegmentIds, "ACTIVE");
-	}
-
-	public List<Long> getIndividualIds(
-		List<Long> individualSegmentIds, int max, int min, boolean ascending) {
-
-		return _membershipRepository.findIndividualIdByIndividualSegmentIdIn(
-			individualSegmentIds, max, min, ascending);
-	}
-
-	public long getIndividualsCount(Long individualSegmentId) {
-		return _membershipRepository.countByIndividualSegmentIdAndStatus(
-			individualSegmentId, "ACTIVE");
-	}
-
-	public List<Long> getIndividualSegmentIds(Long individualId) {
-		return _membershipRepository.findTop20IndividualSegmentIdByIndividualId(
-			individualId);
-	}
-
-	public Page<Membership> getMembershipPage(
+	public Page<BQMembership> getBQMembershipPage(
 		List<Long> individualIds, Long individualSegmentId, String status,
 		int page, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_membershipRepository.
+			_bqMembershipRepository.
 				findByIndividualIdInAndIndividualSegmentIdAndStatus(
 					individualIds, individualSegmentId, status, pageRequest),
 			pageRequest,
 			() ->
-				_membershipRepository.
+				_bqMembershipRepository.
 					countByIndividualIdInAndIndividualSegmentIdAndStatus(
 						individualIds, individualSegmentId, status));
 	}
 
-	public Page<Membership> getMembershipPage(
+	public Page<BQMembership> getBQMembershipPage(
 		Long individualSegmentId, String status, int page, int size,
 		String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_membershipRepository.findByIndividualSegmentIdAndStatus(
+			_bqMembershipRepository.findByIndividualSegmentIdAndStatus(
 				individualSegmentId, status, pageRequest),
 			pageRequest,
-			() -> _membershipRepository.countByIndividualSegmentIdAndStatus(
+			() -> _bqMembershipRepository.countByIndividualSegmentIdAndStatus(
 				individualSegmentId, status));
+	}
+
+	public List<Long> getIndividualIds(
+		List<Long> individualSegmentIds, int max, int min, boolean ascending) {
+
+		return _bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
+			individualSegmentIds, max, min, ascending);
+	}
+
+	public long getIndividualsCount(Long individualSegmentId) {
+		return _bqMembershipRepository.countByIndividualSegmentIdAndStatus(
+			individualSegmentId, "ACTIVE");
+	}
+
+	public List<Long> getIndividualSegmentIds(Long individualId) {
+		return _bqMembershipRepository.
+			findTop20IndividualSegmentIdByIndividualId(individualId);
 	}
 
 	public Map<Long, JSONObject> getMembershipsJSONObjects(
 		Long individualId, List<Segment> segments) {
 
-		List<Membership> memberships = getActiveMemberships(
+		List<BQMembership> bqMemberships = getActiveBQMemberships(
 			individualId, ListUtil.map(segments, Segment::getId));
 
 		Map<Long, JSONObject> individualSegmentJSONObjects = new HashMap<>();
 
-		for (Membership membership : memberships) {
+		for (BQMembership bqMembership : bqMemberships) {
 			individualSegmentJSONObjects.put(
-				membership.getIndividualSegmentId(),
-				_objectMapper.convertValue(membership, JSONObject.class));
+				bqMembership.getIndividualSegmentId(),
+				_objectMapper.convertValue(bqMembership, JSONObject.class));
 		}
 
 		Map<Long, JSONObject> membershipsJSONObjects = new HashMap<>();
@@ -403,7 +411,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 		boolean ascending) {
 
 		List<Long> individualIds =
-			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+			_bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
 				individualId, individualSegmentIds, max, min, ascending);
 
 		return !individualIds.isEmpty();
@@ -412,22 +420,23 @@ public class MembershipDog extends BaseFaroInfoDog {
 	public List<Long> isMember(
 		List<Long> individualIds, Long individualSegmentId) {
 
-		return _membershipRepository.
+		return _bqMembershipRepository.
 			findIndividualIdByIndividualInAndIndividualSegmentIdAndStatus(
 				individualIds, individualSegmentId, "ACTIVE");
 	}
 
 	public boolean isMember(Long individualId, Long individualSegmentId) {
-		return _membershipRepository.
+		return _bqMembershipRepository.
 			existsByIndividualIdAndIndividualSegmentIdAndStatus(
 				individualId, individualSegmentId, "ACTIVE");
 	}
 
-	public List<Membership> searchMemberships(
-		Long individualSegmentId, Long membershipId, int size, String status) {
+	public List<BQMembership> searchBQMemberships(
+		Long individualSegmentId, Long bqMembershipId, int size,
+		String status) {
 
-		return _membershipRepository.searchMemberships(
-			membershipId, individualSegmentId, size, status);
+		return _bqMembershipRepository.searchBQMemberships(
+			bqMembershipId, individualSegmentId, size, status);
 	}
 
 	private Sort _getSort(String[] sorts) {
@@ -452,13 +461,13 @@ public class MembershipDog extends BaseFaroInfoDog {
 	private static final Log _log = LogFactory.getLog(MembershipDog.class);
 
 	@Autowired
+	private BQMembershipRepository _bqMembershipRepository;
+
+	@Autowired
 	private IndividualDog _individualDog;
 
 	@Autowired
 	private MembershipChangeDog _membershipChangeDog;
-
-	@Autowired
-	private MembershipRepository _membershipRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

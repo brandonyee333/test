@@ -38,12 +38,12 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Inácio Nery
  */
 @Table
-public class Membership implements Persistable<Long> {
+public class BQMembership implements Persistable<Long> {
 
-	public Membership() {
+	public BQMembership() {
 	}
 
-	public Membership(Map<String, Object> source) {
+	public BQMembership(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
 	}
 
@@ -53,20 +53,20 @@ public class Membership implements Persistable<Long> {
 			return true;
 		}
 
-		if (!(obj instanceof Membership)) {
+		if (!(obj instanceof BQMembership)) {
 			return false;
 		}
 
-		Membership membership = (Membership)obj;
+		BQMembership bqMembership = (BQMembership)obj;
 
-		if (Objects.equals(_createDate, membership._createDate) &&
-			Objects.equals(_id, membership._id) &&
-			Objects.equals(_individualId, membership._individualId) &&
+		if (Objects.equals(_createDate, bqMembership._createDate) &&
+			Objects.equals(_id, bqMembership._id) &&
+			Objects.equals(_individualId, bqMembership._individualId) &&
 			Objects.equals(
-				_individualSegmentId, membership._individualSegmentId) &&
-			Objects.equals(_modifiedDate, membership._modifiedDate) &&
-			Objects.equals(_removedDate, membership._removedDate) &&
-			Objects.equals(_status, membership._status)) {
+				_individualSegmentId, bqMembership._individualSegmentId) &&
+			Objects.equals(_modifiedDate, bqMembership._modifiedDate) &&
+			Objects.equals(_removedDate, bqMembership._removedDate) &&
+			Objects.equals(_status, bqMembership._status)) {
 
 			return true;
 		}

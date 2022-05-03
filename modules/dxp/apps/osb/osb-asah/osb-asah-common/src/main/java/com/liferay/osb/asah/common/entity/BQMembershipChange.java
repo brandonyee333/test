@@ -14,13 +14,9 @@
 
 package com.liferay.osb.asah.common.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -37,12 +33,12 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcellus Tavares
  */
 @Table
-public class MembershipChange implements Persistable<Long> {
+public class BQMembershipChange implements Persistable<Long> {
 
-	public MembershipChange() {
+	public BQMembershipChange() {
 	}
 
-	public MembershipChange(Map<String, Object> source) {
+	public BQMembershipChange(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
 	}
 
@@ -52,29 +48,31 @@ public class MembershipChange implements Persistable<Long> {
 			return true;
 		}
 
-		if (!(obj instanceof MembershipChange)) {
+		if (!(obj instanceof BQMembershipChange)) {
 			return false;
 		}
 
-		MembershipChange membershipChange = (MembershipChange)obj;
+		BQMembershipChange bqMembershipChange = (BQMembershipChange)obj;
 
-		if (Objects.equals(_id, membershipChange._id) &&
+		if (Objects.equals(_id, bqMembershipChange._id) &&
 			Objects.equals(
-				_individualDeleted, membershipChange._individualDeleted) &&
+				_individualDeleted, bqMembershipChange._individualDeleted) &&
 			Objects.equals(
-				_individualEmail, membershipChange._individualEmail) &&
-			Objects.equals(_individualId, membershipChange._individualId) &&
-			Objects.equals(_individualName, membershipChange._individualName) &&
+				_individualEmail, bqMembershipChange._individualEmail) &&
+			Objects.equals(_individualId, bqMembershipChange._individualId) &&
 			Objects.equals(
-				_individualSegmentId, membershipChange._individualSegmentId) &&
+				_individualName, bqMembershipChange._individualName) &&
 			Objects.equals(
-				_individualsCount, membershipChange._individualsCount) &&
-			Objects.equals(_joinedDate, membershipChange._joinedDate) &&
+				_individualSegmentId,
+				bqMembershipChange._individualSegmentId) &&
+			Objects.equals(
+				_individualsCount, bqMembershipChange._individualsCount) &&
+			Objects.equals(_joinedDate, bqMembershipChange._joinedDate) &&
 			Objects.equals(
 				_knownIndividualsCount,
-				membershipChange._knownIndividualsCount) &&
-			Objects.equals(_modifiedDate, membershipChange._modifiedDate) &&
-			Objects.equals(_operation, membershipChange._operation)) {
+				bqMembershipChange._knownIndividualsCount) &&
+			Objects.equals(_modifiedDate, bqMembershipChange._modifiedDate) &&
+			Objects.equals(_operation, bqMembershipChange._operation)) {
 
 			return true;
 		}
@@ -84,7 +82,6 @@ public class MembershipChange implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
-	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
 	public Long getId() {
 		return _id;
@@ -101,7 +98,6 @@ public class MembershipChange implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getIndividualId() {
 		return _individualId;
 	}
@@ -117,16 +113,11 @@ public class MembershipChange implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getIndividualSegmentId() {
 		return _individualSegmentId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
 	@JsonProperty("dateFirst")
 	public Date getJoinedDate() {
 		if (_joinedDate == null) {
@@ -142,10 +133,6 @@ public class MembershipChange implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
 	@JsonProperty("dateChanged")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {

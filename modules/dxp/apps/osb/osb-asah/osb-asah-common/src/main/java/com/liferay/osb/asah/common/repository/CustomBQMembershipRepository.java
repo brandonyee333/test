@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.BQMembership;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface CustomMembershipRepository {
+public interface CustomBQMembershipRepository {
 
 	@Cacheable
 	public List<Long> findIndividualIdByIndividualSegmentIdIn(
@@ -36,7 +36,7 @@ public interface CustomMembershipRepository {
 		boolean ascending);
 
 	@Cacheable
-	public List<Membership> searchMemberships(
+	public List<BQMembership> searchBQMemberships(
 		@Nullable Long id, Long individualSegmentId, int size, String status);
 
 }

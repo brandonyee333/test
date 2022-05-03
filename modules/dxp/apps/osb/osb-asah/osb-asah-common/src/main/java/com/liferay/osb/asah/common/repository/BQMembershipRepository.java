@@ -14,13 +14,12 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.BQMembership;
 
 import java.util.List;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
@@ -28,13 +27,19 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Inácio Nery
  */
-@Primary
-public interface MembershipRepository
-	extends CustomMembershipRepository, Repository<Membership, Long> {
+public interface BQMembershipRepository
+	extends CustomBQMembershipRepository, Repository<BQMembership, Long> {
+
+	@Cacheable
+	public long countByIndividualIdAndIndividualSegmentId(
+		Long individualId, Long individualSegmentId);
 
 	@Cacheable
 	public long countByIndividualIdInAndIndividualSegmentIdAndStatus(
 		List<Long> individualIds, Long individualSegmentId, String status);
+
+	@Cacheable
+	public long countByIndividualSegmentId(Long individualSegmentId);
 
 	@Cacheable
 	public long countByIndividualSegmentIdAndStatus(
@@ -50,28 +55,30 @@ public interface MembershipRepository
 		Long individualId, Long individualSegmentId, String status);
 
 	@Cacheable
-	public Membership findByIndividualIdAndIndividualSegmentIdAndStatus(
+	public BQMembership findByIndividualIdAndIndividualSegmentIdAndStatus(
 		Long individualId, Long individualSegmentId, String status);
 
 	@Cacheable
-	public List<Membership> findByIndividualIdAndIndividualSegmentIdInAndStatus(
-		Long individualId, List<Long> individualSegmentIds, String status);
+	public List<BQMembership>
+		findByIndividualIdAndIndividualSegmentIdInAndStatus(
+			Long individualId, List<Long> individualSegmentIds, String status);
 
 	@Cacheable
-	public List<Membership> findByIndividualIdAndStatus(
+	public List<BQMembership> findByIndividualIdAndStatus(
 		Long individualId, String status);
 
 	@Cacheable
-	public List<Membership> findByIndividualIdInAndIndividualSegmentIdAndStatus(
-		List<Long> individualIds, Long individualSegmentId, String status,
-		Pageable pageable);
+	public List<BQMembership>
+		findByIndividualIdInAndIndividualSegmentIdAndStatus(
+			List<Long> individualIds, Long individualSegmentId, String status,
+			Pageable pageable);
 
 	@Cacheable
-	public List<Membership> findByIndividualIdInAndStatus(
+	public List<BQMembership> findByIndividualIdInAndStatus(
 		List<Long> individualIds, String status);
 
 	@Cacheable
-	public List<Membership> findByIndividualSegmentIdAndStatus(
+	public List<BQMembership> findByIndividualSegmentIdAndStatus(
 		Long individualSegmentId, String status, Pageable pageable);
 
 	@Cacheable

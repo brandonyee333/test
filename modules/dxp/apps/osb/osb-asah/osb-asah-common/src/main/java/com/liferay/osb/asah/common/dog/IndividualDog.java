@@ -21,13 +21,13 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
@@ -441,9 +441,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 		_interestRepository.deleteByOwnerIdInAndOwnerType(
 			Collections.singletonList(individualId), "individual");
 
-		_membershipDog.deactivateMemberships(deletionDate, individualId);
+		_membershipDog.deactivateBQMemberships(deletionDate, individualId);
 
-		_membershipChangeDog.updateMembershipChangeIndividualDeleted(
+		_membershipChangeDog.updateBQMembershipChangeIndividualDeleted(
 			Boolean.TRUE, individualId);
 
 		_individualRepository.deleteById(individualId);
@@ -518,10 +518,10 @@ public class IndividualDog extends BaseFaroInfoDog {
 		elasticsearchInvoker.delete("interests", boolQueryBuilder);
 		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
-		_membershipDog.deactivateMembershipByIndividuals(
+		_membershipDog.deactivateBQMembershipByIndividuals(
 			deletionDate, individuals);
 
-		_membershipChangeDog.updateMembershipChangeIndividualDeleted(
+		_membershipChangeDog.updateBQMembershipChangeIndividualDeleted(
 			Boolean.TRUE, individualIds);
 
 		_individualRepository.deleteByIdIn(individualIds);
@@ -1454,12 +1454,12 @@ public class IndividualDog extends BaseFaroInfoDog {
 		);
 	}
 
-	private List<Membership> _getDeactivateMemberships(
-		List<Individual> individuals, List<Membership> memberships) {
+	private List<BQMembership> _getDeactivateMemberships(
+		List<Individual> individuals, List<BQMembership> bqMemberships) {
 
 		List<Long> individualIds = ListUtil.map(individuals, Individual::getId);
 
-		Stream<Membership> stream = memberships.stream();
+		Stream<BQMembership> stream = bqMemberships.stream();
 
 		return stream.filter(
 			membership -> !individualIds.contains(membership.getIndividualId())
@@ -1662,7 +1662,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 				Collectors.toList()
 			);
 
-			_membershipDog.addMemberships(
+			_membershipDog.addBQMemberships(
 				modifiedDate, individuals, individualSegmentId);
 		}
 	}
@@ -1675,28 +1675,30 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Long currentMembershipId = null;
 
 		while (true) {
-			List<Membership> memberships = _membershipDog.searchMemberships(
-				individualSegmentId, currentMembershipId, 10000, "ACTIVE");
+			List<BQMembership> bqMemberships =
+				_membershipDog.searchBQMemberships(
+					individualSegmentId, currentMembershipId, 10000, "ACTIVE");
 
-			if (memberships.isEmpty()) {
+			if (bqMemberships.isEmpty()) {
 				break;
 			}
 
-			Membership lastMembership = memberships.get(memberships.size() - 1);
+			BQMembership lastBQMembership = bqMemberships.get(
+				bqMemberships.size() - 1);
 
-			currentMembershipId = lastMembership.getId();
+			currentMembershipId = lastBQMembership.getId();
 
 			List<Long> individualIds = ListUtil.map(
-				memberships, Membership::getIndividualId);
+				bqMemberships, BQMembership::getIndividualId);
 
 			List<Individual> individuals =
 				_individualRepository.searchIndividuals(
 					channelId, filterHelper, individualIds,
 					includeAnonymousUsers);
 
-			_membershipDog.deactivateMemberships(
+			_membershipDog.deactivateBQMemberships(
 				modifiedDate,
-				_getDeactivateMemberships(individuals, memberships));
+				_getDeactivateMemberships(individuals, bqMemberships));
 		}
 	}
 

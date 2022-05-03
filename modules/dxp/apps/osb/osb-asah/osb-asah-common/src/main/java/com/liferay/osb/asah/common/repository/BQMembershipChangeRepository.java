@@ -14,24 +14,22 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.MembershipChange;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
 
 /**
  * @author Marcellus Tavares
  */
-@Primary
-public interface MembershipChangeRepository
-	extends CustomMembershipChangeRepository,
-			Repository<MembershipChange, Long> {
+public interface BQMembershipChangeRepository
+	extends CustomBQMembershipChangeRepository,
+			Repository<BQMembershipChange, Long> {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -39,7 +37,11 @@ public interface MembershipChangeRepository
 		@Param("individualSegmentIds") List<Long> individualSegmentIds);
 
 	@Cacheable
-	public Optional<MembershipChange> findByIndividualId(Long individualId);
+	public Optional<BQMembershipChange> findByIndividualId(Long individualId);
+
+	public BQMembershipChange
+		findByIndividualIdAndIndividualSegmentIdAndOperation(
+			long individualId, long individualSegmentId, String operation);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
