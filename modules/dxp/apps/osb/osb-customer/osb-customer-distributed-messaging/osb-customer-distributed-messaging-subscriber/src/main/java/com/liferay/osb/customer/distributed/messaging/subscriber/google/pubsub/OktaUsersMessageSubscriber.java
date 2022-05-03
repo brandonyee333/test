@@ -52,7 +52,10 @@ public class OktaUsersMessageSubscriber
 	protected void doReceive(JSONObject jsonObject) throws Exception {
 		String eventType = jsonObject.getString("eventType");
 
-		if (eventType.equals(_EVENT_TYPE_GROUP_REMOVE)) {
+		if (eventType.equals(_EVENT_TYPE_DEACTIVATE)) {
+			_downgradeZendeskAgent(jsonObject.getJSONObject("user"));
+		}
+		else if (eventType.equals(_EVENT_TYPE_GROUP_REMOVE)) {
 			if (_isGroupEmployee(jsonObject)) {
 				_downgradeZendeskAgent(jsonObject.getJSONObject("user"));
 			}
@@ -233,6 +236,9 @@ public class OktaUsersMessageSubscriber
 				phoneNumbers, false);
 		}
 	}
+
+	private static final String _EVENT_TYPE_DEACTIVATE =
+		"user.lifecycle.deactivate";
 
 	private static final String _EVENT_TYPE_GROUP_REMOVE =
 		"group.user_membership.remove";

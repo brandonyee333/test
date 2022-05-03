@@ -106,7 +106,7 @@ public class UserSynchronizer {
 		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
 			user.getEmailAddress());
 
-		if (zendeskUser.isAgent()) {
+		if ((zendeskUser != null) && zendeskUser.isAgent()) {
 			Set<String> criteria = new HashSet<>();
 
 			criteria.add("assignee:" + zendeskUser.getZendeskUserId());
