@@ -17,6 +17,8 @@ package com.liferay.osb.asah.test.util.faro;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
@@ -24,8 +26,6 @@ import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Membership;
-import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
@@ -267,6 +267,53 @@ public class FaroInfoTestUtil {
 		).put(
 			"name", RandomTestUtil.randomMultipleWordString(5, 20)
 		);
+	}
+
+	public static BQMembership buildBQMembership(
+		Long individualId, Long segmentId) {
+
+		Date date = new Date();
+
+		BQMembership bqMembership = new BQMembership();
+
+		bqMembership.setCreateDate(date);
+		bqMembership.setIndividualId(individualId);
+		bqMembership.setIndividualSegmentId(segmentId);
+		bqMembership.setModifiedDate(date);
+		bqMembership.setStatus("ACTIVE");
+
+		return bqMembership;
+	}
+
+	public static BQMembershipChange buildBQMembershipChange(
+		boolean individualDeleted, Individual individual,
+		Long individualSegmentId, String operationType) {
+
+		Set<Field> fields = individual.getFields();
+
+		Stream<Field> stream = fields.stream();
+
+		Field emailField = stream.filter(
+			field -> Objects.equals("email", field.getName())
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		BQMembershipChange bqMembershipChange = new BQMembershipChange();
+
+		bqMembershipChange.setIndividualDeleted(individualDeleted);
+		bqMembershipChange.setIndividualEmail(
+			String.valueOf(emailField.getValue()));
+		bqMembershipChange.setIndividualName(
+			FaroInfoIndividualUtil.getIndividualName(individual));
+		bqMembershipChange.setIndividualSegmentId(individualSegmentId);
+		bqMembershipChange.setIndividualsCount(RandomUtils.nextLong());
+		bqMembershipChange.setJoinedDate(new Date());
+		bqMembershipChange.setModifiedDate(new Date());
+		bqMembershipChange.setOperation(operationType);
+
+		return bqMembershipChange;
 	}
 
 	public static JSONObject buildChannelJSONObject(
@@ -703,53 +750,6 @@ public class FaroInfoTestUtil {
 		dataSource.setProviderType("LIFERAY");
 
 		return dataSource;
-	}
-
-	public static Membership buildMembership(
-		Long individualId, Long segmentId) {
-
-		Date date = new Date();
-
-		Membership membership = new Membership();
-
-		membership.setCreateDate(date);
-		membership.setIndividualId(individualId);
-		membership.setIndividualSegmentId(segmentId);
-		membership.setModifiedDate(date);
-		membership.setStatus("ACTIVE");
-
-		return membership;
-	}
-
-	public static MembershipChange buildMembershipChange(
-		boolean individualDeleted, Individual individual,
-		Long individualSegmentId, String operationType) {
-
-		Set<Field> fields = individual.getFields();
-
-		Stream<Field> stream = fields.stream();
-
-		Field emailField = stream.filter(
-			field -> Objects.equals("email", field.getName())
-		).findFirst(
-		).orElse(
-			null
-		);
-
-		MembershipChange membershipChange = new MembershipChange();
-
-		membershipChange.setIndividualDeleted(individualDeleted);
-		membershipChange.setIndividualEmail(
-			String.valueOf(emailField.getValue()));
-		membershipChange.setIndividualName(
-			FaroInfoIndividualUtil.getIndividualName(individual));
-		membershipChange.setIndividualSegmentId(individualSegmentId);
-		membershipChange.setIndividualsCount(RandomUtils.nextLong());
-		membershipChange.setJoinedDate(new Date());
-		membershipChange.setModifiedDate(new Date());
-		membershipChange.setOperation(operationType);
-
-		return membershipChange;
 	}
 
 	public static Organization buildOrganization(Long dataSourceId) {
