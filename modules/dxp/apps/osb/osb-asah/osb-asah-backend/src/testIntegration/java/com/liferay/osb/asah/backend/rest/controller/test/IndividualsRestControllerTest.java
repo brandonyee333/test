@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualsRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -63,9 +64,9 @@ public class IndividualsRestControllerTest
 		name = "individuals", resourcePath = "individuals_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships_2.json"
 	)
 	@Test
 	public void testActiveMembershipReturned() {
@@ -195,9 +196,9 @@ public class IndividualsRestControllerTest
 		name = "individuals", resourcePath = "individuals_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships_2.json"
 	)
 	@Test
 	public void testExpandIndividualSegments() throws Exception {
@@ -343,9 +344,9 @@ public class IndividualsRestControllerTest
 		name = "individuals", resourcePath = "individuals_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships_2.json"
 	)
 	@Test
 	public void testInactiveMembershipNotReturned() {

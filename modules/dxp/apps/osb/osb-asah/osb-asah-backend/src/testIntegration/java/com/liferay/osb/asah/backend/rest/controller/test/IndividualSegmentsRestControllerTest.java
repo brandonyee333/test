@@ -17,15 +17,16 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
-import com.liferay.osb.asah.backend.dto.MembershipChangeDTO;
+import com.liferay.osb.asah.backend.dto.BQMembershipChangeDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -37,8 +38,6 @@ import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Map;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -87,13 +86,13 @@ public class IndividualSegmentsRestControllerTest
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships_1.json"
 	)
 	@Test
 	public void testAssignChannelModifiesIndividualsCount() throws Exception {
@@ -123,13 +122,13 @@ public class IndividualSegmentsRestControllerTest
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
 	@Test
 	public void testAssignChannelStaticSegment() throws Exception {
@@ -144,14 +143,8 @@ public class IndividualSegmentsRestControllerTest
 
 		Assertions.assertEquals(
 			1,
-			_elasticsearchInvoker.count(
-				"memberships",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"individualSegmentId", "338511451975440187")
-				).filter(
-					QueryBuilders.termQuery("status", "ACTIVE")
-				)));
+			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
+				338511451975440187L, "ACTIVE"));
 	}
 
 	@ElasticsearchIndex(
@@ -171,18 +164,18 @@ public class IndividualSegmentsRestControllerTest
 		resourcePath = "individual_segments_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership_changes_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_2.json"
 	)
 	@Test
 	public void testExpandAccountNames() throws Exception {
-		PageDTO<MembershipChangeDTO> membershipChangeDTOPageDTO =
+		PageDTO<BQMembershipChangeDTO> bqMembershipChangeDTOPageDTO =
 			_individualSegmentsRestController.getMembershipChangeDTOPageDTO(
 				346306743994746064L, "account-names", null, 0, 10, null);
 
 		JSONObject membershipChangesJSONObject = _objectMapper.convertValue(
-			membershipChangeDTOPageDTO, JSONObject.class);
+			bqMembershipChangeDTOPageDTO, JSONObject.class);
 
 		JSONObject embeddedJSONObject =
 			membershipChangesJSONObject.getJSONObject("_embedded");
@@ -302,17 +295,17 @@ public class IndividualSegmentsRestControllerTest
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership_changes.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources_1.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
 	@Test
 	public void testGetMembershipChanges() throws Exception {
@@ -360,13 +353,13 @@ public class IndividualSegmentsRestControllerTest
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources_1.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
 	@Test
 	public void testGetMemberships() throws Exception {
@@ -490,6 +483,9 @@ public class IndividualSegmentsRestControllerTest
 
 		Assertions.assertEquals("READY", responseJSONObject.getString("state"));
 	}
+
+	@Autowired
+	private BQMembershipRepository _bqMembershipRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;

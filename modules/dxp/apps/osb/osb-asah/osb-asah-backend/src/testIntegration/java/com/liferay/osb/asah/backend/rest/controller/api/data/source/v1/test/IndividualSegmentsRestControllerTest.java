@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -300,9 +301,9 @@ public class IndividualSegmentsRestControllerTest
 		resourcePath = "individual_segments_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership_changes_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
 	)
 	@Test
 	public void testGetSegmentDTO1() throws Exception {
@@ -402,9 +403,9 @@ public class IndividualSegmentsRestControllerTest
 		resourcePath = "individual_segments_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership_changes_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_2.json"
 	)
 	@Test
 	public void testGetSegmentDTOCreatedToday() throws Exception {
@@ -441,9 +442,9 @@ public class IndividualSegmentsRestControllerTest
 		resourcePath = "individual_segments_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership_changes_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
