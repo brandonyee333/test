@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Organization;
@@ -58,6 +59,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -1466,6 +1468,31 @@ public class IndividualDog extends BaseFaroInfoDog {
 		);
 	}
 
+	private Set<Field> _getFields(String context, Long individualId) {
+		Set<Field> fields = new HashSet<>();
+
+		List<FieldMapping> fieldMappings =
+			_fieldMappingRepository.findByContextAndDataSourceIdAndOwnerType(
+				context, null, "individual");
+
+		Stream<FieldMapping> stream = fieldMappings.stream();
+
+		Map<String, FieldMapping> fieldMappingsMap = stream.collect(
+			Collectors.toMap(
+				FieldMapping::getDisplayName, Function.identity(),
+				(existing, replacement) -> replacement));
+
+		for (Field field : _fieldDog.getOwnerIdFields(context, individualId)) {
+			if (!fieldMappingsMap.containsKey(field.getName())) {
+				continue;
+			}
+
+			fields.add(field);
+		}
+
+		return fields;
+	}
+
 	private Long _getSegmentChannelId(Long segmentId) {
 		return Optional.ofNullable(
 			segmentId
@@ -1536,13 +1563,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		individual.setCustomFields(
-			new HashSet<>(
-				_fieldDog.getOwnerIdFields("custom", individual.getId())));
-		individual.setFields(
-			new HashSet<>(
-				_fieldDog.getOwnerIdFields(
-					"demographics", individual.getId())));
+		individual.setCustomFields(_getFields("custom", individual.getId()));
+		individual.setFields(_getFields("demographics", individual.getId()));
 
 		return individual;
 	}
