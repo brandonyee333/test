@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="BQMembership.deleteByIndividualSegmentIdIn">
+		<![CDATA[
+			DELETE FROM BQMembership WHERE BQMembership.individualSegmentId IN (:individualSegmentIds)
+		]]>
+	</entry>
+	<entry key="BQMembership.findIndividualIdByIndividualInAndIndividualSegmentIdAndStatus">
+		<![CDATA[
+			SELECT
+				BQMembership.individualId
+			FROM
+				BQMembership
+			WHERE
+				BQMembership.individualId IN (:individualIds) AND
+				BQMembership.individualSegmentId = :individualSegmentId AND
+				BQMembership.status = :status
+			GROUP BY
+				BQMembership.individualId
+			ORDER BY
+				COUNT(BQMembership.individualId) DESC,
+				BQMembership.individualId ASC
+		]]>
+	</entry>
+	<entry key="BQMembership.findIndividualIdByIndividualSegmentIdAndStatus">
+		<![CDATA[
+			SELECT
+				BQMembership.individualId
+			FROM
+				BQMembership
+			WHERE
+				BQMembership.individualSegmentId = :individualSegmentId AND
+				BQMembership.status = :status
+			GROUP BY
+				BQMembership.individualId
+			ORDER BY
+				COUNT(BQMembership.individualId) DESC,
+				BQMembership.individualId ASC
+		]]>
+	</entry>
+	<entry key="BQMembership.findIndividualSegmentIdByIndividualIdAndStatus">
+		<![CDATA[
+			SELECT
+				BQMembership.individualSegmentId
+			FROM
+				BQMembership
+			WHERE
+				BQMembership.individualId = :individualId AND
+				BQMembership.status = :status
+			GROUP BY
+				BQMembership.individualSegmentId
+			ORDER BY
+				COUNT(BQMembership.individualSegmentId) DESC,
+				BQMembership.individualSegmentId ASC
+		]]>
+	</entry>
+	<entry key="BQMembership.findIndividualSegmentIdByIndividualIdInAndStatus">
+		<![CDATA[
+			SELECT
+				BQMembership.individualSegmentId
+			FROM
+				BQMembership
+			WHERE
+				BQMembership.individualId IN (:individualIds) AND
+				BQMembership.status = :status
+			GROUP BY
+				BQMembership.individualSegmentId
+			ORDER BY
+				COUNT(BQMembership.individualSegmentId) DESC,
+				BQMembership.individualSegmentId ASC
+		]]>
+	</entry>
+	<entry key="BQMembership.findTop20IndividualSegmentIdByIndividualId">
+		<![CDATA[
+			SELECT
+				BQMembership.individualSegmentId
+			FROM
+				BQMembership
+			WHERE
+				BQMembership.individualId = :individualId
+			GROUP BY
+				BQMembership.individualSegmentId
+			ORDER BY
+				COUNT(BQMembership.individualSegmentId) DESC,
+				BQMembership.individualSegmentId ASC
+			LIMIT 20
+		]]>
+	</entry>
+</properties>

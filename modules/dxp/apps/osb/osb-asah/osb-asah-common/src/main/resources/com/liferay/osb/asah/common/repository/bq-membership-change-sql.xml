@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="BQMembershipChange.deleteByIndividualSegmentIdIn">
+		<![CDATA[
+			DELETE FROM BQMembershipChange WHERE BQMembershipChange.individualSegmentId IN (:individualSegmentIds)
+		]]>
+	</entry>
+	<entry key="BQMembershipChange.updateIndividualDeletedByIndividualId">
+		<![CDATA[
+			UPDATE
+				BQMembershipChange
+			SET
+				individualDeleted = :individualDeleted
+			WHERE
+				BQMembershipChange.individualId = :individualId
+		]]>
+	</entry>
+	<entry key="BQMembershipChange.updateIndividualDeletedByIndividualIdIn">
+		<![CDATA[
+			UPDATE
+				BQMembershipChange
+			SET
+				individualDeleted = :individualDeleted
+			WHERE
+				BQMembershipChange.individualId IN (:individualIds)
+		]]>
+	</entry>
+	<entry key="BQMembershipChange.updateIndividualNameByIndividualId">
+		<![CDATA[
+			UPDATE
+				BQMembershipChange
+			SET
+				individualName = :individualName
+			WHERE
+				BQMembershipChange.individualId = :individualId
+		]]>
+	</entry>
+</properties>
