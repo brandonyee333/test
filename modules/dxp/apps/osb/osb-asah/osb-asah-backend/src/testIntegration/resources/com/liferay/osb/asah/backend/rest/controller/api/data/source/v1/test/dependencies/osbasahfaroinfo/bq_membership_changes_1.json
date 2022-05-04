@@ -56,7 +56,7 @@
 	},
 	{
 		"dateChanged": "${now-15dT00:00:00.000Z}",
-		"dateFirst": "${now",
+		"dateFirst": "${now}",
 		"id": "6",
 		"individualDeleted": false,
 		"individualId": "6",
