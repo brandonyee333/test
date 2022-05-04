@@ -68,7 +68,7 @@ public class OktaUsersMessageSubscriber
 	private void _downgradeZendeskAgent(JSONObject jsonObject)
 		throws Exception {
 
-		User user = _fetchUser(jsonObject);
+		User user = _fetchUser(jsonObject.getJSONObject("profile"));
 
 		if (user != null) {
 			_userSynchronizer.removeAgentRole(user);
@@ -149,15 +149,17 @@ public class OktaUsersMessageSubscriber
 	}
 
 	private void _updateUser(JSONObject jsonObject) throws Exception {
-		User user = _fetchUser(jsonObject);
+		JSONObject profileJSONObject = jsonObject.getJSONObject("profile");
+
+		User user = _fetchUser(profileJSONObject);
 
 		if (user == null) {
 			return;
 		}
 
-		String emailAddress = jsonObject.getString("email");
-		String firstName = jsonObject.getString("firstName");
-		String lastName = jsonObject.getString("lastName");
+		String emailAddress = profileJSONObject.getString("email");
+		String firstName = profileJSONObject.getString("firstName");
+		String lastName = profileJSONObject.getString("lastName");
 
 		if (Validator.isNull(emailAddress)) {
 			emailAddress = user.getEmailAddress();
@@ -224,15 +226,16 @@ public class OktaUsersMessageSubscriber
 			}
 		}
 
-		if (jsonObject.has("primaryPhone")) {
+		if (profileJSONObject.has("primaryPhone")) {
 			_syncPhone(
-				user, businessTypeId, jsonObject.getString("primaryPhone"),
-				phoneNumbers, true);
+				user, businessTypeId,
+				profileJSONObject.getString("primaryPhone"), phoneNumbers,
+				true);
 		}
 
-		if (jsonObject.has("mobilePhone")) {
+		if (profileJSONObject.has("mobilePhone")) {
 			_syncPhone(
-				user, mobileTypeId, jsonObject.getString("mobilePhone"),
+				user, mobileTypeId, profileJSONObject.getString("mobilePhone"),
 				phoneNumbers, false);
 		}
 	}
