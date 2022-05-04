@@ -36,12 +36,14 @@ import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
+import com.liferay.sites.kernel.util.Sites;
 
 import java.util.Collections;
 
@@ -151,9 +153,32 @@ public class PublishLayoutMVCActionCommand
 				serviceContext, Collections.emptyMap());
 		}
 		else {
+			UnicodeProperties layoutOriginalTypeSettingsUnicodeProperties =
+				layout.getTypeSettingsProperties();
+
 			_layoutCopyHelper.copyLayout(draftLayout, layout);
 
 			layout = _layoutLocalService.getLayout(layout.getPlid());
+
+			UnicodeProperties layoutTypeSettingsUnicodeProperties =
+				layout.getTypeSettingsProperties();
+
+			String layoutUpdatableProperty =
+				layoutOriginalTypeSettingsUnicodeProperties.getProperty(
+					Sites.LAYOUT_UPDATEABLE);
+
+			if (layoutUpdatableProperty != null) {
+				boolean layoutUpdatable = GetterUtil.getBoolean(
+					layoutOriginalTypeSettingsUnicodeProperties.getProperty(
+						Sites.LAYOUT_UPDATEABLE),
+					true);
+
+				layoutTypeSettingsUnicodeProperties.setProperty(
+					Sites.LAYOUT_UPDATEABLE, String.valueOf(layoutUpdatable));
+
+				layout.setTypeSettingsProperties(
+					layoutTypeSettingsUnicodeProperties);
+			}
 
 			draftLayout = _layoutLocalService.getLayout(draftLayout.getPlid());
 
