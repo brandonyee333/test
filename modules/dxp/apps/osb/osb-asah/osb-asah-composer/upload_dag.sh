@@ -9,15 +9,17 @@ cd src/main/python
 
 for i in `ls`;
 do
-	gcloud composer environments storage dags import --project ${PROJECT_ID} \
+	gcloud composer environments storage dags import \
 		--environment ${COMPOSER_ENVIRONMENT_NAME} \
 		--location ${REGION} \
+		--project ${PROJECT_ID} \
 		--source ${i};
 done
 
 cd -
 
-gcloud composer environments storage dags import --project ${PROJECT_ID} \
---environment ${COMPOSER_ENVIRONMENT_NAME} \
---location ${REGION} \
---source src/main/resources/
+gcloud composer environments storage dags import \
+	--environment ${COMPOSER_ENVIRONMENT_NAME} \
+	--location ${REGION} \
+	--project ${PROJECT_ID} \
+	--source src/main/resources/
