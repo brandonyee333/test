@@ -28,6 +28,7 @@ import com.liferay.osb.asah.upgrade.v3_2_0.DataControlTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DataExportTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DatabaseSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.ExperimentMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.IdentityMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobRunMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.SalesforceEntityMigrationUpgradeStep;
@@ -72,6 +73,7 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_dxpEntitiesUpgradeStep);
 		upgradeSteps.add(_dxpEntityMigrationUpgradeStep);
 		upgradeSteps.add(_experimentMigrationUpgradeStep);
+		upgradeSteps.add(_identityMigrationUpgradeStep);
 		upgradeSteps.add(_jobMigrationUpgradeStep);
 		upgradeSteps.add(_jobRunMigrationUpgradeStep);
 		upgradeSteps.add(_salesforceEntityMigrationUpgradeStep);
@@ -119,6 +121,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private FieldMappingUpgradeStep _fieldMappingUpgradeStep;
+
+	@Autowired
+	private IdentityMigrationUpgradeStep _identityMigrationUpgradeStep;
 
 	@Autowired
 	private JobMigrationUpgradeStep _jobMigrationUpgradeStep;
