@@ -156,29 +156,32 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 	}
 
 	private JSONArray _getNextBatch(String projectId) {
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		BoolQueryBuilder individualsBoolQueryBuilder =
+			QueryBuilders.boolQuery();
 
-		boolQueryBuilder.filter(
+		individualsBoolQueryBuilder.filter(
 			QueryBuilders.existsQuery("emailAddressHashed"));
-		boolQueryBuilder.filter(
+		individualsBoolQueryBuilder.filter(
 			QueryBuilders.existsQuery("firstEnrichmentDate"));
-		boolQueryBuilder.filter(
+		individualsBoolQueryBuilder.filter(
 			QueryBuilders.rangeQuery(
 				"id"
 			).gt(
 				_lastIndividualId
 			));
 
-		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+		SearchSourceBuilder individualsSearchSourceBuilder =
+			new SearchSourceBuilder();
 
-		searchSourceBuilder.query(boolQueryBuilder);
-		searchSourceBuilder.size(500);
-		searchSourceBuilder.sort("id");
+		individualsSearchSourceBuilder.query(individualsBoolQueryBuilder);
+		individualsSearchSourceBuilder.size(500);
+		individualsSearchSourceBuilder.sort("id");
 
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"individuals", searchSourceBuilder);
+		SearchResponse individualsSearchResponse =
+			_faroInfoElasticsearchInvoker.search(
+				"individuals", individualsSearchSourceBuilder);
 
-		SearchHits searchHits = searchResponse.getHits();
+		SearchHits searchHits = individualsSearchResponse.getHits();
 
 		SearchHit[] hits = searchHits.getHits();
 
@@ -205,29 +208,27 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 					JSONObject dataSourceIndividualPK =
 						(JSONObject)dataSourceIndividualPKObject;
 
-					JSONArray userIds = dataSourceIndividualPK.getJSONArray(
-						"individualPKs");
+					JSONArray individualPKJSONArray =
+						dataSourceIndividualPK.getJSONArray("individualPKs");
 
-					userIds.forEach(
-						userIdObject -> {
-							String userId = (String)userIdObject;
-
-							identityMap.put(
-								userId,
-								JSONUtil.put(
-									"createDate", firstEnrichmentDate
-								).put(
-									"emailAddressHashed", emailAddressHashed
-								));
-						});
+					individualPKJSONArray.forEach(
+						individualPKObject -> identityMap.put(
+							(String)individualPKObject,
+							JSONUtil.put(
+								"createDate", firstEnrichmentDate
+							).put(
+								"emailAddressHashed", emailAddressHashed
+							)));
 				});
 		}
 
-		SearchSourceBuilder sessionSearchSourceBuilder =
-			new SearchSourceBuilder();
-		BoolQueryBuilder sessionBoolQueryBuilder = QueryBuilders.boolQuery();
 
-		sessionSearchSourceBuilder.aggregation(
+		SearchSourceBuilder userSessionsSearchSourceBuilder =
+			new SearchSourceBuilder();
+		BoolQueryBuilder userSessionBoolQueryBuilder =
+			QueryBuilders.boolQuery();
+
+		userSessionsSearchSourceBuilder.aggregation(
 			AggregationBuilders.terms(
 				"userIds"
 			).field(
@@ -252,18 +253,18 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 				)
 			));
 
-		sessionBoolQueryBuilder.filter(
+		userSessionBoolQueryBuilder.filter(
 			QueryBuilders.termsQuery("userId", identityMap.keySet()));
 
-		sessionSearchSourceBuilder.query(sessionBoolQueryBuilder);
-		sessionSearchSourceBuilder.size(0);
+		userSessionsSearchSourceBuilder.query(userSessionBoolQueryBuilder);
+		userSessionsSearchSourceBuilder.size(0);
 
-		SearchResponse sessionSearchResponse =
+		SearchResponse userSessionsSearchResponse =
 			_cerebroInfoElasticsearchInvoker.search(
-				"user-sessions", sessionSearchSourceBuilder);
+				"user-sessions", userSessionsSearchSourceBuilder);
 
 		Aggregations userIdAggregations =
-			sessionSearchResponse.getAggregations();
+			userSessionsSearchResponse.getAggregations();
 
 		Terms userIdTerms = userIdAggregations.get("userIds");
 
