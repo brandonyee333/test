@@ -745,7 +745,7 @@
 					) AS accountId,
 					(
 						SELECT
-							SAFE_CAST(value AS TIMESTAMP)
+							SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
 						FROM
 							UNNEST(user.fields)
 						WHERE
@@ -769,7 +769,7 @@
 					) AS contactId,
 					(
 						SELECT
-							SAFE_CAST(value AS TIMESTAMP)
+							SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
 						FROM
 							UNNEST(user.fields)
 						WHERE
@@ -844,7 +844,7 @@
 					) AS lastName,
 					(
 						SELECT
-							SAFE_CAST(value AS BOOL)
+							SAFE_CAST(CAST(value AS STRING) AS BOOL)
 						FROM
 							UNNEST(user.fields)
 						WHERE
