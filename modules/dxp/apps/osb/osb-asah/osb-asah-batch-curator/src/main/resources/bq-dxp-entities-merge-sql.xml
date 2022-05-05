@@ -69,7 +69,8 @@
 							WHERE
 								name = 'className'
 						) AS className
-					FROM `{projectId}.dxpentity`
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
@@ -154,7 +155,8 @@
 							WHERE
 								name = 'className'
 						) AS className
-					FROM `{projectId}.dxpentity`
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
@@ -253,7 +255,8 @@
 							WHERE
 								name = 'className'
 						) AS className
-					FROM `{projectId}.dxpentity`
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
@@ -379,7 +382,8 @@
 							WHERE
 								name = 'className'
 						) AS className
-					FROM `{projectId}.dxpentity`
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
@@ -485,7 +489,8 @@
 							WHERE
 								name = 'className'
 						) AS className
-					FROM `{projectId}.dxpentity`
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
@@ -587,7 +592,8 @@
 							WHERE
 								name = 'className'
 						) AS className
-					FROM `{projectId}.dxpentity`
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
@@ -684,7 +690,8 @@
 							WHERE
 								name = 'className'
 						) AS className
-					FROM `{projectId}.dxpentity`
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
@@ -1025,7 +1032,8 @@
 							WHERE
 								name = 'className'
 						) AS className
-					FROM `{projectId}.dxpentity`
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
