@@ -30,21 +30,21 @@ import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -477,11 +477,11 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		individual2 = _individualDog.addIndividual(individual2, false);
 
-		_membershipDog.addMembership(
-			FaroInfoTestUtil.buildMembership(
+		_membershipDog.addBQMembership(
+			FaroInfoTestUtil.buildBQMembership(
 				individual1.getId(), segment.getId()));
-		_membershipDog.addMembership(
-			FaroInfoTestUtil.buildMembership(
+		_membershipDog.addBQMembership(
+			FaroInfoTestUtil.buildBQMembership(
 				individual2.getId(), segment.getId()));
 
 		_updateDynamicMembershipsNanite.run(
@@ -602,16 +602,16 @@ public class UpdateDynamicMembershipsNaniteTest
 		_updateDynamicMemberships(
 			"(((dataSourceAccountPKs/accountPKs eq '345')))");
 
-		Assertions.assertEquals(1, _membershipRepository.count());
+		Assertions.assertEquals(1, _bqMembershipRepository.count());
 
-		Iterable<Membership> iterable = _membershipRepository.findAll();
+		Iterable<BQMembership> iterable = _bqMembershipRepository.findAll();
 
-		Iterator<Membership> iterator = iterable.iterator();
+		Iterator<BQMembership> iterator = iterable.iterator();
 
-		Membership membership = iterator.next();
+		BQMembership bqMembership = iterator.next();
 
 		individual = _individualDog.fetchIndividual(
-			membership.getIndividualId());
+			bqMembership.getIndividualId());
 
 		Assertions.assertEquals(
 			Collections.singleton(
@@ -717,6 +717,9 @@ public class UpdateDynamicMembershipsNaniteTest
 	private AssetRepository _assetRepository;
 
 	@Autowired
+	private BQMembershipRepository _bqMembershipRepository;
+
+	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
@@ -733,9 +736,6 @@ public class UpdateDynamicMembershipsNaniteTest
 
 	@Autowired
 	private MembershipDog _membershipDog;
-
-	@Autowired
-	private MembershipRepository _membershipRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

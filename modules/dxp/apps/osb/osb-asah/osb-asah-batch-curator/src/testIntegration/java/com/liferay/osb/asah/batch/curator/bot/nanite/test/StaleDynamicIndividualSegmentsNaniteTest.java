@@ -25,19 +25,18 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
@@ -121,31 +120,31 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@Test
 	public void testMembershipsAreDeactivatedIfNoActivities() throws Exception {
-		List<Long> membershipIds = _addMemberships(
+		List<Long> bqMembershipIds = _addBQMemberships(
 			"last30Days", "last7Days", "lastYear", "today");
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
 
-		for (Long membershipId : membershipIds) {
-			Optional<Membership> membershipOptional =
-				_membershipRepository.findById(membershipId);
+		for (Long bqMembershipId : bqMembershipIds) {
+			Optional<BQMembership> bqMembershipOptional =
+				_bqMembershipRepository.findById(bqMembershipId);
 
-			Membership membership = membershipOptional.get();
+			BQMembership bqMembership = bqMembershipOptional.get();
 
 			String individualSegmentActivityFilterDuration =
-				_getIndividualSegmentActivityFilterDuration(membership);
+				_getIndividualSegmentActivityFilterDuration(bqMembership);
 
 			Assertions.assertEquals(
-				"INACTIVE", membership.getStatus(),
+				"INACTIVE", bqMembership.getStatus(),
 				"Membership should be deactivated if no activities were " +
 					"found for an individual within " +
 						individualSegmentActivityFilterDuration);
 
 			List<Long> individualIds = _individualDog.getIdsBySegmentId(
-				membership.getIndividualSegmentId());
+				bqMembership.getIndividualSegmentId());
 
 			Assertions.assertFalse(
-				individualIds.contains(membership.getIndividualId()),
+				individualIds.contains(bqMembership.getIndividualId()),
 				"Individual segment ID should be removed from individual " +
 					"when membership is deactivated");
 		}
@@ -155,18 +154,18 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	public void testMembershipsOfAllTimeDynamicIndividualSegmentsRemainActive()
 		throws Exception {
 
-		List<Long> membershipIds = _addMemberships("ever");
+		List<Long> bqMembershipIds = _addBQMemberships("ever");
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
 
-		for (Long membershipId : membershipIds) {
-			Optional<Membership> membershipOptional =
-				_membershipRepository.findById(membershipId);
+		for (Long bqMembershipId : bqMembershipIds) {
+			Optional<BQMembership> bqMembershipOptional =
+				_bqMembershipRepository.findById(bqMembershipId);
 
-			Membership membership = membershipOptional.get();
+			BQMembership bqMembership = bqMembershipOptional.get();
 
 			Assertions.assertTrue(
-				Objects.equals(membership.getStatus(), "ACTIVE"),
+				Objects.equals(bqMembership.getStatus(), "ACTIVE"),
 				"Membership should remain active if activities were found");
 		}
 	}
@@ -177,20 +176,20 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 		_addActivity(DateUtil.addDays(DateUtil.newDayDateString(), -3));
 
-		List<Long> membershipIds = _addMemberships("last7Days", "today");
+		List<Long> bqMembershipIds = _addBQMemberships("last7Days", "today");
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
 
-		for (Long membershipId : membershipIds) {
-			Optional<Membership> membershipOptional =
-				_membershipRepository.findById(membershipId);
+		for (Long bqMembershipId : bqMembershipIds) {
+			Optional<BQMembership> bqMembershipOptional =
+				_bqMembershipRepository.findById(bqMembershipId);
 
-			Membership membership = membershipOptional.get();
+			BQMembership bqMembership = bqMembershipOptional.get();
 
 			String individualSegmentActivityFilterDuration =
-				_getIndividualSegmentActivityFilterDuration(membership);
+				_getIndividualSegmentActivityFilterDuration(bqMembership);
 
-			if (Objects.equals(membership.getStatus(), "ACTIVE")) {
+			if (Objects.equals(bqMembership.getStatus(), "ACTIVE")) {
 				Assertions.assertEquals(
 					"last7Days", individualSegmentActivityFilterDuration,
 					"Membership should remain active if activities were " +
@@ -209,22 +208,22 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	public void testMembershipsRemainActive() throws Exception {
 		_addActivity(DateUtil.newDayDateString());
 
-		List<Long> membershipIds = _addMemberships(
+		List<Long> bqMembershipIds = _addBQMemberships(
 			"last30Days", "last7Days", "lastYear", "today");
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
 
-		for (Long membershipId : membershipIds) {
-			Optional<Membership> membershipOptional =
-				_membershipRepository.findById(membershipId);
+		for (Long bqMembershipId : bqMembershipIds) {
+			Optional<BQMembership> bqMembershipOptional =
+				_bqMembershipRepository.findById(bqMembershipId);
 
-			Membership membership = membershipOptional.get();
+			BQMembership bqMembership = bqMembershipOptional.get();
 
 			String individualSegmentActivityFilterDuration =
-				_getIndividualSegmentActivityFilterDuration(membership);
+				_getIndividualSegmentActivityFilterDuration(bqMembership);
 
 			Assertions.assertTrue(
-				Objects.equals(membership.getStatus(), "ACTIVE"),
+				Objects.equals(bqMembership.getStatus(), "ACTIVE"),
 				"Membership should remain active if activities were found " +
 					"within " + individualSegmentActivityFilterDuration);
 		}
@@ -247,16 +246,12 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			JSONObject individualSegmentJSONObject =
 				individualSegmentsJSONArray.getJSONObject(i);
 
-			Assertions.assertTrue(
-				faroInfoElasticsearchInvoker.exists(
-					"memberships",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"individualSegmentId",
-							individualSegmentJSONObject.getString("id"))
-					).filter(
-						QueryBuilders.termQuery("status", "ACTIVE")
-					)));
+			long count =
+				_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
+					Long.parseLong(individualSegmentJSONObject.getString("id")),
+					"ACTIVE");
+
+			Assertions.assertTrue(count > 0);
 		}
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
@@ -265,16 +260,11 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			JSONObject individualSegmentJSONObject =
 				individualSegmentsJSONArray.getJSONObject(i);
 
-			Assertions.assertFalse(
-				faroInfoElasticsearchInvoker.exists(
-					"memberships",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"individualSegmentId",
-							individualSegmentJSONObject.getString("id"))
-					).filter(
-						QueryBuilders.termQuery("status", "ACTIVE")
-					)));
+			Assertions.assertEquals(
+				0,
+				_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
+					Long.parseLong(individualSegmentJSONObject.getString("id")),
+					"ACTIVE"));
 		}
 	}
 
@@ -291,8 +281,8 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 				_assetJSONObject, "pageViewed", new String[0]));
 	}
 
-	private List<Long> _addMemberships(String... durations) {
-		List<Long> membershipIds = new ArrayList<>();
+	private List<Long> _addBQMemberships(String... durations) {
+		List<Long> bqMembershipIds = new ArrayList<>();
 
 		for (String duration : durations) {
 			Segment segment = _segmentRepository.save(
@@ -303,14 +293,14 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 			_individualDog.addSegmentId(_individual.getId(), segment.getId());
 
-			Membership membership = _membershipDog.addMembership(
-				FaroInfoTestUtil.buildMembership(
+			BQMembership bqMembership = _membershipDog.addBQMembership(
+				FaroInfoTestUtil.buildBQMembership(
 					_individual.getId(), segment.getId()));
 
-			membershipIds.add(membership.getId());
+			bqMembershipIds.add(bqMembership.getId());
 		}
 
-		return membershipIds;
+		return bqMembershipIds;
 	}
 
 	private JSONArray _addSessionMemberships(String... durations) {
@@ -328,8 +318,8 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 			membershipsJSONArray.put(
 				_objectMapper.convertValue(
-					_membershipDog.addMembership(
-						FaroInfoTestUtil.buildMembership(
+					_membershipDog.addBQMembership(
+						FaroInfoTestUtil.buildBQMembership(
 							_individual.getId(), segment.getId())),
 					JSONObject.class));
 		}
@@ -356,10 +346,10 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	}
 
 	private String _getIndividualSegmentActivityFilterDuration(
-		Membership membership) {
+		BQMembership bqMembership) {
 
 		Segment segment = _segmentDog.getSegment(
-			membership.getIndividualSegmentId());
+			bqMembership.getIndividualSegmentId());
 
 		Matcher matcher = _individualSegmentActivityFilterPattern.matcher(
 			segment.getFilter());
@@ -409,6 +399,9 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	@Autowired
 	private AssetRepository _assetRepository;
 
+	@Autowired
+	private BQMembershipRepository _bqMembershipRepository;
+
 	private DataSource _dataSource;
 
 	@Autowired
@@ -427,9 +420,6 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@Autowired
 	private MembershipDog _membershipDog;
-
-	@Autowired
-	private MembershipRepository _membershipRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

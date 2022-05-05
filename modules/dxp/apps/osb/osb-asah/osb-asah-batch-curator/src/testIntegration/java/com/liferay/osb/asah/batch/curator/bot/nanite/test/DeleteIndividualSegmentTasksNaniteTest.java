@@ -83,12 +83,12 @@ public class DeleteIndividualSegmentTasksNaniteTest
 
 		_individualDog.addIndividual(individual, false);
 
-		_membershipChangeDog.addMembershipChange(
-			FaroInfoTestUtil.buildMembershipChange(
+		_membershipChangeDog.addBQMembershipChange(
+			FaroInfoTestUtil.buildBQMembershipChange(
 				false, individual, segmentId, "ADDED"));
 
-		_membershipDog.addMembership(
-			FaroInfoTestUtil.buildMembership(individual.getId(), segmentId));
+		_membershipDog.addBQMembership(
+			FaroInfoTestUtil.buildBQMembership(individual.getId(), segmentId));
 
 		faroInfoElasticsearchInvoker.add(
 			"visited-pages",
