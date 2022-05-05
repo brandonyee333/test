@@ -69,7 +69,10 @@ public class TableRowConverter {
 		if (fieldTypeClass.isPrimitive() ||
 			fieldTypeClassName.startsWith("java.lang")) {
 
-			if (value instanceof Object[]) {
+			if (value instanceof Boolean) {
+				return Boolean.toString((Boolean)value);
+			}
+			else if (value instanceof Object[]) {
 				return Arrays.toString((Object[])value);
 			}
 
