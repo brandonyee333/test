@@ -112,6 +112,8 @@ public class DXPEntityNanite extends BaseNanite {
 			for (Map.Entry<String, Object> entry : map.entrySet()) {
 				jsonArray.put(
 					JSONUtil.put(
+						"columnId", entry.getKey()
+					).put(
 						"name",
 						StringUtils.substringBeforeLast(entry.getKey(), "-")
 					).put(
