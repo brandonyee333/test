@@ -139,8 +139,23 @@ public class DXPEntityNanite extends BaseNanite {
 			}
 		}
 		else if (type == DXPEntity.Type.USER) {
+			if (fieldsJSONObject.has("contact")) {
+				JSONObject contactJSONObject = fieldsJSONObject.getJSONObject(
+					"contact");
+
+				for (String key : contactJSONObject.keySet()) {
+					fieldsJSONObject.put(key, contactJSONObject.get(key));
+				}
+
+				fieldsJSONObject.remove("contact");
+			}
+
 			if (!fieldsJSONObject.has("createDate")) {
 				fieldsJSONObject.put("createDate", DateUtil.newDateString());
+			}
+
+			if (fieldsJSONObject.has("expando")) {
+				fieldsJSONObject.remove("expando");
 			}
 
 			if (fieldsJSONObject.has("memberships")) {
@@ -158,6 +173,8 @@ public class DXPEntityNanite extends BaseNanite {
 						membershipType.getIndividualFieldName(),
 						membershipJSONObject.get(key));
 				}
+
+				fieldsJSONObject.remove("memberships");
 			}
 		}
 
