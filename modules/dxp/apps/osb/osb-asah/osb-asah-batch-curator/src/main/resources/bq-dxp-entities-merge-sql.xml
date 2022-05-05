@@ -209,12 +209,12 @@
 			USING (
 				SELECT
 					analyticsDeleteMessage.deleted,
-					group.*,
+					_group.*,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
 						FROM
-							UNNEST(group.fields)
+							UNNEST(_group.fields)
 						WHERE
 							name = 'groupId'
 					) AS groupId,
@@ -222,17 +222,17 @@
 						SELECT
 							SAFE_CAST(value AS STRING)
 						FROM
-							UNNEST(group.fields)
+							UNNEST(_group.fields)
 						WHERE
 							name = 'name'
 					) AS name,
 					TO_HEX(
 						SHA256(
-							CONCAT(group.projectId, '#', group.dataSourceId, '#', group.classPK)
+							CONCAT(_group.projectId, '#', _group.dataSourceId, '#', _group.classPK)
 						)
 					) AS sha256HexId
 				FROM
-					`{projectId}.dxpentity` AS group
+					`{projectId}.dxpentity` AS _group
 				LEFT JOIN (
 					SELECT
 						*,
@@ -258,14 +258,14 @@
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
 				ON
-					analyticsDeleteMessage.className = group.type AND
-					analyticsDeleteMessage.groupId = group.classPK
+					analyticsDeleteMessage.className = _group.type AND
+					analyticsDeleteMessage.groupId = _group.classPK
 				WHERE
 					(
 						analyticsDeleteMessage.groupId IS NOT NULL OR
-						group.uploadDate >= '{previousRunDateString}'
+						_group.uploadDate >= '{previousRunDateString}'
 					) AND
-					group.type = 'com.liferay.portal.kernel.model.Group'
+					_group.type = 'com.liferay.portal.kernel.model.Group'
 			) AS staging
 			ON
 				staging.classPK = replica.groupId AND
