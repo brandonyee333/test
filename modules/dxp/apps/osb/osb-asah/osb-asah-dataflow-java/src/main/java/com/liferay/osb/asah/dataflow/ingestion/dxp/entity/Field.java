@@ -28,7 +28,7 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 public class Field implements Serializable {
 
 	@Nullable
-	public Long columnId;
+	public String columnId;
 
 	public String name;
 	public Object value;

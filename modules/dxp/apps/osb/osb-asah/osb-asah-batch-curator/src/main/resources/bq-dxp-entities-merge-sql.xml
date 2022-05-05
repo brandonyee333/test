@@ -20,7 +20,7 @@
 					) AS className,
 					(
 						SELECT
-							SAFE_CAST(value AS INT64)
+							SAFE_CAST(value AS STRING)
 						FROM
 							UNNEST(expandoColumn.fields)
 						WHERE
@@ -85,7 +85,7 @@
 					expandoColumn.type = 'com.liferay.expando.kernel.model.ExpandoColumn'
 			) AS staging
 			ON
-				staging.classPK = replica.columnId AND
+				staging.columnId = replica.columnId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
 			WHEN MATCHED AND staging.deleted IS NULL THEN

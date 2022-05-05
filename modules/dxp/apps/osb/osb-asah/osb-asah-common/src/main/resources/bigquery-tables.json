@@ -19,7 +19,7 @@
 					{
 						"mode": "REQUIRED",
 						"name": "columnId",
-						"type": "INT64"
+						"type": "STRING"
 					},
 					{
 						"mode": "REQUIRED",
@@ -358,7 +358,7 @@
 			{
 				"mode": "REQUIRED",
 				"name": "columnId",
-				"type": "INT64"
+				"type": "STRING"
 			},
 			{
 				"mode": "REQUIRED",
@@ -782,7 +782,7 @@
 			{
 				"mode": "REPEATED",
 				"name": "expandoColumnIds",
-				"type": "INT64"
+				"type": "STRING"
 			},
 			{
 				"mode": "REQUIRED",
@@ -1267,7 +1267,7 @@
 			{
 				"mode": "REPEATED",
 				"name": "expandoColumnIds",
-				"type": "INT64"
+				"type": "STRING"
 			},
 			{
 				"mode": "NULLABLE",
