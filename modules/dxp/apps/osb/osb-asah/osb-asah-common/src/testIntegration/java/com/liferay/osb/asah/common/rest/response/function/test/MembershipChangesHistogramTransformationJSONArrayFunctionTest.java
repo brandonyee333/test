@@ -16,11 +16,12 @@ package com.liferay.osb.asah.common.rest.response.function.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.MembershipChangesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
@@ -30,6 +31,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -41,9 +43,10 @@ public class MembershipChangesHistogramTransformationJSONArrayFunctionTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership_changes.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@Disabled
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
 	)
 	@Test
 	public void test() throws Exception {
@@ -55,7 +58,7 @@ public class MembershipChangesHistogramTransformationJSONArrayFunctionTest
 				TestExecutionListenerUtil.replaceVariables(
 					ResourceUtil.readResourceToString(
 						"dependencies" +
-							"/expected_membership_changes_histogram.json",
+							"/expected_bq_membership_changes_histogram.json",
 						this))),
 			transformationJSONArrayFunction.apply(
 				"membership-changes", "day", _elasticsearchInvoker, 0, 20,

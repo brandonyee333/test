@@ -37,6 +37,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 					"operator='eq', value=-8)");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountEqPositive() throws Exception {
 		testFilterString(
@@ -129,6 +131,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountGePositive() throws Exception {
 		testFilterString(
@@ -195,6 +198,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountGtPositive() throws Exception {
 		testFilterString(
@@ -208,6 +212,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountGtZero() throws Exception {
 		testFilterString(
@@ -234,6 +239,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 					"operator='le', value=-1)");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountLePositive() throws Exception {
 		testFilterString(
@@ -253,6 +259,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountLeZero() throws Exception {
 		testFilterString(
@@ -272,6 +279,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 				"''Private''', operator='lt', value=-3)");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountLtPositive() throws Exception {
 		testFilterString(
@@ -313,6 +321,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountNePositive() throws Exception {
 		testFilterString(
@@ -328,6 +337,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountNestedAnd() throws Exception {
 		testFilterString(
@@ -341,6 +351,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountNestedOr() throws Exception {
 		testFilterString(
@@ -370,6 +381,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountUnnestedAnd() throws Exception {
 		testFilterString(
@@ -385,6 +397,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountUnnestedOr() throws Exception {
 		testFilterString(
@@ -405,6 +418,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468683127812925", "346468700681239480");
 	}
 
+	@Disabled
 	@Test
 	public void testAccountsFilterByCountWithApostrophe() throws Exception {
 		testFilterString(
@@ -1105,6 +1119,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testFreestyle1() throws Exception {
 		StringBuilder sb = new StringBuilder();
@@ -1124,6 +1139,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testFreestyle2() throws Exception {
 		StringBuilder sb = new StringBuilder();
