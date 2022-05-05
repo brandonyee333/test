@@ -155,7 +155,8 @@ public class TableRowConverterTest {
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
-		Assertions.assertEquals(testEntity.bool, tableRow.get("bool"));
+		Assertions.assertEquals(
+			String.valueOf(testEntity.bool), tableRow.get("bool"));
 		Assertions.assertEquals(testEntity.number, tableRow.get("number"));
 	}
 
