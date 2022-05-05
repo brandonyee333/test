@@ -256,6 +256,9 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 				objectJSONObject);
 
 			if (dxpEntity != null) {
+				newDXPEntity.setFieldsJSONObject(
+					JSONUtil.merge(
+						dxpEntity.getFieldsJSONObject(), objectJSONObject));
 				newDXPEntity.setId(dxpEntity.getId());
 				newDXPEntity.setType(type);
 
