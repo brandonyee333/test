@@ -222,6 +222,9 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 				});
 		}
 
+		SearchHit lastSearchHit = hits[hits.length - 1];
+
+		_lastIndividualId = lastSearchHit.getId();
 
 		SearchSourceBuilder userSessionsSearchSourceBuilder =
 			new SearchSourceBuilder();
@@ -318,12 +321,6 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 				}
 			}
 		}
-
-		SearchHit lastHit = hits[hits.length - 1];
-
-		JSONObject jsonObject = new JSONObject(lastHit.getSourceAsString());
-
-		_lastIndividualId = jsonObject.getString("id");
 
 		return jsonArray;
 	}
