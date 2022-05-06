@@ -62,7 +62,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -223,8 +222,8 @@ public class DXPEntitiesIngestionNanite {
 					_objectMapper.convertValue(
 						fields, AnalyticsDeleteMessage.class);
 
-				PagingAndSortingRepository pagingAndSortingRepository =
-					(PagingAndSortingRepository)_applicationContext.getBean(
+				CrudRepository crudRepository =
+					(CrudRepository)_applicationContext.getBean(
 						Class.forName(
 							String.format(
 								"com.liferay.osb.asah.common.repository." +
@@ -233,7 +232,7 @@ public class DXPEntitiesIngestionNanite {
 									analyticsDeleteMessage.getClassName(),
 									"."))));
 
-				pagingAndSortingRepository.deleteById(
+				crudRepository.deleteById(
 					_generateDXPEntityId(
 						analyticsDeleteMessage.getClassPK(), dataSourceId,
 						projectId));
