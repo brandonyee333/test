@@ -118,9 +118,9 @@ public class IndividualsFilterStringConverterHelperTest
 		_setUpFields();
 		_setUpOrganizations();
 
-		_setUpSegments();
 		_setUpBQMemberships();
 		_setUpBQMembershipChanges();
+		_setUpSegments();
 	}
 
 	@Test
