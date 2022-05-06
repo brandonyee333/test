@@ -149,18 +149,7 @@ public class BeanUtils {
 					Class<?> componentType = rawClass.getComponentType();
 
 					if (componentType != null) {
-						if (StringUtils.equals(
-								componentType.getName(),
-								String.class.getName())) {
-
-							targetPropertyValue = (String[])array.getArray();
-						}
-						else if (StringUtils.equals(
-									componentType.getName(),
-									Long.class.getName())) {
-
-							targetPropertyValue = (Long[])array.getArray();
-						}
+						targetPropertyValue = array.getArray();
 					}
 					else {
 						ResolvableType resolvableType =
