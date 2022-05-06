@@ -37,8 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.IterableUtils;
 
@@ -48,7 +46,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * @author Marcos Martins
@@ -142,12 +139,13 @@ public class DXPEntitiesIngestionNaniteTest
 		bqUserGroup.setIsNew(true);
 		bqUserGroup.setName("test");
 
-		bqUserGroup = _bqUserGroupRepository.save(bqUserGroup);
+		_bqUserGroupRepository.save(bqUserGroup);
 
 		_dxpEntitiesIngestionNanite.run();
 
 		Optional<BQUserGroup> bqUserGroupOptional =
-			_bqUserGroupRepository.findById(bqUserGroup.getId());
+			_bqUserGroupRepository.findById(
+				DigestUtils.sha256Hex(String.join("#", "test", "1", "123")));
 
 		Assertions.assertFalse(bqUserGroupOptional.isPresent());
 	}
@@ -242,10 +240,6 @@ public class DXPEntitiesIngestionNaniteTest
 
 	@Autowired
 	private BQUserRepository _bqUserRepository;
-
-	@Autowired
-	@Qualifier("postgreSQLDataSource")
-	private DataSource _dataSource;
 
 	@Autowired
 	private DXPEntitiesIngestionNanite _dxpEntitiesIngestionNanite;
