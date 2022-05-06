@@ -48,41 +48,38 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/accounts")
 	public PageDTO<ReportAccountDTO> getReportAccountDTOPageDTO(
-		@RequestParam(defaultValue = "") String after,
-		@RequestParam("fromDate") String fromDateString,
-		@RequestParam("toDate") String toDateString) {
+		@RequestParam(defaultValue = "") String afterId,
+		@RequestParam("fromDate") String fromDate,
+		@RequestParam("toDate") String toDate) {
 
 		return _toReportAccountDTOPageDTO(
 			_accountDog.getAccountPage(
-				_getId(after), DateUtil.toUTCDate(fromDateString), _PAGE_SIZE,
-				Sort.by(Sort.Order.asc("id")),
-				DateUtil.toUTCDate(toDateString)));
+				_getId(afterId), DateUtil.toUTCDate(fromDate), _PAGE_SIZE,
+				Sort.by(Sort.Order.asc("id")), DateUtil.toUTCDate(toDate)));
 	}
 
 	@GetMapping("/individuals")
 	public PageDTO<ReportIndividualDTO> getReportIndividualDTOPageDTO(
-		@RequestParam(defaultValue = "") String after,
-		@RequestParam("fromDate") String fromDateString,
-		@RequestParam("toDate") String toDateString) {
+		@RequestParam(defaultValue = "") String afterId,
+		@RequestParam("fromDate") String fromDate,
+		@RequestParam("toDate") String toDate) {
 
 		return _toReportIndividualDTOPageDTO(
 			_individualDog.getIndividualPage(
-				DateUtil.toUTCDate(fromDateString), _getId(after), _PAGE_SIZE,
-				Sort.by(Sort.Order.asc("id")),
-				DateUtil.toUTCDate(toDateString)));
+				DateUtil.toUTCDate(fromDate), _getId(afterId), _PAGE_SIZE,
+				Sort.by(Sort.Order.asc("id")), DateUtil.toUTCDate(toDate)));
 	}
 
 	@GetMapping("/segments")
 	public PageDTO<ReportSegmentDTO> getReportSegmentDTOPageDTO(
-		@RequestParam(defaultValue = "") String after,
-		@RequestParam("fromDate") String fromDateString,
-		@RequestParam("toDate") String toDateString) {
+		@RequestParam(defaultValue = "") String afterId,
+		@RequestParam("fromDate") String fromDate,
+		@RequestParam("toDate") String toDate) {
 
 		return _toReportSegmentDTOPageDTO(
 			_segmentDog.getSegmentPage(
-				DateUtil.toUTCDate(fromDateString), _getId(after), _PAGE_SIZE,
-				Sort.by(Sort.Order.asc("id")),
-				DateUtil.toUTCDate(toDateString)));
+				DateUtil.toUTCDate(fromDate), _getId(afterId), _PAGE_SIZE,
+				Sort.by(Sort.Order.asc("id")), DateUtil.toUTCDate(toDate)));
 	}
 
 	private Long _getId(String id) {

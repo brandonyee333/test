@@ -190,23 +190,22 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/export/{type}")
 	public ResponseEntity<DataExportTaskDTO> getDataExportTask(
-		@RequestParam(required = false, value = "fromDate") String
-			fromDateString,
-		@RequestParam(required = false, value = "toDate") String toDateString,
+		@RequestParam(required = false, value = "fromDate") String fromDate,
+		@RequestParam(required = false, value = "toDate") String toDate,
 		@PathVariable String type) {
 
-		_validateDateRange(fromDateString, toDateString);
+		_validateDateRange(fromDate, toDate);
 
-		Date fromDate = DateUtil.toUTCDate(fromDateString);
-		Date toDate = DateUtil.toUTCDate(toDateString);
+		Date fromUtcDate = DateUtil.toUTCDate(fromDate);
+		Date toUtcDate = DateUtil.toUTCDate(toDate);
 
 		DataExportTask dataExportTask =
 			_dataExportTaskDog.fetchLastDataExportTaskByRange(
-				fromDate, toDate,
+				fromUtcDate, toUtcDate,
 				DataExportTask.Type.valueOf(StringUtils.upperCase(type)));
 
 		if (dataExportTask == null) {
-			return _addDataExportTask(fromDate, null, toDate, type);
+			return _addDataExportTask(fromUtcDate, null, toUtcDate, type);
 		}
 
 		DataExportTask.Status status = dataExportTask.getStatus();
@@ -220,7 +219,7 @@ public class ReportRestController extends BaseRestController {
 						dataExportTask.getId()));
 			}
 
-			return _addDataExportTask(fromDate, status, toDate, type);
+			return _addDataExportTask(fromUtcDate, status, toUtcDate, type);
 		}
 
 		return _buildAcceptedResponseEntity(
@@ -229,16 +228,14 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/export/{type}/file")
 	public ResponseEntity<FileSystemResource> getDataExportTaskFile(
-		@RequestParam("fromDate") String fromDateString,
-		@RequestParam("toDate") String toDateString,
-		@PathVariable String type) {
+		@RequestParam("fromDate") String fromDate,
+		@RequestParam("toDate") String toDate, @PathVariable String type) {
 
-		_validateDateRange(fromDateString, toDateString);
+		_validateDateRange(fromDate, toDate);
 
 		DataExportTask dataExportTask =
 			_dataExportTaskDog.fetchLastDataExportTaskByRange(
-				DateUtil.toUTCDate(fromDateString),
-				DateUtil.toUTCDate(toDateString),
+				DateUtil.toUTCDate(fromDate), DateUtil.toUTCDate(toDate),
 				DataExportTask.Type.valueOf(StringUtils.upperCase(type)));
 
 		if (dataExportTask == null) {
@@ -1395,26 +1392,24 @@ public class ReportRestController extends BaseRestController {
 			resultEntityModelMapperFunction);
 	}
 
-	private void _validateDateRange(
-		String fromDateString, String toDateString) {
-
-		if ((fromDateString == null) || (toDateString == null)) {
+	private void _validateDateRange(String fromDate, String toDate) {
+		if ((fromDate == null) || (toDate == null)) {
 			throw new IllegalArgumentException("Date range is mandatory");
 		}
 
-		Date fromDate;
-		Date toDate;
+		Date fromUtcDate;
+		Date toUtcDate;
 
 		try {
-			fromDate = DateUtil.toUTCDate(fromDateString);
-			toDate = DateUtil.toUTCDate(toDateString);
+			fromUtcDate = DateUtil.toUTCDate(fromDate);
+			toUtcDate = DateUtil.toUTCDate(toDate);
 		}
 		catch (Exception exception) {
 			throw new IllegalArgumentException(
 				"Wrong date format. Cannot convert to UTC date.", exception);
 		}
 
-		if (fromDate.after(toDate)) {
+		if (fromUtcDate.after(toUtcDate)) {
 			throw new IllegalArgumentException(
 				"Wrong range date. \"fromDate\" cannot be after \"toDate\"");
 		}
