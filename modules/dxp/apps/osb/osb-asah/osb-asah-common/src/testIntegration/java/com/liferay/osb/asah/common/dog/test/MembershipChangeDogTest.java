@@ -18,16 +18,16 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
-import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -81,13 +81,15 @@ public class MembershipChangeDogTest
 					DateUtils.addDays(date, daysAgoCreation));
 
 				for (int daysAgo = daysAgoCreation; daysAgo <= 0; daysAgo++) {
-					MembershipChange membershipChange = _addMembershipChange(
-						33 + daysAgo, DateUtils.addDays(date, daysAgo),
-						segment);
+					BQMembershipChange bqMembershipChange =
+						_addMembershipChange(
+							33 + daysAgo +
+								(channelNames.indexOf(channelName) * 33),
+							DateUtils.addDays(date, daysAgo), segment);
 
 					if (daysAgo == -1) {
-						_membershipChangeByIndividualSegmentId.put(
-							segment.getId(), membershipChange);
+						_bqMembershipChangeByIndividualSegmentId.put(
+							segment.getId(), bqMembershipChange);
 					}
 				}
 			});
@@ -137,23 +139,24 @@ public class MembershipChangeDogTest
 
 		_individualRepository.save(individual);
 
-		ArrayList<MembershipChange> membershipChanges = new ArrayList<>();
+		ArrayList<BQMembershipChange> bqMembershipChanges = new ArrayList<>();
 
 		IntStream.range(
 			32, 34
 		).forEach(
 			i -> {
-				Optional<MembershipChange> membershipChangeOptional =
-					_membershipChangeRepository.findByIndividualId((long)i);
+				Optional<BQMembershipChange> bqMembershipChangeOptional =
+					_bqMembershipChangeRepository.findByIndividualId((long)i);
 
-				Assertions.assertTrue(membershipChangeOptional.isPresent());
+				Assertions.assertTrue(bqMembershipChangeOptional.isPresent());
 
-				membershipChanges.add(membershipChangeOptional.get());
+				bqMembershipChanges.add(bqMembershipChangeOptional.get());
 			}
 		);
 
 		Map<Long, JSONObject> accountNamesJSONObjects =
-			_membershipChangeDog.getAccountNamesJSONObjects(membershipChanges);
+			_membershipChangeDog.getAccountNamesJSONObjects(
+				bqMembershipChanges);
 
 		Collection<JSONObject> values = accountNamesJSONObjects.values();
 
@@ -177,22 +180,22 @@ public class MembershipChangeDogTest
 	@Test
 	public void testGetLastBeforeTodayByIndividualSegmentsId1() {
 		List<Long> segmentIds = new ArrayList(
-			_membershipChangeByIndividualSegmentId.keySet());
+			_bqMembershipChangeByIndividualSegmentId.keySet());
 
-		List<MembershipChange> membershipChanges =
+		List<BQMembershipChange> bqMembershipChanges =
 			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
 				segmentIds);
 
 		Assertions.assertEquals(
-			2, membershipChanges.size(), membershipChanges.toString());
+			2, bqMembershipChanges.size(), bqMembershipChanges.toString());
 		Assertions.assertNotEquals(
-			membershipChanges.get(0), membershipChanges.get(1));
+			bqMembershipChanges.get(0), bqMembershipChanges.get(1));
 
-		for (MembershipChange membershipChange : membershipChanges) {
+		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
 			Assertions.assertEquals(
-				_membershipChangeByIndividualSegmentId.get(
-					membershipChange.getIndividualSegmentId()),
-				membershipChange);
+				_bqMembershipChangeByIndividualSegmentId.get(
+					bqMembershipChange.getIndividualSegmentId()),
+				bqMembershipChange);
 		}
 	}
 
@@ -208,51 +211,52 @@ public class MembershipChangeDogTest
 
 		segment = _segmentRepository.save(segment);
 
-		MembershipChange membershipChange = _addMembershipChange(
+		BQMembershipChange bqMembershipChange = _addMembershipChange(
 			1, DateUtils.addDays(date, -1), segment);
 
-		membershipChange.setIndividualEmail(null);
+		bqMembershipChange.setIndividualEmail(null);
 
-		_membershipChangeRepository.save(membershipChange);
+		_bqMembershipChangeRepository.save(bqMembershipChange);
 
-		List<MembershipChange> membershipChanges =
+		List<BQMembershipChange> bqMembershipChanges =
 			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
 				false, Arrays.asList(segment.getId()));
 
-		Assertions.assertTrue(membershipChanges.isEmpty());
+		Assertions.assertTrue(bqMembershipChanges.isEmpty());
 
-		membershipChanges =
+		bqMembershipChanges =
 			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
 				true, Arrays.asList(segment.getId()));
 
 		Assertions.assertEquals(
-			1, membershipChanges.size(), membershipChanges.toString());
+			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
 
-		membershipChange = membershipChanges.get(0);
+		bqMembershipChange = bqMembershipChanges.get(0);
 
-		Assertions.assertNull(membershipChange.getIndividualEmail());
+		Assertions.assertNull(bqMembershipChange.getIndividualEmail());
 	}
 
-	private MembershipChange _addMembershipChange(
+	private BQMembershipChange _addMembershipChange(
 		int index, Date modifiedDate, Segment segment) {
 
-		MembershipChange membershipChange = new MembershipChange();
+		BQMembershipChange bqMembershipChange = new BQMembershipChange();
 
-		membershipChange.setIndividualDeleted(Boolean.FALSE);
-		membershipChange.setIndividualEmail(
+		bqMembershipChange.setIndividualDeleted(Boolean.FALSE);
+		bqMembershipChange.setIndividualsCount((long)index);
+		bqMembershipChange.setIndividualEmail(
 			String.format("individual.%d@liferay.com", index));
-		membershipChange.setIndividualId((long)index);
-		membershipChange.setIndividualName(
+		bqMembershipChange.setIndividualId((long)index);
+		bqMembershipChange.setIndividualName(
 			String.format("Individual Name %d", index));
 
-		membershipChange.setIndividualSegmentId(segment.getId());
+		bqMembershipChange.setIndividualSegmentId(segment.getId());
 
-		membershipChange.setJoinedDate(modifiedDate);
-		membershipChange.setKnownIndividualsCount((long)index);
-		membershipChange.setModifiedDate(modifiedDate);
-		membershipChange.setOperation("ADDED");
+		bqMembershipChange.setJoinedDate(modifiedDate);
+		bqMembershipChange.setKnownIndividualsCount((long)index);
+		bqMembershipChange.setModifiedDate(modifiedDate);
+		bqMembershipChange.setOperation("ADDED");
 
-		return _membershipChangeRepository.save(membershipChange);
+		return _bqMembershipChangeRepository.save(bqMembershipChange);
 	}
 
 	private Segment _addSegment(Channel channel, Date createDate) {
@@ -278,6 +282,12 @@ public class MembershipChangeDogTest
 	@Autowired
 	private AccountDog _accountDog;
 
+	private final Map<Long, BQMembershipChange>
+		_bqMembershipChangeByIndividualSegmentId = new HashMap<>();
+
+	@Autowired
+	private BQMembershipChangeRepository _bqMembershipChangeRepository;
+
 	@Autowired
 	private ChannelRepository _channelRepository;
 
@@ -287,14 +297,8 @@ public class MembershipChangeDogTest
 	@Autowired
 	private IndividualRepository _individualRepository;
 
-	private final Map<Long, MembershipChange>
-		_membershipChangeByIndividualSegmentId = new HashMap<>();
-
 	@Autowired
 	private MembershipChangeDog _membershipChangeDog;
-
-	@Autowired
-	private MembershipChangeRepository _membershipChangeRepository;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;

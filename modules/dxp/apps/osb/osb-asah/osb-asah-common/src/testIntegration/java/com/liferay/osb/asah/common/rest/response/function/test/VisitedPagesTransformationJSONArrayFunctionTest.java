@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.VisitedPagesTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -170,10 +171,6 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -184,6 +181,10 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
 		resourcePath = "osbasahfaroinfo/assets.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
 	@Test
 	public void testApplyWithOwner() throws Exception {

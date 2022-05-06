@@ -23,25 +23,25 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Membership;
-import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
-import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
-import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -119,8 +119,8 @@ public class IndividualsFilterStringConverterHelperTest
 		_setUpOrganizations();
 
 		_setUpSegments();
-		_setUpMemberships();
-		_setUpMembershipChanges();
+		_setUpBQMemberships();
+		_setUpBQMembershipChanges();
 	}
 
 	@Test
@@ -1474,6 +1474,38 @@ public class IndividualsFilterStringConverterHelperTest
 		}
 	}
 
+	private void _setUpBQMembershipChanges() throws Exception {
+		JSONArray jsonArray = new JSONArray(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies/osbasahfaroinfo/individuals.json", this)));
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			BQMembershipChange bqMembershipChange = _objectMapper.convertValue(
+				jsonArray.getJSONObject(i), BQMembershipChange.class);
+
+			bqMembershipChange.setIsNew(Boolean.TRUE);
+
+			_bqMembershipChangeRepository.save(bqMembershipChange);
+		}
+	}
+
+	private void _setUpBQMemberships() throws Exception {
+		JSONArray jsonArray = new JSONArray(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					"dependencies/osbasahfaroinfo/bq_memberships.json", this)));
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			BQMembership bqMembership = _objectMapper.convertValue(
+				jsonArray.getJSONObject(i), BQMembership.class);
+
+			bqMembership.setIsNew(Boolean.TRUE);
+
+			_bqMembershipRepository.save(bqMembership);
+		}
+	}
+
 	private void _setUpDataSources() throws Exception {
 		JSONArray jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
@@ -1596,38 +1628,6 @@ public class IndividualsFilterStringConverterHelperTest
 		}
 	}
 
-	private void _setUpMembershipChanges() throws Exception {
-		JSONArray jsonArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies/osbasahfaroinfo/individuals.json", this)));
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			MembershipChange membershipChange = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), MembershipChange.class);
-
-			membershipChange.setIsNew(Boolean.TRUE);
-
-			_membershipChangeRepository.save(membershipChange);
-		}
-	}
-
-	private void _setUpMemberships() throws Exception {
-		JSONArray jsonArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies/osbasahfaroinfo/memberships.json", this)));
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			Membership membership = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), Membership.class);
-
-			membership.setIsNew(Boolean.TRUE);
-
-			_membershipRepository.save(membership);
-		}
-	}
-
 	private void _setUpOrganizations() throws Exception {
 		JSONArray jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
@@ -1708,6 +1708,12 @@ public class IndividualsFilterStringConverterHelperTest
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
 
+	@Autowired
+	private BQMembershipChangeRepository _bqMembershipChangeRepository;
+
+	@Autowired
+	private BQMembershipRepository _bqMembershipRepository;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
@@ -1733,12 +1739,6 @@ public class IndividualsFilterStringConverterHelperTest
 	@Autowired
 	private IndividualsFilterStringConverterHelper
 		_individualsFilterStringConverterHelper;
-
-	@Autowired
-	private MembershipChangeRepository _membershipChangeRepository;
-
-	@Autowired
-	private MembershipRepository _membershipRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

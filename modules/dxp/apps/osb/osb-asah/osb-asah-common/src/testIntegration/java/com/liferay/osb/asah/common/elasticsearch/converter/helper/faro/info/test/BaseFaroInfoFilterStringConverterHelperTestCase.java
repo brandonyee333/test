@@ -117,8 +117,8 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase
 
 	private static final String[] _COLLECTION_NAMES = {
 		"accounts", "activities", "data-sources", "field-mappings", "fields",
-		"individual-segments", "individuals", "interests", "membership-changes",
-		"memberships"
+		"individual-segments", "individuals", "interests",
+		"bq-membership-changes", "bq-memberships"
 	};
 
 }

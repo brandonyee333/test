@@ -20,20 +20,23 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -41,8 +44,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -90,30 +91,31 @@ public class MembershipDogTest
 
 		individual = _individualDog.addIndividual(individual, false);
 
-		Membership membership = new Membership();
+		BQMembership bqMembership = new BQMembership();
 
-		membership.setCreateDate(
+		bqMembership.setCreateDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
-		membership.setIndividualId(123L);
-		membership.setIndividualSegmentId(234L);
-		membership.setModifiedDate(
+		bqMembership.setIndividualId(123L);
+		bqMembership.setIndividualSegmentId(234L);
+		bqMembership.setModifiedDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
-		membership.setStatus("ACTIVE");
+		bqMembership.setStatus("ACTIVE");
 
-		membership = _membershipDog.addMembership(membership);
+		bqMembership = _membershipDog.addBQMembership(bqMembership);
 
-		Assertions.assertNotNull(membership);
+		Assertions.assertNotNull(bqMembership);
 
-		JSONArray membershipsJSONArray = faroInfoElasticsearchInvoker.get(
-			"memberships");
+		List<BQMembership> bqMemberships =
+			(List<BQMembership>)_bqMembershipRepository.findAll();
 
-		Assertions.assertEquals(1, membershipsJSONArray.length());
+		Assertions.assertEquals(1, bqMemberships.size());
 
 		JSONAssert.assertEquals(
-			_objectMapper.convertValue(membership, JSONObject.class),
-			membershipsJSONArray.getJSONObject(0), false);
+			_objectMapper.convertValue(bqMembership, JSONObject.class),
+			_objectMapper.convertValue(bqMemberships.get(0), JSONObject.class),
+			false);
 
-		Assertions.assertNotNull(membership.getId());
+		Assertions.assertNotNull(bqMembership.getId());
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
@@ -124,59 +126,57 @@ public class MembershipDogTest
 			Matchers.arrayContainingInAnyOrder(
 				segmentIds.toArray(new Long[0])));
 
-		JSONArray membershipChangesJSONArray = faroInfoElasticsearchInvoker.get(
-			"membership-changes");
+		List<BQMembershipChange> bqMembershipChanges =
+			(List<BQMembershipChange>)_bqMembershipChangeRepository.findAll();
 
-		Assertions.assertEquals(1, membershipChangesJSONArray.length());
+		Assertions.assertEquals(1, bqMembershipChanges.size());
 
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				"dateChanged", "2019-02-11T20:27:36.603Z"
-			).put(
-				"dateFirst", "2019-02-11T20:27:36.603Z"
-			).put(
-				"individualDeleted", false
-			).put(
-				"individualId", "123"
-			).put(
-				"individualsCount", 1
-			).put(
-				"individualSegmentId", "234"
-			).put(
-				"knownIndividualsCount", 0
-			).put(
-				"operation", "ADDED"
-			),
-			membershipChangesJSONArray.getJSONObject(0), false);
+		BQMembershipChange bqMembershipChange = bqMembershipChanges.get(0);
+
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"),
+			bqMembershipChange.getModifiedDate());
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"),
+			bqMembershipChange.getJoinedDate());
+		Assertions.assertEquals(
+			false, bqMembershipChange.getIndividualDeleted());
+		Assertions.assertEquals(123L, bqMembershipChange.getIndividualId());
+		Assertions.assertEquals(1, bqMembershipChange.getIndividualsCount());
+		Assertions.assertEquals(
+			234L, bqMembershipChange.getIndividualSegmentId());
+		Assertions.assertEquals(
+			0, bqMembershipChange.getKnownIndividualsCount());
+		Assertions.assertEquals("ADDED", bqMembershipChange.getOperation());
 	}
 
 	@Test
 	public void testAddMembershipWithInactiveStatus() {
-		Membership membership = _membershipDog.addMembership(
+		BQMembership bqMembership = _membershipDog.addBQMembership(
 			_objectMapper.convertValue(
-				JSONUtil.put("status", "INACTIVE"), Membership.class));
+				JSONUtil.put("status", "INACTIVE"), BQMembership.class));
 
-		Assertions.assertNotNull(membership);
+		Assertions.assertNotNull(bqMembership);
 
-		JSONArray membershipsJSONArray = faroInfoElasticsearchInvoker.get(
-			"memberships");
+		List<BQMembership> bqMemberships =
+			(List<BQMembership>)_bqMembershipRepository.findAll();
 
-		Assertions.assertEquals(1, membershipsJSONArray.length());
+		Assertions.assertEquals(1, bqMemberships.size());
 
-		JSONAssert.assertEquals(
-			JSONUtil.put("status", "INACTIVE"),
-			membershipsJSONArray.getJSONObject(0), false);
+		bqMembership = bqMemberships.get(0);
 
-		Assertions.assertNotNull(membership.getId());
+		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
+
+		Assertions.assertNotNull(bqMembership.getId());
 	}
 
-	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership_changes.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
 	)
 	@Test
 	public void testDeactivateMembershipWithIndividuals() {
@@ -259,60 +259,51 @@ public class MembershipDogTest
 
 		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.218Z");
 
-		_membershipDog.deactivateMembership(
+		_membershipDog.deactivateBQMembership(
 			deletionDate, 338486041327913341L, 338511398116723458L);
 
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				"dateCreated", "2019-02-11T20:26:53.218Z"
-			).put(
-				"dateModified", "2019-02-11T20:26:53.218Z"
-			).put(
-				"dateRemoved", "2019-02-11T20:26:53.218Z"
-			).put(
-				"id", "338511398389279308"
-			).put(
-				"individualId", "338486041327913341"
-			).put(
-				"individualSegmentId", "338511398116723458"
-			).put(
-				"status", "INACTIVE"
-			),
-			faroInfoElasticsearchInvoker.fetch(
-				"memberships",
-				QueryBuilders.termsQuery("individualId", "338486041327913341")),
-			false);
+		BQMembership bqMembership =
+			_bqMembershipRepository.
+				findByIndividualIdAndIndividualSegmentIdAndStatus(
+					338486041327913341L, 338511398116723458L, "INACTIVE");
 
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				"dateChanged", "2019-02-11T20:26:53.218Z"
-			).put(
-				"dateFirst", "2019-02-11T20:26:53.218Z"
-			).put(
-				"individualEmail", "test2@liferay.com"
-			).put(
-				"individualId", "338486041327913341"
-			).put(
-				"individualsCount", 1
-			).put(
-				"individualSegmentId", "338511398116723458"
-			).put(
-				"knownIndividualsCount", 1
-			).put(
-				"operation", "REMOVED"
-			),
-			faroInfoElasticsearchInvoker.fetch(
-				"membership-changes",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"individualSegmentId", "338511398116723458")
-				).filter(
-					QueryBuilders.termQuery(
-						"individualId", "338486041327913341")
-				).filter(
-					QueryBuilders.termQuery("operation", "REMOVED")
-				)),
-			false);
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
+			bqMembership.getCreateDate());
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
+			bqMembership.getModifiedDate());
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
+			bqMembership.getRemovedDate());
+		Assertions.assertEquals(338511398389279308L, bqMembership.getId());
+		Assertions.assertEquals(
+			338486041327913341L, bqMembership.getIndividualId());
+		Assertions.assertEquals(
+			338511398116723458L, bqMembership.getIndividualSegmentId());
+		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
+
+		BQMembershipChange bqMembershipChange =
+			_bqMembershipChangeRepository.
+				findByIndividualIdAndIndividualSegmentIdAndOperation(
+					338486041327913341L, 338511398116723458L, "REMOVED");
+
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
+			bqMembershipChange.getModifiedDate());
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
+			bqMembershipChange.getJoinedDate());
+		Assertions.assertEquals(
+			"test2@liferay.com", bqMembershipChange.getIndividualEmail());
+		Assertions.assertEquals(
+			338486041327913341L, bqMembershipChange.getIndividualId());
+		Assertions.assertEquals(1, bqMembershipChange.getIndividualsCount());
+		Assertions.assertEquals(
+			338511398116723458L, bqMembershipChange.getIndividualSegmentId());
+		Assertions.assertEquals(
+			1, bqMembershipChange.getKnownIndividualsCount());
+		Assertions.assertEquals("REMOVED", bqMembershipChange.getOperation());
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals", "338486041327913341");
@@ -327,70 +318,41 @@ public class MembershipDogTest
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership_changes.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
 	)
 	@Test
 	public void testDeactivateMembershipWithoutKnownIndividuals() {
-		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.218Z");
+		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.215Z");
 
-		_membershipDog.deactivateMembership(
-			deletionDate, 338486041327913339L, 338511398116723457L);
+		_membershipDog.deactivateBQMembership(
+			deletionDate, 338486037253283140L, 338511398116723458L);
 
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				"dateCreated", "2019-02-11T20:26:53.218Z"
-			).put(
-				"dateModified", "2019-02-11T20:26:53.218Z"
-			).put(
-				"dateRemoved", "2019-02-11T20:26:53.218Z"
-			).put(
-				"id", "338511398389279306"
-			).put(
-				"individualId", "338486041327913339"
-			).put(
-				"individualSegmentId", "338511398116723457"
-			).put(
-				"status", "INACTIVE"
-			),
-			faroInfoElasticsearchInvoker.fetch(
-				"memberships",
-				QueryBuilders.termsQuery("individualId", "338486041327913339")),
-			false);
+		BQMembership bqMembership =
+			_bqMembershipRepository.
+				findByIndividualIdAndIndividualSegmentIdAndStatus(
+					338486037253283140L, 338511398116723458L, "INACTIVE");
 
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				"dateChanged", "2019-02-11T20:26:53.218Z"
-			).put(
-				"dateFirst", "2019-02-11T20:26:53.218Z"
-			).put(
-				"individualId", "338486041327913339"
-			).put(
-				"individualsCount", 0
-			).put(
-				"individualSegmentId", "338511398116723457"
-			).put(
-				"knownIndividualsCount", 0
-			).put(
-				"operation", "REMOVED"
-			),
-			faroInfoElasticsearchInvoker.fetch(
-				"membership-changes",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"individualId", "338486041327913339")
-				).filter(
-					QueryBuilders.termQuery(
-						"individualSegmentId", "338511398116723457")
-				).filter(
-					QueryBuilders.termQuery("operation", "REMOVED")
-				)),
-			false);
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:26:53.215Z"),
+			bqMembership.getCreateDate());
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:26:53.215Z"),
+			bqMembership.getModifiedDate());
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-11T20:26:53.215Z"),
+			bqMembership.getRemovedDate());
+		Assertions.assertEquals(338511398389279307L, bqMembership.getId());
+		Assertions.assertEquals(
+			338486037253283140L, bqMembership.getIndividualId());
+		Assertions.assertEquals(
+			338511398116723458L, bqMembership.getIndividualSegmentId());
+		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
 	}
 
 	@ElasticsearchIndex(
@@ -401,13 +363,13 @@ public class MembershipDogTest
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership_changes.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
 	)
 	@Test
 	public void testGetIndividualSegmentIndividualIds() {
@@ -420,9 +382,9 @@ public class MembershipDogTest
 		Assertions.assertTrue(individualIds.contains(338486041327913341L));
 	}
 
-	@ElasticsearchIndex(
-		name = "memberships", resourcePath = "memberships.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
 	@Test
 	public void testIsMember() {
@@ -430,6 +392,12 @@ public class MembershipDogTest
 		Assertions.assertTrue(
 			_membershipDog.isMember(338486041327913341L, 338511398116723458L));
 	}
+
+	@Autowired
+	private BQMembershipChangeRepository _bqMembershipChangeRepository;
+
+	@Autowired
+	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

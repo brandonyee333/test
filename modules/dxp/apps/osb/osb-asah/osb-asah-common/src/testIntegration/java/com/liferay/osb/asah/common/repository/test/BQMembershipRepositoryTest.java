@@ -14,13 +14,14 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.Membership;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -34,6 +35,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -41,66 +43,67 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * @author Inácio Nery
  */
-public abstract class BaseMembershipRepositoryTestCase
-	extends BaseRepositoryTestCase<Membership, Long> {
+@Import(JDBCTestConfiguration.class)
+public class BQMembershipRepositoryTest
+	extends BaseRepositoryTestCase<BQMembership, Long> {
 
 	@BeforeEach
 	public void setUp() {
-		Membership membership1 = new Membership();
+		BQMembership bqMembership1 = new BQMembership();
 
-		membership1.setCreateDate(new Date());
-		membership1.setIndividualId(12L);
+		bqMembership1.setCreateDate(new Date());
+		bqMembership1.setIndividualId(12L);
 
 		Segment segment1 = _addSegment(34);
 
-		membership1.setIndividualSegmentId(segment1.getId());
+		bqMembership1.setIndividualSegmentId(segment1.getId());
 
-		membership1.setModifiedDate(new Date());
-		membership1.setRemovedDate(new Date());
-		membership1.setStatus("ACTIVE");
+		bqMembership1.setModifiedDate(new Date());
+		bqMembership1.setRemovedDate(new Date());
+		bqMembership1.setStatus("ACTIVE");
 
-		Membership membership2 = new Membership();
+		BQMembership bqMembership2 = new BQMembership();
 
-		membership2.setCreateDate(new Date());
-		membership2.setIndividualId(12L);
+		bqMembership2.setCreateDate(new Date());
+		bqMembership2.setIndividualId(12L);
 
 		Segment segment2 = _addSegment(56);
 
-		membership2.setIndividualSegmentId(segment2.getId());
+		bqMembership2.setIndividualSegmentId(segment2.getId());
 
-		membership2.setModifiedDate(new Date());
-		membership2.setRemovedDate(new Date());
-		membership2.setStatus("INACTIVE");
+		bqMembership2.setModifiedDate(new Date());
+		bqMembership2.setRemovedDate(new Date());
+		bqMembership2.setStatus("INACTIVE");
 
-		Membership membership3 = new Membership();
+		BQMembership bqMembership3 = new BQMembership();
 
-		membership3.setCreateDate(new Date());
-		membership3.setIndividualId(78L);
+		bqMembership3.setCreateDate(new Date());
+		bqMembership3.setIndividualId(78L);
 
-		membership3.setIndividualSegmentId(segment1.getId());
+		bqMembership3.setIndividualSegmentId(segment1.getId());
 
-		membership3.setModifiedDate(new Date());
-		membership3.setRemovedDate(new Date());
-		membership3.setStatus("ACTIVE");
+		bqMembership3.setModifiedDate(new Date());
+		bqMembership3.setRemovedDate(new Date());
+		bqMembership3.setStatus("ACTIVE");
 
-		setUpRepository(membership1, membership2, membership3);
+		setUpRepository(bqMembership1, bqMembership2, bqMembership3);
 	}
 
 	@Test
 	public void testCountByIndividualIdInAndIndividualSegmentIdAndStatus() {
 		Assertions.assertEquals(
 			2,
-			_membershipRepository.
+			_bqMembershipRepository.
 				countByIndividualIdInAndIndividualSegmentIdAndStatus(
 					Arrays.asList(12L, 78L), 34L, "ACTIVE"));
 		Assertions.assertEquals(
 			0,
-			_membershipRepository.
+			_bqMembershipRepository.
 				countByIndividualIdInAndIndividualSegmentIdAndStatus(
 					Arrays.asList(12L, 78L), 34L, "INACTIVE"));
 		Assertions.assertEquals(
 			1,
-			_membershipRepository.
+			_bqMembershipRepository.
 				countByIndividualIdInAndIndividualSegmentIdAndStatus(
 					Arrays.asList(12L, 78L), 56L, "INACTIVE"));
 	}
@@ -109,137 +112,148 @@ public abstract class BaseMembershipRepositoryTestCase
 	public void testCountByIndividualSegmentIdAndStatus() {
 		Assertions.assertEquals(
 			2,
-			_membershipRepository.countByIndividualSegmentIdAndStatus(
+			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
 				34L, "ACTIVE"));
 		Assertions.assertEquals(
 			0,
-			_membershipRepository.countByIndividualSegmentIdAndStatus(
+			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
 				34L, "INACTIVE"));
 		Assertions.assertEquals(
 			1,
-			_membershipRepository.countByIndividualSegmentIdAndStatus(
+			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
 				56L, "INACTIVE"));
 	}
 
 	@Test
 	public void testDeleteByIndividualSegmentIdIn() {
-		List<Membership> memberships = IterableUtils.toList(
-			_membershipRepository.findAll());
+		List<BQMembership> bqMemberships = IterableUtils.toList(
+			_bqMembershipRepository.findAll());
 
-		Stream<Membership> stream = memberships.stream();
+		Stream<BQMembership> stream = bqMemberships.stream();
 
 		Assertions.assertTrue(
 			stream.anyMatch(
-				membership -> membership.getIndividualSegmentId() == 34));
+				bqMembership -> bqMembership.getIndividualSegmentId() == 34));
 
-		_membershipRepository.deleteByIndividualSegmentIdIn(Arrays.asList(34L));
+		_bqMembershipRepository.deleteByIndividualSegmentIdIn(
+			Arrays.asList(34L));
 
-		memberships = IterableUtils.toList(_membershipRepository.findAll());
+		bqMemberships = IterableUtils.toList(_bqMembershipRepository.findAll());
 
-		stream = memberships.stream();
+		stream = bqMemberships.stream();
 
 		Assertions.assertFalse(
 			stream.anyMatch(
-				membership -> membership.getIndividualSegmentId() == 34));
+				bqMembership -> bqMembership.getIndividualSegmentId() == 34));
 	}
 
 	@Test
 	public void testExistsByIndividualIdAndIndividualSegmentIdAndStatus() {
 		Assertions.assertTrue(
-			_membershipRepository.
+			_bqMembershipRepository.
 				existsByIndividualIdAndIndividualSegmentIdAndStatus(
 					12L, 34L, "ACTIVE"));
 	}
 
 	@Test
 	public void testFindByIndividualIdAndIndividualSegmentIdAndStatus() {
-		Membership membership =
-			_membershipRepository.
+		BQMembership bqMembership =
+			_bqMembershipRepository.
 				findByIndividualIdAndIndividualSegmentIdAndStatus(
 					12L, 34L, "ACTIVE");
 
-		Assertions.assertEquals(entityModels.get(0), membership);
+		Assertions.assertEquals(entityModels.get(0), bqMembership);
 	}
 
 	@Test
 	public void testFindByIndividualIdAndIndividualSegmentIdInAndStatus() {
-		List<Membership> memberships =
-			_membershipRepository.
+		List<BQMembership> bqMemberships =
+			_bqMembershipRepository.
 				findByIndividualIdAndIndividualSegmentIdInAndStatus(
 					12L, Arrays.asList(34L, 56L), "ACTIVE");
 
-		Assertions.assertEquals(1, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(0), memberships.get(0));
+		Assertions.assertEquals(
+			1, bqMemberships.size(), bqMemberships.toString());
+		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
 	}
 
 	@Test
 	public void testFindByIndividualIdAndStatus() {
-		List<Membership> memberships =
-			_membershipRepository.findByIndividualIdAndStatus(12L, "ACTIVE");
+		List<BQMembership> bqMemberships =
+			_bqMembershipRepository.findByIndividualIdAndStatus(12L, "ACTIVE");
 
-		Assertions.assertEquals(1, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(0), memberships.get(0));
+		Assertions.assertEquals(
+			1, bqMemberships.size(), bqMemberships.toString());
+		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
 	}
 
 	@Test
 	public void testFindByIndividualIdInAndIndividualSegmentIdAndStatus() {
-		List<Membership> memberships =
-			_membershipRepository.
+		List<BQMembership> bqMemberships =
+			_bqMembershipRepository.
 				findByIndividualIdInAndIndividualSegmentIdAndStatus(
 					Arrays.asList(12L, 78L), 34L, "ACTIVE",
 					PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assertions.assertEquals(2, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(0), memberships.get(0));
-		Assertions.assertEquals(entityModels.get(2), memberships.get(1));
+		Assertions.assertEquals(
+			2, bqMemberships.size(), bqMemberships.toString());
+		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
+		Assertions.assertEquals(entityModels.get(2), bqMemberships.get(1));
 
-		memberships =
-			_membershipRepository.
+		bqMemberships =
+			_bqMembershipRepository.
 				findByIndividualIdInAndIndividualSegmentIdAndStatus(
 					Arrays.asList(12L, 78L), 34L, "INACTIVE",
 					PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assertions.assertEquals(0, memberships.size(), memberships.toString());
+		Assertions.assertEquals(
+			0, bqMemberships.size(), bqMemberships.toString());
 
-		memberships =
-			_membershipRepository.
+		bqMemberships =
+			_bqMembershipRepository.
 				findByIndividualIdInAndIndividualSegmentIdAndStatus(
 					Arrays.asList(12L, 78L), 56L, "INACTIVE",
 					PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assertions.assertEquals(1, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(1), memberships.get(0));
+		Assertions.assertEquals(
+			1, bqMemberships.size(), bqMemberships.toString());
+		Assertions.assertEquals(entityModels.get(1), bqMemberships.get(0));
 	}
 
 	@Test
 	public void testFindByIndividualSegmentIdAndStatus() {
-		List<Membership> memberships =
-			_membershipRepository.findByIndividualSegmentIdAndStatus(
+		List<BQMembership> bqMemberships =
+			_bqMembershipRepository.findByIndividualSegmentIdAndStatus(
 				34L, "ACTIVE",
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assertions.assertEquals(2, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(0), memberships.get(0));
-		Assertions.assertEquals(entityModels.get(2), memberships.get(1));
+		Assertions.assertEquals(
+			2, bqMemberships.size(), bqMemberships.toString());
+		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
+		Assertions.assertEquals(entityModels.get(2), bqMemberships.get(1));
 
-		memberships = _membershipRepository.findByIndividualSegmentIdAndStatus(
-			34L, "INACTIVE",
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+		bqMemberships =
+			_bqMembershipRepository.findByIndividualSegmentIdAndStatus(
+				34L, "INACTIVE",
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assertions.assertEquals(0, memberships.size(), memberships.toString());
+		Assertions.assertEquals(
+			0, bqMemberships.size(), bqMemberships.toString());
 
-		memberships = _membershipRepository.findByIndividualSegmentIdAndStatus(
-			56L, "INACTIVE",
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+		bqMemberships =
+			_bqMembershipRepository.findByIndividualSegmentIdAndStatus(
+				56L, "INACTIVE",
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assertions.assertEquals(1, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(1), memberships.get(0));
+		Assertions.assertEquals(
+			1, bqMemberships.size(), bqMemberships.toString());
+		Assertions.assertEquals(entityModels.get(1), bqMemberships.get(0));
 	}
 
 	@Test
 	public void testFindIndividualIdByIndividualSegmentIdAndStatus() {
 		List<Long> individualIds =
-			_membershipRepository.
+			_bqMembershipRepository.
 				findIndividualIdByIndividualSegmentIdAndStatus(34L, "ACTIVE");
 
 		Assertions.assertEquals(
@@ -248,14 +262,14 @@ public abstract class BaseMembershipRepositoryTestCase
 		Assertions.assertEquals(78, individualIds.get(1));
 
 		individualIds =
-			_membershipRepository.
+			_bqMembershipRepository.
 				findIndividualIdByIndividualSegmentIdAndStatus(34L, "INACTIVE");
 
 		Assertions.assertEquals(
 			0, individualIds.size(), individualIds.toString());
 
 		individualIds =
-			_membershipRepository.
+			_bqMembershipRepository.
 				findIndividualIdByIndividualSegmentIdAndStatus(56L, "INACTIVE");
 
 		Assertions.assertEquals(
@@ -266,25 +280,25 @@ public abstract class BaseMembershipRepositoryTestCase
 	@Test
 	public void testFindIndividualIdByIndividualSegmentIdIn() {
 		List<Long> individualIds =
-			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+			_bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
 				Arrays.asList(34L, 56L), 10, 1, true);
 
 		Assertions.assertEquals(Arrays.asList(78L, 12L), individualIds);
 
 		individualIds =
-			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+			_bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
 				Arrays.asList(34L, 56L), 10, 1, false);
 
 		Assertions.assertEquals(Arrays.asList(12L, 78L), individualIds);
 
 		individualIds =
-			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+			_bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
 				Arrays.asList(34L, 56L), 10, 2, true);
 
 		Assertions.assertEquals(Arrays.asList(12L), individualIds);
 
 		individualIds =
-			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+			_bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
 				Arrays.asList(34L, 56L), 1, 1, true);
 
 		Assertions.assertEquals(Arrays.asList(78L), individualIds);
@@ -293,7 +307,7 @@ public abstract class BaseMembershipRepositoryTestCase
 	@Test
 	public void testFindIndividualSegmentIdByIndividualIdAndStatus() {
 		List<Long> individualSegmenIds =
-			_membershipRepository.
+			_bqMembershipRepository.
 				findIndividualSegmentIdByIndividualIdAndStatus(12L, "ACTIVE");
 
 		Assertions.assertEquals(
@@ -301,14 +315,14 @@ public abstract class BaseMembershipRepositoryTestCase
 		Assertions.assertEquals(34, individualSegmenIds.get(0));
 
 		individualSegmenIds =
-			_membershipRepository.
+			_bqMembershipRepository.
 				findIndividualSegmentIdByIndividualIdAndStatus(78L, "INACTIVE");
 
 		Assertions.assertEquals(
 			0, individualSegmenIds.size(), individualSegmenIds.toString());
 
 		individualSegmenIds =
-			_membershipRepository.
+			_bqMembershipRepository.
 				findIndividualSegmentIdByIndividualIdAndStatus(12L, "INACTIVE");
 
 		Assertions.assertEquals(
@@ -319,7 +333,7 @@ public abstract class BaseMembershipRepositoryTestCase
 	@Test
 	public void testFindIndividualSegmentIdByIndividualIdInAndStatus() {
 		List<Long> individualSegmenIds =
-			_membershipRepository.
+			_bqMembershipRepository.
 				findIndividualSegmentIdByIndividualIdInAndStatus(
 					Arrays.asList(12L, 78L), "ACTIVE");
 
@@ -328,7 +342,7 @@ public abstract class BaseMembershipRepositoryTestCase
 		Assertions.assertEquals(34, individualSegmenIds.get(0));
 
 		individualSegmenIds =
-			_membershipRepository.
+			_bqMembershipRepository.
 				findIndividualSegmentIdByIndividualIdInAndStatus(
 					Arrays.asList(12L, 78L), "INACTIVE");
 
@@ -340,7 +354,7 @@ public abstract class BaseMembershipRepositoryTestCase
 	@Test
 	public void testFindTop20IndividualSegmentIdByIndividualId() {
 		List<Long> individualSegmenIds =
-			_membershipRepository.findTop20IndividualSegmentIdByIndividualId(
+			_bqMembershipRepository.findTop20IndividualSegmentIdByIndividualId(
 				12L);
 
 		Assertions.assertEquals(
@@ -349,7 +363,7 @@ public abstract class BaseMembershipRepositoryTestCase
 		Assertions.assertEquals(56, individualSegmenIds.get(1));
 
 		individualSegmenIds =
-			_membershipRepository.findTop20IndividualSegmentIdByIndividualId(
+			_bqMembershipRepository.findTop20IndividualSegmentIdByIndividualId(
 				78L);
 
 		Assertions.assertEquals(
@@ -359,30 +373,34 @@ public abstract class BaseMembershipRepositoryTestCase
 
 	@Test
 	public void testSearchMemberships() {
-		List<Membership> memberships = _membershipRepository.searchMemberships(
-			null, 34L, 10, "ACTIVE");
+		List<BQMembership> bqMemberships =
+			_bqMembershipRepository.searchBQMemberships(
+				null, 34L, 10, "ACTIVE");
 
-		Assertions.assertEquals(2, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(0), memberships.get(0));
-		Assertions.assertEquals(entityModels.get(2), memberships.get(1));
+		Assertions.assertEquals(
+			2, bqMemberships.size(), bqMemberships.toString());
+		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
+		Assertions.assertEquals(entityModels.get(2), bqMemberships.get(1));
 
-		memberships = _membershipRepository.searchMemberships(
+		bqMemberships = _bqMembershipRepository.searchBQMemberships(
 			null, 34L, 10, "INACTIVE");
 
-		Assertions.assertEquals(0, memberships.size(), memberships.toString());
+		Assertions.assertEquals(
+			0, bqMemberships.size(), bqMemberships.toString());
 
-		memberships = _membershipRepository.searchMemberships(
+		bqMemberships = _bqMembershipRepository.searchBQMemberships(
 			null, 56L, 10, "INACTIVE");
 
-		Assertions.assertEquals(1, memberships.size(), memberships.toString());
-		Assertions.assertEquals(entityModels.get(1), memberships.get(0));
+		Assertions.assertEquals(
+			1, bqMemberships.size(), bqMemberships.toString());
+		Assertions.assertEquals(entityModels.get(1), bqMemberships.get(0));
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Membership, Long>
+	protected PagingAndSortingRepository<BQMembership, Long>
 		getPagingAndSortingRepository() {
 
-		return _membershipRepository;
+		return _bqMembershipRepository;
 	}
 
 	private Segment _addSegment(long segmentId) {
@@ -409,10 +427,10 @@ public abstract class BaseMembershipRepositoryTestCase
 	}
 
 	@Autowired
-	private ChannelRepository _channelRepository;
+	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
-	private MembershipRepository _membershipRepository;
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;

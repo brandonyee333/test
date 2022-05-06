@@ -15,14 +15,15 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
@@ -43,14 +44,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Marcellus Tavares
  */
-public abstract class BaseMembershipChangeRepositoryTestCase
-	extends BaseRepositoryTestCase<MembershipChange, Long> {
+@Import(JDBCTestConfiguration.class)
+public class BQMembershipChangeRepositoryTest
+	extends BaseRepositoryTestCase<BQMembershipChange, Long> {
 
 	@BeforeEach
 	public void setUp() {
@@ -60,31 +63,32 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		_tomorrow = DateUtils.addDays(_newDayDate, 1);
 		_yesterday = DateUtils.addDays(_newDayDate, -1);
 
-		List<MembershipChange> membershipsChanges = new LinkedList<>();
+		List<BQMembershipChange> bqMembershipsChanges = new LinkedList<>();
 
 		for (Segment segment : _segments) {
-			membershipsChanges.add(
-				_createMembershipChange(
+			bqMembershipsChanges.add(
+				_createBQMembershipChange(
 					RandomTestUtil.randomNumber(), 1, _yesterday, segment));
-			membershipsChanges.add(
-				_createMembershipChange(
+			bqMembershipsChanges.add(
+				_createBQMembershipChange(
 					RandomTestUtil.randomNumber(), 3,
 					DateUtil.newEndOfDayDate(_newDayDate), segment));
-			membershipsChanges.add(
-				_createMembershipChange(
+			bqMembershipsChanges.add(
+				_createBQMembershipChange(
 					RandomTestUtil.randomNumber(), 4,
 					DateUtil.newEndOfDayDate(_newDayDate), segment));
-			membershipsChanges.add(
-				_createMembershipChange(
+			bqMembershipsChanges.add(
+				_createBQMembershipChange(
 					RandomTestUtil.randomNumber(), 2, _newDayDate, segment));
-			membershipsChanges.add(
-				_createMembershipChange(
+			bqMembershipsChanges.add(
+				_createBQMembershipChange(
 					RandomTestUtil.randomNumber(), 5, _tomorrow, segment));
 		}
 
-		setUpRepository(membershipsChanges.toArray(new MembershipChange[0]));
+		setUpRepository(
+			bqMembershipsChanges.toArray(new BQMembershipChange[0]));
 
-		_membershipChange = entityModels.get(2);
+		_bqMembershipChange = entityModels.get(2);
 	}
 
 	@Test
@@ -93,7 +97,7 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 
 		Assertions.assertEquals(
 			5,
-			_membershipChangeRepository.countMembershipChanges(
+			_bqMembershipChangeRepository.countBQMembershipChanges(
 				FilterHelper.EMPTY, false, segment.getId()));
 	}
 
@@ -109,16 +113,16 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 			Collectors.toList()
 		);
 
-		_membershipChangeRepository.deleteByIndividualSegmentIdIn(segmentIds);
+		_bqMembershipChangeRepository.deleteByIndividualSegmentIdIn(segmentIds);
 
-		List<MembershipChange> membershipChanges = IterableUtils.toList(
-			_membershipChangeRepository.findAll());
+		List<BQMembershipChange> bqMembershipChanges = IterableUtils.toList(
+			_bqMembershipChangeRepository.findAll());
 
-		Stream<MembershipChange> membershipChangesStream =
-			membershipChanges.stream();
+		Stream<BQMembershipChange> bqMembershipChangesStream =
+			bqMembershipChanges.stream();
 
 		Assertions.assertFalse(
-			membershipChangesStream.anyMatch(
+			bqMembershipChangesStream.anyMatch(
 				membershipChange -> segmentIds.contains(
 					membershipChange.getIndividualSegmentId())));
 	}
@@ -126,18 +130,18 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 	@Test
 	public void testFindByIndividualId() {
 		Assertions.assertEquals(
-			Optional.of(_membershipChange),
-			_membershipChangeRepository.findByIndividualId(
-				_membershipChange.getIndividualId()));
+			Optional.of(_bqMembershipChange),
+			_bqMembershipChangeRepository.findByIndividualId(
+				_bqMembershipChange.getIndividualId()));
 	}
 
 	@Test
 	public void testSearchLastByDateChangedPeriodAndIndividualSegmentId() {
 		List<Long> individualSegmentIds = Collections.singletonList(
-			_membershipChange.getIndividualSegmentId());
+			_bqMembershipChange.getIndividualSegmentId());
 
-		List<MembershipChange> membershipChanges =
-			_membershipChangeRepository.
+		List<BQMembershipChange> bqMembershipChanges =
+			_bqMembershipChangeRepository.
 				searchLastByModifiedDateAndIndividualSegmentId(
 					DateUtil.newBeginningOfDayDate(
 						DateUtils.addDays(_yesterday, -3)),
@@ -145,38 +149,41 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 					DateUtil.newEndOfDayDate(
 						DateUtils.addDays(_yesterday, -2)));
 
-		Assertions.assertTrue(membershipChanges.isEmpty());
+		Assertions.assertTrue(bqMembershipChanges.isEmpty());
 
-		membershipChanges =
-			_membershipChangeRepository.
+		bqMembershipChanges =
+			_bqMembershipChangeRepository.
 				searchLastByModifiedDateAndIndividualSegmentId(
 					DateUtil.newBeginningOfDayDate(_yesterday), false,
 					individualSegmentIds,
 					DateUtil.newEndOfDayDate(_newDayDate));
 
 		Assertions.assertEquals(
-			1, membershipChanges.size(), membershipChanges.toString());
-		Assertions.assertEquals(_membershipChange, membershipChanges.get(0));
+			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
+		Assertions.assertEquals(
+			_bqMembershipChange, bqMembershipChanges.get(0));
 
-		membershipChanges =
-			_membershipChangeRepository.
+		bqMembershipChanges =
+			_bqMembershipChangeRepository.
 				searchLastByModifiedDateAndIndividualSegmentId(
 					null, false, individualSegmentIds,
 					DateUtil.newEndOfDayDate(_newDayDate));
 
 		Assertions.assertEquals(
-			1, membershipChanges.size(), membershipChanges.toString());
-		Assertions.assertEquals(_membershipChange, membershipChanges.get(0));
+			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
+		Assertions.assertEquals(
+			_bqMembershipChange, bqMembershipChanges.get(0));
 
-		membershipChanges =
-			_membershipChangeRepository.
+		bqMembershipChanges =
+			_bqMembershipChangeRepository.
 				searchLastByModifiedDateAndIndividualSegmentId(
 					DateUtil.newBeginningOfDayDate(_yesterday), false,
 					individualSegmentIds, DateUtil.newEndOfDayDate(_tomorrow));
 
 		Assertions.assertEquals(
-			1, membershipChanges.size(), membershipChanges.toString());
-		Assertions.assertEquals(entityModels.get(4), membershipChanges.get(0));
+			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
+		Assertions.assertEquals(
+			entityModels.get(4), bqMembershipChanges.get(0));
 
 		List<Segment> segments = _segments.subList(0, 2);
 
@@ -188,27 +195,28 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 			Collectors.toList()
 		);
 
-		membershipChanges =
-			_membershipChangeRepository.
+		bqMembershipChanges =
+			_bqMembershipChangeRepository.
 				searchLastByModifiedDateAndIndividualSegmentId(
 					DateUtil.newBeginningOfDayDate(_yesterday), false,
 					segmentIds1, DateUtil.newEndOfDayDate(_tomorrow));
 
 		Assertions.assertEquals(
-			2, membershipChanges.size(), membershipChanges.toString());
+			2, bqMembershipChanges.size(), bqMembershipChanges.toString());
 
-		Stream<MembershipChange> stream2 = membershipChanges.stream();
+		Stream<BQMembershipChange> stream2 = bqMembershipChanges.stream();
 
 		Assertions.assertEquals(
 			segmentIds1,
 			stream2.map(
-				MembershipChange::getIndividualSegmentId
+				BQMembershipChange::getIndividualSegmentId
 			).collect(
 				Collectors.toList()
 			));
 
-		for (MembershipChange membershipChange : membershipChanges) {
-			Assertions.assertEquals(5L, membershipChange.getIndividualsCount());
+		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
+			Assertions.assertEquals(
+				5L, bqMembershipChange.getIndividualsCount());
 		}
 	}
 
@@ -216,94 +224,99 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 	public void testSearchMembershipChanges() {
 		Segment segment = _segments.get(0);
 
-		List<MembershipChange> membershipChanges =
-			_membershipChangeRepository.searchMembershipChanges(
+		List<BQMembershipChange> bqMembershipChanges =
+			_bqMembershipChangeRepository.searchBQMembershipChanges(
 				FilterHelper.EMPTY, false, segment.getId(),
 				PageRequest.of(0, 1));
 
 		Assertions.assertEquals(
-			1, membershipChanges.size(), membershipChanges.toString());
-		Assertions.assertEquals(entityModels.get(0), membershipChanges.get(0));
+			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
+		Assertions.assertEquals(
+			entityModels.get(0), bqMembershipChanges.get(0));
 
-		membershipChanges = _membershipChangeRepository.searchMembershipChanges(
-			new FilterHelper("operation ge 'ADDED'"), false, segment.getId(),
-			PageRequest.of(0, 10));
+		bqMembershipChanges =
+			_bqMembershipChangeRepository.searchBQMembershipChanges(
+				new FilterHelper("operation ge 'ADDED'"), false,
+				segment.getId(), PageRequest.of(0, 10));
 
-		Stream<MembershipChange> stream = membershipChanges.stream();
+		Stream<BQMembershipChange> stream = bqMembershipChanges.stream();
 
-		Map<Long, List<MembershipChange>> membershipChangesMap = stream.collect(
-			Collectors.groupingBy(MembershipChange::getIndividualSegmentId));
+		Map<Long, List<BQMembershipChange>> bqMembershipChangesMap =
+			stream.collect(
+				Collectors.groupingBy(
+					BQMembershipChange::getIndividualSegmentId));
 
 		Assertions.assertEquals(
-			1, membershipChangesMap.size(), membershipChangesMap.toString());
+			1, bqMembershipChangesMap.size(),
+			bqMembershipChangesMap.toString());
 	}
 
 	@Test
 	public void testUpdateIndividualDeletedByIndividualId() {
-		_membershipChangeRepository.updateIndividualDeletedByIndividualId(
-			Boolean.TRUE, _membershipChange.getIndividualId());
+		_bqMembershipChangeRepository.updateIndividualDeletedByIndividualId(
+			Boolean.TRUE, _bqMembershipChange.getIndividualId());
 
-		Long membershipChangeId = _membershipChange.getId();
+		Long bqMembershipChangeId = _bqMembershipChange.getId();
 
-		Assertions.assertNotNull(membershipChangeId);
+		Assertions.assertNotNull(bqMembershipChangeId);
 
-		Optional<MembershipChange> membershipChangeOptional =
-			_membershipChangeRepository.findById(membershipChangeId);
+		Optional<BQMembershipChange> bqMembershipChangeOptional =
+			_bqMembershipChangeRepository.findById(bqMembershipChangeId);
 
-		Assertions.assertTrue(membershipChangeOptional.isPresent());
+		Assertions.assertTrue(bqMembershipChangeOptional.isPresent());
 
-		MembershipChange actualMembershipChange =
-			membershipChangeOptional.get();
+		BQMembershipChange actualBQMembershipChange =
+			bqMembershipChangeOptional.get();
 
-		Assertions.assertTrue(actualMembershipChange.getIndividualDeleted());
+		Assertions.assertTrue(actualBQMembershipChange.getIndividualDeleted());
 	}
 
 	@Test
 	public void testUpdateIndividualDeletedByIndividualIdIn() {
-		_membershipChangeRepository.updateIndividualDeletedByIndividualIdIn(
-			Boolean.TRUE, Arrays.asList(_membershipChange.getIndividualId()));
+		_bqMembershipChangeRepository.updateIndividualDeletedByIndividualIdIn(
+			Boolean.TRUE, Arrays.asList(_bqMembershipChange.getIndividualId()));
 
-		Long membershipChangeId = _membershipChange.getId();
+		Long bqMembershipChangeId = _bqMembershipChange.getId();
 
-		Assertions.assertNotNull(membershipChangeId);
+		Assertions.assertNotNull(bqMembershipChangeId);
 
-		Optional<MembershipChange> membershipChangeOptional =
-			_membershipChangeRepository.findById(membershipChangeId);
+		Optional<BQMembershipChange> bqMembershipChangeOptional =
+			_bqMembershipChangeRepository.findById(bqMembershipChangeId);
 
-		Assertions.assertTrue(membershipChangeOptional.isPresent());
+		Assertions.assertTrue(bqMembershipChangeOptional.isPresent());
 
-		MembershipChange actualMembershipChange =
-			membershipChangeOptional.get();
+		BQMembershipChange actualBQMembershipChange =
+			bqMembershipChangeOptional.get();
 
-		Assertions.assertTrue(actualMembershipChange.getIndividualDeleted());
+		Assertions.assertTrue(actualBQMembershipChange.getIndividualDeleted());
 	}
 
 	@Test
 	public void testUpdateIndividualNameByIndividualId() {
-		_membershipChangeRepository.updateIndividualNameByIndividualId(
-			_membershipChange.getIndividualId(), "Frank Sinatra");
+		_bqMembershipChangeRepository.updateIndividualNameByIndividualId(
+			_bqMembershipChange.getIndividualId(), "Frank Sinatra");
 
-		Long membershipChangeId = _membershipChange.getId();
+		Long bqMembershipChangeId = _bqMembershipChange.getId();
 
-		Assertions.assertNotNull(membershipChangeId);
+		Assertions.assertNotNull(bqMembershipChangeId);
 
-		Optional<MembershipChange> membershipChangeOptional =
-			_membershipChangeRepository.findById(membershipChangeId);
+		Optional<BQMembershipChange> bqMembershipChangeOptional =
+			_bqMembershipChangeRepository.findById(bqMembershipChangeId);
 
-		Assertions.assertTrue(membershipChangeOptional.isPresent());
+		Assertions.assertTrue(bqMembershipChangeOptional.isPresent());
 
-		MembershipChange actualMembershipChange =
-			membershipChangeOptional.get();
+		BQMembershipChange actualBQMembershipChange =
+			bqMembershipChangeOptional.get();
 
 		Assertions.assertEquals(
-			"Frank Sinatra", actualMembershipChange.getIndividualName());
+			"Frank Sinatra", actualBQMembershipChange.getIndividualName());
 	}
 
 	@Override
-	protected PagingAndSortingRepository<MembershipChange, Long>
+	protected PagingAndSortingRepository<BQMembershipChange, Long>
 		getPagingAndSortingRepository() {
 
-		return _membershipChangeRepository;
+		return _bqMembershipChangeRepository;
 	}
 
 	private Segment _addSegment() {
@@ -328,35 +341,35 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		return _segmentRepository.save(segment);
 	}
 
-	private MembershipChange _createMembershipChange(
+	private BQMembershipChange _createBQMembershipChange(
 		long individualId, long knownIndividualsCount, Date modifiedDate,
 		Segment segment) {
 
-		MembershipChange membershipChange = new MembershipChange();
+		BQMembershipChange bqMembershipChange = new BQMembershipChange();
 
-		membershipChange.setIndividualDeleted(Boolean.FALSE);
-		membershipChange.setIndividualEmail(
+		bqMembershipChange.setIndividualDeleted(Boolean.FALSE);
+		bqMembershipChange.setIndividualEmail(
 			String.format("individual.%d@liferay.com", individualId));
-		membershipChange.setIndividualId(individualId);
-		membershipChange.setIndividualName(
+		bqMembershipChange.setIndividualId(individualId);
+		bqMembershipChange.setIndividualName(
 			String.format("Individual Name %d", individualId));
-		membershipChange.setIndividualsCount(knownIndividualsCount);
-		membershipChange.setIndividualSegmentId(segment.getId());
-		membershipChange.setJoinedDate(modifiedDate);
-		membershipChange.setKnownIndividualsCount(knownIndividualsCount);
-		membershipChange.setModifiedDate(modifiedDate);
-		membershipChange.setOperation("ADDED");
+		bqMembershipChange.setIndividualsCount(knownIndividualsCount);
+		bqMembershipChange.setIndividualSegmentId(segment.getId());
+		bqMembershipChange.setJoinedDate(modifiedDate);
+		bqMembershipChange.setKnownIndividualsCount(knownIndividualsCount);
+		bqMembershipChange.setModifiedDate(modifiedDate);
+		bqMembershipChange.setOperation("ADDED");
 
-		return membershipChange;
+		return bqMembershipChange;
 	}
+
+	private BQMembershipChange _bqMembershipChange;
+
+	@Autowired
+	private BQMembershipChangeRepository _bqMembershipChangeRepository;
 
 	@Autowired
 	private ChannelRepository _channelRepository;
-
-	private MembershipChange _membershipChange;
-
-	@Autowired
-	private MembershipChangeRepository _membershipChangeRepository;
 
 	private Date _newDayDate;
 
