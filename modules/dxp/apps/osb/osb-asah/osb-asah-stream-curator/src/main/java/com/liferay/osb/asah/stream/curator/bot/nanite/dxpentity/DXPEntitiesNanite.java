@@ -230,7 +230,7 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 			return;
 		}
 
-		if (type.isExpandoColumn() || type.isUserField()) {
+		if (type.isUserField()) {
 			return;
 		}
 
@@ -240,9 +240,15 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 					put(
 						"dataSourceId",
 						objectJSONObject.getString("osbAsahDataSourceId"));
-					put(
-						"fields." + type.getIdFieldName(),
-						objectJSONObject.optInt(type.getIdFieldName()));
+
+					if (type.isExpandoColumn()) {
+						put("fields.name", objectJSONObject.optString("name"));
+					}
+					else {
+						put(
+							"fields." + type.getIdFieldName(),
+							objectJSONObject.optInt(type.getIdFieldName()));
+					}
 				}
 			},
 			type);
