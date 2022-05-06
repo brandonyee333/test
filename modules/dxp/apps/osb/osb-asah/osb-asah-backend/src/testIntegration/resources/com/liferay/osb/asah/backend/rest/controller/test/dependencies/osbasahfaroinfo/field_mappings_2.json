@@ -1,0 +1,184 @@
+[
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"1000": "emailAddress",
+			"351238757269547426": "emailAddress"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"displayName": "email",
+		"fieldName": "email",
+		"fieldType": "http://schema.org/email",
+		"id": "331238757947565158",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"351238757269547424": "favoritePokemon"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"displayName": "favoritePokemon",
+		"fieldName": "favoritePokemon",
+		"fieldType": "Text",
+		"id": "340477857996688156",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"1000": "givenName"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"displayName": "givenName",
+		"fieldName": "givenName",
+		"fieldType": "http://schema.org/givenName",
+		"id": "331238757947565160",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"1000": "familyName"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"displayName": "familyName",
+		"fieldName": "familyName",
+		"fieldType": "http://schema.org/familyName",
+		"id": "331238757947565161",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"1000": "jobTitle",
+			"351238757269547424": "jobTitle",
+			"351238757269547425": "jobTitle"
+		},
+		"dateCreated": "2019-01-03T17:09:08.023Z",
+		"dateModified": "2019-01-03T17:09:08.023Z",
+		"displayName": "jobTitle",
+		"fieldName": "jobTitle",
+		"fieldType": "Text",
+		"id": "340477857996688157",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"351238757269547426": "age",
+			"366588399828298918": "age",
+			"366588441118531472": "age",
+			"366588489711802687": "age"
+		},
+		"dateCreated": "2019-07-16T19:22:48.366Z",
+		"dateModified": "2019-07-16T19:23:33.867Z",
+		"displayName": "age",
+		"fieldName": "age",
+		"fieldType": "Number",
+		"id": "366588394714972833",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"366573382114568984": "NumberOfEmployees"
+		},
+		"dateCreated": "2019-07-16T17:23:33.266Z",
+		"dateModified": "2019-07-16T17:23:34.917Z",
+		"displayName": "numberOfEmployees",
+		"fieldName": "numberOfEmployees",
+		"fieldType": "Number",
+		"id": "366573389382719637",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"366573382114568984": "ShippingPostalCode"
+		},
+		"dateCreated": "2019-07-16T17:23:33.906Z",
+		"dateModified": "2019-07-16T17:23:34.845Z",
+		"displayName": "shippingPostalCode",
+		"fieldName": "shippingPostalCode",
+		"fieldType": "Text",
+		"id": "366573390725218943",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	}
+]

@@ -60,6 +60,10 @@ public class ReportRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
+		name = "field-mappings", resourcePath = "field_mappings_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_4.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
