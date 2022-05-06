@@ -37,34 +37,34 @@ public class ReportHttpImpl implements ReportHttp {
 
 	@Override
 	public JSONObject getAccountsJSONObject(
-		String after, String fromDate, String toDate) {
+		String afterId, String fromDate, String toDate) {
 
 		return _httpGetJSONObject(
-			_getPath(after, fromDate, toDate, "accounts"));
+			_getPath(afterId, fromDate, toDate, "accounts"));
 	}
 
 	@Override
 	public JSONObject getIndividualsJSONObject(
-		String after, String fromDate, String toDate) {
+		String afterId, String fromDate, String toDate) {
 
 		return _httpGetJSONObject(
-			_getPath(after, fromDate, toDate, "individuals"));
+			_getPath(afterId, fromDate, toDate, "individuals"));
 	}
 
 	@Override
 	public JSONObject getSegmentsJSONObject(
-		String after, String fromDate, String toDate) {
+		String afterId, String fromDate, String toDate) {
 
 		return _httpGetJSONObject(
-			_getPath(after, fromDate, toDate, "segments"));
+			_getPath(afterId, fromDate, toDate, "segments"));
 	}
 
 	private String _getPath(
-		String after, String fromDate, String toDate, String type) {
+		String afterId, String fromDate, String toDate, String type) {
 
 		return String.format(
-			"/reports/%s?after=%s&fromDate=%s&toDate=%s", type, after, fromDate,
-			toDate);
+			"/reports/%s?after=%s&fromDate=%s&toDate=%s", type, afterId,
+			fromDate, toDate);
 	}
 
 	private JSONObject _httpGetJSONObject(String path) {

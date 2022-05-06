@@ -38,8 +38,8 @@ public class SegmentDataExporter extends BaseReportDataExporter {
 	}
 
 	@Override
-	protected JSONObject doGetResultPageJSONObject(String after) {
-		return reportHttp.getSegmentsJSONObject(after, fromDate, toDate);
+	protected JSONObject doGetResultPageJSONObject(String afterId) {
+		return reportHttp.getSegmentsJSONObject(afterId, fromDate, toDate);
 	}
 
 }

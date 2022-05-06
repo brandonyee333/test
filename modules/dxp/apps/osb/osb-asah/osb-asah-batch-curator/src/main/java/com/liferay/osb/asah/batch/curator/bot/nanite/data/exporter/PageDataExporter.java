@@ -51,7 +51,7 @@ public class PageDataExporter extends BaseReportDataExporter {
 	}
 
 	@Override
-	protected JSONObject doGetResultPageJSONObject(String after) {
+	protected JSONObject doGetResultPageJSONObject(String afterId) {
 		JSONArray jsonArray = _elasticsearchInvoker.get(
 			"pages", SortBuilderUtil.fieldSort("id"),
 			BoolQueryBuilderUtil.filter(
@@ -66,7 +66,7 @@ public class PageDataExporter extends BaseReportDataExporter {
 				QueryBuilders.rangeQuery(
 					"id"
 				).gt(
-					after
+					afterId
 				)
 			),
 			50);

@@ -38,8 +38,8 @@ public class IndividualDataExporter extends BaseReportDataExporter {
 	}
 
 	@Override
-	protected JSONObject doGetResultPageJSONObject(String after) {
-		return reportHttp.getIndividualsJSONObject(after, fromDate, toDate);
+	protected JSONObject doGetResultPageJSONObject(String afterId) {
+		return reportHttp.getIndividualsJSONObject(afterId, fromDate, toDate);
 	}
 
 }

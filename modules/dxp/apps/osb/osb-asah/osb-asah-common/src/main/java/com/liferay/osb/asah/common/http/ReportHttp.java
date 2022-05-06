@@ -22,12 +22,12 @@ import org.json.JSONObject;
 public interface ReportHttp {
 
 	public JSONObject getAccountsJSONObject(
-		String after, String fromDate, String toDate);
+		String afterId, String fromDate, String toDate);
 
 	public JSONObject getIndividualsJSONObject(
-		String after, String fromDate, String toDate);
+		String afterId, String fromDate, String toDate);
 
 	public JSONObject getSegmentsJSONObject(
-		String after, String fromDate, String toDate);
+		String afterId, String fromDate, String toDate);
 
 }

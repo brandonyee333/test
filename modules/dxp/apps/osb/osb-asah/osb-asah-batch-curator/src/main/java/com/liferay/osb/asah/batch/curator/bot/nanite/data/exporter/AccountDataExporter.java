@@ -38,8 +38,8 @@ public class AccountDataExporter extends BaseReportDataExporter {
 	}
 
 	@Override
-	protected JSONObject doGetResultPageJSONObject(String after) {
-		return reportHttp.getAccountsJSONObject(after, fromDate, toDate);
+	protected JSONObject doGetResultPageJSONObject(String afterId) {
+		return reportHttp.getAccountsJSONObject(afterId, fromDate, toDate);
 	}
 
 }
