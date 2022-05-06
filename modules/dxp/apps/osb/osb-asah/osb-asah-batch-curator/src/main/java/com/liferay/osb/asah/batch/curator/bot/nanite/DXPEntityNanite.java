@@ -69,6 +69,9 @@ public class DXPEntityNanite extends BaseNanite {
 
 		Date currentDate = DateUtil.newDate();
 
+		_run(
+			currentDate, lastSuccessfulDate, projectId,
+			DXPEntity.Type.EXPANDO_COLUMN);
 		_run(currentDate, lastSuccessfulDate, projectId, DXPEntity.Type.GROUP);
 		_run(
 			currentDate, lastSuccessfulDate, projectId,
@@ -132,7 +135,10 @@ public class DXPEntityNanite extends BaseNanite {
 
 		DXPEntity.Type type = dxpEntity.getType();
 
-		if (type == DXPEntity.Type.ORGANIZATION) {
+		if (type == DXPEntity.Type.EXPANDO_COLUMN) {
+			fieldsJSONObject.put("columnId", fieldsJSONObject.get("name"));
+		}
+		else if (type == DXPEntity.Type.ORGANIZATION) {
 			if (fieldsJSONObject.has("nameTreePath") &&
 				fieldsJSONObject.has("treePath")) {
 
@@ -257,7 +263,7 @@ public class DXPEntityNanite extends BaseNanite {
 	private static final Log _log = LogFactory.getLog(DXPEntityNanite.class);
 
 	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(6, 6);
+		BoundedExecutor.newBoundedExecutor(7, 7);
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
