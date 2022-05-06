@@ -1,2 +1,2 @@
-INSERT INTO dataexporttask(completeddate, createdate, fromdate, id, starteddate, status, todate, type) VALUES(null, '2022-04-01 12:00:00.000000', '2022-03-01 12:00:00.000000', 1000, null, 'PENDING', '2022-03-31 12:00:00.000000', 'PAGE');
-INSERT INTO dataexporttask(completeddate, createdate, fromdate, id, starteddate, status, todate, type) VALUES('${now}', '${now-1d}', '2022-03-01 12:00:00.000000', 1001, '${now-1h}', 'COMPLETED', '2022-03-31 12:00:00.000000', 'ACCOUNT');
+INSERT INTO DataExportTask(completedDate, createDate, fromDate, id, startedDate, status, toDate, type) VALUES(null, '2022-04-01 12:00:00.000000', '2022-03-01 12:00:00.000000', 1000, null, 'PENDING', '2022-03-31 12:00:00.000000', 'PAGE');
+INSERT INTO DataExportTask(completedDate, createDate, fromDate, id, startedDate, status, toDate, type) VALUES('${now}', '${now-1d}', '2022-03-01 12:00:00.000000', 1001, '${now-1h}', 'COMPLETED', '2022-03-31 12:00:00.000000', 'ACCOUNT');
