@@ -16,10 +16,12 @@ package com.liferay.osb.asah.upgrade.v3_2_0;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -31,10 +33,13 @@ import javax.annotation.PostConstruct;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
+
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -54,6 +59,7 @@ public class DXPEntityMigrationUpgradeStep implements UpgradeStep {
 		_upgradeCollection(DXPEntity.Type.TEAM);
 		_upgradeCollection(DXPEntity.Type.USER);
 		_upgradeCollection(DXPEntity.Type.USER_GROUP);
+		_upgradeExpandoColumns();
 	}
 
 	private List<Long> _getDXPEntityIds(boolean retry, DXPEntity.Type type) {
@@ -108,6 +114,62 @@ public class DXPEntityMigrationUpgradeStep implements UpgradeStep {
 		).iterate();
 	}
 
+	private void _upgradeExpandoColumns() throws Exception {
+		JSONArrayIterator.of(
+			"field-mappings", _faroInfoElasticsearchInvoker,
+			jsonObject -> {
+				JSONObject dataSourceFieldNamesJSONObject =
+					jsonObject.getJSONObject("dataSourceFieldNames");
+
+				for (String key : dataSourceFieldNamesJSONObject.keySet()) {
+					DXPEntity dxpEntity = new DXPEntity();
+
+					dxpEntity.setDataSourceId(Long.valueOf(key));
+
+					JSONObject fieldsJSONObject = JSONUtil.put(
+						"dataType", jsonObject.get("fieldType")
+					).put(
+						"name", dataSourceFieldNamesJSONObject.get(key)
+					);
+
+					if (StringUtils.equals(
+							jsonObject.getString("ownerType"), "individual")) {
+
+						fieldsJSONObject.put(
+							"className", DXPEntity.Type.CLASS_NAME_USER);
+					}
+					else if (StringUtils.equals(
+								jsonObject.getString("ownerType"),
+								"organization")) {
+
+						fieldsJSONObject.put(
+							"className",
+							DXPEntity.Type.CLASS_NAME_ORGANIZATION);
+					}
+
+					dxpEntity.setFieldsJSONObject(fieldsJSONObject);
+					dxpEntity.setIsNew(Boolean.TRUE);
+					dxpEntity.setId(Long.valueOf(jsonObject.getString("id")));
+					dxpEntity.setModifiedDate(
+						DateUtil.toUTCDate(
+							jsonObject.getString("dateModified")));
+					dxpEntity.setType(DXPEntity.Type.EXPANDO_COLUMN);
+
+					_dxpEntityRepository.save(dxpEntity);
+				}
+
+				return null;
+			}
+		).setQueryBuilder(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("context", "custom")
+			).mustNot(
+				QueryBuilders.termsQuery(
+					"id", _getDXPEntityIds(true, DXPEntity.Type.EXPANDO_COLUMN))
+			)
+		).iterate();
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		DXPEntityMigrationUpgradeStep.class);
 
@@ -119,6 +181,9 @@ public class DXPEntityMigrationUpgradeStep implements UpgradeStep {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	private NamedParameterJdbcTemplate _namedParameterJdbcTemplate;
 
