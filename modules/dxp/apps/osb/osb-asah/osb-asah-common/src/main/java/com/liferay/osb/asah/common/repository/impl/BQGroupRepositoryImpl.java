@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQGroup;
+import com.liferay.osb.asah.common.repository.CustomBQGroupRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.List;
@@ -30,12 +31,14 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcos Martins
  */
-public class BQGroupRepositoryImpl extends BaseRepository {
+public class BQGroupRepositoryImpl
+	extends BaseRepository implements CustomBQGroupRepository {
 
 	public BQGroupRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, @Nullable String keywords) {
 
@@ -54,6 +57,7 @@ public class BQGroupRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<BQGroup> searchByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, @Nullable String keywords,
 		Pageable pageable) {

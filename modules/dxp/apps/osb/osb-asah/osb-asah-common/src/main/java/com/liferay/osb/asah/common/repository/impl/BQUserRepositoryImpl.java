@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQUser;
+import com.liferay.osb.asah.common.repository.CustomBQUserRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.List;
@@ -30,12 +31,14 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Marcos Martins
  */
-public class BQUserRepositoryImpl extends BaseRepository {
+public class BQUserRepositoryImpl
+	extends BaseRepository implements CustomBQUserRepository {
 
 	public BQUserRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords) {
 
@@ -54,6 +57,7 @@ public class BQUserRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<BQUser> findByFields(
 		Map<String, Object> fields, Pageable pageable) {
 

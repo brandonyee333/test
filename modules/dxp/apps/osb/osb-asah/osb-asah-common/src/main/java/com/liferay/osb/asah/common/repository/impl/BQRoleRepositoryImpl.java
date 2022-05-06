@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQRole;
+import com.liferay.osb.asah.common.repository.CustomBQRoleRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.List;
@@ -29,12 +30,14 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Marcos Martins
  */
-public class BQRoleRepositoryImpl extends BaseRepository {
+public class BQRoleRepositoryImpl
+	extends BaseRepository implements CustomBQRoleRepository {
 
 	public BQRoleRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords) {
 
@@ -53,6 +56,7 @@ public class BQRoleRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	@Override
 	public List<BQRole> searchByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords, Pageable pageable) {
 
