@@ -322,8 +322,8 @@ public class ReportRestControllerTest
 
 		_assertDataExportTaskDTO(
 			null, _createDate, responseEntity.getBody(), _fromDate, "1000",
-			null, null, DataExportTask.Status.PENDING, _toDate,
-			DataExportTask.Type.PAGE);
+			DataExportTask.Status.PENDING, null, DataExportTask.Status.PENDING,
+			_toDate, DataExportTask.Type.PAGE);
 	}
 
 	@SQLResource(

@@ -222,8 +222,15 @@ public class ReportRestController extends BaseRestController {
 			return _addDataExportTask(fromUtcDate, status, toUtcDate, type);
 		}
 
-		return _buildAcceptedResponseEntity(
-			new DataExportTaskDTO(dataExportTask));
+		DataExportTaskDTO dataExportTaskDTO = new DataExportTaskDTO(
+			dataExportTask);
+
+		if (status == DataExportTask.Status.PENDING) {
+			dataExportTaskDTO.setPreviousStatus(
+				DataExportTask.Status.PENDING.name());
+		}
+
+		return _buildAcceptedResponseEntity(dataExportTaskDTO);
 	}
 
 	@GetMapping("/export/{type}/file")
