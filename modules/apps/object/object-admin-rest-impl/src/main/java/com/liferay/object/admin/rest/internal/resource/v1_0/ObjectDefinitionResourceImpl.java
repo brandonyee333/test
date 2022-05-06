@@ -28,6 +28,7 @@ import com.liferay.object.admin.rest.internal.odata.entity.v1_0.ObjectDefinition
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
 import com.liferay.object.constants.ObjectActionKeys;
 import com.liferay.object.constants.ObjectConstants;
+import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionService;
 import com.liferay.object.service.ObjectFieldLocalService;
@@ -137,6 +138,7 @@ public class ObjectDefinitionResourceImpl
 				LocalizedMapUtil.getLocalizedMap(
 					objectDefinition.getPluralLabel()),
 				objectDefinition.getScope(),
+				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT,
 				transformToList(
 					objectDefinition.getObjectFields(),
 					objectField -> ObjectFieldUtil.toObjectField(
