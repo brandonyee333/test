@@ -70,6 +70,11 @@ public class BQMembershipChangeDTO {
 		_bqMembershipChangeDTOs = bqMembershipChangeDTOs;
 	}
 
+	@JsonProperty("membership-changes")
+	public Set<BQMembershipChangeDTO> getBQMembershipChangeDTOs() {
+		return _bqMembershipChangeDTOs;
+	}
+
 	@JsonProperty("_embedded")
 	public Map<String, Object> getEmbedded() {
 		return _embedded;
@@ -124,11 +129,6 @@ public class BQMembershipChangeDTO {
 		return _knownIndividualsCount;
 	}
 
-	@JsonProperty("membership-changes")
-	public Set<BQMembershipChangeDTO> getMembershipChangeDTOs() {
-		return _bqMembershipChangeDTOs;
-	}
-
 	@JsonAlias("modifiedDate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
@@ -151,6 +151,12 @@ public class BQMembershipChangeDTO {
 	@JsonProperty("individualSegmentId")
 	public String getSegmentId() {
 		return _segmentId;
+	}
+
+	public void setBQMembershipChangeDTOs(
+		Set<BQMembershipChangeDTO> bqMembershipChangeDTOs) {
+
+		_bqMembershipChangeDTOs = bqMembershipChangeDTOs;
 	}
 
 	public void setEmbedded(Map<String, Object> embedded) {
@@ -189,12 +195,6 @@ public class BQMembershipChangeDTO {
 
 	public void setKnownIndividualsCount(Long knownIndividualsCount) {
 		_knownIndividualsCount = knownIndividualsCount;
-	}
-
-	public void setMembershipChangeDTOs(
-		Set<BQMembershipChangeDTO> bqMembershipChangeDTOs) {
-
-		_bqMembershipChangeDTOs = bqMembershipChangeDTOs;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
