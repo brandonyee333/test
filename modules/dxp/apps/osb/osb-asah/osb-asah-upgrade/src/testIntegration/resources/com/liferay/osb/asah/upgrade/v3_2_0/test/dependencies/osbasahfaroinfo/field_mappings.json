@@ -1,0 +1,44 @@
+[
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"405057430327289648": "secondaryEmail"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"fieldName": "secondaryEmail",
+		"fieldType": "http://schema.org/secondaryEmail",
+		"id": "331238757947565158",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"405057430327289648": "email"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"fieldName": "email",
+		"fieldType": "http://schema.org/email",
+		"id": "331238757947565159",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	}
+]

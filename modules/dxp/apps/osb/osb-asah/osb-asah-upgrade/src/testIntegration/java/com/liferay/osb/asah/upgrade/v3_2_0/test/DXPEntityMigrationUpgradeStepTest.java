@@ -99,7 +99,10 @@ public class DXPEntityMigrationUpgradeStepTest
 		_dxpRawElasticsearchInvoker.delete(
 			DXPEntity.Type.USER_GROUP.getCollectionName(),
 			QueryBuilders.matchAllQuery());
+		_faroInfoElasticsearchInvoker.delete(
+			"field-mappings", QueryBuilders.matchAllQuery());
 
+		_dxpEntityRepository.deleteByType(DXPEntity.Type.EXPANDO_COLUMN);
 		_dxpEntityRepository.deleteByType(DXPEntity.Type.GROUP);
 		_dxpEntityRepository.deleteByType(DXPEntity.Type.ORGANIZATION);
 		_dxpEntityRepository.deleteByType(DXPEntity.Type.ROLE);
@@ -112,35 +115,52 @@ public class DXPEntityMigrationUpgradeStepTest
 
 	@Test
 	public void testUpgrade() throws Exception {
-		JSONArray groupJSONArray = _getJSONArray("groups");
-		JSONArray organizationJSONArray = _getJSONArray("organizations");
-		JSONArray roleJSONArray = _getJSONArray("roles");
-		JSONArray teamJSONArray = _getJSONArray("teams");
-		JSONArray userJSONArray = _getJSONArray("users");
-		JSONArray userGroupJSONArray = _getJSONArray("user_groups");
+		JSONArray fieldMappingsJSONArray = _getJSONArray(
+			"field_mappings",
+			WeDeployDataService.OSB_ASAH_FARO_INFO.toString());
+		JSONArray groupsJSONArray = _getJSONArray(
+			"groups", WeDeployDataService.OSB_ASAH_DXP_RAW.toString());
+		JSONArray organizationsJSONArray = _getJSONArray(
+			"organizations", WeDeployDataService.OSB_ASAH_DXP_RAW.toString());
+		JSONArray rolesJSONArray = _getJSONArray(
+			"roles", WeDeployDataService.OSB_ASAH_DXP_RAW.toString());
+		JSONArray teamsJSONArray = _getJSONArray(
+			"teams", WeDeployDataService.OSB_ASAH_DXP_RAW.toString());
+		JSONArray usersJSONArray = _getJSONArray(
+			"users", WeDeployDataService.OSB_ASAH_DXP_RAW.toString());
+		JSONArray userGroupsJSONArray = _getJSONArray(
+			"user_groups", WeDeployDataService.OSB_ASAH_DXP_RAW.toString());
 
+		_faroInfoElasticsearchInvoker.add(
+			"field-mappings", fieldMappingsJSONArray);
 		_dxpRawElasticsearchInvoker.add(
-			DXPEntity.Type.GROUP.getCollectionName(), groupJSONArray);
+			DXPEntity.Type.GROUP.getCollectionName(), groupsJSONArray);
 		_dxpRawElasticsearchInvoker.add(
 			DXPEntity.Type.ORGANIZATION.getCollectionName(),
-			organizationJSONArray);
+			organizationsJSONArray);
 		_dxpRawElasticsearchInvoker.add(
-			DXPEntity.Type.ROLE.getCollectionName(), roleJSONArray);
+			DXPEntity.Type.ROLE.getCollectionName(), rolesJSONArray);
 		_dxpRawElasticsearchInvoker.add(
-			DXPEntity.Type.TEAM.getCollectionName(), teamJSONArray);
+			DXPEntity.Type.TEAM.getCollectionName(), teamsJSONArray);
 		_dxpRawElasticsearchInvoker.add(
-			DXPEntity.Type.USER.getCollectionName(), userJSONArray);
+			DXPEntity.Type.USER.getCollectionName(), usersJSONArray);
 		_dxpRawElasticsearchInvoker.add(
-			DXPEntity.Type.USER_GROUP.getCollectionName(), userGroupJSONArray);
+			DXPEntity.Type.USER_GROUP.getCollectionName(), userGroupsJSONArray);
 
 		_dxpEntityMigrationUpgradeStep.upgrade("");
 
-		_assertDXPEntities(groupJSONArray, DXPEntity.Type.GROUP);
-		_assertDXPEntities(organizationJSONArray, DXPEntity.Type.ORGANIZATION);
-		_assertDXPEntities(roleJSONArray, DXPEntity.Type.ROLE);
-		_assertDXPEntities(teamJSONArray, DXPEntity.Type.TEAM);
-		_assertDXPEntities(userJSONArray, DXPEntity.Type.USER);
-		_assertDXPEntities(userGroupJSONArray, DXPEntity.Type.USER_GROUP);
+		_assertDXPEntities(
+			new JSONArray(
+				TestExecutionListenerUtil.replaceVariables(
+					ResourceUtil.readResourceToString(
+						"dependencies/expected_expando_columns.json", this))),
+			DXPEntity.Type.EXPANDO_COLUMN);
+		_assertDXPEntities(groupsJSONArray, DXPEntity.Type.GROUP);
+		_assertDXPEntities(organizationsJSONArray, DXPEntity.Type.ORGANIZATION);
+		_assertDXPEntities(rolesJSONArray, DXPEntity.Type.ROLE);
+		_assertDXPEntities(teamsJSONArray, DXPEntity.Type.TEAM);
+		_assertDXPEntities(usersJSONArray, DXPEntity.Type.USER);
+		_assertDXPEntities(userGroupsJSONArray, DXPEntity.Type.USER_GROUP);
 	}
 
 	private void _assertDXPEntities(JSONArray jsonArray, DXPEntity.Type type) {
@@ -160,12 +180,16 @@ public class DXPEntityMigrationUpgradeStepTest
 				Collections.emptyMap(), type));
 	}
 
-	private JSONArray _getJSONArray(String collectionName) throws Exception {
+	private JSONArray _getJSONArray(
+			String collectionName, String weDeployDataServiceName)
+		throws Exception {
+
 		return new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					String.format(
-						"dependencies/osbasahdxpraw/%s.json", collectionName),
+						"dependencies/%s/%s.json", weDeployDataServiceName,
+						collectionName),
 					this)));
 	}
 
@@ -180,6 +204,9 @@ public class DXPEntityMigrationUpgradeStepTest
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

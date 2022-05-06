@@ -1,0 +1,13 @@
+[
+	{
+		"dataSourceId": "405057430327289648",
+		"fields": {
+			"className": "com.liferay.portal.kernel.model.User",
+			"dataType": "http://schema.org/secondaryEmail",
+			"name": "secondaryEmail"
+		},
+		"id": "331238757947565158",
+		"modifiedDate": "2019-01-02T17:09:08.023Z",
+		"type": "EXPANDO_COLUMN"
+	}
+]
