@@ -14,13 +14,23 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.BQRole;
+import com.liferay.osb.asah.common.entity.BQTeam;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcos Martins
  */
-public interface BQRoleRepository
-	extends CustomBQRoleRepository, PagingAndSortingRepository<BQRole, String> {
+@Repository
+public interface CustomBQTeamRepository {
+
+	public long countByDataSourceIdsAndKeywords(
+		List<Long> dataSourceIds, String keywords);
+
+	public List<BQTeam> searchByDataSourceIdsAndKeywords(
+		List<Long> dataSourceIds, String keywords, Pageable pageable);
+
 }

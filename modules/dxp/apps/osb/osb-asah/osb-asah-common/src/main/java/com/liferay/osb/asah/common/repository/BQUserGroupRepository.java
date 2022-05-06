@@ -16,23 +16,12 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQUserGroup;
 
-import java.util.List;
-
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcos Martins
  */
-@Repository
 public interface BQUserGroupRepository
-	extends PagingAndSortingRepository<BQUserGroup, String> {
-
-	public long countByDataSourceIdsAndKeywords(
-		List<Long> dataSourceIds, String keywords);
-
-	public List<BQUserGroup> searchByDataSourceIdsAndKeywords(
-		List<Long> dataSourceIds, String keywords, Pageable pageable);
-
+	extends CustomBQUserGroupRepository,
+			PagingAndSortingRepository<BQUserGroup, String> {
 }
