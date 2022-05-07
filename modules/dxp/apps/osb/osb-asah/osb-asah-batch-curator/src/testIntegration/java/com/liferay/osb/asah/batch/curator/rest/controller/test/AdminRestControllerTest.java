@@ -51,6 +51,8 @@ public class AdminRestControllerTest
 	public void testCloseSessions() throws Exception {
 		_adminRestController.closeSessions();
 
+		_elasticsearchInvoker.refresh();
+
 		Assertions.assertEquals(
 			2,
 			_elasticsearchInvoker.count(

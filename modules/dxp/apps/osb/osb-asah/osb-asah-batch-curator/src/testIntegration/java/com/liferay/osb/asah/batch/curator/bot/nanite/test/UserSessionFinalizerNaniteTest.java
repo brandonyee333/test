@@ -60,6 +60,8 @@ public class UserSessionFinalizerNaniteTest
 	public void testExpiredSessionMultipleInteractions() throws Exception {
 		_userSessionFinalizerNanite.run(null);
 
+		_elasticsearchInvoker.refresh();
+
 		Assertions.assertEquals(
 			1,
 			_elasticsearchInvoker.count(
@@ -142,6 +144,8 @@ public class UserSessionFinalizerNaniteTest
 	public void testExpiredSessionSingleInteraction() throws Exception {
 		_userSessionFinalizerNanite.run(null);
 
+		_elasticsearchInvoker.refresh();
+
 		Assertions.assertEquals(
 			2,
 			_elasticsearchInvoker.count(
@@ -188,6 +192,8 @@ public class UserSessionFinalizerNaniteTest
 	@Test
 	public void testExpiredSessionUpdatesAssets() throws Exception {
 		_userSessionFinalizerNanite.run(null);
+
+		_elasticsearchInvoker.refresh();
 
 		Assertions.assertEquals(
 			1,
@@ -258,6 +264,8 @@ public class UserSessionFinalizerNaniteTest
 		String modifiedDate2 = userSessionJSONObject.getString("modifiedDate");
 
 		_userSessionFinalizerNanite.run(null);
+
+		_elasticsearchInvoker.refresh();
 
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215919");
@@ -361,6 +369,8 @@ public class UserSessionFinalizerNaniteTest
 	@Test
 	public void testUpdateTimeOnPageSinglePage() throws Exception {
 		_userSessionFinalizerNanite.run(null);
+
+		_elasticsearchInvoker.refresh();
 
 		Assertions.assertEquals(
 			1,
