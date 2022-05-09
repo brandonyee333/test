@@ -28,6 +28,7 @@ import com.google.cloud.bigquery.storage.v1.WriteStream;
 import com.google.common.util.concurrent.MoreExecutors;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -38,7 +39,6 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
@@ -47,7 +47,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -84,17 +83,11 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 						clientWriteStream.getTableSchema()
 					).build()) {
 
-				String currentIndividualId = null;
-
-				while (!Objects.equals(
-							currentIndividualId, _lastIndividualId)) {
-
-					currentIndividualId = _lastIndividualId;
-
+				while (true) {
 					JSONArray jsonArray = _getNextBatch(datasetName);
 
 					if (jsonArray.isEmpty()) {
-						continue;
+						break;
 					}
 
 					ApiFuture<AppendRowsResponse> apiFuture =
@@ -156,24 +149,21 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 	}
 
 	private JSONArray _getNextBatch(String projectId) {
-		BoolQueryBuilder individualsBoolQueryBuilder =
-			QueryBuilders.boolQuery();
-
-		individualsBoolQueryBuilder.filter(
-			QueryBuilders.existsQuery("emailAddressHashed"));
-		individualsBoolQueryBuilder.filter(
-			QueryBuilders.existsQuery("firstEnrichmentDate"));
-		individualsBoolQueryBuilder.filter(
-			QueryBuilders.rangeQuery(
-				"id"
-			).gt(
-				_lastIndividualId
-			));
-
 		SearchSourceBuilder individualsSearchSourceBuilder =
 			new SearchSourceBuilder();
 
-		individualsSearchSourceBuilder.query(individualsBoolQueryBuilder);
+		individualsSearchSourceBuilder.query(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery("emailAddressHashed")
+			).filter(
+				QueryBuilders.existsQuery("firstEnrichmentDate")
+			).filter(
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					_lastIndividualId
+				)
+			));
 		individualsSearchSourceBuilder.size(500);
 		individualsSearchSourceBuilder.sort("id");
 
@@ -203,23 +193,23 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 			Date firstEnrichmentDate = DateUtil.toUTCDate(
 				individualJSONObject.getString("firstEnrichmentDate"));
 
-			dataSourceIndividualPKs.forEach(
-				dataSourceIndividualPKObject -> {
-					JSONObject dataSourceIndividualPK =
-						(JSONObject)dataSourceIndividualPKObject;
+			for (int i = 0; i < dataSourceIndividualPKs.length(); i++) {
+				JSONObject dataSourceIndividualPK =
+					dataSourceIndividualPKs.getJSONObject(i);
 
-					JSONArray individualPKJSONArray =
-						dataSourceIndividualPK.getJSONArray("individualPKs");
+				JSONArray individualPKJSONArray =
+					dataSourceIndividualPK.getJSONArray("individualPKs");
 
-					individualPKJSONArray.forEach(
-						individualPKObject -> identityMap.put(
-							(String)individualPKObject,
-							JSONUtil.put(
-								"createDate", firstEnrichmentDate
-							).put(
-								"emailAddressHashed", emailAddressHashed
-							)));
-				});
+				for (int j = 0; j < individualPKJSONArray.length(); j++) {
+					identityMap.put(
+						individualPKJSONArray.getString(j),
+						JSONUtil.put(
+							"createDate", firstEnrichmentDate
+						).put(
+							"emailAddressHashed", emailAddressHashed
+						));
+				}
+			}
 		}
 
 		SearchHit lastSearchHit = hits[hits.length - 1];
@@ -228,8 +218,6 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 
 		SearchSourceBuilder userSessionsSearchSourceBuilder =
 			new SearchSourceBuilder();
-		BoolQueryBuilder userSessionBoolQueryBuilder =
-			QueryBuilders.boolQuery();
 
 		userSessionsSearchSourceBuilder.aggregation(
 			AggregationBuilders.terms(
@@ -256,10 +244,9 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 				)
 			));
 
-		userSessionBoolQueryBuilder.filter(
-			QueryBuilders.termsQuery("userId", identityMap.keySet()));
-
-		userSessionsSearchSourceBuilder.query(userSessionBoolQueryBuilder);
+		userSessionsSearchSourceBuilder.query(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termsQuery("userId", identityMap.keySet())));
 		userSessionsSearchSourceBuilder.size(0);
 
 		SearchResponse userSessionsSearchResponse =
@@ -297,11 +284,11 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 
 					String channelId = channelIdBucket.getKeyAsString();
 
-					JSONObject identity = identityMap.get(userId);
+					JSONObject identityJSONObject = identityMap.get(userId);
 
 					jsonArray.put(
 						JSONUtil.merge(
-							identity,
+							identityJSONObject,
 							JSONUtil.put(
 								"channelId", Long.parseLong(channelId)
 							).put(
@@ -311,7 +298,7 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 								DigestUtils.sha256Hex(
 									String.join(
 										"#", projectId, dataSourceId, channelId,
-										identity.getString(
+										identityJSONObject.getString(
 											"emailAddressHashed")))
 							).put(
 								"projectId", projectId
