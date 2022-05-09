@@ -577,7 +577,7 @@ public class EventAnalysisDog {
 			if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 				if (eventAnalysisBreakdown.getDateGrouping() == null) {
 					throw new OSBAsahException(
-						HttpStatus.BAD_REQUEST, "Date grouping cannot be null");
+						HttpStatus.BAD_REQUEST, "Date grouping is null");
 				}
 			}
 			else if (dataType.equals(

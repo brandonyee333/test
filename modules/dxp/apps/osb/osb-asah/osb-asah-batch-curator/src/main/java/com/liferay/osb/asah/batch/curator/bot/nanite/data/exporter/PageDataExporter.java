@@ -43,8 +43,7 @@ public class PageDataExporter extends BaseReportDataExporter {
 		super(fromDate, jsonFactory, outputStream, null, toDate);
 
 		if (elasticsearchInvoker == null) {
-			throw new IllegalArgumentException(
-				"ElasticsearchInvoker cannot be null");
+			throw new IllegalArgumentException("Elasticsearch invoker is null");
 		}
 
 		_elasticsearchInvoker = elasticsearchInvoker;

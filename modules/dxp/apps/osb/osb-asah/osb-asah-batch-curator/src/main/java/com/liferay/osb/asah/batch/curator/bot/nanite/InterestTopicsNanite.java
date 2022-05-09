@@ -255,8 +255,7 @@ public class InterestTopicsNanite extends BaseNanite {
 				Long assetId = asset.getId();
 
 				if (assetId == null) {
-					throw new IllegalArgumentException(
-						"Asset ID cannot be null");
+					throw new IllegalArgumentException("Asset ID is null");
 				}
 
 				Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
