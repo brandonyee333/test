@@ -1413,12 +1413,11 @@ public class ReportRestController extends BaseRestController {
 		}
 		catch (Exception exception) {
 			throw new IllegalArgumentException(
-				"Wrong date format. Cannot convert to UTC date.", exception);
+				"Unable to convert to UTC date", exception);
 		}
 
 		if (fromUTCDate.after(toUTCDate)) {
-			throw new IllegalArgumentException(
-				"Wrong range date. \"fromDate\" cannot be after \"toDate\"");
+			throw new IllegalArgumentException("From date is after to date");
 		}
 	}
 

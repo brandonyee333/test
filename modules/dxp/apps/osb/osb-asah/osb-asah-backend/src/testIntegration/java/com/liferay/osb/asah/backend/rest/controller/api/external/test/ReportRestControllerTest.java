@@ -147,8 +147,7 @@ public class ReportRestControllerTest
 				"page"));
 
 		Assertions.assertEquals(
-			"Wrong range date. \"fromDate\" cannot be after \"toDate\"",
-			exception.getMessage());
+			"From date is after to date", exception.getMessage());
 	}
 
 	@Test
@@ -204,8 +203,7 @@ public class ReportRestControllerTest
 				"page"));
 
 		Assertions.assertEquals(
-			"Wrong range date. \"fromDate\" cannot be after \"toDate\"",
-			exception.getMessage());
+			"From date is after to date", exception.getMessage());
 	}
 
 	@ElasticsearchIndex(
