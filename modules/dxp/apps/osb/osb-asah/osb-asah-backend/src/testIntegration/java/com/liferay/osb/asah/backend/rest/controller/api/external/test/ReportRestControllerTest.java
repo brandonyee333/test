@@ -120,7 +120,6 @@ public class ReportRestControllerTest
 				"page");
 
 		Assertions.assertNotNull(responseEntity);
-
 		Assertions.assertEquals(
 			HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
