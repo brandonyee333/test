@@ -66,8 +66,7 @@ public class ReportDataExporterFactory {
 		}
 
 		throw new IllegalArgumentException(
-			String.format(
-				"Invalid data export task type: %s", dataExportTask.getType()));
+			"Invalid data export task type: %s" + dataExportTask.getType());
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
