@@ -204,7 +204,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public long countByCreateDateBetweenAndIdAfter(
-		Date createDateFrom, Date createDateTo, Long id) {
+		Date fromDate, Date toDate, Long id) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -214,9 +214,9 @@ public class ElasticsearchIndividualRepositoryImpl
 				QueryBuilders.rangeQuery(
 					"dateCreated"
 				).gte(
-					DateUtil.toString(createDateFrom)
+					DateUtil.toString(fromDate)
 				).lte(
-					DateUtil.toString(createDateTo)
+					DateUtil.toString(toDate)
 				)
 			).filter(
 				QueryBuilders.rangeQuery(
@@ -685,7 +685,7 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public List<Individual> findByCreateDateBetweenAndIdAfter(
-		Date createDateFrom, Date createDateTo, Long id, Pageable pageable) {
+		Date fromDate, Date toDate, Long id, Pageable pageable) {
 
 		return _toIndividuals(
 			_faroInfoElasticsearchInvoker.get(
@@ -695,9 +695,9 @@ public class ElasticsearchIndividualRepositoryImpl
 					QueryBuilders.rangeQuery(
 						"dateCreated"
 					).gte(
-						DateUtil.toString(createDateFrom)
+						DateUtil.toString(fromDate)
 					).lte(
-						DateUtil.toString(createDateTo)
+						DateUtil.toString(toDate)
 					)
 				).filter(
 					QueryBuilders.rangeQuery(

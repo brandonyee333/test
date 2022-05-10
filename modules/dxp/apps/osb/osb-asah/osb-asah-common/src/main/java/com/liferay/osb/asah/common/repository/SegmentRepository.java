@@ -37,7 +37,7 @@ public interface SegmentRepository
 
 	@Cacheable
 	public long countByCreateDateBetweenAndIdAfter(
-		Date createDateFrom, Date createDateTo, Long id);
+		Date fromDate, Date toDate, Long id);
 
 	@Cacheable
 	public long countByIdAfter(Long id);
@@ -59,7 +59,7 @@ public interface SegmentRepository
 
 	@Cacheable
 	public List<Segment> findByCreateDateBetweenAndIdAfter(
-		Date createDateFrom, Date createDateTo, Long id, Pageable pageable);
+		Date fromDate, Date toDate, Long id, Pageable pageable);
 
 	@Cacheable
 	public List<Segment> findByIdAfter(Long id, Pageable pageable);
