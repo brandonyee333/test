@@ -16,6 +16,8 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.entity.BQAccountEntry;
+import com.liferay.osb.asah.common.entity.BQAccountGroup;
 import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQGroup;
@@ -27,6 +29,8 @@ import com.liferay.osb.asah.common.entity.BQUserGroup;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.repository.BQAccountEntryRepository;
+import com.liferay.osb.asah.common.repository.BQAccountGroupRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQGroupRepository;
@@ -210,9 +214,39 @@ public class DXPEntitiesIngestionNanite {
 			jsonObject.getJSONArray("fields"));
 
 		if (StringUtils.equals(
-				type,
-				"com.liferay.analytics.message.storage.model." +
-					"AnalyticsDeleteMessage")) {
+				type, "com.liferay.account.model.AccountEntry")) {
+
+			BQAccountEntry accountEntry = _objectMapper.convertValue(
+				fields, BQAccountEntry.class);
+
+			accountEntry.setId(
+				_generateDXPEntityId(
+					accountEntry.getAccountEntryId(), dataSourceId, projectId));
+
+			accountEntry.setIsNew(
+				_isNew(_bqAccountEntryRepository, accountEntry.getId()));
+
+			_bqAccountEntryRepository.save(accountEntry);
+		}
+		else if (StringUtils.equals(
+					type, "com.liferay.account.model.AccountGroup")) {
+
+			BQAccountGroup accountGroup = _objectMapper.convertValue(
+				fields, BQAccountGroup.class);
+
+			accountGroup.setId(
+				_generateDXPEntityId(
+					accountGroup.getAccountGroupId(), dataSourceId, projectId));
+
+			accountGroup.setIsNew(
+				_isNew(_bqAccountGroupRepository, accountGroup.getId()));
+
+			_bqAccountGroupRepository.save(accountGroup);
+		}
+		else if (StringUtils.equals(
+					type,
+					"com.liferay.analytics.message.storage.model." +
+						"AnalyticsDeleteMessage")) {
 
 			try {
 				AnalyticsDeleteMessage analyticsDeleteMessage =
@@ -380,6 +414,12 @@ public class DXPEntitiesIngestionNanite {
 
 	@Autowired
 	private ApplicationContext _applicationContext;
+
+	@Autowired
+	private BQAccountEntryRepository _bqAccountEntryRepository;
+
+	@Autowired
+	private BQAccountGroupRepository _bqAccountGroupRepository;
 
 	@Autowired
 	private BQExpandoColumnRepository _bqExpandoColumnRepository;
