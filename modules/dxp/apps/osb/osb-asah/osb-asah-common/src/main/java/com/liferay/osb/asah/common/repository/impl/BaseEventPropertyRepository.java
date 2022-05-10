@@ -14,6 +14,11 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
+import com.liferay.osb.asah.common.dog.EventDefinitionDog;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
+
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -23,6 +28,7 @@ import org.jooq.SelectFinalStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -55,20 +61,12 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 
 		return selectSelectStep.from(
 			"BQEventProperty"
-		).join(
-			"EventAttributeDefinition"
-		).on(
-			DSL.field(
-				"BQEventProperty.name"
-			).eq(
-				DSL.field("EventAttributeDefinition.name")
-			)
 		).where(
 			DSL.and(
 				DSL.field(
-					"EventAttributeDefinition.id"
+					"BQEventProperty.name"
 				).eq(
-					eventAttributeDefinitionId
+					_getEventAttributeDefinitionName(eventAttributeDefinitionId)
 				),
 				DSL.field(
 					"BQEventProperty.id"
@@ -108,15 +106,15 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 			channelId
 		).and(
 			DSL.field(
-				"EventDefinition.id"
+				"BQEvent.eventId"
 			).eq(
-				eventDefinitionId
+				_getEventDefinitionName(eventDefinitionId)
 			)
 		).and(
 			DSL.field(
-				"EventAttributeDefinition.id"
+				"BQEventProperty.name"
 			).eq(
-				eventAttributeDefinitionId
+				_getEventAttributeDefinitionName(eventAttributeDefinitionId)
 			)
 		).and(
 			DSL.field(
@@ -125,6 +123,23 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 				"%" + keywords + "%"
 			)
 		);
+	}
+
+	private String _getEventAttributeDefinitionName(
+		Long eventAttributeDefinitionId) {
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionDog.getEventAttributeDefinition(
+				eventAttributeDefinitionId);
+
+		return eventAttributeDefinition.getName();
+	}
+
+	private String _getEventDefinitionName(Long eventDefinitionId) {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.getEventDefinition(eventDefinitionId);
+
+		return eventDefinition.getName();
 	}
 
 	private SelectConditionStep<Record1<String>> _getEventPropertySelectStep(
@@ -145,22 +160,6 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 			).eq(
 				DSL.field("BQEventProperty.id")
 			)
-		).join(
-			"EventDefinition"
-		).on(
-			DSL.field(
-				"BQEvent.eventId"
-			).eq(
-				DSL.field("EventDefinition.name")
-			)
-		).join(
-			"EventAttributeDefinition"
-		).on(
-			DSL.field(
-				"BQEventProperty.name"
-			).eq(
-				DSL.field("EventAttributeDefinition.name")
-			)
 		).where(
 			_getCondition(
 				channelId, eventAttributeDefinitionId, eventDefinitionId,
@@ -169,5 +168,11 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
+
+	@Autowired
+	private EventDefinitionDog _eventDefinitionDog;
 
 }
