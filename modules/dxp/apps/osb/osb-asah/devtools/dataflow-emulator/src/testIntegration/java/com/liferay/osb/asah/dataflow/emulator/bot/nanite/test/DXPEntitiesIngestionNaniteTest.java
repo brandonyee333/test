@@ -20,6 +20,8 @@ import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.BQUserGroup;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.repository.BQAccountEntryRepository;
+import com.liferay.osb.asah.common.repository.BQAccountGroupRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQGroupRepository;
@@ -73,6 +75,8 @@ public class DXPEntitiesIngestionNaniteTest
 
 		_dxpEntitiesIngestionNanite.run();
 
+		Assertions.assertEquals(1, _bqAccountEntryRepository.count());
+		Assertions.assertEquals(1, _bqAccountGroupRepository.count());
 		Assertions.assertEquals(1, _bqExpandoColumnRepository.count());
 		Assertions.assertEquals(2, _bqExpandoValueRepository.count());
 		Assertions.assertEquals(1, _bqGroupRepository.count());
@@ -216,6 +220,12 @@ public class DXPEntitiesIngestionNaniteTest
 
 		Assertions.assertEquals(1, _bqExpandoValueRepository.count());
 	}
+
+	@Autowired
+	private BQAccountEntryRepository _bqAccountEntryRepository;
+
+	@Autowired
+	private BQAccountGroupRepository _bqAccountGroupRepository;
 
 	@Autowired
 	private BQExpandoColumnRepository _bqExpandoColumnRepository;

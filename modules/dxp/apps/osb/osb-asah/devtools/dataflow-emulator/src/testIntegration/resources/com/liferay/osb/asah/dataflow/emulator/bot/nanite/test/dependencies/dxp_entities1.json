@@ -2,6 +2,102 @@
 	{
 		"fields": [
 			{
+				"name": "accountEntryId",
+				"value": "123"
+			},
+			{
+				"name": "createDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "defaultCPaymentMethodKey",
+				"value": "1"
+			},
+			{
+				"name": "description",
+				"value": "test"
+			},
+			{
+				"name": "domains",
+				"value": "test"
+			},
+			{
+				"name": "emailAddress",
+				"value": "test@liferay.com"
+			},
+			{
+				"name": "logoId",
+				"value": "1"
+			},
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "name",
+				"value": "Account Group Name"
+			},
+			{
+				"name": "parentAccountEntryId",
+				"value": "1"
+			},
+			{
+				"name": "taxExemptionCode",
+				"value": "test"
+			},
+			{
+				"name": "taxIdNumber",
+				"value": "test"
+			},
+			{
+				"name": "type",
+				"value": "test"
+			},
+			{
+				"name": "status",
+				"value": "1"
+			}
+		],
+		"id": "123",
+		"type": "com.liferay.account.model.AccountEntry"
+	},
+	{
+		"fields": [
+			{
+				"name": "accountGroupId",
+				"value": "123"
+			},
+			{
+				"name": "createDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "defaultAccountGroup",
+				"value": "false"
+			},
+			{
+				"name": "description",
+				"value": "test"
+			},
+			{
+				"name": "modifiedDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "name",
+				"value": "Account Group Name"
+			},
+			{
+				"name": "type",
+				"value": "test"
+			}
+		],
+		"id": "123",
+		"type": "com.liferay.account.model.AccountGroup"
+	},
+	{
+		"fields": [
+			{
 				"name": "columnId",
 				"value": "123"
 			},
