@@ -49,7 +49,6 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@Override
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -59,7 +58,6 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 		return _dataSourceName;
 	}
 
-	@Override
 	public String getDXPEntityType() {
 		return DXPEntity.Type.ORGANIZATION.name();
 	}
@@ -79,7 +77,6 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 	}
 
 	@JsonProperty("fields")
-	@Override
 	public JSONObject getFieldsJSONObject() {
 		return JSONUtil.put(
 			"expandoColumnIds", _expandoColumnIds
@@ -107,12 +104,10 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 		return _id;
 	}
 
-	@Override
 	public String getIdFieldName() {
 		return "organizationId";
 	}
 
-	@Override
 	public Long getIdFieldValue() {
 		return _organizationId;
 	}
@@ -170,7 +165,6 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 		_dataSourceId = dataSourceId;
 	}
 
-	@Override
 	public void setDataSourceName(String dataSourceName) {
 		_dataSourceName = dataSourceName;
 	}

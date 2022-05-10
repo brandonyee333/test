@@ -14,33 +14,15 @@
 
 package com.liferay.osb.asah.common.model;
 
-import java.util.Date;
-
-import org.json.JSONObject;
-
 /**
  * @author Marcos Martins
  */
 public interface BQDXPEntity {
 
-	public Long getDataSourceId();
-
 	public String getDataSourceName();
-
-	public String getDXPEntityType();
-
-	public JSONObject getFieldsJSONObject();
 
 	public String getId();
 
-	public String getIdFieldName();
-
-	public Long getIdFieldValue();
-
-	public Date getModifiedDate();
-
 	public String getName();
-
-	public void setDataSourceName(String dataSourceName);
 
 }

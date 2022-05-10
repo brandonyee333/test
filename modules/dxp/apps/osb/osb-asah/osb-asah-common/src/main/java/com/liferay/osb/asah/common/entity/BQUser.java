@@ -87,7 +87,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@Override
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -97,7 +96,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		return _dataSourceName;
 	}
 
-	@Override
 	public String getDXPEntityType() {
 		return DXPEntity.Type.USER.name();
 	}
@@ -122,7 +120,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	}
 
 	@JsonProperty("fields")
-	@Override
 	public JSONObject getFieldsJSONObject() {
 		return JSONUtil.put(
 			"accountId", _accountId
@@ -202,12 +199,10 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		return _id;
 	}
 
-	@Override
 	public String getIdFieldName() {
 		return "userId";
 	}
 
-	@Override
 	public Long getIdFieldValue() {
 		return _userId;
 	}
@@ -352,7 +347,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		_dataSourceId = dataSourceId;
 	}
 
-	@Override
 	public void setDataSourceName(String dataSourceName) {
 		_dataSourceName = dataSourceName;
 	}

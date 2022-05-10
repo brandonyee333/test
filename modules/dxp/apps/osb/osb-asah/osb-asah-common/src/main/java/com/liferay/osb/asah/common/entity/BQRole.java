@@ -45,7 +45,6 @@ public class BQRole implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@Override
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -55,13 +54,11 @@ public class BQRole implements BQDXPEntity, Persistable<String> {
 		return _dataSourceName;
 	}
 
-	@Override
 	public String getDXPEntityType() {
 		return DXPEntity.Type.ROLE.name();
 	}
 
 	@JsonProperty("fields")
-	@Override
 	public JSONObject getFieldsJSONObject() {
 		return JSONUtil.put(
 			"name", _name
@@ -77,12 +74,10 @@ public class BQRole implements BQDXPEntity, Persistable<String> {
 		return _id;
 	}
 
-	@Override
 	public String getIdFieldName() {
 		return "roleId";
 	}
 
-	@Override
 	public Long getIdFieldValue() {
 		return _roleId;
 	}
@@ -119,7 +114,6 @@ public class BQRole implements BQDXPEntity, Persistable<String> {
 		_dataSourceId = dataSourceId;
 	}
 
-	@Override
 	public void setDataSourceName(String dataSourceName) {
 		_dataSourceName = dataSourceName;
 	}
