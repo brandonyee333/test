@@ -1,3 +1,32 @@
+CREATE TABLE IF NOT EXISTS BQAccountEntry (
+	accountEntryId BIGINT,
+	createDate TIMESTAMPTZ,
+	defaultCPaymentMethodKey TEXT,
+	description TEXT,
+	domains TEXT,
+	emailAddress TEXT,
+	id TEXT UNIQUE,
+	logoId BIGINT,
+	modifiedDate TIMESTAMPTZ,
+	name TEXT,
+	parentAccountEntryId BIGINT,
+	status INTEGER,
+	taxExemptionCode TEXT,
+	taxIdNumber TEXT,
+	type TEXT
+);
+
+CREATE TABLE IF NOT EXISTS BQAccountGroup (
+	accountGroupId BIGINT,
+	createDate TIMESTAMPTZ,
+	defaultAccountGroup BOOLEAN,
+	description TEXT,
+	id TEXT UNIQUE,
+	modifiedDate TIMESTAMPTZ,
+	name TEXT,
+	type TEXT
+);
+
 CREATE TABLE IF NOT EXISTS BQEvent (
 	applicationId TEXT,
 	browserName TEXT,
