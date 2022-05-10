@@ -80,7 +80,7 @@ public class DXPEntityDataExporter extends BaseDataExporter {
 			"results",
 			new JSONArray(
 				ListUtil.map(
-					_bqUserDog.findByFields(
+					_bqUserDog.getBQUsers(
 						Collections.singletonMap(_fieldName, _fieldValue),
 						PageRequest.of(Integer.parseInt(page), _PAGE_SIZE)),
 					this::_toJSONObject)));

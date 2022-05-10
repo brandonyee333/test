@@ -44,7 +44,6 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@Override
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -59,13 +58,11 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 		return _dataType;
 	}
 
-	@Override
 	public String getDXPEntityType() {
 		return DXPEntity.Type.EXPANDO_COLUMN.name();
 	}
 
 	@JsonProperty("fields")
-	@Override
 	public JSONObject getFieldsJSONObject() {
 		return JSONUtil.put(
 			"columnId", _columnId
@@ -83,12 +80,10 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 		return _id;
 	}
 
-	@Override
 	public String getIdFieldName() {
 		return "columnId";
 	}
 
-	@Override
 	public Long getIdFieldValue() {
 		return _columnId;
 	}
@@ -124,7 +119,6 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 		_dataSourceId = dataSourceId;
 	}
 
-	@Override
 	public void setDataSourceName(String dataSourceName) {
 		_dataSourceName = dataSourceName;
 	}

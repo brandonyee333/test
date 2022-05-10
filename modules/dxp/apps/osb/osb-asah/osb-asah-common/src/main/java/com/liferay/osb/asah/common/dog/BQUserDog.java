@@ -36,18 +36,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class BQUserDog extends BaseBQDXPEntityDog {
 
-	public List<BQUser> findByFields(
-		Map<String, Object> fields, Pageable pageable) {
-
-		List<BQUser> bqUsers = _bqUserRepository.findByFields(fields, pageable);
-
-		for (BQUser bqUser : bqUsers) {
-			_populateExpandoFields(bqUser);
-		}
-
-		return bqUsers;
-	}
-
 	public Page<BQUser> getBQUserPage(
 		@Nullable Long channelId, @Nullable String keywords, int size,
 		Sort sort, int start) {
@@ -68,6 +56,18 @@ public class BQUserDog extends BaseBQDXPEntityDog {
 			bqUsers, pageRequest,
 			() -> _bqUserRepository.countByDataSourceIdsAndKeywords(
 				dataSourceIds, keywords));
+	}
+
+	public List<BQUser> getBQUsers(
+		Map<String, Object> fields, Pageable pageable) {
+
+		List<BQUser> bqUsers = _bqUserRepository.findByFields(fields, pageable);
+
+		for (BQUser bqUser : bqUsers) {
+			_populateExpandoFields(bqUser);
+		}
+
+		return bqUsers;
 	}
 
 	private BQUser _populateExpandoFields(BQUser bqUser) {

@@ -67,27 +67,6 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 	}
 
 	@Test
-	public void testFindByFields() {
-		List<BQUser> bqUsers = _bqUserDog.findByFields(
-			Collections.singletonMap("userId", 2), PageRequest.of(0, 10));
-
-		Assertions.assertEquals(1, bqUsers.size(), bqUsers.toString());
-
-		BQUser bqUser = bqUsers.get(0);
-
-		List<ExpandoField> expandoFields = bqUser.getExpandoFields();
-
-		Assertions.assertEquals(
-			1, expandoFields.size(), expandoFields.toString());
-
-		ExpandoField expandoField = expandoFields.get(0);
-
-		Assertions.assertEquals(1, expandoField.getColumnId());
-		Assertions.assertEquals("column", expandoField.getName());
-		Assertions.assertEquals("test", expandoField.getValue());
-	}
-
-	@Test
 	public void testGetBQUserPage() {
 		Page<BQUser> bqUserPage = _bqUserDog.getBQUserPage(
 			11L, null, 10, Sort.asc("firstName"), 0);
@@ -106,6 +85,27 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 		bqUsers = bqUserPage.getContent();
 
 		Assertions.assertEquals(1, bqUsers.size(), bqUsers.toString());
+	}
+
+	@Test
+	public void testGetBQUsers() {
+		List<BQUser> bqUsers = _bqUserDog.getBQUsers(
+			Collections.singletonMap("userId", 2), PageRequest.of(0, 10));
+
+		Assertions.assertEquals(1, bqUsers.size(), bqUsers.toString());
+
+		BQUser bqUser = bqUsers.get(0);
+
+		List<ExpandoField> expandoFields = bqUser.getExpandoFields();
+
+		Assertions.assertEquals(
+			1, expandoFields.size(), expandoFields.toString());
+
+		ExpandoField expandoField = expandoFields.get(0);
+
+		Assertions.assertEquals(1, expandoField.getColumnId());
+		Assertions.assertEquals("column", expandoField.getName());
+		Assertions.assertEquals("test", expandoField.getValue());
 	}
 
 	@Autowired

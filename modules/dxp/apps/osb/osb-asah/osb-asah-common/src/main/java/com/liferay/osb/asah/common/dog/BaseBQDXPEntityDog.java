@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,19 +39,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseBQDXPEntityDog {
 
 	protected List<Long> getDataSourceIds(Long channelId) {
-		List<Long> dataSourceIds = new ArrayList<>();
-
-		if (channelId != null) {
-			Channel channel = _channelDog.fetchChannel(channelId);
-
-			if (channel != null) {
-				dataSourceIds = ListUtil.map(
-					channel.getChannelDataSources(),
-					ChannelDataSource::getDataSourceId);
-			}
+		if (channelId == null) {
+			return Collections.emptyList();
 		}
 
-		return dataSourceIds;
+		Channel channel = _channelDog.fetchChannel(channelId);
+
+		if (channel == null) {
+			return Collections.emptyList();
+		}
+
+		return ListUtil.map(
+			channel.getChannelDataSources(),
+			ChannelDataSource::getDataSourceId);
 	}
 
 	protected List<ExpandoField> getExpandoFields(
