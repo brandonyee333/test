@@ -1,4 +1,161 @@
 {
+	"accountentry": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "accountEntryId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "createDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "defaultCPaymentMethodKey",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "description",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "domains",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "emailAddress",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "logoId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "name",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "parentAccountEntryId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "taxExemptionCode",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "taxIdNumber",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "type",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "status",
+				"type": "INT64"
+			}
+		],
+		"timePartitioning": {
+			"field": "modifiedDate",
+			"type": "DAY"
+		}
+	},
+	"accountgroup": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "accountGroupId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "createDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "defaultAccountGroup",
+				"type": "BOOL"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "description",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "name",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "type",
+				"type": "STRING"
+			}
+		],
+		"timePartitioning": {
+			"field": "modifiedDate",
+			"type": "DAY"
+		}
+	},
 	"dxpentity": {
 		"clusteringFields": [
 			"dataSourceId"
