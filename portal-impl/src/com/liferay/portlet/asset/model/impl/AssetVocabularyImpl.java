@@ -170,7 +170,9 @@ public class AssetVocabularyImpl extends AssetVocabularyBaseImpl {
 	public boolean isMissingRequiredCategory(
 		long classNameId, long classTypePK, long[] categoryIds) {
 
-		if (!isRequired(classNameId, classTypePK)) {
+		if (!isRequired(classNameId, classTypePK) ||
+			ArrayUtil.isEmpty(categoryIds)) {
+
 			return false;
 		}
 
