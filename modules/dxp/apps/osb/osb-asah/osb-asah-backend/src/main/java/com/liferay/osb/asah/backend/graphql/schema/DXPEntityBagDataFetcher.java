@@ -15,14 +15,12 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dto.DXPEntityDTO;
-import com.liferay.osb.asah.backend.dto.DXPOrganizationDTO;
 import com.liferay.osb.asah.backend.dto.DXPUserDTO;
 import com.liferay.osb.asah.common.dog.BQGroupDog;
 import com.liferay.osb.asah.common.dog.BQRoleDog;
 import com.liferay.osb.asah.common.dog.BQTeamDog;
 import com.liferay.osb.asah.common.dog.BQUserDog;
 import com.liferay.osb.asah.common.dog.BQUserGroupDog;
-import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.BQDXPEntity;
@@ -72,11 +70,6 @@ public class DXPEntityBagDataFetcher
 			ListUtil.map(
 				bqDXPEntityPage.getContent(),
 				bqDXPEntity -> {
-					if (bqDXPEntity instanceof BQOrganization) {
-						return new DXPOrganizationDTO(
-							(BQOrganization)bqDXPEntity);
-					}
-
 					if (bqDXPEntity instanceof BQUser) {
 						return new DXPUserDTO((BQUser)bqDXPEntity);
 					}
