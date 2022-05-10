@@ -91,7 +91,9 @@
 	/>
 </#if>
 
-<#macro print_navigation layout_friendly_url>
+<#macro print_navigation
+	layout_friendly_url
+>
 	<#assign
 		layoutGroup = layout.getGroup()
 		navigation_layout = layout_local_service.fetchLayoutByFriendlyURL(guest_group_id, false, layout_friendly_url)!""
