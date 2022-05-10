@@ -157,22 +157,6 @@ public class OktaUsersMessageSubscriber
 			return;
 		}
 
-		String emailAddress = profileJSONObject.getString("email");
-		String firstName = profileJSONObject.getString("firstName");
-		String lastName = profileJSONObject.getString("lastName");
-
-		if (Validator.isNull(emailAddress)) {
-			emailAddress = user.getEmailAddress();
-		}
-
-		if (Validator.isNull(firstName)) {
-			firstName = user.getFirstName();
-		}
-
-		if (Validator.isNull(lastName)) {
-			lastName = user.getLastName();
-		}
-
 		Contact contact = user.getContact();
 
 		Calendar calendar = Calendar.getInstance();
@@ -181,11 +165,12 @@ public class OktaUsersMessageSubscriber
 
 		user = _userLocalService.updateUser(
 			user.getUserId(), null, null, null, false, null, null,
-			user.getScreenName(), emailAddress, user.getFacebookId(),
-			user.getOpenId(), true, null, user.getLanguageId(),
-			user.getTimeZoneId(), user.getGreeting(), user.getComments(),
-			firstName, user.getMiddleName(), lastName, contact.getPrefixId(),
-			contact.getSuffixId(), contact.isMale(),
+			user.getScreenName(), profileJSONObject.getString("email"),
+			user.getFacebookId(), user.getOpenId(), true, null,
+			user.getLanguageId(), user.getTimeZoneId(), user.getGreeting(),
+			user.getComments(), profileJSONObject.getString("firstName"),
+			user.getMiddleName(), profileJSONObject.getString("lastName"),
+			contact.getPrefixId(), contact.getSuffixId(), contact.isMale(),
 			calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
 			calendar.get(Calendar.YEAR), contact.getSmsSn(),
 			contact.getFacebookSn(), contact.getJabberSn(),
