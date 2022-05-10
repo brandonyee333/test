@@ -104,7 +104,8 @@ public class DXPEntityBagDataFetcher
 				channelId, keywords, size, sort, start);
 		}
 
-		return null;
+		throw new IllegalArgumentException(
+			"Unsupported DXP Entity type " + graphQLFieldDefinitionName);
 	}
 
 	private String _getGraphQLFieldDefinitionName(
