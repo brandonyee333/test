@@ -309,6 +309,10 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 			}
 		}
 
+		if (jsonArray.isEmpty()) {
+			return _getNextBatch(projectId);
+		}
+
 		return jsonArray;
 	}
 
