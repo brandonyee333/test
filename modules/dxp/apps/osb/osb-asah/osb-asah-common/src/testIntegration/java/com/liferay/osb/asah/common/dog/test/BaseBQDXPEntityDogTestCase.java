@@ -36,15 +36,14 @@ public abstract class BaseBQDXPEntityDogTestCase
 			   OSBAsahTestExecutionListenersContext {
 
 	public void setUp() {
-		dataSource = new DataSource("Liferay Brazil");
-
-		dataSource.setCredentialType("Token Authentication");
-
 		Channel channel = new Channel("channel");
 
 		channel.setId(11L);
 		channel.setIsNew(true);
 
+		dataSource = new DataSource("Liferay Brazil");
+
+		dataSource.setCredentialType("Token Authentication");
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(123L);
