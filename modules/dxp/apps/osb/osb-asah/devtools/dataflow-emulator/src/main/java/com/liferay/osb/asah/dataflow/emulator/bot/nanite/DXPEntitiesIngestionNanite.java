@@ -162,15 +162,12 @@ public class DXPEntitiesIngestionNanite {
 				bqExpandoValue.setClassPK(classPK);
 				bqExpandoValue.setClassType(classType);
 				bqExpandoValue.setColumnId(jsonObject.getLong("columnId"));
-
 				bqExpandoValue.setId(
 					_generateBQExpandoValueId(
 						jsonObject.getLong("columnId"), classPK, dataSourceId,
 						projectId));
-
 				bqExpandoValue.setIsNew(
 					_isNew(_bqExpandoValueRepository, bqExpandoValue.getId()));
-
 				bqExpandoValue.setValue(jsonObject.getString("value"));
 
 				bqExpandoValues.add(bqExpandoValue);
@@ -248,11 +245,9 @@ public class DXPEntitiesIngestionNanite {
 				fields, BQExpandoColumn.class);
 
 			bqExpandoColumn.setDataSourceId(dataSourceId);
-
 			bqExpandoColumn.setId(
 				_generateDXPEntityId(
 					bqExpandoColumn.getColumnId(), dataSourceId, projectId));
-
 			bqExpandoColumn.setIsNew(
 				_isNew(_bqExpandoColumnRepository, bqExpandoColumn.getId()));
 
@@ -264,11 +259,9 @@ public class DXPEntitiesIngestionNanite {
 			BQGroup bqGroup = _objectMapper.convertValue(fields, BQGroup.class);
 
 			bqGroup.setDataSourceId(dataSourceId);
-
 			bqGroup.setId(
 				_generateDXPEntityId(
 					bqGroup.getGroupId(), dataSourceId, projectId));
-
 			bqGroup.setIsNew(_isNew(_bqGroupRepository, bqGroup.getId()));
 
 			_bqGroupRepository.save(bqGroup);
@@ -303,7 +296,6 @@ public class DXPEntitiesIngestionNanite {
 				_generateDXPEntityId(
 					bqOrganization.getOrganizationId(), dataSourceId,
 					projectId));
-
 			bqOrganization.setIsNew(
 				_isNew(_bqOrganizationRepository, bqOrganization.getId()));
 
@@ -315,11 +307,9 @@ public class DXPEntitiesIngestionNanite {
 			BQRole bqRole = _objectMapper.convertValue(fields, BQRole.class);
 
 			bqRole.setDataSourceId(dataSourceId);
-
 			bqRole.setId(
 				_generateDXPEntityId(
 					bqRole.getRoleId(), dataSourceId, projectId));
-
 			bqRole.setIsNew(_isNew(_bqRoleRepository, bqRole.getId()));
 
 			_bqRoleRepository.save(bqRole);
@@ -330,11 +320,9 @@ public class DXPEntitiesIngestionNanite {
 			BQTeam bqTeam = _objectMapper.convertValue(fields, BQTeam.class);
 
 			bqTeam.setDataSourceId(dataSourceId);
-
 			bqTeam.setId(
 				_generateDXPEntityId(
 					bqTeam.getTeamId(), dataSourceId, projectId));
-
 			bqTeam.setIsNew(_isNew(_bqTeamRepository, bqTeam.getId()));
 
 			_bqTeamRepository.save(bqTeam);
@@ -366,7 +354,6 @@ public class DXPEntitiesIngestionNanite {
 			bqUser.setId(
 				_generateDXPEntityId(
 					bqUser.getUserId(), dataSourceId, projectId));
-
 			bqUser.setIsNew(_isNew(_bqUserRepository, bqUser.getId()));
 
 			_bqUserRepository.save(bqUser);
@@ -378,11 +365,9 @@ public class DXPEntitiesIngestionNanite {
 				fields, BQUserGroup.class);
 
 			bqUserGroup.setDataSourceId(dataSourceId);
-
 			bqUserGroup.setId(
 				_generateDXPEntityId(
 					bqUserGroup.getUserGroupId(), dataSourceId, projectId));
-
 			bqUserGroup.setIsNew(
 				_isNew(_bqUserGroupRepository, bqUserGroup.getId()));
 
