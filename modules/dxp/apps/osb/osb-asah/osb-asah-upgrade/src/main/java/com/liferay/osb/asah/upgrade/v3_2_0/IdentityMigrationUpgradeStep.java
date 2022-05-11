@@ -33,14 +33,11 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
@@ -134,12 +131,14 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 	private CreateWriteStreamRequest _buildCreateWriteStreamRequest(
 		String datasetName) {
 
+		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
 		CreateWriteStreamRequest.Builder builder =
 			CreateWriteStreamRequest.newBuilder();
 
 		return builder.setParent(
 			String.valueOf(
-				TableName.of(_googleProjectId, datasetName, _TABLE_NAME))
+				TableName.of(
+					bigQueryOptions.getProjectId(), datasetName, _TABLE_NAME))
 		).setWriteStream(
 			WriteStream.newBuilder(
 			).setType(
@@ -316,17 +315,10 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 		return jsonArray;
 	}
 
-	@PostConstruct
-	private void _init() {
-		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
-
-		_googleProjectId = bigQueryOptions.getProjectId();
-	}
-
 	private static final String _TABLE_NAME = "identity";
 
 	private static final Log _log = LogFactory.getLog(
-		BaseMigrationUpgradeStep.class);
+		IdentityMigrationUpgradeStep.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
@@ -334,7 +326,6 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
-	private String _googleProjectId;
 	private String _lastIndividualId = "0";
 
 }
