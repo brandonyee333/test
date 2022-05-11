@@ -38,7 +38,6 @@ public class BQRoleDog extends BaseBQDXPEntityDog {
 		Sort sort, int start) {
 
 		List<Long> dataSourceIds = getDataSourceIds(channelId);
-
 		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
 
 		return PageableExecutionUtils.getPage(
