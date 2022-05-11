@@ -65,14 +65,16 @@ public abstract class BaseBQDXPEntityDog {
 		Map<Long, BQExpandoValue> bqExpandoValues = _getExpandoValues(
 			expandoValueIds);
 
-		for (long columnId : expandoColumnIds) {
-			BQExpandoColumn bqExpandoColumn = bqExpandoColumns.get(columnId);
+		for (long expandoColumnId : expandoColumnIds) {
+			BQExpandoColumn bqExpandoColumn = bqExpandoColumns.get(
+				expandoColumnId);
 
 			if (bqExpandoColumn == null) {
 				continue;
 			}
 
-			BQExpandoValue bqExpandoValue = bqExpandoValues.get(columnId);
+			BQExpandoValue bqExpandoValue = bqExpandoValues.get(
+				expandoColumnId);
 
 			if (bqExpandoValue == null) {
 				continue;
