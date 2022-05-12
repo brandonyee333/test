@@ -32,6 +32,7 @@ import com.liferay.osb.asah.upgrade.v3_2_0.IdentityMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.JobRunMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.SalesforceEntityMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.SequenceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.SuppressionMigrationUpgradeStep;
 
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_jobMigrationUpgradeStep);
 		upgradeSteps.add(_jobRunMigrationUpgradeStep);
 		upgradeSteps.add(_salesforceEntityMigrationUpgradeStep);
+		upgradeSteps.add(_sequenceUpgradeStep);
 		upgradeSteps.add(_suppressionMigrationUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
@@ -137,6 +139,9 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private SalesforceEntityMigrationUpgradeStep
 		_salesforceEntityMigrationUpgradeStep;
+
+	@Autowired
+	private SequenceUpgradeStep _sequenceUpgradeStep;
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
