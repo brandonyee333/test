@@ -45,13 +45,14 @@ public class IdentityMigrationUpgradeStepTest
 	implements OSBAsahUpgradeSpringTestContext {
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	public void setUp() {
 		ProjectIdThreadLocal.setProjectId("test");
+
 		tearDown();
 	}
 
 	@AfterEach
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		_faroInfoElasticsearchInvoker.delete(
 			"individuals", QueryBuilders.matchAllQuery());
 		_cerebroInfoElasticsearchInvoker.delete(
@@ -60,22 +61,21 @@ public class IdentityMigrationUpgradeStepTest
 
 	@Test
 	public void testGetNextBatch() throws Exception {
-		JSONArray individualJSONArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies/individuals.json", this)));
-		JSONArray userSessionJSONArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies/user_sessions.json", this)));
-
-		_faroInfoElasticsearchInvoker.add("individuals", individualJSONArray);
+		_faroInfoElasticsearchInvoker.add(
+			"individuals",
+			new JSONArray(
+				TestExecutionListenerUtil.replaceVariables(
+					ResourceUtil.readResourceToString(
+						"dependencies/individuals.json", this))));
 		_cerebroInfoElasticsearchInvoker.add(
-			"user-sessions", userSessionJSONArray);
+			"user-sessions",
+			new JSONArray(
+				TestExecutionListenerUtil.replaceVariables(
+					ResourceUtil.readResourceToString(
+						"dependencies/user_sessions.json", this))));
 
-		JSONArray identityJSONArray =
-			(JSONArray)ReflectionTestUtils.invokeMethod(
-				_identityMigrationUpgradeStep, "_getNextBatch", "test");
+		JSONArray identityJSONArray = ReflectionTestUtils.invokeMethod(
+			_identityMigrationUpgradeStep, "_getNextBatch", "test");
 
 		Assertions.assertNotNull(identityJSONArray);
 		Assertions.assertEquals(6, identityJSONArray.length());
@@ -96,13 +96,15 @@ public class IdentityMigrationUpgradeStepTest
 		).put(
 			"userId", "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
 		);
-		JSONObject identityJSONObject = identityJSONArray.getJSONObject(0);
+
+		JSONObject actualIdentityJSONObject = identityJSONArray.getJSONObject(
+			0);
 
 		Assertions.assertTrue(
 			Objects.equals(
-				expectedJSONObject.toMap(), identityJSONObject.toMap()));
+				expectedJSONObject.toMap(), actualIdentityJSONObject.toMap()));
 
-		identityJSONArray = (JSONArray)ReflectionTestUtils.invokeMethod(
+		identityJSONArray = ReflectionTestUtils.invokeMethod(
 			_identityMigrationUpgradeStep, "_getNextBatch", "test");
 
 		Assertions.assertNotNull(identityJSONArray);
