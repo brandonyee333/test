@@ -1479,7 +1479,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		Map<String, FieldMapping> fieldMappingsMap = stream.collect(
 			Collectors.toMap(
-				FieldMapping::getDisplayName, Function.identity(),
+				FieldMapping::getFieldName, Function.identity(),
 				(existing, replacement) -> replacement));
 
 		for (Field field : _fieldDog.getOwnerIdFields(context, individualId)) {
