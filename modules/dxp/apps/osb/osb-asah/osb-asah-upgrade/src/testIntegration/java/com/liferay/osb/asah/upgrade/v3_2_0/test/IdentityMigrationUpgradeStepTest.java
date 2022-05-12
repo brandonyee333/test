@@ -73,9 +73,11 @@ public class IdentityMigrationUpgradeStepTest
 		_cerebroInfoElasticsearchInvoker.add(
 			"user-sessions", userSessionJSONArray);
 
-		JSONArray identityJSONArray = ReflectionTestUtils.invokeMethod(
-			_identityMigrationUpgradeStep, "_getNextBatch", "test");
+		JSONArray identityJSONArray =
+			(JSONArray)ReflectionTestUtils.invokeMethod(
+				_identityMigrationUpgradeStep, "_getNextBatch", "test");
 
+		Assertions.assertNotNull(identityJSONArray);
 		Assertions.assertEquals(6, identityJSONArray.length());
 
 		JSONObject expectedJSONObject = JSONUtil.put(
@@ -100,9 +102,10 @@ public class IdentityMigrationUpgradeStepTest
 			Objects.equals(
 				expectedJSONObject.toMap(), identityJSONObject.toMap()));
 
-		identityJSONArray = ReflectionTestUtils.invokeMethod(
+		identityJSONArray = (JSONArray)ReflectionTestUtils.invokeMethod(
 			_identityMigrationUpgradeStep, "_getNextBatch", "test");
 
+		Assertions.assertNotNull(identityJSONArray);
 		Assertions.assertTrue(identityJSONArray.isEmpty());
 	}
 
