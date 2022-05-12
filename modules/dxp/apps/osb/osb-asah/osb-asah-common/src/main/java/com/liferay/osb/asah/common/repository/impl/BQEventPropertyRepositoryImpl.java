@@ -31,7 +31,7 @@ import org.springframework.data.domain.Pageable;
  * @author Alejo Ceballos
  */
 public class BQEventPropertyRepositoryImpl
-	extends BaseEventPropertyRepository
+	extends BaseBQEventPropertyRepository
 	implements CustomBQEventPropertyRepository {
 
 	public BQEventPropertyRepositoryImpl(DSLContext dslContext) {

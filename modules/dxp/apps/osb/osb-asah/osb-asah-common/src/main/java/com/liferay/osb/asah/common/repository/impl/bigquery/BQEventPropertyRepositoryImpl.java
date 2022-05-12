@@ -21,7 +21,7 @@ import com.google.cloud.bigquery.TableResult;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.helper.BigQueryHelper;
-import com.liferay.osb.asah.common.repository.impl.BaseEventPropertyRepository;
+import com.liferay.osb.asah.common.repository.impl.BaseBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.util.BigQueryUtil;
 
 import java.util.List;
@@ -40,7 +40,7 @@ import org.springframework.data.domain.Pageable;
  * @author Matthew Kong
  */
 public class BQEventPropertyRepositoryImpl
-	extends BaseEventPropertyRepository
+	extends BaseBQEventPropertyRepository
 	implements CustomBQEventPropertyRepository {
 
 	public BQEventPropertyRepositoryImpl(DSLContext dslContext) {

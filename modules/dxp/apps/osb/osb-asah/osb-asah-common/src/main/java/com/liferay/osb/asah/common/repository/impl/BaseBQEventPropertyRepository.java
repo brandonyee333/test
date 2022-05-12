@@ -37,9 +37,9 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Matthew Kong
  */
-public abstract class BaseEventPropertyRepository extends BaseRepository {
+public abstract class BaseBQEventPropertyRepository extends BaseRepository {
 
-	public BaseEventPropertyRepository(DSLContext dslContext) {
+	public BaseBQEventPropertyRepository(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
