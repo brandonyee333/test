@@ -19,6 +19,9 @@ import javax.sql.DataSource;
 import org.jooq.ConnectionProvider;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
+import org.jooq.conf.RenderOptionalKeyword;
+import org.jooq.conf.RenderQuotedNames;
+import org.jooq.conf.Settings;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
@@ -44,6 +47,15 @@ public class JooqConfiguration {
 		DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
 
 		defaultConfiguration.set(connectionProvider);
+
+		Settings settings = defaultConfiguration.settings();
+
+		settings.setRenderOptionalAsKeywordForFieldAliases(
+			RenderOptionalKeyword.ON);
+		settings.setRenderOptionalAsKeywordForTableAliases(
+			RenderOptionalKeyword.ON);
+		settings.setRenderQuotedNames(
+			RenderQuotedNames.EXPLICIT_DEFAULT_UNQUOTED);
 
 		return defaultConfiguration;
 	}
