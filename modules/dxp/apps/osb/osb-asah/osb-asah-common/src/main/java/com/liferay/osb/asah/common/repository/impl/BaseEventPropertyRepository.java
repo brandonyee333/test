@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectConditionStep;
@@ -52,6 +53,7 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 		return selectCount.from(
 			_getEventPropertySelectStep(
 				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				DSL.lower(DSL.field("BQEventProperty.value", String.class)),
 				keywords));
 	}
 
@@ -82,15 +84,19 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Pageable pageable) {
 
+		Field<String> selectField = DSL.lower(
+			DSL.field("BQEventProperty.value", String.class)
+		).as(
+			"temp"
+		);
+
 		SelectConditionStep<Record1<String>> eventPropertySelectStep =
 			_getEventPropertySelectStep(
 				channelId, eventAttributeDefinitionId, eventDefinitionId,
-				keywords);
+				selectField, keywords);
 
 		return eventPropertySelectStep.orderBy(
-			DSL.lower(
-				DSL.field("BQEventProperty.value", String.class)
-			).asc()
+			selectField.asc()
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -146,11 +152,10 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 
 	private SelectConditionStep<Record1<String>> _getEventPropertySelectStep(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords) {
+		Field<String> selectField, String keywords) {
 
 		SelectSelectStep<Record1<String>> selectSelectStep =
-			_dslContext.selectDistinct(
-				DSL.lower(DSL.field("BQEventProperty.value", String.class)));
+			_dslContext.selectDistinct(selectField);
 
 		return selectSelectStep.from(
 			"BQEventProperty"
