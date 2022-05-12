@@ -76,7 +76,7 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public long countByCreateDateBetweenAndIdAfter(
-		Date fromDate, Date toDate, Long id) {
+		Date createDateFromDate, Date createDateToDate, Long id) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -86,9 +86,9 @@ public class ElasticsearchSegmentRepositoryImpl
 				QueryBuilders.rangeQuery(
 					"dateCreated"
 				).gte(
-					DateUtil.toString(fromDate)
+					DateUtil.toString(createDateFromDate)
 				).lte(
-					DateUtil.toString(toDate)
+					DateUtil.toString(createDateToDate)
 				)
 			).filter(
 				QueryBuilders.rangeQuery(

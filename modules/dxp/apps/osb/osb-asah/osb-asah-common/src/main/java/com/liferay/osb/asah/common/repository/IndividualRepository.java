@@ -35,7 +35,7 @@ public interface IndividualRepository
 			PagingAndSortingRepository<Individual, Long> {
 
 	public long countByCreateDateBetweenAndIdAfter(
-		Date fromDate, Date toDate, Long id);
+		Date createDateFromDate, Date createDateToDate, Long id);
 
 	public long countByIdAfter(Long id);
 

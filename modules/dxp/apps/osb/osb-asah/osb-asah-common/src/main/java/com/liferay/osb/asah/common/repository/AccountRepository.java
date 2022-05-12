@@ -33,7 +33,7 @@ public interface AccountRepository
 
 	@Cacheable
 	public long countByCreateDateBetweenAndIdAfter(
-		Date fromDate, Date toDate, Long id);
+		Date createDateFromDate, Date createDateToDate, Long id);
 
 	@Cacheable
 	public long countByIdAfter(Long accountId);
