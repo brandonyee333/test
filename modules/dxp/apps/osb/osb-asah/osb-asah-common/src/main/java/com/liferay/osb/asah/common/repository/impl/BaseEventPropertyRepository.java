@@ -87,7 +87,7 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 
 		return eventPropertySelectStep.orderBy(
 			DSL.lower(
-				DSL.field("value", String.class)
+				DSL.field("BQEventProperty.value", String.class)
 			).asc()
 		).limit(
 			pageable.getPageSize()
@@ -148,7 +148,7 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 
 		SelectSelectStep<Record1<String>> selectSelectStep =
 			_dslContext.selectDistinct(
-				DSL.lower(DSL.field("value", String.class)));
+				DSL.lower(DSL.field("BQEventProperty.value", String.class)));
 
 		return selectSelectStep.from(
 			"BQEventProperty"
