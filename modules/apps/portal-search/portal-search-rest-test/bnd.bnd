@@ -1,0 +1,4 @@
+Bundle-Name: portal-search-rest-test
+Bundle-SymbolicName: portal.search.rest.test
+Bundle-Version: 1.0.0
+-includeresource: portal.search.rest.client.jar=../portal-search-rest-client/build/libs/portal.search.rest.client-1.0.0.jar;lib:=true
