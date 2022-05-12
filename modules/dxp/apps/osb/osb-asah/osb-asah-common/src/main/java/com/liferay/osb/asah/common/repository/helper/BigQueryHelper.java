@@ -26,6 +26,8 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.jooq.SelectFinalStep;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,9 +36,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class BigQueryHelper {
 
-	public TableResult query(String query) {
+	public TableResult query(SelectFinalStep selectFinalStep) {
 		QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(
-			_translate(query)
+			_translate(String.valueOf(selectFinalStep.getQuery()))
 		).build();
 
 		try {

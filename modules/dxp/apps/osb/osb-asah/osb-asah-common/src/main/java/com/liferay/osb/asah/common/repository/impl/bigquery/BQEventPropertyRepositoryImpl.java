@@ -32,7 +32,6 @@ import java.util.stream.Stream;
 import org.apache.commons.collections4.IterableUtils;
 
 import org.jooq.DSLContext;
-import org.jooq.SelectFinalStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -53,11 +52,10 @@ public class BQEventPropertyRepositoryImpl
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords) {
 
-		SelectFinalStep selectFinalStep = getCountValuesSelect(
-			channelId, eventAttributeDefinitionId, eventDefinitionId, keywords);
-
 		TableResult tableResult = _bigQueryHelper.query(
-			String.valueOf(selectFinalStep.getQuery()));
+			getCountValuesSelect(
+				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				keywords));
 
 		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
 			FieldValue fieldValue = fieldValueList.get(0);
@@ -72,12 +70,9 @@ public class BQEventPropertyRepositoryImpl
 	public Optional<BQEventProperty> findByEventAttributeDefinitionIdAndEventId(
 		Long eventAttributeDefinitionId, Long eventId) {
 
-		SelectFinalStep selectFinalStep =
-			getFindByEventAttributeDefinitionIdAndEventIdSelect(
-				eventAttributeDefinitionId, eventId);
-
 		TableResult tableResult = _bigQueryHelper.query(
-			selectFinalStep.getSQL());
+			getFindByEventAttributeDefinitionIdAndEventIdSelect(
+				eventAttributeDefinitionId, eventId));
 
 		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
 			BQEventProperty bqEventProperty = new BQEventProperty();
@@ -106,12 +101,10 @@ public class BQEventPropertyRepositoryImpl
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Pageable pageable) {
 
-		SelectFinalStep selectFinalStep = getSearchValuesSelect(
-			channelId, eventAttributeDefinitionId, eventDefinitionId, keywords,
-			pageable);
-
 		TableResult tableResult = _bigQueryHelper.query(
-			selectFinalStep.getSQL());
+			getSearchValuesSelect(
+				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				keywords, pageable));
 
 		List<FieldValueList> fieldValueLists = IterableUtils.toList(
 			tableResult.iterateAll());
