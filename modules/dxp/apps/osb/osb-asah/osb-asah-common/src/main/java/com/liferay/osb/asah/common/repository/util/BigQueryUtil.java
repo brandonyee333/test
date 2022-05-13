@@ -26,22 +26,42 @@ import java.util.Date;
 public class BigQueryUtil {
 
 	public static Date getDate(FieldValue fieldValue) {
+		if ((fieldValue == null) || (fieldValue.getValue() == null)) {
+			return null;
+		}
+
 		return new Date(fieldValue.getTimestampValue());
 	}
 
 	public static long getLong(FieldValue fieldValue) {
+		if ((fieldValue == null) || (fieldValue.getValue() == null)) {
+			return 0;
+		}
+
 		return fieldValue.getLongValue();
 	}
 
 	public static BigDecimal getNumber(FieldValue fieldValue) {
+		if ((fieldValue == null) || (fieldValue.getValue() == null)) {
+			return BigDecimal.ZERO;
+		}
+
 		return fieldValue.getNumericValue();
 	}
 
 	public static Object getObject(FieldValue fieldValue) {
+		if ((fieldValue == null) || (fieldValue.getValue() == null)) {
+			return null;
+		}
+
 		return fieldValue.getValue();
 	}
 
 	public static String getString(FieldValue fieldValue) {
+		if ((fieldValue == null) || (fieldValue.getValue() == null)) {
+			return null;
+		}
+
 		return fieldValue.getStringValue();
 	}
 
