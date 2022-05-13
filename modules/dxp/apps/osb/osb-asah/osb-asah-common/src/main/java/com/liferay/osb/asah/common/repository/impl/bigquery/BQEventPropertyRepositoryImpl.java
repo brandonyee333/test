@@ -95,7 +95,7 @@ public class BQEventPropertyRepositoryImpl
 			return Optional.of(bqEventProperty);
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
