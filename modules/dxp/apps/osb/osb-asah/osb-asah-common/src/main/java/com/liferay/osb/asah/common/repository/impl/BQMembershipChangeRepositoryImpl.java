@@ -50,8 +50,7 @@ public class BQMembershipChangeRepositoryImpl
 
 	@Override
 	public long countBQMembershipChanges(
-		FilterHelper filterHelper, Boolean includeAnonymousUsers,
-		Long segmentId) {
+		FilterHelper filterHelper, Long segmentId) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -59,7 +58,7 @@ public class BQMembershipChangeRepositoryImpl
 		return selectSelectStep.from(
 			"BQMembershipChange"
 		).where(
-			_getConditions(filterHelper, includeAnonymousUsers, segmentId)
+			_getConditions(filterHelper, segmentId)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -69,15 +68,14 @@ public class BQMembershipChangeRepositoryImpl
 
 	@Override
 	public List<BQMembershipChange> searchBQMembershipChanges(
-		FilterHelper filterHelper, Boolean includeAnonymousUsers,
-		Long segmentId, Pageable pageable) {
+		FilterHelper filterHelper, Long segmentId, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"BQMembershipChange"
 		).where(
-			_getConditions(filterHelper, includeAnonymousUsers, segmentId)
+			_getConditions(filterHelper, segmentId)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -89,33 +87,27 @@ public class BQMembershipChangeRepositoryImpl
 
 	@Override
 	public List<BQMembershipChange>
-		searchLastByModifiedDateAndIndividualSegmentId(
-			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
-			List<Long> individualSegmentIds, Date toModifiedDate) {
+		searchLastByCreateDateAndIndividualSegmentId(
+			@Nullable Date fromCreateDate, List<Long> individualSegmentIds,
+			Date toCreateDate) {
 
 		if (individualSegmentIds.isEmpty()) {
 			return Collections.emptyList();
 		}
 
+		Field<Object> createDateField = DSL.field("createdate");
+
 		Field<Object> individualSegmentIdField = DSL.field(
 			"individualsegmentid");
-		Field<Object> modifiedDateField = DSL.field("modifieddate");
 
 		Condition condition = individualSegmentIdField.in(individualSegmentIds);
 
-		if (fromModifiedDate == null) {
-			condition = condition.and(modifiedDateField.le(toModifiedDate));
+		if (fromCreateDate == null) {
+			condition = condition.and(createDateField.le(toCreateDate));
 		}
 		else {
 			condition = condition.and(
-				modifiedDateField.between(fromModifiedDate, toModifiedDate));
-		}
-
-		if (!includeAnonymousUsers) {
-			condition = condition.and(
-				DSL.field(
-					"individualemail"
-				).isNotNull());
+				createDateField.between(fromCreateDate, toCreateDate));
 		}
 
 		Table<Record> bqMembershipChangeTable = DSL.table("BQMembershipChange");
@@ -127,12 +119,11 @@ public class BQMembershipChangeRepositoryImpl
 
 		return selectWhereStep.where(
 			DSL.row(
-				individualSegmentIdField, individualsCountField,
-				modifiedDateField
+				createDateField, individualSegmentIdField, individualsCountField
 			).in(
 				DSL.select(
-					individualSegmentIdField, DSL.max(individualsCountField),
-					DSL.max(modifiedDateField)
+					DSL.max(createDateField), individualSegmentIdField,
+					DSL.max(individualsCountField)
 				).from(
 					bqMembershipChangeTable
 				).where(
@@ -147,8 +138,7 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	private List<Condition> _getConditions(
-		FilterHelper filterHelper, Boolean includeAnonymousUsers,
-		Long segmentId) {
+		FilterHelper filterHelper, Long segmentId) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -159,13 +149,6 @@ public class BQMembershipChangeRepositoryImpl
 				).eq(
 					segmentId
 				));
-
-			if ((includeAnonymousUsers != null) && !includeAnonymousUsers) {
-				conditions.add(
-					DSL.field(
-						"individualEmail"
-					).isNotNull());
-			}
 		}
 
 		if (!StringUtils.isEmpty(filterHelper.getFilterString())) {

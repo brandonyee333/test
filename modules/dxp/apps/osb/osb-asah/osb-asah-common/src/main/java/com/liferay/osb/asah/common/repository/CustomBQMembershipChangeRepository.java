@@ -31,18 +31,16 @@ public interface CustomBQMembershipChangeRepository {
 
 	@Cacheable
 	public long countBQMembershipChanges(
-		FilterHelper filterHelper, Boolean includeAnonymousUsers,
-		Long segmentId);
+		FilterHelper filterHelper, Long segmentId);
 
 	@Cacheable
 	public List<BQMembershipChange> searchBQMembershipChanges(
-		FilterHelper filterHelper, Boolean includeAnonymousUsers,
-		Long segmentId, Pageable pageable);
+		FilterHelper filterHelper, Long segmentId, Pageable pageable);
 
 	@Cacheable
 	public List<BQMembershipChange>
-		searchLastByModifiedDateAndIndividualSegmentId(
-			@Nullable Date fromModifiedDate, boolean includeAnonymousUsers,
-			List<Long> individualSegmentIds, Date toModifiedDate);
+		searchLastByCreateDateAndIndividualSegmentId(
+			@Nullable Date fromCreateDate, List<Long> individualSegmentIds,
+			Date toCreateDate);
 
 }

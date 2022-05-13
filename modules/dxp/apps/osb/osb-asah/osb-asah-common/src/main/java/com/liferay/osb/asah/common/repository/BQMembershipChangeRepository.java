@@ -17,10 +17,8 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.query.Param;
 
@@ -36,29 +34,7 @@ public interface BQMembershipChangeRepository
 	public void deleteByIndividualSegmentIdIn(
 		@Param("individualSegmentIds") List<Long> individualSegmentIds);
 
-	@Cacheable
-	public Optional<BQMembershipChange> findByIndividualId(Long individualId);
-
-	public BQMembershipChange
-		findByIndividualIdAndIndividualSegmentIdAndOperation(
-			long individualId, long individualSegmentId, String operation);
-
-	@CacheEvict(allEntries = true)
-	@Modifying
-	public void updateIndividualDeletedByIndividualId(
-		@Param("individualDeleted") Boolean individualDeleted,
-		@Param("individualId") Long individualId);
-
-	@CacheEvict(allEntries = true)
-	@Modifying
-	public void updateIndividualDeletedByIndividualIdIn(
-		@Param("individualDeleted") Boolean individualDeleted,
-		@Param("individualIds") List<Long> individualIds);
-
-	@CacheEvict(allEntries = true)
-	@Modifying
-	public void updateIndividualNameByIndividualId(
-		@Param("individualId") Long individualId,
-		@Param("individualName") String individualName);
+	public BQMembershipChange findByIndividualSegmentId(
+		long individualSegmentId);
 
 }

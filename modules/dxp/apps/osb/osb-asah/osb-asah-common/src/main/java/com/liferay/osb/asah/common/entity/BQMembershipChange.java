@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.util.BeanUtils;
 
@@ -54,25 +53,16 @@ public class BQMembershipChange implements Persistable<Long> {
 
 		BQMembershipChange bqMembershipChange = (BQMembershipChange)obj;
 
-		if (Objects.equals(_id, bqMembershipChange._id) &&
-			Objects.equals(
-				_individualDeleted, bqMembershipChange._individualDeleted) &&
-			Objects.equals(
-				_individualEmail, bqMembershipChange._individualEmail) &&
-			Objects.equals(_individualId, bqMembershipChange._individualId) &&
-			Objects.equals(
-				_individualName, bqMembershipChange._individualName) &&
+		if (Objects.equals(_createDate, bqMembershipChange._createDate) &&
+			Objects.equals(_id, bqMembershipChange._id) &&
 			Objects.equals(
 				_individualSegmentId,
 				bqMembershipChange._individualSegmentId) &&
 			Objects.equals(
 				_individualsCount, bqMembershipChange._individualsCount) &&
-			Objects.equals(_joinedDate, bqMembershipChange._joinedDate) &&
 			Objects.equals(
 				_knownIndividualsCount,
-				bqMembershipChange._knownIndividualsCount) &&
-			Objects.equals(_modifiedDate, bqMembershipChange._modifiedDate) &&
-			Objects.equals(_operation, bqMembershipChange._operation)) {
+				bqMembershipChange._knownIndividualsCount)) {
 
 			return true;
 		}
@@ -81,30 +71,19 @@ public class BQMembershipChange implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
 	public Long getId() {
 		return _id;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Boolean getIndividualDeleted() {
-		return _individualDeleted;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getIndividualEmail() {
-		return _individualEmail;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Long getIndividualId() {
-		return _individualId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getIndividualName() {
-		return _individualName;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -118,41 +97,15 @@ public class BQMembershipChange implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonProperty("dateFirst")
-	public Date getJoinedDate() {
-		if (_joinedDate == null) {
-			return null;
-		}
-
-		return new Date(_joinedDate.getTime());
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getKnownIndividualsCount() {
 		return _knownIndividualsCount;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonProperty("dateChanged")
-	public Date getModifiedDate() {
-		if (_modifiedDate == null) {
-			return null;
-		}
-
-		return new Date(_modifiedDate.getTime());
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getOperation() {
-		return _operation;
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _individualDeleted, _individualEmail, _individualId,
-			_individualName, _individualSegmentId, _individualsCount,
-			_joinedDate, _knownIndividualsCount, _modifiedDate, _operation);
+			_id, _individualSegmentId, _individualsCount,
+			_knownIndividualsCount, _createDate);
 	}
 
 	@JsonIgnore
@@ -165,24 +118,14 @@ public class BQMembershipChange implements Persistable<Long> {
 		return false;
 	}
 
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
+	}
+
 	public void setId(Long id) {
 		_id = id;
-	}
-
-	public void setIndividualDeleted(Boolean individualDeleted) {
-		_individualDeleted = individualDeleted;
-	}
-
-	public void setIndividualEmail(String individualEmail) {
-		_individualEmail = individualEmail;
-	}
-
-	public void setIndividualId(Long individualId) {
-		_individualId = individualId;
-	}
-
-	public void setIndividualName(String individualName) {
-		_individualName = individualName;
 	}
 
 	public void setIndividualsCount(Long individualsCount) {
@@ -197,40 +140,15 @@ public class BQMembershipChange implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
-	public void setJoinedDate(Date joinedDate) {
-		if (joinedDate != null) {
-			_joinedDate = new Date(joinedDate.getTime());
-		}
-	}
-
 	public void setKnownIndividualsCount(Long knownIndividualsCount) {
 		_knownIndividualsCount = knownIndividualsCount;
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
-		if (modifiedDate != null) {
-			_modifiedDate = new Date(modifiedDate.getTime());
-		}
-	}
-
-	public void setOperation(String operation) {
-		_operation = operation;
-	}
+	@Transient
+	private Date _createDate;
 
 	@Transient
 	private Long _id;
-
-	@Transient
-	private Boolean _individualDeleted;
-
-	@Transient
-	private String _individualEmail;
-
-	@Transient
-	private Long _individualId;
-
-	@Transient
-	private String _individualName;
 
 	@Transient
 	private Long _individualsCount;
@@ -242,15 +160,6 @@ public class BQMembershipChange implements Persistable<Long> {
 	private Boolean _isNew;
 
 	@Transient
-	private Date _joinedDate;
-
-	@Transient
 	private Long _knownIndividualsCount;
-
-	@Transient
-	private Date _modifiedDate;
-
-	@Transient
-	private String _operation;
 
 }

@@ -443,9 +443,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		_membershipDog.deactivateBQMemberships(deletionDate, individualId);
 
-		_membershipChangeDog.updateBQMembershipChangeIndividualDeleted(
-			Boolean.TRUE, individualId);
-
 		_individualRepository.deleteById(individualId);
 	}
 
@@ -520,9 +517,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		_membershipDog.deactivateBQMembershipByIndividuals(
 			deletionDate, individuals);
-
-		_membershipChangeDog.updateBQMembershipChangeIndividualDeleted(
-			Boolean.TRUE, individualIds);
 
 		_individualRepository.deleteByIdIn(individualIds);
 	}
@@ -1225,12 +1219,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		Individual existingIndividual = fetchIndividual(individualId);
 
-		String oldIndividualName = null;
-
-		if (updateMemberships) {
-			oldIndividualName = getIndividualName(individualId);
-		}
-
 		_setFirstEnrichmentDate(existingIndividual);
 
 		if (CollectionUtils.isNotEmpty(existingIndividual.getFields()) &&
@@ -1258,7 +1246,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Individual individual = _individualRepository.save(existingIndividual);
 
 		if (updateMemberships) {
-			_individualModified(individual, oldIndividualName);
+			_individualModified(individual);
 		}
 
 		return _populateIndividual(individual);
@@ -1336,8 +1324,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		String oldIndividualName = getIndividualName(individualId);
-
 		JSONObject fieldsJSONObject = _fieldDog.getFieldsJSONObject(
 			"demographics", dataJSONObject, dataSource);
 
@@ -1393,7 +1379,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		individual.setCustomFields(customFields);
 
-		_individualModified(individual, oldIndividualName);
+		_individualModified(individual);
 
 		return individual;
 	}
@@ -1537,9 +1523,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		return Sort.by(orders);
 	}
 
-	private void _individualModified(
-		Individual individual, String oldIndividualName) {
-
+	private void _individualModified(Individual individual) {
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
@@ -1548,14 +1532,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 			).put(
 				"individualJSONObject", JSONUtil.put("id", individual.getId())
 			));
-
-		String newIndividualName = FaroInfoIndividualUtil.getIndividualName(
-			individual);
-
-		if (!Objects.equals(oldIndividualName, newIndividualName)) {
-			_membershipChangeDog.updateIndividualNameForIndividual(
-				individual.getId(), newIndividualName);
-		}
 	}
 
 	private Individual _populateIndividual(Individual individual) {
@@ -1832,9 +1808,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private InterestRepository _interestRepository;
-
-	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;

@@ -72,12 +72,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		Segment segment = _segmentDog.updateSegment(
-			bqMembership.getIndividualSegmentId());
-
-		_membershipChangeDog.addBQMembershipChange(
-			individual, segment.getIndividualsCount(),
-			segment.getKnownIndividualsCount(), bqMembership, "ADDED");
+		_segmentDog.updateSegment(bqMembership.getIndividualSegmentId());
 
 		return bqMembership;
 	}
@@ -104,11 +99,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 		_individualDog.addSegmentId(individuals, individualSegmentId);
 
-		Segment segment = _segmentDog.updateSegment(individualSegmentId);
-
-		_membershipChangeDog.addBQMembershipChanges(
-			createDate, individuals, segment.getIndividualsCount(),
-			individualSegmentId, segment.getKnownIndividualsCount(), "ADDED");
+		_segmentDog.updateSegment(individualSegmentId);
 	}
 
 	public List<BQMembership> addBQMemberships(
@@ -158,24 +149,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			bqMembership.getIndividualId(),
 			bqMembership.getIndividualSegmentId());
 
-		Individual individual = _individualDog.fetchIndividual(
-			bqMembership.getIndividualId());
-
-		Segment segment = _segmentDog.updateSegment(
-			bqMembership.getIndividualSegmentId());
-
-		if (individual == null) {
-			_membershipChangeDog.addBQMembershipChangeForDeletedIndividual(
-				bqMembership.getCreateDate(), bqMembership.getIndividualId(),
-				segment.getIndividualsCount(),
-				segment.getKnownIndividualsCount(), deletionDate,
-				bqMembership.getIndividualSegmentId());
-		}
-		else {
-			_membershipChangeDog.addBQMembershipChange(
-				individual, segment.getIndividualsCount(),
-				segment.getKnownIndividualsCount(), bqMembership, "REMOVED");
-		}
+		_segmentDog.updateSegment(bqMembership.getIndividualSegmentId());
 	}
 
 	public void deactivateBQMembership(
@@ -228,12 +202,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 				SetUtil.map(individualsByMembership, Individual::getId),
 				entry.getKey());
 
-			Segment segment = _segmentDog.updateSegment(entry.getKey());
-
-			_membershipChangeDog.addBQMembershipChanges(
-				deletionDate, individualsByMembership,
-				segment.getIndividualsCount(), entry.getKey(),
-				segment.getKnownIndividualsCount(), "REMOVED");
+			_segmentDog.updateSegment(entry.getKey());
 		}
 	}
 
@@ -260,16 +229,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 				SetUtil.map(entry.getValue(), BQMembership::getIndividualId),
 				entry.getKey());
 
-			Segment segment = _segmentDog.updateSegment(entry.getKey());
-
-			for (BQMembership bqMembership : entry.getValue()) {
-				_membershipChangeDog.addBQMembershipChangeForDeletedIndividual(
-					bqMembership.getCreateDate(),
-					bqMembership.getIndividualId(),
-					segment.getIndividualsCount(),
-					segment.getKnownIndividualsCount(), deletionDate,
-					bqMembership.getIndividualSegmentId());
-			}
+			_segmentDog.updateSegment(entry.getKey());
 		}
 	}
 
