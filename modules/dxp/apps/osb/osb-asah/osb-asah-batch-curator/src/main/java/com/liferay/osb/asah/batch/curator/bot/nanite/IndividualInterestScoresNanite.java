@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -96,8 +97,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		Long interestId = null;
 
 		while (true) {
-			List<Interest> newInterests = new ArrayList<>();
-
 			List<Interest> interests = _interestDog.getInterests(
 				interestId, "individual", DateUtil.addDays(dayDate, -1), 10000);
 
@@ -109,13 +108,19 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 			interestId = lastInterest.getId();
 
-			for (Interest interest : interests) {
+			Iterator<Interest> iterator = interests.iterator();
+
+			while (iterator.hasNext()) {
 				if (isInterrupted()) {
 					return;
 				}
 
+				Interest interest = iterator.next();
+
 				if (!keywordInfosMap.containsKey(interest.getName()) ||
 					ownerIds.contains(interest.getOwnerId())) {
+
+					iterator.remove();
 
 					continue;
 				}
@@ -126,14 +131,12 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 					interest.setId(null);
 					interest.setRecordedDate(dayDate);
 					interest.setScore(score);
-
-					newInterests.add(interest);
 				}
 			}
 
-			if (!newInterests.isEmpty()) {
+			if (!interests.isEmpty()) {
 				ListUtils.partition(
-					newInterests, 1000
+					interests, 1000
 				).forEach(
 					_interestDog::addInterests
 				);
