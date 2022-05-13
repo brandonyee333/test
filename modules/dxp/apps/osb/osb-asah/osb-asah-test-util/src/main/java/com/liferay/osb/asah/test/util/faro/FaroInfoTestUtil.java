@@ -28,7 +28,6 @@ import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.Goal;
@@ -286,32 +285,13 @@ public class FaroInfoTestUtil {
 	}
 
 	public static BQMembershipChange buildBQMembershipChange(
-		boolean individualDeleted, Individual individual,
-		Long individualSegmentId, String operationType) {
-
-		Set<Field> fields = individual.getFields();
-
-		Stream<Field> stream = fields.stream();
-
-		Field emailField = stream.filter(
-			field -> Objects.equals("email", field.getName())
-		).findFirst(
-		).orElse(
-			null
-		);
+		Long individualSegmentId) {
 
 		BQMembershipChange bqMembershipChange = new BQMembershipChange();
 
-		bqMembershipChange.setIndividualDeleted(individualDeleted);
-		bqMembershipChange.setIndividualEmail(
-			String.valueOf(emailField.getValue()));
-		bqMembershipChange.setIndividualName(
-			FaroInfoIndividualUtil.getIndividualName(individual));
+		bqMembershipChange.setCreateDate(new Date());
 		bqMembershipChange.setIndividualSegmentId(individualSegmentId);
 		bqMembershipChange.setIndividualsCount(RandomUtils.nextLong());
-		bqMembershipChange.setJoinedDate(new Date());
-		bqMembershipChange.setModifiedDate(new Date());
-		bqMembershipChange.setOperation(operationType);
 
 		return bqMembershipChange;
 	}
