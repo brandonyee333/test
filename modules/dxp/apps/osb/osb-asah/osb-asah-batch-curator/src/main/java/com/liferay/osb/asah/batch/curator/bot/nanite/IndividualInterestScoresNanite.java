@@ -50,6 +50,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -98,7 +99,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 		while (true) {
 			List<Interest> interests = _interestDog.getInterests(
-				interestId, "individual", DateUtil.addDays(dayDate, -1), 10000);
+				interestId, "individual", DateUtil.addDays(dayDate, -1),
+				_staleInterestsQuerySize);
 
 			if (interests.isEmpty()) {
 				break;
@@ -454,5 +456,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	private boolean _interrupted;
 	private boolean _running;
+
+	@Value("${osb.asah.batch.curator.stale.interests.query.size:10000}")
+	private int _staleInterestsQuerySize;
 
 }
