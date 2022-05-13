@@ -95,9 +95,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 		Long interestId = null;
 
-		List<Interest> newInterests = new ArrayList<>();
-
 		while (true) {
+			List<Interest> newInterests = new ArrayList<>();
+
 			List<Interest> interests = _interestDog.getInterests(
 				interestId, "individual", DateUtil.addDays(dayDate, -1), 10000);
 
