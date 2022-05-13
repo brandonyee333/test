@@ -17,8 +17,6 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
-import com.liferay.osb.asah.backend.dto.BQMembershipChangeDTO;
-import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -36,8 +34,6 @@ import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
-
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -145,66 +141,6 @@ public class IndividualSegmentsRestControllerTest
 			1,
 			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
 				338511451975440187L, "ACTIVE"));
-	}
-
-	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes_2.json"
-	)
-	@Test
-	public void testExpandAccountNames() throws Exception {
-		PageDTO<BQMembershipChangeDTO> bqMembershipChangeDTOPageDTO =
-			_individualSegmentsRestController.getMembershipChangeDTOPageDTO(
-				346306743994746064L, "account-names", null, 0, 10, null);
-
-		JSONObject membershipChangesJSONObject = _objectMapper.convertValue(
-			bqMembershipChangeDTOPageDTO, JSONObject.class);
-
-		JSONObject embeddedJSONObject =
-			membershipChangesJSONObject.getJSONObject("_embedded");
-
-		JSONArray membershipChangesJSONArray = embeddedJSONObject.getJSONArray(
-			"membership-changes");
-
-		Map<String, JSONObject> jsonObjectMap = JSONUtil.toJSONObjectMap(
-			membershipChangesJSONArray, "id");
-
-		JSONObject membershipChangeJSONObject = jsonObjectMap.get(
-			"346497473206675793");
-
-		embeddedJSONObject = membershipChangeJSONObject.getJSONObject(
-			"_embedded");
-
-		JSONArray accountNamesJSONArray = embeddedJSONObject.getJSONArray(
-			"account-names");
-
-		Assertions.assertEquals(4, accountNamesJSONArray.length());
-		Assertions.assertTrue(
-			JSONUtil.hasValue(accountNamesJSONArray, "Liferay, Inc."));
-		Assertions.assertTrue(
-			JSONUtil.hasValue(accountNamesJSONArray, "Nozomi Project"));
-		Assertions.assertTrue(
-			JSONUtil.hasValue(accountNamesJSONArray, "The Space Program"));
-		Assertions.assertTrue(
-			JSONUtil.hasValue(
-				accountNamesJSONArray, "The World's Foremost Chess Club"));
 	}
 
 	@ElasticsearchIndex(
@@ -323,22 +259,35 @@ public class IndividualSegmentsRestControllerTest
 		JSONArray membershipChangesJSONArray = embeddedJSONObject.getJSONArray(
 			"membership-changes");
 
-		Assertions.assertEquals(2, membershipChangesJSONArray.length());
+		Assertions.assertEquals(1, membershipChangesJSONArray.length());
+
+		JSONObject membershipJSONObject =
+			(JSONObject)membershipChangesJSONArray.get(0);
+
+		Assertions.assertEquals(
+			1, membershipJSONObject.getInt("individualsCount"));
+		Assertions.assertEquals(
+			1, membershipJSONObject.getInt("knownIndividualsCount"));
 
 		// Does not include anonymous users
 
 		membershipChangesJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getMembershipDTOPageDTO(
-				327968823603500677L, null, 0, 20, null),
+			_individualSegmentsRestController.getMembershipChangeDTOPageDTO(
+				327968823603500677L, null, null, 0, 20, null),
 			JSONObject.class);
 
 		embeddedJSONObject = membershipChangesJSONObject.getJSONObject(
 			"_embedded");
 
 		membershipChangesJSONArray = embeddedJSONObject.getJSONArray(
-			"memberships");
+			"membership-changes");
 
-		Assertions.assertEquals(1, membershipChangesJSONArray.length());
+		membershipJSONObject = (JSONObject)membershipChangesJSONArray.get(0);
+
+		Assertions.assertEquals(
+			2, membershipJSONObject.getInt("individualsCount"));
+		Assertions.assertEquals(
+			0, membershipJSONObject.getInt("knownIndividualsCount"));
 	}
 
 	@ElasticsearchIndex(
