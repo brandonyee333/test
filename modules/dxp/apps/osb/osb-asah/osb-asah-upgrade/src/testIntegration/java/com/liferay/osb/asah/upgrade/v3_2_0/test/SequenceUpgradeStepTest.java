@@ -76,7 +76,7 @@ public class SequenceUpgradeStepTest
 
 	private Long _getTableMaxId(String tableName) {
 		return _namedParameterJdbcTemplate.queryForObject(
-			"SELECT coalesce(max(id),1) FROM " + tableName,
+			"SELECT COALESCE(MAX(id), 1) FROM " + tableName,
 			Collections.emptyMap(), Long.class);
 	}
 

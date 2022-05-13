@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 public class SequenceUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade(String version) {
 		_syncSequenceStart(_getLatestId(true, "channel"), "channel_id_seq");
 		_syncSequenceStart(
 			_getLatestId(true, "datasource"), "datasource_id_seq");
@@ -46,7 +46,7 @@ public class SequenceUpgradeStep implements UpgradeStep {
 	private Long _getLatestId(boolean retry, String tableName) {
 		try {
 			return _namedParameterJdbcTemplate.queryForObject(
-				"SELECT coalesce(max(id),1) FROM " + tableName,
+				"SELECT COALESCE(MAX(id), 1) FROM " + tableName,
 				Collections.emptyMap(), Long.class);
 		}
 		catch (Exception exception) {
@@ -67,7 +67,7 @@ public class SequenceUpgradeStep implements UpgradeStep {
 				return _getLatestId(false, tableName);
 			}
 
-			return 0L;
+			return 1L;
 		}
 	}
 
