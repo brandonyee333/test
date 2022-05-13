@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.helper.BigQueryHelper;
 import com.liferay.osb.asah.common.repository.impl.BaseBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.util.BigQueryUtil;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,7 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Matthew Kong
  */
+@ConditionalOnGoogleApplicationCredentials
 public class BQEventPropertyRepositoryImpl
 	extends BaseBQEventPropertyRepository
 	implements CustomBQEventPropertyRepository {

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,7 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Alejo Ceballos
  */
+@ConditionalOnGoogleApplicationCredentials(matchIfMissing = true)
 public class BQEventPropertyRepositoryImpl
 	extends BaseBQEventPropertyRepository
 	implements CustomBQEventPropertyRepository {

@@ -20,6 +20,7 @@ import com.google.cloud.bigquery.JobException;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.TableResult;
 
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Component;
  * @author Matthew Kong
  */
 @Component
+@ConditionalOnGoogleApplicationCredentials
 public class BigQueryHelper {
 
 	public TableResult query(SelectFinalStep selectFinalStep) {

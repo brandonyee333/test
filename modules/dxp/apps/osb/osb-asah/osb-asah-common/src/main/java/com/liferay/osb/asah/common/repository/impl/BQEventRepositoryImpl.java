@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.Tuple3;
 import com.liferay.osb.asah.common.repository.CustomBQEventRepository;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
 import java.math.BigDecimal;
 
@@ -52,6 +53,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Leslie Wong
  */
+@ConditionalOnGoogleApplicationCredentials(matchIfMissing = true)
 public class BQEventRepositoryImpl
 	extends BaseBQEventRepository implements CustomBQEventRepository {
 

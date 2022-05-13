@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.repository.CustomBQEventRepository;
 import com.liferay.osb.asah.common.repository.helper.BigQueryHelper;
 import com.liferay.osb.asah.common.repository.impl.BaseBQEventRepository;
 import com.liferay.osb.asah.common.repository.util.BigQueryUtil;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
 import java.math.BigDecimal;
 
@@ -57,6 +58,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Matthew Kong
  */
+@ConditionalOnGoogleApplicationCredentials
 public class BQEventRepositoryImpl
 	extends BaseBQEventRepository implements CustomBQEventRepository {
 
