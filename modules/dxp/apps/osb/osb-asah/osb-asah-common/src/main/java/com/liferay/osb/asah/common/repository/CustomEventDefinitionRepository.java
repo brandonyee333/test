@@ -39,6 +39,9 @@ public interface CustomEventDefinitionRepository {
 	public List<EventDefinition> findByNameIn(Collection<String> names);
 
 	@Cacheable
+	public List<String> getEventDefinitionNames(boolean hidden);
+
+	@Cacheable
 	public List<EventDefinition> searchEventDefinitions(
 		@Nullable Boolean blocked,
 		@Nullable EventDefinition.BlockedReasonType blockedReasonType,

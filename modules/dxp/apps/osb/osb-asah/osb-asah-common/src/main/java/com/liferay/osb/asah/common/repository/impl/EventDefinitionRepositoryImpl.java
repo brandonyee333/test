@@ -92,6 +92,19 @@ public class EventDefinitionRepositoryImpl
 	}
 
 	@Override
+	public List<String> getEventDefinitionNames(boolean hidden) {
+		return _dslContext.select(
+			DSL.field("name")
+		).from(
+			"EventDefinition"
+		).where(
+			_getConditions(null, null, hidden, null, null)
+		).fetch(
+			record -> String.valueOf(record.get("name"))
+		);
+	}
+
+	@Override
 	public List<EventDefinition> searchEventDefinitions(
 		@Nullable Boolean blocked,
 		@Nullable EventDefinition.BlockedReasonType blockedReasonType,
