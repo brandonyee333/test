@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.model.Tuple3;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
+import com.liferay.osb.asah.common.repository.impl.bigquery.BQEventRepositoryImpl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -514,10 +515,8 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 			DSL.field(
 				"BQEvent.eventDate"
 			).between(
-				DateUtil.toUTCLocalDateTime(
-					rangeStartLocalDateTime, ZoneId.of(timeZoneId)),
-				DateUtil.toUTCLocalDateTime(
-					rangeEndLocalDateTime, ZoneId.of(timeZoneId))
+				_getDateParam(rangeStartLocalDateTime, timeZoneId),
+				_getDateParam(rangeEndLocalDateTime, timeZoneId)
 			),
 			DSL.field(
 				"BQEvent.eventId"
@@ -537,10 +536,10 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 
 		if (!StringUtils.isEmpty(keyword)) {
 			Condition keywordCondition = DSL.or(
-				DSL.field(
-					"BQEvent.eventId"
-				).containsIgnoreCase(
-					keyword
+				DSL.lower(
+					DSL.field("BQEvent.eventId", String.class)
+				).like(
+					"%" + StringUtils.lowerCase(keyword) + "%"
 				),
 				DSL.exists(
 					DSL.select(
@@ -555,20 +554,20 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 								).eq(
 									DSL.field("BQEvent.id")
 								)),
-							DSL.field(
-								"BQEventProperty.value"
-							).containsIgnoreCase(
-								keyword
+							DSL.lower(
+								DSL.field("BQEventProperty.value", String.class)
+							).like(
+								"%" + StringUtils.lowerCase(keyword) + "%"
 							)
 						)
 					)));
 
 			for (String globalAttribute : _globalAttributes.values()) {
 				keywordCondition = keywordCondition.or(
-					DSL.field(
-						"BQEvent." + globalAttribute
-					).containsIgnoreCase(
-						keyword
+					DSL.lower(
+						DSL.field("BQEvent." + globalAttribute, String.class)
+					).like(
+						"%" + StringUtils.lowerCase(keyword) + "%"
 					));
 			}
 
@@ -634,10 +633,34 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		if ((rangeEndDate != null) && (rangeStartDate != null)) {
 			Field<Object> field = DSL.field("BQEvent.eventDate");
 
-			conditions.add(field.between(rangeStartDate, rangeEndDate));
+			conditions.add(
+				field.between(
+					_getDateParam(rangeStartDate),
+					_getDateParam(rangeEndDate)));
 		}
 
 		return conditions;
+	}
+
+	private Object _getDateParam(Date date) {
+		if (this instanceof BQEventRepositoryImpl) {
+			return DateUtil.toUTCString(date);
+		}
+
+		return date;
+	}
+
+	private Object _getDateParam(
+		LocalDateTime localDateTime, String timeZoneId) {
+
+		localDateTime = DateUtil.toUTCLocalDateTime(
+			localDateTime, ZoneId.of(timeZoneId));
+
+		if (this instanceof BQEventRepositoryImpl) {
+			return DateUtil.toUTCString(localDateTime);
+		}
+
+		return localDateTime;
 	}
 
 	private Field<OffsetDateTime> _getDateValueField(
