@@ -84,8 +84,7 @@ public class DeleteIndividualSegmentTasksNaniteTest
 		_individualDog.addIndividual(individual, false);
 
 		_membershipChangeDog.addBQMembershipChange(
-			FaroInfoTestUtil.buildBQMembershipChange(
-				false, individual, segmentId, "ADDED"));
+			FaroInfoTestUtil.buildBQMembershipChange(segmentId));
 
 		_membershipDog.addBQMembership(
 			FaroInfoTestUtil.buildBQMembership(individual.getId(), segmentId));
