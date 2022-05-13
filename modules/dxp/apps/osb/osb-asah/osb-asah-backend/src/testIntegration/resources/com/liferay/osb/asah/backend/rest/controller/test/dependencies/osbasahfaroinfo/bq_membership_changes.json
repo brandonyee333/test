@@ -1,40 +1,16 @@
 [
 	{
-		"dateChanged": "2019-02-11T20:26:53.215Z",
-		"dateFirst": "2019-02-11T20:26:53.215Z",
+		"createDate": "2019-02-11T20:26:53.215Z",
 		"id": "338511399340944254",
-		"individualEmail": "test.test2@liferay.com",
-		"individualId": "337984659206412343",
-		"individualSegmentId": "327968823603500677",
-		"individualsCount": 1,
-		"operation": "ADDED"
-	},
-	{
-		"dateChanged": "2019-02-11T20:26:53.218Z",
-		"dateFirst": "2019-02-11T20:26:53.218Z",
-		"id": "338511399340944255",
-		"individualId": "337984612356412876",
 		"individualSegmentId": "327968823603500677",
 		"individualsCount": 2,
-		"operation": "ADDED"
+		"knownIndividualsCount": 0
 	},
 	{
-		"dateChanged": "2019-02-11T20:27:18.882Z",
-		"dateFirst": "2019-02-11T20:27:18.882Z",
+		"createDate": "2019-02-11T20:27:18.882Z",
 		"id": "338511452975425116",
-		"individualEmail": "test.test@liferay.com",
-		"individualId": "337984659206412898",
 		"individualSegmentId": "327968823603500666",
 		"individualsCount": 1,
-		"operation": "ADDED"
-	},
-	{
-		"dateChanged": "2019-02-11T20:27:18.892Z",
-		"dateFirst": "2019-02-11T20:27:18.892Z",
-		"id": "338511452975425117",
-		"individualId": "337984612356412845",
-		"individualSegmentId": "327968823603500666",
-		"individualsCount": 2,
-		"operation": "ADDED"
+		"knownIndividualsCount": 1
 	}
 ]
