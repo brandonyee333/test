@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.repository.util;
 
 import com.google.cloud.bigquery.FieldValue;
 
+import java.math.BigDecimal;
+
 import java.util.Date;
 
 /**
@@ -29,6 +31,14 @@ public class BigQueryUtil {
 
 	public static long getLong(FieldValue fieldValue) {
 		return fieldValue.getLongValue();
+	}
+
+	public static BigDecimal getNumber(FieldValue fieldValue) {
+		return fieldValue.getNumericValue();
+	}
+
+	public static Object getObject(FieldValue fieldValue) {
+		return fieldValue.getValue();
 	}
 
 	public static String getString(FieldValue fieldValue) {
