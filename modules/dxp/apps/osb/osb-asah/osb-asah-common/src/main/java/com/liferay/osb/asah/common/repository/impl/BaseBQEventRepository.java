@@ -15,7 +15,9 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
@@ -95,8 +97,7 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		getCountByEventDefinitionIdSelect(long eventDefinitionId) {
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep =
-			_getEventSelectJoinStep(
-				eventDefinitionId, _dslContext.selectCount());
+			_getEventSelectJoinStep(_dslContext.selectCount());
 
 		return selectJoinStep.where(
 			_getConditions(null, eventDefinitionId, null, null));
@@ -120,8 +121,7 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		@Nullable Date rangeStartDate, String timeZoneId) {
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep =
-			_getEventSelectJoinStep(
-				eventDefinitionId, _dslContext.selectCount());
+			_getEventSelectJoinStep(_dslContext.selectCount());
 
 		return selectJoinStep.where(
 			_getConditions(
@@ -139,7 +139,7 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 			_dslContext.select(_getUniqueIndividualsField());
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep =
-			_getEventSelectJoinStep(eventDefinitionId, selectSelectStep);
+			_getEventSelectJoinStep(selectSelectStep);
 
 		return selectJoinStep.where(
 			_getConditions(
@@ -155,21 +155,22 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
 			eventTable.asterisk());
 
-		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			"BQEvent");
-
 		Condition condition = DSL.noCondition();
 
 		if (eventDefinitionId != null) {
-			selectJoinStep = _joinEventDefinitionTable(selectJoinStep);
+			EventDefinition eventDefinition =
+				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
 
-			Field<Object> eventDefinitionIdField = DSL.field(
-				"EventDefinition.id");
-
-			condition = eventDefinitionIdField.eq(eventDefinitionId);
+			condition = DSL.field(
+				"BQEvent.eventId"
+			).eq(
+				eventDefinition.getName()
+			);
 		}
 
-		return selectJoinStep.where(
+		return selectSelectStep.from(
+			"BQEvent"
+		).where(
 			condition
 		).orderBy(
 			DSL.field(
@@ -195,7 +196,7 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 			totalEventCount.div(DSL.nullif(_getUniqueIndividualsField(), 0)));
 
 		SelectJoinStep<Record1<Number>> selectJoinStep =
-			_getEventSelectJoinStep(eventDefinitionId, selectSelectStep);
+			_getEventSelectJoinStep(selectSelectStep);
 
 		return selectJoinStep.where(
 			_getConditions(
@@ -233,8 +234,8 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 					DSL.count(DSL.when(valueField.isNull(), 1))
 				));
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep =
-			_joinEventDefinitionTable(selectSelectStep.from("BQEvent"));
+		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
+			"BQEvent");
 
 		selectJoinStep = _joinEventAttributeTable(
 			attributeType, eventAttributeDefinition, selectJoinStep);
@@ -278,8 +279,6 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 				"BQEvent"
 			),
 			timeZoneId);
-
-		selectJoinStep = _joinEventDefinitionTable(selectJoinStep);
 
 		SelectFinalStep selectFinalStep = selectJoinStep.where(
 			_getConditions(
@@ -325,16 +324,11 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 
 		eventDateField = eventDateField.as("eventDate");
 
-		SelectJoinStep<Record2<OffsetDateTime, Integer>> selectJoinStep =
-			_dslContext.select(
-				eventDateField, DSL.count()
-			).from(
-				"BQEvent"
-			);
-
-		selectJoinStep = _joinEventDefinitionTable(selectJoinStep);
-
-		return selectJoinStep.where(
+		return _dslContext.select(
+			eventDateField, DSL.count()
+		).from(
+			"BQEvent"
+		).where(
 			_createCondition(
 				channelId, keywords, rangeEndLocalDateTime,
 				rangeStartLocalDateTime, timeZoneId, userIds)
@@ -364,7 +358,7 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		eventDateField = eventDateField.as("eventDate");
 
 		Field<OffsetDateTime> event1EventDateField = DSL.field(
-			"event1.\"eventDate\"", OffsetDateTime.class);
+			"event1.eventDate", OffsetDateTime.class);
 
 		SelectSelectStep<Record2<OffsetDateTime, Object>> selectSelectStep =
 			_dslContext.selectDistinct(eventDateField, DSL.field("sessionId"));
@@ -375,14 +369,6 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 			DSL.table(
 				selectSelectStep.from(
 					"BQEvent"
-				).innerJoin(
-					DSL.table("EventDefinition")
-				).on(
-					DSL.field(
-						"BQEvent.eventId"
-					).eq(
-						DSL.field("EventDefinition.name")
-					)
 				).where(
 					_createCondition(
 						channelId, keywords, rangeEndLocalDateTime,
@@ -409,14 +395,6 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 
 		return selectSelectStep.from(
 			eventTable
-		).innerJoin(
-			DSL.table("EventDefinition")
-		).on(
-			DSL.field(
-				"BQEvent.eventId"
-			).eq(
-				DSL.field("EventDefinition.name")
-			)
 		).where(
 			_createCondition(
 				channelId, keywords, rangeEndLocalDateTime,
@@ -542,8 +520,10 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 					rangeEndLocalDateTime, ZoneId.of(timeZoneId))
 			),
 			DSL.field(
-				"EventDefinition.hidden", Boolean.class
-			).isFalse());
+				"BQEvent.eventId"
+			).notIn(
+				_eventDefinitionDog.getEventDefinitionNames(true)
+			));
 
 		if ((userIds != null) && !userIds.isEmpty()) {
 			condition = DSL.and(
@@ -558,7 +538,7 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		if (!StringUtils.isEmpty(keyword)) {
 			Condition keywordCondition = DSL.or(
 				DSL.field(
-					"EventDefinition.name"
+					"BQEvent.eventId"
 				).containsIgnoreCase(
 					keyword
 				),
@@ -643,9 +623,12 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		}
 
 		if (eventDefinitionId != null) {
-			Field<Object> field = DSL.field("EventDefinition.id");
+			EventDefinition eventDefinition =
+				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
 
-			conditions.add(field.eq(eventDefinitionId));
+			Field<Object> field = DSL.field("BQEvent.eventId");
+
+			conditions.add(field.eq(eventDefinition.getName()));
 		}
 
 		if ((rangeEndDate != null) && (rangeStartDate != null)) {
@@ -824,21 +807,11 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds) {
 
-		Table<Record> eventTable = DSL.table("BQEvent");
-
 		SelectSelectStep<Record1<Integer>> selectCount = _dslContext.select(
 			countAggregateFunction);
 
 		return selectCount.from(
-			eventTable
-		).innerJoin(
-			DSL.table("EventDefinition")
-		).on(
-			DSL.field(
-				"BQEvent.eventId"
-			).eq(
-				DSL.field("EventDefinition.name")
-			)
+			"BQEvent"
 		).where(
 			_createCondition(
 				channelId, keywords, rangeEndLocalDateTime,
@@ -847,16 +820,9 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 	}
 
 	private <T> SelectJoinStep<Record1<T>> _getEventSelectJoinStep(
-		Long eventDefinitionId, SelectSelectStep<Record1<T>> selectSelectStep) {
+		SelectSelectStep<Record1<T>> selectSelectStep) {
 
-		SelectJoinStep<Record1<T>> selectJoinStep = selectSelectStep.from(
-			"BQEvent");
-
-		if (eventDefinitionId == null) {
-			return selectJoinStep;
-		}
-
-		return _joinEventDefinitionTable(selectJoinStep);
+		return selectSelectStep.from("BQEvent");
 	}
 
 	private Field _getField(
@@ -1131,20 +1097,6 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		);
 	}
 
-	private SelectJoinStep _joinEventDefinitionTable(
-		SelectJoinStep selectJoinStep) {
-
-		return selectJoinStep.join(
-			"EventDefinition"
-		).on(
-			DSL.field(
-				"BQEvent.eventId"
-			).eq(
-				DSL.field("EventDefinition.name")
-			)
-		);
-	}
-
 	private static final Map<String, String> _globalAttributes =
 		new HashMap<String, String>() {
 			{
@@ -1162,5 +1114,8 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 	@Autowired
 	private EventAttributeDefinitionRepository
 		_eventAttributeDefinitionRepository;
+
+	@Autowired
+	private EventDefinitionDog _eventDefinitionDog;
 
 }
