@@ -71,9 +71,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		_deleteInterestScores(dayDateString);
 
 		Date dayDate = DateUtil.toUTCDate(dayDateString);
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			faroInfoElasticsearchInvoker.
-				createElasticsearchBulkRequestBuilder();
 
 		long totalViews = _faroInfoActivityDog.getTotalPageViews(dayDateString);
 
@@ -91,8 +88,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			}
 
 			_process(
-				dayDateString, elasticsearchBulkRequestBuilder, keywordInfosMap,
-				ownerId, totalKeywordsPageViewsMap, totalViews);
+				dayDateString, keywordInfosMap, ownerId,
+				totalKeywordsPageViewsMap, totalViews);
 		}
 
 		Long interestId = null;
@@ -197,9 +194,12 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	}
 
 	private void _addVisitedPages(
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
 		String dayDateString, Long individualId, String keyword,
 		List<KeywordInfo> keywordInfos, Map<String, Long> urlsPageViewsMap) {
+
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			faroInfoElasticsearchInvoker.
+				createElasticsearchBulkRequestBuilder();
 
 		for (KeywordInfo keywordInfo : keywordInfos) {
 			Long pageViews = urlsPageViewsMap.get(
@@ -236,6 +236,10 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 					faroInfoElasticsearchInvoker.
 						createElasticsearchBulkRequestBuilder();
 			}
+		}
+
+		if (elasticsearchBulkRequestBuilder.hasActions()) {
+			elasticsearchBulkRequestBuilder.get();
 		}
 	}
 
@@ -345,7 +349,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	private void _process(
 			String dayDateString,
-			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
 			Map<String, List<KeywordInfo>> keywordInfosMap, Long ownerId,
 			Map<String, Long> totalKeywordsPageViewsMap, long totalViews)
 		throws Exception {
@@ -413,8 +416,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 		for (String keyword : interestsMap.keySet()) {
 			_addVisitedPages(
-				elasticsearchBulkRequestBuilder, dayDateString, ownerId,
-				keyword, keywordInfosMap.get(keyword), urlPageViewsMap);
+				dayDateString, ownerId, keyword, keywordInfosMap.get(keyword),
+				urlPageViewsMap);
 		}
 
 		if (!interestsMap.isEmpty()) {
@@ -423,10 +426,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			).forEach(
 				_interestDog::addInterests
 			);
-		}
-
-		if (elasticsearchBulkRequestBuilder.hasActions()) {
-			elasticsearchBulkRequestBuilder.get();
 		}
 	}
 
