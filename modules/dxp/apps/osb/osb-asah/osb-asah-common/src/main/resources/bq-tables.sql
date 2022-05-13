@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS BQIdentity (
 );
 
 CREATE TABLE IF NOT EXISTS BQMembership (
-    id BIGSERIAL PRIMARY KEY,
     createDate TIMESTAMPTZ,
+    id BIGSERIAL PRIMARY KEY,
     individualId BIGINT,
     individualSegmentId BIGINT,
     modifiedDate TIMESTAMPTZ,
