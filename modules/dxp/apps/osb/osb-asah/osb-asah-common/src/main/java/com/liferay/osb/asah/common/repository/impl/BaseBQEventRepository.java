@@ -306,9 +306,8 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 			LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 			Set<String> userIds) {
 
-		Field<OffsetDateTime> eventDateField = DSL.field(
-			String.format("BQEvent.eventDate AT TIME ZONE '%s'", timeZoneId),
-			OffsetDateTime.class);
+		Field<OffsetDateTime> eventDateField = _getEventDateTimeZoneOffsetField(
+			timeZoneId);
 
 		if (interval == Interval.DAY) {
 			eventDateField = _dateTrunc(DatePart.DAY, eventDateField);
@@ -345,9 +344,8 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 			LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 			Set<String> userIds) {
 
-		Field<OffsetDateTime> eventDateField = DSL.field(
-			String.format("eventDate AT TIME ZONE '%s'", timeZoneId),
-			OffsetDateTime.class);
+		Field<OffsetDateTime> eventDateField = _getEventDateTimeZoneOffsetField(
+			timeZoneId);
 
 		if (interval != Interval.HOUR) {
 			eventDateField = _dateTrunc(DatePart.DAY, eventDateField);
@@ -580,6 +578,12 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 	private <OffsetDateTime> Field<OffsetDateTime> _dateTrunc(
 		DatePart datePart, Field<OffsetDateTime> field) {
 
+		if (this instanceof BQEventRepositoryImpl) {
+			return DSL.field(
+				"date_trunc({0}, {1})", field.getDataType(), field,
+				datePart.toName());
+		}
+
 		if (datePart == DatePart.WEEK) {
 			return DSL.field(
 				"date_trunc({0}, {1} + INTERVAL '1 DAY') - INTERVAL '1 DAY'",
@@ -589,6 +593,41 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		return DSL.field(
 			"date_trunc({0}, {1})", field.getDataType(), datePart.toSQL(),
 			field);
+	}
+
+	private Field _getCastBooleanField(Field field) {
+		if (this instanceof BQEventRepositoryImpl) {
+			return DSL.field("SAFE_CAST({0} as BOOL)", field);
+		}
+
+		return DSL.function("try_cast_boolean", Boolean.class, field);
+	}
+
+	private Field _getCastDurationField(Field field) {
+		if (this instanceof BQEventRepositoryImpl) {
+			return DSL.field("SAFE_CAST({0} as INT64)", field);
+		}
+
+		return DSL.round(
+			DSL.abs(DSL.function("try_cast_bigint", BigInteger.class, field)),
+			-3);
+	}
+
+	private Field _getCastNumberField(Field field) {
+		if (this instanceof BQEventRepositoryImpl) {
+			return DSL.field("SAFE_CAST({0} as BIGNUMERIC)", field);
+		}
+
+		return DSL.round(
+			DSL.function("try_cast_float", BigDecimal.class, field));
+	}
+
+	private Field _getCastStringField(Field field) {
+		if (this instanceof BQEventRepositoryImpl) {
+			return DSL.field("SAFE_CAST({0} as STRING)", field);
+		}
+
+		return field.cast(String.class);
 	}
 
 	private List<Condition> _getConditions(
@@ -665,6 +704,11 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 
 	private Field<OffsetDateTime> _getDateValueField(
 		Field field, String timeZoneId) {
+
+		if (this instanceof BQEventRepositoryImpl) {
+			return DSL.field(
+				"SAFE_CAST({0} as DATE)", OffsetDateTime.class, field);
+		}
 
 		StringBuilder sb = new StringBuilder();
 
@@ -824,6 +868,18 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 				EventAttributeDefinition::getId, Function.identity()));
 	}
 
+	private Field _getEventDateTimeZoneOffsetField(String timeZoneId) {
+		if (this instanceof BQEventRepositoryImpl) {
+			return DSL.field(
+				String.format("DATETIME(BQEvent.eventDate, '%s')", timeZoneId),
+				OffsetDateTime.class);
+		}
+
+		return DSL.field(
+			String.format("BQEvent.eventDate AT TIME ZONE '%s'", timeZoneId),
+			OffsetDateTime.class);
+	}
+
 	private SelectFinalStep<Record1<Integer>> _getEventsCount(
 		Long channelId, AggregateFunction<Integer> countAggregateFunction,
 		String keywords, LocalDateTime rangeEndLocalDateTime,
@@ -856,7 +912,7 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 			eventAnalysisFilter.getDataType();
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
-			return DSL.function("try_cast_boolean", Object.class, field);
+			return _getCastBooleanField(field);
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
@@ -865,15 +921,11 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			return DSL.round(
-				DSL.abs(
-					DSL.function("try_cast_bigint", BigInteger.class, field)),
-				-3);
+			_getCastDurationField(field);
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			return DSL.round(
-				DSL.function("try_cast_float", BigDecimal.class, field));
+			_getCastNumberField(field);
 		}
 
 		return field;
@@ -974,7 +1026,9 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 					"BQEventProperty.eventDate");
 
 				condition = condition.and(
-					eventDateField.between(rangeStartDate, rangeEndDate));
+					eventDateField.between(
+						_getDateParam(rangeStartDate),
+						_getDateParam(rangeEndDate)));
 			}
 		}
 
@@ -1008,8 +1062,7 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
-			field = DSL.function(
-				"try_cast_boolean", Boolean.class, attributeField);
+			field = _getCastBooleanField(attributeField);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			DateGrouping dateGrouping =
@@ -1039,11 +1092,7 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
 			field = DSL.floor(
 				DSL.round(
-					DSL.abs(
-						DSL.function(
-							"try_cast_bigint", BigInteger.class,
-							attributeField)),
-					-3
+					DSL.abs(_getCastDurationField(attributeField)), -3
 				).div(
 					eventAnalysisBreakdown.getBinSize()
 				)
@@ -1052,19 +1101,16 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 			);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
+			Field castField = _getCastNumberField(attributeField);
+
 			field = DSL.floor(
-				DSL.round(
-					DSL.function(
-						"try_cast_float", BigDecimal.class, attributeField)
-				).div(
-					eventAnalysisBreakdown.getBinSize()
-				)
+				castField.div(eventAnalysisBreakdown.getBinSize())
 			).multiply(
 				eventAnalysisBreakdown.getBinSize()
 			);
 		}
 		else {
-			field = DSL.lower(attributeField.cast(String.class));
+			field = DSL.lower(_getCastStringField(attributeField));
 		}
 
 		if (alias) {
