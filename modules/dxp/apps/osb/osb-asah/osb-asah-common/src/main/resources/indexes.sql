@@ -4,7 +4,7 @@ CREATE INDEX IF NOT EXISTS IX_EVENTDEFINITION_NAME ON EventDefinition (name);
 
 CREATE INDEX IF NOT EXISTS IX_INTEREST_OIOT ON Interest (ownerId, ownerType);
 
-CREATE INDEX IF NOT EXISTS IX_MEMBERSHIPCHANGE_ISIMD ON BQMembershipChange (individualsegmentid, modifieddate);
+CREATE INDEX IF NOT EXISTS IX_MEMBERSHIPCHANGE_ISIMD ON BQMembershipChange (createDate, individualsegmentid);
 
 CREATE UNIQUE INDEX IF NOT EXISTS IX_ACTIVITYGROUP_ATCIDSIDDUI ON ActivityGroup (activityType, channelId, dataSourceId, dayDate, userId);
 

@@ -87,17 +87,11 @@ CREATE TABLE IF NOT EXISTS BQMembership (
 );
 
 CREATE TABLE IF NOT EXISTS BQMembershipChange (
+    createDate TIMESTAMPTZ,
     id BIGSERIAL PRIMARY KEY,
-    individualDeleted BOOLEAN,
-    individualId BIGINT,
-    individualEmail TEXT,
-    individualName TEXT,
     individualsCount BIGINT,
     individualSegmentId BIGINT,
-    joinedDate TIMESTAMPTZ,
-    knownIndividualsCount BIGINT,
-    modifiedDate TIMESTAMPTZ,
-    operation TEXT
+    knownIndividualsCount BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS BQOrganization (

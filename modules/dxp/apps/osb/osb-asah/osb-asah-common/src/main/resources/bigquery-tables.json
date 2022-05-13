@@ -511,34 +511,18 @@
 	},
 	"membershipChange": {
 		"clusteringFields": [
-			"individualId",
 			"individualSegmentId"
 		],
 		"fields": [
 			{
 				"mode": "REQUIRED",
-				"name": "individualDeleted",
-				"type": "BOOL"
+				"name": "createDate",
+				"type": "TIMESTAMP"
 			},
 			{
 				"mode": "REQUIRED",
 				"name": "id",
 				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "individualId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "individualEmail",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "individualName",
-				"type": "STRING"
 			},
 			{
 				"mode": "REQUIRED",
@@ -552,23 +536,8 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "joinedDate",
-				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "REQUIRED",
 				"name": "knownIndividualsCount",
 				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "modifiedDate",
-				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "operation",
-				"type": "STRING"
 			}
 		]
 	},
