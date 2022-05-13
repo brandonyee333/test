@@ -48,7 +48,6 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -137,40 +136,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			membershipChange -> bqMembershipChangeDTOs.add(
 				new BQMembershipChangeDTO(membershipChange)));
 
-		Map<Long, JSONObject> accountNamesJSONObjects = new HashMap<>();
-
-		String[] expandParts = expand.split(",");
-
-		for (String expandPart : expandParts) {
-			if (expandPart.equals("account-names")) {
-				accountNamesJSONObjects =
-					_bqMembershipChangeDog.getAccountNamesJSONObjects(
-						bqMembershipChanges);
-			}
-			else if (_log.isWarnEnabled()) {
-				_log.warn("Invalid expand: " + expandPart);
-			}
-		}
-
-		for (BQMembershipChangeDTO bqMembershipChangeDTO :
-				bqMembershipChangeDTOs) {
-
-			Map<String, Object> expandMap = new HashMap<>();
-
-			JSONObject accountNamesJSONObject = accountNamesJSONObjects.get(
-				Long.valueOf(bqMembershipChangeDTO.getId()));
-
-			if (accountNamesJSONObject != null) {
-				expandMap.put(
-					"account-names",
-					accountNamesJSONObject.getJSONArray("account-names"));
-			}
-
-			if (!expandMap.isEmpty()) {
-				bqMembershipChangeDTO.setEmbedded(expandMap);
-			}
-		}
-
 		return _toMembershipChangeDTOPageDTO(
 			new BQMembershipChangeDTO(bqMembershipChangeDTOs),
 			bqMembershipChangesPages);
@@ -228,7 +193,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 			List<BQMembershipChange> bqMembershipsChanges =
 				_bqMembershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
-					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
 					Collections.singletonList(segment.getId()));
 
 			if (!bqMembershipsChanges.isEmpty()) {
