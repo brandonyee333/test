@@ -348,10 +348,9 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	}
 
 	private void _process(
-			String dayDateString,
-			Map<String, List<KeywordInfo>> keywordInfosMap, Long ownerId,
-			Map<String, Long> totalKeywordsPageViewsMap, long totalViews)
-		throws Exception {
+		String dayDateString, Map<String, List<KeywordInfo>> keywordInfosMap,
+		Long ownerId, Map<String, Long> totalKeywordsPageViewsMap,
+		long totalViews) {
 
 		Date dayDate = DateUtil.toUTCDate(dayDateString);
 
