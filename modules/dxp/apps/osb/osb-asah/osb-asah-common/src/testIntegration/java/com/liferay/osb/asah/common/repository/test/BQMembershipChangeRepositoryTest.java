@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +31,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,22 +65,17 @@ public class BQMembershipChangeRepositoryTest
 
 		for (Segment segment : _segments) {
 			bqMembershipsChanges.add(
-				_createBQMembershipChange(
-					RandomTestUtil.randomNumber(), 1, _yesterday, segment));
+				_createBQMembershipChange(_yesterday, 1, segment));
 			bqMembershipsChanges.add(
 				_createBQMembershipChange(
-					RandomTestUtil.randomNumber(), 3,
-					DateUtil.newEndOfDayDate(_newDayDate), segment));
+					DateUtil.newEndOfDayDate(_newDayDate), 3, segment));
 			bqMembershipsChanges.add(
 				_createBQMembershipChange(
-					RandomTestUtil.randomNumber(), 4,
-					DateUtil.newEndOfDayDate(_newDayDate), segment));
+					DateUtil.newEndOfDayDate(_newDayDate), 4, segment));
 			bqMembershipsChanges.add(
-				_createBQMembershipChange(
-					RandomTestUtil.randomNumber(), 2, _newDayDate, segment));
+				_createBQMembershipChange(_newDayDate, 2, segment));
 			bqMembershipsChanges.add(
-				_createBQMembershipChange(
-					RandomTestUtil.randomNumber(), 5, _tomorrow, segment));
+				_createBQMembershipChange(_tomorrow, 5, segment));
 		}
 
 		setUpRepository(
@@ -98,7 +91,7 @@ public class BQMembershipChangeRepositoryTest
 		Assertions.assertEquals(
 			5,
 			_bqMembershipChangeRepository.countBQMembershipChanges(
-				FilterHelper.EMPTY, false, segment.getId()));
+				FilterHelper.EMPTY, segment.getId()));
 	}
 
 	@Test
@@ -128,24 +121,16 @@ public class BQMembershipChangeRepositoryTest
 	}
 
 	@Test
-	public void testFindByIndividualId() {
-		Assertions.assertEquals(
-			Optional.of(_bqMembershipChange),
-			_bqMembershipChangeRepository.findByIndividualId(
-				_bqMembershipChange.getIndividualId()));
-	}
-
-	@Test
 	public void testSearchLastByDateChangedPeriodAndIndividualSegmentId() {
 		List<Long> individualSegmentIds = Collections.singletonList(
 			_bqMembershipChange.getIndividualSegmentId());
 
 		List<BQMembershipChange> bqMembershipChanges =
 			_bqMembershipChangeRepository.
-				searchLastByModifiedDateAndIndividualSegmentId(
+				searchLastByCreateDateAndIndividualSegmentId(
 					DateUtil.newBeginningOfDayDate(
 						DateUtils.addDays(_yesterday, -3)),
-					false, individualSegmentIds,
+					individualSegmentIds,
 					DateUtil.newEndOfDayDate(
 						DateUtils.addDays(_yesterday, -2)));
 
@@ -153,8 +138,8 @@ public class BQMembershipChangeRepositoryTest
 
 		bqMembershipChanges =
 			_bqMembershipChangeRepository.
-				searchLastByModifiedDateAndIndividualSegmentId(
-					DateUtil.newBeginningOfDayDate(_yesterday), false,
+				searchLastByCreateDateAndIndividualSegmentId(
+					DateUtil.newBeginningOfDayDate(_yesterday),
 					individualSegmentIds,
 					DateUtil.newEndOfDayDate(_newDayDate));
 
@@ -165,8 +150,8 @@ public class BQMembershipChangeRepositoryTest
 
 		bqMembershipChanges =
 			_bqMembershipChangeRepository.
-				searchLastByModifiedDateAndIndividualSegmentId(
-					null, false, individualSegmentIds,
+				searchLastByCreateDateAndIndividualSegmentId(
+					null, individualSegmentIds,
 					DateUtil.newEndOfDayDate(_newDayDate));
 
 		Assertions.assertEquals(
@@ -176,8 +161,8 @@ public class BQMembershipChangeRepositoryTest
 
 		bqMembershipChanges =
 			_bqMembershipChangeRepository.
-				searchLastByModifiedDateAndIndividualSegmentId(
-					DateUtil.newBeginningOfDayDate(_yesterday), false,
+				searchLastByCreateDateAndIndividualSegmentId(
+					DateUtil.newBeginningOfDayDate(_yesterday),
 					individualSegmentIds, DateUtil.newEndOfDayDate(_tomorrow));
 
 		Assertions.assertEquals(
@@ -197,9 +182,9 @@ public class BQMembershipChangeRepositoryTest
 
 		bqMembershipChanges =
 			_bqMembershipChangeRepository.
-				searchLastByModifiedDateAndIndividualSegmentId(
-					DateUtil.newBeginningOfDayDate(_yesterday), false,
-					segmentIds1, DateUtil.newEndOfDayDate(_tomorrow));
+				searchLastByCreateDateAndIndividualSegmentId(
+					DateUtil.newBeginningOfDayDate(_yesterday), segmentIds1,
+					DateUtil.newEndOfDayDate(_tomorrow));
 
 		Assertions.assertEquals(
 			2, bqMembershipChanges.size(), bqMembershipChanges.toString());
@@ -226,8 +211,7 @@ public class BQMembershipChangeRepositoryTest
 
 		List<BQMembershipChange> bqMembershipChanges =
 			_bqMembershipChangeRepository.searchBQMembershipChanges(
-				FilterHelper.EMPTY, false, segment.getId(),
-				PageRequest.of(0, 1));
+				FilterHelper.EMPTY, segment.getId(), PageRequest.of(0, 1));
 
 		Assertions.assertEquals(
 			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
@@ -236,8 +220,7 @@ public class BQMembershipChangeRepositoryTest
 
 		bqMembershipChanges =
 			_bqMembershipChangeRepository.searchBQMembershipChanges(
-				new FilterHelper("operation ge 'ADDED'"), false,
-				segment.getId(), PageRequest.of(0, 10));
+				FilterHelper.EMPTY, segment.getId(), PageRequest.of(0, 10));
 
 		Stream<BQMembershipChange> stream = bqMembershipChanges.stream();
 
@@ -249,67 +232,6 @@ public class BQMembershipChangeRepositoryTest
 		Assertions.assertEquals(
 			1, bqMembershipChangesMap.size(),
 			bqMembershipChangesMap.toString());
-	}
-
-	@Test
-	public void testUpdateIndividualDeletedByIndividualId() {
-		_bqMembershipChangeRepository.updateIndividualDeletedByIndividualId(
-			Boolean.TRUE, _bqMembershipChange.getIndividualId());
-
-		Long bqMembershipChangeId = _bqMembershipChange.getId();
-
-		Assertions.assertNotNull(bqMembershipChangeId);
-
-		Optional<BQMembershipChange> bqMembershipChangeOptional =
-			_bqMembershipChangeRepository.findById(bqMembershipChangeId);
-
-		Assertions.assertTrue(bqMembershipChangeOptional.isPresent());
-
-		BQMembershipChange actualBQMembershipChange =
-			bqMembershipChangeOptional.get();
-
-		Assertions.assertTrue(actualBQMembershipChange.getIndividualDeleted());
-	}
-
-	@Test
-	public void testUpdateIndividualDeletedByIndividualIdIn() {
-		_bqMembershipChangeRepository.updateIndividualDeletedByIndividualIdIn(
-			Boolean.TRUE, Arrays.asList(_bqMembershipChange.getIndividualId()));
-
-		Long bqMembershipChangeId = _bqMembershipChange.getId();
-
-		Assertions.assertNotNull(bqMembershipChangeId);
-
-		Optional<BQMembershipChange> bqMembershipChangeOptional =
-			_bqMembershipChangeRepository.findById(bqMembershipChangeId);
-
-		Assertions.assertTrue(bqMembershipChangeOptional.isPresent());
-
-		BQMembershipChange actualBQMembershipChange =
-			bqMembershipChangeOptional.get();
-
-		Assertions.assertTrue(actualBQMembershipChange.getIndividualDeleted());
-	}
-
-	@Test
-	public void testUpdateIndividualNameByIndividualId() {
-		_bqMembershipChangeRepository.updateIndividualNameByIndividualId(
-			_bqMembershipChange.getIndividualId(), "Frank Sinatra");
-
-		Long bqMembershipChangeId = _bqMembershipChange.getId();
-
-		Assertions.assertNotNull(bqMembershipChangeId);
-
-		Optional<BQMembershipChange> bqMembershipChangeOptional =
-			_bqMembershipChangeRepository.findById(bqMembershipChangeId);
-
-		Assertions.assertTrue(bqMembershipChangeOptional.isPresent());
-
-		BQMembershipChange actualBQMembershipChange =
-			bqMembershipChangeOptional.get();
-
-		Assertions.assertEquals(
-			"Frank Sinatra", actualBQMembershipChange.getIndividualName());
 	}
 
 	@Override
@@ -342,23 +264,14 @@ public class BQMembershipChangeRepositoryTest
 	}
 
 	private BQMembershipChange _createBQMembershipChange(
-		long individualId, long knownIndividualsCount, Date modifiedDate,
-		Segment segment) {
+		Date createDate, long knownIndividualsCount, Segment segment) {
 
 		BQMembershipChange bqMembershipChange = new BQMembershipChange();
 
-		bqMembershipChange.setIndividualDeleted(Boolean.FALSE);
-		bqMembershipChange.setIndividualEmail(
-			String.format("individual.%d@liferay.com", individualId));
-		bqMembershipChange.setIndividualId(individualId);
-		bqMembershipChange.setIndividualName(
-			String.format("Individual Name %d", individualId));
+		bqMembershipChange.setCreateDate(createDate);
 		bqMembershipChange.setIndividualsCount(knownIndividualsCount);
 		bqMembershipChange.setIndividualSegmentId(segment.getId());
-		bqMembershipChange.setJoinedDate(modifiedDate);
 		bqMembershipChange.setKnownIndividualsCount(knownIndividualsCount);
-		bqMembershipChange.setModifiedDate(modifiedDate);
-		bqMembershipChange.setOperation("ADDED");
 
 		return bqMembershipChange;
 	}

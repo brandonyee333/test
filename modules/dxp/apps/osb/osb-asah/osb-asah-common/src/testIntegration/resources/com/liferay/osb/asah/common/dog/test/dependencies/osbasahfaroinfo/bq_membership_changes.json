@@ -1,72 +1,14 @@
 [
 	{
-		"dateChanged": "2019-02-11T20:26:53.215Z",
-		"dateFirst": "2019-02-11T20:26:53.215Z",
+		"createDate": "2019-02-11T20:26:53.215Z",
 		"id": "338511399340944254",
-		"individualEmail": "test1@liferay.com",
-		"individualId": "338486037253283140",
 		"individualSegmentId": "338511398116723458",
-		"individualsCount": 1,
-		"operation": "ADDED"
+		"individualsCount": 4
 	},
 	{
-		"dateChanged": "2019-02-11T20:26:53.218Z",
-		"dateFirst": "2019-02-11T20:26:53.218Z",
-		"id": "338511399340944255",
-		"individualEmail": "test2@liferay.com",
-		"individualId": "338486041327913341",
-		"individualSegmentId": "338511398116723458",
-		"individualsCount": 2,
-		"operation": "ADDED"
-	},
-	{
-		"dateChanged": "2019-02-11T20:26:53.221Z",
-		"dateFirst": "2019-02-11T20:26:53.221Z",
-		"id": "338511399340944257",
-		"individualEmail": "test3@liferay.com",
-		"individualId": "338486039084349956",
-		"individualSegmentId": "338511398116723458",
-		"individualsCount": 3,
-		"operation": "ADDED"
-	},
-	{
-		"dateChanged": "2019-02-11T20:27:18.882Z",
-		"dateFirst": "2019-02-11T20:27:18.882Z",
-		"id": "338511452975425116",
-		"individualEmail": "test4@liferay.com",
-		"individualId": "338486044983457832",
-		"individualSegmentId": "338511451975440187",
-		"individualsCount": 1,
-		"operation": "ADDED"
-	},
-	{
-		"dateChanged": "2019-02-11T20:27:18.892Z",
-		"dateFirst": "2019-02-11T20:27:18.892Z",
+		"createDate": "2019-02-11T20:27:18.892Z",
 		"id": "338511452975425117",
-		"individualEmail": "test5@liferay.com",
-		"individualId": "338486040159673751",
 		"individualSegmentId": "338511451975440187",
-		"individualsCount": 2,
-		"operation": "ADDED"
-	},
-	{
-		"dateChanged": "2019-02-11T20:27:36.615Z",
-		"dateFirst": "2019-02-11T20:26:53.221Z",
-		"id": "338511489739360168",
-		"individualEmail": "test3@liferay.com",
-		"individualId": "338486039084349956",
-		"individualSegmentId": "338511398116723458",
-		"individualsCount": 2,
-		"operation": "REMOVED"
-	},
-	{
-		"dateChanged": "2019-02-11T20:27:47.590Z",
-		"dateFirst": "2019-02-11T20:27:18.892Z",
-		"id": "338511512696689057",
-		"individualEmail": "test5@liferay.com",
-		"individualId": "338486040159673751",
-		"individualSegmentId": "338511451975440187",
-		"individualsCount": 1,
-		"operation": "REMOVED"
+		"individualsCount": 3
 	}
 ]

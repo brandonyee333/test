@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
-import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -125,29 +124,6 @@ public class MembershipDogTest
 			new Long[] {234L, 456L},
 			Matchers.arrayContainingInAnyOrder(
 				segmentIds.toArray(new Long[0])));
-
-		List<BQMembershipChange> bqMembershipChanges =
-			(List<BQMembershipChange>)_bqMembershipChangeRepository.findAll();
-
-		Assertions.assertEquals(1, bqMembershipChanges.size());
-
-		BQMembershipChange bqMembershipChange = bqMembershipChanges.get(0);
-
-		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"),
-			bqMembershipChange.getModifiedDate());
-		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"),
-			bqMembershipChange.getJoinedDate());
-		Assertions.assertEquals(
-			false, bqMembershipChange.getIndividualDeleted());
-		Assertions.assertEquals(123L, bqMembershipChange.getIndividualId());
-		Assertions.assertEquals(1, bqMembershipChange.getIndividualsCount());
-		Assertions.assertEquals(
-			234L, bqMembershipChange.getIndividualSegmentId());
-		Assertions.assertEquals(
-			0, bqMembershipChange.getKnownIndividualsCount());
-		Assertions.assertEquals("ADDED", bqMembershipChange.getOperation());
 	}
 
 	@Test
@@ -283,28 +259,6 @@ public class MembershipDogTest
 			338511398116723458L, bqMembership.getIndividualSegmentId());
 		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
 
-		BQMembershipChange bqMembershipChange =
-			_bqMembershipChangeRepository.
-				findByIndividualIdAndIndividualSegmentIdAndOperation(
-					338486041327913341L, 338511398116723458L, "REMOVED");
-
-		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
-			bqMembershipChange.getModifiedDate());
-		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
-			bqMembershipChange.getJoinedDate());
-		Assertions.assertEquals(
-			"test2@liferay.com", bqMembershipChange.getIndividualEmail());
-		Assertions.assertEquals(
-			338486041327913341L, bqMembershipChange.getIndividualId());
-		Assertions.assertEquals(1, bqMembershipChange.getIndividualsCount());
-		Assertions.assertEquals(
-			338511398116723458L, bqMembershipChange.getIndividualSegmentId());
-		Assertions.assertEquals(
-			1, bqMembershipChange.getKnownIndividualsCount());
-		Assertions.assertEquals("REMOVED", bqMembershipChange.getOperation());
-
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals", "338486041327913341");
 
@@ -392,9 +346,6 @@ public class MembershipDogTest
 		Assertions.assertTrue(
 			_membershipDog.isMember(338486041327913341L, 338511398116723458L));
 	}
-
-	@Autowired
-	private BQMembershipChangeRepository _bqMembershipChangeRepository;
 
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
