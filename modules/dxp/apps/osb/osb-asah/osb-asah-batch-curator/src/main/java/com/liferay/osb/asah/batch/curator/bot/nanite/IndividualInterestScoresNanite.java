@@ -142,8 +142,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			}
 		}
 
-		faroInfoElasticsearchInvoker.refresh();
-
 		_faroInfoInterestDog.clearCache();
 	}
 
