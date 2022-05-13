@@ -16,15 +16,22 @@ package com.liferay.osb.asah.common.repository.helper;
 
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
+import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.JobException;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.TableResult;
 
+import com.liferay.osb.asah.common.repository.util.BigQueryUtil;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.StringUtils;
 
 import org.jooq.SelectFinalStep;
@@ -37,6 +44,51 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnGoogleApplicationCredentials
 public class BigQueryHelper {
+
+	public long count(SelectFinalStep selectFinalStep) {
+		TableResult tableResult = query(selectFinalStep);
+
+		List<FieldValueList> fieldValueLists = IterableUtils.toList(
+			tableResult.iterateAll());
+
+		if (fieldValueLists.isEmpty()) {
+			return 0;
+		}
+
+		FieldValueList fieldValueList = fieldValueLists.get(0);
+
+		return BigQueryUtil.getLong(fieldValueList.get(0));
+	}
+
+	public <T> T get(
+		T defaultValue, Function<FieldValueList, T> function,
+		SelectFinalStep selectFinalStep) {
+
+		TableResult tableResult = query(selectFinalStep);
+
+		List<FieldValueList> fieldValueLists = IterableUtils.toList(
+			tableResult.iterateAll());
+
+		if (fieldValueLists.isEmpty()) {
+			return defaultValue;
+		}
+
+		return function.apply(fieldValueLists.get(0));
+	}
+
+	public <T> List<T> getList(
+		Function<FieldValueList, T> function, SelectFinalStep selectFinalStep) {
+
+		List<T> list = new ArrayList<>();
+
+		TableResult tableResult = query(selectFinalStep);
+
+		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
+			list.add(function.apply(fieldValueList));
+		}
+
+		return list;
+	}
 
 	public TableResult query(SelectFinalStep selectFinalStep) {
 		QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(

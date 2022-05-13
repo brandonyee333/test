@@ -34,7 +34,6 @@ import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -72,28 +71,16 @@ public class BQEventRepositoryImpl
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds) {
 
-		TableResult tableResult = _bigQueryHelper.query(
+		return (int)_bigQueryHelper.count(
 			getCountBQEventsSelect(
 				channelId, keywords, rangeEndLocalDateTime,
 				rangeStartLocalDateTime, timeZoneId, userIds));
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			return (int)BigQueryUtil.getLong(fieldValueList.get(0));
-		}
-
-		return 0;
 	}
 
 	@Override
 	public long countByEventDefinitionId(long eventDefinitionId) {
-		TableResult tableResult = _bigQueryHelper.query(
+		return _bigQueryHelper.count(
 			getCountByEventDefinitionIdSelect(eventDefinitionId));
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			return BigQueryUtil.getLong(fieldValueList.get(0));
-		}
-
-		return 0;
 	}
 
 	@Override
@@ -102,16 +89,10 @@ public class BQEventRepositoryImpl
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds) {
 
-		TableResult tableResult = _bigQueryHelper.query(
+		return (int)_bigQueryHelper.count(
 			getCountEventSessionsSelect(
 				channelId, keywords, rangeEndLocalDateTime,
 				rangeStartLocalDateTime, timeZoneId, userIds));
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			return (int)BigQueryUtil.getLong(fieldValueList.get(0));
-		}
-
-		return 0;
 	}
 
 	@Override
@@ -121,16 +102,10 @@ public class BQEventRepositoryImpl
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId) {
 
-		TableResult tableResult = _bigQueryHelper.query(
+		return _bigQueryHelper.count(
 			getCountTotalBQEventsSelect(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				rangeEndDate, rangeStartDate, timeZoneId));
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			return BigQueryUtil.getLong(fieldValueList.get(0));
-		}
-
-		return 0;
 	}
 
 	@Override
@@ -140,30 +115,20 @@ public class BQEventRepositoryImpl
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId) {
 
-		TableResult tableResult = _bigQueryHelper.query(
+		return _bigQueryHelper.count(
 			getCountUniqueIndividualsSelect(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				rangeEndDate, rangeStartDate, timeZoneId));
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			return BigQueryUtil.getLong(fieldValueList.get(0));
-		}
-
-		return 0;
 	}
 
 	@Override
 	public Optional<BQEvent> findLastSeenBQEvent(
 		@Nullable Long eventDefinitionId) {
 
-		TableResult tableResult = _bigQueryHelper.query(
+		return _bigQueryHelper.get(
+			Optional.empty(),
+			fieldValueList -> Optional.of(_getBQEvent(fieldValueList)),
 			getFindLastSeenBQEventSelect(eventDefinitionId));
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			return Optional.of(_getBQEvent(fieldValueList));
-		}
-
-		return Optional.empty();
 	}
 
 	@Override
@@ -173,16 +138,12 @@ public class BQEventRepositoryImpl
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId) {
 
-		TableResult tableResult = _bigQueryHelper.query(
+		return _bigQueryHelper.get(
+			BigDecimal.ZERO,
+			fieldValueList -> BigQueryUtil.getNumber(fieldValueList.get(0)),
 			getGetAverageBQEventCountPerIndividualSelect(
 				channelId, eventAnalysisFilters, eventDefinitionId,
 				rangeEndDate, rangeStartDate, timeZoneId));
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			return BigQueryUtil.getNumber(fieldValueList.get(0));
-		}
-
-		return BigDecimal.ZERO;
 	}
 
 	@Override
@@ -238,13 +199,7 @@ public class BQEventRepositoryImpl
 			return 0;
 		}
 
-		TableResult tableResult = _bigQueryHelper.query(selectFinalStep);
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			return BigQueryUtil.getLong(fieldValueList.get(0));
-		}
-
-		return 0;
+		return _bigQueryHelper.count(selectFinalStep);
 	}
 
 	@Override
@@ -282,18 +237,11 @@ public class BQEventRepositoryImpl
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds) {
 
-		List<BQEvent> bqEvents = new ArrayList<>();
-
-		TableResult tableResult = _bigQueryHelper.query(
+		return _bigQueryHelper.getList(
+			fieldValueList -> _getBQEvent(fieldValueList),
 			getSearchBQEventsSelect(
 				channelId, keywords, pageable, rangeEndLocalDateTime,
 				rangeStartLocalDateTime, timeZoneId, userIds));
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			bqEvents.add(_getBQEvent(fieldValueList));
-		}
-
-		return bqEvents;
 	}
 
 	private BQEvent _getBQEvent(FieldValueList fieldValueList) {
