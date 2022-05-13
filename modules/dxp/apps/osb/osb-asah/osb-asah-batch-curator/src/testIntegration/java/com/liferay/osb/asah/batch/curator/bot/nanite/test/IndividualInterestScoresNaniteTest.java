@@ -42,12 +42,14 @@ import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -63,6 +65,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Edward Kwok-Yu Wong
@@ -88,6 +91,9 @@ public class IndividualInterestScoresNaniteTest
 		_assetJSONObject2 = _createAssetJSONObject();
 
 		_addActivities(DateUtil.addDays(DateUtil.newDayDateString(), -1));
+
+		ReflectionTestUtils.setField(
+			_individualInterestScoresNanite, "_staleInterestsQuerySize", 10000);
 	}
 
 	@Test
@@ -180,6 +186,71 @@ public class IndividualInterestScoresNaniteTest
 		Assertions.assertTrue(
 			interactions > 1,
 			"Too few interactions means no interest was created");
+	}
+
+	@Test
+	public void testInterestScoresDecayMultipleLoops() throws Exception {
+		String dayDateString = DateUtil.newDayDateString();
+
+		String previousDayDateString = DateUtil.addDays(dayDateString, -1);
+
+		_individualInterestScoresNanite.run(previousDayDateString);
+
+		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
+			"interests",
+			QueryBuilders.termQuery("dateRecorded", previousDayDateString));
+
+		Map<Pair<String, String>, Double> interestsMap = new HashMap<>();
+
+		interestsJSONArray.forEach(
+			object -> {
+				JSONObject interestJSONObject = (JSONObject)object;
+
+				interestsMap.put(
+					Pair.of(
+						interestJSONObject.getString("name"),
+						interestJSONObject.getString("ownerId")),
+					interestJSONObject.getDouble("score"));
+			});
+
+		ReflectionTestUtils.setField(
+			_individualInterestScoresNanite, "_staleInterestsQuerySize",
+			interestsJSONArray.length() / 3);
+
+		_individualInterestScoresNanite.run(dayDateString);
+
+		for (Map.Entry<Pair<String, String>, Double> entry :
+				interestsMap.entrySet()) {
+
+			Pair<String, String> nameOwnerIdPair = entry.getKey();
+
+			interestsJSONArray = faroInfoElasticsearchInvoker.get(
+				"interests",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("dateRecorded", dayDateString)
+				).filter(
+					QueryBuilders.termQuery("name", nameOwnerIdPair.getKey())
+				).filter(
+					QueryBuilders.termQuery(
+						"ownerId", nameOwnerIdPair.getValue())
+				));
+
+			Assertions.assertEquals(1, interestsJSONArray.length());
+
+			JSONObject interestJSONObject = interestsJSONArray.getJSONObject(0);
+
+			Assertions.assertTrue(
+				entry.getValue() > interestJSONObject.getDouble("score"));
+
+			faroInfoElasticsearchInvoker.delete(
+				"interests", interestJSONObject.getString("id"));
+		}
+
+		Assertions.assertEquals(
+			0,
+			faroInfoElasticsearchInvoker.count(
+				"interests",
+				QueryBuilders.termQuery("dateRecorded", dayDateString)));
 	}
 
 	@Test
