@@ -33,7 +33,6 @@ import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicat
 import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -334,13 +333,8 @@ public class BQEventRepositoryImpl
 		Map<String, Integer> map = new HashMap<>();
 
 		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			OffsetDateTime offsetDateTime =
-				(OffsetDateTime)BigQueryUtil.getObject(fieldValueList.get(0));
-
-			LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
-
 			map.put(
-				localDateTime.toString(),
+				BigQueryUtil.getString(fieldValueList.get(0)),
 				(int)BigQueryUtil.getLong(fieldValueList.get(1)));
 		}
 
