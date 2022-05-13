@@ -19,6 +19,8 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -117,10 +119,10 @@ public abstract class BaseEventPropertyRepository extends BaseRepository {
 				_getEventAttributeDefinitionName(eventAttributeDefinitionId)
 			)
 		).and(
-			DSL.field(
-				"BQEventProperty.value"
-			).likeIgnoreCase(
-				"%" + keywords + "%"
+			DSL.lower(
+				DSL.field("BQEventProperty.value", String.class)
+			).like(
+				"%" + StringUtils.lowerCase(keywords) + "%"
 			)
 		);
 	}
