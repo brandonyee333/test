@@ -2,7 +2,9 @@ definition {
 
 	macro getRemoteServerVersion {
 		var curl = "http://localhost:9200";
+
 		var serverInfo = JSONCurlUtil.get("${curl}");
+
 		var serverVersion = RegexUtil.replace("${serverInfo}", "number\" : \"(\d+\.\d+\.\d+)", "1");
 
 		echo("Version of the remote Elasticsearch server on port 9200: ${serverVersion}");

@@ -2166,7 +2166,6 @@ definition {
 	@priority = "3"
 	test ViewUnchangedKBArticleTitleViaLocalizedPage {
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
-
 		var portalURL = PropsUtil.get("portal.url");
 
 		ProductMenu.gotoPortlet(

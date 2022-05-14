@@ -479,7 +479,6 @@ definition {
 		LAR.exportSiteCP(siteScopeName = "Site A");
 
 		var key_larFileName = "${larFileName}";
-
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();

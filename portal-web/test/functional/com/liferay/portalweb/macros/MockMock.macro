@@ -87,8 +87,11 @@ definition {
 			subject = "${subject}");
 
 		var bodyContent = selenium.getText("MockMock#MOCKMOCK_MESSAGE_BODY");
+
 		var bodyContent = StringUtil.extractLast("${bodyContent}", " at ");
+
 		var bodyURL = StringUtil.extractFirst("${bodyContent}", ".");
+
 		var bodyURL = StringUtil.replace("${bodyURL}", "amp;", "");
 
 		Navigator.openSpecificURL(url = "${bodyURL}");

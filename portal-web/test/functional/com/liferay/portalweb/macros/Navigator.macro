@@ -17,7 +17,6 @@ definition {
 
 	macro _isLocalizedURL {
 		var currentURL = Navigator.getCurrentURL();
-
 		var portalURL = PropsUtil.get("portal.url");
 		var isLocalizedURL = "false";
 
@@ -43,7 +42,6 @@ definition {
 
 		if ("${isLocalizedURL}" == "false") {
 			var currentURL = Navigator.getCurrentURL();
-
 			var portalURL = PropsUtil.get("portal.url");
 
 			Navigator.openSpecificURL(url = StringUtil.replace("${currentURL}", "${portalURL}", "${portalURL}/${locale}"));
@@ -155,8 +153,10 @@ definition {
 
 	macro openPrivateSitePageURL {
 		var siteNameURL = StringUtil.replace("${siteName}", " ", "-");
+
 		var siteNameURL = StringUtil.lowerCase("${siteNameURL}");
 		var pageNameURL = StringUtil.replace("${pageName}", " ", "-");
+
 		var pageNameURL = StringUtil.lowerCase("${pageNameURL}");
 
 		Open(locator1 = "/group/${siteNameURL}/${pageNameURL}");
@@ -164,6 +164,7 @@ definition {
 
 	macro openPrivateSiteURL {
 		var siteNameURL = StringUtil.replace("${siteName}", " ", "-");
+
 		var siteNameURL = StringUtil.lowerCase("${siteNameURL}");
 
 		Open(locator1 = "/group/${siteNameURL}");
@@ -171,6 +172,7 @@ definition {
 
 	macro openPrivateStagedSiteURL {
 		var siteNameURL = StringUtil.replace("${siteNameURL}", " ", "-");
+
 		var siteNameURL = StringUtil.lowerCase("${siteNameURL}");
 
 		Open(locator1 = "/group/${siteNameURL}-staging");
@@ -182,6 +184,7 @@ definition {
 
 	macro openSiteLanding {
 		var siteNameURL = StringUtil.replace("${siteURLKey}", " ", "-");
+
 		var siteURLKey = StringUtil.lowerCase("${siteNameURL}");
 
 		Navigator.openWithAppendToBaseURL(
@@ -191,6 +194,7 @@ definition {
 
 	macro openSiteURL {
 		var siteNameURL = StringUtil.replace("${siteName}", " ", "-");
+
 		var siteNameURL = StringUtil.lowerCase("${siteNameURL}");
 		var baseURL = "${baseURL}";
 
@@ -207,6 +211,7 @@ definition {
 
 	macro openStagingSiteURL {
 		var siteNameURL = StringUtil.replace("${siteName}", " ", "-");
+
 		var siteNameURL = StringUtil.lowerCase("${siteNameURL}");
 
 		Open(locator1 = "/web/${siteNameURL}-staging");

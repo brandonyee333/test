@@ -306,6 +306,7 @@ definition {
 	@description = "This will shutdown the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
 	macro shutdownSpecificServer {
 		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+
 		var bundleIndex = ${leadingPortNumber} - 8;
 
 		AntCommand(
@@ -335,6 +336,7 @@ definition {
 	@description = "This will start the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
 	macro startSpecificServer {
 		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+
 		var bundleIndex = ${leadingPortNumber} - 8;
 
 		if ("${deleteLiferayHome}" == "false") {

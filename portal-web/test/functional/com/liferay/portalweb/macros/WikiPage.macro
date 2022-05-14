@@ -1609,6 +1609,7 @@ definition {
 
 	macro viewTagViaAddPG {
 		var tagName = StringUtil.lowerCase("${tagName}");
+
 		var key_tagName = "${tagName}";
 
 		AssertElementPresent(locator1 = "AssetCategorization#TAG");

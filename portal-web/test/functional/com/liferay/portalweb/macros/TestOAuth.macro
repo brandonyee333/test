@@ -40,6 +40,7 @@ definition {
 
 	macro getConsumerKey {
 		var strippedResult = StringUtil.stripBetween("${applicationCredentials}", "Application", "Key: ");
+
 		var consumerKey = StringUtil.stripBetween("${strippedResult}", " Consumer", "${consumerSecret}");
 
 		return "${consumerKey}";

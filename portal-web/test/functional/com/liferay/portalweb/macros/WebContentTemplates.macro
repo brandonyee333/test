@@ -70,6 +70,7 @@ definition {
 
 	macro addField {
 		var fieldNameLabel = StringUtil.replace("${fieldName}", " ", "");
+
 		var fieldNameLabel = StringUtil.lowerCase("${fieldNameLabel}");
 		var key_fieldName = "${fieldName}";
 
