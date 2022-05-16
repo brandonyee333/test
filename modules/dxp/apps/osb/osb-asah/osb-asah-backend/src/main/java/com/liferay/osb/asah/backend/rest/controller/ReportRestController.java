@@ -48,7 +48,7 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/accounts")
 	public PageDTO<ReportAccountDTO> getReportAccountDTOPageDTO(
-		@RequestParam(defaultValue = "") String afterId,
+		@RequestParam(defaultValue = "", value = "after") String afterId,
 		@RequestParam("fromDate") String fromDate,
 		@RequestParam("toDate") String toDate) {
 
@@ -60,7 +60,7 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/individuals")
 	public PageDTO<ReportIndividualDTO> getReportIndividualDTOPageDTO(
-		@RequestParam(defaultValue = "") String afterId,
+		@RequestParam(defaultValue = "", value = "after") String afterId,
 		@RequestParam("fromDate") String fromDate,
 		@RequestParam("toDate") String toDate) {
 
@@ -72,7 +72,7 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/segments")
 	public PageDTO<ReportSegmentDTO> getReportSegmentDTOPageDTO(
-		@RequestParam(defaultValue = "") String afterId,
+		@RequestParam(defaultValue = "", value = "after") String afterId,
 		@RequestParam("fromDate") String fromDate,
 		@RequestParam("toDate") String toDate) {
 
