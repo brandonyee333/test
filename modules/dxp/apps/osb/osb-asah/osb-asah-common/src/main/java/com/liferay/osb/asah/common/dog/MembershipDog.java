@@ -72,8 +72,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		_segmentDog.updateSegment(bqMembership.getIndividualSegmentId());
-
 		return bqMembership;
 	}
 
@@ -98,8 +96,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 		_bqMembershipRepository.saveAll(bqMemberships);
 
 		_individualDog.addSegmentId(individuals, individualSegmentId);
-
-		_segmentDog.updateSegment(individualSegmentId);
 	}
 
 	public List<BQMembership> addBQMemberships(
@@ -117,7 +113,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			ListUtil.map(bqMemberships, BQMembership::getIndividualId),
 			bqMembership.getIndividualSegmentId());
 
-		Segment segment = _segmentDog.updateSegment(
+		Segment segment = _segmentDog.getSegment(
 			bqMembership.getIndividualSegmentId());
 
 		long knownIndividualsCount = _individualDog.getKnownIndividualsCount(
@@ -146,8 +142,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 		_individualDog.removeSegmentId(
 			bqMembership.getIndividualId(),
 			bqMembership.getIndividualSegmentId());
-
-		_segmentDog.updateSegment(bqMembership.getIndividualSegmentId());
 	}
 
 	public void deactivateBQMembership(
@@ -199,8 +193,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 			_individualDog.removeSegmentId(
 				SetUtil.map(individualsByMembership, Individual::getId),
 				entry.getKey());
-
-			_segmentDog.updateSegment(entry.getKey());
 		}
 	}
 
@@ -226,8 +218,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 			_individualDog.removeSegmentId(
 				SetUtil.map(entry.getValue(), BQMembership::getIndividualId),
 				entry.getKey());
-
-			_segmentDog.updateSegment(entry.getKey());
 		}
 	}
 

@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
@@ -84,32 +83,6 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	@Override
 	protected Log getLog() {
 		return _log;
-	}
-
-	private long _getActivitiesCount(
-		Long channelId, boolean includeAnonymousUsers, Long segmentId) {
-
-		List<Individual.ActivitiesCount> activitiesCounts =
-			_individualDog.getActivitiesCounts(
-				includeAnonymousUsers, segmentId);
-
-		Stream<Individual.ActivitiesCount> stream = activitiesCounts.stream();
-
-		Individual.ActivitiesCount individualActivitiesCount = stream.filter(
-			activitiesCount -> Objects.equals(
-				channelId, activitiesCount.getChannelId())
-		).findFirst(
-		).orElse(
-			null
-		);
-
-		if ((individualActivitiesCount == null) ||
-			(individualActivitiesCount.getActivitiesCount() == null)) {
-
-			return 0;
-		}
-
-		return individualActivitiesCount.getActivitiesCount();
 	}
 
 	private Date _getLastActivityDate(

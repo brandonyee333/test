@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
@@ -28,7 +27,6 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -36,7 +34,6 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -52,7 +49,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -575,54 +571,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 				referencedObjectIds.get("referencedUserIds"), Long::valueOf));
 	}
 
-	public Segment updateSegment(Long segmentId) {
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), ProjectIdThreadLocal.getProjectId(), segmentId);
-
-		try {
-			reentrantLock.lock();
-
-			Segment existingSegment = getSegment(segmentId);
-
-			long knownIndividualsCount =
-				_individualDog.getKnownIndividualsCount(segmentId);
-
-			long individualsCount = 0;
-
-			if (BooleanUtils.toBoolean(
-					existingSegment.getIncludeAnonymousUsers())) {
-
-				individualsCount = _membershipDog.getIndividualsCount(
-					segmentId);
-			}
-			else {
-				individualsCount = knownIndividualsCount;
-			}
-
-			if (!Objects.equals(
-					existingSegment.getAnonymousIndividualsCount(),
-					individualsCount - knownIndividualsCount) ||
-				!Objects.equals(
-					existingSegment.getIndividualsCount(), individualsCount) ||
-				!Objects.equals(
-					existingSegment.getKnownIndividualsCount(),
-					knownIndividualsCount)) {
-
-				existingSegment.setAnonymousIndividualsCount(
-					individualsCount - knownIndividualsCount);
-				existingSegment.setIndividualsCount(individualsCount);
-				existingSegment.setKnownIndividualsCount(knownIndividualsCount);
-
-				return _segmentRepository.save(existingSegment);
-			}
-
-			return existingSegment;
-		}
-		finally {
-			reentrantLock.unlock();
-		}
-	}
-
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {
 		return _updateSegment(getSegment(segmentId), partialSegment);
 	}
@@ -995,73 +943,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return null;
 	}
 
-	private void _replaceAccount(Segment segment) {
-		if (!Objects.equals(segment.getStatus(), "INACTIVE")) {
-			return;
-		}
-
-		String name = segment.getName();
-
-		if (!name.startsWith(_ACCOUNT_PREFIX)) {
-			return;
-		}
-
-		Account account = _accountDog.getAccount(
-			Long.valueOf(name.substring(_ACCOUNT_PREFIX.length())), null);
-
-		account.setActiveIndividualsCount(segment.getActiveIndividualsCount());
-		account.setActivitiesCount(segment.getActivitiesCount());
-
-		if (Objects.nonNull(segment.getActivitiesCount())) {
-			List<Individual.ActivitiesCount> individualActivitiesCounts =
-				_individualDog.getActivitiesCounts(
-					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-					segment.getId());
-
-			if (!individualActivitiesCounts.isEmpty()) {
-				Set<Account.AccountActivityCount> activitiesCounts =
-					new HashSet<>();
-
-				for (Individual.ActivitiesCount individualActivitiesCount :
-						individualActivitiesCounts) {
-
-					activitiesCounts.add(
-						new Account.AccountActivityCount(
-							individualActivitiesCount.getActivitiesCount(),
-							individualActivitiesCount.getChannelId()));
-				}
-
-				account.setActivitiesCounts(activitiesCounts);
-			}
-		}
-
-		account.setIndividualsCount(segment.getIndividualsCount());
-
-		if (Objects.nonNull(segment.getIndividualsCount())) {
-			Map<Long, Long> channelIndividualCounts =
-				_individualDog.getIndividualCounts(
-					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-					segment.getId());
-
-			if (!channelIndividualCounts.isEmpty()) {
-				Set<Account.AccountIndividualCount> individualsCounts =
-					new HashSet<>();
-
-				for (Map.Entry<Long, Long> entry :
-						channelIndividualCounts.entrySet()) {
-
-					individualsCounts.add(
-						new Account.AccountIndividualCount(
-							entry.getKey(), entry.getValue()));
-				}
-
-				account.setIndividualsCounts(individualsCounts);
-			}
-		}
-
-		_accountDog.updateAccount(account);
-	}
-
 	private void _setState(Segment segment) {
 		if ((segment.getType() == null) ||
 			Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
@@ -1133,12 +1014,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 			_addAsahTask(existingSegment);
 		}
 
-		_replaceAccount(existingSegment);
-
 		return existingSegment;
 	}
-
-	private static final String _ACCOUNT_PREFIX = "Account: ";
 
 	private static final String[] _REFERENCED_OBJECT_NAMES = {
 		"referencedAssetDataSourceIds", "referencedAssetIds",

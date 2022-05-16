@@ -473,14 +473,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		return false;
 	}
 
-	private Segment _resetIndividualsCount(Segment segment) {
-		segment.setAnonymousIndividualsCount(0L);
-		segment.setIndividualsCount(0L);
-		segment.setKnownIndividualsCount(0L);
-
-		return segment;
-	}
-
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
 		Page<Individual> individualsPage) {
 
@@ -542,21 +534,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			"_embedded", transformationDTO, transformations.getNumber(),
 			transformations.getSize(), transformations.getTotalElements(),
 			transformations.getTotalPages());
-	}
-
-	private void _updateSegmentCounts(
-		BQMembershipChange bqMembershipChange, Segment segment) {
-
-		if (bqMembershipChange == null) {
-			return;
-		}
-
-		segment.setAnonymousIndividualsCount(
-			bqMembershipChange.getIndividualsCount() -
-				bqMembershipChange.getKnownIndividualsCount());
-		segment.setIndividualsCount(bqMembershipChange.getIndividualsCount());
-		segment.setKnownIndividualsCount(
-			bqMembershipChange.getKnownIndividualsCount());
 	}
 
 	private static final Log _log = LogFactory.getLog(
