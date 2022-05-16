@@ -236,7 +236,8 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Segment> findByCreateDateBetweenAndIdAfter(
-		Date fromDate, Date toDate, Long id, Pageable pageable) {
+		Date createDateFromDate, Date createDateToDate, Long id,
+		Pageable pageable) {
 
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
@@ -248,9 +249,9 @@ public class ElasticsearchSegmentRepositoryImpl
 					QueryBuilders.rangeQuery(
 						"dateCreated"
 					).gte(
-						DateUtil.toString(fromDate)
+						DateUtil.toString(createDateFromDate)
 					).lte(
-						DateUtil.toString(toDate)
+						DateUtil.toString(createDateToDate)
 					)
 				).filter(
 					QueryBuilders.rangeQuery(

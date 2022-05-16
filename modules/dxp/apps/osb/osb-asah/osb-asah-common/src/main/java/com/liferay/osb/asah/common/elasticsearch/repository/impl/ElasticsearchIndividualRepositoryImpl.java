@@ -685,7 +685,8 @@ public class ElasticsearchIndividualRepositoryImpl
 
 	@Override
 	public List<Individual> findByCreateDateBetweenAndIdAfter(
-		Date fromDate, Date toDate, Long id, Pageable pageable) {
+		Date createDateFromDate, Date createDateToDate, Long id,
+		Pageable pageable) {
 
 		return _toIndividuals(
 			_faroInfoElasticsearchInvoker.get(
@@ -695,9 +696,9 @@ public class ElasticsearchIndividualRepositoryImpl
 					QueryBuilders.rangeQuery(
 						"dateCreated"
 					).gte(
-						DateUtil.toString(fromDate)
+						DateUtil.toString(createDateFromDate)
 					).lte(
-						DateUtil.toString(toDate)
+						DateUtil.toString(createDateToDate)
 					)
 				).filter(
 					QueryBuilders.rangeQuery(

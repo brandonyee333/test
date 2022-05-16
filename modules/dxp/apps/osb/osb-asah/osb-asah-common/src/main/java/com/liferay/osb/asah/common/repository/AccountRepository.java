@@ -50,7 +50,8 @@ public interface AccountRepository
 
 	@Cacheable
 	public List<Account> findByCreateDateBetweenAndIdAfter(
-		Date fromDate, Date toDate, Long id, Pageable pageable);
+		Date createDateFromDate, Date createDateToDate, Long id,
+		Pageable pageable);
 
 	@Cacheable
 	public List<Account> findByIdAfter(Long accountId, Pageable pageable);
