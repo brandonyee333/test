@@ -103,13 +103,11 @@ public class FaroInfoTestUtil {
 
 		Segment segment = new Segment();
 
-		segment.setActivitiesCount(0L);
 		segment.setChannelId(channelId);
 		segment.setCreateDate(date);
 		segment.setFilter(
 			"((dataSourceAccountPKs/accountPKs eq '" + account.getAccountPK() +
 				"'))");
-		segment.setIndividualsCount(0L);
 		segment.setModifiedDate(date);
 		segment.setName("Account: " + account.getId());
 		segment.setScope("PROJECT");
@@ -361,8 +359,6 @@ public class FaroInfoTestUtil {
 
 		Segment segment = new Segment();
 
-		segment.setActiveIndividualsCount(0L);
-
 		if (channelId != null) {
 			segment.setChannelId(channelId);
 		}
@@ -372,7 +368,6 @@ public class FaroInfoTestUtil {
 		segment.setCreateDate(date);
 
 		segment.setFilter(filterString);
-		segment.setIndividualsCount(0L);
 		segment.setModifiedDate(date);
 		segment.setName(RandomTestUtil.randomString());
 		segment.setScope("PROJECT");
@@ -385,7 +380,6 @@ public class FaroInfoTestUtil {
 	public static Segment buildDynamicSegment(String filterString) {
 		Segment segment = new Segment();
 
-		segment.setActiveIndividualsCount(0L);
 		segment.setChannelId(
 			Long.parseLong(RandomStringUtils.randomNumeric(4)));
 
@@ -394,7 +388,6 @@ public class FaroInfoTestUtil {
 		segment.setCreateDate(date);
 
 		segment.setFilter(filterString);
-		segment.setIndividualsCount(0L);
 		segment.setModifiedDate(date);
 		segment.setName(RandomTestUtil.randomString());
 		segment.setScope("PROJECT");
@@ -877,14 +870,11 @@ public class FaroInfoTestUtil {
 	public static Segment buildStaticSegment() {
 		Segment segment = new Segment();
 
-		segment.setActiveIndividualsCount(0L);
-
 		Date date = new Date();
 
 		segment.setCreateDate(date);
-
-		segment.setIndividualsCount(0L);
 		segment.setModifiedDate(date);
+
 		segment.setName(RandomTestUtil.randomString());
 		segment.setScope("PROJECT");
 		segment.setStatus("ACTIVE");

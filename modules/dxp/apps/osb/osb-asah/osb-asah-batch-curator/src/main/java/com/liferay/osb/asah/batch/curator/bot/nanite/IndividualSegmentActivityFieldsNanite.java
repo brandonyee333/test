@@ -142,28 +142,21 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	}
 
 	private void _process(Segment segment) {
-		if (segment.getActivitiesCount() == null) {
-			segment.setActivitiesCount(0L);
-
+		if (segment.getLastActivityDate() == null) {
 			segment = _segmentDog.updateSegment(segment, segment.getId());
 		}
 
 		boolean includeAnonymousUsers = BooleanUtils.toBoolean(
 			segment.getIncludeAnonymousUsers());
 
-		long activitiesCount = _getActivitiesCount(
-			segment.getChannelId(), includeAnonymousUsers, segment.getId());
 		Date lastActivityDate = _getLastActivityDate(
 			segment.getChannelId(), includeAnonymousUsers, segment.getId());
 
-		if ((activitiesCount == segment.getActivitiesCount()) &&
-			Objects.nonNull(segment.getLastActivityDate()) &&
+		if (Objects.nonNull(segment.getLastActivityDate()) &&
 			Objects.equals(lastActivityDate, segment.getLastActivityDate())) {
 
 			return;
 		}
-
-		segment.setActivitiesCount(activitiesCount);
 
 		if (Objects.nonNull(lastActivityDate)) {
 			segment.setLastActivityDate(lastActivityDate);

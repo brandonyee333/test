@@ -62,13 +62,7 @@ public class Segment implements Persistable<Long> {
 
 		Segment segment = (Segment)obj;
 
-		if (Objects.equals(
-				_activeIndividualsCount, segment._activeIndividualsCount) &&
-			Objects.equals(_activitiesCount, segment._activitiesCount) &&
-			Objects.equals(
-				_anonymousIndividualsCount,
-				segment._anonymousIndividualsCount) &&
-			Objects.equals(_author, segment._author) &&
+		if (Objects.equals(_author, segment._author) &&
 			Objects.equals(_channelId, segment._channelId) &&
 			Objects.equals(_createDate, segment._createDate) &&
 			Objects.equals(_filter, segment._filter) &&
@@ -76,9 +70,6 @@ public class Segment implements Persistable<Long> {
 			Objects.equals(_id, segment._id) &&
 			Objects.equals(
 				_includeAnonymousUsers, segment._includeAnonymousUsers) &&
-			Objects.equals(_individualsCount, segment._individualsCount) &&
-			Objects.equals(
-				_knownIndividualsCount, segment._knownIndividualsCount) &&
 			Objects.equals(_lastActivityDate, segment._lastActivityDate) &&
 			Objects.equals(_modifiedDate, segment._modifiedDate) &&
 			Objects.equals(_name, segment._name) &&
@@ -107,25 +98,6 @@ public class Segment implements Persistable<Long> {
 		}
 
 		return false;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonAlias("activeIndividualsCount")
-	@JsonProperty("activeIndividualCount")
-	public Long getActiveIndividualsCount() {
-		return _activeIndividualsCount;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Long getActivitiesCount() {
-		return _activitiesCount;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonAlias("anonymousIndividualsCount")
-	@JsonProperty("anonymousIndividualCount")
-	public Long getAnonymousIndividualsCount() {
-		return _anonymousIndividualsCount;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -190,20 +162,6 @@ public class Segment implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean getIncludeAnonymousUsers() {
 		return _includeAnonymousUsers;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonAlias("individualsCount")
-	@JsonProperty("individualCount")
-	public Long getIndividualsCount() {
-		return _individualsCount;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonAlias("knownIndividualsCount")
-	@JsonProperty("knownIndividualCount")
-	public Long getKnownIndividualsCount() {
-		return _knownIndividualsCount;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -318,15 +276,13 @@ public class Segment implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_activeIndividualsCount, _activitiesCount,
-			_anonymousIndividualsCount, _author, _channelId, _createDate,
-			_filter, _filterMetadata, _id, _includeAnonymousUsers,
-			_individualsCount, _knownIndividualsCount, _lastActivityDate,
-			_modifiedDate, _name, _referencedAssetDataSourceIds,
-			_referencedAssetIds, _referencedFieldMappingIds,
-			_referencedGroupIds, _referencedOrganizationIds, _referencedRoleIds,
-			_referencedTeamIds, _referencedUserGroupIds, _referencedUserIds,
-			_scope, _state, _status, _type);
+			_author, _channelId, _createDate, _filter, _filterMetadata, _id,
+			_includeAnonymousUsers, _lastActivityDate, _modifiedDate, _name,
+			_referencedAssetDataSourceIds, _referencedAssetIds,
+			_referencedFieldMappingIds, _referencedGroupIds,
+			_referencedOrganizationIds, _referencedRoleIds, _referencedTeamIds,
+			_referencedUserGroupIds, _referencedUserIds, _scope, _state,
+			_status, _type);
 	}
 
 	@JsonIgnore
@@ -337,18 +293,6 @@ public class Segment implements Persistable<Long> {
 		}
 
 		return false;
-	}
-
-	public void setActiveIndividualsCount(Long activeIndividualsCount) {
-		_activeIndividualsCount = activeIndividualsCount;
-	}
-
-	public void setActivitiesCount(Long activitiesCount) {
-		_activitiesCount = activitiesCount;
-	}
-
-	public void setAnonymousIndividualsCount(Long anonymousIndividualsCount) {
-		_anonymousIndividualsCount = anonymousIndividualsCount;
 	}
 
 	public void setAuthorId(Long authorId) {
@@ -401,16 +345,8 @@ public class Segment implements Persistable<Long> {
 		_includeAnonymousUsers = includeAnonymousUsers;
 	}
 
-	public void setIndividualsCount(Long individualsCount) {
-		_individualsCount = individualsCount;
-	}
-
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
-	}
-
-	public void setKnownIndividualsCount(Long knownIndividualsCount) {
-		_knownIndividualsCount = knownIndividualsCount;
 	}
 
 	public void setLastActivityDate(Date lastActivityDate) {
@@ -503,15 +439,6 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@Transient
-	private Long _activeIndividualsCount;
-
-	@Transient
-	private Long _activitiesCount;
-
-	@Transient
-	private Long _anonymousIndividualsCount;
-
-	@Transient
 	private Author _author;
 
 	@Transient
@@ -533,13 +460,7 @@ public class Segment implements Persistable<Long> {
 	private Boolean _includeAnonymousUsers;
 
 	@Transient
-	private Long _individualsCount;
-
-	@Transient
 	private Boolean _isNew;
-
-	@Transient
-	private Long _knownIndividualsCount;
 
 	@Transient
 	private Date _lastActivityDate;

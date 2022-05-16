@@ -88,7 +88,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		Segment segment = new Segment();
 
-		segment.setActivitiesCount(activitiesCount);
 		segment.setCreateDate(createDate);
 		segment.setFilter(_parserFilter(filter));
 		segment.setModifiedDate(modifiedDate);
@@ -423,8 +422,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 			_addAsahTask(segment);
 		}
-
-		_replaceAccount(segment);
 
 		return segment;
 	}

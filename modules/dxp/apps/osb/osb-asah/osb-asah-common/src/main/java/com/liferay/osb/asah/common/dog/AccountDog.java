@@ -351,11 +351,6 @@ public class AccountDog {
 			"Account: " + account.getId(), "INACTIVE");
 
 		if (segment != null) {
-			account.setActiveIndividualsCount(
-				segment.getActiveIndividualsCount());
-			account.setActivitiesCount(segment.getActivitiesCount());
-			account.setIndividualsCount(segment.getIndividualsCount());
-
 			List<Individual.ActivitiesCount> individualActivitiesCounts =
 				_individualDog.getActivitiesCounts(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),

@@ -125,9 +125,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 		_membershipChangeDog.addBQMembershipChanges(
 			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-			segment.getIndividualsCount() - bqMemberships.size(),
-			segment.getKnownIndividualsCount() - knownIndividualsCount,
-			bqMemberships);
+			bqMemberships.size(), knownIndividualsCount, bqMemberships);
 
 		return bqMemberships;
 	}

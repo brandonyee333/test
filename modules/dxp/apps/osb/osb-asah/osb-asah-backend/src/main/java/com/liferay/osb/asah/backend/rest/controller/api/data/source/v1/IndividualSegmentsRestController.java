@@ -45,12 +45,10 @@ import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
 import com.liferay.osb.asah.common.util.ListUtil;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -188,22 +186,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		Segment segment = segmentDog.getSegment(id);
 
-		if (segment.getType() == Segment.Type.DYNAMIC) {
-			segment = _resetIndividualsCount(segmentDog.getSegment(id));
-
-			List<BQMembershipChange> bqMembershipsChanges =
-				_bqMembershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
-					Collections.singletonList(segment.getId()));
-
-			if (!bqMembershipsChanges.isEmpty()) {
-				_updateSegmentCounts(bqMembershipsChanges.get(0), segment);
-			}
-
-			segment.setActiveIndividualsCount(
-				_individualDog.countActiveIndividualsFromLast30DaysBySegment(
-					segment));
-		}
-
 		SegmentDTO segmentDTO = new SegmentDTO(segment);
 
 		if (StringUtils.isNotEmpty(expand)) {
@@ -235,27 +217,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		Page<Segment> segmentsPage = segmentDog.searchSegmentPage(
 			dataSourceId, filterString, page, Math.max(1, size), sorts);
-
-		if (segmentsPage.getTotalElements() > 0) {
-			Stream<Segment> stream = segmentsPage.stream();
-
-			Map<Long, Segment> segmentsMap = stream.filter(
-				segment -> segment.getType() == Segment.Type.DYNAMIC
-			).collect(
-				Collectors.toMap(Segment::getId, this::_resetIndividualsCount)
-			);
-
-			List<BQMembershipChange> bqMembershipsChanges =
-				_bqMembershipChangeDog.getLastBeforeTodayByIndividualSegmentsId(
-					new ArrayList<>(segmentsMap.keySet()));
-
-			for (BQMembershipChange bqMembershipChange : bqMembershipsChanges) {
-				_updateSegmentCounts(
-					bqMembershipChange,
-					segmentsMap.get(
-						bqMembershipChange.getIndividualSegmentId()));
-			}
-		}
 
 		return toSegmentDTOPageDTO(segmentsPage);
 	}
