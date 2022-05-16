@@ -182,7 +182,7 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		).put(
 			"userGroupIds", _userGroupIds
 		).put(
-			"userNam", _userName
+			"userName", _userName
 		).put(
 			"uuid", _uuid
 		);
