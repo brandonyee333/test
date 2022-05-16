@@ -465,9 +465,6 @@ CREATE TABLE IF NOT EXISTS SalesforceEntity (
 
 CREATE TABLE IF NOT EXISTS Segment (
 	id BIGSERIAL PRIMARY KEY,
-	activeIndividualsCount BIGINT,
-	activitiesCount BIGINT,
-	anonymousIndividualsCount BIGINT,
 	authorId BIGINT,
 	authorName TEXT,
 	channelId BIGINT,
@@ -475,8 +472,6 @@ CREATE TABLE IF NOT EXISTS Segment (
 	filter TEXT,
 	filterMetadata TEXT,
 	includeAnonymousUsers BOOLEAN,
-	individualsCount BIGINT,
-	knownIndividualsCount BIGINT,
 	lastActivityDate TIMESTAMPTZ,
 	modifiedDate TIMESTAMPTZ,
 	name TEXT,
