@@ -121,7 +121,7 @@ public class IndividualInterestScoresNaniteTest
 				_assetJSONObject1, DateUtil.addDays(dayDateString, -31),
 				_individual.getId(), 1));
 
-		_individualInterestScoresNanite.run(dayDateString);
+		_runIndividualInterestScoresNanite(dayDateString);
 
 		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
 			"interests");
@@ -156,7 +156,7 @@ public class IndividualInterestScoresNaniteTest
 		int previousInterestsSize = 0;
 
 		do {
-			_individualInterestScoresNanite.run(dayDateString);
+			_runIndividualInterestScoresNanite(dayDateString);
 
 			List<Interest> interests =
 				_interestRepository.findByFilterStringAndScoreGreaterThanEqual(
@@ -194,7 +194,7 @@ public class IndividualInterestScoresNaniteTest
 
 		String previousDayDateString = DateUtil.addDays(dayDateString, -1);
 
-		_individualInterestScoresNanite.run(previousDayDateString);
+		_runIndividualInterestScoresNanite(previousDayDateString);
 
 		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
 			"interests",
@@ -217,7 +217,7 @@ public class IndividualInterestScoresNaniteTest
 			_individualInterestScoresNanite, "_staleInterestsQuerySize",
 			interestsJSONArray.length() / 3);
 
-		_individualInterestScoresNanite.run(dayDateString);
+		_runIndividualInterestScoresNanite(dayDateString);
 
 		for (Map.Entry<Pair<String, String>, Double> entry :
 				interestsMap.entrySet()) {
@@ -259,13 +259,13 @@ public class IndividualInterestScoresNaniteTest
 
 		String previousDayDateString = DateUtil.addDays(dayDateString, -1);
 
-		_individualInterestScoresNanite.run(previousDayDateString);
+		_runIndividualInterestScoresNanite(previousDayDateString);
 
 		for (int elapsedDays = 0;
 			 elapsedDays < _MAX_DAYS_BEFORE_INTEREST_SCORE_BELOW_THRESHOLD;
 			 elapsedDays++) {
 
-			_individualInterestScoresNanite.run(dayDateString);
+			_runIndividualInterestScoresNanite(dayDateString);
 
 			JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
 				"interests",
@@ -337,7 +337,7 @@ public class IndividualInterestScoresNaniteTest
 		Assertions.assertFalse(
 			_membershipDog.isMember(individualId, segment2Id));
 
-		_individualInterestScoresNanite.run((JSONObject)null);
+		_runIndividualInterestScoresNanite((JSONObject)null);
 
 		Assertions.assertFalse(
 			_membershipDog.isMember(individualId, segment1Id));
@@ -349,7 +349,7 @@ public class IndividualInterestScoresNaniteTest
 	public void testNoInterestScoresGeneratedBeforeActivitiesOccur()
 		throws Exception {
 
-		_individualInterestScoresNanite.run(
+		_runIndividualInterestScoresNanite(
 			DateUtil.addDays(DateUtil.newDayDateString(), -2));
 
 		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
@@ -376,7 +376,7 @@ public class IndividualInterestScoresNaniteTest
 		).forEach(
 			i -> {
 				try {
-					_individualInterestScoresNanite.run(
+					_runIndividualInterestScoresNanite(
 						JSONUtil.put("processDay", dayDateString));
 				}
 				catch (Exception exception) {
@@ -426,11 +426,11 @@ public class IndividualInterestScoresNaniteTest
 
 		String previousDayDateString = DateUtil.addDays(dayDateString, -1);
 
-		_individualInterestScoresNanite.run(previousDayDateString);
+		_runIndividualInterestScoresNanite(previousDayDateString);
 
 		_addActivities(dayDateString);
 
-		_individualInterestScoresNanite.run(dayDateString);
+		_runIndividualInterestScoresNanite(dayDateString);
 
 		_assertInterestScoreDirection(
 			previousDayDateString, dayDateString, true);
@@ -442,7 +442,7 @@ public class IndividualInterestScoresNaniteTest
 
 		_addActivities(dayDateString);
 
-		_individualInterestScoresNanite.run(dayDateString);
+		_runIndividualInterestScoresNanite(dayDateString);
 
 		Assertions.assertEquals(
 			0,
@@ -584,6 +584,23 @@ public class IndividualInterestScoresNaniteTest
 				jsonObject -> jsonObject.getString("keyword")));
 
 		return keywords;
+	}
+
+	private void _runIndividualInterestScoresNanite(
+			JSONObject contextJSONObject)
+		throws Exception {
+
+		_individualInterestScoresNanite.run(contextJSONObject);
+
+		faroInfoElasticsearchInvoker.refresh();
+	}
+
+	private void _runIndividualInterestScoresNanite(String dateString)
+		throws Exception {
+
+		_individualInterestScoresNanite.run(dateString);
+
+		faroInfoElasticsearchInvoker.refresh();
 	}
 
 	private static final int _MAX_DAYS_BEFORE_INTEREST_SCORE_BELOW_THRESHOLD =
