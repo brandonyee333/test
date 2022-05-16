@@ -104,7 +104,7 @@ public class AccountDog {
 		_accountRepository.save(account);
 
 		_segmentDog.addSegment(
-			0L, date,
+			date,
 			"((dataSourceAccountPKs/accountPKs eq '" + account.getAccountPK() +
 				"'))",
 			date, "Account: " + account.getId(), "PROJECT", "DYNAMIC",

@@ -83,8 +83,8 @@ import org.springframework.stereotype.Component;
 public class SegmentDog extends BaseFaroInfoDog {
 
 	public Segment addSegment(
-		Long activitiesCount, Date createDate, String filter, Date modifiedDate,
-		String name, String scope, String type, String status) {
+		Date createDate, String filter, Date modifiedDate, String name,
+		String scope, String type, String status) {
 
 		Segment segment = new Segment();
 
