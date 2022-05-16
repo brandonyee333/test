@@ -62,7 +62,7 @@ public class IndividualDataExporterTest {
 			ResourceUtil.readResourceToJSONObject("empty_report.json", this)
 		);
 
-		String[] actualIndividualsExportLines;
+		String[] actualIndividualsExportLines = null;
 
 		try (ByteArrayOutputStream byteArrayOutputStream =
 				new ByteArrayOutputStream()) {
