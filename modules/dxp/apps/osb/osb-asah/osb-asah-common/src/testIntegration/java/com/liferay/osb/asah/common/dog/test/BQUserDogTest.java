@@ -46,22 +46,22 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 		BQUser bqUser1 = new BQUser();
 
 		bqUser1.setDataSourceId(dataSource.getId());
+		bqUser1.setDXPUserId(1L);
+		bqUser1.setFirstName("Test");
 		bqUser1.setId("1");
 		bqUser1.setIsNew(true);
 		bqUser1.setModifiedDate(DateUtil.newDate());
-		bqUser1.setFirstName("Test");
-		bqUser1.setUserId(1L);
 
 		BQUser bqUser2 = new BQUser();
 
 		bqUser2.setDataSourceId(dataSource.getId());
+		bqUser2.setDXPUserId(2L);
 		bqUser2.setExpandoColumnIds(new Long[] {bqExpandoColumn.getColumnId()});
 		bqUser2.setExpandoValueIds(new String[] {bqExpandoValue.getId()});
+		bqUser2.setFirstName("Liferay");
 		bqUser2.setId("2");
 		bqUser2.setIsNew(true);
 		bqUser2.setModifiedDate(DateUtil.newDate());
-		bqUser2.setFirstName("Liferay");
-		bqUser2.setUserId(2L);
 
 		_bqUserRepository.saveAll(Arrays.asList(bqUser1, bqUser2));
 	}

@@ -1442,6 +1442,7 @@
 					`contactId`,
 					`createDate`,
 					`dataSourceId`,
+					`dxpUserId`,
 					`emailAddress`,
 					`emailAddressHashed`,
 					`expandoColumnIds`,
@@ -1464,7 +1465,6 @@
 					`teamIds`,
 					`timeZoneId`,
 					`userGroupIds`,
-					`userId`,
 					`userName`,
 					`uuid`
 				)
@@ -1476,6 +1476,7 @@
 					staging.contactId,
 					staging.createDate,
 					staging.dataSourceId,
+					staging.userId,
 					staging.emailAddress,
 					TO_HEX(SHA256(staging.emailAddress)),
 					staging.expandoColumnIds,

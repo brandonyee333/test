@@ -101,6 +101,12 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonProperty("userId")
+	public Long getDXPUserId() {
+		return _dxpUserId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddress() {
 		return _emailAddress;
 	}
@@ -133,6 +139,8 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 			"contactId", _contactId
 		).put(
 			"createDate", DateUtil.toString(_createDate)
+		).put(
+			"dxpUserId", _dxpUserId
 		).put(
 			"emailAddress", _emailAddress
 		).put(
@@ -174,8 +182,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		).put(
 			"userGroupIds", _userGroupIds
 		).put(
-			"userId", _userId
-		).put(
 			"userNam", _userName
 		).put(
 			"uuid", _uuid
@@ -204,7 +210,7 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	}
 
 	public Long getIdFieldValue() {
-		return _userId;
+		return _dxpUserId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -292,11 +298,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getUserId() {
-		return _userId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getUserName() {
 		return _userName;
 	}
@@ -349,6 +350,10 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 
 	public void setDataSourceName(String dataSourceName) {
 		_dataSourceName = dataSourceName;
+	}
+
+	public void setDXPUserId(Long dxpUserId) {
+		_dxpUserId = dxpUserId;
 	}
 
 	public void setEmailAddress(String emailAddress) {
@@ -448,10 +453,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		_userGroupIds = Arrays.copyOf(userGroupIds, userGroupIds.length);
 	}
 
-	public void setUserId(Long userId) {
-		_userId = userId;
-	}
-
 	public void setUserName(String userName) {
 		_userName = userName;
 	}
@@ -483,6 +484,9 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 
 	@Transient
 	private String _dataSourceName;
+
+	@Transient
+	private Long _dxpUserId;
 
 	@Transient
 	private String _emailAddress;
@@ -552,9 +556,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 
 	@Transient
 	private Long[] _userGroupIds = {};
-
-	@Transient
-	private Long _userId;
 
 	@Transient
 	private String _userName;

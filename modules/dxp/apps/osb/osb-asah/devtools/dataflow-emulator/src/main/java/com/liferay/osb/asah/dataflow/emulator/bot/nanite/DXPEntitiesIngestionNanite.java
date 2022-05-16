@@ -378,7 +378,7 @@ public class DXPEntitiesIngestionNanite {
 				Iterable<BQExpandoValue> bqExpandoValues =
 					_bqExpandoValueRepository.saveAll(
 						_getExpandoValues(
-							bqUser.getUserId(),
+							bqUser.getDXPUserId(),
 							BQExpandoValue.ClassType.INDIVIDUAL, dataSourceId,
 							expandFieldsJSONArray, projectId));
 
@@ -387,7 +387,7 @@ public class DXPEntitiesIngestionNanite {
 
 			bqUser.setId(
 				_generateDXPEntityId(
-					bqUser.getUserId(), dataSourceId, projectId));
+					bqUser.getDXPUserId(), dataSourceId, projectId));
 			bqUser.setIsNew(_isNew(_bqUserRepository, bqUser.getId()));
 
 			_bqUserRepository.save(bqUser);
