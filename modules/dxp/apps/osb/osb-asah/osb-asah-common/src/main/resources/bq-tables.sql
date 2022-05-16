@@ -167,6 +167,7 @@ CREATE TABLE IF NOT EXISTS BQUser (
 	classNameId BIGINT,
 	classPK BIGINT,
 	dataSourceId BIGINT,
+	dxpUserId BIGINT,
 	expandoColumnIds BIGINT[],
 	expandoValueIds TEXT[],
 	contactId BIGINT,
@@ -190,7 +191,6 @@ CREATE TABLE IF NOT EXISTS BQUser (
 	teamIds BIGINT[],
 	timeZoneId TEXT,
 	userGroupIds BIGINT[],
-	userId BIGINT,
 	userName TEXT,
 	uuid TEXT
 );

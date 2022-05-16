@@ -1382,6 +1382,11 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "dxpUserId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "emailAddress",
 				"type": "STRING"
 			},
@@ -1488,11 +1493,6 @@
 			{
 				"mode": "REPEATED",
 				"name": "userGroupIds",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "userId",
 				"type": "INT64"
 			},
 			{
