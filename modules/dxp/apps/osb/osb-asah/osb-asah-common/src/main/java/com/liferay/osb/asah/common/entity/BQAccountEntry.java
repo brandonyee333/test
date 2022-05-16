@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -27,6 +28,44 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class BQAccountEntry implements Persistable<String> {
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof BQAccountEntry)) {
+			return false;
+		}
+
+		BQAccountEntry bqAccountEntry = (BQAccountEntry)obj;
+
+		if (Objects.equals(_accountEntryId, bqAccountEntry._accountEntryId) &&
+			Objects.equals(_createDate, bqAccountEntry._createDate) &&
+			Objects.equals(
+				_defaultCPaymentMethodKey,
+				bqAccountEntry._defaultCPaymentMethodKey) &&
+			Objects.equals(_description, bqAccountEntry._description) &&
+			Objects.equals(_domains, bqAccountEntry._domains) &&
+			Objects.equals(_emailAddress, bqAccountEntry._emailAddress) &&
+			Objects.equals(_id, bqAccountEntry._id) &&
+			Objects.equals(_logoId, bqAccountEntry._logoId) &&
+			Objects.equals(_modifiedDate, bqAccountEntry._modifiedDate) &&
+			Objects.equals(_name, bqAccountEntry._name) &&
+			Objects.equals(
+				_parentAccountEntryId, bqAccountEntry._parentAccountEntryId) &&
+			Objects.equals(_status, bqAccountEntry._status) &&
+			Objects.equals(
+				_taxExemptionCode, bqAccountEntry._taxExemptionCode) &&
+			Objects.equals(_taxIdNumber, bqAccountEntry._taxIdNumber) &&
+			Objects.equals(_type, bqAccountEntry._type)) {
+
+			return true;
+		}
+
+		return false;
+	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long getAccountEntryId() {
@@ -111,6 +150,15 @@ public class BQAccountEntry implements Persistable<String> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getType() {
 		return _type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+			_accountEntryId, _createDate, _defaultCPaymentMethodKey,
+			_description, _domains, _emailAddress, _id, _logoId, _modifiedDate,
+			_name, _parentAccountEntryId, _status, _taxExemptionCode,
+			_taxIdNumber, _type);
 	}
 
 	@Override
