@@ -104,6 +104,20 @@ public class JobRunRepositoryTest extends BaseRepositoryTestCase<JobRun, Long> {
 	}
 
 	@Test
+	public void testFindByCreateLocalDateTimeBetweenAndJobId() {
+		LocalDateTime endLocalDateTime = LocalDateTime.now(
+			_timeZoneDog.getZoneId());
+
+		LocalDateTime startLocalDateTime = endLocalDateTime.withDayOfMonth(1);
+
+		List<JobRun> jobRuns =
+			_jobRunRepository.findByCreateLocalDateTimeBetweenAndJobId(
+				startLocalDateTime, endLocalDateTime, 321L);
+
+		Assertions.assertEquals(2, jobRuns.size(), jobRuns.toString());
+	}
+
+	@Test
 	public void testFindByJobId() {
 		PageRequest pageRequest = PageRequest.of(0, 10, Sort.asc("id"));
 
@@ -115,20 +129,6 @@ public class JobRunRepositoryTest extends BaseRepositoryTestCase<JobRun, Long> {
 
 		Assertions.assertEquals(
 			JobRunStatus.RUNNING, jobRun.getJobRunStatus(), jobRun.toString());
-	}
-
-	@Test
-	public void testFindByJobIdAndCreateLocalDateTimeBetween() {
-		LocalDateTime endLocalDateTime = LocalDateTime.now(
-			_timeZoneDog.getZoneId());
-
-		LocalDateTime startLocalDateTime = endLocalDateTime.withDayOfMonth(1);
-
-		List<JobRun> jobRuns =
-			_jobRunRepository.findByJobIdAndCreateLocalDateTimeBetween(
-				321L, endLocalDateTime, startLocalDateTime);
-
-		Assertions.assertEquals(2, jobRuns.size(), jobRuns.toString());
 	}
 
 	@Test

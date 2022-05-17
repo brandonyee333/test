@@ -45,22 +45,19 @@ public interface JobRunRepository extends Repository<JobRun, Long> {
 		Long jobId, JobRunStatus jobRunStatus);
 
 	@Cacheable
-	public List<JobRun> findByJobId(Long jobId, Pageable pageable);
+	public List<JobRun> findByCreateLocalDateTimeBetweenAndJobId(
+		LocalDateTime startCreateLocalDateTime,
+		LocalDateTime endCreateLocalDateTime, Long jobId);
 
 	@Cacheable
-	public List<JobRun> findByJobIdAndCreateLocalDateTimeBetween(
-		@Param("jobId") Long jobId,
-		@Param("endCreateLocalDateTime") LocalDateTime endCreateLocalDateTime,
-		@Param("startCreateLocalDateTime") LocalDateTime
-			startCreateLocalDateTime);
+	public List<JobRun> findByJobId(Long jobId, Pageable pageable);
 
 	@Cacheable
 	public List<JobRun> findByJobRunStatusAndJobTypeAndStep(
 		JobRunStatus jobRunStatus, String jobType, String step);
 
 	@Cacheable
-	public List<JobRun> findByJobRunStatusIn(
-		@Param("jobRunStatus") List<String> jobRunStatus);
+	public List<JobRun> findByJobRunStatusIn(List<String> jobRunStatus);
 
 	@Cacheable
 	public Optional<JobRun> findFirstByJobIdAndJobRunStatusOrderByIdDesc(

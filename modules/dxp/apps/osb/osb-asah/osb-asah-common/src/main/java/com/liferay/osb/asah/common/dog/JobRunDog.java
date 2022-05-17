@@ -254,9 +254,9 @@ public class JobRunDog {
 
 		LocalDateTime startLocalDateTime = endLocalDateTime.withDayOfMonth(1);
 
-		return _jobRunRepository.findByJobIdAndCreateLocalDateTimeBetween(
-			jobId, endLocalDateTime,
-			startLocalDateTime.with(LocalTime.MIDNIGHT));
+		return _jobRunRepository.findByCreateLocalDateTimeBetweenAndJobId(
+			startLocalDateTime.with(LocalTime.MIDNIGHT), endLocalDateTime,
+			jobId);
 	}
 
 	@Autowired
