@@ -139,9 +139,7 @@ public class DXPEntityNanite extends BaseNanite {
 			fieldsJSONObject.put("columnId", fieldsJSONObject.get("name"));
 		}
 		else if (type == DXPEntity.Type.ORGANIZATION) {
-			if (fieldsJSONObject.has("nameTreePath") &&
-				fieldsJSONObject.has("treePath")) {
-
+			if (fieldsJSONObject.has("nameTreePath")) {
 				fieldsJSONObject.put(
 					"treePath", fieldsJSONObject.get("nameTreePath"));
 			}
