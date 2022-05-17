@@ -10,24 +10,4 @@
 				jobId = :jobId
 		]]>
 	</entry>
-	<entry key="JobRun.findByJobIdAndCreateLocalDateTimeBetween">
-		<![CDATA[
-			SELECT JobRun.*
-			FROM
-				JobRun
-			WHERE
-				jobId = :jobId AND
-				createDate BETWEEN :startCreateLocalDateTime AND
-				:endCreateLocalDateTime
-		]]>
-	</entry>
-	<entry key="JobRun.findByJobRunStatusIn">
-		<![CDATA[
-			SELECT JobRun.*
-			FROM
-				JobRun
-			WHERE
-				status IN (:jobRunStatus)
-		]]>
-	</entry>
 </properties>
