@@ -147,7 +147,7 @@
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
 				ON
-					analyticsDeleteMessage.accountEntryId = accountEntry.classPK AND
+					analyticsDeleteMessage.accountEntryId = SAFE_CAST(accountEntry.classPK AS INT64) AND
 					analyticsDeleteMessage.className = accountEntry.type
 				WHERE
 					(
@@ -158,7 +158,7 @@
 
 			) AS staging
 			ON
-				staging.classPK = replica.accountEntryId AND
+				SAFE_CAST(staging.classPK AS INT64) = replica.accountEntryId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
 			WHEN MATCHED AND staging.deleted IS NULL THEN
@@ -307,7 +307,7 @@
 						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
 				) AS analyticsDeleteMessage
 				ON
-					analyticsDeleteMessage.accountGroupId = accountGroup.classPK AND
+					analyticsDeleteMessage.accountGroupId = SAFE_CAST(accountGroup.classPK AS INT64) AND
 					analyticsDeleteMessage.className = accountGroup.type
 				WHERE
 					(
@@ -318,7 +318,7 @@
 
 			) AS staging
 			ON
-				staging.classPK = replica.accountGroupId AND
+				SAFE_CAST(staging.classPK AS INT64) = replica.accountGroupId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
 			WHEN MATCHED AND staging.deleted IS NULL THEN
@@ -410,7 +410,7 @@
 						TRUE AS deleted,
 						(
 							SELECT
-								SAFE_CAST(value AS INT64)
+								SAFE_CAST(value AS STRING)
 							FROM
 								UNNEST(fields)
 							WHERE
@@ -536,7 +536,7 @@
 						TRUE AS deleted,
 						(
 							SELECT
-								SAFE_CAST(value AS INT64)
+								SAFE_CAST(value AS STRING)
 							FROM
 								UNNEST(fields)
 							WHERE
@@ -660,7 +660,7 @@
 				ON
 					analyticsDeleteMessage.className = group_.type AND
 					analyticsDeleteMessage.dataSourceId = group_.dataSourceId AND
-					analyticsDeleteMessage.groupId = group_.classPK AND
+					analyticsDeleteMessage.groupId = SAFE_CAST(group_.classPK AS INT64) AND
 					analyticsDeleteMessage.projectId = group_.projectId
 				WHERE
 					(
@@ -670,7 +670,7 @@
 					group_.type = 'com.liferay.portal.kernel.model.Group'
 			) AS staging
 			ON
-				staging.classPK = replica.groupId AND
+				SAFE_CAST(staging.classPK AS INT64) = replica.groupId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
 			WHEN MATCHED AND staging.deleted IS NULL THEN
@@ -865,7 +865,7 @@
 				ON
 					analyticsDeleteMessage.className = organization.type AND
 					analyticsDeleteMessage.dataSourceId = organization.dataSourceId AND
-					analyticsDeleteMessage.organizationId = organization.classPK AND
+					analyticsDeleteMessage.organizationId = SAFE_CAST(organization.classPK AS INT64) AND
 					analyticsDeleteMessage.projectId = organization.projectId
 				WHERE
 					(
@@ -875,7 +875,7 @@
 					organization.type = 'com.liferay.portal.kernel.model.Organization'
 			) AS staging
 			ON
-				staging.classPK = replica.organizationId AND
+				SAFE_CAST(staging.classPK AS INT64) = replica.organizationId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
 			WHEN MATCHED AND staging.deleted IS NULL THEN
@@ -975,7 +975,7 @@
 					analyticsDeleteMessage.className = role.type AND
 					analyticsDeleteMessage.dataSourceId = role.dataSourceId AND
 					analyticsDeleteMessage.projectId = role.projectId AND
-					analyticsDeleteMessage.roleId = role.classPK
+					analyticsDeleteMessage.roleId = SAFE_CAST(role.classPK AS INT64)
 				WHERE
 					(
 						analyticsDeleteMessage.roleId IS NOT NULL OR
@@ -984,7 +984,7 @@
 					role.type = 'com.liferay.portal.kernel.model.Role'
 			) AS staging
 			ON
-				staging.classPK = replica.roleId AND
+				SAFE_CAST(staging.classPK AS INT64) = replica.roleId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
 			WHEN MATCHED AND staging.deleted IS NULL THEN
@@ -1080,7 +1080,7 @@
 					analyticsDeleteMessage.className = team.type AND
 					analyticsDeleteMessage.dataSourceId = team.dataSourceId AND
 					analyticsDeleteMessage.projectId = team.projectId AND
-					analyticsDeleteMessage.teamId = team.classPK
+					analyticsDeleteMessage.teamId = SAFE_CAST(team.classPK AS INT64)
 				WHERE
 					(
 						analyticsDeleteMessage.teamId IS NOT NULL OR
@@ -1089,7 +1089,7 @@
 					team.type = 'com.liferay.portal.kernel.model.Team'
 			) AS staging
 			ON
-				staging.classPK = replica.teamId AND
+				SAFE_CAST(staging.classPK AS INT64) = replica.teamId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
 			WHEN MATCHED AND staging.deleted IS NULL THEN
@@ -1180,7 +1180,7 @@
 					analyticsDeleteMessage.className = userGroup.type AND
 					analyticsDeleteMessage.dataSourceId = userGroup.dataSourceId AND
 					analyticsDeleteMessage.projectId = userGroup.projectId AND
-					analyticsDeleteMessage.userGroupId = userGroup.classPK
+					analyticsDeleteMessage.userGroupId = SAFE_CAST(userGroup.classPK AS INT64)
 				WHERE
 					(
 						analyticsDeleteMessage.userGroupId IS NOT NULL OR
@@ -1189,7 +1189,7 @@
 					userGroup.type = 'com.liferay.portal.kernel.model.UserGroup'
 			) AS staging
 			ON
-				staging.classPK = replica.userGroupId AND
+				SAFE_CAST(staging.classPK AS INT64) = replica.userGroupId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
 			WHEN MATCHED AND staging.deleted IS NULL THEN
@@ -1600,7 +1600,7 @@
 					analyticsDeleteMessage.className = user.type AND
 					analyticsDeleteMessage.dataSourceId = user.dataSourceId AND
 					analyticsDeleteMessage.projectId = user.projectId AND
-					analyticsDeleteMessage.userId = user.classPK
+					analyticsDeleteMessage.userId = SAFE_CAST(user.classPK AS INT64)
 				WHERE
 					(
 						analyticsDeleteMessage.userId IS NOT NULL OR
@@ -1703,7 +1703,6 @@
 					staging.teamIds,
 					staging.timeZoneId,
 					staging.userGroupIds,
-					staging.userId,
 					staging.userName,
 					staging.uuid
 				)
