@@ -1386,11 +1386,6 @@
 			},
 			{
 				"mode": "NULLABLE",
-				"name": "classPK",
-				"type": "INT64"
-			},
-			{
-				"mode": "NULLABLE",
 				"name": "contactId",
 				"type": "INT64"
 			},
