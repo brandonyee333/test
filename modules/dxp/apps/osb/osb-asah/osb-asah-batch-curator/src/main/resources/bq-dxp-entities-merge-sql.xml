@@ -476,6 +476,44 @@
 				)
 		]]>
 	</entry>
+	<entry key="ExpandoValueExpandoColumnMergeStatement">
+		<![CDATA[
+			MERGE INTO
+				`{projectId}.expandovalue` AS replica
+			USING (
+				SELECT
+					*,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'classPK'
+					) AS columnId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'className'
+					) AS className
+				FROM
+					`{projectId}.dxpentity`
+				WHERE
+					type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage' AND
+					uploadDate >= '{previousRunDateString}'
+			) AS staging
+			ON
+				staging.className = 'com.liferay.expando.kernel.model.ExpandoColumn' AND
+				staging.columnId = replica.columnId AND
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.projectId = replica.projectId
+			WHEN MATCHED THEN
+				DELETE
+		]]>
+	</entry>
 	<entry key="ExpandoValueMergeStatement">
 		<![CDATA[
 			MERGE INTO
