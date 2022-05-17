@@ -71,7 +71,7 @@ definition {
 
 	@description = "This test adds the Add Account Entry permission to Account Admin and assert user can add an account."
 	@priority = "5"
-	test AccountAdminCanAddAccount {
+	test AccountAdminCanAddAccounts {
 		property portal.acceptance = "true";
 
 		User.logoutAndLoginPG(
