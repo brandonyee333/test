@@ -660,6 +660,82 @@
 				)
 		]]>
 	</entry>
+	<entry key="OrganizationExpandoColumnMergeStatement">
+		<![CDATA[
+			MERGE INTO
+				`{projectId}.organization` AS replica
+			USING (
+				SELECT
+					organization.*,
+					ARRAY(SELECT unnestExpandoColumnIds
+							FROM UNNEST(organization.expandoColumnIds) AS unnestExpandoColumnIds
+							WHERE unnestExpandoColumnIds <> expandoColumnAnalyticsDeleteMessage.columnId) AS updatedExpandoColumnIds
+					FROM (
+						SELECT
+							*,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS columnId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage' AND
+							uploadDate >= '{previousRunDateString}'
+					) AS expandoColumnAnalyticsDeleteMessage
+					INNER JOIN (
+						SELECT
+							*,
+							(
+							SELECT ARRAY(
+								SELECT
+									DISTINCT SAFE_CAST(columnId AS STRING)
+								FROM
+									UNNEST(expandoFields)
+							)
+						) AS expandoColumnIds,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'organizationId'
+						) AS organizationId
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.portal.kernel.model.Organization'
+					) AS organization
+					ON
+						expandoColumnAnalyticsDeleteMessage.columnId in UNNEST(organization.expandoColumnIds) AND
+						expandoColumnAnalyticsDeleteMessage.dataSourceId = organization.dataSourceId AND
+						expandoColumnAnalyticsDeleteMessage.projectId = organization.projectId
+					WHERE
+						expandoColumnAnalyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
+			) AS staging
+			ON
+				staging.dataSourceId = replica.dataSourceId AND
+				staging.modifiedDate = replica.modifiedDate AND
+				staging.projectId = replica.projectId AND
+				staging.organizationId = replica.organizationId
+			WHEN MATCHED THEN
+				UPDATE SET
+					replica.expandoColumnIds = staging.updatedExpandoColumnIds
+		]]>
+	</entry>
 	<entry key="OrganizationMergeStatement">
 		<![CDATA[
 			MERGE INTO
