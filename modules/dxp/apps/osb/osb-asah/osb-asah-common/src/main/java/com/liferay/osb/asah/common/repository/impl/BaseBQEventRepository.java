@@ -921,11 +921,11 @@ public abstract class BaseBQEventRepository extends BaseRepository {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			_getCastDurationField(field);
+			return _getCastDurationField(field);
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			_getCastNumberField(field);
+			return _getCastNumberField(field);
 		}
 
 		return field;
