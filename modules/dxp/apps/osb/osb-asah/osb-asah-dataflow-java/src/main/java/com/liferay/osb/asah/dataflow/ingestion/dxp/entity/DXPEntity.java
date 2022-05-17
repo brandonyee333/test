@@ -25,7 +25,7 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 @DefaultSchema(JavaFieldSchema.class)
 public class DXPEntity extends BaseDXPEntity {
 
-	public Long classPK;
+	public String classPK;
 	public List<Field> expandoFields;
 	public List<Field> fields;
 	public String id;

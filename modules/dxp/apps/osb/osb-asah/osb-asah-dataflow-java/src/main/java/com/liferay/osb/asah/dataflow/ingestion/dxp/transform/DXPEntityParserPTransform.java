@@ -34,7 +34,7 @@ public class DXPEntityParserPTransform extends BaseParserPTransform<DXPEntity> {
 		DXPEntityPubsubMessage.Attributes attributes =
 			dxpEntityPubsubMessage.getAttributes();
 
-		dxpEntity.classPK = Long.parseLong(dxpEntity.id);
+		dxpEntity.classPK = dxpEntity.id;
 		dxpEntity.dataSourceId = attributes.getDataSourceId();
 		dxpEntity.projectId = attributes.getProjectId();
 		dxpEntity.uploadDate = attributes.getUploadTime();
