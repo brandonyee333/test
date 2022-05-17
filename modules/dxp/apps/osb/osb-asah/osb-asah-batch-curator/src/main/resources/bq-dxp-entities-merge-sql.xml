@@ -7,9 +7,14 @@
 			MERGE INTO
 				`{projectId}.accountentry` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					accountEntry.*,
+					accountEntry.classPK,
+					accountEntry.dataSourceId,
+					accountEntry.modifiedDate,
+					accountEntry.projectId,
+					accountEntry.type,
+					accountEntry.uploadDate,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
@@ -223,9 +228,14 @@
 			MERGE INTO
 				`{projectId}.accountgroup` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					accountGroup.*,
+					accountGroup.classPK,
+					accountGroup.dataSourceId,
+					accountGroup.modifiedDate,
+					accountGroup.projectId,
+					accountGroup.type,
+					accountGroup.uploadDate,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
@@ -362,9 +372,14 @@
 			MERGE INTO
 				`{projectId}.expandocolumn` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					expandoColumn.*,
+					expandoColumn.classPK,
+					expandoColumn.dataSourceId,
+					expandoColumn.modifiedDate,
+					expandoColumn.projectId,
+					expandoColumn.type,
+					expandoColumn.uploadDate,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
@@ -476,13 +491,18 @@
 				)
 		]]>
 	</entry>
-	<entry key="ExpandoValueExpandoColumnMergeStatement">
+	<entry key="ExpandoValueDeleteStatement">
 		<![CDATA[
 			MERGE INTO
 				`{projectId}.expandovalue` AS replica
 			USING (
 				SELECT
-					*,
+					classPK,
+					dataSourceId,
+					modifiedDate,
+					projectId,
+					type,
+					uploadDate,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
@@ -519,10 +539,16 @@
 			MERGE INTO
 				`{projectId}.expandovalue` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					dxpEntity.*,
-					expandoField.*,
+					dxpEntity.classPK,
+					dxpEntity.dataSourceId,
+					dxpEntity.modifiedDate,
+					dxpEntity.projectId,
+					dxpEntity.type,
+					dxpEntity.uploadDate,
+					expandoField.columnId,
+					expandoField.value,
 					TO_HEX(
 						SHA256(
 							CONCAT(dxpEntity.projectId, '#', dxpEntity.dataSourceId, '#', expandoField.columnId, '#', dxpEntity.classPK)
@@ -606,9 +632,14 @@
 			MERGE INTO
 				`{projectId}.group` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					group_.*,
+					group_.classPK,
+					group_.dataSourceId,
+					group_.modifiedDate,
+					group_.projectId,
+					group_.type,
+					group_.uploadDate,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
@@ -704,10 +735,21 @@
 				`{projectId}.organization` AS replica
 			USING (
 				SELECT
-					organization.*,
-					ARRAY(SELECT unnestExpandoColumnIds
-							FROM UNNEST(organization.expandoColumnIds) AS unnestExpandoColumnIds
-							WHERE unnestExpandoColumnIds <> analyticsDeleteMessage.columnId) AS updatedExpandoColumnIds
+					organization.classPK,
+					organization.dataSourceId,
+					organization.modifiedDate,
+					organization.organizationId,
+					organization.projectId,
+					organization.type,
+					organization.uploadDate,
+					ARRAY(
+						SELECT
+							unnestExpandoColumnIds
+						FROM
+							UNNEST(organization.expandoColumnIds) AS unnestExpandoColumnIds
+						WHERE
+							unnestExpandoColumnIds <> analyticsDeleteMessage.columnId
+					) AS updatedExpandoColumnIds
 					FROM (
 						SELECT
 							*,
@@ -779,9 +821,14 @@
 			MERGE INTO
 				`{projectId}.organization` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					organization.*,
+					organization.classPK,
+					organization.dataSourceId,
+					organization.modifiedDate,
+					organization.projectId,
+					organization.type,
+					organization.uploadDate,
 					(
 						SELECT ARRAY(
 							SELECT
@@ -920,9 +967,14 @@
 			MERGE INTO
 				`{projectId}.role` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					role.*,
+					role.classPK,
+					role.dataSourceId,
+					role.modifiedDate,
+					role.projectId,
+					role.type,
+					role.uploadDate,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
@@ -1017,9 +1069,14 @@
 			MERGE INTO
 				`{projectId}.team` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					team.*,
+					team.classPK,
+					team.dataSourceId,
+					team.modifiedDate,
+					team.projectId,
+					team.type,
+					team.uploadDate,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
@@ -1125,9 +1182,14 @@
 			MERGE INTO
 				`{projectId}.usergroup` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					userGroup.*,
+					userGroup.classPK,
+					userGroup.dataSourceId,
+					userGroup.modifiedDate,
+					userGroup.projectId,
+					userGroup.type,
+					userGroup.uploadDate,
 					(
 						SELECT
 							SAFE_CAST(value AS STRING)
@@ -1217,71 +1279,82 @@
 				)
 		]]>
 	</entry>
-	<entry key="UserExpandoColumnMergeStatement">
-				<![CDATA[
+	<entry key="UserExpandoColumnUpdateStatement">
+		<![CDATA[
 			MERGE INTO
 				`{projectId}.user` AS replica
 			USING (
 				SELECT
-					user.*,
-					ARRAY(SELECT unnestExpandoColumnIds
-							FROM UNNEST(user.expandoColumnIds) AS unnestExpandoColumnIds
-							WHERE unnestExpandoColumnIds <> analyticsDeleteMessage.columnId) AS updatedExpandoColumnIds
-					FROM (
+					user.classPK,
+					user.dataSourceId,
+					user.modifiedDate,
+					user.projectId,
+					user.type,
+					user.uploadDate,
+					user.userId,
+					ARRAY(
 						SELECT
-							*,
-							(
-								SELECT
-									SAFE_CAST(value AS STRING)
-								FROM
-									UNNEST(fields)
-								WHERE
-									name = 'classPK'
-							) AS columnId,
-							(
-								SELECT
-									SAFE_CAST(value AS STRING)
-								FROM
-									UNNEST(fields)
-								WHERE
-									name = 'className'
-							) AS className
+							unnestExpandoColumnIds
 						FROM
-							`{projectId}.dxpentity`
+							UNNEST(user.expandoColumnIds) AS unnestExpandoColumnIds
 						WHERE
-							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage' AND
-							uploadDate >= '{previousRunDateString}'
-					) AS analyticsDeleteMessage
-					INNER JOIN (
-						SELECT
-							*,
-							(
-							SELECT ARRAY(
-								SELECT
-									DISTINCT SAFE_CAST(columnId AS STRING)
-								FROM
-									UNNEST(expandoFields)
-							)
-						) AS expandoColumnIds,
+							unnestExpandoColumnIds <> analyticsDeleteMessage.columnId
+					) AS updatedExpandoColumnIds
+				FROM (
+					SELECT
+						*,
 						(
 							SELECT
-								SAFE_CAST(value AS INT64)
+								SAFE_CAST(value AS STRING)
 							FROM
 								UNNEST(fields)
 							WHERE
-								name = 'userId'
-						) AS userId
-						FROM
-							`{projectId}.dxpentity`
-						WHERE
-							type = 'com.liferay.portal.kernel.model.User'
-					) AS user
-					ON
-						analyticsDeleteMessage.columnId in UNNEST(user.expandoColumnIds) AND
-						analyticsDeleteMessage.dataSourceId = user.dataSourceId AND
-						analyticsDeleteMessage.projectId = user.projectId
+								name = 'classPK'
+						) AS columnId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
-						analyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage' AND
+						uploadDate >= '{previousRunDateString}'
+				) AS analyticsDeleteMessage
+				INNER JOIN (
+					SELECT
+						*,
+						(
+						SELECT ARRAY(
+							SELECT
+								DISTINCT SAFE_CAST(columnId AS STRING)
+							FROM
+								UNNEST(expandoFields)
+						)
+					) AS expandoColumnIds,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'userId'
+					) AS userId
+					FROM
+						`{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.portal.kernel.model.User'
+				) AS user
+				ON
+					analyticsDeleteMessage.columnId in UNNEST(user.expandoColumnIds) AND
+					analyticsDeleteMessage.dataSourceId = user.dataSourceId AND
+					analyticsDeleteMessage.projectId = user.projectId
+				WHERE
+					analyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
 			) AS staging
 			ON
 				staging.dataSourceId = replica.dataSourceId AND
@@ -1298,9 +1371,14 @@
 			MERGE INTO
 				`{projectId}.user` AS replica
 			USING (
-				SELECT
+				SELECT DISTINCT
 					analyticsDeleteMessage.deleted,
-					user.*,
+					user.classPK,
+					user.dataSourceId,
+					user.modifiedDate,
+					user.projectId,
+					user.type,
+					user.uploadDate,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
