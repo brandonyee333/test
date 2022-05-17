@@ -1403,7 +1403,7 @@
 					user.type = 'com.liferay.portal.kernel.model.User'
 			) AS staging
 			ON
-				staging.classPK = replica.userId AND
+				SAFE_CAST(staging.classPK AS INT64) = replica.dxpUserId AND
 				staging.dataSourceId = replica.dataSourceId AND
 				staging.projectId = replica.projectId
 			WHEN MATCHED AND staging.deleted IS NULL THEN
