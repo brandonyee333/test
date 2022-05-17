@@ -93,13 +93,16 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 			)
 		).iterate();
 
+		String userSessionId = null;
+
 		while (true) {
 			long start = System.currentTimeMillis();
 
 			JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
 				"user-sessions",
 				_getQueryBuilder(
-					dateString, force, lastSuccessfulSessionFinalizerDate),
+					dateString, force, lastSuccessfulSessionFinalizerDate,
+					userSessionId),
 				500);
 
 			List<UserSession> userSessions = JSONUtil.toList(
@@ -110,6 +113,11 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 			if (userSessions.isEmpty()) {
 				break;
 			}
+
+			UserSession latestUserSession = userSessions.get(
+				userSessions.size() - 1);
+
+			userSessionId = latestUserSession.getId();
 
 			String projectId = ProjectIdThreadLocal.getProjectId();
 
@@ -176,7 +184,7 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 
 	private QueryBuilder _getQueryBuilder(
 		String currentDateString, boolean force,
-		String lastSuccessfulSessionFinalizerDateString) {
+		String lastSuccessfulSessionFinalizerDateString, String userSessionId) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("completed", false));
@@ -200,7 +208,7 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 				));
 		}
 
-		return BoolQueryBuilderUtil.should(
+		boolQueryBuilder = BoolQueryBuilderUtil.should(
 			boolQueryBuilder
 		).should(
 			BoolQueryBuilderUtil.filter(
@@ -222,6 +230,20 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 				)
 			)
 		);
+
+		if (userSessionId != null) {
+			boolQueryBuilder = BoolQueryBuilderUtil.filter(
+				boolQueryBuilder
+			).filter(
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					userSessionId
+				)
+			);
+		}
+
+		return boolQueryBuilder;
 	}
 
 	private static final Log _log = LogFactory.getLog(
