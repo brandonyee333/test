@@ -669,7 +669,7 @@
 					organization.*,
 					ARRAY(SELECT unnestExpandoColumnIds
 							FROM UNNEST(organization.expandoColumnIds) AS unnestExpandoColumnIds
-							WHERE unnestExpandoColumnIds <> expandoColumnAnalyticsDeleteMessage.columnId) AS updatedExpandoColumnIds
+							WHERE unnestExpandoColumnIds <> analyticsDeleteMessage.columnId) AS updatedExpandoColumnIds
 					FROM (
 						SELECT
 							*,
@@ -694,7 +694,7 @@
 						WHERE
 							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage' AND
 							uploadDate >= '{previousRunDateString}'
-					) AS expandoColumnAnalyticsDeleteMessage
+					) AS analyticsDeleteMessage
 					INNER JOIN (
 						SELECT
 							*,
@@ -720,11 +720,11 @@
 							type = 'com.liferay.portal.kernel.model.Organization'
 					) AS organization
 					ON
-						expandoColumnAnalyticsDeleteMessage.columnId in UNNEST(organization.expandoColumnIds) AND
-						expandoColumnAnalyticsDeleteMessage.dataSourceId = organization.dataSourceId AND
-						expandoColumnAnalyticsDeleteMessage.projectId = organization.projectId
+						analyticsDeleteMessage.columnId in UNNEST(organization.expandoColumnIds) AND
+						analyticsDeleteMessage.dataSourceId = organization.dataSourceId AND
+						analyticsDeleteMessage.projectId = organization.projectId
 					WHERE
-						expandoColumnAnalyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
+						analyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
 			) AS staging
 			ON
 				staging.dataSourceId = replica.dataSourceId AND
@@ -1188,7 +1188,7 @@
 					user.*,
 					ARRAY(SELECT unnestExpandoColumnIds
 							FROM UNNEST(user.expandoColumnIds) AS unnestExpandoColumnIds
-							WHERE unnestExpandoColumnIds <> expandoColumnAnalyticsDeleteMessage.columnId) AS updatedExpandoColumnIds
+							WHERE unnestExpandoColumnIds <> analyticsDeleteMessage.columnId) AS updatedExpandoColumnIds
 					FROM (
 						SELECT
 							*,
@@ -1213,7 +1213,7 @@
 						WHERE
 							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage' AND
 							uploadDate >= '{previousRunDateString}'
-					) AS expandoColumnAnalyticsDeleteMessage
+					) AS analyticsDeleteMessage
 					INNER JOIN (
 						SELECT
 							*,
@@ -1239,11 +1239,11 @@
 							type = 'com.liferay.portal.kernel.model.User'
 					) AS user
 					ON
-						expandoColumnAnalyticsDeleteMessage.columnId in UNNEST(user.expandoColumnIds) AND
-						expandoColumnAnalyticsDeleteMessage.dataSourceId = user.dataSourceId AND
-						expandoColumnAnalyticsDeleteMessage.projectId = user.projectId
+						analyticsDeleteMessage.columnId in UNNEST(user.expandoColumnIds) AND
+						analyticsDeleteMessage.dataSourceId = user.dataSourceId AND
+						analyticsDeleteMessage.projectId = user.projectId
 					WHERE
-						expandoColumnAnalyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
+						analyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
 			) AS staging
 			ON
 				staging.dataSourceId = replica.dataSourceId AND
