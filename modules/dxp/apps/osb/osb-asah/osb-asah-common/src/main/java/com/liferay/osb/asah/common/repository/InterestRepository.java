@@ -56,8 +56,8 @@ public interface InterestRepository
 
 	public List<Interest>
 		findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-			String name, Long ownerId, String ownerType, Date fromRecordedDate,
-			Date toRecordedDate);
+			String name, Long ownerId, String ownerType,
+			Date recordedDateFromDate, Date recordedDateToDate);
 
 	public List<Interest> findByOwnerIdAndOwnerType(
 		Long ownerId, String ownerType, Pageable pageable);

@@ -304,8 +304,8 @@ public class ElasticsearchInterestRepositoryImpl implements InterestRepository {
 	@Override
 	public List<Interest>
 		findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-			String name, Long ownerId, String ownerType, Date fromRecordedDate,
-			Date toRecordedDate) {
+			String name, Long ownerId, String ownerType,
+			Date recordedDateFromDate, Date recordedDateToDate) {
 
 		return _toInterests(
 			_faroInfoElasticsearchInvoker.get(
@@ -314,9 +314,9 @@ public class ElasticsearchInterestRepositoryImpl implements InterestRepository {
 					QueryBuilders.rangeQuery(
 						"dateRecorded"
 					).gte(
-						DateUtil.toString(fromRecordedDate)
+						DateUtil.toString(recordedDateFromDate)
 					).lte(
-						DateUtil.toString(toRecordedDate)
+						DateUtil.toString(recordedDateToDate)
 					)
 				).filter(
 					QueryBuilders.termQuery("name", name)
