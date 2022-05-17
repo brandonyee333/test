@@ -90,7 +90,7 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 	@Test
 	public void testGetBQUsers() {
 		List<BQUser> bqUsers = _bqUserDog.getBQUsers(
-			Collections.singletonMap("userId", 2), PageRequest.of(0, 10));
+			Collections.singletonMap("dxpUserId", 2), PageRequest.of(0, 10));
 
 		Assertions.assertEquals(1, bqUsers.size(), bqUsers.toString());
 
