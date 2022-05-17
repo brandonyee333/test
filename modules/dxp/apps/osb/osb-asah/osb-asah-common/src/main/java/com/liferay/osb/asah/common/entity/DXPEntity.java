@@ -191,7 +191,8 @@ public class DXPEntity implements Persistable<Long> {
 
 	public enum Type {
 
-		EXPANDO_COLUMN(Type.CLASS_NAME_EXPANDO_COLUMN, null, null, null, null),
+		EXPANDO_COLUMN(
+			Type.CLASS_NAME_EXPANDO_COLUMN, null, "name", null, null),
 		GROUP(
 			Type.CLASS_NAME_GROUP, "groups", "groupId", "groupIds",
 			"referencedGroupIds"),
