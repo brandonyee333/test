@@ -431,7 +431,9 @@
 				) AS analyticsDeleteMessage
 				ON
 					analyticsDeleteMessage.className = expandoColumn.type AND
-					analyticsDeleteMessage.columnId = expandoColumn.classPK
+					analyticsDeleteMessage.columnId = expandoColumn.classPK AND
+					analyticsDeleteMessage.dataSourceId = expandoColumn.dataSourceId AND
+					analyticsDeleteMessage.projectId = expandoColumn.projectId
 				WHERE
 					(
 						analyticsDeleteMessage.columnId IS NOT NULL OR
@@ -517,7 +519,9 @@
 				) AS analyticsDeleteMessage
 				ON
 					analyticsDeleteMessage.className = dxpEntity.type AND
-					analyticsDeleteMessage.entityId = dxpEntity.classPK
+					analyticsDeleteMessage.dataSourceId = dxpEntity.dataSourceId AND
+					analyticsDeleteMessage.entityId = dxpEntity.classPK AND
+					analyticsDeleteMessage.projectId = dxpEntity.projectId
 				WHERE
 					(
 						analyticsDeleteMessage.entityId IS NOT NULL OR
@@ -617,7 +621,9 @@
 				) AS analyticsDeleteMessage
 				ON
 					analyticsDeleteMessage.className = group_.type AND
-					analyticsDeleteMessage.groupId = group_.classPK
+					analyticsDeleteMessage.dataSourceId = group_.dataSourceId AND
+					analyticsDeleteMessage.groupId = group_.classPK AND
+					analyticsDeleteMessage.projectId = group_.projectId
 				WHERE
 					(
 						analyticsDeleteMessage.groupId IS NOT NULL OR
@@ -744,7 +750,9 @@
 				) AS analyticsDeleteMessage
 				ON
 					analyticsDeleteMessage.className = organization.type AND
-					analyticsDeleteMessage.organizationId = organization.classPK
+					analyticsDeleteMessage.dataSourceId = organization.dataSourceId AND
+					analyticsDeleteMessage.organizationId = organization.classPK AND
+					analyticsDeleteMessage.projectId = organization.projectId
 				WHERE
 					(
 						analyticsDeleteMessage.organizationId IS NOT NULL OR
@@ -851,6 +859,8 @@
 				) AS analyticsDeleteMessage
 				ON
 					analyticsDeleteMessage.className = role.type AND
+					analyticsDeleteMessage.dataSourceId = role.dataSourceId AND
+					analyticsDeleteMessage.projectId = role.projectId AND
 					analyticsDeleteMessage.roleId = role.classPK
 				WHERE
 					(
@@ -954,6 +964,8 @@
 				) AS analyticsDeleteMessage
 				ON
 					analyticsDeleteMessage.className = team.type AND
+					analyticsDeleteMessage.dataSourceId = team.dataSourceId AND
+					analyticsDeleteMessage.projectId = team.projectId AND
 					analyticsDeleteMessage.teamId = team.classPK
 				WHERE
 					(
@@ -1052,6 +1064,8 @@
 				) AS analyticsDeleteMessage
 				ON
 					analyticsDeleteMessage.className = userGroup.type AND
+					analyticsDeleteMessage.dataSourceId = userGroup.dataSourceId AND
+					analyticsDeleteMessage.projectId = userGroup.projectId AND
 					analyticsDeleteMessage.userGroupId = userGroup.classPK
 				WHERE
 					(
@@ -1394,6 +1408,8 @@
 				) AS analyticsDeleteMessage
 				ON
 					analyticsDeleteMessage.className = user.type AND
+					analyticsDeleteMessage.dataSourceId = user.dataSourceId AND
+					analyticsDeleteMessage.projectId = user.projectId AND
 					analyticsDeleteMessage.userId = user.classPK
 				WHERE
 					(
