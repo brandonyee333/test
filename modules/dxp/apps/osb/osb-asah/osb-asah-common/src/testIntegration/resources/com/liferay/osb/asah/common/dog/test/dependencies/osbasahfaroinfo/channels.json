@@ -16,7 +16,8 @@
 		],
 		"dateCreated": "${now-1h}",
 		"id": "1",
-		"name": "channel1"
+		"name": "channel1",
+		"state": "READY"
 	},
 	{
 		"dataSources": [
@@ -29,7 +30,8 @@
 		],
 		"dateCreated": "${now-1h}",
 		"id": "2",
-		"name": "channel2"
+		"name": "channel2",
+		"state": "READY"
 	},
 	{
 		"dataSources": [
@@ -42,6 +44,7 @@
 		],
 		"dateCreated": "${now-1h}",
 		"id": "3",
-		"name": "channel3"
+		"name": "channel3",
+		"state": "READY"
 	}
 ]

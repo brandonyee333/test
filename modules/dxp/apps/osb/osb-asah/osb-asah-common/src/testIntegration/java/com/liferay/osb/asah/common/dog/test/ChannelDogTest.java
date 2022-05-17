@@ -50,6 +50,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 /**
  * @author André Miranda
@@ -193,6 +194,29 @@ public class ChannelDogTest
 		Assertions.assertEquals("channel1", channelNames.get(123L));
 		Assertions.assertEquals("channel2", channelNames.get(456L));
 		Assertions.assertNull(channelNames.get(789L));
+	}
+
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@Test
+	public void testGetChannelPage() {
+		Page<Channel> channelPage = _channelDog.getChannelPage("", 0, 20, null);
+
+		Assertions.assertEquals(3, channelPage.getTotalElements());
+	}
+
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@Test
+	public void testGetChannelPageByName() {
+		Page<Channel> channelPage = _channelDog.getChannelPage(
+			"channel2", 0, 20, null);
+
+		Assertions.assertEquals(1, channelPage.getTotalElements());
 	}
 
 	@RepositoryResource(
