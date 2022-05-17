@@ -671,7 +671,7 @@
 					(
 						SELECT ARRAY(
 							SELECT
-								DISTINCT columnId
+								DISTINCT SAFE_CAST(columnId AS STRING)
 							FROM
 								UNNEST(organization.expandoFields)
 						)
@@ -1162,7 +1162,7 @@
 					(
 						SELECT ARRAY(
 							SELECT
-								DISTINCT columnId
+								DISTINCT SAFE_CAST(columnId AS STRING)
 							FROM
 								UNNEST(user.expandoFields)
 						)
