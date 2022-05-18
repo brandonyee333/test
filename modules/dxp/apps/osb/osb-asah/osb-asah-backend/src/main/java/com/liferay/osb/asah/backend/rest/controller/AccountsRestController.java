@@ -21,12 +21,15 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
+import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -174,8 +177,13 @@ public class AccountsRestController extends BaseRestController {
 	}
 
 	private PageDTO<SegmentDTO> _toSegmentPageDTO(Page<Segment> segmentsPage) {
+		List<Segment> segments = segmentsPage.getContent();
+
 		return _toSegmentPageDTO(
-			new SegmentDTO(segmentsPage.getContent()), segmentsPage);
+			new SegmentDTO(
+				_bqMembershipChangeDog.getBQMembershipChanges(segments),
+				segments),
+			segmentsPage);
 	}
 
 	private PageDTO<SegmentDTO> _toSegmentPageDTO(
@@ -216,6 +224,9 @@ public class AccountsRestController extends BaseRestController {
 
 	@Autowired
 	private AccountDog _accountDog;
+
+	@Autowired
+	private MembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;

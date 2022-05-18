@@ -21,12 +21,17 @@ import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
+
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -109,8 +114,17 @@ public class ReportRestController extends BaseRestController {
 	private PageDTO<ReportSegmentDTO> _toReportSegmentDTOPageDTO(
 		Page<Segment> segmentPage) {
 
+		List<Segment> segments = segmentPage.toList();
+
+		Map<Long, BQMembershipChange> bqMembershipChangeMap =
+			_membershipChangeDog.getBQMembershipChanges(segments);
+
 		return new PageDTO<>(
-			ListUtil.map(segmentPage.toList(), ReportSegmentDTO::new),
+			ListUtil.map(
+				segments,
+				segment -> new ReportSegmentDTO(
+					bqMembershipChangeMap.getOrDefault(segment.getId(), null),
+					segment)),
 			segmentPage.getTotalElements());
 	}
 
@@ -121,6 +135,9 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

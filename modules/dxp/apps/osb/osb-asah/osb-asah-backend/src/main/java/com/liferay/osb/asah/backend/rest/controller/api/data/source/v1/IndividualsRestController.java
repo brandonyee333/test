@@ -22,8 +22,10 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -261,12 +263,18 @@ public class IndividualsRestController extends BaseRestController {
 
 		List<Segment> segments = segmentsPage.getContent();
 
+		Map<Long, BQMembershipChange> bqMembershipChangeMap =
+			_membershipChangeDog.getBQMembershipChanges(segments);
+
 		Set<SegmentDTO> segmentDTOs = new LinkedHashSet<>();
 
 		Stream<Segment> stream = segments.stream();
 
 		stream.forEachOrdered(
-			segment -> segmentDTOs.add(new SegmentDTO(segment)));
+			segment -> segmentDTOs.add(
+				new SegmentDTO(
+					bqMembershipChangeMap.getOrDefault(segment.getId(), null),
+					segment)));
 
 		Map<Long, JSONObject> membershipsJSONObjects = new HashMap<>();
 
@@ -341,8 +349,13 @@ public class IndividualsRestController extends BaseRestController {
 	private PageDTO<SegmentDTO> _toSegmentDTOPageDTO(
 		Page<Segment> segmentsPage) {
 
+		List<Segment> segments = segmentsPage.getContent();
+
 		return new PageDTO<>(
-			"_embedded", new SegmentDTO(segmentsPage.getContent()),
+			"_embedded",
+			new SegmentDTO(
+				_membershipChangeDog.getBQMembershipChanges(segments),
+				segments),
 			segmentsPage.getNumber(), segmentsPage.getSize(),
 			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
 	}
@@ -394,6 +407,9 @@ public class IndividualsRestController extends BaseRestController {
 
 	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;
