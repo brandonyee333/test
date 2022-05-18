@@ -28,6 +28,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @ComponentScan(
 	basePackages = {
+		"com.liferay.osb.asah.common.antivirus",
 		"com.liferay.osb.asah.common.bigquery",
 		"com.liferay.osb.asah.common.configuration",
 		"com.liferay.osb.asah.common.date.dog",

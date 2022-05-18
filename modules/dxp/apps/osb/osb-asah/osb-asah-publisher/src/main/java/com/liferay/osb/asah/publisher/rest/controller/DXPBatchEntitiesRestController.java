@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
+import com.liferay.osb.asah.common.antivirus.ClamAVScanner;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -131,6 +132,10 @@ public class DXPBatchEntitiesRestController {
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Received upload request " + name);
+			}
+
+			if (_clamAVScanner != null) {
+				_clamAVScanner.scan(multipartFile.getInputStream());
 			}
 
 			ZipInputStream zipInputStream = new ZipInputStream(
@@ -264,6 +269,9 @@ public class DXPBatchEntitiesRestController {
 
 	private static final DateTimeFormatter _dateTimeFormatter =
 		DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz");
+
+	@Autowired(required = false)
+	private ClamAVScanner _clamAVScanner;
 
 	@Value(
 		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities-{region}}"
