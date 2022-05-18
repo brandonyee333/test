@@ -38,8 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,16 +47,10 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.Sum;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -141,8 +133,6 @@ public class FinalizeUserSessionArm {
 		_updatePageEntrancesAndExits(pagesJSONArray);
 
 		_updatePageBounces(pagesJSONArray, userSession);
-
-		_updatePageViews(elasticsearchBulkRequestBuilder, userSession);
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {
 			elasticsearchBulkRequestBuilder.get();
@@ -520,97 +510,6 @@ public class FinalizeUserSessionArm {
 		}
 	}
 
-	private void _updatePageViews(
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-		UserSession userSession) {
-
-		QueryBuilder queryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery(
-				"dataSourceId", userSession.getDataSourceId())
-		).filter(
-			QueryBuilders.termQuery("sessionId", userSession.getId())
-		);
-
-		SearchResponse searchResponse = _cerebroInfoElasticsearchInvoker.search(
-			"pages",
-			searchSourceBuilder -> {
-				TermsAggregationBuilder termsAggregationBuilder =
-					AggregationBuilders.terms("pages");
-
-				termsAggregationBuilder.script(
-					new Script(
-						Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-						"doc['title'] + ' ' + doc['url']",
-						Collections.emptyMap()));
-				termsAggregationBuilder.subAggregation(
-					AggregationBuilders.sum(
-						"pageViews"
-					).field(
-						"views"
-					));
-
-				searchSourceBuilder.aggregation(termsAggregationBuilder);
-
-				searchSourceBuilder.query(queryBuilder);
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		if (aggregations == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to find pages buckets relevant to user session " +
-						userSession.getId());
-			}
-
-			return;
-		}
-
-		Terms terms = aggregations.get("pages");
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			Aggregations termsAggregations = bucket.getAggregations();
-
-			Sum sumAggregation = termsAggregations.get("pageViews");
-
-			if (sumAggregation.getValue() > 0) {
-				continue;
-			}
-
-			Matcher matcher = _pattern.matcher(bucket.getKeyAsString());
-
-			if (!matcher.matches()) {
-				continue;
-			}
-
-			JSONArray pagesJSONArray = _cerebroInfoElasticsearchInvoker.get(
-				"pages", SortBuilderUtil.fieldSort("eventDate", SortOrder.ASC),
-				BoolQueryBuilderUtil.filter(
-					queryBuilder
-				).filter(
-					QueryBuilders.termQuery("title", matcher.group("title"))
-				).filter(
-					QueryBuilders.termQuery("url", matcher.group("url"))
-				),
-				1);
-
-			if (pagesJSONArray.length() == 0) {
-				continue;
-			}
-
-			JSONObject pageJSONObject = pagesJSONArray.getJSONObject(0);
-
-			elasticsearchBulkRequestBuilder.update(
-				"pages",
-				JSONUtil.put(
-					"id", pageJSONObject.getString("id")
-				).put(
-					"views", 1
-				));
-		}
-	}
-
 	private static final String[] _COLLECTION_NAMES = {
 		"blog-clicks", "blog-social-shares", "blog-traffic-sources", "blogs",
 		"custom-assets", "document-libraries", "forms", "journal-clicks",
@@ -621,9 +520,6 @@ public class FinalizeUserSessionArm {
 
 	private static final Log _log = LogFactory.getLog(
 		FinalizeUserSessionArm.class);
-
-	private static final Pattern _pattern = Pattern.compile(
-		"\\[(?<title>[^]]+)] \\[(?<url>[^]]+)]");
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
