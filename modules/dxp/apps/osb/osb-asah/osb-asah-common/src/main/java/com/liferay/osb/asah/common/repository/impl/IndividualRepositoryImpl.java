@@ -1086,10 +1086,10 @@ public class IndividualRepositoryImpl
 
 		AggregateFunction<Object> aggregateFunction = DSL.max(
 			DSL.field("modifiedDate"));
-		Field<Object> modifiedDateField = DSL.field("modifiedDate");
-		Field<Object> nameField = DSL.field("name");
-		Field<Object> ownerIdField = DSL.field("ownerId");
-		Field<Object> valueField = DSL.field("value");
+		Field<Object> modifiedDateField = DSL.field("field.modifiedDate");
+		Field<Object> nameField = DSL.field("field.name");
+		Field<Object> ownerIdField = DSL.field("field.ownerId");
+		Field<Object> valueField = DSL.field("field.value");
 
 		SelectSelectStep<Record> modifiedDateSelectSelectStep =
 			_dslContext.select();
@@ -1735,11 +1735,15 @@ public class IndividualRepositoryImpl
 		).on(
 			DSL.and(
 				DSL.field(
-					"modifiedDate"
+					"field.modifiedDate"
 				).eq(
 					maxModifiedDateTable.field("modifiedDate")
 				),
-				ownerIdField.eq(maxModifiedDateTable.field("ownerId")))
+				DSL.field(
+					"field.ownerId"
+				).eq(
+					maxModifiedDateTable.field("ownerId")
+				))
 		).where(
 			nameField.eq(fieldName)
 		).asTable(
