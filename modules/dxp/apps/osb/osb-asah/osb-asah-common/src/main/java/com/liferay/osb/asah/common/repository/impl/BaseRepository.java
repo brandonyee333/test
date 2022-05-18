@@ -75,7 +75,7 @@ public abstract class BaseRepository {
 			}
 
 			if (table != null) {
-				fieldName = table + "." + fieldName;
+				fieldName = table.getName() + "." + fieldName;
 			}
 
 			Field<?> field = DSL.field(fieldName);

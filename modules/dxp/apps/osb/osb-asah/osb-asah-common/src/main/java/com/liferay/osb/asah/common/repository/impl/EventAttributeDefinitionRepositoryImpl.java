@@ -197,7 +197,7 @@ public class EventAttributeDefinitionRepositoryImpl
 			selectSelectStep.from(
 				table
 			).groupBy(
-				DSL.field(table + ".name")
+				DSL.field(table.getName() + ".name")
 			).orderBy(
 				getSortFields(
 					Collections.singletonMap("displayName", "name"),
