@@ -52,11 +52,14 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -125,6 +128,13 @@ public class FinalizeUserSessionArm {
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			_cerebroInfoElasticsearchInvoker.
 				createElasticsearchBulkRequestBuilder();
+
+		JSONArray pagesJSONArray = _getPagesJSONArray(
+			userSession.getDataSourceId(), userSession.getId());
+
+		if (pagesJSONArray.length() == 0) {
+			return;
+		}
 
 		_updatePageTimeOnPage(elasticsearchBulkRequestBuilder, userSession);
 
@@ -249,6 +259,54 @@ public class FinalizeUserSessionArm {
 		}
 
 		return pageEventDateMap;
+	}
+
+	private JSONArray _getPagesJSONArray(
+		String dataSourceId, String userSessionId) {
+
+		JSONArray pagesJSONArray = new JSONArray();
+
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+		searchSourceBuilder.query(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("sessionId", userSessionId)
+			).filter(
+				QueryBuilders.termQuery("dataSourceId", dataSourceId)
+			));
+
+		searchSourceBuilder.size(10000);
+		searchSourceBuilder.sort("lastEventDate");
+
+		String id = "0";
+
+		while (true) {
+			searchSourceBuilder.searchAfter(new Object[] {id});
+
+			SearchResponse searchResponse =
+				_cerebroInfoElasticsearchInvoker.search(
+					"pages", searchSourceBuilder);
+
+			SearchHits searchHits = searchResponse.getHits();
+
+			SearchHit[] hits = searchHits.getHits();
+
+			if (hits.length == 0) {
+				break;
+			}
+
+			for (SearchHit searchHit : hits) {
+				pagesJSONArray.put(
+					new JSONObject(searchHit.getSourceAsString()));
+			}
+
+			JSONObject jsonObject = pagesJSONArray.getJSONObject(
+				pagesJSONArray.length() - 1);
+
+			id = jsonObject.getString("id");
+		}
+
+		return pagesJSONArray;
 	}
 
 	private List<Pair<String, Date>> _getURLEventDatePairs(
