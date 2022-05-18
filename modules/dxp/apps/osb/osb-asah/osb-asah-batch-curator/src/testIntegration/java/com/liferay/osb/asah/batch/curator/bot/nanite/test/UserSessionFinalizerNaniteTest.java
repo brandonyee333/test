@@ -58,9 +58,7 @@ public class UserSessionFinalizerNaniteTest
 	)
 	@Test
 	public void testExpiredSessionMultipleInteractions() throws Exception {
-		_userSessionFinalizerNanite.run(null);
-
-		_elasticsearchInvoker.refresh();
+		_runUserSessionFinalizerNanite();
 
 		Assertions.assertEquals(
 			1,
@@ -103,7 +101,7 @@ public class UserSessionFinalizerNaniteTest
 	)
 	@Test
 	public void testExpiredSessionMultiplePageVisits() throws Exception {
-		_userSessionFinalizerNanite.run(null);
+		_runUserSessionFinalizerNanite();
 
 		Assertions.assertEquals(
 			1,
@@ -142,9 +140,7 @@ public class UserSessionFinalizerNaniteTest
 	)
 	@Test
 	public void testExpiredSessionSingleInteraction() throws Exception {
-		_userSessionFinalizerNanite.run(null);
-
-		_elasticsearchInvoker.refresh();
+		_runUserSessionFinalizerNanite();
 
 		Assertions.assertEquals(
 			2,
@@ -191,9 +187,7 @@ public class UserSessionFinalizerNaniteTest
 	)
 	@Test
 	public void testExpiredSessionUpdatesAssets() throws Exception {
-		_userSessionFinalizerNanite.run(null);
-
-		_elasticsearchInvoker.refresh();
+		_runUserSessionFinalizerNanite();
 
 		Assertions.assertEquals(
 			1,
@@ -263,9 +257,7 @@ public class UserSessionFinalizerNaniteTest
 
 		String modifiedDate2 = userSessionJSONObject.getString("modifiedDate");
 
-		_userSessionFinalizerNanite.run(null);
-
-		_elasticsearchInvoker.refresh();
+		_runUserSessionFinalizerNanite();
 
 		userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", "366909399944215919");
@@ -332,7 +324,7 @@ public class UserSessionFinalizerNaniteTest
 	)
 	@Test
 	public void testUpdatePageViews() throws Exception {
-		_userSessionFinalizerNanite.run(null);
+		_runUserSessionFinalizerNanite();
 
 		Assertions.assertEquals(
 			1,
@@ -368,9 +360,7 @@ public class UserSessionFinalizerNaniteTest
 	)
 	@Test
 	public void testUpdateTimeOnPageSinglePage() throws Exception {
-		_userSessionFinalizerNanite.run(null);
-
-		_elasticsearchInvoker.refresh();
+		_runUserSessionFinalizerNanite();
 
 		Assertions.assertEquals(
 			1,
@@ -390,6 +380,12 @@ public class UserSessionFinalizerNaniteTest
 		JSONObject pageJSONObject = pagesJSONArray.getJSONObject(0);
 
 		Assertions.assertEquals(120000, pageJSONObject.getLong("timeOnPage"));
+	}
+
+	private void _runUserSessionFinalizerNanite() throws Exception {
+		_userSessionFinalizerNanite.run(null);
+
+		_elasticsearchInvoker.refresh();
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
