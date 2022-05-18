@@ -110,7 +110,13 @@ public class DXPEntity implements Persistable<Long> {
 	public String getIdFieldValue() {
 		DXPEntity.Type type = getType();
 
-		return String.valueOf(_fieldsJSONObject.get(type.getIdFieldName()));
+		Object value = _fieldsJSONObject.opt(type.getIdFieldName());
+
+		if (value == null) {
+			return null;
+		}
+
+		return String.valueOf(value);
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)

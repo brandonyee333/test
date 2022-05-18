@@ -230,6 +230,10 @@ public class DXPEntityNanite extends BaseNanite {
 					}
 
 					for (DXPEntity dxpEntity : dxpEntitiesPage.getContent()) {
+						if (StringUtils.isEmpty(dxpEntity.getIdFieldValue())) {
+							continue;
+						}
+
 						messageAttributes.put(
 							"dataSourceId",
 							String.valueOf(dxpEntity.getDataSourceId()));
