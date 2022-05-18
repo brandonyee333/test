@@ -75,9 +75,33 @@ public class MembershipChangeDogTest
 					if (daysAgo == -1) {
 						_bqMembershipChangeByIndividualSegmentId.put(
 							segment.getId(), bqMembershipChange);
+						_segments.add(segment);
 					}
 				}
 			});
+	}
+
+	@Test
+	public void testGetBQMembershipChanges() {
+		Assertions.assertEquals(
+			_bqMembershipChangeByIndividualSegmentId,
+			_membershipChangeDog.getBQMembershipChanges(_segments));
+	}
+
+	@Test
+	public void testGetLastBeforeTodayByIndividualSegmentId() {
+		List<Long> segmentIds = new ArrayList(
+			_bqMembershipChangeByIndividualSegmentId.keySet());
+
+		Long segmentId = segmentIds.get(0);
+
+		BQMembershipChange bqMembershipChange =
+			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentId(
+				segmentId);
+
+		Assertions.assertEquals(
+			_bqMembershipChangeByIndividualSegmentId.get(segmentId),
+			bqMembershipChange);
 	}
 
 	@Test
@@ -174,5 +198,7 @@ public class MembershipChangeDogTest
 
 	@Autowired
 	private SegmentRepository _segmentRepository;
+
+	private final List<Segment> _segments = new ArrayList<>();
 
 }

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
+import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -157,6 +158,10 @@ public class IndividualSegmentsRestControllerTest
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
+	)
 	@Test
 	public void testGetAccounts() throws Exception {
 		JSONAssert.assertEquals(
@@ -263,7 +268,7 @@ public class IndividualSegmentsRestControllerTest
 			(JSONObject)membershipChangesJSONArray.get(0);
 
 		Assertions.assertEquals(
-			1, membershipJSONObject.getInt("individualsCount"));
+			2, membershipJSONObject.getInt("individualsCount"));
 		Assertions.assertEquals(
 			1, membershipJSONObject.getInt("knownIndividualsCount"));
 
@@ -409,9 +414,15 @@ public class IndividualSegmentsRestControllerTest
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(""));
 
+		Long segmentId = segment.getId();
+
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.putIndividualSegment(
-				segment.getId(), new SegmentDTO(segment)),
+				segmentId,
+				new SegmentDTO(
+					_membershipChangeDog.
+						getLastBeforeTodayByIndividualSegmentId(segmentId),
+					segment)),
 			JSONObject.class);
 
 		Assertions.assertEquals(
@@ -423,9 +434,15 @@ public class IndividualSegmentsRestControllerTest
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildStaticSegment());
 
+		Long segmentId = segment.getId();
+
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.putIndividualSegment(
-				segment.getId(), new SegmentDTO(segment)),
+				segmentId,
+				new SegmentDTO(
+					_membershipChangeDog.
+						getLastBeforeTodayByIndividualSegmentId(segmentId),
+					segment)),
 			JSONObject.class);
 
 		Assertions.assertEquals("READY", responseJSONObject.getString("state"));
@@ -439,6 +456,9 @@ public class IndividualSegmentsRestControllerTest
 
 	@Autowired
 	private IndividualSegmentsRestController _individualSegmentsRestController;
+
+	@Autowired
+	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

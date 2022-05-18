@@ -70,18 +70,13 @@ public class BQMembershipChangeRepositoryTest
 				_createBQMembershipChange(
 					DateUtil.newEndOfDayDate(_newDayDate), 3, segment));
 			bqMembershipsChanges.add(
-				_createBQMembershipChange(
-					DateUtil.newEndOfDayDate(_newDayDate), 4, segment));
-			bqMembershipsChanges.add(
-				_createBQMembershipChange(_newDayDate, 2, segment));
-			bqMembershipsChanges.add(
 				_createBQMembershipChange(_tomorrow, 5, segment));
 		}
 
 		setUpRepository(
 			bqMembershipsChanges.toArray(new BQMembershipChange[0]));
 
-		_bqMembershipChange = entityModels.get(2);
+		_bqMembershipChange = entityModels.get(1);
 	}
 
 	@Test
@@ -89,7 +84,7 @@ public class BQMembershipChangeRepositoryTest
 		Segment segment = _segments.get(0);
 
 		Assertions.assertEquals(
-			5,
+			3,
 			_bqMembershipChangeRepository.countBQMembershipChanges(
 				FilterHelper.EMPTY, segment.getId()));
 	}
@@ -168,7 +163,7 @@ public class BQMembershipChangeRepositoryTest
 		Assertions.assertEquals(
 			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
 		Assertions.assertEquals(
-			entityModels.get(4), bqMembershipChanges.get(0));
+			entityModels.get(2), bqMembershipChanges.get(0));
 
 		List<Segment> segments = _segments.subList(0, 2);
 

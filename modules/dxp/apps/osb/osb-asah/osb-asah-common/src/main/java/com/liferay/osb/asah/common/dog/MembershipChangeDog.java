@@ -18,14 +18,17 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -84,15 +87,51 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 			individualSegmentIds);
 	}
 
+	public Map<Long, BQMembershipChange> getBQMembershipChanges(
+		List<Segment> segments) {
+
+		List<Long> individualSegmentIds = new ArrayList<>();
+
+		for (Segment segment : segments) {
+			individualSegmentIds.add(segment.getId());
+		}
+
+		Map<Long, BQMembershipChange> bqMembershipChangeMap = new HashMap<>();
+
+		for (BQMembershipChange bqMembershipChange :
+				getLastBeforeTodayByIndividualSegmentsId(
+					individualSegmentIds)) {
+
+			bqMembershipChangeMap.put(
+				bqMembershipChange.getIndividualSegmentId(),
+				bqMembershipChange);
+		}
+
+		return bqMembershipChangeMap;
+	}
+
+	public BQMembershipChange getLastBeforeTodayByIndividualSegmentId(
+		Long individualSegmentId) {
+
+		List<BQMembershipChange> bqMembershipChanges =
+			getLastBeforeTodayByIndividualSegmentsId(
+				Collections.singletonList(individualSegmentId));
+
+		if (bqMembershipChanges.isEmpty()) {
+			return null;
+		}
+
+		return bqMembershipChanges.get(0);
+	}
+
 	public List<BQMembershipChange> getLastBeforeTodayByIndividualSegmentsId(
 		List<Long> individualSegmentIds) {
-
-		Date date = DateUtil.newDayDate();
 
 		return _bqMembershipChangeRepository.
 			searchLastByCreateDateAndIndividualSegmentId(
 				null, individualSegmentIds,
-				DateUtil.newEndOfDayDate(DateUtils.addDays(date, -1)));
+				DateUtil.newEndOfDayDate(
+					DateUtils.addDays(DateUtil.newDayDate(), -1)));
 	}
 
 	public Page<BQMembershipChange> searchBQMembershipChangePages(

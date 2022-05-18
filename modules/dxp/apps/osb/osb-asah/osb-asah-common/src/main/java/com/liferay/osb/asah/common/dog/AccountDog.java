@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -351,6 +352,18 @@ public class AccountDog {
 			"Account: " + account.getId(), "INACTIVE");
 
 		if (segment != null) {
+			BQMembershipChange bqMembershipChange =
+				_membershipChangeDog.getLastBeforeTodayByIndividualSegmentId(
+					segment.getId());
+
+			if (bqMembershipChange != null) {
+				account.setIndividualsCount(
+					bqMembershipChange.getIndividualsCount());
+			}
+			else {
+				account.setIndividualsCount(0L);
+			}
+
 			List<Individual.ActivitiesCount> individualActivitiesCounts =
 				_individualDog.getActivitiesCounts(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
@@ -614,6 +627,9 @@ public class AccountDog {
 
 	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

@@ -19,7 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
+import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -418,6 +420,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 			_addAsahTask(segment);
 		}
+
+		_replaceAccount(segment);
 
 		return segment;
 	}
@@ -942,6 +946,74 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return null;
 	}
 
+	private void _replaceAccount(Segment segment) {
+		if (!Objects.equals(segment.getStatus(), "INACTIVE")) {
+			return;
+		}
+
+		String name = segment.getName();
+
+		if (!name.startsWith(_ACCOUNT_PREFIX)) {
+			return;
+		}
+
+		Account account = _accountDog.getAccount(
+			Long.valueOf(name.substring(_ACCOUNT_PREFIX.length())), null);
+
+		BQMembershipChange bqMembershipChange =
+			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentId(
+				segment.getId());
+
+		if (Objects.nonNull(segment.getLastActivityDate())) {
+			List<Individual.ActivitiesCount> individualActivitiesCounts =
+				_individualDog.getActivitiesCounts(
+					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+					segment.getId());
+
+			if (!individualActivitiesCounts.isEmpty()) {
+				Set<Account.AccountActivityCount> activitiesCounts =
+					new HashSet<>();
+
+				for (Individual.ActivitiesCount individualActivitiesCount :
+						individualActivitiesCounts) {
+
+					activitiesCounts.add(
+						new Account.AccountActivityCount(
+							individualActivitiesCount.getActivitiesCount(),
+							individualActivitiesCount.getChannelId()));
+				}
+
+				account.setActivitiesCounts(activitiesCounts);
+			}
+		}
+
+		account.setIndividualsCount(bqMembershipChange.getIndividualsCount());
+
+		if (Objects.nonNull(bqMembershipChange.getIndividualsCount())) {
+			Map<Long, Long> channelIndividualCounts =
+				_individualDog.getIndividualCounts(
+					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+					segment.getId());
+
+			if (!channelIndividualCounts.isEmpty()) {
+				Set<Account.AccountIndividualCount> individualsCounts =
+					new HashSet<>();
+
+				for (Map.Entry<Long, Long> entry :
+						channelIndividualCounts.entrySet()) {
+
+					individualsCounts.add(
+						new Account.AccountIndividualCount(
+							entry.getKey(), entry.getValue()));
+				}
+
+				account.setIndividualsCounts(individualsCounts);
+			}
+		}
+
+		_accountDog.updateAccount(account);
+	}
+
 	private void _setState(Segment segment) {
 		if ((segment.getType() == null) ||
 			Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
@@ -1013,8 +1085,12 @@ public class SegmentDog extends BaseFaroInfoDog {
 			_addAsahTask(existingSegment);
 		}
 
+		_replaceAccount(existingSegment);
+
 		return existingSegment;
 	}
+
+	private static final String _ACCOUNT_PREFIX = "Account: ";
 
 	private static final String[] _REFERENCED_OBJECT_NAMES = {
 		"referencedAssetDataSourceIds", "referencedAssetIds",
@@ -1048,6 +1124,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;

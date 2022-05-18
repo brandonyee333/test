@@ -186,7 +186,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		Segment segment = segmentDog.getSegment(id);
 
-		SegmentDTO segmentDTO = new SegmentDTO(segment);
+		SegmentDTO segmentDTO = new SegmentDTO(
+			_bqMembershipChangeDog.getLastBeforeTodayByIndividualSegmentId(id),
+			segment);
 
 		if (StringUtils.isNotEmpty(expand)) {
 			String[] expandParts = expand.split(",");
@@ -349,8 +351,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	protected PageDTO<SegmentDTO> toSegmentDTOPageDTO(
 		Page<Segment> segmentsPage) {
 
+		List<Segment> segments = segmentsPage.getContent();
+
 		return new PageDTO<>(
-			"_embedded", new SegmentDTO(segmentsPage.getContent()),
+			"_embedded",
+			new SegmentDTO(
+				_bqMembershipChangeDog.getBQMembershipChanges(segments),
+				segments),
 			segmentsPage.getNumber(), segmentsPage.getSize(),
 			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
 	}
