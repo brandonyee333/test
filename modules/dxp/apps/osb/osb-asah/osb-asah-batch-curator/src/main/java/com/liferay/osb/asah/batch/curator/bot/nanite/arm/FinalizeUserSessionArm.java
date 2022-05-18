@@ -117,10 +117,6 @@ public class FinalizeUserSessionArm {
 
 		_updateAssetBuckets(userSession);
 
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			_cerebroInfoElasticsearchInvoker.
-				createElasticsearchBulkRequestBuilder();
-
 		JSONArray pagesJSONArray = _getPagesJSONArray(
 			userSession.getDataSourceId(), userSession.getId());
 
@@ -133,6 +129,24 @@ public class FinalizeUserSessionArm {
 		_updatePageEntrancesAndExits(pagesJSONArray);
 
 		_updatePageBounces(pagesJSONArray, userSession);
+
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			_cerebroInfoElasticsearchInvoker.
+				createElasticsearchBulkRequestBuilder();
+
+		for (int i = 0; i < pagesJSONArray.length(); i++) {
+			JSONObject pageJSONObject = pagesJSONArray.getJSONObject(i);
+
+			elasticsearchBulkRequestBuilder.update("pages", pageJSONObject);
+
+			if ((elasticsearchBulkRequestBuilder.getSize() % 1000) == 0) {
+				elasticsearchBulkRequestBuilder.get();
+
+				elasticsearchBulkRequestBuilder =
+					_cerebroInfoElasticsearchInvoker.
+						createElasticsearchBulkRequestBuilder();
+			}
+		}
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {
 			elasticsearchBulkRequestBuilder.get();
