@@ -311,42 +311,6 @@ public class UserSessionFinalizerNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "page_info_old_5.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_session_info_old_5.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@RepositoryResource(
-		repositoryClass = AsahMarkerRepository.class,
-		resourcePath = "osbasahcerebroinfo/osbasahmarkers.json"
-	)
-	@Test
-	public void testUpdatePageViews() throws Exception {
-		_runUserSessionFinalizerNanite();
-
-		Assertions.assertEquals(
-			1,
-			_elasticsearchInvoker.count(
-				"user-sessions", QueryBuilders.matchAllQuery()));
-
-		JSONObject userSessionJSONObject = _elasticsearchInvoker.fetch(
-			"user-sessions", QueryBuilders.matchAllQuery());
-
-		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
-			"pages",
-			QueryBuilders.termQuery(
-				"sessionId", userSessionJSONObject.getString("id")));
-
-		for (int i = 0; i < pagesJSONArray.length(); i++) {
-			JSONObject pageJSONObject = pagesJSONArray.getJSONObject(i);
-
-			Assertions.assertTrue(pageJSONObject.getInt("views") > 0);
-		}
-	}
-
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_6.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
