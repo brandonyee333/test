@@ -63,19 +63,6 @@ public class BQEventPropertyRepositoryImpl
 	}
 
 	@Override
-	public Optional<BQEventProperty> findByEventAttributeDefinitionIdAndEventId(
-		Long eventAttributeDefinitionId, Long eventId) {
-
-		SelectFinalStep<Record> selectFinalStep =
-			getFindByEventAttributeDefinitionIdAndEventIdSelect(
-				eventAttributeDefinitionId, eventId);
-
-		return Optional.ofNullable(
-			selectFinalStep.fetchAny(
-				record -> new BQEventProperty(record.intoMap())));
-	}
-
-	@Override
 	public List<String> searchValues(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
 		String keywords, Pageable pageable) {

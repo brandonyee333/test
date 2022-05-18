@@ -14,11 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.entity.BQEventProperty;
-import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
-
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,31 +27,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EventPropertyDog {
-
-	public BQEventProperty getBQEventProperty(
-		String attributeName, Long eventId) {
-
-		EventAttributeDefinition eventAttributeDefinition =
-			_eventAttributionDefinitionDog.fetchEventAttributeDefinitionByName(
-				attributeName);
-
-		if (eventAttributeDefinition == null) {
-			throw new IllegalArgumentException(
-				"There is no event attribute definition with name " +
-					attributeName);
-		}
-
-		Optional<BQEventProperty> bqEventPropertyOptional =
-			_bqEventPropertyRepository.
-				findByEventAttributeDefinitionIdAndEventId(
-					eventAttributeDefinition.getId(), eventId);
-
-		return bqEventPropertyOptional.orElseThrow(
-			() -> new IllegalArgumentException(
-				String.format(
-					"There is no event attribute with name %s and event ID %s",
-					attributeName, eventId)));
-	}
 
 	public Page<String> getBQEventPropertyValuePage(
 		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
