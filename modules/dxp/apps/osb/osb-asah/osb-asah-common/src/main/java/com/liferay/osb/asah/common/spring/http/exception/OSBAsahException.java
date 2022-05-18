@@ -24,19 +24,26 @@ import org.springframework.http.HttpStatus;
 public class OSBAsahException extends RuntimeException {
 
 	public OSBAsahException(HttpStatus httpStatus, String message) {
-		this(
-			httpStatus, message,
-			StringUtils.replaceAll(
-				StringUtils.lowerCase(message), "\\s+", "-"));
+		this(httpStatus, message, null);
 	}
 
 	public OSBAsahException(
-		HttpStatus httpStatus, String message, String messageKey) {
+		HttpStatus httpStatus, String message, String messageKey,
+		Throwable throwable) {
 
-		super(message);
+		super(message, throwable);
 
 		_httpStatus = httpStatus;
 		_messageKey = messageKey;
+	}
+
+	public OSBAsahException(
+		HttpStatus httpStatus, String message, Throwable throwable) {
+
+		this(
+			httpStatus, message,
+			StringUtils.replaceAll(StringUtils.lowerCase(message), "\\s+", "-"),
+			throwable);
 	}
 
 	public HttpStatus getHttpStatus() {
