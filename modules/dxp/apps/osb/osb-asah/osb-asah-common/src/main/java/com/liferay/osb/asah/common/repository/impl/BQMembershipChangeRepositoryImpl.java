@@ -115,15 +115,12 @@ public class BQMembershipChangeRepositoryImpl
 		SelectWhereStep<Record> selectWhereStep = _dslContext.selectFrom(
 			bqMembershipChangeTable);
 
-		Field<Object> individualsCountField = DSL.field("individualscount");
-
 		return selectWhereStep.where(
 			DSL.row(
-				createDateField, individualSegmentIdField, individualsCountField
+				createDateField, individualSegmentIdField
 			).in(
 				DSL.select(
-					DSL.max(createDateField), individualSegmentIdField,
-					DSL.max(individualsCountField)
+					DSL.max(createDateField), individualSegmentIdField
 				).from(
 					bqMembershipChangeTable
 				).where(
