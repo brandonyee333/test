@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -42,19 +43,28 @@ public class SegmentDTO {
 	public SegmentDTO() {
 	}
 
-	public SegmentDTO(List<Segment> segments) {
-		_segmentDTOs = SetUtil.map(segments, SegmentDTO::new);
-	}
-
-	public SegmentDTO(Segment segment) {
-		_activeIndividualsCount = segment.getActiveIndividualsCount();
-		_activitiesCount = segment.getActivitiesCount();
-		_anonymousIndividualsCount = segment.getAnonymousIndividualsCount();
-
+	public SegmentDTO(BQMembershipChange bqMembershipChange, Segment segment) {
 		AuthorDTO authorDTO = new AuthorDTO(segment);
 
 		if (!authorDTO.isEmpty()) {
 			_authorDTO = authorDTO;
+		}
+
+		_activeIndividualsCount = 0L;
+		_activitiesCount = 0L;
+
+		if (bqMembershipChange != null) {
+			_knownIndividualsCount =
+				bqMembershipChange.getKnownIndividualsCount();
+			_individualsCount = bqMembershipChange.getIndividualsCount();
+
+			_anonymousIndividualsCount =
+				_individualsCount - _knownIndividualsCount;
+		}
+		else {
+			_anonymousIndividualsCount = 0L;
+			_knownIndividualsCount = 0L;
+			_individualsCount = 0L;
 		}
 
 		_channelId = StringUtil.get(segment.getChannelId(), null);
@@ -63,8 +73,6 @@ public class SegmentDTO {
 		_filterMetadata = segment.getFilterMetadata();
 		_id = StringUtil.get(segment.getId(), null);
 		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
-		_individualsCount = segment.getIndividualsCount();
-		_knownIndividualsCount = segment.getKnownIndividualsCount();
 		_lastActivityDate = segment.getLastActivityDate();
 		_modifiedDate = segment.getModifiedDate();
 		_name = segment.getName();
@@ -90,6 +98,17 @@ public class SegmentDTO {
 		_state = segment.getState();
 		_status = segment.getStatus();
 		_type = StringUtil.get(segment.getType(), null);
+	}
+
+	public SegmentDTO(
+		Map<Long, BQMembershipChange> bqMembershipChangeMap,
+		List<Segment> segments) {
+
+		_segmentDTOs = SetUtil.map(
+			segments,
+			segment -> new SegmentDTO(
+				bqMembershipChangeMap.getOrDefault(segment.getId(), null),
+				segment));
 	}
 
 	public SegmentDTO(Set<SegmentDTO> segmentDTOs) {
