@@ -136,7 +136,7 @@ public class FinalizeUserSessionArm {
 			return;
 		}
 
-		_updatePageTimeOnPage(elasticsearchBulkRequestBuilder, userSession);
+		_updatePageTimeOnPage(pagesJSONArray, userSession);
 
 		_updatePageEntrancesAndExits(
 			elasticsearchBulkRequestBuilder, userSession);
@@ -454,22 +454,9 @@ public class FinalizeUserSessionArm {
 	}
 
 	private void _updatePageTimeOnPage(
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-		UserSession userSession) {
+		JSONArray pagesJSONArray, UserSession userSession) {
 
 		if (userSession.getBounced()) {
-			return;
-		}
-
-		JSONArray pagesJSONArray = _cerebroInfoElasticsearchInvoker.get(
-			"pages",
-			new String[] {
-				"directAccessDates", "eventDate", "id", "indirectAccessDates",
-				"interactionDates", "url"
-			},
-			QueryBuilders.termQuery("sessionId", userSession.getId()));
-
-		if (pagesJSONArray.length() == 0) {
 			return;
 		}
 
@@ -479,6 +466,9 @@ public class FinalizeUserSessionArm {
 		if (urlEventDatePairs.size() < 2) {
 			return;
 		}
+
+		Map<String, JSONObject> jsonObjectMap = JSONUtil.toJSONObjectMap(
+			pagesJSONArray, "id");
 
 		Map<Pair<String, Date>, List<Long>> viewDurations = new HashMap<>();
 
@@ -535,20 +525,22 @@ public class FinalizeUserSessionArm {
 			Pair<String, Date> pageEventDatePair = entry.getKey();
 
 			if (pageEventDateMap.containsKey(pageEventDatePair)) {
+				JSONObject pageJSONObject = jsonObjectMap.get(
+					pageEventDateMap.get(pageEventDatePair));
+
+				if (pageJSONObject == null) {
+					continue;
+				}
+
 				List<Long> values = entry.getValue();
 
 				Stream<Long> valuesStream = values.stream();
 
-				elasticsearchBulkRequestBuilder.update(
-					"pages",
-					JSONUtil.put(
-						"id", pageEventDateMap.get(pageEventDatePair)
-					).put(
-						"timeOnPage",
-						valuesStream.mapToLong(
-							value -> value
-						).sum()
-					));
+				pageJSONObject.put(
+					"timeOnPage",
+					valuesStream.mapToLong(
+						value -> value
+					).sum());
 			}
 			else if (_log.isWarnEnabled()) {
 				_log.warn(
