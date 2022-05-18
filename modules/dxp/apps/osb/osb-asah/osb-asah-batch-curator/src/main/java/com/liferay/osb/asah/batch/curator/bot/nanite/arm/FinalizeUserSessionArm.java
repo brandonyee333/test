@@ -138,8 +138,7 @@ public class FinalizeUserSessionArm {
 
 		_updatePageTimeOnPage(pagesJSONArray, userSession);
 
-		_updatePageEntrancesAndExits(
-			elasticsearchBulkRequestBuilder, userSession);
+		_updatePageEntrancesAndExits(pagesJSONArray);
 
 		_updatePageBounces(elasticsearchBulkRequestBuilder, userSession);
 
@@ -419,38 +418,15 @@ public class FinalizeUserSessionArm {
 		}
 	}
 
-	private void _updatePageEntrancesAndExits(
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-		UserSession userSession) {
+	private void _updatePageEntrancesAndExits(JSONArray pagesJSONArray) {
+		JSONObject entryPageJSONObject = pagesJSONArray.getJSONObject(0);
 
-		JSONArray entryPageJSONArray = _cerebroInfoElasticsearchInvoker.get(
-			"pages", SortBuilderUtil.fieldSort("firstEventDate", SortOrder.ASC),
-			QueryBuilders.termQuery("sessionId", userSession.getId()), 1);
+		entryPageJSONObject.put("entrances", 1);
 
-		if (entryPageJSONArray.length() > 0) {
-			JSONObject entryPageJSONObject = entryPageJSONArray.getJSONObject(
-				0);
+		JSONObject exitPageJSONObject = pagesJSONArray.getJSONObject(
+			pagesJSONArray.length() - 1);
 
-			elasticsearchBulkRequestBuilder.update(
-				"pages",
-				JSONUtil.put(
-					"entrances", 1
-				).put(
-					"id", entryPageJSONObject.getString("id")
-				));
-		}
-
-		JSONObject exitPageJSONObject = _getExitPageJSONObject(userSession);
-
-		if (exitPageJSONObject != null) {
-			elasticsearchBulkRequestBuilder.update(
-				"pages",
-				JSONUtil.put(
-					"exits", 1
-				).put(
-					"id", exitPageJSONObject.getString("id")
-				));
-		}
+		exitPageJSONObject.put("exits", 1);
 	}
 
 	private void _updatePageTimeOnPage(
