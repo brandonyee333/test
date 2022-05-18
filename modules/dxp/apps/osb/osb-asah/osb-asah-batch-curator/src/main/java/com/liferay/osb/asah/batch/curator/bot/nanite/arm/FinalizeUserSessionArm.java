@@ -140,7 +140,7 @@ public class FinalizeUserSessionArm {
 
 		_updatePageEntrancesAndExits(pagesJSONArray);
 
-		_updatePageBounces(elasticsearchBulkRequestBuilder, userSession);
+		_updatePageBounces(pagesJSONArray, userSession);
 
 		_updatePageViews(elasticsearchBulkRequestBuilder, userSession);
 
@@ -398,24 +398,16 @@ public class FinalizeUserSessionArm {
 	}
 
 	private void _updatePageBounces(
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-		UserSession userSession) {
+		JSONArray pagesJSONArray, UserSession userSession) {
 
 		if (!userSession.getBounced()) {
 			return;
 		}
 
-		JSONObject exitPageJSONObject = _getExitPageJSONObject(userSession);
+		JSONObject exitPageJSONObject = pagesJSONArray.getJSONObject(
+			pagesJSONArray.length() - 1);
 
-		if (exitPageJSONObject != null) {
-			elasticsearchBulkRequestBuilder.update(
-				"pages",
-				JSONUtil.put(
-					"bounce", 1
-				).put(
-					"id", exitPageJSONObject.getString("id")
-				));
-		}
+		exitPageJSONObject.put("bounce", 1);
 	}
 
 	private void _updatePageEntrancesAndExits(JSONArray pagesJSONArray) {
