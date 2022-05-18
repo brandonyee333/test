@@ -20,16 +20,19 @@ import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
 
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageStreamingSubscriber;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -254,6 +257,8 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 			type);
 
 		if (action.equalsIgnoreCase("delete") && (dxpEntity != null)) {
+			_sendDeleteMessage(dxpEntity);
+
 			_dxpEntityDog.delete(dxpEntity);
 		}
 		else if (!action.equalsIgnoreCase("delete")) {
@@ -276,6 +281,48 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 		}
 	}
 
+	private void _sendDeleteMessage(DXPEntity dxpEntity) {
+		Map<String, String> messageAttributes = new HashMap<>();
+
+		messageAttributes.put(
+			"dataSourceId", String.valueOf(dxpEntity.getDataSourceId()));
+		messageAttributes.put("projectId", ProjectIdThreadLocal.getProjectId());
+		messageAttributes.put(
+			"resourceName",
+			"com.liferay.analytics.dxp.entity.rest.dto.v1_0.DXPEntity");
+		messageAttributes.put("uploadTime", DateUtil.toUTCString(new Date()));
+		messageAttributes.put("uploadType", "FULL");
+
+		DXPEntity.Type type = dxpEntity.getType();
+
+		_messageBus.sendMessage(
+			Channel.DXP_ENTITIES_DEFAULT,
+			JSONUtil.put(
+				"fields",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"name", "className"
+					).put(
+						"value", type.getClassName()
+					),
+					JSONUtil.put(
+						"name", "classPK"
+					).put(
+						"value", dxpEntity.getId()
+					))
+			).put(
+				"id", dxpEntity.getIdFieldValue()
+			).put(
+				"modifiedDate",
+				DateUtil.toUTCString(dxpEntity.getModifiedDate())
+			).put(
+				"type",
+				"com.liferay.analytics.message.storage.model." +
+					"AnalyticsDeleteMessage"
+			).toString(),
+			messageAttributes);
+	}
+
 	private static final Log _log = LogFactory.getLog(DXPEntitiesNanite.class);
 
 	private final BoundedExecutor _boundedExecutor =
@@ -288,6 +335,9 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 		"${osb.asah.analytics.events.message.processor.streaming.max.outstanding.messages:1000}"
 	)
 	private long _maxOutstandingMessages;
+
+	@Autowired
+	private MessageBus _messageBus;
 
 	@MessageStreamingSubscriber.Autowired(
 		channel = Channel.DXP_ENTITIES_MESSAGE
