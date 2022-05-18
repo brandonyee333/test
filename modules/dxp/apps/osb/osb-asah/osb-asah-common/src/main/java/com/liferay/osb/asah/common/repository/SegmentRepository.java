@@ -108,7 +108,6 @@ public interface SegmentRepository
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void updateActivitiesCountAndRemoveLastActivityDate(
-		@Param("activitiesCount") Long activitiesCount);
+	public void updateRemoveLastActivityDate();
 
 }

@@ -60,7 +60,6 @@ public abstract class BaseSegmentRepositoryTestCase
 
 		segment1.setChannelId(channel1.getId());
 
-		segment1.setActivitiesCount(1L);
 		segment1.setAuthorName("Test Test");
 		segment1.setCreateDate(DateUtil.addDays(new Date(), -5));
 		segment1.setFilter("(channelId eq '1')");
@@ -329,23 +328,19 @@ public abstract class BaseSegmentRepositoryTestCase
 	}
 
 	@Test
-	public void testUpdateActivitiesCountAndRemoveLastActivityDate() {
+	public void testUpdateRemoveLastActivityDate() {
 		Optional<Segment> segmentOptional = _segmentRepository.findById(
 			_segment1Id);
 
 		Segment segment = segmentOptional.get();
 
-		Assertions.assertEquals(1L, (long)segment.getActivitiesCount());
-
 		Assertions.assertNotNull(segment.getLastActivityDate());
 
-		_segmentRepository.updateActivitiesCountAndRemoveLastActivityDate(0L);
+		_segmentRepository.updateRemoveLastActivityDate();
 
 		segmentOptional = _segmentRepository.findById(_segment1Id);
 
 		segment = segmentOptional.get();
-
-		Assertions.assertEquals(0L, (long)segment.getActivitiesCount());
 
 		Assertions.assertNull(segment.getLastActivityDate());
 	}

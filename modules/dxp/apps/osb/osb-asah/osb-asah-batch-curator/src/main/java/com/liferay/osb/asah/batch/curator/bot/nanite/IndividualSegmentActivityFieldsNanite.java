@@ -51,7 +51,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	public void run(JSONObject contextJSONObject) throws Exception {
 		if (!_dataSourceDog.isAnalyticsConfigured()) {
 			if (_isAnalyticsConfigured()) {
-				_segmentDog.updateSegments(0L);
+				_segmentDog.resetSegments();
 			}
 
 			_setAnalyticsConfigured(false);

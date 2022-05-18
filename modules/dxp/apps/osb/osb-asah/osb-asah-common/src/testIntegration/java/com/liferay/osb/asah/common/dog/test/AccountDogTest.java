@@ -215,7 +215,6 @@ public class AccountDogTest
 
 		Account account = accountOptional.get();
 
-		Assertions.assertTrue(segment.getActivitiesCount() == 0);
 		Assertions.assertNotNull(segment.getCreateDate());
 		Assertions.assertNotNull(segment.getModifiedDate());
 		Assertions.assertEquals(

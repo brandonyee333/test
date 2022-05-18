@@ -758,14 +758,10 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
-	public void updateActivitiesCountAndRemoveLastActivityDate(
-		Long activitiesCount) {
-
+	public void updateRemoveLastActivityDate() {
 		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			QueryBuilders.matchAllQuery(), true,
-			new Script(
-				"ctx._source.remove('lastActivityDate');" +
-					"ctx._source.activitiesCount = " + activitiesCount),
+			new Script("ctx._source.remove('lastActivityDate');"),
 			getCollectionName());
 	}
 

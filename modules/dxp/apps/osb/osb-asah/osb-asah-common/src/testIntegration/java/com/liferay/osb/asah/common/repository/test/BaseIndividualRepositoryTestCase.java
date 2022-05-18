@@ -202,13 +202,9 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		Segment segment = new Segment();
 
-		segment.setActiveIndividualsCount(1L);
-		segment.setActivitiesCount(3L);
-		segment.setAnonymousIndividualsCount(0L);
 		segment.setChannelId(channel1.getId());
 		segment.setCreateDate(date);
 		segment.setFilter("(demographics/field3/value eq 'field three')");
-		segment.setIndividualsCount(1L);
 		segment.setLastActivityDate(date);
 		segment.setModifiedDate(date);
 		segment.setName("Test Segment");

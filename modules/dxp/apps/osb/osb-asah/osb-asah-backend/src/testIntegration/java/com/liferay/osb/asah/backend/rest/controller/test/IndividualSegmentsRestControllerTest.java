@@ -102,8 +102,6 @@ public class IndividualSegmentsRestControllerTest
 
 		Assertions.assertEquals(
 			"1", individualSegmentJSONObject.getString("channelId"));
-		Assertions.assertEquals(
-			1, individualSegmentJSONObject.getInt("individualCount"));
 	}
 
 	@ElasticsearchIndex(

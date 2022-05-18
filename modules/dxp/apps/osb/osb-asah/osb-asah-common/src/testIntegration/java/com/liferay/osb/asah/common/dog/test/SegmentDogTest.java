@@ -750,8 +750,8 @@ public class SegmentDogTest
 
 		Assertions.assertEquals(2, segments.size(), segments.toString());
 
-		_assertSegment(2L, "Test Segment 0", segments.get(0));
-		_assertSegment(1L, "Test Segment 2", segments.get(1));
+		_assertSegment("Test Segment 0", segments.get(0));
+		_assertSegment("Test Segment 2", segments.get(1));
 	}
 
 	@Test
@@ -1103,13 +1103,9 @@ public class SegmentDogTest
 	}
 
 	private void _assertSegment(
-		Long expectedSegmentIndividualsCount, String expectedSegmentName,
-		Segment actualSegment) {
+		String expectedSegmentName, Segment actualSegment) {
 
 		Assertions.assertEquals(expectedSegmentName, actualSegment.getName());
-		Assertions.assertEquals(
-			expectedSegmentIndividualsCount,
-			actualSegment.getIndividualsCount());
 	}
 
 	private void _assertUpdateSetsReferencedObjectIds(

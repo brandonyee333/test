@@ -140,12 +140,11 @@
 				Segment.referencedAssetIds <> '{}'
 		]]>
 	</entry>
-	<entry key="Segment.updateActivitiesCountAndRemoveLastActivityDate">
+	<entry key="Segment.updateRemoveLastActivityDate">
 		<![CDATA[
 			UPDATE
 				Segment
 			SET
-				activitiesCount = :activitiesCount,
 				lastActivityDate = NULL
 		]]>
 	</entry>

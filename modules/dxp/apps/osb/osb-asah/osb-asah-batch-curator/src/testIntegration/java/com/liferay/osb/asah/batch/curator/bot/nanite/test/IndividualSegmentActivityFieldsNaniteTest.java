@@ -53,7 +53,6 @@ public class IndividualSegmentActivityFieldsNaniteTest
 
 		Segment segment = _segmentDog.getSegment(461522890926789186L);
 
-		Assertions.assertEquals(6, (long)segment.getActivitiesCount());
 		Assertions.assertEquals(
 			"2020-12-06T17:54:23.916Z",
 			DateUtil.toUTCString(segment.getLastActivityDate()));

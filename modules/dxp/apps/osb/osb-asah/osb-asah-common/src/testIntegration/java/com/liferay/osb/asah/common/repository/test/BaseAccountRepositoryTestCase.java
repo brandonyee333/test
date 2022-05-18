@@ -140,13 +140,9 @@ public abstract class BaseAccountRepositoryTestCase
 
 		Segment segment = new Segment();
 
-		segment.setActiveIndividualsCount(2L);
-		segment.setActivitiesCount(3L);
-		segment.setAnonymousIndividualsCount(1L);
 		segment.setCreateDate(new Date());
 		segment.setFilter(
 			"((dataSourceAccountPKs/accountPKs eq 'testAccount'))");
-		segment.setIndividualsCount(2L);
 		segment.setLastActivityDate(new Date());
 		segment.setModifiedDate(new Date());
 		segment.setName("Account: " + _accountId);
