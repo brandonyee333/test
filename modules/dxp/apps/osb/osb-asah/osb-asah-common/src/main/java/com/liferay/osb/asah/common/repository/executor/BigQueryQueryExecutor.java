@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.repository.executor;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.Field;
-import com.google.cloud.bigquery.FieldList;
 import com.google.cloud.bigquery.FieldValue;
 import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.JobException;
@@ -34,7 +33,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -218,14 +216,6 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		return fieldValue.getValue();
 	}
 
-	private Iterator<Field> _getFieldIterator(TableResult tableResult) {
-		Schema schema = tableResult.getSchema();
-
-		FieldList fieldList = schema.getFields();
-
-		return fieldList.iterator();
-	}
-
 	@PostConstruct
 	private void _init() {
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
@@ -287,12 +277,13 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 		Map<String, Object> objectMap = new HashMap<>();
 
-		Iterator<Field> iterator = _getFieldIterator(tableResult);
+		Schema schema = tableResult.getSchema();
 
-		iterator.forEachRemaining(
-			field -> objectMap.put(
+		for (Field field : schema.getFields()) {
+			objectMap.put(
 				StringUtils.lowerCase(field.getName()),
-				_getField(fieldValueList.get(field.getName()), field)));
+				_getField(fieldValueList.get(field.getName()), field));
+		}
 
 		return objectMap;
 	}

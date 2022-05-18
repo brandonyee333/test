@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.google.cloud.bigquery.FieldValue;
-
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
@@ -32,15 +29,14 @@ import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
 import com.liferay.osb.asah.common.repository.CustomBQEventRepository;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
-import com.liferay.osb.asah.common.repository.executor.BigQueryQueryExecutor;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
+import com.liferay.osb.asah.common.util.GetterUtil;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -256,7 +252,7 @@ public class BQEventRepositoryImpl
 			timeZoneId);
 
 		return _queryExecutor.queryForMap(
-			this::_toObject,
+			GetterUtil::getObject,
 			selectJoinStep.where(
 				_getConditions(
 					channelId, eventAnalysisFilters, eventDefinitionId,
@@ -272,7 +268,7 @@ public class BQEventRepositoryImpl
 			).offset(
 				pageable.getOffset()
 			),
-			this::_toNumber);
+			GetterUtil::getNumber);
 	}
 
 	@Override
@@ -324,26 +320,29 @@ public class BQEventRepositoryImpl
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds) {
 
-		Field<OffsetDateTime> eventDateField = _getEventDateTimeZoneOffsetField(
-			timeZoneId);
+		Field<OffsetDateTime> eventDateField =
+			_dslHelper.getDateAtTimeZoneField("BQEvent.eventDate", timeZoneId);
 
 		if (interval == Interval.DAY) {
-			eventDateField = _dateTrunc(DatePart.DAY, eventDateField);
+			eventDateField = _dslHelper.dateTrunc(DatePart.DAY, eventDateField);
 		}
 		else if (interval == Interval.HOUR) {
-			eventDateField = _dateTrunc(DatePart.HOUR, eventDateField);
+			eventDateField = _dslHelper.dateTrunc(
+				DatePart.HOUR, eventDateField);
 		}
 		else if (interval == Interval.MONTH) {
-			eventDateField = _dateTrunc(DatePart.MONTH, eventDateField);
+			eventDateField = _dslHelper.dateTrunc(
+				DatePart.MONTH, eventDateField);
 		}
 		else {
-			eventDateField = _dateTrunc(DatePart.WEEK, eventDateField);
+			eventDateField = _dslHelper.dateTrunc(
+				DatePart.WEEK, eventDateField);
 		}
 
 		eventDateField = eventDateField.as("eventDate");
 
 		return _queryExecutor.queryForMap(
-			this::_toDateString,
+			GetterUtil::getDateString,
 			_dslContext.select(
 				eventDateField, DSL.count()
 			).from(
@@ -355,7 +354,7 @@ public class BQEventRepositoryImpl
 			).groupBy(
 				eventDateField
 			),
-			this::_toInteger);
+			GetterUtil::getInteger);
 	}
 
 	@Override
@@ -365,14 +364,15 @@ public class BQEventRepositoryImpl
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
 		Set<String> userIds) {
 
-		Field<OffsetDateTime> eventDateField = _getEventDateTimeZoneOffsetField(
-			timeZoneId);
+		Field<OffsetDateTime> eventDateField =
+			_dslHelper.getDateAtTimeZoneField("BQEvent.eventDate", timeZoneId);
 
 		if (interval != Interval.HOUR) {
-			eventDateField = _dateTrunc(DatePart.DAY, eventDateField);
+			eventDateField = _dslHelper.dateTrunc(DatePart.DAY, eventDateField);
 		}
 		else {
-			eventDateField = _dateTrunc(DatePart.HOUR, eventDateField);
+			eventDateField = _dslHelper.dateTrunc(
+				DatePart.HOUR, eventDateField);
 		}
 
 		eventDateField = eventDateField.as("eventDate");
@@ -384,7 +384,7 @@ public class BQEventRepositoryImpl
 			_dslContext.selectDistinct(eventDateField, DSL.field("sessionId"));
 
 		return _queryExecutor.queryForMap(
-			object -> _toDateString(object),
+			object -> GetterUtil.getDateString(object),
 			_dslContext.select(
 				event1EventDateField, DSL.count()
 			).from(
@@ -402,7 +402,7 @@ public class BQEventRepositoryImpl
 			).groupBy(
 				event1EventDateField
 			),
-			this::_toInteger);
+			GetterUtil::getInteger);
 	}
 
 	@Override
@@ -540,8 +540,8 @@ public class BQEventRepositoryImpl
 			DSL.field(
 				"BQEvent.eventDate"
 			).between(
-				_getDateParam(rangeStartLocalDateTime, timeZoneId),
-				_getDateParam(rangeEndLocalDateTime, timeZoneId)
+				_dslHelper.getDateParam(rangeStartLocalDateTime, timeZoneId),
+				_dslHelper.getDateParam(rangeEndLocalDateTime, timeZoneId)
 			),
 			DSL.field(
 				"BQEvent.eventId"
@@ -602,61 +602,6 @@ public class BQEventRepositoryImpl
 		return condition;
 	}
 
-	private <OffsetDateTime> Field<OffsetDateTime> _dateTrunc(
-		DatePart datePart, Field<OffsetDateTime> field) {
-
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			return DSL.field(
-				"date_trunc({0}, {1})", field.getDataType(), field,
-				datePart.toName());
-		}
-
-		if (datePart == DatePart.WEEK) {
-			return DSL.field(
-				"date_trunc({0}, {1} + INTERVAL '1 DAY') - INTERVAL '1 DAY'",
-				field.getDataType(), datePart.toSQL(), field);
-		}
-
-		return DSL.field(
-			"date_trunc({0}, {1})", field.getDataType(), datePart.toSQL(),
-			field);
-	}
-
-	private Field _getCastBooleanField(Field field) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			return DSL.field("SAFE_CAST({0} as BOOL)", field);
-		}
-
-		return DSL.function("try_cast_boolean", Boolean.class, field);
-	}
-
-	private Field _getCastDurationField(Field field) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			return DSL.field("SAFE_CAST({0} as INT64)", field);
-		}
-
-		return DSL.round(
-			DSL.abs(DSL.function("try_cast_bigint", BigInteger.class, field)),
-			-3);
-	}
-
-	private Field _getCastNumberField(Field field) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			return DSL.field("SAFE_CAST({0} as BIGNUMERIC)", field);
-		}
-
-		return DSL.round(
-			DSL.function("try_cast_float", BigDecimal.class, field));
-	}
-
-	private Field _getCastStringField(Field field) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			return DSL.field("SAFE_CAST({0} as STRING)", field);
-		}
-
-		return field.cast(String.class);
-	}
-
 	private List<Condition> _getConditions(
 		Long channelId, List<EventAnalysisFilter> eventAnalysisFilters,
 		Long eventDefinitionId, Date rangeEndDate, Date rangeStartDate,
@@ -701,54 +646,11 @@ public class BQEventRepositoryImpl
 
 			conditions.add(
 				field.between(
-					_getDateParam(rangeStartDate),
-					_getDateParam(rangeEndDate)));
+					_dslHelper.getDateParam(rangeStartDate),
+					_dslHelper.getDateParam(rangeEndDate)));
 		}
 
 		return conditions;
-	}
-
-	private Object _getDateParam(Date date) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			return DateUtil.toUTCString(date);
-		}
-
-		return date;
-	}
-
-	private Object _getDateParam(
-		LocalDateTime localDateTime, String timeZoneId) {
-
-		localDateTime = DateUtil.toUTCLocalDateTime(
-			localDateTime, ZoneId.of(timeZoneId));
-
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			return DateUtil.toUTCString(localDateTime);
-		}
-
-		return localDateTime;
-	}
-
-	private Field<OffsetDateTime> _getDateValueField(
-		Field field, String timeZoneId) {
-
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			return DSL.field(
-				"SAFE_CAST({0} as DATE)", OffsetDateTime.class, field);
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(DSL.function("try_cast_timestamp", Object.class, field));
-		sb.append(" AT TIME ZONE 'UTC'");
-
-		if (!timeZoneId.equals("UTC")) {
-			sb.append(" AT TIME ZONE '");
-			sb.append(timeZoneId);
-			sb.append("'");
-		}
-
-		return DSL.field(sb.toString(), OffsetDateTime.class);
 	}
 
 	private Condition _getEventAnalysisFilterCondition(
@@ -895,18 +797,6 @@ public class BQEventRepositoryImpl
 				EventAttributeDefinition::getId, Function.identity()));
 	}
 
-	private Field _getEventDateTimeZoneOffsetField(String timeZoneId) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			return DSL.field(
-				String.format("DATETIME(BQEvent.eventDate, '%s')", timeZoneId),
-				OffsetDateTime.class);
-		}
-
-		return DSL.field(
-			String.format("BQEvent.eventDate AT TIME ZONE '%s'", timeZoneId),
-			OffsetDateTime.class);
-	}
-
 	private SelectFinalStep<Record1<Integer>> _getEventsCount(
 		Long channelId, AggregateFunction<Integer> countAggregateFunction,
 		String keywords, LocalDateTime rangeEndLocalDateTime,
@@ -939,20 +829,20 @@ public class BQEventRepositoryImpl
 			eventAnalysisFilter.getDataType();
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
-			return _getCastBooleanField(field);
+			return _dslHelper.getCastBooleanField(field);
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			return _dateTrunc(
-				DatePart.DAY, _getDateValueField(field, timeZoneId));
+			return _dslHelper.dateTrunc(
+				DatePart.DAY, _dslHelper.getDateValueField(field, timeZoneId));
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
-			return _getCastDurationField(field);
+			return _dslHelper.getCastDurationField(field);
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			return _getCastNumberField(field);
+			return _dslHelper.getCastNumberField(field);
 		}
 
 		return field;
@@ -1054,8 +944,8 @@ public class BQEventRepositoryImpl
 
 				condition = condition.and(
 					eventDateField.between(
-						_getDateParam(rangeStartDate),
-						_getDateParam(rangeEndDate)));
+						_dslHelper.getDateParam(rangeStartDate),
+						_dslHelper.getDateParam(rangeEndDate)));
 			}
 		}
 
@@ -1089,14 +979,14 @@ public class BQEventRepositoryImpl
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
-			field = _getCastBooleanField(attributeField);
+			field = _dslHelper.getCastBooleanField(attributeField);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			DateGrouping dateGrouping =
 				eventAnalysisBreakdown.getDateGrouping();
 
-			Field<OffsetDateTime> offsetDateTimeField = _getDateValueField(
-				attributeField, timeZoneId);
+			Field<OffsetDateTime> offsetDateTimeField =
+				_dslHelper.getDateValueField(attributeField, timeZoneId);
 
 			if (dateGrouping.equals(DateGrouping.DAY)) {
 				field = DSL.concat(
@@ -1119,7 +1009,7 @@ public class BQEventRepositoryImpl
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
 			field = DSL.floor(
 				DSL.round(
-					DSL.abs(_getCastDurationField(attributeField)), -3
+					DSL.abs(_dslHelper.getCastDurationField(attributeField)), -3
 				).div(
 					eventAnalysisBreakdown.getBinSize()
 				)
@@ -1128,7 +1018,7 @@ public class BQEventRepositoryImpl
 			);
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-			Field castField = _getCastNumberField(attributeField);
+			Field castField = _dslHelper.getCastNumberField(attributeField);
 
 			field = DSL.floor(
 				castField.div(eventAnalysisBreakdown.getBinSize())
@@ -1137,7 +1027,7 @@ public class BQEventRepositoryImpl
 			);
 		}
 		else {
-			field = DSL.lower(_getCastStringField(attributeField));
+			field = DSL.lower(_dslHelper.getCastStringField(attributeField));
 		}
 
 		if (alias) {
@@ -1193,50 +1083,6 @@ public class BQEventRepositoryImpl
 		);
 	}
 
-	private String _toDateString(Object object) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			FieldValue fieldValue = (FieldValue)object;
-
-			return fieldValue.getStringValue();
-		}
-
-		OffsetDateTime offsetDateTime = (OffsetDateTime)object;
-
-		LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
-
-		return localDateTime.toString();
-	}
-
-	private int _toInteger(Object object) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			FieldValue fieldValue = (FieldValue)object;
-
-			return (int)fieldValue.getLongValue();
-		}
-
-		return (int)object;
-	}
-
-	private Number _toNumber(Object object) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			FieldValue fieldValue = (FieldValue)object;
-
-			return fieldValue.getNumericValue();
-		}
-
-		return (Number)object;
-	}
-
-	private Object _toObject(Object object) {
-		if (_queryExecutor instanceof BigQueryQueryExecutor) {
-			FieldValue fieldValue = (FieldValue)object;
-
-			return fieldValue.getValue();
-		}
-
-		return object;
-	}
-
 	private static final Map<String, String> _globalAttributes =
 		new HashMap<String, String>() {
 			{
@@ -1250,6 +1096,9 @@ public class BQEventRepositoryImpl
 		};
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private DSLHelper _dslHelper;
 
 	@Autowired
 	private EventAttributeDefinitionRepository
