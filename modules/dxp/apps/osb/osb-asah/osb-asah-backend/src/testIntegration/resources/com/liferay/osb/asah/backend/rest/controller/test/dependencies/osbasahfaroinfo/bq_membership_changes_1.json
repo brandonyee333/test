@@ -1,0 +1,51 @@
+[
+	{
+		"createDate": "2019-02-11T20:26:53.215Z",
+		"id": "338511399340944254",
+		"individualSegmentId": "327968823603500677",
+		"individualsCount": 2,
+		"knownIndividualsCount": 0
+	},
+	{
+		"createDate": "2019-02-11T20:27:18.882Z",
+		"id": "338511452975425116",
+		"individualSegmentId": "327968823603500666",
+		"individualsCount": 2,
+		"knownIndividualsCount": 1
+	},
+	{
+		"createDate": "2019-02-11T20:27:18.882Z",
+		"id": "327968823603500655",
+		"individualSegmentId": "327968823603500655",
+		"individualsCount": 10,
+		"knownIndividualsCount": 5
+	},
+	{
+		"createDate": "2019-02-04T12:00:00.000Z",
+		"id": "331238757269547423",
+		"individualSegmentId": "366637689379787789",
+		"individualsCount": 24,
+		"knownIndividualsCount": 20
+	},
+	{
+		"createDate": "2019-02-03T12:00:00.000Z",
+		"id": "327968823603500657",
+		"individualSegmentId": "327968823603500657",
+		"individualsCount": 9,
+		"knownIndividualsCount": 8
+	},
+	{
+		"createDate": "2019-02-03T12:00:00.000Z",
+		"id": "327968823603500656",
+		"individualSegmentId": "327968823603500656",
+		"individualsCount": 8,
+		"knownIndividualsCount": 6
+	},
+	{
+		"createDate": "2019-02-03T12:00:00.000Z",
+		"id": "338511451975440187",
+		"individualSegmentId": "338511451975440187",
+		"individualsCount": 1,
+		"knownIndividualsCount": 1
+	}
+]

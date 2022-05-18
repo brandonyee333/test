@@ -96,6 +96,10 @@ public class AccountsRestControllerTest
 		name = "individuals", resourcePath = "individuals_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
+	)
 	@Test
 	public void testGetAccountDTOPageDTO() throws Exception {
 		JSONAssert.assertEquals(

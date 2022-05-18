@@ -47,6 +47,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -314,7 +316,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assertions.assertEquals(10L, activeIndividualsCount);
+		Assertions.assertEquals(0, activeIndividualsCount);
 
 		long anonymousIndividualsCount = Optional.ofNullable(
 			segmentDTO.getAnonymousIndividualsCount()
@@ -387,6 +389,10 @@ public class IndividualSegmentsRestControllerTest
 		name = "individual-segments",
 		resourcePath = "individual_segments_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
 	)
 	@Test
 	public void testGetSegmentDTO2() throws Exception {
@@ -508,6 +514,10 @@ public class IndividualSegmentsRestControllerTest
 		name = "individual-segments",
 		resourcePath = "individual_segments_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
 	)
 	@Test
 	public void testGetSegmentDTOPageDTO2() {
