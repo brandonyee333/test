@@ -90,6 +90,7 @@ public class Account implements Persistable<Long> {
 		return _activeIndividualsCount;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("activitiesCount")
 	public Long getActivitiesCount() {
 		return _activitiesCount;
@@ -135,6 +136,7 @@ public class Account implements Persistable<Long> {
 		return _id;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("individualsCount")
 	@JsonProperty("individualCount")
 	public Long getIndividualsCount() {

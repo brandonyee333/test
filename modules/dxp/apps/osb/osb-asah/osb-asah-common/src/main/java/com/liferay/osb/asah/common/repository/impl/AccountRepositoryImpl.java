@@ -392,19 +392,7 @@ public class AccountRepositoryImpl
 			);
 
 		if (segmentSort != null) {
-			Table<Record> segmentTable = _buildSegmentTable();
-
-			selectOnConditionStep.join(
-				segmentTable
-			).on(
-				DSL.field(
-					"account.id"
-				).eq(
-					segmentTable.field("accountId")
-				)
-			).orderBy(
-				getSortFields(segmentSort, segmentTable)
-			);
+			selectOnConditionStep.orderBy(getSortFields(segmentSort, null));
 		}
 
 		if ((accountPKs != null) && !accountPKs.isEmpty()) {
@@ -457,40 +445,6 @@ public class AccountRepositoryImpl
 		}
 
 		return selectSelectStep.asTable("fieldTable");
-	}
-
-	private Table<Record> _buildSegmentTable() {
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		Field<Long> accountIdField = DSL.replace(
-			DSL.field("name", String.class), "Account: ", ""
-		).cast(
-			Long.class
-		).as(
-			"accountId"
-		);
-		Field<Object> activitiesCountField = DSL.field("activitiesCount");
-		Field<Object> individualsCountField = DSL.field("individualsCount");
-
-		return selectSelectStep.select(
-			accountIdField, activitiesCountField, individualsCountField
-		).from(
-			"Segment"
-		).where(
-			DSL.and(
-				DSL.field(
-					"name"
-				).similarTo(
-					"Account: %"
-				),
-				DSL.field(
-					"status"
-				).eq(
-					"INACTIVE"
-				))
-		).asTable(
-			"segmentTable"
-		);
 	}
 
 	private List<Distribution> _getAccountNumbersDistributions(
