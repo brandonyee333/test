@@ -105,9 +105,11 @@ public class JobRunRepositoryTest extends BaseRepositoryTestCase<JobRun, Long> {
 
 	@Test
 	public void testFindByCreateLocalDateTimeBetweenAndJobId() {
-		LocalDateTime createLocalDateTime1 = endLocalDateTime.withDayOfMonth(1);
 		LocalDateTime createLocalDateTime2 = LocalDateTime.now(
 			_timeZoneDog.getZoneId());
+
+		LocalDateTime createLocalDateTime1 =
+			createLocalDateTime2.withDayOfMonth(1);
 
 		List<JobRun> jobRuns =
 			_jobRunRepository.findByCreateLocalDateTimeBetweenAndJobId(
