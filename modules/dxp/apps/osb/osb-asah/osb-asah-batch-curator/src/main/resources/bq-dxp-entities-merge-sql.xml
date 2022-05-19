@@ -7,159 +7,171 @@
 			MERGE INTO
 				`{projectId}.accountentry` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					accountEntry.classPK,
-					accountEntry.dataSourceId,
-					accountEntry.modifiedDate,
-					accountEntry.projectId,
-					accountEntry.type,
-					accountEntry.uploadDate,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'accountEntryId'
-					) AS accountEntryId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'type'
-					) AS accountEntryType,
-					(
-						SELECT
-							SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'createDate'
-					) AS createDate,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'defaultCPaymentMethodKey'
-					) AS defaultCPaymentMethodKey,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'description'
-					) AS description,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'domains'
-					) AS domains,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'emailAddress'
-					) AS emailAddress,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'logoId'
-					) AS logoId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'name'
-					) AS name,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'parentAccountEntryId'
-					) AS parentAccountEntryId,
-					TO_HEX(
-						SHA256(
-							CONCAT(accountEntry.projectId, '#', accountEntry.dataSourceId, '#', accountEntry.classPK)
-						)
-					) AS sha256HexId,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'status'
-					) AS status,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'taxExemptionCode'
-					) AS taxExemptionCode,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountEntry.fields)
-						WHERE
-							name = 'taxIdNumber'
-					) AS taxIdNumber
-				FROM
-					`{projectId}.dxpentity` AS accountEntry
-				LEFT JOIN (
+				SELECT
+					*
+				FROM (
 					SELECT
-						*,
-						TRUE AS deleted,
+						analyticsDeleteMessage.deleted,
+						accountEntry.classPK,
+						accountEntry.dataSourceId,
+						accountEntry.modifiedDate,
+						accountEntry.projectId,
+						accountEntry.type,
+						accountEntry.uploadDate,
 						(
 							SELECT
 								SAFE_CAST(value AS INT64)
 							FROM
-								UNNEST(fields)
+								UNNEST(accountEntry.fields)
 							WHERE
-								name = 'classPK'
+								name = 'accountEntryId'
 						) AS accountEntryId,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(accountEntry.fields)
 							WHERE
-								name = 'className'
-						) AS className
+								name = 'type'
+						) AS accountEntryType,
+						(
+							SELECT
+								SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'createDate'
+						) AS createDate,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'defaultCPaymentMethodKey'
+						) AS defaultCPaymentMethodKey,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'description'
+						) AS description,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'domains'
+						) AS domains,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'emailAddress'
+						) AS emailAddress,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'logoId'
+						) AS logoId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'name'
+						) AS name,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'parentAccountEntryId'
+						) AS parentAccountEntryId,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								accountEntry.projectId, accountEntry.dataSourceId, accountEntry.classPK
+							ORDER BY
+								accountEntry.modifiedDate DESC
+						) AS rowNumber,
+						TO_HEX(
+							SHA256(
+								CONCAT(accountEntry.projectId, '#', accountEntry.dataSourceId, '#', accountEntry.classPK)
+							)
+						) AS sha256HexId,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'status'
+						) AS status,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'taxExemptionCode'
+						) AS taxExemptionCode,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(accountEntry.fields)
+							WHERE
+								name = 'taxIdNumber'
+						) AS taxIdNumber
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS accountEntry
+					LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS INT64)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS accountEntryId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.accountEntryId = SAFE_CAST(accountEntry.classPK AS INT64) AND
+						analyticsDeleteMessage.className = accountEntry.type
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.accountEntryId = SAFE_CAST(accountEntry.classPK AS INT64) AND
-					analyticsDeleteMessage.className = accountEntry.type
+						(
+							analyticsDeleteMessage.accountEntryId IS NOT NULL OR
+							accountEntry.uploadDate >= '{previousRunDateString}'
+						) AND
+						accountEntry.type = 'com.liferay.account.model.AccountEntry'
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.accountEntryId IS NOT NULL OR
-						accountEntry.uploadDate >= '{previousRunDateString}'
-					) AND
-					accountEntry.type = 'com.liferay.account.model.AccountEntry'
+					rowNumber = 1
 
 			) AS staging
 			ON
@@ -228,104 +240,115 @@
 			MERGE INTO
 				`{projectId}.accountgroup` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					accountGroup.classPK,
-					accountGroup.dataSourceId,
-					accountGroup.modifiedDate,
-					accountGroup.projectId,
-					accountGroup.type,
-					accountGroup.uploadDate,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(accountGroup.fields)
-						WHERE
-							name = 'accountGroupId'
-					) AS accountGroupId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountGroup.fields)
-						WHERE
-							name = 'type'
-					) AS accountGroupType,
-					(
-						SELECT
-							SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
-						FROM
-							UNNEST(accountGroup.fields)
-						WHERE
-							name = 'createDate'
-					) AS createDate,
-					(
-						SELECT
-							SAFE_CAST(CAST(value AS STRING) AS BOOL)
-						FROM
-							UNNEST(accountGroup.fields)
-						WHERE
-							name = 'defaultAccountGroup'
-					) AS defaultAccountGroup,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountGroup.fields)
-						WHERE
-							name = 'description'
-					) AS description,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(accountGroup.fields)
-						WHERE
-							name = 'name'
-					) AS name,
-					TO_HEX(
-						SHA256(
-							CONCAT(accountGroup.projectId, '#', accountGroup.dataSourceId, '#', accountGroup.classPK)
-						)
-					) AS sha256HexId
-				FROM
-					`{projectId}.dxpentity` AS accountGroup
-				LEFT JOIN (
+				SELECT
+					*
+				FROM (
 					SELECT
-						*,
-						TRUE AS deleted,
+						analyticsDeleteMessage.deleted,
+						accountGroup.classPK,
+						accountGroup.dataSourceId,
+						accountGroup.modifiedDate,
+						accountGroup.projectId,
+						accountGroup.type,
+						accountGroup.uploadDate,
 						(
 							SELECT
 								SAFE_CAST(value AS INT64)
 							FROM
-								UNNEST(fields)
+								UNNEST(accountGroup.fields)
 							WHERE
-								name = 'classPK'
+								name = 'accountGroupId'
 						) AS accountGroupId,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(accountGroup.fields)
 							WHERE
-								name = 'className'
-						) AS className
+								name = 'type'
+						) AS accountGroupType,
+						(
+							SELECT
+								SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
+							FROM
+								UNNEST(accountGroup.fields)
+							WHERE
+								name = 'createDate'
+						) AS createDate,
+						(
+							SELECT
+								SAFE_CAST(CAST(value AS STRING) AS BOOL)
+							FROM
+								UNNEST(accountGroup.fields)
+							WHERE
+								name = 'defaultAccountGroup'
+						) AS defaultAccountGroup,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(accountGroup.fields)
+							WHERE
+								name = 'description'
+						) AS description,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(accountGroup.fields)
+							WHERE
+								name = 'name'
+						) AS name,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								accountGroup.projectId, accountGroup.dataSourceId, accountGroup.classPK
+							ORDER BY
+								accountGroup.modifiedDate DESC
+						) AS rowNumber,
+						TO_HEX(
+							SHA256(
+								CONCAT(accountGroup.projectId, '#', accountGroup.dataSourceId, '#', accountGroup.classPK)
+							)
+						) AS sha256HexId
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS accountGroup
+					LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS INT64)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS accountGroupId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.accountGroupId = SAFE_CAST(accountGroup.classPK AS INT64) AND
+						analyticsDeleteMessage.className = accountGroup.type
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.accountGroupId = SAFE_CAST(accountGroup.classPK AS INT64) AND
-					analyticsDeleteMessage.className = accountGroup.type
+						(
+							analyticsDeleteMessage.accountGroupId IS NOT NULL OR
+							accountGroup.uploadDate >= '{previousRunDateString}'
+						) AND
+						accountGroup.type = 'com.liferay.account.model.AccountGroup'
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.accountGroupId IS NOT NULL OR
-						accountGroup.uploadDate >= '{previousRunDateString}'
-					) AND
-					accountGroup.type = 'com.liferay.account.model.AccountGroup'
-
+					rowNumber = 1
 			) AS staging
 			ON
 				SAFE_CAST(staging.classPK AS INT64) = replica.accountGroupId AND
@@ -372,89 +395,101 @@
 			MERGE INTO
 				`{projectId}.expandocolumn` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					expandoColumn.classPK,
-					expandoColumn.dataSourceId,
-					expandoColumn.modifiedDate,
-					expandoColumn.projectId,
-					expandoColumn.type,
-					expandoColumn.uploadDate,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(expandoColumn.fields)
-						WHERE
-							name = 'className'
-					) AS className,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(expandoColumn.fields)
-						WHERE
-							name = 'columnId'
-					) AS columnId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(expandoColumn.fields)
-						WHERE
-							name = 'dataType'
-					) AS dataType,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(expandoColumn.fields)
-						WHERE
-							name = 'name'
-					) AS name,
-					TO_HEX(
-						SHA256(
-							CONCAT(expandoColumn.projectId, '#', expandoColumn.dataSourceId, '#', expandoColumn.classPK)
-						)
-					) AS sha256HexId
-				FROM
-					`{projectId}.dxpentity` AS expandoColumn
-			 	LEFT JOIN (
+				SELECT
+					*
+				FROM (
 					SELECT
-						*,
-						TRUE AS deleted,
+						analyticsDeleteMessage.deleted,
+						expandoColumn.classPK,
+						expandoColumn.dataSourceId,
+						expandoColumn.modifiedDate,
+						expandoColumn.projectId,
+						expandoColumn.type,
+						expandoColumn.uploadDate,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(expandoColumn.fields)
 							WHERE
-								name = 'classPK'
+								name = 'className'
+						) AS className,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(expandoColumn.fields)
+							WHERE
+								name = 'columnId'
 						) AS columnId,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(expandoColumn.fields)
 							WHERE
-								name = 'className'
-						) AS className
+								name = 'dataType'
+						) AS dataType,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(expandoColumn.fields)
+							WHERE
+								name = 'name'
+						) AS name,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								expandoColumn.projectId, expandoColumn.dataSourceId, expandoColumn.classPK
+							ORDER BY
+								expandoColumn.modifiedDate DESC
+						) AS rowNumber,
+						TO_HEX(
+							SHA256(
+								CONCAT(expandoColumn.projectId, '#', expandoColumn.dataSourceId, '#', expandoColumn.classPK)
+							)
+						) AS sha256HexId
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS expandoColumn
+				 	LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS columnId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.className = expandoColumn.type AND
+						analyticsDeleteMessage.columnId = expandoColumn.classPK AND
+						analyticsDeleteMessage.dataSourceId = expandoColumn.dataSourceId AND
+						analyticsDeleteMessage.projectId = expandoColumn.projectId
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.className = expandoColumn.type AND
-					analyticsDeleteMessage.columnId = expandoColumn.classPK AND
-					analyticsDeleteMessage.dataSourceId = expandoColumn.dataSourceId AND
-					analyticsDeleteMessage.projectId = expandoColumn.projectId
+						(
+							analyticsDeleteMessage.columnId IS NOT NULL OR
+							expandoColumn.uploadDate >= '{previousRunDateString}'
+						) AND
+						expandoColumn.type = 'com.liferay.expando.kernel.model.ExpandoColumn'
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.columnId IS NOT NULL OR
-						expandoColumn.uploadDate >= '{previousRunDateString}'
-					) AND
-					expandoColumn.type = 'com.liferay.expando.kernel.model.ExpandoColumn'
+					rowNumber = 1
 			) AS staging
 			ON
 				staging.columnId = replica.columnId AND
@@ -539,62 +574,76 @@
 			MERGE INTO
 				`{projectId}.expandovalue` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					dxpEntity.classPK,
-					dxpEntity.dataSourceId,
-					dxpEntity.modifiedDate,
-					dxpEntity.projectId,
-					dxpEntity.type,
-					dxpEntity.uploadDate,
-					expandoField.columnId,
-					expandoField.value,
-					TO_HEX(
-						SHA256(
-							CONCAT(dxpEntity.projectId, '#', dxpEntity.dataSourceId, '#', expandoField.columnId, '#', dxpEntity.classPK)
-						)
-					) AS sha256HexId
+				SELECT
+					*
 				FROM
-					`{projectId}.dxpentity` AS dxpEntity, UNNEST(expandoFields) AS expandoField
-			 	LEFT JOIN (
+				(
 					SELECT
-						*,
-						TRUE AS deleted,
-						(
-							SELECT
-								SAFE_CAST(value AS STRING)
-							FROM
-								UNNEST(fields)
-							WHERE
-								name = 'classPK'
-						) AS entityId,
-						(
-							SELECT
-								SAFE_CAST(value AS STRING)
-							FROM
-								UNNEST(fields)
-							WHERE
-								name = 'className'
-						) AS className
+						analyticsDeleteMessage.deleted,
+						dxpEntity.classPK,
+						dxpEntity.dataSourceId,
+						dxpEntity.modifiedDate,
+						dxpEntity.projectId,
+						dxpEntity.type,
+						dxpEntity.uploadDate,
+						expandoField.columnId,
+						expandoField.value,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								dxpEntity.projectId, dxpEntity.dataSourceId, expandoField.columnId, dxpEntity.classPK
+							ORDER BY
+								dxpEntity.modifiedDate DESC
+						) AS rowNumber,
+						TO_HEX(
+							SHA256(
+								CONCAT(dxpEntity.projectId, '#', dxpEntity.dataSourceId, '#', expandoField.columnId, '#', dxpEntity.classPK)
+							)
+						) AS sha256HexId
+
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS dxpEntity, UNNEST(expandoFields) AS expandoField
+				 	LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS entityId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.className = dxpEntity.type AND
+						analyticsDeleteMessage.dataSourceId = dxpEntity.dataSourceId AND
+						analyticsDeleteMessage.entityId = dxpEntity.classPK AND
+						analyticsDeleteMessage.projectId = dxpEntity.projectId
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.className = dxpEntity.type AND
-					analyticsDeleteMessage.dataSourceId = dxpEntity.dataSourceId AND
-					analyticsDeleteMessage.entityId = dxpEntity.classPK AND
-					analyticsDeleteMessage.projectId = dxpEntity.projectId
+						(
+							analyticsDeleteMessage.entityId IS NOT NULL OR
+							dxpEntity.uploadDate >= '{previousRunDateString}'
+						) AND
+						(
+							dxpEntity.type = 'com.liferay.portal.kernel.model.Organization' OR
+							dxpEntity.type = 'com.liferay.portal.kernel.model.User'
+						)
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.entityId IS NOT NULL OR
-						dxpEntity.uploadDate >= '{previousRunDateString}'
-					) AND
-					(
-						dxpEntity.type = 'com.liferay.portal.kernel.model.Organization' OR
-						dxpEntity.type = 'com.liferay.portal.kernel.model.User'
-					)
+					rowNumber = 1
 			) AS staging
 			ON
 				staging.classPK = replica.classPK AND
@@ -632,73 +681,85 @@
 			MERGE INTO
 				`{projectId}.group` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					group_.classPK,
-					group_.dataSourceId,
-					group_.modifiedDate,
-					group_.projectId,
-					group_.type,
-					group_.uploadDate,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(group_.fields)
-						WHERE
-							name = 'groupId'
-					) AS groupId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(group_.fields)
-						WHERE
-							name = 'name'
-					) AS name,
-					TO_HEX(
-						SHA256(
-							CONCAT(group_.projectId, '#', group_.dataSourceId, '#', group_.classPK)
-						)
-					) AS sha256HexId
-				FROM
-					`{projectId}.dxpentity` AS group_
-				LEFT JOIN (
+				SELECT
+					*
+				FROM (
 					SELECT
-						*,
-						TRUE AS deleted,
+						analyticsDeleteMessage.deleted,
+						group_.classPK,
+						group_.dataSourceId,
+						group_.modifiedDate,
+						group_.projectId,
+						group_.type,
+						group_.uploadDate,
 						(
 							SELECT
 								SAFE_CAST(value AS INT64)
 							FROM
-								UNNEST(fields)
+								UNNEST(group_.fields)
 							WHERE
-								name = 'classPK'
+								name = 'groupId'
 						) AS groupId,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(group_.fields)
 							WHERE
-								name = 'className'
-						) AS className
+								name = 'name'
+						) AS name,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								group_.projectId, group_.dataSourceId, group_.classPK
+							ORDER BY
+								group_.modifiedDate DESC
+						) AS rowNumber,
+						TO_HEX(
+							SHA256(
+								CONCAT(group_.projectId, '#', group_.dataSourceId, '#', group_.classPK)
+							)
+						) AS sha256HexId
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS group_
+					LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS INT64)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS groupId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.className = group_.type AND
+						analyticsDeleteMessage.dataSourceId = group_.dataSourceId AND
+						analyticsDeleteMessage.groupId = SAFE_CAST(group_.classPK AS INT64) AND
+						analyticsDeleteMessage.projectId = group_.projectId
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.className = group_.type AND
-					analyticsDeleteMessage.dataSourceId = group_.dataSourceId AND
-					analyticsDeleteMessage.groupId = SAFE_CAST(group_.classPK AS INT64) AND
-					analyticsDeleteMessage.projectId = group_.projectId
+						(
+							analyticsDeleteMessage.groupId IS NOT NULL OR
+							group_.uploadDate >= '{previousRunDateString}'
+						) AND
+						group_.type = 'com.liferay.portal.kernel.model.Group'
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.groupId IS NOT NULL OR
-						group_.uploadDate >= '{previousRunDateString}'
-					) AND
-					group_.type = 'com.liferay.portal.kernel.model.Group'
+					rowNumber = 1
 			) AS staging
 			ON
 				SAFE_CAST(staging.classPK AS INT64) = replica.groupId AND
@@ -750,61 +811,61 @@
 						WHERE
 							unnestExpandoColumnIds <> analyticsDeleteMessage.columnId
 					) AS updatedExpandoColumnIds
-					FROM (
-						SELECT
-							*,
-							(
-								SELECT
-									SAFE_CAST(value AS STRING)
-								FROM
-									UNNEST(fields)
-								WHERE
-									name = 'classPK'
-							) AS columnId,
-							(
-								SELECT
-									SAFE_CAST(value AS STRING)
-								FROM
-									UNNEST(fields)
-								WHERE
-									name = 'className'
-							) AS className
-						FROM
-							`{projectId}.dxpentity`
-						WHERE
-							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage' AND
-							uploadDate >= '{previousRunDateString}'
-					) AS analyticsDeleteMessage
-					INNER JOIN (
-						SELECT
-							*,
-							(
-							SELECT ARRAY(
-								SELECT
-									DISTINCT SAFE_CAST(columnId AS STRING)
-								FROM
-									UNNEST(expandoFields)
-							)
-						) AS expandoColumnIds,
+				FROM (
+					SELECT
+						*,
 						(
 							SELECT
-								SAFE_CAST(value AS INT64)
+								SAFE_CAST(value AS STRING)
 							FROM
 								UNNEST(fields)
 							WHERE
-								name = 'organizationId'
-						) AS organizationId
-						FROM
-							`{projectId}.dxpentity`
-						WHERE
-							type = 'com.liferay.portal.kernel.model.Organization'
-					) AS organization
-					ON
-						analyticsDeleteMessage.columnId in UNNEST(organization.expandoColumnIds) AND
-						analyticsDeleteMessage.dataSourceId = organization.dataSourceId AND
-						analyticsDeleteMessage.projectId = organization.projectId
+								name = 'classPK'
+						) AS columnId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(fields)
+							WHERE
+								name = 'className'
+						) AS className
+					FROM
+						`{projectId}.dxpentity`
 					WHERE
-						analyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
+						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage' AND
+						uploadDate >= '{previousRunDateString}'
+				) AS analyticsDeleteMessage
+				INNER JOIN (
+					SELECT
+						*,
+						(
+						SELECT ARRAY(
+							SELECT
+								DISTINCT SAFE_CAST(columnId AS STRING)
+							FROM
+								UNNEST(expandoFields)
+						)
+					) AS expandoColumnIds,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'organizationId'
+					) AS organizationId
+					FROM
+						`{projectId}.dxpentity`
+					WHERE
+						type = 'com.liferay.portal.kernel.model.Organization'
+				) AS organization
+				ON
+					analyticsDeleteMessage.columnId in UNNEST(organization.expandoColumnIds) AND
+					analyticsDeleteMessage.dataSourceId = organization.dataSourceId AND
+					analyticsDeleteMessage.projectId = organization.projectId
+				WHERE
+					analyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
 			) AS staging
 			ON
 				staging.dataSourceId = replica.dataSourceId AND
@@ -821,105 +882,117 @@
 			MERGE INTO
 				`{projectId}.organization` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					organization.classPK,
-					organization.dataSourceId,
-					organization.modifiedDate,
-					organization.projectId,
-					organization.type,
-					organization.uploadDate,
-					(
-						SELECT ARRAY(
-							SELECT
-								DISTINCT SAFE_CAST(columnId AS STRING)
-							FROM
-								UNNEST(organization.expandoFields)
-						)
-					) AS expandoColumnIds,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(organization.fields)
-						WHERE
-							name = 'name'
-					) AS name,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(organization.fields)
-						WHERE
-							name = 'organizationId'
-					) AS organizationId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(organization.fields)
-						WHERE
-							name = 'type'
-					) AS organizationType,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(organization.fields)
-						WHERE
-							name = 'parentOrganizationId'
-					) AS parentOrganizationId,
-					TO_HEX(
-						SHA256(
-							CONCAT(organization.projectId, '#', organization.dataSourceId, '#', organization.classPK)
-						)
-					) AS sha256HexId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(organization.fields)
-						WHERE
-							name = 'treePath'
-					) AS treePath
-				FROM
-					`{projectId}.dxpentity` AS organization
-				LEFT JOIN (
+				SELECT
+					*
+				FROM (
 					SELECT
-						*,
-						TRUE AS deleted,
+						analyticsDeleteMessage.deleted,
+						organization.classPK,
+						organization.dataSourceId,
+						organization.modifiedDate,
+						organization.projectId,
+						organization.type,
+						organization.uploadDate,
+						(
+							SELECT ARRAY(
+								SELECT
+									DISTINCT SAFE_CAST(columnId AS STRING)
+								FROM
+									UNNEST(organization.expandoFields)
+							)
+						) AS expandoColumnIds,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(organization.fields)
+							WHERE
+								name = 'name'
+						) AS name,
 						(
 							SELECT
 								SAFE_CAST(value AS INT64)
 							FROM
-								UNNEST(fields)
+								UNNEST(organization.fields)
 							WHERE
-								name = 'classPK'
+								name = 'organizationId'
 						) AS organizationId,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(organization.fields)
 							WHERE
-								name = 'className'
-						) AS className
+								name = 'type'
+						) AS organizationType,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(organization.fields)
+							WHERE
+								name = 'parentOrganizationId'
+						) AS parentOrganizationId,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								organization.projectId, organization.dataSourceId, organization.classPK
+							ORDER BY
+								organization.modifiedDate DESC
+						) AS rowNumber,
+						TO_HEX(
+							SHA256(
+								CONCAT(organization.projectId, '#', organization.dataSourceId, '#', organization.classPK)
+							)
+						) AS sha256HexId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(organization.fields)
+							WHERE
+								name = 'treePath'
+						) AS treePath
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS organization
+					LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS INT64)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS organizationId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.className = organization.type AND
+						analyticsDeleteMessage.dataSourceId = organization.dataSourceId AND
+						analyticsDeleteMessage.organizationId = SAFE_CAST(organization.classPK AS INT64) AND
+						analyticsDeleteMessage.projectId = organization.projectId
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.className = organization.type AND
-					analyticsDeleteMessage.dataSourceId = organization.dataSourceId AND
-					analyticsDeleteMessage.organizationId = SAFE_CAST(organization.classPK AS INT64) AND
-					analyticsDeleteMessage.projectId = organization.projectId
+						(
+							analyticsDeleteMessage.organizationId IS NOT NULL OR
+							organization.uploadDate >= '{previousRunDateString}'
+						) AND
+						organization.type = 'com.liferay.portal.kernel.model.Organization'
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.organizationId IS NOT NULL OR
-						organization.uploadDate >= '{previousRunDateString}'
-					) AND
-					organization.type = 'com.liferay.portal.kernel.model.Organization'
+					rowNumber = 1
 			) AS staging
 			ON
 				SAFE_CAST(staging.classPK AS INT64) = replica.organizationId AND
@@ -967,73 +1040,85 @@
 			MERGE INTO
 				`{projectId}.role` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					role.classPK,
-					role.dataSourceId,
-					role.modifiedDate,
-					role.projectId,
-					role.type,
-					role.uploadDate,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(role.fields)
-						WHERE
-							name = 'name'
-					) AS name,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(role.fields)
-						WHERE
-							name = 'roleId'
-					) AS roleId,
-					TO_HEX(
-						SHA256(
-							CONCAT(role.projectId, '#', role.dataSourceId, '#', role.classPK)
-						)
-					) AS sha256HexId
-				FROM
-					`{projectId}.dxpentity` AS role
-				LEFT JOIN (
+				SELECT
+					*
+				FROM (
 					SELECT
-						*,
-						TRUE AS deleted,
-						(
-							SELECT
-								SAFE_CAST(value AS INT64)
-							FROM
-								UNNEST(fields)
-							WHERE
-								name = 'classPK'
-						) AS roleId,
+						analyticsDeleteMessage.deleted,
+						role.classPK,
+						role.dataSourceId,
+						role.modifiedDate,
+						role.projectId,
+						role.type,
+						role.uploadDate,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(role.fields)
 							WHERE
-								name = 'className'
-						) AS className
+								name = 'name'
+						) AS name,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(role.fields)
+							WHERE
+								name = 'roleId'
+						) AS roleId,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								role.projectId, role.dataSourceId, role.classPK
+							ORDER BY
+								role.modifiedDate DESC
+						) AS rowNumber,
+						TO_HEX(
+							SHA256(
+								CONCAT(role.projectId, '#', role.dataSourceId, '#', role.classPK)
+							)
+						) AS sha256HexId
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS role
+					LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS INT64)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS roleId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.className = role.type AND
+						analyticsDeleteMessage.dataSourceId = role.dataSourceId AND
+						analyticsDeleteMessage.projectId = role.projectId AND
+						analyticsDeleteMessage.roleId = SAFE_CAST(role.classPK AS INT64)
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.className = role.type AND
-					analyticsDeleteMessage.dataSourceId = role.dataSourceId AND
-					analyticsDeleteMessage.projectId = role.projectId AND
-					analyticsDeleteMessage.roleId = SAFE_CAST(role.classPK AS INT64)
+						(
+							analyticsDeleteMessage.roleId IS NOT NULL OR
+							role.uploadDate >= '{previousRunDateString}'
+						) AND
+						role.type = 'com.liferay.portal.kernel.model.Role'
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.roleId IS NOT NULL OR
-						role.uploadDate >= '{previousRunDateString}'
-					) AND
-					role.type = 'com.liferay.portal.kernel.model.Role'
+					rowNumber = 1
 			) AS staging
 			ON
 				SAFE_CAST(staging.classPK AS INT64) = replica.roleId AND
@@ -1069,81 +1154,93 @@
 			MERGE INTO
 				`{projectId}.team` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					team.classPK,
-					team.dataSourceId,
-					team.modifiedDate,
-					team.projectId,
-					team.type,
-					team.uploadDate,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(team.fields)
-						WHERE
-							name = 'groupId'
-					) AS groupId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(team.fields)
-						WHERE
-							name = 'name'
-					) AS name,
-					TO_HEX(
-						SHA256(
-							CONCAT(team.projectId, '#', team.dataSourceId, '#', team.classPK)
-						)
-					) AS sha256HexId,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(team.fields)
-						WHERE
-							name = 'teamId'
-					) AS teamId
-				FROM
-					`{projectId}.dxpentity` AS team
-				LEFT JOIN (
+				SELECT
+					*
+				FROM (
 					SELECT
-						*,
-						TRUE AS deleted,
+						analyticsDeleteMessage.deleted,
+						team.classPK,
+						team.dataSourceId,
+						team.modifiedDate,
+						team.projectId,
+						team.type,
+						team.uploadDate,
 						(
 							SELECT
 								SAFE_CAST(value AS INT64)
 							FROM
-								UNNEST(fields)
+								UNNEST(team.fields)
 							WHERE
-								name = 'classPK'
-						) AS teamId,
+								name = 'groupId'
+						) AS groupId,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(team.fields)
 							WHERE
-								name = 'className'
-						) AS className
+								name = 'name'
+						) AS name,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								team.projectId, team.dataSourceId, team.classPK
+							ORDER BY
+								team.modifiedDate DESC
+						) AS rowNumber,
+						TO_HEX(
+							SHA256(
+								CONCAT(team.projectId, '#', team.dataSourceId, '#', team.classPK)
+							)
+						) AS sha256HexId,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(team.fields)
+							WHERE
+								name = 'teamId'
+						) AS teamId
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS team
+					LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS INT64)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS teamId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.className = team.type AND
+						analyticsDeleteMessage.dataSourceId = team.dataSourceId AND
+						analyticsDeleteMessage.projectId = team.projectId AND
+						analyticsDeleteMessage.teamId = SAFE_CAST(team.classPK AS INT64)
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.className = team.type AND
-					analyticsDeleteMessage.dataSourceId = team.dataSourceId AND
-					analyticsDeleteMessage.projectId = team.projectId AND
-					analyticsDeleteMessage.teamId = SAFE_CAST(team.classPK AS INT64)
+						(
+							analyticsDeleteMessage.teamId IS NOT NULL OR
+							team.uploadDate >= '{previousRunDateString}'
+						) AND
+						team.type = 'com.liferay.portal.kernel.model.Team'
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.teamId IS NOT NULL OR
-						team.uploadDate >= '{previousRunDateString}'
-					) AND
-					team.type = 'com.liferay.portal.kernel.model.Team'
+					rowNumber = 1
 			) AS staging
 			ON
 				SAFE_CAST(staging.classPK AS INT64) = replica.teamId AND
@@ -1182,73 +1279,85 @@
 			MERGE INTO
 				`{projectId}.usergroup` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					userGroup.classPK,
-					userGroup.dataSourceId,
-					userGroup.modifiedDate,
-					userGroup.projectId,
-					userGroup.type,
-					userGroup.uploadDate,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(userGroup.fields)
-						WHERE
-							name = 'name'
-					) AS name,
-					TO_HEX(
-						SHA256(
-							CONCAT(userGroup.projectId, '#', userGroup.dataSourceId, '#', userGroup.classPK)
-						)
-					) AS sha256HexId,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(userGroup.fields)
-						WHERE
-							name = 'userGroupId'
-					) AS userGroupId
-				FROM
-					`{projectId}.dxpentity` AS userGroup
-				LEFT JOIN (
+				SELECT
+					*
+				FROM (
 					SELECT
-						*,
-						TRUE AS deleted,
-						(
-							SELECT
-								SAFE_CAST(value AS INT64)
-							FROM
-								UNNEST(fields)
-							WHERE
-								name = 'classPK'
-						) AS userGroupId,
+						analyticsDeleteMessage.deleted,
+						userGroup.classPK,
+						userGroup.dataSourceId,
+						userGroup.modifiedDate,
+						userGroup.projectId,
+						userGroup.type,
+						userGroup.uploadDate,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(userGroup.fields)
 							WHERE
-								name = 'className'
-						) AS className
+								name = 'name'
+						) AS name,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								userGroup.projectId, userGroup.dataSourceId, userGroup.classPK
+							ORDER BY
+								userGroup.modifiedDate DESC
+						) AS rowNumber,
+						TO_HEX(
+							SHA256(
+								CONCAT(userGroup.projectId, '#', userGroup.dataSourceId, '#', userGroup.classPK)
+							)
+						) AS sha256HexId,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(userGroup.fields)
+							WHERE
+								name = 'userGroupId'
+						) AS userGroupId
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS userGroup
+					LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS INT64)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS userGroupId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.className = userGroup.type AND
+						analyticsDeleteMessage.dataSourceId = userGroup.dataSourceId AND
+						analyticsDeleteMessage.projectId = userGroup.projectId AND
+						analyticsDeleteMessage.userGroupId = SAFE_CAST(userGroup.classPK AS INT64)
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.className = userGroup.type AND
-					analyticsDeleteMessage.dataSourceId = userGroup.dataSourceId AND
-					analyticsDeleteMessage.projectId = userGroup.projectId AND
-					analyticsDeleteMessage.userGroupId = SAFE_CAST(userGroup.classPK AS INT64)
+						(
+							analyticsDeleteMessage.userGroupId IS NOT NULL OR
+							userGroup.uploadDate >= '{previousRunDateString}'
+						) AND
+						userGroup.type = 'com.liferay.portal.kernel.model.UserGroup'
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.userGroupId IS NOT NULL OR
-						userGroup.uploadDate >= '{previousRunDateString}'
-					) AND
-					userGroup.type = 'com.liferay.portal.kernel.model.UserGroup'
+					rowNumber = 1
 			) AS staging
 			ON
 				SAFE_CAST(staging.classPK AS INT64) = replica.userGroupId AND
@@ -1371,320 +1480,332 @@
 			MERGE INTO
 				`{projectId}.user` AS replica
 			USING (
-				SELECT DISTINCT
-					analyticsDeleteMessage.deleted,
-					user.classPK,
-					user.dataSourceId,
-					user.modifiedDate,
-					user.projectId,
-					user.type,
-					user.uploadDate,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'accountId'
-					) AS accountId,
-					(
-						SELECT
-							SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'birthday'
-					) AS birthday,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'classNameId'
-					) AS classNameId,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'contactId'
-					) AS contactId,
-					(
-						SELECT
-							SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'createDate'
-					) AS createDate,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'emailAddress'
-					) AS emailAddress,
-					(
-						SELECT ARRAY(
-							SELECT
-								DISTINCT SAFE_CAST(columnId AS STRING)
-							FROM
-								UNNEST(user.expandoFields)
-						)
-					) AS expandoColumnIds,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'firstName'
-					) AS firstName,
-					(
-						SELECT
-							ARRAY (
-								SELECT
-									SAFE_CAST(number AS INT64)
-								FROM
-									UNNEST(arrayField.groupIds) AS number
-							)
-						FROM (
-							SELECT (
-								SELECT
-									JSON_EXTRACT_ARRAY(value)
-								FROM
-									UNNEST(user.fields)
-								WHERE
-									name = 'groupIds'
-							) groupIds
-						) arrayField
-					) AS groupIds,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'jobTitle'
-					) AS jobTitle,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'languageId'
-					) AS languageId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'lastName'
-					) AS lastName,
-					(
-						SELECT
-							SAFE_CAST(CAST(value AS STRING) AS BOOL)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'male'
-					) AS male,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'middleName'
-					) AS middleName,
-					(
-						SELECT
-							ARRAY (
-								SELECT
-									SAFE_CAST(number AS INT64)
-								FROM
-									UNNEST(arrayField.organizationIds) AS number
-							)
-						FROM (
-							SELECT (
-								SELECT
-									JSON_EXTRACT_ARRAY(value)
-								FROM
-									UNNEST(user.fields)
-								WHERE
-									name = 'organizationIds'
-							) organizationIds
-						) arrayField
-					) AS organizationIds,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'parentContactId'
-					) AS parentContactId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'prefixId'
-					) AS prefixId,
-					(
-						SELECT
-							ARRAY (
-								SELECT
-									SAFE_CAST(number AS INT64)
-								FROM
-									UNNEST(arrayField.roleIds) AS number
-							)
-						FROM (
-							SELECT (
-								SELECT
-									JSON_EXTRACT_ARRAY(value)
-								FROM
-									UNNEST(user.fields)
-								WHERE
-									name = 'roleIds'
-							) roleIds
-						) arrayField
-					) AS roleIds,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'screenName'
-					) AS screenName,
-					TO_HEX(
-						SHA256(
-							CONCAT(user.projectId, '#', user.dataSourceId, '#', user.classPK)
-						)
-					) AS sha256HexId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'suffixId'
-					) AS suffixId,
-					(
-						SELECT
-							ARRAY (
-								SELECT
-									SAFE_CAST(number AS INT64)
-								FROM
-									UNNEST(arrayField.teamIds) AS number
-							)
-						FROM (
-							SELECT (
-								SELECT
-									JSON_EXTRACT_ARRAY(value)
-								FROM
-									UNNEST(user.fields)
-								WHERE
-									name = 'teamIds'
-							) teamIds
-						) arrayField
-					) AS teamIds,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'timeZoneId'
-					) AS timeZoneId,
-					(
-						SELECT
-							ARRAY (
-								SELECT
-									SAFE_CAST(number AS INT64)
-								FROM
-									UNNEST(arrayField.userGroupIds) AS number
-							)
-						FROM (
-							SELECT (
-								SELECT
-									JSON_EXTRACT_ARRAY(value)
-								FROM
-									UNNEST(user.fields)
-								WHERE
-									name = 'userGroupIds'
-							) userGroupIds
-						) arrayField
-					) AS userGroupIds,
-					(
-						SELECT
-							SAFE_CAST(value AS INT64)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'userId'
-					) AS userId,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'userName'
-					) AS userName,
-					(
-						SELECT
-							SAFE_CAST(value AS STRING)
-						FROM
-							UNNEST(user.fields)
-						WHERE
-							name = 'uuid'
-					) AS uuid
-				FROM
-					`{projectId}.dxpentity` AS user
-				LEFT JOIN (
+				SELECT
+					*
+				FROM (
 					SELECT
-						*,
-						TRUE AS deleted,
+						analyticsDeleteMessage.deleted,
+						user.classPK,
+						user.dataSourceId,
+						user.modifiedDate,
+						user.projectId,
+						user.type,
+						user.uploadDate,
 						(
 							SELECT
 								SAFE_CAST(value AS INT64)
 							FROM
-								UNNEST(fields)
+								UNNEST(user.fields)
 							WHERE
-								name = 'classPK'
+								name = 'accountId'
+						) AS accountId,
+						(
+							SELECT
+								SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'birthday'
+						) AS birthday,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'classNameId'
+						) AS classNameId,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'contactId'
+						) AS contactId,
+						(
+							SELECT
+								SAFE_CAST(TIMESTAMP_MILLIS(CAST(value AS INT64)) AS TIMESTAMP)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'createDate'
+						) AS createDate,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'emailAddress'
+						) AS emailAddress,
+						(
+							SELECT ARRAY(
+								SELECT
+									DISTINCT SAFE_CAST(columnId AS STRING)
+								FROM
+									UNNEST(user.expandoFields)
+							)
+						) AS expandoColumnIds,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'firstName'
+						) AS firstName,
+						(
+							SELECT
+								ARRAY (
+									SELECT
+										SAFE_CAST(number AS INT64)
+									FROM
+										UNNEST(arrayField.groupIds) AS number
+								)
+							FROM (
+								SELECT (
+									SELECT
+										JSON_EXTRACT_ARRAY(value)
+									FROM
+										UNNEST(user.fields)
+									WHERE
+										name = 'groupIds'
+								) groupIds
+							) arrayField
+						) AS groupIds,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'jobTitle'
+						) AS jobTitle,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'languageId'
+						) AS languageId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'lastName'
+						) AS lastName,
+						(
+							SELECT
+								SAFE_CAST(CAST(value AS STRING) AS BOOL)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'male'
+						) AS male,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'middleName'
+						) AS middleName,
+						(
+							SELECT
+								ARRAY (
+									SELECT
+										SAFE_CAST(number AS INT64)
+									FROM
+										UNNEST(arrayField.organizationIds) AS number
+								)
+							FROM (
+								SELECT (
+									SELECT
+										JSON_EXTRACT_ARRAY(value)
+									FROM
+										UNNEST(user.fields)
+									WHERE
+										name = 'organizationIds'
+								) organizationIds
+							) arrayField
+						) AS organizationIds,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'parentContactId'
+						) AS parentContactId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'prefixId'
+						) AS prefixId,
+						(
+							SELECT
+								ARRAY (
+									SELECT
+										SAFE_CAST(number AS INT64)
+									FROM
+										UNNEST(arrayField.roleIds) AS number
+								)
+							FROM (
+								SELECT (
+									SELECT
+										JSON_EXTRACT_ARRAY(value)
+									FROM
+										UNNEST(user.fields)
+									WHERE
+										name = 'roleIds'
+								) roleIds
+							) arrayField
+						) AS roleIds,
+						ROW_NUMBER() OVER (
+							PARTITION BY
+								user.projectId, user.dataSourceId, user.classPK
+							ORDER BY
+								user.modifiedDate DESC
+						) AS rowNumber,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'screenName'
+						) AS screenName,
+						TO_HEX(
+							SHA256(
+								CONCAT(user.projectId, '#', user.dataSourceId, '#', user.classPK)
+							)
+						) AS sha256HexId,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'suffixId'
+						) AS suffixId,
+						(
+							SELECT
+								ARRAY (
+									SELECT
+										SAFE_CAST(number AS INT64)
+									FROM
+										UNNEST(arrayField.teamIds) AS number
+								)
+							FROM (
+								SELECT (
+									SELECT
+										JSON_EXTRACT_ARRAY(value)
+									FROM
+										UNNEST(user.fields)
+									WHERE
+										name = 'teamIds'
+								) teamIds
+							) arrayField
+						) AS teamIds,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'timeZoneId'
+						) AS timeZoneId,
+						(
+							SELECT
+								ARRAY (
+									SELECT
+										SAFE_CAST(number AS INT64)
+									FROM
+										UNNEST(arrayField.userGroupIds) AS number
+								)
+							FROM (
+								SELECT (
+									SELECT
+										JSON_EXTRACT_ARRAY(value)
+									FROM
+										UNNEST(user.fields)
+									WHERE
+										name = 'userGroupIds'
+								) userGroupIds
+							) arrayField
+						) AS userGroupIds,
+						(
+							SELECT
+								SAFE_CAST(value AS INT64)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'userId'
 						) AS userId,
 						(
 							SELECT
 								SAFE_CAST(value AS STRING)
 							FROM
-								UNNEST(fields)
+								UNNEST(user.fields)
 							WHERE
-								name = 'className'
-						) AS className
+								name = 'userName'
+						) AS userName,
+						(
+							SELECT
+								SAFE_CAST(value AS STRING)
+							FROM
+								UNNEST(user.fields)
+							WHERE
+								name = 'uuid'
+						) AS uuid
 					FROM
-						`{projectId}.dxpentity`
+						`{projectId}.dxpentity` AS user
+					LEFT JOIN (
+						SELECT
+							*,
+							TRUE AS deleted,
+							(
+								SELECT
+									SAFE_CAST(value AS INT64)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'classPK'
+							) AS userId,
+							(
+								SELECT
+									SAFE_CAST(value AS STRING)
+								FROM
+									UNNEST(fields)
+								WHERE
+									name = 'className'
+							) AS className
+						FROM
+							`{projectId}.dxpentity`
+						WHERE
+							type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+					) AS analyticsDeleteMessage
+					ON
+						analyticsDeleteMessage.className = user.type AND
+						analyticsDeleteMessage.dataSourceId = user.dataSourceId AND
+						analyticsDeleteMessage.projectId = user.projectId AND
+						analyticsDeleteMessage.userId = SAFE_CAST(user.classPK AS INT64)
 					WHERE
-						type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-				) AS analyticsDeleteMessage
-				ON
-					analyticsDeleteMessage.className = user.type AND
-					analyticsDeleteMessage.dataSourceId = user.dataSourceId AND
-					analyticsDeleteMessage.projectId = user.projectId AND
-					analyticsDeleteMessage.userId = SAFE_CAST(user.classPK AS INT64)
+						(
+							analyticsDeleteMessage.userId IS NOT NULL OR
+							user.uploadDate >= '{previousRunDateString}'
+						) AND
+						user.type = 'com.liferay.portal.kernel.model.User'
+				)
 				WHERE
-					(
-						analyticsDeleteMessage.userId IS NOT NULL OR
-						user.uploadDate >= '{previousRunDateString}'
-					) AND
-					user.type = 'com.liferay.portal.kernel.model.User'
+					rowNumber = 1
 			) AS staging
 			ON
 				SAFE_CAST(staging.classPK AS INT64) = replica.dxpUserId AND
