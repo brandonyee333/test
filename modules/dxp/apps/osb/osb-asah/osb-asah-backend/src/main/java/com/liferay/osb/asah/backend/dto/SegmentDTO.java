@@ -54,17 +54,17 @@ public class SegmentDTO {
 		_activitiesCount = 0L;
 
 		if (bqMembershipChange != null) {
+			_individualsCount = bqMembershipChange.getIndividualsCount();
 			_knownIndividualsCount =
 				bqMembershipChange.getKnownIndividualsCount();
-			_individualsCount = bqMembershipChange.getIndividualsCount();
 
 			_anonymousIndividualsCount =
 				_individualsCount - _knownIndividualsCount;
 		}
 		else {
 			_anonymousIndividualsCount = 0L;
-			_knownIndividualsCount = 0L;
 			_individualsCount = 0L;
+			_knownIndividualsCount = 0L;
 		}
 
 		_channelId = StringUtil.get(segment.getChannelId(), null);
