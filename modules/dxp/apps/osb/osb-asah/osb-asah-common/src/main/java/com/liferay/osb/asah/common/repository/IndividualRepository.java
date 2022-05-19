@@ -35,7 +35,7 @@ public interface IndividualRepository
 			PagingAndSortingRepository<Individual, Long> {
 
 	public long countByCreateDateBetweenAndIdAfter(
-		Date createDateFromDate, Date createDateToDate, Long id);
+		Date createDate1, Date createDate2, Long id);
 
 	public long countByIdAfter(Long id);
 
@@ -48,8 +48,7 @@ public interface IndividualRepository
 	public void deleteByIdIn(@Param("ids") List<Long> ids);
 
 	public List<Individual> findByCreateDateBetweenAndIdAfter(
-		Date createDateFromDate, Date createDateToDate, Long id,
-		Pageable pageable);
+		Date createDate1, Date createDate2, Long id, Pageable pageable);
 
 	public Individual findByEmailAddressHashed(String emailAddressHashed);
 
