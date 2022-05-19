@@ -213,10 +213,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 	public Page<Channel> getChannelPage(
 		String name, int page, int size, String[] sorts) {
 
-		if (name.equals(null)) {
-			StringUtils.isBlank(name);
-		}
-
 		return PageableExecutionUtils.getPage(
 			_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
 				name, PageRequest.of(page, size, _getSort(sorts)),
