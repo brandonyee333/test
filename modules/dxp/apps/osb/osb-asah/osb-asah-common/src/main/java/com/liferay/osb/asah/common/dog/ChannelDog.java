@@ -213,20 +213,17 @@ public class ChannelDog extends BaseFaroInfoDog {
 	public Page<Channel> getChannelPage(
 		String name, int page, int size, String[] sorts) {
 
-		if (name != null) {
-			return PageableExecutionUtils.getPage(
-				_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
-					name, PageRequest.of(page, size, _getSort(sorts)),
-					"IN_PROGRESS_DELETING"),
-				PageRequest.of(page, size, _getSort(sorts)),
-				() ->
-					_channelRepository.
-						countByNameContainingIgnoreCaseAndStateNot(
-							name, "IN_PROGRESS_DELETING"));
+		if (name.equals(null)) {
+			StringUtils.isBlank(name);
 		}
 
-		return _channelRepository.findAll(
-			PageRequest.of(page, size, _getSort(sorts)));
+		return PageableExecutionUtils.getPage(
+			_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
+				name, PageRequest.of(page, size, _getSort(sorts)),
+				"IN_PROGRESS_DELETING"),
+			PageRequest.of(page, size, _getSort(sorts)),
+			() -> _channelRepository.countByNameContainingIgnoreCaseAndStateNot(
+				name, "IN_PROGRESS_DELETING"));
 	}
 
 	public List<Channel> getChannels(List<Long> channelIds) {
