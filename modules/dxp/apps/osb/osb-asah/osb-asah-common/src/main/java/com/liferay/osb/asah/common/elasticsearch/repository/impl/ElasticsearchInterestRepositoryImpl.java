@@ -304,8 +304,8 @@ public class ElasticsearchInterestRepositoryImpl implements InterestRepository {
 	@Override
 	public List<Interest>
 		findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-			String name, Long ownerId, String ownerType,
-			Date recordedDate1, Date recordedDate2) {
+			String name, Long ownerId, String ownerType, Date recordedDate1,
+			Date recordedDate2) {
 
 		return _toInterests(
 			_faroInfoElasticsearchInvoker.get(

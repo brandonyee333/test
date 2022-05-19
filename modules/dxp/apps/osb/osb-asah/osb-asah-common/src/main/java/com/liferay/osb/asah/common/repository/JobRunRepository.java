@@ -46,8 +46,8 @@ public interface JobRunRepository extends Repository<JobRun, Long> {
 
 	@Cacheable
 	public List<JobRun> findByCreateLocalDateTimeBetweenAndJobId(
-		LocalDateTime createLocalDateTime1,
-		LocalDateTime createLocalDateTime2, Long jobId);
+		LocalDateTime createLocalDateTime1, LocalDateTime createLocalDateTime2,
+		Long jobId);
 
 	@Cacheable
 	public List<JobRun> findByJobId(Long jobId, Pageable pageable);
