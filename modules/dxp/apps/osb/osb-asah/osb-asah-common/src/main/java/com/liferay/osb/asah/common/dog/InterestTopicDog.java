@@ -59,9 +59,9 @@ public class InterestTopicDog {
 
 		return _interestTopicRepository.
 			findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn(
-				_calculateTermRankEnd(size, topics.size()),
 				_calculateTermRankStart(page, size, topics.size()),
-				termsExclude, termType, topics);
+				_calculateTermRankEnd(size, topics.size()), termsExclude,
+				termType, topics);
 	}
 
 	public List<Integer> getInterestTopicTopics(

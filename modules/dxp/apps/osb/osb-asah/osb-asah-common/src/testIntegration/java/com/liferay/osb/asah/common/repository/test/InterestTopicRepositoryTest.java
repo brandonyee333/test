@@ -97,7 +97,7 @@ public class InterestTopicRepositoryTest
 		List<String> interestTerms =
 			_interestTopicRepository.
 				findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn(
-					2, 0, Arrays.asList("objective-c"), "keyword",
+					0, 2, Arrays.asList("objective-c"), "keyword",
 					Arrays.asList(2, 1));
 
 		Assertions.assertEquals("javascript", interestTerms.get(0));

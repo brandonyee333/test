@@ -44,8 +44,8 @@ public interface InterestTopicRepository
 	@Cacheable
 	public List<String>
 		findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn(
-			@Param("termRankEnd") Integer termRankEnd,
-			@Param("termRankStart") Integer termRankStart,
+			@Param("termRank1") Integer termRank1,
+			@Param("termRank2") Integer termRank2,
 			@Param("terms") List<String> terms,
 			@Param("termType") String termType,
 			@Param("topics") List<Integer> topics);

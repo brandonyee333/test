@@ -64,8 +64,8 @@
 						InterestTopic.topic IN (:topics)
 				) AS TMP
 			WHERE
-				rank > :termRankStart AND
-				rank <= :termRankEnd
+				rank > :termRank1 AND
+				rank <= :termRank2
 		]]>
 	</entry>
 </properties>
