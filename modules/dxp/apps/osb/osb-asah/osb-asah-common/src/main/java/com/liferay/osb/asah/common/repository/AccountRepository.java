@@ -33,7 +33,7 @@ public interface AccountRepository
 
 	@Cacheable
 	public long countByCreateDateBetweenAndIdAfter(
-		Date createDateFromDate, Date createDateToDate, Long id);
+		Date createDate1, Date createDate2, Long id);
 
 	@Cacheable
 	public long countByIdAfter(Long accountId);
@@ -50,8 +50,7 @@ public interface AccountRepository
 
 	@Cacheable
 	public List<Account> findByCreateDateBetweenAndIdAfter(
-		Date createDateFromDate, Date createDateToDate, Long id,
-		Pageable pageable);
+		Date createDate1, Date createDate2, Long id, Pageable pageable);
 
 	@Cacheable
 	public List<Account> findByIdAfter(Long accountId, Pageable pageable);
