@@ -77,9 +77,8 @@ public class DXPEntityRepositoryImpl
 	}
 
 	@Override
-	public long countByTypeAndModifiedDateBetween(
-		@Nullable Date fromModifiedDate, Date toModifiedDate,
-		DXPEntity.Type type) {
+	public long countByModifiedDateBetweenAndType(
+		@Nullable Date modifiedDate1, Date modifiedDate2, DXPEntity.Type type) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -95,12 +94,12 @@ public class DXPEntityRepositoryImpl
 				)
 			);
 
-		if (fromModifiedDate != null) {
+		if (modifiedDate1 != null) {
 			selectConditionStep = selectConditionStep.and(
 				DSL.field(
 					"modifiedDate"
 				).ge(
-					fromModifiedDate
+					modifiedDate1
 				));
 		}
 
@@ -108,7 +107,7 @@ public class DXPEntityRepositoryImpl
 			DSL.field(
 				"modifiedDate"
 			).le(
-				toModifiedDate
+				modifiedDate2
 			));
 
 		return selectConditionStep.fetchOptional(
@@ -300,9 +299,9 @@ public class DXPEntityRepositoryImpl
 	}
 
 	@Override
-	public List<DXPEntity> findByTypeAndModifiedDateBetween(
-		@Nullable Date fromModifiedDate, Date toModifiedDate,
-		DXPEntity.Type type, Pageable pageable) {
+	public List<DXPEntity> findByModifiedDateBetweenAndType(
+		@Nullable Date modifiedDate1, Date modifiedDate2, DXPEntity.Type type,
+		Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -316,12 +315,12 @@ public class DXPEntityRepositoryImpl
 			)
 		);
 
-		if (fromModifiedDate != null) {
+		if (modifiedDate1 != null) {
 			selectConditionStep = selectConditionStep.and(
 				DSL.field(
 					"modifiedDate"
 				).ge(
-					fromModifiedDate
+					modifiedDate1
 				));
 		}
 
@@ -329,7 +328,7 @@ public class DXPEntityRepositoryImpl
 			DSL.field(
 				"modifiedDate"
 			).le(
-				toModifiedDate
+				modifiedDate2
 			));
 
 		return selectConditionStep.orderBy(

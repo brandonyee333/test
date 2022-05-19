@@ -42,9 +42,8 @@ public interface CustomDXPEntityRepository {
 		DXPEntity.Type type);
 
 	@Cacheable
-	public long countByTypeAndModifiedDateBetween(
-		@Nullable Date fromModifiedDate, Date toModifiedDate,
-		DXPEntity.Type type);
+	public long countByModifiedDateBetweenAndType(
+		@Nullable Date modifiedDate1, Date modifiedDate2, DXPEntity.Type type);
 
 	public void delete(DXPEntity dxpEntity);
 
@@ -87,9 +86,9 @@ public interface CustomDXPEntityRepository {
 		String memebershipClassName, Long membershipId);
 
 	@Cacheable
-	public List<DXPEntity> findByTypeAndModifiedDateBetween(
-		@Nullable Date fromModifiedDate, Date toModifiedDate,
-		DXPEntity.Type type, Pageable pageable);
+	public List<DXPEntity> findByModifiedDateBetweenAndType(
+		@Nullable Date modifiedDate1, Date modifiedDate2, DXPEntity.Type type,
+		Pageable pageable);
 
 	@Cacheable
 	public List<DXPEntity> searchByDataSourceIdsAndKeywordsAndType(
