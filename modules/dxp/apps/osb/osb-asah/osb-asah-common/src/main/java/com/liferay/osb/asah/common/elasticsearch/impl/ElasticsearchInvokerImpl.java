@@ -796,9 +796,9 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		SearchHit[] hits = searchHits.getHits();
+		SearchHit[] searchHitsArray = searchHits.getHits();
 
-		for (SearchHit searchHit : hits) {
+		for (SearchHit searchHit : searchHitsArray) {
 			jsonArray.put(new JSONObject(searchHit.getSourceAsString()));
 		}
 
@@ -846,17 +846,17 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 			SearchHits searchHits = searchResponse.getHits();
 
-			SearchHit[] hits = searchHits.getHits();
+			SearchHit[] searchHitsArray = searchHits.getHits();
 
-			for (SearchHit searchHit : hits) {
+			for (SearchHit searchHit : searchHitsArray) {
 				jsonArray.put(new JSONObject(searchHit.getSourceAsString()));
 			}
 
-			if (hits.length < 10000) {
+			if (searchHitsArray.length < 10000) {
 				break;
 			}
 
-			SearchHit searchHit = hits[hits.length - 1];
+			SearchHit searchHit = searchHitsArray[searchHitsArray.length - 1];
 
 			fieldValues = searchHit.getSortValues();
 		}

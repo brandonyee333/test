@@ -172,15 +172,15 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 
 		SearchHits searchHits = individualsSearchResponse.getHits();
 
-		SearchHit[] hits = searchHits.getHits();
+		SearchHit[] searchHitsArray = searchHits.getHits();
 
-		if (hits.length == 0) {
+		if (searchHitsArray.length == 0) {
 			return new JSONArray();
 		}
 
 		Map<String, JSONObject> identityMap = new HashMap<>();
 
-		for (SearchHit searchHit : hits) {
+		for (SearchHit searchHit : searchHitsArray) {
 			JSONObject individualJSONObject = new JSONObject(
 				searchHit.getSourceAsString());
 
@@ -211,7 +211,7 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 			}
 		}
 
-		SearchHit lastSearchHit = hits[hits.length - 1];
+		SearchHit lastSearchHit = searchHitsArray[searchHitsArray.length - 1];
 
 		_lastIndividualId = lastSearchHit.getId();
 

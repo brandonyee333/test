@@ -292,13 +292,13 @@ public class FinalizeUserSessionArm {
 
 			SearchHits searchHits = searchResponse.getHits();
 
-			SearchHit[] hits = searchHits.getHits();
+			SearchHit[] searchHitsArray = searchHits.getHits();
 
-			if (hits.length == 0) {
+			if (searchHitsArray.length == 0) {
 				break;
 			}
 
-			for (SearchHit searchHit : hits) {
+			for (SearchHit searchHit : searchHitsArray) {
 				pagesJSONArray.put(
 					new JSONObject(searchHit.getSourceAsString()));
 			}

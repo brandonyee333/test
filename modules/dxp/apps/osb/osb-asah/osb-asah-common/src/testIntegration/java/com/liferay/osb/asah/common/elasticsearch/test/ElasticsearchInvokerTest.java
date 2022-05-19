@@ -405,11 +405,11 @@ public class ElasticsearchInvokerTest
 
 		Assertions.assertEquals(3, HitsUtil.getTotalHitsCount(searchHits));
 
-		SearchHit[] hits = searchHits.getHits();
+		SearchHit[] searchHitsArray = searchHits.getHits();
 
-		int hitsLength = hits.length;
+		int searchHitsArrayLength = searchHitsArray.length;
 
-		Assertions.assertEquals(0, hitsLength);
+		Assertions.assertEquals(0, searchHitsArrayLength);
 
 		Aggregations aggregations = searchResponse.getAggregations();
 

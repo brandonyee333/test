@@ -109,7 +109,7 @@ public class JSONArrayIterator {
 
 			SearchHits searchHits = searchResponse.getHits();
 
-			SearchHit[] hits = searchHits.getHits();
+			SearchHit[] searchHitsArray = searchHits.getHits();
 
 			if (_queueMonitorConsumer != null) {
 				long remaining =
@@ -119,11 +119,11 @@ public class JSONArrayIterator {
 				_queueMonitorConsumer.accept((int)remaining);
 			}
 
-			if (hits.length == 0) {
+			if (searchHitsArray.length == 0) {
 				return;
 			}
 
-			Stream<SearchHit> stream = Arrays.stream(hits);
+			Stream<SearchHit> stream = Arrays.stream(searchHitsArray);
 
 			JSONArray jsonArray = new JSONArray(
 				stream.map(
