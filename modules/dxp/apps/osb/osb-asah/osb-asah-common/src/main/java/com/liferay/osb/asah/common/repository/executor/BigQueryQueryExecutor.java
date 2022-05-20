@@ -204,13 +204,13 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 			return _toDateValue(fieldValue);
 		}
-		else if (field.getType() == LegacySQLTypeName.STRING) {
-			return _toStringValue(fieldValue);
-		}
 		else if ((field.getType() == LegacySQLTypeName.INTEGER) ||
 				 (field.getType() == LegacySQLTypeName.NUMERIC)) {
 
 			return _toLongValue(fieldValue);
+		}
+		else if (field.getType() == LegacySQLTypeName.STRING) {
+			return _toStringValue(fieldValue);
 		}
 
 		return fieldValue.getValue();
