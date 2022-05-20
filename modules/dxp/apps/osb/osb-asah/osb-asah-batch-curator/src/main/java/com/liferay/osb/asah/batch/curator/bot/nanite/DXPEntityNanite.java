@@ -160,10 +160,6 @@ public class DXPEntityNanite extends BaseNanite {
 				fieldsJSONObject.put("createDate", DateUtil.newDateString());
 			}
 
-			if (fieldsJSONObject.has("expando")) {
-				fieldsJSONObject.remove("expando");
-			}
-
 			if (fieldsJSONObject.has("memberships")) {
 				JSONObject membershipJSONObject =
 					fieldsJSONObject.getJSONObject("memberships");
@@ -182,6 +178,10 @@ public class DXPEntityNanite extends BaseNanite {
 
 				fieldsJSONObject.remove("memberships");
 			}
+		}
+
+		if (fieldsJSONObject.has("expando")) {
+			fieldsJSONObject.remove("expando");
 		}
 
 		Map<String, Object> map = fieldsJSONObject.toMap();
