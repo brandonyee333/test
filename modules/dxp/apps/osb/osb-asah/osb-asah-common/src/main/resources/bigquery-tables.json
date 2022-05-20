@@ -581,6 +581,35 @@
 		}
 	},
 	"identity": {
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "createDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "emailAddressHashed",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userId",
+				"type": "STRING"
+			}
+		]
+	},
+	"identityActivity": {
 		"clusteringFields": [
 			"datasourceId",
 			"channelId"
@@ -613,13 +642,8 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "projectId",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "userId",
-				"type": "STRING"
+				"name": "identityId",
+				"type": "INT64"
 			}
 		]
 	},

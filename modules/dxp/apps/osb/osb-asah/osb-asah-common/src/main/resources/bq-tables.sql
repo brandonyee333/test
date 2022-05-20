@@ -95,14 +95,19 @@ CREATE TABLE IF NOT EXISTS BQGroup (
 	name TEXT
 );
 
-
 CREATE TABLE IF NOT EXISTS BQIdentity (
-	channelId BIGINT,
-	createDate TIMESTAMP,
-	dataSourceId BIGINT,
-	emailAddressHashed TEXT,
-	id TEXT PRIMARY KEY,
-	userId TEXT
+    createDate TIMESTAMP,
+    emailAddressHashed TEXT,
+    id TEXT PRIMARY KEY,
+    userId TEXT
+);
+
+CREATE TABLE IF NOT EXISTS BQIdentityActivity (
+    channelId BIGINT,
+    createDate TIMESTAMP,
+    dataSourceId BIGINT,
+    id TEXT PRIMARY KEY,
+    identityId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQMembership (
