@@ -15,9 +15,11 @@
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
 import com.liferay.osb.asah.common.entity.BQIdentity;
+import com.liferay.osb.asah.common.entity.BQIdentityActivity;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
@@ -71,7 +73,14 @@ public class IdentityIngestionNanite {
 			));
 	}
 
-	private boolean _isNew(String id) {
+	private boolean _isBQIdentityActivityNew(String id) {
+		Optional<BQIdentityActivity> optional =
+			_bqIdentityActivityRepository.findById(id);
+
+		return !optional.isPresent();
+	}
+
+	private boolean _isBQIdentityNew(String id) {
 		Optional<BQIdentity> optional = _bqIdentityRepository.findById(id);
 
 		return !optional.isPresent();
@@ -86,31 +95,47 @@ public class IdentityIngestionNanite {
 
 		BQIdentity bqIdentity = new BQIdentity();
 
+		bqIdentity.setCreateDate(new Date());
+
+		bqIdentity.setEmailAddressHashed(
+			jsonObject.getString("emailAddressHashed"));
+
+		String userId = jsonObject.getString("userId");
+
+		bqIdentity.setUserId(userId);
+
+		String id = DigestUtils.sha256Hex(String.join("#", projectId, userId));
+
+		bqIdentity.setId(id);
+		bqIdentity.setIsNew(_isBQIdentityNew(id));
+
+		bqIdentity = _bqIdentityRepository.save(bqIdentity);
+
+		BQIdentityActivity bqIdentityActivity = new BQIdentityActivity();
+
 		String channelId = jsonObject.getString("channelId");
 
-		bqIdentity.setChannelId(Long.valueOf(channelId));
+		bqIdentityActivity.setChannelId(Long.valueOf(channelId));
 
-		bqIdentity.setCreateDate(new Date());
+		bqIdentityActivity.setCreateDate(new Date());
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
-		bqIdentity.setDataSourceId(Long.valueOf(dataSourceId));
+		bqIdentityActivity.setDataSourceId(Long.valueOf(dataSourceId));
 
-		String emailAddressHashed = jsonObject.getString("emailAddressHashed");
+		id = String.join(
+			"#", projectId, bqIdentity.getId(), dataSourceId, channelId);
 
-		bqIdentity.setEmailAddressHashed(emailAddressHashed);
+		bqIdentityActivity.setId(id);
 
-		String id = DigestUtils.sha256Hex(
-			String.join(
-				"#", projectId, dataSourceId, channelId, emailAddressHashed));
+		bqIdentityActivity.setIdentityId(bqIdentity.getId());
+		bqIdentityActivity.setIsNew(_isBQIdentityActivityNew(id));
 
-		bqIdentity.setId(id);
-		bqIdentity.setIsNew(_isNew(id));
-
-		bqIdentity.setUserId(jsonObject.getString("userId"));
-
-		_bqIdentityRepository.save(bqIdentity);
+		_bqIdentityActivityRepository.save(bqIdentityActivity);
 	}
+
+	@Autowired
+	private BQIdentityActivityRepository _bqIdentityActivityRepository;
 
 	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;

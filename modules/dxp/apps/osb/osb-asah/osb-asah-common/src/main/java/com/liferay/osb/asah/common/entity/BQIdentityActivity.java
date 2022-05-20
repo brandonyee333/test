@@ -23,10 +23,15 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
- * @author Marcos Martins
+ * @author Ivica Cardic
  */
 @Table
-public class BQIdentity implements Persistable<String> {
+public class BQIdentityActivity implements Persistable<String> {
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getChannelId() {
+		return _channelId;
+	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
@@ -38,8 +43,8 @@ public class BQIdentity implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getEmailAddressHashed() {
-		return _emailAddressHashed;
+	public Long getDataSourceId() {
+		return _dataSourceId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -50,8 +55,8 @@ public class BQIdentity implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getUserId() {
-		return _userId;
+	public String getIdentityId() {
+		return _identityId;
 	}
 
 	@Override
@@ -63,41 +68,48 @@ public class BQIdentity implements Persistable<String> {
 		return false;
 	}
 
+	public void setChannelId(Long channelId) {
+		_channelId = channelId;
+	}
+
 	public void setCreateDate(Date createDate) {
 		if (createDate != null) {
 			_createDate = new Date(createDate.getTime());
 		}
 	}
 
-	public void setEmailAddressHashed(String emailAddressHashed) {
-		_emailAddressHashed = emailAddressHashed;
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
 	}
 
 	public void setId(String id) {
 		_id = id;
 	}
 
+	public void setIdentityId(String identityId) {
+		_identityId = identityId;
+	}
+
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
 	}
 
-	public void setUserId(String userId) {
-		_userId = userId;
-	}
+	@Transient
+	private Long _channelId;
 
 	@Transient
 	private Date _createDate;
 
 	@Transient
-	private String _emailAddressHashed;
+	private Long _dataSourceId;
 
 	@Transient
 	private String _id;
 
 	@Transient
-	private Boolean _isNew;
+	private String _identityId;
 
 	@Transient
-	private String _userId;
+	private Boolean _isNew;
 
 }
