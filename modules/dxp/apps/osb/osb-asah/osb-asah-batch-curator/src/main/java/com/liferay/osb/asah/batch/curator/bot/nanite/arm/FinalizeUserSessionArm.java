@@ -271,20 +271,28 @@ public class FinalizeUserSessionArm {
 
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-		searchSourceBuilder.query(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("sessionId", userSessionId)
-			).filter(
-				QueryBuilders.termQuery("dataSourceId", dataSourceId)
-			));
-
 		searchSourceBuilder.size(10000);
 		searchSourceBuilder.sort("lastEventDate");
 
-		String id = "0";
+		String lastEventDate = null;
 
 		while (true) {
-			searchSourceBuilder.searchAfter(new Object[] {id});
+			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("sessionId", userSessionId)
+			).filter(
+				QueryBuilders.termQuery("dataSourceId", dataSourceId)
+			);
+
+			if (lastEventDate != null) {
+				boolQueryBuilder.filter(
+					QueryBuilders.rangeQuery(
+						"lastEventDate"
+					).gt(
+						lastEventDate
+					));
+			}
+
+			searchSourceBuilder.query(boolQueryBuilder);
 
 			SearchResponse searchResponse =
 				_cerebroInfoElasticsearchInvoker.search(
@@ -306,7 +314,7 @@ public class FinalizeUserSessionArm {
 			JSONObject jsonObject = pagesJSONArray.getJSONObject(
 				pagesJSONArray.length() - 1);
 
-			id = jsonObject.getString("id");
+			lastEventDate = jsonObject.getString("lastEventDate");
 		}
 
 		return pagesJSONArray;
