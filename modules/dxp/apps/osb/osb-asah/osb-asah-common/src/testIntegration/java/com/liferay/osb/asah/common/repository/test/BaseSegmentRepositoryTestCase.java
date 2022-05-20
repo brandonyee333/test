@@ -271,6 +271,14 @@ public abstract class BaseSegmentRepositoryTestCase
 	}
 
 	@Test
+	public void testFindIdByNameInAndStatus() {
+		List<Long> ids = _segmentRepository.findIdByNameInAndStatus(
+			Arrays.asList("Segment 1", "Segment 2"), "STARTED");
+
+		Assertions.assertEquals(2, ids.size(), ids.toString());
+	}
+
+	@Test
 	public void testSearchDynamicSegments() {
 		List<Segment> segments = _segmentRepository.searchDynamicSegments(
 			Collections.singleton(
