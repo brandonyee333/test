@@ -10,7 +10,8 @@
 			}
 		],
 		"id": "123456789",
-		"name": "Site 1"
+		"name": "Site 1",
+		"state": "READY"
 	},
 	{
 		"createDate": "2020-01-29T08:30:00.000Z",
@@ -30,7 +31,8 @@
 			}
 		],
 		"id": "4324324324",
-		"name": "DXP Combinated Property"
+		"name": "DXP Combinated Property",
+		"state": "READY"
 	},
 	{
 		"createDate": "2020-01-29T08:30:00.000Z",
@@ -50,6 +52,7 @@
 			}
 		],
 		"id": "321321321",
-		"name": "Portal Combinated Property"
+		"name": "Portal Combinated Property",
+		"state": "READY"
 	}
 ]

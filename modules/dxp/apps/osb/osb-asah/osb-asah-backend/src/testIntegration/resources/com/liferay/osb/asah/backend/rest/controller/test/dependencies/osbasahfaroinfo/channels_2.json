@@ -10,6 +10,7 @@
 			}
 		],
 		"id": "1",
-		"name": "Site 1"
+		"name": "Site 1",
+		"state": "READY"
 	}
 ]
