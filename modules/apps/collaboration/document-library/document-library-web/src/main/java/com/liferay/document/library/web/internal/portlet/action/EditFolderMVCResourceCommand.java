@@ -87,9 +87,10 @@ public class EditFolderMVCResourceCommand implements MVCResourceCommand {
 		long repositoryId = ParamUtil.getLong(resourceRequest, "repositoryId");
 		long folderId = ParamUtil.getLong(resourceRequest, "folderId");
 
-		File file = null;
 		InputStream inputStream = null;
 		String zipFileName = null;
+
+		ZipWriter zipWriter = ZipWriterFactoryUtil.getZipWriter();
 
 		try {
 			if (folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
@@ -101,13 +102,9 @@ public class EditFolderMVCResourceCommand implements MVCResourceCommand {
 				zipFileName = themeDisplay.getScopeGroupName() + ".zip";
 			}
 
-			ZipWriter zipWriter = ZipWriterFactoryUtil.getZipWriter();
-
 			zipFolder(repositoryId, folderId, StringPool.SLASH, zipWriter);
 
-			file = zipWriter.getFile();
-
-			inputStream = new FileInputStream(file);
+			inputStream = new FileInputStream(zipWriter.getFile());
 
 			PortletResponseUtil.sendFile(
 				resourceRequest, resourceResponse, zipFileName, inputStream,
@@ -116,9 +113,9 @@ public class EditFolderMVCResourceCommand implements MVCResourceCommand {
 		finally {
 			StreamUtil.cleanUp(inputStream);
 
-			if (file != null) {
-				file.delete();
-			}
+			File file = zipWriter.getFile();
+
+			file.delete();
 		}
 	}
 
