@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -66,6 +67,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -211,15 +213,16 @@ public class ChannelDog extends BaseFaroInfoDog {
 	}
 
 	public Page<Channel> getChannelPage(
-		String name, int page, int size, String[] sorts) {
+		@Nullable String name, int page, int size, String[] sorts) {
 
 		return PageableExecutionUtils.getPage(
 			_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
-				name, PageRequest.of(page, size, _getSort(sorts)),
+				StringUtil.get(name),
+				PageRequest.of(page, size, _getSort(sorts)),
 				"IN_PROGRESS_DELETING"),
 			PageRequest.of(page, size, _getSort(sorts)),
 			() -> _channelRepository.countByNameContainingIgnoreCaseAndStateNot(
-				name, "IN_PROGRESS_DELETING"));
+				StringUtil.get(name), "IN_PROGRESS_DELETING"));
 	}
 
 	public List<Channel> getChannels(List<Long> channelIds) {
