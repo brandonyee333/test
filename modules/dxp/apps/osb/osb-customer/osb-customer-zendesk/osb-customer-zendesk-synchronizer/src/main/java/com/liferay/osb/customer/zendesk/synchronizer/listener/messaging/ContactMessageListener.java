@@ -168,6 +168,12 @@ public class ContactMessageListener extends BaseMessageListener {
 				!name.equals(
 					ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
 
+				if (ArrayUtil.contains(
+						ContactRoleConstants.SUPPORT_CONTACT_ROLES, name)) {
+
+					_customerSynchronizer.update(user);
+				}
+
 				return;
 			}
 
