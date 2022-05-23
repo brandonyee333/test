@@ -182,7 +182,7 @@ public class AccountsRestController extends BaseRestController {
 		return _toSegmentPageDTO(
 			new SegmentDTO(
 				_bqMembershipChangeDog.getBQMembershipChanges(segments),
-				segments),
+				_segmentDog.getLastActivityDates(segments), segments),
 			segmentsPage);
 	}
 

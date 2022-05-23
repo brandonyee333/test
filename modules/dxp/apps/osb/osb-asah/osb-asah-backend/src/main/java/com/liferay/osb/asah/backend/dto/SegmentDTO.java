@@ -43,7 +43,10 @@ public class SegmentDTO {
 	public SegmentDTO() {
 	}
 
-	public SegmentDTO(BQMembershipChange bqMembershipChange, Segment segment) {
+	public SegmentDTO(
+		BQMembershipChange bqMembershipChange, Date lastActivityDate,
+		Segment segment) {
+
 		AuthorDTO authorDTO = new AuthorDTO(segment);
 
 		if (!authorDTO.isEmpty()) {
@@ -67,13 +70,14 @@ public class SegmentDTO {
 			_knownIndividualsCount = 0L;
 		}
 
+		_lastActivityDate = lastActivityDate;
+
 		_channelId = StringUtil.get(segment.getChannelId(), null);
 		_createDate = segment.getCreateDate();
 		_filter = segment.getFilter();
 		_filterMetadata = segment.getFilterMetadata();
 		_id = StringUtil.get(segment.getId(), null);
 		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
-		_lastActivityDate = segment.getLastActivityDate();
 		_modifiedDate = segment.getModifiedDate();
 		_name = segment.getName();
 		_referencedAssetDataSourceIds = SetUtil.map(
@@ -102,13 +106,17 @@ public class SegmentDTO {
 
 	public SegmentDTO(
 		Map<Long, BQMembershipChange> bqMembershipChangeMap,
-		List<Segment> segments) {
+		Map<Long, Date> lastActivityDateMap, List<Segment> segments) {
 
 		_segmentDTOs = SetUtil.map(
 			segments,
-			segment -> new SegmentDTO(
-				bqMembershipChangeMap.getOrDefault(segment.getId(), null),
-				segment));
+			segment -> {
+				Long segmentId = segment.getId();
+
+				return new SegmentDTO(
+					bqMembershipChangeMap.getOrDefault(segmentId, null),
+					lastActivityDateMap.get(segmentId), segment);
+			});
 	}
 
 	public SegmentDTO(Set<SegmentDTO> segmentDTOs) {

@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -261,21 +260,6 @@ public class IndividualsRestController extends BaseRestController {
 			return _toSegmentDTOPageDTO(segmentsPage);
 		}
 
-		List<Segment> segments = segmentsPage.getContent();
-
-		Map<Long, BQMembershipChange> bqMembershipChangeMap =
-			_membershipChangeDog.getBQMembershipChanges(segments);
-
-		Set<SegmentDTO> segmentDTOs = new LinkedHashSet<>();
-
-		Stream<Segment> stream = segments.stream();
-
-		stream.forEachOrdered(
-			segment -> segmentDTOs.add(
-				new SegmentDTO(
-					bqMembershipChangeMap.getOrDefault(segment.getId(), null),
-					segment)));
-
 		Map<Long, JSONObject> membershipsJSONObjects = new HashMap<>();
 
 		String[] expandParts = expand.split(",");
@@ -291,11 +275,19 @@ public class IndividualsRestController extends BaseRestController {
 			}
 		}
 
-		for (SegmentDTO segmentDTO : segmentDTOs) {
+		List<Segment> segments = segmentsPage.getContent();
+
+		SegmentDTO segmentDTO1 = new SegmentDTO(
+			_membershipChangeDog.getBQMembershipChanges(segments),
+			_segmentDog.getLastActivityDates(segments), segments);
+
+		Set<SegmentDTO> segmentDTOs = segmentDTO1.getSegmentDTOs();
+
+		for (SegmentDTO segmentDTO2 : segmentDTOs) {
 			Map<String, Object> expandMap = new HashMap<>();
 
 			JSONObject membershipJSONObject = membershipsJSONObjects.get(
-				Long.valueOf(segmentDTO.getId()));
+				Long.valueOf(segmentDTO2.getId()));
 
 			if (membershipJSONObject != null) {
 				expandMap.put(
@@ -304,7 +296,7 @@ public class IndividualsRestController extends BaseRestController {
 			}
 
 			if (!expandMap.isEmpty()) {
-				segmentDTO.setEmbedded(expandMap);
+				segmentDTO2.setEmbedded(expandMap);
 			}
 		}
 
@@ -355,7 +347,7 @@ public class IndividualsRestController extends BaseRestController {
 			"_embedded",
 			new SegmentDTO(
 				_membershipChangeDog.getBQMembershipChanges(segments),
-				segments),
+				_segmentDog.getLastActivityDates(segments), segments),
 			segmentsPage.getNumber(), segmentsPage.getSize(),
 			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
 	}

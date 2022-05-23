@@ -188,7 +188,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		SegmentDTO segmentDTO = new SegmentDTO(
 			_bqMembershipChangeDog.getLastBeforeTodayByIndividualSegmentId(id),
-			segment);
+			segmentDog.getLastActivityDate(segment), segment);
 
 		if (StringUtils.isNotEmpty(expand)) {
 			String[] expandParts = expand.split(",");
@@ -357,7 +357,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			"_embedded",
 			new SegmentDTO(
 				_bqMembershipChangeDog.getBQMembershipChanges(segments),
-				segments),
+				_segmentDog.getLastActivityDates(segments), segments),
 			segmentsPage.getNumber(), segmentsPage.getSize(),
 			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
 	}

@@ -422,7 +422,7 @@ public class IndividualSegmentsRestControllerTest
 				new SegmentDTO(
 					_membershipChangeDog.
 						getLastBeforeTodayByIndividualSegmentId(segmentId),
-					segment)),
+					_segmentDog.getLastActivityDate(segment), segment)),
 			JSONObject.class);
 
 		Assertions.assertEquals(
@@ -442,7 +442,7 @@ public class IndividualSegmentsRestControllerTest
 				new SegmentDTO(
 					_membershipChangeDog.
 						getLastBeforeTodayByIndividualSegmentId(segmentId),
-					segment)),
+					_segmentDog.getLastActivityDate(segment), segment)),
 			JSONObject.class);
 
 		Assertions.assertEquals("READY", responseJSONObject.getString("state"));
