@@ -245,6 +245,41 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return segmentOptional.orElse(null);
 	}
 
+	public Date getLastActivityDate(Segment segment) {
+		Long channelId = segment.getChannelId();
+
+		List<Individual> searchIndividuals = _individualDog.searchIndividuals(
+			channelId, segment.getIncludeAnonymousUsers(), segment.getId(), 0,
+			1, new String[] {"lastActivityDate", "desc"});
+
+		if (searchIndividuals.isEmpty()) {
+			return null;
+		}
+
+		Individual individual = searchIndividuals.get(0);
+
+		for (Individual.ActivityDate lastActivityDate :
+				individual.getLastActivityDates()) {
+
+			if (Objects.equals(lastActivityDate.getChannelId(), channelId)) {
+				return lastActivityDate.getActivityDate();
+			}
+		}
+
+		return null;
+	}
+
+	public Map<Long, Date> getLastActivityDates(List<Segment> segments) {
+		Map<Long, Date> lastActivityDateMap = new HashMap();
+
+		for (Segment segment : segments) {
+			lastActivityDateMap.put(
+				segment.getId(), getLastActivityDate(segment));
+		}
+
+		return lastActivityDateMap;
+	}
+
 	public List<Long> getReferencedAssetIds() {
 		return _segmentRepository.findReferencedAssetIds();
 	}
@@ -953,34 +988,36 @@ public class SegmentDog extends BaseFaroInfoDog {
 			return;
 		}
 
-		Account account = _accountDog.getAccount(
-			Long.valueOf(name.substring(_ACCOUNT_PREFIX.length())), null);
-
 		BQMembershipChange bqMembershipChange =
 			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentId(
 				segment.getId());
 
-		if (Objects.nonNull(segment.getLastActivityDate())) {
-			List<Individual.ActivitiesCount> individualActivitiesCounts =
-				_individualDog.getActivitiesCounts(
-					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-					segment.getId());
+		if (bqMembershipChange == null) {
+			return;
+		}
 
-			if (!individualActivitiesCounts.isEmpty()) {
-				Set<Account.AccountActivityCount> activitiesCounts =
-					new HashSet<>();
+		Account account = _accountDog.getAccount(
+			Long.valueOf(name.substring(_ACCOUNT_PREFIX.length())), null);
 
-				for (Individual.ActivitiesCount individualActivitiesCount :
-						individualActivitiesCounts) {
+		List<Individual.ActivitiesCount> individualActivitiesCounts =
+			_individualDog.getActivitiesCounts(
+				BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
+				segment.getId());
 
-					activitiesCounts.add(
-						new Account.AccountActivityCount(
-							individualActivitiesCount.getActivitiesCount(),
-							individualActivitiesCount.getChannelId()));
-				}
+		if (!individualActivitiesCounts.isEmpty()) {
+			Set<Account.AccountActivityCount> activitiesCounts =
+				new HashSet<>();
 
-				account.setActivitiesCounts(activitiesCounts);
+			for (Individual.ActivitiesCount individualActivitiesCount :
+					individualActivitiesCounts) {
+
+				activitiesCounts.add(
+					new Account.AccountActivityCount(
+						individualActivitiesCount.getActivitiesCount(),
+						individualActivitiesCount.getChannelId()));
 			}
+
+			account.setActivitiesCounts(activitiesCounts);
 		}
 
 		account.setIndividualsCount(bqMembershipChange.getIndividualsCount());
