@@ -70,7 +70,6 @@ public class Segment implements Persistable<Long> {
 			Objects.equals(_id, segment._id) &&
 			Objects.equals(
 				_includeAnonymousUsers, segment._includeAnonymousUsers) &&
-			Objects.equals(_lastActivityDate, segment._lastActivityDate) &&
 			Objects.equals(_modifiedDate, segment._modifiedDate) &&
 			Objects.equals(_name, segment._name) &&
 			Objects.equals(
@@ -162,19 +161,6 @@ public class Segment implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean getIncludeAnonymousUsers() {
 		return _includeAnonymousUsers;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
-	public Date getLastActivityDate() {
-		if (_lastActivityDate == null) {
-			return null;
-		}
-
-		return new Date(_lastActivityDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -277,7 +263,7 @@ public class Segment implements Persistable<Long> {
 	public int hashCode() {
 		return Objects.hash(
 			_author, _channelId, _createDate, _filter, _filterMetadata, _id,
-			_includeAnonymousUsers, _lastActivityDate, _modifiedDate, _name,
+			_includeAnonymousUsers, _modifiedDate, _name,
 			_referencedAssetDataSourceIds, _referencedAssetIds,
 			_referencedFieldMappingIds, _referencedGroupIds,
 			_referencedOrganizationIds, _referencedRoleIds, _referencedTeamIds,
@@ -347,12 +333,6 @@ public class Segment implements Persistable<Long> {
 
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
-	}
-
-	public void setLastActivityDate(Date lastActivityDate) {
-		if (lastActivityDate != null) {
-			_lastActivityDate = new Date(lastActivityDate.getTime());
-		}
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
@@ -461,9 +441,6 @@ public class Segment implements Persistable<Long> {
 
 	@Transient
 	private Boolean _isNew;
-
-	@Transient
-	private Date _lastActivityDate;
 
 	@Transient
 	private Date _modifiedDate;

@@ -474,7 +474,6 @@ CREATE TABLE IF NOT EXISTS Segment (
 	filter TEXT,
 	filterMetadata TEXT,
 	includeAnonymousUsers BOOLEAN,
-	lastActivityDate TIMESTAMPTZ,
 	modifiedDate TIMESTAMPTZ,
 	name TEXT,
 	referencedAssetDataSourceIds BIGINT[],

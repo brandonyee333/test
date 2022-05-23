@@ -143,7 +143,6 @@ public abstract class BaseAccountRepositoryTestCase
 		segment.setCreateDate(new Date());
 		segment.setFilter(
 			"((dataSourceAccountPKs/accountPKs eq 'testAccount'))");
-		segment.setLastActivityDate(new Date());
 		segment.setModifiedDate(new Date());
 		segment.setName("Account: " + _accountId);
 		segment.setState("READY");

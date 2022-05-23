@@ -205,7 +205,6 @@ public abstract class BaseIndividualRepositoryTestCase
 		segment.setChannelId(channel1.getId());
 		segment.setCreateDate(date);
 		segment.setFilter("(demographics/field3/value eq 'field three')");
-		segment.setLastActivityDate(date);
 		segment.setModifiedDate(date);
 		segment.setName("Test Segment");
 		segment.setState("READY");
