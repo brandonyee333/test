@@ -63,7 +63,6 @@ public abstract class BaseSegmentRepositoryTestCase
 		segment1.setAuthorName("Test Test");
 		segment1.setCreateDate(DateUtil.addDays(new Date(), -5));
 		segment1.setFilter("(channelId eq '1')");
-		segment1.setLastActivityDate(new Date());
 		segment1.setName("Segment 1");
 		segment1.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
 		segment1.setReferencedAssetIds(SetUtil.of(3L, 4L));
@@ -325,24 +324,6 @@ public abstract class BaseSegmentRepositoryTestCase
 		segment = segments.get(2);
 
 		Assertions.assertEquals("Marcos Martins", segment.getAuthorName());
-	}
-
-	@Test
-	public void testUpdateRemoveLastActivityDate() {
-		Optional<Segment> segmentOptional = _segmentRepository.findById(
-			_segment1Id);
-
-		Segment segment = segmentOptional.get();
-
-		Assertions.assertNotNull(segment.getLastActivityDate());
-
-		_segmentRepository.updateRemoveLastActivityDate();
-
-		segmentOptional = _segmentRepository.findById(_segment1Id);
-
-		segment = segmentOptional.get();
-
-		Assertions.assertNull(segment.getLastActivityDate());
 	}
 
 	@Override

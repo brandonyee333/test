@@ -140,12 +140,4 @@
 				Segment.referencedAssetIds <> '{}'
 		]]>
 	</entry>
-	<entry key="Segment.updateRemoveLastActivityDate">
-		<![CDATA[
-			UPDATE
-				Segment
-			SET
-				lastActivityDate = NULL
-		]]>
-	</entry>
 </properties>

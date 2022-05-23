@@ -426,10 +426,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return segment;
 	}
 
-	public void resetSegments() {
-		_segmentRepository.updateRemoveLastActivityDate();
-	}
-
 	public Page<Segment> searchAccountSegmentPage(
 		Long accountId, @Nullable String filterString, int page, int size,
 		@Nullable String[] sorts) {

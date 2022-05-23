@@ -51,7 +51,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -755,14 +754,6 @@ public class ElasticsearchSegmentRepositoryImpl
 					QueryBuilders.termQuery("status", status)
 				),
 				pageable.getPageSize()));
-	}
-
-	@Override
-	public void updateRemoveLastActivityDate() {
-		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.matchAllQuery(), true,
-			new Script("ctx._source.remove('lastActivityDate');"),
-			getCollectionName());
 	}
 
 	@Override

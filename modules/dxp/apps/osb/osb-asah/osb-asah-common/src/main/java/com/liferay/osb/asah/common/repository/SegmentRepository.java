@@ -106,8 +106,4 @@ public interface SegmentRepository
 	@Cacheable
 	public List<Long> findReferencedAssetIds();
 
-	@CacheEvict(allEntries = true)
-	@Modifying
-	public void updateRemoveLastActivityDate();
-
 }
