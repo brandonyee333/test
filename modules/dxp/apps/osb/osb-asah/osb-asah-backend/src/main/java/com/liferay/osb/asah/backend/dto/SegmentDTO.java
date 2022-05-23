@@ -70,7 +70,12 @@ public class SegmentDTO {
 			_knownIndividualsCount = 0L;
 		}
 
-		_lastActivityDate = lastActivityDate;
+		if (lastActivityDate != null) {
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
+		else {
+			_lastActivityDate = null;
+		}
 
 		_channelId = StringUtil.get(segment.getChannelId(), null);
 		_createDate = segment.getCreateDate();
