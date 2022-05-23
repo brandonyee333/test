@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +38,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
+@Disabled
 public class EventHistogramDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@Ignore
 	@SQLResource(resourcePath = "test_events_count_histogram_last_24_hours.sql")
 	@Test
 	public void testTotalEventHistogramMetricsLast24Hours() {
@@ -61,7 +61,6 @@ public class EventHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@Ignore
 	@SQLResource(resourcePath = "test_events_count_histogram_last_30_days.sql")
 	@Test
 	public void testTotalEventHistogramMetricsLast30Days() {
@@ -103,7 +102,6 @@ public class EventHistogramDogTest
 			0);
 	}
 
-	@Ignore
 	@SQLResource(
 		resourcePath = "test_events_count_histogram_grouped_by_month.sql"
 	)
