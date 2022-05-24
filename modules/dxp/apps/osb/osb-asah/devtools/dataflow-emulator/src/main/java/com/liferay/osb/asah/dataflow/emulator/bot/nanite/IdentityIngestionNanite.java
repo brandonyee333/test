@@ -102,12 +102,12 @@ public class IdentityIngestionNanite {
 
 		String userId = jsonObject.getString("userId");
 
-		bqIdentity.setUserId(userId);
-
 		String id = DigestUtils.sha256Hex(String.join("#", projectId, userId));
 
 		bqIdentity.setId(id);
 		bqIdentity.setIsNew(_isBQIdentityNew(id));
+
+		bqIdentity.setUserId(userId);
 
 		bqIdentity = _bqIdentityRepository.save(bqIdentity);
 
