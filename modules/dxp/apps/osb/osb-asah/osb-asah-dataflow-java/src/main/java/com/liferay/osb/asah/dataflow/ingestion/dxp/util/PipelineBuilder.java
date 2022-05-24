@@ -17,12 +17,15 @@ package com.liferay.osb.asah.dataflow.ingestion.dxp.util;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.BaseDXPEntity;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BaseParserPTransform;
+import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BigQueryInsertErrorWriterPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BigQueryWriterPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.FixedDurationOrCountWindowPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.GCSWriterPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.PubsubReaderPTransform;
 
 import org.apache.beam.sdk.Pipeline;
+import org.apache.beam.sdk.io.gcp.bigquery.BigQueryInsertError;
+import org.apache.beam.sdk.io.gcp.bigquery.WriteResult;
 import org.apache.beam.sdk.transforms.Values;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PCollectionTuple;
@@ -51,11 +54,29 @@ public class PipelineBuilder {
 		_parsedMessagesPCollectionTuple = _pubsubMessagesPCollection.apply(
 			baseParserPTransform);
 
-		_parsedMessagesPCollectionTuple.get(
+		_writeResult = _parsedMessagesPCollectionTuple.get(
 			baseParserPTransform.getSuccessTupleTag()
 		).apply(
 			new BigQueryWriterPTransform<>(table)
 		);
+
+		return this;
+	}
+
+	public PipelineBuilder withFailedBigQueryItemsToGCS(
+		String gcsBucket, int shardCount, int triggerElementCount,
+		long triggerInterval) {
+
+		PCollection<BigQueryInsertError> failedInsertsWithErr =
+			_writeResult.getFailedInsertsWithErr();
+
+		PCollection<DXPEntityPubsubMessage> bigqueryInsertErrors =
+			failedInsertsWithErr.apply(
+				new BigQueryInsertErrorWriterPTransform());
+
+		_writeToGCS(
+			gcsBucket, bigqueryInsertErrors, shardCount, triggerElementCount,
+			triggerInterval);
 
 		return this;
 	}
@@ -121,5 +142,6 @@ public class PipelineBuilder {
 	private PCollectionTuple _parsedMessagesPCollectionTuple;
 	private final Pipeline _pipeline;
 	private PCollection<DXPEntityPubsubMessage> _pubsubMessagesPCollection;
+	private WriteResult _writeResult;
 
 }
