@@ -339,7 +339,7 @@ public class BQEventRepositoryImpl
 				DatePart.WEEK, eventDateField);
 		}
 
-		eventDateField = eventDateField.as("eventDate");
+		eventDateField = eventDateField.as("eventDateTrunc");
 
 		return _queryExecutor.queryForMap(
 			GetterUtil::getDateString,
