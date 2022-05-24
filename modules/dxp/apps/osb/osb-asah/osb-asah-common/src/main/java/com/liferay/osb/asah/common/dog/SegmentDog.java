@@ -246,11 +246,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public Date getLastActivityDate(Segment segment) {
-		Long channelId = segment.getChannelId();
-
 		List<Individual> searchIndividuals = _individualDog.searchIndividuals(
-			channelId, segment.getIncludeAnonymousUsers(), segment.getId(), 0,
-			1, new String[] {"lastActivityDate", "desc"});
+			segment.getChannelId(), segment.getIncludeAnonymousUsers(),
+			segment.getId(), 0, 1, new String[] {"lastActivityDate", "desc"});
 
 		if (searchIndividuals.isEmpty()) {
 			return null;
@@ -261,7 +259,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 		for (Individual.ActivityDate lastActivityDate :
 				individual.getLastActivityDates()) {
 
-			if (Objects.equals(lastActivityDate.getChannelId(), channelId)) {
+			if (Objects.equals(
+					lastActivityDate.getChannelId(), segment.getChannelId())) {
+
 				return lastActivityDate.getActivityDate();
 			}
 		}

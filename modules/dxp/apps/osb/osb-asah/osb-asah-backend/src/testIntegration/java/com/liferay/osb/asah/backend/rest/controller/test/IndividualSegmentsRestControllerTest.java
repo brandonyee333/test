@@ -414,14 +414,13 @@ public class IndividualSegmentsRestControllerTest
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(""));
 
-		Long segmentId = segment.getId();
-
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.putIndividualSegment(
-				segmentId,
+				segment.getId(),
 				new SegmentDTO(
 					_membershipChangeDog.
-						getLastBeforeTodayByIndividualSegmentId(segmentId),
+						getLastBeforeTodayByIndividualSegmentId(
+							segment.getId()),
 					_segmentDog.getLastActivityDate(segment), segment)),
 			JSONObject.class);
 

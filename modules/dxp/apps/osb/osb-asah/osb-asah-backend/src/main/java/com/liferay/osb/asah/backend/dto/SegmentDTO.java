@@ -70,19 +70,19 @@ public class SegmentDTO {
 			_knownIndividualsCount = 0L;
 		}
 
-		if (lastActivityDate != null) {
-			_lastActivityDate = new Date(lastActivityDate.getTime());
-		}
-		else {
-			_lastActivityDate = null;
-		}
-
 		_channelId = StringUtil.get(segment.getChannelId(), null);
 		_createDate = segment.getCreateDate();
 		_filter = segment.getFilter();
 		_filterMetadata = segment.getFilterMetadata();
 		_id = StringUtil.get(segment.getId(), null);
 		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
+
+		_lastActivityDate = null;
+
+		if (lastActivityDate != null) {
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
+
 		_modifiedDate = segment.getModifiedDate();
 		_name = segment.getName();
 		_referencedAssetDataSourceIds = SetUtil.map(
