@@ -81,7 +81,15 @@ public class DXPCommerceEntitiesIngestionPipeline {
 			dxpCommerceEntitiesIngestionPipelineOptions.getOrderBigQueryTable()
 		).withFailedParsedItemsToGCS(
 			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
-				"failed",
+				"failed/parse",
+			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerElementCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerIntervalDuration()
+		).withFailedBigQueryItemsToGCS(
+			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
+				"failed/bigquery",
 			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getTriggerElementCount(),
@@ -110,7 +118,15 @@ public class DXPCommerceEntitiesIngestionPipeline {
 				getProductBigQueryTable()
 		).withFailedParsedItemsToGCS(
 			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
-				"failed",
+				"failed/parse",
+			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerElementCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerIntervalDuration()
+		).withFailedBigQueryItemsToGCS(
+			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
+				"failed/bigquery",
 			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getTriggerElementCount(),
