@@ -28,6 +28,13 @@ import org.apache.beam.sdk.io.gcp.pubsub.PubsubMessage;
  */
 public class DXPEntityPubsubMessage implements Serializable {
 
+	public DXPEntityPubsubMessage(
+		Map<String, String> attributes, String payload) {
+
+		_attributes = new Attributes(attributes);
+		_payload = payload;
+	}
+
 	public DXPEntityPubsubMessage(PubsubMessage pubsubMessage) {
 		_attributes = new Attributes(pubsubMessage.getAttributeMap());
 		_payload = new String(
