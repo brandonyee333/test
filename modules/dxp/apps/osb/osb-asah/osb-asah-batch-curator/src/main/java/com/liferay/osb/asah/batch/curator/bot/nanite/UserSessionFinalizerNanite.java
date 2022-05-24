@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -69,29 +68,6 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 				"lastSuccessfulSessionFinalizerDate", "now-30m");
 
 		String dateString = DateUtil.newDateString();
-
-		JSONArrayIterator.of(
-			"user-sessions", _cerebroInfoElasticsearchInvoker,
-			userSessionJSONObject -> {
-				_finalizeUserSessionArm.updateActivitiesAndAssets(
-					_objectMapper.readValue(
-						userSessionJSONObject.toString(), UserSession.class));
-
-				return null;
-			}
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("completed", true)
-			).filter(
-				QueryBuilders.rangeQuery(
-					"completeDate"
-				).gt(
-					lastSuccessfulSessionFinalizerDate
-				)
-			).filter(
-				QueryBuilders.termQuery("finalized", true)
-			)
-		).iterate();
 
 		String userSessionId = null;
 
