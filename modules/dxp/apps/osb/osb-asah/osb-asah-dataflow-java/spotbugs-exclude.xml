@@ -6,6 +6,18 @@
 		<Class name="com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BaseParserPTransform$1" />
 	</Match>
 	<Match>
+		<Class name="com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BigQueryInsertErrorWriterPTransform$1" />
+	</Match>
+	<Match>
+		<Class name="com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BigQueryInsertErrorWriterPTransform$1$1" />
+	</Match>
+	<Match>
+		<Class name="com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BigQueryInsertErrorWriterPTransform$1$2" />
+	</Match>
+	<Match>
+		<Class name="com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BigQueryInsertErrorWriterPTransform$2" />
+	</Match>
+	<Match>
 		<Class name="com.liferay.osb.asah.dataflow.ingestion.dxp.transform.BigQueryWriterPTransform$1" />
 	</Match>
 	<Match>
