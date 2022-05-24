@@ -96,18 +96,17 @@ public class IdentityIngestionNanite {
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
-
 		bqIdentity.setEmailAddressHashed(
 			jsonObject.getString("emailAddressHashed"));
-
-		String userId = jsonObject.getString("userId");
-
-		bqIdentity.setUserId(userId);
 
 		String id = DigestUtils.sha256Hex(String.join("#", projectId, userId));
 
 		bqIdentity.setId(id);
 		bqIdentity.setIsNew(_isBQIdentityNew(id));
+
+		String userId = jsonObject.getString("userId");
+
+		bqIdentity.setUserId(userId);
 
 		bqIdentity = _bqIdentityRepository.save(bqIdentity);
 
