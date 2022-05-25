@@ -167,20 +167,10 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 
 		if (!force) {
 			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.rangeQuery(
-						"lastEventDate"
-					).lt(
-						"now-30m"
-					)
-				).should(
-					QueryBuilders.rangeQuery(
-						"lastEventDate"
-					).lt(
-						"now/d"
-					).timeZone(
-						_timeZoneDog.getTimeZoneId()
-					)
+				QueryBuilders.rangeQuery(
+					"lastEventDate"
+				).lt(
+					"now-30m"
 				));
 		}
 
@@ -207,16 +197,25 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 			)
 		);
 
-		if (userSessionId != null) {
+		if (!force) {
 			boolQueryBuilder = BoolQueryBuilderUtil.filter(
 				boolQueryBuilder
 			).filter(
 				QueryBuilders.rangeQuery(
+					"lastEventDate"
+				).gte(
+					"now/d"
+				)
+			);
+		}
+
+		if (userSessionId != null) {
+			boolQueryBuilder = boolQueryBuilder.filter(
+				QueryBuilders.rangeQuery(
 					"id"
 				).gt(
 					userSessionId
-				)
-			);
+				));
 		}
 
 		return boolQueryBuilder;
