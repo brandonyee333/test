@@ -128,6 +128,21 @@ definition {
 	}
 
 	@description = "Verify that the user is imported on localhost after LDAP sync"
+	macro verifyUserImportAfterImportIntervalTime {
+		if (!(isSet(intervalTime))) {
+			var intervalTime = "60000";
+		}
+
+		Pause(locator1 = "${intervalTime}");
+
+		User.openUsersAdmin();
+
+		Search.searchCP(searchTerm = "${userScreenName}");
+
+		AssertElementPresent(locator1 = "ContentRow#ENTRY_CONTENT_ROW_1");
+	}
+
+	@description = "Verify that the user is imported on localhost after LDAP sync"
 	macro verifyUserIsImported {
 		User.openUsersAdmin();
 
