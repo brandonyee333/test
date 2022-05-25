@@ -110,7 +110,7 @@ if (selLayout != null) {
 
 		<div class="layout-type">
 			<p class="small text-muted">
-				<%= LanguageUtil.get(request, layoutTypeResourceBundle, "layout.types." + type + ".description") %>
+				<%= LanguageUtil.get(request, layoutTypeResourceBundle, "layout.types." + HtmlUtil.escape(type) + ".description") %>
 			</p>
 
 			<%= layoutTypeController.includeEditContent(request, response, selLayout) %>
