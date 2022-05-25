@@ -344,6 +344,7 @@ definition {
 	@priority = "3"
 	test LDAPImportIntervalCanBeSetManually {
 		property apacheds.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "LDAP#DeactivatedUserStayDeactivatedAfterLDAPImport";
 
 		task ("Given: User enable DEBUG log level for LDAP related loggers") {
