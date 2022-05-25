@@ -5936,6 +5936,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 
 		if (user == null) {
+			PwdAuthenticator.pretendToAuthenticate();
+
 			return Authenticator.DNE;
 		}
 
