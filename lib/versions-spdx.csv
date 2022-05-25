@@ -193,7 +193,7 @@ com.liferay.portal.security.sso.openid.connect.impl.jar!asm.jar,5.0.4,ASM Core,"
 com.liferay.portal.security.sso.openid.connect.impl.jar!commons-lang3.jar,3.4,Apache Commons Lang,"Apache License, Version 2.0",
 com.liferay.portal.security.sso.openid.connect.impl.jar!javax.mail.jar,1.6.2,JavaMail API,COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0,
 com.liferay.portal.security.sso.openid.connect.impl.jar!jcip-annotations.jar,1.0-1,JCIP Annotations under Apache License,"Apache License, Version 2.0",
-com.liferay.portal.security.sso.openid.connect.impl.jar!json-smart.jar,2.3,JSON Small and Fast Parser,"The Apache Software License, Version 2.0",
+com.liferay.portal.security.sso.openid.connect.impl.jar!json-smart.jar,2.4.5,JSON Small and Fast Parser,"The Apache Software License, Version 2.0",
 com.liferay.portal.security.sso.openid.connect.impl.jar!lang-tag.jar,1.4.4,Nimbus LangTag,"The Apache Software License, Version 2.0",
 com.liferay.portal.security.sso.openid.connect.impl.jar!nimbus-jose-jwt.jar,6.7,Nimbus JOSE+JWT,"The Apache Software License, Version 2.0",
 com.liferay.portal.security.sso.openid.connect.impl.jar!oauth2-oidc-sdk.jar,6.5,OAuth 2.0 SDK with OpenID Connect extensions,"Apache License, version 2.0",
