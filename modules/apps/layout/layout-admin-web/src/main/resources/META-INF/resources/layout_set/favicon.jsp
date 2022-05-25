@@ -62,5 +62,23 @@ LayoutSet selLayoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
 				url: '<%= layoutsAdminDisplayContext.getFileEntryItemSelectorURL() %>',
 			});
 		});
+
+		const clearFaviconButton = document.getElementById(
+			'<portlet:namespace />clearFaviconButton'
+		);
+		const faviconFileEntryId = document.getElementById(
+			'<portlet:namespace />faviconFileEntryId'
+		);
+		const faviconFileEntryTitle = document.getElementById(
+			'<portlet:namespace />faviconFileEntryTitle'
+		);
+
+		if (clearFaviconButton && faviconFileEntryId && faviconFileEntryTitle) {
+			clearFaviconButton.addEventListener('click', (event) => {
+				faviconFileEntryTitle.value =
+					'<liferay-ui:message key="favicon-from-theme" />';
+				faviconFileEntryId.value = '0';
+			});
+		}
 	</aui:script>
 </div>
