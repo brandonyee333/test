@@ -77,8 +77,6 @@ public class SegmentDTO {
 		_id = StringUtil.get(segment.getId(), null);
 		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
 
-		_lastActivityDate = null;
-
 		if (lastActivityDate != null) {
 			_lastActivityDate = new Date(lastActivityDate.getTime());
 		}
