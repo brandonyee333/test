@@ -25,7 +25,7 @@ LayoutsPrototypeTreeDisplayContext layoutsTreeDisplayContext = new LayoutsProtot
 		<li class="tree-node">
 			<div class="tree-node-content <%= layoutsTreeDisplayContext.isLayoutSelected() ? "tree-node-selected" : StringPool.BLANK %>">
 				<span class="tree-label">
-					<aui:a cssClass="layout-tree" href="<%= layoutsTreeDisplayContext.getLayoutURL() %>" label="<%= layoutsTreeDisplayContext.getLayoutName() %>" />
+					<aui:a cssClass="layout-tree" href="<%= layoutsTreeDisplayContext.getLayoutURL() %>" label="<%= HtmlUtil.escape(layoutsTreeDisplayContext.getLayoutName()) %>" />
 
 					<div class="dropdown dropdown-menu-no-arrow layout-tree-options" data-updateable="true">
 						<a aria-expanded="false" class="dropdown-toggle icon-monospaced" data-qa-id="pageOptions" data-toggle="dropdown" href="javascript:;">
@@ -36,7 +36,7 @@ LayoutsPrototypeTreeDisplayContext layoutsTreeDisplayContext = new LayoutsProtot
 							<li>
 								<a class="layout-tree-edit" data-qa-id="editPage" data-updateable="true" href="<%= layoutsTreeDisplayContext.getEditLayoutURL() %>">
 									<span aria-hidden="true"><liferay-ui:message key="edit" /></span>
-									<span class="sr-only"><liferay-ui:message arguments="<%= layoutsTreeDisplayContext.getLayoutName() %>" key="edit-x" /></span>
+									<span class="sr-only"><liferay-ui:message arguments="<%= HtmlUtil.escape(layoutsTreeDisplayContext.getLayoutName()) %>" key="edit-x" /></span>
 								</a>
 							</li>
 						</ul>
