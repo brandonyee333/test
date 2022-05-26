@@ -90,7 +90,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 	public Map<Long, BQMembershipChange> getBQMembershipChanges(
 		List<Segment> segments) {
 
-		Map<Long, BQMembershipChange> bqMembershipChangeMap = new HashMap<>();
+		Map<Long, BQMembershipChange> bqMembershipChanges = new HashMap<>();
 
 		List<Long> individualSegmentIds = new ArrayList<>();
 
@@ -102,12 +102,12 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 				getLastBeforeTodayByIndividualSegmentsId(
 					individualSegmentIds)) {
 
-			bqMembershipChangeMap.put(
+			bqMembershipChanges.put(
 				bqMembershipChange.getIndividualSegmentId(),
 				bqMembershipChange);
 		}
 
-		return bqMembershipChangeMap;
+		return bqMembershipChanges;
 	}
 
 	public BQMembershipChange getLastBeforeTodayByIndividualSegmentId(

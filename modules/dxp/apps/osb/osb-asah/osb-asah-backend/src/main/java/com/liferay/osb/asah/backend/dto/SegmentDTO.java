@@ -108,7 +108,7 @@ public class SegmentDTO {
 	}
 
 	public SegmentDTO(
-		Map<Long, BQMembershipChange> bqMembershipChangeMap,
+		Map<Long, BQMembershipChange> bqMembershipChanges,
 		Map<Long, Date> lastActivityDateMap, List<Segment> segments) {
 
 		_segmentDTOs = SetUtil.map(
@@ -117,7 +117,7 @@ public class SegmentDTO {
 				Long segmentId = segment.getId();
 
 				return new SegmentDTO(
-					bqMembershipChangeMap.getOrDefault(segmentId, null),
+					bqMembershipChanges.getOrDefault(segmentId, null),
 					lastActivityDateMap.get(segmentId), segment);
 			});
 	}

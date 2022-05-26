@@ -759,7 +759,7 @@ public class ReportRestController extends BaseRestController {
 
 		List<Segment> segments = segmentPage.getContent();
 
-		Map<Long, BQMembershipChange> bqMembershipChangeMap =
+		Map<Long, BQMembershipChange> bqMembershipChanges =
 			_membershipChangeDog.getBQMembershipChanges(segments);
 
 		return _toResultBagEntityModel(
@@ -767,7 +767,7 @@ public class ReportRestController extends BaseRestController {
 			_getSegmentResultBagEntityModel(page - 1), segments,
 			segmentPage.getTotalElements(),
 			segment -> _toReportSegmentDTOEntityModel(
-				bqMembershipChangeMap.getOrDefault(segment.getId(), null),
+				bqMembershipChanges.getOrDefault(segment.getId(), null),
 				segment));
 	}
 
