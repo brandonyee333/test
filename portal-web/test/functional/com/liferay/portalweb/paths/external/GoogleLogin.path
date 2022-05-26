@@ -30,7 +30,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--LOGIN-->
+
 <tr>
 	<td>LOGIN_NEXT_BUTTON</td>
 	<td>//input[@id='next'] | //div[contains(@id,'Next')]</td>
@@ -46,7 +48,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ACCOUNT_MENULIST-->
+
 <tr>
 	<td>ACCOUNT_MENULIST</td>
 	<td>//a[contains(@title,'Account')]</td>

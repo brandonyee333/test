@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ORGANIZATION_TABLE-->
+
 <tr>
 	<td>ORGANIZATION_TABLE_PARENT_ORGANIZATION</td>
 	<td>//tr[contains(.,'${key_orgName}')]/td[2]</td>

@@ -85,7 +85,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ALL_RESULTS-->
+
 <tr>
 	<td>ALL_RESULTS_PAGE_TITLE</td>
 	<td>//li[contains(@class,'page-list-item-container')]//a[contains(.,'${key_pageTitle}')]</td>
@@ -106,7 +108,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--POSTS_RESULTS-->
+
 <tr>
 	<td>POSTS_RESULTS_ENTRY_STREAM</td>
 	<td>//div[contains(@class,'search-feed-container')]</td>
@@ -322,7 +326,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PEOPLE_RESULTS-->
+
 <tr>
 	<td>PEOPLE_RESULTS_PERSON_PROFILE_IMAGE</td>
 	<td>//div[contains(@class,'entity-index-item-container') and contains(.,'${key_userName}')]//div[contains(@class,'loop-placeholder-avatar')] | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_userName}')]//img[contains(@class,'loop-avatar')]</td>
@@ -363,7 +369,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--GROUPS_RESULTS-->
+
 <tr>
 	<td>GROUPS_RESULTS_GROUP_NAME_LINK</td>
 	<td>//div[contains(@class,'entity-index-item-container') and contains(.,'${key_groupName}')]//a[contains(@class,'link')]</td>
@@ -389,7 +397,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TOPICS_RESULTS-->
+
 <tr>
 	<td>TOPICS_RESULTS_TOPIC_NAME_LINK</td>
 	<td>//div[contains(@class,'entity-index-item-container') and contains(.,'${key_topicName}')]//a[contains(@class,'link')]</td>
@@ -410,7 +420,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PAGES_RESULTS-->
+
 <tr>
 	<td>PAGES_RESULTS_PAGE_TITLE</td>
 	<td>//div[contains(@class,'card-container page-search-result-item-container')]//a[contains(.,'${key_pageTitle}')]</td>

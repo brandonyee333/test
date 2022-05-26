@@ -15,7 +15,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--FORMS_TABLE-->
+
 <tr>
 	<td>FORMS_TABLE_NAME</td>
 	<td>//div[contains(@class,'searchcontainer')]//h4[contains(.,'${key_formName}')]/a</td>
@@ -31,7 +33,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--FORMS_ENTRY_TABLE-->
+
 <tr>
 	<td>FORM_ENTRY_TABLE_ENTRY</td>
 	<td>//td[contains(@class,'${key_fieldLabel}') and contains(.,'${key_fieldValue}')]</td>
@@ -47,7 +51,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--DATA_PROVIDER-->
+
 <tr>
 	<td>DATA_PROVIDER_PLUS_BUTTON</td>
 	<td>//*[@data-qa-id='addButton' and contains(@id,'DDMDataProviderPortlet')]</td>

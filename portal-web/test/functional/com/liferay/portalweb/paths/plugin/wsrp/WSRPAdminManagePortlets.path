@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--PORTLET_TABLE-->
+
 <tr>
 	<td>PORTLET_TABLE_NAME</td>
 	<td>//tr[contains(.,'${key_consumerPortletName}')]/td[1]</td>

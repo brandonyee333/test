@@ -25,7 +25,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SCHEDULER_EVENT-->
+
 <tr>
 	<td>SCHEDULER_EVENT_SPECIFIC</td>
 	<td>//div[contains(@class,'scheduler-view-agenda-event') and contains(@data-clientid,'scheduler-event')]//div[contains(.,'${key_eventTitle}')]</td>

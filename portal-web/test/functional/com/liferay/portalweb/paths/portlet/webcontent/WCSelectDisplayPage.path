@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PUBLIC_PAGES-->
+
 <tr>
 	<td>PUBLIC_PAGES_SELECTION</td>
 	<td>//ul[contains(@class,'tree-container')]/li[contains(.,'${key_pageName}')]/div//a</td>

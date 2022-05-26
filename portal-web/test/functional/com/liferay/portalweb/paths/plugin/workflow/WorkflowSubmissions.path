@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--PENDING_TABLE-->
+
 <tr>
 	<td>ASSET_TITLE</td>
 	<td>//div[contains(@id,'workflowInstancesSearchContainerSearchContainer')]//tr[contains(.,'${key_workflowAssetTitle}')]/td[1]//a</td>

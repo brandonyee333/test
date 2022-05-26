@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--EDIT_TABS-->
+
 <tr>
 	<td>MISCELLANEOUS</td>
 	<td>//li[contains(@class,'tab')]/a[contains(.,'Miscellaneous')]</td>
@@ -41,7 +43,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ORGANIZATION_TABLE-->
+
 <tr>
 	<td>ORGANIZATION_TABLE_NAME</td>
 	<td>//td[contains(@class,'name') and contains(.,'${key_orgName}')]//a[2]</td>
@@ -67,7 +71,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--USER_TABLE-->
+
 <tr>
 	<td>USER_TABLE_FIRST_NAME_LINK</td>
 	<td>//tr[contains(.,'${key_userScreenName}')]/td[1]//a</td>

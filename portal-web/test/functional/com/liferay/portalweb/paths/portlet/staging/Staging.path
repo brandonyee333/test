@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--PROCESSES-->
+
 <tr>
 	<td>INITIAL_PROCESS_SUCCESSFUL</td>
 	<td>//div[contains(.,'Initial Publication')]//h6[contains(@class,'background-task-status-successful')]</td>
@@ -46,7 +48,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--STAGING-->
+
 <tr>
 	<td>STAGING_CONTENT_COUNT</td>
 	<td>//span[contains(@class,'badge-info')]</td>
@@ -92,7 +96,9 @@
 	<td>//a[contains(.,'Copy from Live')]</td>
 	<td></td>
 </tr>
+
 <!--PG-->
+
 <tr>
 	<td>LIVE_BUTTON</td>
 	<td>//a[contains(@value,'live')]</td>
@@ -173,7 +179,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_PAGES_VARIATION_MENULIST-->
+
 <tr>
 	<td>SITE_PAGES_VARIATION_MENULIST_NAME</td>
 	<td>xpath=(//ul//li//a[contains(.,'${key_sitePagesVariationName}')])[1]</td>
@@ -184,7 +192,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PAGE_VARIATION_MENULIST-->
+
 <tr>
 	<td>PAGE_VARIATION_MENULIST_NAME</td>
 	<td>//a[contains(.,'${key_pageVariationName}') and contains(@href,'layoutBranchId')]</td>
@@ -195,7 +205,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--HISTORY-->
+
 <tr>
 	<td>HISTORY_VERSION</td>
 	<td>//span[contains(@class,'layout-revision')]</td>
@@ -216,7 +228,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--LIVE_MENU-->
+
 <tr>
 	<td>LIVE_MENU_MESSAGE</td>
 	<td>//span[@class='last-publication-branch']</td>
@@ -227,7 +241,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--STAGING_MENU-->
+
 <tr>
 	<td>STAGING_MENU_READY_FOR_PUBLICATION</td>
 	<td>//span[@class='toggle-switch-handle' and @data-label-on='Ready for Publication']</td>

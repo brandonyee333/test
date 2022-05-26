@@ -70,7 +70,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--NOTIFICATIONS_SETTING-->
+
 <tr>
 	<td>NOTIFICATIONS_SETTING_TOGGLE</td>
 	<td>//div[contains(.,'Notifications')]//a[contains(@class,'settings-toggle')]</td>

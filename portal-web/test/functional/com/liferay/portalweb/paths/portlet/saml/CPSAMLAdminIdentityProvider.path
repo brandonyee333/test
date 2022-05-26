@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--IDENTITY_PROVIDER-->
+
 <tr>
 	<td>IDENTITY_PROVIDER_SIGN_METADATA_CHECKBOX</td>
 	<td>//input[contains(@id,'SamlAdminPortlet_saml-sign-metadata')]</td>

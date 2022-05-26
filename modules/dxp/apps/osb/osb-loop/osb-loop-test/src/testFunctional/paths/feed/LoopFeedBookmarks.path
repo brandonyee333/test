@@ -25,7 +25,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY-->
+
 <tr>
 	<td>ENTRY_STREAM</td>
 	<td>//div[contains(@class,'home-container')]</td>
@@ -246,7 +248,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_ADD_COMMENT-->
+
 <tr>
 	<td>ENTRY_ADD_COMMENT_PROFILE_PICTURE</td>
 	<td>//div[contains(@class,'card-container post-container bookmarked') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator')]//div[contains(@class,'avatar')]</td>
@@ -287,7 +291,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_COMMENT-->
+
 <tr>
 	<td>ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE</td>
 	<td>//div[contains(@class,'card-container post-container bookmarked') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//div/a[contains(@class,'avatar')]</td>

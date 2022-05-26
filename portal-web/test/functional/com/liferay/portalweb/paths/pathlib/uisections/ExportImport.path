@@ -40,7 +40,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CURRENT_AND_PREVIOUS-->
+
 <tr>
 	<td>CURRENT_AND_PREVIOUS_TAB</td>
 	<td>//a[normalize-space()='Current and Previous']</td>
@@ -66,7 +68,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTENT-->
+
 <tr>
 	<td>CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK</td>
 	<td>//a[@data-portlettitle='${key_contentName}']</td>
@@ -87,7 +91,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!-- PERMISSIONS -->
+
 <tr>
 	<td>PERMISSIONS</td>
 	<td>//input[contains(@id,'PERMISSIONS')]</td>

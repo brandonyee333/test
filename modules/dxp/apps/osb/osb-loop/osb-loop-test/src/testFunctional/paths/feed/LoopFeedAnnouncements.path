@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--ADD_ENTRY-->
+
 <tr>
 	<td>ADD_ENTRY_MINIMIZED</td>
 	<td>//div[contains(@class,'asset-creator') and contains(@class,'minimized')]</td>
@@ -81,7 +83,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--EDIT ENTRY-->
+
 <tr>
 	<td>EDIT_ENTRY_TITLE_FIELD</td>
 	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'announcement-title')]//input</td>
@@ -112,7 +116,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY-->
+
 <tr>
 	<td>ENTRY_STREAM</td>
 	<td>//div[contains(@class,'home-container')]</td>
@@ -348,7 +354,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_ADD_COMMENT-->
+
 <tr>
 	<td>ENTRY_ADD_COMMENT_PROFILE_PICTURE</td>
 	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator')]//div[contains(@class,'avatar')]</td>
@@ -389,7 +397,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_COMMENT-->
+
 <tr>
 	<td>ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE</td>
 	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//div/a[contains(@class,'avatar')]</td>

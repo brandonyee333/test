@@ -40,7 +40,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ABOUT-->
+
 <tr>
 	<td>NAME_FIELD</td>
 	<td>//input[contains(@name,'name')]</td>
@@ -71,7 +73,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--MEMBERS-->
+
 <tr>
 	<td>ADD_LEAD_FIELD</td>
 	<td>//label[contains(.,'Group Leads')]//following-sibling::div//input</td>

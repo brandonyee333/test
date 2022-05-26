@@ -80,7 +80,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PERSON_OVERLAY-->
+
 <tr>
 	<td>PERSON_OVERLAY_AVATAR</td>
 	<td>//div[contains(@class,'entity-summary-container')]//div[contains(@class,'avatar-container')]</td>

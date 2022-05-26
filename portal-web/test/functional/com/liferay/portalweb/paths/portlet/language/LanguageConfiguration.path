@@ -15,7 +15,9 @@
 	<td>//select[contains(@id,'languageId')]</td>
 	<td></td>
 </tr>
+
 <!--LANGUAGES-->
+
 <tr>
 	<td>LANGUAGES_CURRENT</td>
 	<td>//select[contains(@id,'currentLanguageIds')]</td>

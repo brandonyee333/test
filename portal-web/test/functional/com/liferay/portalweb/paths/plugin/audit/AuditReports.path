@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--REPORTS_TABLE -->
+
 <tr>
 	<td>REPORTS_TABLE_USER_ID</td>
 	<td>//tbody[@class='table-data']/tr[contains(.,'${key_resourceAction}') and contains(.,'${key_resourceName}')]/td[1]</td>
@@ -66,7 +68,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ADVANCED_SEARCH -->
+
 <tr>
 	<td>ADVANCED_SEARCH_MATCH_SELECT</td>
 	<td>//select[contains(@id,'AuditPortlet_andOperator')]</td>

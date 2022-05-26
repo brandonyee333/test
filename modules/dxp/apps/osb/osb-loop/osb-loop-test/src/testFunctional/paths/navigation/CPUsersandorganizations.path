@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--CP_USERS_AND_ORGANIZATIONS-->
+
 <tr>
 	<td>SUCCESS_MESSAGE</td>
 	<td>//div[contains(@class,'alert') and contains(@class,'alert-success')]</td>
@@ -21,7 +23,9 @@
 	<td>//tr[@data-qa-id='row']/td/a[contains(.,'${key_userScreenName}')]</td>
 	<td></td>
 </tr>
+
 <!--CP_USERS_AND_ORGANIZATIONS_USER_PASSWORD-->
+
 <tr>
 	<td>EXPAND_PASSWORD</td>
 	<td>//div[@id='passwordTitle']//span[contains(@class,'collapse-icon-closed')]</td>
@@ -42,7 +46,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CP_USERS_AND_ORGANIZATIONS_USER_ROLES-->
+
 <tr>
 	<td>EXPAND_ROLES</td>
 	<td>//div[@id='rolesTitle']//span[contains(@class,'collapse-icon-closed')]</td>
@@ -68,7 +74,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CP_USERS_AND_ORGANIZATIONS_USER-->
+
 <tr>
 	<td>SAVE_BUTTON</td>
 	<td>//span[contains(.,'Save')]</td>

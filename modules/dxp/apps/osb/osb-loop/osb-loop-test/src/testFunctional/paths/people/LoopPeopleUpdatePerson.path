@@ -50,7 +50,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--WORK-->
+
 <tr>
 	<td>EMPLOYMENT_TYPE_SELECT</td>
 	<td>//label[contains(.,'Employment Type')]/following-sibling::select</td>
@@ -206,7 +208,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ABOUT-->
+
 <tr>
 	<td>FIRST_NAME_FIELD</td>
 	<td>//label[contains(.,'First Name')]/following-sibling::div//input</td>
@@ -277,7 +281,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTACT-->
+
 <tr>
 	<td>EMAIL_ADDRESS_FIELD</td>
 	<td>//label[contains(.,'Email (Required)')]//following-sibling::div//input</td>
@@ -333,7 +339,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ELSEWHERE-->
+
 <tr>
 	<td>TWITTER_FIELD</td>
 	<td>//label[contains(.,'Twitter')]//following-sibling::div//input</td>

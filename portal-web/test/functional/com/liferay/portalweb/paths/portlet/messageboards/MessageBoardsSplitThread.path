@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ADD_EXPLANATION_POST-->
+
 <tr>
 	<td>ADD_EXPLANATION_POST_CHECKBOX</td>
 	<td>//label[contains(@for,'addExplanationPost')]/input[@type='checkbox']</td>

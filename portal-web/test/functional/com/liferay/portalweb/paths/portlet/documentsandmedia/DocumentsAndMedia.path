@@ -55,7 +55,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ICON_DOCUMENT-->
+
 <tr>
 	<td>ICON_DOCUMENT_GENERIC</td>
 	<td>//div[contains(@id,'entriesContainer')]//div[@class='entry-thumbnail']</td>
@@ -111,7 +113,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ICON_FOLDER-->
+
 <tr>
 	<td>ICON_FOLDER_THUMBNAIL</td>
 	<td>//div[contains(@class,'card-col-content')]/span[contains(@class,'lfr-card-title-text')]/a[contains(@title,'${key_dmFolderName}')]</td>
@@ -137,7 +141,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--DESCRIPTIVE_LIST_DOCUMENT-->
+
 <tr>
 	<td>DESCRIPTIVE_LIST_DOCUMENT_CHECKBOX</td>
 	<td>//li[@data-title='${key_dmDocumentTitle}']//input[@type='checkbox']</td>
@@ -163,7 +169,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--DESCRIPTIVE_LIST_FOLDER-->
+
 <tr>
 	<td>DESCRIPTIVE_LIST_VERTICAL_ELLIPSIS</td>
 	<td>//li[contains(.,'${key_dmFolderName}')]//a[span/*[name()='svg'][contains(@class,'icon-ellipsis')]]</td>
@@ -194,7 +202,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--FILTER-->
+
 <tr>
 	<td>FILTER_REPOSITORY</td>
 	<td>//li[@data-title='${key_dmRepositoryName}']//span[contains(@title,'${key_dmRepositoryName}')]/a</td>
@@ -220,7 +230,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TOOLBAR-->
+
 <tr>
 	<td>TOOLBAR_ACTIONS</td>
 	<td>//ul[contains(@id,'toolbarContainer')]/li/a[@title='Actions']</td>
@@ -236,7 +248,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SEARCH-->
+
 <tr>
 	<td>SEARCH_REPOSITORY_TAB</td>
 	<td>//ul[contains(@class,'nav-tabs')]/li/a[contains(.,'${key_dmRepositoryName}')]</td>
@@ -262,7 +276,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SIDEBAR-->
+
 <tr>
 	<td>SIDEBAR_MENU_ITEM</td>
 	<td>//div[contains(@class,'lfr-icon-menu-open')]//*[normalize-space(text())='${key_menuItem}']</td>
@@ -273,7 +289,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--REPOSITORY-->
+
 <tr>
 	<td>REPOSITORY_FOLDER_NAME_DESCRIPTIVE_VIEW</td>
 	<td>//a[contains(.,'${key_dmRepositoryName}')]</td>

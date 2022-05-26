@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONFIGURATION-->
+
 <tr>
 	<td>CONFIGURATION</td>
 	<td>//div/a[contains(@href,'site_administration_configuration')]</td>
@@ -36,7 +38,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_TEMPLATE_TABLE-->
+
 <tr>
 	<td>SITE_TEMPLATE_TABLE_NAME</td>
 	<td>//tr[contains(.,'${key_siteTemplateName}')]/td//a</td>

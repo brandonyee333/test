@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--LANGUAGE_MENU-->
+
 <tr>
 	<td>SITE_NAME_TRANSLATION</td>
 	<td>//div[contains(@id,'nameContentBox')]//a[contains(@data-languageid,'${key_language}')]</td>

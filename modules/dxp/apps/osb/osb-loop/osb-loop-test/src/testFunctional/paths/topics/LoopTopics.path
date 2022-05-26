@@ -65,7 +65,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TOPIC_OVERLAY-->
+
 <tr>
 	<td>TOPIC_OVERLAY_AVATAR</td>
 	<td>//div[contains(@class,'entity-summary-container')]//div[contains(@class,'avatar-container')]</td>

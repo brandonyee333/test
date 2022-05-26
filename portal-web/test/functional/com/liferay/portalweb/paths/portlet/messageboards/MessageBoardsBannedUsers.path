@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--BANNED_USERS_TABLE-->
+
 <tr>
 	<td>BANNED_USERS_TABLE_UNBAN_DATE</td>
 	<td>//tr[contains(.,'${key_userScreenName}')]/td[4]</td>

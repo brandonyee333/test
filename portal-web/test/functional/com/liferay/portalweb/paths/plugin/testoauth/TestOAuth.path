@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--OAUTH_ADMIN-->
+
 <tr>
 	<td>OAUTH_ADMIN_ADD</td>
 	<td>//span[contains(@class,'add-button')]/a[contains(., 'Add')]</td>
@@ -41,7 +43,9 @@
 	<td>//div[contains(@class,'field-wrapper') and contains(.,'Consumer Key') and contains(.,'Consumer Secret')]</td>
 	<td></td>
 </tr>
+
 <!--TEST_OAUTH_PORTLET-->
+
 <tr>
 	<td>TEST_PORTLET_KEY</td>
 	<td>//input[contains(@id,'testoauthportlet_key')]</td>

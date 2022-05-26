@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--DETAILS-->
+
 <tr>
 	<td>FRIENDLY_URL_ENGLISH_UNITED_STATES</td>
 	<td>//div[contains(@id,'friendlyURL')]//li[@data-value='en_US']/a</td>
@@ -101,7 +103,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SEO-->
+
 <tr>
 	<td>SEO_HTML_TITLE_META_TAGS</td>
 	<td>//div[contains(.,'HTML')]/span//ul/li[@data-value='${key_defaultSiteLanguageKey}']</td>
@@ -112,7 +116,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CUSTOMIZATION_SETTINGS-->
+
 <tr>
 	<td>CUSTOMIZATION_SETTINGS_SHOW_CUSTOMIZABLE_SECTIONS</td>
 	<td>//input[contains(@id,'CUSTOMIZABLE_LAYOUT')]</td>
@@ -133,7 +139,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--COPY_APPLICATIONS-->
+
 <tr>
 	<td>COPY_APPLICATIONS_MESSAGE_INFO</td>
 	<td>//div[contains(@id,'copyPortletsFromPage')]/p</td>
@@ -154,7 +162,9 @@
 	<td>//div[contains(@id,'copyPortletsFromPage')]//button[contains(@id,'copySubmitButton')]</td>
 	<td></td>
 </tr>
+
 <!--THEME-->
+
 <tr>
 	<td>CHANGE_CURRENT_THEME_BUTTON</td>
 	<td>//button[contains(.,'Change Current Theme')]</td>

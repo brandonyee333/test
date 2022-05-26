@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--DEFINITION_TABLE-->
+
 <tr>
 	<td>DEFINITION_TABLE_NAME</td>
 	<td>//div[contains(@id,'WorkflowDefinitionPortlet_workflowDefinitionsSearchContainer')]//tr[contains(.,'${key_workflowDefinitionName}')]/td[1]</td>

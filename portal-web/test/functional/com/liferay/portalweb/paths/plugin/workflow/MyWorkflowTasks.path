@@ -30,7 +30,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ASSIGNED_TO_ME_TABLE-->
+
 <tr>
 	<td>ASSIGNED_TO_ME_TABLE_ASSET_TITLE</td>
 	<td>//div[contains(@id,'workflowTasksSearchContainerSearchContainer')]//tr[contains(.,'${key_workflowAssetTitle}')]/td[1]//a</td>
@@ -71,7 +73,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ASSIGNED_TO_MY_ROLES_TABLE-->
+
 <tr>
 	<td>ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE</td>
 	<td>//div[contains(@id,'workflowTasksSearchContainerSearchContainer')]//tr[contains(.,'${key_workflowTask}') and contains(.,'${key_workflowAssetTitle}')]/td[1]//a</td>
@@ -112,7 +116,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--DIALOG_BOX-->
+
 <tr>
 	<td>DIALOG_BOX_DUE_DATE</td>
 	<td>//input[contains(@id,'_dueDate')]</td>
@@ -143,7 +149,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--COMPLETED_TABLE-->
+
 <tr>
 	<td>COMPLETED_TABLE_ASSET_TITLE</td>
 	<td>//tr[contains(.,'${key_workflowAssetTitle}')]/td//a</td>

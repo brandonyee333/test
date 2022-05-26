@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ADMIN_TABS-->
+
 <tr>
 	<td>ADMIN_TABS_SUGGESTIONS</td>
 	<td>//ul[contains(@class,'navbar')]/li/a[contains(.,'Suggestions')]</td>
@@ -31,7 +33,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ARTICLE_DESCRIPTIVE-->
+
 <tr>
 	<td>ARTICLE_DESCRIPTIVE_ARTICLE_TITLE</td>
 	<td>//ul[contains(@class,'descriptive')]//a[contains(.,'${key_kbArticleTitle}')]</td>
@@ -52,7 +56,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ARTICLE_TABLE-->
+
 <tr>
 	<td>ARTICLE_TABLE_ARTICLE_STATUS</td>
 	<td>//div[contains(.,'${key_kbArticleTitle}')]//h5//span</td>
@@ -73,7 +79,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--DESCRIPTIVE_VIEW-->
+
 <tr>
 	<td>DESCRIPTIVE_VIEW_ARTICLE_PRIORITY</td>
 	<td>//div[contains(.,'${key_kbArticleTitle}')]/h5/span[@class='kb-descriptive-details' and contains(.,'Priority')]</td>
@@ -94,7 +102,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CHILD_ARTICLES-->
+
 <tr>
 	<td>CHILD_PAGE_TITLE</td>
 	<td>//li[@class='list-group-item']//a[contains(.,'${key_kbChildArticleTitle}')]</td>
@@ -105,7 +115,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--DISPLAY-->
+
 <tr>
 	<td>DISPLAY_CONTENT</td>
 	<td>//div[contains(@class,'kb-entity-body')]//p</td>
@@ -136,7 +148,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--FOLDER-->
+
 <tr>
 	<td>FOLDER_BREADCRUMBS</td>
 	<td>//ul[contains(@class,'breadcrumb')]//li[contains(.,'${key_kbFolderName}')]</td>
@@ -162,7 +176,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--FOLDER_DESCRIPTIVE-->
+
 <tr>
 	<td>FOLDER_DESCRIPTIVE_FOLDER_NAME</td>
 	<td>//ul[contains(@class,'descriptive')]//a[contains(.,'${key_kbFolderName}')]</td>
@@ -173,7 +189,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--FOLDER_TABLE-->
+
 <tr>
 	<td>FOLDER_TABLE_HEADER</td>
 	<td>//th[contains(.,'Folder')]</td>
@@ -184,7 +202,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--HIERARCHY_NAVIGATION-->
+
 <tr>
 	<td>HIERARCHY_NAVIGATION_PARENT</td>
 	<td>//div[@class='kbarticle-navigation']/ul/li/a[contains(.,'${key_kbArticleTitle}')]</td>
@@ -215,7 +235,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--LINK-->
+
 <tr>
 	<td>LINK_THERE_ARE_SUGGESTIONS</td>
 	<td>//div[@class='sidenav-content']//div[contains(.,'suggestion')]</td>
@@ -226,7 +248,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--MOVE-->
+
 <tr>
 	<td>MOVE_CURRENT_PARENT_TITLE_LABEL</td>
 	<td>//span[(@class='control-label') and contains (.,'Current Parent')]</td>
@@ -262,7 +286,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SCOPE-->
+
 <tr>
 	<td>SCOPE_DROPDOWN</td>
 	<td>//div[@class='scope-selector']//a[contains(@class,'dropdown-toggle')]</td>

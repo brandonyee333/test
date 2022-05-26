@@ -25,7 +25,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TAG_ENTRY_TABLE-->
+
 <tr>
 	<td>TAG_ENTRY_TABLE_CHECKBOX</td>
 	<td>//tr[contains(.,'${key_tagName}')]/td//input</td>
@@ -46,7 +48,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--MERGE_TAGS-->
+
 <tr>
 	<td>MERGE_TAGS_INTO_THIS_TAG_SELECT</td>
 	<td>//select[contains(@id,'targetTagName')]</td>

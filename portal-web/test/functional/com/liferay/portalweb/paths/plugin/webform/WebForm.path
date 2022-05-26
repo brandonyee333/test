@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--FORM_INFORMATION-->
+
 <tr>
 	<td>FORM_INFORMATION_TITLE</td>
 	<td>//div[@class='portlet-body']/form/fieldset/legend/span</td>
@@ -26,7 +28,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--FORM_FIELDS-->
+
 <tr>
 	<td>FORM_FIELDS_FIELD_MANDATORY_MESSAGE</td>
 	<td>//div[contains(@id,'Errorfield')]/span</td>

@@ -15,7 +15,9 @@
 	<td>//tr[contains(.,'${key_informationName}')]//*[*[name()='svg'][contains(@class,'icon-times')]]</td>
 	<td></td>
 </tr>
+
 <!--DETAILS-->
+
 <tr>
 	<td>DETAILS_BIRTHDAY_FIELD</td>
 	<td>//input[contains(@id,'birthday')]</td>
@@ -81,7 +83,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PASSWORD-->
+
 <tr>
 	<td>PASSWORD_NEW_PASSWORD_FIELD</td>
 	<td>//input[contains(@id,'password1')]</td>
@@ -97,7 +101,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ORGANIZATIONS-->
+
 <tr>
 	<td>ORGANIZATIONS_TABLE_NAME</td>
 	<td>//tr[contains(.,'${key_orgName}')]/td[1]</td>
@@ -118,7 +124,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITES-->
+
 <tr>
 	<td>SITES_TABLE_NAME</td>
 	<td>//tr[contains(.,'${key_siteName}')]/td[1]</td>
@@ -134,7 +142,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--USER_GROUPS-->
+
 <tr>
 	<td>USER_GROUPS_TABLE_NAME</td>
 	<td>//tr[contains(.,'${key_userGroupName}')]/td[1]</td>
@@ -145,7 +155,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ROLES_ORGANIZATION_ROLES-->
+
 <tr>
 	<td>ROLES_ORGANIZATION_SELECT_CHOOSE_BUTTON</td>
 	<td>//tr[contains(.,'${key_roleName}')]/td[2]//button[contains(.,'Choose')]</td>
@@ -161,7 +173,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ROLES_REGULAR_ROLES-->
+
 <tr>
 	<td>ROLES_REGULAR_ROLES_SELECT_LINK</td>
 	<td>//a[contains(@id,'selectRegularRoleLink')]/span</td>
@@ -172,7 +186,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ROLES_SITE_ROLES-->
+
 <tr>
 	<td>ROLES_SITE_ROLES_TABLE_TITLE</td>
 	<td>//tr[contains(.,'${key_siteRoleName}')]/td[1]</td>
@@ -188,7 +204,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ROLES_INHERITED_ROLES_SITE_ROLES-->
+
 <tr>
 	<td>ROLES_INHERITED_SITE_ROLES_TABLE_TITLE</td>
 	<td>//div[contains(@class,'inherited-site-roles')]//span[contains(.,'${key_roleName}')]</td>
@@ -199,7 +217,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PERSONAL_SITE-->
+
 <tr>
 	<td>PERSONAL_SITE_PRIVATE_PAGES_LABEL</td>
 	<td>//div[contains(@id,'personalSite')]//label[contains(@for,'privateLayoutSetPrototypeId')]</td>
@@ -215,7 +235,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--USER_IDENTIFICATION-->
+
 <tr>
 	<td>USER_IDENTIFICATION_PHONE_NUMBERS</td>
 	<td>//fieldset[contains(@id,'phoneNumbers')]//input[contains(@id,'phoneNumber')]</td>
@@ -246,13 +268,17 @@
 	<td>//fieldset[contains(@id,'${key_rowEntry}')]//button[contains(@class,'delete-row')]</td>
 	<td></td>
 </tr>
+
 <!--ANNOUNCEMENTS-->
+
 <tr>
 	<td>ANNOUNCEMENTS_NOTIFICATION_CHECKBOX</td>
 	<td>//input[contains(@title,'${key_announcementType}') and contains(@id,'${key_notificationType}')]</td>
 	<td></td>
 </tr>
+
 <!--DISPLAY_SETTINGS-->
+
 <tr>
 	<td>DISPLAY_SETTINGS_GREETING_FIELD</td>
 	<td>//input[contains(@name,'greeting')]</td>
@@ -263,7 +289,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CUSTOM_FIELDS-->
+
 <tr>
 	<td>CUSTOM_FIELDS_LABEL</td>
 	<td>//div/label[@class='control-label' and contains(.,'${customFieldName}')]</td>
@@ -274,7 +302,9 @@
 	<td>//div[contains(.,'${customFieldName}')]/select</td>
 	<td></td>
 </tr>
+
 <!--UPLOAD_IMAGE-->
+
 <tr>
 	<td>UPLOAD_IMAGE_SELECT</td>
 	<td>//label[contains(@id,'uploadImage')]</td>

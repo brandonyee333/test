@@ -15,7 +15,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--VIRTUAL_INSTANCES_TABLE-->
+
 <tr>
 	<td>VIRTUAL_INSTANCES_TABLE_WEB_ID</td>
 	<td>//div[@class='searchcontainer-content']//tr[contains(.,'${key_portalURL}')]/td[2]/a</td>

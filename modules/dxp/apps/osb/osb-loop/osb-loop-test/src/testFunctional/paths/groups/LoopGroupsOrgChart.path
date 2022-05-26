@@ -45,8 +45,11 @@
 	<td>//*[local-name()='svg' and contains(@class,'loop-icon-minus')]</td>
 	<td></td>
 </tr>
+
 <!---->
+
 <!--GROUP_DETAILS-->
+
 <tr>
 	<td>GROUP_DETAILS_GROUP_AVATAR</td>
 	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[contains(@class,'entity-display-container') and contains(.,'${key_groupName}')]//div[contains(@class,'avatar-container')]</td>

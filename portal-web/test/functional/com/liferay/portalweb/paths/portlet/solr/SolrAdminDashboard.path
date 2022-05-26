@@ -25,7 +25,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--VERSIONS-->
+
 <tr>
 	<td>VERSIONS_SOLR_SPEC</td>
 	<td>//li[contains(@class,'solr_spec_version')]/dl/dd</td>
@@ -41,7 +43,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CLOUD-->
+
 <tr>
 	<td>CLOUD_COLLECTION</td>
 	<td>//div[@id='cloud']/div/div[@id='graph-content']/div[contains(.,'${key_cloudCollectionName}')]</td>
@@ -52,7 +56,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CORE_ADMIN-->
+
 <tr>
 	<td>CORE_ADMIN_CORE_NAVIGATION</td>
 	<td>//div[@id='navigation']/ul/li/a[contains(.,'${key_coreName}')]</td>
@@ -63,7 +69,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CORE_ADMIN_CONTENT-->
+
 <tr>
 	<td>CORE_ADMIN_CONTENT_INSTANCE_DIR</td>
 	<td>//div[@id='core-data']//li[contains(@class,'instanceDir')]/dl/dd</td>
@@ -79,7 +87,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--LOGGING_TABLE-->
+
 <tr>
 	<td>LOGGING_TABLE_LOGGER_NAME</td>
 	<td>//abbr[contains(.,'${key_loggerName}')]</td>

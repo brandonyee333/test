@@ -115,7 +115,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--GROUP_FOLLOW_MENU-->
+
 <tr>
 	<td>GROUP_POSTS_AND_COMMENTED_POSTS_NOTIFICATIONS_LINK</td>
 	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Posts, Comments, and Mentions')]</td>
@@ -156,7 +158,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--GROUP_OPTIONS_MENU-->
+
 <tr>
 	<td>GROUP_OPTIONS_EDIT_LINK</td>
 	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Edit')]/a</td>
@@ -177,7 +181,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ABOUT-->
+
 <tr>
 	<td>ABOUT_DESCRIPTION</td>
 	<td>//div[contains(@class,'about')]//div[contains(@class,'content')]</td>
@@ -208,7 +214,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--MEMBERS-->
+
 <tr>
 	<td>MEMBERS_LEAD</td>
 	<td>//div[contains(@class,'category-label') and contains(.,'Leads')]/following-sibling::div//a[@title='${key_leadName}']</td>
@@ -239,7 +247,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--NETWORK-->
+
 <tr>
 	<td>NETWORK_CHILD_GROUP</td>
 	<td>//div[contains(@class,'category-label') and contains(.,'Contains')]/following-sibling::div//div[contains(@class,'entity')]//a[contains(.,'${key_childGroupName}')]</td>
@@ -290,7 +300,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PAGES-->
+
 <tr>
 	<td>PAGES_NO_PAGE_YET_TITLE</td>
 	<td>//div[contains(@class,'create-page-card-container')]//div[@class='title']</td>
@@ -421,7 +433,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROLS-->
+
 <tr>
 	<td>CANCEL_BUTTON</td>
 	<td>//button[contains(.,'Cancel')]</td>

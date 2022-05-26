@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SETUP_FORM_FIELDS-->
+
 <tr>
 	<td>SETUP_FORM_FIELDS_INFO_MESSAGE</td>
 	<td>//div[@class='alert']</td>
@@ -76,7 +78,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SETUP_FORM_POPULATED_FIELDS-->
+
 <tr>
 	<td>SETUP_FORM_POPULATED_FIELDS_FIELD_TITLE</td>
 	<td>//div[@class='field-title' and contains(.,'${key_wfFieldName}')]</td>

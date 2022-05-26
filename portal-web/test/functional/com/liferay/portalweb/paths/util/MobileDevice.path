@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ADD_CLASSIFICATION_RULE-->
+
 <tr>
 	<td>ADD_CLASSIFICATION_RULE_OPERATING_SYSTEM</td>
 	<td>//select[contains(@id,'os')]/option[contains(.,'${key_ruleOSScope}')]</td>
@@ -31,7 +33,9 @@
 	<td>//select[contains(@id,'tablet')]/option[contains(.,'${key_deviceType}')]</td>
 	<td></td>
 </tr>
+
 <!--ADD_ACTION-->
+
 <tr>
 	<td>ADD_ACTION_TYPE_OPTION</td>
 	<td>//option[contains(.,'${key_actionType}')]</td>

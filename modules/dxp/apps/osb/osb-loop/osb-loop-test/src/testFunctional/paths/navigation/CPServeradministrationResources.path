@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SERVER_RESOURCES_ACTION_MENU-->
+
 <tr>
 	<td>SERVER_RESOURCES_ACTION_DESCRIPTION</td>
 	<td>//div[@id='adminServerAdministrationActionsPanelContent']//table//td[contains(.,'${key_resourcesAction}')]</td>

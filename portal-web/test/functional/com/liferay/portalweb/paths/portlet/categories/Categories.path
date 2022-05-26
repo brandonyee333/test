@@ -30,7 +30,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CATEGORY_ENTRY-->
+
 <tr>
 	<td>CATEGORY_ENTRY</td>
 	<td>//tr[contains(.,'${key_categoryName}')]/td[2]</td>
@@ -51,7 +53,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CATEGORY_DETAILS-->
+
 <tr>
 	<td>CATEGORY_DETAILS_PROPERTY_KEY</td>
 	<td>//span[@class='property-key']</td>
@@ -67,7 +71,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SUBCATEGORY_ENTRY-->
+
 <tr>
 	<td>SUBCATEGORY_ENTRY</td>
 	<td>//tr[contains(.,'${key_subcategoryName}')]/td[2]</td>
@@ -83,7 +89,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--VOCABULARY_ENTRY-->
+
 <tr>
 	<td>VOCABULARY_ENTRY</td>
 	<td>//tr[contains(.,'${key_vocabularyName}')]/td[2]</td>
@@ -104,7 +112,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--VOCABULARY_CATEGORY-->
+
 <tr>
 	<td>VOCABULARY_CATEGORY</td>
 	<td>//div[contains(@id,'assetCategories')]//td[contains(.,'${key_categoryName}')]</td>

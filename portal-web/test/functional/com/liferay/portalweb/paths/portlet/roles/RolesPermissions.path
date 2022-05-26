@@ -25,7 +25,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROL_PANEL_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>CONTROL_PANEL_GENERAL_PERMISSIONS_ADD_ORGANIZATION_CHECKBOX</td>
 	<td>//input[@value='90ADD_ORGANIZATION']</td>
@@ -71,7 +73,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS_GENERAL_PERMISSIONS_ACCESS_IN_CONTROL_PANEL_CHECKBOX</td>
 	<td>//input[contains(@value,'ACCESS_IN_CONTROL_PANEL')]</td>
@@ -87,7 +91,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS_RESOURCE_PERMISSIONS-->
+
 <tr>
 	<td>CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS_RESOURCE_PERMISSIONS_USER_IMPERSONATE_CHECKBOX</td>
 	<td>//input[contains(@value,'UserIMPERSONATE')]</td>
@@ -103,7 +109,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROL_PANEL_USERS_USER_GROUPS_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>CONTROL_PANEL_USERS_USER_GROUPS_GENERAL_PERMISSIONS_ACCESS_IN_CONTROL_PANEL_CHECKBOX</td>
 	<td>//input[contains(@value,'ACCESS_IN_CONTROL_PANEL')]</td>
@@ -114,7 +122,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROL_PANEL_USERS_USER_GROUPS_RESOURCE_PERMISSIONS-->
+
 <tr>
 	<td>CONTROL_PANEL_USERS_USER_GROUPS_RESOURCE_PERMISSIONS_USER_GROUP_VIEW_CHECKBOX</td>
 	<td>//tbody//input[contains(@value,'UserGroupVIEW')]</td>
@@ -125,7 +135,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROL_PANEL_USERS_ROLES_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>CONTROL_PANEL_USERS_ROLES_GENERAL_PERMISSIONS_ACCESS_IN_CONTROL_PANEL_CHECKBOX</td>
 	<td>//input[contains(@value,'RolesAdminPortletACCESS_IN_CONTROL_PANEL')]</td>
@@ -136,7 +148,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROL_PANEL_USERS_ROLES_RESOURCE_PERMISSIONS-->
+
 <tr>
 	<td>CONTROL_PANEL_USERS_ROLES_RESOURCE_PERMISSIONS_ROLE_VIEW_CHECKBOX</td>
 	<td>//tbody//input[contains(@value,'RoleVIEW')]</td>
@@ -152,7 +166,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROL_PANEL_SITES_SITES_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>CONTROL_PANEL_SITES_SITES_GENERAL_PERMISSIONS_ACCESS_IN_CONTROL_PANEL_CHECKBOX</td>
 	<td>//input[contains(@value,'ACCESS_IN_CONTROL_PANEL')]</td>
@@ -163,7 +179,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROL_PANEL_SITES_SITES_RESOURCE_PERMISSIONS-->
+
 <tr>
 	<td>CONTROL_PANEL_SITES_SITES_RESOURCE_PERMISSIONS_SITE_MANAGE_PAGES_CHECKBOX</td>
 	<td>//input[contains(@value,'GroupMANAGE_LAYOUTS') and contains(@title,'Select')]</td>
@@ -199,7 +217,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_PAGES_SITE_PAGES_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_PAGES_SITE_PAGES_GENERAL_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>//input[contains(@name,'allRowIds')]</td>
@@ -215,7 +235,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_SITE-->
+
 <tr>
 	<td>SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_SITE_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[2]</td>
@@ -256,7 +278,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_PAGE-->
+
 <tr>
 	<td>SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_PAGE_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[3]</td>
@@ -277,7 +301,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_PAGE_VARIATION-->
+
 <tr>
 	<td>SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_PAGE_VARIATION_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[4]</td>
@@ -288,7 +314,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_SITE_PAGE_VARIATION-->
+
 <tr>
 	<td>SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_SITE_PAGES_VARIATION_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[5]</td>
@@ -299,7 +327,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_WEB_CONTENT_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_GENERAL_PERMISSIONS_ACCESS_IN_SITE_ADMINISTRATION_CHECKBOX</td>
 	<td>//tbody//input[contains(@value,'ACCESS_IN_CONTROL_PANEL')]</td>
@@ -330,7 +360,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[2]</td>
@@ -366,7 +398,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FOLDER-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FOLDER_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[3]</td>
@@ -392,7 +426,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_ARTICLE-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_ARTICLE_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[4]</td>
@@ -423,7 +459,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FEED-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FEED_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[5]</td>
@@ -434,7 +472,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_STRUCTURE-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_STRUCTURE_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[6]</td>
@@ -445,7 +485,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_TEMPLATE-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_TEMPLATE_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[7]</td>
@@ -456,7 +498,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_GENERAL_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[1]</td>
@@ -477,7 +521,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS_ADD_DOCUMENT_CHECKBOX</td>
 	<td>//tbody//input[contains(@value,'document.libraryADD_DOCUMENT')]</td>
@@ -498,7 +544,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS_FOLDER-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS_FOLDER_ADD_DOCUMENT_CHECKBOX</td>
 	<td>//input[contains(@value,'DLFolderADD_DOCUMENT')]</td>
@@ -524,7 +572,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENT-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENT_DELETE_CHECKBOX</td>
 	<td>//input[contains(@value,'DLFileEntryDELETE')]</td>
@@ -540,7 +590,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_DOCUMENT_TYPE-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_DOCUMENT_TYPE_DELETE_CHECKBOX</td>
 	<td>//input[contains(@value,'DLFileEntryTypeDELETE')]</td>
@@ -561,7 +613,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_BLOGS_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_BLOGS_GENERAL_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[1]</td>
@@ -577,7 +631,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_BLOGS_RESOURCE_PERMISSIONS_BLOGS_ENTRIES-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_BLOGS_RESOURCE_PERMISSIONS_BLOGS_ENTRIES_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[2]</td>
@@ -613,7 +669,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_BLOGS_RESOURCE_PERMISSIONS_BLOGS_ENTRY-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_BLOGS_RESOURCE_PERMISSIONS_BLOGS_ENTRY_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[3]</td>
@@ -659,7 +717,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_BOOKMARKS_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_BOOKMARKS_GENERAL_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[1]</td>
@@ -675,7 +735,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_KALEO_FORMS_ADMIN_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_KALEO_FORMS_ADMIN_GENERAL_PERMISSIONS_ACCESS_IN_SITE_ADMINISTRATION</td>
 	<td>//input[contains(@value,'KaleoFormsAdminPortletACCESS_IN_CONTROL_PANEL')]</td>
@@ -696,7 +758,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_KALEO_FORMS_RESOURCE_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_KALEO_FORMS_ADMIN_RESOURCE_PERMISSIONS_KALEO_FORMS_PROCESS_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[2]</td>
@@ -737,7 +801,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_MESSAGE_BOARDS_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_MESSAGE_BOARDS_GENERAL_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[1]</td>
@@ -753,7 +819,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_MESSAGE_BOARDS_RESOURCE_PERMISSIONS_MESSAGES-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_MESSAGE_BOARDS_RESOURCE_PERMISSIONS_MESSAGES_ADD_CATEGORY_CHECKBOX</td>
 	<td>//input[contains(@value,'message.boardsADD_CATEGORY')]</td>
@@ -774,7 +842,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_MESSAGE_BOARDS_RESOURCE_PERMISSIONS_MESSAGE_BOARDS_CATEGORY-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_MESSAGE_BOARDS_RESOURCE_PERMISSIONS_MESSAGE_BOARDS_CATEGORY_ADD_MESSAGE_CHECKBOX</td>
 	<td>//input[contains(@value,'MBCategoryADD_MESSAGE')]</td>
@@ -790,7 +860,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_MESSAGE_BOARDS_RESOURCE_PERMISSIONS_MESSAGE_BOARDS_MESSAGE-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_MESSAGE_BOARDS_RESOURCE_PERMISSIONS_MESSAGE_BOARDS_MESSAGE_VIEW_CHECKBOX</td>
 	<td>//input[contains(@value,'MBMessageVIEW')]</td>
@@ -801,7 +873,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_WIKI_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_WIKI_GENERAL_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[1]</td>
@@ -817,7 +891,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_CATEGORIES_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_CATEGORIES_GENERAL_PERMISSIONS_ACCESS_IN_SITE_ADMINISTRATION_CHECKBOX</td>
 	<td>//input[contains(@value,'AssetCategoriesAdminPortletACCESS_IN_CONTROL_PANEL')]</td>
@@ -838,7 +914,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_ASSET_ENTRIES-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_ASSET_ENTRIES_ADD_CATEGORY_CHECKBOX</td>
 	<td>//label/input[contains(@value,'categoriesADD_CATEGORY')]</td>
@@ -859,7 +937,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_CATEGORY_VOCABULARY-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_CATEGORY_VOCABULARY_VIEW_CHECKBOX</td>
 	<td>//input[contains(@value,'AssetVocabularyVIEW')]</td>
@@ -870,7 +950,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_CATEGORY-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_CATEGORIES_RESOURCE_PERMISSIONS_CATEGORY_ADD_CATEGORY_CHECKBOX</td>
 	<td>//label/input[contains(@value,'AssetCategoryADD_CATEGORY')]</td>
@@ -881,7 +963,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS_GENERAL_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>//h4[contains(.,'General Permissions')]/following-sibling::div[contains(@class,'search-container')]//input[contains(@name,'allRowIds')]</td>
@@ -892,7 +976,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS_RESOURCE_PERMISSIONS_DYNAMIC_DATA_LISTS_RECORD_SET-->
+
 <tr>
 	<td>SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS_RESOURCE_PERMISSIONS_DYNAMIC_DATA_LISTS_RECORD_SET_ADD_RECORD_CHECKBOX</td>
 	<td>//input[contains(@value,'DDLRecordSetADD_RECORD')]</td>
@@ -913,7 +999,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_MEMBERS_SITE_MEMBERSHIPS_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_MEMBERS_SITE_MEMBERSHIPS_GENERAL_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[1]</td>
@@ -924,7 +1012,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_MEMBERSS_SITE_TEAMS_RESOURCE_PERMISSIONS_TEAM-->
+
 <tr>
 	<td>SITE_ADMIN_MEMBERS_SITE_TEAMS_RESOURCE_PERMISSIONS_TEAM_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[2]</td>
@@ -935,7 +1025,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_ASSET_PUBLISHER_APPLICATION_PERIMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_ASSET_PUBLISHER_APPLICATION_PERIMISSIONS_ADD_TO_PAGE_CHECKBOX</td>
 	<td>//input[contains(@value,'AssetPublisherPortletADD_TO_PAGE')]</td>
@@ -961,7 +1053,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_BLOGS-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_BLOGS_APPLICATION_PERMISSIONS_CONFIGURATION_CHECKBOX</td>
 	<td>//tbody//input[contains(@value,'BlogsPortletCONFIGURATION')]</td>
@@ -977,7 +1071,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_BOOKMARKS_RESOURCE_PERMISSIONS_BOOKMARKS_ENTRY-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_BOOKMARKS_RESOURCE_PERMISSIONS_BOOKMARKS_ENTRY_VIEW_CHECKBOX</td>
 	<td>//input[contains(@value,'BookmarksEntryVIEW')]</td>
@@ -998,7 +1094,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_CALENDAR_RESOURCE_PERMISSIONS_CALENDAR-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_CALENDAR_MANAGE_EVENTS_CHECKBOX</td>
 	<td>//input[contains(@value,'CalendarMANAGE')]</td>
@@ -1009,7 +1107,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_CATEGORIES_NAVIGATION_APPLICATION_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_CATEGORIES_NAVIGATION_APPLICATION_PERMISSIONS_ADD_TO_PAGE_CHECKBOX</td>
 	<td>//tr[contains(.,'Add to Page')]/td//input</td>
@@ -1030,7 +1130,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[2]</td>
@@ -1051,7 +1153,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENT-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENT_ACTION_CHECKBOX</td>
 	<td>xpath=(//input[contains(@name,'allRowIds')])[4]</td>
@@ -1067,7 +1171,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_LANGUAGE_APPLICATIONS_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_LANGUAGE_APPLICATION_PERMISSIONS_ADD_TO_PAGE_CHECKBOX</td>
 	<td>//input[contains(@value,'LanguagePortletADD_TO_PAGE')]</td>
@@ -1078,7 +1184,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_MESSAGE_BOARDS_APPLICATIONS_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_MESSAGE_BOARDS_APPLICATION_PERMISSIONS_ADD_TO_PAGE_CHECKBOX</td>
 	<td>//input[contains(@value,'MBPortletADD_TO_PAGE')]</td>
@@ -1089,7 +1197,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_SOCIAL_OFFICE_ANNOUNCEMENTS_APPLICATIONS_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_SOCIAL_OFFICE_ANNOUNCEMENTS_APPLICATIONS_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>//input[contains(@name,'allRowIds')]</td>
@@ -1110,7 +1220,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SITE_ADMIN_APPLICATIONS_WEB_CONTENT_DISPLAY_APPLICATIONS_PERMISSIONS-->
+
 <tr>
 	<td>SITE_ADMIN_APPLICATIONS_WEB_CONTENT_DISPLAY_APPLICATIONS_PERMISSIONS_ACTION_CHECKBOX</td>
 	<td>//input[contains(@name,'allRowIds')]</td>
@@ -1121,7 +1233,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--USER_MY_ACCOUNT_MY_WORKFLOW_TASKS_GENERAL_PERMISSIONS-->
+
 <tr>
 	<td>USER_MY_ACCOUNT_MY_WORKFLOW_TASKS_ACCESS_IN_MY_ACCOUNT_CHECKBOX</td>
 	<td>//input[contains(@value,'MyWorkflowTaskPortletACCESS_IN_CONTROL_PANEL')]</td>

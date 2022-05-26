@@ -45,7 +45,9 @@
 	<td>//pre[contains(.,'data')]</td>
 	<td></td>
 </tr>
+
 <!--ENTRY_ICON-->
+
 <tr>
 	<td>ENTRY_ICON_THUMBNAIL</td>
 	<td>//li[contains(@data-title,'${key_webContentTitle}')]//div[contains(@class,'icon-vertical-card-container')]</td>
@@ -56,7 +58,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_DESCRIPTIVE-->
+
 <tr>
 	<td>ENTRY_DESCRIPTIVE_THUMBNAIL</td>
 	<td>//li[contains(@data-title,'${key_webContentTitle}')]//div[contains(@class,'list-group-item-field')]/div</td>
@@ -102,7 +106,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_LIST-->
+
 <tr>
 	<td>ENTRY_LIST_ID</td>
 	<td>//tr[contains(@data-title,'${key_webContentTitle}')]/td[2]</td>
@@ -118,13 +124,17 @@
 	<td>//tr[contains(.,'${key_webContentTitle}')]//span[@class='workflow-status']/strong</td>
 	<td></td>
 </tr>
+
 <!--FOLDER_TABLE-->
+
 <tr>
 	<td>FOLDER_TABLE_CHOOSE</td>
 	<td>//tr[contains(.,'${key_folderName}')]/td[4]//button[contains(.,'Choose')]</td>
 	<td></td>
 </tr>
+
 <!--TOOLBAR-->
+
 <tr>
 	<td>TOOLBAR_MOVE_BUTTON</td>
 	<td>//div[@class='management-bar-header-right']/a[@data-title='Move']/span</td>

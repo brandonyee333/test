@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--ATTACHMENTS-->
+
 <tr>
 	<td>ATTACHMENTS_BROWSE_FIELD</td>
 	<td>//input[contains(@id,'_msgFile1')]</td>

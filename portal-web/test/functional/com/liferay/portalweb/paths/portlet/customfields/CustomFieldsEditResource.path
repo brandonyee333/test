@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--CUSTOM_FIELDS_TABLE-->
+
 <tr>
 	<td>CUSTOM_FIELDS_TABLE_ACTIONS</td>
 	<td>//tr[contains(.,'${customFieldName}')]/td[7]//div[contains(@class,'dropdown')]/a</td>

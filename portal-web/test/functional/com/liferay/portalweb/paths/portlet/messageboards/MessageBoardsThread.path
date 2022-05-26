@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--THREAD-->
+
 <tr>
 	<td>THREAD_BODY</td>
 	<td>//div[contains(@class,'message-content') and contains(.,'${key_threadBody}')]</td>
@@ -56,7 +58,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--THREAD_ACTIONS-->
+
 <tr>
 	<td>THREAD_ACTIONS_UNSUBSCRIBE</td>
 	<td>//div[@class='thread-actions']/ul/li/a/span[contains(.,'Unsubscribe')]</td>
@@ -72,7 +76,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--MESSAGE-->
+
 <tr>
 	<td>MESSAGE_BAN_THIS_USER</td>
 	<td>//div[contains(.,'${key_userName}')]/div/span/a/span[contains(.,'Ban This User')]</td>

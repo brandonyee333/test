@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--LOGIN-->
+
 <tr>
 	<td>LOGIN_NEXT_BUTTON</td>
 	<td>//div[contains(@class,'inline-block')]/input[contains(@value,'Next')]</td>
@@ -31,7 +33,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SHAREPOINT-->
+
 <tr>
 	<td>SHAREPOINT_NOTIFICATION</td>
 	<td>//div/h1[contains(.,'Do you trust ${app_name}')]</td>

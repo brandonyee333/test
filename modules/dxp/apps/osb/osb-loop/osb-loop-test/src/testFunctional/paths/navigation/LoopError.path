@@ -15,7 +15,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ERROR_PAGE-->
+
 <tr>
 	<td>ERROR_PAGE_TITLE</td>
 	<td>//div[@class='error-page']//div[@class='title']</td>

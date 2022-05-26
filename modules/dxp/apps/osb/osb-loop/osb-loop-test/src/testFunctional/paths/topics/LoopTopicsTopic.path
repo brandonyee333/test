@@ -90,7 +90,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TOPIC_FOLLOW_MENU-->
+
 <tr>
 	<td>TOPIC_POSTS_AND_COMMENTED_POSTS_NOTIFICATIONS_LINK</td>
 	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Posts, Comments, and Mentions')]</td>
@@ -131,7 +133,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TOPIC_OPTIONS_MENU-->
+
 <tr>
 	<td>TOPIC_OPTIONS_EDIT_LINK</td>
 	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Edit')]/a</td>
@@ -152,7 +156,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ABOUT-->
+
 <tr>
 	<td>ABOUT_DESCRIPTION</td>
 	<td>//div[contains(@class,'about')]//div[contains(@class,'content')]</td>
@@ -183,7 +189,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--EXPERT-->
+
 <tr>
 	<td>EXPERT_PROFILE_PICTURE</td>
 	<td>//div[contains(@class,'card-container') and contains(.,'Experts')]//div[contains(@class,'entity') and contains(.,'${key_expertName}')]//a[contains(@class,'avatar')]</td>
@@ -204,7 +212,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SUCCESS_MESSAGE-->
+
 <tr>
 	<td>SUCCESS_MESSAGE</td>
 	<td>//div[contains(@class,'alert-container')]</td>

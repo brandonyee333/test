@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--CONSUMER_TABLE-->
+
 <tr>
 	<td>CONSUMER_TABLE_ACTIONS_BUTTON</td>
 	<td>//tr[contains(.,'${key_consumerName}')]//div/a[contains(@id,'Consumers')]</td>
@@ -26,7 +28,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PRODUCER_TABLE-->
+
 <tr>
 	<td>PRODUCER_TABLE_PRODUCER</td>
 	<td>//tr[contains(.,'${key_producerName}')]/td[1]</td>

@@ -140,7 +140,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PERSON_FOLLOW_MENU-->
+
 <tr>
 	<td>PERSON_POSTS_AND_COMMENTED_POSTS_NOTIFICATIONS_LINK</td>
 	<td>//ul[contains(@class,'menu-list-container')]//li//span[contains(.,'Posts, Comments, and Mentions')]</td>
@@ -181,7 +183,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PERSON_OPTIONS_MENU-->
+
 <tr>
 	<td>PERSON_OPTIONS_EDIT_LINK</td>
 	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Edit User Information')]/a</td>
@@ -197,7 +201,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTACT-->
+
 <tr>
 	<td>CONTACT_EMAIL_ADDRESS</td>
 	<td>//div[contains(@class,'card-container') and contains(.,'Contact')]//a[contains(@href,'mailto:${key_userEmailAddress}')]</td>
@@ -218,7 +224,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ELSEWHERE-->
+
 <tr>
 	<td>ELSEWHERE_TWITTER</td>
 	<td>//div[contains(@class,'card-container') and contains(.,'Elsewhere')]//a[contains(@href,'https://twitter.com/${key_userTwitter}')]</td>
@@ -244,7 +252,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--NETWORK-->
+
 <tr>
 	<td>NETWORK_MANAGER</td>
 	<td>//div[contains(@class,'category-label') and contains(.,'Reports To')]//parent::div//a[@title='${key_managerName}']</td>
@@ -295,7 +305,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TOGGLE_ACTIVATE-->
+
 <tr>
 	<td>TOGGLE_ACTIVATE_ACTIVATE_MESSAGE</td>
 	<td>//div[contains(.,'Are you sure you want to activate')]</td>
@@ -321,7 +333,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--GROUPS-->
+
 <tr>
 	<td>GROUPS_GROUP_NAME</td>
 	<td>//div[contains(@class,'card-container') and contains(.,'Groups')]//div[contains(@class,'name')]/a[contains(.,'${key_groupName}')]</td>
@@ -342,7 +356,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--WORK-->
+
 <tr>
 	<td>WORK_START_DATE</td>
 	<td>//div[contains(@class,'card-container') and contains(.,'Work')]//ul[contains(@class,'category-items') and contains(.,'${key_userHireDate}')]</td>
@@ -373,7 +389,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--JOB_RESPONSIBILITIES-->
+
 <tr>
 	<td>JOB_RESPONSIBILITIES_DESCRIPTION</td>
 	<td>//div[contains(@class,'card-container') and contains(.,'Job Responsibilities')]//div[contains(@class,'markdown-content-container') and contains(.,'${key_userJobResponsibilities}')]</td>
@@ -384,7 +402,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ABOUT-->
+
 <tr>
 	<td>ABOUT_CARD</td>
 	<td>//div[contains(@class,'about')]</td>
@@ -440,7 +460,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTROLS-->
+
 <tr>
 	<td>CANCEL_BUTTON</td>
 	<td>//button[contains(.,'Cancel')]</td>

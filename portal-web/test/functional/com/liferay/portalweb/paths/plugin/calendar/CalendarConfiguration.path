@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--NAVIGATION-->
+
 <tr>
 	<td>NAVIGATION_USER_RSS</td>
 	<td>//ul[contains(@class,'lfr-nav nav')]//a[contains(.,'RSS')]</td>
@@ -31,7 +33,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--USER_SETTINGS-->
+
 <tr>
 	<td>USER_SETTINGS_TIME_FORMAT_SELECT</td>
 	<td>//select[contains(@id,'timeFormat')]</td>
@@ -67,7 +71,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--RSS-->
+
 <tr>
 	<td>RSS_ENABLE_RSS_SUBSCRIPTION_SWITCHER</td>
 	<td>//label[contains(.,'Enable RSS Subscription')]//span[@class='toggle-switch-handle']</td>

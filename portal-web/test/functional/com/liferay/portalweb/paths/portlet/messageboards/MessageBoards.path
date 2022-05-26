@@ -30,7 +30,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--NAVIGATION-->
+
 <tr>
 	<td>NAVIGATION_RECENT_POSTS</td>
 	<td>//div[contains(@class,'navbar')]//ul/li/a[contains(.,'Recent Posts')]</td>
@@ -61,7 +63,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CATEGORY_TABLE-->
+
 <tr>
 	<td>CATEGORY_TABLE_PANEL</td>
 	<td>//div[@id=&quot;messageBoardsCategoriesPanel&quot;]</td>
@@ -112,7 +116,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CATEGORY_LIST-->
+
 <tr>
 	<td>CATEGORY_LIST_ACTIONS</td>
 	<td>//li[contains(.,'${key_categoryName}')]//a[span/*[name()='svg'][contains(@class,'icon-ellipsis')]]</td>
@@ -163,7 +169,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--QUESTION_CATEGORY_THREAD_TABLE-->
+
 <tr>
 	<td>QUESTION_CATEGORY_THREAD_TABLE_QUESTION</td>
 	<td>//div[contains(@id,'mbThreadsSearchContainer')]//tr[contains(.,'${key_threadSubject}')]/td[2]//a</td>
@@ -174,7 +182,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SUBCATEGORY_TABLE-->
+
 <tr>
 	<td>SUBCATEGORY_TABLE_PANEL</td>
 	<td>//div[@id='messageBoardsCategoriesPanel']</td>
@@ -195,7 +205,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--THREAD_LIST-->
+
 <tr>
 	<td>THREAD_LIST_ANSWER</td>
 	<td>//li[contains(.,'${key_threadSubject}')]/div/span[3]</td>
@@ -241,7 +253,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--THREAD_REPLY-->
+
 <tr>
 	<td>THREAD_REPLY_ACTIONS</td>
 	<td>//div[contains(@class,'message-content') and contains(.,'${key_threadReplyBody}')]/../..//a[span/*[name()='svg'][contains(@class,'icon-ellipsis')]]</td>
@@ -252,7 +266,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--THREAD_TABLE-->
+
 <tr>
 	<td>THREAD_TABLE_ALL_CHECKBOX</td>
 	<td>//div[contains(@id,'mbThreadsSearchContainer')]//input[contains(@name,'allRowIds')]</td>

@@ -80,7 +80,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CONTENT_ADD_MENUBAR-->
+
 <tr>
 	<td>CONTENT_ADD_MENUBAR_IMAGE</td>
 	<td>//button[contains(@data-type,'image')]</td>
@@ -91,7 +93,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TEXT_FORMATTING-->
+
 <tr>
 	<td>TEXT_FORMATTING_LINK_BROWSE_BUTTON</td>
 	<td>//button[contains(@title,'browse')] | //button[contains(@aria-label,'Browse')]</td>
@@ -147,7 +151,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TRACKBACK-->
+
 <tr>
 	<td>TRACKBACKS_TO_SEND</td>
 	<td>//input[contains(@id,'trackbacks')]</td>

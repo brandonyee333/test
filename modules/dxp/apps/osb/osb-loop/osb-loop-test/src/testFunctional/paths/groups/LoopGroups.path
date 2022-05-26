@@ -85,7 +85,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--GROUP_OVERLAY-->
+
 <tr>
 	<td>GROUP_OVERLAY_AVATAR</td>
 	<td>//div[contains(@class,'entity-summary-container')]//div[contains(@class,'avatar-container')]</td>

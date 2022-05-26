@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--DEFINITION_TABLE-->
+
 <tr>
 	<td>DEFINITION_TABLE_NAME</td>
 	<td>//*[contains(@id,'kaleoDraftDefinitionsSearchContainer')]//td[contains(@class,'lfr-name-column')]</td>

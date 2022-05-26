@@ -45,7 +45,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_CONTENT_ENTRY-->
+
 <tr>
 	<td>ENTRY_CONTENT_ENTRY_CHECKBOX</td>
 	<td>//*[@data-qa-id='row' and contains(.,'${key_rowEntry}')]//input[@title='Select']</td>

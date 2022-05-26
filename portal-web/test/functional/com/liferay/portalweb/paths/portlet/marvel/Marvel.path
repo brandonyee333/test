@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!--HOME-->
+
 <tr>
 	<td>CLUSTER_NAME</td>
 	<td>//tbody//a[contains(.,'LiferayElasticsearchCluster')]</td>
@@ -31,7 +33,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--NAVBAR-->
+
 <tr>
 	<td>CLUSTERS</td>
 	<td>//ul[@role='navigation']//a[contains(.,'Clusters')]</td>
@@ -57,7 +61,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--CLUSTER_STATUS-->
+
 <tr>
 	<td>STATUS_CLUSTER_NAME</td>
 	<td>//marvel-cluster-status//div[contains(@class,'clusters')]/strong</td>
@@ -73,7 +79,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--MARVEL_CHART-->
+
 <tr>
 	<td>INDEXING_LATENCY</td>
 	<td>//marvel-chart//h1[contains(.,'Indexing Latency')]</td>
@@ -99,7 +107,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SHARD_ACTIVITY-->
+
 <tr>
 	<td>SHARD_ACTIVITY_HEADER</td>
 	<td>//marvel-shard-activity//h1[contains(.,'Shard Activity')]</td>

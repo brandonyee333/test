@@ -35,7 +35,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--NO_ENTRIES-->
+
 <tr>
 	<td>NO_POSTS_ICON</td>
 	<td>//div[@class='no-results-container text-center']//*[local-name()='svg']</td>
@@ -51,7 +53,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ADD_ENTRY-->
+
 <tr>
 	<td>ADD_ENTRY_MINIMIZED</td>
 	<td>//div[contains(@class,'asset-creator') and contains(@class,'minimized')]</td>
@@ -352,7 +356,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--EDIT_ENTRY-->
+
 <tr>
 	<td>EDIT_ENTRY_TEXT_FIELD</td>
 	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'DraftEditor-content')]</td>
@@ -518,7 +524,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_PREVIEW-->
+
 <tr>
 	<td>ENTRY_PREVIEW_AUTHOR_PROFILE_PICTURE</td>
 	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//div[contains(@class,'avatar')]//a</td>
@@ -594,7 +602,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY-->
+
 <tr>
 	<td>ENTRY_STREAM</td>
 	<td>//div[contains(@class,'home-container')] | //div[contains(@class,'loop-profile-page')] | //div[contains(@class,'portlet-content-container')]</td>
@@ -975,7 +985,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_OPTIONS-->
+
 <tr>
 	<td>ENTRY_OPTIONS_BOOKMARK_POST_LINK</td>
 	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Bookmark')]</td>
@@ -1036,7 +1048,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_AUTHOR_OVERLAY-->
+
 <tr>
 	<td>ENTRY_AUTHOR_OVERLAY_AVATAR</td>
 	<td>//div[contains(@class,'entity-summary-container')]//div[contains(@class,'avatar-container')]</td>
@@ -1077,7 +1091,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_UNDO_MESSAGE-->
+
 <tr>
 	<td>ENTRY_UNDO_MESSAGE</td>
 	<td>//div[contains(@class,'undo-card-content')]</td>
@@ -1103,7 +1119,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_ADD_COMMENT-->
+
 <tr>
 	<td>ENTRY_ADD_COMMENT_PROFILE_PICTURE</td>
 	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator')]//div[contains(@class,'avatar')]</td>
@@ -1144,7 +1162,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_SHARE-->
+
 <tr>
 	<td>ENTRY_SHARE_LINK</td>
 	<td>//div[contains(@class,'share-link')]//input</td>
@@ -1160,7 +1180,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_DELETE-->
+
 <tr>
 	<td>ENTRY_DELETE_MESSAGE</td>
 	<td>//div[contains(@class,'confirm-dialog-modal-container')]//div[contains(.,'Are you sure you want to delete this')]</td>
@@ -1181,7 +1203,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_EDIT-->
+
 <tr>
 	<td>ENTRY_EDIT_LOAD</td>
 	<td>//div[contains(@class,'edit-post-modal loop-portlet loading yui3')]</td>
@@ -1192,7 +1216,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_COMMENT-->
+
 <tr>
 	<td>ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE</td>
 	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//div/a[contains(@class,'avatar')]</td>
@@ -1323,7 +1349,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_COMMENT_REPLY-->
+
 <tr>
 	<td>ENTRY_COMMENT_REPLY_TOGGLE</td>
 	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//span[@class='toggle-replies']</td>
@@ -1424,7 +1452,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_NAVIGATE_AWAY-->
+
 <tr>
 	<td>ENTRY_NAVIGATE_AWAY_MESSAGE</td>
 	<td>//div[contains(.,'Are you sure you want to navigate away?')]</td>
@@ -1445,7 +1475,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--ENTRY_SHARE_PRIVATE_POST-->
+
 <tr>
 	<td>ENTRY_SHARE_PRIVATE_POST_MESSAGE</td>
 	<td>//div[contains(@class,'confirm-dialog-modal-container')]//div[contains(.,'This post is not already shared to')]</td>
@@ -1466,7 +1498,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--FEATURED_TOPICS-->
+
 <tr>
 	<td>FEATURED_TOPICS_HEADER</td>
 	<td>//div[contains(@class,'card-container') and contains(.,'Featured Topics')]//div[contains(@class,'card-header-container')]</td>
@@ -1497,7 +1531,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--MANAGE_FEATURED_TOPICS-->
+
 <tr>
 	<td>MANAGE_FEATURED_TOPICS_SEARCH</td>
 	<td>//div[contains(@class,'modal-content')]//div[contains(@class,'input-container')]//input</td>
@@ -1528,7 +1564,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--NEW_HIRES-->
+
 <tr>
 	<td>NEW_HIRES_HEADER</td>
 	<td>//div[contains(@class,'card-container') and contains(.,'New Hires')]//div[contains(@class,'card-header-container')]</td>
@@ -1549,7 +1587,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--NEW_GROUPS-->
+
 <tr>
 	<td>NEW_GROUPS_HEADER</td>
 	<td>//div[contains(@class,'card-container') and contains(.,'Groups')]//div[contains(@class,'card-header-container')]</td>
@@ -1575,7 +1615,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--MODAL_CLOSE_BUTTON-->
+
 <tr>
 	<td>MODAL_CLOSE_BUTTON</td>
 	<td>//div[contains(@class,'modal-container')]//*[local-name()='svg' and contains(@class,'close')]</td>
@@ -1586,7 +1628,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SUCCESS_MESSAGE-->
+
 <tr>
 	<td>SUCCESS_MESSAGE</td>
 	<td>//div[contains(@class,'alert-container')]</td>

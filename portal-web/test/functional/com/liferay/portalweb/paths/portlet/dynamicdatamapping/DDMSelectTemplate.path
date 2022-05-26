@@ -25,7 +25,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TOOLBAR-->
+
 <tr>
 	<td>TOOLBAR_SEARCH_FIELD</td>
 	<td>//div[@class='navbar ' or contains(@class,'navbar-default')]//input[contains(@name,'keywords')]</td>
@@ -36,7 +38,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--TEMPLATE_TABLE-->
+
 <tr>
 	<td>TEMPLATE_TABLE_ALL_CHECKBOX</td>
 	<td>//div[contains(@id,'DDMPortlet_managementBarContainerId')]//input[contains(@name,'allRowIds')]</td>

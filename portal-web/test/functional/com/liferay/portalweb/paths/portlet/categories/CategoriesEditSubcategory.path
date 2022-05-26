@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--MOVE_CATEGORIES_CATEGORY-->
+
 <tr>
 	<td>MOVE_CATEGORIES_CATEGORY_CHECK_ICON</td>
 	<td>//div[contains(.,'${key_categoryName}')]/span[contains(@class,'checkbox-container')]</td>
@@ -31,7 +33,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--PROPERTIES-->
+
 <tr>
 	<td>PROPERTIES_KEY_FIELD</td>
 	<td>//input[contains(@id,'key${key_pathNumber}')]</td>

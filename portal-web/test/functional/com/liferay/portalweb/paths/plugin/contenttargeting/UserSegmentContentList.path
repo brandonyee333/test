@@ -20,7 +20,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--SELECT_MULTIPLE-->
+
 <tr>
 	<td>SELECTED_ASSETS</td>
 	<td>//select[contains(@class,'left-selector')]/option</td>
@@ -46,7 +48,9 @@
 	<td></td>
 	<td></td>
 </tr>
+
 <!--VIEW_ENTRY-->
+
 <tr>
 	<td>VIEW_ENTRY_CONTENT</td>
 	<td>//div[@class='asset-content'][contains(.,'${key_entryContent}')]</td>
