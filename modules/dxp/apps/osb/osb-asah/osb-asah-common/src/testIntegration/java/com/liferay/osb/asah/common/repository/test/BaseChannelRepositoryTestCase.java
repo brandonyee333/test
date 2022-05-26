@@ -149,10 +149,6 @@ public abstract class BaseChannelRepositoryTestCase
 	public void testFindByNameContainingIgnoreCaseAndStateNot() {
 		Iterable<Channel> channels = _channelRepository.findAll();
 
-		for (Channel channel : channels) {
-			channel.setState("READY");
-		}
-
 		_channelRepository.saveAll(channels);
 
 		List<Channel> channelsNotReady =
