@@ -190,6 +190,6 @@ public class Channel implements Persistable<Long> {
 	private String _name;
 
 	@Transient
-	private String _state;
+	private String _state = "READY";
 
 }

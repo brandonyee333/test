@@ -86,7 +86,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 		channel.setDefaultChannel(defaultChannel);
 		channel.setId(_timeOrderedUuidGenerator.generateIdAsLong());
 		channel.setIsNew(Boolean.TRUE);
-		channel.setState("READY");
 
 		channel = _channelRepository.save(channel);
 
