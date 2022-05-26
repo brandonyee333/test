@@ -51,8 +51,8 @@ public class PipelineBuilder {
 
 		_baseParserPTransform = baseParserPTransform;
 
-		_parsedMessagesPCollectionTuple = _pubsubMessagesPCollection.apply(
-			baseParserPTransform);
+		_parsedMessagesPCollectionTuple =
+			_dxpEntityPubsubMessagePCollection.apply(baseParserPTransform);
 
 		_writeResult = _parsedMessagesPCollectionTuple.get(
 			baseParserPTransform.getSuccessTupleTag()
@@ -67,16 +67,16 @@ public class PipelineBuilder {
 		String gcsBucket, int shardCount, int triggerElementCount,
 		long triggerInterval) {
 
-		PCollection<BigQueryInsertError> failedInsertsWithErr =
+		PCollection<BigQueryInsertError> bigQueryInsertErrorPCollection =
 			_writeResult.getFailedInsertsWithErr();
 
-		PCollection<DXPEntityPubsubMessage> bigqueryInsertErrors =
-			failedInsertsWithErr.apply(
+		PCollection<DXPEntityPubsubMessage> dxpEntityPubsubMessagePCollection =
+			bigQueryInsertErrorPCollection.apply(
 				new BigQueryInsertErrorWriterPTransform());
 
 		_writeToGCS(
-			gcsBucket, bigqueryInsertErrors, shardCount, triggerElementCount,
-			triggerInterval);
+			dxpEntityPubsubMessagePCollection, gcsBucket, shardCount,
+			triggerElementCount, triggerInterval);
 
 		return this;
 	}
@@ -85,7 +85,7 @@ public class PipelineBuilder {
 		String gcsBucket, int shardCount, int triggerElementCount,
 		long triggerInterval) {
 
-		PCollection<DXPEntityPubsubMessage> failedParsePCollection =
+		PCollection<DXPEntityPubsubMessage> dxpEntityPubsubMessagePCollection =
 			_parsedMessagesPCollectionTuple.get(
 				_baseParserPTransform.getFailTupleTag()
 			).apply(
@@ -93,8 +93,8 @@ public class PipelineBuilder {
 			);
 
 		_writeToGCS(
-			gcsBucket, failedParsePCollection, shardCount, triggerElementCount,
-			triggerInterval);
+			dxpEntityPubsubMessagePCollection, gcsBucket, shardCount,
+			triggerElementCount, triggerInterval);
 
 		return this;
 	}
@@ -104,7 +104,7 @@ public class PipelineBuilder {
 		long triggerInterval) {
 
 		_writeToGCS(
-			gcsBucket, _pubsubMessagesPCollection, shardCount,
+			_dxpEntityPubsubMessagePCollection, gcsBucket, shardCount,
 			triggerElementCount, triggerInterval);
 
 		return this;
@@ -113,7 +113,7 @@ public class PipelineBuilder {
 	public PipelineBuilder withPubsubSubscription(
 		String title, String subscription) {
 
-		_pubsubMessagesPCollection = _pipeline.apply(
+		_dxpEntityPubsubMessagePCollection = _pipeline.apply(
 			"Read Pubsub Subscription " + title,
 			new PubsubReaderPTransform(subscription));
 
@@ -121,10 +121,11 @@ public class PipelineBuilder {
 	}
 
 	private void _writeToGCS(
-		String gcsBucket, PCollection<DXPEntityPubsubMessage> pCollection,
-		int shardCount, int triggerElementCount, long triggerInterval) {
+		PCollection<DXPEntityPubsubMessage> dxpEntityPubsubMessagePCollection,
+		String gcsBucket, int shardCount, int triggerElementCount,
+		long triggerInterval) {
 
-		pCollection.apply(
+		dxpEntityPubsubMessagePCollection.apply(
 			String.format(
 				"Window By %s Elements Count Or %s Seconds",
 				triggerElementCount, triggerInterval),
@@ -139,9 +140,10 @@ public class PipelineBuilder {
 	}
 
 	private BaseParserPTransform<?> _baseParserPTransform;
+	private PCollection<DXPEntityPubsubMessage>
+		_dxpEntityPubsubMessagePCollection;
 	private PCollectionTuple _parsedMessagesPCollectionTuple;
 	private final Pipeline _pipeline;
-	private PCollection<DXPEntityPubsubMessage> _pubsubMessagesPCollection;
 	private WriteResult _writeResult;
 
 }
