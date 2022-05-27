@@ -20,9 +20,7 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
@@ -64,65 +62,10 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 
 	public void addActivity(JSONArray activityJSONArray) {
 		elasticsearchInvoker.add("activities", activityJSONArray);
-
-		List<Long> referencedAssetIds = _segmentDog.getReferencedAssetIds();
-
-		JSONArray contextJSONArray = new JSONArray();
-
-		for (int i = 0; i < activityJSONArray.length(); i++) {
-			JSONObject activityJSONObject = activityJSONArray.getJSONObject(i);
-
-			JSONObject objectJSONObject = activityJSONObject.getJSONObject(
-				"object");
-
-			if (!referencedAssetIds.contains(objectJSONObject.getLong("id"))) {
-				continue;
-			}
-
-			contextJSONArray.put(
-				JSONUtil.put(
-					"dateModified", DateUtil.newDateString()
-				).put(
-					"filter",
-					"contains(filter, '" +
-						activityJSONObject.getString("activityKey") + "')"
-				).put(
-					"individualJSONObject",
-					JSONUtil.put("id", activityJSONObject.getLong("ownerId"))
-				));
-		}
-
-		_asahTaskDog.scheduleAsahTask(
-			"UpdateDynamicMembershipsNanite", contextJSONArray);
 	}
 
 	public JSONObject addActivity(JSONObject activityJSONObject) {
-		activityJSONObject = elasticsearchInvoker.add(
-			"activities", activityJSONObject);
-
-		List<Long> referencedAssetIds = _segmentDog.getReferencedAssetIds();
-
-		JSONObject objectJSONObject = activityJSONObject.getJSONObject(
-			"object");
-
-		if (!referencedAssetIds.contains(objectJSONObject.getLong("id"))) {
-			return activityJSONObject;
-		}
-
-		_asahTaskDog.scheduleAsahTask(
-			"UpdateDynamicMembershipsNanite",
-			JSONUtil.put(
-				"dateModified", DateUtil.newDateString()
-			).put(
-				"filter",
-				"contains(filter, '" +
-					activityJSONObject.getString("activityKey") + "')"
-			).put(
-				"individualJSONObject",
-				JSONUtil.put("id", activityJSONObject.getLong("ownerId"))
-			));
-
-		return activityJSONObject;
+		return elasticsearchInvoker.add("activities", activityJSONObject);
 	}
 
 	public void deleteActivies(Set<Long> channelIds) {
@@ -505,35 +448,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 				Collections.singletonMap(
 					"ownerId", String.valueOf(individual.getId()))),
 			"activities");
-
-		JSONArray activitiesJSONArray = elasticsearchInvoker.get(
-			"activities",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery(
-					"object.id",
-					ListUtil.map(
-						_segmentDog.getReferencedAssetIds(), String::valueOf))
-			).filter(
-				QueryBuilders.termQuery("userId", userId)
-			));
-
-		for (int i = 0; i < activitiesJSONArray.length(); i++) {
-			JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(
-				i);
-
-			_asahTaskDog.scheduleAsahTask(
-				"UpdateDynamicMembershipsNanite",
-				JSONUtil.put(
-					"dateModified", DateUtil.newDateString()
-				).put(
-					"filter",
-					"contains(filter, " +
-						activityJSONObject.getString("activityKey") + ")"
-				).put(
-					"individualJSONObject",
-					JSONUtil.put("id", individual.getId())
-				));
-		}
 	}
 
 	public void updateSessionId(UserSession userSession) {

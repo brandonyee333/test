@@ -103,7 +103,4 @@ public interface SegmentRepository
 	public List<String> findNameByIdInAndStatus(
 		@Param("ids") List<Long> ids, @Param("status") String status);
 
-	@Cacheable
-	public List<Long> findReferencedAssetIds();
-
 }

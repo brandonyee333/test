@@ -280,10 +280,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return lastActivityDateMap;
 	}
 
-	public List<Long> getReferencedAssetIds() {
-		return _segmentRepository.findReferencedAssetIds();
-	}
-
 	public Segment getSegment(Long segmentId) {
 		Optional<Segment> segmentOptional = _segmentRepository.findById(
 			segmentId);

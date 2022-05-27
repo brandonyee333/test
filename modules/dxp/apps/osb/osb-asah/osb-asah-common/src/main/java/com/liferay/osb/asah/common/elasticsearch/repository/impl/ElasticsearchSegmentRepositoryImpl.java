@@ -433,39 +433,6 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
-	public List<Long> findReferencedAssetIds() {
-		List<Long> referencedAssetIds = new ArrayList<>();
-
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			getCollectionName(),
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"referencedAssetIds"
-					).field(
-						"referencedAssetIds"
-					).size(
-						Integer.MAX_VALUE
-					));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		if (isEmpty(aggregations)) {
-			return referencedAssetIds;
-		}
-
-		Terms terms = aggregations.get("referencedAssetIds");
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			referencedAssetIds.add(Long.valueOf(bucket.getKeyAsString()));
-		}
-
-		return referencedAssetIds;
-	}
-
-	@Override
 	public List<Transformation> getSegmentTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable,
 		List<Long> segmentIds) {

@@ -128,16 +128,4 @@
 				COUNT(Segment.id) DESC
 		]]>
 	</entry>
-	<entry key="Segment.findReferencedAssetIds">
-		<![CDATA[
-			SELECT
-				UNNEST(COALESCE(ARRAY_AGG(DISTINCT referencedAssetIdsUnnest), '{}'))
-			FROM
-				Segment,
-				UNNEST(Segment.referencedAssetIds) referencedAssetIdsUnnest
-			WHERE
-				Segment.referencedAssetIds IS NOT NULL AND
-				Segment.referencedAssetIds <> '{}'
-		]]>
-	</entry>
 </properties>
