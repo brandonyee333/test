@@ -175,7 +175,6 @@ public class MembershipChangeDogTest
 		segment.setName(
 			String.format("Segment of channel %s", channel.getName()));
 		segment.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
-		segment.setReferencedAssetIds(SetUtil.of(3L, 4L));
 		segment.setReferencedFieldMappingIds(SetUtil.of(7L, 8L));
 		segment.setState("READY");
 		segment.setStatus("STARTED");

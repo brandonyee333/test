@@ -414,9 +414,6 @@ public class UpdateDynamicMembershipsNaniteTest
 			"((organizations.filter(filter='(id eq ''" + organization.getId() +
 				"'')')))");
 
-		segment.setReferencedOrganizationIds(
-			Collections.singleton(organization.getId()));
-
 		segment = _segmentRepository.save(segment);
 
 		Assertions.assertFalse(
@@ -521,10 +518,6 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		Segment segment = FaroInfoTestUtil.buildDynamicSegment(
 			1L, "((roleIds eq '" + roleJSONObject.getString("id") + "'))");
-
-		segment.setReferencedRoleIds(
-			Collections.singleton(
-				Long.valueOf(roleJSONObject.getString("id"))));
 
 		segment = _segmentRepository.save(segment);
 

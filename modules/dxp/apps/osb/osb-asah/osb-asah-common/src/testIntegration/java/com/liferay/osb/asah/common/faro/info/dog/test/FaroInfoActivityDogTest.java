@@ -32,7 +32,6 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -69,8 +68,6 @@ public class FaroInfoActivityDogTest
 
 		Segment segment = FaroInfoTestUtil.buildDynamicSegment(
 			"(((activities/ever eq 'Page#pageViewed#" + asset.getId() + "')))");
-
-		segment.setReferencedAssetIds(Collections.singleton(asset.getId()));
 
 		_segmentDog.addSegment(segment);
 

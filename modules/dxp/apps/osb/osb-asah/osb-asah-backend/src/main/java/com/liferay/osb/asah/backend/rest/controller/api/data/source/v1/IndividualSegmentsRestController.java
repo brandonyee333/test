@@ -24,8 +24,6 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipChangeDog;
@@ -35,7 +33,6 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
-import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -43,7 +40,6 @@ import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.rest.response.function.MembershipChangesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Collections;
 import java.util.Date;
@@ -69,7 +65,6 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -371,42 +366,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@Autowired
 	protected SegmentDog segmentDog;
 
-	private void _addReferencedObject(
-			String collectionName, Set<Long> referencedIds,
-			JSONObject referencedObjectsJSONObject)
-		throws Exception {
-
-		if (CollectionUtils.isEmpty(referencedIds)) {
-			referencedObjectsJSONObject.put(collectionName, new JSONArray());
-
-			return;
-		}
-
-		JSONArray jsonArray = null;
-
-		if (!collectionName.equals("organizations") &&
-			(DXPEntity.Type.ofCollectionName(collectionName) != null)) {
-
-			List<? extends DXPEntity> dxpEntities =
-				_dxpEntityDog.findByFieldsAndType(
-					Collections.singletonMap("id", referencedIds),
-					DXPEntity.Type.ofCollectionName(collectionName));
-
-			jsonArray = JSONUtil.toJSONArray(
-				dxpEntities,
-				dxpEntity -> _objectMapper.convertValue(
-					dxpEntity, JSONObject.class));
-		}
-		else {
-			jsonArray = faroInfoElasticsearchInvoker.get(
-				collectionName,
-				QueryBuilders.termsQuery(
-					"id", ListUtil.map(referencedIds, String::valueOf)));
-		}
-
-		referencedObjectsJSONObject.put(collectionName, jsonArray);
-	}
-
 	private QueryBuilder _getMembershipChangesQueryBuilder(
 		String filterString, String individualSegmentId) {
 
@@ -535,13 +494,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		IndividualSegmentsRestController.class);
 
 	@Autowired
-	private AssetDog _assetDog;
-
-	@Autowired
 	private MembershipChangeDog _bqMembershipChangeDog;
-
-	@Autowired
-	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;

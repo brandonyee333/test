@@ -417,7 +417,6 @@ public class BQMembershipRepositoryTest
 		segment.setFilter("(channelId eq '1')");
 		segment.setName("Segment 1");
 		segment.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
-		segment.setReferencedAssetIds(SetUtil.of(3L, 4L));
 		segment.setReferencedFieldMappingIds(SetUtil.of(7L, 8L));
 		segment.setState("READY");
 		segment.setStatus("STARTED");

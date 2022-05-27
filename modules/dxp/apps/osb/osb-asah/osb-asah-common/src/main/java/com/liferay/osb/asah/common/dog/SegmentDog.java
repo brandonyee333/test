@@ -65,7 +65,6 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -577,33 +576,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 			SetUtil.map(
 				referencedObjectIds.get("referencedAssetDataSourceIds"),
 				Long::valueOf));
-		segment.setReferencedAssetIds(
-			SetUtil.map(
-				referencedObjectIds.get("referencedAssetIds"), Long::valueOf));
 		segment.setReferencedFieldMappingIds(
 			SetUtil.map(
 				referencedObjectIds.get("referencedFieldMappingIds"),
 				Long::valueOf));
-		segment.setReferencedGroupIds(
-			SetUtil.map(
-				referencedObjectIds.get("referencedGroupIds"), Long::valueOf));
-		segment.setReferencedOrganizationIds(
-			SetUtil.map(
-				referencedObjectIds.get("referencedOrganizationIds"),
-				Long::valueOf));
-		segment.setReferencedRoleIds(
-			SetUtil.map(
-				referencedObjectIds.get("referencedRoleIds"), Long::valueOf));
-		segment.setReferencedTeamIds(
-			SetUtil.map(
-				referencedObjectIds.get("referencedTeamIds"), Long::valueOf));
-		segment.setReferencedUserGroupIds(
-			SetUtil.map(
-				referencedObjectIds.get("referencedUserGroupIds"),
-				Long::valueOf));
-		segment.setReferencedUserIds(
-			SetUtil.map(
-				referencedObjectIds.get("referencedUserIds"), Long::valueOf));
 	}
 
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {
@@ -633,12 +609,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	private Exception _addAssetReferenceId(
-		Long assetId, String key,
-		Map<String, Set<String>> referencedObjectSets) {
-
-		Set<String> referencedIds = referencedObjectSets.get(key);
-
-		referencedIds.add(String.valueOf(assetId));
+		Long assetId, Map<String, Set<String>> referencedObjectSets) {
 
 		Set<String> referencedAssetDataSourceIds = referencedObjectSets.get(
 			"referencedAssetDataSourceIds");
@@ -691,12 +662,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	private Exception _addReferencedId(
-		String collectionName, String id, String key,
+		String collectionName, String id,
 		Map<String, Set<String>> referencedObjectSets) {
-
-		Set<String> referencedIds = referencedObjectSets.get(key);
-
-		referencedIds.add(id);
 
 		Set<String> referencedAssetDataSourceIds = referencedObjectSets.get(
 			"referencedAssetDataSourceIds");
@@ -851,8 +818,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			Long assetId = _getAssetId(terms);
 
 			if (assetId != null) {
-				return _addAssetReferenceId(
-					assetId, "referencedAssetIds", referencedObjectSets);
+				return _addAssetReferenceId(assetId, referencedObjectSets);
 			}
 
 			DXPEntity.Type dxpEntityType = DXPEntity.Type.ofIndividualFieldName(
@@ -861,9 +827,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			if (dxpEntityType != null) {
 				return _addReferencedId(
 					dxpEntityType.getCollectionName(),
-					StringUtil.unquote(terms[2]),
-					dxpEntityType.getIndividualSegmentFieldName(),
-					referencedObjectSets);
+					StringUtil.unquote(terms[2]), referencedObjectSets);
 			}
 
 			return _addReferencedFieldMappingId(
@@ -887,7 +851,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		if (fieldName.equals("id") || fieldName.equals("parentId")) {
 			return _addReferencedId(
 				"organizations", StringUtil.unquote(terms[2]),
-				"referencedOrganizationIds", referencedObjectSets);
+				referencedObjectSets);
 		}
 
 		return _addReferencedFieldMappingId(
@@ -1122,10 +1086,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private static final String _ACCOUNT_PREFIX = "Account: ";
 
 	private static final String[] _REFERENCED_OBJECT_NAMES = {
-		"referencedAssetDataSourceIds", "referencedAssetIds",
-		"referencedFieldMappingIds", "referencedGroupIds",
-		"referencedOrganizationIds", "referencedRoleIds", "referencedTeamIds",
-		"referencedUserGroupIds", "referencedUserIds"
+		"referencedAssetDataSourceIds", "referencedFieldMappingIds"
 	};
 
 	private static final Log _log = LogFactory.getLog(SegmentDog.class);

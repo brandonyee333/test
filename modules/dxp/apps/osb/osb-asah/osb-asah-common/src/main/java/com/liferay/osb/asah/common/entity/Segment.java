@@ -75,19 +75,9 @@ public class Segment implements Persistable<Long> {
 			Objects.equals(
 				_referencedAssetDataSourceIds,
 				segment._referencedAssetDataSourceIds) &&
-			Objects.equals(_referencedAssetIds, segment._referencedAssetIds) &&
 			Objects.equals(
 				_referencedFieldMappingIds,
 				segment._referencedFieldMappingIds) &&
-			Objects.equals(_referencedGroupIds, segment._referencedGroupIds) &&
-			Objects.equals(
-				_referencedOrganizationIds,
-				segment._referencedOrganizationIds) &&
-			Objects.equals(_referencedRoleIds, segment._referencedRoleIds) &&
-			Objects.equals(_referencedTeamIds, segment._referencedTeamIds) &&
-			Objects.equals(
-				_referencedUserGroupIds, segment._referencedUserGroupIds) &&
-			Objects.equals(_referencedUserIds, segment._referencedUserIds) &&
 			Objects.equals(_scope, segment._scope) &&
 			Objects.equals(_state, segment._state) &&
 			Objects.equals(_status, segment._status) &&
@@ -191,50 +181,8 @@ public class Segment implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<Long> getReferencedAssetIds() {
-		return _referencedAssetIds;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedFieldMappingIds() {
 		return _referencedFieldMappingIds;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<Long> getReferencedGroupIds() {
-		return _referencedGroupIds;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<Long> getReferencedOrganizationIds() {
-		return _referencedOrganizationIds;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<Long> getReferencedRoleIds() {
-		return _referencedRoleIds;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<Long> getReferencedTeamIds() {
-		return _referencedTeamIds;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<Long> getReferencedUserGroupIds() {
-		return _referencedUserGroupIds;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<Long> getReferencedUserIds() {
-		return _referencedUserIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -264,11 +212,8 @@ public class Segment implements Persistable<Long> {
 		return Objects.hash(
 			_author, _channelId, _createDate, _filter, _filterMetadata, _id,
 			_includeAnonymousUsers, _modifiedDate, _name,
-			_referencedAssetDataSourceIds, _referencedAssetIds,
-			_referencedFieldMappingIds, _referencedGroupIds,
-			_referencedOrganizationIds, _referencedRoleIds, _referencedTeamIds,
-			_referencedUserGroupIds, _referencedUserIds, _scope, _state,
-			_status, _type);
+			_referencedAssetDataSourceIds, _referencedFieldMappingIds, _scope,
+			_state, _status, _type);
 	}
 
 	@JsonIgnore
@@ -351,40 +296,10 @@ public class Segment implements Persistable<Long> {
 		_referencedAssetDataSourceIds = referencedAssetDataSourceIds;
 	}
 
-	public void setReferencedAssetIds(Set<Long> referencedAssetIds) {
-		_referencedAssetIds = referencedAssetIds;
-	}
-
 	public void setReferencedFieldMappingIds(
 		Set<Long> referencedFieldMappingIds) {
 
 		_referencedFieldMappingIds = referencedFieldMappingIds;
-	}
-
-	public void setReferencedGroupIds(Set<Long> referencedGroupIds) {
-		_referencedGroupIds = referencedGroupIds;
-	}
-
-	public void setReferencedOrganizationIds(
-		Set<Long> referencedOrganizationIds) {
-
-		_referencedOrganizationIds = referencedOrganizationIds;
-	}
-
-	public void setReferencedRoleIds(Set<Long> referencedRoleIds) {
-		_referencedRoleIds = referencedRoleIds;
-	}
-
-	public void setReferencedTeamIds(Set<Long> referencedTeamIds) {
-		_referencedTeamIds = referencedTeamIds;
-	}
-
-	public void setReferencedUserGroupIds(Set<Long> referencedUserGroupIds) {
-		_referencedUserGroupIds = referencedUserGroupIds;
-	}
-
-	public void setReferencedUserIds(Set<Long> referencedUserIds) {
-		_referencedUserIds = referencedUserIds;
 	}
 
 	public void setScope(String scope) {
@@ -452,28 +367,7 @@ public class Segment implements Persistable<Long> {
 	private Set<Long> _referencedAssetDataSourceIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedAssetIds = new HashSet<>();
-
-	@Transient
 	private Set<Long> _referencedFieldMappingIds = new HashSet<>();
-
-	@Transient
-	private Set<Long> _referencedGroupIds = new HashSet<>();
-
-	@Transient
-	private Set<Long> _referencedOrganizationIds = new HashSet<>();
-
-	@Transient
-	private Set<Long> _referencedRoleIds = new HashSet<>();
-
-	@Transient
-	private Set<Long> _referencedTeamIds = new HashSet<>();
-
-	@Transient
-	private Set<Long> _referencedUserGroupIds = new HashSet<>();
-
-	@Transient
-	private Set<Long> _referencedUserIds = new HashSet<>();
 
 	@Transient
 	private String _scope;

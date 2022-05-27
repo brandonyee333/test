@@ -65,7 +65,6 @@ public abstract class BaseSegmentRepositoryTestCase
 		segment1.setFilter("(channelId eq '1')");
 		segment1.setName("Segment 1");
 		segment1.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
-		segment1.setReferencedAssetIds(SetUtil.of(3L, 4L));
 		segment1.setReferencedFieldMappingIds(SetUtil.of(7L, 8L));
 		segment1.setState("READY");
 		segment1.setStatus("STARTED");
@@ -82,7 +81,6 @@ public abstract class BaseSegmentRepositoryTestCase
 		segment2.setFilter("(channelId eq '2')");
 		segment2.setName("Segment 2");
 		segment2.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
-		segment2.setReferencedAssetIds(SetUtil.of(3L, 4L));
 		segment2.setReferencedFieldMappingIds(SetUtil.of(7L, 8L));
 		segment2.setState("READY");
 		segment2.setStatus("STARTED");
