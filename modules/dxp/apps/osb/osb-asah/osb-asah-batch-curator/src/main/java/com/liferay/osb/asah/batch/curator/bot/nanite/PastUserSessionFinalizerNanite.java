@@ -61,6 +61,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class PastUserSessionFinalizerNanite extends BaseNanite {
 
+	public void awaitPendingTasks() {
+		_boundedExecutor.awaitPendingTasks();
+	}
+
 	@Override
 	public boolean isLogRunEnabled() {
 		return true;
