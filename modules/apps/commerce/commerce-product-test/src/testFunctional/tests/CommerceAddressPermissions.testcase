@@ -146,5 +146,61 @@ definition {
 		}
     }
 
+	@description = "COMMERCE-9365 | Without Manage Address permission, user cannot add new billing address and only can select pre-defined addresses"
+	@priority = "3"
+	test CanOnlySelectPreDefinedBillingAddressWhithouPermission {
+		task ("When the buyer reach the Billing Address step") {
+			CommerceCheckout.gotoCheckout();
+
+			Select(
+				key_selectFieldLabel = "Choose Shipping Address",
+				locator1 = "Select#ANY",
+				value1 = "Liferay Shipping");
+
+			Click(locator1 = "Button#CONTINUE");
+
+			Click(
+				key_radioOption = "Standard",
+				locator1 = "CommerceEntry#RADIO_BUTTON");
+
+			Click(locator1 = "Button#CONTINUE");
+		}
+
+		task ("Then the buyer can select a billing address between the pre-defined list of existing billing addresses") {
+			AssertElementPresent(
+				key_selectFieldLabel = "Choose Shipping Address",
+				locator1 = "Select#ANY",
+				value1 = "Liferay Billing");
+
+			Select(
+				key_selectFieldLabel = "Choose Shipping Address",
+				locator1 = "Select#ANY",
+				value1 = "Liferay Billing");
+
+			AssertElementPresent(
+				key_selectFieldLabel = "Choose Shipping Address",
+				locator1 = "Select#ANY",
+				value1 = "Liferay Billing and Shipping");
+
+			Select(
+				key_selectFieldLabel = "Choose Shipping Address",
+				locator1 = "Select#ANY",
+				value1 = "Liferay Billing and Shipping");
+		}
+
+		task ("But the buyer is not able to add a new shipping address as fields are disabled") {
+			AssertElementPresent(
+				key_fieldName = "Name",
+				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
+
+			AssertElementPresent(
+				key_fieldName = "Address",
+				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
+
+			AssertElementPresent(
+				key_fieldName = "Zip",
+				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
+		}
+    }
 
 }
