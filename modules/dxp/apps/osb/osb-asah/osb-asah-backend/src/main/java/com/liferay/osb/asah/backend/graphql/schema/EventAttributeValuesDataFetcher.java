@@ -23,7 +23,11 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,11 +49,44 @@ public class EventAttributeValuesDataFetcher
 		EventAttributeDefinitionDTO eventAttributeDefinitionDTO =
 			environment.getSource();
 
+		String name = _globalBQEventPropertyNames.get(
+			eventAttributeDefinitionDTO.getName());
+
+		if (name != null) {
+			List<EventAttributeValueDTO> eventAttributeValueDTOs =
+				new ArrayList<>();
+
+			Map<String, Date> recentGlobalBQEventProperyValues =
+				_eventDog.getRecentGlobalBQEventProperyValues(name, 10);
+
+			for (Map.Entry<String, Date> entry :
+					recentGlobalBQEventProperyValues.entrySet()) {
+
+				eventAttributeValueDTOs.add(
+					new EventAttributeValueDTO(
+						entry.getValue(), entry.getKey()));
+			}
+
+			return eventAttributeValueDTOs;
+		}
+
 		return ListUtil.map(
 			_eventDog.getRecentBQEventPropertyValues(
 				Long.valueOf(eventAttributeDefinitionDTO.getId()), 10),
 			EventAttributeValueDTO::new);
 	}
+
+	private static final Map<String, String> _globalBQEventPropertyNames =
+		new HashMap<String, String>() {
+			{
+				put("canonicalUrl", "canonicalUrl");
+				put("pageDescription", "description");
+				put("pageKeywords", "keywords");
+				put("pageTitle", "title");
+				put("referrer", "referrer");
+				put("url", "url");
+			}
+		};
 
 	@Autowired
 	private EventDog _eventDog;
