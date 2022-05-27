@@ -10,7 +10,7 @@ definition {
 	setUp {
 		CommerceConfiguration.commerceSetUp();
 
-        task ("Setup: Create an account with a buyer user") {
+		task ("Setup: Create an account with a buyer user") {
 			CommerceEntry.addAccountEntryUser(
 				accountName = "Commerce Account",
 				accountType = "Business",
@@ -26,7 +26,7 @@ definition {
 		}
 
 		task ("Setup: 3 addresses are added to the account(Billing, Shipping, Billing & Shipping)") {
-			 Accounts.openAccountsAdmin();
+			Accounts.openAccountsAdmin();
 
 			LexiconEntry.gotoEntry(rowEntry = "Commerce Account");
 
@@ -42,7 +42,7 @@ definition {
 					addressStreet1 = "1400 Montefino Ave",
 					addressType = "${typeList}",
 					phoneNumber = "+1-877-543-3729");
-     	   }
+			}
 		}
 
 		task ("Setup: The buyer doesn't have permission to manage addresses(Accounts > Account Entry: Manage Addresses)") {
@@ -66,19 +66,19 @@ definition {
 				value1 = "Accounts");
 
 			ClickNoError(
-				locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_SUBITEM",
 				key_navItem = "Accounts",
-				key_subItem = "Accounts");
-				
+				key_subItem = "Accounts",
+				locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_SUBITEM");
+
 			Uncheck.uncheckNotVisible(
-				locator1 = "RolesPermissionsNavigation#PERMISSIONS_ITEM_CHECKBOX",
+				key_checkboxName = "MANAGE_ADDRESSES",
 				key_itemName = "Account Entry",
-				key_checkboxName = "MANAGE_ADDRESSES");
+				locator1 = "RolesPermissionsNavigation#PERMISSIONS_ITEM_CHECKBOX");
 
 			Button.clickSave();
 		}
 
-        task ("Setup: login with a buyer user") {
+		task ("Setup: login with a buyer user") {
 			User.logoutPG();
 
 			CommerceLogin.miniumLogin(
@@ -86,65 +86,15 @@ definition {
 				urlAppend = "web/minium",
 				userEmailAddress = "buyer@liferay.com");
 
-            FrontStore.addInitializerProductToCart(
-                productName = "ABS Sensor",
-                productQuantity = "1");
+			FrontStore.addInitializerProductToCart(
+				productName = "ABS Sensor",
+				productQuantity = "1");
 		}
 	}
 
 	tearDown {
 		CommerceConfiguration.commerceTearDown();
 	}
-
-    @description = "COMMERCE-9364 | Without Manage Address permission, user cannot add new shipping address and only can select pre-defined addresses"
-	@priority = "3"
-	test CanOnlySelectPreDefinedShippingAddressWhithouPermission {
-		task ("When the buyer reach the Billing Address step") {
-			CommerceCheckout.gotoCheckout();
-		}
-
-		task ("Then the buyer can select a billing address between the pre-defined list of existing billing addresses") {
-			AssertElementPresent(
-				key_selectFieldLabel = "Choose Shipping Address",
-				locator1 = "Select#ANY",
-				value1 = "Liferay Shipping");
-
-			Select(
-				key_selectFieldLabel = "Choose Shipping Address",
-				locator1 = "Select#ANY",
-				value1 = "Liferay Shipping");
-
-			AssertElementPresent(
-				key_selectFieldLabel = "Choose Shipping Address",
-				locator1 = "Select#ANY",
-				value1 = "Liferay Billing and Shipping");
-
-			Select(
-				key_selectFieldLabel = "Choose Shipping Address",
-				locator1 = "Select#ANY",
-				value1 = "Liferay Billing and Shipping");
-		}
-
-		task ("And then the 'Use shipping address as billing address' checkbox is not visible") {
-			AssertElementNotPresent(
-				locator1 = "Checkbox#ANY_CHECKBOX",
-				checkboxName = "Use shipping address as billing address");
-		}
-
-		task ("But the buyer is not able to add a new shipping address as fields are disabled") {
-			AssertElementPresent(
-				key_fieldName = "Name",
-				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
-
-			AssertElementPresent(
-				key_fieldName = "Address",
-				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
-
-			AssertElementPresent(
-				key_fieldName = "Zip",
-				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
-		}
-    }
 
 	@description = "COMMERCE-9365 | Without Manage Address permission, user cannot add new billing address and only can select pre-defined addresses"
 	@priority = "3"
@@ -201,6 +151,56 @@ definition {
 				key_fieldName = "Zip",
 				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
 		}
-    }
+	}
+
+	@description = "COMMERCE-9364 | Without Manage Address permission, user cannot add new shipping address and only can select pre-defined addresses"
+	@priority = "3"
+	test CanOnlySelectPreDefinedShippingAddressWhithouPermission {
+		task ("When the buyer reach the Billing Address step") {
+			CommerceCheckout.gotoCheckout();
+		}
+
+		task ("Then the buyer can select a billing address between the pre-defined list of existing billing addresses") {
+			AssertElementPresent(
+				key_selectFieldLabel = "Choose Shipping Address",
+				locator1 = "Select#ANY",
+				value1 = "Liferay Shipping");
+
+			Select(
+				key_selectFieldLabel = "Choose Shipping Address",
+				locator1 = "Select#ANY",
+				value1 = "Liferay Shipping");
+
+			AssertElementPresent(
+				key_selectFieldLabel = "Choose Shipping Address",
+				locator1 = "Select#ANY",
+				value1 = "Liferay Billing and Shipping");
+
+			Select(
+				key_selectFieldLabel = "Choose Shipping Address",
+				locator1 = "Select#ANY",
+				value1 = "Liferay Billing and Shipping");
+		}
+
+		task ("And then the 'Use shipping address as billing address' checkbox is not visible") {
+			AssertElementNotPresent(
+				checkboxName = "Use shipping address as billing address",
+				locator1 = "Checkbox#ANY_CHECKBOX");
+		}
+
+		task ("But the buyer is not able to add a new shipping address as fields are disabled") {
+			AssertElementPresent(
+				key_fieldName = "Name",
+				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
+
+			AssertElementPresent(
+				key_fieldName = "Address",
+				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
+
+			AssertElementPresent(
+				key_fieldName = "Zip",
+				locator1 = "CommerceAccelerators#CHECKOUT_GENERIC_TEXT_INPUT_DISABLED");
+		}
+	}
 
 }
