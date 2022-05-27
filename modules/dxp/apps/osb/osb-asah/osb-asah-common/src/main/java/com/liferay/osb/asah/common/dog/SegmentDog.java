@@ -1163,9 +1163,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 	@Autowired
 	private ObjectMapper _objectMapper;
 
-	@Value("${osb.asah.data.dog.query.response.threshold:10000}")
-	private int _queryResponseThreshold;
-
 	@Autowired
 	private SegmentRepository _segmentRepository;
 

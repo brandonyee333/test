@@ -247,7 +247,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		return _toTransformationDTOPageDTO(
 			"individual-segment-transformations",
-			_segmentDog.getTransformationPage(apply, filterString, page, size));
+			segmentDog.getTransformationPage(apply, filterString, page, size));
 	}
 
 	@PostMapping("/{id}/memberships")
@@ -357,7 +357,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			"_embedded",
 			new SegmentDTO(
 				_bqMembershipChangeDog.getBQMembershipChanges(segments),
-				_segmentDog.getLastActivityDates(segments), segments),
+				segmentDog.getLastActivityDates(segments), segments),
 			segmentsPage.getNumber(), segmentsPage.getSize(),
 			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
 	}
@@ -548,11 +548,5 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 }
