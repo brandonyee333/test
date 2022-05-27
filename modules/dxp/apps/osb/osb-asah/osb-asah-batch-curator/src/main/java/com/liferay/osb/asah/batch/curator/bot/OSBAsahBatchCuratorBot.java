@@ -190,8 +190,15 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
-	public void runUserSessionFinalizerNanite() {
-		_asahTaskManager.runNanitesForAllProjects("UserSessionFinalizerNanite");
+	public void runPastUserSessionFinalizerNanite() {
+		_asahTaskManager.runNanitesForAllProjects(
+			"PastUserSessionFinalizerNanite");
+	}
+
+	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
+	public void runPresentUserSessionFinalizerNanite() {
+		_asahTaskManager.runNanitesForAllProjects(
+			"PresentUserSessionFinalizerNanite");
 	}
 
 	private String _buildCronExpression(int second, int minute) {
