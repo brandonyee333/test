@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -173,6 +174,10 @@ public class PastUserSessionFinalizerNanite extends BaseNanite {
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (aggregations == null) {
+			return Collections.emptyList();
+		}
 
 		Histogram histogram = aggregations.get("sessions_by_day");
 
