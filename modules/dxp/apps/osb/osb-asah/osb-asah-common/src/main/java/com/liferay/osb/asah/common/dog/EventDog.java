@@ -64,6 +64,21 @@ public class EventDog {
 	@VisibleForTestingOnly
 	public BQEvent addBQEvent(
 			String applicationId, Set<BQEventProperty> bqEventProperties,
+			Long channelId, Date createDate, Long dataSourceId, Date eventDate,
+			String eventId, String id, String sessionId, String title,
+			String userId)
+		throws Exception {
+
+		return addBQEvent(
+			applicationId, bqEventProperties, null, null, channelId, null, null,
+			null, null, createDate, dataSourceId, null, null, eventDate,
+			eventId, null, id, null, null, null, null, null, null, sessionId,
+			null, title, null, userId, null);
+	}
+
+	@VisibleForTestingOnly
+	public BQEvent addBQEvent(
+			String applicationId, Set<BQEventProperty> bqEventProperties,
 			String browserName, String canonicalUrl, Long channelId,
 			String city, String contentLanguageId, String context,
 			String country, Date createDate, Long dataSourceId,

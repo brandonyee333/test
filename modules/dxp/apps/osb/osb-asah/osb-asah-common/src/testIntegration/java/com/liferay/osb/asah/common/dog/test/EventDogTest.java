@@ -34,10 +34,13 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -94,6 +97,89 @@ public class EventDogTest
 			},
 			_eventDog.getRecentBQEventPropertyValues(
 				eventAttributeDefinition.getId(), 2));
+	}
+
+	@Test
+	public void testGetRecentGlobalBQEventProperyValues() throws Exception {
+		Date date = DateUtil.newDayDate();
+
+		Channel channel = _channelDog.addChannel("Test Channel");
+
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
+				{
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue2"));
+				}
+			},
+			channel.getId(), date, 1L, DateUtil.addDays(date, -3), "pageViewed",
+			"analyticsEventId1", "sessionId", "Home", "userId");
+
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
+				{
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue2"));
+				}
+			},
+			channel.getId(), date, 1L, DateUtil.addDays(date, -1), "pageViewed",
+			"analyticsEventId2", "sessionId", "Home", "userId");
+
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
+				{
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue2"));
+				}
+			},
+			channel.getId(), date, 1L, DateUtil.addDays(date, -8), "pageViewed",
+			"analyticsEventId3", "sessionId", "Test", "userId");
+
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
+				{
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue2"));
+				}
+			},
+			channel.getId(), date, 1L, date, "pageViewed", "analyticsEventId4",
+			"sessionId", "Test", "userId");
+
+		Map<String, Date> recentGlobalBQEventProperyValues =
+			_eventDog.getRecentGlobalBQEventProperyValues("title", 10);
+
+		Assertions.assertEquals(2, recentGlobalBQEventProperyValues.size());
+
+		Set<String> keySet = recentGlobalBQEventProperyValues.keySet();
+
+		Assertions.assertArrayEquals(
+			new String[] {"Test", "Home"}, keySet.toArray(new String[0]));
+
+		Collection<Date> values = recentGlobalBQEventProperyValues.values();
+
+		Assertions.assertArrayEquals(
+			new Date[] {date, DateUtil.addDays(date, -1)},
+			values.toArray(new Date[0]));
 	}
 
 	@Test
