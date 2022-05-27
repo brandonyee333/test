@@ -363,6 +363,12 @@ definition {
 
 		MouseOver(locator1 = "SitePages#NAVIGATION_SPECIFIC_PAGE");
 
+		if (IsElementNotPresent.isNotVisible(locator1 = "SitePages#NAVIGATION_SPECIFIC_PAGE_X_DELETE")) {
+			MouseOver.mouseOverNotVisible(locator1 = "SitePages#NAVIGATION_SPECIFIC_PAGE_X_DELETE");
+
+			AssertVisible(locator1 = "SitePages#NAVIGATION_SPECIFIC_PAGE_X_DELETE");
+		}
+
 		ClickNoError(locator1 = "SitePages#NAVIGATION_SPECIFIC_PAGE_X_DELETE");
 
 		Confirm.waitForConfirmation(value1 = "Are you sure you want to delete this page?");
