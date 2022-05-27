@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
@@ -64,6 +65,7 @@ import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectHavingConditionStep;
+import org.jooq.SelectHavingStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
@@ -403,6 +405,49 @@ public class BQEventRepositoryImpl
 				event1EventDateField
 			),
 			GetterUtil::getInteger);
+	}
+
+	@Override
+	public Map<String, Date> getLastSeenDateDateGroupedByColumnName(
+		String columnName, int size) {
+
+		Field<String> columnField = DSL.field(columnName, String.class);
+
+		SelectSelectStep<Record2<String, Date>> selectSelectStep =
+			_dslContext.select(
+				columnField,
+				DSL.max(
+					DSL.field("eventdate", Date.class)
+				).as(
+					"lastseendate"
+				));
+
+		SelectHavingStep<Record2<String, Date>> selectHavingStep =
+			selectSelectStep.from(
+				"BQEvent"
+			).where(
+				DSL.field(
+					"eventdate"
+				).ge(
+					DateUtil.addDays(DateUtil.newDate(), -7)
+				)
+			).groupBy(
+				columnField
+			);
+
+		return _queryExecutor.queryForMap(
+			key -> (String)key,
+			_dslContext.select(
+			).from(
+				selectHavingStep
+			).orderBy(
+				DSL.field(
+					"lastseendate"
+				).desc()
+			).limit(
+				size
+			),
+			value -> (Date)value);
 	}
 
 	@Override

@@ -127,6 +127,13 @@ public class EventDog {
 				eventAttributeDefinitionId, size);
 	}
 
+	public Map<String, Date> getRecentGlobalBQEventProperyValues(
+		String columnName, int size) {
+
+		return _bqEventRepository.getLastSeenDateDateGroupedByColumnName(
+			columnName, size);
+	}
+
 	public List<BQEvent> searchBQEvents(
 		Long channelId, @Nullable Long individualId, @Nullable String keywords,
 		int page, int size, TimeRange timeRange) {
