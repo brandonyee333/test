@@ -50,7 +50,7 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-public class UserSessionFinalizerNanite extends BaseNanite {
+public class PresentUserSessionFinalizerNanite extends BaseNanite {
 
 	@Override
 	public boolean isLogRunEnabled() {
@@ -231,7 +231,7 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		UserSessionFinalizerNanite.class);
+		PresentUserSessionFinalizerNanite.class);
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;

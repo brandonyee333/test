@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.UserSessionFinalizerNanite;
+import com.liferay.osb.asah.batch.curator.bot.nanite.PresentUserSessionFinalizerNanite;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -42,7 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author André Miranda
  */
-public class UserSessionFinalizerNaniteTest
+public class PresentUserSessionFinalizerNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
@@ -345,7 +345,7 @@ public class UserSessionFinalizerNaniteTest
 	}
 
 	private void _runUserSessionFinalizerNanite() throws Exception {
-		_userSessionFinalizerNanite.run(true);
+		_presentUserSessionFinalizerNanite.run(true);
 
 		_elasticsearchInvoker.refresh();
 	}
@@ -354,6 +354,7 @@ public class UserSessionFinalizerNaniteTest
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
-	private UserSessionFinalizerNanite _userSessionFinalizerNanite;
+	private PresentUserSessionFinalizerNanite
+		_presentUserSessionFinalizerNanite;
 
 }
