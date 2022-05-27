@@ -435,11 +435,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		JSONObject jsonObject = new JSONObject();
 
-		jsonObject.put(
-			"assets",
-			JSONUtil.toJSONArray(
-				_assetDog.getAssets(segment.getReferencedAssetIds()),
-				asset -> objectMapper.convertValue(asset, JSONObject.class)));
+		jsonObject.put("assets", Collections.emptyList());
 		jsonObject.put(
 			"field-mappings",
 			JSONUtil.toJSONArray(
@@ -447,20 +443,12 @@ public class IndividualSegmentsRestController extends BaseRestController {
 					segment.getReferencedFieldMappingIds()),
 				fieldMapping -> objectMapper.convertValue(
 					fieldMapping, JSONObject.class)));
-
-		_addReferencedObject(
-			"groups", segment.getReferencedGroupIds(), jsonObject);
-		_addReferencedObject(
-			"organizations", segment.getReferencedOrganizationIds(),
-			jsonObject);
-		_addReferencedObject(
-			"roles", segment.getReferencedRoleIds(), jsonObject);
-		_addReferencedObject(
-			"teams", segment.getReferencedTeamIds(), jsonObject);
-		_addReferencedObject(
-			"user-groups", segment.getReferencedUserGroupIds(), jsonObject);
-		_addReferencedObject(
-			"users", segment.getReferencedUserIds(), jsonObject);
+		jsonObject.put("groups", Collections.emptyList());
+		jsonObject.put("organizations", Collections.emptyList());
+		jsonObject.put("roles", Collections.emptyList());
+		jsonObject.put("teams", Collections.emptyList());
+		jsonObject.put("user-groups", Collections.emptyList());
+		jsonObject.put("users", Collections.emptyList());
 
 		return jsonObject;
 	}

@@ -19,10 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
-import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -44,7 +42,6 @@ import io.restassured.response.ValidatableResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,7 +75,7 @@ public class IndividualSegmentsRestControllerTest
 	)
 	@Test
 	public void testExpandReferencedObjects() throws Exception {
-		Asset asset = _assetRepository.save(
+		_assetRepository.save(
 			_objectMapper.convertValue(
 				FaroInfoTestUtil.buildAssetJSONObject("Page", 1L),
 				Asset.class));
@@ -90,7 +87,7 @@ public class IndividualSegmentsRestControllerTest
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				1L, "email", "email", "Text"));
 
-		JSONObject organizationJSONObject = _faroInfoElasticsearchInvoker.add(
+		_faroInfoElasticsearchInvoker.add(
 			"organizations",
 			JSONUtil.put(
 				"dataSourceId", 1L
@@ -98,73 +95,12 @@ public class IndividualSegmentsRestControllerTest
 				"name", "organizationName"
 			));
 
-		DXPEntity groupDXPEntity = new DXPEntity();
-
-		groupDXPEntity.setDataSourceId(331238757269547423L);
-		groupDXPEntity.setFieldsJSONObject(JSONUtil.put("name", "groupName"));
-		groupDXPEntity.setType(DXPEntity.Type.GROUP);
-
-		groupDXPEntity = _dxpEntityDog.addDXPEntity(
-			groupDXPEntity, DXPEntity.Type.GROUP);
-
-		DXPEntity roleDXPEntity = new DXPEntity();
-
-		roleDXPEntity.setDataSourceId(331238757269547423L);
-		roleDXPEntity.setFieldsJSONObject(JSONUtil.put("name", "roleName"));
-		roleDXPEntity.setType(DXPEntity.Type.ROLE);
-
-		roleDXPEntity = _dxpEntityDog.addDXPEntity(
-			roleDXPEntity, DXPEntity.Type.ROLE);
-
-		DXPEntity teamDXPEntity = new DXPEntity();
-
-		teamDXPEntity.setDataSourceId(331238757269547423L);
-		teamDXPEntity.setFieldsJSONObject(JSONUtil.put("name", "teamName"));
-		teamDXPEntity.setType(DXPEntity.Type.TEAM);
-
-		teamDXPEntity = _dxpEntityDog.addDXPEntity(
-			teamDXPEntity, DXPEntity.Type.TEAM);
-
-		DXPEntity userDXPEntity = new DXPEntity();
-
-		userDXPEntity.setDataSourceId(331238757269547423L);
-		userDXPEntity.setFieldsJSONObject(
-			JSONUtil.put("firstName", "userName"));
-		userDXPEntity.setType(DXPEntity.Type.USER);
-
-		userDXPEntity = _dxpEntityDog.addDXPEntity(
-			userDXPEntity, DXPEntity.Type.USER);
-
-		DXPEntity userGroupDXPEntity = new DXPEntity();
-
-		userGroupDXPEntity.setDataSourceId(331238757269547423L);
-		userGroupDXPEntity.setFieldsJSONObject(
-			JSONUtil.put("name", "userGroupName"));
-		userGroupDXPEntity.setType(DXPEntity.Type.USER_GROUP);
-
-		userGroupDXPEntity = _dxpEntityDog.addDXPEntity(
-			userGroupDXPEntity, DXPEntity.Type.USER_GROUP);
-
 		Segment segment = new Segment();
 
 		segment.setChannelId(1L);
-		segment.setReferencedAssetIds(Collections.singleton(asset.getId()));
 		segment.setReferencedFieldMappingIds(
 			SetUtil.of(
 				accountFieldMapping.getId(), individualFieldMapping.getId()));
-		segment.setReferencedGroupIds(
-			Collections.singleton(groupDXPEntity.getId()));
-		segment.setReferencedOrganizationIds(
-			Collections.singleton(
-				Long.valueOf(organizationJSONObject.getString("id"))));
-		segment.setReferencedRoleIds(
-			Collections.singleton(roleDXPEntity.getId()));
-		segment.setReferencedTeamIds(
-			Collections.singleton(teamDXPEntity.getId()));
-		segment.setReferencedUserGroupIds(
-			Collections.singleton(userGroupDXPEntity.getId()));
-		segment.setReferencedUserIds(
-			Collections.singleton(userDXPEntity.getId()));
 
 		segment = _segmentRepository.save(segment);
 
@@ -177,40 +113,27 @@ public class IndividualSegmentsRestControllerTest
 			"referenced-objects");
 
 		MatcherAssert.assertThat(
-			new String[] {String.valueOf(asset.getId())},
-			Matchers.arrayContainingInAnyOrder(
-				_getIds("assets", referencedObjectsJSONObject)));
-		MatcherAssert.assertThat(
 			new String[] {
 				String.valueOf(accountFieldMapping.getId()),
 				String.valueOf(individualFieldMapping.getId())
 			},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("field-mappings", referencedObjectsJSONObject)));
-		MatcherAssert.assertThat(
-			new String[] {String.valueOf(groupDXPEntity.getId())},
-			Matchers.arrayContainingInAnyOrder(
-				_getIds("groups", referencedObjectsJSONObject)));
-		MatcherAssert.assertThat(
-			new String[] {String.valueOf(organizationJSONObject.getLong("id"))},
-			Matchers.arrayContainingInAnyOrder(
-				_getIds("organizations", referencedObjectsJSONObject)));
-		MatcherAssert.assertThat(
-			new String[] {String.valueOf(roleDXPEntity.getId())},
-			Matchers.arrayContainingInAnyOrder(
-				_getIds("roles", referencedObjectsJSONObject)));
-		MatcherAssert.assertThat(
-			new String[] {String.valueOf(teamDXPEntity.getId())},
-			Matchers.arrayContainingInAnyOrder(
-				_getIds("teams", referencedObjectsJSONObject)));
-		MatcherAssert.assertThat(
-			new String[] {String.valueOf(userGroupDXPEntity.getId())},
-			Matchers.arrayContainingInAnyOrder(
-				_getIds("user-groups", referencedObjectsJSONObject)));
-		MatcherAssert.assertThat(
-			new String[] {String.valueOf(userDXPEntity.getId())},
-			Matchers.arrayContainingInAnyOrder(
-				_getIds("users", referencedObjectsJSONObject)));
+
+		_assertEmptyJSONArray(
+			referencedObjectsJSONObject.getJSONArray("assets"));
+		_assertEmptyJSONArray(
+			referencedObjectsJSONObject.getJSONArray("groups"));
+		_assertEmptyJSONArray(
+			referencedObjectsJSONObject.getJSONArray("organizations"));
+		_assertEmptyJSONArray(
+			referencedObjectsJSONObject.getJSONArray("roles"));
+		_assertEmptyJSONArray(
+			referencedObjectsJSONObject.getJSONArray("teams"));
+		_assertEmptyJSONArray(
+			referencedObjectsJSONObject.getJSONArray("user-groups"));
+		_assertEmptyJSONArray(
+			referencedObjectsJSONObject.getJSONArray("users"));
 	}
 
 	/**
@@ -538,6 +461,10 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertNotEquals(0L, segmentDTO.getKnownIndividualsCount());
 	}
 
+	private void _assertEmptyJSONArray(JSONArray jsonArray) {
+		Assertions.assertTrue(jsonArray.isEmpty());
+	}
+
 	private String[] _getIds(
 		String key, JSONObject referencedObjectsJSONObject) {
 
@@ -547,9 +474,6 @@ public class IndividualSegmentsRestControllerTest
 
 	@Autowired
 	private AssetRepository _assetRepository;
-
-	@Autowired
-	private DXPEntityDog _dxpEntityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

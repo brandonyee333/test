@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -85,22 +86,15 @@ public class SegmentDTO {
 		_name = segment.getName();
 		_referencedAssetDataSourceIds = SetUtil.map(
 			segment.getReferencedAssetDataSourceIds(), String::valueOf);
-		_referencedAssetIds = SetUtil.map(
-			segment.getReferencedAssetIds(), String::valueOf);
+		_referencedAssetIds = Collections.emptySet();
 		_referencedFieldMappingIds = SetUtil.map(
 			segment.getReferencedFieldMappingIds(), String::valueOf);
-		_referencedGroupIds = SetUtil.map(
-			segment.getReferencedGroupIds(), String::valueOf);
-		_referencedOrganizationIds = SetUtil.map(
-			segment.getReferencedOrganizationIds(), String::valueOf);
-		_referencedRoleIds = SetUtil.map(
-			segment.getReferencedRoleIds(), String::valueOf);
-		_referencedTeamIds = SetUtil.map(
-			segment.getReferencedTeamIds(), String::valueOf);
-		_referencedUserGroupIds = SetUtil.map(
-			segment.getReferencedUserGroupIds(), String::valueOf);
-		_referencedUserIds = SetUtil.map(
-			segment.getReferencedUserIds(), String::valueOf);
+		_referencedGroupIds = Collections.emptySet();
+		_referencedOrganizationIds = Collections.emptySet();
+		_referencedRoleIds = Collections.emptySet();
+		_referencedTeamIds = Collections.emptySet();
+		_referencedUserGroupIds = Collections.emptySet();
+		_referencedUserIds = Collections.emptySet();
 		_scope = segment.getScope();
 		_state = segment.getState();
 		_status = segment.getStatus();

@@ -141,8 +141,6 @@ public class FieldMappingsRestController extends BaseRestController {
 				new DataSourceFieldMapping(dataSourceId, dataSourceFieldName));
 		}
 
-		String responseJSON = null;
-
 		if (deletedFieldMappingIds.isEmpty()) {
 			fieldMapping = _fieldMappingDog.updateFieldMapping(
 				fieldMapping.getId(), fieldMapping);
@@ -152,7 +150,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		_addReprocessAsahTask(dataSourceId, fieldMapping.getOwnerType());
 
-		return responseJSON;
+		return null;
 	}
 
 	@PatchMapping
