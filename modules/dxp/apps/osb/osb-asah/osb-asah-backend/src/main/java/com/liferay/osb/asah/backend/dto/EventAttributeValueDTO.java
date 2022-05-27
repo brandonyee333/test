@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 
+import java.util.Date;
+
 /**
  * @author Leslie Wong
  */
@@ -35,6 +37,11 @@ public class EventAttributeValueDTO {
 		_lastSeenDate = DateUtil.toUTCString(
 			bqEventPropertyValue.getLastSeenDate());
 		_value = bqEventPropertyValue.getValue();
+	}
+
+	public EventAttributeValueDTO(Date lastSeenDate, String value) {
+		_lastSeenDate = DateUtil.toUTCString(lastSeenDate);
+		_value = value;
 	}
 
 	@JsonProperty("lastSeenDate")
