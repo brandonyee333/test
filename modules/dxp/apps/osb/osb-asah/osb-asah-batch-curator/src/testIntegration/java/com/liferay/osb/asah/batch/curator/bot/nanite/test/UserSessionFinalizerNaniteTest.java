@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.UserSessionFinalizerNanite;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
@@ -148,13 +149,16 @@ public class UserSessionFinalizerNaniteTest
 				"user-sessions", QueryBuilders.matchAllQuery()));
 
 		JSONObject sessionJSONObject = _elasticsearchInvoker.fetch(
-			"user-sessions", QueryBuilders.termQuery("completed", true));
+			"user-sessions",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("completed", true)
+			).filter(
+				QueryBuilders.termQuery("completeReason", "expired")
+			));
 
 		Assertions.assertTrue(sessionJSONObject.getBoolean("bounced"));
 		Assertions.assertTrue(sessionJSONObject.getBoolean("completed"));
 		Assertions.assertEquals(0, sessionJSONObject.getLong("duration"));
-		Assertions.assertEquals(
-			"expired", sessionJSONObject.getString("completeReason"));
 		Assertions.assertEquals(
 			sessionJSONObject.getString("entryPage"),
 			sessionJSONObject.getString("exitPage"));
@@ -302,12 +306,6 @@ public class UserSessionFinalizerNaniteTest
 		Assertions.assertEquals(0, userSessionJSONObject.getInt("duration"));
 		Assertions.assertEquals(
 			modifiedDate2, userSessionJSONObject.getString("modifiedDate"));
-
-		userSessionJSONObject = _elasticsearchInvoker.fetch(
-			"user-sessions", "366909399944215921");
-
-		Assertions.assertNotNull(userSessionJSONObject);
-		Assertions.assertFalse(userSessionJSONObject.getBoolean("completed"));
 	}
 
 	@ElasticsearchIndex(
@@ -347,7 +345,7 @@ public class UserSessionFinalizerNaniteTest
 	}
 
 	private void _runUserSessionFinalizerNanite() throws Exception {
-		_userSessionFinalizerNanite.run(null);
+		_userSessionFinalizerNanite.run(true);
 
 		_elasticsearchInvoker.refresh();
 	}
