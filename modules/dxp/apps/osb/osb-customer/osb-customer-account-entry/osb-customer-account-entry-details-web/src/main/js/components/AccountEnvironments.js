@@ -110,16 +110,6 @@ export default class AccountEnvironments extends React.Component {
 								value={environment.envCSLabel}
 							/>
 						)}
-
-						<EnvironmentDetail
-							href={
-								environment.portalExtAccountEnvironmentAttachmentURL
-							}
-							label={Liferay.Language.get('portal-ext')}
-							value={
-								environment.portalExtAccountEnvironmentAttachmentFileName
-							}
-						/>
 					</div>
 
 					<div className="col-sm-6">
@@ -136,16 +126,6 @@ export default class AccountEnvironments extends React.Component {
 						<EnvironmentDetail
 							label={Liferay.Language.get('browser')}
 							value={environment.envBrowserLabel}
-						/>
-
-						<EnvironmentDetail
-							href={
-								environment.patchLevelAccountEnvironmentAttachmentURL
-							}
-							label={Liferay.Language.get('patch-info')}
-							value={
-								environment.patchLevelAccountEnvironmentAttachmentFileName
-							}
 						/>
 					</div>
 

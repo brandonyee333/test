@@ -16,7 +16,6 @@ package com.liferay.osb.customer.admin.service.impl;
 
 import com.liferay.osb.customer.admin.constants.AccountEnvironmentConstants;
 import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
-import com.liferay.osb.customer.admin.exception.AccountEnvironmentAttachmentException;
 import com.liferay.osb.customer.admin.exception.AccountEnvironmentEnvASException;
 import com.liferay.osb.customer.admin.exception.AccountEnvironmentEnvBrowserException;
 import com.liferay.osb.customer.admin.exception.AccountEnvironmentEnvCSException;
@@ -28,18 +27,14 @@ import com.liferay.osb.customer.admin.exception.AccountEnvironmentEnvSearchExcep
 import com.liferay.osb.customer.admin.exception.AccountEnvironmentNameException;
 import com.liferay.osb.customer.admin.exception.DuplicateAccountEnvironmentException;
 import com.liferay.osb.customer.admin.model.AccountEnvironment;
-import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.base.AccountEnvironmentLocalServiceBaseImpl;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.io.File;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,8 +52,7 @@ public class AccountEnvironmentLocalServiceImpl
 			long userId, long accountEntryId, long productEntryId, String name,
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 			int envLFR, int envCommerce, int envBrowser, int envCS,
-			String envSearch, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			String envSearch)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -66,7 +60,7 @@ public class AccountEnvironmentLocalServiceImpl
 
 		validate(
 			0, accountEntryId, productEntryId, name, envOS, envDB, envAS,
-			envLFR, envCommerce, envBrowser, envCS, envSearch, files);
+			envLFR, envCommerce, envBrowser, envCS, envSearch);
 
 		long accountEnvironmentId = counterLocalService.increment();
 
@@ -91,38 +85,14 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvCS(envCS);
 		accountEnvironment.setEnvSearch(envSearch);
 
-		accountEnvironment = accountEnvironmentPersistence.update(
-			accountEnvironment);
-
-		if (!files.isEmpty()) {
-			accountEnvironmentAttachmentLocalService.
-				addAccountEnvironmentAttachments(
-					userId, accountEnvironmentId, files, types);
-		}
-
-		return accountEnvironment;
+		return accountEnvironmentPersistence.update(accountEnvironment);
 	}
 
 	public AccountEnvironment deleteAccountEnvironment(
 			long accountEnvironmentId)
 		throws PortalException {
 
-		AccountEnvironment accountEnvironment =
-			accountEnvironmentPersistence.remove(accountEnvironmentId);
-
-		List<AccountEnvironmentAttachment> accountEnvironmentAttachments =
-			accountEnvironmentAttachmentPersistence.findByAccountEnvironmentId(
-				accountEnvironmentId);
-
-		for (AccountEnvironmentAttachment accountEnvironmentAttachment :
-				accountEnvironmentAttachments) {
-
-			accountEnvironmentAttachmentLocalService.
-				deleteAccountEnvironmentAttachment(
-					accountEnvironmentAttachment);
-		}
-
-		return accountEnvironment;
+		return accountEnvironmentPersistence.remove(accountEnvironmentId);
 	}
 
 	public AccountEnvironment fetchAccountEnvironment(
@@ -184,8 +154,7 @@ public class AccountEnvironmentLocalServiceImpl
 			long userId, long accountEnvironmentId, long productEntryId,
 			String name, int envOS, String envOSCustom, int envDB, int envJVM,
 			int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
-			String envSearch, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			String envSearch)
 		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
@@ -195,7 +164,7 @@ public class AccountEnvironmentLocalServiceImpl
 		validate(
 			accountEnvironmentId, accountEnvironment.getAccountEntryId(),
 			productEntryId, name, envOS, envDB, envAS, envLFR, envCommerce,
-			envBrowser, envCS, envSearch, files);
+			envBrowser, envCS, envSearch);
 
 		accountEnvironment.setModifiedDate(new Date());
 		accountEnvironment.setProductEntryId(productEntryId);
@@ -211,16 +180,7 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvCS(envCS);
 		accountEnvironment.setEnvSearch(envSearch);
 
-		accountEnvironment = accountEnvironmentPersistence.update(
-			accountEnvironment);
-
-		if (!files.isEmpty()) {
-			accountEnvironmentAttachmentLocalService.
-				updateAccountEnvironmentAttachments(
-					userId, accountEnvironmentId, files, types);
-		}
-
-		return accountEnvironment;
+		return accountEnvironmentPersistence.update(accountEnvironment);
 	}
 
 	protected boolean isValidListType(int listTypeId, String listTypeType) {
@@ -244,22 +204,11 @@ public class AccountEnvironmentLocalServiceImpl
 	protected void validate(
 			long accountEnvironmentId, long accountEntryId, long productEntryId,
 			String name, int envOS, int envDB, int envAS, int envLFR,
-			int envCommerce, int envBrowser, int envCS, String envSearch,
-			List<ObjectValuePair<String, File>> files)
+			int envCommerce, int envBrowser, int envCS, String envSearch)
 		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new AccountEnvironmentNameException();
-		}
-
-		if (files.size() != 2) {
-			int accountEnvironmentAttachmentsCount =
-				accountEnvironmentAttachmentPersistence.
-					countByAccountEnvironmentId(accountEnvironmentId);
-
-			if (accountEnvironmentAttachmentsCount != 2) {
-				throw new AccountEnvironmentAttachmentException();
-			}
 		}
 
 		AccountEnvironment accountEnvironment =

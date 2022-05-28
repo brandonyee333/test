@@ -26,11 +26,6 @@ describe('AccountEnvironments', () => {
 			envOSLabel: 'CentOS 7',
 			envSearchLabels: ['Elasticsearch 6.x', 'solr-5'],
 			name: 'All Selections',
-			patchLevelAccountEnvironmentAttachmentFileName: 'Patch File',
-			patchLevelAccountEnvironmentAttachmentURL: '/patch/attachment/url',
-			portalExtAccountEnvironmentAttachmentFileName: 'Portal Ext File',
-			portalExtAccountEnvironmentAttachmentURL:
-				'/portal-ext/attachment/url',
 			productEntryDisplayName: 'Liferay DXP Production',
 			productEntryId: '111'
 		},
@@ -48,11 +43,6 @@ describe('AccountEnvironments', () => {
 			envOSLabel: 'CentOS 7',
 			envSearchLabels: [],
 			name: 'No Search, Commerce, Cloud Services Selection',
-			patchLevelAccountEnvironmentAttachmentFileName: 'Patch File',
-			patchLevelAccountEnvironmentAttachmentURL: '/patch/attachment/url',
-			portalExtAccountEnvironmentAttachmentFileName: 'Portal Ext File',
-			portalExtAccountEnvironmentAttachmentURL:
-				'/portal-ext/attachment/url',
 			productEntryDisplayName: 'Liferay DXP Production',
 			productEntryId: '222'
 		}

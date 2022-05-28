@@ -16,17 +16,14 @@ package com.liferay.osb.customer.account.entry.details.web.internal.display.cont
 
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.util.AccountEntryDetailsRequestHelper;
 import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
-import com.liferay.osb.customer.admin.constants.AccountEnvironmentAttachmentConstants;
 import com.liferay.osb.customer.admin.constants.AccountEnvironmentConstants;
 import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.AccountEntryLanguage;
 import com.liferay.osb.customer.admin.model.AccountEnvironment;
-import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalService;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.customer.admin.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.permission.AccountEnvironmentPermission;
@@ -82,7 +79,6 @@ import javax.portlet.MimeResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
-import javax.portlet.ResourceURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -555,21 +551,6 @@ public class AccountEntryViewDisplayContext {
 		return _isPartnerManagedSupportWorker;
 	}
 
-	protected String getAccountEnvironmentAttachmentURL(
-		AccountEnvironmentAttachment accountEnvironmentAttachment) {
-
-		ResourceURL resourceURL = _mimeResponse.createResourceURL();
-
-		resourceURL.setParameter(
-			"accountEnvironmentAttachmentId",
-			String.valueOf(
-				accountEnvironmentAttachment.
-					getAccountEnvironmentAttachmentId()));
-		resourceURL.setResourceID("/account_environment_attachment");
-
-		return resourceURL.toString();
-	}
-
 	protected String getAccountEnvironmentDeleteURL(
 		AccountEnvironment accountEnvironment) {
 
@@ -709,38 +690,6 @@ public class AccountEntryViewDisplayContext {
 		jsonObject.put("envOSLabel", envOSLabel);
 
 		jsonObject.put("name", accountEnvironment.getName());
-
-		AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment =
-			AccountEnvironmentAttachmentLocalServiceUtil.
-				fetchAccountEnvironmentAttachment(
-					accountEnvironment.getAccountEnvironmentId(),
-					AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
-
-		if (patchLevelAccountEnvironmentAttachment != null) {
-			jsonObject.put(
-				"patchLevelAccountEnvironmentAttachmentFileName",
-				patchLevelAccountEnvironmentAttachment.getFileName());
-			jsonObject.put(
-				"patchLevelAccountEnvironmentAttachmentURL",
-				getAccountEnvironmentAttachmentURL(
-					patchLevelAccountEnvironmentAttachment));
-		}
-
-		AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment =
-			AccountEnvironmentAttachmentLocalServiceUtil.
-				fetchAccountEnvironmentAttachment(
-					accountEnvironment.getAccountEnvironmentId(),
-					AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
-
-		if (portalExtAccountEnvironmentAttachment != null) {
-			jsonObject.put(
-				"portalExtAccountEnvironmentAttachmentFileName",
-				portalExtAccountEnvironmentAttachment.getFileName());
-			jsonObject.put(
-				"portalExtAccountEnvironmentAttachmentURL",
-				getAccountEnvironmentAttachmentURL(
-					portalExtAccountEnvironmentAttachment));
-		}
 
 		ProductEntry productEntry =
 			ProductEntryLocalServiceUtil.getProductEntry(

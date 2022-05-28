@@ -30,7 +30,6 @@ page import="com.liferay.osb.customer.account.entry.details.web.internal.constan
 page import="com.liferay.osb.customer.account.entry.details.web.internal.dao.search.TicketAttachmentResultRowSplitter" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntrySearchDisplayContext" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
-page import="com.liferay.osb.customer.admin.exception.AccountEnvironmentAttachmentSizeException" %><%@
 page import="com.liferay.osb.customer.admin.exception.AccountEnvironmentEnvASException" %><%@
 page import="com.liferay.osb.customer.admin.exception.AccountEnvironmentEnvBrowserException" %><%@
 page import="com.liferay.osb.customer.admin.exception.AccountEnvironmentEnvCSException" %><%@

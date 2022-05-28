@@ -15,8 +15,6 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
-import com.liferay.osb.customer.admin.constants.AccountEnvironmentAttachmentConstants;
-import com.liferay.osb.customer.admin.exception.AccountEnvironmentAttachmentSizeException;
 import com.liferay.osb.customer.admin.service.AccountEnvironmentService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -24,17 +22,10 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-
-import java.io.File;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -84,59 +75,18 @@ public class EditAccountEnvironmentMVCActionCommand
 			ParamUtil.getParameterValues(actionRequest, "envSearch"),
 			StringPool.NEW_LINE);
 
-		List<ObjectValuePair<String, File>> files = new ArrayList<>();
-
-		List<Integer> types = new ArrayList<>();
-
-		String[] uploadFileNames = {"patchLevel", "portalExt"};
-
 		try {
-			for (String uploadFileName : uploadFileNames) {
-				String fileName = uploadPortletRequest.getFileName(
-					uploadFileName);
-
-				if (Validator.isNull(fileName)) {
-					continue;
-				}
-
-				File file = uploadPortletRequest.getFile(uploadFileName);
-
-				if (file == null) {
-					continue;
-				}
-
-				if (file.length() <= 0) {
-					throw new AccountEnvironmentAttachmentSizeException(
-						AccountEnvironmentAttachmentSizeException.EMPTY_FILE,
-						fileName);
-				}
-
-				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
-					fileName, file);
-
-				files.add(ovp);
-
-				if (uploadFileName.equals("portalExt")) {
-					types.add(
-						AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
-				}
-				else {
-					types.add(
-						AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
-				}
-			}
-
 			if (accountEnvironmentId > 0) {
 				_accountEnvironmentService.updateAccountEnvironment(
 					accountEnvironmentId, productEntryId, name, envOS,
 					envOSCustom, envDB, envJVM, envAS, envLFR, envCommerce,
-					envBrowser, envCS, envSearch, files, types);
+					envBrowser, envCS, envSearch);
 			}
 			else {
 				_accountEnvironmentService.addAccountEnvironment(
 					accountEntryId, productEntryId, name, envOS, envOSCustom,
 					envDB, envJVM, envAS, envLFR, envCommerce, envBrowser,
-					envCS, envSearch, files, types);
+					envCS, envSearch);
 			}
 		}
 		catch (Exception e) {

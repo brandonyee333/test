@@ -18,8 +18,6 @@ const SELECT_LABEL = Liferay.Language.get('select');
 export default class EditAccountEnvironmentForm extends React.Component {
 	editEnvironmentFormRef = React.createRef();
 	formikInstanceRef = React.createRef();
-	patchLevelRef = React.createRef();
-	portalExtRef = React.createRef();
 
 	static propTypes = {
 		addEnvironmentURL: PropTypes.string.isRequired,
@@ -45,8 +43,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			envOS: '',
 			envSearch: [],
 			name: '',
-			patchLevel: '',
-			portalExt: '',
 			productEntryId: ''
 		},
 		selectedOptions: {
@@ -147,10 +143,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 						environment.envSearchLabels
 					),
 					name: environment.name,
-					patchLevel:
-						environment.patchLevelAccountEnvironmentAttachmentFileName,
-					portalExt:
-						environment.portalExtAccountEnvironmentAttachmentFileName,
 					productEntryId: environment.productEntryId
 				},
 				selectedOptions: {
@@ -432,7 +424,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			selectedProduct
 		} = selectedOptions;
 		const {customOS, enterprise} = configurations;
-		const {patchLevel, portalExt} = formValues;
 
 		const actionURL = environment
 			? environment.editAccountEnvironmentURL
@@ -459,8 +450,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			[`${namespace}envOS`]: formValues.envOS,
 			[`${namespace}envSearch`]: formValues.envSearch,
 			[`${namespace}name`]: formValues.name,
-			[`${namespace}patchLevel`]: '',
-			[`${namespace}portalExt`]: '',
 			[`${namespace}productEntryId`]: formValues.productEntryId
 		};
 
@@ -474,12 +463,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			[`${namespace}envLFR`]: REQUIRED_SCHEMA,
 			[`${namespace}envOS`]: REQUIRED_SCHEMA,
 			[`${namespace}name`]: REQUIRED_SCHEMA,
-			[`${namespace}patchLevel`]: formValues.patchLevel
-				? NOT_REQUIRED_SCHEMA
-				: REQUIRED_SCHEMA,
-			[`${namespace}portalExt`]: formValues.portalExt
-				? NOT_REQUIRED_SCHEMA
-				: REQUIRED_SCHEMA,
 			[`${namespace}productEntryId`]: REQUIRED_SCHEMA
 		});
 
@@ -1122,152 +1105,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 										)}
 								</div>
 							)}
-
-							<div className="col-md-12">
-								<div className="form-group">
-									<label
-										className="control-label"
-										htmlFor={`${namespace}portalExt`}
-									>
-										{Liferay.Language.get('portal-ext')}
-
-										<svg className="lexicon-icon lexicon-icon-asterisk">
-											<use xlinkHref="#asterisk" />
-										</svg>
-									</label>
-
-									<div className="upload-dropzone">
-										<input
-											ref={this.portalExtRef}
-											className="form-control"
-											id={`${namespace}portalExt`}
-											name={`${namespace}portalExt`}
-											onChange={this.handleFileChange}
-											type="file"
-										/>
-
-										<svg className="lexicon-icon lexicon-icon-paperclip">
-											<use xlinkHref="#paperclip" />
-										</svg>
-
-										<span>
-											{Liferay.Language.get(
-												'add-file-or-drop-file-here'
-											)}
-										</span>
-									</div>
-
-									{portalExt && (
-										<div className="file-list">
-											<ul className="attachment-pool">
-												<li className="attachment">
-													<svg className="lexicon-icon lexicon-icon-paperclip">
-														<use xlinkHref="#paperclip" />
-													</svg>
-
-													<span className="attachment-name">
-														{portalExt}
-													</span>
-
-													<span
-														className="icon-delete-file"
-														onClick={() =>
-															this.handleDeleteFile(
-																this
-																	.portalExtRef
-															)
-														}
-													>
-														<svg className="lexicon-icon lexicon-icon-times">
-															<use xlinkHref="#times" />
-														</svg>
-													</span>
-												</li>
-											</ul>
-										</div>
-									)}
-								</div>
-
-								{touched[`${namespace}portalExt`] &&
-									errors[`${namespace}portalExt`] && (
-										<Alert type="danger">
-											{errors[`${namespace}portalExt`]}
-										</Alert>
-									)}
-							</div>
-
-							<div className="col-md-12">
-								<div className="form-group">
-									<label
-										className="control-label"
-										htmlFor={`${namespace}patchLevel`}
-									>
-										{Liferay.Language.get('patch-info')}
-
-										<svg className="lexicon-icon lexicon-icon-asterisk">
-											<use xlinkHref="#asterisk" />
-										</svg>
-									</label>
-
-									<div className="upload-dropzone">
-										<input
-											ref={this.patchLevelRef}
-											className="form-control"
-											id={`${namespace}patchLevel`}
-											name={`${namespace}patchLevel`}
-											onChange={this.handleFileChange}
-											type="file"
-										/>
-
-										<svg className="lexicon-icon lexicon-icon-paperclip">
-											<use xlinkHref="#paperclip" />
-										</svg>
-
-										<span>
-											{Liferay.Language.get(
-												'add-file-or-drop-file-here'
-											)}
-										</span>
-									</div>
-
-									{patchLevel && (
-										<div className="file-list">
-											<ul className="attachment-pool">
-												<li className="attachment">
-													<svg className="lexicon-icon lexicon-icon-paperclip">
-														<use xlinkHref="#paperclip" />
-													</svg>
-
-													<span className="attachment-name">
-														{patchLevel}
-													</span>
-
-													<span
-														className="icon-delete-file"
-														onClick={() =>
-															this.handleDeleteFile(
-																this
-																	.patchLevelRef
-															)
-														}
-													>
-														<svg className="lexicon-icon lexicon-icon-times">
-															<use xlinkHref="#times" />
-														</svg>
-													</span>
-												</li>
-											</ul>
-										</div>
-									)}
-								</div>
-
-								{touched[`${namespace}patchLevel`] &&
-									errors[`${namespace}patchLevel`] && (
-										<Alert type="danger">
-											{errors[`${namespace}patchLevel`]}
-										</Alert>
-									)}
-							</div>
 						</div>
 
 						<div className="btn-row">

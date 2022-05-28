@@ -212,22 +212,6 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
                 AWS S3
               </div>
             </div>
-            <div
-              class="panel-detail"
-            >
-              <div
-                class="panel-label"
-              >
-                portal-ext
-              </div>
-              <a
-                href="/portal-ext/attachment/url"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Portal Ext File
-              </a>
-            </div>
           </div>
           <div
             class="col-sm-6"
@@ -267,22 +251,6 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               <div>
                 Chrome
               </div>
-            </div>
-            <div
-              class="panel-detail"
-            >
-              <div
-                class="panel-label"
-              >
-                patch-info
-              </div>
-              <a
-                href="/patch/attachment/url"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Patch File
-              </a>
             </div>
           </div>
         </div>

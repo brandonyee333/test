@@ -21,9 +21,6 @@ import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.util.ObjectValuePair;
-
-import java.io.File;
 
 import java.util.List;
 import java.util.Map;
@@ -38,8 +35,7 @@ public class AccountEnvironmentServiceImpl
 	public AccountEnvironment addAccountEnvironment(
 			long accountEntryId, long productEntryId, String name, int envOS,
 			String envOSCustom, int envDB, int envJVM, int envAS, int envLFR,
-			int envCommerce, int envBrowser, int envCS, String envSearch,
-			List<ObjectValuePair<String, File>> files, List<Integer> types)
+			int envCommerce, int envBrowser, int envCS, String envSearch)
 		throws PortalException {
 
 		AccountEnvironmentPermission.check(
@@ -49,7 +45,7 @@ public class AccountEnvironmentServiceImpl
 		return accountEnvironmentLocalService.addAccountEnvironment(
 			getUserId(), accountEntryId, productEntryId, name, envOS,
 			envOSCustom, envDB, envJVM, envAS, envLFR, envCommerce, envBrowser,
-			envCS, envSearch, files, types);
+			envCS, envSearch);
 	}
 
 	public AccountEnvironment deleteAccountEnvironment(
@@ -107,8 +103,7 @@ public class AccountEnvironmentServiceImpl
 			long accountEnvironmentId, long productEntryId, String name,
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 			int envLFR, int envCommerce, int envBrowser, int envCS,
-			String envSearch, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			String envSearch)
 		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
@@ -122,7 +117,7 @@ public class AccountEnvironmentServiceImpl
 		return accountEnvironmentLocalService.updateAccountEnvironment(
 			getUserId(), accountEnvironmentId, productEntryId, name, envOS,
 			envOSCustom, envDB, envJVM, envAS, envLFR, envCommerce, envBrowser,
-			envCS, envSearch, files, types);
+			envCS, envSearch);
 	}
 
 }
