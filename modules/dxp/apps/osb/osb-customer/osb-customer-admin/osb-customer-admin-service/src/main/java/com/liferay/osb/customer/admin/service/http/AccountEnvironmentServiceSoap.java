@@ -66,11 +66,7 @@ public class AccountEnvironmentServiceSoap {
 				long accountEntryId, long productEntryId, String name,
 				int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 				int envLFR, int envCommerce, int envBrowser, int envCS,
-				String envSearch,
-				java.util.List
-					<com.liferay.portal.kernel.util.ObjectValuePair
-						<String, java.io.File>> files,
-				java.util.List<Integer> types)
+				String envSearch)
 		throws RemoteException {
 
 		try {
@@ -79,7 +75,7 @@ public class AccountEnvironmentServiceSoap {
 					AccountEnvironmentServiceUtil.addAccountEnvironment(
 						accountEntryId, productEntryId, name, envOS,
 						envOSCustom, envDB, envJVM, envAS, envLFR, envCommerce,
-						envBrowser, envCS, envSearch, files, types);
+						envBrowser, envCS, envSearch);
 
 			return com.liferay.osb.customer.admin.model.AccountEnvironmentSoap.
 				toSoapModel(returnValue);
@@ -157,11 +153,7 @@ public class AccountEnvironmentServiceSoap {
 				long accountEnvironmentId, long productEntryId, String name,
 				int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 				int envLFR, int envCommerce, int envBrowser, int envCS,
-				String envSearch,
-				java.util.List
-					<com.liferay.portal.kernel.util.ObjectValuePair
-						<String, java.io.File>> files,
-				java.util.List<Integer> types)
+				String envSearch)
 		throws RemoteException {
 
 		try {
@@ -170,7 +162,7 @@ public class AccountEnvironmentServiceSoap {
 					AccountEnvironmentServiceUtil.updateAccountEnvironment(
 						accountEnvironmentId, productEntryId, name, envOS,
 						envOSCustom, envDB, envJVM, envAS, envLFR, envCommerce,
-						envBrowser, envCS, envSearch, files, types);
+						envBrowser, envCS, envSearch);
 
 			return com.liferay.osb.customer.admin.model.AccountEnvironmentSoap.
 				toSoapModel(returnValue);

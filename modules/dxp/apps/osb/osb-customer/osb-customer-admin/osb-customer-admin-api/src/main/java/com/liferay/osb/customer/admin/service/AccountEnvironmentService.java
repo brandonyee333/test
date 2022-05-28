@@ -26,9 +26,6 @@ import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.kernel.util.ObjectValuePair;
-
-import java.io.File;
 
 import java.util.List;
 import java.util.Map;
@@ -66,8 +63,7 @@ public interface AccountEnvironmentService extends BaseService {
 	public AccountEnvironment addAccountEnvironment(
 			long accountEntryId, long productEntryId, String name, int envOS,
 			String envOSCustom, int envDB, int envJVM, int envAS, int envLFR,
-			int envCommerce, int envBrowser, int envCS, String envSearch,
-			List<ObjectValuePair<String, File>> files, List<Integer> types)
+			int envCommerce, int envBrowser, int envCS, String envSearch)
 		throws PortalException;
 
 	public AccountEnvironment deleteAccountEnvironment(
@@ -98,8 +94,7 @@ public interface AccountEnvironmentService extends BaseService {
 			long accountEnvironmentId, long productEntryId, String name,
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 			int envLFR, int envCommerce, int envBrowser, int envCS,
-			String envSearch, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			String envSearch)
 		throws PortalException;
 
 }

@@ -65,17 +65,13 @@ public class AccountEnvironmentLocalServiceUtil {
 			long userId, long accountEntryId, long productEntryId, String name,
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 			int envLFR, int envCommerce, int envBrowser, int envCS,
-			String envSearch,
-			List
-				<com.liferay.portal.kernel.util.ObjectValuePair
-					<String, java.io.File>> files,
-			List<Integer> types)
+			String envSearch)
 		throws PortalException {
 
 		return getService().addAccountEnvironment(
 			userId, accountEntryId, productEntryId, name, envOS, envOSCustom,
 			envDB, envJVM, envAS, envLFR, envCommerce, envBrowser, envCS,
-			envSearch, files, types);
+			envSearch);
 	}
 
 	/**
@@ -336,17 +332,13 @@ public class AccountEnvironmentLocalServiceUtil {
 			long userId, long accountEnvironmentId, long productEntryId,
 			String name, int envOS, String envOSCustom, int envDB, int envJVM,
 			int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
-			String envSearch,
-			List
-				<com.liferay.portal.kernel.util.ObjectValuePair
-					<String, java.io.File>> files,
-			List<Integer> types)
+			String envSearch)
 		throws PortalException {
 
 		return getService().updateAccountEnvironment(
 			userId, accountEnvironmentId, productEntryId, name, envOS,
 			envOSCustom, envDB, envJVM, envAS, envLFR, envCommerce, envBrowser,
-			envCS, envSearch, files, types);
+			envCS, envSearch);
 	}
 
 	public static AccountEnvironmentLocalService getService() {

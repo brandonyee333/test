@@ -31,10 +31,8 @@ import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import java.io.File;
 import java.io.Serializable;
 
 import java.util.List;
@@ -82,8 +80,7 @@ public interface AccountEnvironmentLocalService
 			long userId, long accountEntryId, long productEntryId, String name,
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 			int envLFR, int envCommerce, int envBrowser, int envCS,
-			String envSearch, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			String envSearch)
 		throws PortalException;
 
 	/**
@@ -292,8 +289,7 @@ public interface AccountEnvironmentLocalService
 			long userId, long accountEnvironmentId, long productEntryId,
 			String name, int envOS, String envOSCustom, int envDB, int envJVM,
 			int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
-			String envSearch, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			String envSearch)
 		throws PortalException;
 
 }

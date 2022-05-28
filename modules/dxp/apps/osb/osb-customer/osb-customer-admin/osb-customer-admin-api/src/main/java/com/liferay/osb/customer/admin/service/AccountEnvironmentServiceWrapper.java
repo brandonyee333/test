@@ -39,17 +39,12 @@ public class AccountEnvironmentServiceWrapper
 				long accountEntryId, long productEntryId, String name,
 				int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 				int envLFR, int envCommerce, int envBrowser, int envCS,
-				String envSearch,
-				java.util.List
-					<com.liferay.portal.kernel.util.ObjectValuePair
-						<String, java.io.File>> files,
-				java.util.List<Integer> types)
+				String envSearch)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEnvironmentService.addAccountEnvironment(
 			accountEntryId, productEntryId, name, envOS, envOSCustom, envDB,
-			envJVM, envAS, envLFR, envCommerce, envBrowser, envCS, envSearch,
-			files, types);
+			envJVM, envAS, envLFR, envCommerce, envBrowser, envCS, envSearch);
 	}
 
 	@Override
@@ -108,17 +103,13 @@ public class AccountEnvironmentServiceWrapper
 				long accountEnvironmentId, long productEntryId, String name,
 				int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
 				int envLFR, int envCommerce, int envBrowser, int envCS,
-				String envSearch,
-				java.util.List
-					<com.liferay.portal.kernel.util.ObjectValuePair
-						<String, java.io.File>> files,
-				java.util.List<Integer> types)
+				String envSearch)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEnvironmentService.updateAccountEnvironment(
 			accountEnvironmentId, productEntryId, name, envOS, envOSCustom,
 			envDB, envJVM, envAS, envLFR, envCommerce, envBrowser, envCS,
-			envSearch, files, types);
+			envSearch);
 	}
 
 	@Override
