@@ -48,45 +48,26 @@ public class DXPCommerceEntitiesIngestionPipeline {
 		PipelineBuilder defaultPipelineBuilder = new PipelineBuilder(
 			Pipeline.create(dxpCommerceEntitiesIngestionPipelineOptions));
 
-		Pipeline pipeline = defaultPipelineBuilder.withPubsubSubscription(
-			"Default",
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getDefaultPubsubSubscription()
-		).withGCSWriter(
+		Pipeline pipeline = defaultPipelineBuilder.withGCSWriter(
 			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket(),
 			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getTriggerElementCount(),
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getTriggerIntervalDuration()
+		).withPubsubSubscription(
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getDefaultPubsubSubscription(),
+			"Default"
 		).build();
 
 		// Order
 
 		PipelineBuilder orderPipelineBuilder = new PipelineBuilder(pipeline);
 
-		pipeline = orderPipelineBuilder.withPubsubSubscription(
-			"Order",
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getOrderPubsubSubscription()
-		).withGCSWriter(
-			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket(),
-			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerElementCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerIntervalDuration()
-		).<Order>withBigQueryWriter(
+		pipeline = orderPipelineBuilder.<Order>withBigQueryWriter(
 			new OrderParserPTransform(),
 			dxpCommerceEntitiesIngestionPipelineOptions.getOrderBigQueryTable()
-		).withFailedParsedItemsToGCS(
-			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
-				"failed/parse",
-			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerElementCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerIntervalDuration()
 		).withFailedBigQueryItemsToGCS(
 			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
 				"failed/bigquery",
@@ -95,35 +76,35 @@ public class DXPCommerceEntitiesIngestionPipeline {
 				getTriggerElementCount(),
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getTriggerIntervalDuration()
+		).withFailedParsedItemsToGCS(
+			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
+				"failed/parse",
+			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerElementCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerIntervalDuration()
+		).withGCSWriter(
+			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket(),
+			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerElementCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerIntervalDuration()
+		).withPubsubSubscription(
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getOrderPubsubSubscription(),
+			"Order"
 		).build();
 
 		// Product
 
 		PipelineBuilder productPipelineBuilder = new PipelineBuilder(pipeline);
 
-		pipeline = productPipelineBuilder.withPubsubSubscription(
-			"Product",
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getProductPubsubSubscription()
-		).withGCSWriter(
-			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket(),
-			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerElementCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerIntervalDuration()
-		).<Product>withBigQueryWriter(
+		pipeline = productPipelineBuilder.<Product>withBigQueryWriter(
 			new ProductParserPTransform(),
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getProductBigQueryTable()
-		).withFailedParsedItemsToGCS(
-			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
-				"failed/parse",
-			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerElementCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerIntervalDuration()
 		).withFailedBigQueryItemsToGCS(
 			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
 				"failed/bigquery",
@@ -132,6 +113,25 @@ public class DXPCommerceEntitiesIngestionPipeline {
 				getTriggerElementCount(),
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getTriggerIntervalDuration()
+		).withFailedParsedItemsToGCS(
+			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
+				"failed/parse",
+			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerElementCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerIntervalDuration()
+		).withGCSWriter(
+			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket(),
+			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerElementCount(),
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getTriggerIntervalDuration()
+		).withPubsubSubscription(
+			dxpCommerceEntitiesIngestionPipelineOptions.
+				getProductPubsubSubscription(),
+			"Product"
 		).build();
 
 		return pipeline.run();

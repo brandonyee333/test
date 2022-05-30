@@ -23,6 +23,9 @@ import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.FixedDurationOrCoun
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.GCSWriterPTransform;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.transform.PubsubReaderPTransform;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryInsertError;
 import org.apache.beam.sdk.io.gcp.bigquery.WriteResult;
@@ -40,25 +43,96 @@ public class PipelineBuilder {
 
 	public PipelineBuilder(Pipeline pipeline) {
 		_pipeline = pipeline;
+
+		_steps = new HashMap<>();
 	}
 
 	public Pipeline build() {
+		PubsubSubscriptionStep pubsubSubscriptionStep =
+			(PubsubSubscriptionStep)_steps.get("withPubsubSubscription");
+
+		PCollection<DXPEntityPubsubMessage> dxpEntityPubsubMessagePCollection =
+			_pipeline.apply(
+				"Read Pubsub Subscription " + pubsubSubscriptionStep.getTitle(),
+				new PubsubReaderPTransform(
+					pubsubSubscriptionStep.getSubscription()));
+
+		if (_steps.containsKey("withGCSWriter")) {
+			GCSWriterStep gcsWriterStep = (GCSWriterStep)_steps.get(
+				"withGCSWriter");
+
+			_writeToGCS(
+				dxpEntityPubsubMessagePCollection, gcsWriterStep.getGCSBucket(),
+				gcsWriterStep.getShardCount(),
+				gcsWriterStep.getTriggerElementCount(),
+				gcsWriterStep.getTriggerInterval());
+		}
+
+		if (_steps.containsKey("withBigQueryWriter")) {
+			BigQueryWriterStep<?> bigQueryWriterStep =
+				(BigQueryWriterStep<?>)_steps.get("withBigQueryWriter");
+
+			BaseParserPTransform<?> parserPTransform =
+				bigQueryWriterStep.getBaseParserPTransform();
+
+			PCollectionTuple parsedMessagesPCollectionTuple =
+				dxpEntityPubsubMessagePCollection.apply(parserPTransform);
+
+			WriteResult writeResult = parsedMessagesPCollectionTuple.get(
+				parserPTransform.getSuccessTupleTag()
+			).apply(
+				new BigQueryWriterPTransform<>(bigQueryWriterStep.getTable())
+			);
+
+			if (_steps.containsKey("withFailedParsedItemsToGCS")) {
+				GCSWriterStep gcsWriterStep = (GCSWriterStep)_steps.get(
+					"withFailedParsedItemsToGCS");
+
+				PCollection<DXPEntityPubsubMessage>
+					failParseDxpEntityPubsubMessagePCollection =
+						parsedMessagesPCollectionTuple.get(
+							parserPTransform.getFailTupleTag()
+						).apply(
+							Values.create()
+						);
+
+				_writeToGCS(
+					failParseDxpEntityPubsubMessagePCollection,
+					gcsWriterStep.getGCSBucket(), gcsWriterStep.getShardCount(),
+					gcsWriterStep.getTriggerElementCount(),
+					gcsWriterStep.getTriggerInterval());
+			}
+
+			if (_steps.containsKey("withFailedBigQueryItemsToGCS")) {
+				GCSWriterStep gcsWriterStep = (GCSWriterStep)_steps.get(
+					"withFailedBigQueryItemsToGCS");
+
+				PCollection<BigQueryInsertError>
+					bigQueryInsertErrorPCollection =
+						writeResult.getFailedInsertsWithErr();
+
+				PCollection<DXPEntityPubsubMessage>
+					bigqueryErrorDxpEntityPubsubMessagePCollection =
+						bigQueryInsertErrorPCollection.apply(
+							new BigQueryInsertErrorWriterPTransform());
+
+				_writeToGCS(
+					bigqueryErrorDxpEntityPubsubMessagePCollection,
+					gcsWriterStep.getGCSBucket(), gcsWriterStep.getShardCount(),
+					gcsWriterStep.getTriggerElementCount(),
+					gcsWriterStep.getTriggerInterval());
+			}
+		}
+
 		return _pipeline;
 	}
 
 	public <T extends BaseDXPEntity> PipelineBuilder withBigQueryWriter(
 		BaseParserPTransform<T> baseParserPTransform, String table) {
 
-		_baseParserPTransform = baseParserPTransform;
-
-		_parsedMessagesPCollectionTuple =
-			_dxpEntityPubsubMessagePCollection.apply(baseParserPTransform);
-
-		_writeResult = _parsedMessagesPCollectionTuple.get(
-			baseParserPTransform.getSuccessTupleTag()
-		).apply(
-			new BigQueryWriterPTransform<>(table)
-		);
+		_steps.put(
+			"withBigQueryWriter",
+			new BigQueryWriterStep<T>(baseParserPTransform, table));
 
 		return this;
 	}
@@ -67,16 +141,10 @@ public class PipelineBuilder {
 		String gcsBucket, int shardCount, int triggerElementCount,
 		long triggerInterval) {
 
-		PCollection<BigQueryInsertError> bigQueryInsertErrorPCollection =
-			_writeResult.getFailedInsertsWithErr();
-
-		PCollection<DXPEntityPubsubMessage> dxpEntityPubsubMessagePCollection =
-			bigQueryInsertErrorPCollection.apply(
-				new BigQueryInsertErrorWriterPTransform());
-
-		_writeToGCS(
-			dxpEntityPubsubMessagePCollection, gcsBucket, shardCount,
-			triggerElementCount, triggerInterval);
+		_steps.put(
+			"withFailedBigQueryItemsToGCS",
+			new GCSWriterStep(
+				gcsBucket, shardCount, triggerElementCount, triggerInterval));
 
 		return this;
 	}
@@ -85,16 +153,10 @@ public class PipelineBuilder {
 		String gcsBucket, int shardCount, int triggerElementCount,
 		long triggerInterval) {
 
-		PCollection<DXPEntityPubsubMessage> dxpEntityPubsubMessagePCollection =
-			_parsedMessagesPCollectionTuple.get(
-				_baseParserPTransform.getFailTupleTag()
-			).apply(
-				Values.create()
-			);
-
-		_writeToGCS(
-			dxpEntityPubsubMessagePCollection, gcsBucket, shardCount,
-			triggerElementCount, triggerInterval);
+		_steps.put(
+			"withFailedParsedItemsToGCS",
+			new GCSWriterStep(
+				gcsBucket, shardCount, triggerElementCount, triggerInterval));
 
 		return this;
 	}
@@ -103,19 +165,20 @@ public class PipelineBuilder {
 		String gcsBucket, int shardCount, int triggerElementCount,
 		long triggerInterval) {
 
-		_writeToGCS(
-			_dxpEntityPubsubMessagePCollection, gcsBucket, shardCount,
-			triggerElementCount, triggerInterval);
+		_steps.put(
+			"withGCSWriter",
+			new GCSWriterStep(
+				gcsBucket, shardCount, triggerElementCount, triggerInterval));
 
 		return this;
 	}
 
 	public PipelineBuilder withPubsubSubscription(
-		String title, String subscription) {
+		String subscription, String title) {
 
-		_dxpEntityPubsubMessagePCollection = _pipeline.apply(
-			"Read Pubsub Subscription " + title,
-			new PubsubReaderPTransform(subscription));
+		_steps.put(
+			"withPubsubSubscription",
+			new PubsubSubscriptionStep(subscription, title));
 
 		return this;
 	}
@@ -139,11 +202,84 @@ public class PipelineBuilder {
 		);
 	}
 
-	private BaseParserPTransform<?> _baseParserPTransform;
-	private PCollection<DXPEntityPubsubMessage>
-		_dxpEntityPubsubMessagePCollection;
-	private PCollectionTuple _parsedMessagesPCollectionTuple;
 	private final Pipeline _pipeline;
-	private WriteResult _writeResult;
+	private final Map<String, Object> _steps;
+
+	private static class BigQueryWriterStep<T extends BaseDXPEntity> {
+
+		public BigQueryWriterStep(
+			BaseParserPTransform<T> baseParserPTransform, String table) {
+
+			_baseParserPTransform = baseParserPTransform;
+			_table = table;
+		}
+
+		public BaseParserPTransform<T> getBaseParserPTransform() {
+			return _baseParserPTransform;
+		}
+
+		public String getTable() {
+			return _table;
+		}
+
+		private final BaseParserPTransform<T> _baseParserPTransform;
+		private final String _table;
+
+	}
+
+	private static class GCSWriterStep {
+
+		public GCSWriterStep(
+			String gcsBucket, int shardCount, int triggerElementCount,
+			long triggerInterval) {
+
+			_gcsBucket = gcsBucket;
+			_shardCount = shardCount;
+			_triggerElementCount = triggerElementCount;
+			_triggerInterval = triggerInterval;
+		}
+
+		public String getGCSBucket() {
+			return _gcsBucket;
+		}
+
+		public int getShardCount() {
+			return _shardCount;
+		}
+
+		public int getTriggerElementCount() {
+			return _triggerElementCount;
+		}
+
+		public long getTriggerInterval() {
+			return _triggerInterval;
+		}
+
+		private final String _gcsBucket;
+		private final int _shardCount;
+		private final int _triggerElementCount;
+		private final long _triggerInterval;
+
+	}
+
+	private static class PubsubSubscriptionStep {
+
+		public PubsubSubscriptionStep(String subscription, String title) {
+			_subscription = subscription;
+			_title = title;
+		}
+
+		public String getSubscription() {
+			return _subscription;
+		}
+
+		public String getTitle() {
+			return _title;
+		}
+
+		private final String _subscription;
+		private final String _title;
+
+	}
 
 }

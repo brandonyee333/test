@@ -44,15 +44,7 @@ public class DXPEntitiesIngestionPipeline {
 		PipelineBuilder defaultPipelineBuilder = new PipelineBuilder(
 			Pipeline.create(dxpEntitiesIngestionPipelineOptions));
 
-		Pipeline pipeline = defaultPipelineBuilder.withPubsubSubscription(
-			"DXPEntity",
-			dxpEntitiesIngestionPipelineOptions.getPubsubSubscription()
-		).withGCSWriter(
-			dxpEntitiesIngestionPipelineOptions.getGCSBucket(),
-			dxpEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpEntitiesIngestionPipelineOptions.getTriggerElementCount(),
-			dxpEntitiesIngestionPipelineOptions.getTriggerIntervalDuration()
-		).withBigQueryWriter(
+		Pipeline pipeline = defaultPipelineBuilder.withBigQueryWriter(
 			new DXPEntityParserPTransform(), "dxpentity"
 		).withFailedParsedItemsToGCS(
 			dxpEntitiesIngestionPipelineOptions.getGCSBucket() + "failed/parse",
@@ -65,6 +57,14 @@ public class DXPEntitiesIngestionPipeline {
 			dxpEntitiesIngestionPipelineOptions.getShardCount(),
 			dxpEntitiesIngestionPipelineOptions.getTriggerElementCount(),
 			dxpEntitiesIngestionPipelineOptions.getTriggerIntervalDuration()
+		).withGCSWriter(
+			dxpEntitiesIngestionPipelineOptions.getGCSBucket(),
+			dxpEntitiesIngestionPipelineOptions.getShardCount(),
+			dxpEntitiesIngestionPipelineOptions.getTriggerElementCount(),
+			dxpEntitiesIngestionPipelineOptions.getTriggerIntervalDuration()
+		).withPubsubSubscription(
+			dxpEntitiesIngestionPipelineOptions.getPubsubSubscription(),
+			"DXPEntity"
 		).build();
 
 		return pipeline.run();
