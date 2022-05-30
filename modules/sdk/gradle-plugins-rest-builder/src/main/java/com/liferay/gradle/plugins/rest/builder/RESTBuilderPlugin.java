@@ -122,24 +122,18 @@ public class RESTBuilderPlugin implements Plugin<Project> {
 
 				@Override
 				public boolean isSatisfiedBy(Task task) {
-					if (task instanceof BuildRESTTask) {
-						BuildRESTTask restTask = (BuildRESTTask)task;
+					BuildRESTTask restTask = (BuildRESTTask)task;
 
-						File restConfigDir = restTask.getRESTConfigDir();
+					File restConfigDir = restTask.getRESTConfigDir();
 
-						if ((restConfigDir == null) ||
-							!restConfigDir.exists()) {
-
-							return false;
-						}
-
-						File restConfigFile = new File(
-							restConfigDir, "rest-config.yaml");
-
-						return Files.exists(restConfigFile.toPath());
+					if ((restConfigDir == null) || !restConfigDir.exists()) {
+						return false;
 					}
 
-					return false;
+					File restConfigFile = new File(
+						restConfigDir, "rest-config.yaml");
+
+					return Files.exists(restConfigFile.toPath());
 				}
 
 			});
