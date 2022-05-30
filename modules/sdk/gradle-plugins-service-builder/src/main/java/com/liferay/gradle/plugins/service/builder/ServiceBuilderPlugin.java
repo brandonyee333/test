@@ -37,6 +37,7 @@ import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.PluginContainer;
 import org.gradle.api.plugins.WarPlugin;
 import org.gradle.api.plugins.WarPluginConvention;
+import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.execution.ProjectConfigurer;
@@ -106,6 +107,18 @@ public class ServiceBuilderPlugin implements Plugin<Project> {
 	protected BuildServiceTask addTaskBuildService(final Project project) {
 		final BuildServiceTask buildServiceTask = GradleUtil.addTask(
 			project, BUILD_SERVICE_TASK_NAME, BuildServiceTask.class);
+
+		buildServiceTask.onlyIf(
+			new Spec<Task>() {
+
+				@Override
+				public boolean isSatisfiedBy(Task task) {
+					Project taskProject = task.getProject();
+
+					return FileUtil.exists(taskProject, "service.xml");
+				}
+
+			});
 
 		buildServiceTask.setDescription("Runs Liferay Service Builder.");
 		buildServiceTask.setGroup(BasePlugin.BUILD_GROUP);

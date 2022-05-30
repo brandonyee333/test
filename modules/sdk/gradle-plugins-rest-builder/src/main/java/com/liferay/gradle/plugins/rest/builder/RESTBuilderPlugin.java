@@ -39,6 +39,7 @@ import org.gradle.api.logging.Logger;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.PluginContainer;
+import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.execution.ProjectConfigurer;
 import org.gradle.internal.service.ServiceRegistry;
@@ -115,6 +116,33 @@ public class RESTBuilderPlugin implements Plugin<Project> {
 	@SuppressWarnings("rawtypes")
 	private void _configureTaskBuildREST(final BuildRESTTask buildRESTTask) {
 		Project project = buildRESTTask.getProject();
+
+		buildRESTTask.onlyIf(
+			new Spec<Task>() {
+
+				@Override
+				public boolean isSatisfiedBy(Task task) {
+					if (task instanceof BuildRESTTask) {
+						BuildRESTTask restTask = (BuildRESTTask)task;
+
+						File restConfigDir = restTask.getRESTConfigDir();
+
+						if ((restConfigDir == null) ||
+							!restConfigDir.exists()) {
+
+							return false;
+						}
+
+						File restConfigFile = new File(
+							restConfigDir, "rest-config.yaml");
+
+						return Files.exists(restConfigFile.toPath());
+					}
+
+					return false;
+				}
+
+			});
 
 		PluginContainer pluginContainer = project.getPlugins();
 
