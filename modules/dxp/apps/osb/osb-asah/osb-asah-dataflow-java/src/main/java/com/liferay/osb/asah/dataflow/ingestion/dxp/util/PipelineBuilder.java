@@ -43,8 +43,6 @@ public class PipelineBuilder {
 
 	public PipelineBuilder(Pipeline pipeline) {
 		_pipeline = pipeline;
-
-		_steps = new HashMap<>();
 	}
 
 	public Pipeline build() {
@@ -203,7 +201,7 @@ public class PipelineBuilder {
 	}
 
 	private final Pipeline _pipeline;
-	private final Map<String, Object> _steps;
+	private final Map<String, Object> _steps = new HashMap<>();
 
 	private static class BigQueryWriterStep<T extends BaseDXPEntity> {
 
