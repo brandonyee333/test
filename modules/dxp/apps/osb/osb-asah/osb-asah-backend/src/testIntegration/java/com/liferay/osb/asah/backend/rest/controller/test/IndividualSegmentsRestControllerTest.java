@@ -345,9 +345,13 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals(1, membershipsJSONArray.length());
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels_2.json"
+	)
 	@Test
 	public void testPostIndividualSegment1() throws Exception {
-		Segment segment = FaroInfoTestUtil.buildDynamicSegment("");
+		Segment segment = FaroInfoTestUtil.buildDynamicSegment(1L, "");
 
 		_segmentDog.addSegment(segment);
 
@@ -409,10 +413,14 @@ public class IndividualSegmentsRestControllerTest
 				"JSONObject/page", "Object/totalElements"));
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels_2.json"
+	)
 	@Test
 	public void testPutIndividualSegment1() throws Exception {
 		Segment segment = _segmentDog.addSegment(
-			FaroInfoTestUtil.buildDynamicSegment(""));
+			FaroInfoTestUtil.buildDynamicSegment(1L, ""));
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.putIndividualSegment(

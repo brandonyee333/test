@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.http.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
@@ -26,6 +27,7 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
@@ -325,6 +327,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteDataSourceDisablesIndividualDynamicSegment1()
 		throws Exception {
 
+		Channel channel = _channelDog.addChannel("Liferay");
+
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
@@ -334,7 +338,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(
-				"(((demographics/givenName/value ne null)))"));
+				channel.getId(), "(((demographics/givenName/value ne null)))"));
 
 		dataSource.setDeletionDate(new Date());
 
@@ -352,6 +356,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteDataSourceDisablesIndividualDynamicSegment2()
 		throws Exception {
 
+		Channel channel = _channelDog.addChannel("Liferay");
+
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
@@ -362,6 +368,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(
+				channel.getId(),
 				"activities/ever eq 'page#pageViewed#" + asset.getId() + "'"));
 
 		dataSource.setDeletionDate(new Date());
@@ -807,6 +814,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private AssetRepository _assetRepository;
+
+	@Autowired
+	private ChannelDog _channelDog;
 
 	@Autowired
 	private CSVIndividualRepository _csvIndividualRepository;

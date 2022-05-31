@@ -159,7 +159,7 @@ public class UpdateDynamicMembershipsNaniteTest
 	@Test
 	public void testIndividualSegmentState() throws Exception {
 		Segment segment = _segmentRepository.save(
-			FaroInfoTestUtil.buildDynamicSegment(""));
+			FaroInfoTestUtil.buildDynamicSegment(1L, ""));
 
 		_updateDynamicMembershipsNanite.run(
 			_getContextJSONObject(

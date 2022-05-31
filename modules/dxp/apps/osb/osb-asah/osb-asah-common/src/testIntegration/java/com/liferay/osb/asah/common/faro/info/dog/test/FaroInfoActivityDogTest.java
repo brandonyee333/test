@@ -18,11 +18,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -50,6 +52,8 @@ public class FaroInfoActivityDogTest
 
 	@Test
 	public void testAddActivityTriggersAddsAsahTask() {
+		Channel channel = _channelDog.addChannel("Liferay");
+
 		DataSource dataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
@@ -67,6 +71,7 @@ public class FaroInfoActivityDogTest
 				Asset.class));
 
 		Segment segment = FaroInfoTestUtil.buildDynamicSegment(
+			channel.getId(),
 			"(((activities/ever eq 'Page#pageViewed#" + asset.getId() + "')))");
 
 		_segmentDog.addSegment(segment);
@@ -91,6 +96,9 @@ public class FaroInfoActivityDogTest
 
 	@Autowired
 	private AssetRepository _assetRepository;
+
+	@Autowired
+	private ChannelDog _channelDog;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
