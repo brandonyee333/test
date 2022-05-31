@@ -31,12 +31,10 @@ import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQMembership;
-import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
@@ -383,72 +381,6 @@ public class UpdateDynamicMembershipsNaniteTest
 	}
 
 	@Test
-	public void testOrganizationAssociationMembership() throws Exception {
-		DataSource dataSource = _dataSourceRepository.save(
-			FaroInfoTestUtil.buildLiferayDataSource());
-
-		Organization organization = _organizationDog.addOrganization(
-			JSONUtil.put(
-				"modifiedDate", System.currentTimeMillis()
-			).put(
-				"name", "engineering"
-			).put(
-				"organizationId", 123
-			).put(
-				"organizationPK", "33120"
-			),
-			dataSource);
-
-		Individual individual = FaroInfoTestUtil.buildIndividual(
-			1L, dataSource);
-
-		_fieldRepository.saveAll(individual.getFields());
-
-		individual.setOrganizationIds(
-			Collections.singleton(organization.getId()));
-
-		individual = _individualDog.addIndividual(individual, false);
-
-		Segment segment = FaroInfoTestUtil.buildDynamicSegment(
-			1L,
-			"((organizations.filter(filter='(id eq ''" + organization.getId() +
-				"'')')))");
-
-		segment = _segmentRepository.save(segment);
-
-		Assertions.assertFalse(
-			_membershipDog.isMember(individual.getId(), segment.getId()));
-
-		_updateDynamicMembershipsNanite.run(
-			JSONUtil.put(
-				"addFilter",
-				"((referencedOrganizationIds eq [" + organization.getId() +
-					"]))"
-			).put(
-				"dateModified", DateUtil.newDateString()
-			));
-
-		Assertions.assertTrue(
-			_membershipDog.isMember(individual.getId(), segment.getId()));
-
-		individual.setOrganizationIds(Collections.emptySet());
-
-		individual = _individualDog.updateIndividual(individual);
-
-		_updateDynamicMembershipsNanite.run(
-			JSONUtil.put(
-				"dateModified", DateUtil.newDateString()
-			).put(
-				"removeFilter",
-				"((referencedOrganizationIds eq [" + organization.getId() +
-					"]))"
-			));
-
-		Assertions.assertFalse(
-			_membershipDog.isMember(individual.getId(), segment.getId()));
-	}
-
-	@Test
 	public void testRemoveMembershipsWithDifferentChannel() throws Exception {
 		DataSource dataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildLiferayDataSource());
@@ -489,68 +421,6 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		Assertions.assertEquals(
 			1, individualIds.size(), individualIds.toString());
-	}
-
-	@Test
-	public void testRoleAssociationMembership() throws Exception {
-		DataSource dataSource = _dataSourceRepository.save(
-			FaroInfoTestUtil.buildLiferayDataSource());
-
-		DXPEntity dxpEntity = new DXPEntity();
-
-		dxpEntity.setDataSourceId(dataSource.getId());
-		dxpEntity.setName("Administrator");
-		dxpEntity.setFieldsJSONObject(JSONUtil.put("roleId", "33120"));
-
-		JSONObject roleJSONObject = _objectMapper.convertValue(
-			_dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.ROLE),
-			JSONObject.class);
-
-		Individual individual = FaroInfoTestUtil.buildIndividual(
-			1L, dataSource);
-
-		_fieldRepository.saveAll(individual.getFields());
-
-		individual.setRoleIds(
-			Collections.singleton(roleJSONObject.getLong("id")));
-
-		individual = _individualDog.addIndividual(individual, false);
-
-		Segment segment = FaroInfoTestUtil.buildDynamicSegment(
-			1L, "((roleIds eq '" + roleJSONObject.getString("id") + "'))");
-
-		segment = _segmentRepository.save(segment);
-
-		Assertions.assertFalse(
-			_membershipDog.isMember(individual.getId(), segment.getId()));
-
-		_updateDynamicMembershipsNanite.run(
-			JSONUtil.put(
-				"addFilter",
-				"((referencedRoleIds eq [" + roleJSONObject.getString("id") +
-					"]))"
-			).put(
-				"dateModified", DateUtil.newDateString()
-			));
-
-		Assertions.assertTrue(
-			_membershipDog.isMember(individual.getId(), segment.getId()));
-
-		individual.setRoleIds(Collections.emptySet());
-
-		individual = _individualDog.updateIndividual(individual);
-
-		_updateDynamicMembershipsNanite.run(
-			JSONUtil.put(
-				"dateModified", DateUtil.newDateString()
-			).put(
-				"removeFilter",
-				"((referencedRoleIds eq [" + roleJSONObject.getString("id") +
-					"]))"
-			));
-
-		Assertions.assertFalse(
-			_membershipDog.isMember(individual.getId(), segment.getId()));
 	}
 
 	@Test

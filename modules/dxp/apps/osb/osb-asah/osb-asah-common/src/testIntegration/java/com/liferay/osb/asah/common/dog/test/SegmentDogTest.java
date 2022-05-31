@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
-import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
@@ -55,7 +54,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 
 /**
@@ -129,7 +127,7 @@ public class SegmentDogTest
 	@Test
 	public void testAddAnd() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
+			new String[0],
 			_convertFieldNamesToFieldMappingIds(
 				"favoriteColor", "favoriteGenre"),
 			"demographics/favoriteColor/value eq 'blue' and " +
@@ -170,8 +168,7 @@ public class SegmentDogTest
 		}
 
 		_assertAddSetsReferencedObjectIds(
-			expectedReferencedAssetDataSourceIds,
-			expectedReferencedAssetIds.toArray(new String[0]), new String[0],
+			expectedReferencedAssetDataSourceIds, new String[0],
 			filterSB.toString());
 	}
 
@@ -196,9 +193,7 @@ public class SegmentDogTest
 		}
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId},
-			JSONUtil.toStringArray(assetIdsJSONArray), new String[0],
-			filterSB.toString());
+			new String[] {dataSourceId}, new String[0], filterSB.toString());
 	}
 
 	@Test
@@ -213,7 +208,7 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/ever eq 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -229,7 +224,7 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/last7Days eq 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -245,7 +240,7 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/last30Days eq 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -261,7 +256,7 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/lastYear eq 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -277,7 +272,7 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/today eq 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -293,7 +288,7 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/ever ne 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -309,7 +304,7 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/last7Days ne 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -325,7 +320,7 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/last30Days ne 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -341,7 +336,7 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/lastYear ne 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -357,39 +352,35 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/today ne 'page#pageViewed#" + assetId + "'");
 	}
 
 	@Test
 	public void testAddContainsFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("jobTitle"),
+			new String[0], _convertFieldNamesToFieldMappingIds("jobTitle"),
 			"contains(demographics/jobTitle/value, 'Engineer')");
 	}
 
 	@Test
 	public void testAddEndsWithFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("email"),
+			new String[0], _convertFieldNamesToFieldMappingIds("email"),
 			"endsWith(demographics/email/value, '@liferay.com')");
 	}
 
 	@Test
 	public void testAddEqOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("address"),
+			new String[0], _convertFieldNamesToFieldMappingIds("address"),
 			"demographics/address/value eq '221B Baker Street'");
 	}
 
 	@Test
 	public void testAddGeOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("age"),
+			new String[0], _convertFieldNamesToFieldMappingIds("age"),
 			"demographics/age/value ge 18");
 	}
 
@@ -406,40 +397,35 @@ public class SegmentDogTest
 		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.GROUP);
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId},
-			new String[] {String.valueOf(dxpEntity.getId())},
-			"groupIds eq '" + String.valueOf(dxpEntity.getId()) + "'",
-			"referencedGroupIds");
+			new String[] {dataSourceId}, new String[0],
+			"groupIds eq '" + String.valueOf(dxpEntity.getId()) + "'");
 	}
 
 	@Test
 	public void testAddGtOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("birthDate"),
+			new String[0], _convertFieldNamesToFieldMappingIds("birthDate"),
 			"demographics/birthDate/value gt '1989-11-09T00:00:00.000Z'");
 	}
 
 	@Test
 	public void testAddLeOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("postalCode"),
+			new String[0], _convertFieldNamesToFieldMappingIds("postalCode"),
 			"demographics/postalCode/value le '09999'");
 	}
 
 	@Test
 	public void testAddLtOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("familyName"),
+			new String[0], _convertFieldNamesToFieldMappingIds("familyName"),
 			"demographics/familyName/value lt 'N'");
 	}
 
 	@Test
 	public void testAddNeOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
+			new String[0],
 			_convertFieldNamesToFieldMappingIds("favoritePokemon"),
 			"demographics/favoritePokemon/value ne 'Thundurus'");
 	}
@@ -447,15 +433,14 @@ public class SegmentDogTest
 	@Test
 	public void testAddNotStringFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("telephone"),
+			new String[0], _convertFieldNamesToFieldMappingIds("telephone"),
 			"not contains(demographics/telephone/value, '909')");
 	}
 
 	@Test
 	public void testAddOr() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
+			new String[0],
 			_convertFieldNamesToFieldMappingIds("country", "favoriteArtist"),
 			"demographics/country/value eq 'France' or " +
 				"demographics/favoriteArtist/value eq 'Laurice Deauxnim'");
@@ -464,7 +449,7 @@ public class SegmentDogTest
 	@Test
 	public void testAddOrganizationContainsNameTreePath() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0], new String[0], new String[0],
+			new String[0], new String[0],
 			"(organizations.filter(filter='(contains(nameTreePath, " +
 				"''childOrg1''))'))");
 	}
@@ -481,8 +466,7 @@ public class SegmentDogTest
 				"department", "Text", "organization"));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			new String[] {String.valueOf(fieldMapping.getId())},
+			new String[0], new String[] {String.valueOf(fieldMapping.getId())},
 			"(organizations.filter(filter='(custom/department/value eq " +
 				"''engineering'')'))");
 	}
@@ -499,8 +483,7 @@ public class SegmentDogTest
 				"department", "Text", "organization"));
 
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			new String[] {String.valueOf(fieldMapping.getId())},
+			new String[0], new String[] {String.valueOf(fieldMapping.getId())},
 			"(organizations.filter(filter='(contains(" +
 				"custom/department/value, ''life''))'))");
 	}
@@ -517,8 +500,7 @@ public class SegmentDogTest
 		String organizationId = organizationJSONObject.getString("id");
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0], new String[0],
-			new String[] {organizationId},
+			new String[] {dataSourceId}, new String[0],
 			"(organizations.filter(filter='(id eq ''" + organizationId +
 				"'')'))");
 	}
@@ -526,7 +508,7 @@ public class SegmentDogTest
 	@Test
 	public void testAddOrganizationModifiedDate() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0], new String[0], new String[0],
+			new String[0], new String[0],
 			"organizations.filter(filter='(dateModified gt 1580256740750)')");
 	}
 
@@ -542,8 +524,7 @@ public class SegmentDogTest
 		String organizationId = organizationJSONObject.getString("id");
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0], new String[0],
-			new String[] {organizationId},
+			new String[] {dataSourceId}, new String[0],
 			"(organizations.filter(filter='(parentId ne ''" + organizationId +
 				"'')'))");
 	}
@@ -580,16 +561,13 @@ public class SegmentDogTest
 
 		_assertAddSetsReferencedObjectIds(
 			expectedReferencedAssetDataSourceIds.toArray(new String[0]),
-			new String[0], new String[0],
-			expectedReferencedOrganizationIds.toArray(new String[0]),
-			sb.toString());
+			new String[0], sb.toString());
 	}
 
 	@Test
 	public void testAddParentheses() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("worksFor"),
+			new String[0], _convertFieldNamesToFieldMappingIds("worksFor"),
 			"(((demographics/worksFor/value eq 'Bluecorp')))");
 	}
 
@@ -606,17 +584,14 @@ public class SegmentDogTest
 		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.ROLE);
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId},
-			new String[] {String.valueOf(dxpEntity.getId())},
-			"roleIds eq '" + String.valueOf(dxpEntity.getId()) + "'",
-			"referencedRoleIds");
+			new String[] {dataSourceId}, new String[0],
+			"roleIds eq '" + String.valueOf(dxpEntity.getId()) + "'");
 	}
 
 	@Test
 	public void testAddSameFieldMappingReferencedMultipleTimesOnlyAppearsOnce() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("state"),
+			new String[0], _convertFieldNamesToFieldMappingIds("state"),
 			"demographics/state/value eq 'Alaska' or " +
 				"demographics/state/value eq 'Hawaii'");
 	}
@@ -641,8 +616,7 @@ public class SegmentDogTest
 	@Test
 	public void testAddStartsWithFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("givenName"),
+			new String[0], _convertFieldNamesToFieldMappingIds("givenName"),
 			"startsWith(demographics/givenName/value, 'B')");
 	}
 
@@ -659,10 +633,8 @@ public class SegmentDogTest
 		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.TEAM);
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId},
-			new String[] {String.valueOf(dxpEntity.getId())},
-			"teamIds eq '" + String.valueOf(dxpEntity.getId()) + "'",
-			"referencedTeamIds");
+			new String[] {dataSourceId}, new String[0],
+			"teamIds eq '" + String.valueOf(dxpEntity.getId()) + "'");
 	}
 
 	@Test
@@ -679,10 +651,8 @@ public class SegmentDogTest
 			dxpEntity, DXPEntity.Type.USER_GROUP);
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId},
-			new String[] {String.valueOf(dxpEntity.getId())},
-			"userGroupIds eq '" + String.valueOf(dxpEntity.getId()) + "'",
-			"referencedUserGroupIds");
+			new String[] {dataSourceId}, new String[0],
+			"userGroupIds eq '" + String.valueOf(dxpEntity.getId()) + "'");
 	}
 
 	@Test
@@ -698,25 +668,21 @@ public class SegmentDogTest
 		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.USER);
 
 		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId},
-			new String[] {String.valueOf(dxpEntity.getId())},
-			"userId eq '" + String.valueOf(dxpEntity.getId()) + "'",
-			"referencedUserIds");
+			new String[] {dataSourceId}, new String[0],
+			"userId eq '" + String.valueOf(dxpEntity.getId()) + "'");
 	}
 
 	@Test
 	public void testFieldNameDoesNotNeedValueSuffixToAddReferencedFieldMappingId() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("image"),
+			new String[0], _convertFieldNamesToFieldMappingIds("image"),
 			"demographics/image ne null");
 	}
 
 	@Test
 	public void testFieldNameMustBePrefixedWithDemographicsToAddReferencedFieldMappingId() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0], new String[0],
-			"street eq 'Broadway'");
+			new String[0], new String[0], "street eq 'Broadway'");
 	}
 
 	@ElasticsearchIndex(
@@ -766,8 +732,8 @@ public class SegmentDogTest
 			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
 
 		_assertUpdateSetsReferencedObjectIds(
-			"id ne null", new String[0], new String[0], new String[0],
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
+			"id ne null", new String[0], new String[0],
+			new String[] {dataSourceId}, new String[0],
 			"activities/ever eq 'page#pageViewed#" + assetId + "'");
 	}
 
@@ -784,8 +750,8 @@ public class SegmentDogTest
 
 		_assertUpdateSetsReferencedObjectIds(
 			"activities/ever eq 'page#pageViewed#" + assetId + "'",
-			new String[] {dataSourceId}, new String[] {assetId}, new String[0],
-			new String[0], new String[0], new String[0], "");
+			new String[] {dataSourceId}, new String[0], new String[0],
+			new String[0], "");
 	}
 
 	@Test
@@ -815,17 +781,15 @@ public class SegmentDogTest
 
 		_assertUpdateSetsReferencedObjectIds(
 			"activities/ever eq 'page#pageViewed#" + addAssetId + "'",
-			new String[] {addDataSourceId}, new String[] {addAssetId},
-			new String[0], new String[] {updateDataSourceId},
-			new String[] {updateAssetId}, new String[0],
+			new String[] {addDataSourceId}, new String[0],
+			new String[] {updateDataSourceId}, new String[0],
 			"activities/ever eq 'page#pageViewed#" + updateAssetId + "'");
 	}
 
 	@Test
 	public void testReferencedFieldMappingIdsAddedOnUpdate() {
 		_assertUpdateSetsReferencedObjectIds(
-			"", new String[0], new String[0], new String[0], new String[0],
-			new String[0],
+			"", new String[0], new String[0], new String[0],
 			_convertFieldNamesToFieldMappingIds("additionalName"),
 			"demographics/additionalName/value eq 'Miles'");
 	}
@@ -834,18 +798,16 @@ public class SegmentDogTest
 	public void testReferencedFieldMappingIdsEmptiedOnUpdate() {
 		_assertUpdateSetsReferencedObjectIds(
 			"demographics/city/value eq 'Los Angeles'", new String[0],
-			new String[0], _convertFieldNamesToFieldMappingIds("city"),
-			new String[0], new String[0], new String[0], "");
+			_convertFieldNamesToFieldMappingIds("city"), new String[0],
+			new String[0], "");
 	}
 
 	@Test
 	public void testReferencedFieldMappingIdsModifiedOnUpdate() {
 		_assertUpdateSetsReferencedObjectIds(
 			"demographics/honorificPrefix/value eq 'Mrs.'", new String[0],
-			new String[0],
 			_convertFieldNamesToFieldMappingIds("honorificPrefix"),
-			new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("gender"),
+			new String[0], _convertFieldNamesToFieldMappingIds("gender"),
 			"demographics/gender/value eq 'Female'");
 	}
 
@@ -864,8 +826,7 @@ public class SegmentDogTest
 			"(organizations.filter(filter='(id eq ''" + organizationId +
 				"'')'))",
 			new String[] {dataSourceId}, new String[0], new String[0],
-			new String[] {organizationId}, new String[0], new String[0],
-			new String[0], new String[0], "");
+			new String[0], "");
 	}
 
 	@Test
@@ -890,9 +851,8 @@ public class SegmentDogTest
 		_assertUpdateSetsReferencedObjectIds(
 			"(organizations.filter(filter='(id eq ''" + addOrganizationId +
 				"'')'))",
-			new String[] {addDataSourceId}, new String[0], new String[0],
-			new String[] {addOrganizationId}, new String[] {updateDataSourceId},
-			new String[0], new String[0], new String[] {updateOrganizationId},
+			new String[] {addDataSourceId}, new String[0],
+			new String[] {updateDataSourceId}, new String[0],
 			"(organizations.filter(filter='(parentId eq ''" +
 				updateOrganizationId + "'')'))");
 	}
@@ -960,14 +920,12 @@ public class SegmentDogTest
 
 		_assertUpdateSetsReferencedObjectIds(
 			addFilterSB.toString(), new String[] {addDataSourceId},
-			new String[] {addAssetId},
 			_convertFieldNamesToFieldMappingIds(
 				"additionalName", "age", "favoritePokemon", "image"),
-			new String[] {organizationId}, new String[] {updateDataSourceId},
-			new String[] {updateAssetId},
+			new String[] {updateDataSourceId},
 			_convertFieldNamesToFieldMappingIds(
 				"age", "gender", "telephone", "worksFor"),
-			new String[0], updateFilterSB.toString());
+			updateFilterSB.toString());
 	}
 
 	@Test
@@ -1030,60 +988,23 @@ public class SegmentDogTest
 				partialSegment.getFilter(), String.valueOf(Integer.MAX_VALUE)));
 	}
 
-	private void _assertAddSetsReferencedObjectIds(
-		String[] expectedReferencedAssetDataSourceIds,
-		String[] expectedReferencedIds, String filterString, String key) {
-
-		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
-			_segmentDog.addSegment(
-				FaroInfoTestUtil.buildDynamicSegment(filterString)),
-			JSONObject.class);
-
-		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray(
-				"referencedAssetDataSourceIds"),
-			expectedReferencedAssetDataSourceIds);
-		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray(key),
-			expectedReferencedIds);
-	}
-
-	private void _assertAddSetsReferencedObjectIds(
-		String[] expectedReferencedAssetDataSourceIds,
-		String[] expectedReferencedAssetIds,
-		String[] expectedReferencedFieldMappingIds, String filterString) {
-
-		_assertAddSetsReferencedObjectIds(
-			expectedReferencedAssetDataSourceIds, expectedReferencedAssetIds,
-			expectedReferencedFieldMappingIds, new String[0], filterString);
-	}
-
 	private JSONObject _assertAddSetsReferencedObjectIds(
 		String[] expectedReferencedAssetDataSourceIds,
-		String[] expectedReferencedAssetIds,
-		String[] expectedReferencedFieldMappingIds,
-		String[] expectedReferencedOrganizationIds, String filterString) {
+		String[] expectedReferencedFieldMappingIds, String filterString) {
 
 		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
 			_segmentDog.addSegment(
-				FaroInfoTestUtil.buildDynamicSegment(filterString)),
+				FaroInfoTestUtil.buildDynamicSegment(1L, filterString)),
 			JSONObject.class);
 
 		_assertSameContents(
 			individualSegmentJSONObject.getJSONArray(
 				"referencedAssetDataSourceIds"),
 			expectedReferencedAssetDataSourceIds);
-		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray("referencedAssetIds"),
-			expectedReferencedAssetIds);
 		_assertSameContents(
 			individualSegmentJSONObject.getJSONArray(
 				"referencedFieldMappingIds"),
 			expectedReferencedFieldMappingIds);
-		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray(
-				"referencedOrganizationIds"),
-			expectedReferencedOrganizationIds);
 
 		return individualSegmentJSONObject;
 	}
@@ -1110,37 +1031,14 @@ public class SegmentDogTest
 
 	private void _assertUpdateSetsReferencedObjectIds(
 		String addFilter, String[] expectedAddReferencedAssetDataSourceIds,
-		String[] expectedAddReferencedAssetIds,
 		String[] expectedAddReferencedFieldMappingIds,
 		String[] expectedUpdateReferencedAssetDataSourceIds,
-		String[] expectedUpdateReferencedAssetIds,
 		String[] expectedUpdateReferencedFieldMappingIds, String updateFilter) {
-
-		_assertUpdateSetsReferencedObjectIds(
-			addFilter, expectedAddReferencedAssetDataSourceIds,
-			expectedAddReferencedAssetIds, expectedAddReferencedFieldMappingIds,
-			new String[0], expectedUpdateReferencedAssetDataSourceIds,
-			expectedUpdateReferencedAssetIds,
-			expectedUpdateReferencedFieldMappingIds, new String[0],
-			updateFilter);
-	}
-
-	private void _assertUpdateSetsReferencedObjectIds(
-		String addFilter, String[] expectedAddReferencedAssetDataSourceIds,
-		String[] expectedAddReferencedAssetIds,
-		String[] expectedAddReferencedFieldMappingIds,
-		String[] expectedAddReferencedOrganizationIds,
-		String[] expectedUpdateReferencedAssetDataSourceIds,
-		String[] expectedUpdateReferencedAssetIds,
-		String[] expectedUpdateReferencedFieldMappingIds,
-		String[] expectedUpdateReferencedOrganizationIds, String updateFilter) {
 
 		JSONObject individualSegmentJSONObject =
 			_assertAddSetsReferencedObjectIds(
 				expectedAddReferencedAssetDataSourceIds,
-				expectedAddReferencedAssetIds,
-				expectedAddReferencedFieldMappingIds,
-				expectedAddReferencedOrganizationIds, addFilter);
+				expectedAddReferencedFieldMappingIds, addFilter);
 
 		Segment segment = new Segment();
 
@@ -1156,16 +1054,9 @@ public class SegmentDogTest
 				"referencedAssetDataSourceIds"),
 			expectedUpdateReferencedAssetDataSourceIds);
 		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray("referencedAssetIds"),
-			expectedUpdateReferencedAssetIds);
-		_assertSameContents(
 			individualSegmentJSONObject.getJSONArray(
 				"referencedFieldMappingIds"),
 			expectedUpdateReferencedFieldMappingIds);
-		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray(
-				"referencedOrganizationIds"),
-			expectedUpdateReferencedOrganizationIds);
 	}
 
 	private String[] _convertFieldNamesToFieldMappingIds(String... fieldNames) {
@@ -1188,9 +1079,6 @@ public class SegmentDogTest
 
 	@Autowired
 	private AssetRepository _assetRepository;
-
-	@MockBean
-	private ChannelHttp _channelHttp;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
