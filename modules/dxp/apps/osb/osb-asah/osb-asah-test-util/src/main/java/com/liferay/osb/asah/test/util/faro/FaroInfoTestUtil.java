@@ -377,26 +377,6 @@ public class FaroInfoTestUtil {
 		return segment;
 	}
 
-	public static Segment buildDynamicSegment(String filterString) {
-		Segment segment = new Segment();
-
-		segment.setChannelId(
-			Long.parseLong(RandomStringUtils.randomNumeric(4)));
-
-		Date date = new Date();
-
-		segment.setCreateDate(date);
-
-		segment.setFilter(filterString);
-		segment.setModifiedDate(date);
-		segment.setName(RandomTestUtil.randomString());
-		segment.setScope("PROJECT");
-		segment.setStatus("ACTIVE");
-		segment.setType(Segment.Type.DYNAMIC);
-
-		return segment;
-	}
-
 	public static Experiment buildExperiment(
 		ExperimentStatus experimentStatus, GoalMetric goalMetric, Long id) {
 
