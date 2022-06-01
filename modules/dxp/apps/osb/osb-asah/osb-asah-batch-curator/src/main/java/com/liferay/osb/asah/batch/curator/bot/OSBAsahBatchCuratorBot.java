@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.PastUserSessionFinalizerNanite;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
@@ -21,15 +22,24 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Project;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.TimeZone;
 
 import javax.annotation.PreDestroy;
@@ -40,8 +50,15 @@ import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -191,8 +208,35 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runPastUserSessionFinalizerNanite() {
-		_asahTaskManager.runNanitesForAllProjects(
-			"PastUserSessionFinalizerNanite");
+		Map<Date, Set<String>> pastUserSessionsToFinalize =
+			_getPastUserSessionDatesToFinalize();
+
+		int availablePastUserSessionFinalizerTasks =
+			_asahTaskManager.getAvailablePastUserSessionFinalizerTasks();
+
+		int count = 0;
+
+		for (Map.Entry<Date, Set<String>> entry :
+			pastUserSessionsToFinalize.entrySet()) {
+
+			Set<String> projectIds = entry.getValue();
+
+			for (String projectId : projectIds) {
+				if (count < availablePastUserSessionFinalizerTasks) {
+					return;
+				}
+
+				AsahTask asahTask = new AsahTask(
+					"PastUserSessionFinalizerNanite",
+					JSONUtil.put(
+						"dayDateString", DateUtil.toUTCString(entry.getKey())),
+					projectId);
+
+				_asahTaskManager.executeAsahTask(asahTask, true);
+
+				count++;
+			}
+		}
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
@@ -231,6 +275,103 @@ public class OSBAsahBatchCuratorBot {
 
 			_asahTaskManager.runNanites("IndividualInterestScoresNanite");
 		};
+	}
+
+	private List<String> _getPastUserSessionDates(String projectId) {
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
+
+			SearchResponse searchResponse =
+				_cerebroInfoElasticsearchInvoker.search(
+					"user-sessions",
+					searchSourceBuilder -> {
+						DateHistogramAggregationBuilder
+							dateHistogramAggregationBuilder =
+							AggregationBuilders.dateHistogram(
+								"sessions_by_day");
+
+						dateHistogramAggregationBuilder.calendarInterval(
+							DateHistogramInterval.DAY);
+						dateHistogramAggregationBuilder.field("lastEventDate");
+						dateHistogramAggregationBuilder.order(
+							BucketOrder.key(false));
+						dateHistogramAggregationBuilder.timeZone(
+							_timeZoneDog.getZoneId());
+						dateHistogramAggregationBuilder.minDocCount(1);
+
+						searchSourceBuilder.aggregation(
+							dateHistogramAggregationBuilder);
+
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.rangeQuery(
+									"lastEventDate"
+								).lt(
+									"now/d"
+								)
+							).filter(
+								BoolQueryBuilderUtil.should(
+									BoolQueryBuilderUtil.mustNot(
+										QueryBuilders.existsQuery("finalized"))
+								).should(
+									QueryBuilders.termQuery("finalized", false)
+								)
+							));
+						searchSourceBuilder.size(0);
+					});
+
+			Aggregations aggregations = searchResponse.getAggregations();
+
+			if (aggregations == null) {
+				return Collections.emptyList();
+			}
+
+			Histogram histogram = aggregations.get("sessions_by_day");
+
+			List<String> dateStrings = new ArrayList<>();
+
+			List<? extends Histogram.Bucket> buckets = histogram.getBuckets();
+
+			for (Histogram.Bucket bucket : buckets) {
+				dateStrings.add(bucket.getKeyAsString());
+			}
+
+			return dateStrings;
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
+	}
+
+	private Map<Date, Set<String>> _getPastUserSessionDatesToFinalize() {
+		Map<Date, Set<String>> pastUserSessionDatesToFinalize = new TreeMap<>(
+			Collections.reverseOrder());
+
+		for (Project project : _projectDog.getProjects()) {
+			List<String> pastUserSessionDates = _getPastUserSessionDates(
+				project.getId());
+
+			for (String pastUserSessionDate : pastUserSessionDates) {
+				Set<String> projectIds =
+					pastUserSessionDatesToFinalize.computeIfAbsent(
+						DateUtil.toUTCDate(pastUserSessionDate),
+						userSessionDate -> new HashSet<>());
+
+				String projectId = project.getId();
+
+				Set<String> userSessionFinalizeDates =
+					PastUserSessionFinalizerNanite.getUserSessionFinalizeDates(
+						projectId);
+
+				if (userSessionFinalizeDates.contains(pastUserSessionDate)) {
+					continue;
+				}
+
+				projectIds.add(project.getId());
+			}
+		}
+
+		return pastUserSessionDatesToFinalize;
 	}
 
 	private Runnable _getStaleDynamicIndividualSegmentsRunnable() {
@@ -331,6 +472,9 @@ public class OSBAsahBatchCuratorBot {
 
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(50, 40);
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired(required = false)
 	@Qualifier("contentRecommendationDataSolutionNaniteRunnable")
