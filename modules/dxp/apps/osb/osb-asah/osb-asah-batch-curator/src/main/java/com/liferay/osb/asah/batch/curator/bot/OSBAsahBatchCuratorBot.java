@@ -202,15 +202,13 @@ public class OSBAsahBatchCuratorBot {
 		int availablePastUserSessionFinalizerTasks =
 			_asahTaskManager.getAvailablePastUserSessionFinalizerTasks();
 
-		int count = 0;
-
 		for (Map.Entry<Date, List<String>> entry :
 				pastUserSessionsToFinalize.entrySet()) {
 
 			List<String> projectIds = entry.getValue();
 
 			for (String projectId : projectIds) {
-				if (count < availablePastUserSessionFinalizerTasks) {
+				if (availablePastUserSessionFinalizerTasks <= 0) {
 					return;
 				}
 
@@ -222,7 +220,7 @@ public class OSBAsahBatchCuratorBot {
 
 				_asahTaskManager.executeAsahTask(asahTask, true);
 
-				count++;
+				availablePastUserSessionFinalizerTasks--;
 			}
 		}
 	}
