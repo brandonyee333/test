@@ -45,6 +45,11 @@ public class BQExpandoValue implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
 	public String getId() {
@@ -77,6 +82,10 @@ public class BQExpandoValue implements Persistable<String> {
 		_columnId = columnId;
 	}
 
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
@@ -103,6 +112,9 @@ public class BQExpandoValue implements Persistable<String> {
 
 	@Transient
 	private Long _columnId;
+
+	@Transient
+	private Long _dataSourceId;
 
 	@Transient
 	private String _id;
