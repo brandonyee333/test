@@ -26,6 +26,8 @@ import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.time.LocalDateTime;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -103,6 +105,9 @@ public class PastUserSessionFinalizerNanite extends BaseNanite {
 	private QueryBuilder _getQueryBuilder(
 		String dayDateString, String userSessionId) {
 
+		LocalDateTime localDateTime = DateUtil.toLocalDateTime(
+			DateUtil.toUTCDate(dayDateString), _timeZoneDog.getZoneId());
+
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			BoolQueryBuilderUtil.should(
 				BoolQueryBuilderUtil.mustNot(
@@ -114,9 +119,9 @@ public class PastUserSessionFinalizerNanite extends BaseNanite {
 			QueryBuilders.rangeQuery(
 				"lastEventDate"
 			).gte(
-				dayDateString
+				DateUtil.toUTCString(localDateTime)
 			).lt(
-				DateUtil.addDays(dayDateString, 1)
+				DateUtil.toUTCString(localDateTime.plusDays(1))
 			)
 		);
 
