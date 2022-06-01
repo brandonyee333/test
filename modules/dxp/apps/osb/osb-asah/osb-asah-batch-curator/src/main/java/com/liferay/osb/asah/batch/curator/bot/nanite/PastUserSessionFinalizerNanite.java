@@ -133,6 +133,13 @@ public class PastUserSessionFinalizerNanite extends BaseNanite {
 	}
 
 	private void _processDay(String dayDateString) throws Exception {
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Start finalizing past user sessions for " + dayDateString);
+		}
+
+		long processDayStart = System.currentTimeMillis();
+
 		String userSessionId = null;
 
 		while (true) {
@@ -175,6 +182,14 @@ public class PastUserSessionFinalizerNanite extends BaseNanite {
 						clazz.getSimpleName(), userSessions.size(),
 						System.currentTimeMillis() - start));
 			}
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				String.format(
+					"Completed finalizing past user sessions for %s in %d ms",
+					dayDateString,
+					System.currentTimeMillis() - processDayStart));
 		}
 	}
 
