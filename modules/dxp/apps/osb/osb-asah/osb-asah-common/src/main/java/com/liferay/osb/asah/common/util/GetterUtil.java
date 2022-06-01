@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.util;
 
 import com.google.cloud.bigquery.FieldValue;
 
+import java.math.BigDecimal;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
@@ -23,6 +25,16 @@ import java.time.OffsetDateTime;
  * @author Marcellus Tavares
  */
 public class GetterUtil {
+
+	public static BigDecimal getBigDecimal(Object object) {
+		if (object instanceof FieldValue) {
+			FieldValue fieldValue = (FieldValue)object;
+
+			return fieldValue.getNumericValue();
+		}
+
+		return (BigDecimal)object;
+	}
 
 	public static String getDateString(Object object) {
 		if (object instanceof FieldValue) {
@@ -66,6 +78,16 @@ public class GetterUtil {
 		}
 
 		return object;
+	}
+
+	public static String getString(Object object) {
+		if (object instanceof FieldValue) {
+			FieldValue fieldValue = (FieldValue)object;
+
+			return fieldValue.getStringValue();
+		}
+
+		return (String)object;
 	}
 
 }

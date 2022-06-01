@@ -306,7 +306,9 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		return query;
 	}
 
-	private static final String[] _TABLE_NAMES = {"BQEvent", "BQEventProperty"};
+	private static final String[] _TABLE_NAMES = {
+		"BQEvent", "BQEventProperty", "BQOrder"
+	};
 
 	private BigQuery _bigQuery;
 	private String _googleProjectId;
