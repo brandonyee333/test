@@ -60,11 +60,6 @@ public class PastUserSessionFinalizerNanite extends BaseNanite {
 	}
 
 	@Override
-	public boolean isLogRunEnabled() {
-		return true;
-	}
-
-	@Override
 	public void run(JSONObject contextJSONObject) {
 		if ((contextJSONObject == null) ||
 			!contextJSONObject.has("dayDateString")) {
