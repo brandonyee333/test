@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS BQExpandoValue (
 	classPK BIGINT,
 	classType TEXT,
 	columnId BIGINT,
-	entityId BIGINT,
+	dataSourceId BIGINT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
 	value TEXT
