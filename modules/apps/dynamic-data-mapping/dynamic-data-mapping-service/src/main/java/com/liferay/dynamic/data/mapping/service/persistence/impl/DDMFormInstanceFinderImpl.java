@@ -47,14 +47,14 @@ public class DDMFormInstanceFinderImpl
 	public static final String COUNT_BY_C_G_N_D =
 		DDMFormInstanceFinder.class.getName() + ".countByC_G_N_D";
 
-	public static final String COUNT_BY_C_G_N_D_S =
-		DDMFormInstanceFinder.class.getName() + ".countByC_G_N_D_S";
+	public static final String COUNT_BY_C_G_N_D_P_S =
+		DDMFormInstanceFinder.class.getName() + ".countByC_G_N_D_P_S";
 
 	public static final String FIND_BY_C_G_N_D =
 		DDMFormInstanceFinder.class.getName() + ".findByC_G_N_D";
 
-	public static final String FIND_BY_C_G_N_D_S =
-		DDMFormInstanceFinder.class.getName() + ".findByC_G_N_D_S";
+	public static final String FIND_BY_C_G_N_D_P_S =
+		DDMFormInstanceFinder.class.getName() + ".findByC_G_N_D_P_S";
 
 	@Override
 	public int countByKeywords(long companyId, long groupId, String keywords) {
@@ -79,9 +79,16 @@ public class DDMFormInstanceFinderImpl
 
 	@Override
 	public int filterCountByKeywords(
+		long companyId, long groupId, String keywords, boolean published) {
+
+		return doCountByKeywords(companyId, groupId, keywords, published, WorkflowConstants.STATUS_ANY, true);
+	}
+
+	@Override
+	public int filterCountByKeywords(
 		long companyId, long groupId, String keywords, int status) {
 
-		return doCountByKeywords(companyId, groupId, keywords, status, true);
+		return doCountByKeywords(companyId, groupId, keywords, null, status, true);
 	}
 
 	@Override
@@ -98,10 +105,9 @@ public class DDMFormInstanceFinderImpl
 			companyId, groupId, names, descriptions, andOperator, true);
 	}
 
-	@Override
-	public List<DDMFormInstance> filterFindByKeywords(
-		long companyId, long groupId, String keywords, int status, int start,
-		int end, OrderByComparator<DDMFormInstance> orderByComparator) {
+	protected List<DDMFormInstance> filterFindByKeywords(
+		long companyId, long groupId, String keywords, Boolean published, int status, int start, int end,
+		OrderByComparator<DDMFormInstance> orderByComparator){
 
 		String[] names = null;
 		String[] descriptions = null;
@@ -115,8 +121,35 @@ public class DDMFormInstanceFinderImpl
 			andOperator = true;
 		}
 
+		if (published != null){
+			return filterFindByC_G_N_D_P(
+				companyId, groupId, names, descriptions, published, andOperator,
+				start, end, orderByComparator);
+		}
+
 		return filterFindByC_G_N_D_S(
-			companyId, groupId, names, descriptions, status, andOperator, start,
+			companyId, groupId, names, descriptions, status, andOperator,
+			start, end, orderByComparator);
+	}
+
+	@Override
+	public List<DDMFormInstance> filterFindByKeywords(
+		long companyId, long groupId, String keywords, boolean published,
+		int start, int end,
+		OrderByComparator<DDMFormInstance> orderByComparator) {
+
+		return filterFindByKeywords(
+			companyId, groupId, keywords, published, WorkflowConstants.STATUS_ANY, start,
+			end, orderByComparator);
+	}
+
+	@Override
+	public List<DDMFormInstance> filterFindByKeywords(
+		long companyId, long groupId, String keywords, int status, int start,
+		int end, OrderByComparator<DDMFormInstance> orderByComparator) {
+
+		return filterFindByKeywords(
+			companyId, groupId, keywords, null, status, start,
 			end, orderByComparator);
 	}
 
@@ -149,13 +182,24 @@ public class DDMFormInstanceFinderImpl
 	}
 
 	@Override
+	public List<DDMFormInstance> filterFindByC_G_N_D_P(
+		long companyId, long groupId, String[] names, String[] descriptions,
+		boolean published, boolean andOperator, int start, int end,
+		OrderByComparator<DDMFormInstance> orderByComparator) {
+
+		return doFindByC_G_N_D_P_S(
+			companyId, groupId, names, descriptions, published, WorkflowConstants.STATUS_ANY, andOperator,
+			start, end, orderByComparator, true);
+	}
+
+	@Override
 	public List<DDMFormInstance> filterFindByC_G_N_D_S(
 		long companyId, long groupId, String[] names, String[] descriptions,
 		int status, boolean andOperator, int start, int end,
 		OrderByComparator<DDMFormInstance> orderByComparator) {
 
-		return doFindByC_G_N_D_S(
-			companyId, groupId, names, descriptions, status, andOperator, start,
+		return doFindByC_G_N_D_P_S(
+			companyId, groupId, names, descriptions, null, status, andOperator, start,
 			end, orderByComparator, true);
 	}
 
@@ -197,12 +241,12 @@ public class DDMFormInstanceFinderImpl
 		boolean inlineSQLHelper) {
 
 		return doCountByKeywords(
-			companyId, groupId, keywords, WorkflowConstants.STATUS_ANY,
+			companyId, groupId, keywords, null, WorkflowConstants.STATUS_ANY,
 			inlineSQLHelper);
 	}
 
 	protected int doCountByKeywords(
-		long companyId, long groupId, String keywords, int status,
+		long companyId, long groupId, String keywords, Boolean published, int status,
 		boolean inlineSQLHelper) {
 
 		String[] names = null;
@@ -217,8 +261,8 @@ public class DDMFormInstanceFinderImpl
 			andOperator = true;
 		}
 
-		return doCountByC_G_N_D_S(
-			companyId, groupId, names, descriptions, status, andOperator,
+		return doCountByC_G_N_D_P_S(
+			companyId, groupId, names, descriptions, published, status, andOperator,
 			inlineSQLHelper);
 	}
 
@@ -226,13 +270,13 @@ public class DDMFormInstanceFinderImpl
 		long companyId, long groupId, String[] names, String[] descriptions,
 		boolean andOperator, boolean inlineSQLHelper) {
 
-		return doCountByC_G_N_D_S(
-			companyId, groupId, names, descriptions,
+		return doCountByC_G_N_D_P_S(
+			companyId, groupId, names, descriptions, null,
 			WorkflowConstants.STATUS_ANY, andOperator, inlineSQLHelper);
 	}
 
-	protected int doCountByC_G_N_D_S(
-		long companyId, long groupId, String[] names, String[] descriptions,
+	protected int doCountByC_G_N_D_P_S(
+		long companyId, long groupId, String[] names, String[] descriptions, Boolean published,
 		int status, boolean andOperator, boolean inlineSQLHelper) {
 
 		names = _customSQL.keywords(names);
@@ -245,11 +289,11 @@ public class DDMFormInstanceFinderImpl
 
 			String sql = "";
 
-			if (status == WorkflowConstants.STATUS_ANY) {
+			if (published == null && status == WorkflowConstants.STATUS_ANY) {
 				sql = _customSQL.get(getClass(), COUNT_BY_C_G_N_D);
 			}
 			else {
-				sql = _customSQL.get(getClass(), COUNT_BY_C_G_N_D_S);
+				sql = _customSQL.get(getClass(), COUNT_BY_C_G_N_D_P_S);
 			}
 
 			if (inlineSQLHelper) {
@@ -263,6 +307,16 @@ public class DDMFormInstanceFinderImpl
 					sql, "(DDMFormInstance.groupId = ?) AND");
 			}
 
+			if (published == null) {
+				sql = StringUtil.removeSubstring(
+					sql, "(DDMFormInstance.settings_ LIKE '%\"fieldReference\":\"published\",\"value\":\"[$PUBLISHED$]\"%') AND");
+			}
+
+			if (status == WorkflowConstants.STATUS_ANY) {
+				sql = StringUtil.removeSubstring(
+					sql, " AND (DDMFormInstanceVersion.status = ?)");
+			}
+
 			sql = _customSQL.replaceKeywords(
 				sql, "LOWER(DDMFormInstance.name)", StringPool.LIKE, false,
 				names);
@@ -270,6 +324,11 @@ public class DDMFormInstanceFinderImpl
 				sql, "DDMFormInstance.description", StringPool.LIKE, true,
 				descriptions);
 			sql = _customSQL.replaceAndOperator(sql, andOperator);
+
+			if (published != null){
+				sql = StringUtil.replace(
+					sql, "[$PUBLISHED$]", Boolean.toString(published));
+			}
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
@@ -315,14 +374,14 @@ public class DDMFormInstanceFinderImpl
 		OrderByComparator<DDMFormInstance> orderByComparator,
 		boolean inlineSQLHelper) {
 
-		return doFindByC_G_N_D_S(
-			companyId, groupId, names, descriptions,
+		return doFindByC_G_N_D_P_S(
+			companyId, groupId, names, descriptions, null,
 			WorkflowConstants.STATUS_ANY, andOperator, start, end,
 			orderByComparator, inlineSQLHelper);
 	}
 
-	protected List<DDMFormInstance> doFindByC_G_N_D_S(
-		long companyId, long groupId, String[] names, String[] descriptions,
+	protected List<DDMFormInstance> doFindByC_G_N_D_P_S(
+		long companyId, long groupId, String[] names, String[] descriptions, Boolean published,
 		int status, boolean andOperator, int start, int end,
 		OrderByComparator<DDMFormInstance> orderByComparator,
 		boolean inlineSQLHelper) {
@@ -337,11 +396,11 @@ public class DDMFormInstanceFinderImpl
 
 			String sql = "";
 
-			if (status == WorkflowConstants.STATUS_ANY) {
+			if (published == null && status == WorkflowConstants.STATUS_ANY) {
 				sql = _customSQL.get(getClass(), FIND_BY_C_G_N_D);
 			}
 			else {
-				sql = _customSQL.get(getClass(), FIND_BY_C_G_N_D_S);
+				sql = _customSQL.get(getClass(), FIND_BY_C_G_N_D_P_S);
 			}
 
 			if (inlineSQLHelper) {
@@ -355,6 +414,16 @@ public class DDMFormInstanceFinderImpl
 					sql, "(DDMFormInstance.groupId = ?) AND");
 			}
 
+			if (published == null) {
+				sql = StringUtil.removeSubstring(
+					sql, "(DDMFormInstance.settings_ LIKE '%\"fieldReference\":\"published\",\"value\":\"[$PUBLISHED$]\"%') AND");
+			}
+
+			if (status == WorkflowConstants.STATUS_ANY) {
+				sql = StringUtil.removeSubstring(
+					sql, " AND (DDMFormInstanceVersion.status = ?)");
+			}
+
 			sql = _customSQL.replaceKeywords(
 				sql, "LOWER(DDMFormInstance.name)", StringPool.LIKE, false,
 				names);
@@ -363,6 +432,11 @@ public class DDMFormInstanceFinderImpl
 				descriptions);
 			sql = _customSQL.replaceAndOperator(sql, andOperator);
 			sql = _customSQL.replaceOrderBy(sql, orderByComparator);
+
+			if (published != null){
+				sql = StringUtil.replace(
+					sql, "[$PUBLISHED$]", Boolean.toString(published));
+			}
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
