@@ -327,14 +327,14 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteDataSourceDisablesIndividualDynamicSegment1()
 		throws Exception {
 
-		Channel channel = _channelDog.addChannel("Liferay");
-
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				dataSource.getId(), "givenName", "givenName", "Text"));
+
+		Channel channel = _channelDog.addChannel("Liferay");
 
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(
@@ -356,8 +356,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteDataSourceDisablesIndividualDynamicSegment2()
 		throws Exception {
 
-		Channel channel = _channelDog.addChannel("Liferay");
-
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
@@ -365,6 +363,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			_objectMapper.convertValue(
 				FaroInfoTestUtil.buildPageAssetJSONObject(dataSource.getId()),
 				Asset.class));
+
+		Channel channel = _channelDog.addChannel("Liferay");
 
 		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(

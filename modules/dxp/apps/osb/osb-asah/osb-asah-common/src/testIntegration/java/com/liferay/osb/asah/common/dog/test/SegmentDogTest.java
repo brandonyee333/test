@@ -139,8 +139,6 @@ public class SegmentDogTest
 		String[] expectedReferencedAssetDataSourceIds =
 			new String[_liferayDataSourceIdsJSONArray.length() - 1];
 
-		List<String> expectedReferencedAssetIds = new ArrayList<>();
-
 		StringBuilder filterSB = new StringBuilder();
 
 		for (int i = 0; i < (_liferayDataSourceIdsJSONArray.length() - 1);
@@ -155,8 +153,6 @@ public class SegmentDogTest
 
 			String assetId = assetIdsJSONArray.getString(
 				RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-			expectedReferencedAssetIds.add(assetId);
 
 			filterSB.append("activities/ever eq 'page#pageViewed#");
 			filterSB.append(assetId);
@@ -532,7 +528,6 @@ public class SegmentDogTest
 	@Test
 	public void testAddOrganizationWithMultipleClauses() {
 		List<String> expectedReferencedAssetDataSourceIds = new ArrayList<>();
-		List<String> expectedReferencedOrganizationIds = new ArrayList<>();
 
 		StringBuilder sb = new StringBuilder();
 
@@ -549,8 +544,6 @@ public class SegmentDogTest
 					dataSourceId);
 
 			String organizationId = organizationJSONObject.getString("id");
-
-			expectedReferencedOrganizationIds.add(organizationId);
 
 			sb.append("or id eq ''");
 			sb.append(organizationId);
