@@ -516,6 +516,7 @@ public class AccountEntryViewDisplayContext {
 			String name = product.getName();
 
 			if (name.contains(ProductConstants.NAME_PREFIX_DXP) ||
+				name.contains(ProductConstants.NAME_PREFIX_LXC_SM) ||
 				name.contains(ProductConstants.NAME_PREFIX_PORTAL)) {
 
 				return false;
