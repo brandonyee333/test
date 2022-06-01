@@ -128,6 +128,30 @@ CREATE TABLE IF NOT EXISTS BQMembershipChange (
     knownIndividualsCount BIGINT
 );
 
+CREATE TABLE IF NOT EXISTS BQOrder(
+    projectId TEXT,
+    datasourceId BIGINT,
+    channelId BIGINT,
+    uploadType TEXT,
+    uploadDate TIMESTAMP,
+    accountId BIGINT,
+    createDate TIMESTAMP,
+    currencyCode TEXT,
+    externalReferenceCode TEXT,
+    id BIGINT,
+    modifiedDate TIMESTAMP,
+    orderDate TIMESTAMP,
+    orderItems TEXT[],
+    orderStatus BIGINT,
+    orderTypeExternalReferenceCode TEXT,
+    orderTypeId BIGINT,
+    paymentMethod TEXT,
+    paymentStatus BIGINT,
+    status BIGINT,
+    total TEXT,
+    userId BIGINT
+);
+
 CREATE TABLE IF NOT EXISTS BQOrganization (
 	dataSourceId BIGINT,
 	expandoColumnIds BIGINT[],
