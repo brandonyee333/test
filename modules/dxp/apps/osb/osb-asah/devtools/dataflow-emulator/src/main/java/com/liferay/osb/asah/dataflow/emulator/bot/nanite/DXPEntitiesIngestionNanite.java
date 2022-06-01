@@ -166,6 +166,7 @@ public class DXPEntitiesIngestionNanite {
 				bqExpandoValue.setClassPK(classPK);
 				bqExpandoValue.setClassType(classType);
 				bqExpandoValue.setColumnId(jsonObject.getLong("columnId"));
+				bqExpandoValue.setDataSourceId(dataSourceId);
 				bqExpandoValue.setId(
 					_generateBQExpandoValueId(
 						jsonObject.getLong("columnId"), classPK, dataSourceId,
