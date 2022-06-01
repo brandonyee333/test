@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
@@ -39,13 +40,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -81,7 +82,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FinalizeUserSessionArm {
 
-	public List<String> getPastUserSessionDates(String projectId) {
+	public Map<Date, Long> getPastUserSessionDates(String projectId) {
 		try {
 			ProjectIdThreadLocal.setProjectId(projectId);
 
@@ -127,17 +128,23 @@ public class FinalizeUserSessionArm {
 			Aggregations aggregations = searchResponse.getAggregations();
 
 			if (aggregations == null) {
-				return Collections.emptyList();
+				return Collections.emptyMap();
 			}
 
 			Histogram histogram = aggregations.get("sessions_by_day");
 
-			List<String> dateStrings = new ArrayList<>();
+			Map<Date, Long> dateStrings = new TreeMap<>(
+				Collections.reverseOrder());
 
 			List<? extends Histogram.Bucket> buckets = histogram.getBuckets();
 
 			for (Histogram.Bucket bucket : buckets) {
-				dateStrings.add(bucket.getKeyAsString());
+				ZonedDateTime zonedDateTime = ZonedDateTime.parse(
+					bucket.getKeyAsString());
+
+				dateStrings.put(
+					DateUtil.toUTCDate(zonedDateTime.toLocalDateTime()),
+					bucket.getDocCount());
 			}
 
 			return dateStrings;
@@ -147,19 +154,16 @@ public class FinalizeUserSessionArm {
 		}
 	}
 
-	public Map<Date, Set<String>> getPastUserSessionDatesToFinalize() {
-		Map<Date, Set<String>> pastUserSessionDatesToFinalize = new TreeMap<>(
-			Collections.reverseOrder());
+	public Map<Date, List<String>> getPastUserSessionDatesToFinalize() {
+		Map<Date, Set<Pair<String, Long>>> pastUserSessionDatesWithCount =
+			new TreeMap<>(Collections.reverseOrder());
 
 		for (Project project : _projectDog.getProjects()) {
-			List<String> pastUserSessionDates = getPastUserSessionDates(
+			Map<Date, Long> pastUserSessionDates = getPastUserSessionDates(
 				project.getId());
 
-			for (String pastUserSessionDate : pastUserSessionDates) {
-				Set<String> projectIds =
-					pastUserSessionDatesToFinalize.computeIfAbsent(
-						DateUtil.toUTCDate(pastUserSessionDate),
-						userSessionDate -> new HashSet<>());
+			for (Map.Entry<Date, Long> entry :
+					pastUserSessionDates.entrySet()) {
 
 				String projectId = project.getId();
 
@@ -167,12 +171,56 @@ public class FinalizeUserSessionArm {
 					PastUserSessionFinalizerNanite.getUserSessionFinalizeDates(
 						projectId);
 
-				if (userSessionFinalizeDates.contains(pastUserSessionDate)) {
+				if (userSessionFinalizeDates.contains(
+						DateUtil.toUTCString(entry.getKey()))) {
+
 					continue;
 				}
 
-				projectIds.add(project.getId());
+				Date date = entry.getKey();
+
+				Set<Pair<String, Long>> projectIds =
+					pastUserSessionDatesWithCount.computeIfAbsent(
+						date,
+						userSessionDate -> new TreeSet<>(
+							(project1, project2) -> {
+								Long userSessionCount1 = project1.getValue();
+								Long userSessionCount2 = project2.getValue();
+
+								if (userSessionCount1 > userSessionCount2) {
+									return -1;
+								}
+
+								if (userSessionCount1 < userSessionCount2) {
+									return 1;
+								}
+
+								String projectId1 = project1.getKey();
+
+								return projectId1.compareTo(project2.getKey());
+							}));
+
+				projectIds.add(Pair.of(project.getId(), entry.getValue()));
 			}
+		}
+
+		Map<Date, List<String>> pastUserSessionDatesToFinalize = new TreeMap<>(
+			Collections.reverseOrder());
+
+		for (Map.Entry<Date, Set<Pair<String, Long>>> entry :
+				pastUserSessionDatesWithCount.entrySet()) {
+
+			Set<Pair<String, Long>> projectIdCounts = entry.getValue();
+
+			Stream<Pair<String, Long>> stream = projectIdCounts.stream();
+
+			pastUserSessionDatesToFinalize.put(
+				entry.getKey(),
+				stream.map(
+					Pair::getKey
+				).collect(
+					Collectors.toList()
+				));
 		}
 
 		return pastUserSessionDatesToFinalize;

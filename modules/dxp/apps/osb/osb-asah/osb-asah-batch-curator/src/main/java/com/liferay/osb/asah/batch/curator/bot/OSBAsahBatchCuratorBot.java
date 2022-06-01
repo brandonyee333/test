@@ -33,8 +33,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TimeZone;
 
 import javax.annotation.PreDestroy;
@@ -196,7 +196,7 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runPastUserSessionFinalizerNanite() {
-		Map<Date, Set<String>> pastUserSessionsToFinalize =
+		Map<Date, List<String>> pastUserSessionsToFinalize =
 			_finalizeUserSessionArm.getPastUserSessionDatesToFinalize();
 
 		int availablePastUserSessionFinalizerTasks =
@@ -204,10 +204,10 @@ public class OSBAsahBatchCuratorBot {
 
 		int count = 0;
 
-		for (Map.Entry<Date, Set<String>> entry :
+		for (Map.Entry<Date, List<String>> entry :
 				pastUserSessionsToFinalize.entrySet()) {
 
-			Set<String> projectIds = entry.getValue();
+			List<String> projectIds = entry.getValue();
 
 			for (String projectId : projectIds) {
 				if (count < availablePastUserSessionFinalizerTasks) {
