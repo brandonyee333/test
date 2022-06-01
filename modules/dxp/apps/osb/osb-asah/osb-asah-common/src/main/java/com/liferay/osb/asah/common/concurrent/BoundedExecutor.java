@@ -54,6 +54,10 @@ public class BoundedExecutor {
 		}
 	}
 
+	public int countAvailableTasks() {
+		return _semaphore.availablePermits();
+	}
+
 	public int countPendingTasks() {
 		return _semaphore.getQueueLength();
 	}
