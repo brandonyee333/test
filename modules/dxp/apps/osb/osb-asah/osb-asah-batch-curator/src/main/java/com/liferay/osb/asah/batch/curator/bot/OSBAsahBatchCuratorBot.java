@@ -212,15 +212,23 @@ public class OSBAsahBatchCuratorBot {
 					return;
 				}
 
-				AsahTask asahTask = new AsahTask(
-					"PastUserSessionFinalizerNanite",
-					JSONUtil.put(
-						"dayDateString", DateUtil.toUTCString(entry.getKey())),
-					projectId);
+				try {
+					ProjectIdThreadLocal.setProjectId(projectId);
 
-				_asahTaskManager.executeAsahTask(asahTask, true);
+					AsahTask asahTask = new AsahTask(
+						"PastUserSessionFinalizerNanite",
+						JSONUtil.put(
+							"dayDateString",
+							DateUtil.toUTCString(entry.getKey())),
+						projectId);
 
-				availablePastUserSessionFinalizerTasks--;
+					_asahTaskManager.executeAsahTask(asahTask, true);
+
+					availablePastUserSessionFinalizerTasks--;
+				}
+				finally {
+					ProjectIdThreadLocal.remove();
+				}
 			}
 		}
 	}
