@@ -14,15 +14,20 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.PastUserSessionFinalizerNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.Instant;
@@ -34,10 +39,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -52,6 +60,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -66,6 +80,103 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class FinalizeUserSessionArm {
+
+	public List<String> getPastUserSessionDates(String projectId) {
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
+
+			SearchResponse searchResponse =
+				_cerebroInfoElasticsearchInvoker.search(
+					"user-sessions",
+					searchSourceBuilder -> {
+						DateHistogramAggregationBuilder
+							dateHistogramAggregationBuilder =
+								AggregationBuilders.dateHistogram(
+									"sessions_by_day");
+
+						dateHistogramAggregationBuilder.calendarInterval(
+							DateHistogramInterval.DAY);
+						dateHistogramAggregationBuilder.field("lastEventDate");
+						dateHistogramAggregationBuilder.minDocCount(1);
+						dateHistogramAggregationBuilder.order(
+							BucketOrder.key(false));
+						dateHistogramAggregationBuilder.timeZone(
+							_timeZoneDog.getZoneId());
+
+						searchSourceBuilder.aggregation(
+							dateHistogramAggregationBuilder);
+
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								BoolQueryBuilderUtil.should(
+									BoolQueryBuilderUtil.mustNot(
+										QueryBuilders.existsQuery("finalized"))
+								).should(
+									QueryBuilders.termQuery("finalized", false)
+								)
+							).filter(
+								QueryBuilders.rangeQuery(
+									"lastEventDate"
+								).lt(
+									"now/d"
+								)
+							));
+						searchSourceBuilder.size(0);
+					});
+
+			Aggregations aggregations = searchResponse.getAggregations();
+
+			if (aggregations == null) {
+				return Collections.emptyList();
+			}
+
+			Histogram histogram = aggregations.get("sessions_by_day");
+
+			List<String> dateStrings = new ArrayList<>();
+
+			List<? extends Histogram.Bucket> buckets = histogram.getBuckets();
+
+			for (Histogram.Bucket bucket : buckets) {
+				dateStrings.add(bucket.getKeyAsString());
+			}
+
+			return dateStrings;
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
+	}
+
+	public Map<Date, Set<String>> getPastUserSessionDatesToFinalize() {
+		Map<Date, Set<String>> pastUserSessionDatesToFinalize = new TreeMap<>(
+			Collections.reverseOrder());
+
+		for (Project project : _projectDog.getProjects()) {
+			List<String> pastUserSessionDates = getPastUserSessionDates(
+				project.getId());
+
+			for (String pastUserSessionDate : pastUserSessionDates) {
+				Set<String> projectIds =
+					pastUserSessionDatesToFinalize.computeIfAbsent(
+						DateUtil.toUTCDate(pastUserSessionDate),
+						userSessionDate -> new HashSet<>());
+
+				String projectId = project.getId();
+
+				Set<String> userSessionFinalizeDates =
+					PastUserSessionFinalizerNanite.getUserSessionFinalizeDates(
+						projectId);
+
+				if (userSessionFinalizeDates.contains(pastUserSessionDate)) {
+					continue;
+				}
+
+				projectIds.add(project.getId());
+			}
+		}
+
+		return pastUserSessionDatesToFinalize;
+	}
 
 	public void processSession(UserSession userSession) {
 		updateActivitiesAndAssets(userSession);
@@ -596,5 +707,11 @@ public class FinalizeUserSessionArm {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
+
+	@Autowired
+	private ProjectDog _projectDog;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
