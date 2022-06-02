@@ -835,6 +835,12 @@ type MutationType {
 	): Job
 }
 
+type OrderTotalValue {
+	currencyCode: String,
+	trend: Trend,
+	value: String
+}
+
 type Organization implements DXPEntity {
 	dataSourceName: String
 	id: String
@@ -1255,6 +1261,13 @@ type QueryType {
 		sort: Sort!,
 		start: Int!
 	): AssetMetricBag
+
+	orderTotalValue(
+		channelId: String!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String
+	): [OrderTotalValue]
 
 	organizations(
 		keywords: String,
