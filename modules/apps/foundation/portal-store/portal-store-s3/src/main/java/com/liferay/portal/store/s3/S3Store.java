@@ -429,6 +429,7 @@ public class S3Store extends BaseStore {
 			clientConfiguration.setProtocol(Protocol.HTTPS);
 		}
 	}
+
 	protected void configureProxySettings(
 		ClientConfiguration clientConfiguration) {
 
@@ -554,7 +555,6 @@ public class S3Store extends BaseStore {
 		amazonS3.setRegion(region);
 
 		configureS3Endpoint(amazonS3);
-
 		configureS3PathStyle(amazonS3);
 
 		return amazonS3;
@@ -585,11 +585,10 @@ public class S3Store extends BaseStore {
 		clientConfiguration.setMaxConnections(
 			_s3StoreConfiguration.httpClientMaxConnections());
 
-		configureProxySettings(clientConfiguration);
-
-		configureSignerOverride(clientConfiguration);
-
 		configureConnectionProtocol(clientConfiguration);
+
+		configureProxySettings(clientConfiguration);
+		configureSignerOverride(clientConfiguration);
 
 		return clientConfiguration;
 	}
