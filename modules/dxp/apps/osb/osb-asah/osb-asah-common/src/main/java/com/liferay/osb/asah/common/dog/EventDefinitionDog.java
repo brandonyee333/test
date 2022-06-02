@@ -216,7 +216,7 @@ public class EventDefinitionDog {
 			eventDefinition.setBlockedLastSeenURL(blockedLastSeenURL);
 		}
 
-		if (StringUtils.isNotBlank(description)) {
+		if (description != null) {
 			eventDefinition.setDescription(description);
 		}
 
