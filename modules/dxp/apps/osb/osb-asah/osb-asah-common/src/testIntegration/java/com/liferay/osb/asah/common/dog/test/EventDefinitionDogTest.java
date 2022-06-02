@@ -641,6 +641,31 @@ public class EventDefinitionDogTest
 	}
 
 	@Test
+	public void testUpdateEventDefinitionDescriptionNull() {
+		EventDefinition eventDefinition1 =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		String newDescription = RandomTestUtil.randomString();
+
+		eventDefinition1.setDescription(newDescription);
+
+		EventDefinition eventDefinition2 =
+			_eventDefinitionDog.updateEventDefinition(
+				null, null, newDescription, null, eventDefinition1.getId());
+
+		Assertions.assertEquals(eventDefinition1, eventDefinition2);
+
+		newDescription = "";
+
+		eventDefinition1.setDescription(newDescription);
+
+		eventDefinition2 = _eventDefinitionDog.updateEventDefinition(
+			null, null, newDescription, null, eventDefinition1.getId());
+
+		Assertions.assertEquals(eventDefinition1, eventDefinition2);
+	}
+
+	@Test
 	public void testUpdateEventDefinitionDisplayName() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
