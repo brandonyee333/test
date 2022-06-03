@@ -970,18 +970,17 @@ public class BQEventRepositoryImpl
 
 		Condition condition = DSL.noCondition();
 
-		if (attributeFilterType.equals(AttributeType.EVENT)) {
-			if (!Objects.equals(
-					eventAttributeDefinition.getType(),
-					EventAttributeDefinition.Type.GLOBAL)) {
+		if (attributeFilterType.equals(AttributeType.EVENT) &&
+			!Objects.equals(
+				eventAttributeDefinition.getType(),
+				EventAttributeDefinition.Type.GLOBAL)) {
 
-				Field eventAttributeDefinitionIdField = DSL.field(
-					"BQEventProperty.name");
+			Field eventAttributeDefinitionIdField = DSL.field(
+				"BQEventProperty.name");
 
-				condition = condition.and(
-					eventAttributeDefinitionIdField.eq(
-						eventAttributeDefinition.getName()));
-			}
+			condition = condition.and(
+				eventAttributeDefinitionIdField.eq(
+					eventAttributeDefinition.getName()));
 
 			if ((rangeEndDate != null) && (rangeStartDate != null)) {
 				Field<Object> eventDateField = DSL.field(
