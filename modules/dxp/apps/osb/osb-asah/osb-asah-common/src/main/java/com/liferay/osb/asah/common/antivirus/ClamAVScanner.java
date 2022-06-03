@@ -74,7 +74,7 @@ public class ClamAVScanner {
 	@Value("${osb.asah.clamav.hostname:osbasahclamav}")
 	private String _clamAVHostname;
 
-	@Value("${osb.asah.clamav.hostname:3310}")
+	@Value("${osb.asah.clamav.port:3310}")
 	private int _clamAVPort;
 
 	@Value("${osb.asah.clamav.timeout:10000}")
