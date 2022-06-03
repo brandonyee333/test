@@ -31,32 +31,38 @@ def create_dag(ac_project_id, dag_id, dag_description):
 			max_active_runs=1,
 			schedule_interval='@hourly'
 	) as dag:
-		job1 = BigQueryInsertJobOperator(
-			configuration={
-				"query": {
-					"query": read_query_template("sql/account_entry_merge_statement.sql"),
-					"useLegacySql": False,
-				}
-			},
-			task_id='account_entry_merge'
-		)
-
-		job2 = BigQueryInsertJobOperator(
-			configuration={
-				"query": {
-					"template": read_query_template("sql/account_entry_merge_statement.sql"),
-					"useLegacySql": False,
-				}
-			},
-			task_id='user_entry_merge'
-		)
-
-		job1 >> job2
+		[
+			create_bigquery_insert_job('account_entry_merge'),
+			create_bigquery_insert_job('account_group_merge'),
+			create_bigquery_insert_job('expando_column_merge'),
+			create_bigquery_insert_job('expando_value_delete'),
+			create_bigquery_insert_job('expando_value_merge'),
+			create_bigquery_insert_job('group_merge'),
+			create_bigquery_insert_job('organization_expando_column_update'),
+			create_bigquery_insert_job('organization_merge'),
+			create_bigquery_insert_job('role_merge'),
+			create_bigquery_insert_job('team_merge'),
+			create_bigquery_insert_job('user_expando_column_update'),
+			create_bigquery_insert_job('user_group_merge'),
+			create_bigquery_insert_job('user_merge')
+		]
 
 		return dag
 
+def create_bigquery_insert_job(task_id: str):
+	return BigQueryInsertJobOperator(
+		configuration={
+			"query": {
+				"query": read_query_template("sql/" + task_id + "_statement.sql"),
+				"useLegacySql": False,
+			}
+		},
+		task_id=task_id
+	)
+
 def read_query_template(template_path: str):
 	my_dir = os.path.dirname(os.path.abspath(__file__))
+
 	full_template_path = os.path.join(my_dir, 'resources', template_path)
 
 	with open(full_template_path, 'r') as template_file:
