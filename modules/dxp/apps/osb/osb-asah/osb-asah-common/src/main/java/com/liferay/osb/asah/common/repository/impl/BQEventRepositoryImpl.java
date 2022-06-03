@@ -748,6 +748,15 @@ public class BQEventRepositoryImpl
 			conditions = conditions.or(condition);
 		}
 
+		if ((rangeEndDate != null) && (rangeStartDate != null)) {
+			Field<Object> eventDateField = DSL.field("BQEvent.eventDate");
+
+			conditions = conditions.and(
+				eventDateField.between(
+					_dslHelper.getDateParam(rangeStartDate),
+					_dslHelper.getDateParam(rangeEndDate)));
+		}
+
 		Field<Object> field = DSL.field(_getJoinFieldTableName(attributeType));
 
 		SelectJoinStep<Record1<Object>> selectJoinStep = _dslContext.select(
