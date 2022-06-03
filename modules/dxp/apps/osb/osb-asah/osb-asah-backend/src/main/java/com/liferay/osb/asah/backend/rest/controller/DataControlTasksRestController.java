@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.antivirus.ClamAVScanner;
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
@@ -147,6 +148,10 @@ public class DataControlTasksRestController extends BaseRestController {
 	public String upload(@RequestParam MultipartFile multipartFile)
 		throws Exception {
 
+		if (_clamAVScanner != null) {
+			_clamAVScanner.scan(multipartFile.getInputStream());
+		}
+
 		File file = new File(
 			_tempPath + "/data-control-task-" + System.currentTimeMillis() +
 				".csv");
@@ -176,6 +181,9 @@ public class DataControlTasksRestController extends BaseRestController {
 				put("type", "Request Type");
 			}
 		};
+
+	@Autowired(required = false)
+	private ClamAVScanner _clamAVScanner;
 
 	@Autowired
 	private DataControlTaskDog _dataControlTaskDog;
