@@ -78,6 +78,7 @@ USING (
 	WHERE
 		analyticsDeleteMessage.className = 'com.liferay.expando.kernel.model.ExpandoColumn'
 ) AS staging
+
 ON
 	staging.dataSourceId = replica.dataSourceId AND
 	staging.modifiedDate = replica.modifiedDate AND

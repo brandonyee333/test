@@ -102,6 +102,7 @@ USING (
 	WHERE
 		rowNumber = 1
 ) AS staging
+
 ON
 	staging.columnId = replica.columnId AND
 	staging.dataSourceId = replica.dataSourceId AND

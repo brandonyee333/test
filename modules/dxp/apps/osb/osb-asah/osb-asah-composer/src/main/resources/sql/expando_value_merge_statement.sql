@@ -77,6 +77,7 @@ USING (
 	WHERE
 		rowNumber = 1
 ) AS staging
+
 ON
 	staging.classPK = replica.classPK AND
 	staging.dataSourceId = replica.dataSourceId AND

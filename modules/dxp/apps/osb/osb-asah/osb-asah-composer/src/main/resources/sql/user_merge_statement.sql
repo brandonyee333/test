@@ -333,6 +333,7 @@ USING (
 	WHERE
 		rowNumber = 1
 ) AS staging
+
 ON
 	SAFE_CAST(staging.classPK AS INT64) = replica.dxpUserId AND
 	staging.dataSourceId = replica.dataSourceId AND

@@ -16,6 +16,17 @@ import os
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 
+def create_bigquery_insert_job(task_id: str):
+	return BigQueryInsertJobOperator(
+		configuration={
+			"query": {
+				"query": read_query_template("sql/" + task_id + "_statement.sql"),
+				"useLegacySql": False,
+			}
+		},
+		task_id=task_id
+	)
+
 def create_dag(ac_project_id, dag_id, dag_description):
 	with airflow.DAG(
 			dag_id=dag_id,
@@ -48,17 +59,6 @@ def create_dag(ac_project_id, dag_id, dag_description):
 		]
 
 		return dag
-
-def create_bigquery_insert_job(task_id: str):
-	return BigQueryInsertJobOperator(
-		configuration={
-			"query": {
-				"query": read_query_template("sql/" + task_id + "_statement.sql"),
-				"useLegacySql": False,
-			}
-		},
-		task_id=task_id
-	)
 
 def read_query_template(template_path: str):
 	my_dir = os.path.dirname(os.path.abspath(__file__))
