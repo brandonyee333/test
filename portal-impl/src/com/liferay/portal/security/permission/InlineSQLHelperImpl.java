@@ -270,24 +270,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		PermissionChecker permissionChecker, long checkGroupId,
 		String className, Set<Long> ownerResourceBlockIds) {
 
-		if (ownerResourceBlockIds.size() <
-				PropsValues.
-					PERMISSIONS_INLINE_SQL_RESOURCE_BLOCK_QUERY_THRESHOLD) {
-
-			return StringUtil.merge(ownerResourceBlockIds);
-		}
-
-		return StringUtil.replace(
-			CustomSQLUtil.get(FIND_BY_RESOURCE_BLOCK_ID),
-			new String[] {
-				"[$COMPANY_ID$]", "[$GROUP_ID$]", "[$RESOURCE_BLOCK_NAME$]",
-				"[$ROLE_ID$]"
-			},
-			new String[] {
-				String.valueOf(permissionChecker.getCompanyId()),
-				String.valueOf(checkGroupId), className,
-				String.valueOf(permissionChecker.getOwnerRoleId())
-			});
+		return StringUtil.merge(ownerResourceBlockIds);
 	}
 
 	protected Set<Long> getResourceBlockIds(
@@ -399,24 +382,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		PermissionChecker permissionChecker, long checkGroupId, long[] roleIds,
 		String className, Set<Long> userResourceBlockIds) {
 
-		if (userResourceBlockIds.size() <
-				PropsValues.
-					PERMISSIONS_INLINE_SQL_RESOURCE_BLOCK_QUERY_THRESHOLD) {
-
-			return StringUtil.merge(userResourceBlockIds);
-		}
-
-		return StringUtil.replace(
-			CustomSQLUtil.get(FIND_BY_RESOURCE_BLOCK_ID),
-			new String[] {
-				"[$COMPANY_ID$]", "[$GROUP_ID$]", "[$RESOURCE_BLOCK_NAME$]",
-				"[$ROLE_ID$]"
-			},
-			new String[] {
-				String.valueOf(permissionChecker.getCompanyId()),
-				String.valueOf(checkGroupId), className,
-				StringUtil.merge(roleIds)
-			});
+		return StringUtil.merge(userResourceBlockIds);
 	}
 
 	protected String replacePermissionCheckBlocks(
