@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
@@ -122,6 +123,33 @@ public class BQEventRepositoryTest
 						EventAttributeDefinition.DataType.DATE, null,
 						"testDate", "between",
 						Arrays.asList("2021-05-10", "2021-06-01"))),
+				246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
+	}
+
+	@SQLResource(resourcePath = "test_bq_event_global_property_values.sql")
+	@Test
+	public void testCountTotalBQEventsWithOnlyGlobalAttributes() {
+		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
+			_eventAttributeDefinitionRepository.findByName("pageTitle");
+
+		Assertions.assertTrue(eventAttributeDefinitionOptional.isPresent());
+
+		EventAttributeDefinition eventAttributeDefinition =
+			eventAttributeDefinitionOptional.get();
+
+		Assertions.assertEquals(
+			1,
+			_bqEventRepository.countTotalBQEvents(
+				1L,
+				Collections.singletonList(
+					new EventAnalysisFilter(
+						String.valueOf(eventAttributeDefinition.getId()),
+						AttributeType.EVENT,
+						EventAttributeDefinition.DataType.STRING, null,
+						"pageTitle", "contains", Arrays.asList("test"))),
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
@@ -1018,6 +1046,10 @@ public class BQEventRepositoryTest
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
+
+	@Autowired
+	private EventAttributeDefinitionRepository
+		_eventAttributeDefinitionRepository;
 
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
