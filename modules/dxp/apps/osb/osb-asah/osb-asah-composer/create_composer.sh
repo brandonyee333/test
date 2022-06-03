@@ -3,7 +3,7 @@
 PROJECT_ID=$(gcloud config get-value project)
 REGION=$(gcloud config get-value compute/region)
 
-COMPOSER_ENVIRONMENT_NAME==ac-composer-${REGION}
+COMPOSER_ENVIRONMENT_NAME=ac-composer-${REGION}-c
 
 gcloud composer environments create ${COMPOSER_ENVIRONMENT_NAME} \
 	--airflow-version=2.2 \
