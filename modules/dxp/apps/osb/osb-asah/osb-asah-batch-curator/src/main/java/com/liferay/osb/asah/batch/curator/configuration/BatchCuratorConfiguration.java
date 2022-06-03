@@ -28,12 +28,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BatchCuratorConfiguration {
 
-	@Bean(name = "bigQueryDXPEntitiesNaniteRunnable")
-	@ConditionalOnGoogleApplicationCredentials
-	public Runnable bigQueryDXPEntitiesNaniteRunnable() {
-		return () -> _asahTaskManager.runNanites("BigQueryDXPEntitiesNanite");
-	}
-
 	@Bean(name = "contentRecommendationDataSolutionNaniteRunnable")
 	@ConditionalOnGoogleApplicationCredentials
 	public Runnable contentRecommendationDataSolutionNaniteRunnable() {
