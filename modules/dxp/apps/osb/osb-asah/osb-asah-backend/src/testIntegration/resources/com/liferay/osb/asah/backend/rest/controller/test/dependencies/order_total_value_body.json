@@ -1,0 +1,7 @@
+{
+	"operationName": "OrderTotalValue",
+	"variables": {
+		"channelId": "11",
+		"rangeKey": 7
+	}
+}

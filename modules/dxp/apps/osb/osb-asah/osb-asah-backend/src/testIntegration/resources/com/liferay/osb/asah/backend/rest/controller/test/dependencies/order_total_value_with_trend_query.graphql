@@ -1,0 +1,10 @@
+query OrderTotalValue($channelId: String!, $rangeKey: Int) {
+    orderTotalValue(channelId: $channelId, rangeKey: $rangeKey) {
+        currencyCode
+        trend {
+            trendClassification,
+            percentage
+        }
+        value
+    }
+}
