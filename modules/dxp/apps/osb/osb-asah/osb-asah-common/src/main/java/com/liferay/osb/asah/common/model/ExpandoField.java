@@ -31,7 +31,7 @@ public class ExpandoField {
 		_value = bqExpandoValue.getValue();
 	}
 
-	public Long getColumnId() {
+	public String getColumnId() {
 		return _columnId;
 	}
 
@@ -47,7 +47,7 @@ public class ExpandoField {
 		return _value;
 	}
 
-	private final Long _columnId;
+	private final String _columnId;
 	private final String _dataType;
 	private final String _name;
 	private final String _value;
