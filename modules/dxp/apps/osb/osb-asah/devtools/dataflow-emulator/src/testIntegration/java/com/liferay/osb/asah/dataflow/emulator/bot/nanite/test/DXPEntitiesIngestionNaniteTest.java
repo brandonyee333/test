@@ -91,7 +91,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		BQOrganization bqOrganization = bqOrganizations.get(0);
 
-		Long[] expandoColumnIds1 = bqOrganization.getExpandoColumnIds();
+		String[] expandoColumnIds1 = bqOrganization.getExpandoColumnIds();
 
 		Assertions.assertEquals(1, expandoColumnIds1.length);
 
@@ -110,7 +110,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		BQUser bqUser = bqUsers.get(0);
 
-		Long[] expandoColumnIds2 = bqUser.getExpandoColumnIds();
+		String[] expandoColumnIds2 = bqUser.getExpandoColumnIds();
 
 		Assertions.assertEquals(1, expandoColumnIds2.length);
 
@@ -182,7 +182,7 @@ public class DXPEntitiesIngestionNaniteTest
 		BQExpandoValue bqExpandoValue = new BQExpandoValue();
 
 		bqExpandoValue.setClassPK(123L);
-		bqExpandoValue.setColumnId(1L);
+		bqExpandoValue.setColumnId("1");
 		bqExpandoValue.setClassType(BQExpandoValue.ClassType.ORGANIZATION);
 
 		bqExpandoValue.setId(
@@ -210,7 +210,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		bqOrganization = bqOrganizations.get(0);
 
-		Long[] expandoColumnIds1 = bqOrganization.getExpandoColumnIds();
+		String[] expandoColumnIds1 = bqOrganization.getExpandoColumnIds();
 
 		Assertions.assertEquals(1, expandoColumnIds1.length);
 

@@ -104,16 +104,16 @@ public class DXPEntitiesIngestionNanite {
 	}
 
 	private String _generateBQExpandoValueId(
-		Long columnId, Long classPK, Long dataSourceId, String projectId) {
+		String columnId, Long classPK, Long dataSourceId, String projectId) {
 
 		return DigestUtils.sha256Hex(
 			String.join(
-				"#", projectId, String.valueOf(dataSourceId),
-				String.valueOf(columnId), String.valueOf(classPK)));
+				"#", projectId, String.valueOf(dataSourceId), columnId,
+				String.valueOf(classPK)));
 	}
 
 	private String _generateDXPEntityId(
-		Long classPK, Long dataSourceId, String projectId) {
+		Object classPK, Long dataSourceId, String projectId) {
 
 		return DigestUtils.sha256Hex(
 			String.join(
@@ -121,7 +121,7 @@ public class DXPEntitiesIngestionNanite {
 				String.valueOf(classPK)));
 	}
 
-	private Long[] _getExpandoColumnIds(JSONArray expandoFieldsJSONArray) {
+	private String[] _getExpandoColumnIds(JSONArray expandoFieldsJSONArray) {
 		List<Object> objects = expandoFieldsJSONArray.toList();
 
 		Stream<Object> stream = objects.stream();
@@ -130,10 +130,10 @@ public class DXPEntitiesIngestionNanite {
 			object -> {
 				Map<String, Object> map = (Map<String, Object>)object;
 
-				return Long.valueOf(String.valueOf(map.get("columnId")));
+				return String.valueOf(map.get("columnId"));
 			}
 		).toArray(
-			Long[]::new
+			String[]::new
 		);
 	}
 
@@ -166,11 +166,11 @@ public class DXPEntitiesIngestionNanite {
 
 				bqExpandoValue.setClassPK(classPK);
 				bqExpandoValue.setClassType(classType);
-				bqExpandoValue.setColumnId(jsonObject.getLong("columnId"));
+				bqExpandoValue.setColumnId(jsonObject.getString("columnId"));
 				bqExpandoValue.setDataSourceId(dataSourceId);
 				bqExpandoValue.setId(
 					_generateBQExpandoValueId(
-						jsonObject.getLong("columnId"), classPK, dataSourceId,
+						jsonObject.getString("columnId"), classPK, dataSourceId,
 						projectId));
 				bqExpandoValue.setIsNew(
 					_isNew(_bqExpandoValueRepository, bqExpandoValue.getId()));

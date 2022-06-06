@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS BQEventProperty (
 );
 
 CREATE TABLE IF NOT EXISTS BQExpandoColumn (
-	columnId BIGINT,
+	columnId TEXT,
 	dataSourceId BIGINT,
 	dataType TEXT,
 	id TEXT PRIMARY KEY,
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS BQExpandoColumn (
 CREATE TABLE IF NOT EXISTS BQExpandoValue (
 	classPK BIGINT,
 	classType TEXT,
-	columnId BIGINT,
+	columnId TEXT,
 	dataSourceId BIGINT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS BQOrder(
 
 CREATE TABLE IF NOT EXISTS BQOrganization (
 	dataSourceId BIGINT,
-	expandoColumnIds BIGINT[],
+	expandoColumnIds TEXT[],
 	expandoValueIds TEXT[],
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS BQUser (
 	classPK BIGINT,
 	dataSourceId BIGINT,
 	dxpUserId BIGINT,
-	expandoColumnIds BIGINT[],
+	expandoColumnIds TEXT[],
 	expandoValueIds TEXT[],
 	contactId BIGINT,
 	createDate TIMESTAMP,

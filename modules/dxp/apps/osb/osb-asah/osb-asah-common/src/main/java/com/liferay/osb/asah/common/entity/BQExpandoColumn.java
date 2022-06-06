@@ -39,7 +39,7 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getColumnId() {
+	public String getColumnId() {
 		return _columnId;
 	}
 
@@ -111,7 +111,7 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 		return false;
 	}
 
-	public void setColumnId(Long columnId) {
+	public void setColumnId(String columnId) {
 		_columnId = columnId;
 	}
 
@@ -146,7 +146,7 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 	}
 
 	@Transient
-	private Long _columnId;
+	private String _columnId;
 
 	@Transient
 	private Long _dataSourceId;

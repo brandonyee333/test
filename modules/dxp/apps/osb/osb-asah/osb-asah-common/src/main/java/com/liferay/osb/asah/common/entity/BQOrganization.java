@@ -63,7 +63,7 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long[] getExpandoColumnIds() {
+	public String[] getExpandoColumnIds() {
 		return Arrays.copyOf(_expandoColumnIds, _expandoColumnIds.length);
 	}
 
@@ -169,7 +169,7 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 		_dataSourceName = dataSourceName;
 	}
 
-	public void setExpandoColumnIds(Long[] expandoColumnIds) {
+	public void setExpandoColumnIds(String[] expandoColumnIds) {
 		_expandoColumnIds = Arrays.copyOf(
 			expandoColumnIds, expandoColumnIds.length);
 	}
@@ -228,7 +228,7 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 	private String _dataSourceName;
 
 	@Transient
-	private Long[] _expandoColumnIds = {};
+	private String[] _expandoColumnIds = {};
 
 	@Transient
 	private List<ExpandoField> _expandoFields;
