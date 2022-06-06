@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -38,10 +39,9 @@ public class BQMembershipChangeDTO {
 
 	public BQMembershipChangeDTO(BQMembershipChange bqMembershipChange) {
 		_id = StringUtil.get(bqMembershipChange.getId(), null);
-		_individualsCount = bqMembershipChange.getIndividualsCount();
-		_knownIndividualsCount = bqMembershipChange.getKnownIndividualsCount();
-		_segmentId = StringUtil.get(
-			bqMembershipChange.getIndividualSegmentId(), null);
+		_identitiesCount = bqMembershipChange.getIdentitiesCount();
+		_knownIdentitiesCount = bqMembershipChange.getKnownIdentitiesCount();
+		_segmentId = StringUtil.get(bqMembershipChange.getSegmentId(), null);
 	}
 
 	public BQMembershipChangeDTO(List<BQMembershipChange> bqMembershipChanges) {
@@ -70,14 +70,16 @@ public class BQMembershipChangeDTO {
 		return _id;
 	}
 
+	@JsonAlias("identitiesCount")
 	@JsonProperty("individualsCount")
-	public Long getIndividualsCount() {
-		return _individualsCount;
+	public Long getIdentitiesCount() {
+		return _identitiesCount;
 	}
 
+	@JsonAlias("knownIdentitiesCount")
 	@JsonProperty("knownIndividualsCount")
-	public Long getKnownIndividualsCount() {
-		return _knownIndividualsCount;
+	public Long getKnownIdentitiesCount() {
+		return _knownIdentitiesCount;
 	}
 
 	@JsonProperty("individualSegmentId")
@@ -99,12 +101,12 @@ public class BQMembershipChangeDTO {
 		_id = id;
 	}
 
-	public void setIndividualsCount(Long individualsCount) {
-		_individualsCount = individualsCount;
+	public void setIdentitiesCount(Long individualsCount) {
+		_identitiesCount = individualsCount;
 	}
 
-	public void setKnownIndividualsCount(Long knownIndividualsCount) {
-		_knownIndividualsCount = knownIndividualsCount;
+	public void setKnownIdentitiesCount(Long knownIndividualsCount) {
+		_knownIdentitiesCount = knownIndividualsCount;
 	}
 
 	public void setSegmentId(String segmentId) {
@@ -114,8 +116,8 @@ public class BQMembershipChangeDTO {
 	private Set<BQMembershipChangeDTO> _bqMembershipChangeDTOs;
 	private Map<String, Object> _embedded;
 	private String _id;
-	private Long _individualsCount;
-	private Long _knownIndividualsCount;
+	private Long _identitiesCount;
+	private Long _knownIdentitiesCount;
 	private String _segmentId;
 
 }

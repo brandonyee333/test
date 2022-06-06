@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.DeleteUsingStep;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
@@ -67,6 +68,18 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	@Override
+	public void deleteBySegmentIdIn(List<Long> segmentIds) {
+		Field<Object> segmentIdField = DSL.field("segmentId");
+
+		DeleteUsingStep<Record> deleteUsingStep = _dslContext.deleteFrom(
+			DSL.table("BQMembershipChange"));
+
+		deleteUsingStep.where(
+			segmentIdField.in(segmentIds)
+		).execute();
+	}
+
+	@Override
 	public List<BQMembershipChange> searchBQMembershipChanges(
 		FilterHelper filterHelper, Long segmentId, Pageable pageable) {
 
@@ -86,21 +99,19 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	@Override
-	public List<BQMembershipChange>
-		searchLastByCreateDateAndIndividualSegmentId(
-			@Nullable Date fromCreateDate, List<Long> individualSegmentIds,
-			Date toCreateDate) {
+	public List<BQMembershipChange> searchLastByCreateDateAndSegmentId(
+		@Nullable Date fromCreateDate, List<Long> segmentIds,
+		Date toCreateDate) {
 
-		if (individualSegmentIds.isEmpty()) {
+		if (segmentIds.isEmpty()) {
 			return Collections.emptyList();
 		}
 
 		Field<Object> createDateField = DSL.field("createdate");
 
-		Field<Object> individualSegmentIdField = DSL.field(
-			"individualsegmentid");
+		Field<Object> segmentIdField = DSL.field("segmentid");
 
-		Condition condition = individualSegmentIdField.in(individualSegmentIds);
+		Condition condition = segmentIdField.in(segmentIds);
 
 		if (fromCreateDate == null) {
 			condition = condition.and(createDateField.le(toCreateDate));
@@ -117,16 +128,16 @@ public class BQMembershipChangeRepositoryImpl
 
 		return selectWhereStep.where(
 			DSL.row(
-				createDateField, individualSegmentIdField
+				createDateField, segmentIdField
 			).in(
 				DSL.select(
-					DSL.max(createDateField), individualSegmentIdField
+					DSL.max(createDateField), segmentIdField
 				).from(
 					bqMembershipChangeTable
 				).where(
 					condition
 				).groupBy(
-					individualSegmentIdField
+					segmentIdField
 				)
 			)
 		).fetch(
@@ -142,7 +153,7 @@ public class BQMembershipChangeRepositoryImpl
 		if (segmentId != null) {
 			conditions.add(
 				DSL.field(
-					"individualSegmentId"
+					"segmentId"
 				).eq(
 					segmentId
 				));

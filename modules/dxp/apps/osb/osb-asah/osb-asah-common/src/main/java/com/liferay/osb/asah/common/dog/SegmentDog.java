@@ -358,8 +358,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Map<Long, JSONObject> segmentsJSONObjects = new HashMap<>();
 
 		for (Individual individual : individuals) {
-			List<Long> segmentIds = _membershipDog.getIndividualSegmentIds(
-				individual.getId());
+			List<Long> segmentIds = _membershipDog.getSegmentIds(
+				String.valueOf(individual.getId()));
 
 			segmentsJSONObjects.put(
 				individual.getId(),
@@ -546,11 +546,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public Page<Segment> searchSegmentPage(
-		String filterString, Long individualId, int page, int size,
+		String filterString, String identityId, int page, int size,
 		String[] sorts) {
 
-		List<Long> segmentIds = _membershipDog.getActiveIndividualSegmentIds(
-			individualId);
+		List<Long> segmentIds = _membershipDog.getActiveSegmentIds(identityId);
 
 		FilterHelper filterHelper = new FilterHelper(filterString);
 
@@ -719,7 +718,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 			return Collections.emptyList();
 		}
 
-		return _membershipDog.getActiveIndividualSegmentIds(individualIds);
+		return _membershipDog.getActiveSegmentIds(
+			ListUtil.map(individualIds, String::valueOf));
 	}
 
 	private Map<String, Set<String>> _getReferencedObjectIds(
@@ -949,8 +949,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 
 		BQMembershipChange bqMembershipChange =
-			_membershipChangeDog.getLastBeforeTodayByIndividualSegmentId(
-				segment.getId());
+			_membershipChangeDog.getLastBeforeTodayBySegmentId(segment.getId());
 
 		if (bqMembershipChange == null) {
 			return;
@@ -980,9 +979,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 			account.setActivitiesCounts(activitiesCounts);
 		}
 
-		account.setIndividualsCount(bqMembershipChange.getIndividualsCount());
+		account.setIndividualsCount(bqMembershipChange.getIdentitiesCount());
 
-		if (Objects.nonNull(bqMembershipChange.getIndividualsCount())) {
+		if (Objects.nonNull(bqMembershipChange.getIdentitiesCount())) {
 			Map<Long, Long> channelIndividualCounts =
 				_individualDog.getIndividualCounts(
 					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
@@ -1025,12 +1024,12 @@ public class SegmentDog extends BaseFaroInfoDog {
 			return;
 		}
 
-		List<Long> individualIds = _membershipDog.getActiveIndividualIds(
+		List<String> identityIds = _membershipDog.getActiveIdentityIds(
 			segment.getId());
 
-		for (Long individualId : individualIds) {
+		for (String identityId : identityIds) {
 			Individual individual = _individualDog.fetchIndividual(
-				individualId);
+				Long.parseLong(identityId));
 
 			if (individual == null) {
 				continue;
@@ -1040,7 +1039,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 					individual.getChannelIds(), segment.getChannelId())) {
 
 				_membershipDog.deactivateBQMembership(
-					new Date(), individualId, segment.getId());
+					new Date(), identityId, segment.getId());
 			}
 		}
 	}

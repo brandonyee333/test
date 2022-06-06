@@ -306,8 +306,8 @@ public class IndividualsFilterStringConverterHelper
 		Long individualId = IndividualIdThreadLocal.getIndividualId();
 
 		if (individualId != null) {
-			if (!_membershipDog.isIndividualInSegments(
-					individualId,
+			if (!_membershipDog.isIdentityInSegments(
+					individualId.toString(),
 					_segmentDog.getSegmentIds(
 						individualSegmentNames, "INACTIVE"),
 					value, minDocCount, checkEqualityOnly)) {
@@ -322,9 +322,12 @@ public class IndividualsFilterStringConverterHelper
 			);
 		}
 		else {
-			List<Long> individualIds = _membershipDog.getIndividualIds(
+			List<String> identityIds = _membershipDog.getIdentityIds(
 				_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
 				value, minDocCount, checkEqualityOnly);
+
+			List<Long> individualIds = ListUtil.map(
+				identityIds, Long::parseLong);
 
 			if (individualIds.isEmpty()) {
 				return DSL.noCondition();

@@ -49,32 +49,32 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 	}
 
 	public void addBQMembershipChanges(
-		boolean includeAnonymousUsers, long individualsCount,
-		long knownIndividualsCount, List<BQMembership> bqMemberships) {
+		boolean includeAnonymousUsers, long identitiesCount,
+		long knownIdentitiesCount, List<BQMembership> bqMemberships) {
 
 		List<BQMembershipChange> bqMembershipChanges = new ArrayList<>();
 
 		for (BQMembership bqMembership : bqMemberships) {
 			String individualEmail = FaroInfoIndividualUtil.getIndividualEmail(
-				_individualDog.getIndividual(bqMembership.getIndividualId()));
+				_individualDog.getIndividual(
+					Long.parseLong(bqMembership.getIdentityId())));
 
 			if (individualEmail != null) {
-				knownIndividualsCount++;
+				knownIdentitiesCount++;
 			}
 
 			if (includeAnonymousUsers ||
 				(!includeAnonymousUsers && (individualEmail != null))) {
 
-				individualsCount++;
+				identitiesCount++;
 			}
 
 			BQMembershipChange bqMembershipChange = new BQMembershipChange();
 
 			bqMembershipChange.setCreateDate(bqMembership.getCreateDate());
-			bqMembershipChange.setIndividualsCount(individualsCount);
-			bqMembershipChange.setIndividualSegmentId(
-				bqMembership.getIndividualSegmentId());
-			bqMembershipChange.setKnownIndividualsCount(knownIndividualsCount);
+			bqMembershipChange.setIdentitiesCount(identitiesCount);
+			bqMembershipChange.setSegmentId(bqMembership.getSegmentId());
+			bqMembershipChange.setKnownIdentitiesCount(knownIdentitiesCount);
 
 			bqMembershipChanges.add(bqMembershipChange);
 		}
@@ -83,8 +83,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 	}
 
 	public void deleteBQMembershipChanges(List<Long> individualSegmentIds) {
-		_bqMembershipChangeRepository.deleteByIndividualSegmentIdIn(
-			individualSegmentIds);
+		_bqMembershipChangeRepository.deleteBySegmentIdIn(individualSegmentIds);
 	}
 
 	public Map<Long, BQMembershipChange> getBQMembershipChanges(
@@ -92,30 +91,26 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 		Map<Long, BQMembershipChange> bqMembershipChanges = new HashMap<>();
 
-		List<Long> individualSegmentIds = new ArrayList<>();
+		List<Long> segmentIds = new ArrayList<>();
 
 		for (Segment segment : segments) {
-			individualSegmentIds.add(segment.getId());
+			segmentIds.add(segment.getId());
 		}
 
 		for (BQMembershipChange bqMembershipChange :
-				getLastBeforeTodayByIndividualSegmentsId(
-					individualSegmentIds)) {
+				getLastBeforeTodayBySegmentsId(segmentIds)) {
 
 			bqMembershipChanges.put(
-				bqMembershipChange.getIndividualSegmentId(),
-				bqMembershipChange);
+				bqMembershipChange.getSegmentId(), bqMembershipChange);
 		}
 
 		return bqMembershipChanges;
 	}
 
-	public BQMembershipChange getLastBeforeTodayByIndividualSegmentId(
-		Long individualSegmentId) {
-
+	public BQMembershipChange getLastBeforeTodayBySegmentId(Long segmentId) {
 		List<BQMembershipChange> bqMembershipChanges =
-			getLastBeforeTodayByIndividualSegmentsId(
-				Collections.singletonList(individualSegmentId));
+			getLastBeforeTodayBySegmentsId(
+				Collections.singletonList(segmentId));
 
 		if (bqMembershipChanges.isEmpty()) {
 			return null;
@@ -124,14 +119,13 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		return bqMembershipChanges.get(0);
 	}
 
-	public List<BQMembershipChange> getLastBeforeTodayByIndividualSegmentsId(
-		List<Long> individualSegmentIds) {
+	public List<BQMembershipChange> getLastBeforeTodayBySegmentsId(
+		List<Long> segmentIds) {
 
-		return _bqMembershipChangeRepository.
-			searchLastByCreateDateAndIndividualSegmentId(
-				null, individualSegmentIds,
-				DateUtil.newEndOfDayDate(
-					DateUtils.addDays(DateUtil.newDayDate(), -1)));
+		return _bqMembershipChangeRepository.searchLastByCreateDateAndSegmentId(
+			null, segmentIds,
+			DateUtil.newEndOfDayDate(
+				DateUtils.addDays(DateUtil.newDayDate(), -1)));
 	}
 
 	public Page<BQMembershipChange> searchBQMembershipChangePages(

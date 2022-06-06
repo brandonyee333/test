@@ -40,6 +40,7 @@ import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.rest.response.function.MembershipChangesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Collections;
 import java.util.Date;
@@ -165,8 +166,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		if (!segmentDog.isIncludeAnonymousUsers(id)) {
 			return _toMembershipDTOPageDTO(
 				membershipDog.getBQMembershipPage(
-					_individualDog.getKnownIndividualIds(filterString, id), id,
-					"ACTIVE", page, size, sorts));
+					ListUtil.map(
+						_individualDog.getKnownIndividualIds(filterString, id),
+						String::valueOf),
+					id, "ACTIVE", page, size, sorts));
 		}
 
 		return _toMembershipDTOPageDTO(
@@ -182,7 +185,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		Segment segment = segmentDog.getSegment(id);
 
 		SegmentDTO segmentDTO = new SegmentDTO(
-			_bqMembershipChangeDog.getLastBeforeTodayByIndividualSegmentId(id),
+			_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(id),
 			segmentDog.getLastActivityDate(segment), segment);
 
 		if (StringUtils.isNotEmpty(expand)) {
@@ -266,11 +269,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			BQMembership bqMembership = objectMapper.convertValue(
 				new JSONObject(json), BQMembership.class);
 
-			bqMembership.setIndividualSegmentId(id);
+			bqMembership.setSegmentId(id);
 
 			if (_isMember(
-					bqMembership.getIndividualId(),
-					bqMembership.getIndividualSegmentId())) {
+					bqMembership.getIdentityId(),
+					bqMembership.getSegmentId())) {
 
 				return null;
 			}
@@ -296,15 +299,14 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		).map(
 			bqMembership -> {
 				bqMembership.setCreateDate(date);
-				bqMembership.setIndividualSegmentId(id);
+				bqMembership.setSegmentId(id);
 				bqMembership.setModifiedDate(date);
 
 				return bqMembership;
 			}
 		).filter(
 			membership -> !_isMember(
-				membership.getIndividualId(),
-				membership.getIndividualSegmentId())
+				membership.getIdentityId(), membership.getSegmentId())
 		).collect(
 			Collectors.toList()
 		);
@@ -367,14 +369,12 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	protected SegmentDog segmentDog;
 
 	private QueryBuilder _getMembershipChangesQueryBuilder(
-		String filterString, String individualSegmentId) {
+		String filterString, String segmentId) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery(
-				"individualSegmentId", individualSegmentId));
+			QueryBuilders.termQuery("individualSegmentId", segmentId));
 
-		Segment segment = segmentDog.getSegment(
-			Long.valueOf(individualSegmentId));
+		Segment segment = segmentDog.getSegment(Long.valueOf(segmentId));
 
 		if (!BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())) {
 			boolQueryBuilder.filter(
@@ -412,13 +412,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		return jsonObject;
 	}
 
-	private boolean _isMember(Long individualId, Long individualSegmentId) {
-		if (membershipDog.isMember(individualId, individualSegmentId)) {
+	private boolean _isMember(String identityId, Long segmentId) {
+		if (membershipDog.isMember(identityId, segmentId)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Not adding membership because individual " + individualId +
+					"Not adding membership because individual " + identityId +
 						" is already a member of individual segment " +
-							individualSegmentId);
+							segmentId);
 			}
 
 			return true;

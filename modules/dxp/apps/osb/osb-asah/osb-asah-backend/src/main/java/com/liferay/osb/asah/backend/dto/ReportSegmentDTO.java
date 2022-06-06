@@ -42,13 +42,13 @@ public class ReportSegmentDTO {
 		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
 
 		if (bqMembershipChange != null) {
-			_individualsCount = bqMembershipChange.getIndividualsCount();
-			_knownIndividualsCount =
-				bqMembershipChange.getKnownIndividualsCount();
+			_identitiesCount = bqMembershipChange.getIdentitiesCount();
+			_knownIdentitiesCount =
+				bqMembershipChange.getKnownIdentitiesCount();
 		}
 		else {
-			_individualsCount = 0L;
-			_knownIndividualsCount = 0L;
+			_identitiesCount = 0L;
+			_knownIdentitiesCount = 0L;
 		}
 
 		_name = segment.getName();
@@ -72,16 +72,16 @@ public class ReportSegmentDTO {
 		return _id;
 	}
 
-	@JsonAlias("individualsCount")
+	@JsonAlias("identitiesCount")
 	@JsonProperty("individualCount")
-	public Long getIndividualsCount() {
-		return _individualsCount;
+	public Long getIdentitiesCount() {
+		return _identitiesCount;
 	}
 
-	@JsonAlias("knownIndividualsCount")
+	@JsonAlias("knownIdentitiesCount")
 	@JsonProperty("knownIndividualCount")
-	public Long getKnownIndividualsCount() {
-		return _knownIndividualsCount;
+	public Long getKnownIdentitiesCount() {
+		return _knownIdentitiesCount;
 	}
 
 	public String getName() {
@@ -98,9 +98,9 @@ public class ReportSegmentDTO {
 
 	private final Date _createDate;
 	private final String _id;
+	private final Long _identitiesCount;
 	private final Boolean _includeAnonymousUsers;
-	private final Long _individualsCount;
-	private final Long _knownIndividualsCount;
+	private final Long _knownIdentitiesCount;
 	private final String _name;
 	private final String _segmentType;
 

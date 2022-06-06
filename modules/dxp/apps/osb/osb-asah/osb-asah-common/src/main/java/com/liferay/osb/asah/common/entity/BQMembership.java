@@ -61,9 +61,8 @@ public class BQMembership implements Persistable<Long> {
 
 		if (Objects.equals(_createDate, bqMembership._createDate) &&
 			Objects.equals(_id, bqMembership._id) &&
-			Objects.equals(_individualId, bqMembership._individualId) &&
-			Objects.equals(
-				_individualSegmentId, bqMembership._individualSegmentId) &&
+			Objects.equals(_identityId, bqMembership._identityId) &&
+			Objects.equals(_segmentId, bqMembership._segmentId) &&
 			Objects.equals(_modifiedDate, bqMembership._modifiedDate) &&
 			Objects.equals(_removedDate, bqMembership._removedDate) &&
 			Objects.equals(_status, bqMembership._status)) {
@@ -98,15 +97,10 @@ public class BQMembership implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getIndividualId() {
-		return _individualId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getIndividualSegmentId() {
-		return _individualSegmentId;
+	@JsonAlias("identityId")
+	@JsonProperty("individualId")
+	public String getIdentityId() {
+		return _identityId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -140,6 +134,14 @@ public class BQMembership implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("segmentId")
+	@JsonProperty("individualSegmentId")
+	@JsonSerialize(using = ToStringSerializer.class)
+	public Long getSegmentId() {
+		return _segmentId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getStatus() {
 		return _status;
 	}
@@ -147,8 +149,8 @@ public class BQMembership implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_createDate, _id, _individualId, _individualSegmentId,
-			_modifiedDate, _removedDate, _status);
+			_createDate, _id, _identityId, _segmentId, _modifiedDate,
+			_removedDate, _status);
 	}
 
 	@JsonIgnore
@@ -171,12 +173,8 @@ public class BQMembership implements Persistable<Long> {
 		_id = id;
 	}
 
-	public void setIndividualId(Long individualId) {
-		_individualId = individualId;
-	}
-
-	public void setIndividualSegmentId(Long individualSegmentId) {
-		_individualSegmentId = individualSegmentId;
+	public void setIdentityId(String identityId) {
+		_identityId = identityId;
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -195,6 +193,10 @@ public class BQMembership implements Persistable<Long> {
 		}
 	}
 
+	public void setSegmentId(Long segmentId) {
+		_segmentId = segmentId;
+	}
+
 	public void setStatus(String status) {
 		_status = status;
 	}
@@ -206,10 +208,7 @@ public class BQMembership implements Persistable<Long> {
 	private Long _id;
 
 	@Transient
-	private Long _individualId;
-
-	@Transient
-	private Long _individualSegmentId;
+	private String _identityId;
 
 	@Transient
 	private Boolean _isNew;
@@ -219,6 +218,9 @@ public class BQMembership implements Persistable<Long> {
 
 	@Transient
 	private Date _removedDate;
+
+	@Transient
+	private Long _segmentId;
 
 	@Transient
 	private String _status;

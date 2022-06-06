@@ -854,8 +854,8 @@ public class IndividualDogTest
 
 		bqMembership.setCreateDate(
 			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"));
-		bqMembership.setIndividualId(338486037253283140L);
-		bqMembership.setIndividualSegmentId(338511451975440187L);
+		bqMembership.setIdentityId("338486037253283140");
+		bqMembership.setSegmentId(338511451975440187L);
 		bqMembership.setStatus("ACTIVE");
 
 		_membershipDog.addBQMembership(bqMembership);
@@ -881,17 +881,15 @@ public class IndividualDogTest
 
 		Assertions.assertEquals(
 			0,
-			_bqMembershipRepository.countByIndividualIdAndIndividualSegmentId(
-				338486037253283140L, 338511398116723458L));
+			_bqMembershipRepository.countByIdentityIdAndSegmentId(
+				"338486037253283140", 338511398116723458L));
 
 		_individualDog.updateDynamicMemberships(
 			DateUtil.toUTCDate("2022-01-06T20:26:53.218Z"),
 			_segmentDog.getSegment(338511451975440190L));
 
 		Assertions.assertEquals(
-			0,
-			_bqMembershipRepository.countByIndividualSegmentId(
-				338511451975440190L));
+			0, _bqMembershipRepository.countBySegmentId(338511451975440190L));
 	}
 
 	@ElasticsearchIndex(
@@ -914,7 +912,7 @@ public class IndividualDogTest
 
 		Assertions.assertEquals(
 			3,
-			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
+			_bqMembershipRepository.countBySegmentIdAndStatus(
 				338511398116723458L, "INACTIVE"));
 	}
 

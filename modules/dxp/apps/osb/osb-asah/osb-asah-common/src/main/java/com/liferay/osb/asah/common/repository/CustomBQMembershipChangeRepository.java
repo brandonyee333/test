@@ -20,8 +20,10 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.lang.Nullable;
 
 /**
@@ -33,14 +35,17 @@ public interface CustomBQMembershipChangeRepository {
 	public long countBQMembershipChanges(
 		FilterHelper filterHelper, Long segmentId);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void deleteBySegmentIdIn(List<Long> segmentIds);
+
 	@Cacheable
 	public List<BQMembershipChange> searchBQMembershipChanges(
 		FilterHelper filterHelper, Long segmentId, Pageable pageable);
 
 	@Cacheable
-	public List<BQMembershipChange>
-		searchLastByCreateDateAndIndividualSegmentId(
-			@Nullable Date fromCreateDate, List<Long> individualSegmentIds,
-			Date toCreateDate);
+	public List<BQMembershipChange> searchLastByCreateDateAndSegmentId(
+		@Nullable Date fromCreateDate, List<Long> segmentIds,
+		Date toCreateDate);
 
 }

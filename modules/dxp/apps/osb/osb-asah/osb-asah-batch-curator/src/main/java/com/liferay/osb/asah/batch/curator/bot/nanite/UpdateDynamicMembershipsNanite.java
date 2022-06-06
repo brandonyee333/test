@@ -249,10 +249,9 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 								bqMembership.setCreateDate(
 									individual.getModifiedDate());
-								bqMembership.setIndividualId(
-									individual.getId());
-								bqMembership.setIndividualSegmentId(
-									segment.getId());
+								bqMembership.setIdentityId(
+									String.valueOf(individual.getId()));
+								bqMembership.setSegmentId(segment.getId());
 								bqMembership.setModifiedDate(
 									individual.getModifiedDate());
 								bqMembership.setStatus("ACTIVE");
@@ -395,7 +394,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		}
 		else if (!newMember && oldMember) {
 			_membershipDog.deactivateBQMembership(
-				modifiedDate, individual.getId(), segment.getId());
+				modifiedDate, String.valueOf(individual.getId()),
+				segment.getId());
 		}
 	}
 

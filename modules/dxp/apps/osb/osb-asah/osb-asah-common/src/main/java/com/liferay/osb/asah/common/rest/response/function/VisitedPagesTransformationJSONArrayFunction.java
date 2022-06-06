@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -123,12 +122,11 @@ public class VisitedPagesTransformationJSONArrayFunction
 					segmentId = segment.getId();
 				}
 
-				List<Long> individualIds =
-					_membershipDog.getActiveIndividualIds(segmentId);
+				List<String> identityIds = _membershipDog.getActiveIdentityIds(
+					segmentId);
 
 				boolQueryBuilder.filter(
-					QueryBuilders.termsQuery(
-						"ownerId", ListUtil.map(individualIds, String::valueOf))
+					QueryBuilders.termsQuery("ownerId", identityIds)
 				).filter(
 					QueryBuilders.termQuery("ownerType", "individual")
 				);

@@ -16,12 +16,6 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 
-import java.util.List;
-
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.query.Param;
-
 /**
  * @author Marcellus Tavares
  */
@@ -29,12 +23,6 @@ public interface BQMembershipChangeRepository
 	extends CustomBQMembershipChangeRepository,
 			Repository<BQMembershipChange, Long> {
 
-	@CacheEvict(allEntries = true)
-	@Modifying
-	public void deleteByIndividualSegmentIdIn(
-		@Param("individualSegmentIds") List<Long> individualSegmentIds);
-
-	public BQMembershipChange findByIndividualSegmentId(
-		long individualSegmentId);
+	public BQMembershipChange findBySegmentId(long segmentId);
 
 }

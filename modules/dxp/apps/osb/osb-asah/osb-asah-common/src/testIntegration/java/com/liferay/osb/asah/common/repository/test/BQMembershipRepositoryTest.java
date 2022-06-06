@@ -52,11 +52,11 @@ public class BQMembershipRepositoryTest
 		BQMembership bqMembership1 = new BQMembership();
 
 		bqMembership1.setCreateDate(new Date());
-		bqMembership1.setIndividualId(12L);
+		bqMembership1.setIdentityId("12");
 
 		Segment segment1 = _addSegment(34);
 
-		bqMembership1.setIndividualSegmentId(segment1.getId());
+		bqMembership1.setSegmentId(segment1.getId());
 
 		bqMembership1.setModifiedDate(new Date());
 		bqMembership1.setRemovedDate(new Date());
@@ -65,11 +65,11 @@ public class BQMembershipRepositoryTest
 		BQMembership bqMembership2 = new BQMembership();
 
 		bqMembership2.setCreateDate(new Date());
-		bqMembership2.setIndividualId(12L);
+		bqMembership2.setIdentityId("12");
 
 		Segment segment2 = _addSegment(56);
 
-		bqMembership2.setIndividualSegmentId(segment2.getId());
+		bqMembership2.setSegmentId(segment2.getId());
 
 		bqMembership2.setModifiedDate(new Date());
 		bqMembership2.setRemovedDate(new Date());
@@ -78,9 +78,9 @@ public class BQMembershipRepositoryTest
 		BQMembership bqMembership3 = new BQMembership();
 
 		bqMembership3.setCreateDate(new Date());
-		bqMembership3.setIndividualId(78L);
+		bqMembership3.setIdentityId("78");
 
-		bqMembership3.setIndividualSegmentId(segment1.getId());
+		bqMembership3.setSegmentId(segment1.getId());
 
 		bqMembership3.setModifiedDate(new Date());
 		bqMembership3.setRemovedDate(new Date());
@@ -90,87 +90,75 @@ public class BQMembershipRepositoryTest
 	}
 
 	@Test
-	public void testCountByIndividualIdInAndIndividualSegmentIdAndStatus() {
+	public void testCountByIdentityIdInAndSegmentIdAndStatus() {
 		Assertions.assertEquals(
 			2,
-			_bqMembershipRepository.
-				countByIndividualIdInAndIndividualSegmentIdAndStatus(
-					Arrays.asList(12L, 78L), 34L, "ACTIVE"));
+			_bqMembershipRepository.countByIdentityIdInAndSegmentIdAndStatus(
+				Arrays.asList("12", "78"), 34L, "ACTIVE"));
 		Assertions.assertEquals(
 			0,
-			_bqMembershipRepository.
-				countByIndividualIdInAndIndividualSegmentIdAndStatus(
-					Arrays.asList(12L, 78L), 34L, "INACTIVE"));
+			_bqMembershipRepository.countByIdentityIdInAndSegmentIdAndStatus(
+				Arrays.asList("12", "78"), 34L, "INACTIVE"));
 		Assertions.assertEquals(
 			1,
-			_bqMembershipRepository.
-				countByIndividualIdInAndIndividualSegmentIdAndStatus(
-					Arrays.asList(12L, 78L), 56L, "INACTIVE"));
+			_bqMembershipRepository.countByIdentityIdInAndSegmentIdAndStatus(
+				Arrays.asList("12", "78"), 56L, "INACTIVE"));
 	}
 
 	@Test
-	public void testCountByIndividualSegmentIdAndStatus() {
+	public void testCountBySegmentIdAndStatus() {
 		Assertions.assertEquals(
 			2,
-			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
-				34L, "ACTIVE"));
+			_bqMembershipRepository.countBySegmentIdAndStatus(34L, "ACTIVE"));
 		Assertions.assertEquals(
 			0,
-			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
-				34L, "INACTIVE"));
+			_bqMembershipRepository.countBySegmentIdAndStatus(34L, "INACTIVE"));
 		Assertions.assertEquals(
 			1,
-			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
-				56L, "INACTIVE"));
+			_bqMembershipRepository.countBySegmentIdAndStatus(56L, "INACTIVE"));
 	}
 
 	@Test
-	public void testDeleteByIndividualSegmentIdIn() {
+	public void testDeleteBySegmentIdIn() {
 		List<BQMembership> bqMemberships = IterableUtils.toList(
 			_bqMembershipRepository.findAll());
 
 		Stream<BQMembership> stream = bqMemberships.stream();
 
 		Assertions.assertTrue(
-			stream.anyMatch(
-				bqMembership -> bqMembership.getIndividualSegmentId() == 34));
+			stream.anyMatch(bqMembership -> bqMembership.getSegmentId() == 34));
 
-		_bqMembershipRepository.deleteByIndividualSegmentIdIn(
-			Arrays.asList(34L));
+		_bqMembershipRepository.deleteBySegmentIdIn(Arrays.asList(34L));
 
 		bqMemberships = IterableUtils.toList(_bqMembershipRepository.findAll());
 
 		stream = bqMemberships.stream();
 
 		Assertions.assertFalse(
-			stream.anyMatch(
-				bqMembership -> bqMembership.getIndividualSegmentId() == 34));
+			stream.anyMatch(bqMembership -> bqMembership.getSegmentId() == 34));
 	}
 
 	@Test
-	public void testExistsByIndividualIdAndIndividualSegmentIdAndStatus() {
+	public void testExistsByIdentityIdAndSegmentIdAndStatus() {
 		Assertions.assertTrue(
-			_bqMembershipRepository.
-				existsByIndividualIdAndIndividualSegmentIdAndStatus(
-					12L, 34L, "ACTIVE"));
+			_bqMembershipRepository.existsByIdentityIdAndSegmentIdAndStatus(
+				"12", 34L, "ACTIVE"));
 	}
 
 	@Test
-	public void testFindByIndividualIdAndIndividualSegmentIdAndStatus() {
+	public void testFindByIdentityIdAndSegmentIdAndStatus() {
 		BQMembership bqMembership =
-			_bqMembershipRepository.
-				findByIndividualIdAndIndividualSegmentIdAndStatus(
-					12L, 34L, "ACTIVE");
+			_bqMembershipRepository.findByIdentityIdAndSegmentIdAndStatus(
+				"12", 34L, "ACTIVE");
 
 		Assertions.assertEquals(entityModels.get(0), bqMembership);
 	}
 
 	@Test
-	public void testFindByIndividualIdAndIndividualSegmentIdInAndStatus() {
+	public void testFindByIdentityIdAndSegmentIdInAndStatus() {
 		List<BQMembership> bqMemberships =
-			_bqMembershipRepository.
-				findByIndividualIdAndIndividualSegmentIdInAndStatus(
-					12L, Arrays.asList(34L, 56L), "ACTIVE");
+			_bqMembershipRepository.findByIdentityIdAndSegmentIdInAndStatus(
+				"12", Arrays.asList(34L, 56L), "ACTIVE");
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
@@ -178,9 +166,9 @@ public class BQMembershipRepositoryTest
 	}
 
 	@Test
-	public void testFindByIndividualIdAndStatus() {
+	public void testFindByIdentityIdAndStatus() {
 		List<BQMembership> bqMemberships =
-			_bqMembershipRepository.findByIndividualIdAndStatus(12L, "ACTIVE");
+			_bqMembershipRepository.findByIdentityIdAndStatus("12", "ACTIVE");
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
@@ -188,12 +176,11 @@ public class BQMembershipRepositoryTest
 	}
 
 	@Test
-	public void testFindByIndividualIdInAndIndividualSegmentIdAndStatus() {
+	public void testFindByIdentityIdInAndSegmentIdAndStatus() {
 		List<BQMembership> bqMemberships =
-			_bqMembershipRepository.
-				findByIndividualIdInAndIndividualSegmentIdAndStatus(
-					Arrays.asList(12L, 78L), 34L, "ACTIVE",
-					PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+			_bqMembershipRepository.findByIdentityIdInAndSegmentIdAndStatus(
+				Arrays.asList("12", "78"), 34L, "ACTIVE",
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assertions.assertEquals(
 			2, bqMemberships.size(), bqMemberships.toString());
@@ -201,19 +188,17 @@ public class BQMembershipRepositoryTest
 		Assertions.assertEquals(entityModels.get(2), bqMemberships.get(1));
 
 		bqMemberships =
-			_bqMembershipRepository.
-				findByIndividualIdInAndIndividualSegmentIdAndStatus(
-					Arrays.asList(12L, 78L), 34L, "INACTIVE",
-					PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+			_bqMembershipRepository.findByIdentityIdInAndSegmentIdAndStatus(
+				Arrays.asList("12", "78"), 34L, "INACTIVE",
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assertions.assertEquals(
 			0, bqMemberships.size(), bqMemberships.toString());
 
 		bqMemberships =
-			_bqMembershipRepository.
-				findByIndividualIdInAndIndividualSegmentIdAndStatus(
-					Arrays.asList(12L, 78L), 56L, "INACTIVE",
-					PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+			_bqMembershipRepository.findByIdentityIdInAndSegmentIdAndStatus(
+				Arrays.asList("12", "78"), 56L, "INACTIVE",
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
@@ -221,9 +206,9 @@ public class BQMembershipRepositoryTest
 	}
 
 	@Test
-	public void testFindByIndividualSegmentIdAndStatus() {
+	public void testFindBySegmentIdAndStatus() {
 		List<BQMembership> bqMemberships =
-			_bqMembershipRepository.findByIndividualSegmentIdAndStatus(
+			_bqMembershipRepository.findBySegmentIdAndStatus(
 				34L, "ACTIVE",
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
@@ -232,18 +217,16 @@ public class BQMembershipRepositoryTest
 		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
 		Assertions.assertEquals(entityModels.get(2), bqMemberships.get(1));
 
-		bqMemberships =
-			_bqMembershipRepository.findByIndividualSegmentIdAndStatus(
-				34L, "INACTIVE",
-				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+		bqMemberships = _bqMembershipRepository.findBySegmentIdAndStatus(
+			34L, "INACTIVE",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assertions.assertEquals(
 			0, bqMemberships.size(), bqMemberships.toString());
 
-		bqMemberships =
-			_bqMembershipRepository.findByIndividualSegmentIdAndStatus(
-				56L, "INACTIVE",
-				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+		bqMemberships = _bqMembershipRepository.findBySegmentIdAndStatus(
+			56L, "INACTIVE",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
@@ -251,124 +234,105 @@ public class BQMembershipRepositoryTest
 	}
 
 	@Test
-	public void testFindIndividualIdByIndividualSegmentIdAndStatus() {
-		List<Long> individualIds =
-			_bqMembershipRepository.
-				findIndividualIdByIndividualSegmentIdAndStatus(34L, "ACTIVE");
+	public void testFindIdentityIdBySegmentIdAndStatus() {
+		List<String> identityIds =
+			_bqMembershipRepository.findIdentityIdBySegmentIdAndStatus(
+				34L, "ACTIVE");
 
-		Assertions.assertEquals(
-			2, individualIds.size(), individualIds.toString());
-		Assertions.assertEquals(12, individualIds.get(0));
-		Assertions.assertEquals(78, individualIds.get(1));
+		Assertions.assertEquals(2, identityIds.size(), identityIds.toString());
+		Assertions.assertEquals("12", identityIds.get(0));
+		Assertions.assertEquals("78", identityIds.get(1));
 
-		individualIds =
-			_bqMembershipRepository.
-				findIndividualIdByIndividualSegmentIdAndStatus(34L, "INACTIVE");
+		identityIds =
+			_bqMembershipRepository.findIdentityIdBySegmentIdAndStatus(
+				34L, "INACTIVE");
 
-		Assertions.assertEquals(
-			0, individualIds.size(), individualIds.toString());
+		Assertions.assertEquals(0, identityIds.size(), identityIds.toString());
 
-		individualIds =
-			_bqMembershipRepository.
-				findIndividualIdByIndividualSegmentIdAndStatus(56L, "INACTIVE");
+		identityIds =
+			_bqMembershipRepository.findIdentityIdBySegmentIdAndStatus(
+				56L, "INACTIVE");
 
-		Assertions.assertEquals(
-			1, individualIds.size(), individualIds.toString());
-		Assertions.assertEquals(12, individualIds.get(0));
+		Assertions.assertEquals(1, identityIds.size(), identityIds.toString());
+		Assertions.assertEquals("12", identityIds.get(0));
 	}
 
 	@Test
-	public void testFindIndividualIdByIndividualSegmentIdIn() {
-		List<Long> individualIds =
-			_bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
+	public void testFindIdentityIdBySegmentIdIn() {
+		List<String> identityIds =
+			_bqMembershipRepository.findIdentityIdBySegmentIdIn(
 				Arrays.asList(34L, 56L), 10, 1, true);
 
-		Assertions.assertEquals(Arrays.asList(78L, 12L), individualIds);
+		Assertions.assertEquals(Arrays.asList("78", "12"), identityIds);
 
-		individualIds =
-			_bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
-				Arrays.asList(34L, 56L), 10, 1, false);
+		identityIds = _bqMembershipRepository.findIdentityIdBySegmentIdIn(
+			Arrays.asList(34L, 56L), 10, 1, false);
 
-		Assertions.assertEquals(Arrays.asList(12L, 78L), individualIds);
+		Assertions.assertEquals(Arrays.asList("12", "78"), identityIds);
 
-		individualIds =
-			_bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
-				Arrays.asList(34L, 56L), 10, 2, true);
+		identityIds = _bqMembershipRepository.findIdentityIdBySegmentIdIn(
+			Arrays.asList(34L, 56L), 10, 2, true);
 
-		Assertions.assertEquals(Arrays.asList(12L), individualIds);
+		Assertions.assertEquals(Arrays.asList("12"), identityIds);
 
-		individualIds =
-			_bqMembershipRepository.findIndividualIdByIndividualSegmentIdIn(
-				Arrays.asList(34L, 56L), 1, 1, true);
+		identityIds = _bqMembershipRepository.findIdentityIdBySegmentIdIn(
+			Arrays.asList(34L, 56L), 1, 1, true);
 
-		Assertions.assertEquals(Arrays.asList(78L), individualIds);
+		Assertions.assertEquals(Arrays.asList("78"), identityIds);
 	}
 
 	@Test
-	public void testFindIndividualSegmentIdByIndividualIdAndStatus() {
-		List<Long> individualSegmenIds =
-			_bqMembershipRepository.
-				findIndividualSegmentIdByIndividualIdAndStatus(12L, "ACTIVE");
+	public void testFindSegmentIdByIdentityIdAndStatus() {
+		List<Long> segmenIds =
+			_bqMembershipRepository.findSegmentIdByIdentityIdAndStatus(
+				"12", "ACTIVE");
 
-		Assertions.assertEquals(
-			1, individualSegmenIds.size(), individualSegmenIds.toString());
-		Assertions.assertEquals(34, individualSegmenIds.get(0));
+		Assertions.assertEquals(1, segmenIds.size(), segmenIds.toString());
+		Assertions.assertEquals(34, segmenIds.get(0));
 
-		individualSegmenIds =
-			_bqMembershipRepository.
-				findIndividualSegmentIdByIndividualIdAndStatus(78L, "INACTIVE");
+		segmenIds = _bqMembershipRepository.findSegmentIdByIdentityIdAndStatus(
+			"78", "INACTIVE");
 
-		Assertions.assertEquals(
-			0, individualSegmenIds.size(), individualSegmenIds.toString());
+		Assertions.assertEquals(0, segmenIds.size(), segmenIds.toString());
 
-		individualSegmenIds =
-			_bqMembershipRepository.
-				findIndividualSegmentIdByIndividualIdAndStatus(12L, "INACTIVE");
+		segmenIds = _bqMembershipRepository.findSegmentIdByIdentityIdAndStatus(
+			"12", "INACTIVE");
 
-		Assertions.assertEquals(
-			1, individualSegmenIds.size(), individualSegmenIds.toString());
-		Assertions.assertEquals(56, individualSegmenIds.get(0));
+		Assertions.assertEquals(1, segmenIds.size(), segmenIds.toString());
+		Assertions.assertEquals(56, segmenIds.get(0));
 	}
 
 	@Test
-	public void testFindIndividualSegmentIdByIndividualIdInAndStatus() {
-		List<Long> individualSegmenIds =
-			_bqMembershipRepository.
-				findIndividualSegmentIdByIndividualIdInAndStatus(
-					Arrays.asList(12L, 78L), "ACTIVE");
+	public void testFindSegmentIdByIdentityIdInAndStatus() {
+		List<Long> segmentIds =
+			_bqMembershipRepository.findSegmentIdByIdentityIdInAndStatus(
+				Arrays.asList("12", "78"), "ACTIVE");
 
-		Assertions.assertEquals(
-			1, individualSegmenIds.size(), individualSegmenIds.toString());
-		Assertions.assertEquals(34, individualSegmenIds.get(0));
+		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
+		Assertions.assertEquals(34, segmentIds.get(0));
 
-		individualSegmenIds =
-			_bqMembershipRepository.
-				findIndividualSegmentIdByIndividualIdInAndStatus(
-					Arrays.asList(12L, 78L), "INACTIVE");
+		segmentIds =
+			_bqMembershipRepository.findSegmentIdByIdentityIdInAndStatus(
+				Arrays.asList("12", "78"), "INACTIVE");
 
-		Assertions.assertEquals(
-			1, individualSegmenIds.size(), individualSegmenIds.toString());
-		Assertions.assertEquals(56, individualSegmenIds.get(0));
+		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
+		Assertions.assertEquals(56, segmentIds.get(0));
 	}
 
 	@Test
-	public void testFindTop20IndividualSegmentIdByIndividualId() {
-		List<Long> individualSegmenIds =
-			_bqMembershipRepository.findTop20IndividualSegmentIdByIndividualId(
-				12L);
+	public void testFindTop20SegmentIdByIdentityId() {
+		List<Long> segmentIds =
+			_bqMembershipRepository.findTop20SegmentIdByIdentityId("12");
 
-		Assertions.assertEquals(
-			2, individualSegmenIds.size(), individualSegmenIds.toString());
-		Assertions.assertEquals(34, individualSegmenIds.get(0));
-		Assertions.assertEquals(56, individualSegmenIds.get(1));
+		Assertions.assertEquals(2, segmentIds.size(), segmentIds.toString());
+		Assertions.assertEquals(34, segmentIds.get(0));
+		Assertions.assertEquals(56, segmentIds.get(1));
 
-		individualSegmenIds =
-			_bqMembershipRepository.findTop20IndividualSegmentIdByIndividualId(
-				78L);
+		segmentIds = _bqMembershipRepository.findTop20SegmentIdByIdentityId(
+			"78");
 
-		Assertions.assertEquals(
-			1, individualSegmenIds.size(), individualSegmenIds.toString());
-		Assertions.assertEquals(34, individualSegmenIds.get(0));
+		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
+		Assertions.assertEquals(34, segmentIds.get(0));
 	}
 
 	@Test

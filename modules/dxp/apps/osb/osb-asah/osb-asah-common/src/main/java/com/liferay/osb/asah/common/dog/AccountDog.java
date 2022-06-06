@@ -353,12 +353,12 @@ public class AccountDog {
 
 		if (segment != null) {
 			BQMembershipChange bqMembershipChange =
-				_membershipChangeDog.getLastBeforeTodayByIndividualSegmentId(
+				_membershipChangeDog.getLastBeforeTodayBySegmentId(
 					segment.getId());
 
 			if (bqMembershipChange != null) {
 				account.setIndividualsCount(
-					bqMembershipChange.getIndividualsCount());
+					bqMembershipChange.getIdentitiesCount());
 			}
 			else {
 				account.setIndividualsCount(0L);

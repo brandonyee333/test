@@ -1478,7 +1478,8 @@ public class IndividualsFilterStringConverterHelperTest
 		JSONArray jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
-					"dependencies/osbasahfaroinfo/individuals.json", this)));
+					"dependencies/osbasahfaroinfo/bq_membership_changes.json",
+					this)));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			BQMembershipChange bqMembershipChange = _objectMapper.convertValue(

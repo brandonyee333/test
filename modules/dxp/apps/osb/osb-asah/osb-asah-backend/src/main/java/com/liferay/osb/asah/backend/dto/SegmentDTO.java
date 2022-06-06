@@ -54,21 +54,21 @@ public class SegmentDTO {
 			_authorDTO = authorDTO;
 		}
 
-		_activeIndividualsCount = 0L;
+		_activeIdentitiesCount = 0L;
 		_activitiesCount = 0L;
 
 		if (bqMembershipChange != null) {
-			_individualsCount = bqMembershipChange.getIndividualsCount();
-			_knownIndividualsCount =
-				bqMembershipChange.getKnownIndividualsCount();
+			_identitiesCount = bqMembershipChange.getIdentitiesCount();
+			_knownIdentitiesCount =
+				bqMembershipChange.getKnownIdentitiesCount();
 
-			_anonymousIndividualsCount =
-				_individualsCount - _knownIndividualsCount;
+			_anonymousIdentitiesCount =
+				_identitiesCount - _knownIdentitiesCount;
 		}
 		else {
-			_anonymousIndividualsCount = 0L;
-			_individualsCount = 0L;
-			_knownIndividualsCount = 0L;
+			_anonymousIdentitiesCount = 0L;
+			_identitiesCount = 0L;
+			_knownIdentitiesCount = 0L;
 		}
 
 		_channelId = StringUtil.get(segment.getChannelId(), null);
@@ -120,10 +120,10 @@ public class SegmentDTO {
 		_segmentDTOs = segmentDTOs;
 	}
 
-	@JsonAlias("activeIndividualsCount")
+	@JsonAlias("activeIdentitiesCount")
 	@JsonProperty("activeIndividualCount")
-	public Long getActiveIndividualsCount() {
-		return _activeIndividualsCount;
+	public Long getActiveIdentitiesCount() {
+		return _activeIdentitiesCount;
 	}
 
 	@JsonProperty("activitiesCount")
@@ -131,10 +131,10 @@ public class SegmentDTO {
 		return _activitiesCount;
 	}
 
-	@JsonAlias("anonymousIndividualsCount")
+	@JsonAlias("anonymousIdentitiesCount")
 	@JsonProperty("anonymousIndividualCount")
-	public Long getAnonymousIndividualsCount() {
-		return _anonymousIndividualsCount;
+	public Long getAnonymousIdentitiesCount() {
+		return _anonymousIdentitiesCount;
 	}
 
 	@JsonProperty("author")
@@ -181,21 +181,21 @@ public class SegmentDTO {
 		return _id;
 	}
 
+	@JsonAlias("identitiesCount")
+	@JsonProperty("individualCount")
+	public Long getIdentitiesCount() {
+		return _identitiesCount;
+	}
+
 	@JsonProperty("includeAnonymousUsers")
 	public Boolean getIncludeAnonymousUsers() {
 		return _includeAnonymousUsers;
 	}
 
-	@JsonAlias("individualsCount")
-	@JsonProperty("individualCount")
-	public Long getIndividualsCount() {
-		return _individualsCount;
-	}
-
-	@JsonAlias("knownIndividualsCount")
+	@JsonAlias("knownIdentitiesCount")
 	@JsonProperty("knownIndividualCount")
-	public Long getKnownIndividualsCount() {
-		return _knownIndividualsCount;
+	public Long getKnownIdentitiesCount() {
+		return _knownIdentitiesCount;
 	}
 
 	@JsonFormat(
@@ -301,16 +301,16 @@ public class SegmentDTO {
 		return _type;
 	}
 
-	public void setActiveIndividualsCount(Long activeIndividualsCount) {
-		_activeIndividualsCount = activeIndividualsCount;
+	public void setActiveIdentitiesCount(Long activeIdentitiesCount) {
+		_activeIdentitiesCount = activeIdentitiesCount;
 	}
 
 	public void setActivitiesCount(Long activitiesCount) {
 		_activitiesCount = activitiesCount;
 	}
 
-	public void setAnonymousIndividualsCount(Long anonymousIndividualsCount) {
-		_anonymousIndividualsCount = anonymousIndividualsCount;
+	public void setAnonymousIdentitiesCount(Long anonymousIdentitiesCount) {
+		_anonymousIdentitiesCount = anonymousIdentitiesCount;
 	}
 
 	public void setAuthorDTO(AuthorDTO authorDTO) {
@@ -343,16 +343,16 @@ public class SegmentDTO {
 		_id = id;
 	}
 
+	public void setIdentitiesCount(Long identitiesCount) {
+		_identitiesCount = identitiesCount;
+	}
+
 	public void setIncludeAnonymousUsers(Boolean includeAnonymousUsers) {
 		_includeAnonymousUsers = includeAnonymousUsers;
 	}
 
-	public void setIndividualsCount(Long individualsCount) {
-		_individualsCount = individualsCount;
-	}
-
-	public void setKnownIndividualsCount(Long knownIndividualsCount) {
-		_knownIndividualsCount = knownIndividualsCount;
+	public void setKnownIdentitiesCount(Long knownIdentitiesCount) {
+		_knownIdentitiesCount = knownIdentitiesCount;
 	}
 
 	public void setLastActivityDate(Date lastActivityDate) {
@@ -494,9 +494,9 @@ public class SegmentDTO {
 
 	}
 
-	private Long _activeIndividualsCount;
+	private Long _activeIdentitiesCount;
 	private Long _activitiesCount;
-	private Long _anonymousIndividualsCount;
+	private Long _anonymousIdentitiesCount;
 	private AuthorDTO _authorDTO;
 	private String _channelId;
 	private Date _createDate;
@@ -504,9 +504,9 @@ public class SegmentDTO {
 	private String _filter;
 	private String _filterMetadata;
 	private String _id;
+	private Long _identitiesCount;
 	private Boolean _includeAnonymousUsers;
-	private Long _individualsCount;
-	private Long _knownIndividualsCount;
+	private Long _knownIdentitiesCount;
 	private Date _lastActivityDate;
 	private Date _modifiedDate;
 	private String _name;

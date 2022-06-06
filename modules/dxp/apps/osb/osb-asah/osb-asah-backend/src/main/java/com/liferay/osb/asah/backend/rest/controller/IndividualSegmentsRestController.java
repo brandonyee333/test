@@ -61,7 +61,8 @@ public class IndividualSegmentsRestController
 	public void deleteIndividual(
 		@PathVariable Long id, @PathVariable Long individualId) {
 
-		membershipDog.deactivateBQMembership(new Date(), individualId, id);
+		membershipDog.deactivateBQMembership(
+			new Date(), String.valueOf(individualId), id);
 	}
 
 	@DeleteMapping("/{id}")
@@ -98,15 +99,15 @@ public class IndividualSegmentsRestController
 	}
 
 	@PutMapping("/{id}")
-	public SegmentDTO putIndividualSegment(
+	public SegmentDTO putSegment(
 		@PathVariable Long id, @RequestBody SegmentDTO segmentDTO) {
 
-		segmentDTO.setActiveIndividualsCount(null);
+		segmentDTO.setActiveIdentitiesCount(null);
 		segmentDTO.setActivitiesCount(null);
-		segmentDTO.setAnonymousIndividualsCount(null);
+		segmentDTO.setAnonymousIdentitiesCount(null);
 		segmentDTO.setCreateDate(null);
-		segmentDTO.setIndividualsCount(null);
-		segmentDTO.setKnownIndividualsCount(null);
+		segmentDTO.setIdentitiesCount(null);
+		segmentDTO.setKnownIdentitiesCount(null);
 		segmentDTO.setModifiedDate(new Date());
 
 		return objectMapper.convertValue(

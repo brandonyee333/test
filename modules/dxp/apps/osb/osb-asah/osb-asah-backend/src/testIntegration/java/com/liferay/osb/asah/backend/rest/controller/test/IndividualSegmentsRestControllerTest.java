@@ -138,7 +138,7 @@ public class IndividualSegmentsRestControllerTest
 
 		Assertions.assertEquals(
 			1,
-			_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
+			_bqMembershipRepository.countBySegmentIdAndStatus(
 				338511451975440187L, "ACTIVE"));
 	}
 
@@ -423,12 +423,11 @@ public class IndividualSegmentsRestControllerTest
 			FaroInfoTestUtil.buildDynamicSegment(1L, ""));
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.putIndividualSegment(
+			_individualSegmentsRestController.putSegment(
 				segment.getId(),
 				new SegmentDTO(
-					_membershipChangeDog.
-						getLastBeforeTodayByIndividualSegmentId(
-							segment.getId()),
+					_membershipChangeDog.getLastBeforeTodayBySegmentId(
+						segment.getId()),
 					_segmentDog.getLastActivityDate(segment), segment)),
 			JSONObject.class);
 
@@ -444,11 +443,11 @@ public class IndividualSegmentsRestControllerTest
 		Long segmentId = segment.getId();
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.putIndividualSegment(
+			_individualSegmentsRestController.putSegment(
 				segmentId,
 				new SegmentDTO(
-					_membershipChangeDog.
-						getLastBeforeTodayByIndividualSegmentId(segmentId),
+					_membershipChangeDog.getLastBeforeTodayBySegmentId(
+						segmentId),
 					_segmentDog.getLastActivityDate(segment), segment)),
 			JSONObject.class);
 

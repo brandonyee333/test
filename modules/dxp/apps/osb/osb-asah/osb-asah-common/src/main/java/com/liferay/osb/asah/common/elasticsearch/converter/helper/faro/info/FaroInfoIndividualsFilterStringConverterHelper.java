@@ -276,8 +276,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		Long individualId = IndividualIdThreadLocal.getIndividualId();
 
 		if (individualId != null) {
-			if (!_membershipDog.isIndividualInSegments(
-					individualId,
+			if (!_membershipDog.isIdentityInSegments(
+					individualId.toString(),
 					_segmentDog.getSegmentIds(
 						individualSegmentNames, "INACTIVE"),
 					value, minDocCount, checkEqualityOnly)) {
@@ -289,13 +289,16 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				"id", String.valueOf(individualId));
 		}
 		else {
-			List<Long> individualIds = _membershipDog.getIndividualIds(
+			List<String> identityIds = _membershipDog.getIdentityIds(
 				_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
 				value, minDocCount, checkEqualityOnly);
 
 			accountsFilterByCountFunctionQueryBuilder =
 				QueryBuilders.termsQuery(
-					"id", ListUtil.map(individualIds, String::valueOf));
+					"id",
+					ListUtil.map(
+						ListUtil.map(identityIds, Long::parseLong),
+						String::valueOf));
 		}
 
 		if (negate) {

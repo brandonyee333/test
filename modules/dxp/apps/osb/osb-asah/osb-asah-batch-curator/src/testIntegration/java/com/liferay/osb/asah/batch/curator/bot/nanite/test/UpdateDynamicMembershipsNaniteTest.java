@@ -140,18 +140,22 @@ public class UpdateDynamicMembershipsNaniteTest
 		Long individual2Id = individual2.getId();
 
 		Assertions.assertTrue(
-			_membershipDog.isMember(individual1Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual1Id), individualSegmentId));
 		Assertions.assertFalse(
-			_membershipDog.isMember(individual2Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual2Id), individualSegmentId));
 
 		individualSegmentId = _updateDynamicMemberships(
 			"(((activities/ever ne 'Page#pageViewed#" +
 				assetJSONObject.getString("id") + "')))");
 
 		Assertions.assertFalse(
-			_membershipDog.isMember(individual1Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual1Id), individualSegmentId));
 		Assertions.assertTrue(
-			_membershipDog.isMember(individual2Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual2Id), individualSegmentId));
 	}
 
 	@Test
@@ -240,22 +244,28 @@ public class UpdateDynamicMembershipsNaniteTest
 		Long individual3Id = individual3.getId();
 
 		Assertions.assertTrue(
-			_membershipDog.isMember(individual1Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual1Id), individualSegmentId));
 		Assertions.assertFalse(
-			_membershipDog.isMember(individual2Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual2Id), individualSegmentId));
 		Assertions.assertFalse(
-			_membershipDog.isMember(individual3Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual3Id), individualSegmentId));
 
 		individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''" + keyword + "'') and " +
 				"(score eq ''false'')')");
 
 		Assertions.assertFalse(
-			_membershipDog.isMember(individual1Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual1Id), individualSegmentId));
 		Assertions.assertTrue(
-			_membershipDog.isMember(individual2Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual2Id), individualSegmentId));
 		Assertions.assertTrue(
-			_membershipDog.isMember(individual3Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual3Id), individualSegmentId));
 	}
 
 	@Test
@@ -319,18 +329,22 @@ public class UpdateDynamicMembershipsNaniteTest
 				"''false'')')");
 
 		Assertions.assertFalse(
-			_membershipDog.isMember(individual1Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual1Id), individualSegmentId));
 		Assertions.assertTrue(
-			_membershipDog.isMember(individual2Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual2Id), individualSegmentId));
 
 		individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
 				"''true'')')");
 
 		Assertions.assertTrue(
-			_membershipDog.isMember(individual1Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual1Id), individualSegmentId));
 		Assertions.assertFalse(
-			_membershipDog.isMember(individual2Id, individualSegmentId));
+			_membershipDog.isMember(
+				String.valueOf(individual2Id), individualSegmentId));
 	}
 
 	@Test
@@ -408,15 +422,15 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		_membershipDog.addBQMembership(
 			FaroInfoTestUtil.buildBQMembership(
-				individual1.getId(), segment.getId()));
+				String.valueOf(individual1.getId()), segment.getId()));
 		_membershipDog.addBQMembership(
 			FaroInfoTestUtil.buildBQMembership(
-				individual2.getId(), segment.getId()));
+				String.valueOf(individual2.getId()), segment.getId()));
 
 		_updateDynamicMembershipsNanite.run(
 			_objectMapper.convertValue(segment, JSONObject.class));
 
-		List<Long> individualIds = _membershipDog.getActiveIndividualIds(
+		List<String> individualIds = _membershipDog.getActiveIdentityIds(
 			segment.getId());
 
 		Assertions.assertEquals(
@@ -474,7 +488,7 @@ public class UpdateDynamicMembershipsNaniteTest
 		BQMembership bqMembership = iterator.next();
 
 		individual = _individualDog.fetchIndividual(
-			bqMembership.getIndividualId());
+			Long.parseLong(bqMembership.getIdentityId()));
 
 		Assertions.assertEquals(
 			Collections.singleton(
@@ -517,7 +531,8 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		individuals.forEach(
 			individual -> Assertions.assertFalse(
-				_membershipDog.isMember(individual.getId(), segment.getId())));
+				_membershipDog.isMember(
+					String.valueOf(individual.getId()), segment.getId())));
 	}
 
 	private void _addIndividualInterests(

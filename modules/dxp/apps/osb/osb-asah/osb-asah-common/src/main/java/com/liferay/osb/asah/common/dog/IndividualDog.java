@@ -441,7 +441,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 		_interestRepository.deleteByOwnerIdInAndOwnerType(
 			Collections.singletonList(individualId), "individual");
 
-		_membershipDog.deactivateBQMemberships(deletionDate, individualId);
+		_membershipDog.deactivateBQMemberships(
+			deletionDate, individualId.toString());
 
 		_individualRepository.deleteById(individualId);
 	}
@@ -1451,7 +1452,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Stream<BQMembership> stream = bqMemberships.stream();
 
 		return stream.filter(
-			membership -> !individualIds.contains(membership.getIndividualId())
+			membership -> !individualIds.contains(membership.getIdentityId())
 		).collect(
 			Collectors.toList()
 		);
@@ -1629,9 +1630,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 			currentIndividualId = lastIndividual.getId();
 
-			List<Long> individualIds = _membershipDog.isMember(
-				ListUtil.map(individuals, Individual::getId),
-				individualSegmentId);
+			List<Long> individualIds = ListUtil.map(
+				_membershipDog.isMember(
+					ListUtil.map(
+						ListUtil.map(individuals, Individual::getId),
+						String::valueOf),
+					individualSegmentId),
+				Long::parseLong);
 
 			Stream<Individual> stream = individuals.stream();
 
@@ -1667,12 +1672,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 			currentMembershipId = lastBQMembership.getId();
 
-			List<Long> individualIds = ListUtil.map(
-				bqMemberships, BQMembership::getIndividualId);
+			List<String> identityIds = ListUtil.map(
+				bqMemberships, BQMembership::getIdentityId);
 
 			List<Individual> individuals =
 				_individualRepository.searchIndividuals(
-					channelId, filterHelper, individualIds,
+					channelId, filterHelper,
+					ListUtil.map(identityIds, Long::parseLong),
 					includeAnonymousUsers);
 
 			_membershipDog.deactivateBQMemberships(

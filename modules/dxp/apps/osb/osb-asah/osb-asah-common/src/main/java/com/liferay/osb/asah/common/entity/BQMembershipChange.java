@@ -55,14 +55,12 @@ public class BQMembershipChange implements Persistable<Long> {
 
 		if (Objects.equals(_createDate, bqMembershipChange._createDate) &&
 			Objects.equals(_id, bqMembershipChange._id) &&
+			Objects.equals(_segmentId, bqMembershipChange._segmentId) &&
 			Objects.equals(
-				_individualSegmentId,
-				bqMembershipChange._individualSegmentId) &&
+				_identitiesCount, bqMembershipChange._identitiesCount) &&
 			Objects.equals(
-				_individualsCount, bqMembershipChange._individualsCount) &&
-			Objects.equals(
-				_knownIndividualsCount,
-				bqMembershipChange._knownIndividualsCount)) {
+				_knownIdentitiesCount,
+				bqMembershipChange._knownIdentitiesCount)) {
 
 			return true;
 		}
@@ -87,25 +85,25 @@ public class BQMembershipChange implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getIndividualsCount() {
-		return _individualsCount;
+	public Long getIdentitiesCount() {
+		return _identitiesCount;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getIndividualSegmentId() {
-		return _individualSegmentId;
+	public Long getKnownIdentitiesCount() {
+		return _knownIdentitiesCount;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getKnownIndividualsCount() {
-		return _knownIndividualsCount;
+	public Long getSegmentId() {
+		return _segmentId;
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _individualSegmentId, _individualsCount,
-			_knownIndividualsCount, _createDate);
+			_id, _segmentId, _identitiesCount, _knownIdentitiesCount,
+			_createDate);
 	}
 
 	@JsonIgnore
@@ -128,20 +126,20 @@ public class BQMembershipChange implements Persistable<Long> {
 		_id = id;
 	}
 
-	public void setIndividualsCount(Long individualsCount) {
-		_individualsCount = individualsCount;
-	}
-
-	public void setIndividualSegmentId(Long individualSegmentId) {
-		_individualSegmentId = individualSegmentId;
+	public void setIdentitiesCount(Long identitiesCount) {
+		_identitiesCount = identitiesCount;
 	}
 
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
 	}
 
-	public void setKnownIndividualsCount(Long knownIndividualsCount) {
-		_knownIndividualsCount = knownIndividualsCount;
+	public void setKnownIdentitiesCount(Long knownIdentitiesCount) {
+		_knownIdentitiesCount = knownIdentitiesCount;
+	}
+
+	public void setSegmentId(Long segmentId) {
+		_segmentId = segmentId;
 	}
 
 	@Transient
@@ -151,15 +149,15 @@ public class BQMembershipChange implements Persistable<Long> {
 	private Long _id;
 
 	@Transient
-	private Long _individualsCount;
-
-	@Transient
-	private Long _individualSegmentId;
+	private Long _identitiesCount;
 
 	@Transient
 	private Boolean _isNew;
 
 	@Transient
-	private Long _knownIndividualsCount;
+	private Long _knownIdentitiesCount;
+
+	@Transient
+	private Long _segmentId;
 
 }

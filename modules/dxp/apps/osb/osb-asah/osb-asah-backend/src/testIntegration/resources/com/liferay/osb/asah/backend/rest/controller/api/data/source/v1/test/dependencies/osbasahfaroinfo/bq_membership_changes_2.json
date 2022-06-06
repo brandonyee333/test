@@ -2,51 +2,51 @@
 	{
 		"createDate": "${now}",
 		"id": "1",
-		"individualSegmentId": "1",
-		"individualsCount": 6,
-		"knownIndividualsCount": 6
+		"identitiesCount": 6,
+		"knownIdentitiesCount": 6,
+		"segmentId": "1"
 	},
 	{
 		"createDate": "${now-10dT00:00:00.000Z}",
 		"id": "7",
-		"individualSegmentId": "2",
-		"individualsCount": 1,
-		"knownIndividualsCount": 1,
-		"operation": "ADDED"
+		"identitiesCount": 1,
+		"knownIdentitiesCount": 1,
+		"operation": "ADDED",
+		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-8dT00:00:00.000Z}",
 		"id": "8",
-		"individualSegmentId": "2",
-		"individualsCount": 2,
-		"knownIndividualsCount": 2
+		"identitiesCount": 2,
+		"knownIdentitiesCount": 2,
+		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-1dT00:00:00.000Z}",
 		"id": "9",
-		"individualSegmentId": "2",
-		"individualsCount": 3,
-		"knownIndividualsCount": 3
+		"identitiesCount": 3,
+		"knownIdentitiesCount": 3,
+		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-1dT12:00:00.000Z}",
 		"id": "10",
-		"individualSegmentId": "2",
-		"individualsCount": 4,
-		"knownIndividualsCount": 4
+		"identitiesCount": 4,
+		"knownIdentitiesCount": 4,
+		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-1dT23:00:00.000Z}",
 		"id": "11",
-		"individualSegmentId": "2",
-		"individualsCount": 5,
-		"knownIndividualsCount": 5
+		"identitiesCount": 5,
+		"knownIdentitiesCount": 5,
+		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-0dT12:00:00.000Z}",
 		"id": "12",
-		"individualSegmentId": "2",
-		"individualsCount": 6,
-		"knownIndividualsCount": 6
+		"identitiesCount": 6,
+		"knownIdentitiesCount": 6,
+		"segmentId": "2"
 	}
 ]

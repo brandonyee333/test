@@ -140,11 +140,12 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 					"found for an individual within " +
 						individualSegmentActivityFilterDuration);
 
-			List<Long> individualIds = _individualDog.getIdsBySegmentId(
-				bqMembership.getIndividualSegmentId());
+			List<Long> identityIds = _individualDog.getIdsBySegmentId(
+				bqMembership.getSegmentId());
 
 			Assertions.assertFalse(
-				individualIds.contains(bqMembership.getIndividualId()),
+				identityIds.contains(
+					Long.parseLong(bqMembership.getIdentityId())),
 				"Individual segment ID should be removed from individual " +
 					"when membership is deactivated");
 		}
@@ -246,10 +247,9 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			JSONObject individualSegmentJSONObject =
 				individualSegmentsJSONArray.getJSONObject(i);
 
-			long count =
-				_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
-					Long.parseLong(individualSegmentJSONObject.getString("id")),
-					"ACTIVE");
+			long count = _bqMembershipRepository.countBySegmentIdAndStatus(
+				Long.parseLong(individualSegmentJSONObject.getString("id")),
+				"ACTIVE");
 
 			Assertions.assertTrue(count > 0);
 		}
@@ -262,7 +262,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 			Assertions.assertEquals(
 				0,
-				_bqMembershipRepository.countByIndividualSegmentIdAndStatus(
+				_bqMembershipRepository.countBySegmentIdAndStatus(
 					Long.parseLong(individualSegmentJSONObject.getString("id")),
 					"ACTIVE"));
 		}
@@ -295,7 +295,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 			BQMembership bqMembership = _membershipDog.addBQMembership(
 				FaroInfoTestUtil.buildBQMembership(
-					_individual.getId(), segment.getId()));
+					String.valueOf(_individual.getId()), segment.getId()));
 
 			bqMembershipIds.add(bqMembership.getId());
 		}
@@ -320,7 +320,8 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 				_objectMapper.convertValue(
 					_membershipDog.addBQMembership(
 						FaroInfoTestUtil.buildBQMembership(
-							_individual.getId(), segment.getId())),
+							String.valueOf(_individual.getId()),
+							segment.getId())),
 					JSONObject.class));
 		}
 
@@ -348,8 +349,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	private String _getIndividualSegmentActivityFilterDuration(
 		BQMembership bqMembership) {
 
-		Segment segment = _segmentDog.getSegment(
-			bqMembership.getIndividualSegmentId());
+		Segment segment = _segmentDog.getSegment(bqMembership.getSegmentId());
 
 		Matcher matcher = _individualSegmentActivityFilterPattern.matcher(
 			segment.getFilter());

@@ -267,29 +267,27 @@ public class FaroInfoTestUtil {
 	}
 
 	public static BQMembership buildBQMembership(
-		Long individualId, Long segmentId) {
+		String identityId, Long segmentId) {
 
 		Date date = new Date();
 
 		BQMembership bqMembership = new BQMembership();
 
 		bqMembership.setCreateDate(date);
-		bqMembership.setIndividualId(individualId);
-		bqMembership.setIndividualSegmentId(segmentId);
+		bqMembership.setIdentityId(identityId);
+		bqMembership.setSegmentId(segmentId);
 		bqMembership.setModifiedDate(date);
 		bqMembership.setStatus("ACTIVE");
 
 		return bqMembership;
 	}
 
-	public static BQMembershipChange buildBQMembershipChange(
-		Long individualSegmentId) {
-
+	public static BQMembershipChange buildBQMembershipChange(Long segmentId) {
 		BQMembershipChange bqMembershipChange = new BQMembershipChange();
 
 		bqMembershipChange.setCreateDate(new Date());
-		bqMembershipChange.setIndividualSegmentId(individualSegmentId);
-		bqMembershipChange.setIndividualsCount(RandomUtils.nextLong());
+		bqMembershipChange.setSegmentId(segmentId);
+		bqMembershipChange.setIdentitiesCount(RandomUtils.nextLong());
 
 		return bqMembershipChange;
 	}

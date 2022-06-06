@@ -42,9 +42,8 @@ public class BQMembershipDTO {
 	public BQMembershipDTO(BQMembership bqMembership) {
 		_createDate = bqMembership.getCreateDate();
 		_id = StringUtil.get(bqMembership.getId(), null);
-		_individualId = StringUtil.get(bqMembership.getIndividualId(), null);
-		_individualSegmentId = StringUtil.get(
-			bqMembership.getIndividualSegmentId(), null);
+		_identityId = StringUtil.get(bqMembership.getIdentityId(), null);
+		_segmentId = StringUtil.get(bqMembership.getSegmentId(), null);
 		_modifiedDate = bqMembership.getModifiedDate();
 		_removedDate = bqMembership.getRemovedDate();
 		_status = bqMembership.getStatus();
@@ -78,14 +77,10 @@ public class BQMembershipDTO {
 		return _id;
 	}
 
+	@JsonAlias("identityId")
 	@JsonProperty("individualId")
-	public String getIndividualId() {
-		return _individualId;
-	}
-
-	@JsonProperty("individualSegmentId")
-	public String getIndividualSegmentId() {
-		return _individualSegmentId;
+	public String getIdentityId() {
+		return _identityId;
 	}
 
 	@JsonAlias("modifiedDate")
@@ -116,6 +111,12 @@ public class BQMembershipDTO {
 		return new Date(_removedDate.getTime());
 	}
 
+	@JsonAlias("segmentId")
+	@JsonProperty("individualSegmentId")
+	public String getSegmentId() {
+		return _segmentId;
+	}
+
 	@JsonProperty("status")
 	public String getStatus() {
 		return _status;
@@ -131,12 +132,8 @@ public class BQMembershipDTO {
 		_id = id;
 	}
 
-	public void setIndividualId(String individualId) {
-		_individualId = individualId;
-	}
-
-	public void setIndividualSegmentId(String individualSegmentId) {
-		_individualSegmentId = individualSegmentId;
+	public void setIdentityId(String individualId) {
+		_identityId = individualId;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
@@ -151,6 +148,10 @@ public class BQMembershipDTO {
 		}
 	}
 
+	public void setSegmentId(String segmentId) {
+		_segmentId = segmentId;
+	}
+
 	public void setStatus(String status) {
 		_status = status;
 	}
@@ -158,10 +159,10 @@ public class BQMembershipDTO {
 	private Set<BQMembershipDTO> _bqMembershipDTOs;
 	private Date _createDate;
 	private String _id;
-	private String _individualId;
-	private String _individualSegmentId;
+	private String _identityId;
 	private Date _modifiedDate;
 	private Date _removedDate;
+	private String _segmentId;
 	private String _status;
 
 }

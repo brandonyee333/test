@@ -333,16 +333,16 @@ public class IndividualInterestScoresNaniteTest
 		Long individualId = _individual.getId();
 
 		Assertions.assertTrue(
-			_membershipDog.isMember(individualId, segment1Id));
+			_membershipDog.isMember(String.valueOf(individualId), segment1Id));
 		Assertions.assertFalse(
-			_membershipDog.isMember(individualId, segment2Id));
+			_membershipDog.isMember(String.valueOf(individualId), segment2Id));
 
 		_runIndividualInterestScoresNanite((JSONObject)null);
 
 		Assertions.assertFalse(
-			_membershipDog.isMember(individualId, segment1Id));
+			_membershipDog.isMember(String.valueOf(individualId), segment1Id));
 		Assertions.assertTrue(
-			_membershipDog.isMember(individualId, segment2Id));
+			_membershipDog.isMember(String.valueOf(individualId), segment2Id));
 	}
 
 	@Test

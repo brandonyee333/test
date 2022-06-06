@@ -94,8 +94,8 @@ public class MembershipDogTest
 
 		bqMembership.setCreateDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
-		bqMembership.setIndividualId(123L);
-		bqMembership.setIndividualSegmentId(234L);
+		bqMembership.setIdentityId("123");
+		bqMembership.setSegmentId(234L);
 		bqMembership.setModifiedDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
 		bqMembership.setStatus("ACTIVE");
@@ -236,12 +236,11 @@ public class MembershipDogTest
 		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.218Z");
 
 		_membershipDog.deactivateBQMembership(
-			deletionDate, 338486041327913341L, 338511398116723458L);
+			deletionDate, "338486041327913341", 338511398116723458L);
 
 		BQMembership bqMembership =
-			_bqMembershipRepository.
-				findByIndividualIdAndIndividualSegmentIdAndStatus(
-					338486041327913341L, 338511398116723458L, "INACTIVE");
+			_bqMembershipRepository.findByIdentityIdAndSegmentIdAndStatus(
+				"338486041327913341", 338511398116723458L, "INACTIVE");
 
 		Assertions.assertEquals(
 			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
@@ -254,9 +253,9 @@ public class MembershipDogTest
 			bqMembership.getRemovedDate());
 		Assertions.assertEquals(338511398389279308L, bqMembership.getId());
 		Assertions.assertEquals(
-			338486041327913341L, bqMembership.getIndividualId());
+			"338486041327913341", bqMembership.getIdentityId());
 		Assertions.assertEquals(
-			338511398116723458L, bqMembership.getIndividualSegmentId());
+			338511398116723458L, bqMembership.getSegmentId());
 		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
@@ -285,12 +284,11 @@ public class MembershipDogTest
 		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.215Z");
 
 		_membershipDog.deactivateBQMembership(
-			deletionDate, 338486037253283140L, 338511398116723458L);
+			deletionDate, "338486037253283140", 338511398116723458L);
 
 		BQMembership bqMembership =
-			_bqMembershipRepository.
-				findByIndividualIdAndIndividualSegmentIdAndStatus(
-					338486037253283140L, 338511398116723458L, "INACTIVE");
+			_bqMembershipRepository.findByIdentityIdAndSegmentIdAndStatus(
+				"338486037253283140", 338511398116723458L, "INACTIVE");
 
 		Assertions.assertEquals(
 			DateUtil.toUTCDate("2019-02-11T20:26:53.215Z"),
@@ -303,9 +301,9 @@ public class MembershipDogTest
 			bqMembership.getRemovedDate());
 		Assertions.assertEquals(338511398389279307L, bqMembership.getId());
 		Assertions.assertEquals(
-			338486037253283140L, bqMembership.getIndividualId());
+			"338486037253283140", bqMembership.getIdentityId());
 		Assertions.assertEquals(
-			338511398116723458L, bqMembership.getIndividualSegmentId());
+			338511398116723458L, bqMembership.getSegmentId());
 		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
 	}
 
@@ -327,13 +325,12 @@ public class MembershipDogTest
 	)
 	@Test
 	public void testGetIndividualSegmentIndividualIds() {
-		List<Long> individualIds = _membershipDog.getActiveIndividualIds(
+		List<String> identityIds = _membershipDog.getActiveIdentityIds(
 			338511398116723458L);
 
-		Assertions.assertEquals(
-			2, individualIds.size(), individualIds.toString());
-		Assertions.assertTrue(individualIds.contains(338486037253283140L));
-		Assertions.assertTrue(individualIds.contains(338486041327913341L));
+		Assertions.assertEquals(2, identityIds.size(), identityIds.toString());
+		Assertions.assertTrue(identityIds.contains("338486037253283140"));
+		Assertions.assertTrue(identityIds.contains("338486041327913341"));
 	}
 
 	@RepositoryResource(
@@ -342,9 +339,9 @@ public class MembershipDogTest
 	)
 	@Test
 	public void testIsMember() {
-		Assertions.assertFalse(_membershipDog.isMember(0L, 0L));
+		Assertions.assertFalse(_membershipDog.isMember("0", 0L));
 		Assertions.assertTrue(
-			_membershipDog.isMember(338486041327913341L, 338511398116723458L));
+			_membershipDog.isMember("338486041327913341", 338511398116723458L));
 	}
 
 	@Autowired

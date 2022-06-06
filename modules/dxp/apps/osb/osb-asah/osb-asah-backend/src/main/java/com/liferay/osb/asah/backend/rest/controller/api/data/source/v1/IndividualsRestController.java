@@ -254,7 +254,7 @@ public class IndividualsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		Page<Segment> segmentsPage = _segmentDog.searchSegmentPage(
-			filterString, id, page, Math.max(1, size), sorts);
+			filterString, String.valueOf(id), page, Math.max(1, size), sorts);
 
 		if (StringUtils.isEmpty(expand)) {
 			return _toSegmentDTOPageDTO(segmentsPage);
@@ -268,7 +268,7 @@ public class IndividualsRestController extends BaseRestController {
 			if (expandPart.equals("active-membership")) {
 				membershipsJSONObjects =
 					_membershipDog.getMembershipsJSONObjects(
-						id, segmentsPage.getContent());
+						String.valueOf(id), segmentsPage.getContent());
 			}
 			else if (_log.isWarnEnabled()) {
 				_log.warn("Invalid expand: " + expandPart);
