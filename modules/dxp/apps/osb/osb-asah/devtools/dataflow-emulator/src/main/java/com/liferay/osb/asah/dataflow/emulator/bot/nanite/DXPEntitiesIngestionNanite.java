@@ -40,6 +40,7 @@ import com.liferay.osb.asah.common.repository.BQTeamRepository;
 import com.liferay.osb.asah.common.repository.BQUserGroupRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.model.AnalyticsDeleteMessage;
 
 import java.util.HashMap;
@@ -205,7 +206,10 @@ public class DXPEntitiesIngestionNanite {
 		Map<String, String> attributes = message.getAttributes();
 
 		Long dataSourceId = MapUtil.getLong(attributes, "dataSourceId");
+
 		String projectId = MapUtil.getString(attributes, "projectId");
+
+		ProjectIdThreadLocal.setProjectId(projectId);
 
 		JSONObject jsonObject = new JSONObject(message.getObject());
 
