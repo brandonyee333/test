@@ -80,14 +80,6 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 		return _id;
 	}
 
-	public String getIdFieldName() {
-		return "columnId";
-	}
-
-	public Long getIdFieldValue() {
-		return _columnId;
-	}
-
 	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
