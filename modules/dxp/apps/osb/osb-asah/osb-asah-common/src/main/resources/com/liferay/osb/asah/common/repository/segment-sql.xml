@@ -82,6 +82,16 @@
 				Segment.id
 		]]>
 	</entry>
+	<entry key="Segment.findIdByFilterLike">
+		<![CDATA[
+			SELECT
+				Segment.id
+			FROM
+				Segment
+			WHERE
+				Segment.filter like :filter
+		]]>
+	</entry>
 	<entry key="Segment.findNameByChannelIdAndIdInAndStatus">
 		<![CDATA[
 			SELECT
