@@ -56,7 +56,8 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqUser2.setDataSourceId(dataSource.getId());
 		bqUser2.setDXPUserId(2L);
-		bqUser2.setExpandoColumnIds(new Long[] {bqExpandoColumn.getColumnId()});
+		bqUser2.setExpandoColumnIds(
+			new String[] {bqExpandoColumn.getColumnId()});
 		bqUser2.setExpandoValueIds(new String[] {bqExpandoValue.getId()});
 		bqUser2.setFirstName("Liferay");
 		bqUser2.setId("2");

@@ -55,17 +55,17 @@ public abstract class BaseBQDXPEntityDog {
 	}
 
 	protected List<ExpandoField> getExpandoFields(
-		List<Long> expandoColumnIds, List<String> expandoValueIds) {
+		List<String> expandoColumnIds, List<String> expandoValueIds) {
 
 		List<ExpandoField> expandoFields = new ArrayList<>();
 
-		Map<Long, BQExpandoColumn> bqExpandoColumns = _getExpandoColumns(
+		Map<String, BQExpandoColumn> bqExpandoColumns = _getExpandoColumns(
 			expandoColumnIds);
 
-		Map<Long, BQExpandoValue> bqExpandoValues = _getExpandoValues(
+		Map<String, BQExpandoValue> bqExpandoValues = _getExpandoValues(
 			expandoValueIds);
 
-		for (long expandoColumnId : expandoColumnIds) {
+		for (String expandoColumnId : expandoColumnIds) {
 			BQExpandoColumn bqExpandoColumn = bqExpandoColumns.get(
 				expandoColumnId);
 
@@ -87,10 +87,10 @@ public abstract class BaseBQDXPEntityDog {
 		return expandoFields;
 	}
 
-	private Map<Long, BQExpandoColumn> _getExpandoColumns(
-		List<Long> expandoColumnIds) {
+	private Map<String, BQExpandoColumn> _getExpandoColumns(
+		List<String> expandoColumnIds) {
 
-		Map<Long, BQExpandoColumn> bqExpandoColumns = new HashMap<>();
+		Map<String, BQExpandoColumn> bqExpandoColumns = new HashMap<>();
 
 		for (BQExpandoColumn bqExpandoColumn :
 				_bqExpandoColumnRepository.findByColumnIdIn(expandoColumnIds)) {
@@ -102,10 +102,10 @@ public abstract class BaseBQDXPEntityDog {
 		return bqExpandoColumns;
 	}
 
-	private Map<Long, BQExpandoValue> _getExpandoValues(
+	private Map<String, BQExpandoValue> _getExpandoValues(
 		List<String> expandoValueIds) {
 
-		Map<Long, BQExpandoValue> bqExpandoValues = new HashMap<>();
+		Map<String, BQExpandoValue> bqExpandoValues = new HashMap<>();
 
 		for (BQExpandoValue bqExpandoValue :
 				IterableUtils.toList(

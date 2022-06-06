@@ -62,7 +62,7 @@ public abstract class BaseBQDXPEntityDogTestCase
 
 		bqExpandoColumn = new BQExpandoColumn();
 
-		bqExpandoColumn.setColumnId(1L);
+		bqExpandoColumn.setColumnId("1");
 		bqExpandoColumn.setDataSourceId(dataSource.getId());
 		bqExpandoColumn.setDataType("STRING");
 		bqExpandoColumn.setId("1");

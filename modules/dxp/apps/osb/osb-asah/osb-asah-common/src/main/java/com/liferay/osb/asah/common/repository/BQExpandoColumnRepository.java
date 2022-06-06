@@ -30,6 +30,6 @@ public interface BQExpandoColumnRepository
 	extends PagingAndSortingRepository<BQExpandoColumn, String> {
 
 	public List<BQExpandoColumn> findByColumnIdIn(
-		Collection<Long> expandoColumnIds);
+		Collection<String> expandoColumnIds);
 
 }
