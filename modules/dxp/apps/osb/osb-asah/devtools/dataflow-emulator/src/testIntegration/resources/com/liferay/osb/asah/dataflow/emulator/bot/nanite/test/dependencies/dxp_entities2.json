@@ -2,7 +2,7 @@
 	{
 		"expandoFields": [
 			{
-				"columnId": 1,
+				"columnId": "1",
 				"name": "custom_field_1",
 				"value": "123"
 			}
