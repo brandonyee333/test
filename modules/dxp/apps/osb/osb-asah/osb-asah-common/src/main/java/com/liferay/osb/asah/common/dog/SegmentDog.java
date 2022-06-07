@@ -169,23 +169,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public void disableDynamicSegments(
-		Long dxpEntityId, DXPEntity.Type dxpEntityType) {
-
-		if (Objects.isNull(dxpEntityId)) {
-			return;
-		}
-
-		List<Segment> segments = _segmentRepository.searchSegments(
-			dxpEntityId, dxpEntityType, "DISABLED", Segment.Type.DYNAMIC);
-
-		for (Segment segment : segments) {
-			segment.setState("DISABLED");
-		}
-
-		_segmentRepository.saveAll(segments);
-	}
-
-	public void disableDynamicSegments(
 		Long dataSourceId, List<Long> fieldMappingIds) {
 
 		if ((dataSourceId == null) && fieldMappingIds.isEmpty()) {
@@ -424,37 +407,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Segment segment = getSegment(segmentId);
 
 		return BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers());
-	}
-
-	public Segment replaceSegment(Segment segment) {
-		Long segmentId = segment.getId();
-
-		if (segmentId == null) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"Unable to replace a segment without ID");
-		}
-
-		Segment existingSegment = getSegment(segmentId);
-
-		if (Objects.isNull(segment.getFilter()) ||
-			Objects.equals(existingSegment.getFilter(), segment.getFilter())) {
-
-			_segmentRepository.save(segment);
-		}
-		else {
-			setReferencedFields(segment);
-
-			_setState(segment);
-
-			_segmentRepository.save(segment);
-
-			_addAsahTask(segment);
-		}
-
-		_replaceAccount(segment);
-
-		return segment;
 	}
 
 	public Page<Segment> searchAccountSegmentPage(

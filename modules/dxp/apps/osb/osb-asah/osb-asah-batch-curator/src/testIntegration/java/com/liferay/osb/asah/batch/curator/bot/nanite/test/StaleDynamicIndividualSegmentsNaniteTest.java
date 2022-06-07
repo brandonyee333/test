@@ -364,12 +364,6 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		return null;
 	}
 
-	private JSONArray _getSessionsIndividualSegments() {
-		return faroInfoElasticsearchInvoker.get(
-			"individual-segments",
-			QueryBuilders.regexpQuery("filter", ".*sessions.filter.*"));
-	}
-
 	private void _mock() {
 		Mockito.doAnswer(
 			invocation -> {

@@ -104,11 +104,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 )
 public class DataSourcesRestControllerTest {
 
-	@BeforeEach
-	public void setUp() {
-		_mock();
-	}
-
 	@Test
 	public void testDeleteDataSource() throws Exception {
 		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
@@ -1163,15 +1158,6 @@ public class DataSourcesRestControllerTest {
 		Assertions.assertEquals(3, jsonArray.length());
 	}
 
-	private void _mock() {
-		Mockito.when(
-			_salesforceExtractorConfigurationDog.getState(
-				ArgumentMatchers.any(DataSource.class))
-		).thenReturn(
-			"CREDENTIALS_VALID"
-		);
-	}
-
 	private void _runDeleteDataSourcesNanite(JSONObject dataSourceJSONObject)
 		throws Exception {
 
@@ -1227,17 +1213,10 @@ public class DataSourcesRestControllerTest {
 	private RunLogRepository _runLogRepository;
 
 	@Autowired
-	private SalesforceAuditEventDog _salesforceAuditEventDog;
-
-	@Autowired
 	private SalesforceAuditEventRepository _salesforceAuditEventRepository;
 
 	@Autowired
 	private SalesforceEntityDog _salesforceEntityDog;
-
-	@Mock
-	private SalesforceExtractorConfigurationDog
-		_salesforceExtractorConfigurationDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
