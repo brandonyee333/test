@@ -29,12 +29,14 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
@@ -83,6 +85,14 @@ public class IndividualInterestScoresNaniteTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
+		Channel channel = new Channel();
+
+		channel.setId(1L);
+		channel.setIsNew(Boolean.TRUE);
+		channel.setName("Liferay");
+
+		_channelRepository.save(channel);
+
 		_dataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
@@ -622,6 +632,9 @@ public class IndividualInterestScoresNaniteTest
 
 	@Autowired
 	private AssetRepository _assetRepository;
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	private DataSource _dataSource;
 

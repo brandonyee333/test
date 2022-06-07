@@ -69,6 +69,7 @@ public class DeleteIndividualSegmentTasksNaniteTest
 		Segment segment = new Segment();
 
 		segment.setId(segmentId);
+		segment.setIsNew(Boolean.TRUE);
 
 		_segmentRepository.save(segment);
 

@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.tes
 
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +34,10 @@ public class FaroInfoActivitiesFilterStringConverterHelperTest
 		return _faroInfoActivitiesFilterStringConverterHelper;
 	}
 
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
+	)
 	@Test
 	public void testAccountIdEq() throws Exception {
 		testFilterString(
@@ -42,6 +48,10 @@ public class FaroInfoActivitiesFilterStringConverterHelperTest
 			"349395508504086369");
 	}
 
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
+	)
 	@Test
 	public void testAccountIdNe() throws Exception {
 		testFilterString("activities", "accountId ne '346306769708391202'");

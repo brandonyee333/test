@@ -20,10 +20,8 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNan
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
-import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.Account;
@@ -31,6 +29,7 @@ import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
@@ -40,6 +39,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
@@ -62,6 +62,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -74,6 +75,17 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class UpdateDynamicMembershipsNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
+
+	@BeforeEach
+	public void setUp() throws Exception {
+		Channel channel = new Channel();
+
+		channel.setId(1L);
+		channel.setIsNew(Boolean.TRUE);
+		channel.setName("Liferay");
+
+		_channelRepository.save(channel);
+	}
 
 	@Test
 	public void test() throws Exception {
@@ -522,8 +534,7 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		individuals.forEach(
 			individual -> Assertions.assertFalse(
-				_membershipDog.isMember(
-					String.valueOf(individual.getId()), segment.getId())));
+				_membershipDog.isMember(individual.getId(), segment.getId())));
 	}
 
 	private void _addIndividualInterests(
@@ -589,10 +600,10 @@ public class UpdateDynamicMembershipsNaniteTest
 	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
-	private DataSourceRepository _dataSourceRepository;
+	private ChannelRepository _channelRepository;
 
 	@Autowired
-	private DXPEntityDog _dxpEntityDog;
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;
@@ -608,9 +619,6 @@ public class UpdateDynamicMembershipsNaniteTest
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private OrganizationDog _organizationDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

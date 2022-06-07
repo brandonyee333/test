@@ -17,12 +17,14 @@ package com.liferay.osb.asah.common.repository.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
@@ -50,6 +52,14 @@ public class AccountRepositoryTest extends BaseAccountRepositoryTestCase {
 	@Test
 	public void testGetAccountDistributions() throws Exception {
 		setUpDataSources();
+
+		Channel channel = new Channel();
+
+		channel.setId(1L);
+		channel.setIsNew(Boolean.TRUE);
+		channel.setName("Liferay");
+
+		_channelRepository.save(channel);
 
 		JSONArray jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
@@ -172,6 +182,9 @@ public class AccountRepositoryTest extends BaseAccountRepositoryTestCase {
 
 		super.testGetAccountDistributions();
 	}
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
