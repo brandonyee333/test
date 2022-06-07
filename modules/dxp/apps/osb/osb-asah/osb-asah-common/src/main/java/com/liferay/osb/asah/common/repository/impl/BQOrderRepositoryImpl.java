@@ -45,11 +45,11 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 	}
 
 	@Override
-	public Map<String, BigDecimal> getOrderTotalValue(
+	public Map<String, BigDecimal> getOrderTotalValues(
 		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		SelectHavingStep<Record2<String, BigDecimal>> record =
+		SelectHavingStep<Record2<String, BigDecimal>> selectHavingStep =
 			_dslContext.select(
 				DSL.field("currencyCode", String.class),
 				DSL.sum(
@@ -59,7 +59,7 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 						BigDecimal.class
 					)
 				).as(
-					"totalOrderValue"
+					"orderTotalValue"
 				)
 			).from(
 				DSL.table("BQOrder")
@@ -81,7 +81,7 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 			);
 
 		return _queryExecutor.queryForMap(
-			GetterUtil::getString, record, GetterUtil::getBigDecimal);
+			GetterUtil::getString, selectHavingStep, GetterUtil::getBigDecimal);
 	}
 
 	private final DSLContext _dslContext;

@@ -70,14 +70,14 @@ public class CommerceDashboardDogTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
-	public void testGetTotalOrderValue() {
-		Map<String, OrderTotalValue> totalOrderValue =
-			_commerceDashboardDog.getOrderTotalValue(
+	public void testGetOrderTotalValues() {
+		Map<String, OrderTotalValue> orderTotalValues =
+			_commerceDashboardDog.getOrderTotalValues(
 				11L, false, TimeRange.LAST_7_DAYS);
 
-		Assertions.assertNotNull(totalOrderValue);
+		Assertions.assertNotNull(orderTotalValues);
 
-		OrderTotalValue orderTotalValue = totalOrderValue.get("USD");
+		OrderTotalValue orderTotalValue = orderTotalValues.get("USD");
 
 		Assertions.assertNotNull(orderTotalValue);
 
@@ -88,14 +88,14 @@ public class CommerceDashboardDogTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
-	public void testGetTotalOrderValueWithPreviousPeriodComparison() {
-		Map<String, OrderTotalValue> totalOrderValue =
-			_commerceDashboardDog.getOrderTotalValue(
+	public void testGetOrderTotalValuesWithPreviousPeriodComparison() {
+		Map<String, OrderTotalValue> orderTotalValues =
+			_commerceDashboardDog.getOrderTotalValues(
 				11L, true, TimeRange.LAST_7_DAYS);
 
-		Assertions.assertNotNull(totalOrderValue);
+		Assertions.assertNotNull(orderTotalValues);
 
-		OrderTotalValue orderTotalValue = totalOrderValue.get("USD");
+		OrderTotalValue orderTotalValue = orderTotalValues.get("USD");
 
 		Assertions.assertNotNull(orderTotalValue);
 

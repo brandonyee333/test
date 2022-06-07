@@ -43,20 +43,19 @@ public class BQOrderRepositoryTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
-	public void testGetTotalOrderValue() {
+	public void testGetOrderTotalValues() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
-		Map<String, BigDecimal> totalOrderValue =
-			_bqOrderRepository.getOrderTotalValue(
+		Map<String, BigDecimal> orderTotalValues =
+			_bqOrderRepository.getOrderTotalValues(
 				Arrays.asList(123L), timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
-		Assertions.assertNotNull(totalOrderValue);
+		Assertions.assertNotNull(orderTotalValues);
+		Assertions.assertNotNull(orderTotalValues.get("USD"));
 
-		Assertions.assertNotNull(totalOrderValue.get("USD"));
-
-		BigDecimal actualValue = totalOrderValue.get("USD");
+		BigDecimal actualValue = orderTotalValues.get("USD");
 
 		BigDecimal expectedValue = new BigDecimal("50.0");
 
@@ -64,10 +63,9 @@ public class BQOrderRepositoryTest
 			expectedValue.stripTrailingZeros(),
 			actualValue.stripTrailingZeros());
 
-		Assertions.assertNotNull(totalOrderValue.get("EUR"));
+		Assertions.assertNotNull(orderTotalValues.get("EUR"));
 
-		actualValue = totalOrderValue.get("EUR");
-
+		actualValue = orderTotalValues.get("EUR");
 		expectedValue = new BigDecimal("20.0");
 
 		Assertions.assertEquals(

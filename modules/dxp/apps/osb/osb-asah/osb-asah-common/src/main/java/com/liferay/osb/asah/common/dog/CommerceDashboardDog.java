@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommerceDashboardDog {
 
-	public Map<String, OrderTotalValue> getOrderTotalValue(
+	public Map<String, OrderTotalValue> getOrderTotalValues(
 		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
 
 		Channel channel = _channelDog.fetchChannel(channelId);
@@ -51,22 +51,21 @@ public class CommerceDashboardDog {
 		Set<ChannelDataSource> channelDataSources =
 			channel.getChannelDataSources();
 
-		Stream<ChannelDataSource> channelDataSourcesStream =
-			channelDataSources.stream();
+		Stream<ChannelDataSource> stream = channelDataSources.stream();
 
-		List<Long> dataSourceIds = channelDataSourcesStream.map(
+		List<Long> dataSourceIds = stream.map(
 			ChannelDataSource::getDataSourceId
 		).collect(
 			Collectors.toList()
 		);
 
-		Map<String, BigDecimal> currentOrderTotalValue =
-			_bqOrderRepository.getOrderTotalValue(
+		Map<String, BigDecimal> currentOrderTotalValues =
+			_bqOrderRepository.getOrderTotalValues(
 				dataSourceIds, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
-		Map<String, BigDecimal> previousOrderTotalValue = null;
+		Map<String, BigDecimal> previousOrderTotalValues = null;
 
 		if (compareToPrevious) {
 			LocalDateTime previousEndLocalDateTime =
@@ -82,28 +81,30 @@ public class CommerceDashboardDog {
 			previousStartLocalDateTime = previousStartLocalDateTime.minusDays(
 				timeRange.getDeltaDays() - 1);
 
-			previousOrderTotalValue = _bqOrderRepository.getOrderTotalValue(
+			previousOrderTotalValues = _bqOrderRepository.getOrderTotalValues(
 				dataSourceIds, previousEndLocalDateTime,
 				previousStartLocalDateTime, _timeZoneDog.getTimeZoneId());
 		}
 
 		Map<String, OrderTotalValue> orderTotalValues = new HashMap<>();
 
-		for (Map.Entry<String, BigDecimal> totalOrderValue :
-				currentOrderTotalValue.entrySet()) {
+		for (Map.Entry<String, BigDecimal> currentOrderTotalValue :
+				currentOrderTotalValues.entrySet()) {
 
-			String currencyCode = totalOrderValue.getKey();
+			String currencyCode = currentOrderTotalValue.getKey();
 
 			OrderTotalValue orderTotalValue = new OrderTotalValue(
-				currencyCode, null, totalOrderValue.getValue());
+				currencyCode, null, currentOrderTotalValue.getValue());
 
 			if (compareToPrevious) {
-				BigDecimal previousValue = previousOrderTotalValue.getOrDefault(
-					currencyCode, BigDecimal.ZERO);
+				BigDecimal previousOrderTotalValue =
+					previousOrderTotalValues.getOrDefault(
+						currencyCode, BigDecimal.ZERO);
 
 				orderTotalValue.setPercentageVariation(
 					_getPercentageVariation(
-						totalOrderValue.getValue(), previousValue));
+						currentOrderTotalValue.getValue(),
+						previousOrderTotalValue));
 			}
 
 			orderTotalValues.put(currencyCode, orderTotalValue);
