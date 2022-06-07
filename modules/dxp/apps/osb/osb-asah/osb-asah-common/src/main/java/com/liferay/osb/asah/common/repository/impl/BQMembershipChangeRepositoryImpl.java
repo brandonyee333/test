@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
+import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.repository.CustomBQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
@@ -77,6 +78,37 @@ public class BQMembershipChangeRepositoryImpl
 		deleteUsingStep.where(
 			segmentIdField.in(segmentIds)
 		).execute();
+	}
+
+	@Override
+	public List<Long> findSegmentIdByFilterString(String filterString) {
+		Field<Object> createDateField = DSL.field("createdate");
+		Field<Object> segmentIdField = DSL.field("segmentId");
+
+		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
+			segmentIdField);
+
+		Table<Record> bqMembershipChangeTable = DSL.table("BQMembershipChange");
+
+		return selectSelectStep.from(
+			bqMembershipChangeTable
+		).where(
+			DSL.row(
+				createDateField, segmentIdField
+			).in(
+				DSL.select(
+					DSL.max(createDateField), segmentIdField
+				).from(
+					bqMembershipChangeTable
+				).groupBy(
+					segmentIdField
+				)
+			).and(
+				FilterStringToConditionConverter.convert(filterString)
+			)
+		).fetch(
+			0, Long.class
+		);
 	}
 
 	@Override

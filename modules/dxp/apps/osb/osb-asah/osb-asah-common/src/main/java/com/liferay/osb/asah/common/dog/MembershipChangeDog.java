@@ -86,6 +86,13 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		_bqMembershipChangeRepository.deleteBySegmentIdIn(individualSegmentIds);
 	}
 
+	public List<Long> findIndividualSegmentIdByFilterString(
+		String filterString) {
+
+		return _bqMembershipChangeRepository.
+			findIndividualSegmentIdByFilterString(filterString);
+	}
+
 	public Map<Long, BQMembershipChange> getBQMembershipChanges(
 		List<Segment> segments) {
 

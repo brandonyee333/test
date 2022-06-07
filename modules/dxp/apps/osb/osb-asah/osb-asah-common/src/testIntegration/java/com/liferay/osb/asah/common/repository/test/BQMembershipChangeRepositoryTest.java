@@ -116,6 +116,27 @@ public class BQMembershipChangeRepositoryTest
 	}
 
 	@Test
+	public void testFindSegmentIdByFilterString() {
+		List<Long> segmentIds =
+			_bqMembershipChangeRepository.findSegmentIdByFilterString(
+				"identitiesCount eq 1");
+
+		Assertions.assertEquals(0, segmentIds.size());
+
+		segmentIds =
+			_bqMembershipChangeRepository.findSegmentIdByFilterString(
+				"identitiesCount eq 7");
+
+		Assertions.assertEquals(3, segmentIds.size());
+
+		segmentIds =
+			_bqMembershipChangeRepository.findSegmentIdByFilterString(
+				"knownIdentitiesCount ge 3");
+
+		Assertions.assertEquals(3, segmentIds.size());
+	}
+
+	@Test
 	public void testSearchLastByDateChangedPeriodAndSegmentId() {
 		List<Long> segmentIds1 = Collections.singletonList(
 			_bqMembershipChange.getSegmentId());
@@ -188,7 +209,7 @@ public class BQMembershipChangeRepositoryTest
 
 		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
 			Assertions.assertEquals(
-				5L, bqMembershipChange.getIdentitiesCount());
+				7L, bqMembershipChange.getIdentitiesCount());
 		}
 	}
 
@@ -254,7 +275,7 @@ public class BQMembershipChangeRepositoryTest
 		BQMembershipChange bqMembershipChange = new BQMembershipChange();
 
 		bqMembershipChange.setCreateDate(createDate);
-		bqMembershipChange.setIdentitiesCount(knownIdentitiesCount);
+		bqMembershipChange.setIdentitiesCount(knownIdentitiesCount + 2);
 		bqMembershipChange.setKnownIdentitiesCount(knownIdentitiesCount);
 		bqMembershipChange.setSegmentId(segment.getId());
 

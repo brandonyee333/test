@@ -71,6 +71,7 @@ public class MembershipDogTest
 
 		segment1.setId(234L);
 		segment1.setIncludeAnonymousUsers(Boolean.TRUE);
+		segment1.setIsNew(Boolean.TRUE);
 		segment1.setStatus("ACTIVE");
 
 		_segmentRepository.save(segment1);
@@ -79,6 +80,7 @@ public class MembershipDogTest
 
 		segment2.setId(456L);
 		segment2.setIncludeAnonymousUsers(Boolean.TRUE);
+		segment2.setIsNew(Boolean.TRUE);
 		segment2.setStatus("ACTIVE");
 
 		_segmentRepository.save(segment2);
@@ -161,6 +163,7 @@ public class MembershipDogTest
 		segment1.setFilter("");
 		segment1.setFilterMetadata("0");
 		segment1.setId(338511398116723458L);
+		segment1.setIsNew(Boolean.TRUE);
 		segment1.setModifiedDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
 		segment1.setName("Test Segment 1");
@@ -171,11 +174,8 @@ public class MembershipDogTest
 
 		_segmentDog.addSegment(segment1);
 
-		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();
-
-		dataSource.setId(338486009405470846L);
-
-		dataSource = _dataSourceRepository.save(dataSource);
+		DataSource dataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildLiferayDataSource());
 
 		_fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
@@ -267,13 +267,13 @@ public class MembershipDogTest
 		Assertions.assertEquals(0, individualSegmentIdsJSONArray.length());
 	}
 
-	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual_segments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_memberships.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
@@ -308,16 +308,16 @@ public class MembershipDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual_segments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_memberships.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,

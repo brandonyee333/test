@@ -40,6 +40,10 @@ public interface CustomBQMembershipChangeRepository {
 	public void deleteBySegmentIdIn(List<Long> segmentIds);
 
 	@Cacheable
+	public List<Long> findIndividualSegmentIdByFilterString(
+		String filterString);
+
+	@Cacheable
 	public List<BQMembershipChange> searchBQMembershipChanges(
 		FilterHelper filterHelper, Long segmentId, Pageable pageable);
 
