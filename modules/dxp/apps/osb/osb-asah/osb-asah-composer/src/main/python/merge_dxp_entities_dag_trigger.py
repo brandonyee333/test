@@ -33,9 +33,7 @@ def create_dag(ac_project_id, dag_id, dag_description):
 			description=dag_description,
 			default_args={
 				'ac_project_id': ac_project_id,
-				'lcp_project_id': 'asahdev',
 				'owner': 'Liferay',
-				'project_id': 'liferaycloud-ac-uat',
 				'start_date': datetime.datetime.now() - datetime.timedelta(
 					minutes=1)
 			},
