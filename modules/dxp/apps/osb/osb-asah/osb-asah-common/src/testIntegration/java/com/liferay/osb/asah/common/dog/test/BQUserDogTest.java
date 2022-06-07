@@ -104,7 +104,7 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 
 		ExpandoField expandoField = expandoFields.get(0);
 
-		Assertions.assertEquals(1, expandoField.getColumnId());
+		Assertions.assertEquals("1", expandoField.getColumnId());
 		Assertions.assertEquals("column", expandoField.getName());
 		Assertions.assertEquals("test", expandoField.getValue());
 	}
