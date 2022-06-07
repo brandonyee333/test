@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
 
-import com.liferay.osb.asah.common.dog.EventDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -25,11 +23,11 @@ import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -106,11 +104,6 @@ public class IndividualNaniteTest
 		name = "blogs", resourcePath = "blog_info_old.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_1_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.IDENTITY_MESSAGE,
 		resourcePath = "identity_message_1.json"
@@ -122,6 +115,10 @@ public class IndividualNaniteTest
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_1_info.json"
 	)
 	@Test
 	public void testIndividualResolution() throws Exception {
@@ -508,12 +505,6 @@ public class IndividualNaniteTest
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
-	@Autowired
-	private EventDefinitionDog _eventDefinitionDog;
-
-	@Autowired
-	private EventDog _eventDog;
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
@@ -528,8 +519,5 @@ public class IndividualNaniteTest
 
 	@Autowired
 	private IndividualNanite _individualNanite;
-
-	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
-	private MessageSubscriber _messageSubscriber;
 
 }

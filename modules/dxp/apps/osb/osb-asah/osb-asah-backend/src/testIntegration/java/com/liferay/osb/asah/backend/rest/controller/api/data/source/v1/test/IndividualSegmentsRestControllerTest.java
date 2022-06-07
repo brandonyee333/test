@@ -97,7 +97,6 @@ public class IndividualSegmentsRestControllerTest
 
 		Segment segment = new Segment();
 
-		segment.setChannelId(1L);
 		segment.setReferencedFieldMappingIds(
 			SetUtil.of(
 				accountFieldMapping.getId(), individualFieldMapping.getId()));
@@ -151,13 +150,13 @@ public class IndividualSegmentsRestControllerTest
 		name = "fields", resourcePath = "fields_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual_segments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DXPEntityRepository.class,
@@ -172,11 +171,6 @@ public class IndividualSegmentsRestControllerTest
 		validateIndividuals(validatableResponse);
 	}
 
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels.json"
@@ -185,8 +179,16 @@ public class IndividualSegmentsRestControllerTest
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources_1.json"
 	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_1.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
+	)
 	@Test
-	public void testGetIndividualSegmentsForDataSourceId() throws Exception {
+	public void testGetIndividualSegmentsForDataSourceId() {
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.getSegmentDTOPageDTO(
 				327968823603501234L, "((individualCount ge 1))", 0, 20,
@@ -219,10 +221,13 @@ public class IndividualSegmentsRestControllerTest
 		name = "individuals", resourcePath = "individuals_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
@@ -308,10 +313,9 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertTrue(referencedUserIds.isEmpty());
 	}
 
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_3.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
@@ -325,10 +329,13 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertNotEquals(0L, segmentDTO.getKnownIdentitiesCount());
 	}
 
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
@@ -364,11 +371,6 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals(0L, knownIdentitiesCount);
 	}
 
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_membership_changes_2.json"
@@ -377,8 +379,12 @@ public class IndividualSegmentsRestControllerTest
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_2.json"
+	)
 	@Test
-	public void testGetSegmentDTOPageDTO1() throws Exception {
+	public void testGetSegmentDTOPageDTO1() {
 		PageDTO<SegmentDTO> pageDTO =
 			_individualSegmentsRestController.getSegmentDTOPageDTO(
 				1L, null, 0, 50, new String[0]);
@@ -433,14 +439,13 @@ public class IndividualSegmentsRestControllerTest
 		}
 	}
 
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_3.json"
 	)
 	@Test
 	public void testGetSegmentDTOPageDTO2() {

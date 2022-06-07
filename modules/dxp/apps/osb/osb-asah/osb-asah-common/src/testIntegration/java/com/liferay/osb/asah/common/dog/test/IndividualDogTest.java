@@ -42,6 +42,7 @@ import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -761,6 +762,7 @@ public class IndividualDogTest
 		segment.setFilter("");
 		segment.setId(234L);
 		segment.setIncludeAnonymousUsers(Boolean.TRUE);
+		segment.setIsNew(Boolean.TRUE);
 		segment.setStatus("ACTIVE");
 
 		_segmentDog.addSegment(segment);
@@ -784,6 +786,7 @@ public class IndividualDogTest
 		segment1.setFilter("");
 		segment1.setFilterMetadata("0");
 		segment1.setId(338511398116723458L);
+		segment1.setIsNew(Boolean.TRUE);
 		segment1.setModifiedDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
 		segment1.setName("Test Segment 1");
@@ -799,6 +802,7 @@ public class IndividualDogTest
 		segment2.setFilter("");
 		segment2.setFilterMetadata("0");
 		segment2.setId(338511451975440187L);
+		segment2.setIsNew(Boolean.TRUE);
 		segment2.setModifiedDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:47.622Z"));
 		segment2.setName("Test Segment 2");
@@ -814,6 +818,7 @@ public class IndividualDogTest
 		segment3.setFilter("");
 		segment3.setFilterMetadata("0");
 		segment3.setId(338511451975440190L);
+		segment3.setIsNew(Boolean.TRUE);
 		segment3.setModifiedDate(
 			DateUtil.toUTCDate("2022-01-06T20:27:47.622Z"));
 		segment3.setName("Test Segment 3");
@@ -895,11 +900,6 @@ public class IndividualDogTest
 			0, _bqMembershipRepository.countBySegmentId(338511451975440190L));
 	}
 
-	@Disabled
-	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual_segments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_memberships.json"
@@ -907,6 +907,10 @@ public class IndividualDogTest
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
 	@Test
 	public void testUpdateDynamicRemoveMemberships() {

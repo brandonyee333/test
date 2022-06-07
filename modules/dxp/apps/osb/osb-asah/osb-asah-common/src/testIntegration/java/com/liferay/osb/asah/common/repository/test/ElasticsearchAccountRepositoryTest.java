@@ -18,9 +18,12 @@ import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverter
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.postgresql.converter.helper.AccountsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,14 +59,18 @@ public class ElasticsearchAccountRepositoryTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual_segments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Override
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
+	)
 	@Test
 	public void testGetAccountDistributions() throws Exception {
 		setUpDataSources();

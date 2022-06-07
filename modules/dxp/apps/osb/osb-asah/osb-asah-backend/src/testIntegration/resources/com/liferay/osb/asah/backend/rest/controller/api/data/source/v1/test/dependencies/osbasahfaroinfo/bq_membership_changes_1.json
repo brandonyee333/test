@@ -20,5 +20,29 @@
 		"individualDeleted": false,
 		"knownIdentitiesCount": 3,
 		"segmentId": "327968823603500655"
+	},
+	{
+		"createDate": "${now}",
+		"id": "13",
+		"identitiesCount": 12,
+		"individualDeleted": false,
+		"knownIdentitiesCount": 3,
+		"segmentId": "327968823603500908"
+	},
+	{
+		"createDate": "${now-1d}",
+		"id": "14",
+		"identitiesCount": 12,
+		"individualDeleted": false,
+		"knownIdentitiesCount": 3,
+		"segmentId": "327968823603500908"
+	},
+	{
+		"createDate": "${now-2d}",
+		"id": "15",
+		"identitiesCount": 12,
+		"individualDeleted": false,
+		"knownIdentitiesCount": 3,
+		"segmentId": "327968823603500908",
 	}
 ]

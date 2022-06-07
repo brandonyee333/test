@@ -29,9 +29,10 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -678,10 +679,9 @@ public class SegmentDogTest
 			new String[0], new String[0], "street eq 'Broadway'");
 	}
 
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_info_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_info_2.json"
 	)
 	@Test
 	public void testGetSegmentPage() {
@@ -697,10 +697,9 @@ public class SegmentDogTest
 		Assertions.assertEquals(1, segments.size());
 	}
 
-	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_info.json"
 	)
 	@Test
 	public void testGetSegments() {
@@ -1072,6 +1071,9 @@ public class SegmentDogTest
 
 	@Autowired
 	private AssetRepository _assetRepository;
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;

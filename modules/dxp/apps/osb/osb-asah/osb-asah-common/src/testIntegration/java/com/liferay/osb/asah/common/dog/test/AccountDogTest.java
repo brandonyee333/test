@@ -38,7 +38,6 @@ import java.util.Optional;
 
 import org.apache.commons.collections4.IterableUtils;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
@@ -92,12 +91,11 @@ public class AccountDogTest
 
 		_asahTaskDog.deleteAsahTasks();
 
+		Assertions.assertEquals(1, _segmentRepository.count());
+
 		_accountDog.deleteAccount(account);
 
-		JSONArray individualSegmentsJSONArray =
-			faroInfoElasticsearchInvoker.get("individual-segments");
-
-		Assertions.assertEquals(0, individualSegmentsJSONArray.length());
+		Assertions.assertEquals(0, _segmentRepository.count());
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"DeleteIndividualSegmentTasksNanite");

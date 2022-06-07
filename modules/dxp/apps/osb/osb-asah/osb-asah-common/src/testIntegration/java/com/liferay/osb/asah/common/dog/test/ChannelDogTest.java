@@ -19,9 +19,11 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -30,6 +32,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -51,6 +54,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * @author André Miranda
@@ -79,11 +83,6 @@ public class ChannelDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_delete_channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -94,6 +93,10 @@ public class ChannelDogTest
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_delete_channels.json"
 	)
 	@Test
 	public void testDeleteChannels() throws Exception {
@@ -120,16 +123,10 @@ public class ChannelDogTest
 
 		Assertions.assertEquals("2", blogsJSONObject.getString("channelId"));
 
-		JSONArray individualSegmentsJSONArray =
-			faroInfoElasticsearchInvoker.get("individual-segments");
+		List<Segment> segments = _segmentRepository.findByChannelIdIn(
+			Collections.singleton(2L), PageRequest.of(0, 10));
 
-		Assertions.assertEquals(1, individualSegmentsJSONArray.length());
-
-		JSONObject individualSegmentJSONObject =
-			individualSegmentsJSONArray.getJSONObject(0);
-
-		Assertions.assertEquals(
-			"2", individualSegmentJSONObject.getString("channelId"));
+		Assertions.assertEquals(1, segments.size());
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.get(
 			"individuals", "338486037253283140");
@@ -356,5 +353,8 @@ public class ChannelDogTest
 
 	@Autowired
 	private ChannelRepository _channelRepository;
+
+	@Autowired
+	private SegmentRepository _segmentRepository;
 
 }
