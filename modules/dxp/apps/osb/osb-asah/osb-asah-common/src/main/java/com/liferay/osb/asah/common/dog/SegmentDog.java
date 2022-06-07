@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
+import com.liferay.osb.asah.common.postgresql.converter.helper.SegmentFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -379,7 +380,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			int page, int size)
 		throws Exception {
 
-		Segment segment = fetchSegment("Account: " + accountId, "INACTIVE");
+		Segment segment = fetchSegment(_ACCOUNT_PREFIX + accountId, "INACTIVE");
 
 		if (segment == null) {
 			throw new Exception(
@@ -460,7 +461,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Long accountId, @Nullable String filterString, int page, int size,
 		@Nullable String[] sorts) {
 
-		Segment segment = fetchSegment("Account: " + accountId, "INACTIVE");
+		Segment segment = fetchSegment(_ACCOUNT_PREFIX + accountId, "INACTIVE");
 
 		if (segment == null) {
 			throw new OSBAsahException(
@@ -533,7 +534,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 		List<Long> channelIds = ListUtil.map(
 			_channelDog.getChannels(dataSourceId), Channel::getId);
 
-		FilterHelper filterHelper = new FilterHelper(filterString);
+		FilterHelper filterHelper = new FilterHelper(
+			null, filterString,
+			new SegmentFilterStringConverterHelper(_membershipChangeDog));
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
