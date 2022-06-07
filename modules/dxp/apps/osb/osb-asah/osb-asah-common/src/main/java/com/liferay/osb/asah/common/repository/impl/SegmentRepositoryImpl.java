@@ -124,7 +124,7 @@ public class SegmentRepositoryImpl
 		}
 
 		String containsField = matcher.group("containsField");
-		String groupByField = matcher.group("groupByField");
+		Field groupByField = DSL.field(matcher.group("groupByField"));
 
 		Condition condition = filterHelper.getCondition();
 
@@ -143,11 +143,7 @@ public class SegmentRepositoryImpl
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.select(
-			DSL.field(
-				groupByField
-			).as(
-				"terms"
-			),
+			groupByField.as("terms"),
 			DSL.count(
 				DSL.field("id")
 			).as(
@@ -157,15 +153,19 @@ public class SegmentRepositoryImpl
 			"Segment"
 		).where(
 			condition
+		).groupBy(
+			groupByField
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
+			pageable.getPageSize()
+		).offset(
 			pageable.getOffset()
 		).fetch(
 			record -> new Transformation(
 				new Transformation.Term(
 					Collections.singletonMap(
-						groupByField, record.get("terms"))),
+						groupByField.getName(), record.get("terms"))),
 				(Integer)record.get("totalelements"))
 		);
 	}
@@ -527,18 +527,12 @@ public class SegmentRepositoryImpl
 		return conditions;
 	}
 
-	private Condition _getIncludeCondition(
-		String containsField, String fieldName) {
-
+	private Condition _getIncludeCondition(String containsField, Field field) {
 		if (containsField == null) {
 			return DSL.noCondition();
 		}
 
-		return DSL.field(
-			fieldName
-		).containsIgnoreCase(
-			containsField
-		);
+		return field.containsIgnoreCase(containsField);
 	}
 
 	private List<Condition> _getPreviewDisabledSegmentsConditions(
@@ -549,16 +543,30 @@ public class SegmentRepositoryImpl
 
 		conditions.add(
 			DSL.or(
-				DSL.field(
-					"referencedAssetDataSourceIds"
-				).in(
-					Collections.singletonList(dataSourceId)
-				),
-				DSL.field(
-					"referencedFieldMappingIds"
-				).in(
-					dataSourceFieldMappingIds
-				)));
+				DSL.exists(
+					DSL.selectOne(
+					).from(
+						"UNNEST(referencedAssetDataSourceIds) AS " +
+							"referencedAssetDataSourceId"
+					).where(
+						DSL.field(
+							"referencedAssetDataSourceId"
+						).eq(
+							dataSourceId
+						)
+					)),
+				DSL.exists(
+					DSL.selectOne(
+					).from(
+						"UNNEST(referencedFieldMappingIds) AS " +
+							"referencedFieldMappingId"
+					).where(
+						DSL.field(
+							"referencedFieldMappingId"
+						).in(
+							dataSourceFieldMappingIds
+						)
+					))));
 
 		conditions.add(filterHelper.getCondition());
 
