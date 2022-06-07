@@ -27,7 +27,7 @@ import java.util.Map;
 public interface CustomBQOrderRepository {
 
 	public Map<String, BigDecimal> getOrderTotalValues(
-		List<Long> datasourceIds, LocalDateTime rangeEndLocalDateTime,
+		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 }

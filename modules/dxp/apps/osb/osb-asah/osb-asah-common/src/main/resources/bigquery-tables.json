@@ -611,7 +611,7 @@
 	},
 	"identityActivity": {
 		"clusteringFields": [
-			"datasourceId",
+			"dataSourceId",
 			"channelId"
 		],
 		"fields": [
@@ -724,7 +724,7 @@
 	},
 	"order": {
 		"clusteringFields": [
-			"datasourceId",
+			"dataSourceId",
 			"channelId",
 			"uploadType",
 			"uploadDate"
@@ -737,7 +737,7 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "datasourceId",
+				"name": "dataSourceId",
 				"type": "INT64"
 			},
 			{
@@ -982,7 +982,7 @@
 	},
 	"product": {
 		"clusteringFields": [
-			"datasourceId",
+			"dataSourceId",
 			"channelId",
 			"uploadType",
 			"uploadDate"
@@ -995,7 +995,7 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "datasourceId",
+				"name": "dataSourceId",
 				"type": "INT64"
 			},
 			{

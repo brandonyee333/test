@@ -65,7 +65,7 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 				DSL.table("BQOrder")
 			).where(
 				DSL.field(
-					"datasourceId"
+					"dataSourceId"
 				).in(
 					dataSourceIds
 				),

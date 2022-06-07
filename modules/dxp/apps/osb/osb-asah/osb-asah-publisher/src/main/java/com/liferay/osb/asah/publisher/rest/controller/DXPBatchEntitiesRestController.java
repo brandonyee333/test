@@ -149,7 +149,7 @@ public class DXPBatchEntitiesRestController {
 			_messageBus.sendMessage(
 				Channel.COMPOSER,
 				JSONUtil.put(
-					"datasourceId", dataSourceId
+					"dataSourceId", dataSourceId
 				).put(
 					"projectId", ProjectIdThreadLocal.getProjectId()
 				).put(

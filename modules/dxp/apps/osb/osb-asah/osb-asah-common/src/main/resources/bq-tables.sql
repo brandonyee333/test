@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS BQOrder(
 	channelId BIGINT,
 	createDate TIMESTAMP,
 	currencyCode TEXT,
-	datasourceId BIGINT,
+	dataSourceId BIGINT,
 	externalReferenceCode TEXT,
 	id BIGINT,
 	modifiedDate TIMESTAMP,
