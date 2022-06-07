@@ -24,8 +24,8 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
 import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
@@ -42,7 +42,6 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
-import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.faro.backend.http.DataSourceHttpTestConfiguration;
@@ -64,13 +63,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -119,6 +113,10 @@ public class DataSourcesRestControllerTest {
 		account = _accountDog.addAccount(
 			String.valueOf(account.getId()),
 			_objectMapper.convertValue(account, JSONObject.class), dataSource);
+
+		Assertions.assertNotNull(
+			_segmentDog.fetchSegment(
+				"Account: " + account.getId(), "INACTIVE"));
 
 		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource);
 
@@ -172,13 +170,11 @@ public class DataSourcesRestControllerTest {
 
 		Assertions.assertTrue(_assetRepository.existsById(asset.getId()));
 		Assertions.assertFalse(
-			_faroInfoElasticsearchInvoker.exists(
-				"data-sources", dataSourceJSONObject.getString("id")));
-		Assertions.assertFalse(
-			_faroInfoElasticsearchInvoker.exists(
-				"individual-segments",
-				QueryBuilders.termQuery(
-					"name", "Account: " + account.getId())));
+			_dataSourceRepository.existsById(
+				dataSourceJSONObject.getLong("id")));
+		Assertions.assertNull(
+			_segmentDog.fetchSegment(
+				"Account: " + account.getId(), "INACTIVE"));
 		Assertions.assertFalse(
 			_faroInfoElasticsearchInvoker.exists(
 				"individuals",
@@ -1220,5 +1216,8 @@ public class DataSourcesRestControllerTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

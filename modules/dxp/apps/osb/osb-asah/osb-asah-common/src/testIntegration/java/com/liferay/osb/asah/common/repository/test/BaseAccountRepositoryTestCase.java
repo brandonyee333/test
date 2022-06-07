@@ -344,13 +344,6 @@ public abstract class BaseAccountRepositoryTestCase
 	}
 
 	protected void setUpDataSources() {
-		Channel channel = new Channel();
-
-		channel.setId(1L);
-		channel.setIsNew(true);
-
-		_channelRepository.save(channel);
-
 		DataSource dataSource = FaroInfoTestUtil.buildSalesforceDataSource();
 
 		dataSource.setId(337984445922213329L);

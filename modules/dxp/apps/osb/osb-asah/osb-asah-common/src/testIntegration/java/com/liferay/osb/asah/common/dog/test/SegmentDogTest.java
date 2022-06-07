@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -66,6 +67,13 @@ public class SegmentDogTest
 
 	@BeforeEach
 	public void setUp() {
+		Channel channel = new Channel("Liferay");
+
+		channel.setId(1L);
+		channel.setIsNew(Boolean.TRUE);
+
+		_channelRepository.save(channel);
+
 		for (int i = 0; i < 3; i++) {
 			DataSource dataSource = _dataSourceDog.addDataSource(
 				FaroInfoTestUtil.buildLiferayDataSource());

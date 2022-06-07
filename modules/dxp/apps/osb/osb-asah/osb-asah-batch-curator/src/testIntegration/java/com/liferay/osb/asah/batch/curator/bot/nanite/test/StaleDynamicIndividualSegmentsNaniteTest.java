@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -29,6 +30,7 @@ import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -51,8 +53,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -243,31 +243,25 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			"last24Hours", "last28Days", "last30Days", "last7Days",
 			"last90Days", "yesterday");
 
-		JSONArray individualSegmentsJSONArray =
-			_getSessionsIndividualSegments();
+		List<Long> segmentIds = _segmentRepository.findIdByFilterLike(
+			"%sessions.filter%");
 
-		for (int i = 0; i < individualSegmentsJSONArray.length(); i++) {
-			JSONObject individualSegmentJSONObject =
-				individualSegmentsJSONArray.getJSONObject(i);
+		Assertions.assertEquals(6, individualSegmentIds.size());
 
-			long count = _bqMembershipRepository.countBySegmentIdAndStatus(
-				Long.parseLong(individualSegmentJSONObject.getString("id")),
-				"ACTIVE");
-
-			Assertions.assertTrue(count > 0);
+		for (Long segmentId : segmentIds) {
+			Assertions.assertEquals(
+				1,
+				_bqMembershipRepository.countBySegmentIdAndStatus(
+					segmentId, "ACTIVE"));
 		}
 
 		_staleDynamicIndividualSegmentsNanite.run(null);
 
-		for (int i = 0; i < individualSegmentsJSONArray.length(); i++) {
-			JSONObject individualSegmentJSONObject =
-				individualSegmentsJSONArray.getJSONObject(i);
-
+		for (Long segmentId : segmentIds) {
 			Assertions.assertEquals(
 				0,
 				_bqMembershipRepository.countBySegmentIdAndStatus(
-					Long.parseLong(individualSegmentJSONObject.getString("id")),
-					"ACTIVE"));
+					segmentId, "ACTIVE"));
 		}
 	}
 
@@ -308,11 +302,12 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	private JSONArray _addSessionMemberships(String... durations) {
 		JSONArray membershipsJSONArray = new JSONArray();
+		Channel channel = _channelDog.addChannel("Liferay");
 
 		for (String duration : durations) {
 			Segment segment = _segmentRepository.save(
 				FaroInfoTestUtil.buildDynamicSegment(
-					1L,
+					channel.getId(),
 					"(sessions.filter(filter='(context/country eq ''" +
 						"United States'' and completeDate gt ''" + duration +
 							"'')'))"));
@@ -398,6 +393,9 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
+
+	@Autowired
+	private ChannelDog _channelDog;
 
 	private DataSource _dataSource;
 
