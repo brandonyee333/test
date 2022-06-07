@@ -46,10 +46,10 @@ public class OrderTotalValue {
 
 		OrderTotalValue orderTotalValue = (OrderTotalValue)obj;
 
-		if (_currencyCode.equals(orderTotalValue._currencyCode) &&
+		if (Objects.equals(_currencyCode, orderTotalValue._currencyCode) &&
 			Objects.equals(
 				_percentageVariation, orderTotalValue._percentageVariation) &&
-			_value.equals(orderTotalValue._value)) {
+			Objects.equals(_value, orderTotalValue._value)) {
 
 			return true;
 		}

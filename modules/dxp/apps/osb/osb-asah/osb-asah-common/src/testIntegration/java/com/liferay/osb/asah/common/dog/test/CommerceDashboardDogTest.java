@@ -43,11 +43,6 @@ public class CommerceDashboardDogTest
 
 	@BeforeEach
 	public void setUp() {
-		Channel channel = new Channel("channel");
-
-		channel.setId(11L);
-		channel.setIsNew(true);
-
 		_dataSource = new DataSource("Liferay Italy");
 
 		_dataSource.setCredentialType("Token Authentication");
@@ -61,6 +56,11 @@ public class CommerceDashboardDogTest
 		_dataSource.setURL("");
 
 		_dataSource = _dataSourceRepository.save(_dataSource);
+
+		Channel channel = new Channel("channel");
+
+		channel.setId(11L);
+		channel.setIsNew(true);
 
 		channel.addChannelDataSource(
 			new ChannelDataSource(_dataSource.getId(), null));
@@ -80,9 +80,7 @@ public class CommerceDashboardDogTest
 		OrderTotalValue orderTotalValue = orderTotalValues.get("USD");
 
 		Assertions.assertNotNull(orderTotalValue);
-
 		Assertions.assertNotNull(orderTotalValue.getValue());
-
 		Assertions.assertNull(orderTotalValue.getPercentageVariation());
 	}
 
@@ -98,9 +96,7 @@ public class CommerceDashboardDogTest
 		OrderTotalValue orderTotalValue = orderTotalValues.get("USD");
 
 		Assertions.assertNotNull(orderTotalValue);
-
 		Assertions.assertNotNull(orderTotalValue.getValue());
-
 		Assertions.assertNotNull(orderTotalValue.getPercentageVariation());
 	}
 

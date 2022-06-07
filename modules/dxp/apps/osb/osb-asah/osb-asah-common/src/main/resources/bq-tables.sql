@@ -96,60 +96,60 @@ CREATE TABLE IF NOT EXISTS BQGroup (
 );
 
 CREATE TABLE IF NOT EXISTS BQIdentity (
-    createDate TIMESTAMP,
-    emailAddressHashed TEXT,
-    id TEXT PRIMARY KEY,
-    userId TEXT
+	createDate TIMESTAMP,
+	emailAddressHashed TEXT,
+	id TEXT PRIMARY KEY,
+	userId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQIdentityActivity (
-    channelId BIGINT,
-    createDate TIMESTAMP,
-    dataSourceId BIGINT,
-    id TEXT PRIMARY KEY,
-    identityId TEXT
+	channelId BIGINT,
+	createDate TIMESTAMP,
+	dataSourceId BIGINT,
+	id TEXT PRIMARY KEY,
+	identityId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQMembership (
-    createDate TIMESTAMPTZ,
-    id BIGSERIAL PRIMARY KEY,
-    individualId BIGINT,
-    individualSegmentId BIGINT,
-    modifiedDate TIMESTAMPTZ,
-    removedDate TIMESTAMPTZ,
-    status TEXT
+	createDate TIMESTAMPTZ,
+	id BIGSERIAL PRIMARY KEY,
+	individualId BIGINT,
+	individualSegmentId BIGINT,
+	modifiedDate TIMESTAMPTZ,
+	removedDate TIMESTAMPTZ,
+	status TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQMembershipChange (
-    createDate TIMESTAMPTZ,
-    id BIGSERIAL PRIMARY KEY,
-    individualsCount BIGINT,
-    individualSegmentId BIGINT,
-    knownIndividualsCount BIGINT
+	createDate TIMESTAMPTZ,
+	id BIGSERIAL PRIMARY KEY,
+	individualsCount BIGINT,
+	individualSegmentId BIGINT,
+	knownIndividualsCount BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS BQOrder(
-    projectId TEXT,
-    datasourceId BIGINT,
-    channelId BIGINT,
-    uploadType TEXT,
-    uploadDate TIMESTAMP,
-    accountId BIGINT,
-    createDate TIMESTAMP,
-    currencyCode TEXT,
-    externalReferenceCode TEXT,
-    id BIGINT,
-    modifiedDate TIMESTAMP,
-    orderDate TIMESTAMP,
-    orderItems TEXT[],
-    orderStatus BIGINT,
-    orderTypeExternalReferenceCode TEXT,
-    orderTypeId BIGINT,
-    paymentMethod TEXT,
-    paymentStatus BIGINT,
-    status BIGINT,
-    total TEXT,
-    userId BIGINT
+	accountId BIGINT,
+	channelId BIGINT,
+	createDate TIMESTAMP,
+	currencyCode TEXT,
+	datasourceId BIGINT,
+	externalReferenceCode TEXT,
+	id BIGINT,
+	modifiedDate TIMESTAMP,
+	orderDate TIMESTAMP,
+	orderItems TEXT[],
+	orderStatus BIGINT,
+	orderTypeExternalReferenceCode TEXT,
+	orderTypeId BIGINT,
+	paymentMethod TEXT,
+	paymentStatus BIGINT,
+	projectId TEXT,
+	status BIGINT,
+	total TEXT,
+	uploadDate TIMESTAMP,
+	uploadType TEXT,
+	userId BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS BQOrganization (
