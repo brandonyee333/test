@@ -36,23 +36,25 @@
 			FROM
 				Segment
 			WHERE
-				EXISTS
 				(
-					SELECT
-						1
-					FROM
-						UNNEST(Segment.referencedAssetDataSourceIds) AS referencedAssetDataSourceId
-					WHERE
-						referencedAssetDataSourceId = :referencedAssetDataSourceId
-				) AND
-				EXISTS
-				(
-					SELECT
-						1
-					FROM
-						UNNEST(Segment.referencedFieldMappingIds) AS referencedFieldMappingId
-					WHERE
-						referencedFieldMappingId IN (:referencedFieldMappingIds)
+					EXISTS
+					(
+						SELECT
+							1
+						FROM
+							UNNEST(Segment.referencedAssetDataSourceIds) AS referencedAssetDataSourceId
+						WHERE
+							referencedAssetDataSourceId = :referencedAssetDataSourceId
+					) OR
+					EXISTS
+					(
+						SELECT
+							1
+						FROM
+							UNNEST(Segment.referencedFieldMappingIds) AS referencedFieldMappingId
+						WHERE
+							referencedFieldMappingId IN (:referencedFieldMappingIds)
+					)
 				) AND
 				Segment.state <> :state AND
 				Segment.type = :type
