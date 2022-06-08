@@ -35,7 +35,6 @@ USING (
 				'1970-01-01T00:00:00'
 			{% endif %}
 ) AS staging
-
 ON
 	staging.className = 'com.liferay.expando.kernel.model.ExpandoColumn' AND
 	staging.columnId = replica.columnId AND

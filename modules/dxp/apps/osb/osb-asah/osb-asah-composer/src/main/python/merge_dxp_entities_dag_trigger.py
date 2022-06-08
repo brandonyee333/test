@@ -66,7 +66,6 @@ def read_query_template(template_path: str):
 	with open(full_template_path, 'r') as template_file:
 		return template_file.read()
 
-
 bigquery_hook = BigQueryHook(gcp_conn_id='google_cloud_default')
 
 client = bigquery_hook.get_client()
