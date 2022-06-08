@@ -440,6 +440,12 @@ definition {
 			locator1 = "CommerceEntry#SEARCH_ORDER_ID_RESULT");
 	}
 
+	macro openTermsAndConditionsAdmin {
+		Navigator.openWithAppendToBaseURL(
+			baseURL = "${baseURL}",
+			urlAppend = "group/guest/~/control_panel/manage?p_p_id=com_liferay_commerce_term_web_internal_portlet_CommerceTermEntryPortlet");
+	}
+
 	macro viewOrdersDetails {
 		AssertElementPresent(
 			key_productSku = "${productSku}",
