@@ -23,11 +23,15 @@ import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Record2;
+import org.jooq.Field;
+import org.jooq.Record;
 import org.jooq.SelectHavingStep;
 import org.jooq.impl.DSL;
 
@@ -45,44 +49,107 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 	}
 
 	@Override
-	public Map<String, BigDecimal> getOrderTotalValues(
+	public Map<String, BigDecimal> getOrderIncompleteCurrencyValues(
 		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		SelectHavingStep<Record2<String, BigDecimal>> selectHavingStep =
-			_dslContext.select(
-				DSL.field("currencyCode", String.class),
-				DSL.sum(
-					DSL.field(
-						"total"
-					).cast(
-						BigDecimal.class
-					)
-				).as(
-					"orderTotalValue"
-				)
-			).from(
-				DSL.table("BQOrder")
-			).where(
-				DSL.field(
-					"dataSourceId"
-				).in(
-					dataSourceIds
-				),
-				DSL.field(
-					"orderDate"
-				).between(
-					_dslHelper.getDateParam(
-						rangeStartLocalDateTime, timeZoneId),
-					_dslHelper.getDateParam(rangeEndLocalDateTime, timeZoneId)
-				)
-			).groupBy(
-				DSL.field("currencyCode")
-			);
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			_getSelectHavingStep(
+				Arrays.asList(
+					DSL.field("currencyCode"),
+					DSL.sum(
+						DSL.field(
+							"total"
+						).cast(
+							BigDecimal.class
+						)
+					).as(
+						"orderIncompleteCurrencyValue"
+					)),
+				_getConditions(
+					dataSourceIds, _orderIncompleteCurrencyValueStatuses,
+					rangeEndLocalDateTime, rangeStartLocalDateTime,
+					timeZoneId)),
+			GetterUtil::getBigDecimal);
+	}
+
+	@Override
+	public Map<String, BigDecimal> getOrderTotalCurrencyValues(
+		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
 		return _queryExecutor.queryForMap(
-			GetterUtil::getString, selectHavingStep, GetterUtil::getBigDecimal);
+			GetterUtil::getString,
+			_getSelectHavingStep(
+				Arrays.asList(
+					DSL.field("currencyCode"),
+					DSL.sum(
+						DSL.field(
+							"total"
+						).cast(
+							BigDecimal.class
+						)
+					).as(
+						"orderTotalCurrencyValue"
+					)),
+				_getConditions(
+					dataSourceIds, _orderTotalCurrencyValueStatuses,
+					rangeEndLocalDateTime, rangeStartLocalDateTime,
+					timeZoneId)),
+			GetterUtil::getBigDecimal);
 	}
+
+	private List<Condition> _getConditions(
+		List<Long> dataSourceIds, List<Long> orderStatuses,
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"dataSourceId"
+			).in(
+				dataSourceIds
+			));
+
+		conditions.add(
+			DSL.field(
+				"orderStatus"
+			).in(
+				orderStatuses
+			));
+
+		conditions.add(
+			DSL.field(
+				"orderDate"
+			).between(
+				_dslHelper.getDateParam(rangeStartLocalDateTime, timeZoneId),
+				_dslHelper.getDateParam(rangeEndLocalDateTime, timeZoneId)
+			));
+
+		return conditions;
+	}
+
+	private SelectHavingStep<Record> _getSelectHavingStep(
+		List<Field> fields, List<Condition> conditions) {
+
+		return _dslContext.select(
+			fields
+		).from(
+			DSL.table("BQOrder")
+		).where(
+			conditions
+		).groupBy(
+			DSL.field("currencyCode")
+		);
+	}
+
+	private static final List<Long> _orderIncompleteCurrencyValueStatuses =
+		Arrays.asList(2L, 6L);
+	private static final List<Long> _orderTotalCurrencyValueStatuses =
+		Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L);
 
 	private final DSLContext _dslContext;
 
