@@ -1,91 +1,92 @@
 MERGE INTO
 	`{{ dag.default_args['ac_project_id'] }}.role` AS replica
-USING (
-	SELECT
-		*
-	FROM (
+USING
+	(
 		SELECT
-			analyticsDeleteMessage.deleted,
-			role.classPK,
-			role.dataSourceId,
-			role.modifiedDate,
-			role.projectId,
-			role.type,
-			role.uploadDate,
-			(
-				SELECT
-					SAFE_CAST(value AS STRING)
-				FROM
-					UNNEST(role.fields)
-				WHERE
-					name = 'name'
-			) AS name,
-			(
-				SELECT
-					SAFE_CAST(value AS INT64)
-				FROM
-					UNNEST(role.fields)
-				WHERE
-					name = 'roleId'
-			) AS roleId,
-			ROW_NUMBER() OVER (
-				PARTITION BY
-					role.projectId, role.dataSourceId, role.classPK
-				ORDER BY
-					role.modifiedDate DESC
-			) AS rowNumber,
-			TO_HEX(
-				SHA256(
-					CONCAT(role.projectId, '#', role.dataSourceId, '#', role.classPK)
-				)
-			) AS sha256HexId
-		FROM
-			`{{ dag.default_args['ac_project_id'] }}.dxpentity` AS role
-		LEFT JOIN (
+			*
+		FROM (
 			SELECT
-				*,
-				TRUE AS deleted,
-				(
-					SELECT
-						SAFE_CAST(value AS INT64)
-					FROM
-						UNNEST(fields)
-					WHERE
-						name = 'classPK'
-				) AS roleId,
+				analyticsDeleteMessage.deleted,
+				role.classPK,
+				role.dataSourceId,
+				role.modifiedDate,
+				role.projectId,
+				role.type,
+				role.uploadDate,
 				(
 					SELECT
 						SAFE_CAST(value AS STRING)
 					FROM
-						UNNEST(fields)
+						UNNEST(role.fields)
 					WHERE
-						name = 'className'
-				) AS className
+						name = 'name'
+				) AS name,
+				(
+					SELECT
+						SAFE_CAST(value AS INT64)
+					FROM
+						UNNEST(role.fields)
+					WHERE
+						name = 'roleId'
+				) AS roleId,
+				ROW_NUMBER() OVER (
+					PARTITION BY
+						role.projectId, role.dataSourceId, role.classPK
+					ORDER BY
+						role.modifiedDate DESC
+				) AS rowNumber,
+				TO_HEX(
+					SHA256(
+						CONCAT(role.projectId, '#', role.dataSourceId, '#', role.classPK)
+					)
+				) AS sha256HexId
 			FROM
-				`{{ dag.default_args['ac_project_id'] }}.dxpentity`
+				`{{ dag.default_args['ac_project_id'] }}.dxpentity` AS role
+			LEFT JOIN (
+				SELECT
+					*,
+					TRUE AS deleted,
+					(
+						SELECT
+							SAFE_CAST(value AS INT64)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'classPK'
+					) AS roleId,
+					(
+						SELECT
+							SAFE_CAST(value AS STRING)
+						FROM
+							UNNEST(fields)
+						WHERE
+							name = 'className'
+					) AS className
+				FROM
+					`{{ dag.default_args['ac_project_id'] }}.dxpentity`
+				WHERE
+					type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
+			) AS analyticsDeleteMessage
+			ON
+				analyticsDeleteMessage.className = role.type AND
+				analyticsDeleteMessage.dataSourceId = role.dataSourceId AND
+				analyticsDeleteMessage.projectId = role.projectId AND
+				analyticsDeleteMessage.roleId = SAFE_CAST(role.classPK AS INT64)
 			WHERE
-				type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-		) AS analyticsDeleteMessage
-		ON
-			analyticsDeleteMessage.className = role.type AND
-			analyticsDeleteMessage.dataSourceId = role.dataSourceId AND
-			analyticsDeleteMessage.projectId = role.projectId AND
-			analyticsDeleteMessage.roleId = SAFE_CAST(role.classPK AS INT64)
+				(
+					analyticsDeleteMessage.roleId IS NOT NULL OR
+					role.uploadDate >=
+						{% if prev_start_date_success is not none %}
+							'{{ prev_start_date_success }}'
+						{% else %}
+							'1970-01-01T00:00:00'
+						{% endif %}
+				) AND
+				role.type = 'com.liferay.portal.kernel.model.Role'
+		)
 		WHERE
-			(
-				analyticsDeleteMessage.roleId IS NOT NULL OR
-				role.uploadDate >=
-					{% if prev_start_date_success is not none %}
-						'{{ prev_start_date_success }}'
-					{% else %}
-						'1970-01-01T00:00:00'
-					{% endif %}
-			) AND
-			role.type = 'com.liferay.portal.kernel.model.Role'
-	)
-	WHERE
-		rowNumber = 1
-) AS staging
+			rowNumber = 1
+	) AS staging
 ON
 	SAFE_CAST(staging.classPK AS INT64) = replica.roleId AND
 	staging.dataSourceId = replica.dataSourceId AND
