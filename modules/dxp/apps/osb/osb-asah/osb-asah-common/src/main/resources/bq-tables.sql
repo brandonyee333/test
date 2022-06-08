@@ -111,21 +111,21 @@ CREATE TABLE IF NOT EXISTS BQIdentityActivity (
 );
 
 CREATE TABLE IF NOT EXISTS BQMembership (
-	createDate TIMESTAMPTZ,
-	id BIGSERIAL PRIMARY KEY,
-	individualId BIGINT,
-	individualSegmentId BIGINT,
-	modifiedDate TIMESTAMPTZ,
-	removedDate TIMESTAMPTZ,
-	status TEXT
+    createDate TIMESTAMPTZ,
+    id BIGSERIAL PRIMARY KEY,
+    identityId TEXT,
+    segmentId BIGINT,
+    modifiedDate TIMESTAMPTZ,
+    removedDate TIMESTAMPTZ,
+    status TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQMembershipChange (
-	createDate TIMESTAMPTZ,
-	id BIGSERIAL PRIMARY KEY,
-	individualsCount BIGINT,
-	individualSegmentId BIGINT,
-	knownIndividualsCount BIGINT
+    createDate TIMESTAMPTZ,
+    id BIGSERIAL PRIMARY KEY,
+    identitiesCount BIGINT,
+    segmentId BIGINT,
+	knownIdentitiesCount BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS BQOrder(
