@@ -2474,10 +2474,6 @@ public interface PropsKeys {
 	public static final String PERMISSIONS_INLINE_SQL_CHECK_ENABLED =
 		"permissions.inline.sql.check.enabled";
 
-	public static final String
-		PERMISSIONS_INLINE_SQL_RESOURCE_BLOCK_QUERY_THRESHOLD =
-			"permissions.inline.sql.resource.block.query.threshold";
-
 	public static final String PERMISSIONS_OBJECT_BLOCKING_CACHE =
 		"permissions.object.blocking.cache";
 

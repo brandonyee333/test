@@ -1983,10 +1983,6 @@ public class VerifyProperties extends VerifyProcess {
 			"passwords.passwordpolicytoolkit.charset.uppercase",
 			"passwords.passwordpolicytoolkit.validator.charset.uppercase"
 		},
-		{
-			"permissions.inline.sql.resource.block.query.threshhold",
-			"permissions.inline.sql.resource.block.query.threshold"
-		},
 		{"portal.instance.http.port", "portal.instance.http.socket.address"},
 		{"portal.instance.https.port", "portal.instance.http.socket.address"},
 		{"referer.url.domains.allowed", "redirect.url.domains.allowed"},

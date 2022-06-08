@@ -2160,13 +2160,6 @@ public class PropsValues {
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.PERMISSIONS_INLINE_SQL_CHECK_ENABLED));
 
-	public static final int
-		PERMISSIONS_INLINE_SQL_RESOURCE_BLOCK_QUERY_THRESHOLD =
-			GetterUtil.getInteger(
-				PropsUtil.get(
-					PropsKeys.
-						PERMISSIONS_INLINE_SQL_RESOURCE_BLOCK_QUERY_THRESHOLD));
-
 	public static final boolean PERMISSIONS_OBJECT_BLOCKING_CACHE =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.PERMISSIONS_OBJECT_BLOCKING_CACHE));
