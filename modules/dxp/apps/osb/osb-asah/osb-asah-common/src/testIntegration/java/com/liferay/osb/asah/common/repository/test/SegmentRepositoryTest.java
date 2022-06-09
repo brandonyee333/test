@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,6 +44,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -50,6 +52,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * @author Inácio Nery
  */
+@Import(JDBCTestConfiguration.class)
 public class SegmentRepositoryTest
 	extends BaseRepositoryTestCase<Segment, Long> {
 
@@ -266,6 +269,24 @@ public class SegmentRepositoryTest
 			_segmentRepository.
 				findByReferencedAssetDataSourceIdsAndStateNotAndType(
 					5L, "INACTIVE", Segment.Type.DYNAMIC));
+	}
+
+	@Test
+	public void testFindByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType() {
+		Assertions.assertEquals(
+			Arrays.asList(entityModels.get(0), entityModels.get(1)),
+			_segmentRepository.
+				findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
+					5L, Arrays.asList(7L), "INACTIVE", Segment.Type.DYNAMIC));
+	}
+
+	@Test
+	public void testFindByReferencedFieldMappingIdInAndStateNotAndType() {
+		Assertions.assertEquals(
+			Arrays.asList(entityModels.get(0), entityModels.get(1)),
+			_segmentRepository.
+				findByReferencedFieldMappingIdInAndStateNotAndType(
+					Arrays.asList(7L), "INACTIVE", Segment.Type.DYNAMIC));
 	}
 
 	@Test
