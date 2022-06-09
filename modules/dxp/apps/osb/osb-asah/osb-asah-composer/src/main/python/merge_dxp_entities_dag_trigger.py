@@ -19,30 +19,31 @@ from liferay.bigquery import BigQueryInsertJobFromTemplateOperator
 def create_dag(ac_project_id, dag_id, dag_description):
 	with airflow.DAG(
 			dag_id=dag_id,
-			description=dag_description,
 			default_args={
 				'ac_project_id': ac_project_id,
-				'owner': 'Liferay',
-				'start_date': datetime.datetime.now() - datetime.timedelta(
-					minutes=1)
+				'owner': 'Liferay'
 			},
+			description=dag_description,
 			max_active_runs=1,
-			schedule_interval='@hourly'
+			schedule_interval='@hourly',
+			start_date=datetime.datetime.now() - datetime.timedelta(hours=1)
 	) as dag:
 		[
-			BigQueryInsertJobFromTemplateOperator('account_entry_merge'),
-			BigQueryInsertJobFromTemplateOperator('account_group_merge'),
-			BigQueryInsertJobFromTemplateOperator('expando_column_merge'),
-			BigQueryInsertJobFromTemplateOperator('expando_value_delete'),
-			BigQueryInsertJobFromTemplateOperator('expando_value_merge'),
-			BigQueryInsertJobFromTemplateOperator('group_merge'),
-			BigQueryInsertJobFromTemplateOperator('organization_expando_column_update'),
-			BigQueryInsertJobFromTemplateOperator('organization_merge'),
-			BigQueryInsertJobFromTemplateOperator('role_merge'),
-			BigQueryInsertJobFromTemplateOperator('team_merge'),
-			BigQueryInsertJobFromTemplateOperator('user_expando_column_update'),
-			BigQueryInsertJobFromTemplateOperator('user_group_merge'),
-			BigQueryInsertJobFromTemplateOperator('user_merge')
+			BigQueryInsertJobFromTemplateOperator(task_id='account_entry_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='account_group_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='expando_column_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='expando_value_delete'),
+			BigQueryInsertJobFromTemplateOperator(task_id='expando_value_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='group_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='order_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='organization_expando_column_update'),
+			BigQueryInsertJobFromTemplateOperator(task_id='organization_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='product_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='role_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='team_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='user_expando_column_update'),
+			BigQueryInsertJobFromTemplateOperator(task_id='user_group_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='user_merge')
 		]
 
 		return dag
