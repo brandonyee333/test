@@ -78,6 +78,7 @@ import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -745,6 +746,7 @@ public class IndividualDogTest
 		Assertions.assertEquals(0, individuals.size(), individuals.toString());
 	}
 
+	@Disabled
 	@Test
 	public void testUpdateDynamicAddMemberships() {
 		Individual individual = new Individual();
@@ -774,6 +776,7 @@ public class IndividualDogTest
 			new Long[] {234L}, segmentIds.toArray(new Long[0]));
 	}
 
+	@Disabled
 	@Test
 	public void testUpdateDynamicMemberships() {
 		Segment segment1 = new Segment();
@@ -892,6 +895,7 @@ public class IndividualDogTest
 			0, _bqMembershipRepository.countBySegmentId(338511451975440190L));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO

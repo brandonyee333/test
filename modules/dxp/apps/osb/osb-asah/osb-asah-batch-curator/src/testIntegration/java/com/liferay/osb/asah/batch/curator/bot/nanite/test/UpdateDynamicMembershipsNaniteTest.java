@@ -62,6 +62,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,7 @@ public class UpdateDynamicMembershipsNaniteTest
 		Assertions.assertEquals("READY", segment.getState());
 	}
 
+	@Disabled
 	@Test
 	public void testBehavioralCriteria() throws Exception {
 		DataSource dataSource = _dataSourceRepository.save(
@@ -172,6 +174,7 @@ public class UpdateDynamicMembershipsNaniteTest
 		Assertions.assertEquals("READY", segment.getState());
 	}
 
+	@Disabled
 	@Test
 	public void testInterestCriteria() throws Exception {
 		DataSource dataSource = _dataSourceRepository.save(
@@ -268,6 +271,7 @@ public class UpdateDynamicMembershipsNaniteTest
 				String.valueOf(individual3Id), individualSegmentId));
 	}
 
+	@Disabled
 	@Test
 	public void testKeywordInterestMembership() throws Exception {
 		DataSource dataSource = _dataSourceRepository.save(
@@ -347,6 +351,7 @@ public class UpdateDynamicMembershipsNaniteTest
 				String.valueOf(individual2Id), individualSegmentId));
 	}
 
+	@Disabled
 	@Test
 	public void testKeywordInterestMembershipNoThreshold() throws Exception {
 		DataSource dataSource = _dataSourceRepository.save(
@@ -394,6 +399,7 @@ public class UpdateDynamicMembershipsNaniteTest
 			"No memberships should be added if no interest threshold exists");
 	}
 
+	@Disabled
 	@Test
 	public void testRemoveMembershipsWithDifferentChannel() throws Exception {
 		DataSource dataSource = _dataSourceRepository.save(

@@ -60,6 +60,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
@@ -171,6 +172,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		}
 	}
 
+	@Disabled
 	@Test
 	public void testMembershipsOfStaleDynamicIndividualSegmentsAreDeactivated()
 		throws Exception {
@@ -205,6 +207,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		}
 	}
 
+	@Disabled
 	@Test
 	public void testMembershipsRemainActive() throws Exception {
 		_addActivity(DateUtil.newDayDateString());
