@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.OrderTotalValueDTO;
-import com.liferay.osb.asah.backend.graphql.schema.OrderTotalValueDataFetcher;
+import com.liferay.osb.asah.backend.graphql.schema.OrderTotalValuesDataFetcher;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -51,7 +51,7 @@ import org.springframework.context.annotation.Import;
  * @author Riccardo Ferrari
  */
 @Import(JDBCTestConfiguration.class)
-public class OrderTotalValueDataFetcherTest
+public class OrderTotalValuesDataFetcherTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -86,7 +86,7 @@ public class OrderTotalValueDataFetcherTest
 	@Test
 	public void testGet() {
 		List<OrderTotalValueDTO> orderTotalValueDTOs =
-			_orderTotalValueDataFetcher.get(
+			_orderTotalValuesDataFetcher.get(
 				_getDataFetchingEnvironment(
 					Arrays.asList(
 						new Field("currencyCode"), new Field("value"))),
@@ -109,7 +109,7 @@ public class OrderTotalValueDataFetcherTest
 	@Test
 	public void testGetWithTrend() {
 		List<OrderTotalValueDTO> orderTotalValueDTOs =
-			_orderTotalValueDataFetcher.get(
+			_orderTotalValuesDataFetcher.get(
 				_getDataFetchingEnvironment(
 					Arrays.asList(
 						new Field("currencyCode"), new Field("trend"),
@@ -160,6 +160,6 @@ public class OrderTotalValueDataFetcherTest
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
-	private OrderTotalValueDataFetcher _orderTotalValueDataFetcher;
+	private OrderTotalValuesDataFetcher _orderTotalValuesDataFetcher;
 
 }

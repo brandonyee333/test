@@ -1,5 +1,5 @@
 query OrderTotalValue($channelId: String!, $rangeKey: Int) {
-	orderTotalValue(channelId: $channelId, rangeKey: $rangeKey) {
+	orderTotalValues(channelId: $channelId, rangeKey: $rangeKey) {
 		currencyCode
 		value
 	}

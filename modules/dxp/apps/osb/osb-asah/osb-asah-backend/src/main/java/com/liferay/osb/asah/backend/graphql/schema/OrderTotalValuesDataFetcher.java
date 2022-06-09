@@ -36,8 +36,8 @@ import org.springframework.stereotype.Component;
  * @author Riccardo Ferrari
  */
 @Component
-@GraphQLTypeWiring(fieldName = "orderTotalValue", typeName = "QueryType")
-public class OrderTotalValueDataFetcher
+@GraphQLTypeWiring(fieldName = "orderTotalValues", typeName = "QueryType")
+public class OrderTotalValuesDataFetcher
 	extends BaseDataFetcher<List<OrderTotalValueDTO>> {
 
 	@Override

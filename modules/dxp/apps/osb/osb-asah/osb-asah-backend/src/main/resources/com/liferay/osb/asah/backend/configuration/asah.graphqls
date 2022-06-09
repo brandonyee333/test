@@ -1262,7 +1262,7 @@ type QueryType {
 		start: Int!
 	): AssetMetricBag
 
-	orderTotalValue(
+	orderTotalValues(
 		channelId: String!,
 		rangeEnd: String,
 		rangeKey: Int,

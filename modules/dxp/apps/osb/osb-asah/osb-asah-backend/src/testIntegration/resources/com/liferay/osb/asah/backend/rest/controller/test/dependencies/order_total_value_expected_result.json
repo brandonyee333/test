@@ -1,6 +1,6 @@
 {
 	"data": {
-		"orderTotalValue": [
+		"orderTotalValues": [
 			{
 				"currencyCode": "EUR",
 				"value": "20.0"
