@@ -1,17 +1,17 @@
 [
 	{
-		"individualId": "123",
-		"individualSegmentId": "910",
+		"identityId": "123",
+		"segmentId": "910",
 		"status": "ACTIVE"
 	},
 	{
-		"individualId": "123",
-		"individualSegmentId": "101",
+		"identityId": "123",
+		"segmentId": "101",
 		"status": "ACTIVE"
 	},
 	{
-		"individualId": "456",
-		"individualSegmentId": "910",
+		"identityId": "456",
+		"segmentId": "910",
 		"status": "INACTIVE"
 	}
 ]

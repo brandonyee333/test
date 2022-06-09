@@ -2,31 +2,31 @@
 	{
 		"createDate": "${today-1dT00:00:00.000Z}",
 		"id": "346497407620237874",
-		"individualSegmentId": "346306743994746064",
-		"individualsCount": 16
+		"identitiesCount": 16,
+		"segmentId": "346306743994746064"
 	},
 	{
 		"createDate": "${today-1dT00:00:00.000Z}",
 		"id": "346497418110132141",
-		"individualSegmentId": "346306763618649567",
-		"individualsCount": 16
+		"identitiesCount": 16,
+		"segmentId": "346306763618649567"
 	},
 	{
 		"createDate": "${today-1dT00:00:00.000Z}",
 		"id": "346497432308139953",
-		"individualSegmentId": "346308250473619552",
-		"individualsCount": 16
+		"identitiesCount": 16,
+		"segmentId": "346308250473619552"
 	},
 	{
 		"createDate": "${today-1dT00:00:00.000Z}",
 		"id": "346497445857690864",
-		"individualSegmentId": "346308936219234391",
-		"individualsCount": 16
+		"identitiesCount": 16,
+		"segmentId": "346308936219234391"
 	},
 	{
 		"createDate": "${today-1dT00:00:00.000Z}",
 		"id": "346497473459820907",
-		"individualSegmentId": "346308970527203814",
-		"individualsCount": 16
+		"identitiesCount": 16,
+		"segmentId": "346308970527203814"
 	}
 ]

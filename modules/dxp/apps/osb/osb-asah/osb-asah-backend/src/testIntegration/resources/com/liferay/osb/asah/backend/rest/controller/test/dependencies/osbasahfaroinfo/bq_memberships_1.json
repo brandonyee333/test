@@ -4,8 +4,8 @@
 		"dateModified": "2019-02-11T20:26:53.215Z",
 		"dateRemoved": null,
 		"id": "338511398389279307",
-		"individualId": "337984612356654154",
-		"individualSegmentId": "366637689379787789",
+		"identityId": "337984612356654154",
+		"segmentId": "366637689379787789",
 		"status": "ACTIVE"
 	},
 	{
@@ -13,8 +13,8 @@
 		"dateModified": "2019-02-11T20:26:53.215Z",
 		"dateRemoved": null,
 		"id": "338511398389279308",
-		"individualId": "337984612356412845",
-		"individualSegmentId": "366637689379787789",
+		"identityId": "337984612356412845",
+		"segmentId": "366637689379787789",
 		"status": "ACTIVE"
 	},
 	{
@@ -22,8 +22,8 @@
 		"dateModified": "2019-02-11T20:26:53.215Z",
 		"dateRemoved": null,
 		"id": "338511398389279309",
-		"individualId": "337984612356412846",
-		"individualSegmentId": "366637689379787789",
+		"identityId": "337984612356412846",
+		"segmentId": "366637689379787789",
 		"status": "ACTIVE"
 	}
 ]

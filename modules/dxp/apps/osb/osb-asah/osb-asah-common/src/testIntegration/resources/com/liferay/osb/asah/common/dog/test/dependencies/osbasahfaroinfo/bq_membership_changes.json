@@ -2,13 +2,13 @@
 	{
 		"createDate": "2019-02-11T20:26:53.215Z",
 		"id": "338511399340944254",
-		"individualSegmentId": "338511398116723458",
-		"individualsCount": 4
+		"identitiesCount": 4,
+		"segmentId": "338511398116723458"
 	},
 	{
 		"createDate": "2019-02-11T20:27:18.892Z",
 		"id": "338511452975425117",
-		"individualSegmentId": "338511451975440187",
-		"individualsCount": 3
+		"identitiesCount": 3,
+		"segmentId": "338511451975440187"
 	}
 ]
