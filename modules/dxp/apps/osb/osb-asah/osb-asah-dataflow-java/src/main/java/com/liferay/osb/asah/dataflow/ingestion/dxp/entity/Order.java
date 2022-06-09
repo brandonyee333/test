@@ -28,10 +28,6 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 public class Order extends BaseDXPEntity {
 
 	public long accountId;
-
-	@Nullable
-	public long channelId;
-
 	public String createDate;
 
 	@Nullable
