@@ -337,6 +337,25 @@ CREATE TABLE IF NOT EXISTS SalesforceEntity (
 	PRIMARY KEY (dataSourceId, id, type)
 );
 
+CREATE TABLE IF NOT EXISTS Segment (
+	id BIGSERIAL PRIMARY KEY,
+	authorId BIGINT,
+	authorName TEXT,
+	channelId BIGINT,
+	createDate TIMESTAMPTZ,
+	filter TEXT,
+	filterMetadata TEXT,
+	includeAnonymousUsers BOOLEAN,
+	modifiedDate TIMESTAMPTZ,
+	name TEXT,
+	referencedAssetDataSourceIds BIGINT[],
+	referencedFieldMappingIds BIGINT[],
+	scope TEXT,
+	state TEXT,
+	status TEXT,
+	type TEXT
+);
+
 CREATE TABLE IF NOT EXISTS Suppression (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
