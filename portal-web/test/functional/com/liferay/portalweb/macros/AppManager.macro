@@ -6,6 +6,16 @@ definition {
 		MenuItem.clickNoError(menuItem = "Activate");
 	}
 
+	macro checkLogoutMarketplace {
+		AssertElementPresent(
+			locator1 = "AppManager#USER_SIGN_IN",
+			value1 = "Sign In");
+
+		AssertElementPresent(
+			locator1 = "AppManager#MARKETPLACE_DESCRIPTION",
+			value1 = "Liferay Marketplace is an integral part of the Liferay platform experience for all users. Enterprise subscribers also have exclusive access to Liferay Subscription Apps through the Liferay Marketplace. Log in with your Liferay account to browse hundreds of apps to help you build your business or technical solution.");
+	}
+
 	macro deactivateApp {
 		LexiconEntry.openEntryMenu(rowEntry = "${appName}");
 
@@ -68,6 +78,20 @@ definition {
 		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MARKETPLACE_STORE_PORTLET_IFRAME");
 
 		AssertElementPresent(locator1 = "AppManager#APP_RESULT_BOX");
+	}
+
+	macro searchApp {
+		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MARKETPLACE_STORE_PORTLET_IFRAME");
+
+		Type(
+			locator1 = "AppManager#APP_RESULT_BOX",
+			value1 = "${searchName}");
+
+		Click(locator1 = "AppManager#SEARCH_BUTTON");
+
+		AssertElementPresent(
+			key_searchName = "${searchName}",
+			locator1 = "AppManager#APP_TITLE_TYPE");
 	}
 
 	macro uninstallApp {
