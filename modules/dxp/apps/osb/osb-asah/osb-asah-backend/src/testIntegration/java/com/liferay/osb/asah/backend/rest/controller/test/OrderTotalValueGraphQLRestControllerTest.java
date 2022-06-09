@@ -51,11 +51,6 @@ public class OrderTotalValueGraphQLRestControllerTest
 
 	@BeforeEach
 	public void setUp() {
-		Channel channel = new Channel("channel");
-
-		channel.setId(11L);
-		channel.setIsNew(true);
-
 		DataSource dataSource = new DataSource("Liferay Italy");
 
 		dataSource.setCredentialType("Token Authentication");
@@ -69,6 +64,11 @@ public class OrderTotalValueGraphQLRestControllerTest
 		dataSource.setURL("");
 
 		dataSource = _dataSourceRepository.save(dataSource);
+
+		Channel channel = new Channel("channel");
+
+		channel.setId(11L);
+		channel.setIsNew(true);
 
 		channel.addChannelDataSource(
 			new ChannelDataSource(dataSource.getId(), null));

@@ -57,11 +57,6 @@ public class OrderTotalValueDataFetcherTest
 
 	@BeforeEach
 	public void setUp() {
-		Channel channel = new Channel("channel");
-
-		channel.setId(11L);
-		channel.setIsNew(true);
-
 		DataSource dataSource = new DataSource("Liferay Italy");
 
 		dataSource.setCredentialType("Token Authentication");
@@ -75,6 +70,11 @@ public class OrderTotalValueDataFetcherTest
 		dataSource.setURL("");
 
 		dataSource = _dataSourceRepository.save(dataSource);
+
+		Channel channel = new Channel("channel");
+
+		channel.setId(11L);
+		channel.setIsNew(true);
 
 		channel.addChannelDataSource(
 			new ChannelDataSource(dataSource.getId(), null));
@@ -144,10 +144,10 @@ public class OrderTotalValueDataFetcherTest
 
 		dataFetchingEnvironmentBuilder.context(new HashMap<>());
 
-		Stream<Field> fieldsStream = fields.stream();
+		Stream<Field> stream = fields.stream();
 
 		dataFetchingEnvironmentBuilder.selectionSet(
-			() -> fieldsStream.collect(
+			() -> stream.collect(
 				Collectors.toMap(Field::getName, Arrays::asList)));
 
 		return dataFetchingEnvironmentBuilder.build();

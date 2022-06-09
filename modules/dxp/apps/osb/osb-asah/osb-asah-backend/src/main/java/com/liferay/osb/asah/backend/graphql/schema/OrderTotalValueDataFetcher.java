@@ -48,16 +48,16 @@ public class OrderTotalValueDataFetcher
 		DataFetchingFieldSelectionSet dataFetchingFieldSelectionSet =
 			dataFetchingEnvironment.getSelectionSet();
 
-		Map<String, List<Field>> dataFetchingFieldSelectionSetFileds =
+		Map<String, List<Field>> dataFetchingFieldSelectionSetFields =
 			dataFetchingFieldSelectionSet.get();
 
-		Map<String, OrderTotalValue> orderTotalValue =
+		Map<String, OrderTotalValue> orderTotalValues =
 			_commerceDashboardDog.getOrderTotalValues(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
-				dataFetchingFieldSelectionSetFileds.containsKey("trend"),
+				dataFetchingFieldSelectionSetFields.containsKey("trend"),
 				searchQueryContext.getTimeRange());
 
-		return ListUtil.map(orderTotalValue.values(), OrderTotalValueDTO::new);
+		return ListUtil.map(orderTotalValues.values(), OrderTotalValueDTO::new);
 	}
 
 	@Autowired
