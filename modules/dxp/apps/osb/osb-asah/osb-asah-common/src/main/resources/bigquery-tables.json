@@ -725,6 +725,191 @@
 	"order": {
 		"clusteringFields": [
 			"dataSourceId",
+			"channelId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "accountId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "createDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "currencyCode",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "externalReferenceCode",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "id",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "orderDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"fields": [
+					{
+						"mode": "NULLABLE",
+						"name": "cpDefinitionId",
+						"type": "INT64"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "createDate",
+						"type": "TIMESTAMP"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "customFields",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "externalReferenceCode",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "finalPrice",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "id",
+						"type": "INT64"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "modifiedDate",
+						"type": "TIMESTAMP"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "name",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "options",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "parentOrderItemId",
+						"type": "INT64"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "quantity",
+						"type": "INT64"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "sku",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "subscription",
+						"type": "BOOL"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "unitOfMeasure",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "unitPrice",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "userId",
+						"type": "INT64"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "orderItems",
+				"type": "RECORD"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "orderStatus",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "orderTypeExternalReferenceCode",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "orderTypeId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "paymentMethod",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "paymentStatus",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "status",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "total",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "userId",
+				"type": "INT64"
+			}
+		]
+	},
+	"order_raw": {
+		"clusteringFields": [
+			"dataSourceId",
 			"channelId",
 			"uploadType",
 			"uploadDate"
@@ -981,6 +1166,255 @@
 		}
 	},
 	"product": {
+		"clusteringFields": [
+			"dataSourceId",
+			"channelId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "catalogId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "categoryIds",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "createDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "description",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "displayDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "expirationDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "externalReferenceCode",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "id",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "metaDescription",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "metaKeyword",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "metaTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "name",
+				"type": "STRING"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "productChannelIds",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "productId",
+				"type": "INT64"
+			},
+			{
+				"fields": [
+					{
+						"mode": "NULLABLE",
+						"name": "key",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "optionKey",
+						"type": "STRING"
+					},
+					{
+						"mode": "REPEATED",
+						"name": "values",
+						"type": "STRING"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "productOptions",
+				"type": "RECORD"
+			},
+			{
+				"fields": [
+					{
+						"mode": "NULLABLE",
+						"name": "id",
+						"type": "INT64"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "label",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "optionCategoryId",
+						"type": "INT64"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "priority",
+						"type": "NUMERIC"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "specificationId",
+						"type": "INT64"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "specificationKey",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "value",
+						"type": "STRING"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "productSpecifications",
+				"type": "RECORD"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "productType",
+				"type": "STRING"
+			},
+			{
+				"fields": [
+					{
+						"mode": "NULLABLE",
+						"name": "cost",
+						"type": "NUMERIC"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "discontinued",
+						"type": "BOOL"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "displayDate",
+						"type": "TIMESTAMP"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "expirationDate",
+						"type": "TIMESTAMP"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "externalReferenceCode",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "gtin",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "id",
+						"type": "INT64"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "manufacturerPartNumber",
+						"type": "STRING"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "published",
+						"type": "BOOL"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "purchasable",
+						"type": "BOOL"
+					},
+					{
+						"mode": "NULLABLE",
+						"name": "sku",
+						"type": "STRING"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "skus",
+				"type": "RECORD"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "status",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "subscriptionEnabled",
+				"type": "BOOL"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "tags",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "urls",
+				"type": "STRING"
+			}
+		]
+	},
+	"product_raw": {
 		"clusteringFields": [
 			"dataSourceId",
 			"channelId",
