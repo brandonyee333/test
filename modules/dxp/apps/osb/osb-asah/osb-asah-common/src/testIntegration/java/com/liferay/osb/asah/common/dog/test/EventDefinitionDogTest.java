@@ -200,14 +200,19 @@ public class EventDefinitionDogTest
 
 		Assertions.assertNotNull(eventDefinition);
 
+		String expectedDescription = eventDefinition.getDescription();
+		String expectedDisplayName = eventDefinition.getDisplayName();
+
 		_eventDefinitionDog.blockEventDefinitions(
 			Collections.singletonList(eventDefinition.getId()));
 
 		eventDefinition = _eventDefinitionDog.fetchEventDefinitionByName(
 			"subscribed");
 
-		Assertions.assertNull(eventDefinition.getDescription());
-		Assertions.assertNull(eventDefinition.getDisplayName());
+		Assertions.assertEquals(
+			expectedDescription, eventDefinition.getDescription());
+		Assertions.assertEquals(
+			expectedDisplayName, eventDefinition.getDisplayName());
 
 		ZonedDateTime zonedDateTime = ZonedDateTime.of(
 			2021, 4, 19, 12, 35, 0, 0, ZoneOffset.UTC);
@@ -265,9 +270,6 @@ public class EventDefinitionDogTest
 		for (Long eventDefinitionId : eventDefinitionIds) {
 			EventDefinition eventDefinition =
 				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
-
-			Assertions.assertNull(eventDefinition.getDescription());
-			Assertions.assertNull(eventDefinition.getDisplayName());
 
 			Tuple2 tuple2 = expectedBlockedEventInfos.get(
 				eventDefinition.getName());
