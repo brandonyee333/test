@@ -3,8 +3,8 @@ MERGE INTO
 USING
 	(
 		SELECT
-			`order`.*,
-			analyticsDeleteMessage.deleted
+			analyticsDeleteMessage.deleted,
+			`order`.*
 		FROM (
 			SELECT
 				*
@@ -13,24 +13,24 @@ USING
 					*,
 					ROW_NUMBER() OVER (
 						PARTITION BY
-							`channelId`, `id`
+							channelId, id
 						ORDER BY
-							`uploadDate` DESC
-					) AS `rowNumber`
+							uploadDate DESC
+					) AS rowNumber
 				FROM
 					`{{ dag.default_args['ac_project_id'] }}.order_raw`
-				) AS latest_order
+				)
 			WHERE
-				`rowNumber` = 1
+				rowNumber = 1
 		) AS `order`
 		LEFT JOIN (
 			SELECT
-			  *
+				*
 			FROM (
 				SELECT
-					projectId,
 					dataSourceId,
 					TRUE AS deleted,
+					projectId,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
@@ -51,16 +51,16 @@ USING
 					`{{ dag.default_args['ac_project_id'] }}.dxpentity`
 				WHERE
 					type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-			  ) AS analyticsDeleteMessage_inner
+			)
 			WHERE
-			  `className` = 'com.liferay.commerce.model.CommerceOrder'
-		) as analyticsDeleteMessage
+				className = 'com.liferay.commerce.model.CommerceOrder'
+		) AS analyticsDeleteMessage
 		ON
-			`order`.projectId = analyticsDeleteMessage.projectId AND
-			`order`.datasourceId = analyticsDeleteMessage.datasourceId AND
-			`order`.id = analyticsDeleteMessage.classPK
+			order.dataSourceId = analyticsDeleteMessage.dataSourceId AND
+			order.id = analyticsDeleteMessage.classPK AND
+			order.projectId = analyticsDeleteMessage.projectId
 		WHERE
-			`order`.uploadDate >=
+			order.uploadDate >=
 				{% if prev_start_date_success is not none %}
 					'{{ prev_start_date_success }}'
 				{% else %}
@@ -68,19 +68,15 @@ USING
 				{% endif %}
 		) AS staging
 ON
-	staging.id = replica.id AND
 	staging.dataSourceId = replica.dataSourceId AND
+	staging.id = replica.id AND
 	staging.projectId = replica.projectId
 WHEN MATCHED AND staging.deleted IS NULL AND staging.modifiedDate > replica.modifiedDate THEN
 	UPDATE SET
-		replica.dataSourceId = staging.dataSourceId,
-		replica.projectId = staging.projectId,
 		replica.accountId = staging.accountId,
 		replica.channelId = staging.channelId,
-		replica.createDate = staging.createDate,
 		replica.currencyCode = staging.currencyCode,
 		replica.externalReferenceCode = staging.externalReferenceCode,
-		replica.id = staging.id,
 		replica.modifiedDate = staging.modifiedDate,
 		replica.orderDate = staging.orderDate,
 		replica.orderItems = staging.orderItems,
@@ -95,12 +91,11 @@ WHEN MATCHED AND staging.deleted = true THEN
 	DELETE
 WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 	INSERT (
-		`dataSourceId`,
-		`projectId`,
 		`accountId`,
 		`channelId`,
 		`createDate`,
 		`currencyCode`,
+		`dataSourceId`,
 		`externalReferenceCode`,
 		`id`,
 		`modifiedDate`,
@@ -110,17 +105,17 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		`orderTypeId`,
 		`paymentMethod`,
 		`paymentStatus`,
+		`projectId`,
 		`status`,
 		`total`,
 		`userId`
 	)
 	VALUES (
-		staging.dataSourceId,
-		staging.projectId,
 		staging.accountId,
 		staging.channelId,
 		staging.createDate,
 		staging.currencyCode,
+		staging.dataSourceId,
 		staging.externalReferenceCode,
 		staging.id,
 		staging.modifiedDate,
@@ -130,6 +125,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		staging.orderTypeId,
 		staging.paymentMethod,
 		staging.paymentStatus,
+		staging.projectId,
 		staging.status,
 		staging.total,
 		staging.userId

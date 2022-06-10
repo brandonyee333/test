@@ -729,23 +729,13 @@
 		],
 		"fields": [
 			{
-				"mode": "REQUIRED",
-				"name": "projectId",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "dataSourceId",
+				"mode": "NULLABLE",
+				"name": "accountId",
 				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",
 				"name": "channelId",
-				"type": "INT64"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "accountId",
 				"type": "INT64"
 			},
 			{
@@ -757,6 +747,11 @@
 				"mode": "NULLABLE",
 				"name": "currencyCode",
 				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -889,6 +884,11 @@
 				"mode": "NULLABLE",
 				"name": "paymentStatus",
 				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
 			},
 			{
 				"mode": "NULLABLE",
@@ -916,33 +916,13 @@
 		],
 		"fields": [
 			{
-				"mode": "REQUIRED",
-				"name": "projectId",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "dataSourceId",
+				"mode": "NULLABLE",
+				"name": "accountId",
 				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",
 				"name": "channelId",
-				"type": "INT64"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "uploadType",
-				"type": "STRING"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "uploadDate",
-				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "accountId",
 				"type": "INT64"
 			},
 			{
@@ -954,6 +934,11 @@
 				"mode": "NULLABLE",
 				"name": "currencyCode",
 				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -1088,6 +1073,11 @@
 				"type": "INT64"
 			},
 			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
 				"mode": "NULLABLE",
 				"name": "status",
 				"type": "INT64"
@@ -1095,6 +1085,16 @@
 			{
 				"mode": "NULLABLE",
 				"name": "total",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "uploadDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "uploadType",
 				"type": "STRING"
 			},
 			{
@@ -1172,21 +1172,6 @@
 		],
 		"fields": [
 			{
-				"mode": "REQUIRED",
-				"name": "channelId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "dataSourceId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "projectId",
-				"type": "STRING"
-			},
-			{
 				"mode": "NULLABLE",
 				"name": "catalogId",
 				"type": "INT64"
@@ -1197,9 +1182,19 @@
 				"type": "INT64"
 			},
 			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
 				"mode": "NULLABLE",
 				"name": "createDate",
 				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -1328,6 +1323,11 @@
 			{
 				"mode": "NULLABLE",
 				"name": "productType",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "projectId",
 				"type": "STRING"
 			},
 			{
@@ -1423,31 +1423,6 @@
 		],
 		"fields": [
 			{
-				"mode": "REQUIRED",
-				"name": "channelId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "dataSourceId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "projectId",
-				"type": "STRING"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "uploadDate",
-				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "uploadType",
-				"type": "STRING"
-			},
-			{
 				"mode": "NULLABLE",
 				"name": "catalogId",
 				"type": "INT64"
@@ -1458,9 +1433,19 @@
 				"type": "INT64"
 			},
 			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
 				"mode": "NULLABLE",
 				"name": "createDate",
 				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
@@ -1592,6 +1577,11 @@
 				"type": "STRING"
 			},
 			{
+				"mode": "REQUIRED",
+				"name": "projectId",
+				"type": "STRING"
+			},
+			{
 				"fields": [
 					{
 						"mode": "NULLABLE",
@@ -1666,6 +1656,16 @@
 			{
 				"mode": "REPEATED",
 				"name": "tags",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "uploadDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "uploadType",
 				"type": "STRING"
 			},
 			{

@@ -3,8 +3,8 @@ MERGE INTO
 USING
 	(
 		SELECT
-			product.*,
-			analyticsDeleteMessage.deleted
+			analyticsDeleteMessage.deleted,
+			product.*
 		FROM (
 			SELECT
 				*
@@ -13,24 +13,24 @@ USING
 					*,
 					ROW_NUMBER() OVER (
 						PARTITION BY
-							`channelId`, `id`
+							channelId, id
 						ORDER BY
-							`uploadDate` DESC
-					) AS `rowNumber`
+							uploadDate DESC
+					) AS rowNumber
 				FROM
 					`{{ dag.default_args['ac_project_id'] }}.product_raw`
-				) AS latest_product
+			)
 			WHERE
-				`rowNumber` = 1
+				rowNumber = 1
 		) AS product
 		LEFT JOIN (
 			SELECT
 				*
 			FROM (
 				SELECT
-					projectId,
 					dataSourceId,
 					TRUE AS deleted,
+					projectId,
 					(
 						SELECT
 							SAFE_CAST(value AS INT64)
@@ -51,14 +51,14 @@ USING
 					`{{ dag.default_args['ac_project_id'] }}.dxpentity`
 				WHERE
 					type = 'com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage'
-			) AS analyticsDeleteMessage_inner
+			)
 			WHERE
-				`className` = 'com.liferay.commerce.product.model.CPDefinition'
-		) as analyticsDeleteMessage
+				className = 'com.liferay.commerce.product.model.CPDefinition'
+		) AS analyticsDeleteMessage
 		ON
-			product.projectId = analyticsDeleteMessage.projectId AND
 			product.datasourceId = analyticsDeleteMessage.datasourceId AND
-			product.id = analyticsDeleteMessage.classPK
+			product.id = analyticsDeleteMessage.classPK AND
+			product.projectId = analyticsDeleteMessage.projectId
 		WHERE
 			product.uploadDate >=
 				{% if prev_start_date_success is not none %}
@@ -68,22 +68,18 @@ USING
 				{% endif %}
 		) AS staging
 ON
-	staging.id = replica.id AND
 	staging.dataSourceId = replica.dataSourceId AND
+	staging.id = replica.id AND
 	staging.projectId = replica.projectId
 WHEN MATCHED AND staging.deleted IS NULL AND staging.modifiedDate > replica.modifiedDate THEN
 	UPDATE SET
-		replica.channelId = staging.channelId,
-		replica.dataSourceId = staging.dataSourceId,
-		replica.projectId = staging.projectId,
 		replica.catalogId = staging.catalogId,
 		replica.categoryIds = staging.categoryIds,
-		replica.createDate = staging.createDate,
+		replica.channelId = staging.channelId,
 		replica.description = staging.description,
 		replica.displayDate = staging.displayDate,
 		replica.expirationDate = staging.expirationDate,
 		replica.externalReferenceCode = staging.externalReferenceCode,
-		replica.id = staging.id,
 		replica.metaDescription = staging.metaDescription,
 		replica.metaKeyword = staging.metaKeyword,
 		replica.metaTitle = staging.metaTitle,
@@ -103,12 +99,11 @@ WHEN MATCHED AND staging.deleted = true THEN
 	DELETE
 WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 	INSERT (
-		`channelId`,
-		`dataSourceId`,
-		`projectId`,
 		`catalogId`,
 		`categoryIds`,
+		`channelId`,
 		`createDate`,
+		`dataSourceId`,
 		`description`,
 		`displayDate`,
 		`expirationDate`,
@@ -124,6 +119,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		`productOptions`,
 		`productSpecifications`,
 		`productType`,
+		`projectId`,
 		`skus`,
 		`status`,
 		`subscriptionEnabled`,
@@ -131,12 +127,11 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		`urls`
 	)
 	VALUES (
-		staging.channelId,
-		staging.dataSourceId,
-		staging.projectId,
 		staging.catalogId,
 		staging.categoryIds,
+		staging.channelId,
 		staging.createDate,
+		staging.dataSourceId,
 		staging.description,
 		staging.displayDate,
 		staging.expirationDate,
@@ -152,6 +147,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		staging.productOptions,
 		staging.productSpecifications,
 		staging.productType,
+		staging.projectId,
 		staging.skus,
 		staging.status,
 		staging.subscriptionEnabled,
