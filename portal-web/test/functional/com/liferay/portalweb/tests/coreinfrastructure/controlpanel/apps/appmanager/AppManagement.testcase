@@ -841,4 +841,59 @@ definition {
 		AssertElementNotPresent(locator1 = "Portlet#HEADER_DUPLICATE");
 	}
 
+	@description = "This test view purchased apps in marketplace purchased page."
+	@priority = "3"
+	test ViewPurchasedApp {
+		task ("When login marketplace store") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Store");
+
+			AppManager.loginMarketplaceStore();
+
+			Navigator.openURL();
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Purchased");
+
+			AssertElementPresent(
+				locator1 = "UserBar#USER_SIGN_OUT",
+				value1 = "Sign Out");
+		}
+
+		task ("Then go to marketplace store and search apps and purchase") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Marketplace",
+				panel = "Control Panel",
+				portlet = "Store");
+
+			WaitForPageLoad();
+
+			AppManager.searchApp(searchName = "Control Panel Documentation");
+
+			WaitForPageLoad();
+
+			AppManager.purchaseApp(
+				searchName = "Control Panel Documentation",
+				type = "Free");
+		}
+
+		task ("Then view purchased app in purchased portlet") {
+			Click(
+				key_text = "See Purchased",
+				locator1 = "Button#ANY");
+
+			WaitForPageLoad();
+
+			SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MARKETPLACE_PURCHASED_PORTLET_IFRAME");
+
+			AssertElementPresent(
+				key_searchName = "Control Panel Documentation",
+				locator1 = "AppManager#APP_TITLE_TYPE");
+		}
+	}
+
 }
