@@ -267,8 +267,6 @@ public class EventDefinitionDog {
 
 		eventDefinition.setBlockedReasonType(
 			EventDefinition.BlockedReasonType.BLOCKED_BY_USER);
-		eventDefinition.setDescription(null);
-		eventDefinition.setDisplayName(null);
 
 		_eventDefinitionRepository.save(eventDefinition);
 	}
@@ -303,7 +301,8 @@ public class EventDefinitionDog {
 		eventDefinition.setBlockedLastSeenURL(null);
 		eventDefinition.setBlockedReasonType(null);
 		eventDefinition.setDisplayName(
-			_getDisplayName(null, eventDefinition.getName()));
+			_getDisplayName(
+				eventDefinition.getDisplayName(), eventDefinition.getName()));
 
 		_validateEventDefinitionLimit(1);
 
