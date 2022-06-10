@@ -80,6 +80,36 @@ definition {
 		AssertElementPresent(locator1 = "AppManager#APP_RESULT_BOX");
 	}
 
+	macro purchaseApp {
+		var key_searchName = "${searchName}";
+
+		AssertElementPresent(
+			key_searchName = "${searchName}",
+			locator1 = "AppManager#APP_TITLE_TYPE");
+
+		AssertClick(
+			key_searchName = "${searchName}",
+			locator1 = "AppManager#APP_TITLE_TYPE",
+			value1 = "${searchName}");
+
+		AssertClick(
+			key_type = "${type}",
+			locator1 = "AppManager#APP_PURCHASE",
+			value1 = "${type}");
+
+		WaitForPageLoad();
+
+		Click(locator1 = "AppManager#APP_PURCHASE_USER_SELECT");
+
+		Click(locator1 = "AppManager#APP_PURCHASE_AGREE_CHECKBOX");
+
+		Click(locator1 = "AppManager#APP_SUBMIT");
+
+		WaitForPageLoad();
+
+		AssertElementPresent(locator1 = "AppManager#APP_PURCHASE_INFO");
+	}
+
 	macro searchApp {
 		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MARKETPLACE_STORE_PORTLET_IFRAME");
 
