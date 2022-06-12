@@ -406,7 +406,7 @@ public class FinalizeUserSessionArm {
 			).mustNot(
 				QueryBuilders.existsQuery("sessionId")
 			),
-			true, script, _COLLECTION_NAMES);
+			false, script, _COLLECTION_NAMES);
 	}
 
 	private void _updatePageBounces(
