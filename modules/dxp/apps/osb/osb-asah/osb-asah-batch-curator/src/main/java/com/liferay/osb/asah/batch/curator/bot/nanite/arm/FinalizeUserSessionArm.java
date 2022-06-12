@@ -535,7 +535,7 @@ public class FinalizeUserSessionArm {
 	private static final String[] _COLLECTION_NAMES = {
 		"blog-clicks", "blog-social-shares", "blog-traffic-sources", "blogs",
 		"custom-assets", "document-libraries", "forms", "journal-clicks",
-		"journals", "pages", "page-referrers"
+		"journals", "page-referrers"
 	};
 
 	private static final int _INACTIVITY_TIMEOUT_MINUTES = 30;
