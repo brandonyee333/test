@@ -47,6 +47,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
@@ -118,7 +119,7 @@ public class FinalizeUserSessionArm {
 		_updateAssetBuckets(userSession);
 
 		JSONArray pagesJSONArray = _getPagesJSONArray(
-			userSession.getDataSourceId(), userSession.getId());
+			userSession.getDataSourceId(), userSession);
 
 		if (pagesJSONArray.length() == 0) {
 			return;
@@ -223,7 +224,7 @@ public class FinalizeUserSessionArm {
 	private JSONObject _getExitPageJSONObject(UserSession userSession) {
 		JSONArray exitPageJSONArray = _cerebroInfoElasticsearchInvoker.get(
 			"pages", SortBuilderUtil.fieldSort("lastEventDate", SortOrder.DESC),
-			QueryBuilders.termQuery("sessionId", userSession.getId()), 1);
+			_getUserSessionAssetQueryBuilder(userSession), 1);
 
 		if (exitPageJSONArray.length() == 0) {
 			return null;
@@ -265,7 +266,7 @@ public class FinalizeUserSessionArm {
 	}
 
 	private JSONArray _getPagesJSONArray(
-		String dataSourceId, String userSessionId) {
+		String dataSourceId, UserSession userSession) {
 
 		JSONArray pagesJSONArray = new JSONArray();
 
@@ -278,7 +279,7 @@ public class FinalizeUserSessionArm {
 
 		while (true) {
 			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("sessionId", userSessionId)
+				_getUserSessionAssetQueryBuilder(userSession)
 			).filter(
 				QueryBuilders.termQuery("dataSourceId", dataSourceId)
 			);
@@ -307,8 +308,12 @@ public class FinalizeUserSessionArm {
 			}
 
 			for (SearchHit searchHit : searchHitsArray) {
-				pagesJSONArray.put(
-					new JSONObject(searchHit.getSourceAsString()));
+				JSONObject pageJSONObject = new JSONObject(
+					searchHit.getSourceAsString());
+
+				pageJSONObject.put("sessionId", userSession.getId());
+
+				pagesJSONArray.put(pageJSONObject);
 			}
 
 			JSONObject jsonObject = pagesJSONArray.getJSONObject(
@@ -381,6 +386,25 @@ public class FinalizeUserSessionArm {
 		);
 	}
 
+	private QueryBuilder _getUserSessionAssetQueryBuilder(
+		UserSession userSession) {
+
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery(
+				"dataSourceId", userSession.getDataSourceId())
+		).filter(
+			QueryBuilders.rangeQuery(
+				"lastEventDate"
+			).gte(
+				DateUtil.toUTCString(userSession.getFirstEventDate())
+			).lte(
+				DateUtil.toUTCString(userSession.getLastEventDate())
+			)
+		).filter(
+			QueryBuilders.termQuery("userId", userSession.getUserId())
+		);
+	}
+
 	private void _updateAssetBuckets(UserSession userSession) {
 		Script script = new Script(
 			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
@@ -389,20 +413,7 @@ public class FinalizeUserSessionArm {
 
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceId", userSession.getDataSourceId())
-				).filter(
-					QueryBuilders.rangeQuery(
-						"lastEventDate"
-					).gte(
-						DateUtil.toUTCString(userSession.getFirstEventDate())
-					).lte(
-						DateUtil.toUTCString(userSession.getLastEventDate())
-					)
-				).filter(
-					QueryBuilders.termQuery("userId", userSession.getUserId())
-				)
+				_getUserSessionAssetQueryBuilder(userSession)
 			).mustNot(
 				QueryBuilders.existsQuery("sessionId")
 			),
