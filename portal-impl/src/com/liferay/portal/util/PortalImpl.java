@@ -8883,7 +8883,7 @@ public class PortalImpl implements Portal {
 
 			for (Portlet portlet : layoutTypePortlet.getAllPortlets()) {
 				if (portletId.equals(portlet.getPortletId()) ||
-					 portletId.equals(portlet.getRootPortletId())) {
+					portletId.equals(portlet.getRootPortletId())) {
 
 					return layout.getPlid();
 				}
