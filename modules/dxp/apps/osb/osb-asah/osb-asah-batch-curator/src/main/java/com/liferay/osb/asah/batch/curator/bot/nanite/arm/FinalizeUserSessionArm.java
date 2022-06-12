@@ -68,10 +68,6 @@ import org.springframework.stereotype.Component;
 public class FinalizeUserSessionArm {
 
 	public void processSession(UserSession userSession) {
-		if (userSession.getCompleted()) {
-			_clearPageSessionAttributes(userSession);
-		}
-
 		updateActivitiesAndAssets(userSession);
 
 		JSONObject partialUserSessionJSONObject = new JSONObject();
@@ -152,34 +148,6 @@ public class FinalizeUserSessionArm {
 		if (elasticsearchBulkRequestBuilder.hasActions()) {
 			elasticsearchBulkRequestBuilder.get();
 		}
-	}
-
-	private void _clearPageSessionAttributes(UserSession userSession) {
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("sessionId", userSession.getId())
-		).filter(
-			BoolQueryBuilderUtil.should(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.termQuery("bounce", 0))
-			).should(
-				QueryBuilders.termQuery("entrances", 1)
-			).should(
-				QueryBuilders.termQuery("exits", 1)
-			).should(
-				QueryBuilders.termQuery("views", 1)
-			)
-		);
-
-		Script script = new Script(
-			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-			"ctx._source.bounce = 0; ctx._source.entrances = 0; " +
-				"ctx._source.exits = 0; ctx._source.views = " +
-					"ctx._source.directAccessDates.size() + " +
-						"ctx._source.indirectAccessDates.size();",
-			Collections.emptyMap());
-
-		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			boolQueryBuilder, true, script, "pages");
 	}
 
 	private String _getCompleteReason(UserSession userSession) {
@@ -311,6 +279,9 @@ public class FinalizeUserSessionArm {
 				JSONObject pageJSONObject = new JSONObject(
 					searchHit.getSourceAsString());
 
+				pageJSONObject.put("bounce", 0);
+				pageJSONObject.put("entrances", 0);
+				pageJSONObject.put("exits", 0);
 				pageJSONObject.put("sessionId", userSession.getId());
 
 				pagesJSONArray.put(pageJSONObject);
