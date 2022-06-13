@@ -699,6 +699,32 @@ public class EventAttributeDefinitionDogTest
 	}
 
 	@Test
+	public void testUpdateEventAttributeDefinitionDescriptionBlank() {
+		EventAttributeDefinition eventAttributeDefinition1 =
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"viewDuration");
+
+		eventAttributeDefinition1.setDescription("New Description");
+
+		EventAttributeDefinition eventAttributeDefinition2 =
+			_eventAttributeDefinitionDog.updateEventAttributeDefinition(
+				null, "New Description", null,
+				eventAttributeDefinition1.getId(), null, null);
+
+		Assertions.assertEquals(
+			eventAttributeDefinition1, eventAttributeDefinition2);
+
+		eventAttributeDefinition1.setDescription("");
+
+		eventAttributeDefinition2 =
+			_eventAttributeDefinitionDog.updateEventAttributeDefinition(
+				null, "", null, eventAttributeDefinition1.getId(), null, null);
+
+		Assertions.assertEquals(
+			eventAttributeDefinition1, eventAttributeDefinition2);
+	}
+
+	@Test
 	public void testUpdateEventAttributeDefinitionDisplayName() {
 		EventAttributeDefinition eventAttributeDefinition1 =
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
