@@ -475,7 +475,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			).mustNot(
 				QueryBuilders.existsQuery("sessionId")
 			),
-			true, script, "activities");
+			false, script, "activities");
 	}
 
 	private static final Map<String, String[]> _eventIds =
