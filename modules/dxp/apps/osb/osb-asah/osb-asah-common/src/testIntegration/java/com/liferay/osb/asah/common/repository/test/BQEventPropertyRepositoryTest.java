@@ -90,7 +90,7 @@ public class BQEventPropertyRepositoryTest
 	@Test
 	public void testSearchValues() {
 		List<String> values = _bqEventPropertyRepository.searchValues(
-			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 100));
+			1L, "test", "test", "Attribute Value", PageRequest.of(0, 100));
 
 		Assertions.assertEquals(4, values.size());
 
@@ -103,19 +103,24 @@ public class BQEventPropertyRepositoryTest
 		}
 
 		values = _bqEventPropertyRepository.searchValues(
-			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(0, 3));
+			1L, "pageTitle", "test", "Test", PageRequest.of(0, 100));
+
+		Assertions.assertEquals(1, values.size());
+
+		values = _bqEventPropertyRepository.searchValues(
+			1L, "test", "test", "Attribute Value", PageRequest.of(0, 3));
 
 		Assertions.assertEquals(3, values.size());
 
 		values = _bqEventPropertyRepository.searchValues(
-			1L, 3001L, 3002L, "Attribute Value", PageRequest.of(1, 3));
+			1L, "test", "test", "Attribute Value", PageRequest.of(1, 3));
 
 		Assertions.assertEquals(1, values.size());
 
 		Assertions.assertEquals(
 			4,
 			_bqEventPropertyRepository.countValues(
-				1L, 3001L, 3002L, "Attribute Value"));
+				1L, "test", "test", "Attribute Value"));
 	}
 
 	private Date _getExpectedDate(Date date, int deltaDays) {
