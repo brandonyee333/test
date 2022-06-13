@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
-import com.liferay.osb.asah.common.model.OrderTotalValue;
+import com.liferay.osb.asah.common.model.CurrencyValue;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQOrderRepository;
 
@@ -43,9 +43,108 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommerceDashboardDog {
 
-	public Map<String, OrderTotalValue> getOrderTotalValues(
+	public Map<String, CurrencyValue> getOrderIncompleteCurrencyValues(
 		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
 
+		List<Long> dataSourceIds = _getDataSourceIds(channelId);
+
+		Map<String, BigDecimal> currentOrderIncompleteCurrencyValues =
+			_bqOrderRepository.getOrderIncompleteCurrencyValues(
+				dataSourceIds, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Map<String, BigDecimal> previousOrderIncompleteCurrencyValues = null;
+
+		if (compareToPrevious) {
+			TimeRange previousTimeRange = _getPreviousTimeRange(timeRange);
+
+			previousOrderIncompleteCurrencyValues =
+				_bqOrderRepository.getOrderIncompleteCurrencyValues(
+					dataSourceIds, previousTimeRange.getEndLocalDateTime(),
+					previousTimeRange.getStartLocalDateTime(),
+					_timeZoneDog.getTimeZoneId());
+		}
+
+		Map<String, CurrencyValue> orderIncompleteCurrencyValues =
+			new HashMap<>();
+
+		for (Map.Entry<String, BigDecimal> currentOrderTotalValue :
+				currentOrderIncompleteCurrencyValues.entrySet()) {
+
+			String currencyCode = currentOrderTotalValue.getKey();
+
+			CurrencyValue currencyValue = new CurrencyValue(
+				currencyCode, null, currentOrderTotalValue.getValue());
+
+			if (compareToPrevious) {
+				BigDecimal previousOrderTotalValue =
+					previousOrderIncompleteCurrencyValues.getOrDefault(
+						currencyCode, BigDecimal.ZERO);
+
+				currencyValue.setPercentageVariation(
+					_getPercentageVariation(
+						currentOrderTotalValue.getValue(),
+						previousOrderTotalValue));
+			}
+
+			orderIncompleteCurrencyValues.put(currencyCode, currencyValue);
+		}
+
+		return orderIncompleteCurrencyValues;
+	}
+
+	public Map<String, CurrencyValue> getOrderTotalCurrencyValues(
+		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
+
+		List<Long> dataSourceIds = _getDataSourceIds(channelId);
+
+		Map<String, BigDecimal> currentOrderTotalCurrencyValues =
+			_bqOrderRepository.getOrderTotalCurrencyValues(
+				dataSourceIds, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Map<String, BigDecimal> previousOrderTotalCurrencyValues = null;
+
+		if (compareToPrevious) {
+			TimeRange previousTimeRange = _getPreviousTimeRange(timeRange);
+
+			previousOrderTotalCurrencyValues =
+				_bqOrderRepository.getOrderTotalCurrencyValues(
+					dataSourceIds, previousTimeRange.getEndLocalDateTime(),
+					previousTimeRange.getStartLocalDateTime(),
+					_timeZoneDog.getTimeZoneId());
+		}
+
+		Map<String, CurrencyValue> orderTotalCurrencyValues = new HashMap<>();
+
+		for (Map.Entry<String, BigDecimal> currentOrderTotalValue :
+				currentOrderTotalCurrencyValues.entrySet()) {
+
+			String currencyCode = currentOrderTotalValue.getKey();
+
+			CurrencyValue currencyValue = new CurrencyValue(
+				currencyCode, null, currentOrderTotalValue.getValue());
+
+			if (compareToPrevious) {
+				BigDecimal previousOrderTotalValue =
+					previousOrderTotalCurrencyValues.getOrDefault(
+						currencyCode, BigDecimal.ZERO);
+
+				currencyValue.setPercentageVariation(
+					_getPercentageVariation(
+						currentOrderTotalValue.getValue(),
+						previousOrderTotalValue));
+			}
+
+			orderTotalCurrencyValues.put(currencyCode, currencyValue);
+		}
+
+		return orderTotalCurrencyValues;
+	}
+
+	private List<Long> _getDataSourceIds(Long channelId) {
 		Channel channel = _channelDog.fetchChannel(channelId);
 
 		Set<ChannelDataSource> channelDataSources =
@@ -53,64 +152,11 @@ public class CommerceDashboardDog {
 
 		Stream<ChannelDataSource> stream = channelDataSources.stream();
 
-		List<Long> dataSourceIds = stream.map(
+		return stream.map(
 			ChannelDataSource::getDataSourceId
 		).collect(
 			Collectors.toList()
 		);
-
-		Map<String, BigDecimal> currentOrderTotalValues =
-			_bqOrderRepository.getOrderTotalValues(
-				dataSourceIds, timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
-
-		Map<String, BigDecimal> previousOrderTotalValues = null;
-
-		if (compareToPrevious) {
-			LocalDateTime previousEndLocalDateTime =
-				timeRange.getStartLocalDateTime();
-
-			previousEndLocalDateTime = previousEndLocalDateTime.minusDays(1);
-			previousEndLocalDateTime = previousEndLocalDateTime.with(
-				LocalTime.MAX);
-
-			LocalDateTime previousStartLocalDateTime =
-				previousEndLocalDateTime.with(LocalTime.MIN);
-
-			previousStartLocalDateTime = previousStartLocalDateTime.minusDays(
-				timeRange.getDeltaDays() - 1);
-
-			previousOrderTotalValues = _bqOrderRepository.getOrderTotalValues(
-				dataSourceIds, previousEndLocalDateTime,
-				previousStartLocalDateTime, _timeZoneDog.getTimeZoneId());
-		}
-
-		Map<String, OrderTotalValue> orderTotalValues = new HashMap<>();
-
-		for (Map.Entry<String, BigDecimal> currentOrderTotalValue :
-				currentOrderTotalValues.entrySet()) {
-
-			String currencyCode = currentOrderTotalValue.getKey();
-
-			OrderTotalValue orderTotalValue = new OrderTotalValue(
-				currencyCode, null, currentOrderTotalValue.getValue());
-
-			if (compareToPrevious) {
-				BigDecimal previousOrderTotalValue =
-					previousOrderTotalValues.getOrDefault(
-						currencyCode, BigDecimal.ZERO);
-
-				orderTotalValue.setPercentageVariation(
-					_getPercentageVariation(
-						currentOrderTotalValue.getValue(),
-						previousOrderTotalValue));
-			}
-
-			orderTotalValues.put(currencyCode, orderTotalValue);
-		}
-
-		return orderTotalValues;
 	}
 
 	private double _getPercentageVariation(
@@ -118,9 +164,32 @@ public class CommerceDashboardDog {
 
 		BigDecimal delta = currentValue.subtract(previousValue);
 
+		if (currentValue.equals(BigDecimal.ZERO) ||
+			currentValue.equals(BigDecimal.valueOf(0.0))) {
+
+			return 0.0;
+		}
+
 		delta = delta.divide(currentValue, RoundingMode.HALF_UP);
 
 		return delta.doubleValue() * 100;
+	}
+
+	private TimeRange _getPreviousTimeRange(TimeRange timeRange) {
+		LocalDateTime previousEndLocalDateTime =
+			timeRange.getStartLocalDateTime();
+
+		previousEndLocalDateTime = previousEndLocalDateTime.minusDays(1);
+		previousEndLocalDateTime = previousEndLocalDateTime.with(LocalTime.MAX);
+
+		LocalDateTime previousStartLocalDateTime =
+			previousEndLocalDateTime.with(LocalTime.MIN);
+
+		previousStartLocalDateTime = previousStartLocalDateTime.minusDays(
+			timeRange.getDeltaDays() - 1);
+
+		return TimeRange.of(
+			previousEndLocalDateTime, previousStartLocalDateTime);
 	}
 
 	@Autowired
