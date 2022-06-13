@@ -112,12 +112,44 @@ public class BQEventRepositoryTest
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
-	public void testCountTotalBQEvents() {
+	public void testCountTotalBQEvents1() {
 		Assertions.assertEquals(
 			8L,
 			_bqEventRepository.countTotalBQEvents(
 				1L,
 				Collections.singletonList(
+					new EventAnalysisFilter(
+						"56789", AttributeType.EVENT,
+						EventAttributeDefinition.DataType.DATE, null,
+						"testDate", "between",
+						Arrays.asList("2021-05-10", "2021-06-01"))),
+				246810L,
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
+				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				_timeZoneDog.getTimeZoneId()));
+	}
+
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
+	@Test
+	public void testCountTotalBQEvents2() {
+		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
+			_eventAttributeDefinitionRepository.findByName("pageTitle");
+
+		Assertions.assertTrue(eventAttributeDefinitionOptional.isPresent());
+
+		EventAttributeDefinition eventAttributeDefinition =
+			eventAttributeDefinitionOptional.get();
+
+		Assertions.assertEquals(
+			9L,
+			_bqEventRepository.countTotalBQEvents(
+				1L,
+				Arrays.asList(
+					new EventAnalysisFilter(
+						String.valueOf(eventAttributeDefinition.getId()),
+						AttributeType.EVENT,
+						EventAttributeDefinition.DataType.STRING, null,
+						"pageTitle", "contains", Arrays.asList("Test 16")),
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
 						EventAttributeDefinition.DataType.DATE, null,
