@@ -773,6 +773,21 @@ public class BQEventRepositoryImpl
 			);
 		}
 
+		Set<String> keySet = eventAnalysisFiltersByField.keySet();
+
+		Stream<String> keyStream = keySet.stream();
+
+		Long localAttributesCount = Long.valueOf(
+			keyStream.filter(
+				key -> {
+					EventAttributeDefinition eventAttributeDefinition =
+						eventAttributeDefinitionMap.get(Long.valueOf(key));
+
+					return eventAttributeDefinition.getType() ==
+						EventAttributeDefinition.Type.LOCAL;
+				}
+			).count());
+
 		SelectHavingConditionStep<Record1<Object>> selectHavingConditionStep =
 			selectJoinStep.where(
 				conditions
@@ -782,7 +797,7 @@ public class BQEventRepositoryImpl
 				DSL.count(
 					field
 				).ge(
-					eventAnalysisFiltersByField.size()
+					localAttributesCount.intValue()
 				)
 			);
 
