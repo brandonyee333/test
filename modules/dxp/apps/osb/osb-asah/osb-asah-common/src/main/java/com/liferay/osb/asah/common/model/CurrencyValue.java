@@ -21,12 +21,12 @@ import java.util.Objects;
 /**
  * @author Riccardo Ferrari
  */
-public class OrderTotalValue {
+public class CurrencyValue {
 
-	public OrderTotalValue() {
+	public CurrencyValue() {
 	}
 
-	public OrderTotalValue(
+	public CurrencyValue(
 		String currencyCode, Double percentageVariation, BigDecimal value) {
 
 		_currencyCode = currencyCode;
@@ -44,12 +44,12 @@ public class OrderTotalValue {
 			return false;
 		}
 
-		OrderTotalValue orderTotalValue = (OrderTotalValue)obj;
+		CurrencyValue currencyValue = (CurrencyValue)obj;
 
-		if (Objects.equals(_currencyCode, orderTotalValue._currencyCode) &&
+		if (Objects.equals(_currencyCode, currencyValue._currencyCode) &&
 			Objects.equals(
-				_percentageVariation, orderTotalValue._percentageVariation) &&
-			Objects.equals(_value, orderTotalValue._value)) {
+				_percentageVariation, currencyValue._percentageVariation) &&
+			Objects.equals(_value, currencyValue._value)) {
 
 			return true;
 		}
