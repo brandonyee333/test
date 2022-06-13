@@ -46,14 +46,4 @@ public class CustomerWebConfigurationValues {
 			CustomerWebConfigurationUtil.get(
 				"remote.rest.service.api.dxp.cloud.token"));
 
-	public static final String REMOTE_REST_SERVICE_API_TRAINING_HOST =
-		GetterUtil.getString(
-			CustomerWebConfigurationUtil.get(
-				"remote.rest.service.api.training.host"));
-
-	public static final String REMOTE_REST_SERVICE_API_TRAINING_TOKEN =
-		GetterUtil.getString(
-			CustomerWebConfigurationUtil.get(
-				"remote.rest.service.api.training.token"));
-
 }

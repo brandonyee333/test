@@ -33,14 +33,9 @@ public class OSBCustomerConstants {
 
 	public static final long GROUP_KNOWLEDGE_ID = 10738;
 
-	public static final long ORGANIZATION_CORPORATION_PROJECT_PARENT_ID =
-		3294642;
-
 	public static final long ORGANIZATION_CUSTOMER_DXP_ID = 2844828;
 
 	public static final long ORGANIZATION_CUSTOMER_ID = 1747330;
-
-	public static final long ORGANIZATION_CUSTOMER_PORTAL_ID = 2844836;
 
 	public static final long ORGANIZATION_DATA_ACCESS_EU_ID = 120797992;
 
@@ -60,22 +55,6 @@ public class OSBCustomerConstants {
 
 	public static final long ROLE_ADMINISTRATOR_ID = 10164;
 
-	public static final long
-		ROLE_CUSTOMER_COMMERCE_CONNECTOR_TO_PUNCHOUT2GO_ID = 120129734;
-
-	public static final long ROLE_CUSTOMER_COMMERCE_CONNECTOR_TO_SALESFORCE_ID =
-		3525738;
-
-	public static final long ROLE_CUSTOMER_COMMERCE_ID = 3525734;
-
-	public static final long ROLE_CUSTOMER_DXP_ID = 1546576;
-
-	public static final long ROLE_CUSTOMER_ENTERPRISE_SEARCH_ID = 1546578;
-
-	public static final long ROLE_CUSTOMER_ID = 10827;
-
-	public static final long ROLE_CUSTOMER_PORTAL_ID = 1546575;
-
 	public static final long ROLE_GUEST_ID = 10165;
 
 	public static final long ROLE_LIFERAY_EMPLOYEE_ID = 10946;
@@ -87,8 +66,6 @@ public class OSBCustomerConstants {
 	public static final long ROLE_OSB_SUPPORT_ADMIN_ID = 1546564;
 
 	public static final long ROLE_OSB_TRIAL_LICENSE_ADMIN_ID = 1546565;
-
-	public static final long ROLE_PARTNER_ID = 54427;
 
 	public static final long ROLE_SITE_MEMBER_ID = 10173;
 
