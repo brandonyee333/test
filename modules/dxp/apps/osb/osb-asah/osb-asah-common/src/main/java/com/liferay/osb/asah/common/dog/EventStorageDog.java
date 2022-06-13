@@ -14,13 +14,13 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.constants.EventPropertyConstants;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -113,7 +113,7 @@ public class EventStorageDog {
 		Map<String, String> eventContext, Long eventDefinitionId) {
 
 		for (Map.Entry<String, String> entry :
-				_globalEventAttributeDefinitionNames.entrySet()) {
+				EventPropertyConstants.globalEventPropertyNames.entrySet()) {
 
 			_resolveEventAttributeDefinition(
 				entry.getKey(), eventContext.get(entry.getValue()),
@@ -161,18 +161,6 @@ public class EventStorageDog {
 
 		return eventDefinition;
 	}
-
-	private static final Map<String, String>
-		_globalEventAttributeDefinitionNames = new HashMap<String, String>() {
-			{
-				put("canonicalUrl", "canonicalUrl");
-				put("pageDescription", "description");
-				put("pageKeywords", "keywords");
-				put("pageTitle", "title");
-				put("referrer", "referrer");
-				put("url", "url");
-			}
-		};
 
 	@Autowired
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
