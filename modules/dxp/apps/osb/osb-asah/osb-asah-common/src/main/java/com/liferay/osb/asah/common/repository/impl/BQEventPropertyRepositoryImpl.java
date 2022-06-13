@@ -14,10 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDefinitionDog;
-import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.entity.EventDefinition;
+import com.liferay.osb.asah.common.constants.EventPropertyConstants;
 import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
@@ -68,11 +65,27 @@ public class BQEventPropertyRepositoryImpl
 		Long channelId, String eventAttributeDefinitionName,
 		String eventDefinitionName, String keywords, Pageable pageable) {
 
-		Field<String> selectField = DSL.lower(
-			DSL.field("BQEventProperty.value", String.class)
-		).as(
-			"temp"
-		);
+		Field<String> selectField = null;
+
+		if (_isGlobalEventAttributeDefinition(eventAttributeDefinitionName)) {
+			selectField = DSL.lower(
+				DSL.field(
+					String.format(
+						"BQEvent.%s",
+						EventPropertyConstants.globalEventPropertyNames.get(
+							eventAttributeDefinitionName)),
+					String.class)
+			).as(
+				"temp"
+			);
+		}
+		else {
+			selectField = DSL.lower(
+				DSL.field("BQEventProperty.value", String.class)
+			).as(
+				"temp"
+			);
+		}
 
 		SelectConditionStep<Record1<String>> eventPropertySelectStep =
 			_getEventPropertySelectStep(
@@ -93,7 +106,7 @@ public class BQEventPropertyRepositoryImpl
 		Long channelId, String eventAttributeDefinitionName,
 		String eventDefinitionName, String keywords) {
 
-		return DSL.field(
+		Condition condition = DSL.field(
 			"BQEvent.channelId"
 		).eq(
 			channelId
@@ -105,6 +118,35 @@ public class BQEventPropertyRepositoryImpl
 			)
 		);
 
+		if (_isGlobalEventAttributeDefinition(eventAttributeDefinitionName)) {
+			condition = condition.and(
+				DSL.lower(
+					DSL.field(
+						String.format(
+							"BQEvent.%s",
+							EventPropertyConstants.globalEventPropertyNames.get(
+								eventAttributeDefinitionName)),
+						String.class)
+				).like(
+					"%" + StringUtils.lowerCase(keywords) + "%"
+				));
+		}
+		else {
+			condition = DSL.and(
+				condition,
+				DSL.field(
+					"BQEventProperty.name"
+				).eq(
+					eventAttributeDefinitionName
+				),
+				DSL.lower(
+					DSL.field("BQEventProperty.value", String.class)
+				).like(
+					"%" + StringUtils.lowerCase(keywords) + "%"
+				));
+		}
+
+		return condition;
 	}
 
 	private SelectConditionStep<Record1<String>> _getEventPropertySelectStep(
@@ -132,7 +174,12 @@ public class BQEventPropertyRepositoryImpl
 		);
 	}
 
+	private boolean _isGlobalEventAttributeDefinition(
+		String eventAttributeDefinitionName) {
 
+		return EventPropertyConstants.globalEventPropertyNames.containsKey(
+			eventAttributeDefinitionName);
+	}
 
 	private final DSLContext _dslContext;
 
