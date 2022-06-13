@@ -226,7 +226,7 @@ public class EventAttributeDefinitionDog {
 			eventAttributeDefinition.setDataType(dataType);
 		}
 
-		if (StringUtils.isNotBlank(description)) {
+		if (description != null) {
 			eventAttributeDefinition.setDescription(description);
 		}
 
