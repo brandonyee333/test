@@ -43,30 +43,62 @@ public class BQOrderRepositoryTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
-	public void testGetOrderTotalValues() {
+	public void testGetOrderIncompleteCurrencyValues() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
-		Map<String, BigDecimal> orderTotalValues =
-			_bqOrderRepository.getOrderTotalValues(
+		Map<String, BigDecimal> orderIncompleteCurrencyValues =
+			_bqOrderRepository.getOrderIncompleteCurrencyValues(
 				Arrays.asList(123L), timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
-		Assertions.assertNotNull(orderTotalValues);
-		Assertions.assertNotNull(orderTotalValues.get("USD"));
+		Assertions.assertNotNull(orderIncompleteCurrencyValues);
+		Assertions.assertNotNull(orderIncompleteCurrencyValues.get("USD"));
 
-		BigDecimal actualValue = orderTotalValues.get("USD");
+		BigDecimal actualValue = orderIncompleteCurrencyValues.get("USD");
 
-		BigDecimal expectedValue = new BigDecimal("50.0");
+		BigDecimal expectedValue = new BigDecimal("20.0");
 
 		Assertions.assertEquals(
 			expectedValue.stripTrailingZeros(),
 			actualValue.stripTrailingZeros());
 
-		Assertions.assertNotNull(orderTotalValues.get("EUR"));
+		Assertions.assertNotNull(orderIncompleteCurrencyValues.get("EUR"));
 
-		actualValue = orderTotalValues.get("EUR");
+		actualValue = orderIncompleteCurrencyValues.get("EUR");
 		expectedValue = new BigDecimal("20.0");
+
+		Assertions.assertEquals(
+			expectedValue.stripTrailingZeros(),
+			actualValue.stripTrailingZeros());
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
+	public void testGetOrderTotalCurrencyValues() {
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
+		Map<String, BigDecimal> orderTotalCurrencyValues =
+			_bqOrderRepository.getOrderTotalCurrencyValues(
+				Arrays.asList(123L), timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Assertions.assertNotNull(orderTotalCurrencyValues);
+		Assertions.assertNotNull(orderTotalCurrencyValues.get("USD"));
+
+		BigDecimal actualValue = orderTotalCurrencyValues.get("USD");
+
+		BigDecimal expectedValue = new BigDecimal("70.0");
+
+		Assertions.assertEquals(
+			expectedValue.stripTrailingZeros(),
+			actualValue.stripTrailingZeros());
+
+		Assertions.assertNotNull(orderTotalCurrencyValues.get("EUR"));
+
+		actualValue = orderTotalCurrencyValues.get("EUR");
+		expectedValue = new BigDecimal("40.0");
 
 		Assertions.assertEquals(
 			expectedValue.stripTrailingZeros(),
