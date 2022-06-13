@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.dog.CommerceDashboardDog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.model.OrderTotalValue;
+import com.liferay.osb.asah.common.model.CurrencyValue;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -70,34 +70,67 @@ public class CommerceDashboardDogTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
-	public void testGetOrderTotalValues() {
-		Map<String, OrderTotalValue> orderTotalValues =
-			_commerceDashboardDog.getOrderTotalValues(
+	public void testGetOrderIncompleteCurrencyValues() {
+		Map<String, CurrencyValue> orderIncompleteCurrencyValues =
+			_commerceDashboardDog.getOrderIncompleteCurrencyValues(
 				11L, false, TimeRange.LAST_7_DAYS);
 
-		Assertions.assertNotNull(orderTotalValues);
+		Assertions.assertNotNull(orderIncompleteCurrencyValues);
 
-		OrderTotalValue orderTotalValue = orderTotalValues.get("USD");
+		CurrencyValue orderIncompleteValue = orderIncompleteCurrencyValues.get(
+			"USD");
 
-		Assertions.assertNotNull(orderTotalValue);
-		Assertions.assertNotNull(orderTotalValue.getValue());
-		Assertions.assertNull(orderTotalValue.getPercentageVariation());
+		Assertions.assertNotNull(orderIncompleteValue);
+		Assertions.assertNotNull(orderIncompleteValue.getValue());
+		Assertions.assertNull(orderIncompleteValue.getPercentageVariation());
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
-	public void testGetOrderTotalValuesWithPreviousPeriodComparison() {
-		Map<String, OrderTotalValue> orderTotalValues =
-			_commerceDashboardDog.getOrderTotalValues(
+	public void testGetOrderIncompleteCurrencyValuesWithPreviousPeriodComparison() {
+		Map<String, CurrencyValue> orderTotalCurrencyValues =
+			_commerceDashboardDog.getOrderTotalCurrencyValues(
 				11L, true, TimeRange.LAST_7_DAYS);
 
-		Assertions.assertNotNull(orderTotalValues);
+		Assertions.assertNotNull(orderTotalCurrencyValues);
 
-		OrderTotalValue orderTotalValue = orderTotalValues.get("USD");
+		CurrencyValue currencyValue = orderTotalCurrencyValues.get("USD");
 
-		Assertions.assertNotNull(orderTotalValue);
-		Assertions.assertNotNull(orderTotalValue.getValue());
-		Assertions.assertNotNull(orderTotalValue.getPercentageVariation());
+		Assertions.assertNotNull(currencyValue);
+		Assertions.assertNotNull(currencyValue.getValue());
+		Assertions.assertNotNull(currencyValue.getPercentageVariation());
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
+	public void testGetOrderTotalCurrencyValues() {
+		Map<String, CurrencyValue> orderTotalCurrencyValues =
+			_commerceDashboardDog.getOrderTotalCurrencyValues(
+				11L, false, TimeRange.LAST_7_DAYS);
+
+		Assertions.assertNotNull(orderTotalCurrencyValues);
+
+		CurrencyValue currencyValue = orderTotalCurrencyValues.get("USD");
+
+		Assertions.assertNotNull(currencyValue);
+		Assertions.assertNotNull(currencyValue.getValue());
+		Assertions.assertNull(currencyValue.getPercentageVariation());
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
+	public void testGetOrderTotalCurrencyValuesWithPreviousPeriodComparison() {
+		Map<String, CurrencyValue> orderTotalCurrencyValues =
+			_commerceDashboardDog.getOrderTotalCurrencyValues(
+				11L, true, TimeRange.LAST_7_DAYS);
+
+		Assertions.assertNotNull(orderTotalCurrencyValues);
+
+		CurrencyValue currencyValue = orderTotalCurrencyValues.get("USD");
+
+		Assertions.assertNotNull(currencyValue);
+		Assertions.assertNotNull(currencyValue.getValue());
+		Assertions.assertNotNull(currencyValue.getPercentageVariation());
 	}
 
 	@Autowired
