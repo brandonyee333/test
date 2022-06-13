@@ -70,6 +70,8 @@ public class FinalizeUserSessionArm {
 	public void processSession(UserSession userSession) {
 		updateActivitiesAndAssets(userSession);
 
+		long start = System.currentTimeMillis();
+
 		JSONObject partialUserSessionJSONObject = new JSONObject();
 
 		if (!userSession.getCompleted()) {
@@ -90,6 +92,15 @@ public class FinalizeUserSessionArm {
 		_cerebroInfoElasticsearchInvoker.update(
 			"user-sessions", userSession.getId(), partialUserSessionJSONObject);
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"FinalizeUserSessionArm took %d ms to update session",
+					System.currentTimeMillis() - start));
+		}
+
+		start = System.currentTimeMillis();
+
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
@@ -107,15 +118,51 @@ public class FinalizeUserSessionArm {
 					null
 				)
 			));
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"FinalizeUserSessionArm took %d ms to schedule Asah task",
+					System.currentTimeMillis() - start));
+		}
 	}
 
 	public void updateActivitiesAndAssets(UserSession userSession) {
+		long start = System.currentTimeMillis();
+
 		_faroInfoActivityDog.updateSessionId(userSession);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"FinalizeUserSessionArm took %d ms to update activities",
+					System.currentTimeMillis() - start));
+		}
+
+		start = System.currentTimeMillis();
 
 		_updateAssetBuckets(userSession);
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"FinalizeUserSessionArm took %d ms to update session asset",
+					System.currentTimeMillis() - start));
+		}
+
+		start = System.currentTimeMillis();
+
 		JSONArray pagesJSONArray = _getPagesJSONArray(
 			userSession.getDataSourceId(), userSession);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"FinalizeUserSessionArm took %d ms to fetch session pages",
+					System.currentTimeMillis() - start));
+		}
+
+		start = System.currentTimeMillis();
 
 		if (pagesJSONArray.length() == 0) {
 			return;
@@ -126,6 +173,15 @@ public class FinalizeUserSessionArm {
 		_updatePageEntrancesAndExits(pagesJSONArray);
 
 		_updatePageBounces(pagesJSONArray, userSession);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"FinalizeUserSessionArm took %d ms to compute page metrics",
+					System.currentTimeMillis() - start));
+		}
+
+		start = System.currentTimeMillis();
 
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			_cerebroInfoElasticsearchInvoker.
@@ -147,6 +203,13 @@ public class FinalizeUserSessionArm {
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {
 			elasticsearchBulkRequestBuilder.get();
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"FinalizeUserSessionArm took %d ms to update page metrics",
+					System.currentTimeMillis() - start));
 		}
 	}
 

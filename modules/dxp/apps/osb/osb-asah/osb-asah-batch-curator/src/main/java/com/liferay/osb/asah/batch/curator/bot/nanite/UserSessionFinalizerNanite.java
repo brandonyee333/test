@@ -81,6 +81,16 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 					userSessionId),
 				500);
 
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					String.format(
+						"PastUserSessionFinalizerNanite took %d ms to fetch " +
+							"sessions",
+						System.currentTimeMillis() - start));
+			}
+
+			start = System.currentTimeMillis();
+
 			List<UserSession> userSessions = JSONUtil.toList(
 				jsonArray,
 				jsonObject -> _objectMapper.convertValue(
