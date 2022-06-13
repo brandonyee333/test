@@ -835,7 +835,7 @@ type MutationType {
 	): Job
 }
 
-type OrderTotalValue {
+type CurrencyValue {
 	currencyCode: String,
 	trend: Trend,
 	value: String
@@ -1262,12 +1262,12 @@ type QueryType {
 		start: Int!
 	): AssetMetricBag
 
-	orderTotalValues(
+	orderTotalCurrencyValues(
 		channelId: String!,
 		rangeEnd: String,
 		rangeKey: Int,
 		rangeStart: String
-	): [OrderTotalValue]
+	): [CurrencyValue]
 
 	organizations(
 		keywords: String,
