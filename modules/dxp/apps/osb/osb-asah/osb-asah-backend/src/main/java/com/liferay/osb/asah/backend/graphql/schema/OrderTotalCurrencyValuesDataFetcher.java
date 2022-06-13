@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.dto.OrderTotalValueDTO;
+import com.liferay.osb.asah.backend.dto.CurrencyValueDTO;
 import com.liferay.osb.asah.common.dog.CommerceDashboardDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.OrderTotalValue;
+import com.liferay.osb.asah.common.model.CurrencyValue;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.language.Field;
@@ -36,12 +36,14 @@ import org.springframework.stereotype.Component;
  * @author Riccardo Ferrari
  */
 @Component
-@GraphQLTypeWiring(fieldName = "orderTotalValues", typeName = "QueryType")
-public class OrderTotalValuesDataFetcher
-	extends BaseDataFetcher<List<OrderTotalValueDTO>> {
+@GraphQLTypeWiring(
+	fieldName = "orderTotalCurrencyValues", typeName = "QueryType"
+)
+public class OrderTotalCurrencyValuesDataFetcher
+	extends BaseDataFetcher<List<CurrencyValueDTO>> {
 
 	@Override
-	public List<OrderTotalValueDTO> get(
+	public List<CurrencyValueDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
@@ -51,13 +53,13 @@ public class OrderTotalValuesDataFetcher
 		Map<String, List<Field>> dataFetchingFieldSelectionSetFields =
 			dataFetchingFieldSelectionSet.get();
 
-		Map<String, OrderTotalValue> orderTotalValues =
+		Map<String, CurrencyValue> orderTotalValues =
 			_commerceDashboardDog.getOrderTotalValues(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				dataFetchingFieldSelectionSetFields.containsKey("trend"),
 				searchQueryContext.getTimeRange());
 
-		return ListUtil.map(orderTotalValues.values(), OrderTotalValueDTO::new);
+		return ListUtil.map(orderTotalValues.values(), CurrencyValueDTO::new);
 	}
 
 	@Autowired

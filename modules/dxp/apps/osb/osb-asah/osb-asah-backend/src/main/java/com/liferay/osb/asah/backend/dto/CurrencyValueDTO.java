@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
-import com.liferay.osb.asah.common.model.OrderTotalValue;
+import com.liferay.osb.asah.common.model.CurrencyValue;
 import com.liferay.osb.asah.common.model.TrendClassification;
 
 import java.math.BigDecimal;
@@ -26,23 +26,23 @@ import java.math.BigDecimal;
 /**
  * @author Riccardo Ferrari
  */
-@GraphQLType("OrderTotalValue")
+@GraphQLType("CurrencyValue")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class OrderTotalValueDTO {
+public class CurrencyValueDTO {
 
-	public OrderTotalValueDTO(OrderTotalValue orderTotalValue) {
-		_currencyCode = orderTotalValue.getCurrencyCode();
+	public CurrencyValueDTO(CurrencyValue currencyValue) {
+		_currencyCode = currencyValue.getCurrencyCode();
 
-		if (orderTotalValue.getPercentageVariation() != null) {
+		if (currencyValue.getPercentageVariation() != null) {
 			_trend = new Trend();
 
 			_trend.setPercentage(
-				BigDecimal.valueOf(orderTotalValue.getPercentageVariation()));
+				BigDecimal.valueOf(currencyValue.getPercentageVariation()));
 
-			if (orderTotalValue.getPercentageVariation() > 0.0) {
+			if (currencyValue.getPercentageVariation() > 0.0) {
 				_trend.setTrendClassification(TrendClassification.POSITIVE);
 			}
-			else if (orderTotalValue.getPercentageVariation() < 0.0) {
+			else if (currencyValue.getPercentageVariation() < 0.0) {
 				_trend.setTrendClassification(TrendClassification.NEGATIVE);
 			}
 			else {
@@ -53,7 +53,7 @@ public class OrderTotalValueDTO {
 			_trend = null;
 		}
 
-		_value = orderTotalValue.getValue();
+		_value = currencyValue.getValue();
 	}
 
 	public String getCurrencyCode() {
