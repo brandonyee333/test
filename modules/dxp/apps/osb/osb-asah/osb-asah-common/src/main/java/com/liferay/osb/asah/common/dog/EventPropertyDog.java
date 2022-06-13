@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,20 +36,48 @@ public class EventPropertyDog {
 
 		PageRequest pageRequest = PageRequest.of(start, size);
 
+		String eventAttributeDefinitionName = _getEventAttributeDefinitionName(
+			eventAttributeDefinitionId);
+
+		String eventDefinitionName = _getEventDefinitionName(eventDefinitionId);
+
 		return PageableExecutionUtils.getPage(
 			_bqEventPropertyRepository.searchValues(
-				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				channelId, eventAttributeDefinitionName, eventDefinitionName,
 				keywords, pageRequest),
 			pageRequest,
 			() -> _bqEventPropertyRepository.countValues(
-				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				channelId, eventAttributeDefinitionName, eventDefinitionName,
 				keywords));
+	}
+
+	private String _getEventAttributeDefinitionName(
+		Long eventAttributeDefinitionId) {
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionDog.getEventAttributeDefinition(
+				eventAttributeDefinitionId);
+
+		return eventAttributeDefinition.getName();
+	}
+
+	private String _getEventDefinitionName(Long eventDefinitionId) {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.getEventDefinition(eventDefinitionId);
+
+		return eventDefinition.getName();
 	}
 
 	@Autowired
 	private BQEventPropertyRepository _bqEventPropertyRepository;
 
 	@Autowired
+	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
+
+	@Autowired
 	private EventAttributeDefinitionDog _eventAttributionDefinitionDog;
+
+	@Autowired
+	private EventDefinitionDog _eventDefinitionDog;
 
 }

@@ -24,11 +24,11 @@ import org.springframework.data.domain.Pageable;
 public interface CustomBQEventPropertyRepository {
 
 	public long countValues(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords);
+		Long channelId, String eventAttributeDefinitionName,
+		String eventDefinitionName, String keywords);
 
 	public List<String> searchValues(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords, Pageable pageable);
+		Long channelId, String eventAttributeDefinitionName,
+		String eventDefinitionName, String keywords, Pageable pageable);
 
 }

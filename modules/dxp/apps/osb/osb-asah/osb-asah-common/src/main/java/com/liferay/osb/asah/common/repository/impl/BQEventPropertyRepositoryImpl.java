@@ -48,8 +48,8 @@ public class BQEventPropertyRepositoryImpl
 
 	@Override
 	public long countValues(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords) {
+		Long channelId, String eventAttributeDefinitionName,
+		String eventDefinitionName, String keywords) {
 
 		SelectSelectStep<Record1<Integer>> selectCount =
 			_dslContext.selectCount();
@@ -57,15 +57,16 @@ public class BQEventPropertyRepositoryImpl
 		return _queryExecutor.queryForLong(
 			selectCount.from(
 				_getEventPropertySelectStep(
-					channelId, eventAttributeDefinitionId, eventDefinitionId,
+					channelId, eventAttributeDefinitionName,
+					eventDefinitionName,
 					DSL.lower(DSL.field("BQEventProperty.value", String.class)),
 					keywords)));
 	}
 
 	@Override
 	public List<String> searchValues(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords, Pageable pageable) {
+		Long channelId, String eventAttributeDefinitionName,
+		String eventDefinitionName, String keywords, Pageable pageable) {
 
 		Field<String> selectField = DSL.lower(
 			DSL.field("BQEventProperty.value", String.class)
@@ -75,7 +76,7 @@ public class BQEventPropertyRepositoryImpl
 
 		SelectConditionStep<Record1<String>> eventPropertySelectStep =
 			_getEventPropertySelectStep(
-				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				channelId, eventAttributeDefinitionName, eventDefinitionName,
 				selectField, keywords);
 
 		return _queryExecutor.queryForList(
@@ -89,8 +90,8 @@ public class BQEventPropertyRepositoryImpl
 	}
 
 	private Condition _getCondition(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		String keywords) {
+		Long channelId, String eventAttributeDefinitionName,
+		String eventDefinitionName, String keywords) {
 
 		return DSL.field(
 			"BQEvent.channelId"
@@ -100,43 +101,16 @@ public class BQEventPropertyRepositoryImpl
 			DSL.field(
 				"BQEvent.eventId"
 			).eq(
-				_getEventDefinitionName(eventDefinitionId)
-			)
-		).and(
-			DSL.field(
-				"BQEventProperty.name"
-			).eq(
-				_getEventAttributeDefinitionName(eventAttributeDefinitionId)
-			)
-		).and(
-			DSL.lower(
-				DSL.field("BQEventProperty.value", String.class)
-			).like(
-				"%" + StringUtils.lowerCase(keywords) + "%"
+				eventDefinitionName
 			)
 		);
-	}
 
-	private String _getEventAttributeDefinitionName(
-		Long eventAttributeDefinitionId) {
-
-		EventAttributeDefinition eventAttributeDefinition =
-			_eventAttributeDefinitionDog.getEventAttributeDefinition(
-				eventAttributeDefinitionId);
-
-		return eventAttributeDefinition.getName();
-	}
-
-	private String _getEventDefinitionName(Long eventDefinitionId) {
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.getEventDefinition(eventDefinitionId);
-
-		return eventDefinition.getName();
 	}
 
 	private SelectConditionStep<Record1<String>> _getEventPropertySelectStep(
-		Long channelId, Long eventAttributeDefinitionId, Long eventDefinitionId,
-		Field<String> selectField, String keywords) {
+		Long channelId, String eventAttributeDefinitionName,
+		String eventDefinitionName, Field<String> selectField,
+		String keywords) {
 
 		SelectSelectStep<Record1<String>> selectSelectStep =
 			_dslContext.selectDistinct(selectField);
@@ -153,18 +127,14 @@ public class BQEventPropertyRepositoryImpl
 			)
 		).where(
 			_getCondition(
-				channelId, eventAttributeDefinitionId, eventDefinitionId,
+				channelId, eventAttributeDefinitionName, eventDefinitionName,
 				keywords)
 		);
 	}
 
+
+
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
-
-	@Autowired
-	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;
