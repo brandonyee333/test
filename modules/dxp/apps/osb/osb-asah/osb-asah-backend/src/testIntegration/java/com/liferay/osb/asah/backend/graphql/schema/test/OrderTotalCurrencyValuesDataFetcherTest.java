@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.dto.OrderTotalValueDTO;
-import com.liferay.osb.asah.backend.graphql.schema.OrderTotalValuesDataFetcher;
+import com.liferay.osb.asah.backend.dto.CurrencyValueDTO;
+import com.liferay.osb.asah.backend.graphql.schema.OrderTotalCurrencyValuesDataFetcher;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -51,7 +51,7 @@ import org.springframework.context.annotation.Import;
  * @author Riccardo Ferrari
  */
 @Import(JDBCTestConfiguration.class)
-public class OrderTotalValuesDataFetcherTest
+public class OrderTotalCurrencyValuesDataFetcherTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -85,8 +85,8 @@ public class OrderTotalValuesDataFetcherTest
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGet() {
-		List<OrderTotalValueDTO> orderTotalValueDTOs =
-			_orderTotalValuesDataFetcher.get(
+		List<CurrencyValueDTO> currencyValueDTOs =
+			_orderTotalCurrencyValuesDataFetcher.get(
 				_getDataFetchingEnvironment(
 					Arrays.asList(
 						new Field("currencyCode"), new Field("value"))),
@@ -96,20 +96,20 @@ public class OrderTotalValuesDataFetcherTest
 					}
 				});
 
-		Assertions.assertNotNull(orderTotalValueDTOs);
+		Assertions.assertNotNull(currencyValueDTOs);
 
-		Assertions.assertEquals(2, orderTotalValueDTOs.size());
+		Assertions.assertEquals(2, currencyValueDTOs.size());
 
-		OrderTotalValueDTO orderTotalValueDTO = orderTotalValueDTOs.get(0);
+		CurrencyValueDTO currencyValueDTO = currencyValueDTOs.get(0);
 
-		Assertions.assertNull(orderTotalValueDTO.getTrend());
+		Assertions.assertNull(currencyValueDTO.getTrend());
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetWithTrend() {
-		List<OrderTotalValueDTO> orderTotalValueDTOs =
-			_orderTotalValuesDataFetcher.get(
+		List<CurrencyValueDTO> currencyValueDTOs =
+			_orderTotalCurrencyValuesDataFetcher.get(
 				_getDataFetchingEnvironment(
 					Arrays.asList(
 						new Field("currencyCode"), new Field("trend"),
@@ -120,13 +120,13 @@ public class OrderTotalValuesDataFetcherTest
 					}
 				});
 
-		Assertions.assertNotNull(orderTotalValueDTOs);
+		Assertions.assertNotNull(currencyValueDTOs);
 
-		Assertions.assertEquals(2, orderTotalValueDTOs.size());
+		Assertions.assertEquals(2, currencyValueDTOs.size());
 
-		OrderTotalValueDTO orderTotalValueDTO = orderTotalValueDTOs.get(0);
+		CurrencyValueDTO currencyValueDTO = currencyValueDTOs.get(0);
 
-		Assertions.assertNotNull(orderTotalValueDTO.getTrend());
+		Assertions.assertNotNull(currencyValueDTO.getTrend());
 	}
 
 	private DataFetchingEnvironment _getDataFetchingEnvironment(
@@ -160,6 +160,7 @@ public class OrderTotalValuesDataFetcherTest
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
-	private OrderTotalValuesDataFetcher _orderTotalValuesDataFetcher;
+	private OrderTotalCurrencyValuesDataFetcher
+		_orderTotalCurrencyValuesDataFetcher;
 
 }
