@@ -55,12 +55,12 @@ public class BQMembershipChange implements Persistable<Long> {
 
 		if (Objects.equals(_createDate, bqMembershipChange._createDate) &&
 			Objects.equals(_id, bqMembershipChange._id) &&
-			Objects.equals(_segmentId, bqMembershipChange._segmentId) &&
 			Objects.equals(
 				_identitiesCount, bqMembershipChange._identitiesCount) &&
 			Objects.equals(
 				_knownIdentitiesCount,
-				bqMembershipChange._knownIdentitiesCount)) {
+				bqMembershipChange._knownIdentitiesCount) &&
+			Objects.equals(_segmentId, bqMembershipChange._segmentId)) {
 
 			return true;
 		}
@@ -102,8 +102,8 @@ public class BQMembershipChange implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _segmentId, _identitiesCount, _knownIdentitiesCount,
-			_createDate);
+			_id, _identitiesCount, _knownIdentitiesCount, _createDate,
+			_segmentId);
 	}
 
 	@JsonIgnore

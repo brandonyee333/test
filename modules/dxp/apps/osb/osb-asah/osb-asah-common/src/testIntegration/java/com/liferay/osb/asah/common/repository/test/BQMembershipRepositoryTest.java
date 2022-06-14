@@ -53,37 +53,35 @@ public class BQMembershipRepositoryTest
 
 		bqMembership1.setCreateDate(new Date());
 		bqMembership1.setIdentityId("12");
+		bqMembership1.setModifiedDate(new Date());
+		bqMembership1.setRemovedDate(new Date());
 
 		Segment segment1 = _addSegment(34);
 
 		bqMembership1.setSegmentId(segment1.getId());
 
-		bqMembership1.setModifiedDate(new Date());
-		bqMembership1.setRemovedDate(new Date());
 		bqMembership1.setStatus("ACTIVE");
 
 		BQMembership bqMembership2 = new BQMembership();
 
 		bqMembership2.setCreateDate(new Date());
 		bqMembership2.setIdentityId("12");
+		bqMembership2.setModifiedDate(new Date());
+		bqMembership2.setRemovedDate(new Date());
 
 		Segment segment2 = _addSegment(56);
 
 		bqMembership2.setSegmentId(segment2.getId());
 
-		bqMembership2.setModifiedDate(new Date());
-		bqMembership2.setRemovedDate(new Date());
 		bqMembership2.setStatus("INACTIVE");
 
 		BQMembership bqMembership3 = new BQMembership();
 
 		bqMembership3.setCreateDate(new Date());
 		bqMembership3.setIdentityId("78");
-
-		bqMembership3.setSegmentId(segment1.getId());
-
 		bqMembership3.setModifiedDate(new Date());
 		bqMembership3.setRemovedDate(new Date());
+		bqMembership3.setSegmentId(segment1.getId());
 		bqMembership3.setStatus("ACTIVE");
 
 		setUpRepository(bqMembership1, bqMembership2, bqMembership3);

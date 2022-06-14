@@ -85,8 +85,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 			bqMembership.setCreateDate(createDate);
 			bqMembership.setIdentityId(String.valueOf(individual.getId()));
-			bqMembership.setSegmentId(segmentId);
 			bqMembership.setModifiedDate(createDate);
+			bqMembership.setSegmentId(segmentId);
 			bqMembership.setStatus("ACTIVE");
 
 			bqMemberships.add(bqMembership);
@@ -189,8 +189,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 			List<Individual> individualsByMembership = individualsStream.filter(
 				individual -> identityIdsByMembership.contains(
-					individual.getId(
-					).toString())
+					String.valueOf(individual.getId()))
 			).collect(
 				Collectors.toList()
 			);

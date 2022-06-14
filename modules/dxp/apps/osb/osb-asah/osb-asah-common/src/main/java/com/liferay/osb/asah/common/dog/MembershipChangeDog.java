@@ -73,8 +73,8 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 			bqMembershipChange.setCreateDate(bqMembership.getCreateDate());
 			bqMembershipChange.setIdentitiesCount(identitiesCount);
-			bqMembershipChange.setSegmentId(bqMembership.getSegmentId());
 			bqMembershipChange.setKnownIdentitiesCount(knownIdentitiesCount);
+			bqMembershipChange.setSegmentId(bqMembership.getSegmentId());
 
 			bqMembershipChanges.add(bqMembershipChange);
 		}

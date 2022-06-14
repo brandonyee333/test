@@ -39,7 +39,6 @@ public class ReportSegmentDTO {
 
 		_createDate = segment.getCreateDate();
 		_id = StringUtil.get(segment.getId());
-		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
 
 		if (bqMembershipChange != null) {
 			_identitiesCount = bqMembershipChange.getIdentitiesCount();
@@ -51,6 +50,7 @@ public class ReportSegmentDTO {
 			_knownIdentitiesCount = 0L;
 		}
 
+		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
 		_name = segment.getName();
 		_segmentType = String.valueOf(segment.getType());
 	}

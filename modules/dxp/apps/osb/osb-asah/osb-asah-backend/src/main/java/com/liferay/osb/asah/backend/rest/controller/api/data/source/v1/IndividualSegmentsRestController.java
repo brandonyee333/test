@@ -299,8 +299,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		).map(
 			bqMembership -> {
 				bqMembership.setCreateDate(date);
-				bqMembership.setSegmentId(id);
 				bqMembership.setModifiedDate(date);
+				bqMembership.setSegmentId(id);
 
 				return bqMembership;
 			}

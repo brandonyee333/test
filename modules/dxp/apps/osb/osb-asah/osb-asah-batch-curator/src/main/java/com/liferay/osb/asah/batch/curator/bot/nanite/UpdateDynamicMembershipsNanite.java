@@ -251,9 +251,9 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 									individual.getModifiedDate());
 								bqMembership.setIdentityId(
 									String.valueOf(individual.getId()));
-								bqMembership.setSegmentId(segment.getId());
 								bqMembership.setModifiedDate(
 									individual.getModifiedDate());
+								bqMembership.setSegmentId(segment.getId());
 								bqMembership.setStatus("ACTIVE");
 
 								newBQMemberships.add(bqMembership);

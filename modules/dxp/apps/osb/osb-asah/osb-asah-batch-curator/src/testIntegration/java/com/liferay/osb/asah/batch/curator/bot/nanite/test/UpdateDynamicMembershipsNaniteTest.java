@@ -134,7 +134,7 @@ public class UpdateDynamicMembershipsNaniteTest
 				assetJSONObject, "pageUnloaded",
 				new String[] {"viewDuration", "1000"}));
 
-		Long individualSegmentId = _updateDynamicMemberships(
+		Long segmentId = _updateDynamicMemberships(
 			"(((activities/ever eq 'Page#pageViewed#" +
 				assetJSONObject.getString("id") + "')))");
 
@@ -142,36 +142,18 @@ public class UpdateDynamicMembershipsNaniteTest
 		Long individual2Id = individual2.getId();
 
 		Assertions.assertTrue(
-			_membershipDog.isMember(
-				String.valueOf(individual1Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual1Id), segmentId));
 		Assertions.assertFalse(
-			_membershipDog.isMember(
-				String.valueOf(individual2Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual2Id), segmentId));
 
-		individualSegmentId = _updateDynamicMemberships(
+		segmentId = _updateDynamicMemberships(
 			"(((activities/ever ne 'Page#pageViewed#" +
 				assetJSONObject.getString("id") + "')))");
 
 		Assertions.assertFalse(
-			_membershipDog.isMember(
-				String.valueOf(individual1Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual1Id), segmentId));
 		Assertions.assertTrue(
-			_membershipDog.isMember(
-				String.valueOf(individual2Id), individualSegmentId));
-	}
-
-	@Test
-	public void testIndividualSegmentState() throws Exception {
-		Segment segment = _segmentRepository.save(
-			FaroInfoTestUtil.buildDynamicSegment(1L, ""));
-
-		_updateDynamicMembershipsNanite.run(
-			_getContextJSONObject(
-				_objectMapper.convertValue(segment, JSONObject.class)));
-
-		segment = _segmentDog.getSegment(segment.getId());
-
-		Assertions.assertEquals("READY", segment.getState());
+			_membershipDog.isMember(String.valueOf(individual2Id), segmentId));
 	}
 
 	@Disabled
@@ -240,35 +222,29 @@ public class UpdateDynamicMembershipsNaniteTest
 					"type", "nanite"
 				)));
 
-		Long individualSegmentId = _updateDynamicMemberships(
+		Long segmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''" + keyword + "'') and " +
 				"(score eq ''true'')')");
 
 		Long individual3Id = individual3.getId();
 
 		Assertions.assertTrue(
-			_membershipDog.isMember(
-				String.valueOf(individual1Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual1Id), segmentId));
 		Assertions.assertFalse(
-			_membershipDog.isMember(
-				String.valueOf(individual2Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual2Id), segmentId));
 		Assertions.assertFalse(
-			_membershipDog.isMember(
-				String.valueOf(individual3Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual3Id), segmentId));
 
-		individualSegmentId = _updateDynamicMemberships(
+		segmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''" + keyword + "'') and " +
 				"(score eq ''false'')')");
 
 		Assertions.assertFalse(
-			_membershipDog.isMember(
-				String.valueOf(individual1Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual1Id), segmentId));
 		Assertions.assertTrue(
-			_membershipDog.isMember(
-				String.valueOf(individual2Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual2Id), segmentId));
 		Assertions.assertTrue(
-			_membershipDog.isMember(
-				String.valueOf(individual3Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual3Id), segmentId));
 	}
 
 	@Disabled
@@ -328,27 +304,23 @@ public class UpdateDynamicMembershipsNaniteTest
 					"type", "nanite"
 				)));
 
-		Long individualSegmentId = _updateDynamicMemberships(
+		Long segmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
 				"''false'')')");
 
 		Assertions.assertFalse(
-			_membershipDog.isMember(
-				String.valueOf(individual1Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual1Id), segmentId));
 		Assertions.assertTrue(
-			_membershipDog.isMember(
-				String.valueOf(individual2Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual2Id), segmentId));
 
-		individualSegmentId = _updateDynamicMemberships(
+		segmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
 				"''true'')')");
 
 		Assertions.assertTrue(
-			_membershipDog.isMember(
-				String.valueOf(individual1Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual1Id), segmentId));
 		Assertions.assertFalse(
-			_membershipDog.isMember(
-				String.valueOf(individual2Id), individualSegmentId));
+			_membershipDog.isMember(String.valueOf(individual2Id), segmentId));
 	}
 
 	@Disabled
@@ -385,7 +357,7 @@ public class UpdateDynamicMembershipsNaniteTest
 			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
 				assetJSONObject, dayDateString, individual.getId(), 0.5, 20));
 
-		Long individualSegmentId = _updateDynamicMemberships(
+		Long segmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
 				"''true'')')");
 
@@ -394,8 +366,7 @@ public class UpdateDynamicMembershipsNaniteTest
 				"memberships",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
-						"individualSegmentId",
-						String.valueOf(individualSegmentId)))),
+						"individualSegmentId", String.valueOf(segmentId)))),
 			"No memberships should be added if no interest threshold exists");
 	}
 
@@ -500,6 +471,20 @@ public class UpdateDynamicMembershipsNaniteTest
 			Collections.singleton(
 				new Individual.DataSourceAccountPK(dataSourceIndividual)),
 			individual.getDataSourceAccountPKs());
+	}
+
+	@Test
+	public void testSegmentState() throws Exception {
+		Segment segment = _segmentRepository.save(
+			FaroInfoTestUtil.buildDynamicSegment(1L, ""));
+
+		_updateDynamicMembershipsNanite.run(
+			_getContextJSONObject(
+				_objectMapper.convertValue(segment, JSONObject.class)));
+
+		segment = _segmentDog.getSegment(segment.getId());
+
+		Assertions.assertEquals("READY", segment.getState());
 	}
 
 	@Test

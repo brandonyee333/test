@@ -255,8 +255,8 @@ public class BQMembershipChangeRepositoryTest
 
 		bqMembershipChange.setCreateDate(createDate);
 		bqMembershipChange.setIdentitiesCount(knownIdentitiesCount);
-		bqMembershipChange.setSegmentId(segment.getId());
 		bqMembershipChange.setKnownIdentitiesCount(knownIdentitiesCount);
+		bqMembershipChange.setSegmentId(segment.getId());
 
 		return bqMembershipChange;
 	}

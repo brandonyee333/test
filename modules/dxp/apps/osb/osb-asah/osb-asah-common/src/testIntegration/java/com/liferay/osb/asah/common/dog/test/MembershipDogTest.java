@@ -95,9 +95,9 @@ public class MembershipDogTest
 		bqMembership.setCreateDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
 		bqMembership.setIdentityId("123");
-		bqMembership.setSegmentId(234L);
 		bqMembership.setModifiedDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
+		bqMembership.setSegmentId(234L);
 		bqMembership.setStatus("ACTIVE");
 
 		bqMembership = _membershipDog.addBQMembership(bqMembership);

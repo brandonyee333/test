@@ -155,8 +155,8 @@ public class MembershipChangeDogTest
 
 		bqMembershipChange.setCreateDate(createDate);
 		bqMembershipChange.setIdentitiesCount((long)index);
-		bqMembershipChange.setSegmentId(segment.getId());
 		bqMembershipChange.setKnownIdentitiesCount((long)index);
+		bqMembershipChange.setSegmentId(segment.getId());
 
 		return _bqMembershipChangeRepository.save(bqMembershipChange);
 	}

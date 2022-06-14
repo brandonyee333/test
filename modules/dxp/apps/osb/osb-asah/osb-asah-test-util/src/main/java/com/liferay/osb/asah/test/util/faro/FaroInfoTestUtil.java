@@ -275,8 +275,8 @@ public class FaroInfoTestUtil {
 
 		bqMembership.setCreateDate(date);
 		bqMembership.setIdentityId(identityId);
-		bqMembership.setSegmentId(segmentId);
 		bqMembership.setModifiedDate(date);
+		bqMembership.setSegmentId(segmentId);
 		bqMembership.setStatus("ACTIVE");
 
 		return bqMembership;
@@ -286,8 +286,8 @@ public class FaroInfoTestUtil {
 		BQMembershipChange bqMembershipChange = new BQMembershipChange();
 
 		bqMembershipChange.setCreateDate(new Date());
-		bqMembershipChange.setSegmentId(segmentId);
 		bqMembershipChange.setIdentitiesCount(RandomUtils.nextLong());
+		bqMembershipChange.setSegmentId(segmentId);
 
 		return bqMembershipChange;
 	}
