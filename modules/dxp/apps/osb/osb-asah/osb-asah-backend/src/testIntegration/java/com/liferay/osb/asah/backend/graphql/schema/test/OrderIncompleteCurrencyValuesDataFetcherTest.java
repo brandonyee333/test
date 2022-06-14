@@ -16,10 +16,8 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.CurrencyValueDTO;
-import com.liferay.osb.asah.backend.graphql.schema.OrderTotalCurrencyValuesDataFetcher;
+import com.liferay.osb.asah.backend.graphql.schema.OrderIncompleteValuesDataFetcher;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
 import graphql.language.Field;
@@ -34,14 +32,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Riccardo Ferrari
  */
-public class OrderTotalCurrencyValuesDataFetcherTest
+public class OrderIncompleteCurrencyValuesDataFetcherTest
 	extends BaseOrderDataFetcherTestCase {
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGet() {
 		List<CurrencyValueDTO> currencyValueDTOs =
-			_orderTotalCurrencyValuesDataFetcher.get(
+			_orderIncompleteValuesDataFetcher.get(
 				getDataFetchingEnvironment(
 					Arrays.asList(
 						new Field("currencyCode"), new Field("value"))),
@@ -58,7 +56,7 @@ public class OrderTotalCurrencyValuesDataFetcherTest
 	@Test
 	public void testGetWithTrend() {
 		List<CurrencyValueDTO> currencyValueDTOs =
-			_orderTotalCurrencyValuesDataFetcher.get(
+			_orderIncompleteValuesDataFetcher.get(
 				getDataFetchingEnvironment(
 					Arrays.asList(
 						new Field("currencyCode"), new Field("trend"),
@@ -73,13 +71,6 @@ public class OrderTotalCurrencyValuesDataFetcherTest
 	}
 
 	@Autowired
-	private ChannelRepository _channelRepository;
-
-	@Autowired
-	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private OrderTotalCurrencyValuesDataFetcher
-		_orderTotalCurrencyValuesDataFetcher;
+	private OrderIncompleteValuesDataFetcher _orderIncompleteValuesDataFetcher;
 
 }
