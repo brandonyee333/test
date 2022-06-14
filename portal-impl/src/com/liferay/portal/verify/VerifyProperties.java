@@ -1828,8 +1828,9 @@ public class VerifyProperties extends VerifyProcess {
 		"organizations.form.update.miscellaneous",
 		"organizations.indexer.enabled", "portal.cache.manager.type.multi.vm",
 		"portal.cache.manager.type.single.vm", "portal.ctx",
-		"portal.security.manager.enable", "permissions.list.filter",
-		"permissions.thread.local.cache.max.size",
+		"portal.security.manager.enable",
+		"permissions.inline.sql.resource.block.query.threshold",
+		"permissions.list.filter", "permissions.thread.local.cache.max.size",
 		"permissions.user.check.algorithm", "persistence.provider",
 		"ratings.max.score", "ratings.min.score", "sandbox.deploy.dir",
 		"sandbox.deploy.enabled", "sandbox.deploy.interval",
@@ -1982,6 +1983,10 @@ public class VerifyProperties extends VerifyProcess {
 		{
 			"passwords.passwordpolicytoolkit.charset.uppercase",
 			"passwords.passwordpolicytoolkit.validator.charset.uppercase"
+		},
+		{
+			"permissions.inline.sql.resource.block.query.threshhold",
+			"permissions.inline.sql.resource.block.query.threshold"
 		},
 		{"portal.instance.http.port", "portal.instance.http.socket.address"},
 		{"portal.instance.https.port", "portal.instance.http.socket.address"},
