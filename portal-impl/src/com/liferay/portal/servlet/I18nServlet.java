@@ -29,11 +29,13 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PortalInstances;
+import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.AsyncPortletServletRequest;
 
@@ -156,7 +158,7 @@ public class I18nServlet extends HttpServlet {
 			i18nLanguageCode = i18nLanguageId.substring(0, pos);
 		}
 
-		Locale siteDefaultLocale = LanguageUtil.getLocale(i18nLanguageCode);
+		Locale targetLocale = LanguageUtil.getLocale(i18nLanguageCode);
 
 		Group siteGroup = null;
 
@@ -188,20 +190,32 @@ public class I18nServlet extends HttpServlet {
 					return null;
 				}
 
-				siteDefaultLocale = LanguageUtil.getLocale(
+				targetLocale = LanguageUtil.getLocale(
 					siteGroup.getGroupId(), i18nLanguageCode);
+
+				boolean allowCompanyLocalesInSiteAdmin =
+					PrefsPropsUtil.getBoolean(
+						PortalUtil.getCompanyId(httpServletRequest),
+						PropsKeys.LOCALE_ALLOW_COMPANY_LOCALES_IN_SITE_ADMIN,
+						PropsValues.LOCALE_ALLOW_COMPANY_IN_SITE_ADMIN);
+
+				if ((targetLocale == null) && allowCompanyLocalesInSiteAdmin &&
+					PortalUtil.isControlPanelPath(path)) {
+
+					targetLocale = LanguageUtil.getLocale(i18nLanguageCode);
+				}
 			}
 		}
 
-		if (siteDefaultLocale == null) {
+		if (targetLocale == null) {
 			if (PropsValues.LOCALE_USE_DEFAULT_IF_NOT_AVAILABLE) {
-				siteDefaultLocale = PortalUtil.getSiteDefaultLocale(siteGroup);
+				targetLocale = PortalUtil.getSiteDefaultLocale(siteGroup);
 
-				i18nLanguageCode = siteDefaultLocale.getLanguage();
+				i18nLanguageCode = targetLocale.getLanguage();
 
 				i18nPath = StringPool.SLASH + i18nLanguageCode;
 
-				i18nLanguageId = LocaleUtil.toLanguageId(siteDefaultLocale);
+				i18nLanguageId = LocaleUtil.toLanguageId(targetLocale);
 			}
 			else {
 				return null;
@@ -209,7 +223,7 @@ public class I18nServlet extends HttpServlet {
 		}
 		else {
 			String siteDefaultLanguageId = LocaleUtil.toLanguageId(
-				siteDefaultLocale);
+				targetLocale);
 
 			if (siteDefaultLanguageId.startsWith(i18nLanguageId)) {
 				i18nPath = StringPool.SLASH + i18nLanguageCode;
