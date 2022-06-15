@@ -85,16 +85,16 @@ public class ReportRestControllerTest
 	}
 
 	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments_4.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
 	)
 	@Test
 	public void testGetReportSegmentDTOPageDTO() throws Exception {

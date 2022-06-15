@@ -93,16 +93,16 @@ public class AccountsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments_1.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
 	)
 	@Test
 	public void testGetAccountDTOPageDTO() throws Exception {
@@ -272,20 +272,20 @@ public class AccountsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
 	@Test
 	public void testGetIndividualSegments() throws Exception {
@@ -308,16 +308,16 @@ public class AccountsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
 	@Test
 	public void testGetIndividualSegmentTransformations() throws Exception {

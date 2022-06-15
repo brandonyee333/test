@@ -901,12 +901,12 @@ public class IndividualDogTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_memberships.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,

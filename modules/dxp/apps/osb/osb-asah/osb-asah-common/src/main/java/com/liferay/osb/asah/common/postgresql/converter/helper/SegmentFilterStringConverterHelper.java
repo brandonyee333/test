@@ -42,8 +42,8 @@ public class SegmentFilterStringConverterHelper
 			return DSL.field(
 				"id"
 			).in(
-				_membershipChangeDog.findIndividualSegmentIdByFilterString(
-					"individualsCount " + operator + " " + valueString)
+				_membershipChangeDog.findSegmentIdByFilterString(
+					"identitiesCount " + operator + " " + valueString)
 			);
 		}
 

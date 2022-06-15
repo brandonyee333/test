@@ -40,8 +40,7 @@ public interface CustomBQMembershipChangeRepository {
 	public void deleteBySegmentIdIn(List<Long> segmentIds);
 
 	@Cacheable
-	public List<Long> findIndividualSegmentIdByFilterString(
-		String filterString);
+	public List<Long> findSegmentIdByFilterString(String filterString);
 
 	@Cacheable
 	public List<BQMembershipChange> searchBQMembershipChanges(

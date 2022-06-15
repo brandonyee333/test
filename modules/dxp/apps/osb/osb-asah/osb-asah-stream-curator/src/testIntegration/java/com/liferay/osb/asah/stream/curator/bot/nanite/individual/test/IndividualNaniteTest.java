@@ -392,12 +392,12 @@ public class IndividualNaniteTest
 		resourcePath = "identity_message_2.json"
 	)
 	@RepositoryResource(
-		repositoryClass = SuppressionRepository.class,
-		resourcePath = "osbasahfaroinfo/suppressions.json"
-	)
-	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SuppressionRepository.class,
+		resourcePath = "osbasahfaroinfo/suppressions.json"
 	)
 	@Test
 	public void testSuppressedUserUpdate() {

@@ -534,7 +534,8 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		individuals.forEach(
 			individual -> Assertions.assertFalse(
-				_membershipDog.isMember(individual.getId(), segment.getId())));
+				_membershipDog.isMember(
+					String.valueOf(individual.getId()), segment.getId())));
 	}
 
 	private void _addIndividualInterests(

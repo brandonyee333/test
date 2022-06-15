@@ -155,12 +155,12 @@ public class IndividualSegmentsRestControllerTest
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
-	@RepositoryResource(
 		repositoryClass = DXPEntityRepository.class,
 		resourcePath = "osbasahdxpraw/users.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
 	@Test
 	public void testGetIndividualSegments() {
@@ -172,6 +172,10 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels.json"
 	)
@@ -182,10 +186,6 @@ public class IndividualSegmentsRestControllerTest
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments_1.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
 	)
 	@Test
 	public void testGetIndividualSegmentsForDataSourceId() {
@@ -222,16 +222,16 @@ public class IndividualSegmentsRestControllerTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments_1.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
 	)
 	@Test
 	public void testGetSegmentDTO1() throws Exception {
@@ -314,12 +314,12 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments_3.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_3.json"
 	)
 	@Test
 	public void testGetSegmentDTO2() throws Exception {
@@ -330,16 +330,16 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_2.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes_2.json"
 	)
 	@Test
 	public void testGetSegmentDTOCreatedToday() throws Exception {

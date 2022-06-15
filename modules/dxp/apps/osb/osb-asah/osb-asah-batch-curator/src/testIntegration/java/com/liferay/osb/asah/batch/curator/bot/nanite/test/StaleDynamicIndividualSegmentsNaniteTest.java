@@ -246,7 +246,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		List<Long> segmentIds = _segmentRepository.findIdByFilterLike(
 			"%sessions.filter%");
 
-		Assertions.assertEquals(6, individualSegmentIds.size());
+		Assertions.assertEquals(6, segmentIds.size());
 
 		for (Long segmentId : segmentIds) {
 			Assertions.assertEquals(

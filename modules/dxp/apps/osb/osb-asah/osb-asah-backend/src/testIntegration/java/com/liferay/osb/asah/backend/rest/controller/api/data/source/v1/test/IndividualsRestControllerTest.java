@@ -54,12 +54,12 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
-	@RepositoryResource(
 		repositoryClass = DXPEntityRepository.class,
 		resourcePath = "osbasahdxpraw/users.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
 	@Test
 	public void testGetIndividuals() {

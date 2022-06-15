@@ -37,20 +37,20 @@ public class SegmentFilterStringConverterHelperTest {
 	@Test
 	public void test() {
 		Mockito.when(
-			_membershipChangeDog.findIndividualSegmentIdByFilterString(
-				"individualsCount eq 3")
+			_membershipChangeDog.findSegmentIdByFilterString(
+				"identitiesCount eq 3")
 		).thenReturn(
 			Collections.singletonList(3L)
 		);
 		Mockito.when(
-			_membershipChangeDog.findIndividualSegmentIdByFilterString(
-				"individualsCount gt 3")
+			_membershipChangeDog.findSegmentIdByFilterString(
+				"identitiesCount gt 3")
 		).thenReturn(
 			Collections.singletonList(5L)
 		);
 		Mockito.when(
-			_membershipChangeDog.findIndividualSegmentIdByFilterString(
-				"individualsCount lt 3")
+			_membershipChangeDog.findSegmentIdByFilterString(
+				"identitiesCount lt 3")
 		).thenReturn(
 			Collections.singletonList(2L)
 		);

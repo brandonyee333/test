@@ -82,7 +82,8 @@ public class BQMembershipChangeRepositoryImpl
 
 	@Override
 	public List<Long> findSegmentIdByFilterString(String filterString) {
-		Field<Object> createDateField = DSL.field("createdate");
+		Field<Object> createDateField = DSL.field("createDate");
+
 		Field<Object> segmentIdField = DSL.field("segmentId");
 
 		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
@@ -139,9 +140,9 @@ public class BQMembershipChangeRepositoryImpl
 			return Collections.emptyList();
 		}
 
-		Field<Object> createDateField = DSL.field("createdate");
+		Field<Object> createDateField = DSL.field("createDate");
 
-		Field<Object> segmentIdField = DSL.field("segmentid");
+		Field<Object> segmentIdField = DSL.field("segmentId");
 
 		Condition condition = segmentIdField.in(segmentIds);
 
