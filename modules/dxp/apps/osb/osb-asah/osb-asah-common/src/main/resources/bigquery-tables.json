@@ -674,6 +674,38 @@
 			}
 		]
 	},
+	"identityChannel": {
+		"clusteringFields": [
+			"channelId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "activitiesCount",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "identityId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "lastActivityDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "previousActivityDate",
+				"type": "TIMESTAMP"
+			}
+		]
+	},
 	"membership": {
 		"clusteringFields": [
 			"individualId",

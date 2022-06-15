@@ -120,6 +120,15 @@ CREATE TABLE IF NOT EXISTS BQIdentityActivity (
 	identityId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS BQIdentityChannel (
+    activitiesCount INTEGER,
+    channelId BIGINT,
+    identityId BIGINT,
+    lastActivityDate TIMESTAMPTZ,
+    previousActivityDate TIMESTAMPTZ,
+    PRIMARY KEY (channelId, identityId)
+);
+
 CREATE TABLE IF NOT EXISTS BQMembership (
 	createDate TIMESTAMPTZ,
 	id BIGSERIAL PRIMARY KEY,

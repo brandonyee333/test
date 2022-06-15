@@ -344,15 +344,6 @@ CREATE TABLE IF NOT EXISTS Individual (
 	userGroupIds BIGINT[]
 );
 
-CREATE TABLE IF NOT EXISTS IndividualChannel (
-	activitiesCount INTEGER,
-	channelId BIGINT,
-	individualId BIGINT,
-	lastActivityDate TIMESTAMPTZ,
-	previousActivityDate TIMESTAMPTZ,
-	PRIMARY KEY (channelId, individualId)
-);
-
 CREATE TABLE IF NOT EXISTS Interest (
 	id BIGSERIAL PRIMARY KEY,
 	name TEXT,
