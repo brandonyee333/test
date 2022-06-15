@@ -29,6 +29,14 @@ CREATE TABLE IF NOT EXISTS BQAccountGroup (
 	type TEXT
 );
 
+CREATE TABLE IF NOT EXISTS BQDataSourceUser (
+    accountPKs TEXT[],
+    dataSourceId BIGINT,
+    userId BIGINT,
+    userPKs TEXT[],
+    PRIMARY KEY (dataSourceId, userId)
+);
+
 CREATE TABLE IF NOT EXISTS BQEvent (
 	applicationId TEXT,
 	browserName TEXT,

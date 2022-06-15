@@ -156,6 +156,33 @@
 			"type": "DAY"
 		}
 	},
+	"datasourceuser": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REPEATED",
+				"name": "accountPKs",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "userPKs",
+				"type": "STRING"
+			}
+		]
+	},
 	"dxpentity": {
 		"clusteringFields": [
 			"dataSourceId"

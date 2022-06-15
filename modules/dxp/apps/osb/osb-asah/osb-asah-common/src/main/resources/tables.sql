@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS ChannelDataSource (
 CREATE TABLE IF NOT EXISTS CSVIndividual (
 	id BIGSERIAL PRIMARY KEY,
 	dataSourceId BIGINT,
-	dataSourceIndividualPK TEXT,
+    dataSourceUserPK TEXT,
 	fields JSON
 );
 
@@ -159,14 +159,6 @@ CREATE TABLE IF NOT EXISTS DataSourceFieldMapping (
 	fieldMappingId BIGINT,
 	fieldName TEXT,
 	PRIMARY KEY (dataSourceId, fieldMappingId)
-);
-
-CREATE TABLE IF NOT EXISTS DataSourceIndividual (
-	accountPKs TEXT[],
-	dataSourceId BIGINT,
-	individualId BIGINT,
-	individualPKs TEXT[],
-	PRIMARY KEY (dataSourceId, individualId)
 );
 
 CREATE TABLE IF NOT EXISTS DataSourceOrganization (
