@@ -1,0 +1,6 @@
+query OrderTotalCurrencyValue($channelId: String!, $rangeKey: Int) {
+	orderTotalCurrencyValues(channelId: $channelId, rangeKey: $rangeKey) {
+		currencyCode
+		value
+	}
+}

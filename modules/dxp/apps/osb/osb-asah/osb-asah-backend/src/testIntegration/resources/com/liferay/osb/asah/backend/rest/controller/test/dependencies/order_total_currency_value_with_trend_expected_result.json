@@ -1,21 +1,21 @@
 {
 	"data": {
-		"orderTotalValues": [
+		"orderTotalCurrencyValues": [
 			{
 				"currencyCode": "EUR",
 				"trend": {
 					"percentage": 100.0,
 					"trendClassification": "POSITIVE"
 				},
-				"value": "20.0"
+				"value": "40.0"
 			},
 			{
 				"currencyCode": "USD",
 				"trend": {
-					"percentage": 20.0,
+					"percentage": 40.0,
 					"trendClassification": "POSITIVE"
 				},
-				"value": "50.0"
+				"value": "70.0"
 			}
 		]
 	}

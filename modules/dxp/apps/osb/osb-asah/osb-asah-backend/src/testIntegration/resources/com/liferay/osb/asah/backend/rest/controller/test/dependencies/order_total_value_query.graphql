@@ -1,6 +1,0 @@
-query OrderTotalValue($channelId: String!, $rangeKey: Int) {
-	orderTotalValues(channelId: $channelId, rangeKey: $rangeKey) {
-		currencyCode
-		value
-	}
-}

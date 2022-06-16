@@ -29,24 +29,24 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Riccardo Ferrari
  */
 @SQLResource(
-	resourcePath = "order_total_value_graphql_rest_controller_test.sql"
+	resourcePath = "order_total_currency_value_graphql_rest_controller_test.sql"
 )
-public class OrderTotalValueGraphQLRestControllerTest
+public class OrderTotalCurrencyValueWithTrendGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
 	@Override
 	public String getBodyPath() {
-		return "order_total_value_body.json";
+		return "order_total_currency_value_with_trend_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "order_total_value_expected_result.json";
+		return "order_total_currency_value_with_trend_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "order_total_value_query.graphql";
+		return "order_total_currency_value_with_trend_query.graphql";
 	}
 
 	@BeforeEach

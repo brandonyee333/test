@@ -1,5 +1,5 @@
 {
-	"operationName": "OrderTotalValue",
+	"operationName": "OrderTotalCurrencyValue",
 	"variables": {
 		"channelId": "11",
 		"rangeKey": 7
