@@ -68,9 +68,8 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 						"orderIncompleteCurrencyValue"
 					)),
 				_getConditions(
-					dataSourceIds, _orderIncompleteCurrencyValueStatuses,
-					rangeEndLocalDateTime, rangeStartLocalDateTime,
-					timeZoneId)),
+					dataSourceIds, Arrays.asList(2L, 6L), rangeEndLocalDateTime,
+					rangeStartLocalDateTime, timeZoneId)),
 			GetterUtil::getBigDecimal);
 	}
 
@@ -94,7 +93,7 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 						"orderTotalCurrencyValue"
 					)),
 				_getConditions(
-					dataSourceIds, _orderTotalCurrencyValueStatuses,
+					dataSourceIds, Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L),
 					rangeEndLocalDateTime, rangeStartLocalDateTime,
 					timeZoneId)),
 			GetterUtil::getBigDecimal);
@@ -113,20 +112,18 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 			).in(
 				dataSourceIds
 			));
-
-		conditions.add(
-			DSL.field(
-				"orderStatus"
-			).in(
-				orderStatuses
-			));
-
 		conditions.add(
 			DSL.field(
 				"orderDate"
 			).between(
 				_dslHelper.getDateParam(rangeStartLocalDateTime, timeZoneId),
 				_dslHelper.getDateParam(rangeEndLocalDateTime, timeZoneId)
+			));
+		conditions.add(
+			DSL.field(
+				"orderStatus"
+			).in(
+				orderStatuses
 			));
 
 		return conditions;
@@ -145,11 +142,6 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 			DSL.field("currencyCode")
 		);
 	}
-
-	private static final List<Long> _orderIncompleteCurrencyValueStatuses =
-		Arrays.asList(2L, 6L);
-	private static final List<Long> _orderTotalCurrencyValueStatuses =
-		Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L);
 
 	private final DSLContext _dslContext;
 

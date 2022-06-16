@@ -77,12 +77,11 @@ public class CommerceDashboardDogTest
 
 		Assertions.assertNotNull(orderIncompleteCurrencyValues);
 
-		CurrencyValue orderIncompleteValue = orderIncompleteCurrencyValues.get(
-			"USD");
+		CurrencyValue currencyValue = orderIncompleteCurrencyValues.get("USD");
 
-		Assertions.assertNotNull(orderIncompleteValue);
-		Assertions.assertNotNull(orderIncompleteValue.getValue());
-		Assertions.assertNull(orderIncompleteValue.getPercentageVariation());
+		Assertions.assertNotNull(currencyValue);
+		Assertions.assertNotNull(currencyValue.getValue());
+		Assertions.assertNull(currencyValue.getPercentageVariation());
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")

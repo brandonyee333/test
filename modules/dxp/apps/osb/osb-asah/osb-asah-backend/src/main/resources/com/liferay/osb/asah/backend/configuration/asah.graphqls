@@ -263,6 +263,12 @@ type CompositionBag {
 	totalCount: Int
 }
 
+type CurrencyValue {
+	currencyCode: String,
+	trend: Trend,
+	value: String
+}
+
 type CustomAssetMetric implements AssetMetric {
 	abandonmentsMetric: Metric
 	assetId: String
@@ -833,12 +839,6 @@ type MutationType {
 		runFrequency: JobRunFrequency
 		runNow: Boolean
 	): Job
-}
-
-type CurrencyValue {
-	currencyCode: String,
-	trend: Trend,
-	value: String
 }
 
 type Organization implements DXPEntity {

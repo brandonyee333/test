@@ -69,23 +69,24 @@ public class CommerceDashboardDog {
 		Map<String, CurrencyValue> orderIncompleteCurrencyValues =
 			new HashMap<>();
 
-		for (Map.Entry<String, BigDecimal> currentOrderTotalValue :
+		for (Map.Entry<String, BigDecimal> currentOrderIncompleteCurrencyValue :
 				currentOrderIncompleteCurrencyValues.entrySet()) {
 
-			String currencyCode = currentOrderTotalValue.getKey();
+			String currencyCode = currentOrderIncompleteCurrencyValue.getKey();
 
 			CurrencyValue currencyValue = new CurrencyValue(
-				currencyCode, null, currentOrderTotalValue.getValue());
+				currencyCode, null,
+				currentOrderIncompleteCurrencyValue.getValue());
 
 			if (compareToPrevious) {
-				BigDecimal previousOrderTotalValue =
+				BigDecimal previousOrderIncompleteCurrencyValue =
 					previousOrderIncompleteCurrencyValues.getOrDefault(
 						currencyCode, BigDecimal.ZERO);
 
 				currencyValue.setPercentageVariation(
 					_getPercentageVariation(
-						currentOrderTotalValue.getValue(),
-						previousOrderTotalValue));
+						currentOrderIncompleteCurrencyValue.getValue(),
+						previousOrderIncompleteCurrencyValue));
 			}
 
 			orderIncompleteCurrencyValues.put(currencyCode, currencyValue);
@@ -119,23 +120,23 @@ public class CommerceDashboardDog {
 
 		Map<String, CurrencyValue> orderTotalCurrencyValues = new HashMap<>();
 
-		for (Map.Entry<String, BigDecimal> currentOrderTotalValue :
+		for (Map.Entry<String, BigDecimal> currentOrderTotalCurrencyValue :
 				currentOrderTotalCurrencyValues.entrySet()) {
 
-			String currencyCode = currentOrderTotalValue.getKey();
+			String currencyCode = currentOrderTotalCurrencyValue.getKey();
 
 			CurrencyValue currencyValue = new CurrencyValue(
-				currencyCode, null, currentOrderTotalValue.getValue());
+				currencyCode, null, currentOrderTotalCurrencyValue.getValue());
 
 			if (compareToPrevious) {
-				BigDecimal previousOrderTotalValue =
+				BigDecimal previousOrderTotalCurrencyValue =
 					previousOrderTotalCurrencyValues.getOrDefault(
 						currencyCode, BigDecimal.ZERO);
 
 				currencyValue.setPercentageVariation(
 					_getPercentageVariation(
-						currentOrderTotalValue.getValue(),
-						previousOrderTotalValue));
+						currentOrderTotalCurrencyValue.getValue(),
+						previousOrderTotalCurrencyValue));
 			}
 
 			orderTotalCurrencyValues.put(currencyCode, currencyValue);
