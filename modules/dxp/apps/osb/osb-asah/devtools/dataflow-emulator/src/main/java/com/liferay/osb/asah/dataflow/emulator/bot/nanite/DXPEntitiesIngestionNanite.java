@@ -224,6 +224,7 @@ public class DXPEntitiesIngestionNanite {
 			BQAccountEntry accountEntry = _objectMapper.convertValue(
 				fields, BQAccountEntry.class);
 
+			accountEntry.setDataSourceId(dataSourceId);
 			accountEntry.setId(
 				_generateDXPEntityId(
 					accountEntry.getAccountEntryId(), dataSourceId, projectId));
@@ -239,6 +240,7 @@ public class DXPEntitiesIngestionNanite {
 			BQAccountGroup accountGroup = _objectMapper.convertValue(
 				fields, BQAccountGroup.class);
 
+			accountGroup.setDataSourceId(dataSourceId);
 			accountGroup.setId(
 				_generateDXPEntityId(
 					accountGroup.getAccountGroupId(), dataSourceId, projectId));
