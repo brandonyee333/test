@@ -82,6 +82,11 @@ public class BQAccountEntry implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getDefaultCPaymentMethodKey() {
 		return _defaultCPaymentMethodKey;
 	}
@@ -180,6 +185,10 @@ public class BQAccountEntry implements Persistable<String> {
 		}
 	}
 
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
 	public void setDefaultCPaymentMethodKey(String defaultCPaymentMethodKey) {
 		_defaultCPaymentMethodKey = defaultCPaymentMethodKey;
 	}
@@ -243,6 +252,9 @@ public class BQAccountEntry implements Persistable<String> {
 
 	@Transient
 	private Date _createDate;
+
+	@Transient
+	private Long _dataSourceId;
 
 	@Transient
 	private String _defaultCPaymentMethodKey;

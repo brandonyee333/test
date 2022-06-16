@@ -72,6 +72,11 @@ public class BQAccountGroup implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Long getDataSourceId() {
+		return _dataSourceId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean getDefaultAccountGroup() {
 		return _defaultAccountGroup;
 	}
@@ -137,6 +142,10 @@ public class BQAccountGroup implements Persistable<String> {
 		}
 	}
 
+	public void setDataSourceId(Long dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
 	public void setDefaultAccountGroup(Boolean defaultAccountGroup) {
 		_defaultAccountGroup = defaultAccountGroup;
 	}
@@ -172,6 +181,9 @@ public class BQAccountGroup implements Persistable<String> {
 
 	@Transient
 	private Date _createDate;
+
+	@Transient
+	private Long _dataSourceId;
 
 	@Transient
 	private Boolean _defaultAccountGroup;
