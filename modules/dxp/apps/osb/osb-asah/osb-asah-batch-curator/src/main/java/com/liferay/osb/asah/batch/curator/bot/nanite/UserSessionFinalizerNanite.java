@@ -84,8 +84,7 @@ public class UserSessionFinalizerNanite extends BaseNanite {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
-						"PastUserSessionFinalizerNanite took %d ms to fetch " +
-							"sessions",
+						"Fetched sessions in %d ms",
 						System.currentTimeMillis() - start));
 			}
 

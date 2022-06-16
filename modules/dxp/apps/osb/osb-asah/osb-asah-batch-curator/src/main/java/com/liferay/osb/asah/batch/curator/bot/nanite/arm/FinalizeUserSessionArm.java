@@ -95,7 +95,7 @@ public class FinalizeUserSessionArm {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"FinalizeUserSessionArm took %d ms to update session",
+					"Updated session in %d ms",
 					System.currentTimeMillis() - start));
 		}
 
@@ -122,7 +122,7 @@ public class FinalizeUserSessionArm {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"FinalizeUserSessionArm took %d ms to schedule Asah task",
+					"Scheduled Asah task in %d ms",
 					System.currentTimeMillis() - start));
 		}
 	}
@@ -135,7 +135,7 @@ public class FinalizeUserSessionArm {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"FinalizeUserSessionArm took %d ms to update activities",
+					"Updated activities in %d ms",
 					System.currentTimeMillis() - start));
 		}
 
@@ -146,7 +146,7 @@ public class FinalizeUserSessionArm {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"FinalizeUserSessionArm took %d ms to update session asset",
+					"Updated session asset in %d ms",
 					System.currentTimeMillis() - start));
 		}
 
@@ -158,7 +158,7 @@ public class FinalizeUserSessionArm {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"FinalizeUserSessionArm took %d ms to fetch session pages",
+					"Fetched session pages in %d ms",
 					System.currentTimeMillis() - start));
 		}
 
@@ -177,7 +177,7 @@ public class FinalizeUserSessionArm {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"FinalizeUserSessionArm took %d ms to compute page metrics",
+					"Computed page metrics in %d ms",
 					System.currentTimeMillis() - start));
 		}
 
@@ -208,7 +208,7 @@ public class FinalizeUserSessionArm {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"FinalizeUserSessionArm took %d ms to update page metrics",
+					"Updated page metrics in %d ms",
 					System.currentTimeMillis() - start));
 		}
 	}
