@@ -53,13 +53,14 @@ public class OrderTotalCurrencyValuesDataFetcher
 		Map<String, List<Field>> dataFetchingFieldSelectionSetFields =
 			dataFetchingFieldSelectionSet.get();
 
-		Map<String, CurrencyValue> orderTotalValues =
-			_commerceDashboardDog.getOrderTotalValues(
+		Map<String, CurrencyValue> orderTotalCurrencyValues =
+			_commerceDashboardDog.getOrderTotalCurrencyValues(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				dataFetchingFieldSelectionSetFields.containsKey("trend"),
 				searchQueryContext.getTimeRange());
 
-		return ListUtil.map(orderTotalValues.values(), CurrencyValueDTO::new);
+		return ListUtil.map(
+			orderTotalCurrencyValues.values(), CurrencyValueDTO::new);
 	}
 
 	@Autowired
