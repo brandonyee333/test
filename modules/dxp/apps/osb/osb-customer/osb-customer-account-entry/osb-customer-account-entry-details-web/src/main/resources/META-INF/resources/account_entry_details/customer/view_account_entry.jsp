@@ -29,7 +29,13 @@ portletURL.setParameter("koroneikiAccountKey", String.valueOf(koroneikiAccount.g
 
 PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project-details"), portletURL.toString(), null, false);
 
-String tabNames = "overview,team-members,liferay-contacts,offerings,attachments";
+String tabNames = StringPool.BLANK;
+
+if (!accountEntryViewDisplayContext.hasOnlyLXC()) {
+	tabNames = "overview,";
+}
+
+tabNames += "team-members,liferay-contacts,offerings,attachments";
 
 if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED && !accountEntryViewDisplayContext.hasOnlyLXC()) {
 	tabNames += ",source-code-access";
@@ -65,13 +71,13 @@ if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED && !accountEntryViewDisplay
 	<c:when test='<%= tabs1.equals("offerings") %>'>
 		<liferay-util:include page="/account_entry_details/offerings.jsp" servletContext="<%= application %>" />
 	</c:when>
+	<c:when test='<%= tabs1.equals("overview") && !accountEntryViewDisplayContext.hasOnlyLXC() %>'>
+		<liferay-util:include page="/account_entry_details/customer/overview.jsp" servletContext="<%= application %>" />
+	</c:when>
 	<c:when test='<%= tabs1.equals("source-code-access") && GitHubConfigurationValues.GITHUB_FEATURE_ENABLED && !accountEntryViewDisplayContext.hasOnlyLXC() %>'>
 		<liferay-util:include page="/account_entry_details/source_code_access.jsp" servletContext="<%= application %>" />
 	</c:when>
-	<c:when test='<%= tabs1.equals("team-members") %>'>
-		<liferay-util:include page="/account_entry_details/team_members.jsp" servletContext="<%= application %>" />
-	</c:when>
 	<c:otherwise>
-		<liferay-util:include page="/account_entry_details/customer/overview.jsp" servletContext="<%= application %>" />
+		<liferay-util:include page="/account_entry_details/team_members.jsp" servletContext="<%= application %>" />
 	</c:otherwise>
 </c:choose>

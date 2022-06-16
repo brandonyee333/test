@@ -26,7 +26,7 @@ boolean permitAdd = false;
 boolean permitDelete = false;
 boolean permitEdit = false;
 
-if (accountEntry != null) {
+if ((accountEntry != null) && !accountEntryViewDisplayContext.hasOnlyLXC()) {
 	addEnvironmentURL = accountEntryViewDisplayContext.getAccountEnvironmentAddURL(accountEntry);
 	accountEnvironmentsJSONArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
 	environmentConfigurationJSONObject = accountEntryViewDisplayContext.getEnvironmentConfigurationJSONObject();
@@ -36,19 +36,21 @@ if (accountEntry != null) {
 }
 %>
 
-<div class="account-environments card" id="<portlet:namespace />accountEnvironments"></div>
+<c:if test="<%= !accountEntryViewDisplayContext.hasOnlyLXC() %>">
+	<div class="account-environments card" id="<portlet:namespace />accountEnvironments"></div>
 
-<aui:script>
-	AccountDetails.render(
-		AccountDetails.AccountEnvironments,
-		{
-			addEnvironmentURL: '<%= addEnvironmentURL %>',
-			environmentConfiguration: <%= environmentConfigurationJSONObject %>,
-			environments: <%= accountEnvironmentsJSONArray %>,
-			permitAdd: <%= permitAdd %>,
-			permitDelete: <%= permitDelete %>,
-			permitEdit: <%= permitEdit %>
-		},
-		document.getElementById('<portlet:namespace />accountEnvironments')
-	);
-</aui:script>
+	<aui:script>
+		AccountDetails.render(
+			AccountDetails.AccountEnvironments,
+			{
+				addEnvironmentURL: '<%= addEnvironmentURL %>',
+				environmentConfiguration: <%= environmentConfigurationJSONObject %>,
+				environments: <%= accountEnvironmentsJSONArray %>,
+				permitAdd: <%= permitAdd %>,
+				permitDelete: <%= permitDelete %>,
+				permitEdit: <%= permitEdit %>
+			},
+			document.getElementById('<portlet:namespace />accountEnvironments')
+		);
+	</aui:script>
+</c:if>
