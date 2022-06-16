@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS BQAccountEntry (
 	accountEntryId BIGINT,
 	createDate TIMESTAMPTZ,
+	dataSourceId BIGINT,
 	defaultCPaymentMethodKey TEXT,
 	description TEXT,
 	domains TEXT,
@@ -19,6 +20,7 @@ CREATE TABLE IF NOT EXISTS BQAccountEntry (
 CREATE TABLE IF NOT EXISTS BQAccountGroup (
 	accountGroupId BIGINT,
 	createDate TIMESTAMPTZ,
+	dataSourceId BIGINT,
 	defaultAccountGroup BOOLEAN,
 	description TEXT,
 	id TEXT UNIQUE,
