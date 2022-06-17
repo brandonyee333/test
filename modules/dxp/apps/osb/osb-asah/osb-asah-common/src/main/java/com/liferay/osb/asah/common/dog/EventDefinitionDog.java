@@ -300,9 +300,6 @@ public class EventDefinitionDog {
 		eventDefinition.setBlockedLastSeenDate(null);
 		eventDefinition.setBlockedLastSeenURL(null);
 		eventDefinition.setBlockedReasonType(null);
-		eventDefinition.setDisplayName(
-			_getDisplayName(
-				eventDefinition.getDisplayName(), eventDefinition.getName()));
 
 		_validateEventDefinitionLimit(1);
 
