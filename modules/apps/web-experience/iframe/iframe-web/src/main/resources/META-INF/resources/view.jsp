@@ -162,8 +162,6 @@
 	}
 
 	if (iframe) {
-
-
 		if (!isNested(window, [])) {
 			iframe.set('src', '<%= HtmlUtil.escapeJS(iFrameDisplayContext.getIframeSrc()) %>');
 
