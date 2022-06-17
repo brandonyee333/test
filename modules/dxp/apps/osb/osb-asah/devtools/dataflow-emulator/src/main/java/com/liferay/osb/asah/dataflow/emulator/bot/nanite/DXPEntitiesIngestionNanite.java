@@ -237,18 +237,19 @@ public class DXPEntitiesIngestionNanite {
 		else if (StringUtils.equals(
 					type, "com.liferay.account.model.AccountGroup")) {
 
-			BQAccountGroup accountGroup = _objectMapper.convertValue(
+			BQAccountGroup bqAccountGroup = _objectMapper.convertValue(
 				fields, BQAccountGroup.class);
 
-			accountGroup.setDataSourceId(dataSourceId);
-			accountGroup.setId(
+			bqAccountGroup.setDataSourceId(dataSourceId);
+			bqAccountGroup.setId(
 				_generateDXPEntityId(
-					accountGroup.getAccountGroupId(), dataSourceId, projectId));
+					bqAccountGroup.getAccountGroupId(), dataSourceId,
+					projectId));
 
-			accountGroup.setIsNew(
-				_isNew(_bqAccountGroupRepository, accountGroup.getId()));
+			bqAccountGroup.setIsNew(
+				_isNew(_bqAccountGroupRepository, bqAccountGroup.getId()));
 
-			_bqAccountGroupRepository.save(accountGroup);
+			_bqAccountGroupRepository.save(bqAccountGroup);
 		}
 		else if (StringUtils.equals(
 					type,
