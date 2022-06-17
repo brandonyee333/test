@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -70,8 +71,7 @@ public class CSVIndividual implements Persistable<Long> {
 
 		if (Objects.equals(_dataSourceId, csvIndividual._dataSourceId) &&
 			Objects.equals(
-				_dataSourceIndividualPK,
-				csvIndividual._dataSourceIndividualPK) &&
+				_dataSourceUserPK, csvIndividual._dataSourceUserPK) &&
 			Objects.equals(
 				JSONUtil.toMap(_fieldsJSONObject),
 				JSONUtil.toMap(csvIndividual._fieldsJSONObject)) &&
@@ -90,8 +90,10 @@ public class CSVIndividual implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getDataSourceIndividualPK() {
-		return _dataSourceIndividualPK;
+	@JsonAlias("dataSourceUserPK")
+	@JsonProperty("dataSourceIndividualPK")
+	public String getDataSourceUserPK() {
+		return _dataSourceUserPK;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -112,7 +114,7 @@ public class CSVIndividual implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_dataSourceId, _dataSourceIndividualPK, _fieldsJSONObject, _id);
+			_dataSourceId, _dataSourceUserPK, _fieldsJSONObject, _id);
 	}
 
 	@JsonIgnore
@@ -129,8 +131,8 @@ public class CSVIndividual implements Persistable<Long> {
 		_dataSourceId = dataSourceId;
 	}
 
-	public void setDataSourceIndividualPK(String dataSourceIndividualPK) {
-		_dataSourceIndividualPK = dataSourceIndividualPK;
+	public void setDataSourceUserPK(String dataSourceUserPK) {
+		_dataSourceUserPK = dataSourceUserPK;
 	}
 
 	public void setFieldsJSONObject(JSONObject fieldsJSONObject) {
@@ -149,7 +151,7 @@ public class CSVIndividual implements Persistable<Long> {
 	private Long _dataSourceId;
 
 	@Transient
-	private String _dataSourceIndividualPK;
+	private String _dataSourceUserPK;
 
 	@Transient
 	private JSONObject _fieldsJSONObject;

@@ -66,14 +66,14 @@ public interface CustomIndividualRepository {
 	public List<Individual> findAnonymousByCreateDateAndLastActivityDateAndId(
 		Date date, @Nullable Long id, int size);
 
-	public Individual findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
+	public Individual findByAssociatedIdNotAndDataSourceIdAndUserPK(
 		Long associatedId, Long dataSourceId, String fieldName,
 		String individualPK);
 
 	public List<Individual> findByChannelIdAndFilterStringAndIdIn(
 		@Nullable Long channelId, FilterHelper filterHelper, List<Long> ids);
 
-	public Individual findByDataSourceIdAndIndividualPK(
+	public Individual findByDataSourceIdAndUserPK(
 		Long dataSourceId, String individualPK);
 
 	public Individual findByEmailAddress(String emailAddress);
@@ -87,13 +87,13 @@ public interface CustomIndividualRepository {
 
 	public List<Individual> findBySegmentIds(Long segmentId);
 
+	public Map<Long, Long> findIdentityCounts(
+		boolean includeAnonymousUsers, Long segmentId);
+
 	public List<Long>
 		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 			@Nullable Long channelId, @Nullable Date lastActivityDate,
 			@Nullable Long segmentId);
-
-	public Map<Long, Long> findIndividualCounts(
-		boolean includeAnonymousUsers, Long segmentId);
 
 	public List<Long> findKnownIndividualIds(
 		FilterHelper filterHelper, Long segmentId);

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.model.Distribution;
@@ -407,19 +407,19 @@ public class IndividualRepositoryImpl
 			_dslContext.select(
 				DSL.function(
 					"unnest", String.class,
-					DSL.field("DataSourceIndividual.accountPKs")
+					DSL.field("BQDataSourceUser.accountPKs")
 				).as(
 					accountPKField
 				)
 			).from(
 				"Individual"
 			).join(
-				"DataSourceIndividual"
+				"BQDataSourceUser"
 			).on(
 				DSL.field(
 					"individual.id"
 				).eq(
-					DSL.field("datasourceindividual.individualid")
+					DSL.field("bqdatasourceuser.userid")
 				)
 			).where(
 				conditions
@@ -551,7 +551,7 @@ public class IndividualRepositoryImpl
 	}
 
 	@Override
-	public Individual findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
+	public Individual findByAssociatedIdNotAndDataSourceIdAndUserPK(
 		Long associatedId, Long dataSourceId, String fieldName,
 		String individualPK) {
 
@@ -563,24 +563,23 @@ public class IndividualRepositoryImpl
 		return selectSelectStep.from(
 			"Individual"
 		).join(
-			"DataSourceIndividual"
+			"BQDataSourceUser"
 		).on(
 			DSL.field(
 				"individual.id"
 			).eq(
-				DSL.field("datasourceindividual.individualid")
+				DSL.field("bqdatasourceuser.userid")
 			)
 		).where(
 			DSL.and(
 				DSL.field(
-					"datasourceindividual.datasourceid"
+					"bqdatasourceuser.datasourceid"
 				).eq(
 					dataSourceId
 				),
 				DSL.field(
 					DSL.cast(
-						DSL.array(
-							DSL.field("datasourceindividual.individualpks")),
+						DSL.array(DSL.field("bqdatasourceuser.userpks")),
 						String[].class)
 				).contains(
 					DSL.cast(DSL.array(individualPK), String[].class)
@@ -650,7 +649,7 @@ public class IndividualRepositoryImpl
 	}
 
 	@Override
-	public Individual findByDataSourceIdAndIndividualPK(
+	public Individual findByDataSourceIdAndUserPK(
 		Long dataSourceId, String individualPK) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
@@ -659,12 +658,12 @@ public class IndividualRepositoryImpl
 			).asterisk());
 
 		return selectSelectStep.from(
-			"DataSourceIndividual"
+			"BQDataSourceUser"
 		).join(
 			"Individual"
 		).on(
 			DSL.field(
-				"datasourceindividual.individualid"
+				"bqdatasourceuser.userid"
 			).eq(
 				DSL.field("individual.id")
 			)
@@ -676,8 +675,7 @@ public class IndividualRepositoryImpl
 					dataSourceId
 				),
 				DSL.field(
-					DSL.cast(
-						DSL.array(DSL.field("individualPKs")), String[].class)
+					DSL.cast(DSL.array(DSL.field("userPKs")), String[].class)
 				).contains(
 					DSL.cast(DSL.array(individualPK), String[].class)
 				))
@@ -879,6 +877,63 @@ public class IndividualRepositoryImpl
 	}
 
 	@Override
+	public Map<Long, Long> findIdentityCounts(
+		boolean includeAnonymousUsers, Long segmentId) {
+
+		Condition condition = DSL.field(
+			DSL.cast(
+				DSL.array(DSL.field("individual.segmentids")), Long[].class)
+		).contains(
+			DSL.cast(DSL.array(segmentId), Long[].class)
+		);
+
+		if (!includeAnonymousUsers) {
+			condition = condition.and(
+				DSL.field(
+					"individual.emailaddresshashed"
+				).isNotNull());
+		}
+
+		Map<Long, Long> identityCounts = new HashMap<>();
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		selectSelectStep.select(
+			DSL.field("channelid"),
+			DSL.countDistinct(
+				DSL.field("identityid")
+			).as(
+				"identitycounts"
+			)
+		).from(
+			"BQIdentityChannel"
+		).join(
+			"Individual"
+		).on(
+			DSL.field(
+				"bqidentitychannel.identityid"
+			).eq(
+				DSL.field("individual.id")
+			)
+		).where(
+			condition
+		).groupBy(
+			DSL.field("bqidentitychannel.channelId")
+		).fetch(
+			record -> {
+				Integer count = (Integer)record.get("identitycounts");
+
+				identityCounts.put(
+					(Long)record.get("channelid"), count.longValue());
+
+				return null;
+			}
+		);
+
+		return identityCounts;
+	}
+
+	@Override
 	public List<Long>
 		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 			@Nullable Long channelId, @Nullable Date lastActivityDate,
@@ -940,63 +995,6 @@ public class IndividualRepositoryImpl
 		).fetch(
 			record -> (Long)record.get("individual.id")
 		);
-	}
-
-	@Override
-	public Map<Long, Long> findIndividualCounts(
-		boolean includeAnonymousUsers, Long segmentId) {
-
-		Condition condition = DSL.field(
-			DSL.cast(
-				DSL.array(DSL.field("individual.segmentids")), Long[].class)
-		).contains(
-			DSL.cast(DSL.array(segmentId), Long[].class)
-		);
-
-		if (!includeAnonymousUsers) {
-			condition = condition.and(
-				DSL.field(
-					"individual.emailaddresshashed"
-				).isNotNull());
-		}
-
-		Map<Long, Long> individualCounts = new HashMap<>();
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		selectSelectStep.select(
-			DSL.field("channelid"),
-			DSL.countDistinct(
-				DSL.field("individualid")
-			).as(
-				"individualcounts"
-			)
-		).from(
-			"IndividualChannel"
-		).join(
-			"Individual"
-		).on(
-			DSL.field(
-				"individualchannel.individualid"
-			).eq(
-				DSL.field("individual.id")
-			)
-		).where(
-			condition
-		).groupBy(
-			DSL.field("individualchannel.channelId")
-		).fetch(
-			record -> {
-				Integer count = (Integer)record.get("individualcounts");
-
-				individualCounts.put(
-					(Long)record.get("channelid"), count.longValue());
-
-				return null;
-			}
-		);
-
-		return individualCounts;
 	}
 
 	@Override
@@ -1573,7 +1571,7 @@ public class IndividualRepositoryImpl
 			).asterisk());
 
 		Condition condition = DSL.field(
-			"datasourceindividual.datasourceid"
+			"bqdatasourceuser.datasourceid"
 		).eq(
 			dataSourceId
 		);
@@ -1591,12 +1589,12 @@ public class IndividualRepositoryImpl
 			selectSelectStep.from(
 				"Individual"
 			).join(
-				"DataSourceIndividual"
+				"BQDataSourceUser"
 			).on(
 				DSL.field(
 					"individual.id"
 				).eq(
-					DSL.field("datasourceindividual.individualid")
+					DSL.field("bqdatasourceuser.userid")
 				)
 			).where(
 				condition
@@ -1924,12 +1922,12 @@ public class IndividualRepositoryImpl
 		SelectOnConditionStep<?> selectOnConditionStep = selectSelectStep.from(
 			"Individual"
 		).leftJoin(
-			"DataSourceIndividual"
+			"BQDataSourceUser"
 		).on(
 			DSL.field(
 				"individual.id"
 			).eq(
-				DSL.field("datasourceindividual.individualid")
+				DSL.field("bqdatasourceuser.userid")
 			)
 		).leftJoin(
 			"IndividualChannel"
@@ -1975,25 +1973,25 @@ public class IndividualRepositoryImpl
 		return Collections.singletonMap("name", "values");
 	}
 
-	private void _populateDataSourceIndividuals(
+	private void _populateBqDataSourceUsers(
 		Map<Long, Individual> individualsById) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		Field<Object> field = DSL.field("individualid");
+		Field<Object> field = DSL.field("userid");
 
 		selectSelectStep.from(
-			"DataSourceIndividual"
+			"BQDataSourceUser"
 		).where(
 			field.in(individualsById.keySet())
 		).fetch(
 		).forEach(
 			record -> {
 				Individual individual = individualsById.get(
-					record.get("individualid"));
+					record.get("userid"));
 
-				individual.addDataSourceIndividual(
-					new DataSourceIndividual(record.intoMap()));
+				individual.addBQDataSourceUser(
+					new BQDataSourceUser(record.intoMap()));
 			}
 		);
 	}
@@ -2075,7 +2073,7 @@ public class IndividualRepositoryImpl
 				Individual::getId, Function.identity(), (id, individual) -> id,
 				LinkedHashMap::new));
 
-		_populateDataSourceIndividuals(individualsById);
+		_populateBqDataSourceUsers(individualsById);
 		_populateIndividualChannels(individualsById);
 
 		return new ArrayList<>(individualsById.values());

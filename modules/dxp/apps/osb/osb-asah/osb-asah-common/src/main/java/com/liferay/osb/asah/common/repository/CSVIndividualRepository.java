@@ -37,12 +37,6 @@ public interface CSVIndividualRepository
 	@Modifying
 	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
 
-	@CacheEvict(allEntries = true)
-	@Modifying
-	public void deleteByDataSourceIdAndDataSourceIndividualPKIn(
-		@Param("dataSourceId") Long dataSourceId,
-		@Param("dataSourceIndividualPKs") List<String> dataSourceIndividualPKs);
-
 	@Cacheable
 	public List<CSVIndividual> findByDataSourceId(
 		Long dataSourceId, Pageable pageable);

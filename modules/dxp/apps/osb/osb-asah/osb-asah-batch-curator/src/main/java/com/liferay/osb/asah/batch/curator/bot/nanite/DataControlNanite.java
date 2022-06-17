@@ -125,11 +125,11 @@ public class DataControlNanite extends BaseNanite {
 
 		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
-		for (Individual.DataSourceIndividualPK dataSourceIndividualPK :
-				individual.getDataSourceIndividualPKs()) {
+		for (Individual.DataSourceUserPK dataSourceUserPK :
+				individual.getDataSourceUserPKs()) {
 
 			DataSource dataSource = _dataSourceDog.getDataSource(
-				dataSourceIndividualPK.getDataSourceId());
+				dataSourceUserPK.getDataSourceId());
 
 			if (!StringUtils.equals(
 					dataSource.getProviderType(), dataSourceType)) {
@@ -137,16 +137,13 @@ public class DataControlNanite extends BaseNanite {
 				continue;
 			}
 
-			for (String individualPK :
-					dataSourceIndividualPK.getIndividualPKs()) {
-
+			for (String userPK : dataSourceUserPK.getUserPKs()) {
 				boolQueryBuilder.should(
 					BoolQueryBuilderUtil.filter(
 						QueryBuilders.termsQuery(
 							"dataSourceId", String.valueOf(dataSource.getId()))
 					).filter(
-						QueryBuilders.termsQuery(
-							individualPKFieldName, individualPK)
+						QueryBuilders.termsQuery(individualPKFieldName, userPK)
 					));
 			}
 		}
@@ -170,7 +167,7 @@ public class DataControlNanite extends BaseNanite {
 		}
 
 		Map<Long, List<String>> dataSourceIdIndividualsPKs =
-			_getDataSourceIdIndividualsPKs("CSV", individual);
+			_getBQDataSourceIdUserPKs("CSV", individual);
 
 		if (!dataSourceIdIndividualsPKs.isEmpty()) {
 			for (Map.Entry<Long, List<String>> entry :
@@ -319,16 +316,16 @@ public class DataControlNanite extends BaseNanite {
 		zipFileBuilder.build();
 	}
 
-	private Map<Long, List<String>> _getDataSourceIdIndividualsPKs(
+	private Map<Long, List<String>> _getBQDataSourceIdUserPKs(
 		String dataSourceType, Individual individual) {
 
-		Map<Long, List<String>> dataSourceIdIndividualPKs = new HashMap<>();
+		Map<Long, List<String>> dataSourceIdUserPKs = new HashMap<>();
 
-		for (Individual.DataSourceIndividualPK dataSourceIndividualPK :
-				individual.getDataSourceIndividualPKs()) {
+		for (Individual.DataSourceUserPK dataSourceUserPK :
+				individual.getDataSourceUserPKs()) {
 
 			DataSource dataSource = _dataSourceDog.getDataSource(
-				dataSourceIndividualPK.getDataSourceId());
+				dataSourceUserPK.getDataSourceId());
 
 			if (!StringUtils.equals(
 					dataSource.getProviderType(), dataSourceType)) {
@@ -336,14 +333,13 @@ public class DataControlNanite extends BaseNanite {
 				continue;
 			}
 
-			List<String> individualPKs =
-				dataSourceIdIndividualPKs.computeIfAbsent(
-					dataSource.getId(), id -> new ArrayList<>());
+			List<String> userPKs = dataSourceIdUserPKs.computeIfAbsent(
+				dataSource.getId(), id -> new ArrayList<>());
 
-			individualPKs.addAll(dataSourceIndividualPK.getIndividualPKs());
+			userPKs.addAll(dataSourceUserPK.getUserPKs());
 		}
 
-		return dataSourceIdIndividualPKs;
+		return dataSourceIdUserPKs;
 	}
 
 	private void _runDataControlTask(DataControlTask dataControlTask) {

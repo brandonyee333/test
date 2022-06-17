@@ -20,8 +20,8 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Individual;
 
 import java.util.Date;
@@ -87,18 +87,15 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			return;
 		}
 
-		Set<DataSourceIndividual> dataSourceIndividuals =
-			individual.getDataSourceIndividuals();
+		Set<BQDataSourceUser> bqDataSourceUsers =
+			individual.getBQDataSourceUsers();
 
-		if (dataSourceIndividuals.size() == 1) {
-			Iterator<DataSourceIndividual> iterator =
-				dataSourceIndividuals.iterator();
+		if (bqDataSourceUsers.size() == 1) {
+			Iterator<BQDataSourceUser> iterator = bqDataSourceUsers.iterator();
 
-			DataSourceIndividual dataSourceIndividual = iterator.next();
+			BQDataSourceUser bqDataSourceUser = iterator.next();
 
-			if (CollectionUtils.isNotEmpty(
-					dataSourceIndividual.getIndividualPKs())) {
-
+			if (CollectionUtils.isNotEmpty(bqDataSourceUser.getUserPKs())) {
 				_individualDog.deleteIndividual(
 					deletionDate, individual.getId());
 			}
@@ -106,7 +103,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			return;
 		}
 
-		_individualDog.removeDataSourceIndividualPKs(individual, dataSourceId);
+		_individualDog.removeDataSourceUserPKs(individual, dataSourceId);
 
 		_individualDog.updateIndividual(
 			null, getEmptyDataJSONObject(),

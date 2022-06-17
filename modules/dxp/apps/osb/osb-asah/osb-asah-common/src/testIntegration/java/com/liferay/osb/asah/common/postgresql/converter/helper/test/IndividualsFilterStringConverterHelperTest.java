@@ -23,10 +23,10 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -477,15 +477,14 @@ public class IndividualsFilterStringConverterHelperTest
 				DSL.or(
 					DSL.and(
 						DSL.field(
-							"datasourceindividual.datasourceid"
+							"bqdatasourceuser.datasourceid"
 						).eq(
 							346306699042460013L
 						),
 						DSL.field(
 							DSL.cast(
 								DSL.array(
-									DSL.field(
-										"datasourceindividual.accountpks")),
+									DSL.field("bqdatasourceuser.accountpks")),
 								String[].class)
 						).contains(
 							DSL.cast(
@@ -495,15 +494,14 @@ public class IndividualsFilterStringConverterHelperTest
 						)),
 					DSL.and(
 						DSL.field(
-							"datasourceindividual.datasourceid"
+							"bqdatasourceuser.datasourceid"
 						).eq(
 							346306699042460013L
 						),
 						DSL.field(
 							DSL.cast(
 								DSL.array(
-									DSL.field(
-										"datasourceindividual.accountpks")),
+									DSL.field("bqdatasourceuser.accountpks")),
 								String[].class)
 						).contains(
 							DSL.cast(
@@ -1564,8 +1562,7 @@ public class IndividualsFilterStringConverterHelperTest
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			Map<Long, DataSourceIndividual> dataSourceIndividuals =
-				new HashMap<>();
+			Map<Long, BQDataSourceUser> bqDataSourceUsers = new HashMap<>();
 
 			JSONArray dataSourceAccountPKsJSONArray = jsonObject.optJSONArray(
 				"dataSourceAccountPKs");
@@ -1577,11 +1574,11 @@ public class IndividualsFilterStringConverterHelperTest
 					JSONObject dataSourceAccountPKJSONObject =
 						dataSourceAccountPKsJSONArray.getJSONObject(j);
 
-					dataSourceIndividuals.put(
+					bqDataSourceUsers.put(
 						dataSourceAccountPKJSONObject.getLong("dataSourceId"),
 						_objectMapper.convertValue(
 							dataSourceAccountPKJSONObject,
-							DataSourceIndividual.class));
+							BQDataSourceUser.class));
 				}
 			}
 
@@ -1599,21 +1596,21 @@ public class IndividualsFilterStringConverterHelperTest
 						dataSourceIndividualPKJSONObject.getString(
 							"dataSourceId"));
 
-					if (dataSourceIndividuals.containsKey(dataSourceId)) {
-						DataSourceIndividual dataSourceIndividual =
-							dataSourceIndividuals.get(dataSourceId);
+					if (bqDataSourceUsers.containsKey(dataSourceId)) {
+						BQDataSourceUser bqDataSourceUser =
+							bqDataSourceUsers.get(dataSourceId);
 
-						dataSourceIndividual.setIndividualPKs(
+						bqDataSourceUser.setUserPKs(
 							JSONUtil.toStringSet(
 								dataSourceIndividualPKJSONObject.optJSONArray(
 									"individualPKs")));
 					}
 					else {
-						dataSourceIndividuals.put(
+						bqDataSourceUsers.put(
 							dataSourceId,
 							_objectMapper.convertValue(
 								dataSourceIndividualPKJSONObject,
-								DataSourceIndividual.class));
+								BQDataSourceUser.class));
 					}
 				}
 			}
@@ -1621,8 +1618,8 @@ public class IndividualsFilterStringConverterHelperTest
 			Individual individual = _objectMapper.convertValue(
 				jsonObject, Individual.class);
 
-			individual.setDataSourceIndividuals(
-				new HashSet<>(dataSourceIndividuals.values()));
+			individual.setBQDataSourceUsers(
+				new HashSet<>(bqDataSourceUsers.values()));
 			individual.setIsNew(Boolean.TRUE);
 
 			_individualRepository.save(individual);

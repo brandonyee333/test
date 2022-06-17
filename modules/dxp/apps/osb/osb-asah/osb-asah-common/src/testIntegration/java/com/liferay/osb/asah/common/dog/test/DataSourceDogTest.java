@@ -19,11 +19,11 @@ import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -191,8 +191,8 @@ public class DataSourceDogTest
 
 		Individual individual = new Individual();
 
-		individual.addDataSourceIndividual(
-			new DataSourceIndividual(
+		individual.addBQDataSourceUser(
+			new BQDataSourceUser(
 				Collections.emptySet(), 405201047787757795L, null,
 				Collections.singleton("123")));
 

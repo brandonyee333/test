@@ -212,12 +212,12 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_csvIndividualRepository.save(
 			FaroInfoTestUtil.buildCSVIndividual(
-				dataSource1.getId(), RandomTestUtil.randomUUID(),
+				RandomTestUtil.randomUUID(), dataSource1.getId(),
 				_objectMapper.convertValue(new HashMap<>(), JSONObject.class)));
 
 		_csvIndividualRepository.save(
 			FaroInfoTestUtil.buildCSVIndividual(
-				dataSource2.getId(), RandomTestUtil.randomUUID(),
+				RandomTestUtil.randomUUID(), dataSource2.getId(),
 				_objectMapper.convertValue(new HashMap<>(), JSONObject.class)));
 
 		dataSource1.setDeletionDate(new Date());
@@ -471,7 +471,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		individual = _individualDog.fetchIndividual(individualId);
 
 		Assertions.assertFalse(
-			_individualDog.existsByDataSourceIndividualPK(
+			_individualDog.existsByDataSourceUserPK(
 				dataSourceId2, individualId),
 			"Data source individual PK was not deleted on data source " +
 				"deletion");

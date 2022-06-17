@@ -57,9 +57,9 @@ public class IndividualsFilterStringConverterHelperTest {
 
 		Assertions.assertNotNull(condition);
 		Assertions.assertEquals(
-			"(\n  datasourceindividual.datasourceid = 1\n" +
-				"  and cast(array[datasourceindividual.individualpks] as " +
-					"varchar[]) @> cast(array['1'] as varchar[])\n)",
+			"(\n  bqdatasourceuser.datasourceid = 1\n" +
+				"  and cast(array[bqdatasourceuser.userpks] as varchar[]) @> " +
+					"cast(array['1'] as varchar[])\n)",
 			condition.toString());
 	}
 

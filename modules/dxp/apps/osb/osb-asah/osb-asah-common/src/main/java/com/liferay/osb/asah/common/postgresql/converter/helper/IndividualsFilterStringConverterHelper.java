@@ -175,7 +175,7 @@ public class IndividualsFilterStringConverterHelper
 		if (fieldName.equals("dataSourceIndividualPKs/individualPKs") &&
 			_isEqualityOperator(operator)) {
 
-			return _getIndividualPKCondition(
+			return _getUserPKCondition(
 				(String)StringUtil.toObject(valueString),
 				operator.equalsIgnoreCase("ne"));
 		}
@@ -204,10 +204,10 @@ public class IndividualsFilterStringConverterHelper
 				return DSL.exists(
 					DSL.selectOne(
 					).from(
-						"DataSourceIndividual"
+						"BQDataSourceUser"
 					).where(
 						DSL.field(
-							"datasourceindividual.accountpks"
+							"bqdatasourceuser.accountpks"
 						).isNotNull()
 					));
 			}
@@ -215,10 +215,10 @@ public class IndividualsFilterStringConverterHelper
 			return DSL.notExists(
 				DSL.selectOne(
 				).from(
-					"DataSourceIndividual"
+					"BQDataSourceUser"
 				).where(
 					DSL.field(
-						"datasourceindividual.accountpks"
+						"bqdatasourceuser.accountpks"
 					).isNotNull()
 				));
 		}
@@ -247,15 +247,14 @@ public class IndividualsFilterStringConverterHelper
 				DSL.and(
 					DSL.field(
 						DSL.cast(
-							DSL.array(
-								DSL.field("datasourceindividual.accountpks")),
+							DSL.array(DSL.field("bqdatasourceuser.accountpks")),
 							String[].class)
 					).contains(
 						DSL.cast(
 							DSL.array(account.getAccountPK()), String[].class)
 					),
 					DSL.field(
-						"datasourceindividual.datasourceid"
+						"bqdatasourceuser.datasourceid"
 					).eq(
 						account.getDataSourceId()
 					)));
@@ -264,13 +263,13 @@ public class IndividualsFilterStringConverterHelper
 		return DSL.and(
 			DSL.field(
 				DSL.cast(
-					DSL.array(DSL.field("datasourceindividual.accountpks")),
+					DSL.array(DSL.field("bqdatasourceuser.accountpks")),
 					String[].class)
 			).contains(
 				DSL.cast(DSL.array(account.getAccountPK()), String[].class)
 			),
 			DSL.field(
-				"datasourceindividual.datasourceid"
+				"bqdatasourceuser.datasourceid"
 			).eq(
 				account.getDataSourceId()
 			));
@@ -364,15 +363,14 @@ public class IndividualsFilterStringConverterHelper
 				condition = condition.or(
 					DSL.and(
 						DSL.field(
-							"datasourceindividual.datasourceid"
+							"bqdatasourceuser.datasourceid"
 						).eq(
 							account.getDataSourceId()
 						),
 						DSL.field(
 							DSL.cast(
 								DSL.array(
-									DSL.field(
-										"datasourceindividual.accountpks")),
+									DSL.field("bqdatasourceuser.accountpks")),
 								String[].class)
 						).contains(
 							DSL.cast(
@@ -491,10 +489,10 @@ public class IndividualsFilterStringConverterHelper
 				return DSL.exists(
 					DSL.selectOne(
 					).from(
-						"DataSourceIndividual"
+						"BQDataSourceUser"
 					).where(
 						DSL.field(
-							"datasourceindividual.individualpks"
+							"bqdatasourceuser.userpks"
 						).isNotNull()
 					));
 			}
@@ -502,10 +500,10 @@ public class IndividualsFilterStringConverterHelper
 			return DSL.notExists(
 				DSL.selectOne(
 				).from(
-					"DataSourceIndividual"
+					"BQDataSourceUser"
 				).where(
 					DSL.field(
-						"datasourceindividual.individualpks"
+						"bqdatasourceuser.userpks"
 					).isNotNull()
 				));
 		}
@@ -513,14 +511,14 @@ public class IndividualsFilterStringConverterHelper
 		if (negate) {
 			return DSL.not(
 				DSL.field(
-					"datasourceindividual.datasourceid"
+					"bqdatasourceuser.datasourceid"
 				).eq(
 					dataSourceId
 				));
 		}
 
 		return DSL.field(
-			"datasourceindividual.datasourceid"
+			"bqdatasourceuser.datasourceid"
 		).eq(
 			dataSourceId
 		);
@@ -761,30 +759,6 @@ public class IndividualsFilterStringConverterHelper
 			Long::valueOf);
 	}
 
-	private Condition _getIndividualPKCondition(
-		String individualPK, boolean negate) {
-
-		if (negate) {
-			return DSL.not(
-				DSL.field(
-					DSL.cast(
-						DSL.array(
-							DSL.field("datasourceindividual.individualpks")),
-						String[].class)
-				).contains(
-					DSL.cast(DSL.array(individualPK), String[].class)
-				));
-		}
-
-		return DSL.field(
-			DSL.cast(
-				DSL.array(DSL.field("datasourceindividual.individualpks")),
-				String[].class)
-		).contains(
-			DSL.cast(DSL.array(individualPK), String[].class)
-		);
-	}
-
 	private Condition _getInterestCriteriaConditionWhenNoInterests(
 		boolean score, double value) {
 
@@ -983,13 +957,13 @@ public class IndividualsFilterStringConverterHelper
 
 		Condition condition = DSL.and(
 			DSL.field(
-				"datasourceindividual.datasourceid"
+				"bqdatasourceuser.datasourceid"
 			).eq(
 				dxpEntity.getDataSourceId()
 			),
 			DSL.field(
 				DSL.cast(
-					DSL.array(DSL.field("datasourceindividual.individualpks")),
+					DSL.array(DSL.field("bqdatasourceuser.userpks")),
 					String[].class)
 			).contains(
 				DSL.cast(
@@ -1002,6 +976,27 @@ public class IndividualsFilterStringConverterHelper
 		}
 
 		return condition;
+	}
+
+	private Condition _getUserPKCondition(String individualPK, boolean negate) {
+		if (negate) {
+			return DSL.not(
+				DSL.field(
+					DSL.cast(
+						DSL.array(DSL.field("bqdatasourceuser.userpks")),
+						String[].class)
+				).contains(
+					DSL.cast(DSL.array(individualPK), String[].class)
+				));
+		}
+
+		return DSL.field(
+			DSL.cast(
+				DSL.array(DSL.field("bqdatasourceuser.userpks")),
+				String[].class)
+		).contains(
+			DSL.cast(DSL.array(individualPK), String[].class)
+		);
 	}
 
 	private boolean _isEqualityOperator(String operator) {

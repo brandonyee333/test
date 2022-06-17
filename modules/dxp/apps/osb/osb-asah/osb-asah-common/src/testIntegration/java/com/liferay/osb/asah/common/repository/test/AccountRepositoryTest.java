@@ -17,8 +17,8 @@ package com.liferay.osb.asah.common.repository.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -146,7 +146,7 @@ public class AccountRepositoryTest extends BaseAccountRepositoryTestCase {
 
 			individual.setIsNew(true);
 
-			Set<DataSourceIndividual> dataSourceIndividuals = new HashSet<>();
+			Set<BQDataSourceUser> bqDataSourceUsers = new HashSet<>();
 
 			JSONArray dataSourceAccountPKsJSONArray = jsonObject.optJSONArray(
 				"dataSourceAccountPKs");
@@ -159,23 +159,22 @@ public class AccountRepositoryTest extends BaseAccountRepositoryTestCase {
 					continue;
 				}
 
-				DataSourceIndividual dataSourceIndividual =
-					new DataSourceIndividual();
+				BQDataSourceUser bqDataSourceUser = new BQDataSourceUser();
 
-				dataSourceIndividual.setAccountPKs(
+				bqDataSourceUser.setAccountPKs(
 					JSONUtil.toStringSet(
 						dataSourceAccountPKJSONObject.getJSONArray(
 							"accountPKs")));
-				dataSourceIndividual.setDataSourceId(
+				bqDataSourceUser.setDataSourceId(
 					Long.valueOf(
 						dataSourceAccountPKJSONObject.getString(
 							"dataSourceId")));
-				dataSourceIndividual.setIndividualId(individualId);
+				bqDataSourceUser.setUserId(individualId);
 
-				dataSourceIndividuals.add(dataSourceIndividual);
+				bqDataSourceUsers.add(bqDataSourceUser);
 			}
 
-			individual.setDataSourceIndividuals(dataSourceIndividuals);
+			individual.setBQDataSourceUsers(bqDataSourceUsers);
 
 			individualRepository.save(individual);
 		}

@@ -24,7 +24,7 @@ import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
@@ -631,7 +631,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public Individual findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
+	public Individual findByAssociatedIdNotAndDataSourceIdAndUserPK(
 		Long associatedId, Long dataSourceId, String fieldName,
 		String individualPK) {
 
@@ -710,7 +710,7 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public Individual findByDataSourceIdAndIndividualPK(
+	public Individual findByDataSourceIdAndUserPK(
 		Long dataSourceId, String individualPK) {
 
 		return _toIndividual(
@@ -829,6 +829,45 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
+	public Map<Long, Long> findIdentityCounts(
+		boolean includeAnonymousUsers, Long segmentId) {
+
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			_getCollectionName(),
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"channelIds"
+					).field(
+						"channelIds"
+					).size(
+						Integer.MAX_VALUE
+					));
+				searchSourceBuilder.query(
+					_getQueryBuilder(includeAnonymousUsers, segmentId));
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (_isEmpty(aggregations)) {
+			return Collections.emptyMap();
+		}
+
+		Map<Long, Long> individualCounts = new HashMap<>();
+
+		Terms terms = aggregations.get("channelIds");
+
+		for (Terms.Bucket termsBucket : terms.getBuckets()) {
+			individualCounts.put(
+				Long.valueOf(termsBucket.getKeyAsString()),
+				termsBucket.getDocCount());
+		}
+
+		return individualCounts;
+	}
+
+	@Override
 	public List<Long>
 		findIdsByAnyChannelIdsAndLastActivityDateAfterAndAnySegmentIds(
 			@Nullable Long channelId, @Nullable Date lastActivityDate,
@@ -873,45 +912,6 @@ public class ElasticsearchIndividualRepositoryImpl
 				QueryBuilders.termQuery(
 					"individualSegmentIds", String.valueOf(segmentId))),
 			"id");
-	}
-
-	@Override
-	public Map<Long, Long> findIndividualCounts(
-		boolean includeAnonymousUsers, Long segmentId) {
-
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			_getCollectionName(),
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"channelIds"
-					).field(
-						"channelIds"
-					).size(
-						Integer.MAX_VALUE
-					));
-				searchSourceBuilder.query(
-					_getQueryBuilder(includeAnonymousUsers, segmentId));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		if (_isEmpty(aggregations)) {
-			return Collections.emptyMap();
-		}
-
-		Map<Long, Long> individualCounts = new HashMap<>();
-
-		Terms terms = aggregations.get("channelIds");
-
-		for (Terms.Bucket termsBucket : terms.getBuckets()) {
-			individualCounts.put(
-				Long.valueOf(termsBucket.getKeyAsString()),
-				termsBucket.getDocCount());
-		}
-
-		return individualCounts;
 	}
 
 	@Override
@@ -1725,8 +1725,8 @@ public class ElasticsearchIndividualRepositoryImpl
 				JSONArray accountPKsJSONArray =
 					dataSourceAccountPKJSONObject.getJSONArray("accountPKs");
 
-				individual.addDataSourceIndividual(
-					new DataSourceIndividual(
+				individual.addBQDataSourceUser(
+					new BQDataSourceUser(
 						SetUtil.map(
 							accountPKsJSONArray.toList(), String::valueOf),
 						dataSourceAccountPKJSONObject.getLong("dataSourceId"),
@@ -1738,17 +1738,14 @@ public class ElasticsearchIndividualRepositoryImpl
 			JSONArray dataSourceIndividualPKsJSONArray =
 				jsonObject.getJSONArray("dataSourceIndividualPKs");
 
-			Set<DataSourceIndividual> dataSourceIndividuals =
-				individual.getDataSourceIndividuals();
+			Set<BQDataSourceUser> bqDataSourceUsers =
+				individual.getBQDataSourceUsers();
 
-			Stream<DataSourceIndividual> stream =
-				dataSourceIndividuals.stream();
+			Stream<BQDataSourceUser> stream = bqDataSourceUsers.stream();
 
-			Map<Long, DataSourceIndividual> dataSourceIndividualsMap =
-				stream.collect(
-					Collectors.toMap(
-						DataSourceIndividual::getDataSourceId,
-						Function.identity()));
+			Map<Long, BQDataSourceUser> bqDataSourceUserMap = stream.collect(
+				Collectors.toMap(
+					BQDataSourceUser::getDataSourceId, Function.identity()));
 
 			for (int i = 0; i < dataSourceIndividualPKsJSONArray.length();
 				 i++) {
@@ -1764,19 +1761,17 @@ public class ElasticsearchIndividualRepositoryImpl
 							"individualPKs"));
 				}
 
-				DataSourceIndividual dataSourceIndividual =
-					dataSourceIndividualsMap.get(
-						dataSourceIndividualPKJSONObject.getLong(
-							"dataSourceId"));
+				BQDataSourceUser bqDataSourceUser = bqDataSourceUserMap.get(
+					dataSourceIndividualPKJSONObject.getLong("dataSourceId"));
 
-				if (dataSourceIndividual != null) {
-					dataSourceIndividual.setIndividualPKs(individualPKs);
+				if (bqDataSourceUser != null) {
+					bqDataSourceUser.setUserPKs(individualPKs);
 				}
 				else {
-					dataSourceIndividualsMap.put(
+					bqDataSourceUserMap.put(
 						dataSourceIndividualPKJSONObject.getLong(
 							"dataSourceId"),
-						new DataSourceIndividual(
+						new BQDataSourceUser(
 							null,
 							dataSourceIndividualPKJSONObject.getLong(
 								"dataSourceId"),
@@ -1784,8 +1779,8 @@ public class ElasticsearchIndividualRepositoryImpl
 				}
 			}
 
-			individual.setDataSourceIndividuals(
-				new HashSet<>(dataSourceIndividualsMap.values()));
+			individual.setBQDataSourceUsers(
+				new HashSet<>(bqDataSourceUserMap.values()));
 		}
 
 		if (jsonObject.has("demographics")) {
@@ -1887,30 +1882,27 @@ public class ElasticsearchIndividualRepositoryImpl
 				"dataSourceAccountPKs", dataSourceAccountPKsJSONArray);
 		}
 
-		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
-			individual.getDataSourceIndividualPKs();
+		Set<Individual.DataSourceUserPK> dataSourceUserPKs =
+			individual.getDataSourceUserPKs();
 
-		if (CollectionUtils.isNotEmpty(dataSourceIndividualPKs)) {
+		if (CollectionUtils.isNotEmpty(dataSourceUserPKs)) {
 			JSONArray dataSourceIndividualPKsJSONArray = new JSONArray();
 
-			for (Individual.DataSourceIndividualPK dataSourceIndividualPK :
-					dataSourceIndividualPKs) {
+			for (Individual.DataSourceUserPK dataSourceUserPK :
+					dataSourceUserPKs) {
 
-				if (CollectionUtils.isNotEmpty(
-						dataSourceIndividualPK.getIndividualPKs())) {
-
+				if (CollectionUtils.isNotEmpty(dataSourceUserPK.getUserPKs())) {
 					try {
 						dataSourceIndividualPKsJSONArray.put(
 							JSONUtil.put(
 								"dataSourceId",
 								String.valueOf(
-									dataSourceIndividualPK.getDataSourceId())
+									dataSourceUserPK.getDataSourceId())
 							).put(
 								"individualPKs",
 								new JSONArray(
 									_objectMapper.writeValueAsString(
-										dataSourceIndividualPK.
-											getIndividualPKs()))
+										dataSourceUserPK.getUserPKs()))
 							));
 					}
 					catch (JsonProcessingException jsonProcessingException) {

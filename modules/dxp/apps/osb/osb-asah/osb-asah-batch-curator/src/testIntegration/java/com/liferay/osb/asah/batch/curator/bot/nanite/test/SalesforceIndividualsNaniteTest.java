@@ -60,14 +60,14 @@ public class SalesforceIndividualsNaniteTest
 		addStandardFieldMappings();
 
 		SalesforceEntity salesforceEntity1 = _buildIndividualSalesforceEntity(
-			getDataSourceId(), getIndividual1FieldsMap(), getIndividual1PK());
+			getDataSourceId(), getIndividual1FieldsMap(), getUser1PK());
 
 		salesforceEntity1.setIsNew(Boolean.TRUE);
 
 		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity1);
 
 		SalesforceEntity salesforceEntity2 = _buildIndividualSalesforceEntity(
-			getDataSourceId(), getIndividual2FieldsMap(), getIndividual2PK());
+			getDataSourceId(), getIndividual2FieldsMap(), getUser2PK());
 
 		salesforceEntity2.setIsNew(Boolean.TRUE);
 
@@ -75,7 +75,7 @@ public class SalesforceIndividualsNaniteTest
 
 		SalesforceAuditEvent salesforceAuditEvent1 = _buildSalesforceAuditEvent(
 			_salesforceEntityDog.getSalesforceEntity(
-				getDataSourceId(), getIndividual1PK(),
+				getDataSourceId(), getUser1PK(),
 				SalesforceEntity.Type.INDIVIDUAL));
 
 		salesforceAuditEvent1.setIsNew(Boolean.TRUE);
@@ -84,7 +84,7 @@ public class SalesforceIndividualsNaniteTest
 
 		SalesforceAuditEvent salesforceAuditEvent2 = _buildSalesforceAuditEvent(
 			_salesforceEntityDog.getSalesforceEntity(
-				getDataSourceId(), getIndividual2PK(),
+				getDataSourceId(), getUser2PK(),
 				SalesforceEntity.Type.INDIVIDUAL));
 
 		salesforceAuditEvent2.setIsNew(Boolean.TRUE);
@@ -126,7 +126,7 @@ public class SalesforceIndividualsNaniteTest
 	}
 
 	@Override
-	protected String generateIndividualPK() {
+	protected String generateUserPK() {
 		return _timeOrderedUuidGenerator.generateId();
 	}
 

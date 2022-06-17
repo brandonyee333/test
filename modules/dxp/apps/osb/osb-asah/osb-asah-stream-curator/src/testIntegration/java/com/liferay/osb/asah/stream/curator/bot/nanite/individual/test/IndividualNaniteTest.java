@@ -17,8 +17,8 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
@@ -124,9 +124,9 @@ public class IndividualNaniteTest
 	public void testIndividualResolution() throws Exception {
 		Individual individual1 = new Individual();
 
-		individual1.setDataSourceIndividuals(
+		individual1.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					Collections.emptySet(), 1L, 100L,
 					Collections.singleton("1"))));
 		individual1.setEmailAddressHashed(
@@ -146,9 +146,9 @@ public class IndividualNaniteTest
 
 		Individual individual2 = new Individual();
 
-		individual2.setDataSourceIndividuals(
+		individual2.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					Collections.emptySet(), 2L, 200L,
 					Collections.singleton("2"))));
 		individual2.setEmailAddressHashed(
@@ -196,9 +196,9 @@ public class IndividualNaniteTest
 	public void testMergeIndividual1() {
 		Individual individual1 = new Individual();
 
-		individual1.setDataSourceIndividuals(
+		individual1.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					Collections.emptySet(), 1L, 100L,
 					Collections.singleton("1"))));
 		individual1.setEmailAddressHashed(
@@ -221,9 +221,9 @@ public class IndividualNaniteTest
 
 		Individual individual2 = new Individual();
 
-		individual2.setDataSourceIndividuals(
+		individual2.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					Collections.emptySet(), 1L, 200L,
 					Collections.singleton("2"))));
 		individual2.setId(200L);
@@ -437,9 +437,9 @@ public class IndividualNaniteTest
 	public void testUserSessionUpdate() {
 		Individual individual1 = new Individual();
 
-		individual1.setDataSourceIndividuals(
+		individual1.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					Collections.emptySet(), 1L, 100L,
 					Collections.singleton("1"))));
 		individual1.setEmailAddressHashed(
@@ -462,9 +462,9 @@ public class IndividualNaniteTest
 
 		Individual individual2 = new Individual();
 
-		individual2.setDataSourceIndividuals(
+		individual2.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					Collections.emptySet(), 1L, 200L,
 					Collections.singleton("2"))));
 		individual2.setId(200L);

@@ -28,10 +28,10 @@ import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -438,15 +438,15 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		Individual individual = new Individual();
 
+		BQDataSourceUser bqDataSourceUser = new BQDataSourceUser();
+
+		bqDataSourceUser.setAccountPKs(Collections.singleton("345"));
+		bqDataSourceUser.setDataSourceId(123L);
+
+		individual.setBQDataSourceUsers(
+			Collections.singleton(bqDataSourceUser));
+
 		individual.setChannelIds(Collections.singleton(1L));
-
-		DataSourceIndividual dataSourceIndividual = new DataSourceIndividual();
-
-		dataSourceIndividual.setAccountPKs(Collections.singleton("345"));
-		dataSourceIndividual.setDataSourceId(123L);
-
-		individual.setDataSourceIndividuals(
-			Collections.singleton(dataSourceIndividual));
 
 		Field field = new Field();
 
@@ -481,7 +481,7 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		Assertions.assertEquals(
 			Collections.singleton(
-				new Individual.DataSourceAccountPK(dataSourceIndividual)),
+				new Individual.DataSourceAccountPK(bqDataSourceUser)),
 			individual.getDataSourceAccountPKs());
 	}
 

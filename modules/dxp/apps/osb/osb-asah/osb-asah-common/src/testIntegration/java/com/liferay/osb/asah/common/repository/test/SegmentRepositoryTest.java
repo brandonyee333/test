@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.AccountRepository;
@@ -161,9 +161,9 @@ public class SegmentRepositoryTest
 
 		_individualId = individual.getId();
 
-		individual.setDataSourceIndividuals(
+		individual.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					Collections.singleton("testAccount"), dataSource.getId(),
 					_individualId,
 					Collections.singleton("23432-cd-3242-asf23"))));
@@ -302,7 +302,7 @@ public class SegmentRepositoryTest
 		List<Segment> segments = _segmentRepository.searchDynamicSegments(
 			Collections.singleton(
 				new Individual.DataSourceAccountPK(
-					new DataSourceIndividual(
+					new BQDataSourceUser(
 						Collections.singleton("testAccount"), 100L,
 						_individualId, Collections.emptySet()))),
 			FilterHelper.EMPTY, false, PageRequest.of(0, 10),
@@ -317,7 +317,7 @@ public class SegmentRepositoryTest
 		segments = _segmentRepository.searchDynamicSegments(
 			Collections.singleton(
 				new Individual.DataSourceAccountPK(
-					new DataSourceIndividual(
+					new BQDataSourceUser(
 						Collections.singleton("testAccount"), 100L,
 						_individualId, Collections.emptySet()))),
 			FilterHelper.EMPTY, true, PageRequest.of(0, 10),

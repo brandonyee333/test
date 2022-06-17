@@ -17,11 +17,11 @@ package com.liferay.osb.asah.test.util.faro;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -134,25 +134,22 @@ public class FaroInfoTestUtil {
 	public static ActivityGroup buildActivityGroup(
 		Long channelId, Long dataSourceId, Date date, Individual individual) {
 
-		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
-			individual.getDataSourceIndividualPKs();
+		Set<Individual.DataSourceUserPK> dataSourceUserPKs =
+			individual.getDataSourceUserPKs();
 
-		Stream<Individual.DataSourceIndividualPK> stream =
-			dataSourceIndividualPKs.stream();
+		Stream<Individual.DataSourceUserPK> stream = dataSourceUserPKs.stream();
 
-		Individual.DataSourceIndividualPK dataSourceIndividualPK =
-			stream.filter(
-				individualPK -> Objects.equals(
-					individualPK.getDataSourceId(), dataSourceId)
-			).findFirst(
-			).orElse(
-				null
-			);
+		Individual.DataSourceUserPK dataSourceUserPK = stream.filter(
+			userPK -> Objects.equals(userPK.getDataSourceId(), dataSourceId)
+		).findFirst(
+		).orElse(
+			null
+		);
 
-		Set<String> individualPKs = new HashSet<>();
+		Set<String> userPKs = new HashSet<>();
 
-		if (dataSourceIndividualPK != null) {
-			individualPKs = dataSourceIndividualPK.getIndividualPKs();
+		if (dataSourceUserPK != null) {
+			userPKs = dataSourceUserPK.getUserPKs();
 		}
 
 		ActivityGroup activityGroup = new ActivityGroup();
@@ -164,7 +161,7 @@ public class FaroInfoTestUtil {
 		activityGroup.setEndDate(date);
 		activityGroup.setOwnerId(individual.getId());
 		activityGroup.setStartDate(date);
-		activityGroup.setUserId(individualPKs.toArray(new String[0])[0]);
+		activityGroup.setUserId(userPKs.toArray(new String[0])[0]);
 
 		return activityGroup;
 	}
@@ -337,13 +334,12 @@ public class FaroInfoTestUtil {
 	}
 
 	public static CSVIndividual buildCSVIndividual(
-		Long dataSourceId, String dataSourceIndividualPK,
-		JSONObject fieldsMap) {
+		String dataSourceUserPK, Long dataSourceId, JSONObject fieldsMap) {
 
 		CSVIndividual csvIndividual = new CSVIndividual();
 
 		csvIndividual.setDataSourceId(dataSourceId);
-		csvIndividual.setDataSourceIndividualPK(dataSourceIndividualPK);
+		csvIndividual.setDataSourceUserPK(dataSourceUserPK);
 		csvIndividual.setFieldsJSONObject(fieldsMap);
 		csvIndividual.setId(
 			Long.valueOf(_timeOrderedUuidGenerator.generateId()));
@@ -466,21 +462,21 @@ public class FaroInfoTestUtil {
 
 		Individual individual = new Individual();
 
+		BQDataSourceUser bqDataSourceUser = new BQDataSourceUser();
+
+		bqDataSourceUser.setAccountPKs(Collections.emptySet());
+		bqDataSourceUser.setDataSourceId(dataSourceId);
+		bqDataSourceUser.setUserId(individualId);
+		bqDataSourceUser.setUserPKs(Collections.singleton(dataId));
+
+		individual.setBQDataSourceUsers(
+			Collections.singleton(bqDataSourceUser));
+
 		individual.setChannelIds(Collections.singleton(channelId));
 		individual.setCreateDate(date);
 		individual.setId(individualId);
 		individual.setModifiedDate(date);
 		individual.setSegmentIds(Collections.emptySet());
-
-		DataSourceIndividual dataSourceIndividual = new DataSourceIndividual();
-
-		dataSourceIndividual.setAccountPKs(Collections.emptySet());
-		dataSourceIndividual.setDataSourceId(dataSourceId);
-		dataSourceIndividual.setIndividualId(individualId);
-		dataSourceIndividual.setIndividualPKs(Collections.singleton(dataId));
-
-		individual.setDataSourceIndividuals(
-			Collections.singleton(dataSourceIndividual));
 
 		Field field = new Field();
 

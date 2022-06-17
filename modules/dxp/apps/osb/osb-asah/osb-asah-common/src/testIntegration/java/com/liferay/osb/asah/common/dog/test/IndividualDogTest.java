@@ -21,10 +21,10 @@ import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -573,7 +573,7 @@ public class IndividualDogTest
 		Individual individual = _individualDog.addIndividual(
 			uuid1, dataJSONObject, _liferayDataSource);
 
-		_assertDataSourceIndividualPKs(new String[] {uuid1}, individual);
+		_assertDataSourceUserPKs(new String[] {uuid1}, individual);
 
 		String uuid2 = RandomTestUtil.randomUUID();
 
@@ -581,13 +581,13 @@ public class IndividualDogTest
 			uuid2, dataJSONObject.put("uuid", uuid2), _liferayDataSource,
 			individual);
 
-		_assertDataSourceIndividualPKs(new Object[] {uuid1, uuid2}, individual);
+		_assertDataSourceUserPKs(new Object[] {uuid1, uuid2}, individual);
 
 		individual = _individualDog.updateIndividual(
 			uuid2, dataJSONObject.put("test", "test"), _liferayDataSource,
 			individual);
 
-		_assertDataSourceIndividualPKs(new Object[] {uuid1, uuid2}, individual);
+		_assertDataSourceUserPKs(new Object[] {uuid1, uuid2}, individual);
 	}
 
 	@ElasticsearchIndex(
@@ -960,16 +960,16 @@ public class IndividualDogTest
 
 		Individual individual = new Individual();
 
-		individual.setId(402139280465582637L);
-		individual.setOrganizationIds(
-			Collections.singleton(402139267512234420L));
-		individual.setDataSourceIndividuals(
+		individual.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					Collections.emptySet(), 402139209179557944L,
 					402139280465582637L,
 					Collections.singleton(
 						"86ada3db-d8f9-c59f-7985-5c8fbdebb169"))));
+		individual.setId(402139280465582637L);
+		individual.setOrganizationIds(
+			Collections.singleton(402139267512234420L));
 
 		individual = _individualDog.addIndividual(individual, false);
 
@@ -1098,16 +1098,17 @@ public class IndividualDogTest
 		Individual individual = new Individual();
 
 		individual.setActivitiesCounts(Collections.emptySet());
+
+		BQDataSourceUser bqDataSourceUser = new BQDataSourceUser();
+
+		bqDataSourceUser.setUserPKs(Collections.singleton("12345"));
+		bqDataSourceUser.setDataSourceId(_liferayDataSource.getId());
+
+		individual.setBQDataSourceUsers(
+			Collections.singleton(bqDataSourceUser));
+
 		individual.setChannelIds(Collections.singleton(1L));
 		individual.setCreateDate(date);
-
-		DataSourceIndividual dataSourceIndividual = new DataSourceIndividual();
-
-		dataSourceIndividual.setIndividualPKs(Collections.singleton("12345"));
-		dataSourceIndividual.setDataSourceId(_liferayDataSource.getId());
-
-		individual.setDataSourceIndividuals(
-			Collections.singleton(dataSourceIndividual));
 
 		individual.setEmailAddressHashed(
 			"47ff64395860b1d498241d907069f649b98c198a95b3ba5303b87094058590");
@@ -1184,24 +1185,22 @@ public class IndividualDogTest
 		}
 	}
 
-	private void _assertDataSourceIndividualPKs(
+	private void _assertDataSourceUserPKs(
 		Object[] expectedValue, Individual individual) {
 
-		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
-			individual.getDataSourceIndividualPKs();
+		Set<Individual.DataSourceUserPK> dataSourceUserPKs =
+			individual.getDataSourceUserPKs();
 
-		Iterator<Individual.DataSourceIndividualPK> iterator =
-			dataSourceIndividualPKs.iterator();
+		Iterator<Individual.DataSourceUserPK> iterator =
+			dataSourceUserPKs.iterator();
 
-		Individual.DataSourceIndividualPK dataSourceIndividualPK =
-			iterator.next();
+		Individual.DataSourceUserPK dataSourceUserPK = iterator.next();
 
-		Set<String> individualPKs = dataSourceIndividualPK.getIndividualPKs();
+		Set<String> userPKs = dataSourceUserPK.getUserPKs();
 
 		MatcherAssert.assertThat(
 			expectedValue,
-			Matchers.arrayContainingInAnyOrder(
-				individualPKs.toArray(new Object[0])));
+			Matchers.arrayContainingInAnyOrder(userPKs.toArray(new Object[0])));
 	}
 
 	private void _assertIndividualMiddleName(

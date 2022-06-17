@@ -199,26 +199,6 @@ public class FaroInfoIndividualUtil {
 		return givenName + " " + familyName;
 	}
 
-	public static Map<Long, Set<String>> getIndividualPKs(
-		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs) {
-
-		if (CollectionUtils.isEmpty(dataSourceIndividualPKs)) {
-			return Collections.emptyMap();
-		}
-
-		Map<Long, Set<String>> individualPKs = new HashMap<>();
-
-		for (Individual.DataSourceIndividualPK dataSourceIndividualPK :
-				dataSourceIndividualPKs) {
-
-			individualPKs.put(
-				dataSourceIndividualPK.getDataSourceId(),
-				dataSourceIndividualPK.getIndividualPKs());
-		}
-
-		return individualPKs;
-	}
-
 	public static JSONArray getIndividualPKsJSONArray(
 		String dataSourceId, JSONArray dataSourceIndividualPKsJSONArray) {
 
@@ -236,6 +216,24 @@ public class FaroInfoIndividualUtil {
 		}
 
 		return new JSONArray();
+	}
+
+	public static Map<Long, Set<String>> getUserPKs(
+		Set<Individual.DataSourceUserPK> dataSourceUserPKs) {
+
+		if (CollectionUtils.isEmpty(dataSourceUserPKs)) {
+			return Collections.emptyMap();
+		}
+
+		Map<Long, Set<String>> userPKs = new HashMap<>();
+
+		for (Individual.DataSourceUserPK dataSourceUserPK : dataSourceUserPKs) {
+			userPKs.put(
+				dataSourceUserPK.getDataSourceId(),
+				dataSourceUserPK.getUserPKs());
+		}
+
+		return userPKs;
 	}
 
 	public static boolean isKnownIndividual(Individual individual) {

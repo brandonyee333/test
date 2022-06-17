@@ -47,13 +47,13 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 
 		_csvIndividualRepository.save(
 			FaroInfoTestUtil.buildCSVIndividual(
-				getDataSourceId(), getIndividual1PK(),
+				getUser1PK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					getIndividual1FieldsMap(), JSONObject.class)));
 
 		_csvIndividualRepository.save(
 			FaroInfoTestUtil.buildCSVIndividual(
-				getDataSourceId(), getIndividual2PK(),
+				getUser2PK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					getIndividual2FieldsMap(), JSONObject.class)));
 
@@ -74,7 +74,7 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 
 		_csvIndividualRepository.save(
 			FaroInfoTestUtil.buildCSVIndividual(
-				getDataSourceId(), generateIndividualPK(),
+				generateUserPK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
 						{
@@ -85,7 +85,7 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 
 		_csvIndividualRepository.save(
 			FaroInfoTestUtil.buildCSVIndividual(
-				getDataSourceId(), generateIndividualPK(),
+				generateUserPK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
 						{
@@ -96,7 +96,7 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 
 		_csvIndividualRepository.save(
 			FaroInfoTestUtil.buildCSVIndividual(
-				getDataSourceId(), generateIndividualPK(),
+				generateUserPK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
 						{
@@ -123,7 +123,7 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 	}
 
 	@Override
-	protected String generateIndividualPK() {
+	protected String generateUserPK() {
 		return RandomTestUtil.randomUUID();
 	}
 

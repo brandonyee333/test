@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
@@ -119,9 +119,9 @@ public abstract class BaseIndividualRepositoryTestCase
 			Collections.singleton(
 				new Individual.ActivitiesCount(individualChannel)));
 
-		individual1.setDataSourceIndividuals(
+		individual1.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					SetUtil.of("1234", "5678"), dataSource1.getId(),
 					_individual1Id,
 					Collections.singleton("23432-cd-3242-asf23"))));
@@ -463,11 +463,10 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testFindByAssociatedIdNotAndDataSourceIdAndIndividualPK() {
+	public void testFindByAssociatedIdNotAndDataSourceIdAndUserPK() {
 		Individual individual =
-			individualRepository.
-				findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
-					1234L, 1L, "organizationIds", "23432-cd-3242-asf23");
+			individualRepository.findByAssociatedIdNotAndDataSourceIdAndUserPK(
+				1234L, 1L, "organizationIds", "23432-cd-3242-asf23");
 
 		Assertions.assertNotNull(individual);
 	}
@@ -487,14 +486,14 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testFindByDataSourceIdAndIndividualPK() {
+	public void testFindByDataSourceIdAndUserPK() {
 		Individual individual =
-			individualRepository.findByDataSourceIdAndIndividualPK(
+			individualRepository.findByDataSourceIdAndUserPK(
 				1L, "23432-cd-3242-asf23");
 
 		Assertions.assertNotNull(individual);
 
-		individual = individualRepository.findByDataSourceIdAndIndividualPK(
+		individual = individualRepository.findByDataSourceIdAndUserPK(
 			1L, "23432");
 
 		Assertions.assertNull(individual);
@@ -663,7 +662,7 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Test
 	public void testFindIndividualCounts() {
 		Map<Long, Long> individualCounts =
-			individualRepository.findIndividualCounts(false, _segmentId);
+			individualRepository.findIdentityCounts(false, _segmentId);
 
 		Assertions.assertEquals((Long)1L, individualCounts.get(11L));
 	}

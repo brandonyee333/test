@@ -60,9 +60,8 @@ public class CSVIndividualDog {
 	public void deleteCSVIndividuals(
 		Long dataSourceId, List<String> dataSourceIndividualPKs) {
 
-		_csvIndividualRepository.
-			deleteByDataSourceIdAndDataSourceIndividualPKIn(
-				dataSourceId, dataSourceIndividualPKs);
+		_csvIndividualRepository.deleteByDataSourceIdAndDataSourceUserPKIn(
+			dataSourceId, dataSourceIndividualPKs);
 	}
 
 	public CSVIndividual fetchCSVIndividual(

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Account;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.IndividualChannel;
@@ -74,15 +74,14 @@ public class IndividualDTO {
 		_createDate = individual.getCreateDate();
 
 		Set<DataSourceAccountPKDTO> dataSourceAccountPKDTOs = SetUtil.map(
-			individual.getDataSourceIndividuals(), DataSourceAccountPKDTO::new);
+			individual.getBQDataSourceUsers(), DataSourceAccountPKDTO::new);
 
 		if (!dataSourceAccountPKDTOs.isEmpty()) {
 			_dataSourceAccountPKDTOs = dataSourceAccountPKDTOs;
 		}
 
 		Set<DataSourceIndividualPKDTO> dataSourceIndividualPKDTOs = SetUtil.map(
-			individual.getDataSourceIndividuals(),
-			DataSourceIndividualPKDTO::new);
+			individual.getBQDataSourceUsers(), DataSourceIndividualPKDTO::new);
 
 		if (!dataSourceIndividualPKDTOs.isEmpty()) {
 			_dataSourceIndividualPKDTOs = dataSourceIndividualPKDTOs;
@@ -414,15 +413,11 @@ public class IndividualDTO {
 		public DataSourceAccountPKDTO() {
 		}
 
-		public DataSourceAccountPKDTO(
-			DataSourceIndividual dataSourceIndividual) {
-
-			if (!CollectionUtils.isEmpty(
-					dataSourceIndividual.getAccountPKs())) {
-
-				_accountPKs = dataSourceIndividual.getAccountPKs();
+		public DataSourceAccountPKDTO(BQDataSourceUser bqDataSourceUser) {
+			if (!CollectionUtils.isEmpty(bqDataSourceUser.getAccountPKs())) {
+				_accountPKs = bqDataSourceUser.getAccountPKs();
 				_dataSourceId = String.valueOf(
-					dataSourceIndividual.getDataSourceId());
+					bqDataSourceUser.getDataSourceId());
 			}
 		}
 
@@ -487,15 +482,11 @@ public class IndividualDTO {
 		public DataSourceIndividualPKDTO() {
 		}
 
-		public DataSourceIndividualPKDTO(
-			DataSourceIndividual dataSourceIndividual) {
-
-			if (!CollectionUtils.isEmpty(
-					dataSourceIndividual.getIndividualPKs())) {
-
+		public DataSourceIndividualPKDTO(BQDataSourceUser bqDataSourceUser) {
+			if (!CollectionUtils.isEmpty(bqDataSourceUser.getUserPKs())) {
 				_dataSourceId = String.valueOf(
-					dataSourceIndividual.getDataSourceId());
-				_individualPKs = dataSourceIndividual.getIndividualPKs();
+					bqDataSourceUser.getDataSourceId());
+				_userPKs = bqDataSourceUser.getUserPKs();
 			}
 		}
 
@@ -514,8 +505,7 @@ public class IndividualDTO {
 
 			if (Objects.equals(
 					_dataSourceId, dataSourceIndividualPKDTO._dataSourceId) &&
-				Objects.equals(
-					_individualPKs, dataSourceIndividualPKDTO._individualPKs)) {
+				Objects.equals(_userPKs, dataSourceIndividualPKDTO._userPKs)) {
 
 				return true;
 			}
@@ -528,29 +518,30 @@ public class IndividualDTO {
 			return _dataSourceId;
 		}
 
+		@JsonAlias("userPKs")
 		@JsonProperty("individualPKs")
-		public Set<String> getIndividualPKs() {
-			return _individualPKs;
+		public Set<String> getUserPKs() {
+			return _userPKs;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(_dataSourceId, _individualPKs);
+			return Objects.hash(_dataSourceId, _userPKs);
 		}
 
 		public void setDataSourceId(String dataSourceId) {
 			_dataSourceId = dataSourceId;
 		}
 
-		public void setIndividualPKs(Set<String> individualPKs) {
-			_individualPKs = individualPKs;
+		public void setUserPKs(Set<String> userPKs) {
+			_userPKs = userPKs;
 		}
 
 		@Transient
 		private String _dataSourceId;
 
 		@Transient
-		private Set<String> _individualPKs = new HashSet<>();
+		private Set<String> _userPKs = new HashSet<>();
 
 	}
 

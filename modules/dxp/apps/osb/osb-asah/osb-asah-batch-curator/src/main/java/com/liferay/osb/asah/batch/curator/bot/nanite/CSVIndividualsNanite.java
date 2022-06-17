@@ -78,7 +78,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 		JSONObject fieldsJSONObject = csvIndividual.getFieldsJSONObject();
 
 		processData(
-			csvIndividual.getDataSourceIndividualPK(),
+			csvIndividual.getDataSourceUserPK(),
 			csvIndividual.getDataSourceId(), fieldsJSONObject,
 			fieldsJSONObject.optString(emailDataSourceFieldName, null));
 	}

@@ -200,7 +200,7 @@ public class IndividualNanite implements Nanite {
 		Individual anonymousIndividual, Long dataSourceId,
 		Individual knownIndividual, String userId) {
 
-		_individualDog.addDataSourceIndividualPK(
+		_individualDog.addDataSourceUserPK(
 			userId, dataSourceId, knownIndividual);
 
 		Set<Individual.ActivitiesCount> knownIndividualActivitiesCounts =
@@ -453,7 +453,7 @@ public class IndividualNanite implements Nanite {
 				individual1 = individual2;
 			}
 
-			_individualDog.addDataSourceIndividualPK(
+			_individualDog.addDataSourceUserPK(
 				userId, dataSourceId, individual1);
 
 			individual2 = _updateIndividual(emailAddressHashed, individual1);

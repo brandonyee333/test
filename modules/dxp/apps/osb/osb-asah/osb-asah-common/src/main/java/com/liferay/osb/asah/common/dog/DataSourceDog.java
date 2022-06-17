@@ -20,11 +20,11 @@ import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -251,15 +251,13 @@ public class DataSourceDog {
 		Map<Long, JSONObject> dataSourcesJSONObjects = new HashMap<>();
 
 		for (Individual individual : individuals) {
-			Set<DataSourceIndividual> dataSourceIndividuals =
-				individual.getDataSourceIndividuals();
+			Set<BQDataSourceUser> bqDataSourceUsers =
+				individual.getBQDataSourceUsers();
 
 			List<Long> dataSourceIds = new ArrayList<>();
 
-			for (DataSourceIndividual dataSourceIndividual :
-					dataSourceIndividuals) {
-
-				dataSourceIds.add(dataSourceIndividual.getDataSourceId());
+			for (BQDataSourceUser bqDataSourceUser : bqDataSourceUsers) {
+				dataSourceIds.add(bqDataSourceUser.getDataSourceId());
 			}
 
 			dataSourcesJSONObjects.put(
@@ -425,11 +423,10 @@ public class DataSourceDog {
 
 			List<Individual> singleDataSourceIndividuals = stream.filter(
 				individual -> {
-					Set<Individual.DataSourceIndividualPK>
-						dataSourceIndividualPKs =
-							individual.getDataSourceIndividualPKs();
+					Set<Individual.DataSourceUserPK> dataSourceUserPKs =
+						individual.getDataSourceUserPKs();
 
-					return dataSourceIndividualPKs.size() == 1;
+					return dataSourceUserPKs.size() == 1;
 				}
 			).collect(
 				Collectors.toList()
@@ -444,19 +441,18 @@ public class DataSourceDog {
 
 			if (!individuals.isEmpty()) {
 				for (Individual individual : individuals) {
-					Set<DataSourceIndividual> dataSourceIndividuals =
-						individual.getDataSourceIndividuals();
+					Set<BQDataSourceUser> bqDataSourceUsers =
+						individual.getBQDataSourceUsers();
 
-					Iterator<DataSourceIndividual> iterator =
-						dataSourceIndividuals.iterator();
+					Iterator<BQDataSourceUser> iterator =
+						bqDataSourceUsers.iterator();
 
 					while (iterator.hasNext()) {
-						DataSourceIndividual dataSourceIndividual =
-							iterator.next();
+						BQDataSourceUser bqDataSourceUser = iterator.next();
 
 						if (Objects.equals(
 								dataSourceId,
-								dataSourceIndividual.getDataSourceId())) {
+								bqDataSourceUser.getDataSourceId())) {
 
 							iterator.remove();
 
@@ -464,7 +460,7 @@ public class DataSourceDog {
 						}
 					}
 
-					individual.setDataSourceIndividuals(dataSourceIndividuals);
+					individual.setBQDataSourceUsers(bqDataSourceUsers);
 				}
 
 				_individualDog.updateIndividual(

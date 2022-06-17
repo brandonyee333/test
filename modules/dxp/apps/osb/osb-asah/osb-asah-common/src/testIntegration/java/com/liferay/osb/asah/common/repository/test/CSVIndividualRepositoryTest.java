@@ -70,12 +70,12 @@ public class CSVIndividualRepositoryTest
 		CSVIndividual csvIndividual1 = new CSVIndividual(
 			1L, JSONUtil.put("givenName", "Bennie"));
 
-		csvIndividual1.setDataSourceIndividualPK("1");
+		csvIndividual1.setDataSourceUserPK("1");
 
 		CSVIndividual csvIndividual2 = new CSVIndividual(
 			1L, JSONUtil.put("givenName", "Ellie"));
 
-		csvIndividual2.setDataSourceIndividualPK("2");
+		csvIndividual2.setDataSourceUserPK("2");
 
 		setUpRepository(csvIndividual1, csvIndividual2);
 
@@ -106,10 +106,9 @@ public class CSVIndividualRepositoryTest
 	}
 
 	@Test
-	public void testDeleteByDataSourceIdAndDataSourceIndividualPKIn() {
-		_csvIndividualRepository.
-			deleteByDataSourceIdAndDataSourceIndividualPKIn(
-				1L, Arrays.asList("1", "2"));
+	public void testDeleteByDataSourceIdAndDataSourceUserPKIn() {
+		_csvIndividualRepository.deleteByDataSourceIdAndDataSourceUserPKIn(
+			1L, Arrays.asList("1", "2"));
 
 		Assertions.assertEquals(
 			0L, _csvIndividualRepository.countByDataSourceId(1L));

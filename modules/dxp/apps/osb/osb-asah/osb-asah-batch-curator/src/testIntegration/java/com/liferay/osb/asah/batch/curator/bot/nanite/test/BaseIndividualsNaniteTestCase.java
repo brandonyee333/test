@@ -45,8 +45,8 @@ public abstract class BaseIndividualsNaniteTestCase
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		_individual1PK = generateIndividualPK();
-		_individual2PK = generateIndividualPK();
+		_user1PK = generateUserPK();
+		_user2PK = generateUserPK();
 	}
 
 	protected void addDataSource(String type) throws Exception {
@@ -120,15 +120,15 @@ public abstract class BaseIndividualsNaniteTestCase
 			JSONObject individualJSONObject =
 				individualsJSONArray.getJSONObject(i);
 
-			JSONArray individualPKsJSONArray =
+			JSONArray dataSourceIndividualPKArray =
 				FaroInfoIndividualUtil.getIndividualPKsJSONArray(
 					String.valueOf(getDataSourceId()),
 					individualJSONObject.getJSONArray(
 						"dataSourceIndividualPKs"));
 
-			String individualPK = individualPKsJSONArray.getString(0);
+			String individualPK = dataSourceIndividualPKArray.getString(0);
 
-			if (Objects.equals(_individual1PK, individualPK)) {
+			if (Objects.equals(_user1PK, individualPK)) {
 				individual1Exists = true;
 
 				assertDemographicsJSONObject(
@@ -150,7 +150,7 @@ public abstract class BaseIndividualsNaniteTestCase
 					String.valueOf(getDataSourceId()), "jobTitle", "Text",
 					individualJSONObject, "jobTitle", _INDIVIDUAL_1_JOB_TITLE);
 			}
-			else if (Objects.equals(_individual2PK, individualPK)) {
+			else if (Objects.equals(_user2PK, individualPK)) {
 				individual2Exists = true;
 
 				assertDemographicsJSONObject(
@@ -178,7 +178,7 @@ public abstract class BaseIndividualsNaniteTestCase
 		Assertions.assertTrue(individual2Exists);
 	}
 
-	protected abstract String generateIndividualPK();
+	protected abstract String generateUserPK();
 
 	protected Long getDataSourceId() {
 		if (_dataSourceJSONObject == null) {
@@ -206,10 +206,6 @@ public abstract class BaseIndividualsNaniteTestCase
 		};
 	}
 
-	protected String getIndividual1PK() {
-		return _individual1PK;
-	}
-
 	protected long getIndividual1UserId() {
 		return _INDIVIDUAL_1_USER_ID;
 	}
@@ -230,16 +226,20 @@ public abstract class BaseIndividualsNaniteTestCase
 		};
 	}
 
-	protected String getIndividual2PK() {
-		return _individual2PK;
-	}
-
 	protected long getIndividual2UserId() {
 		return _INDIVIDUAL_2_USER_ID;
 	}
 
 	protected String getSubscription() {
 		return _SUBSCRIPTION;
+	}
+
+	protected String getUser1PK() {
+		return _user1PK;
+	}
+
+	protected String getUser2PK() {
+		return _user2PK;
 	}
 
 	private void _assertDemographicsJSONObject(
@@ -293,10 +293,10 @@ public abstract class BaseIndividualsNaniteTestCase
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;
 
-	private String _individual1PK;
-	private String _individual2PK;
-
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	private String _user1PK;
+	private String _user2PK;
 
 }

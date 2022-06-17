@@ -31,23 +31,23 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Rachael Koestartyo
  */
 @Table
-public class DataSourceIndividual {
+public class BQDataSourceUser {
 
-	public DataSourceIndividual() {
+	public BQDataSourceUser() {
 	}
 
-	public DataSourceIndividual(Map<String, Object> source) {
+	public BQDataSourceUser(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
 	}
 
-	public DataSourceIndividual(
-		Set<String> accountPKs, Long dataSourceId, Long individualId,
-		Set<String> individualPKs) {
+	public BQDataSourceUser(
+		Set<String> accountPKs, Long dataSourceId, Long userId,
+		Set<String> userPKs) {
 
 		_accountPKs = accountPKs;
 		_dataSourceId = dataSourceId;
-		_individualId = individualId;
-		_individualPKs = individualPKs;
+		_userId = userId;
+		_userPKs = userPKs;
 	}
 
 	@Override
@@ -56,17 +56,16 @@ public class DataSourceIndividual {
 			return true;
 		}
 
-		if (!(obj instanceof DataSourceIndividual)) {
+		if (!(obj instanceof BQDataSourceUser)) {
 			return false;
 		}
 
-		DataSourceIndividual dataSourceIndividual = (DataSourceIndividual)obj;
+		BQDataSourceUser bqDataSourceUser = (BQDataSourceUser)obj;
 
-		if (Objects.equals(_accountPKs, dataSourceIndividual._accountPKs) &&
-			Objects.equals(_dataSourceId, dataSourceIndividual._dataSourceId) &&
-			Objects.equals(_individualId, dataSourceIndividual._individualId) &&
-			Objects.equals(
-				_individualPKs, dataSourceIndividual._individualPKs)) {
+		if (Objects.equals(_accountPKs, bqDataSourceUser._accountPKs) &&
+			Objects.equals(_dataSourceId, bqDataSourceUser._dataSourceId) &&
+			Objects.equals(_userId, bqDataSourceUser._userId) &&
+			Objects.equals(_userPKs, bqDataSourceUser._userPKs)) {
 
 			return true;
 		}
@@ -87,19 +86,18 @@ public class DataSourceIndividual {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getIndividualId() {
-		return _individualId;
+	public Long getUserId() {
+		return _userId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Set<String> getIndividualPKs() {
-		return _individualPKs;
+	public Set<String> getUserPKs() {
+		return _userPKs;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(
-			_accountPKs, _dataSourceId, _individualId, _individualPKs);
+		return Objects.hash(_accountPKs, _dataSourceId, _userId, _userPKs);
 	}
 
 	public void setAccountPKs(Set<String> accountPKs) {
@@ -110,12 +108,12 @@ public class DataSourceIndividual {
 		_dataSourceId = dataSourceId;
 	}
 
-	public void setIndividualId(Long individualId) {
-		_individualId = individualId;
+	public void setUserId(Long userId) {
+		_userId = userId;
 	}
 
-	public void setIndividualPKs(Set<String> individualPKs) {
-		_individualPKs = individualPKs;
+	public void setUserPKs(Set<String> userPKs) {
+		_userPKs = userPKs;
 	}
 
 	@Transient
@@ -125,9 +123,9 @@ public class DataSourceIndividual {
 	private Long _dataSourceId;
 
 	@Transient
-	private Long _individualId;
+	private Long _userId;
 
 	@Transient
-	private Set<String> _individualPKs;
+	private Set<String> _userPKs;
 
 }

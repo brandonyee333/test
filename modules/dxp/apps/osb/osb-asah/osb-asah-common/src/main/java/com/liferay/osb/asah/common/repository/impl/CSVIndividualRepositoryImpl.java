@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.repository.CustomCSVIndividualRepository;
 import java.util.List;
 
 import org.jooq.DSLContext;
+import org.jooq.DeleteUsingStep;
 import org.jooq.Record;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -32,6 +33,28 @@ public class CSVIndividualRepositoryImpl
 
 	public CSVIndividualRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	@Override
+	public void deleteByDataSourceIdAndDataSourceUserPKIn(
+		Long dataSourceId, List<String> dataSourceUserPKs) {
+
+		DeleteUsingStep<Record> deleteUsingStep = _dslContext.deleteFrom(
+			DSL.table("CSVIndividual"));
+
+		deleteUsingStep.where(
+			DSL.and(
+				DSL.field(
+					"dataSourceId"
+				).eq(
+					dataSourceId
+				),
+				DSL.field(
+					"dataSourceUserPK"
+				).in(
+					dataSourceUserPKs
+				))
+		).execute();
 	}
 
 	@Override

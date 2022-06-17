@@ -21,10 +21,10 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.DataSourceIndividual;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -95,50 +95,48 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndividualDog extends BaseFaroInfoDog {
 
-	public boolean addDataSourceIndividualPK(
+	public boolean addDataSourceUserPK(
 		String dataId, Long dataSourceId, Individual individual) {
 
-		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
-			individual.getDataSourceIndividualPKs();
+		Set<Individual.DataSourceUserPK> dataSourceUserPKs =
+			individual.getDataSourceUserPKs();
 
-		Stream<Individual.DataSourceIndividualPK> stream =
-			dataSourceIndividualPKs.stream();
+		Stream<Individual.DataSourceUserPK> stream = dataSourceUserPKs.stream();
 
 		if (stream.noneMatch(
-				dataSourceIndividualPK -> Objects.equals(
-					dataSourceId, dataSourceIndividualPK.getDataSourceId()))) {
+				dataSourceUserPK -> Objects.equals(
+					dataSourceId, dataSourceUserPK.getDataSourceId()))) {
 
-			dataSourceIndividualPKs.add(
-				new Individual.DataSourceIndividualPK(
-					new DataSourceIndividual(
+			dataSourceUserPKs.add(
+				new Individual.DataSourceUserPK(
+					new BQDataSourceUser(
 						Collections.emptySet(), dataSourceId,
 						individual.getId(), Collections.singleton(dataId))));
 		}
 		else {
-			Map<Long, Set<String>> individualPKsMap =
-				FaroInfoIndividualUtil.getIndividualPKs(
-					individual.getDataSourceIndividualPKs());
+			Map<Long, Set<String>> userPKsMap =
+				FaroInfoIndividualUtil.getUserPKs(
+					individual.getDataSourceUserPKs());
 
-			Set<String> individualPKs = individualPKsMap.get(dataSourceId);
+			Set<String> userPKs = userPKsMap.get(dataSourceId);
 
-			if (individualPKs.contains(dataId)) {
+			if (userPKs.contains(dataId)) {
 				return false;
 			}
 
-			individualPKs.add(dataId);
+			userPKs.add(dataId);
 
-			stream = dataSourceIndividualPKs.stream();
+			stream = dataSourceUserPKs.stream();
 
 			stream.filter(
-				dataSourceIndividualPK -> Objects.equals(
-					dataSourceId, dataSourceIndividualPK.getDataSourceId())
+				dataSourceUserPK -> Objects.equals(
+					dataSourceId, dataSourceUserPK.getDataSourceId())
 			).forEach(
-				dataSourceIndividualPK ->
-					dataSourceIndividualPK.setIndividualPKs(individualPKs)
+				dataSourceUserPK -> dataSourceUserPK.setUserPKs(userPKs)
 			);
 		}
 
-		individual.setDataSourceIndividualPKs(dataSourceIndividualPKs);
+		individual.setDataSourceUserPKs(dataSourceUserPKs);
 
 		return true;
 	}
@@ -209,13 +207,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		Individual individual = new Individual();
 
-		individual.setChannelIds(channelIds);
-		individual.setCreateDate(date);
-		individual.setDataSourceIndividuals(
+		individual.setBQDataSourceUsers(
 			Collections.singleton(
-				new DataSourceIndividual(
+				new BQDataSourceUser(
 					Collections.emptySet(), dataSourceId, null,
 					Collections.singleton(userId))));
+		individual.setChannelIds(channelIds);
+		individual.setCreateDate(date);
 		individual.setEmailAddressHashed(emailAddressHashed);
 		individual.setModifiedDate(date);
 		individual.setSegmentIds(Collections.emptySet());
@@ -238,9 +236,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		DataSourceIndividual dataSourceIndividual = new DataSourceIndividual();
+		BQDataSourceUser bqDataSourceUser = new BQDataSourceUser();
 
-		dataSourceIndividual.setDataSourceId(dataSource.getId());
+		bqDataSourceUser.setDataSourceId(dataSource.getId());
 
 		String providerType = dataSource.getProviderType();
 
@@ -249,22 +247,21 @@ public class IndividualDog extends BaseFaroInfoDog {
 				"accountPKs");
 
 			if (dataAccountPKsJSONArray != null) {
-				dataSourceIndividual.setAccountPKs(
+				bqDataSourceUser.setAccountPKs(
 					JSONUtil.toStringSet(dataAccountPKsJSONArray));
 			}
 		}
 
 		if (dataId != null) {
-			dataSourceIndividual.setIndividualPKs(
-				Collections.singleton(dataId));
+			bqDataSourceUser.setUserPKs(Collections.singleton(dataId));
 		}
 
 		Date date = new Date();
 
 		Individual individual = new Individual();
 
-		individual.setDataSourceIndividuals(
-			Collections.singleton(dataSourceIndividual));
+		individual.setBQDataSourceUsers(
+			Collections.singleton(bqDataSourceUser));
 		individual.setCreateDate(date);
 		individual.setModifiedDate(date);
 		individual.setFirstEnrichmentDate(date);
@@ -548,20 +545,19 @@ public class IndividualDog extends BaseFaroInfoDog {
 		}
 	}
 
-	public boolean existsByDataSourceIndividualPK(
+	public boolean existsByDataSourceUserPK(
 		Long dataSourceId, Long individualId) {
 
 		Individual individual = fetchIndividual(individualId);
 
-		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
-			individual.getDataSourceIndividualPKs();
+		Set<Individual.DataSourceUserPK> dataSourceUserPKs =
+			individual.getDataSourceUserPKs();
 
-		Stream<Individual.DataSourceIndividualPK> stream =
-			dataSourceIndividualPKs.stream();
+		Stream<Individual.DataSourceUserPK> stream = dataSourceUserPKs.stream();
 
 		return stream.anyMatch(
-			dataSourceIndividualPK -> Objects.equals(
-				dataSourceId, dataSourceIndividualPK.getDataSourceId()));
+			dataSourceUserPK -> Objects.equals(
+				dataSourceId, dataSourceUserPK.getDataSourceId()));
 	}
 
 	public boolean existsById(Long id) {
@@ -577,7 +573,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	public Individual fetchIndividual(Long dataSourceId, String userId) {
 		Individual individual =
-			_individualRepository.findByDataSourceIdAndIndividualPK(
+			_individualRepository.findByDataSourceIdAndUserPK(
 				dataSourceId, userId);
 
 		return _populateIndividual(individual);
@@ -589,9 +585,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 			String individualPK) {
 
 		Individual individual =
-			_individualRepository.
-				findByAssociatedIdNotAndDataSourceIdAndIndividualPK(
-					associationId, dataSourceId, fieldName, individualPK);
+			_individualRepository.findByAssociatedIdNotAndDataSourceIdAndUserPK(
+				associationId, dataSourceId, fieldName, individualPK);
 
 		return _populateIndividual(individual);
 	}
@@ -732,7 +727,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 	public Map<Long, Long> getIndividualCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
-		return _individualRepository.findIndividualCounts(
+		return _individualRepository.findIdentityCounts(
 			includeAnonymousUsers, segmentId);
 	}
 
@@ -816,13 +811,11 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		Set<String> userIds = new HashSet<>();
 
-		Set<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
-			individual.getDataSourceIndividualPKs();
+		Set<Individual.DataSourceUserPK> dataSourceUserPKs =
+			individual.getDataSourceUserPKs();
 
-		for (Individual.DataSourceIndividualPK dataSourceIndividualPK :
-				dataSourceIndividualPKs) {
-
-			userIds.addAll(dataSourceIndividualPK.getIndividualPKs());
+		for (Individual.DataSourceUserPK dataSourceUserPK : dataSourceUserPKs) {
+			userIds.addAll(dataSourceUserPK.getUserPKs());
 		}
 
 		return userIds;
@@ -880,20 +873,19 @@ public class IndividualDog extends BaseFaroInfoDog {
 			collections, ArrayUtils.indexOf(collections, "user-sessions"));
 	}
 
-	public Individual removeDataSourceIndividualPKs(
+	public Individual removeDataSourceUserPKs(
 		Individual individual, Long dataSourceId) {
 
-		Set<DataSourceIndividual> dataSourceIndividuals =
-			individual.getDataSourceIndividuals();
+		Set<BQDataSourceUser> bqDataSourceUsers =
+			individual.getBQDataSourceUsers();
 
-		Iterator<DataSourceIndividual> iterator =
-			dataSourceIndividuals.iterator();
+		Iterator<BQDataSourceUser> iterator = bqDataSourceUsers.iterator();
 
 		while (iterator.hasNext()) {
-			DataSourceIndividual dataSourceIndividual = iterator.next();
+			BQDataSourceUser bqDataSourceUser = iterator.next();
 
 			if (Objects.equals(
-					dataSourceId, dataSourceIndividual.getDataSourceId())) {
+					dataSourceId, bqDataSourceUser.getDataSourceId())) {
 
 				iterator.remove();
 
@@ -901,7 +893,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			}
 		}
 
-		individual.setDataSourceIndividuals(dataSourceIndividuals);
+		individual.setBQDataSourceUsers(bqDataSourceUsers);
 
 		return updateIndividual(individual);
 	}
@@ -1270,7 +1262,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Long dataSourceId = dataSource.getId();
 
 		if ((dataId != null) && !dataId.equals(String.valueOf(individualId))) {
-			addDataSourceIndividualPK(dataId, dataSourceId, individual);
+			addDataSourceUserPK(dataId, dataSourceId, individual);
 		}
 
 		boolean dataAccountPKsUpdated = false;
@@ -1403,7 +1395,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 			dataSourceAccountPKs.add(
 				new Individual.DataSourceAccountPK(
-					new DataSourceIndividual(
+					new BQDataSourceUser(
 						accountPKs, dataSourceId, individual.getId(),
 						Collections.emptySet())));
 		}
