@@ -5,6 +5,7 @@ definition {
 
 		var productType = StringUtil.lowerCase("${productType}");
 		var baseURL = "${baseURL}";
+		var catalogId = CommerceJSONCatalogsAPI._getCommerceCatalogIdByName(catalogName = "${catalogName}");
 
 		if (!(isSet(baseURL))) {
 			var baseURL = PropsUtil.get("portal.url");
@@ -22,12 +23,28 @@ definition {
 			var discontinued = "false";
 		}
 
+		if (!(isSet(externalReferenceCode))) {
+			var externalReferenceCode = "";
+		}
+
 		if (!(isSet(gtin))) {
 			var gtin = "";
 		}
 
 		if (!(isSet(height))) {
 			var height = "0";
+		}
+
+		if (!(isSet(imageSrc))) {
+			var catalogGroupId = JSONGroupAPI._getGroupIdByName(
+				groupName = "${catalogName}",
+				site = "false");
+
+			var imageSrc = "${baseURL}/o/commerce-media/default/?groupId=${catalogGroupId}";
+		}
+
+		if (!(isSet(imageTitle))) {
+			var imageTitle = "${productName} Icon";
 		}
 
 		if (!(isSet(manufacturerPartNumber))) {
@@ -93,8 +110,6 @@ definition {
 			var width = "0";
 		}
 
-		var catalogId = CommerceJSONCatalogsAPI._getCommerceCatalogIdByName(catalogName = "${catalogName}");
-
 		var curl = '''
 			${baseURL}/o/headless-commerce-admin-catalog/v1.0/products \
 			-u test@liferay.com:test \
@@ -109,7 +124,7 @@ definition {
 					  "en_US": "${productDescription}"
 					},
 					"expando": {},
-					"externalReferenceCode": "",
+					"externalReferenceCode": "${externalReferenceCode}",
 					"metaDescription": {
 					  "en_US": "${metaDescription}"
 					},
@@ -126,6 +141,14 @@ definition {
 					"productChannelFilter": false,
 					"productStatus": "${productStatus}",
 					"productType": "${productType}",
+					"images": [
+                        {
+                          "src": "${imageSrc}",
+                          "title": {
+                            "en_US": "${imageTitle}"
+                          }
+                        }
+                    ],
 					"shortDescription": {
 					  "en_US": "${shortDescription}"
 					},
