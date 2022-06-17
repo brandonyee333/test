@@ -74,13 +74,6 @@ CREATE TABLE IF NOT EXISTS ChannelDataSource (
 	PRIMARY KEY (channelId, dataSourceId)
 );
 
-CREATE TABLE IF NOT EXISTS CSVIndividual (
-	id BIGSERIAL PRIMARY KEY,
-	dataSourceId BIGINT,
-    dataSourceUserPK TEXT,
-	fields JSON
-);
-
 CREATE TABLE IF NOT EXISTS CustomAssetDashboard (
 	id TEXT PRIMARY KEY,
 	assetId TEXT,

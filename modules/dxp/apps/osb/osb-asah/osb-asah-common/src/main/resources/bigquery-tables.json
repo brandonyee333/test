@@ -156,6 +156,33 @@
 			"type": "DAY"
 		}
 	},
+	"csvuser": {
+		"clusteringFields": [
+			"dataSourceId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "dataSourceUserPK",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "fields",
+				"type": "TEXT"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "INT64"
+			}
+		]
+	},
 	"datasourceuser": {
 		"clusteringFields": [
 			"dataSourceId"

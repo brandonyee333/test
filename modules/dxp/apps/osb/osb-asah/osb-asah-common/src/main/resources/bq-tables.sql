@@ -29,6 +29,13 @@ CREATE TABLE IF NOT EXISTS BQAccountGroup (
 	type TEXT
 );
 
+CREATE TABLE IF NOT EXISTS BQCSVUser (
+    id BIGSERIAL PRIMARY KEY,
+    dataSourceId BIGINT,
+    dataSourceUserPK TEXT,
+    fields JSON
+);
+
 CREATE TABLE IF NOT EXISTS BQDataSourceUser (
     accountPKs TEXT[],
     dataSourceId BIGINT,
