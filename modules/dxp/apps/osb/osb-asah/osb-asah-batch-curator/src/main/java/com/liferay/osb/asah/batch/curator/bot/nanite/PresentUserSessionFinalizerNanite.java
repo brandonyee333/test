@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.logging.Log;
@@ -44,6 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -51,6 +53,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PresentUserSessionFinalizerNanite extends BaseNanite {
+
+	@PostConstruct
+	public void init() {
+		_boundedExecutor = BoundedExecutor.newBoundedExecutor(
+			_presentUserSessionFinalizeCount, _presentUserSessionFinalizeCount);
+	}
 
 	@Override
 	public boolean isLogRunEnabled() {
@@ -236,8 +244,7 @@ public class PresentUserSessionFinalizerNanite extends BaseNanite {
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
 
-	private final BoundedExecutor _boundedExecutor =
-		BoundedExecutor.newBoundedExecutor(15, 10);
+	private BoundedExecutor _boundedExecutor;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
@@ -247,6 +254,9 @@ public class PresentUserSessionFinalizerNanite extends BaseNanite {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Value("${osb.asah.batch.curator.present.user.session.finalize.count:10}")
+	private int _presentUserSessionFinalizeCount;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
