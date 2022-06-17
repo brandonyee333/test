@@ -230,7 +230,7 @@ public class CTEntryLocalServiceImpl extends CTEntryLocalServiceBaseImpl {
 	public boolean hasCTEntry(
 		long ctCollectionId, long modelClassNameId, long modelClassPK) {
 
-		int count = ctEntryPersistence.countByNotC_MCNI_MCPK(
+		int count = ctEntryPersistence.countByC_MCNI_MCPK(
 			ctCollectionId, modelClassNameId, modelClassPK);
 
 		if (count == 0) {
