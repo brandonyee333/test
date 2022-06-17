@@ -12,4 +12,58 @@
  * details.
  */
 
+import type {FieldType} from './utils/dataConverter';
+
 export {FieldFeedback} from './core/components/FieldFeedback';
+export {
+	getDDMFormFieldSettingsContext,
+	FieldType,
+	FieldTypeName,
+} from './utils/dataConverter';
+
+export function convertToFormData(body: unknown): unknown;
+
+export function makeFetch({
+	body,
+	headers,
+	method,
+	url,
+	...otherProps
+}: {
+	body: unknown;
+	headers?:
+		| {
+				Accept: string;
+		  }
+		| undefined;
+	method?: string | undefined;
+	url: unknown;
+	[x: string]: unknown;
+}): unknown;
+
+export function useConfig(): {
+	fieldTypes: FieldType[];
+	formReportDataURL: string;
+	portletNamespace: string;
+};
+
+export function useForm(): ({
+	payload,
+	type,
+}: {
+	payload?: unknown;
+	type: string;
+}) => void;
+
+export const FormReport: React.FC<{
+	data?: string;
+	fields: unknown;
+	formReportRecordsFieldValuesURL: string;
+	portletNamespace: string;
+}>;
+
+export const FormView: React.FC;
+
+export const PartialResults: React.FC<{
+	reportDataURL: string;
+}>;

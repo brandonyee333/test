@@ -12,12 +12,10 @@
  * details.
  */
 
-declare module 'dynamic-data-mapping-form-field-type' {
-	type FieldChangeEventHandler<T = unknown> = (event: {
-		target: {
-			value: T;
-		};
-	}) => void;
+/// <reference types="react" />
 
-	function ReactFieldBase(props: any): JSX.Element;
-}
+export default function ModalWithProvider({
+	isApproved,
+}: {
+	isApproved: boolean;
+}): JSX.Element;

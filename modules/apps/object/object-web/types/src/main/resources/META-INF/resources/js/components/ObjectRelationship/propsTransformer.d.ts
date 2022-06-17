@@ -12,19 +12,16 @@
  * details.
  */
 
-declare module 'data-engine-js-components-web' {
-	function useConfig(): {formReportDataURL: string};
-
-	export const FormReport: React.FC<{
-		data?: string;
-		fields: unknown;
-		formReportRecordsFieldValuesURL: string;
-		portletNamespace: string;
-	}>;
-
-	export const FormView: React.FC;
-
-	export const PartialResults: React.FC<{
-		reportDataURL: string;
-	}>;
-}
+export default function propsTransformer({
+	...otherProps
+}: {
+	[x: string]: any;
+}): {
+	onActionDropdownItemClick({
+		action,
+		itemData,
+	}: {
+		action: any;
+		itemData: any;
+	}): void;
+};

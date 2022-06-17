@@ -30,6 +30,8 @@ import FieldsSidebarSettingsBody from './FieldsSidebarSettingsBody';
 
 import './SidebarFieldSettings.scss';
 
+import type {FieldType, FieldTypeName} from 'data-engine-js-components-web';
+
 const FieldsSidebarSettingsHeader: React.FC<IProps> = ({field}) => {
 	const dispatch = useForm();
 	const {fieldTypes} = useConfig();
@@ -68,6 +70,10 @@ const SidebarFieldSettings: React.FC<IProps> = ({field}) => {
 
 export default SidebarFieldSettings;
 
+interface Field {
+	name: string;
+	type: FieldTypeName;
+}
 interface IProps {
 	field: Field;
 }

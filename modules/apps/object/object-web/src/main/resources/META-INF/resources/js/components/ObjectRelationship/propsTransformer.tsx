@@ -12,15 +12,19 @@
  * details.
  */
 
-import React from 'react';
-import './SidebarFieldSettings.scss';
-import type {FieldTypeName} from 'data-engine-js-components-web';
-declare const SidebarFieldSettings: React.FC<IProps>;
-export default SidebarFieldSettings;
-interface Field {
-	name: string;
-	type: FieldTypeName;
-}
-interface IProps {
-	field: Field;
+export default function propsTransformer({...otherProps}) {
+	return {
+		...otherProps,
+		onActionDropdownItemClick({
+			action,
+			itemData,
+		}: {
+			action: any;
+			itemData: any;
+		}) {
+			if (action.data.id === 'deleteObjectRelationship') {
+				Liferay.fire('deleteObjectRelationship', {itemData});
+			}
+		},
+	};
 }
