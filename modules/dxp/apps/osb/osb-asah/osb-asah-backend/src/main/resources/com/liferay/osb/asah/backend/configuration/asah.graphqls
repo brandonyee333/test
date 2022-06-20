@@ -1262,6 +1262,13 @@ type QueryType {
 		start: Int!
 	): AssetMetricBag
 
+	orderIncompleteCurrencyValues(
+		channelId: String!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String
+	): [CurrencyValue]
+
 	orderTotalCurrencyValues(
 		channelId: String!,
 		rangeEnd: String,
