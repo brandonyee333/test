@@ -14,25 +14,14 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.ChannelDataSource;
-import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
-
-import org.junit.jupiter.api.BeforeEach;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Riccardo Ferrari
  */
-@SQLResource(
-	resourcePath = "order_total_currency_value_graphql_rest_controller_test.sql"
-)
+@SQLResource(resourcePath = "currency_value_graphql_rest_controller_test.sql")
 public class OrderTotalCurrencyValueGraphQLRestControllerTest
-	extends BaseGraphQLRestControllerTestCase {
+	extends BaseCurrencyValueGraphQLRestControllerTestCase {
 
 	@Override
 	public String getBodyPath() {
@@ -48,38 +37,5 @@ public class OrderTotalCurrencyValueGraphQLRestControllerTest
 	public String getQueryPath() {
 		return "order_total_currency_value_query.graphql";
 	}
-
-	@BeforeEach
-	public void setUp() {
-		DataSource dataSource = new DataSource("Liferay Italy");
-
-		dataSource.setCredentialType("Token Authentication");
-		dataSource.setFaroBackendSecuritySignature(
-			"faroBackendSecuritySignature");
-		dataSource.setId(123L);
-		dataSource.setIsNew(true);
-		dataSource.setProviderType("LIFERAY");
-		dataSource.setState("READY");
-		dataSource.setStatus("STARTED");
-		dataSource.setURL("");
-
-		dataSource = _dataSourceRepository.save(dataSource);
-
-		Channel channel = new Channel("channel");
-
-		channel.setId(11L);
-		channel.setIsNew(true);
-
-		channel.addChannelDataSource(
-			new ChannelDataSource(dataSource.getId(), null));
-
-		_channelRepository.save(channel);
-	}
-
-	@Autowired
-	private ChannelRepository _channelRepository;
-
-	@Autowired
-	private DataSourceRepository _dataSourceRepository;
 
 }
