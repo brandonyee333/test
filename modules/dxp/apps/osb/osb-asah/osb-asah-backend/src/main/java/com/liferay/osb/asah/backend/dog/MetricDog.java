@@ -451,7 +451,6 @@ public class MetricDog {
 			assetIdSetterBiConsumer.accept(assetMetric, keys[0]);
 
 			assetMetric.setAssetTitle(StringEscapeUtils.unescapeHtml4(keys[1]));
-			assetMetric.setDataSourceId(keys[2]);
 
 			_setModelMetrics(
 				termsBucket.getAggregations(), assetMetric,

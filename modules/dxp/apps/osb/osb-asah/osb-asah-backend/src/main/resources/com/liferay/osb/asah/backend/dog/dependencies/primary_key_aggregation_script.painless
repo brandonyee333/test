@@ -16,13 +16,4 @@ else {
 	primaryKey += "null";
 }
 
-primaryKey += "#@!#";
-
-if (doc.dataSourceId.length > 0) {
-	primaryKey += doc.dataSourceId.value;
-}
-else {
-	primaryKey += "null";
-}
-
 return primaryKey;
