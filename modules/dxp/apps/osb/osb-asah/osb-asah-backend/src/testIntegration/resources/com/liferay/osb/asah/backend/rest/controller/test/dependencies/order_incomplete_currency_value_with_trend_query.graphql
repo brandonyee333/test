@@ -1,0 +1,10 @@
+query OrderIncompleteCurrencyValue($channelId: String!, $rangeKey: Int) {
+	orderIncompleteCurrencyValues(channelId: $channelId, rangeKey: $rangeKey) {
+		currencyCode
+		trend {
+			percentage
+			trendClassification
+		}
+		value
+	}
+}
