@@ -166,12 +166,13 @@ public class DXPEntitiesIngestionNanite {
 
 				bqExpandoValue.setClassPK(classPK);
 				bqExpandoValue.setClassType(classType);
-				bqExpandoValue.setColumnId(jsonObject.getString("columnId"));
+				bqExpandoValue.setColumnId(
+					String.valueOf(jsonObject.get("columnId")));
 				bqExpandoValue.setDataSourceId(dataSourceId);
 				bqExpandoValue.setId(
 					_generateBQExpandoValueId(
-						jsonObject.getString("columnId"), classPK, dataSourceId,
-						projectId));
+						String.valueOf(jsonObject.get("columnId")), classPK,
+						dataSourceId, projectId));
 				bqExpandoValue.setIsNew(
 					_isNew(_bqExpandoValueRepository, bqExpandoValue.getId()));
 				bqExpandoValue.setValue(jsonObject.getString("value"));
