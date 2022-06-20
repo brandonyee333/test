@@ -175,7 +175,7 @@ public class DXPEntitiesIngestionNanite {
 						dataSourceId, projectId));
 				bqExpandoValue.setIsNew(
 					_isNew(_bqExpandoValueRepository, bqExpandoValue.getId()));
-				bqExpandoValue.setValue(jsonObject.getString("value"));
+				bqExpandoValue.setValue(jsonObject.optString("value"));
 
 				bqExpandoValues.add(bqExpandoValue);
 			});
@@ -197,7 +197,7 @@ public class DXPEntitiesIngestionNanite {
 				JSONObject jsonObject = (JSONObject)object;
 
 				fields.put(
-					jsonObject.getString("name"), jsonObject.get("value"));
+					jsonObject.getString("name"), jsonObject.opt("value"));
 			});
 
 		return fields;
