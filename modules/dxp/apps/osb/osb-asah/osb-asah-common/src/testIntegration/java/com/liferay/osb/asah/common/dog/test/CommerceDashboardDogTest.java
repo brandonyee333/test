@@ -119,13 +119,13 @@ public class CommerceDashboardDogTest
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderIncompleteCurrencyValuesWithPreviousPeriodComparison() {
-		Map<String, CurrencyValue> orderTotalCurrencyValues =
-			_commerceDashboardDog.getOrderTotalCurrencyValues(
+		Map<String, CurrencyValue> orderIncompleteCurrencyValues =
+			_commerceDashboardDog.getOrderIncompleteCurrencyValues(
 				11L, true, TimeRange.LAST_7_DAYS);
 
-		Assertions.assertNotNull(orderTotalCurrencyValues);
+		Assertions.assertNotNull(orderIncompleteCurrencyValues);
 
-		CurrencyValue currencyValue = orderTotalCurrencyValues.get("USD");
+		CurrencyValue currencyValue = orderIncompleteCurrencyValues.get("USD");
 
 		Assertions.assertNotNull(currencyValue);
 		Assertions.assertNotNull(currencyValue.getValue());
