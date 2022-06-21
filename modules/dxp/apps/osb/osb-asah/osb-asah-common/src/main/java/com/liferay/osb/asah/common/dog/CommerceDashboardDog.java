@@ -43,6 +43,57 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommerceDashboardDog {
 
+	public Map<String, CurrencyValue> getOrderAverageCurrencyValues(
+		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
+
+		List<Long> dataSourceIds = _getDataSourceIds(channelId);
+
+		Map<String, BigDecimal> currentOrderAverageCurrencyValues =
+			_bqOrderRepository.getOrderAverageCurrencyValues(
+				dataSourceIds, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Map<String, BigDecimal> previousOrderAverageCurrencyValues = null;
+
+		if (compareToPrevious) {
+			TimeRange previousTimeRange = _getPreviousTimeRange(timeRange);
+
+			previousOrderAverageCurrencyValues =
+				_bqOrderRepository.getOrderAverageCurrencyValues(
+					dataSourceIds, previousTimeRange.getEndLocalDateTime(),
+					previousTimeRange.getStartLocalDateTime(),
+					_timeZoneDog.getTimeZoneId());
+		}
+
+		Map<String, CurrencyValue> orderAverageCurrencyValues = new HashMap<>();
+
+		for (Map.Entry<String, BigDecimal> currentOrderAverageCurrencyValue :
+				currentOrderAverageCurrencyValues.entrySet()) {
+
+			String currencyCode = currentOrderAverageCurrencyValue.getKey();
+
+			CurrencyValue currencyValue = new CurrencyValue(
+				currencyCode, null,
+				currentOrderAverageCurrencyValue.getValue());
+
+			if (compareToPrevious) {
+				BigDecimal previousOrderAverageCurrencyValue =
+					previousOrderAverageCurrencyValues.getOrDefault(
+						currencyCode, BigDecimal.ZERO);
+
+				currencyValue.setPercentageVariation(
+					_getPercentageVariation(
+						currentOrderAverageCurrencyValue.getValue(),
+						previousOrderAverageCurrencyValue));
+			}
+
+			orderAverageCurrencyValues.put(currencyCode, currencyValue);
+		}
+
+		return orderAverageCurrencyValues;
+	}
+
 	public Map<String, CurrencyValue> getOrderIncompleteCurrencyValues(
 		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
 
