@@ -77,7 +77,7 @@ public abstract class BaseOrderDataFetcherTestCase
 		_channelRepository.save(channel);
 	}
 
-	protected void assetCurrencyValueDTO(
+	protected void assertCurrencyValueDTO(
 		List<CurrencyValueDTO> actualCurrencyValueDTOs, int expectedSize,
 		boolean expectedTrend) {
 

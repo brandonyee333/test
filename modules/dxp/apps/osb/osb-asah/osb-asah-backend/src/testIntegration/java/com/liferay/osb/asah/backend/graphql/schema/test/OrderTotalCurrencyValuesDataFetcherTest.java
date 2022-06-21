@@ -51,7 +51,7 @@ public class OrderTotalCurrencyValuesDataFetcherTest
 					}
 				});
 
-		assetCurrencyValueDTO(currencyValueDTOs, 2, false);
+		assertCurrencyValueDTO(currencyValueDTOs, 2, false);
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
@@ -69,7 +69,7 @@ public class OrderTotalCurrencyValuesDataFetcherTest
 					}
 				});
 
-		assetCurrencyValueDTO(currencyValueDTOs, 2, true);
+		assertCurrencyValueDTO(currencyValueDTOs, 2, true);
 	}
 
 	@Autowired

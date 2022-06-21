@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.CurrencyValueDTO;
-import com.liferay.osb.asah.backend.graphql.schema.OrderIncompleteValuesDataFetcher;
+import com.liferay.osb.asah.backend.graphql.schema.OrderIncompleteCurrencyValuesDataFetcher;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
@@ -39,7 +39,7 @@ public class OrderIncompleteCurrencyValuesDataFetcherTest
 	@Test
 	public void testGet() {
 		List<CurrencyValueDTO> currencyValueDTOs =
-			_orderIncompleteValuesDataFetcher.get(
+			_orderIncompleteCurrencyValuesDataFetcher.get(
 				getDataFetchingEnvironment(
 					Arrays.asList(
 						new Field("currencyCode"), new Field("value"))),
@@ -49,14 +49,14 @@ public class OrderIncompleteCurrencyValuesDataFetcherTest
 					}
 				});
 
-		assetCurrencyValueDTO(currencyValueDTOs, 2, false);
+		assertCurrencyValueDTO(currencyValueDTOs, 2, false);
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetWithTrend() {
 		List<CurrencyValueDTO> currencyValueDTOs =
-			_orderIncompleteValuesDataFetcher.get(
+			_orderIncompleteCurrencyValuesDataFetcher.get(
 				getDataFetchingEnvironment(
 					Arrays.asList(
 						new Field("currencyCode"), new Field("trend"),
@@ -67,10 +67,11 @@ public class OrderIncompleteCurrencyValuesDataFetcherTest
 					}
 				});
 
-		assetCurrencyValueDTO(currencyValueDTOs, 2, true);
+		assertCurrencyValueDTO(currencyValueDTOs, 2, true);
 	}
 
 	@Autowired
-	private OrderIncompleteValuesDataFetcher _orderIncompleteValuesDataFetcher;
+	private OrderIncompleteCurrencyValuesDataFetcher
+		_orderIncompleteCurrencyValuesDataFetcher;
 
 }

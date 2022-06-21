@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
 @GraphQLTypeWiring(
 	fieldName = "orderIncompleteCurrencyValues", typeName = "QueryType"
 )
-public class OrderIncompleteValuesDataFetcher
+public class OrderIncompleteCurrencyValuesDataFetcher
 	extends BaseDataFetcher<List<CurrencyValueDTO>> {
 
 	@Override
@@ -53,14 +53,14 @@ public class OrderIncompleteValuesDataFetcher
 		Map<String, List<Field>> dataFetchingFieldSelectionSetFields =
 			dataFetchingFieldSelectionSet.get();
 
-		Map<String, CurrencyValue> orderIncompleteValues =
+		Map<String, CurrencyValue> orderIncompleteCurrencyValues =
 			_commerceDashboardDog.getOrderIncompleteCurrencyValues(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				dataFetchingFieldSelectionSetFields.containsKey("trend"),
 				searchQueryContext.getTimeRange());
 
 		return ListUtil.map(
-			orderIncompleteValues.values(), CurrencyValueDTO::new);
+			orderIncompleteCurrencyValues.values(), CurrencyValueDTO::new);
 	}
 
 	@Autowired
