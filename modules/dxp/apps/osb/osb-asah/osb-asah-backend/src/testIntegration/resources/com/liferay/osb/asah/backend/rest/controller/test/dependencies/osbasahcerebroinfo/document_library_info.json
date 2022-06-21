@@ -62,6 +62,7 @@
 		"city": "Recife",
 		"comments": 0,
 		"country": "Brazil",
+		"dataSourceId": "370975939087274525",
 		"deviceType": "Desktop",
 		"downloads": 1,
 		"eventDate": "${now-2d}",
@@ -71,6 +72,34 @@
 		"ratings": 0,
 		"ratingsScore": 0,
 		"region": "Pernambuco",
+		"title": "Liferay",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "2"
+	},
+	{
+		"assetId": "3",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
+		"browserName": "Chrome",
+		"canonicalUrls": [
+			"http://liferay.com"
+		],
+		"channelId": "1",
+		"city": "Recife",
+		"comments": 0,
+		"country": "Brazil",
+		"dataSourceId": "370975939087274526",
+		"deviceType": "Desktop",
+		"downloads": 2,
+		"eventDate": "${now-2d}",
+		"platformName": "Linux",
+		"previews": 0,
+		"primaryKey": "b10211dbdd724dce9cd36bd0bf9f69fc0faa2ee0c0eff585f02ce71020f652dc",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"region": "Pernambuco",
+		"title": "Liferay",
 		"urls": [
 			"http://liferay.com"
 		],
