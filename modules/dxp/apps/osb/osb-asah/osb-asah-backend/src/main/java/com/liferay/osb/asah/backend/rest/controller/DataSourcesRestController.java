@@ -161,7 +161,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@PatchMapping("/{id}")
-	public String patchDataSource(
+	public DataSourceDTO patchDataSource(
 		@PathVariable String id, @RequestBody DataSourceDTO dataSourceDTO) {
 
 		dataSourceDTO.setId(id);
@@ -169,10 +169,9 @@ public class DataSourcesRestController extends BaseRestController {
 		DataSource dataSource = _dataSourceDog.patchDataSource(
 			_objectMapper.convertValue(dataSourceDTO, DataSource.class));
 
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			dataSource, JSONObject.class);
+		_sanitize(dataSource);
 
-		return dataSourceJSONObject.toString();
+		return new DataSourceDTO(dataSource);
 	}
 
 	@PostMapping
