@@ -699,7 +699,7 @@ public class EventAttributeDefinitionDogTest
 	}
 
 	@Test
-	public void testUpdateEventAttributeDefinitionDescriptionBlank() {
+	public void testUpdateEventAttributeDefinitionDescriptionEmpty() {
 		EventAttributeDefinition eventAttributeDefinition1 =
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
 				"viewDuration");
@@ -714,7 +714,7 @@ public class EventAttributeDefinitionDogTest
 		Assertions.assertEquals(
 			eventAttributeDefinition1, eventAttributeDefinition2);
 
-		eventAttributeDefinition1.setDescription("");
+		eventAttributeDefinition1.setDescription(null);
 
 		eventAttributeDefinition2 =
 			_eventAttributeDefinitionDog.updateEventAttributeDefinition(
