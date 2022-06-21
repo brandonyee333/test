@@ -1154,6 +1154,24 @@ public class DataSourcesRestControllerTest {
 		Assertions.assertEquals(3, jsonArray.length());
 	}
 
+	@Test
+	public void testPatchDataSource() {
+		DataSourceDTO dataSourceDTO = new DataSourceDTO(
+			_dataSourceRepository.save(
+				FaroInfoTestUtil.buildLiferayDataSource()));
+
+		dataSourceDTO.setName("Liferay DXP");
+
+		DataSourceDTO actualDataSourceDTO =
+			_dataSourcesRestController.patchDataSource(
+				dataSourceDTO.getId(), dataSourceDTO);
+
+		JSONAssert.assertEquals(
+			_objectMapper.convertValue(dataSourceDTO, JSONObject.class),
+			_objectMapper.convertValue(actualDataSourceDTO, JSONObject.class),
+			false);
+	}
+
 	private void _runDeleteDataSourcesNanite(JSONObject dataSourceJSONObject)
 		throws Exception {
 
