@@ -26,6 +26,10 @@ import java.util.Map;
  */
 public interface CustomBQOrderRepository {
 
+	public Map<String, BigDecimal> getOrderAverageCurrencyValues(
+		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
+
 	public Map<String, BigDecimal> getOrderIncompleteCurrencyValues(
 		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);

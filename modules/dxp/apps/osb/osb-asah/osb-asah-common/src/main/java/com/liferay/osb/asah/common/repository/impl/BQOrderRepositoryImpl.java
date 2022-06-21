@@ -49,6 +49,32 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 	}
 
 	@Override
+	public Map<String, BigDecimal> getOrderAverageCurrencyValues(
+		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			_getSelectHavingStep(
+				Arrays.asList(
+					DSL.field("currencyCode"),
+					DSL.avg(
+						DSL.field(
+							"total"
+						).cast(
+							BigDecimal.class
+						)
+					).as(
+						"orderAverageCurrencyValue"
+					)),
+				_getConditions(
+					dataSourceIds, Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L),
+					rangeEndLocalDateTime, rangeStartLocalDateTime,
+					timeZoneId)),
+			GetterUtil::getBigDecimal);
+	}
+
+	@Override
 	public Map<String, BigDecimal> getOrderIncompleteCurrencyValues(
 		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
