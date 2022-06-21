@@ -227,7 +227,12 @@ public class EventAttributeDefinitionDog {
 		}
 
 		if (description != null) {
-			eventAttributeDefinition.setDescription(description);
+			if (description.isEmpty()) {
+				eventAttributeDefinition.setDescription(null);
+			}
+			else {
+				eventAttributeDefinition.setDescription(description);
+			}
 		}
 
 		if (StringUtils.isNotBlank(displayName)) {
