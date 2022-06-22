@@ -1,0 +1,7 @@
+{
+	"operationName": "OrderAverageCurrencyValue",
+	"variables": {
+		"channelId": "11",
+		"rangeKey": 7
+	}
+}

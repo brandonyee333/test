@@ -1,0 +1,14 @@
+{
+	"data": {
+		"orderAverageCurrencyValues": [
+			{
+				"currencyCode": "EUR",
+				"value": "10.0000000000000000"
+			},
+			{
+				"currencyCode": "USD",
+				"value": "10.0000000000000000"
+			}
+		]
+	}
+}
