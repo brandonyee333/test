@@ -54,6 +54,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -237,6 +239,12 @@ public class ZendeskBaseWebServiceImpl
 		setHostName(ZendeskConnectorConfigurationValues.ZENDESK_DOMAIN_NAME);
 		setHostPort(Http.HTTPS_PORT);
 		setProtocol(Http.HTTPS);
+
+		RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
+
+		requestConfigBuilder.setCookieSpec(CookieSpecs.STANDARD);
+
+		httpRequestBase.setConfig(requestConfigBuilder.build());
 
 		return super.execute(httpRequestBase);
 	}
