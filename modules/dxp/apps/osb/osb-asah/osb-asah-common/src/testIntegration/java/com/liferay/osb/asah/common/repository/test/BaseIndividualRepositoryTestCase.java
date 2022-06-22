@@ -17,11 +17,11 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
+import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
@@ -112,12 +112,12 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		_individual1Id = individual1.getId();
 
-		IndividualChannel individualChannel = new IndividualChannel(
+		BQIdentityChannel bqIdentityChannel = new BQIdentityChannel(
 			3L, channel1.getId(), _individual1Id, date, null);
 
 		individual1.setActivitiesCounts(
 			Collections.singleton(
-				new Individual.ActivitiesCount(individualChannel)));
+				new Individual.ActivitiesCount(bqIdentityChannel)));
 
 		individual1.setBQDataSourceUsers(
 			Collections.singleton(
@@ -125,8 +125,8 @@ public abstract class BaseIndividualRepositoryTestCase
 					SetUtil.of("1234", "5678"), dataSource1.getId(),
 					_individual1Id,
 					Collections.singleton("23432-cd-3242-asf23"))));
-		individual1.setIndividualChannels(
-			Collections.singleton(individualChannel));
+		individual1.setBQIdentityChannels(
+			Collections.singleton(bqIdentityChannel));
 
 		individual1 = individualRepository.save(individual1);
 
@@ -227,13 +227,13 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		_individual2Id = individual2.getId();
 
-		individualChannel = new IndividualChannel(
+		bqIdentityChannel = new BQIdentityChannel(
 			5L, channel1.getId(), _individual2Id, date, null);
 
 		individual2.setLastActivityDate(date);
 
-		individual2.setIndividualChannels(
-			Collections.singleton(individualChannel));
+		individual2.setBQIdentityChannels(
+			Collections.singleton(bqIdentityChannel));
 
 		individual2 = individualRepository.save(individual2);
 
@@ -613,11 +613,11 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		individual2 = individualRepository.save(individual2);
 
-		individual2.setChannelIds(Collections.singleton(11L));
-		individual2.setIndividualChannels(
+		individual2.setBQIdentityChannels(
 			Collections.singleton(
-				new IndividualChannel(
+				new BQIdentityChannel(
 					0L, 11L, individual2.getId(), null, null)));
+		individual2.setChannelIds(Collections.singleton(11L));
 
 		individual2 = individualRepository.save(individual2);
 
@@ -966,9 +966,9 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		individual = individualRepository.save(individual);
 
-		individual.setIndividualChannels(
+		individual.setBQIdentityChannels(
 			Collections.singleton(
-				new IndividualChannel(
+				new BQIdentityChannel(
 					0L, channelId, individual.getId(), lastActivityDate,
 					previousActivityDate)));
 

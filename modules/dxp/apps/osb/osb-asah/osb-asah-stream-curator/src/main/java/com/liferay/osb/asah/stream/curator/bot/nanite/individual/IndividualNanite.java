@@ -26,8 +26,8 @@ import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
@@ -215,24 +215,24 @@ public class IndividualNanite implements Nanite {
 				knownIndividualActivitiesCounts));
 
 		Set<Long> channelIds = knownIndividual.getChannelIds();
-		Set<IndividualChannel> individualChannels = new HashSet<>();
+		Set<BQIdentityChannel> bqIdentityChannels = new HashSet<>();
 
 		for (Individual.ActivitiesCount activitiesCount :
 				knownIndividual.getActivitiesCounts()) {
 
 			channelIds.add(activitiesCount.getChannelId());
 
-			IndividualChannel individualChannel = new IndividualChannel();
+			BQIdentityChannel bqIdentityChannel = new BQIdentityChannel();
 
-			individualChannel.setActivitiesCount(
+			bqIdentityChannel.setActivitiesCount(
 				activitiesCount.getActivitiesCount());
-			individualChannel.setChannelId(activitiesCount.getChannelId());
-			individualChannel.setIndividualId(knownIndividual.getId());
+			bqIdentityChannel.setChannelId(activitiesCount.getChannelId());
+			bqIdentityChannel.setIdentityId(knownIndividual.getId());
 
-			individualChannels.add(individualChannel);
+			bqIdentityChannels.add(bqIdentityChannel);
 		}
 
-		knownIndividual.setIndividualChannels(individualChannels);
+		knownIndividual.setBQIdentityChannels(bqIdentityChannels);
 
 		Date date = new Date();
 

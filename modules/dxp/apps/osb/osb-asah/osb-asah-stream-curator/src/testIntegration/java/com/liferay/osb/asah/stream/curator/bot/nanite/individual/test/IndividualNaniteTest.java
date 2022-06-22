@@ -18,10 +18,10 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
+import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -201,12 +201,12 @@ public class IndividualNaniteTest
 				new BQDataSourceUser(
 					Collections.emptySet(), 1L, 100L,
 					Collections.singleton("1"))));
+		individual1.setBQIdentityChannels(
+			Collections.singleton(
+				new BQIdentityChannel(1L, 1L, 100L, null, null)));
 		individual1.setEmailAddressHashed(
 			"3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd");
 		individual1.setId(100L);
-		individual1.setIndividualChannels(
-			Collections.singleton(
-				new IndividualChannel(1L, 1L, 100L, null, null)));
 
 		Field field1 = new Field();
 
@@ -226,11 +226,11 @@ public class IndividualNaniteTest
 				new BQDataSourceUser(
 					Collections.emptySet(), 1L, 200L,
 					Collections.singleton("2"))));
-		individual2.setId(200L);
-		individual2.setIndividualChannels(
+		individual2.setBQIdentityChannels(
 			SetUtil.of(
-				new IndividualChannel(1L, 1L, 200L, null, null),
-				new IndividualChannel(1L, 2L, 200L, null, null)));
+				new BQIdentityChannel(1L, 1L, 200L, null, null),
+				new BQIdentityChannel(1L, 2L, 200L, null, null)));
+		individual2.setId(200L);
 
 		_individualDog.addIndividual(individual2, false);
 
@@ -442,12 +442,12 @@ public class IndividualNaniteTest
 				new BQDataSourceUser(
 					Collections.emptySet(), 1L, 100L,
 					Collections.singleton("1"))));
+		individual1.setBQIdentityChannels(
+			Collections.singleton(
+				new BQIdentityChannel(1L, 1L, 100L, null, null)));
 		individual1.setEmailAddressHashed(
 			"3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd");
 		individual1.setId(100L);
-		individual1.setIndividualChannels(
-			Collections.singleton(
-				new IndividualChannel(1L, 1L, 100L, null, null)));
 
 		Field field1 = new Field();
 
@@ -467,11 +467,11 @@ public class IndividualNaniteTest
 				new BQDataSourceUser(
 					Collections.emptySet(), 1L, 200L,
 					Collections.singleton("2"))));
-		individual2.setId(200L);
-		individual2.setIndividualChannels(
+		individual2.setBQIdentityChannels(
 			SetUtil.of(
-				new IndividualChannel(1L, 1L, 200L, null, null),
-				new IndividualChannel(1L, 2L, 200L, null, null)));
+				new BQIdentityChannel(1L, 1L, 200L, null, null),
+				new BQIdentityChannel(1L, 2L, 200L, null, null)));
+		individual2.setId(200L);
 
 		_individualDog.addIndividual(individual2, false);
 

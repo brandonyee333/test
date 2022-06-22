@@ -145,6 +145,13 @@ public class Individual implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
+	@MappedCollection(idColumn = "identityid")
+	public Set<BQIdentityChannel> getBQIdentityChannels() {
+		return _bqIdentityChannels;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Set<Long> getChannelIds() {
 		return _channelIds;
 	}
@@ -241,13 +248,6 @@ public class Individual implements Persistable<Long> {
 	@Override
 	public Long getId() {
 		return _id;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonIgnore
-	@MappedCollection(idColumn = "individualid")
-	public Set<IndividualChannel> getIndividualChannels() {
-		return _individualChannels;
 	}
 
 	@JsonIgnore
@@ -358,6 +358,38 @@ public class Individual implements Persistable<Long> {
 			_bqDataSourceUsers, DataSourceUserPK::new);
 	}
 
+	public void setBQIdentityChannels(
+		Set<BQIdentityChannel> bqIdentityChannels) {
+
+		_bqIdentityChannels = bqIdentityChannels;
+
+		_activitiesCounts = SetUtil.map(
+			_bqIdentityChannels, ActivitiesCount::new);
+		_lastActivityDates = SetUtil.map(
+			_bqIdentityChannels, ActivityDate::new);
+
+		_previousActivityDates = SetUtil.map(
+			_bqIdentityChannels,
+			bqIdentityChannel -> {
+				if (Objects.isNull(
+						bqIdentityChannel.getPreviousActivityDate())) {
+
+					return null;
+				}
+
+				ActivityDate previousActivityDate = new ActivityDate();
+
+				previousActivityDate.setChannelId(
+					bqIdentityChannel.getChannelId());
+				previousActivityDate.setActivityDate(
+					bqIdentityChannel.getPreviousActivityDate());
+
+				return previousActivityDate;
+			});
+
+		_previousActivityDates.remove(null);
+	}
+
 	public void setChannelIds(Set<Long> channelIds) {
 		_channelIds = channelIds;
 	}
@@ -444,38 +476,6 @@ public class Individual implements Persistable<Long> {
 		_id = id;
 	}
 
-	public void setIndividualChannels(
-		Set<IndividualChannel> individualChannels) {
-
-		_individualChannels = individualChannels;
-
-		_activitiesCounts = SetUtil.map(
-			_individualChannels, ActivitiesCount::new);
-		_lastActivityDates = SetUtil.map(
-			_individualChannels, ActivityDate::new);
-
-		_previousActivityDates = SetUtil.map(
-			_individualChannels,
-			individualChannel -> {
-				if (Objects.isNull(
-						individualChannel.getPreviousActivityDate())) {
-
-					return null;
-				}
-
-				ActivityDate previousActivityDate = new ActivityDate();
-
-				previousActivityDate.setChannelId(
-					individualChannel.getChannelId());
-				previousActivityDate.setActivityDate(
-					individualChannel.getPreviousActivityDate());
-
-				return previousActivityDate;
-			});
-
-		_previousActivityDates.remove(null);
-	}
-
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
 	}
@@ -534,9 +534,9 @@ public class Individual implements Persistable<Long> {
 		public ActivitiesCount() {
 		}
 
-		public ActivitiesCount(IndividualChannel individualChannel) {
-			_activitiesCount = individualChannel.getActivitiesCount();
-			_channelId = individualChannel.getChannelId();
+		public ActivitiesCount(BQIdentityChannel bqIdentityChannel) {
+			_activitiesCount = bqIdentityChannel.getActivitiesCount();
+			_channelId = bqIdentityChannel.getChannelId();
 		}
 
 		public ActivitiesCount(Long activitiesCount, Long channelId) {
@@ -614,15 +614,15 @@ public class Individual implements Persistable<Long> {
 			_channelId = activityDate.getChannelId();
 		}
 
+		public ActivityDate(BQIdentityChannel bqIdentityChannel) {
+			_activityDate = bqIdentityChannel.getLastActivityDate();
+			_channelId = bqIdentityChannel.getChannelId();
+		}
+
 		public ActivityDate(Date activityDate, Long channelId) {
 			_channelId = channelId;
 
 			_activityDate = new Date(activityDate.getTime());
-		}
-
-		public ActivityDate(IndividualChannel individualChannel) {
-			_activityDate = individualChannel.getLastActivityDate();
-			_channelId = individualChannel.getChannelId();
 		}
 
 		@Override
@@ -885,6 +885,9 @@ public class Individual implements Persistable<Long> {
 	private Set<BQDataSourceUser> _bqDataSourceUsers = new HashSet<>();
 
 	@Transient
+	private Set<BQIdentityChannel> _bqIdentityChannels = new HashSet<>();
+
+	@Transient
 	private Set<Long> _channelIds = new HashSet<>();
 
 	@Transient
@@ -919,9 +922,6 @@ public class Individual implements Persistable<Long> {
 
 	@Transient
 	private Long _id;
-
-	@Transient
-	private Set<IndividualChannel> _individualChannels = new HashSet<>();
 
 	@Transient
 	private Boolean _isNew;

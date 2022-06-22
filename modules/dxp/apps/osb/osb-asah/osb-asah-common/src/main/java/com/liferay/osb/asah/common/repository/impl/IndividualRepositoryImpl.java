@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
+import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.CustomIndividualRepository;
@@ -87,10 +87,10 @@ public class IndividualRepositoryImpl
 		).from(
 			"individual"
 		).innerJoin(
-			"individualchannel"
+			"bqidentitychannel"
 		).on(
 			DSL.field(
-				"individualchannel.individualid"
+				"bqidentitychannel.identityid"
 			).eq(
 				DSL.field("individual.id")
 			)
@@ -110,7 +110,7 @@ public class IndividualRepositoryImpl
 			)
 		).and(
 			DSL.field(
-				"individualchannel.channelId"
+				"bqidentitychannel.channelId"
 			).eq(
 				channelId
 			)
@@ -122,7 +122,7 @@ public class IndividualRepositoryImpl
 			!Objects.isNull(startLastActivityDate)) {
 
 			lastActivityDateCondition = DSL.field(
-				"individualchannel.lastactivitydate"
+				"bqidentitychannel.lastactivitydate"
 			).between(
 				startLastActivityDate, endLastActivityDate
 			);
@@ -134,7 +134,7 @@ public class IndividualRepositoryImpl
 			!Objects.isNull(startPreviousActivityDate)) {
 
 			previousActivityDateCondition = DSL.field(
-				"individualchannel.previousactivitydate"
+				"bqidentitychannel.previousactivitydate"
 			).between(
 				startPreviousActivityDate, endPreviousActivityDate
 			);
@@ -465,12 +465,12 @@ public class IndividualRepositoryImpl
 			),
 			DSL.field("channelId")
 		).from(
-			"IndividualChannel"
+			"BQIdentityChannel"
 		).join(
 			"Individual"
 		).on(
 			DSL.field(
-				"individualchannel.individualid"
+				"bqidentitychannel.identityid"
 			).eq(
 				DSL.field("individual.id")
 			)
@@ -510,7 +510,7 @@ public class IndividualRepositoryImpl
 			).isNull(),
 			DSL.not(
 				DSL.field(
-					"individualchannel.lastactivitydate"
+					"bqidentitychannel.lastactivitydate"
 				).gt(
 					date
 				)));
@@ -528,12 +528,12 @@ public class IndividualRepositoryImpl
 			selectSelectStep.from(
 				"Individual"
 			).join(
-				"IndividualChannel"
+				"BQIdentityChannel"
 			).on(
 				DSL.field(
 					"individual.id"
 				).eq(
-					DSL.field("individualchannel.individualid")
+					DSL.field("bqidentitychannel.identityid")
 				)
 			).where(
 				condition
@@ -960,15 +960,15 @@ public class IndividualRepositoryImpl
 
 		if (!Objects.isNull(lastActivityDate)) {
 			selectJoinStep.join(
-				"IndividualChannel"
+				"BQIdentityChannel"
 			).on(
 				DSL.field(
 					"individual.id"
 				).eq(
-					DSL.field("individualchannel.individualid")
+					DSL.field("bqidentitychannel.identityid")
 				),
 				DSL.field(
-					"individualchannel.lastactivitydate"
+					"bqidentitychannel.lastactivitydate"
 				).gt(
 					lastActivityDate
 				)
@@ -1930,12 +1930,12 @@ public class IndividualRepositoryImpl
 				DSL.field("bqdatasourceuser.userid")
 			)
 		).leftJoin(
-			"IndividualChannel"
+			"BQIdentityChannel"
 		).on(
 			DSL.field(
 				"individual.id"
 			).eq(
-				DSL.field("individualchannel.individualid")
+				DSL.field("bqidentitychannel.identityid")
 			)
 		).leftJoin(
 			"Field"
@@ -1996,6 +1996,58 @@ public class IndividualRepositoryImpl
 		);
 	}
 
+	private void _populateBQIdentityChannels(
+		Map<Long, Individual> individualsById) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		Field<Object> field = DSL.field("identityid");
+
+		selectSelectStep.from(
+			"BQIdentityChannel"
+		).where(
+			field.in(individualsById.keySet())
+		).fetch(
+		).forEach(
+			record -> {
+				Individual individual = individualsById.get(
+					record.get("identityid"));
+
+				BQIdentityChannel bqIdentityChannel = new BQIdentityChannel(
+					record.intoMap());
+
+				individual.addChannelId(bqIdentityChannel.getChannelId());
+
+				Set<Individual.ActivitiesCount> activitiesCounts =
+					individual.getActivitiesCounts();
+
+				activitiesCounts.add(
+					new Individual.ActivitiesCount(bqIdentityChannel));
+
+				Set<BQIdentityChannel> bqIdentityChannels =
+					individual.getBQIdentityChannels();
+
+				bqIdentityChannels.add(bqIdentityChannel);
+
+				Set<Individual.ActivityDate> lastActivityDates =
+					individual.getLastActivityDates();
+
+				lastActivityDates.add(
+					new Individual.ActivityDate(bqIdentityChannel));
+
+				if (bqIdentityChannel.getPreviousActivityDate() != null) {
+					Set<Individual.ActivityDate> previousActivityDates =
+						individual.getPreviousActivityDates();
+
+					previousActivityDates.add(
+						new Individual.ActivityDate(
+							bqIdentityChannel.getPreviousActivityDate(),
+							bqIdentityChannel.getChannelId()));
+				}
+			}
+		);
+	}
+
 	private Individual _populateIndividual(Individual individual) {
 		if (individual == null) {
 			return null;
@@ -2005,58 +2057,6 @@ public class IndividualRepositoryImpl
 			Collections.singletonList(individual));
 
 		return individuals.get(0);
-	}
-
-	private void _populateIndividualChannels(
-		Map<Long, Individual> individualsById) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		Field<Object> field = DSL.field("individualid");
-
-		selectSelectStep.from(
-			"IndividualChannel"
-		).where(
-			field.in(individualsById.keySet())
-		).fetch(
-		).forEach(
-			record -> {
-				Individual individual = individualsById.get(
-					record.get("individualid"));
-
-				IndividualChannel individualChannel = new IndividualChannel(
-					record.intoMap());
-
-				individual.addChannelId(individualChannel.getChannelId());
-
-				Set<Individual.ActivitiesCount> activitiesCounts =
-					individual.getActivitiesCounts();
-
-				activitiesCounts.add(
-					new Individual.ActivitiesCount(individualChannel));
-
-				Set<IndividualChannel> individualChannels =
-					individual.getIndividualChannels();
-
-				individualChannels.add(individualChannel);
-
-				Set<Individual.ActivityDate> lastActivityDates =
-					individual.getLastActivityDates();
-
-				lastActivityDates.add(
-					new Individual.ActivityDate(individualChannel));
-
-				if (individualChannel.getPreviousActivityDate() != null) {
-					Set<Individual.ActivityDate> previousActivityDates =
-						individual.getPreviousActivityDates();
-
-					previousActivityDates.add(
-						new Individual.ActivityDate(
-							individualChannel.getPreviousActivityDate(),
-							individualChannel.getChannelId()));
-				}
-			}
-		);
 	}
 
 	private List<Individual> _populateIndividuals(
@@ -2074,7 +2074,7 @@ public class IndividualRepositoryImpl
 				LinkedHashMap::new));
 
 		_populateBqDataSourceUsers(individualsById);
-		_populateIndividualChannels(individualsById);
+		_populateBQIdentityChannels(individualsById);
 
 		return new ArrayList<>(individualsById.values());
 	}

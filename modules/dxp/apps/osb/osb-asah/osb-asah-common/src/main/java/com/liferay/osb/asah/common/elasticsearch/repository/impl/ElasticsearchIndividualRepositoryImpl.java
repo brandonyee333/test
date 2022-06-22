@@ -25,9 +25,9 @@ import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
+import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -546,7 +546,7 @@ public class ElasticsearchIndividualRepositoryImpl
 				JSONObject jsonObject = (JSONObject)object;
 
 				return new Individual.ActivitiesCount(
-					new IndividualChannel(
+					new BQIdentityChannel(
 						jsonObject.getLong("activitiesCount"),
 						jsonObject.getLong("channelId"), null, null, null));
 			}
@@ -1651,13 +1651,13 @@ public class ElasticsearchIndividualRepositoryImpl
 				previousActivityDatesJSONArray, previousActivityDatesMap);
 		}
 
-		Map<Long, IndividualChannel> individualChannelsMap = new HashMap<>();
+		Map<Long, BQIdentityChannel> bqIdentityChannelsMap = new HashMap<>();
 
 		if (!activitiesCountsMap.isEmpty() || !lastActivityDatesMap.isEmpty() ||
 			!previousActivityDatesMap.isEmpty()) {
 
 			for (Map.Entry<Long, Long> entry : activitiesCountsMap.entrySet()) {
-				IndividualChannel individualChannel = new IndividualChannel(
+				BQIdentityChannel bqIdentityChannel = new BQIdentityChannel(
 					entry.getValue(), entry.getKey(), individual.getId(),
 					lastActivityDatesMap.get(entry.getKey()),
 					previousActivityDatesMap.get(entry.getKey()));
@@ -1665,24 +1665,24 @@ public class ElasticsearchIndividualRepositoryImpl
 				lastActivityDatesMap.remove(entry.getKey());
 				previousActivityDatesMap.remove(entry.getKey());
 
-				individualChannelsMap.put(entry.getKey(), individualChannel);
+				bqIdentityChannelsMap.put(entry.getKey(), bqIdentityChannel);
 			}
 
 			for (Map.Entry<Long, Date> entry :
 					lastActivityDatesMap.entrySet()) {
 
-				if (individualChannelsMap.containsKey(entry.getKey())) {
-					IndividualChannel individualChannel =
-						individualChannelsMap.get(entry.getKey());
+				if (bqIdentityChannelsMap.containsKey(entry.getKey())) {
+					BQIdentityChannel bqIdentityChannel =
+						bqIdentityChannelsMap.get(entry.getKey());
 
-					individualChannel.setLastActivityDate(entry.getValue());
-					individualChannel.setPreviousActivityDate(
+					bqIdentityChannel.setLastActivityDate(entry.getValue());
+					bqIdentityChannel.setPreviousActivityDate(
 						previousActivityDatesMap.get(entry.getKey()));
 				}
 				else {
-					individualChannelsMap.put(
+					bqIdentityChannelsMap.put(
 						entry.getKey(),
-						new IndividualChannel(
+						new BQIdentityChannel(
 							0L, entry.getKey(), individual.getId(),
 							entry.getValue(),
 							previousActivityDatesMap.get(entry.getKey())));
@@ -1694,25 +1694,25 @@ public class ElasticsearchIndividualRepositoryImpl
 			for (Map.Entry<Long, Date> entry :
 					previousActivityDatesMap.entrySet()) {
 
-				if (individualChannelsMap.containsKey(entry.getKey())) {
-					IndividualChannel individualChannel =
-						individualChannelsMap.get(entry.getKey());
+				if (bqIdentityChannelsMap.containsKey(entry.getKey())) {
+					BQIdentityChannel bqIdentityChannel =
+						bqIdentityChannelsMap.get(entry.getKey());
 
-					individualChannel.setPreviousActivityDate(
+					bqIdentityChannel.setPreviousActivityDate(
 						previousActivityDatesMap.get(entry.getKey()));
 				}
 				else {
-					individualChannelsMap.put(
+					bqIdentityChannelsMap.put(
 						entry.getKey(),
-						new IndividualChannel(
+						new BQIdentityChannel(
 							0L, entry.getKey(), individual.getId(), null,
 							entry.getValue()));
 				}
 			}
 		}
 
-		individual.setIndividualChannels(
-			new HashSet<>(individualChannelsMap.values()));
+		individual.setBQIdentityChannels(
+			new HashSet<>(bqIdentityChannelsMap.values()));
 
 		if (jsonObject.has("dataSourceAccountPKs")) {
 			JSONArray dataSourceAccountPKsJSONArray = jsonObject.getJSONArray(

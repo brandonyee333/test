@@ -24,9 +24,9 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
+import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.IndividualChannel;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -64,7 +64,7 @@ public class IndividualDTO {
 		}
 
 		Set<ActivityDateDTO> activityDateDTOS = SetUtil.map(
-			individual.getIndividualChannels(), ActivityDateDTO::new);
+			individual.getBQIdentityChannels(), ActivityDateDTO::new);
 
 		if (!activityDateDTOS.isEmpty()) {
 			_activityDateDTOs = activityDateDTOS;
@@ -340,9 +340,9 @@ public class IndividualDTO {
 		public ActivityDateDTO() {
 		}
 
-		public ActivityDateDTO(IndividualChannel individualChannel) {
-			_activityDate = individualChannel.getLastActivityDate();
-			_channelId = String.valueOf(individualChannel.getChannelId());
+		public ActivityDateDTO(BQIdentityChannel bqIdentityChannel) {
+			_activityDate = bqIdentityChannel.getLastActivityDate();
+			_channelId = String.valueOf(bqIdentityChannel.getChannelId());
 		}
 
 		@Override

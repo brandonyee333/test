@@ -33,18 +33,18 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Rachael Koestartyo
  */
 @Table
-public class IndividualChannel {
+public class BQIdentityChannel {
 
-	public IndividualChannel() {
+	public BQIdentityChannel() {
 	}
 
-	public IndividualChannel(
-		Long activitiesCount, Long channelId, Long individualId,
+	public BQIdentityChannel(
+		Long activitiesCount, Long channelId, Long identityId,
 		Date lastActivityDate, Date previousActivityDate) {
 
 		_activitiesCount = activitiesCount;
 		_channelId = channelId;
-		_individualId = individualId;
+		_identityId = identityId;
 
 		if (lastActivityDate != null) {
 			_lastActivityDate = new Date(lastActivityDate.getTime());
@@ -55,7 +55,7 @@ public class IndividualChannel {
 		}
 	}
 
-	public IndividualChannel(Map<String, Object> source) {
+	public BQIdentityChannel(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
 	}
 
@@ -65,21 +65,21 @@ public class IndividualChannel {
 			return true;
 		}
 
-		if (!(obj instanceof IndividualChannel)) {
+		if (!(obj instanceof BQIdentityChannel)) {
 			return false;
 		}
 
-		IndividualChannel individualChannel = (IndividualChannel)obj;
+		BQIdentityChannel bqIdentityChannel = (BQIdentityChannel)obj;
 
 		if (Objects.equals(
-				_activitiesCount, individualChannel._activitiesCount) &&
-			Objects.equals(_channelId, individualChannel._channelId) &&
-			Objects.equals(_individualId, individualChannel._individualId) &&
+				_activitiesCount, bqIdentityChannel._activitiesCount) &&
+			Objects.equals(_channelId, bqIdentityChannel._channelId) &&
+			Objects.equals(_identityId, bqIdentityChannel._identityId) &&
 			Objects.equals(
-				_lastActivityDate, individualChannel._lastActivityDate) &&
+				_lastActivityDate, bqIdentityChannel._lastActivityDate) &&
 			Objects.equals(
 				_previousActivityDate,
-				individualChannel._previousActivityDate)) {
+				bqIdentityChannel._previousActivityDate)) {
 
 			return true;
 		}
@@ -100,8 +100,8 @@ public class IndividualChannel {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getIndividualId() {
-		return _individualId;
+	public Long getIdentityId() {
+		return _identityId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -133,7 +133,7 @@ public class IndividualChannel {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_activitiesCount, _channelId, _individualId, _lastActivityDate,
+			_activitiesCount, _channelId, _identityId, _lastActivityDate,
 			_previousActivityDate);
 	}
 
@@ -145,8 +145,8 @@ public class IndividualChannel {
 		_channelId = channelId;
 	}
 
-	public void setIndividualId(Long individualId) {
-		_individualId = individualId;
+	public void setIdentityId(Long identityId) {
+		_identityId = identityId;
 	}
 
 	public void setLastActivityDate(Date lastActivityDate) {
@@ -168,7 +168,7 @@ public class IndividualChannel {
 	private Long _channelId;
 
 	@Transient
-	private Long _individualId;
+	private Long _identityId;
 
 	@Transient
 	private Date _lastActivityDate;
