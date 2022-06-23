@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
 public class BrowscapEngine {
 
 	public BrowscapDevice getDevice(String userAgent) {
-		return new BrowscapDevice(_parser.parse(userAgent));
+		return new BrowscapDevice(userAgent, _parser);
 	}
 
 	@PostConstruct

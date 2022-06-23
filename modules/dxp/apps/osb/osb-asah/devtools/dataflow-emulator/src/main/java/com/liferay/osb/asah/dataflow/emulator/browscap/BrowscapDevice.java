@@ -16,6 +16,7 @@ package com.liferay.osb.asah.dataflow.emulator.browscap;
 
 import com.blueconic.browscap.BrowsCapField;
 import com.blueconic.browscap.Capabilities;
+import com.blueconic.browscap.UserAgentParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,11 +29,17 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class BrowscapDevice {
 
-	public BrowscapDevice(Capabilities capabilities) {
-		_capabilities = capabilities;
+	public BrowscapDevice(String userAgent, UserAgentParser userAgentParser) {
+		_capabilities = userAgentParser.parse(userAgent);
+
+		_userAgent = userAgent;
 	}
 
 	public String getBrowserName() {
+		if (_userAgent.matches(".*Edge?/.*")) {
+			return "Edge";
+		}
+
 		return _capabilities.getBrowser();
 	}
 
@@ -60,5 +67,6 @@ public class BrowscapDevice {
 				put("Mobile Phone", "SmartPhone");
 			}
 		};
+	private final String _userAgent;
 
 }
