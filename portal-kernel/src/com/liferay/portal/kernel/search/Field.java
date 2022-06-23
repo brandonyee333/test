@@ -102,7 +102,7 @@ public class Field implements Serializable {
 
 	public static final String[] KEYWORDS = {
 		ASSET_CATEGORY_TITLES, ASSET_TAG_NAMES, COMMENTS, CONTENT, DESCRIPTION,
-		Field.PROPERTIES, Field.TITLE, Field.URL, Field.USER_NAME
+		Field.TITLE, Field.URL, Field.USER_NAME
 	};
 
 	public static final String LANGUAGE_ID = "languageId";
