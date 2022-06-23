@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 /**
- * @author Carlos Sierra Andrés
+ * @author     Carlos Sierra Andrés
  * @deprecated As of Wilberforce (7.0.x), with no direct replacement
  */
 @Deprecated

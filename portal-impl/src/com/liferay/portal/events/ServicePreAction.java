@@ -1614,8 +1614,8 @@ public class ServicePreAction extends Action {
 	/**
 	 * @deprecated As of Judson (7.1.x), replaced by {@link
 	 *             #getViewableLayoutComposite(
-	 *                 HttpServletRequest,User,PermissionChecker,Layout,List,
-	 *                 long,boolean)}
+	 *             HttpServletRequest,User,PermissionChecker,Layout,List,
+	 *             long,boolean)}
 	 */
 	@Deprecated
 	protected LayoutComposite getViewableLayoutComposite(

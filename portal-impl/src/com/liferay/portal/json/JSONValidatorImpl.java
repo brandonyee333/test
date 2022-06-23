@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.json.JSONValidator;
 import com.liferay.portal.kernel.util.Validator;
 
 /**
- * @author Pablo Carvalho
+ * @author     Pablo Carvalho
  * @deprecated As of Wilberforce (7.0.x), with no direct replacement
  */
 @Deprecated

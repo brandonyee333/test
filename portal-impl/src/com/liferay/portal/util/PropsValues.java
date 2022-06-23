@@ -1739,7 +1739,8 @@ public class PropsValues {
 			PropsKeys.MINIFIER_INLINE_CONTENT_CACHE_SKIP_JAVASCRIPT);
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as
+	 *             minifiers have been extracted as OSGi components
 	 */
 	@Deprecated
 	public static final String MINIFIER_JAVASCRIPT_IMPL = GetterUtil.getString(
@@ -3216,7 +3217,8 @@ public class PropsValues {
 			PropsUtil.get(PropsKeys.YUI_COMPRESSOR_CSS_LINE_BREAK));
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as
+	 *             minifiers have been extracted as OSGi components
 	 */
 	@Deprecated
 	public static final boolean YUI_COMPRESSOR_JS_DISABLE_OPTIMIZATIONS =
@@ -3224,7 +3226,8 @@ public class PropsValues {
 			PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_DISABLE_OPTIMIZATIONS));
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as
+	 *             minifiers have been extracted as OSGi components
 	 */
 	@Deprecated
 	public static final int YUI_COMPRESSOR_JS_LINE_BREAK =
@@ -3232,14 +3235,16 @@ public class PropsValues {
 			PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_LINE_BREAK));
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as
+	 *             minifiers have been extracted as OSGi components
 	 */
 	@Deprecated
 	public static final boolean YUI_COMPRESSOR_JS_MUNGE = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_MUNGE));
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as
+	 *             minifiers have been extracted as OSGi components
 	 */
 	@Deprecated
 	public static final boolean YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS =
@@ -3247,7 +3252,8 @@ public class PropsValues {
 			PropsUtil.get(PropsKeys.YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS));
 
 	/**
-	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as
+	 *             minifiers have been extracted as OSGi components
 	 */
 	@Deprecated
 	public static final boolean YUI_COMPRESSOR_JS_VERBOSE =

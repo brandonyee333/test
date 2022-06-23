@@ -27,7 +27,7 @@ import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
 
 /**
- * @author Carlos Sierra Andrés
+ * @author     Carlos Sierra Andrés
  * @deprecated As of Wilberforce (7.0.x), with no direct replacement
  */
 @Deprecated

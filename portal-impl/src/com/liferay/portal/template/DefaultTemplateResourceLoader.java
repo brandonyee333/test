@@ -40,8 +40,8 @@ public class DefaultTemplateResourceLoader implements TemplateResourceLoader {
 
 	/**
 	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #DefaultTemplateResourceLoader(
-	 *             		String, TemplateResourceCache)}
+	 *             #DefaultTemplateResourceLoader(String,
+	 *             TemplateResourceCache)}
 	 */
 	@Deprecated
 	public DefaultTemplateResourceLoader(

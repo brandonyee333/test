@@ -1240,7 +1240,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 	/**
 	 * @deprecated As of Judson (7.1.x), replaced by {@link
-	 * 			   #getLayoutChildLayouts(List)}
+	 *             #getLayoutChildLayouts(List)}
 	 */
 	@Deprecated
 	@Override
