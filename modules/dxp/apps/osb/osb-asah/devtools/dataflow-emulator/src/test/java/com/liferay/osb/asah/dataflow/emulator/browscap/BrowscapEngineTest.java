@@ -131,6 +131,32 @@ public class BrowscapEngineTest {
 	}
 
 	@Test
+	public void testGetEdgeBrowser() {
+		BrowscapDevice linuxBrowscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_LINUX_OS_EDGE_DESKTOP);
+
+		Assertions.assertEquals("Edge", linuxBrowscapDevice.getBrowserName());
+
+		BrowscapDevice macBrowscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_MAC_OS_EDGE_DESKTOP);
+
+		Assertions.assertEquals("Edge", macBrowscapDevice.getBrowserName());
+
+		BrowscapDevice windowsBrowscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_WINDOWS_OS_EDGE_DESKTOP);
+
+		Assertions.assertEquals("Edge", windowsBrowscapDevice.getBrowserName());
+	}
+
+	@Test
+	public void testGetNotChromiumBasedEdgeBrowser() {
+		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
+			_USER_AGENT_NOT_CHROMIUM_BASED_EDGE_DESKTOP);
+
+		Assertions.assertEquals("Edge", browscapDevice.getBrowserName());
+	}
+
+	@Test
 	public void testGetPlatform1() {
 		BrowscapDevice browscapDevice = _browscapEngine.getDevice(
 			_USER_AGENT_MAC_OS_CHROME_DESKTOP);
@@ -178,13 +204,32 @@ public class BrowscapEngineTest {
 			"AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0 " +
 				"Mobile/14C92 Safari/602.1";
 
+	private static final String _USER_AGENT_LINUX_OS_EDGE_DESKTOP =
+		"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like " +
+			"Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44";
+
 	private static final String _USER_AGENT_MAC_OS_CHROME_DESKTOP =
 		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 " +
 			"(KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36";
 
+	private static final String _USER_AGENT_MAC_OS_EDGE_DESKTOP =
+		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 " +
+			"(KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 " +
+				"Edg/102.0.1245.44";
+
 	private static final String _USER_AGENT_MAC_OS_FIREFOX_DESKTOP =
 		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:45.0) " +
 			"Gecko/20100101 Firefox/45.0";
+
+	private static final String _USER_AGENT_NOT_CHROMIUM_BASED_EDGE_DESKTOP =
+		"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+			"(KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 " +
+				"Edge/18.18362";
+
+	private static final String _USER_AGENT_WINDOWS_OS_EDGE_DESKTOP =
+		"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+			"(KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 " +
+				"Edg/102.0.1245.44";
 
 	@Autowired
 	private BrowscapEngine _browscapEngine;
