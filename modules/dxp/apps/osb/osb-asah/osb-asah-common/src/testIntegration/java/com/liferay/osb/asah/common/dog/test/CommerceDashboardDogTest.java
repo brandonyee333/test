@@ -70,6 +70,23 @@ public class CommerceDashboardDogTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
+	public void testGetOrderAccountAverageCurrencyValues() {
+		Map<String, CurrencyValue> orderAccountAverageCurrencyValues =
+			_commerceDashboardDog.getOrderAccountAverageCurrencyValues(
+				11L, false, TimeRange.LAST_7_DAYS);
+
+		Assertions.assertNotNull(orderAccountAverageCurrencyValues);
+
+		CurrencyValue currencyValue = orderAccountAverageCurrencyValues.get(
+			"USD");
+
+		Assertions.assertNotNull(currencyValue);
+		Assertions.assertNotNull(currencyValue.getValue());
+		Assertions.assertNull(currencyValue.getPercentageVariation());
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
 	public void testGetOrderAverageCurrencyValues() {
 		Map<String, CurrencyValue> orderAverageCurrencyValues =
 			_commerceDashboardDog.getOrderAverageCurrencyValues(
