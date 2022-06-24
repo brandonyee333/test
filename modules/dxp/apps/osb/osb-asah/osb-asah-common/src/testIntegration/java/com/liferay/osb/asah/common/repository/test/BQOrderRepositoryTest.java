@@ -43,6 +43,38 @@ public class BQOrderRepositoryTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
+	public void testGetOrderAccountAverageCurrencyValues() {
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
+		Map<String, BigDecimal> orderAccountAverageCurrencyValues =
+			_bqOrderRepository.getOrderAccountAverageCurrencyValues(
+				Arrays.asList(123L), timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Assertions.assertNotNull(orderAccountAverageCurrencyValues);
+		Assertions.assertNotNull(orderAccountAverageCurrencyValues.get("USD"));
+
+		BigDecimal actualValue = orderAccountAverageCurrencyValues.get("USD");
+
+		BigDecimal expectedValue = new BigDecimal("14.0");
+
+		Assertions.assertEquals(
+			expectedValue.stripTrailingZeros(),
+			actualValue.stripTrailingZeros());
+
+		Assertions.assertNotNull(orderAccountAverageCurrencyValues.get("EUR"));
+
+		actualValue = orderAccountAverageCurrencyValues.get("EUR");
+		expectedValue = new BigDecimal("10.0");
+
+		Assertions.assertEquals(
+			expectedValue.stripTrailingZeros(),
+			actualValue.stripTrailingZeros());
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
 	public void testGetOrderAverageCurrencyValues() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
