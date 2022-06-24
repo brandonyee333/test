@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.jooq.AggregateFunction;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -46,6 +47,38 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 
 	public BQOrderRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	@Override
+	public Map<String, BigDecimal> getOrderAccountAverageCurrencyValues(
+		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+
+		AggregateFunction<Integer> accountIdCountDistinctAggregateFunction =
+			DSL.countDistinct(DSL.field("accountId"));
+
+		AggregateFunction<BigDecimal> totalSumAggregateFunction = DSL.sum(
+			DSL.field(
+				"total"
+			).cast(
+				BigDecimal.class
+			));
+
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			_getSelectHavingStep(
+				Arrays.asList(
+					DSL.field("currencyCode"),
+					totalSumAggregateFunction.div(
+						accountIdCountDistinctAggregateFunction
+					).as(
+						"orderAccountAverageCurrencyValue"
+					)),
+				_getConditions(
+					dataSourceIds, Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L),
+					rangeEndLocalDateTime, rangeStartLocalDateTime,
+					timeZoneId)),
+			GetterUtil::getBigDecimal);
 	}
 
 	@Override
