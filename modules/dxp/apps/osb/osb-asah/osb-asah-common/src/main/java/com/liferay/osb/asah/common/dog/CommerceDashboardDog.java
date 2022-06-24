@@ -43,6 +43,61 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommerceDashboardDog {
 
+	public Map<String, CurrencyValue> getOrderAccountAverageCurrencyValues(
+		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
+
+		List<Long> dataSourceIds = _getDataSourceIds(channelId);
+
+		Map<String, BigDecimal> currentOrderAccountAverageCurrencyValues =
+			_bqOrderRepository.getOrderAccountAverageCurrencyValues(
+				dataSourceIds, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Map<String, BigDecimal> previousOrderAccountAverageCurrencyValues =
+			null;
+
+		if (compareToPrevious) {
+			TimeRange previousTimeRange = _getPreviousTimeRange(timeRange);
+
+			previousOrderAccountAverageCurrencyValues =
+				_bqOrderRepository.getOrderAccountAverageCurrencyValues(
+					dataSourceIds, previousTimeRange.getEndLocalDateTime(),
+					previousTimeRange.getStartLocalDateTime(),
+					_timeZoneDog.getTimeZoneId());
+		}
+
+		Map<String, CurrencyValue> orderAccountAverageCurrencyValues =
+			new HashMap<>();
+
+		for (Map.Entry<String, BigDecimal>
+				currentOrderAccountAverageCurrencyValue :
+					currentOrderAccountAverageCurrencyValues.entrySet()) {
+
+			String currencyCode =
+				currentOrderAccountAverageCurrencyValue.getKey();
+
+			CurrencyValue currencyValue = new CurrencyValue(
+				currencyCode, null,
+				currentOrderAccountAverageCurrencyValue.getValue());
+
+			if (compareToPrevious) {
+				BigDecimal previousOrderAccountAverageCurrencyValue =
+					previousOrderAccountAverageCurrencyValues.getOrDefault(
+						currencyCode, BigDecimal.ZERO);
+
+				currencyValue.setPercentageVariation(
+					_getPercentageVariation(
+						currentOrderAccountAverageCurrencyValue.getValue(),
+						previousOrderAccountAverageCurrencyValue));
+			}
+
+			orderAccountAverageCurrencyValues.put(currencyCode, currencyValue);
+		}
+
+		return orderAccountAverageCurrencyValues;
+	}
+
 	public Map<String, CurrencyValue> getOrderAverageCurrencyValues(
 		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
 
