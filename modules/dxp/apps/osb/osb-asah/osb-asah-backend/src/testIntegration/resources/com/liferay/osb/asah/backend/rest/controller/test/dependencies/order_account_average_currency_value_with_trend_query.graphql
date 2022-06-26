@@ -1,0 +1,10 @@
+query OrderAccountAverageCurrencyValue($channelId: String!, $rangeKey: Int) {
+	orderAccountAverageCurrencyValues(channelId: $channelId, rangeKey: $rangeKey) {
+		currencyCode
+		trend {
+			percentage
+			trendClassification
+		}
+		value
+	}
+}
