@@ -1262,6 +1262,13 @@ type QueryType {
 		start: Int!
 	): AssetMetricBag
 
+	orderAccountAverageCurrencyValues(
+		channelId: String!,
+		rangeEnd: String,
+		rangeKey: Int,
+		rangeStart: String
+	): [CurrencyValue]
+
 	orderAverageCurrencyValues(
 		channelId: String!,
 		rangeEnd: String,
