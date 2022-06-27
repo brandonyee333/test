@@ -30,10 +30,6 @@
 				"value": "1"
 			},
 			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
-			{
 				"name": "name",
 				"value": "Account Group Name"
 			},
@@ -59,6 +55,7 @@
 			}
 		],
 		"id": "123",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.account.model.AccountEntry"
 	},
 	{
@@ -80,10 +77,6 @@
 				"value": "test"
 			},
 			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
-			{
 				"name": "name",
 				"value": "Account Group Name"
 			},
@@ -93,6 +86,7 @@
 			}
 		],
 		"id": "123",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.account.model.AccountGroup"
 	},
 	{
@@ -106,15 +100,12 @@
 				"value": "test"
 			},
 			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
-			{
 				"name": "name",
 				"value": "Expando Column Name"
 			}
 		],
 		"id": "123",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.expando.kernel.model.ExpandoColumn"
 	},
 	{
@@ -124,15 +115,12 @@
 				"value": "123"
 			},
 			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
-			{
 				"name": "name",
 				"value": "Group Name"
 			}
 		],
 		"id": "123",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.portal.kernel.model.Group"
 	},
 	{
@@ -144,10 +132,6 @@
 			}
 		],
 		"fields": [
-			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
 			{
 				"name": "name",
 				"value": "Organization Name"
@@ -170,14 +154,11 @@
 			}
 		],
 		"id": "123",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.portal.kernel.model.Organization"
 	},
 	{
 		"fields": [
-			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
 			{
 				"name": "name",
 				"value": "Role Name"
@@ -188,6 +169,7 @@
 			}
 		],
 		"id": "123",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.portal.kernel.model.Role"
 	},
 	{
@@ -195,10 +177,6 @@
 			{
 				"name": "groupId",
 				"value": "123"
-			},
-			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
 			},
 			{
 				"name": "name",
@@ -210,6 +188,7 @@
 			}
 		],
 		"id": "123",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.portal.kernel.model.Team"
 	},
 	{
@@ -281,10 +260,6 @@
 				"value": "test"
 			},
 			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
-			{
 				"name": "organizationIds",
 				"value": [
 					12,
@@ -346,14 +321,11 @@
 			}
 		],
 		"id": "343",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.portal.kernel.model.User"
 	},
 	{
 		"fields": [
-			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
 			{
 				"name": "name",
 				"value": "User Group Name"
@@ -364,6 +336,7 @@
 			}
 		],
 		"id": "123",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.portal.kernel.model.UserGroup"
 	}
 ]

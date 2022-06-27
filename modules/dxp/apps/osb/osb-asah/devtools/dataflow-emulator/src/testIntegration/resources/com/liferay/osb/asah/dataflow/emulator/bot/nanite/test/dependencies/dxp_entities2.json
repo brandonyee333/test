@@ -9,10 +9,6 @@
 		],
 		"fields": [
 			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
-			{
 				"name": "name",
 				"value": "Organization Name"
 			},
@@ -34,6 +30,7 @@
 			}
 		],
 		"id": "123",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.portal.kernel.model.Organization"
 	}
 ]

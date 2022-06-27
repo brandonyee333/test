@@ -9,10 +9,6 @@
 		],
 		"fields": [
 			{
-				"name": "modifiedDate",
-				"value": "2022-03-16T12:00:00.000"
-			},
-			{
 				"name": "className",
 				"value": "com.liferay.portal.kernel.model.UserGroup"
 			},
@@ -22,6 +18,7 @@
 			}
 		],
 		"id": "1",
+		"modifiedDate": "2022-03-16T12:00:00.000",
 		"type": "com.liferay.analytics.message.storage.model.AnalyticsDeleteMessage"
 	}
 ]
