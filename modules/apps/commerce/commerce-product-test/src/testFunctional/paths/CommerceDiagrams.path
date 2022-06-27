@@ -14,6 +14,16 @@
 <!--DIAGRAM_ADMIN_TOOLTIP-->
 
 <tr>
+	<td>DEFAULT_DIAMETER_CUSTOM_RADIUS_PIN</td>
+	<td>//div[contains(@class,'view-wrapper')]//*[name()='g' and @class='pin-radius-handler' and @transform]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEFAULT_DIAMETER_CUSTOM_RADIUS_SLIDER</td>
+	<td>//label[contains (.,'Custom')]//..//div[contains(@class,'range-input')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DIAGRAM_ADMIN_TOOLTIP</td>
 	<td>//form[contains(@class,'diagram-admin-tooltip')]</td>
 	<td></td>
