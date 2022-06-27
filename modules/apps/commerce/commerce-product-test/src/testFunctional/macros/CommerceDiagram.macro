@@ -179,6 +179,48 @@ definition {
 			locator1 = "Button#ANY_SECONDARY");
 	}
 
+	macro changeCustomRadius {
+		Click(
+			key_text = "${pinSize}",
+			locator1 = "Button#ANY");
+
+		if (isSet(pinSizeEdit)){
+			Click(
+				key_optionValue = "${pinSizeEdit}",
+				locator1 = "CommerceFrontStore#FS_PRODUCT_OPTION");
+
+			AssertClick(
+				key_text = "${pinSizeEdit}",
+				locator1 = "Button#ANY",
+				value1 = "${pinSizeEdit}");
+
+			if (isSet(AttributeValue)){
+				AssertAttributeValue(
+					attribute1 = "transform",
+					locator1 = "CommerceDiagrams#DEFAULT_DIAMETER_CUSTOM_RADIUS_PIN",
+					value1 = "${AttributeValue}");
+			}
+		}
+
+		if (isSet(moveForce)) {
+			DragAndDrop.dragAndDrop(
+				locator1 = "CommerceDiagrams#DEFAULT_DIAMETER_CUSTOM_RADIUS_SLIDER",
+				value1 = "${moveForce},0");
+
+			AssertClick(
+				key_text = "${pinSizeChange}",
+				locator1 = "Button#ANY",
+				value1 = "${pinSizeChange}");
+
+			if (isSet(AttributeValue)){
+				AssertAttributeValue(
+					attribute1 = "transform",
+					locator1 = "CommerceDiagrams#DEFAULT_DIAMETER_CUSTOM_RADIUS_PIN",
+					value1 = "${AttributeValue}");
+			}
+		}
+	}
+
 	macro changePinInfo {
 		CommerceDiagram.viewPin(pinNumber = "${pinNumber}");
 
