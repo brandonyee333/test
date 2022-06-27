@@ -230,8 +230,18 @@ public class OrganizationDog {
 		DXPOrganization dxpOrganization = new DXPOrganization();
 
 		dxpOrganization.setDataSourceId(organization.getDataSourceId());
-		dxpOrganization.setFieldsJSONObject(
-			_objectMapper.convertValue(organization, JSONObject.class));
+
+		JSONObject fieldsJSONObject = _objectMapper.convertValue(
+			organization, JSONObject.class);
+
+		fieldsJSONObject.put(
+			DXPEntity.Type.ORGANIZATION.getIdFieldName(),
+			organization.getOrganizationPK());
+
+		fieldsJSONObject.put(
+			"parentOrganizationId", organization.getParentOrganizationPK());
+
+		dxpOrganization.setFieldsJSONObject(fieldsJSONObject);
 
 		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
 			Collections.singletonMap(
