@@ -196,14 +196,14 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runPastUserSessionFinalizerNanite() {
-		Map<Date, List<String>> pastUserSessionsToFinalize =
-			_finalizeUserSessionArm.getPastUserSessionDatesToFinalize();
-
 		int availablePastUserSessionFinalizerTasks =
 			_asahTaskManager.getAvailablePastUserSessionFinalizerTasks();
 
+		Map<Date, List<String>> finalizablePastUserSessions =
+			_finalizeUserSessionArm.getPastUserSessionDatesToFinalize();
+
 		for (Map.Entry<Date, List<String>> entry :
-				pastUserSessionsToFinalize.entrySet()) {
+				finalizablePastUserSessions.entrySet()) {
 
 			List<String> projectIds = entry.getValue();
 
