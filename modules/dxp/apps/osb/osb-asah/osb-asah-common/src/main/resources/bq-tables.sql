@@ -199,6 +199,25 @@ CREATE TABLE IF NOT EXISTS BQRole (
 	roleId BIGINT
 );
 
+CREATE TABLE IF NOT EXISTS BQSalesforceAuditEvent (
+    id BIGSERIAL PRIMARY KEY,
+    additionalInfo JSON,
+    createDate TIMESTAMPTZ,
+    dataSourceId BIGINT,
+    entityTypeName TEXT,
+    recordId TEXT,
+    type TEXT,
+    userId TEXT
+);
+
+CREATE TABLE IF NOT EXISTS BQSalesforceEntity (
+    id TEXT,
+    dataSourceId BIGINT,
+    fields JSON,
+    type TEXT,
+    PRIMARY KEY (dataSourceId, id, type)
+);
+
 CREATE TABLE IF NOT EXISTS BQSession (
 	channelId BIGINT,
 	id TEXT UNIQUE,

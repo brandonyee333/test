@@ -422,25 +422,6 @@ CREATE TABLE IF NOT EXISTS RunLog (
 	status TEXT
 );
 
-CREATE TABLE IF NOT EXISTS SalesforceAuditEvent (
-	id BIGSERIAL PRIMARY KEY,
-	additionalInfo JSON,
-	createDate TIMESTAMPTZ,
-	dataSourceId BIGINT,
-	entityTypeName TEXT,
-	recordId TEXT,
-	type TEXT,
-	userId TEXT
-);
-
-CREATE TABLE IF NOT EXISTS SalesforceEntity (
-	id TEXT,
-	dataSourceId BIGINT,
-	fields JSON,
-	type TEXT,
-	PRIMARY KEY (dataSourceId, id, type)
-);
-
 CREATE TABLE IF NOT EXISTS Segment (
 	id BIGSERIAL PRIMARY KEY,
 	authorId BIGINT,
