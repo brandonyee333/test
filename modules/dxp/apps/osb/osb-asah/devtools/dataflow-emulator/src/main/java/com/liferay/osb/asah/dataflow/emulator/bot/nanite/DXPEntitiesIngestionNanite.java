@@ -219,6 +219,8 @@ public class DXPEntitiesIngestionNanite {
 		Map<String, Object> fields = _parseFields(
 			jsonObject.getJSONArray("fields"));
 
+		fields.put("modifiedDate", jsonObject.getString("modifiedDate"));
+
 		if (StringUtils.equals(
 				type, "com.liferay.account.model.AccountEntry")) {
 
