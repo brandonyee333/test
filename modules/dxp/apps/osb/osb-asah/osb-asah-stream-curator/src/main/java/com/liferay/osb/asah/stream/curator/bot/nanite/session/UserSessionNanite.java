@@ -39,8 +39,8 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
@@ -283,18 +283,22 @@ public class UserSessionNanite implements Nanite {
 			if (previousAnalyticsEvent != null) {
 				Date previousEventDate = previousAnalyticsEvent.getEventDate();
 
-				Instant previousEventInstant = previousEventDate.toInstant();
+				ZonedDateTime previousEventZonedDateTime =
+					ZonedDateTime.ofInstant(
+						previousEventDate.toInstant(),
+						_timeZoneDog.getZoneId());
 
 				Date eventDate = analyticsEvent.getEventDate();
 
-				Instant eventInstant = eventDate.toInstant();
+				ZonedDateTime eventZonedDateTime = ZonedDateTime.ofInstant(
+					eventDate.toInstant(), _timeZoneDog.getZoneId());
 
 				long daysDelta = ChronoUnit.DAYS.between(
-					previousEventInstant.truncatedTo(ChronoUnit.DAYS),
-					eventInstant.truncatedTo(ChronoUnit.DAYS));
+					previousEventZonedDateTime.truncatedTo(ChronoUnit.DAYS),
+					eventZonedDateTime.truncatedTo(ChronoUnit.DAYS));
 
 				long minutesDelta = ChronoUnit.MINUTES.between(
-					previousEventInstant, eventInstant);
+					previousEventZonedDateTime, eventZonedDateTime);
 
 				if ((daysDelta > 0) || (minutesDelta >= 30)) {
 					messageSessionsAnalyticsEvents.add(
