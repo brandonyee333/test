@@ -191,12 +191,13 @@ public class UserSessionNanite implements Nanite {
 			analyticsEvent.getUserId());
 	}
 
-	private JSONObject _getUserSession(Date firstEventDate, String userId) {
+	private JSONObject _getUserSession(
+		Date firstEventDate, Date lastEventDate, String userId) {
+
 		LocalDateTime firstEventLocalDateTime = DateUtil.toLocalDateTime(
 			firstEventDate, _timeZoneDog.getZoneId());
-
-		LocalDateTime nowLocalDateTime = LocalDateTime.now(
-			_timeZoneDog.getZoneId());
+		LocalDateTime lastEventLocalDateTime = DateUtil.toLocalDateTime(
+			lastEventDate, _timeZoneDog.getZoneId());
 
 		return _cerebroInfoElasticsearchInvoker.fetch(
 			"user-sessions",
@@ -204,68 +205,47 @@ public class UserSessionNanite implements Nanite {
 				QueryBuilders.termQuery("userId", userId)
 			).filter(
 				BoolQueryBuilderUtil.should(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("completed", true)
-					).filter(
-						QueryBuilders.rangeQuery(
-							"firstEventDate"
-						).lte(
-							firstEventLocalDateTime.toString()
-						).timeZone(
-							_timeZoneDog.getTimeZoneId()
-						)
-					).filter(
-						QueryBuilders.rangeQuery(
-							"lastEventDate"
-						).gte(
-							DateUtil.minusMinutes(firstEventLocalDateTime, 30)
-						).lt(
-							DateUtil.minusMinutes(nowLocalDateTime, 30)
-						).timeZone(
-							_timeZoneDog.getTimeZoneId()
-						)
-					).filter(
-						QueryBuilders.rangeQuery(
-							"lastEventDate"
-						).gte(
-							DateUtil.newDayLocalDateTimeString(
-								firstEventLocalDateTime)
-						).timeZone(
-							_timeZoneDog.getTimeZoneId()
-						)
-					)
-				).should(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("completed", false)
-					).filter(
-						QueryBuilders.rangeQuery(
-							"firstEventDate"
-						).lte(
-							firstEventLocalDateTime.toString()
-						).timeZone(
-							_timeZoneDog.getTimeZoneId()
-						)
-					).mustNot(
-						BoolQueryBuilderUtil.should(
+					BoolQueryBuilderUtil.should(
+						BoolQueryBuilderUtil.filter(
 							QueryBuilders.rangeQuery(
-								"lastEventDate"
-							).lt(
-								DateUtil.minusMinutes(nowLocalDateTime, 30)
+								"firstEventDate"
+							).lte(
+								DateUtil.toUTCString(
+									firstEventLocalDateTime.plusMinutes(30))
 							).timeZone(
 								_timeZoneDog.getTimeZoneId()
 							)
-						).should(
+						).filter(
 							QueryBuilders.rangeQuery(
 								"lastEventDate"
-							).lt(
-								DateUtil.newDayLocalDateTimeString(
-									nowLocalDateTime)
+							).gte(
+								DateUtil.toUTCString(
+									firstEventLocalDateTime.minusMinutes(30))
 							).timeZone(
 								_timeZoneDog.getTimeZoneId()
 							)
 						)
-					)
-				)
+					).should(
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.rangeQuery(
+								"firstEventDate"
+							).lte(
+								DateUtil.toUTCString(
+									lastEventLocalDateTime.plusMinutes(30))
+							).timeZone(
+								_timeZoneDog.getTimeZoneId()
+							)
+						).filter(
+							QueryBuilders.rangeQuery(
+								"lastEventDate"
+							).gte(
+								DateUtil.toUTCString(
+									lastEventLocalDateTime.minusMinutes(30))
+							).timeZone(
+								_timeZoneDog.getTimeZoneId()
+							)
+						)
+					))
 			));
 	}
 
@@ -353,7 +333,8 @@ public class UserSessionNanite implements Nanite {
 			));
 
 		JSONObject userSessionJSONObject = _getUserSession(
-			analyticsEvents.getFirstAnalyticsEventDate(), userId);
+			analyticsEvents.getFirstAnalyticsEventDate(),
+			analyticsEvents.getLastAnalyticsEventDate(), userId);
 
 		if (userSessionJSONObject == null) {
 			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
