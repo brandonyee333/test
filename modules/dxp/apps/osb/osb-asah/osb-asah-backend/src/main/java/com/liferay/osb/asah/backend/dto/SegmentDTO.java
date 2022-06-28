@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -86,15 +85,8 @@ public class SegmentDTO {
 		_name = segment.getName();
 		_referencedAssetDataSourceIds = SetUtil.map(
 			segment.getReferencedAssetDataSourceIds(), String::valueOf);
-		_referencedAssetIds = Collections.emptySet();
 		_referencedFieldMappingIds = SetUtil.map(
 			segment.getReferencedFieldMappingIds(), String::valueOf);
-		_referencedGroupIds = Collections.emptySet();
-		_referencedOrganizationIds = Collections.emptySet();
-		_referencedRoleIds = Collections.emptySet();
-		_referencedTeamIds = Collections.emptySet();
-		_referencedUserGroupIds = Collections.emptySet();
-		_referencedUserIds = Collections.emptySet();
 		_scope = segment.getScope();
 		_state = segment.getState();
 		_status = segment.getStatus();
@@ -235,44 +227,9 @@ public class SegmentDTO {
 		return _referencedAssetDataSourceIds;
 	}
 
-	@JsonProperty("referencedAssetIds")
-	public Set<String> getReferencedAssetIds() {
-		return _referencedAssetIds;
-	}
-
 	@JsonProperty("referencedFieldMappingIds")
 	public Set<String> getReferencedFieldMappingIds() {
 		return _referencedFieldMappingIds;
-	}
-
-	@JsonProperty("referencedGroupIds")
-	public Set<String> getReferencedGroupIds() {
-		return _referencedGroupIds;
-	}
-
-	@JsonProperty("referencedOrganizationIds")
-	public Set<String> getReferencedOrganizationIds() {
-		return _referencedOrganizationIds;
-	}
-
-	@JsonProperty("referencedRoleIds")
-	public Set<String> getReferencedRoleIds() {
-		return _referencedRoleIds;
-	}
-
-	@JsonProperty("referencedTeamIds")
-	public Set<String> getReferencedTeamIds() {
-		return _referencedTeamIds;
-	}
-
-	@JsonProperty("referencedUserGroupIds")
-	public Set<String> getReferencedUserGroupIds() {
-		return _referencedUserGroupIds;
-	}
-
-	@JsonProperty("referencedUserIds")
-	public Set<String> getReferencedUserIds() {
-		return _referencedUserIds;
 	}
 
 	@JsonProperty("scope")
@@ -377,40 +334,10 @@ public class SegmentDTO {
 		_referencedAssetDataSourceIds = referencedAssetDataSourceIds;
 	}
 
-	public void setReferencedAssetIds(Set<String> referencedAssetIds) {
-		_referencedAssetIds = referencedAssetIds;
-	}
-
 	public void setReferencedFieldMappingIds(
 		Set<String> referencedFieldMappingIds) {
 
 		_referencedFieldMappingIds = referencedFieldMappingIds;
-	}
-
-	public void setReferencedGroupIds(Set<String> referencedGroupIds) {
-		_referencedGroupIds = referencedGroupIds;
-	}
-
-	public void setReferencedOrganizationIds(
-		Set<String> referencedOrganizationIds) {
-
-		_referencedOrganizationIds = referencedOrganizationIds;
-	}
-
-	public void setReferencedRoleIds(Set<String> referencedRoleIds) {
-		_referencedRoleIds = referencedRoleIds;
-	}
-
-	public void setReferencedTeamIds(Set<String> referencedTeamIds) {
-		_referencedTeamIds = referencedTeamIds;
-	}
-
-	public void setReferencedUserGroupIds(Set<String> referencedUserGroupIds) {
-		_referencedUserGroupIds = referencedUserGroupIds;
-	}
-
-	public void setReferencedUserIds(Set<String> referencedUserIds) {
-		_referencedUserIds = referencedUserIds;
 	}
 
 	public void setScope(String scope) {
@@ -511,14 +438,7 @@ public class SegmentDTO {
 	private Date _modifiedDate;
 	private String _name;
 	private Set<String> _referencedAssetDataSourceIds;
-	private Set<String> _referencedAssetIds;
 	private Set<String> _referencedFieldMappingIds;
-	private Set<String> _referencedGroupIds;
-	private Set<String> _referencedOrganizationIds;
-	private Set<String> _referencedRoleIds;
-	private Set<String> _referencedTeamIds;
-	private Set<String> _referencedUserGroupIds;
-	private Set<String> _referencedUserIds;
 	private String _scope;
 	private Set<SegmentDTO> _segmentDTOs;
 	private String _state;

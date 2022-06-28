@@ -277,40 +277,10 @@ public class IndividualSegmentsRestControllerTest
 
 		Assertions.assertTrue(referencedAssetDataSourceIds.isEmpty());
 
-		Set<String> referencedAssetIds = segmentDTO.getReferencedAssetIds();
-
-		Assertions.assertTrue(referencedAssetIds.isEmpty());
-
 		Set<String> referencedFieldMappingIds =
 			segmentDTO.getReferencedFieldMappingIds();
 
 		Assertions.assertTrue(referencedFieldMappingIds.isEmpty());
-
-		Set<String> referencedGroupIds = segmentDTO.getReferencedGroupIds();
-
-		Assertions.assertTrue(referencedGroupIds.isEmpty());
-
-		Set<String> referencedOrganizationIds =
-			segmentDTO.getReferencedOrganizationIds();
-
-		Assertions.assertTrue(referencedOrganizationIds.isEmpty());
-
-		Set<String> referencedRoleIds = segmentDTO.getReferencedRoleIds();
-
-		Assertions.assertTrue(referencedRoleIds.isEmpty());
-
-		Set<String> referencedTeamIds = segmentDTO.getReferencedTeamIds();
-
-		Assertions.assertTrue(referencedTeamIds.isEmpty());
-
-		Set<String> referencedUserGroupIds =
-			segmentDTO.getReferencedUserGroupIds();
-
-		Assertions.assertTrue(referencedUserGroupIds.isEmpty());
-
-		Set<String> referencedUserIds = segmentDTO.getReferencedUserIds();
-
-		Assertions.assertTrue(referencedUserIds.isEmpty());
 	}
 
 	@RepositoryResource(
