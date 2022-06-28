@@ -28,9 +28,7 @@ export default function StateDefinition({
 	stateName,
 }: IProps) {
 	const [items, setItems] = useState<CustomItem[]>(
-		initialValues.map(({key, name}) => {
-			return {label: name, value: key};
-		})
+		initialValues.map(({key, name}) => ({label: name, value: key}))
 	);
 
 	return (

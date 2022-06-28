@@ -22,7 +22,6 @@ import React, {useEffect, useState} from 'react';
 
 import {HEADERS} from '../utils/constants';
 import {defaultLanguageId} from '../utils/locale';
-import {TName} from './Layout/types';
 
 const ModalAddListTypeDefinition: React.FC<IProps> = ({
 	apiURL,
@@ -136,7 +135,7 @@ interface IProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 type TInitialValues = {
-	name_i18n: TName;
+	name_i18n: LocalizedValue<string>;
 };
 
 const ModalWithProvider: React.FC<IProps> = ({apiURL}) => {

@@ -14,18 +14,14 @@
 
 export type BoxType = 'regular' | 'categorization';
 
-export type TName = {
-	[key: string]: string;
-};
-
 export type TObjectLayout = {
 	defaultObjectLayout: boolean;
-	name: TName;
+	name: LocalizedValue<string>;
 	objectLayoutTabs: TObjectLayoutTab[];
 };
 
 export type TObjectLayoutTab = {
-	name: TName;
+	name: LocalizedValue<string>;
 	objectLayoutBoxes: TObjectLayoutBox[];
 	objectRelationshipId: number;
 	priority: number;
@@ -33,7 +29,7 @@ export type TObjectLayoutTab = {
 
 export type TObjectLayoutBox = {
 	collapsable: boolean;
-	name: TName;
+	name: LocalizedValue<string>;
 	objectLayoutRows: TObjectLayoutRow[];
 	priority: number;
 	type: BoxType;
@@ -50,27 +46,10 @@ export type TObjectLayoutColumn = {
 	size: number;
 };
 
-export type TObjectField = {
-	DBType: string;
-	businessType: string;
-	id: number;
-	indexed: boolean;
-	indexedAsKeyword: boolean;
-	indexedLanguageId: string;
-	inLayout?: boolean; // eslint-disable-line @typescript-eslint/member-ordering
-	label: TName;
-	listTypeDefinitionId: boolean;
-	name: string;
-	required: boolean;
-	system: boolean;
-};
-
-export type TObjectRelationship = {
-	id: number;
+export interface TObjectField extends ObjectField {
 	inLayout?: boolean;
-	label: TName;
-	name: string;
-	objectDefinitionId1: number;
-	objectDefinitionId2: number;
-	type: string;
-};
+}
+
+export interface TObjectRelationship extends ObjectRelationship {
+	inLayout?: boolean;
+}

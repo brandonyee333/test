@@ -24,11 +24,11 @@ interface IPanelBodyProps extends React.HTMLAttributes<HTMLElement> {}
 interface IPanelHeaderProps extends React.HTMLAttributes<HTMLElement> {
 	contentLeft?: React.ReactNode;
 	contentRight?: React.ReactNode;
-	title: string;
+	title?: string;
 	type: BoxType;
 }
 interface IPanelSimpleBodyProps extends React.HTMLAttributes<HTMLElement> {
 	contentRight?: React.ReactNode;
-	title: string;
+	title?: string;
 }
 export default Panel;
