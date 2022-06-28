@@ -105,6 +105,9 @@ public class DataSourceDog {
 		}
 		else if (Objects.equals(providerType, "LIFERAY")) {
 			_addDefaultChannel(dataSource);
+
+			dataSource.setStatus("ACTIVE");
+
 			_updateTokenDataSourceCredentials(dataSource);
 		}
 		else if (Objects.equals(providerType, "SALESFORCE")) {
@@ -763,8 +766,11 @@ public class DataSourceDog {
 			return;
 		}
 
-		dataSource.setState("CREDENTIALS_VALID");
-		dataSource.setStatus("ACTIVE");
+		String dataSourceStatus = dataSource.getStatus();
+
+		if (dataSourceStatus.equals("ACTIVE")) {
+			dataSource.setState("CREDENTIALS_VALID");
+		}
 
 		try {
 			if (StringUtils.isBlank(dataSource.getPrivateKey())) {
