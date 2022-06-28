@@ -14,16 +14,20 @@
 
 package com.liferay.message.boards.service.impl;
 
+import com.liferay.message.boards.exception.NoSuchSuspiciousActivityException;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBSuspiciousActivity;
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.service.base.MBSuspiciousActivityLocalServiceBaseImpl;
 import com.liferay.message.boards.service.persistence.MBMessagePersistence;
+import com.liferay.message.boards.service.persistence.MBSuspiciousActivityPersistence;
 import com.liferay.message.boards.service.persistence.MBThreadPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -77,8 +81,72 @@ public class MBSuspiciousActivityLocalServiceImpl
 			suspiciousActivity);
 	}
 
+	@Override
+	public MBSuspiciousActivity deleteSuspiciousActivity(
+			long suspiciousActivityId)
+		throws NoSuchSuspiciousActivityException {
+
+		return _mbSuspiciousActivityPersistence.remove(suspiciousActivityId);
+	}
+
+	@Override
+	public List<MBSuspiciousActivity> getMessageSuspiciousActivities(
+		long messageId) {
+
+		return _mbSuspiciousActivityPersistence.findByMessagedId(messageId);
+	}
+
+	@Override
+	public List<MBSuspiciousActivity> getSuspiciousActivities() {
+		return _mbSuspiciousActivityPersistence.findAll();
+	}
+
+	@Override
+	public MBSuspiciousActivity getSuspiciousActivity(long suspiciousActivityId)
+		throws NoSuchSuspiciousActivityException {
+
+		return _mbSuspiciousActivityPersistence.findByPrimaryKey(
+			suspiciousActivityId);
+	}
+
+	@Override
+	public MBSuspiciousActivity getSuspiciousActivity(
+			long userId, long messageId)
+		throws NoSuchSuspiciousActivityException {
+
+		return _mbSuspiciousActivityPersistence.findByU_M(userId, messageId);
+	}
+
+	@Override
+	public int getSuspiciousActivityCount() {
+		return _mbSuspiciousActivityPersistence.countAll();
+	}
+
+	@Override
+	public List<MBSuspiciousActivity> getThreadSuspiciousActivities(
+		long threadId) {
+
+		return _mbSuspiciousActivityPersistence.findByThreadId(threadId);
+	}
+
+	public MBSuspiciousActivity toggleSuspiciousActivityValidator(
+			long suspiciousActivityId)
+		throws NoSuchSuspiciousActivityException {
+
+		MBSuspiciousActivity suspiciousActivity = getSuspiciousActivity(
+			suspiciousActivityId);
+
+		suspiciousActivity.setValidated(!suspiciousActivity.isValidated());
+
+		return mbSuspiciousActivityLocalService.updateMBSuspiciousActivity(
+			suspiciousActivity);
+	}
+
 	@Reference
 	private MBMessagePersistence _mbMessagePersistence;
+
+	@Reference
+	private MBSuspiciousActivityPersistence _mbSuspiciousActivityPersistence;
 
 	@Reference
 	private MBThreadPersistence _mbThreadPersistence;
