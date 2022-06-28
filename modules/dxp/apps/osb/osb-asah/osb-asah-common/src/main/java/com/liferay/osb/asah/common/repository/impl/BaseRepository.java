@@ -31,6 +31,29 @@ import org.springframework.data.domain.Sort;
  */
 public abstract class BaseRepository {
 
+	protected String checkSortFieldName(String fieldName) {
+		if (fieldName.equalsIgnoreCase("activeIndividualCount")) {
+			fieldName = "activeIndividualsCount";
+		}
+		else if (fieldName.equalsIgnoreCase("anonymousIndividualCount")) {
+			fieldName = "anonymousIndividualsCount";
+		}
+		else if (fieldName.equalsIgnoreCase("dateCreated")) {
+			fieldName = "createDate";
+		}
+		else if (fieldName.equalsIgnoreCase("individualCount")) {
+			fieldName = "individualsCount";
+		}
+		else if (fieldName.equalsIgnoreCase("knownIndividualCount")) {
+			fieldName = "knownIndividualsCount";
+		}
+		else if (fieldName.equalsIgnoreCase("dateModified")) {
+			fieldName = "modifiedDate";
+		}
+
+		return fieldName;
+	}
+
 	protected Collection<SortField<?>> getSortFields(
 		Map<String, String> fieldNames, Sort sort, Table<?> table) {
 
@@ -55,24 +78,7 @@ public abstract class BaseRepository {
 				fieldName = fieldNames.get(fieldName);
 			}
 
-			if (fieldName.equalsIgnoreCase("activeIndividualCount")) {
-				fieldName = "activeIndividualsCount";
-			}
-			else if (fieldName.equalsIgnoreCase("anonymousIndividualCount")) {
-				fieldName = "anonymousIndividualsCount";
-			}
-			else if (fieldName.equalsIgnoreCase("dateCreated")) {
-				fieldName = "createDate";
-			}
-			else if (fieldName.equalsIgnoreCase("individualCount")) {
-				fieldName = "individualsCount";
-			}
-			else if (fieldName.equalsIgnoreCase("knownIndividualCount")) {
-				fieldName = "knownIndividualsCount";
-			}
-			else if (fieldName.equalsIgnoreCase("dateModified")) {
-				fieldName = "modifiedDate";
-			}
+			fieldName = checkSortFieldName(fieldName);
 
 			if (table != null) {
 				fieldName = table.getName() + "." + fieldName;

@@ -429,6 +429,18 @@ public class SegmentRepositoryImpl
 		);
 	}
 
+	@Override
+	protected String checkSortFieldName(String fieldName) {
+		if (fieldName.equalsIgnoreCase("individualCount")) {
+			fieldName = "identitiesCount";
+		}
+		else {
+			fieldName = super.checkSortFieldName(fieldName);
+		}
+
+		return fieldName;
+	}
+
 	private List<Condition> _getConditions(
 		FilterHelper filterHelper, List<Long> segmentIds) {
 
