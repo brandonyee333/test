@@ -16,9 +16,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.CSVIndividualsNanite;
+import com.liferay.osb.asah.batch.curator.bot.nanite.CSVUsersNanite;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Vishal Reddy
  * @author Leslie Wong
  */
-public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
+public class CSVUsersNaniteTest extends BaseIndividualsNaniteTestCase {
 
 	@Test
 	public void test() throws Exception {
@@ -45,19 +45,19 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 		addEmailFieldMapping();
 		addStandardFieldMappings();
 
-		_csvIndividualRepository.save(
-			FaroInfoTestUtil.buildCSVIndividual(
+		_bqCSVUserRepository.save(
+			FaroInfoTestUtil.buildBQCSVUser(
 				getUser1PK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					getIndividual1FieldsMap(), JSONObject.class)));
 
-		_csvIndividualRepository.save(
-			FaroInfoTestUtil.buildCSVIndividual(
+		_bqCSVUserRepository.save(
+			FaroInfoTestUtil.buildBQCSVUser(
 				getUser2PK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					getIndividual2FieldsMap(), JSONObject.class)));
 
-		_csvIndividualsNanite.run(
+		_csvUsersNanite.run(
 			JSONUtil.put(
 				"dataSourceId", String.valueOf(getDataSourceId())
 			).put(
@@ -72,8 +72,8 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 		addDataSource("CSV");
 		addEmailFieldMapping();
 
-		_csvIndividualRepository.save(
-			FaroInfoTestUtil.buildCSVIndividual(
+		_bqCSVUserRepository.save(
+			FaroInfoTestUtil.buildBQCSVUser(
 				generateUserPK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
@@ -83,8 +83,8 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 					},
 					JSONObject.class)));
 
-		_csvIndividualRepository.save(
-			FaroInfoTestUtil.buildCSVIndividual(
+		_bqCSVUserRepository.save(
+			FaroInfoTestUtil.buildBQCSVUser(
 				generateUserPK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
@@ -94,8 +94,8 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 					},
 					JSONObject.class)));
 
-		_csvIndividualRepository.save(
-			FaroInfoTestUtil.buildCSVIndividual(
+		_bqCSVUserRepository.save(
+			FaroInfoTestUtil.buildBQCSVUser(
 				generateUserPK(), getDataSourceId(),
 				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
@@ -105,7 +105,7 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 					},
 					JSONObject.class)));
 
-		_csvIndividualsNanite.run(
+		_csvUsersNanite.run(
 			JSONUtil.put(
 				"dataSourceId", String.valueOf(getDataSourceId())
 			).put(
@@ -133,10 +133,10 @@ public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 	}
 
 	@Autowired
-	private CSVIndividualRepository _csvIndividualRepository;
+	private BQCSVUserRepository _bqCSVUserRepository;
 
 	@Autowired
-	private CSVIndividualsNanite _csvIndividualsNanite;
+	private CSVUsersNanite _csvUsersNanite;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

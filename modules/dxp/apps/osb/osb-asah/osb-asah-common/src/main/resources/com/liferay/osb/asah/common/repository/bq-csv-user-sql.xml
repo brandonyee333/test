@@ -2,21 +2,21 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="CSVIndividual.deleteByDataSourceId">
+	<entry key="BQCSVUser.deleteByDataSourceId">
 		<![CDATA[
 			DELETE FROM
-				CSVIndividual
+				BQCSVUser
 			WHERE
 				dataSourceId = :dataSourceId
 		]]>
 	</entry>
-	<entry key="CSVIndividual.deleteByDataSourceIdAndDataSourceIndividualPKIn">
+	<entry key="BQCSVUser.deleteByDataSourceIdAndDataSourceUserPKIn">
 		<![CDATA[
 			DELETE FROM
-				CSVIndividual
+				BQCSVUser
 			WHERE
 				dataSourceId = :dataSourceId AND
-				dataSourceIndividualPK IN (:dataSourceIndividualPKs)
+				dataSourceUserPK IN (:dataSourceUserPKs)
 		]]>
 	</entry>
 </properties>

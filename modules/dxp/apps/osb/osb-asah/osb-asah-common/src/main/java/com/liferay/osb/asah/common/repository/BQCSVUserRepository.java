@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 
 import java.util.List;
 
@@ -22,13 +22,17 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Marcellus Tavares
  */
-public interface CSVIndividualRepository
-	extends CustomCSVIndividualRepository, Repository<CSVIndividual, Long> {
+@Repository
+public interface BQCSVUserRepository
+	extends CustomBQCSVUserRepository,
+			PagingAndSortingRepository<BQCSVUser, Long> {
 
 	@Cacheable
 	public long countByDataSourceId(Long dataSourceId);
@@ -37,8 +41,14 @@ public interface CSVIndividualRepository
 	@Modifying
 	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void deleteByDataSourceIdAndDataSourceUserPKIn(
+		@Param("dataSourceId") Long dataSourceId,
+		@Param("dataSourceUserPKs") List<String> dataSourceUserPKs);
+
 	@Cacheable
-	public List<CSVIndividual> findByDataSourceId(
+	public List<BQCSVUser> findByDataSourceId(
 		Long dataSourceId, Pageable pageable);
 
 }

@@ -40,7 +40,7 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
-import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
@@ -210,13 +210,13 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceRepository.save(dataSource2);
 
-		_csvIndividualRepository.save(
-			FaroInfoTestUtil.buildCSVIndividual(
+		_bqCSVUserRepository.save(
+			FaroInfoTestUtil.buildBQCSVUser(
 				RandomTestUtil.randomUUID(), dataSource1.getId(),
 				_objectMapper.convertValue(new HashMap<>(), JSONObject.class)));
 
-		_csvIndividualRepository.save(
-			FaroInfoTestUtil.buildCSVIndividual(
+		_bqCSVUserRepository.save(
+			FaroInfoTestUtil.buildBQCSVUser(
 				RandomTestUtil.randomUUID(), dataSource2.getId(),
 				_objectMapper.convertValue(new HashMap<>(), JSONObject.class)));
 
@@ -816,10 +816,10 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	private AssetRepository _assetRepository;
 
 	@Autowired
-	private ChannelDog _channelDog;
+	private BQCSVUserRepository _bqCSVUserRepository;
 
 	@Autowired
-	private CSVIndividualRepository _csvIndividualRepository;
+	private ChannelDog _channelDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;

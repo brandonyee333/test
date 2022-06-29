@@ -18,10 +18,10 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.CSVIndividualsRestController;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -71,9 +71,9 @@ public class CSVIndividualsRestControllerTest
 
 		_csvIndividualsRestController.postCSVIndividuals(jsonArray.toString());
 
-		Assertions.assertEquals(2, _csvIndividualRepository.count());
+		Assertions.assertEquals(2, _bqCSVUserRepository.count());
 
-		_assertIds(_csvIndividualRepository.findAll());
+		_assertIds(_bqCSVUserRepository.findAll());
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
@@ -81,8 +81,7 @@ public class CSVIndividualsRestControllerTest
 
 		AsahTask asahTask = asahTasks.get(0);
 
-		Assertions.assertEquals(
-			"CSVIndividualsNanite", asahTask.getClassName());
+		Assertions.assertEquals("CSVUsersNanite", asahTask.getClassName());
 		Assertions.assertNull(asahTask.getCronExpression());
 		Assertions.assertNotNull(asahTask.getId());
 
@@ -95,10 +94,10 @@ public class CSVIndividualsRestControllerTest
 			asahTask.getContextJSONObject(), false);
 	}
 
-	private void _assertIds(Iterable<CSVIndividual> csvIndividuals) {
-		for (CSVIndividual csvIndividual : csvIndividuals) {
-			Assertions.assertEquals(123L, csvIndividual.getDataSourceId());
-			Assertions.assertNotNull(csvIndividual.getId());
+	private void _assertIds(Iterable<BQCSVUser> bqCSVUsers) {
+		for (BQCSVUser bqCSVUser : bqCSVUsers) {
+			Assertions.assertEquals(123L, bqCSVUser.getDataSourceId());
+			Assertions.assertNotNull(bqCSVUser.getId());
 		}
 	}
 
@@ -106,7 +105,7 @@ public class CSVIndividualsRestControllerTest
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private CSVIndividualRepository _csvIndividualRepository;
+	private BQCSVUserRepository _bqCSVUserRepository;
 
 	@Autowired
 	private CSVIndividualsRestController _csvIndividualsRestController;

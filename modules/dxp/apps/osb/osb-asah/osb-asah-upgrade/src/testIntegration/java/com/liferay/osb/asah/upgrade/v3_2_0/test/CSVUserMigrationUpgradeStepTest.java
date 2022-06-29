@@ -18,16 +18,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
-import com.liferay.osb.asah.upgrade.v3_2_0.CSVIndividualMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.CSVUserMigrationUpgradeStep;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,14 +45,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Leilany Ulisses
  */
-public class CSVIndividualMigrationUpgradeStepTest
+public class CSVUserMigrationUpgradeStepTest
 	implements OSBAsahUpgradeSpringTestContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {
 		ProjectIdThreadLocal.setProjectId("test");
 
-		_csvIndividualRepository.deleteAll();
+		_bqCSVUserRepository.deleteAll();
 
 		_dataSourceRepository.deleteAll();
 
@@ -86,7 +86,7 @@ public class CSVIndividualMigrationUpgradeStepTest
 		_elasticsearchIndexManager.delete(
 			"test_osbasahfaroinfo_csv-individuals");
 
-		_csvIndividualRepository.deleteAll();
+		_bqCSVUserRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
 	}
 
@@ -101,7 +101,7 @@ public class CSVIndividualMigrationUpgradeStepTest
 
 		_elasticsearchInvoker.add("csv-individuals", jsonArray);
 
-		_csvIndividualMigrationUpgradeStep.upgrade("");
+		_csvUserMigrationUpgradeStep.upgrade("");
 
 		List<Object> jsonObjectList = jsonArray.toList();
 
@@ -109,20 +109,18 @@ public class CSVIndividualMigrationUpgradeStepTest
 
 		Assertions.assertEquals(
 			stream.map(
-				object -> _objectMapper.convertValue(
-					object, CSVIndividual.class)
+				object -> _objectMapper.convertValue(object, BQCSVUser.class)
 			).collect(
 				Collectors.toList()
 			),
-			_csvIndividualRepository.findAll());
+			_bqCSVUserRepository.findAll());
 	}
 
 	@Autowired
-	private CSVIndividualMigrationUpgradeStep
-		_csvIndividualMigrationUpgradeStep;
+	private BQCSVUserRepository _bqCSVUserRepository;
 
 	@Autowired
-	private CSVIndividualRepository _csvIndividualRepository;
+	private CSVUserMigrationUpgradeStep _csvUserMigrationUpgradeStep;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

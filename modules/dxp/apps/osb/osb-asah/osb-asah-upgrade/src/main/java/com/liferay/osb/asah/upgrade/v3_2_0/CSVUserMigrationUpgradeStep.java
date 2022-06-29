@@ -16,8 +16,8 @@ package com.liferay.osb.asah.upgrade.v3_2_0;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.entity.CSVIndividual;
-import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
+import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 
 import java.util.function.Consumer;
@@ -31,18 +31,17 @@ import org.springframework.stereotype.Component;
  * @author Leilany Ulisses
  */
 @Component
-public class CSVIndividualMigrationUpgradeStep
-	extends BaseMigrationUpgradeStep {
+public class CSVUserMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 
 	@Override
 	protected Consumer<JSONObject> getConsumer() {
 		return jsonObject -> {
-			CSVIndividual csvIndividual = _objectMapper.convertValue(
-				jsonObject, CSVIndividual.class);
+			BQCSVUser bqCSVUser = _objectMapper.convertValue(
+				jsonObject, BQCSVUser.class);
 
-			csvIndividual.setIsNew(Boolean.TRUE);
+			bqCSVUser.setIsNew(Boolean.TRUE);
 
-			_csvIndividualRepository.save(csvIndividual);
+			_bqCSVUserRepository.save(bqCSVUser);
 		};
 	}
 
@@ -53,16 +52,16 @@ public class CSVIndividualMigrationUpgradeStep
 
 	@Override
 	protected String getSelectLatestIdSQL() {
-		return "SELECT id FROM csvindividual ORDER BY id DESC LIMIT 1";
+		return "SELECT id FROM bqcsvuser ORDER BY id DESC LIMIT 1";
 	}
 
 	@Override
 	protected String getSequenceName() {
-		return "csvindividual_id_seq";
+		return "bqcsvuser_id_seq";
 	}
 
 	@Autowired
-	private CSVIndividualRepository _csvIndividualRepository;
+	private BQCSVUserRepository _bqCSVUserRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

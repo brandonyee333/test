@@ -520,7 +520,7 @@ public class DataSourceDog {
 		String providerType = dataSource.getProviderType();
 
 		if (providerType.equals("CSV")) {
-			_csvIndividualDog.deleteCSVIndividuals(dataSourceId);
+			_bqCSVUserDog.deleteBQCSVUsers(dataSourceId);
 		}
 		else if (providerType.equals("LIFERAY")) {
 			_asahMarkerDog.deleteAsahMarker(dataSourceId.toString());
@@ -812,10 +812,10 @@ public class DataSourceDog {
 		BoundedExecutor.newBoundedExecutor(10, 1);
 
 	@Autowired
-	private ChannelDog _channelDog;
+	private BQCSVUserDog _bqCSVUserDog;
 
 	@Autowired
-	private CSVIndividualDog _csvIndividualDog;
+	private ChannelDog _channelDog;
 
 	@Autowired
 	private DataSourceFilterStringConverterHelper

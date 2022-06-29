@@ -23,8 +23,8 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.RawDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SalesforceEntityDataExporter;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQCSVUserDog;
 import com.liferay.osb.asah.common.dog.BQUserDog;
-import com.liferay.osb.asah.common.dog.CSVIndividualDog;
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
@@ -166,14 +166,14 @@ public class DataControlNanite extends BaseNanite {
 			return;
 		}
 
-		Map<Long, List<String>> dataSourceIdIndividualsPKs =
+		Map<Long, List<String>> dataSourceIdUsersPKs =
 			_getBQDataSourceIdUserPKs("CSV", individual);
 
-		if (!dataSourceIdIndividualsPKs.isEmpty()) {
+		if (!dataSourceIdUsersPKs.isEmpty()) {
 			for (Map.Entry<Long, List<String>> entry :
-					dataSourceIdIndividualsPKs.entrySet()) {
+					dataSourceIdUsersPKs.entrySet()) {
 
-				_csvIndividualDog.deleteCSVIndividuals(
+				_bqCSVUserDog.deleteBQCSVUsers(
 					entry.getKey(), entry.getValue());
 			}
 		}
@@ -463,13 +463,13 @@ public class DataControlNanite extends BaseNanite {
 	private static final Log _log = LogFactory.getLog(DataControlNanite.class);
 
 	@Autowired
+	private BQCSVUserDog _bqCSVUserDog;
+
+	@Autowired
 	private BQUserDog _bqUserDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
-	@Autowired
-	private CSVIndividualDog _csvIndividualDog;
 
 	@Autowired
 	private DataControlTaskDog _dataControlTaskDog;

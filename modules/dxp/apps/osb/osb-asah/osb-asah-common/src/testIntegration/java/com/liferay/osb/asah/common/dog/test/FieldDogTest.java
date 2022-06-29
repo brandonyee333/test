@@ -19,13 +19,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -173,8 +173,8 @@ public class FieldDogTest
 	private void _testDateField(Object date, String expectedDateString)
 		throws Exception {
 
-		CSVIndividual csvIndividual = _csvIndividualRepository.save(
-			FaroInfoTestUtil.buildCSVIndividual(
+		BQCSVUser bqCSVUser = _bqCSVUserRepository.save(
+			FaroInfoTestUtil.buildBQCSVUser(
 				RandomTestUtil.randomUUID(), _dataSource.getId(),
 				_objectMapper.convertValue(
 					new HashMap<String, Object>() {
@@ -185,8 +185,8 @@ public class FieldDogTest
 					JSONObject.class)));
 
 		List<Field> fields = _fieldDog.addFields(
-			"demographics", csvIndividual.getFieldsJSONObject(), _dataSource,
-			null, "individual");
+			"demographics", bqCSVUser.getFieldsJSONObject(), _dataSource, null,
+			"individual");
 
 		Field dateField = fields.get(0);
 
@@ -199,7 +199,7 @@ public class FieldDogTest
 	}
 
 	@Autowired
-	private CSVIndividualRepository _csvIndividualRepository;
+	private BQCSVUserRepository _bqCSVUserRepository;
 
 	private DataSource _dataSource;
 

@@ -246,7 +246,7 @@ public class DataSourcesRestControllerTest {
 			));
 		runLog1.setDataSourceId(csvDataSource.getId());
 		runLog1.setDateLogged(DateUtil.newDate());
-		runLog1.setNaniteClassName("CSVIndividualsNanite");
+		runLog1.setNaniteClassName("CSVUsersNanite");
 		runLog1.setStatus("STARTED");
 
 		_runLogRepository.save(runLog1);
@@ -275,7 +275,7 @@ public class DataSourcesRestControllerTest {
 			));
 		runLog2.setDataSourceId(csvDataSource.getId());
 		runLog2.setDateLogged(loggedDate);
-		runLog2.setNaniteClassName("CSVIndividualsNanite");
+		runLog2.setNaniteClassName("CSVUsersNanite");
 		runLog2.setStatus("FAILED");
 
 		_runLogRepository.save(runLog2);

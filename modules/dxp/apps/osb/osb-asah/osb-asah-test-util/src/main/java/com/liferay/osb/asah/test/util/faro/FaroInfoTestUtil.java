@@ -17,10 +17,10 @@ package com.liferay.osb.asah.test.util.faro;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
-import com.liferay.osb.asah.common.entity.CSVIndividual;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Field;
@@ -263,6 +263,20 @@ public class FaroInfoTestUtil {
 		);
 	}
 
+	public static BQCSVUser buildBQCSVUser(
+		String dataSourceUserPK, Long dataSourceId, JSONObject fieldsMap) {
+
+		BQCSVUser bqCSVUser = new BQCSVUser();
+
+		bqCSVUser.setDataSourceUserPK(dataSourceUserPK);
+		bqCSVUser.setDataSourceId(dataSourceId);
+		bqCSVUser.setFieldsJSONObject(fieldsMap);
+		bqCSVUser.setId(Long.valueOf(_timeOrderedUuidGenerator.generateId()));
+		bqCSVUser.setIsNew(Boolean.TRUE);
+
+		return bqCSVUser;
+	}
+
 	public static BQMembership buildBQMembership(
 		String identityId, Long segmentId) {
 
@@ -331,21 +345,6 @@ public class FaroInfoTestUtil {
 		dataSource.setStatus("ACTIVE");
 
 		return dataSource;
-	}
-
-	public static CSVIndividual buildCSVIndividual(
-		String dataSourceUserPK, Long dataSourceId, JSONObject fieldsMap) {
-
-		CSVIndividual csvIndividual = new CSVIndividual();
-
-		csvIndividual.setDataSourceId(dataSourceId);
-		csvIndividual.setDataSourceUserPK(dataSourceUserPK);
-		csvIndividual.setFieldsJSONObject(fieldsMap);
-		csvIndividual.setId(
-			Long.valueOf(_timeOrderedUuidGenerator.generateId()));
-		csvIndividual.setIsNew(Boolean.TRUE);
-
-		return csvIndividual;
 	}
 
 	public static Segment buildDynamicSegment(

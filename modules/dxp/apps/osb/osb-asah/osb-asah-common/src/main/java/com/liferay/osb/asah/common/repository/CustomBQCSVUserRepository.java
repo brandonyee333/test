@@ -14,28 +14,19 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.query.Param;
 
 /**
  * @author Ivica Cardic
  */
-public interface CustomCSVIndividualRepository {
-
-	@CacheEvict(allEntries = true)
-	@Modifying
-	public void deleteByDataSourceIdAndDataSourceUserPKIn(
-		@Param("dataSourceId") Long dataSourceId,
-		@Param("dataSourceUserPKs") List<String> dataSourceUserPKs);
+public interface CustomBQCSVUserRepository {
 
 	@Cacheable
-	public List<CSVIndividual> findByDataSourceIdAndFieldKeyEquals(
+	public List<BQCSVUser> findByDataSourceIdAndFieldKeyEquals(
 		Long dataSourceId, String fieldKey, String fieldValue);
 
 }

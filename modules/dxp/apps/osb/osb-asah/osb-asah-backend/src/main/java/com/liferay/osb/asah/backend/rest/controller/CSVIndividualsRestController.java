@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.dog.CSVIndividualDog;
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.dog.BQCSVUserDog;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.List;
@@ -37,25 +37,25 @@ public class CSVIndividualsRestController extends BaseRestController {
 
 	@PostMapping
 	public void postCSVIndividuals(@RequestBody String json) throws Exception {
-		List<CSVIndividual> csvIndividuals = JSONUtil.toList(
+		List<BQCSVUser> bqCSVUsers = JSONUtil.toList(
 			new JSONArray(json),
 			jsonObject -> {
-				CSVIndividual csvIndividual = new CSVIndividual();
+				BQCSVUser bqCSVUser = new BQCSVUser();
 
-				csvIndividual.setDataSourceId(
+				bqCSVUser.setDataSourceId(
 					Long.valueOf(jsonObject.getString("dataSourceId")));
-				csvIndividual.setDataSourceUserPK(
+				bqCSVUser.setDataSourceUserPK(
 					jsonObject.getString("dataSourceIndividualPK"));
-				csvIndividual.setFieldsJSONObject(
+				bqCSVUser.setFieldsJSONObject(
 					jsonObject.optJSONObject("fields"));
 
-				return csvIndividual;
+				return bqCSVUser;
 			});
 
-		_csvIndividualDog.addCSVIndividuals(csvIndividuals);
+		_bqCSVUserDog.addBQCSVUsers(bqCSVUsers);
 	}
 
 	@Autowired
-	private CSVIndividualDog _csvIndividualDog;
+	private BQCSVUserDog _bqCSVUserDog;
 
 }

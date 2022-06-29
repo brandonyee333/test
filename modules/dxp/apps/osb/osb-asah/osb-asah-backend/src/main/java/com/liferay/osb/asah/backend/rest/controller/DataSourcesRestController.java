@@ -20,7 +20,7 @@ import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.dog.CSVIndividualDog;
+import com.liferay.osb.asah.common.dog.BQCSVUserDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
@@ -253,7 +253,7 @@ public class DataSourcesRestController extends BaseRestController {
 
 	private JSONObject _getCSVDataSourceProgressJSONObject(Long dataSourceId) {
 		RunLog runLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, "CSVIndividualsNanite", null,
+			dataSourceId, "CSVUsersNanite", null,
 			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		if (runLog == null) {
@@ -274,7 +274,7 @@ public class DataSourcesRestController extends BaseRestController {
 				"status", "IN_PROGRESS"
 			).put(
 				"totalOperations",
-				_csvIndividualDog.getCSVIndividualsCount(dataSourceId)
+				_bqCSVUserDog.getBQCSVUsersCount(dataSourceId)
 			);
 		}
 
@@ -677,10 +677,10 @@ public class DataSourcesRestController extends BaseRestController {
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private ConfigurationHttp _configurationHttp;
+	private BQCSVUserDog _bqCSVUserDog;
 
 	@Autowired
-	private CSVIndividualDog _csvIndividualDog;
+	private ConfigurationHttp _configurationHttp;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;

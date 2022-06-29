@@ -369,7 +369,7 @@ public class FieldMappingsRestController extends BaseRestController {
 	private FieldMappingDog _fieldMappingDog;
 
 	private final Map<String, String> _naniteClassNames =
-		Collections.singletonMap("CSV#individual", "CSVIndividualsNanite");
+		Collections.singletonMap("CSV#user", "CSVUsersNanite");
 
 	@Autowired
 	private ObjectMapper _objectMapper;

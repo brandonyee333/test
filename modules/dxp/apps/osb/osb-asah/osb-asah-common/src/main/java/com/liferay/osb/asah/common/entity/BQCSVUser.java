@@ -39,21 +39,21 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcellus Tavares
  */
 @Table
-public class CSVIndividual implements Persistable<Long> {
+public class BQCSVUser implements Persistable<Long> {
 
-	public CSVIndividual() {
+	public BQCSVUser() {
 	}
 
-	public CSVIndividual(Long dataSourceId) {
+	public BQCSVUser(Long dataSourceId) {
 		this(dataSourceId, null);
 	}
 
-	public CSVIndividual(Long dataSourceId, JSONObject fieldsJSONObject) {
+	public BQCSVUser(Long dataSourceId, JSONObject fieldsJSONObject) {
 		_dataSourceId = dataSourceId;
 		_fieldsJSONObject = fieldsJSONObject;
 	}
 
-	public CSVIndividual(Map<String, Object> source) {
+	public BQCSVUser(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
 	}
 
@@ -63,19 +63,18 @@ public class CSVIndividual implements Persistable<Long> {
 			return true;
 		}
 
-		if (!(obj instanceof CSVIndividual)) {
+		if (!(obj instanceof BQCSVUser)) {
 			return false;
 		}
 
-		CSVIndividual csvIndividual = (CSVIndividual)obj;
+		BQCSVUser bqCSVUser = (BQCSVUser)obj;
 
-		if (Objects.equals(_dataSourceId, csvIndividual._dataSourceId) &&
-			Objects.equals(
-				_dataSourceUserPK, csvIndividual._dataSourceUserPK) &&
+		if (Objects.equals(_dataSourceId, bqCSVUser._dataSourceId) &&
+			Objects.equals(_dataSourceUserPK, bqCSVUser._dataSourceUserPK) &&
 			Objects.equals(
 				JSONUtil.toMap(_fieldsJSONObject),
-				JSONUtil.toMap(csvIndividual._fieldsJSONObject)) &&
-			Objects.equals(_id, csvIndividual._id)) {
+				JSONUtil.toMap(bqCSVUser._fieldsJSONObject)) &&
+			Objects.equals(_id, bqCSVUser._id)) {
 
 			return true;
 		}

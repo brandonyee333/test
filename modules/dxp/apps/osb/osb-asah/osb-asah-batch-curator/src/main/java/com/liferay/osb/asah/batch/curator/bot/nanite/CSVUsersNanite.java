@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.dog.CSVIndividualDog;
+import com.liferay.osb.asah.common.dog.BQCSVUserDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.model.Sort;
@@ -38,11 +38,11 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class CSVIndividualsNanite extends BaseIndividualsNanite {
+public class CSVUsersNanite extends BaseIndividualsNanite {
 
 	@Override
 	protected Log getLog() {
-		return LogFactory.getLog(CSVIndividualsNanite.class);
+		return LogFactory.getLog(CSVUsersNanite.class);
 	}
 
 	@Override
@@ -55,9 +55,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 		return _runningMap.getOrDefault(dataSourceId, false);
 	}
 
-	protected void processCSVIndividual(CSVIndividual csvIndividual)
-		throws Exception {
-
+	protected void processBQCSVUser(BQCSVUser bqCSVUser) throws Exception {
 		FieldMapping emailFieldMapping = _fieldMappingDog.fetchFieldMapping(
 			"demographics", "email", "individual");
 
@@ -69,17 +67,17 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 			emailFieldMapping.getDataSourceFieldNames();
 
 		String emailDataSourceFieldName = dataSourceFieldNames.getOrDefault(
-			String.valueOf(csvIndividual.getDataSourceId()), null);
+			String.valueOf(bqCSVUser.getDataSourceId()), null);
 
 		if (emailDataSourceFieldName == null) {
 			return;
 		}
 
-		JSONObject fieldsJSONObject = csvIndividual.getFieldsJSONObject();
+		JSONObject fieldsJSONObject = bqCSVUser.getFieldsJSONObject();
 
 		processData(
-			csvIndividual.getDataSourceUserPK(),
-			csvIndividual.getDataSourceId(), fieldsJSONObject,
+			bqCSVUser.getDataSourceUserPK(), bqCSVUser.getDataSourceId(),
+			fieldsJSONObject,
 			fieldsJSONObject.optString(emailDataSourceFieldName, null));
 	}
 
@@ -107,16 +105,15 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 					return;
 				}
 
-				List<CSVIndividual> csvIndividuals =
-					_csvIndividualDog.getCSVIndividuals(
-						dataSourceId, page++, 10000, Sort.desc("id"));
+				List<BQCSVUser> bqCSVUsers = _bqCSVUserDog.getBQCSVUsers(
+					dataSourceId, page++, 10000, Sort.desc("id"));
 
-				if (csvIndividuals.isEmpty()) {
+				if (bqCSVUsers.isEmpty()) {
 					break;
 				}
 
-				for (CSVIndividual csvIndividual : csvIndividuals) {
-					processCSVIndividual(csvIndividual);
+				for (BQCSVUser bqCSVUser : bqCSVUsers) {
+					processBQCSVUser(bqCSVUser);
 
 					JSONObject runLogContextJSONObject =
 						runLog.getContextJSONObject();
@@ -133,7 +130,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 						WeDeployDataService.OSB_ASAH_FARO_INFO);
 				}
 
-				if (csvIndividuals.size() < 10000) {
+				if (bqCSVUsers.size() < 10000) {
 					break;
 				}
 			}
@@ -162,7 +159,7 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	@Autowired
-	private CSVIndividualDog _csvIndividualDog;
+	private BQCSVUserDog _bqCSVUserDog;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;

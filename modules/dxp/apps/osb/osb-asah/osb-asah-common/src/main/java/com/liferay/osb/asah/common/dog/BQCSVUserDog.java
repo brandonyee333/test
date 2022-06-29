@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 
 import java.util.List;
 
@@ -33,72 +33,72 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class CSVIndividualDog {
+public class BQCSVUserDog {
 
-	public void addCSVIndividuals(List<CSVIndividual> csvIndividuals) {
-		if (csvIndividuals.isEmpty()) {
+	public void addBQCSVUsers(List<BQCSVUser> bqCSVUsers) {
+		if (bqCSVUsers.isEmpty()) {
 			return;
 		}
 
-		_csvIndividualRepository.saveAll(csvIndividuals);
+		_bqCSVUserRepository.saveAll(bqCSVUsers);
 
-		CSVIndividual csvIndividual = csvIndividuals.get(0);
+		BQCSVUser bqCSVUser = bqCSVUsers.get(0);
 
 		_asahTaskDog.scheduleAsahTask(
-			"CSVIndividualsNanite",
+			"CSVUsersNanite",
 			JSONUtil.put(
-				"dataSourceId", String.valueOf(csvIndividual.getDataSourceId())
+				"dataSourceId", String.valueOf(bqCSVUser.getDataSourceId())
 			).put(
 				"type", "reprocess"
 			));
 	}
 
-	public void deleteCSVIndividuals(Long dataSourceId) {
-		_csvIndividualRepository.deleteByDataSourceId(dataSourceId);
+	public void deleteBQCSVUsers(Long dataSourceId) {
+		_bqCSVUserRepository.deleteByDataSourceId(dataSourceId);
 	}
 
-	public void deleteCSVIndividuals(
-		Long dataSourceId, List<String> dataSourceIndividualPKs) {
+	public void deleteBQCSVUsers(
+		Long dataSourceId, List<String> dataSourceUserPKs) {
 
-		_csvIndividualRepository.deleteByDataSourceIdAndDataSourceUserPKIn(
-			dataSourceId, dataSourceIndividualPKs);
+		_bqCSVUserRepository.deleteByDataSourceIdAndDataSourceUserPKIn(
+			dataSourceId, dataSourceUserPKs);
 	}
 
-	public CSVIndividual fetchCSVIndividual(
+	public BQCSVUser fetchBQCSVUser(
 		Long dataSourceId, String fieldKey, String fieldValue) {
 
-		List<CSVIndividual> csvIndividuals =
-			_csvIndividualRepository.findByDataSourceIdAndFieldKeyEquals(
+		List<BQCSVUser> bqCSVUsers =
+			_bqCSVUserRepository.findByDataSourceIdAndFieldKeyEquals(
 				dataSourceId, fieldKey, fieldValue);
 
-		if (csvIndividuals.isEmpty()) {
+		if (bqCSVUsers.isEmpty()) {
 			return null;
 		}
 
-		if ((csvIndividuals.size() > 1) && _log.isWarnEnabled()) {
+		if ((bqCSVUsers.size() > 1) && _log.isWarnEnabled()) {
 			_log.warn("Multiple CSV Individuals were fetched");
 		}
 
-		return csvIndividuals.get(0);
+		return bqCSVUsers.get(0);
 	}
 
-	public List<CSVIndividual> getCSVIndividuals(
+	public List<BQCSVUser> getBQCSVUsers(
 		Long dataSourceId, int page, int size, Sort sort) {
 
-		return _csvIndividualRepository.findByDataSourceId(
+		return _bqCSVUserRepository.findByDataSourceId(
 			dataSourceId, PageRequest.of(page, size, sort));
 	}
 
-	public long getCSVIndividualsCount(Long dataSourceId) {
-		return _csvIndividualRepository.countByDataSourceId(dataSourceId);
+	public long getBQCSVUsersCount(Long dataSourceId) {
+		return _bqCSVUserRepository.countByDataSourceId(dataSourceId);
 	}
 
-	private static final Log _log = LogFactory.getLog(CSVIndividualDog.class);
+	private static final Log _log = LogFactory.getLog(BQCSVUserDog.class);
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private CSVIndividualRepository _csvIndividualRepository;
+	private BQCSVUserRepository _bqCSVUserRepository;
 
 }

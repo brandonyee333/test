@@ -14,13 +14,12 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.entity.CSVIndividual;
-import com.liferay.osb.asah.common.repository.CustomCSVIndividualRepository;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
+import com.liferay.osb.asah.common.repository.CustomBQCSVUserRepository;
 
 import java.util.List;
 
 import org.jooq.DSLContext;
-import org.jooq.DeleteUsingStep;
 import org.jooq.Record;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -28,43 +27,21 @@ import org.jooq.impl.DSL;
 /**
  * @author Marcellus Tavares
  */
-public class CSVIndividualRepositoryImpl
-	extends BaseRepository implements CustomCSVIndividualRepository {
+public class BQCSVUserRepositoryImpl
+	extends BaseRepository implements CustomBQCSVUserRepository {
 
-	public CSVIndividualRepositoryImpl(DSLContext dslContext) {
+	public BQCSVUserRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
 	@Override
-	public void deleteByDataSourceIdAndDataSourceUserPKIn(
-		Long dataSourceId, List<String> dataSourceUserPKs) {
-
-		DeleteUsingStep<Record> deleteUsingStep = _dslContext.deleteFrom(
-			DSL.table("CSVIndividual"));
-
-		deleteUsingStep.where(
-			DSL.and(
-				DSL.field(
-					"dataSourceId"
-				).eq(
-					dataSourceId
-				),
-				DSL.field(
-					"dataSourceUserPK"
-				).in(
-					dataSourceUserPKs
-				))
-		).execute();
-	}
-
-	@Override
-	public List<CSVIndividual> findByDataSourceIdAndFieldKeyEquals(
+	public List<BQCSVUser> findByDataSourceIdAndFieldKeyEquals(
 		Long dataSourceId, String fieldKey, String fieldValue) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
-			"CSVIndividual"
+			"BQCSVUser"
 		).where(
 			DSL.and(
 				DSL.field(
@@ -74,7 +51,7 @@ public class CSVIndividualRepositoryImpl
 				),
 				DSL.condition("fields ->> ? = ?", fieldKey, fieldValue))
 		).fetch(
-			record -> new CSVIndividual(record.intoMap())
+			record -> new BQCSVUser(record.intoMap())
 		);
 	}
 

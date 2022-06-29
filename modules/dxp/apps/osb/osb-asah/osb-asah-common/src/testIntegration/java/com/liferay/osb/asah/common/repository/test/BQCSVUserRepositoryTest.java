@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.entity.CSVIndividual;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.CSVIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
@@ -40,8 +40,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author Marcellus Tavares
  */
 @Import(JDBCTestConfiguration.class)
-public class CSVIndividualRepositoryTest
-	extends BaseRepositoryTestCase<CSVIndividual, Long> {
+public class BQCSVUserRepositoryTest
+	extends BaseRepositoryTestCase<BQCSVUser, Long> {
 
 	@BeforeEach
 	public void setUp() {
@@ -67,20 +67,20 @@ public class CSVIndividualRepositoryTest
 
 		_dataSourceRepository.save(dataSource);
 
-		CSVIndividual csvIndividual1 = new CSVIndividual(
+		BQCSVUser bqCSVUser1 = new BQCSVUser(
 			1L, JSONUtil.put("givenName", "Bennie"));
 
-		csvIndividual1.setDataSourceUserPK("1");
+		bqCSVUser1.setDataSourceUserPK("1");
 
-		CSVIndividual csvIndividual2 = new CSVIndividual(
+		BQCSVUser bqCSVUser2 = new BQCSVUser(
 			1L, JSONUtil.put("givenName", "Ellie"));
 
-		csvIndividual2.setDataSourceUserPK("2");
+		bqCSVUser2.setDataSourceUserPK("2");
 
-		setUpRepository(csvIndividual1, csvIndividual2);
+		setUpRepository(bqCSVUser1, bqCSVUser2);
 
-		_csvIndividual1 = entityModels.get(0);
-		_csvIndividual2 = entityModels.get(1);
+		_bqCSVUser1 = entityModels.get(0);
+		_bqCSVUser2 = entityModels.get(1);
 	}
 
 	@AfterEach
@@ -94,58 +94,57 @@ public class CSVIndividualRepositoryTest
 	@Test
 	public void testCountByDataSourceId() {
 		Assertions.assertEquals(
-			2L, _csvIndividualRepository.countByDataSourceId(1L));
+			2L, _bqCSVUserRepository.countByDataSourceId(1L));
 	}
 
 	@Test
 	public void testDeleteByDataSourceId() {
-		_csvIndividualRepository.deleteByDataSourceId(1L);
+		_bqCSVUserRepository.deleteByDataSourceId(1L);
 
 		Assertions.assertEquals(
-			0L, _csvIndividualRepository.countByDataSourceId(1L));
+			0L, _bqCSVUserRepository.countByDataSourceId(1L));
 	}
 
 	@Test
 	public void testDeleteByDataSourceIdAndDataSourceUserPKIn() {
-		_csvIndividualRepository.deleteByDataSourceIdAndDataSourceUserPKIn(
+		_bqCSVUserRepository.deleteByDataSourceIdAndDataSourceUserPKIn(
 			1L, Arrays.asList("1", "2"));
 
 		Assertions.assertEquals(
-			0L, _csvIndividualRepository.countByDataSourceId(1L));
+			0L, _bqCSVUserRepository.countByDataSourceId(1L));
 	}
 
 	@Test
 	public void testFindByDataSourceId() {
-		List<CSVIndividual> csvIndividualsById =
-			_csvIndividualRepository.findByDataSourceId(
-				1L, PageRequest.of(0, 10));
+		List<BQCSVUser> bqCSVIdentitiesById =
+			_bqCSVUserRepository.findByDataSourceId(1L, PageRequest.of(0, 10));
 
-		Assertions.assertEquals(2L, csvIndividualsById.size());
+		Assertions.assertEquals(2L, bqCSVIdentitiesById.size());
 	}
 
 	@Test
 	public void testFindByDataSourceIdAndFieldKeyEquals() {
 		Assertions.assertEquals(
-			Arrays.asList(_csvIndividual2),
-			_csvIndividualRepository.findByDataSourceIdAndFieldKeyEquals(
+			Arrays.asList(_bqCSVUser2),
+			_bqCSVUserRepository.findByDataSourceIdAndFieldKeyEquals(
 				1L, "givenName", "Ellie"));
 	}
 
 	@Override
-	protected PagingAndSortingRepository<CSVIndividual, Long>
+	protected PagingAndSortingRepository<BQCSVUser, Long>
 		getPagingAndSortingRepository() {
 
-		return _csvIndividualRepository;
+		return _bqCSVUserRepository;
 	}
+
+	private BQCSVUser _bqCSVUser1;
+	private BQCSVUser _bqCSVUser2;
+
+	@Autowired
+	private BQCSVUserRepository _bqCSVUserRepository;
 
 	@Autowired
 	private ChannelRepository _channelRepository;
-
-	private CSVIndividual _csvIndividual1;
-	private CSVIndividual _csvIndividual2;
-
-	@Autowired
-	private CSVIndividualRepository _csvIndividualRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
