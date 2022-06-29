@@ -190,7 +190,7 @@ public class FinalizeUserSessionArmTest
 			"test3", "2022-01-04T07:20:00.000Z", "2022-01-04T09:14:48.000Z",
 			"2022-03-14T00:00:00.000Z");
 
-		Map<Date, List<String>> pastUserSessionDatesToFinalize =
+		Map<Date, List<String>> finalizablePastUserSessions =
 			_finalizeUserSessionArm.getFinalizablePastUserSessions();
 
 		Assertions.assertEquals(
@@ -220,9 +220,9 @@ public class FinalizeUserSessionArmTest
 						});
 				}
 			},
-			pastUserSessionDatesToFinalize);
+			finalizablePastUserSessions);
 
-		Set<Date> keySet = pastUserSessionDatesToFinalize.keySet();
+		Set<Date> keySet = finalizablePastUserSessions.keySet();
 
 		Stream<Date> stream = keySet.stream();
 
