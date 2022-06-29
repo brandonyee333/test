@@ -4,6 +4,13 @@ ctx._source.interactionsCount = params.interactionsCount;
 ctx._source.modifiedDate = params.modifiedDate;
 ctx._source.pageViewsCount = params.pageViewsCount;
 
+def oldFirstEventDate = ZonedDateTime.parse(ctx._source.firstEventDate);
+def newFirstEventDate = ZonedDateTime.parse(params.firstEventDate);
+
+if (oldFirstEventDate.isAfter(newFirstEventDate)) {
+	ctx._source.firstEventDate = params.firstEventDate;
+}
+
 def oldLastEventDate = ZonedDateTime.parse(ctx._source.lastEventDate);
 def newLastEventDate = ZonedDateTime.parse(params.lastEventDate);
 

@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -51,6 +52,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -102,7 +104,7 @@ public class UserSessionNanite implements Nanite {
 		_boundedExecutor.awaitPendingTasks();
 	}
 
-	private void _createUserSession(
+	private UserSession _createUserSession(
 		AnalyticsEvents analyticsEvents, boolean completed, String userId) {
 
 		UserSession userSession = new UserSession();
@@ -171,9 +173,7 @@ public class UserSessionNanite implements Nanite {
 			getCollectionName(),
 			_objectMapper.convertValue(userSession, JSONObject.class));
 
-		_storeEventDefinitions(
-			analyticsEvents.getAnalyticsEventsList(),
-			jsonObject.getString("id"));
+		return _objectMapper.convertValue(jsonObject, UserSession.class);
 	}
 
 	@PreDestroy
@@ -300,6 +300,91 @@ public class UserSessionNanite implements Nanite {
 		return false;
 	}
 
+	private UserSession _mergeUserSessions(
+		AnalyticsEvents analyticsEvents, List<UserSession> userSessions) {
+
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			_cerebroInfoElasticsearchInvoker.
+				createElasticsearchBulkRequestBuilder();
+
+		UserSession retaininingUserSession = userSessions.remove(0);
+
+		Set<String> canonicalUrls = analyticsEvents.getCanonicalUrls();
+		Set<String> urls = analyticsEvents.getUrls();
+		Set<String> referrers = analyticsEvents.getReferrers();
+
+		long totalInteractionsCount =
+			analyticsEvents.getInteractionsCount() +
+				retaininingUserSession.getInteractionsCount();
+
+		long totalPageViewsCount =
+			analyticsEvents.getPageViewsCount() +
+				retaininingUserSession.getPageViewsCount();
+
+		List<Date> firstEventDates = new ArrayList<Date>() {
+			{
+				add(analyticsEvents.getFirstAnalyticsEventDate());
+				add(retaininingUserSession.getFirstEventDate());
+			}
+		};
+
+		List<Date> lastEventDates = new ArrayList<Date>() {
+			{
+				add(analyticsEvents.getLastAnalyticsEventDate());
+				add(retaininingUserSession.getLastEventDate());
+			}
+		};
+
+		for (UserSession userSession : userSessions) {
+			canonicalUrls.addAll(userSession.getCanonicalUrls());
+			firstEventDates.add(userSession.getFirstEventDate());
+			lastEventDates.add(userSession.getLastEventDate());
+			referrers.addAll(userSession.getReferrers());
+			urls.addAll(userSession.getUrls());
+
+			totalInteractionsCount += userSession.getInteractionsCount();
+			totalPageViewsCount += userSession.getPageViewsCount();
+
+			elasticsearchBulkRequestBuilder.delete(
+				"user-sessions", userSession.getId());
+		}
+
+		long interactionsCount = totalInteractionsCount;
+		long pageViewsCount = totalPageViewsCount;
+
+		Date firstEventDate = Collections.min(firstEventDates);
+		Date lastEventDate = Collections.max(lastEventDates);
+
+		Script script = new Script(
+			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+			_sessionUpdateScriptSource,
+			new HashMap<String, Object>() {
+				{
+					put(
+						"bounced",
+						(interactionsCount < 1) && (pageViewsCount < 2));
+					put("canonicalUrls", new ArrayList<>(canonicalUrls));
+					put("finalized", false);
+					put("firstEventDate", DateUtil.toUTCString(firstEventDate));
+					put("interactionsCount", interactionsCount);
+					put("lastEventDate", DateUtil.toUTCString(lastEventDate));
+					put("modifiedDate", DateUtil.newDateString());
+					put("pageViewsCount", pageViewsCount);
+					put("referrers", new ArrayList<>(referrers));
+					put("urls", urls);
+				}
+			});
+
+		elasticsearchBulkRequestBuilder.update(
+			"user-sessions", retaininingUserSession.getId(), script);
+
+		if (elasticsearchBulkRequestBuilder.hasActions()) {
+			elasticsearchBulkRequestBuilder.get();
+		}
+
+		return retaininingUserSession;
+	}
+
 	private void _processAnalyticsEvents(
 		List<Message<AnalyticsEvent>> messages, String userId) {
 
@@ -374,6 +459,8 @@ public class UserSessionNanite implements Nanite {
 			analyticsEvents.getFirstAnalyticsEventDate(),
 			analyticsEvents.getLastAnalyticsEventDate(), userId);
 
+		UserSession userSession;
+
 		if (userSessions.isEmpty()) {
 			Date lastAnalyticsEventDate =
 				analyticsEvents.getLastAnalyticsEventDate();
@@ -390,15 +477,24 @@ public class UserSessionNanite implements Nanite {
 			currentDayZonedDateTime = currentDayZonedDateTime.withSecond(0);
 
 			if (zonedDateTime.isBefore(currentDayZonedDateTime)) {
-				_createUserSession(analyticsEvents, true, userId);
+				userSession = _createUserSession(analyticsEvents, true, userId);
 			}
 			else {
-				_createUserSession(analyticsEvents, false, userId);
+				userSession = _createUserSession(
+					analyticsEvents, false, userId);
 			}
 		}
 		else if (userSessions.size() == 1) {
-			_updateUserSession(analyticsEvents, userSessions.get(0));
+			userSession = userSessions.get(0);
+
+			_updateUserSession(analyticsEvents, userSession);
 		}
+		else {
+			userSession = _mergeUserSessions(analyticsEvents, userSessions);
+		}
+
+		_storeEventDefinitions(
+			analyticsEvents.getAnalyticsEventsList(), userSession.getId());
 	}
 
 	private void _run() throws Exception {
@@ -545,6 +641,10 @@ public class UserSessionNanite implements Nanite {
 						"canonicalUrls",
 						new ArrayList<>(analyticsEvents.getCanonicalUrls()));
 					put("finalized", false);
+					put(
+						"firstEventDate",
+						DateUtil.toUTCString(
+							analyticsEvents.getFirstAnalyticsEventDate()));
 					put("interactionsCount", interactionsCount);
 					put(
 						"lastEventDate",
@@ -561,9 +661,6 @@ public class UserSessionNanite implements Nanite {
 
 		_cerebroInfoElasticsearchInvoker.update(
 			"user-sessions", userSession.getId(), script);
-
-		_storeEventDefinitions(
-			analyticsEvents.getAnalyticsEventsList(), userSession.getId());
 	}
 
 	private static final Log _log = LogFactory.getLog(UserSessionNanite.class);
