@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
 public class BrowscapEngine {
 
 	public BrowscapDevice getDevice(String userAgent) {
-		return new BrowscapDevice(userAgent, _parser);
+		return new BrowscapDevice(userAgent, _userAgentParser);
 	}
 
 	@PostConstruct
@@ -46,7 +46,7 @@ public class BrowscapEngine {
 		try {
 			UserAgentService userAgentService = new UserAgentService();
 
-			_parser = userAgentService.loadParser(
+			_userAgentParser = userAgentService.loadParser(
 				Arrays.asList(
 					BrowsCapField.BROWSER, BrowsCapField.BROWSER_TYPE,
 					BrowsCapField.DEVICE_TYPE, BrowsCapField.IS_CRAWLER,
@@ -61,6 +61,6 @@ public class BrowscapEngine {
 
 	private static final Log _log = LogFactory.getLog(BrowscapEngine.class);
 
-	private UserAgentParser _parser;
+	private UserAgentParser _userAgentParser;
 
 }
