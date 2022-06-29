@@ -169,8 +169,6 @@ public class DataSourcesRestController extends BaseRestController {
 		DataSource dataSource = _dataSourceDog.patchDataSource(
 			_objectMapper.convertValue(dataSourceDTO, DataSource.class));
 
-		_sanitize(dataSource);
-
 		return new DataSourceDTO(dataSource);
 	}
 
