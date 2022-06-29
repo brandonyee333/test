@@ -35,7 +35,7 @@ public class BQExpandoValue implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public ClassType getClassType() {
+	public String getClassType() {
 		return _classType;
 	}
 
@@ -74,7 +74,7 @@ public class BQExpandoValue implements Persistable<String> {
 		_classPK = classPK;
 	}
 
-	public void setClassType(ClassType classType) {
+	public void setClassType(String classType) {
 		_classType = classType;
 	}
 
@@ -98,17 +98,11 @@ public class BQExpandoValue implements Persistable<String> {
 		_value = value;
 	}
 
-	public enum ClassType {
-
-		ACCOUNT, INDIVIDUAL, ORGANIZATION
-
-	}
-
 	@Transient
 	private Long _classPK;
 
 	@Transient
-	private ClassType _classType;
+	private String _classType;
 
 	@Transient
 	private String _columnId;

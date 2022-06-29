@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.entity.BQRole;
 import com.liferay.osb.asah.common.entity.BQTeam;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.BQUserGroup;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
@@ -121,7 +122,7 @@ public class DXPEntitiesIngestionNanite {
 	}
 
 	private Set<BQExpandoValue> _getExpandoValues(
-		Long classPK, BQExpandoValue.ClassType classType, Long dataSourceId,
+		Long classPK, String classType, Long dataSourceId,
 		JSONArray expandoFieldsJSONArray, String projectId) {
 
 		Set<BQExpandoValue> bqExpandoValues = new HashSet<>();
@@ -294,7 +295,7 @@ public class DXPEntitiesIngestionNanite {
 				_bqExpandoValueRepository.saveAll(
 					_getExpandoValues(
 						bqOrganization.getOrganizationId(),
-						BQExpandoValue.ClassType.ORGANIZATION, dataSourceId,
+						DXPEntity.Type.CLASS_NAME_ORGANIZATION, dataSourceId,
 						expandFieldsJSONArray, projectId));
 			}
 
@@ -346,9 +347,8 @@ public class DXPEntitiesIngestionNanite {
 			if (expandFieldsJSONArray != null) {
 				_bqExpandoValueRepository.saveAll(
 					_getExpandoValues(
-						bqUser.getDXPUserId(),
-						BQExpandoValue.ClassType.INDIVIDUAL, dataSourceId,
-						expandFieldsJSONArray, projectId));
+						bqUser.getDXPUserId(), DXPEntity.Type.CLASS_NAME_USER,
+						dataSourceId, expandFieldsJSONArray, projectId));
 			}
 
 			bqUser.setId(
