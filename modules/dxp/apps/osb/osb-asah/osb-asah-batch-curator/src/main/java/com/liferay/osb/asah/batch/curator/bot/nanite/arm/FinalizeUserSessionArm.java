@@ -82,6 +82,78 @@ import org.springframework.stereotype.Component;
 @Component
 public class FinalizeUserSessionArm {
 
+	public Map<Date, List<String>> getFinalizablePastUserSessions() {
+		Map<Date, Set<Pair<String, Long>>> pastUserSessionDatesWithCount =
+			new TreeMap<>(Collections.reverseOrder());
+
+		for (Project project : _projectDog.getProjects()) {
+			Map<Date, Long> pastUserSessionDates = getPastUserSessionDates(
+				project.getId());
+
+			for (Map.Entry<Date, Long> entry :
+					pastUserSessionDates.entrySet()) {
+
+				String projectId = project.getId();
+
+				Set<String> userSessionFinalizeDates =
+					PastUserSessionFinalizerNanite.getUserSessionFinalizeDates(
+						projectId);
+
+				if (userSessionFinalizeDates.contains(
+						DateUtil.toUTCString(entry.getKey()))) {
+
+					continue;
+				}
+
+				Date date = entry.getKey();
+
+				Set<Pair<String, Long>> projectIds =
+					pastUserSessionDatesWithCount.computeIfAbsent(
+						date,
+						userSessionDate -> new TreeSet<>(
+							(project1, project2) -> {
+								Long userSessionCount1 = project1.getValue();
+								Long userSessionCount2 = project2.getValue();
+
+								if (userSessionCount1 > userSessionCount2) {
+									return -1;
+								}
+
+								if (userSessionCount1 < userSessionCount2) {
+									return 1;
+								}
+
+								String projectId1 = project1.getKey();
+
+								return projectId1.compareTo(project2.getKey());
+							}));
+
+				projectIds.add(Pair.of(project.getId(), entry.getValue()));
+			}
+		}
+
+		Map<Date, List<String>> pastUserSessionDatesToFinalize = new TreeMap<>(
+			Collections.reverseOrder());
+
+		for (Map.Entry<Date, Set<Pair<String, Long>>> entry :
+				pastUserSessionDatesWithCount.entrySet()) {
+
+			Set<Pair<String, Long>> projectIdCounts = entry.getValue();
+
+			Stream<Pair<String, Long>> stream = projectIdCounts.stream();
+
+			pastUserSessionDatesToFinalize.put(
+				entry.getKey(),
+				stream.map(
+					Pair::getKey
+				).collect(
+					Collectors.toList()
+				));
+		}
+
+		return pastUserSessionDatesToFinalize;
+	}
+
 	public Map<Date, Long> getPastUserSessionDates(String projectId) {
 		try {
 			ProjectIdThreadLocal.setProjectId(projectId);
@@ -152,78 +224,6 @@ public class FinalizeUserSessionArm {
 		finally {
 			ProjectIdThreadLocal.remove();
 		}
-	}
-
-	public Map<Date, List<String>> getPastUserSessionDatesToFinalize() {
-		Map<Date, Set<Pair<String, Long>>> pastUserSessionDatesWithCount =
-			new TreeMap<>(Collections.reverseOrder());
-
-		for (Project project : _projectDog.getProjects()) {
-			Map<Date, Long> pastUserSessionDates = getPastUserSessionDates(
-				project.getId());
-
-			for (Map.Entry<Date, Long> entry :
-					pastUserSessionDates.entrySet()) {
-
-				String projectId = project.getId();
-
-				Set<String> userSessionFinalizeDates =
-					PastUserSessionFinalizerNanite.getUserSessionFinalizeDates(
-						projectId);
-
-				if (userSessionFinalizeDates.contains(
-						DateUtil.toUTCString(entry.getKey()))) {
-
-					continue;
-				}
-
-				Date date = entry.getKey();
-
-				Set<Pair<String, Long>> projectIds =
-					pastUserSessionDatesWithCount.computeIfAbsent(
-						date,
-						userSessionDate -> new TreeSet<>(
-							(project1, project2) -> {
-								Long userSessionCount1 = project1.getValue();
-								Long userSessionCount2 = project2.getValue();
-
-								if (userSessionCount1 > userSessionCount2) {
-									return -1;
-								}
-
-								if (userSessionCount1 < userSessionCount2) {
-									return 1;
-								}
-
-								String projectId1 = project1.getKey();
-
-								return projectId1.compareTo(project2.getKey());
-							}));
-
-				projectIds.add(Pair.of(project.getId(), entry.getValue()));
-			}
-		}
-
-		Map<Date, List<String>> pastUserSessionDatesToFinalize = new TreeMap<>(
-			Collections.reverseOrder());
-
-		for (Map.Entry<Date, Set<Pair<String, Long>>> entry :
-				pastUserSessionDatesWithCount.entrySet()) {
-
-			Set<Pair<String, Long>> projectIdCounts = entry.getValue();
-
-			Stream<Pair<String, Long>> stream = projectIdCounts.stream();
-
-			pastUserSessionDatesToFinalize.put(
-				entry.getKey(),
-				stream.map(
-					Pair::getKey
-				).collect(
-					Collectors.toList()
-				));
-		}
-
-		return pastUserSessionDatesToFinalize;
 	}
 
 	public void processSession(UserSession userSession) {

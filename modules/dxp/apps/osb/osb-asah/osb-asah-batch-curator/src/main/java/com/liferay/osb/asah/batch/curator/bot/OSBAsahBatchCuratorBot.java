@@ -200,7 +200,7 @@ public class OSBAsahBatchCuratorBot {
 			_asahTaskManager.getAvailablePastUserSessionFinalizerTasks();
 
 		Map<Date, List<String>> finalizablePastUserSessions =
-			_finalizeUserSessionArm.getPastUserSessionDatesToFinalize();
+			_finalizeUserSessionArm.getFinalizablePastUserSessions();
 
 		for (Map.Entry<Date, List<String>> entry :
 				finalizablePastUserSessions.entrySet()) {

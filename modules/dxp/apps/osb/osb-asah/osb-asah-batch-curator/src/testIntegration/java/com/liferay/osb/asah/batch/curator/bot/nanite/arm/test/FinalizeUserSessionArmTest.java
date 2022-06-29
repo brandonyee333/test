@@ -191,7 +191,7 @@ public class FinalizeUserSessionArmTest
 			"2022-03-14T00:00:00.000Z");
 
 		Map<Date, List<String>> pastUserSessionDatesToFinalize =
-			_finalizeUserSessionArm.getPastUserSessionDatesToFinalize();
+			_finalizeUserSessionArm.getFinalizablePastUserSessions();
 
 		Assertions.assertEquals(
 			new TreeMap<Date, List<String>>(Collections.reverseOrder()) {
