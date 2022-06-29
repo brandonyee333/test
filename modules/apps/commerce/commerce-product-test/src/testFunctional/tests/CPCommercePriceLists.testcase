@@ -38,6 +38,8 @@ definition {
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
 
+		SelectFrameTop();
+
 		CommerceNavigator.gotoEntry(entryName = "pricelist1");
 
 		CommerceEntry.gotoMenuTab(menuTab = "Entries");
@@ -139,6 +141,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoEntry(entryName = "Price List Test");
 
@@ -865,6 +869,8 @@ definition {
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
 
+		SelectFrameTop();
+
 		Click(locator1 = "Button#PLUS");
 
 		CommerceEntry.addNewPriceListsEntry(
@@ -875,6 +881,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoEntry(entryName = "pricelist1");
 
@@ -1402,6 +1410,8 @@ definition {
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
 
+		SelectFrameTop();
+
 		Refresh();
 
 		CommerceNavigator.gotoPortlet(
@@ -1418,6 +1428,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoEntry(entryName = "Test Price List");
 
@@ -1527,6 +1539,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoEntry(entryName = "Test Price List");
 
@@ -1649,6 +1663,8 @@ definition {
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
 
+		SelectFrameTop();
+
 		CommerceNavigator.gotoEntry(entryName = "Test Price List");
 
 		CommerceEntry.gotoMenuTab(menuTab = "Price Modifiers");
@@ -1716,6 +1732,8 @@ definition {
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
 
+		SelectFrameTop();
+
 		Refresh();
 
 		CommerceNavigator.gotoPortlet(
@@ -1723,6 +1741,8 @@ definition {
 			portlet = "Price Lists");
 
 		Click(locator1 = "Button#PLUS");
+
+		SelectFrameTop();
 
 		CommerceEntry.addNewPriceListsEntry(
 			priceListCatalog = "Test Catalog",
@@ -1732,6 +1752,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoPortlet(
 			category = "Pricing",
@@ -1764,6 +1786,8 @@ definition {
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
 
+		SelectFrameTop();
+
 		Click(locator1 = "Icon#ANGLE_LEFT_BACK");
 
 		Click(locator1 = "Button#PLUS");
@@ -1776,6 +1800,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoPortlet(
 			category = "Pricing",
@@ -1791,6 +1817,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoPortlet(
 			category = "Product Management",
@@ -1866,6 +1894,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoEntry(entryName = "Test Price List");
 
@@ -1986,6 +2016,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoEntry(entryName = "Test Price List");
 
@@ -2144,6 +2176,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoEntry(entryName = "Test Price List");
 
@@ -2339,6 +2373,8 @@ definition {
 		AssertClickNoError(
 			locator1 = "Button#SUBMIT",
 			value1 = "Submit");
+
+		SelectFrameTop();
 
 		CommerceNavigator.gotoEntry(entryName = "Test Price List");
 
