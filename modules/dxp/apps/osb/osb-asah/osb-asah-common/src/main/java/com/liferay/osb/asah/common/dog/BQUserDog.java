@@ -15,10 +15,11 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.BQUser;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -72,13 +73,18 @@ public class BQUserDog extends BaseBQDXPEntityDog {
 	private BQUser _populateExpandoFields(BQUser bqUser) {
 		bqUser.setExpandoFields(
 			getExpandoFields(
-				Arrays.asList(bqUser.getExpandoColumnIds()),
-				Arrays.asList(bqUser.getExpandoValueIds())));
+				_expandoValueRepository.
+					findByClassPKAndClassTypeAndDataSourceId(
+						bqUser.getId(), DXPEntity.Type.CLASS_NAME_USER,
+						bqUser.getDataSourceId())));
 
 		return bqUser;
 	}
 
 	@Autowired
 	private BQUserRepository _bqUserRepository;
+
+	@Autowired
+	private BQExpandoValueRepository _expandoValueRepository;
 
 }

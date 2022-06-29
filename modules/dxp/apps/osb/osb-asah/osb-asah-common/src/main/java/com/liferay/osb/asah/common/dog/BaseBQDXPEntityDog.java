@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
-import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
@@ -28,8 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.collections4.IterableUtils;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -55,73 +53,44 @@ public abstract class BaseBQDXPEntityDog {
 	}
 
 	protected List<ExpandoField> getExpandoFields(
-		List<String> expandoColumnIds, List<String> expandoValueIds) {
+		List<BQExpandoValue> bqExpandoValues) {
 
 		List<ExpandoField> expandoFields = new ArrayList<>();
 
-		Map<String, BQExpandoColumn> bqExpandoColumns = _getExpandoColumns(
-			expandoColumnIds);
+		Map<String, BQExpandoValue> bqExpandoValuesMap = new HashMap<>();
 
-		Map<String, BQExpandoValue> bqExpandoValues = _getExpandoValues(
-			expandoValueIds);
+		for (BQExpandoValue bqExpandoValue : bqExpandoValues) {
+			bqExpandoValuesMap.put(
+				bqExpandoValue.getColumnId(), bqExpandoValue);
+		}
 
-		for (String expandoColumnId : expandoColumnIds) {
-			BQExpandoColumn bqExpandoColumn = bqExpandoColumns.get(
-				expandoColumnId);
+		for (Map.Entry<String, BQExpandoValue> entry :
+				bqExpandoValuesMap.entrySet()) {
 
-			if (bqExpandoColumn == null) {
+			Optional<BQExpandoColumn> bqExpandoColumnOptional =
+				_bqExpandoColumnRepository.findById(entry.getKey());
+
+			if (!bqExpandoColumnOptional.isPresent()) {
 				continue;
 			}
 
-			BQExpandoValue bqExpandoValue = bqExpandoValues.get(
-				expandoColumnId);
+			BQExpandoValue bqExpandoValue = bqExpandoValuesMap.get(
+				entry.getKey());
 
 			if (bqExpandoValue == null) {
 				continue;
 			}
 
 			expandoFields.add(
-				new ExpandoField(bqExpandoColumn, bqExpandoValue));
+				new ExpandoField(
+					bqExpandoColumnOptional.get(), bqExpandoValue));
 		}
 
 		return expandoFields;
 	}
 
-	private Map<String, BQExpandoColumn> _getExpandoColumns(
-		List<String> expandoColumnIds) {
-
-		Map<String, BQExpandoColumn> bqExpandoColumns = new HashMap<>();
-
-		for (BQExpandoColumn bqExpandoColumn :
-				_bqExpandoColumnRepository.findByColumnIdIn(expandoColumnIds)) {
-
-			bqExpandoColumns.put(
-				bqExpandoColumn.getColumnId(), bqExpandoColumn);
-		}
-
-		return bqExpandoColumns;
-	}
-
-	private Map<String, BQExpandoValue> _getExpandoValues(
-		List<String> expandoValueIds) {
-
-		Map<String, BQExpandoValue> bqExpandoValues = new HashMap<>();
-
-		for (BQExpandoValue bqExpandoValue :
-				IterableUtils.toList(
-					_bqExpandoValueRepository.findAllById(expandoValueIds))) {
-
-			bqExpandoValues.put(bqExpandoValue.getColumnId(), bqExpandoValue);
-		}
-
-		return bqExpandoValues;
-	}
-
 	@Autowired
 	private BQExpandoColumnRepository _bqExpandoColumnRepository;
-
-	@Autowired
-	private BQExpandoValueRepository _bqExpandoValueRepository;
 
 	@Autowired
 	private ChannelDog _channelDog;
