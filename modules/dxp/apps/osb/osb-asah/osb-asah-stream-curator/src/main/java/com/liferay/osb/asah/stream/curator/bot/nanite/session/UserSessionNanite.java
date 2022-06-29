@@ -259,6 +259,25 @@ public class UserSessionNanite implements Nanite {
 		return stream.map(
 			jsonObject -> _objectMapper.convertValue(
 				jsonObject, UserSession.class)
+		).filter(
+			userSession -> {
+				Date userSessionLastEventDate = userSession.getLastEventDate();
+
+				ZonedDateTime userSessionLastEventZonedDateTime =
+					ZonedDateTime.ofInstant(
+						userSessionLastEventDate.toInstant(),
+						_timeZoneDog.getZoneId());
+
+				ZonedDateTime lastEventZonedDateTime = ZonedDateTime.ofInstant(
+					lastEventDate.toInstant(), _timeZoneDog.getZoneId());
+
+				long deltaDays = ChronoUnit.DAYS.between(
+					userSessionLastEventZonedDateTime.truncatedTo(
+						ChronoUnit.DAYS),
+					lastEventZonedDateTime.truncatedTo(ChronoUnit.DAYS));
+
+				return deltaDays == 0;
+			}
 		).collect(
 			Collectors.toList()
 		);
