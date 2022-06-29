@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.model.BQDXPEntity;
 import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,27 +61,13 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 		return DXPEntity.Type.ORGANIZATION.name();
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	public String[] getExpandoColumnIds() {
-		return Arrays.copyOf(_expandoColumnIds, _expandoColumnIds.length);
-	}
-
 	public List<ExpandoField> getExpandoFields() {
 		return _expandoFields;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String[] getExpandoValueIds() {
-		return Arrays.copyOf(_expandoValueIds, _expandoValueIds.length);
 	}
 
 	@JsonProperty("fields")
 	public JSONObject getFieldsJSONObject() {
 		return JSONUtil.put(
-			"expandoColumnIds", _expandoColumnIds
-		).put(
-			"expandoValueIds", _expandoValueIds
-		).put(
 			"name", _name
 		).put(
 			"organizationId", _organizationId
@@ -169,18 +154,8 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 		_dataSourceName = dataSourceName;
 	}
 
-	public void setExpandoColumnIds(String[] expandoColumnIds) {
-		_expandoColumnIds = Arrays.copyOf(
-			expandoColumnIds, expandoColumnIds.length);
-	}
-
 	public void setExpandoFields(List<ExpandoField> expandoFields) {
 		_expandoFields = expandoFields;
-	}
-
-	public void setExpandoValueIds(String[] expandoValueIds) {
-		_expandoValueIds = Arrays.copyOf(
-			expandoValueIds, expandoValueIds.length);
 	}
 
 	public void setId(String id) {
@@ -228,13 +203,7 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 	private String _dataSourceName;
 
 	@Transient
-	private String[] _expandoColumnIds = {};
-
-	@Transient
 	private List<ExpandoField> _expandoFields;
-
-	@Transient
-	private String[] _expandoValueIds = {};
 
 	@Transient
 	private String _id;

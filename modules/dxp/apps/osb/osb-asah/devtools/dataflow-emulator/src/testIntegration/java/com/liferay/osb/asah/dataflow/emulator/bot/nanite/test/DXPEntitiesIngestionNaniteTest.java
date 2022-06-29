@@ -16,7 +16,6 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQOrganization;
-import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.BQUserGroup;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -83,40 +82,12 @@ public class DXPEntitiesIngestionNaniteTest
 
 		Assertions.assertEquals(1, _bqOrganizationRepository.count());
 
-		List<BQOrganization> bqOrganizations = IterableUtils.toList(
-			_bqOrganizationRepository.findAll());
-
-		Assertions.assertEquals(
-			1, bqOrganizations.size(), bqOrganizations.toString());
-
-		BQOrganization bqOrganization = bqOrganizations.get(0);
-
-		String[] expandoColumnIds1 = bqOrganization.getExpandoColumnIds();
-
-		Assertions.assertEquals(1, expandoColumnIds1.length);
-
-		String[] expandoValueIds1 = bqOrganization.getExpandoValueIds();
-
-		Assertions.assertEquals(1, expandoValueIds1.length);
-
+		Assertions.assertEquals(1, _bqOrganizationRepository.count());
 		Assertions.assertEquals(1, _bqRoleRepository.count());
 		Assertions.assertEquals(1, _bqTeamRepository.count());
 		Assertions.assertEquals(1, _bqUserGroupRepository.count());
 
-		List<BQUser> bqUsers = IterableUtils.toList(
-			_bqUserRepository.findAll());
-
-		Assertions.assertEquals(1, bqUsers.size(), bqUsers.toString());
-
-		BQUser bqUser = bqUsers.get(0);
-
-		String[] expandoColumnIds2 = bqUser.getExpandoColumnIds();
-
-		Assertions.assertEquals(1, expandoColumnIds2.length);
-
-		String[] expandoValueIds2 = bqUser.getExpandoValueIds();
-
-		Assertions.assertEquals(1, expandoValueIds2.length);
+		Assertions.assertEquals(1, _bqUserRepository.count());
 	}
 
 	@Test
@@ -191,10 +162,7 @@ public class DXPEntitiesIngestionNaniteTest
 		bqExpandoValue.setIsNew(true);
 		bqExpandoValue.setValue("1234");
 
-		bqExpandoValue = _bqExpandoValueRepository.save(bqExpandoValue);
-
-		bqOrganization.setExpandoValueIds(
-			new String[] {bqExpandoValue.getId()});
+		_bqExpandoValueRepository.save(bqExpandoValue);
 
 		_bqOrganizationRepository.save(bqOrganization);
 
@@ -207,16 +175,6 @@ public class DXPEntitiesIngestionNaniteTest
 
 		Assertions.assertEquals(
 			1, bqOrganizations.size(), bqOrganizations.toString());
-
-		bqOrganization = bqOrganizations.get(0);
-
-		String[] expandoColumnIds1 = bqOrganization.getExpandoColumnIds();
-
-		Assertions.assertEquals(1, expandoColumnIds1.length);
-
-		String[] expandoValueIds1 = bqOrganization.getExpandoValueIds();
-
-		Assertions.assertEquals(1, expandoValueIds1.length);
 
 		Assertions.assertEquals(1, _bqExpandoValueRepository.count());
 	}

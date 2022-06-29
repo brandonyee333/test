@@ -1174,11 +1174,6 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REPEATED",
-				"name": "expandoColumnIds",
-				"type": "STRING"
-			},
-			{
 				"mode": "REQUIRED",
 				"name": "id",
 				"type": "STRING"
@@ -1905,11 +1900,6 @@
 			{
 				"mode": "REQUIRED",
 				"name": "emailAddressHashed",
-				"type": "STRING"
-			},
-			{
-				"mode": "REPEATED",
-				"name": "expandoColumnIds",
 				"type": "STRING"
 			},
 			{

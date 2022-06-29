@@ -62,14 +62,6 @@ USING
 						name = 'emailAddress'
 				) AS emailAddress,
 				(
-					SELECT ARRAY(
-						SELECT
-							DISTINCT SAFE_CAST(columnId AS STRING)
-						FROM
-							UNNEST(user.expandoFields)
-					)
-				) AS expandoColumnIds,
-				(
 					SELECT
 						SAFE_CAST(value AS STRING)
 					FROM
@@ -344,7 +336,6 @@ WHEN MATCHED AND staging.deleted IS NULL THEN
 		replica.birthday = staging.birthday,
 		replica.emailAddress = staging.emailAddress,
 		replica.emailAddressHashed = TO_HEX(SHA256(staging.emailAddress)),
-		replica.expandoColumnIds = staging.expandoColumnIds,
 		replica.firstName = staging.firstName,
 		replica.groupIds = staging.groupIds,
 		replica.jobTitle = staging.jobTitle,
@@ -376,7 +367,6 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		`dxpUserId`,
 		`emailAddress`,
 		`emailAddressHashed`,
-		`expandoColumnIds`,
 		`firstName`,
 		`groupIds`,
 		`id`,
@@ -409,7 +399,6 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		staging.userId,
 		staging.emailAddress,
 		TO_HEX(SHA256(staging.emailAddress)),
-		staging.expandoColumnIds,
 		staging.firstName,
 		staging.groupIds,
 		staging.sha256HexId,

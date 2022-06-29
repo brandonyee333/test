@@ -55,7 +55,6 @@ import java.util.stream.Stream;
 import javax.sql.DataSource;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -119,37 +118,6 @@ public class DXPEntitiesIngestionNanite {
 			String.join(
 				"#", projectId, String.valueOf(dataSourceId),
 				String.valueOf(classPK)));
-	}
-
-	private String[] _getExpandoColumnIds(JSONArray expandoFieldsJSONArray) {
-		List<Object> objects = expandoFieldsJSONArray.toList();
-
-		Stream<Object> stream = objects.stream();
-
-		return stream.map(
-			object -> {
-				Map<String, Object> map = (Map<String, Object>)object;
-
-				return String.valueOf(map.get("columnId"));
-			}
-		).toArray(
-			String[]::new
-		);
-	}
-
-	private String[] _getExpandoValueIds(
-		Iterable<BQExpandoValue> bqExpandoValues) {
-
-		List<BQExpandoValue> bqExpandoValuesList = IterableUtils.toList(
-			bqExpandoValues);
-
-		Stream<BQExpandoValue> stream = bqExpandoValuesList.stream();
-
-		return stream.map(
-			BQExpandoValue::getId
-		).toArray(
-			String[]::new
-		);
 	}
 
 	private Set<BQExpandoValue> _getExpandoValues(
@@ -323,18 +291,11 @@ public class DXPEntitiesIngestionNanite {
 				"expandoFields");
 
 			if (expandFieldsJSONArray != null) {
-				bqOrganization.setExpandoColumnIds(
-					_getExpandoColumnIds(expandFieldsJSONArray));
-
-				Iterable<BQExpandoValue> bqExpandoValues =
-					_bqExpandoValueRepository.saveAll(
-						_getExpandoValues(
-							bqOrganization.getOrganizationId(),
-							BQExpandoValue.ClassType.ORGANIZATION, dataSourceId,
-							expandFieldsJSONArray, projectId));
-
-				bqOrganization.setExpandoValueIds(
-					_getExpandoValueIds(bqExpandoValues));
+				_bqExpandoValueRepository.saveAll(
+					_getExpandoValues(
+						bqOrganization.getOrganizationId(),
+						BQExpandoValue.ClassType.ORGANIZATION, dataSourceId,
+						expandFieldsJSONArray, projectId));
 			}
 
 			bqOrganization.setId(
@@ -383,17 +344,11 @@ public class DXPEntitiesIngestionNanite {
 				"expandoFields");
 
 			if (expandFieldsJSONArray != null) {
-				bqUser.setExpandoColumnIds(
-					_getExpandoColumnIds(expandFieldsJSONArray));
-
-				Iterable<BQExpandoValue> bqExpandoValues =
-					_bqExpandoValueRepository.saveAll(
-						_getExpandoValues(
-							bqUser.getDXPUserId(),
-							BQExpandoValue.ClassType.INDIVIDUAL, dataSourceId,
-							expandFieldsJSONArray, projectId));
-
-				bqUser.setExpandoValueIds(_getExpandoValueIds(bqExpandoValues));
+				_bqExpandoValueRepository.saveAll(
+					_getExpandoValues(
+						bqUser.getDXPUserId(),
+						BQExpandoValue.ClassType.INDIVIDUAL, dataSourceId,
+						expandFieldsJSONArray, projectId));
 			}
 
 			bqUser.setId(

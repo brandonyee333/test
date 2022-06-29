@@ -173,8 +173,6 @@ CREATE TABLE IF NOT EXISTS BQOrder(
 
 CREATE TABLE IF NOT EXISTS BQOrganization (
 	dataSourceId BIGINT,
-	expandoColumnIds TEXT[],
-	expandoValueIds TEXT[],
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
 	name TEXT,
@@ -216,8 +214,6 @@ CREATE TABLE IF NOT EXISTS BQUser (
 	classPK BIGINT,
 	dataSourceId BIGINT,
 	dxpUserId BIGINT,
-	expandoColumnIds TEXT[],
-	expandoValueIds TEXT[],
 	contactId BIGINT,
 	createDate TIMESTAMP,
 	emailAddress TEXT,

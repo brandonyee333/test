@@ -14,14 +14,6 @@ USING
 				organization.type,
 				organization.uploadDate,
 				(
-					SELECT ARRAY(
-						SELECT
-							DISTINCT SAFE_CAST(columnId AS STRING)
-						FROM
-							UNNEST(organization.expandoFields)
-					)
-				) AS expandoColumnIds,
-				(
 					SELECT
 						SAFE_CAST(value AS STRING)
 					FROM
@@ -125,7 +117,6 @@ ON
 	staging.projectId = replica.projectId
 WHEN MATCHED AND staging.deleted IS NULL THEN
 	UPDATE SET
-		replica.expandoColumnIds = staging.expandoColumnIds,
 		replica.modifiedDate = staging.modifiedDate,
 		replica.name = staging.name,
 		replica.type = staging.organizationType,
@@ -136,7 +127,6 @@ WHEN MATCHED AND staging.deleted = true THEN
 WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 	INSERT (
 		`dataSourceId`,
-		`expandoColumnIds`,
 		`id`,
 		`modifiedDate`,
 		`name`,
@@ -148,7 +138,6 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 	)
 	VALUES (
 		staging.dataSourceId,
-		staging.expandoColumnIds,
 		staging.sha256HexId,
 		staging.modifiedDate,
 		staging.name,
