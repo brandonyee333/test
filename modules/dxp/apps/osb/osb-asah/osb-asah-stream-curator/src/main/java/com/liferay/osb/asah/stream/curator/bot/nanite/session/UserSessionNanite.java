@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -44,6 +45,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,10 +60,10 @@ import javax.annotation.PreDestroy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,7 +193,7 @@ public class UserSessionNanite implements Nanite {
 			analyticsEvent.getUserId());
 	}
 
-	private JSONObject _getUserSession(
+	private List<UserSession> _getUserSessions(
 		Date firstEventDate, Date lastEventDate, String userId) {
 
 		LocalDateTime firstEventLocalDateTime = DateUtil.toLocalDateTime(
@@ -199,7 +201,7 @@ public class UserSessionNanite implements Nanite {
 		LocalDateTime lastEventLocalDateTime = DateUtil.toLocalDateTime(
 			lastEventDate, _timeZoneDog.getZoneId());
 
-		return _cerebroInfoElasticsearchInvoker.fetch(
+		JSONArray userSessionsJSONArray = _cerebroInfoElasticsearchInvoker.get(
 			"user-sessions",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("userId", userId)
@@ -247,6 +249,19 @@ public class UserSessionNanite implements Nanite {
 						)
 					))
 			));
+
+		if (userSessionsJSONArray.length() == 0) {
+			return Collections.emptyList();
+		}
+
+		Stream<Object> stream = JSONUtil.toObjectStream(userSessionsJSONArray);
+
+		return stream.map(
+			jsonObject -> _objectMapper.convertValue(
+				jsonObject, UserSession.class)
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	@PostConstruct
@@ -336,58 +351,34 @@ public class UserSessionNanite implements Nanite {
 				Collectors.toList()
 			));
 
-		JSONObject userSessionJSONObject = _getUserSession(
+		List<UserSession> userSessions = _getUserSessions(
 			analyticsEvents.getFirstAnalyticsEventDate(),
 			analyticsEvents.getLastAnalyticsEventDate(), userId);
 
-		if (userSessionJSONObject == null) {
-			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("completed", false)
-			).mustNot(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.rangeQuery(
-						"lastEventDate"
-					).lt(
-						"now-30m"
-					)
-				).should(
-					QueryBuilders.rangeQuery(
-						"lastEventDate"
-					).lt(
-						"now/d"
-					)
-				)
-			).filter(
-				QueryBuilders.termQuery("userId", userId)
-			);
+		if (userSessions.isEmpty()) {
+			Date lastAnalyticsEventDate =
+				analyticsEvents.getLastAnalyticsEventDate();
 
-			if (!_cerebroInfoElasticsearchInvoker.exists(
-					"user-sessions", boolQueryBuilder)) {
+			ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(
+				lastAnalyticsEventDate.toInstant(), _timeZoneDog.getZoneId());
 
-				try {
-					Date lastAnalyticsEventDate =
-						analyticsEvents.getLastAnalyticsEventDate();
+			ZonedDateTime currentDayZonedDateTime = ZonedDateTime.now(
+				_timeZoneDog.getZoneId());
 
-					Date yesterday = DateUtil.toUTCDate(
-						DateUtil.addDays(DateUtil.newDateString(), -1));
+			currentDayZonedDateTime = currentDayZonedDateTime.withHour(0);
+			currentDayZonedDateTime = currentDayZonedDateTime.withMinute(0);
+			currentDayZonedDateTime = currentDayZonedDateTime.withNano(0);
+			currentDayZonedDateTime = currentDayZonedDateTime.withSecond(0);
 
-					if (lastAnalyticsEventDate.before(yesterday)) {
-						_createUserSession(analyticsEvents, true, userId);
-					}
-					else {
-						_createUserSession(analyticsEvents, false, userId);
-					}
-				}
-				catch (Exception exception) {
-					_log.error(exception, exception);
-				}
-			}
-			else {
+			if (zonedDateTime.isBefore(currentDayZonedDateTime)) {
 				_createUserSession(analyticsEvents, true, userId);
 			}
+			else {
+				_createUserSession(analyticsEvents, false, userId);
+			}
 		}
-		else {
-			_updateUserSession(analyticsEvents, userSessionJSONObject);
+		else if (userSessions.size() == 1) {
+			_updateUserSession(analyticsEvents, userSessions.get(0));
 		}
 	}
 
@@ -514,14 +505,14 @@ public class UserSessionNanite implements Nanite {
 	}
 
 	private void _updateUserSession(
-		AnalyticsEvents analyticsEvents, JSONObject userSessionJSONObject) {
+		AnalyticsEvents analyticsEvents, UserSession userSession) {
 
 		long interactionsCount =
 			analyticsEvents.getInteractionsCount() +
-				userSessionJSONObject.optLong("interactionsCount");
+				userSession.getInteractionsCount();
 		long pageViewsCount =
 			analyticsEvents.getPageViewsCount() +
-				userSessionJSONObject.optLong("pageViewsCount");
+				userSession.getPageViewsCount();
 
 		Script script = new Script(
 			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
@@ -550,16 +541,10 @@ public class UserSessionNanite implements Nanite {
 			});
 
 		_cerebroInfoElasticsearchInvoker.update(
-			"user-sessions", userSessionJSONObject.getString("id"), script);
-
-		userSessionJSONObject = _cerebroInfoElasticsearchInvoker.fetch(
-			"user-sessions",
-			QueryBuilders.termQuery(
-				"id", userSessionJSONObject.getString("id")));
+			"user-sessions", userSession.getId(), script);
 
 		_storeEventDefinitions(
-			analyticsEvents.getAnalyticsEventsList(),
-			userSessionJSONObject.getString("id"));
+			analyticsEvents.getAnalyticsEventsList(), userSession.getId());
 	}
 
 	private static final Log _log = LogFactory.getLog(UserSessionNanite.class);
