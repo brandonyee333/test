@@ -16,9 +16,12 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQUserDog;
+import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQUser;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 
 import java.util.Arrays;
@@ -56,15 +59,24 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqUser2.setDataSourceId(dataSource.getId());
 		bqUser2.setDXPUserId(2L);
-		bqUser2.setExpandoColumnIds(
-			new String[] {bqExpandoColumn.getColumnId()});
-		bqUser2.setExpandoValueIds(new String[] {bqExpandoValue.getId()});
 		bqUser2.setFirstName("Liferay");
 		bqUser2.setId("2");
 		bqUser2.setIsNew(true);
 		bqUser2.setModifiedDate(DateUtil.newDate());
 
 		_bqUserRepository.saveAll(Arrays.asList(bqUser1, bqUser2));
+
+		bqExpandoValue = new BQExpandoValue();
+
+		bqExpandoValue.setClassPK(2L);
+		bqExpandoValue.setClassType(DXPEntity.Type.CLASS_NAME_USER);
+		bqExpandoValue.setColumnId(bqExpandoColumn.getColumnId());
+		bqExpandoValue.setDataSourceId(dataSource.getId());
+		bqExpandoValue.setId("1");
+		bqExpandoValue.setIsNew(true);
+		bqExpandoValue.setValue("test");
+
+		bqExpandoValue = _bqExpandoValueRepository.save(bqExpandoValue);
 	}
 
 	@Test
@@ -108,6 +120,9 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 		Assertions.assertEquals("column", expandoField.getName());
 		Assertions.assertEquals("test", expandoField.getValue());
 	}
+
+	@Autowired
+	private BQExpandoValueRepository _bqExpandoValueRepository;
 
 	@Autowired
 	private BQUserDog _bqUserDog;

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.BQUserGroup;
+import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.BQAccountEntryRepository;
@@ -154,7 +155,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		bqExpandoValue.setClassPK(123L);
 		bqExpandoValue.setColumnId("1");
-		bqExpandoValue.setClassType(BQExpandoValue.ClassType.ORGANIZATION);
+		bqExpandoValue.setClassType(DXPEntity.Type.CLASS_NAME_ORGANIZATION);
 
 		bqExpandoValue.setId(
 			DigestUtils.sha256Hex(String.join("#", "test", "1", "1", "123")));
