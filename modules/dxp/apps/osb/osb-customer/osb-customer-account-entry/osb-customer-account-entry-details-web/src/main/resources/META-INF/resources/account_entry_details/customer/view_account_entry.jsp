@@ -19,7 +19,7 @@
 <%
 Account koroneikiAccount = accountEntryViewDisplayContext.getAccount();
 
-String tabs1 = ParamUtil.getString(request, "tabs1");
+String tabs1 = ParamUtil.getString(request, "tabs1", "overview");
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
