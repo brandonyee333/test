@@ -475,7 +475,8 @@
 	},
 	"expandocolumn": {
 		"clusteringFields": [
-			"dataSourceId"
+			"dataSourceId",
+			"className"
 		],
 		"fields": [
 			{
