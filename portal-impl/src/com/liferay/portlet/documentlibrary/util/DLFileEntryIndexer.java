@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -53,12 +54,14 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.RelatedEntryIndexer;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
+import com.liferay.portal.kernel.search.generic.MatchQuery;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -263,12 +266,23 @@ public class DLFileEntryIndexer
 		}
 
 		addSearchTerm(searchQuery, searchContext, "ddmContent", false);
-		addSearchTerm(searchQuery, searchContext, "extension", false);
 		addSearchTerm(searchQuery, searchContext, "fileEntryTypeId", false);
 		addSearchTerm(searchQuery, searchContext, "path", false);
 		addSearchLocalizedTerm(
 			searchQuery, searchContext, Field.CONTENT, false);
 		addSearchTerm(searchQuery, searchContext, Field.TITLE, false);
+
+		if (Validator.isNotNull(keywords)) {
+			try {
+				searchQuery.add(
+					_getMatchQuery(
+						"extension", keywords, MatchQuery.Type.PHRASE_PREFIX),
+					BooleanClauseOccur.SHOULD);
+			}
+			catch (ParseException parseException) {
+				throw new SystemException(parseException);
+			}
+		}
 
 		LinkedHashMap<String, Object> params =
 			(LinkedHashMap<String, Object>)searchContext.getAttribute("params");
@@ -422,7 +436,6 @@ public class DLFileEntryIndexer
 			document.addText(
 				"ddmContent",
 				extractDDMContent(dlFileVersion, LocaleUtil.getSiteDefault()));
-			document.addKeyword("extension", dlFileEntry.getExtension());
 			document.addKeyword(
 				"fileEntryTypeId", dlFileEntry.getFileEntryTypeId());
 			document.addKeyword(
@@ -741,6 +754,16 @@ public class DLFileEntryIndexer
 
 			return null;
 		}
+	}
+
+	private MatchQuery _getMatchQuery(
+		String field, String keywords, MatchQuery.Type phrase) {
+
+		MatchQuery matchQuery = new MatchQuery(field, keywords);
+
+		matchQuery.setType(phrase);
+
+		return matchQuery;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
