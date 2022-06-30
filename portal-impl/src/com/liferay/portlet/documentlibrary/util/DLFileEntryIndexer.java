@@ -266,6 +266,7 @@ public class DLFileEntryIndexer
 		}
 
 		addSearchTerm(searchQuery, searchContext, "ddmContent", false);
+		addSearchTerm(searchQuery, searchContext, "extension", false);
 		addSearchTerm(searchQuery, searchContext, "fileEntryTypeId", false);
 		addSearchTerm(searchQuery, searchContext, "path", false);
 		addSearchLocalizedTerm(
@@ -276,7 +277,8 @@ public class DLFileEntryIndexer
 			try {
 				searchQuery.add(
 					_getMatchQuery(
-						"extension", keywords, MatchQuery.Type.PHRASE_PREFIX),
+						"fileExtension", keywords,
+						MatchQuery.Type.PHRASE_PREFIX),
 					BooleanClauseOccur.SHOULD);
 			}
 			catch (ParseException parseException) {
@@ -438,6 +440,8 @@ public class DLFileEntryIndexer
 				extractDDMContent(dlFileVersion, LocaleUtil.getSiteDefault()));
 			document.addKeyword(
 				"fileEntryTypeId", dlFileEntry.getFileEntryTypeId());
+			document.addTextSortable(
+				"fileExtension", dlFileEntry.getExtension());
 			document.addKeyword(
 				"mimeType",
 				StringUtil.replace(
