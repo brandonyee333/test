@@ -718,6 +718,11 @@
 				"store": "yes",
 				"type": "string"
 			},
+			"fileExtension": {
+				"index": "not_analyzed",
+				"store": "yes",
+				"type": "string"
+			},
 			"folderId": {
 				"index": "not_analyzed",
 				"store": "yes",
