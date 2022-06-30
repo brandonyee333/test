@@ -259,7 +259,6 @@ public class DLFileEntryIndexer
 
 		if (Validator.isNull(keywords)) {
 			addSearchTerm(searchQuery, searchContext, Field.DESCRIPTION, false);
-			addSearchTerm(searchQuery, searchContext, Field.TITLE, false);
 			addSearchTerm(searchQuery, searchContext, Field.USER_NAME, false);
 		}
 
@@ -269,6 +268,7 @@ public class DLFileEntryIndexer
 		addSearchTerm(searchQuery, searchContext, "path", false);
 		addSearchLocalizedTerm(
 			searchQuery, searchContext, Field.CONTENT, false);
+		addSearchTerm(searchQuery, searchContext, Field.TITLE, false);
 
 		LinkedHashMap<String, Object> params =
 			(LinkedHashMap<String, Object>)searchContext.getAttribute("params");
@@ -430,7 +430,6 @@ public class DLFileEntryIndexer
 				StringUtil.replace(
 					dlFileEntry.getMimeType(), CharPool.FORWARD_SLASH,
 					CharPool.UNDERLINE));
-			document.addKeyword("path", dlFileEntry.getTitle());
 			document.addKeyword("readCount", dlFileEntry.getReadCount());
 			document.addKeyword("size", dlFileEntry.getSize());
 
