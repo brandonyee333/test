@@ -430,15 +430,12 @@ public class SegmentRepositoryImpl
 	}
 
 	@Override
-	protected String checkSortFieldName(String fieldName) {
+	protected String getSortFieldName(String fieldName) {
 		if (fieldName.equalsIgnoreCase("individualCount")) {
-			fieldName = "identitiesCount";
-		}
-		else {
-			fieldName = super.checkSortFieldName(fieldName);
+			return "identitiesCount";
 		}
 
-		return fieldName;
+		return super.getSortFieldName(fieldName);
 	}
 
 	private List<Condition> _getConditions(

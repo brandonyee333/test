@@ -31,24 +31,24 @@ import org.springframework.data.domain.Sort;
  */
 public abstract class BaseRepository {
 
-	protected String checkSortFieldName(String fieldName) {
+	protected String getSortFieldName(String fieldName) {
 		if (fieldName.equalsIgnoreCase("activeIndividualCount")) {
-			fieldName = "activeIndividualsCount";
+			return "activeIndividualsCount";
 		}
 		else if (fieldName.equalsIgnoreCase("anonymousIndividualCount")) {
-			fieldName = "anonymousIndividualsCount";
+			return "anonymousIndividualsCount";
 		}
 		else if (fieldName.equalsIgnoreCase("dateCreated")) {
-			fieldName = "createDate";
+			return "createDate";
 		}
 		else if (fieldName.equalsIgnoreCase("individualCount")) {
-			fieldName = "individualsCount";
+			return "individualsCount";
 		}
 		else if (fieldName.equalsIgnoreCase("knownIndividualCount")) {
-			fieldName = "knownIndividualsCount";
+			return "knownIndividualsCount";
 		}
 		else if (fieldName.equalsIgnoreCase("dateModified")) {
-			fieldName = "modifiedDate";
+			return "modifiedDate";
 		}
 
 		return fieldName;
@@ -78,7 +78,7 @@ public abstract class BaseRepository {
 				fieldName = fieldNames.get(fieldName);
 			}
 
-			fieldName = checkSortFieldName(fieldName);
+			fieldName = getSortFieldName(fieldName);
 
 			if (table != null) {
 				fieldName = table.getName() + "." + fieldName;
