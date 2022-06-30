@@ -83,7 +83,7 @@
 			</exclusions>
 		</dependency>
 #end
-#if (${liferayVersion.startsWith("7.4")} && ${framework.equals("springportletmvc")})
+#if (${liferayVersion.startsWith("7.4")} &amp;&amp; ${framework.equals("springportletmvc")})
 		<dependency>
 			<groupId>com.rometools</groupId>
 			<artifactId>rome</artifactId>
