@@ -1,6 +1,7 @@
 @component-name = "portal-web-forms-and-data-lists"
 definition {
 
+	property portal.acceptance = "jayda";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Dynamic Data Lists";
@@ -1031,9 +1032,7 @@ definition {
 		property portal.upstream = "quarantine";
 
 		var currentDateYear = DateUtil.getCurrentYear();
-
 		var currentDatelastYear = ${currentDateYear} - 1;
-
 		var currentDatelastYearShort = StringUtil.substring("${currentDatelastYear}", "2", "4");
 
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");

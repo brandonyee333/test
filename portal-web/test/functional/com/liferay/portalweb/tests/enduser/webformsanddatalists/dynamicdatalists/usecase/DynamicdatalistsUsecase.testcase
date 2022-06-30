@@ -1,6 +1,7 @@
 @component-name = "portal-web-forms-and-data-lists"
 definition {
 
+	property portal.acceptance = "jayda";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Dynamic Data Lists";
@@ -911,6 +912,7 @@ definition {
 	@priority = "4"
 	test AddXSSToHTMLField {
 		var ddlRecordFieldData1 = '''<img src=x onerror=alert(/xss/) />''';
+
 		var ddlRecordFieldData2 = ''''+alert('xss')+'"+alert("xss")+"''';
 
 		Navigator.openURL();

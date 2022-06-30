@@ -123,6 +123,8 @@ ${Application['org.apache.catalina.resources'].getContext().getInstanceManager()
 
 	@priority = "4"
 	test ViewInstanceManagerVelocity {
+		property portal.acceptance = "jayda";
+
 		Navigator.gotoSitePage(
 			pageName = "Test Page",
 			siteName = "Test Site Name");
