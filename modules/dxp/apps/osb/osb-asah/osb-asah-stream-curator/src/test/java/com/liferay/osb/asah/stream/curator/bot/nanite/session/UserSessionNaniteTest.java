@@ -14,6 +14,13 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.session;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -29,7 +36,7 @@ import java.util.Map;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.script.Script;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -57,11 +64,11 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 		throws Exception {
 
 		Mockito.when(
-			elasticsearchInvoker.fetch(
+			elasticsearchInvoker.get(
 				ArgumentMatchers.eq(nanite.getCollectionName()),
 				ArgumentMatchers.any(QueryBuilder.class))
 		).thenReturn(
-			new JSONObject(
+			new JSONArray(
 				ResourceUtil.readResourceToString(
 					fileName + "info_old.json", nanite))
 		);
@@ -91,6 +98,19 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 		).thenReturn(
 			ZoneOffset.UTC
 		);
+
+		ReflectionTestUtils.setField(
+			nanite, "_objectMapper",
+			new ObjectMapper() {
+				{
+					disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+					disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+					registerModule(new JavaTimeModule());
+					registerModule(new Jdk8Module());
+					registerModule(new JsonOrgModule());
+				}
+			});
 	}
 
 	@Override
@@ -112,7 +132,7 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 
 		Map<String, Object> params = script.getParams();
 
-		Assertions.assertEquals(9, params.size(), params.toString());
+		Assertions.assertEquals(10, params.size(), params.toString());
 	}
 
 }
