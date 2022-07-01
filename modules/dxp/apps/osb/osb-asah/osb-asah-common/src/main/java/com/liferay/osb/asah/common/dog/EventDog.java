@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -137,9 +138,20 @@ public class EventDog {
 	public List<BQEventPropertyValue> getRecentBQEventPropertyValues(
 		Long eventAttributeDefinitionId, int size) {
 
-		return _bqEventPropertyRepository.
-			findBQEventPropertyValuesByEventAttributeDefinitionId(
-				eventAttributeDefinitionId, size);
+		List<BQEventPropertyValue> recentBQEventPropertyValues =
+			new ArrayList<>();
+
+		Map<String, Date> bqEventPropertyValues =
+			_bqEventPropertyRepository.
+				findBQEventPropertyValuesByEventAttributeDefinitionId(
+					eventAttributeDefinitionId, size);
+
+		for (Map.Entry<String, Date> entry : bqEventPropertyValues.entrySet()) {
+			recentBQEventPropertyValues.add(
+				new BQEventPropertyValue(entry.getValue(), entry.getKey()));
+		}
+
+		return recentBQEventPropertyValues;
 	}
 
 	public Map<String, Date> getRecentGlobalBQEventProperyValues(
