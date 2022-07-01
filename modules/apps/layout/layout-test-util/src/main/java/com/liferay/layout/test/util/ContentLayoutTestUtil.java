@@ -21,9 +21,12 @@ import com.liferay.fragment.service.FragmentEntryLinkServiceUtil;
 import com.liferay.fragment.service.FragmentEntryLocalServiceUtil;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalServiceUtil;
+import com.liferay.layout.page.template.util.LayoutStructureUtil;
+import com.liferay.layout.util.constants.LayoutDataItemTypeConstants;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -45,6 +48,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.segments.service.SegmentsExperienceLocalServiceUtil;
@@ -65,10 +69,76 @@ import org.osgi.framework.ServiceReference;
  */
 public class ContentLayoutTestUtil {
 
+	public static JSONObject addFormToLayout(
+			Layout layout, String classNameId, String classTypeId,
+			long segmentsExperienceId, String... fieldTypes)
+		throws Exception {
+
+		JSONObject jsonObject = addItemToLayout(
+			layout,
+			JSONUtil.put(
+				"classNameId", classNameId
+			).put(
+				"classTypeId", classTypeId
+			).toString(),
+			LayoutDataItemTypeConstants.TYPE_FORM, segmentsExperienceId);
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				layout.getGroupId(), TestPropsValues.getUserId());
+		String parentItemId = jsonObject.getString("addedItemId");
+
+		for (int i = 0; i < fieldTypes.length; i++) {
+			String fieldType = fieldTypes[i];
+
+			FragmentEntry fragmentEntry =
+				FragmentEntryLocalServiceUtil.addFragmentEntry(
+					TestPropsValues.getUserId(), layout.getGroupId(), 0,
+					StringUtil.randomString(), StringUtil.randomString(),
+					RandomTestUtil.randomString(),
+					RandomTestUtil.randomString(),
+					RandomTestUtil.randomString(), false, "{fieldSets: []}",
+					null, 0, FragmentConstants.TYPE_INPUT,
+					JSONUtil.put(
+						"typeOptions",
+						JSONUtil.put(
+							"fieldTypes", JSONUtil.put(fieldType))
+					).toString(),
+					WorkflowConstants.STATUS_APPROVED, serviceContext);
+
+			addFragmentEntryLinkToLayout(
+				layout, fragmentEntry.getFragmentEntryId(),
+				segmentsExperienceId, fragmentEntry.getCss(),
+				fragmentEntry.getHtml(), fragmentEntry.getJs(),
+				fragmentEntry.getConfiguration(), "{}",
+				fragmentEntry.getFragmentEntryKey(), fragmentEntry.getType(),
+				parentItemId, i);
+		}
+
+		jsonObject.put(
+			"layoutData",
+			LayoutStructureUtil.getLayoutStructure(
+				layout.getPlid(), segmentsExperienceId));
+
+		return jsonObject;
+	}
+
 	public static FragmentEntryLink addFragmentEntryLinkToLayout(
 			Layout layout, long fragmentEntryId, long segmentsExperienceId,
 			String css, String html, String js, String configuration,
 			String editableValues, String rendererKey, int type)
+		throws Exception {
+
+		return addFragmentEntryLinkToLayout(
+			layout, fragmentEntryId, segmentsExperienceId, css, html, js,
+			configuration, editableValues, rendererKey, type, null, 0);
+	}
+
+	public static FragmentEntryLink addFragmentEntryLinkToLayout(
+			Layout layout, long fragmentEntryId, long segmentsExperienceId,
+			String css, String html, String js, String configuration,
+			String editableValues, String rendererKey, int type,
+			String parentItemId, int position)
 		throws Exception {
 
 		FragmentEntryLink fragmentEntryLink =
@@ -87,9 +157,16 @@ public class ContentLayoutTestUtil {
 		LayoutStructure layoutStructure = LayoutStructure.of(
 			layoutPageTemplateStructure.getData(segmentsExperienceId));
 
-		layoutStructure.addFragmentStyledLayoutStructureItem(
-			fragmentEntryLink.getFragmentEntryLinkId(),
-			layoutStructure.getMainItemId(), 0);
+		if (Validator.isNull(parentItemId)) {
+			layoutStructure.addFragmentStyledLayoutStructureItem(
+				fragmentEntryLink.getFragmentEntryLinkId(),
+				layoutStructure.getMainItemId(), position);
+		}
+		else {
+			layoutStructure.addFragmentStyledLayoutStructureItem(
+				fragmentEntryLink.getFragmentEntryLinkId(), parentItemId,
+				position);
+		}
 
 		LayoutPageTemplateStructureLocalServiceUtil.
 			updateLayoutPageTemplateStructureData(
@@ -101,6 +178,15 @@ public class ContentLayoutTestUtil {
 
 	public static FragmentEntryLink addFragmentEntryLinkToLayout(
 			Layout layout, long segmentsExperienceId, String editableValues)
+		throws Exception {
+
+		return addFragmentEntryLinkToLayout(
+			layout, segmentsExperienceId, editableValues, null, 0);
+	}
+
+	public static FragmentEntryLink addFragmentEntryLinkToLayout(
+			Layout layout, long segmentsExperienceId, String editableValues,
+			String parentItemId, int position)
 		throws Exception {
 
 		FragmentEntry fragmentEntry =
@@ -119,7 +205,68 @@ public class ContentLayoutTestUtil {
 			fragmentEntry.getCss(), fragmentEntry.getHtml(),
 			fragmentEntry.getJs(), fragmentEntry.getConfiguration(),
 			editableValues, fragmentEntry.getFragmentEntryKey(),
-			fragmentEntry.getType());
+			fragmentEntry.getType(), parentItemId, position);
+	}
+
+	public static JSONObject addItemToLayout(
+			Layout layout, String itemConfig, String itemType,
+			long segmentsExperienceId)
+		throws Exception {
+
+		LayoutStructure layoutStructure =
+			LayoutStructureUtil.getLayoutStructure(
+				layout.getPlid(), segmentsExperienceId);
+
+		return addItemToLayout(
+			layout, itemConfig, itemType, layoutStructure.getMainItemId(), 0,
+			segmentsExperienceId);
+	}
+
+	public static JSONObject addItemToLayout(
+			Layout layout, String itemConfig, String itemType,
+			String parentItemId, int position, long segmentsExperienceId)
+		throws Exception {
+
+		MVCActionCommand mvcActionCommand = getMVCActionCommand(
+			"/layout_content_page_editor/add_item");
+
+		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
+			getMockLiferayPortletActionRequest(
+				CompanyLocalServiceUtil.getCompany(layout.getCompanyId()),
+				GroupLocalServiceUtil.getGroup(layout.getGroupId()), layout);
+
+		mockLiferayPortletActionRequest.addParameter("itemType", itemType);
+		mockLiferayPortletActionRequest.addParameter(
+			"parentItemId", parentItemId);
+		mockLiferayPortletActionRequest.addParameter(
+			"position", String.valueOf(position));
+		mockLiferayPortletActionRequest.addParameter(
+			"segmentsExperienceId", String.valueOf(segmentsExperienceId));
+
+		JSONObject jsonObject = ReflectionTestUtil.invoke(
+			mvcActionCommand, "_addItemToLayoutData",
+			new Class<?>[] {ActionRequest.class},
+			mockLiferayPortletActionRequest);
+
+		mvcActionCommand = getMVCActionCommand(
+			"/layout_content_page_editor/update_item_config");
+
+		mockLiferayPortletActionRequest = getMockLiferayPortletActionRequest(
+			CompanyLocalServiceUtil.getCompany(layout.getCompanyId()),
+			GroupLocalServiceUtil.getGroup(layout.getGroupId()), layout);
+
+		mockLiferayPortletActionRequest.addParameter("itemConfig", itemConfig);
+		mockLiferayPortletActionRequest.addParameter(
+			"itemId", jsonObject.getString("addedItemId"));
+
+		jsonObject.put(
+			"layoutData",
+			(JSONObject)ReflectionTestUtil.invoke(
+				mvcActionCommand, "_updateItemConfig",
+				new Class<?>[] {ActionRequest.class},
+				mockLiferayPortletActionRequest));
+
+		return jsonObject;
 	}
 
 	public static JSONObject addPortletToLayout(Layout layout, String portletId)
