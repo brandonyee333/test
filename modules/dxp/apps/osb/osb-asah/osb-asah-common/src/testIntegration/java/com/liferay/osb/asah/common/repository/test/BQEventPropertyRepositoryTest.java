@@ -16,13 +16,11 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -30,6 +28,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -52,23 +51,17 @@ public class BQEventPropertyRepositoryTest
 		Date date = DateUtil.newDate();
 
 		Assertions.assertEquals(
-			new ArrayList<BQEventPropertyValue>() {
+			new TreeMap<String, Date>() {
 				{
-					add(
-						new BQEventPropertyValue(
-							_getExpectedDate(date, -1), "Windshield Wipers"));
-					add(
-						new BQEventPropertyValue(
-							_getExpectedDate(date, -2), "Wheels"));
-					add(
-						new BQEventPropertyValue(
-							_getExpectedDate(date, -3), "Plates"));
-					add(
-						new BQEventPropertyValue(
-							_getExpectedDate(date, -4), "Apples"));
-					add(
-						new BQEventPropertyValue(
-							_getExpectedDate(date, -6), "Hair Dye"));
+					put("Windshield Wipers", _getExpectedDate(date, -1));
+
+					put("Wheels", _getExpectedDate(date, -2));
+
+					put("Plates", _getExpectedDate(date, -3));
+
+					put("Apples", _getExpectedDate(date, -4));
+
+					put("Books", _getExpectedDate(date, -6));
 				}
 			},
 			_bqEventPropertyRepository.
@@ -80,7 +73,7 @@ public class BQEventPropertyRepositoryTest
 	@Test
 	public void testFindBQEventPropertyValuesByEventAttributeDefinitionIdNoMatchingValues() {
 		Assertions.assertEquals(
-			Collections.emptyList(),
+			Collections.emptyMap(),
 			_bqEventPropertyRepository.
 				findBQEventPropertyValuesByEventAttributeDefinitionId(
 					2001L, 10));
@@ -135,7 +128,7 @@ public class BQEventPropertyRepositoryTest
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 
-		return calendar.getTime();
+		return new Date(calendar.getTimeInMillis());
 	}
 
 	@Autowired
