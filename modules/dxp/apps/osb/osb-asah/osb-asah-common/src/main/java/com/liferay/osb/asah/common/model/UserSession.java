@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 
 import java.io.Serializable;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
@@ -88,6 +89,10 @@ public class UserSession implements Serializable {
 	}
 
 	public Set<String> getCanonicalUrls() {
+		if (_canonicalUrls == null) {
+			return Collections.emptySet();
+		}
+
 		return _canonicalUrls;
 	}
 
@@ -228,6 +233,10 @@ public class UserSession implements Serializable {
 	}
 
 	public Set<String> getReferrers() {
+		if (_referrers == null) {
+			return Collections.emptySet();
+		}
+
 		return _referrers;
 	}
 
@@ -248,6 +257,10 @@ public class UserSession implements Serializable {
 	}
 
 	public Set<String> getUrls() {
+		if (_urls == null) {
+			return Collections.emptySet();
+		}
+
 		return _urls;
 	}
 
