@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
@@ -37,6 +38,8 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -157,6 +160,104 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 		Assertions.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
+	}
+
+	@ElasticsearchIndex(
+		name = "user-sessions", resourcePath = "user_session_info_old_6.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_SESSION,
+		resourcePath = "user_session_raw_7.json"
+	)
+	@Test
+	public void testMergeUserSessions1() {
+		runNanite();
+
+		_elasticsearchInvoker.refresh();
+
+		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
+			"user-sessions",
+			QueryBuilders.termQuery(
+				"userId", "0cbc8e60-99cd-11e9-9129-a75b6df1b957"));
+
+		Assertions.assertEquals(1, userSessionsJSONArray.length());
+
+		JSONObject userSessionJSONObject = userSessionsJSONArray.getJSONObject(
+			0);
+
+		JSONAssert.assertEquals(
+			JSONUtil.put("http://192.168.108.90:8089/about"),
+			userSessionJSONObject.getJSONArray("canonicalUrls"), false);
+		Assertions.assertEquals(
+			"2022-06-29T09:24:11.000Z",
+			userSessionJSONObject.getString("firstEventDate"));
+		Assertions.assertFalse(userSessionJSONObject.getBoolean("finalized"));
+		Assertions.assertEquals(
+			"2022-06-29T11:00:59.000Z",
+			userSessionJSONObject.getString("lastEventDate"));
+		Assertions.assertEquals(
+			0, userSessionJSONObject.getInt("interactionsCount"));
+		Assertions.assertEquals(
+			2, userSessionJSONObject.getInt("pageViewsCount"));
+		JSONAssert.assertEquals(
+			JSONUtil.put("http://192.168.108.90:8089/"),
+			userSessionJSONObject.getJSONArray("referrers"), false);
+		JSONAssert.assertEquals(
+			JSONUtil.put("http://192.168.108.90:8089/about"),
+			userSessionJSONObject.getJSONArray("urls"), false);
+	}
+
+	@ElasticsearchIndex(
+		name = "user-sessions", resourcePath = "user_session_info_old_7.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_SESSION,
+		resourcePath = "user_session_raw_8.json"
+	)
+	@Test
+	public void testMergeUserSessions2() {
+		runNanite();
+
+		_elasticsearchInvoker.refresh();
+
+		JSONArray userSessionsJSONArray = _elasticsearchInvoker.get(
+			"user-sessions",
+			QueryBuilders.termQuery(
+				"userId", "0cbc8e60-99cd-11e9-9129-a75b6df1b957"));
+
+		Assertions.assertEquals(1, userSessionsJSONArray.length());
+
+		JSONObject userSessionJSONObject = userSessionsJSONArray.getJSONObject(
+			0);
+
+		JSONAssert.assertEquals(
+			JSONUtil.putAll(
+				"http://192.168.108.90:8089/about",
+				"http://192.168.108.90:8089/contact",
+				"http://192.168.108.90:8089/products"),
+			userSessionJSONObject.getJSONArray("canonicalUrls"), false);
+		Assertions.assertEquals(
+			"2022-06-29T10:00:00.000Z",
+			userSessionJSONObject.getString("firstEventDate"));
+		Assertions.assertFalse(userSessionJSONObject.getBoolean("finalized"));
+		Assertions.assertEquals(
+			"2022-06-29T11:27:00.000Z",
+			userSessionJSONObject.getString("lastEventDate"));
+		Assertions.assertEquals(
+			0, userSessionJSONObject.getInt("interactionsCount"));
+		Assertions.assertEquals(
+			4, userSessionJSONObject.getInt("pageViewsCount"));
+		JSONAssert.assertEquals(
+			JSONUtil.put("http://192.168.108.90:8089/"),
+			userSessionJSONObject.getJSONArray("referrers"), false);
+		JSONAssert.assertEquals(
+			JSONUtil.putAll(
+				"http://192.168.108.90:8089/about",
+				"http://192.168.108.90:8089/contact",
+				"http://192.168.108.90:8089/products"),
+			userSessionJSONObject.getJSONArray("urls"), false);
 	}
 
 	@ElasticsearchIndex(
