@@ -143,11 +143,47 @@ public class DataSourceDogTest
 		Assertions.assertEquals("http://portal:8083", dataSource.getURL());
 	}
 
+	@Test
+	public void testPatchDataSource() {
+		DataSource dataSource = new DataSource();
+
+		dataSource.setName("Test Data Source");
+		dataSource.setProviderType("LIFERAY");
+		dataSource.setState("CREDENTIALS_VALID");
+		dataSource.setStatus("ACTIVE");
+
+		dataSource = _dataSourceRepository.save(dataSource);
+
+		dataSource.setName("Test Data Source (1)");
+
+		dataSource = _dataSourceDog.patchDataSource(dataSource);
+
+		Assertions.assertEquals("Test Data Source (1)", dataSource.getName());
+		Assertions.assertEquals("CREDENTIALS_VALID", dataSource.getState());
+		Assertions.assertEquals("ACTIVE", dataSource.getStatus());
+
+		dataSource.setState("DISCONNECTED");
+		dataSource.setStatus("INACTIVE");
+
+		dataSource = _dataSourceRepository.save(dataSource);
+
+		dataSource.setName("Test Data Source (2)");
+
+		dataSource = _dataSourceDog.patchDataSource(dataSource);
+
+		Assertions.assertEquals("Test Data Source (2)", dataSource.getName());
+		Assertions.assertEquals("DISCONNECTED", dataSource.getState());
+		Assertions.assertEquals("INACTIVE", dataSource.getStatus());
+	}
+
 	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;
