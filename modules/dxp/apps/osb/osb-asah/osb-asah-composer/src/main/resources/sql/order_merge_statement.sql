@@ -60,7 +60,7 @@ USING
 			`order`.id = analyticsDeleteMessage.classPK AND
 			`order`.projectId = analyticsDeleteMessage.projectId
 		WHERE
-			order.uploadDate >=
+			`order`.uploadDate >=
 				{% if prev_start_date_success is not none %}
 					'{{ prev_start_date_success }}'
 				{% else %}
