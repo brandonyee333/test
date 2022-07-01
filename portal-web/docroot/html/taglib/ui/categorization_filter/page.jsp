@@ -29,7 +29,7 @@ long[] groupIds = GetterUtil.getLongValues(request.getAttribute("liferay-asset:c
 
 long[] assetTagIds = AssetTagLocalServiceUtil.getTagIds(groupIds, assetTagName);
 
-	if (Validator.isNotNull(assetTagName) && (assetTagIds.length == 0)) {
+if (Validator.isNotNull(assetTagName) && (assetTagIds.length == 0)) {
 	assetTagName = null;
 }
 
