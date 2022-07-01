@@ -15,10 +15,13 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.constants.EventPropertyConstants;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -58,6 +61,54 @@ public class BQEventPropertyRepositoryImpl
 					eventDefinitionName,
 					DSL.lower(DSL.field("BQEventProperty.value", String.class)),
 					keywords)));
+	}
+
+	@Override
+	public Map<String, Date>
+		findBQEventPropertyValuesByEventAttributeDefinitionId(
+			Long eventAttributeDefinitionId, int size) {
+
+		return _queryExecutor.queryForMap(
+			key -> (String)key,
+			_dslContext.select(
+				DSL.field("BQEventProperty.value", String.class),
+				DSL.max(
+					DSL.field("BQEventProperty.eventDate", Date.class)
+				).as(
+					"lastSeenDate"
+				)
+			).from(
+				"BQEventProperty"
+			).join(
+				"EventAttributeDefinition"
+			).on(
+				DSL.field(
+					"BQEventProperty.name"
+				).eq(
+					DSL.field("EventAttributeDefinition.name")
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"EventAttributeDefinition.id"
+					).eq(
+						eventAttributeDefinitionId
+					),
+					DSL.field(
+						"BQEventProperty.eventDate"
+					).ge(
+						DateUtil.addDays(DateUtil.newDate(), -7)
+					))
+			).groupBy(
+				DSL.field("BQEventProperty.value")
+			).orderBy(
+				DSL.field(
+					"lastSeenDate"
+				).desc()
+			).limit(
+				size
+			),
+			value -> (Date)value);
 	}
 
 	@Override

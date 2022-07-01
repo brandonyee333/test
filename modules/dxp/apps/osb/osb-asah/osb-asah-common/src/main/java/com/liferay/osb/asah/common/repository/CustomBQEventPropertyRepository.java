@@ -14,7 +14,9 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 
@@ -26,6 +28,10 @@ public interface CustomBQEventPropertyRepository {
 	public long countValues(
 		Long channelId, String eventAttributeDefinitionName,
 		String eventDefinitionName, String keywords);
+
+	public Map<String, Date>
+		findBQEventPropertyValuesByEventAttributeDefinitionId(
+			Long eventAttributeDefinitionId, int size);
 
 	public List<String> searchValues(
 		Long channelId, String eventAttributeDefinitionName,
