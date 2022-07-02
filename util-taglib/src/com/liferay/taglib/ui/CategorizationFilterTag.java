@@ -25,20 +25,20 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class CategorizationFilterTag extends IncludeTag {
 
-	public void setAssetType(String assetType) {
-		_assetType = assetType;
-	}
-
 	public long[] getGroupIds() {
 		return _groupIds;
 	}
 
-	public void setPortletURL(PortletURL portletURL) {
-		_portletURL = portletURL;
+	public void setAssetType(String assetType) {
+		_assetType = assetType;
 	}
 
 	public void setGroupIds(long[] groupIds) {
 		_groupIds = groupIds;
+	}
+
+	public void setPortletURL(PortletURL portletURL) {
+		_portletURL = portletURL;
 	}
 
 	@Override
@@ -58,9 +58,9 @@ public class CategorizationFilterTag extends IncludeTag {
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
 		request.setAttribute(
-			"liferay-ui:categorization-filter:assetType", _assetType);
-		request.setAttribute(
 			"liferay-asset:categorization-filter:groupIds", _groupIds);
+		request.setAttribute(
+			"liferay-ui:categorization-filter:assetType", _assetType);
 		request.setAttribute(
 			"liferay-ui:categorization-filter:portletURL", _portletURL);
 	}
