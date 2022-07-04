@@ -43,6 +43,14 @@ USING
 					FROM
 						UNNEST(expandoColumn.fields)
 					WHERE
+						name = 'displayType'
+				) AS displayType,
+				(
+					SELECT
+						SAFE_CAST(value AS STRING)
+					FROM
+						UNNEST(expandoColumn.fields)
+					WHERE
 						name = 'name'
 				) AS name,
 				ROW_NUMBER() OVER (
@@ -111,6 +119,8 @@ WHEN MATCHED AND staging.deleted IS NULL THEN
 	UPDATE SET
 		replica.className = staging.className,
 		replica.dataType = staging.dataType,
+		replica.dataType = staging.dataType,
+		replica.displayType = staging.displayType,
 		replica.modifiedDate = staging.modifiedDate,
 		replica.name = staging.name
 WHEN MATCHED AND staging.deleted = true THEN
@@ -121,6 +131,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		`columnId`,
 		`dataSourceId`,
 		`dataType`,
+		`displayType`,
 		`id`,
 		`modifiedDate`,
 		`name`,
@@ -131,6 +142,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		staging.columnId,
 		staging.dataSourceId,
 		staging.dataType,
+		staging.displayType,
 		staging.sha256HexId,
 		staging.modifiedDate,
 		staging.name,
