@@ -58,6 +58,11 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 		return _dataType;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getDisplayType() {
+		return _displayType;
+	}
+
 	public String getDXPEntityType() {
 		return DXPEntity.Type.EXPANDO_COLUMN.name();
 	}
@@ -117,6 +122,9 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 
 	public void setDataType(String type) {
 		_dataType = type;
+
+	public void setDisplayType(String displayType) {
+		_displayType = displayType;
 	}
 
 	public void setId(String id) {
@@ -148,6 +156,9 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 
 	@Transient
 	private String _dataType;
+
+	@Transient
+	private String _displayType;
 
 	@Transient
 	private String _id;
