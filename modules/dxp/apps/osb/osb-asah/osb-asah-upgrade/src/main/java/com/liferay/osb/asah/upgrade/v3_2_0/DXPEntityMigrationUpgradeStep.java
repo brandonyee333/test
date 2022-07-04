@@ -150,8 +150,8 @@ public class DXPEntityMigrationUpgradeStep implements UpgradeStep {
 					}
 
 					dxpEntity.setFieldsJSONObject(fieldsJSONObject);
-					dxpEntity.setIsNew(Boolean.TRUE);
 					dxpEntity.setId(Long.valueOf(jsonObject.getString("id")));
+					dxpEntity.setIsNew(Boolean.TRUE);
 					dxpEntity.setModifiedDate(
 						DateUtil.toUTCDate(
 							jsonObject.getString("dateModified")));

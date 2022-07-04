@@ -120,8 +120,9 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 		_dataSourceName = dataSourceName;
 	}
 
-	public void setDataType(String type) {
-		_dataType = type;
+	public void setDataType(String dataType) {
+		_dataType = dataType;
+	}
 
 	public void setDisplayType(String displayType) {
 		_displayType = displayType;
