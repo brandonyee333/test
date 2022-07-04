@@ -500,6 +500,11 @@
 				"type": "STRING"
 			},
 			{
+				"mode": "NULLABLE",
+				"name": "displayType",
+				"type": "STRING"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "id",
 				"type": "STRING"
