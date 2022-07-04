@@ -61,10 +61,8 @@ public class TableOfContents extends com.ecyrd.jspwiki.plugin.TableOfContents {
 
 			sb.append(result.substring(0, x));
 			sb.append(StringPool.NBSP);
-			sb.append(
-				"<a class=\"toc-trigger\" href=\"javascript:void(0);\">[-]</a>");
-			sb.append("</h4>");
-
+			sb.append("<a class=\"toc-trigger\" href=\"javascript:void(0);\">");
+			sb.append("[-]</a></h4>");
 			sb.append("<div class=\"toc-index\">\n");
 			sb.append(result.substring(y));
 			sb.append("</div>\n");
