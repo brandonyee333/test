@@ -129,6 +129,8 @@ public class DXPEntityMigrationUpgradeStep implements UpgradeStep {
 					JSONObject fieldsJSONObject = JSONUtil.put(
 						"dataType", jsonObject.get("fieldType")
 					).put(
+						"displayType", jsonObject.get("displayType")
+					).put(
 						"name", dataSourceFieldNamesJSONObject.get(key)
 					);
 
