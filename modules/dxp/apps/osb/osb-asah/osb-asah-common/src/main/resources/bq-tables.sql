@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS BQExpandoColumn (
 	columnId TEXT,
 	dataSourceId BIGINT,
 	dataType TEXT,
+	displayType TEXT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
 	name TEXT
