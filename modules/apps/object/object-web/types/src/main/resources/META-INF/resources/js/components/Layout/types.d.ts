@@ -47,5 +47,6 @@ export interface TObjectField extends ObjectField {
 	inLayout?: boolean;
 }
 export interface TObjectRelationship extends ObjectRelationship {
+	id?: number;
 	inLayout?: boolean;
 }

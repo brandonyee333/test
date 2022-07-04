@@ -14,20 +14,15 @@
 
 /// <reference types="react" />
 
-export default function EditRelationship({
-	deletionTypes,
-	hasUpdateObjectDefinitionPermission,
-	objectRelationship: initialValues,
-	parameterRequired,
+export default function SelectRelationship({
+	objectDefinitionId,
+	onChange,
+	value,
+	...otherProps
 }: IProps): JSX.Element;
 interface IProps {
-	deletionTypes: TDeletionType[];
-	hasUpdateObjectDefinitionPermission: boolean;
-	objectRelationship: ObjectRelationship;
-	parameterRequired: boolean;
+	objectDefinitionId?: number;
+	onChange?: (objectFieldId: number) => void;
+	value?: number;
 }
-declare type TDeletionType = {
-	label: string;
-	value: string;
-};
 export {};
