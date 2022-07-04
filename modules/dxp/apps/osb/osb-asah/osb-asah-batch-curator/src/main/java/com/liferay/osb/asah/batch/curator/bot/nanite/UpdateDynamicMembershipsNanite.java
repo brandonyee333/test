@@ -17,8 +17,8 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -267,11 +267,11 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 					}
 
 					if (!newBQMemberships.isEmpty()) {
-						_membershipDog.addBQMemberships(newBQMemberships);
+						_bqMembershipDog.addBQMemberships(newBQMemberships);
 					}
 
 					if (!deactivateIndividuals.isEmpty()) {
-						_membershipDog.deactivateBQMembershipByIndividuals(
+						_bqMembershipDog.deactivateBQMembershipByIndividuals(
 							deletionDate, deactivateIndividuals);
 					}
 
@@ -386,14 +386,14 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		boolean oldMember = segmentIds.contains(segment.getId());
 
 		if (newMember && !oldMember) {
-			_membershipDog.addBQMembership(
+			_bqMembershipDog.addBQMembership(
 				_objectMapper.convertValue(
 					baseMembershipJSONObject.put(
 						"individualSegmentId", segment.getId()),
 					BQMembership.class));
 		}
 		else if (!newMember && oldMember) {
-			_membershipDog.deactivateBQMembership(
+			_bqMembershipDog.deactivateBQMembership(
 				modifiedDate, String.valueOf(individual.getId()),
 				segment.getId());
 		}
@@ -403,10 +403,10 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		UpdateDynamicMembershipsNanite.class);
 
 	@Autowired
-	private IndividualDog _individualDog;
+	private BQMembershipDog _bqMembershipDog;
 
 	@Autowired
-	private MembershipDog _membershipDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

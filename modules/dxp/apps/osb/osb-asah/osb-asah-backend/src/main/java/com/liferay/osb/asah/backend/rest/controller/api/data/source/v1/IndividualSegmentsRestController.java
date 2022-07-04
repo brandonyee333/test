@@ -24,10 +24,10 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -165,7 +165,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		if (!segmentDog.isIncludeAnonymousUsers(id)) {
 			return _toMembershipDTOPageDTO(
-				membershipDog.getBQMembershipPage(
+				bqMembershipDog.getBQMembershipPage(
 					ListUtil.map(
 						_individualDog.getKnownIndividualIds(filterString, id),
 						String::valueOf),
@@ -173,7 +173,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		}
 
 		return _toMembershipDTOPageDTO(
-			membershipDog.getBQMembershipPage(id, "ACTIVE", page, size, sorts));
+			bqMembershipDog.getBQMembershipPage(
+				id, "ACTIVE", page, size, sorts));
 	}
 
 	@GetMapping("/{id}")
@@ -281,7 +282,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			bqMembership.setCreateDate(date);
 			bqMembership.setModifiedDate(date);
 
-			bqMembership = membershipDog.addBQMembership(bqMembership);
+			bqMembership = bqMembershipDog.addBQMembership(bqMembership);
 
 			bqMembership.setId(null);
 
@@ -315,7 +316,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			return null;
 		}
 
-		bqMemberships = membershipDog.addBQMemberships(bqMemberships);
+		bqMemberships = bqMembershipDog.addBQMemberships(bqMemberships);
 
 		bqMemberships.forEach(bqMembership -> bqMembership.setId(null));
 
@@ -360,7 +361,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@Autowired
-	protected MembershipDog membershipDog;
+	protected BQMembershipDog bqMembershipDog;
 
 	@Autowired
 	protected ObjectMapper objectMapper;
@@ -413,7 +414,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	private boolean _isMember(String identityId, Long segmentId) {
-		if (membershipDog.isMember(identityId, segmentId)) {
+		if (bqMembershipDog.isMember(identityId, segmentId)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Not adding membership because individual " + identityId +
@@ -494,7 +495,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		IndividualSegmentsRestController.class);
 
 	@Autowired
-	private MembershipChangeDog _bqMembershipChangeDog;
+	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;

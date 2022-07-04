@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.rest.response.function.VisitedPagesTransformationJSONArrayFunction;
@@ -58,7 +58,7 @@ public class VisitedPagesRestController extends BaseRestController {
 			FilterStringToQueryBuilderConverter.convert(filterString), size,
 			Collections.singletonMap("title", "name"), sorts,
 			new VisitedPagesTransformationJSONArrayFunction(
-				_asahMarkerDog, _assetDog, _membershipDog, ownerId, ownerType,
+				_asahMarkerDog, _assetDog, _bqMembershipDog, ownerId, ownerType,
 				_segmentDog, visitedPages),
 			"visited-pages-transformation");
 	}
@@ -70,7 +70,7 @@ public class VisitedPagesRestController extends BaseRestController {
 	private AssetDog _assetDog;
 
 	@Autowired
-	private MembershipDog _membershipDog;
+	private BQMembershipDog _bqMembershipDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

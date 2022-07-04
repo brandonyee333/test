@@ -20,8 +20,8 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -226,7 +226,7 @@ public class AccountsRestController extends BaseRestController {
 	private AccountDog _accountDog;
 
 	@Autowired
-	private MembershipChangeDog _bqMembershipChangeDog;
+	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;

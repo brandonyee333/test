@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -440,7 +440,7 @@ public class IndividualSegmentsRestControllerTest
 			_individualSegmentsRestController.putSegment(
 				segment.getId(),
 				new SegmentDTO(
-					_membershipChangeDog.getLastBeforeTodayBySegmentId(
+					_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(
 						segment.getId()),
 					_segmentDog.getLastActivityDate(segment), segment)),
 			JSONObject.class);
@@ -460,7 +460,7 @@ public class IndividualSegmentsRestControllerTest
 			_individualSegmentsRestController.putSegment(
 				segmentId,
 				new SegmentDTO(
-					_membershipChangeDog.getLastBeforeTodayBySegmentId(
+					_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(
 						segmentId),
 					_segmentDog.getLastActivityDate(segment), segment)),
 			JSONObject.class);
@@ -469,13 +469,13 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@Autowired
+	private BQMembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
 	private IndividualSegmentsRestController _individualSegmentsRestController;
-
-	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

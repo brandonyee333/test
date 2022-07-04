@@ -18,8 +18,8 @@ import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverter
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
@@ -305,7 +305,7 @@ public class IndividualsFilterStringConverterHelper
 		Long individualId = IndividualIdThreadLocal.getIndividualId();
 
 		if (individualId != null) {
-			if (!_membershipDog.isIdentityInSegments(
+			if (!_bqMembershipDog.isIdentityInSegments(
 					individualId.toString(),
 					_segmentDog.getSegmentIds(
 						individualSegmentNames, "INACTIVE"),
@@ -321,7 +321,7 @@ public class IndividualsFilterStringConverterHelper
 			);
 		}
 		else {
-			List<String> identityIds = _membershipDog.getIdentityIds(
+			List<String> identityIds = _bqMembershipDog.getIdentityIds(
 				_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
 				value, minDocCount, checkEqualityOnly);
 
@@ -1038,6 +1038,9 @@ public class IndividualsFilterStringConverterHelper
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
 
+	@Autowired
+	private BQMembershipDog _bqMembershipDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
@@ -1057,9 +1060,6 @@ public class IndividualsFilterStringConverterHelper
 	@Autowired
 	private FaroInfoInterestsFilterStringConverterHelper
 		_faroInfoInterestsFilterStringConverterHelper;
-
-	@Autowired
-	private MembershipDog _membershipDog;
 
 	@Autowired
 	private OrganizationDog _organizationDog;

@@ -53,7 +53,7 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class MembershipDog extends BaseFaroInfoDog {
+public class BQMembershipDog extends BaseFaroInfoDog {
 
 	public BQMembership addBQMembership(BQMembership bqMembership) {
 		bqMembership = _bqMembershipRepository.save(bqMembership);
@@ -399,7 +399,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 		return Sort.by(orders);
 	}
 
-	private static final Log _log = LogFactory.getLog(MembershipDog.class);
+	private static final Log _log = LogFactory.getLog(BQMembershipDog.class);
 
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
@@ -408,7 +408,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 	private IndividualDog _individualDog;
 
 	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
+	private BQMembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

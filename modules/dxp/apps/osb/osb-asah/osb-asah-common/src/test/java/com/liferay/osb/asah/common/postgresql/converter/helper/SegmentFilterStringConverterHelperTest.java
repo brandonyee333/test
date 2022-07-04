@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.postgresql.converter.helper;
 
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collections;
@@ -37,19 +37,19 @@ public class SegmentFilterStringConverterHelperTest {
 	@Test
 	public void test() {
 		Mockito.when(
-			_membershipChangeDog.findSegmentIdByFilterString(
+			_bqMembershipChangeDog.findSegmentIdByFilterString(
 				"identitiesCount eq 3")
 		).thenReturn(
 			Collections.singletonList(3L)
 		);
 		Mockito.when(
-			_membershipChangeDog.findSegmentIdByFilterString(
+			_bqMembershipChangeDog.findSegmentIdByFilterString(
 				"identitiesCount gt 3")
 		).thenReturn(
 			Collections.singletonList(5L)
 		);
 		Mockito.when(
-			_membershipChangeDog.findSegmentIdByFilterString(
+			_bqMembershipChangeDog.findSegmentIdByFilterString(
 				"identitiesCount lt 3")
 		).thenReturn(
 			Collections.singletonList(2L)
@@ -93,11 +93,11 @@ public class SegmentFilterStringConverterHelperTest {
 	}
 
 	@MockBean
-	private MembershipChangeDog _membershipChangeDog = Mockito.mock(
-		MembershipChangeDog.class);
+	private BQMembershipChangeDog _bqMembershipChangeDog = Mockito.mock(
+		BQMembershipChangeDog.class);
 
 	private final SegmentFilterStringConverterHelper
 		_segmentFilterStringConverterHelper =
-			new SegmentFilterStringConverterHelper(_membershipChangeDog);
+			new SegmentFilterStringConverterHelper(_bqMembershipChangeDog);
 
 }

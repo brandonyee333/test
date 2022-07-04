@@ -16,9 +16,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteIndividualSegmentTasksNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -84,10 +84,10 @@ public class DeleteIndividualSegmentTasksNaniteTest
 
 		_individualDog.addIndividual(individual, false);
 
-		_membershipChangeDog.addBQMembershipChange(
+		_bqMembershipChangeDog.addBQMembershipChange(
 			FaroInfoTestUtil.buildBQMembershipChange(segmentId));
 
-		_membershipDog.addBQMembership(
+		_bqMembershipDog.addBQMembership(
 			FaroInfoTestUtil.buildBQMembership(
 				String.valueOf(individual.getId()), segmentId));
 
@@ -139,6 +139,12 @@ public class DeleteIndividualSegmentTasksNaniteTest
 	}
 
 	@Autowired
+	private BQMembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
+	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
@@ -153,12 +159,6 @@ public class DeleteIndividualSegmentTasksNaniteTest
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
-
-	@Autowired
-	private MembershipDog _membershipDog;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;

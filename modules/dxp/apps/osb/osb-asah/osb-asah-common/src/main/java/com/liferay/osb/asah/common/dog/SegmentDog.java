@@ -342,7 +342,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Map<Long, JSONObject> segmentsJSONObjects = new HashMap<>();
 
 		for (Individual individual : individuals) {
-			List<Long> segmentIds = _membershipDog.getSegmentIds(
+			List<Long> segmentIds = _bqMembershipDog.getSegmentIds(
 				String.valueOf(individual.getId()));
 
 			segmentsJSONObjects.put(
@@ -488,7 +488,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		FilterHelper filterHelper = new FilterHelper(
 			null, filterString,
-			new SegmentFilterStringConverterHelper(_membershipChangeDog));
+			new SegmentFilterStringConverterHelper(_bqMembershipChangeDog));
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
@@ -504,7 +504,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 		String filterString, String identityId, int page, int size,
 		String[] sorts) {
 
-		List<Long> segmentIds = _membershipDog.getActiveSegmentIds(identityId);
+		List<Long> segmentIds = _bqMembershipDog.getActiveSegmentIds(
+			identityId);
 
 		FilterHelper filterHelper = new FilterHelper(filterString);
 
@@ -673,7 +674,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			return Collections.emptyList();
 		}
 
-		return _membershipDog.getActiveSegmentIds(
+		return _bqMembershipDog.getActiveSegmentIds(
 			ListUtil.map(individualIds, String::valueOf));
 	}
 
@@ -904,7 +905,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 
 		BQMembershipChange bqMembershipChange =
-			_membershipChangeDog.getLastBeforeTodayBySegmentId(segment.getId());
+			_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(
+				segment.getId());
 
 		if (bqMembershipChange == null) {
 			return;
@@ -979,7 +981,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			return;
 		}
 
-		List<String> identityIds = _membershipDog.getActiveIdentityIds(
+		List<String> identityIds = _bqMembershipDog.getActiveIdentityIds(
 			segment.getId());
 
 		for (String identityId : identityIds) {
@@ -993,7 +995,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 			if (!CollectionUtils.containsAny(
 					individual.getChannelIds(), segment.getChannelId())) {
 
-				_membershipDog.deactivateBQMembership(
+				_bqMembershipDog.deactivateBQMembership(
 					new Date(), identityId, segment.getId());
 			}
 		}
@@ -1058,6 +1060,12 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private AssetDog _assetDog;
 
 	@Autowired
+	private BQMembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
+	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
@@ -1068,12 +1076,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
-
-	@Autowired
-	private MembershipDog _membershipDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

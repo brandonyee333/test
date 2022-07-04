@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.rest.response.function;
 
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -73,16 +73,17 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 	public VisitedPagesTransformationJSONArrayFunction(
 		AsahMarkerDog asahMarkerDog, AssetDog assetDog,
-		MembershipDog membershipDog, Long ownerId, String ownerType,
+		BQMembershipDog membershipDog, Long ownerId, String ownerType,
 		SegmentDog segmentDog, boolean visitedPages) {
 
 		_asahMarkerDog = asahMarkerDog;
 		_assetDog = assetDog;
-		_membershipDog = membershipDog;
 		_ownerId = ownerId;
 		_ownerType = ownerType;
 		_segmentDog = segmentDog;
 		_visitedPages = visitedPages;
+
+		_bqMembershipDog = membershipDog;
 	}
 
 	@Override
@@ -122,8 +123,8 @@ public class VisitedPagesTransformationJSONArrayFunction
 					segmentId = segment.getId();
 				}
 
-				List<String> identityIds = _membershipDog.getActiveIdentityIds(
-					segmentId);
+				List<String> identityIds =
+					_bqMembershipDog.getActiveIdentityIds(segmentId);
 
 				boolQueryBuilder.filter(
 					QueryBuilders.termsQuery("ownerId", identityIds)
@@ -451,7 +452,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 	private final AsahMarkerDog _asahMarkerDog;
 	private final AssetDog _assetDog;
-	private final MembershipDog _membershipDog;
+	private final BQMembershipDog _bqMembershipDog;
 	private final Long _ownerId;
 	private final String _ownerType;
 	private final SegmentDog _segmentDog;

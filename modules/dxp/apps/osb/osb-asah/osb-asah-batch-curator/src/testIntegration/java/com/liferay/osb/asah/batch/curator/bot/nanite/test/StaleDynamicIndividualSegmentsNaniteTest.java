@@ -22,9 +22,9 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahTask;
@@ -290,7 +290,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 			_individualDog.addSegmentId(_individual.getId(), segment.getId());
 
-			BQMembership bqMembership = _membershipDog.addBQMembership(
+			BQMembership bqMembership = _bqMembershipDog.addBQMembership(
 				FaroInfoTestUtil.buildBQMembership(
 					String.valueOf(_individual.getId()), segment.getId()));
 
@@ -316,7 +316,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 			membershipsJSONArray.put(
 				_objectMapper.convertValue(
-					_membershipDog.addBQMembership(
+					_bqMembershipDog.addBQMembership(
 						FaroInfoTestUtil.buildBQMembership(
 							String.valueOf(_individual.getId()),
 							segment.getId())),
@@ -392,6 +392,9 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	private AssetRepository _assetRepository;
 
 	@Autowired
+	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
@@ -412,9 +415,6 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private MembershipDog _membershipDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

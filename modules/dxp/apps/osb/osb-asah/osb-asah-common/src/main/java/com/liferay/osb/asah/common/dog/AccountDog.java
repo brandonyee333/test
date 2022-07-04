@@ -353,7 +353,7 @@ public class AccountDog {
 
 		if (segment != null) {
 			BQMembershipChange bqMembershipChange =
-				_membershipChangeDog.getLastBeforeTodayBySegmentId(
+				_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(
 					segment.getId());
 
 			if (bqMembershipChange != null) {
@@ -612,6 +612,9 @@ public class AccountDog {
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
+	@Autowired
+	private BQMembershipChangeDog _bqMembershipChangeDog;
+
 	private final DefaultFilterStringConverterHelper
 		_defaultFilterStringConverterHelper =
 			new DefaultFilterStringConverterHelper();
@@ -627,9 +630,6 @@ public class AccountDog {
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

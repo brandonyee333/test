@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -45,7 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Alejo Ceballos
  */
-public class MembershipChangeDogTest
+public class BQMembershipChangeDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
@@ -85,7 +85,7 @@ public class MembershipChangeDogTest
 	public void testGetBQMembershipChanges() {
 		Assertions.assertEquals(
 			_bqMembershipChangeBySegmentId,
-			_membershipChangeDog.getBQMembershipChanges(_segments));
+			_bqMembershipChangeDog.getBQMembershipChanges(_segments));
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class MembershipChangeDogTest
 		Long segmentId = segmentIds.get(0);
 
 		BQMembershipChange bqMembershipChange =
-			_membershipChangeDog.getLastBeforeTodayBySegmentId(segmentId);
+			_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(segmentId);
 
 		Assertions.assertEquals(
 			_bqMembershipChangeBySegmentId.get(segmentId), bqMembershipChange);
@@ -108,7 +108,7 @@ public class MembershipChangeDogTest
 			_bqMembershipChangeBySegmentId.keySet());
 
 		List<BQMembershipChange> bqMembershipChanges =
-			_membershipChangeDog.getLastBeforeTodayBySegmentIds(segmentIds);
+			_bqMembershipChangeDog.getLastBeforeTodayBySegmentIds(segmentIds);
 
 		Assertions.assertEquals(
 			2, bqMembershipChanges.size(), bqMembershipChanges.toString());
@@ -141,7 +141,7 @@ public class MembershipChangeDogTest
 		_bqMembershipChangeRepository.save(bqMembershipChange);
 
 		List<BQMembershipChange> bqMembershipChanges =
-			_membershipChangeDog.getLastBeforeTodayBySegmentIds(
+			_bqMembershipChangeDog.getLastBeforeTodayBySegmentIds(
 				Arrays.asList(segment.getId()));
 
 		Assertions.assertEquals(
@@ -184,13 +184,13 @@ public class MembershipChangeDogTest
 		new HashMap<>();
 
 	@Autowired
+	private BQMembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
 	private BQMembershipChangeRepository _bqMembershipChangeRepository;
 
 	@Autowired
 	private ChannelRepository _channelRepository;
-
-	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;

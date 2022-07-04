@@ -17,9 +17,9 @@ package com.liferay.osb.asah.common.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
@@ -866,7 +866,7 @@ public class IndividualDogTest
 		bqMembership.setSegmentId(338511451975440187L);
 		bqMembership.setStatus("ACTIVE");
 
-		_membershipDog.addBQMembership(bqMembership);
+		_bqMembershipDog.addBQMembership(bqMembership);
 
 		_individualDog.updateDynamicMemberships(
 			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
@@ -1315,6 +1315,9 @@ public class IndividualDogTest
 	};
 
 	@Autowired
+	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
@@ -1330,9 +1333,6 @@ public class IndividualDogTest
 	private IndividualDog _individualDog;
 
 	private DataSource _liferayDataSource;
-
-	@Autowired
-	private MembershipDog _membershipDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

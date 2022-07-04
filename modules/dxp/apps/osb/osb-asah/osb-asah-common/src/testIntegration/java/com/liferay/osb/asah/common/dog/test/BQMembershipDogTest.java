@@ -17,8 +17,8 @@ package com.liferay.osb.asah.common.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -61,7 +61,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Michael Bowerman
  * @author Vishal Reddy
  */
-public class MembershipDogTest
+public class BQMembershipDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
@@ -102,7 +102,7 @@ public class MembershipDogTest
 		bqMembership.setSegmentId(234L);
 		bqMembership.setStatus("ACTIVE");
 
-		bqMembership = _membershipDog.addBQMembership(bqMembership);
+		bqMembership = _bqMembershipDog.addBQMembership(bqMembership);
 
 		Assertions.assertNotNull(bqMembership);
 
@@ -130,7 +130,7 @@ public class MembershipDogTest
 
 	@Test
 	public void testAddMembershipWithInactiveStatus() {
-		BQMembership bqMembership = _membershipDog.addBQMembership(
+		BQMembership bqMembership = _bqMembershipDog.addBQMembership(
 			_objectMapper.convertValue(
 				JSONUtil.put("status", "INACTIVE"), BQMembership.class));
 
@@ -235,7 +235,7 @@ public class MembershipDogTest
 
 		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.218Z");
 
-		_membershipDog.deactivateBQMembership(
+		_bqMembershipDog.deactivateBQMembership(
 			deletionDate, "338486041327913341", 338511398116723458L);
 
 		BQMembership bqMembership =
@@ -283,7 +283,7 @@ public class MembershipDogTest
 	public void testDeactivateMembershipWithoutKnownIndividuals() {
 		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.215Z");
 
-		_membershipDog.deactivateBQMembership(
+		_bqMembershipDog.deactivateBQMembership(
 			deletionDate, "338486037253283140", 338511398116723458L);
 
 		BQMembership bqMembership =
@@ -325,7 +325,7 @@ public class MembershipDogTest
 	)
 	@Test
 	public void testGetIndividualSegmentIndividualIds() {
-		List<String> identityIds = _membershipDog.getActiveIdentityIds(
+		List<String> identityIds = _bqMembershipDog.getActiveIdentityIds(
 			338511398116723458L);
 
 		Assertions.assertEquals(2, identityIds.size(), identityIds.toString());
@@ -339,10 +339,14 @@ public class MembershipDogTest
 	)
 	@Test
 	public void testIsMember() {
-		Assertions.assertFalse(_membershipDog.isMember("0", 0L));
+		Assertions.assertFalse(_bqMembershipDog.isMember("0", 0L));
 		Assertions.assertTrue(
-			_membershipDog.isMember("338486041327913341", 338511398116723458L));
+			_bqMembershipDog.isMember(
+				"338486041327913341", 338511398116723458L));
 	}
+
+	@Autowired
+	private BQMembershipDog _bqMembershipDog;
 
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
@@ -358,9 +362,6 @@ public class MembershipDogTest
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private MembershipDog _membershipDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

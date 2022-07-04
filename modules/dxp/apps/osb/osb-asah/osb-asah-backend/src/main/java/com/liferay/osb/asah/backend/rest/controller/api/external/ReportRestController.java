@@ -52,10 +52,10 @@ import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
@@ -744,7 +744,7 @@ public class ReportRestController extends BaseRestController {
 		@PathVariable Long segmentId) {
 
 		return _toReportSegmentDTOEntityModel(
-			_membershipChangeDog.getLastBeforeTodayBySegmentId(segmentId),
+			_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(segmentId),
 			_segmentDog.getSegment(segmentId));
 	}
 
@@ -759,7 +759,7 @@ public class ReportRestController extends BaseRestController {
 		List<Segment> segments = segmentPage.getContent();
 
 		Map<Long, BQMembershipChange> bqMembershipChanges =
-			_membershipChangeDog.getBQMembershipChanges(segments);
+			_bqMembershipChangeDog.getBQMembershipChanges(segments);
 
 		return _toResultBagEntityModel(
 			_getSegmentResultBagEntityModel(page + 1), page,
@@ -1443,6 +1443,9 @@ public class ReportRestController extends BaseRestController {
 	private ActivityDog _activityDog;
 
 	@Autowired
+	private BQMembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
 	private DataExportTaskDog _dataExportTaskDog;
 
 	@Value("${osb.asah.data.export.task.expiration.minutes:30}")
@@ -1462,9 +1465,6 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private InterestDog _interestDog;
-
-	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private MetricDog _metricDog;

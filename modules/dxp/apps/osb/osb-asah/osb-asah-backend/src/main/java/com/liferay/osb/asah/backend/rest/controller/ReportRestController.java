@@ -20,8 +20,8 @@ import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
@@ -117,7 +117,7 @@ public class ReportRestController extends BaseRestController {
 		List<Segment> segments = segmentPage.toList();
 
 		Map<Long, BQMembershipChange> bqMembershipChanges =
-			_membershipChangeDog.getBQMembershipChanges(segments);
+			_bqMembershipChangeDog.getBQMembershipChanges(segments);
 
 		return new PageDTO<>(
 			ListUtil.map(
@@ -134,10 +134,10 @@ public class ReportRestController extends BaseRestController {
 	private AccountDog _accountDog;
 
 	@Autowired
-	private IndividualDog _individualDog;
+	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

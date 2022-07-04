@@ -20,10 +20,10 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -267,7 +267,7 @@ public class IndividualsRestController extends BaseRestController {
 		for (String expandPart : expandParts) {
 			if (expandPart.equals("active-membership")) {
 				membershipsJSONObjects =
-					_membershipDog.getMembershipsJSONObjects(
+					_bqMembershipDog.getMembershipsJSONObjects(
 						String.valueOf(id), segmentsPage.getContent());
 			}
 			else if (_log.isWarnEnabled()) {
@@ -278,7 +278,7 @@ public class IndividualsRestController extends BaseRestController {
 		List<Segment> segments = segmentsPage.getContent();
 
 		SegmentDTO segmentDTO1 = new SegmentDTO(
-			_membershipChangeDog.getBQMembershipChanges(segments),
+			_bqMembershipChangeDog.getBQMembershipChanges(segments),
 			_segmentDog.getLastActivityDates(segments), segments);
 
 		Set<SegmentDTO> segmentDTOs = segmentDTO1.getSegmentDTOs();
@@ -346,7 +346,7 @@ public class IndividualsRestController extends BaseRestController {
 		return new PageDTO<>(
 			"_embedded",
 			new SegmentDTO(
-				_membershipChangeDog.getBQMembershipChanges(segments),
+				_bqMembershipChangeDog.getBQMembershipChanges(segments),
 				_segmentDog.getLastActivityDates(segments), segments),
 			segmentsPage.getNumber(), segmentsPage.getSize(),
 			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
@@ -395,16 +395,16 @@ public class IndividualsRestController extends BaseRestController {
 	private AccountDog _accountDog;
 
 	@Autowired
+	private BQMembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
+	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private IndividualDog _individualDog;
-
-	@Autowired
-	private MembershipChangeDog _membershipChangeDog;
-
-	@Autowired
-	private MembershipDog _membershipDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

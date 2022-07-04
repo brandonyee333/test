@@ -23,8 +23,8 @@ import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootAp
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
@@ -345,16 +345,20 @@ public class IndividualInterestScoresNaniteTest
 		Long individualId = _individual.getId();
 
 		Assertions.assertTrue(
-			_membershipDog.isMember(String.valueOf(individualId), segment1Id));
+			_bqMembershipDog.isMember(
+				String.valueOf(individualId), segment1Id));
 		Assertions.assertFalse(
-			_membershipDog.isMember(String.valueOf(individualId), segment2Id));
+			_bqMembershipDog.isMember(
+				String.valueOf(individualId), segment2Id));
 
 		_runIndividualInterestScoresNanite((JSONObject)null);
 
 		Assertions.assertFalse(
-			_membershipDog.isMember(String.valueOf(individualId), segment1Id));
+			_bqMembershipDog.isMember(
+				String.valueOf(individualId), segment1Id));
 		Assertions.assertTrue(
-			_membershipDog.isMember(String.valueOf(individualId), segment2Id));
+			_bqMembershipDog.isMember(
+				String.valueOf(individualId), segment2Id));
 	}
 
 	@Test
@@ -634,6 +638,9 @@ public class IndividualInterestScoresNaniteTest
 	private AssetRepository _assetRepository;
 
 	@Autowired
+	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
 	private ChannelRepository _channelRepository;
 
 	private DataSource _dataSource;
@@ -654,9 +661,6 @@ public class IndividualInterestScoresNaniteTest
 
 	@Autowired
 	private InterestRepository _interestRepository;
-
-	@Autowired
-	private MembershipDog _membershipDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

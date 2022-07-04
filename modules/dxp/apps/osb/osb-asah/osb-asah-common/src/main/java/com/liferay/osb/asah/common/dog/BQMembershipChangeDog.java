@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
  * @author Inácio Nery
  */
 @Component
-public class MembershipChangeDog extends BaseFaroInfoDog {
+public class BQMembershipChangeDog extends BaseFaroInfoDog {
 
 	public void addBQMembershipChange(BQMembershipChange bqMembershipChange) {
 		_bqMembershipChangeRepository.save(bqMembershipChange);

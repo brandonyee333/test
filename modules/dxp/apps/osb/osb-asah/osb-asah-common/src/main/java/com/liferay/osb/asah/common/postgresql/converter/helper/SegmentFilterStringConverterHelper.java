@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.postgresql.converter.helper;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
@@ -29,9 +29,9 @@ public class SegmentFilterStringConverterHelper
 	extends DefaultFilterStringConverterHelper {
 
 	public SegmentFilterStringConverterHelper(
-		MembershipChangeDog membershipChangeDog) {
+		BQMembershipChangeDog membershipChangeDog) {
 
-		_membershipChangeDog = membershipChangeDog;
+		_bqMembershipChangeDog = membershipChangeDog;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class SegmentFilterStringConverterHelper
 			return DSL.field(
 				"id"
 			).in(
-				_membershipChangeDog.findSegmentIdByFilterString(
+				_bqMembershipChangeDog.findSegmentIdByFilterString(
 					"identitiesCount " + operator + " " + valueString)
 			);
 		}
@@ -51,6 +51,6 @@ public class SegmentFilterStringConverterHelper
 	}
 
 	@Autowired
-	private final MembershipChangeDog _membershipChangeDog;
+	private final BQMembershipChangeDog _bqMembershipChangeDog;
 
 }

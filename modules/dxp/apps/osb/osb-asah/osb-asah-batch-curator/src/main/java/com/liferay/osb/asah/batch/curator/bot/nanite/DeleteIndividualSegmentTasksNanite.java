@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
+import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
-import com.liferay.osb.asah.common.dog.MembershipChangeDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.VisitedPageDog;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -52,9 +52,9 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 		_visitedPageDog.deleteVisitedPages(individualSegmentIds);
 
-		membershipChangeDog.deleteBQMembershipChanges(individualSegmentIds);
+		bqMembershipChangeDog.deleteBQMembershipChanges(individualSegmentIds);
 
-		membershipDog.deleteBQMemberships(individualSegmentIds);
+		bqMembershipDog.deleteBQMemberships(individualSegmentIds);
 
 		_individualDog.removeSegmentIds(individualSegmentIds);
 	}
@@ -66,10 +66,10 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 	}
 
 	@Autowired
-	protected MembershipChangeDog membershipChangeDog;
+	protected BQMembershipChangeDog bqMembershipChangeDog;
 
 	@Autowired
-	protected MembershipDog membershipDog;
+	protected BQMembershipDog bqMembershipDog;
 
 	@Autowired
 	private IndividualDog _individualDog;

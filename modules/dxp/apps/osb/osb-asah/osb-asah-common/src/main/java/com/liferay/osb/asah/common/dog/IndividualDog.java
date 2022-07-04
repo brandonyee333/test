@@ -438,7 +438,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		_interestRepository.deleteByOwnerIdInAndOwnerType(
 			Collections.singletonList(individualId), "individual");
 
-		_membershipDog.deactivateBQMemberships(
+		_bqMembershipDog.deactivateBQMemberships(
 			deletionDate, individualId.toString());
 
 		_individualRepository.deleteById(individualId);
@@ -513,7 +513,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		elasticsearchInvoker.delete("interests", boolQueryBuilder);
 		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
-		_membershipDog.deactivateBQMembershipByIndividuals(
+		_bqMembershipDog.deactivateBQMembershipByIndividuals(
 			deletionDate, individuals);
 
 		_individualRepository.deleteByIdIn(individualIds);
@@ -1623,7 +1623,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			currentIndividualId = lastIndividual.getId();
 
 			List<Long> individualIds = ListUtil.map(
-				_membershipDog.isMember(
+				_bqMembershipDog.isMember(
 					ListUtil.map(
 						ListUtil.map(individuals, Individual::getId),
 						String::valueOf),
@@ -1638,7 +1638,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 				Collectors.toList()
 			);
 
-			_membershipDog.addBQMemberships(
+			_bqMembershipDog.addBQMemberships(
 				modifiedDate, individuals, individualSegmentId);
 		}
 	}
@@ -1652,7 +1652,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		while (true) {
 			List<BQMembership> bqMemberships =
-				_membershipDog.searchBQMemberships(
+				_bqMembershipDog.searchBQMemberships(
 					individualSegmentId, currentMembershipId, 10000, "ACTIVE");
 
 			if (bqMemberships.isEmpty()) {
@@ -1673,7 +1673,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 					ListUtil.map(identityIds, Long::parseLong),
 					includeAnonymousUsers);
 
-			_membershipDog.deactivateBQMemberships(
+			_bqMembershipDog.deactivateBQMemberships(
 				modifiedDate,
 				_getDeactivateMemberships(individuals, bqMemberships));
 		}
@@ -1776,6 +1776,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(10, 1);
 
+	@Autowired
+	private BQMembershipDog _bqMembershipDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
@@ -1809,9 +1812,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private InterestRepository _interestRepository;
-
-	@Autowired
-	private MembershipDog _membershipDog;
 
 	@Autowired
 	private OrganizationDog _organizationDog;
