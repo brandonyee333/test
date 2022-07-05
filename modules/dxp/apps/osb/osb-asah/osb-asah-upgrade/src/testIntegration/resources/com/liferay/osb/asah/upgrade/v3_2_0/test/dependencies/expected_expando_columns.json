@@ -4,6 +4,7 @@
 		"fields": {
 			"className": "com.liferay.portal.kernel.model.User",
 			"dataType": "http://schema.org/secondaryEmail",
+			"displayType": "http://schema.org/secondaryEmail",
 			"name": "secondaryEmail"
 		},
 		"id": "331238757947565158",
