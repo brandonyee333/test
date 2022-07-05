@@ -459,7 +459,7 @@ public class UserSessionNanite implements Nanite {
 			analyticsEvents.getFirstAnalyticsEventDate(),
 			analyticsEvents.getLastAnalyticsEventDate(), userId);
 
-		UserSession userSession;
+		UserSession userSession = null;
 
 		if (userSessions.isEmpty()) {
 			Date lastAnalyticsEventDate =
