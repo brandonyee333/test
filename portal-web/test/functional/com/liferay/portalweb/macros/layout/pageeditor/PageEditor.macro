@@ -1683,6 +1683,8 @@ definition {
 
 				LexiconCard.clickCard(card = "${assetListName}");
 
+				SelectFrameTop();
+
 				PageEditor.viewItemSelectorText(
 					fieldLabel = "Collection",
 					text = "${assetListName}");
@@ -2096,6 +2098,8 @@ definition {
 				NavItem.click(navItem = "Blogs");
 
 				LexiconCard.clickCard(card = "${entryTitle}");
+
+				SelectFrameTop();
 
 				PageEditor.viewItemSelectorText(
 					fieldLabel = "Item",
@@ -4889,6 +4893,8 @@ return	Array.from(getWebElement("(//div[@aria-label='${fragmentName}'])[${index}
 	}
 
 	macro viewItemSelectorText {
+		SelectFrameTop();
+
 		AssertTextEquals(
 			key_fieldLabel = "${fieldLabel}",
 			locator1 = "PageEditor#ITEM_SELECTOR_CONTENT_INPUT",
@@ -4940,6 +4946,8 @@ return	Array.from(getWebElement("(//div[@aria-label='${fragmentName}'])[${index}
 	}
 
 	macro waitForAutoSave {
+		SelectFrameTop();
+
 		WaitForVisible(locator1 = "PageEditor#AUTOSAVE_MESSAGE");
 	}
 
