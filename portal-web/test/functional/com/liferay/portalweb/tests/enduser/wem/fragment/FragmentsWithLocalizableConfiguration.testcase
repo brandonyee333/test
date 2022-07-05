@@ -124,6 +124,8 @@ definition {
 	@description = "This is a test for LPS-118100. View localizable fragment configuration field value in translated languages."
 	@priority = "4"
 	test ViewLocalizableConfigurationFieldValueInTranslatedLanguages {
+		property portal.acceptance = "fiona";
+
 		task ("Add a fragment collection via JSON") {
 			JSONFragment.addFragmentCollection(
 				groupName = "Test Site Name",

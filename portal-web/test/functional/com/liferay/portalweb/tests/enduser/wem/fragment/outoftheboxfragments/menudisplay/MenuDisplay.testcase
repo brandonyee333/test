@@ -32,7 +32,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test DefineDisplayedSublevels {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add a parent widget page") {
 			JSONLayout.addPublicLayout(
@@ -185,7 +185,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test DefineDisplayStyle {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add a parent widget page") {
 			JSONLayout.addPublicLayout(

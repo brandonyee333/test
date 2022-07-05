@@ -40,7 +40,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test CannotImportNonZip {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Navigate to the fragment import screen") {
 			FragmentsAdminNavigator.gotoImportCollection();
@@ -1347,6 +1347,8 @@ definition {
 	@description = "This is a test case for LPS-120957. Export and Import multiple collections."
 	@priority = "4"
 	test ExportImportMultipleCollections {
+		property portal.acceptance = "fiona";
+
 		task ("Add three collections") {
 			for (var collectionName : list "Collection Name 1,Collection Name 2,Collection Name 3") {
 				JSONFragment.addFragmentCollection(

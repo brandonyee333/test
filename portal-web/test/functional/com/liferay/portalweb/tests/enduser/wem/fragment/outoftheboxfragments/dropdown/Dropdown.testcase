@@ -130,7 +130,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test DefineDisplayedBehaviorOfDropdownPanel {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add a custom master page") {
 			JSONLayoutpagetemplate.addMasterPageTemplateEntry(

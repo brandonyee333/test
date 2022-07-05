@@ -1065,7 +1065,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test ViewAbstractListItemStyleInDifferentListStyles {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add a Web Content Article,a Blogs Entry and a document") {
 			JSONWebcontent.addWebContent(
@@ -1597,7 +1597,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test ViewFullContentListItemStyleInDifferentListStyles {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add a Web Content Article,a Blogs Entry and a document") {
 			JSONWebcontent.addWebContent(
@@ -2447,7 +2447,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test ViewRecentContent {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add three Web Content Articles based on Basic Web Content") {
 			for (var entryTitle : list "First Web Content,Second Web Content,Third Web Content") {

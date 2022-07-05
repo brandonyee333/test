@@ -1530,6 +1530,8 @@ definition {
 	@description = "This is a test for LPS-118979. The mappable fields are grouped by fieldset in Collection Display based on single type collection."
 	@priority = "4"
 	test ViewMappableFieldsAreGroupedByFieldsetBasedOnSingleTypeCollection {
+		property portal.acceptance = "fiona";
+
 		task ("Add a web content article based on Basic Web Content") {
 			JSONWebcontent.addWebContent(
 				content = "Web Content Content",

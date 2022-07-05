@@ -55,7 +55,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test SelectImageResolutionManuallyInTheDesktopViewport {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add an Image fragment to page") {
 			ContentPagesNavigator.openEditContentPage(
@@ -328,7 +328,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test ViewAutoImageResolutionForImageMappedToWebContent {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add an Image Resolution with 2000px Max Width") {
 			ApplicationsMenu.gotoPortlet(
@@ -425,7 +425,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test ViewAutoImageResolutionForMappingBackgroundImageInBannerCenter {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add a Banner Center fragment to page") {
 			ContentPagesNavigator.openEditContentPage(
@@ -603,7 +603,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test ViewAutoImageResolutionForMappingBackgroundImageInContainer {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add a Container fragment to page") {
 			ContentPagesNavigator.openEditContentPage(
@@ -781,6 +781,8 @@ definition {
 	@description = "This is a test for LPS-113806. View auto image resolution when image resolution is greater than original image and original image is greater than viewport."
 	@priority = "4"
 	test ViewAutoImageResolutionWhenImageResolutionIsGreaterThanOriginalImageAndOriginalImageIsGreaterThanViewport {
+		property portal.acceptance = "fiona";
+	
 		task ("Add an Image fragment to page") {
 			ContentPagesNavigator.openEditContentPage(
 				pageName = "Test Page Name",
@@ -846,6 +848,8 @@ definition {
 	@description = "This is a test for LPS-113806. View auto image resolution when image resolution is greater than viewport and viewport is greater than original image."
 	@priority = "4"
 	test ViewAutoImageResolutionWhenImageResolutionIsGreaterThanViewportAndViewportIsGreaterThanOriginalImage {
+		property portal.acceptance = "fiona";
+
 		task ("Add an Image fragment to page") {
 			ContentPagesNavigator.openEditContentPage(
 				pageName = "Test Page Name",
@@ -912,7 +916,7 @@ definition {
 	@priority = "5"
 	@uitest
 	test ViewAutoImageResolutionWhenOriginalImageIsGreaterThanImageResolutionAndImageResolutionIsGreaterThanViewport {
-		property portal.acceptance = "true";
+		property portal.acceptance = "fiona";
 
 		task ("Add an Image Resolution with 800px Max Width") {
 			ApplicationsMenu.gotoPortlet(
@@ -1041,6 +1045,8 @@ definition {
 	@description = "This is a test for LPS-113806. View auto image resolution when viewport is greater than image resolution and image resolution is greater than original image."
 	@priority = "4"
 	test ViewAutoImageResolutionWhenViewportIsGreaterThanImageResolutionAndImageResolutionIsGreaterThanOriginalImage {
+		property portal.acceptance = "fiona";
+
 		task ("Add an Image Resolution with 600px Max Width") {
 			ApplicationsMenu.gotoPortlet(
 				category = "Configuration",
@@ -1117,6 +1123,8 @@ definition {
 	@description = "This is a test for LPS-113806. View auto image resolution when viewport is greater than original image and original image is greater than image resolution."
 	@priority = "4"
 	test ViewAutoImageResolutionWhenViewportIsGreaterThanOriginalImageAndOriginalImageIsGreaterThanImageResolution {
+		property portal.acceptance = "fiona";
+
 		task ("Add an Image Resolution with 600px Max Width") {
 			ApplicationsMenu.gotoPortlet(
 				category = "Configuration",
