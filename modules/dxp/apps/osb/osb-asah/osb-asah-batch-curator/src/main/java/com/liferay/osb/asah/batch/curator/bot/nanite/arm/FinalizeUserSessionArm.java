@@ -93,18 +93,6 @@ public class FinalizeUserSessionArm {
 			for (Map.Entry<Date, Long> entry :
 					pastUserSessionDates.entrySet()) {
 
-				String projectId = project.getId();
-
-				Set<String> userSessionFinalizeDates =
-					PastUserSessionFinalizerNanite.getUserSessionFinalizeDates(
-						projectId);
-
-				if (userSessionFinalizeDates.contains(
-						DateUtil.toUTCString(entry.getKey()))) {
-
-					continue;
-				}
-
 				Date date = entry.getKey();
 
 				Set<Pair<String, Long>> projectIds =
@@ -214,9 +202,19 @@ public class FinalizeUserSessionArm {
 				ZonedDateTime zonedDateTime = ZonedDateTime.parse(
 					bucket.getKeyAsString());
 
-				dateStrings.put(
-					DateUtil.toUTCDate(zonedDateTime.toLocalDateTime()),
-					bucket.getDocCount());
+				Set<String> userSessionFinalizeDates =
+					PastUserSessionFinalizerNanite.getUserSessionFinalizeDates(
+						projectId);
+
+				Date date = DateUtil.toUTCDate(zonedDateTime.toLocalDateTime());
+
+				if (userSessionFinalizeDates.contains(
+						DateUtil.toUTCString(date))) {
+
+					continue;
+				}
+
+				dateStrings.put(date, bucket.getDocCount());
 			}
 
 			return dateStrings;
