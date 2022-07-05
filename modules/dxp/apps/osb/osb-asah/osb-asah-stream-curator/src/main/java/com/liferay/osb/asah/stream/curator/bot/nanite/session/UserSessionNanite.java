@@ -310,8 +310,8 @@ public class UserSessionNanite implements Nanite {
 		UserSession retaininingUserSession = userSessions.remove(0);
 
 		Set<String> canonicalUrls = analyticsEvents.getCanonicalUrls();
-		Set<String> urls = analyticsEvents.getUrls();
 		Set<String> referrers = analyticsEvents.getReferrers();
+		Set<String> urls = analyticsEvents.getUrls();
 
 		long totalInteractionsCount =
 			analyticsEvents.getInteractionsCount() +
