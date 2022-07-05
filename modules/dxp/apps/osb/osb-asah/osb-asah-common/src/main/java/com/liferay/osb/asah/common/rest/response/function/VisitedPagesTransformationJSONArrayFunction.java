@@ -73,17 +73,16 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 	public VisitedPagesTransformationJSONArrayFunction(
 		AsahMarkerDog asahMarkerDog, AssetDog assetDog,
-		BQMembershipDog membershipDog, Long ownerId, String ownerType,
+		BQMembershipDog bqMembershipDog, Long ownerId, String ownerType,
 		SegmentDog segmentDog, boolean visitedPages) {
 
 		_asahMarkerDog = asahMarkerDog;
 		_assetDog = assetDog;
+		_bqMembershipDog = bqMembershipDog;
 		_ownerId = ownerId;
 		_ownerType = ownerType;
 		_segmentDog = segmentDog;
 		_visitedPages = visitedPages;
-
-		_bqMembershipDog = membershipDog;
 	}
 
 	@Override
