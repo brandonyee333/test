@@ -17,6 +17,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.arm.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
+import com.liferay.osb.asah.batch.curator.bot.nanite.PastUserSessionFinalizerNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.FinalizeUserSessionArm;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
@@ -269,6 +270,55 @@ public class FinalizeUserSessionArmTest
 				}
 			},
 			_finalizeUserSessionArm.getPastUserSessionDates("test"));
+	}
+
+	@Test
+	public void testGetUserSessionDatesIsFiltered() {
+		_projectDog.addProject(new Project("test1"));
+
+		_addUserSession(
+			"test1", "2021-12-20T01:22:49.000Z", "2022-01-04T05:43:21.000Z",
+			"2022-01-04T11:23:00.000Z", "2022-02-17T06:00:44.000Z",
+			"2022-03-14T00:00:00.000Z", "2022-05-11T14:19:00.000Z");
+
+		try {
+			ProjectIdThreadLocal.setProjectId("test1");
+
+			PastUserSessionFinalizerNanite.addUserSessionFinalizeDates(
+				DateUtil.toUTCDate("2022-01-04T00:00:00.000Z"),
+				DateUtil.toUTCDate("2022-03-14T00:00:00.000Z"));
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
+
+		Map<Date, Long> pastUserSessionDates =
+			_finalizeUserSessionArm.getPastUserSessionDates("test1");
+
+		Assertions.assertEquals(
+			new TreeMap<Date, Long>(Comparator.reverseOrder()) {
+				{
+					put(DateUtil.toUTCDate("2021-12-20T00:00:00.000Z"), 1L);
+					put(DateUtil.toUTCDate("2022-02-17T00:00:00.000Z"), 1L);
+					put(DateUtil.toUTCDate("2022-05-11T00:00:00.000Z"), 1L);
+				}
+			},
+			pastUserSessionDates);
+
+		Set<Date> keySet = pastUserSessionDates.keySet();
+
+		Stream<Date> stream = keySet.stream();
+
+		List<String> pastUserSessionDateStrings = stream.map(
+			DateUtil::toUTCString
+		).collect(
+			Collectors.toList()
+		);
+
+		Assertions.assertEquals(
+			"[2022-05-11T00:00:00.000Z, 2022-02-17T00:00:00.000Z, " +
+				"2021-12-20T00:00:00.000Z]",
+			pastUserSessionDateStrings.toString());
 	}
 
 	private void _addUserSession(String projectId, String... dateStrings) {
