@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS ChannelDataSource (
 CREATE TABLE IF NOT EXISTS CSVIndividual (
 	id BIGSERIAL PRIMARY KEY,
 	dataSourceId BIGINT,
-	dataSourceIndividualPK TEXT,
+	dataSourceUserPK TEXT,
 	fields JSON
 );
 

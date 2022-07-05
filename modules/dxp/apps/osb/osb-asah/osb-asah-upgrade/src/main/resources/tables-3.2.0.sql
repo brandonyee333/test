@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS BlockedKeyword (
 CREATE TABLE IF NOT EXISTS CSVIndividual (
 	id BIGSERIAL PRIMARY KEY,
 	dataSourceId BIGINT,
-	dataSourceIndividualPK TEXT,
+	dataSourceUserPK TEXT,
 	fields JSON
 );
 
