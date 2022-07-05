@@ -23,12 +23,15 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.LocalDateTime;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +56,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PastUserSessionFinalizerNanite extends BaseNanite {
+
+	public static void addUserSessionFinalizeDates(Date... dates) {
+		Set<String> userSessionFinalizeDates =
+			_userSessionFinalizeDatesByProjectId.computeIfAbsent(
+				ProjectIdThreadLocal.getProjectId(),
+				projectId -> new HashSet<>());
+
+		userSessionFinalizeDates.addAll(
+			ListUtil.map(Arrays.asList(dates), DateUtil::toUTCString));
+
+		_userSessionFinalizeDatesByProjectId.put(
+			ProjectIdThreadLocal.getProjectId(), userSessionFinalizeDates);
+	}
 
 	public static Set<String> getUserSessionFinalizeDates(String projectId) {
 		return _userSessionFinalizeDatesByProjectId.getOrDefault(
