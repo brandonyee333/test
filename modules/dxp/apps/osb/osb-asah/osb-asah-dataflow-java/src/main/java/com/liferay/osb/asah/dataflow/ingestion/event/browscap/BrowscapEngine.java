@@ -38,8 +38,7 @@ public class BrowscapEngine {
 			return null;
 		}
 
-		return new BrowscapDevice(
-			_browscapEngine._userAgentParser.parse(userAgent));
+		return new BrowscapDevice(userAgent, _browscapEngine._userAgentParser);
 	}
 
 	private BrowscapEngine() {
