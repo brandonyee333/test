@@ -30,8 +30,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections4.IterableUtils;
-
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -65,7 +63,7 @@ public class UserSessionDog {
 	}
 
 	public List<BQSession> findByIds(Collection<String> ids) {
-		return IterableUtils.toList(_bqSessionRepository.findAllById(ids));
+		return _bqSessionRepository.findAllById(ids);
 	}
 
 	public List<Long> getIndividualIds(String filterString) {
