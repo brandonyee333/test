@@ -429,7 +429,8 @@ public class BQEventRepositoryImpl
 				DSL.field(
 					"eventdate"
 				).ge(
-					DateUtil.addDays(DateUtil.newDate(), -7)
+					_dslHelper.getDateParam(
+						DateUtil.addDays(DateUtil.newDate(), -7))
 				)
 			).groupBy(
 				columnField
