@@ -16,12 +16,14 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQSession;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import java.util.Collection;
+import java.util.List;
 
 /**
- * @author Marcellus Tavares
+ * @author Marcos Martins
  */
-public interface BQSessionRepository
-	extends CustomBQSessionRepository,
-			PagingAndSortingRepository<BQSession, String> {
+public interface CustomBQSessionRepository {
+
+	public List<BQSession> findAllById(Collection<String> sessionIds);
+
 }
