@@ -63,7 +63,9 @@ public class OktaUserIdentityProvider implements UserIdentityProvider {
 		throw new UnsupportedOperationException();
 	}
 
-	public User fetchUserByEmailAddress(String emailAddress) throws Exception {
+	public synchronized User fetchUserByEmailAddress(String emailAddress)
+		throws Exception {
+
 		User user = _userLocalService.fetchUserByEmailAddress(
 			_companyId, emailAddress);
 

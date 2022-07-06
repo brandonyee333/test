@@ -558,6 +558,10 @@ public class ZendeskBaseWebServiceImpl
 				return _post(endpoint, json, ++retryAttempts);
 			}
 
+			if (_isConflictError(exception, retryAttempts)) {
+				return _post(endpoint, json, ++retryAttempts);
+			}
+
 			if (_isRetry(exception, retryAttempts)) {
 				_apiRetryWait();
 
