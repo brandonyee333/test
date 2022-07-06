@@ -307,7 +307,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	private static final String[] _TABLE_NAMES = {
-		"BQEvent", "BQEventProperty", "BQOrder"
+		"BQEvent", "BQEventProperty", "BQOrder", "BQSession"
 	};
 
 	private BigQuery _bigQuery;
