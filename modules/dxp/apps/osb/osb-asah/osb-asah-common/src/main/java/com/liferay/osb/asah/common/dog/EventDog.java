@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.BQSession;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -143,8 +144,10 @@ public class EventDog {
 
 		Map<String, Date> bqEventPropertyValues =
 			_bqEventPropertyRepository.
-				findBQEventPropertyValuesByEventAttributeDefinitionId(
-					eventAttributeDefinitionId, size);
+				findBQEventPropertyValuesByEventAttributeDefinitionName(
+					_getEventAttributeDefinitionName(
+						eventAttributeDefinitionId),
+					size);
 
 		for (Map.Entry<String, Date> entry : bqEventPropertyValues.entrySet()) {
 			recentBQEventPropertyValues.add(
@@ -207,11 +210,24 @@ public class EventDog {
 					})));
 	}
 
+	private String _getEventAttributeDefinitionName(
+		Long eventAttributeDefinitionId) {
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionDog.getEventAttributeDefinition(
+				eventAttributeDefinitionId);
+
+		return eventAttributeDefinition.getName();
+	}
+
 	@Autowired
 	private BQEventPropertyRepository _bqEventPropertyRepository;
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
+
+	@Autowired
+	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;

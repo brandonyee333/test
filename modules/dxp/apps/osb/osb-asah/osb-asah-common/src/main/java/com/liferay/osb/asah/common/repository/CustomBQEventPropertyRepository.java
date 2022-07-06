@@ -30,8 +30,8 @@ public interface CustomBQEventPropertyRepository {
 		String eventDefinitionName, String keywords);
 
 	public Map<String, Date>
-		findBQEventPropertyValuesByEventAttributeDefinitionId(
-			Long eventAttributeDefinitionId, int size);
+		findBQEventPropertyValuesByEventAttributeDefinitionName(
+			String eventAttributeDefinitionName, int size);
 
 	public List<String> searchValues(
 		Long channelId, String eventAttributeDefinitionName,

@@ -29,7 +29,7 @@ public interface BQEventPropertyRepository
 			PagingAndSortingRepository<BQEventProperty, String> {
 
 	public Map<String, Date>
-		findBQEventPropertyValuesByEventAttributeDefinitionId(
-			Long eventAttributeDefinitionId, int size);
+		findBQEventPropertyValuesByEventAttributeDefinitionName(
+			String eventAttributeDefinitionName, int size);
 
 }

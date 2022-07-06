@@ -65,8 +65,8 @@ public class BQEventPropertyRepositoryTest
 				}
 			},
 			_bqEventPropertyRepository.
-				findBQEventPropertyValuesByEventAttributeDefinitionId(
-					2001L, 5));
+				findBQEventPropertyValuesByEventAttributeDefinitionName(
+					"itemName", 5));
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_properties_1.sql")
@@ -75,8 +75,8 @@ public class BQEventPropertyRepositoryTest
 		Assertions.assertEquals(
 			Collections.emptyMap(),
 			_bqEventPropertyRepository.
-				findBQEventPropertyValuesByEventAttributeDefinitionId(
-					2001L, 10));
+				findBQEventPropertyValuesByEventAttributeDefinitionName(
+					"itemName", 10));
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_properties_2.sql")

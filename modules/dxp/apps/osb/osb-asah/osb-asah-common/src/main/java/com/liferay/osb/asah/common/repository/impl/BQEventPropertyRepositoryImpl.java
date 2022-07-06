@@ -65,8 +65,8 @@ public class BQEventPropertyRepositoryImpl
 
 	@Override
 	public Map<String, Date>
-		findBQEventPropertyValuesByEventAttributeDefinitionId(
-			Long eventAttributeDefinitionId, int size) {
+		findBQEventPropertyValuesByEventAttributeDefinitionName(
+			String eventAttributeDefinitionName, int size) {
 
 		return _queryExecutor.queryForMap(
 			key -> (String)key,
@@ -79,25 +79,17 @@ public class BQEventPropertyRepositoryImpl
 				)
 			).from(
 				"BQEventProperty"
-			).join(
-				"EventAttributeDefinition"
-			).on(
-				DSL.field(
-					"BQEventProperty.name"
-				).eq(
-					DSL.field("EventAttributeDefinition.name")
-				)
 			).where(
 				DSL.and(
-					DSL.field(
-						"EventAttributeDefinition.id"
-					).eq(
-						eventAttributeDefinitionId
-					),
 					DSL.field(
 						"BQEventProperty.eventDate"
 					).ge(
 						DateUtil.addDays(DateUtil.newDate(), -7)
+					),
+					DSL.field(
+						"BQEventProperty.name"
+					).eq(
+						eventAttributeDefinitionName
 					))
 			).groupBy(
 				DSL.field("BQEventProperty.value")
