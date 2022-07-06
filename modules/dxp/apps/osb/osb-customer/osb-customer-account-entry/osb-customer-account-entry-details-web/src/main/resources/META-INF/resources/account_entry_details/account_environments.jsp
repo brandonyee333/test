@@ -26,7 +26,7 @@ boolean permitAdd = false;
 boolean permitDelete = false;
 boolean permitEdit = false;
 
-if ((accountEntry != null) && !accountEntryViewDisplayContext.hasOnlyLXC()) {
+if ((accountEntry != null) && (!accountEntryViewDisplayContext.hasOnlyLXC() || permissionChecker.isOmniadmin())) {
 	addEnvironmentURL = accountEntryViewDisplayContext.getAccountEnvironmentAddURL(accountEntry);
 	accountEnvironmentsJSONArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
 	environmentConfigurationJSONObject = accountEntryViewDisplayContext.getEnvironmentConfigurationJSONObject();
@@ -36,7 +36,7 @@ if ((accountEntry != null) && !accountEntryViewDisplayContext.hasOnlyLXC()) {
 }
 %>
 
-<c:if test="<%= !accountEntryViewDisplayContext.hasOnlyLXC() %>">
+<c:if test="<%= !accountEntryViewDisplayContext.hasOnlyLXC() || permissionChecker.isOmniadmin() %>">
 	<div class="account-environments card" id="<portlet:namespace />accountEnvironments"></div>
 
 	<aui:script>

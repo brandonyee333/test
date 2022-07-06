@@ -501,7 +501,7 @@ public class AccountEntryViewDisplayContext {
 
 		sb.append("accountKey eq '");
 		sb.append(_account.getKey());
-		sb.append("' and state eq 'active'");
+		sb.append("' and (state eq 'active' or state eq 'unactivated')");
 
 		List<ProductPurchase> productPurchases =
 			_productPurchaseWebService.search(sb.toString(), 1, 1000);
