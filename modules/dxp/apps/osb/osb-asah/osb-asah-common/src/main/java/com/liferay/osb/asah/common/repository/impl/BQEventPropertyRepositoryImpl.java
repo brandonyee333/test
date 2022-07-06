@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.constants.EventPropertyConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -84,7 +85,8 @@ public class BQEventPropertyRepositoryImpl
 					DSL.field(
 						"BQEventProperty.eventDate"
 					).ge(
-						DateUtil.addDays(DateUtil.newDate(), -7)
+						_dslHelper.getDateParam(
+							DateUtil.addDays(DateUtil.newDate(), -7))
 					),
 					DSL.field(
 						"BQEventProperty.name"
@@ -225,6 +227,9 @@ public class BQEventPropertyRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private DSLHelper _dslHelper;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;
