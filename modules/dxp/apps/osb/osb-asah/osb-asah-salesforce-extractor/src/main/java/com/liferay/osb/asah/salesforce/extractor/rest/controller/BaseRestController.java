@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.HashMap;
@@ -37,18 +37,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BaseRestController {
 
 	protected String getFields(
-		Long dataSourceId, int end, int start,
-		SalesforceEntity.Type salesforceEntityType) {
+		Long dataSourceId, int end, int start, BQSalesforceEntity.Type type) {
 
 		JSONArray fieldsJSONArray = new JSONArray();
 
 		int size = end - start;
 
-		for (SalesforceEntity salesforceEntity :
-				_salesforceEntityDog.getSalesforceEntities(
-					dataSourceId, start / size, size, salesforceEntityType)) {
+		for (BQSalesforceEntity bqSalesforceEntity :
+				_bqSalesforceEntityDog.getBQSalesforceEntities(
+					dataSourceId, start / size, size, type)) {
 
-			fieldsJSONArray.put(salesforceEntity.getFieldsJSONObject());
+			fieldsJSONArray.put(bqSalesforceEntity.getFieldsJSONObject());
 		}
 
 		return _getFields(fieldsJSONArray);
@@ -99,6 +98,6 @@ public class BaseRestController {
 	}
 
 	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
 
 }

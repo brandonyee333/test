@@ -18,11 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -62,9 +62,9 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		_runLogDog.log(
 			_dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW, "totalOperations",
-			_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-				_dataSourceId, SalesforceEntity.Type.LEAD.getValue(),
-				SalesforceEntity.Type.CONTACT.getValue()));
+			_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
+				_dataSourceId, BQSalesforceEntity.Type.LEAD.getValue(),
+				BQSalesforceEntity.Type.CONTACT.getValue()));
 
 		try {
 			_run();
@@ -92,27 +92,29 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	}
 
 	private void _addAuditEvent(
-		JSONObject additionalInfoJSONObject, String recordId,
-		SalesforceAuditEvent.Type salesforceAuditEventType,
-		SalesforceEntity.Type salesforceEntityType) {
+		JSONObject additionalInfoJSONObject,
+		BQSalesforceAuditEvent.Type bqSalesforceAuditEventType,
+		BQSalesforceEntity.Type bqSalesforceEntityType, String recordId) {
 
-		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
+		BQSalesforceAuditEvent bqSalesforceAuditEvent =
+			new BQSalesforceAuditEvent();
 
-		salesforceAuditEvent.setAdditionalInfoJSONObject(
+		bqSalesforceAuditEvent.setAdditionalInfoJSONObject(
 			additionalInfoJSONObject);
-		salesforceAuditEvent.setCreateDate(new Date());
-		salesforceAuditEvent.setDataSourceId(_dataSourceId);
-		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.getValue());
-		salesforceAuditEvent.setRecordId(recordId);
-		salesforceAuditEvent.setType(salesforceAuditEventType);
+		bqSalesforceAuditEvent.setCreateDate(new Date());
+		bqSalesforceAuditEvent.setDataSourceId(_dataSourceId);
+		bqSalesforceAuditEvent.setEntityTypeName(
+			bqSalesforceEntityType.getValue());
+		bqSalesforceAuditEvent.setRecordId(recordId);
+		bqSalesforceAuditEvent.setType(bqSalesforceAuditEventType);
 
 		try {
-			_salesforceAuditEventDog.addSalesforceAuditEvent(
-				salesforceAuditEvent);
+			_bqSalesforceAuditEventDog.addBQSalesforceAuditEvent(
+				bqSalesforceAuditEvent);
 		}
 		catch (Exception exception) {
 			JSONObject auditEventJSONObject = _objectMapper.convertValue(
-				salesforceAuditEvent, JSONObject.class);
+				bqSalesforceAuditEvent, JSONObject.class);
 
 			_log.error(
 				String.format(
@@ -123,27 +125,27 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		}
 	}
 
-	private SalesforceEntity _buildIndividualSalesforceEntity(
-		String id, JSONObject jsonObject, SalesforceEntity.Type type) {
+	private BQSalesforceEntity _buildIndividualBQSalesforceEntity(
+		String id, JSONObject jsonObject, BQSalesforceEntity.Type type) {
 
 		JSONObject salesforceIndividualFieldsJSONObject = null;
 
-		if (type == SalesforceEntity.Type.CONTACT) {
+		if (type == BQSalesforceEntity.Type.CONTACT) {
 			String accountId = jsonObject.optString("AccountId", null);
 
 			String salesforceAccountName = null;
 
 			if (accountId != null) {
-				SalesforceEntity salesforceAccountEntity =
-					_salesforceEntityDog.getSalesforceEntity(
+				BQSalesforceEntity bqSalesforceAccountEntity =
+					_bqSalesforceEntityDog.getBQSalesforceEntity(
 						_dataSourceId, accountId,
-						SalesforceEntity.Type.ACCOUNT);
+						BQSalesforceEntity.Type.ACCOUNT);
 
-				JSONObject salesforceAccountFieldsJSONObject =
-					salesforceAccountEntity.getFieldsJSONObject();
+				JSONObject bqSalesforceAccountFieldsJSONObject =
+					bqSalesforceAccountEntity.getFieldsJSONObject();
 
 				salesforceAccountName =
-					salesforceAccountFieldsJSONObject.optString("Name", null);
+					bqSalesforceAccountFieldsJSONObject.optString("Name", null);
 			}
 
 			String emailAddress = jsonObject.optString("Email", null);
@@ -180,7 +182,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 					jsonObject.optString("Suffix", null),
 					jsonObject.optString("Title", null));
 		}
-		else if (type == SalesforceEntity.Type.LEAD) {
+		else if (type == BQSalesforceEntity.Type.LEAD) {
 			salesforceIndividualFieldsJSONObject =
 				_buildSalesforceIndividualFieldsJSONObject(
 					null, null, jsonObject.optString("City", null),
@@ -210,9 +212,9 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				"modifiedDate", DateUtil.newDateString());
 		}
 
-		return new SalesforceEntity(
+		return new BQSalesforceEntity(
 			id, _dataSourceId, salesforceIndividualFieldsJSONObject,
-			SalesforceEntity.Type.INDIVIDUAL);
+			BQSalesforceEntity.Type.INDIVIDUAL);
 	}
 
 	private JSONObject _buildSalesforceIndividualFieldsJSONObject(
@@ -292,170 +294,179 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		}
 
 		List<String> accountPKs =
-			_salesforceEntityDog.getSalesforceEntityFieldValuesGroupByField(
+			_bqSalesforceEntityDog.getBQSalesforceEntityFieldValuesGroupByField(
 				_dataSourceId, "Email", emailAddress, "AccountId",
-				SalesforceEntity.Type.CONTACT);
+				BQSalesforceEntity.Type.CONTACT);
 
 		return new JSONArray(accountPKs);
 	}
 
-	private SalesforceEntity _mergeContactsAndLeads(String emailAddress) {
-		SalesforceEntity individualSalesforceEntity = null;
+	private BQSalesforceEntity _mergeContactsAndLeads(String emailAddress) {
+		BQSalesforceEntity individualBQSalesforceEntity = null;
 
-		List<SalesforceEntity> contactSalesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
+		List<BQSalesforceEntity> contactBQSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
 				_dataSourceId, "Email", emailAddress,
-				SalesforceEntity.Type.CONTACT);
+				BQSalesforceEntity.Type.CONTACT);
 
-		for (SalesforceEntity contactSalesforceEntity :
-				contactSalesforceEntities) {
+		for (BQSalesforceEntity contactBQSalesforceEntity :
+				contactBQSalesforceEntities) {
 
-			individualSalesforceEntity = _mergeIndividualSalesforceEntity(
-				individualSalesforceEntity,
-				_buildIndividualSalesforceEntity(
-					contactSalesforceEntity.getId(),
-					contactSalesforceEntity.getFieldsJSONObject(),
-					contactSalesforceEntity.getType()));
+			individualBQSalesforceEntity = _mergeIndividualBQSalesforceEntity(
+				individualBQSalesforceEntity,
+				_buildIndividualBQSalesforceEntity(
+					contactBQSalesforceEntity.getId(),
+					contactBQSalesforceEntity.getFieldsJSONObject(),
+					contactBQSalesforceEntity.getType()));
 		}
 
-		List<SalesforceEntity> leadSalesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
+		List<BQSalesforceEntity> leadBQSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
 				_dataSourceId, "Email", emailAddress,
-				SalesforceEntity.Type.LEAD);
+				BQSalesforceEntity.Type.LEAD);
 
-		for (SalesforceEntity leadSalesforceEntity : leadSalesforceEntities) {
-			individualSalesforceEntity = _mergeIndividualSalesforceEntity(
-				_buildIndividualSalesforceEntity(
-					leadSalesforceEntity.getId(),
-					leadSalesforceEntity.getFieldsJSONObject(),
-					leadSalesforceEntity.getType()),
-				individualSalesforceEntity);
+		for (BQSalesforceEntity leadBQSalesforceEntity :
+				leadBQSalesforceEntities) {
+
+			individualBQSalesforceEntity = _mergeIndividualBQSalesforceEntity(
+				_buildIndividualBQSalesforceEntity(
+					leadBQSalesforceEntity.getId(),
+					leadBQSalesforceEntity.getFieldsJSONObject(),
+					leadBQSalesforceEntity.getType()),
+				individualBQSalesforceEntity);
 		}
 
-		return individualSalesforceEntity;
+		return individualBQSalesforceEntity;
 	}
 
-	private SalesforceEntity _mergeIndividualSalesforceEntity(
-		SalesforceEntity salesforceEntity1,
-		SalesforceEntity salesforceEntity2) {
+	private BQSalesforceEntity _mergeIndividualBQSalesforceEntity(
+		BQSalesforceEntity bqSalesforceEntity1,
+		BQSalesforceEntity bqSalesforceEntity2) {
 
-		if (salesforceEntity1 == null) {
-			return new SalesforceEntity(
-				salesforceEntity2.getId(), salesforceEntity2.getDataSourceId(),
-				salesforceEntity2.getFieldsJSONObject(),
-				salesforceEntity2.getType());
+		if (bqSalesforceEntity1 == null) {
+			return new BQSalesforceEntity(
+				bqSalesforceEntity2.getId(),
+				bqSalesforceEntity2.getDataSourceId(),
+				bqSalesforceEntity2.getFieldsJSONObject(),
+				bqSalesforceEntity2.getType());
 		}
 
-		if (salesforceEntity2 == null) {
-			return new SalesforceEntity(
-				salesforceEntity1.getId(), salesforceEntity1.getDataSourceId(),
-				salesforceEntity1.getFieldsJSONObject(),
-				salesforceEntity1.getType());
+		if (bqSalesforceEntity2 == null) {
+			return new BQSalesforceEntity(
+				bqSalesforceEntity1.getId(),
+				bqSalesforceEntity1.getDataSourceId(),
+				bqSalesforceEntity1.getFieldsJSONObject(),
+				bqSalesforceEntity1.getType());
 		}
 
-		return new SalesforceEntity(
-			salesforceEntity2.getId(), salesforceEntity2.getDataSourceId(),
+		return new BQSalesforceEntity(
+			bqSalesforceEntity2.getId(), bqSalesforceEntity2.getDataSourceId(),
 			JSONUtil.merge(
-				salesforceEntity1.getFieldsJSONObject(),
-				salesforceEntity2.getFieldsJSONObject()),
-			salesforceEntity2.getType());
+				bqSalesforceEntity1.getFieldsJSONObject(),
+				bqSalesforceEntity2.getFieldsJSONObject()),
+			bqSalesforceEntity2.getType());
 	}
 
-	private void _process(SalesforceAuditEvent salesforceAuditEvent) {
+	private void _process(BQSalesforceAuditEvent bqSalesforceAuditEvent) {
 		JSONObject additionalInfoJSONObject =
-			salesforceAuditEvent.getAdditionalInfoJSONObject();
+			bqSalesforceAuditEvent.getAdditionalInfoJSONObject();
 
-		List<SalesforceEntity> individualSalesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
+		List<BQSalesforceEntity> individualBQSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
 				_dataSourceId, "email",
 				additionalInfoJSONObject.optString("Email"),
-				SalesforceEntity.Type.INDIVIDUAL);
+				BQSalesforceEntity.Type.INDIVIDUAL);
 
-		SalesforceEntity oldIndividualSalesforceEntity = null;
+		BQSalesforceEntity oldIndividualBQSalesforceEntity = null;
 
-		if (individualSalesforceEntities.size() == 1) {
-			oldIndividualSalesforceEntity = individualSalesforceEntities.get(0);
+		if (individualBQSalesforceEntities.size() == 1) {
+			oldIndividualBQSalesforceEntity =
+				individualBQSalesforceEntities.get(0);
 		}
 
-		SalesforceEntity newIndividualSalesforceEntity = null;
+		BQSalesforceEntity newIndividualBQSalesforceEntity = null;
 
-		if (salesforceAuditEvent.getType() !=
-				SalesforceAuditEvent.Type.DELETE) {
+		if (bqSalesforceAuditEvent.getType() !=
+				BQSalesforceAuditEvent.Type.DELETE) {
 
-			SalesforceEntity.Type salesforceEntityType =
-				SalesforceEntity.Type.of(
-					salesforceAuditEvent.getEntityTypeName());
+			BQSalesforceEntity.Type bqSalesforceEntityType =
+				BQSalesforceEntity.Type.of(
+					bqSalesforceAuditEvent.getEntityTypeName());
 
-			SalesforceEntity salesforceEntity =
-				_salesforceEntityDog.getSalesforceEntity(
-					salesforceAuditEvent.getDataSourceId(),
-					salesforceAuditEvent.getRecordId(), salesforceEntityType);
+			BQSalesforceEntity bqSalesforceEntity =
+				_bqSalesforceEntityDog.getBQSalesforceEntity(
+					bqSalesforceAuditEvent.getDataSourceId(),
+					bqSalesforceAuditEvent.getRecordId(),
+					bqSalesforceEntityType);
 
-			SalesforceEntity individualSalesforceEntity =
-				_buildIndividualSalesforceEntity(
-					salesforceEntity.getId(),
-					salesforceEntity.getFieldsJSONObject(),
-					salesforceEntityType);
+			BQSalesforceEntity individualBQSalesforceEntity =
+				_buildIndividualBQSalesforceEntity(
+					bqSalesforceEntity.getId(),
+					bqSalesforceEntity.getFieldsJSONObject(),
+					bqSalesforceEntityType);
 
-			if (oldIndividualSalesforceEntity == null) {
-				newIndividualSalesforceEntity = individualSalesforceEntity;
+			if (oldIndividualBQSalesforceEntity == null) {
+				newIndividualBQSalesforceEntity = individualBQSalesforceEntity;
 			}
-			else if (salesforceEntityType == SalesforceEntity.Type.CONTACT) {
-				newIndividualSalesforceEntity =
-					_mergeIndividualSalesforceEntity(
-						oldIndividualSalesforceEntity,
-						individualSalesforceEntity);
+			else if (bqSalesforceEntityType ==
+						BQSalesforceEntity.Type.CONTACT) {
+
+				newIndividualBQSalesforceEntity =
+					_mergeIndividualBQSalesforceEntity(
+						oldIndividualBQSalesforceEntity,
+						individualBQSalesforceEntity);
 			}
-			else if (salesforceEntityType == SalesforceEntity.Type.LEAD) {
-				newIndividualSalesforceEntity =
-					_mergeIndividualSalesforceEntity(
-						individualSalesforceEntity,
-						oldIndividualSalesforceEntity);
+			else if (bqSalesforceEntityType == BQSalesforceEntity.Type.LEAD) {
+				newIndividualBQSalesforceEntity =
+					_mergeIndividualBQSalesforceEntity(
+						individualBQSalesforceEntity,
+						oldIndividualBQSalesforceEntity);
 			}
 		}
-		else if (oldIndividualSalesforceEntity != null) {
-			newIndividualSalesforceEntity = _mergeContactsAndLeads(
+		else if (oldIndividualBQSalesforceEntity != null) {
+			newIndividualBQSalesforceEntity = _mergeContactsAndLeads(
 				additionalInfoJSONObject.optString("Email"));
 
-			if (newIndividualSalesforceEntity == null) {
-				_salesforceEntityDog.deleteSalesforceEntity(
-					oldIndividualSalesforceEntity);
+			if (newIndividualBQSalesforceEntity == null) {
+				_bqSalesforceEntityDog.deleteBQSalesforceEntity(
+					oldIndividualBQSalesforceEntity);
 
 				_addAuditEvent(
-					oldIndividualSalesforceEntity.getFieldsJSONObject(),
-					oldIndividualSalesforceEntity.getId(),
-					SalesforceAuditEvent.Type.DELETE,
-					SalesforceEntity.Type.INDIVIDUAL);
+					oldIndividualBQSalesforceEntity.getFieldsJSONObject(),
+					BQSalesforceAuditEvent.Type.DELETE,
+					BQSalesforceEntity.Type.INDIVIDUAL,
+					oldIndividualBQSalesforceEntity.getId());
 			}
 		}
 
-		if ((newIndividualSalesforceEntity != null) &&
-			(oldIndividualSalesforceEntity != null)) {
+		if ((newIndividualBQSalesforceEntity != null) &&
+			(oldIndividualBQSalesforceEntity != null)) {
 
-			newIndividualSalesforceEntity.setId(
-				oldIndividualSalesforceEntity.getId());
+			newIndividualBQSalesforceEntity.setId(
+				oldIndividualBQSalesforceEntity.getId());
 		}
 
-		if (newIndividualSalesforceEntity != null) {
-			SalesforceEntity salesforceIndividual =
-				_salesforceEntityDog.saveSalesforceEntity(
-					newIndividualSalesforceEntity);
+		if (newIndividualBQSalesforceEntity != null) {
+			BQSalesforceEntity bqSalesforceIndividual =
+				_bqSalesforceEntityDog.saveBQSalesforceEntity(
+					newIndividualBQSalesforceEntity);
 
 			_addAuditEvent(
-				salesforceIndividual.getFieldsJSONObject(),
-				salesforceIndividual.getId(), SalesforceAuditEvent.Type.UPDATE,
-				SalesforceEntity.Type.INDIVIDUAL);
+				bqSalesforceIndividual.getFieldsJSONObject(),
+				BQSalesforceAuditEvent.Type.UPDATE,
+				BQSalesforceEntity.Type.INDIVIDUAL,
+				bqSalesforceIndividual.getId());
 		}
 
-		_salesforceAuditEventDog.deleteSalesforceAuditEvent(
-			salesforceAuditEvent);
+		_bqSalesforceAuditEventDog.deleteBQSalesforceAuditEvent(
+			bqSalesforceAuditEvent);
 	}
 
 	private void _run() {
 		for (String entityTypeName :
 				new String[] {
-					SalesforceEntity.Type.LEAD.getValue(),
-					SalesforceEntity.Type.CONTACT.getValue()
+					BQSalesforceEntity.Type.LEAD.getValue(),
+					BQSalesforceEntity.Type.CONTACT.getValue()
 				}) {
 
 			long time = System.currentTimeMillis();
@@ -472,22 +483,22 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			int processedCount = 0;
 
 			while (true) {
-				List<SalesforceAuditEvent> salesforceAuditEvents =
-					_salesforceAuditEventDog.getSalesforceAuditEvents(
+				List<BQSalesforceAuditEvent> bqSalesforceAuditEvents =
+					_bqSalesforceAuditEventDog.getBQSalesforceAuditEvents(
 						_dataSourceId, entityTypeName, page++, 500,
 						Sort.desc("id"));
 
-				if (salesforceAuditEvents.isEmpty()) {
+				if (bqSalesforceAuditEvents.isEmpty()) {
 					break;
 				}
 
-				for (SalesforceAuditEvent salesforceAuditEvent :
-						salesforceAuditEvents) {
+				for (BQSalesforceAuditEvent bqSalesforceAuditEvent :
+						bqSalesforceAuditEvents) {
 
-					_process(salesforceAuditEvent);
+					_process(bqSalesforceAuditEvent);
 				}
 
-				processedCount += salesforceAuditEvents.size();
+				processedCount += bqSalesforceAuditEvents.size();
 
 				if (_log.isDebugEnabled()) {
 					_log.debug(
@@ -514,6 +525,12 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
+	@Autowired
+	private BQSalesforceAuditEventDog _bqSalesforceAuditEventDog;
+
+	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
+
 	private final Long _dataSourceId;
 
 	@Autowired
@@ -521,12 +538,6 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 	@Autowired
 	private RunLogDog _runLogDog;
-
-	@Autowired
-	private SalesforceAuditEventDog _salesforceAuditEventDog;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 	private final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration;

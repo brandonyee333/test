@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.salesforce.extractor.client.SalesforcePartnerClientInvoker;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
@@ -57,7 +57,7 @@ public class SalesforceUsersRestController extends BaseRestController {
 		@RequestParam(defaultValue = "0") int start) {
 
 		return getFields(
-			dataSourceId, end, start, SalesforceEntity.Type.INDIVIDUAL);
+			dataSourceId, end, start, BQSalesforceEntity.Type.INDIVIDUAL);
 	}
 
 	@Autowired

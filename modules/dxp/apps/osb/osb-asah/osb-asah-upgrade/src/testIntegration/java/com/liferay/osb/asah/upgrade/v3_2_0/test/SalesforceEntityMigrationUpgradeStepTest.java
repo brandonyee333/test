@@ -18,10 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.repository.BQSalesforceEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -53,7 +53,7 @@ public class SalesforceEntityMigrationUpgradeStepTest
 	public void setUp() throws Exception {
 		ProjectIdThreadLocal.setProjectId("test");
 
-		_salesforceEntityRepository.deleteAll();
+		_bqSalesforceEntityRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
 
 		DataSource dataSource = new DataSource("Liferay Brazil");
@@ -82,7 +82,7 @@ public class SalesforceEntityMigrationUpgradeStepTest
 			"test_osbasahsalesforceraw_individuals");
 		_elasticsearchIndexManager.delete("test_osbasahsalesforceraw_lead");
 
-		_salesforceEntityRepository.deleteAll();
+		_bqSalesforceEntityRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
 	}
 
@@ -94,13 +94,13 @@ public class SalesforceEntityMigrationUpgradeStepTest
 		JSONArray leadJSONArray = _getJSONArray("lead");
 
 		_salesforceRawElasticsearchInvoker.add(
-			SalesforceEntity.Type.ACCOUNT.getValue(), accountJSONArray);
+			BQSalesforceEntity.Type.ACCOUNT.getValue(), accountJSONArray);
 		_salesforceRawElasticsearchInvoker.add(
-			SalesforceEntity.Type.CONTACT.getValue(), contactJSONArray);
+			BQSalesforceEntity.Type.CONTACT.getValue(), contactJSONArray);
 		_salesforceRawElasticsearchInvoker.add(
-			SalesforceEntity.Type.INDIVIDUAL.getValue(), individualJSONArray);
+			BQSalesforceEntity.Type.INDIVIDUAL.getValue(), individualJSONArray);
 		_salesforceRawElasticsearchInvoker.add(
-			SalesforceEntity.Type.LEAD.getValue(), leadJSONArray);
+			BQSalesforceEntity.Type.LEAD.getValue(), leadJSONArray);
 
 		JSONArray jsonArray = new JSONArray();
 
@@ -131,13 +131,13 @@ public class SalesforceEntityMigrationUpgradeStepTest
 		Assertions.assertEquals(
 			stream.map(
 				object -> _objectMapper.convertValue(
-					object, SalesforceEntity.class)
+					object, BQSalesforceEntity.class)
 			).sorted(
-				Comparator.comparing(SalesforceEntity::getId)
+				Comparator.comparing(BQSalesforceEntity::getId)
 			).collect(
 				Collectors.toList()
 			),
-			_salesforceEntityRepository.findAll());
+			_bqSalesforceEntityRepository.findAll());
 	}
 
 	private JSONArray _getJSONArray(String collectionName) throws Exception {
@@ -170,6 +170,9 @@ public class SalesforceEntityMigrationUpgradeStepTest
 	}
 
 	@Autowired
+	private BQSalesforceEntityRepository _bqSalesforceEntityRepository;
+
+	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
@@ -181,9 +184,6 @@ public class SalesforceEntityMigrationUpgradeStepTest
 	@Autowired
 	private SalesforceEntityMigrationUpgradeStep
 		_salesforceEntityMigrationUpgradeStep;
-
-	@Autowired
-	private SalesforceEntityRepository _salesforceEntityRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;

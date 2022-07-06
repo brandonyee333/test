@@ -17,23 +17,23 @@ package com.liferay.osb.asah.common.http.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
@@ -625,14 +625,14 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				dataSourceId2);
 		Assertions.assertEquals(
 			0,
-			_salesforceEntityDog.getSalesforceEntitiesCount(
-				dataSourceId1, SalesforceEntity.Type.INDIVIDUAL),
+			_bqSalesforceEntityDog.getBQSalesforceEntitiesCount(
+				dataSourceId1, BQSalesforceEntity.Type.INDIVIDUAL),
 			"Found entry in individuals collection with data source ID " +
 				dataSourceId1);
 		Assertions.assertEquals(
 			1,
-			_salesforceEntityDog.getSalesforceEntitiesCount(
-				dataSourceId2, SalesforceEntity.Type.INDIVIDUAL),
+			_bqSalesforceEntityDog.getBQSalesforceEntitiesCount(
+				dataSourceId2, BQSalesforceEntity.Type.INDIVIDUAL),
 			"Unable to find entry in individuals collection with data source " +
 				"ID " + dataSourceId2);
 	}
@@ -776,7 +776,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildFieldJSONObject(
 				dataSourceId, dataSourceName));
 
-		SalesforceEntity salesforceEntity = new SalesforceEntity(
+		BQSalesforceEntity bqSalesforceEntity = new BQSalesforceEntity(
 			RandomTestUtil.randomUUID(), Long.valueOf(dataSourceId),
 			JSONUtil.put(
 				"dataSourceId", dataSourceId
@@ -793,11 +793,11 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"subscription", RandomTestUtil.randomString()
 			),
-			SalesforceEntity.Type.INDIVIDUAL);
+			BQSalesforceEntity.Type.INDIVIDUAL);
 
-		salesforceEntity.setIsNew(Boolean.TRUE);
+		bqSalesforceEntity.setIsNew(Boolean.TRUE);
 
-		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity);
+		_bqSalesforceEntityDog.saveBQSalesforceEntity(bqSalesforceEntity);
 	}
 
 	private void _mock() {
@@ -817,6 +817,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private BQCSVUserRepository _bqCSVUserRepository;
+
+	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
 
 	@Autowired
 	private ChannelDog _channelDog;
@@ -847,9 +850,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 	@MockBean
 	private SalesforceExtractorConfigurationDog

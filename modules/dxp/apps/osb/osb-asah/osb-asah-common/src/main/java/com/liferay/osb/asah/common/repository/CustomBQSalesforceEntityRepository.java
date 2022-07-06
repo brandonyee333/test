@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 
 import java.util.List;
 
@@ -23,21 +23,21 @@ import org.springframework.cache.annotation.Cacheable;
 /**
  * @author Ivica Cardic
  */
-public interface CustomSalesforceEntityRepository {
+public interface CustomBQSalesforceEntityRepository {
 
-	public List<SalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
+	public List<BQSalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
 		String after, String fieldKey, String fieldValue, int size,
-		SalesforceEntity.Type type);
+		BQSalesforceEntity.Type type);
 
 	@Cacheable
-	public List<SalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
+	public List<BQSalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
 		Long dataSourceId, String fieldKey, String fieldValue,
-		SalesforceEntity.Type type);
+		BQSalesforceEntity.Type type);
 
 	@Cacheable
 	public List<String>
 		findByDataSourceIdAndFieldKeyEqualsAndTypeGroupByFieldKey(
 			Long dataSourceId, String fieldKey, String fieldValue,
-			SalesforceEntity.Type type, String groupByFieldKey);
+			BQSalesforceEntity.Type type, String groupByFieldKey);
 
 }

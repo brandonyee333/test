@@ -18,11 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQSalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -48,7 +48,7 @@ public class SalesforceAuditEventMigrationUpgradeStepTest
 	public void setUp() throws Exception {
 		ProjectIdThreadLocal.setProjectId("test");
 
-		_salesforceAuditEventRepository.deleteAll();
+		_bqSalesforceAuditEventRepository.deleteAll();
 
 		_dataSourceRepository.deleteAll();
 
@@ -77,7 +77,7 @@ public class SalesforceAuditEventMigrationUpgradeStepTest
 		_elasticsearchIndexManager.delete(
 			"test_osbasahsalesforceraw_audit-events");
 
-		_salesforceAuditEventRepository.deleteAll();
+		_bqSalesforceAuditEventRepository.deleteAll();
 
 		_dataSourceRepository.deleteAll();
 	}
@@ -96,12 +96,15 @@ public class SalesforceAuditEventMigrationUpgradeStepTest
 			JSONUtil.toList(
 				jsonArray,
 				jsonObject -> _objectMapper.convertValue(
-					jsonObject, SalesforceAuditEvent.class)),
-			_salesforceAuditEventRepository.findAll());
+					jsonObject, BQSalesforceAuditEvent.class)),
+			_bqSalesforceAuditEventRepository.findAll());
 
 		Assertions.assertTrue(
 			_salesforceAuditEventMigrationUpgradeStep.isSequenceSync());
 	}
+
+	@Autowired
+	private BQSalesforceAuditEventRepository _bqSalesforceAuditEventRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
@@ -115,9 +118,6 @@ public class SalesforceAuditEventMigrationUpgradeStepTest
 	@Autowired
 	private SalesforceAuditEventMigrationUpgradeStep
 		_salesforceAuditEventMigrationUpgradeStep;
-
-	@Autowired
-	private SalesforceAuditEventRepository _salesforceAuditEventRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;

@@ -15,11 +15,11 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQSalesforceEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -38,7 +38,7 @@ import org.springframework.data.domain.PageRequest;
  * @author Marcellus Tavares
  */
 @Import(JDBCTestConfiguration.class)
-public class SalesforceEntityRepositoryTest
+public class BQSalesforceEntityRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -46,93 +46,94 @@ public class SalesforceEntityRepositoryTest
 	public void setUp() {
 		_dataSource = _addDataSource();
 
-		_salesforceEntityRepository.saveAll(
+		_bqSalesforceEntityRepository.saveAll(
 			Arrays.asList(
-				new SalesforceEntity(
+				new BQSalesforceEntity(
 					"1", _dataSource.getId(), JSONUtil.put("Name", "Liferay"),
-					SalesforceEntity.Type.ACCOUNT),
-				new SalesforceEntity(
+					BQSalesforceEntity.Type.ACCOUNT),
+				new BQSalesforceEntity(
 					"2", _dataSource.getId(),
 					JSONUtil.put("Name", "Test Company"),
-					SalesforceEntity.Type.ACCOUNT),
-				new SalesforceEntity(
+					BQSalesforceEntity.Type.ACCOUNT),
+				new BQSalesforceEntity(
 					"1", _dataSource.getId(),
 					JSONUtil.put(
 						"AccountId", "1"
 					).put(
 						"Email", "test@liferay.com"
 					),
-					SalesforceEntity.Type.CONTACT),
-				new SalesforceEntity(
+					BQSalesforceEntity.Type.CONTACT),
+				new BQSalesforceEntity(
 					"2", _dataSource.getId(),
 					JSONUtil.put(
 						"AccountId", "1"
 					).put(
 						"Email", "test@liferay.com"
 					),
-					SalesforceEntity.Type.CONTACT),
-				new SalesforceEntity(
+					BQSalesforceEntity.Type.CONTACT),
+				new BQSalesforceEntity(
 					"3", _dataSource.getId(),
 					JSONUtil.put(
 						"AccountId", "2"
 					).put(
 						"Email", "test@liferay.com"
 					),
-					SalesforceEntity.Type.CONTACT)));
+					BQSalesforceEntity.Type.CONTACT)));
 	}
 
 	@Test
 	public void testDeleteByDataSourceId() {
-		_salesforceEntityRepository.deleteByDataSourceId(1L);
+		_bqSalesforceEntityRepository.deleteByDataSourceId(1L);
 
-		Assertions.assertEquals(0, _salesforceEntityRepository.count());
+		Assertions.assertEquals(0, _bqSalesforceEntityRepository.count());
 	}
 
 	@Test
 	public void testDeleteByFieldKeyAndFieldValueAndType() {
-		_salesforceEntityRepository.deleteByFieldKeyAndFieldValueAndType(
-			"AccountId", "1", SalesforceEntity.Type.CONTACT);
+		_bqSalesforceEntityRepository.deleteByFieldKeyAndFieldValueAndType(
+			"AccountId", "1", BQSalesforceEntity.Type.CONTACT);
 
-		Assertions.assertEquals(3, _salesforceEntityRepository.count());
+		Assertions.assertEquals(3, _bqSalesforceEntityRepository.count());
 	}
 
 	@Test
 	public void testFindByAfterAndFieldKeyAndFieldValueAndType() {
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityRepository.
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityRepository.
 				findByAfterAndFieldKeyAndFieldValueAndType(
-					null, "AccountId", "1", 10, SalesforceEntity.Type.CONTACT);
+					null, "AccountId", "1", 10,
+					BQSalesforceEntity.Type.CONTACT);
 
-		Assertions.assertEquals(2, salesforceEntities.size());
+		Assertions.assertEquals(2, bqSalesforceEntities.size());
 	}
 
 	@Test
 	public void testFindByDataSourceIdAndFieldKeyEqualsAndType() {
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityRepository.
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityRepository.
 				findByDataSourceIdAndFieldKeyEqualsAndType(
 					_dataSource.getId(), "Name", "Liferay",
-					SalesforceEntity.Type.ACCOUNT);
+					BQSalesforceEntity.Type.ACCOUNT);
 
 		Assertions.assertEquals(
-			1, salesforceEntities.size(), salesforceEntities.toString());
+			1, bqSalesforceEntities.size(), bqSalesforceEntities.toString());
 
-		SalesforceEntity salesforceEntity = salesforceEntities.get(0);
+		BQSalesforceEntity bqSalesforceEntity = bqSalesforceEntities.get(0);
 
 		Assertions.assertEquals(
-			new SalesforceEntity(
+			new BQSalesforceEntity(
 				"1", _dataSource.getId(), JSONUtil.put("Name", "Liferay"),
-				SalesforceEntity.Type.ACCOUNT),
-			salesforceEntity);
+				BQSalesforceEntity.Type.ACCOUNT),
+			bqSalesforceEntity);
 	}
 
 	@Test
 	public void testFindByDataSourceIdAndFieldKeyEqualsAndTypeGroupByFieldKey() {
 		List<String> accountIds =
-			_salesforceEntityRepository.
+			_bqSalesforceEntityRepository.
 				findByDataSourceIdAndFieldKeyEqualsAndTypeGroupByFieldKey(
 					_dataSource.getId(), "Email", "test@liferay.com",
-					SalesforceEntity.Type.CONTACT, "AccountId");
+					BQSalesforceEntity.Type.CONTACT, "AccountId");
 
 		Assertions.assertEquals(2, accountIds.size(), accountIds.toString());
 		Assertions.assertEquals(Arrays.asList("1", "2"), accountIds);
@@ -140,31 +141,31 @@ public class SalesforceEntityRepositoryTest
 
 	@Test
 	public void testFindByDataSourceIdAndType() {
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityRepository.findByDataSourceIdAndType(
-				1L, SalesforceEntity.Type.CONTACT, PageRequest.of(0, 100));
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityRepository.findByDataSourceIdAndType(
+				1L, BQSalesforceEntity.Type.CONTACT, PageRequest.of(0, 100));
 
-		Assertions.assertEquals(3, salesforceEntities.size());
+		Assertions.assertEquals(3, bqSalesforceEntities.size());
 	}
 
 	@Test
-	public void testUpdateSalesforceEntityFields() {
-		_salesforceEntityRepository.updateSalesforceEntityFields(
+	public void testUpdateBQSalesforceEntityFields() {
+		_bqSalesforceEntityRepository.updateBQSalesforceEntityFields(
 			1L,
 			JSONUtil.put(
 				"AccountId", "321"
 			).put(
 				"Email", "john.doe@liferay.com"
 			),
-			"1", SalesforceEntity.Type.CONTACT);
+			"1", BQSalesforceEntity.Type.CONTACT);
 
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityRepository.
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityRepository.
 				findByAfterAndFieldKeyAndFieldValueAndType(
 					null, "AccountId", "321", 10,
-					SalesforceEntity.Type.CONTACT);
+					BQSalesforceEntity.Type.CONTACT);
 
-		Assertions.assertEquals(1, salesforceEntities.size());
+		Assertions.assertEquals(1, bqSalesforceEntities.size());
 	}
 
 	private DataSource _addDataSource() {
@@ -182,12 +183,12 @@ public class SalesforceEntityRepositoryTest
 		return _dataSourceRepository.save(dataSource);
 	}
 
+	@Autowired
+	private BQSalesforceEntityRepository _bqSalesforceEntityRepository;
+
 	private DataSource _dataSource;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private SalesforceEntityRepository _salesforceEntityRepository;
 
 }

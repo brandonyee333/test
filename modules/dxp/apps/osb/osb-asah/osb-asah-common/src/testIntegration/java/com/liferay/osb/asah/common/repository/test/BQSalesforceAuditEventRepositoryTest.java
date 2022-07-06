@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.repository.BQSalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -35,7 +35,7 @@ import org.springframework.data.domain.PageRequest;
 /**
  * @author Leilany Ulisses
  */
-public class SalesforceAuditEventRepositoryTest
+public class BQSalesforceAuditEventRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -48,50 +48,53 @@ public class SalesforceAuditEventRepositoryTest
 
 		_dataSourceRepository.save(dataSource);
 
-		SalesforceAuditEvent salesforceAuditEvent1 = new SalesforceAuditEvent();
+		BQSalesforceAuditEvent bqSalesforceAuditEvent1 =
+			new BQSalesforceAuditEvent();
 
-		salesforceAuditEvent1.setDataSourceId(123L);
-		salesforceAuditEvent1.setEntityTypeName("Account");
-		salesforceAuditEvent1.setIsNew(Boolean.TRUE);
+		bqSalesforceAuditEvent1.setDataSourceId(123L);
+		bqSalesforceAuditEvent1.setEntityTypeName("Account");
+		bqSalesforceAuditEvent1.setIsNew(Boolean.TRUE);
 
-		_salesforceAuditEventRepository.save(salesforceAuditEvent1);
+		_bqSalesforceAuditEventRepository.save(bqSalesforceAuditEvent1);
 
-		SalesforceAuditEvent salesforceAuditEvent2 = new SalesforceAuditEvent();
+		BQSalesforceAuditEvent bqSalesforceAuditEvent2 =
+			new BQSalesforceAuditEvent();
 
-		salesforceAuditEvent2.setDataSourceId(134L);
-		salesforceAuditEvent2.setEntityTypeName("Contact");
-		salesforceAuditEvent2.setIsNew(Boolean.TRUE);
+		bqSalesforceAuditEvent2.setDataSourceId(134L);
+		bqSalesforceAuditEvent2.setEntityTypeName("Contact");
+		bqSalesforceAuditEvent2.setIsNew(Boolean.TRUE);
 
-		_salesforceAuditEventRepository.save(salesforceAuditEvent2);
+		_bqSalesforceAuditEventRepository.save(bqSalesforceAuditEvent2);
 	}
 
 	@AfterEach
 	public void tearDown() {
-		_salesforceAuditEventRepository.deleteAll();
+		_bqSalesforceAuditEventRepository.deleteAll();
 	}
 
 	@Test
 	public void testCountByDataSourceIdAndEntityTypeNameIn() {
 		Assertions.assertEquals(
 			1,
-			_salesforceAuditEventRepository.
+			_bqSalesforceAuditEventRepository.
 				countByDataSourceIdAndEntityTypeNameIn(
 					123L, Arrays.asList("Account", "Contact")));
 	}
 
 	@Test
 	public void testFindByDataSourceIdAndEntityTypeName() {
-		List<SalesforceAuditEvent> salesforceAuditEvents =
-			_salesforceAuditEventRepository.findByDataSourceIdAndEntityTypeName(
-				123L, "Account", PageRequest.of(0, 1));
+		List<BQSalesforceAuditEvent> bqSalesforceAuditEvents =
+			_bqSalesforceAuditEventRepository.
+				findByDataSourceIdAndEntityTypeName(
+					123L, "Account", PageRequest.of(0, 1));
 
-		Assertions.assertEquals(1, salesforceAuditEvents.size());
+		Assertions.assertEquals(1, bqSalesforceAuditEvents.size());
 	}
 
 	@Autowired
-	private DataSourceRepository _dataSourceRepository;
+	private BQSalesforceAuditEventRepository _bqSalesforceAuditEventRepository;
 
 	@Autowired
-	private SalesforceAuditEventRepository _salesforceAuditEventRepository;
+	private DataSourceRepository _dataSourceRepository;
 
 }

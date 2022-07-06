@@ -16,13 +16,13 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.SalesforceIndividualsNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.RunLog;
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQSalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
-import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
@@ -59,37 +59,41 @@ public class SalesforceIndividualsNaniteTest
 		addEmailFieldMapping();
 		addStandardFieldMappings();
 
-		SalesforceEntity salesforceEntity1 = _buildIndividualSalesforceEntity(
-			getDataSourceId(), getIndividual1FieldsMap(), getUser1PK());
+		BQSalesforceEntity bqSalesforceEntity1 =
+			_buildIndividualBQSalesforceEntity(
+				getDataSourceId(), getIndividual1FieldsMap(), getUser1PK());
 
-		salesforceEntity1.setIsNew(Boolean.TRUE);
+		bqSalesforceEntity1.setIsNew(Boolean.TRUE);
 
-		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity1);
+		_bqSalesforceEntityDog.saveBQSalesforceEntity(bqSalesforceEntity1);
 
-		SalesforceEntity salesforceEntity2 = _buildIndividualSalesforceEntity(
-			getDataSourceId(), getIndividual2FieldsMap(), getUser2PK());
+		BQSalesforceEntity salesforceEntity2 =
+			_buildIndividualBQSalesforceEntity(
+				getDataSourceId(), getIndividual2FieldsMap(), getUser2PK());
 
 		salesforceEntity2.setIsNew(Boolean.TRUE);
 
-		_salesforceEntityDog.saveSalesforceEntity(salesforceEntity2);
+		_bqSalesforceEntityDog.saveBQSalesforceEntity(salesforceEntity2);
 
-		SalesforceAuditEvent salesforceAuditEvent1 = _buildSalesforceAuditEvent(
-			_salesforceEntityDog.getSalesforceEntity(
-				getDataSourceId(), getUser1PK(),
-				SalesforceEntity.Type.INDIVIDUAL));
+		BQSalesforceAuditEvent bqSalesforceAuditEvent1 =
+			_buildBQSalesforceAuditEvent(
+				_bqSalesforceEntityDog.getBQSalesforceEntity(
+					getDataSourceId(), getUser1PK(),
+					BQSalesforceEntity.Type.INDIVIDUAL));
 
-		salesforceAuditEvent1.setIsNew(Boolean.TRUE);
+		bqSalesforceAuditEvent1.setIsNew(Boolean.TRUE);
 
-		_salesforceAuditEventRepository.save(salesforceAuditEvent1);
+		_bqSalesforceAuditEventRepository.save(bqSalesforceAuditEvent1);
 
-		SalesforceAuditEvent salesforceAuditEvent2 = _buildSalesforceAuditEvent(
-			_salesforceEntityDog.getSalesforceEntity(
-				getDataSourceId(), getUser2PK(),
-				SalesforceEntity.Type.INDIVIDUAL));
+		BQSalesforceAuditEvent bqSalesforceAuditEvent2 =
+			_buildBQSalesforceAuditEvent(
+				_bqSalesforceEntityDog.getBQSalesforceEntity(
+					getDataSourceId(), getUser2PK(),
+					BQSalesforceEntity.Type.INDIVIDUAL));
 
-		salesforceAuditEvent2.setIsNew(Boolean.TRUE);
+		bqSalesforceAuditEvent2.setIsNew(Boolean.TRUE);
 
-		_salesforceAuditEventRepository.save(salesforceAuditEvent2);
+		_bqSalesforceAuditEventRepository.save(bqSalesforceAuditEvent2);
 
 		RunLog runLog = new RunLog();
 
@@ -135,46 +139,46 @@ public class SalesforceIndividualsNaniteTest
 		return "email";
 	}
 
-	private SalesforceEntity _buildIndividualSalesforceEntity(
+	private BQSalesforceAuditEvent _buildBQSalesforceAuditEvent(
+		BQSalesforceEntity bqSalesforceEntity) {
+
+		BQSalesforceAuditEvent bqSalesforceAuditEvent =
+			new BQSalesforceAuditEvent();
+
+		bqSalesforceAuditEvent.setAdditionalInfoJSONObject(
+			bqSalesforceEntity.getFieldsJSONObject());
+		bqSalesforceAuditEvent.setCreateDate(DateUtil.newDate());
+		bqSalesforceAuditEvent.setDataSourceId(
+			bqSalesforceEntity.getDataSourceId());
+		bqSalesforceAuditEvent.setEntityTypeName("individuals");
+		bqSalesforceAuditEvent.setRecordId(bqSalesforceEntity.getId());
+		bqSalesforceAuditEvent.setType(BQSalesforceAuditEvent.Type.UPDATE);
+
+		return bqSalesforceAuditEvent;
+	}
+
+	private BQSalesforceEntity _buildIndividualBQSalesforceEntity(
 		Long dataSourceId, Map<String, Object> fieldsMap, String id) {
 
-		JSONObject individualFieldsJSONObject = new JSONObject(fieldsMap);
+		JSONObject userFieldsJSONObject = new JSONObject(fieldsMap);
 
-		individualFieldsJSONObject.put("dataSourceId", dataSourceId);
-		individualFieldsJSONObject.put("id", id);
-		individualFieldsJSONObject.put(
-			"modifiedDate", DateUtil.newDateString());
+		userFieldsJSONObject.put("dataSourceId", dataSourceId);
+		userFieldsJSONObject.put("id", id);
+		userFieldsJSONObject.put("modifiedDate", DateUtil.newDateString());
 
-		return new SalesforceEntity(
-			id, dataSourceId, individualFieldsJSONObject,
-			SalesforceEntity.Type.INDIVIDUAL);
+		return new BQSalesforceEntity(
+			id, dataSourceId, userFieldsJSONObject,
+			BQSalesforceEntity.Type.INDIVIDUAL);
 	}
 
-	private SalesforceAuditEvent _buildSalesforceAuditEvent(
-		SalesforceEntity salesforceEntity) {
+	@Autowired
+	private BQSalesforceAuditEventRepository _bqSalesforceAuditEventRepository;
 
-		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
-
-		salesforceAuditEvent.setAdditionalInfoJSONObject(
-			salesforceEntity.getFieldsJSONObject());
-		salesforceAuditEvent.setCreateDate(DateUtil.newDate());
-		salesforceAuditEvent.setDataSourceId(
-			salesforceEntity.getDataSourceId());
-		salesforceAuditEvent.setEntityTypeName("individuals");
-		salesforceAuditEvent.setRecordId(salesforceEntity.getId());
-		salesforceAuditEvent.setType(SalesforceAuditEvent.Type.UPDATE);
-
-		return salesforceAuditEvent;
-	}
+	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
 
 	@Autowired
 	private RunLogRepository _runLogRepository;
-
-	@Autowired
-	private SalesforceAuditEventRepository _salesforceAuditEventRepository;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceIndividualsNanite _salesforceIndividualsNanite;

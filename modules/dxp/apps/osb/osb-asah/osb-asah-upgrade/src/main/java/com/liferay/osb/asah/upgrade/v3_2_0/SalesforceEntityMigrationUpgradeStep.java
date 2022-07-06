@@ -18,9 +18,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
+import com.liferay.osb.asah.common.repository.BQSalesforceEntityRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
@@ -54,13 +54,48 @@ public class SalesforceEntityMigrationUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		_upgradeCollection(SalesforceEntity.Type.ACCOUNT);
-		_upgradeCollection(SalesforceEntity.Type.CONTACT);
-		_upgradeCollection(SalesforceEntity.Type.INDIVIDUAL);
-		_upgradeCollection(SalesforceEntity.Type.LEAD);
+		_upgradeCollection(BQSalesforceEntity.Type.ACCOUNT);
+		_upgradeCollection(BQSalesforceEntity.Type.CONTACT);
+		_upgradeCollection(BQSalesforceEntity.Type.INDIVIDUAL);
+		_upgradeCollection(BQSalesforceEntity.Type.LEAD);
 	}
 
-	private List<Long> _getDataSourceIds(SalesforceEntity.Type type) {
+	private List<String> _getBQSalesforceEntityIds(
+		Long dataSourceId, boolean retry, BQSalesforceEntity.Type type) {
+
+		try {
+			return _namedParameterJdbcTemplate.queryForList(
+				"SELECT id FROM bqsalesforceentity WHERE datasourceid = " +
+					":dataSourceId AND type = :type",
+				new HashMap<String, Object>() {
+					{
+						put("dataSourceId", dataSourceId);
+						put("type", type.getValue());
+					}
+				},
+				String.class);
+		}
+		catch (Exception exception) {
+			_log.error("Select Salesforce entity IDs query failed", exception);
+
+			if (retry) {
+				_log.error("Retrying...");
+
+				try {
+					Thread.sleep(5000);
+				}
+				catch (InterruptedException interruptedException) {
+					_log.error(interruptedException, interruptedException);
+				}
+
+				return _getBQSalesforceEntityIds(dataSourceId, false, type);
+			}
+
+			return Collections.emptyList();
+		}
+	}
+
+	private List<Long> _getDataSourceIds(BQSalesforceEntity.Type type) {
 		List<Long> ids = new ArrayList<>();
 
 		SearchResponse searchResponse =
@@ -93,41 +128,6 @@ public class SalesforceEntityMigrationUpgradeStep implements UpgradeStep {
 		return ids;
 	}
 
-	private List<String> _getSalesforceEntityIds(
-		Long dataSourceId, boolean retry, SalesforceEntity.Type type) {
-
-		try {
-			return _namedParameterJdbcTemplate.queryForList(
-				"SELECT id FROM salesforceentity WHERE datasourceid = " +
-					":dataSourceId AND type = :type",
-				new HashMap<String, Object>() {
-					{
-						put("dataSourceId", dataSourceId);
-						put("type", type.getValue());
-					}
-				},
-				String.class);
-		}
-		catch (Exception exception) {
-			_log.error("Select Salesforce entity IDs query failed", exception);
-
-			if (retry) {
-				_log.error("Retrying...");
-
-				try {
-					Thread.sleep(5000);
-				}
-				catch (InterruptedException interruptedException) {
-					_log.error(interruptedException, interruptedException);
-				}
-
-				return _getSalesforceEntityIds(dataSourceId, false, type);
-			}
-
-			return Collections.emptyList();
-		}
-	}
-
 	@PostConstruct
 	private void _init() {
 		_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
@@ -135,19 +135,20 @@ public class SalesforceEntityMigrationUpgradeStep implements UpgradeStep {
 	}
 
 	private void _migrateDataSource(
-			Long dataSourceId, SalesforceEntity.Type type)
+			Long dataSourceId, BQSalesforceEntity.Type type)
 		throws Exception {
 
 		JSONArrayIterator.of(
 			type.getValue(), _salesforceRawElasticsearchInvoker,
 			jsonObject -> {
-				SalesforceEntity salesforceEntity = _objectMapper.convertValue(
-					jsonObject, SalesforceEntity.class);
+				BQSalesforceEntity bqSalesforceEntity =
+					_objectMapper.convertValue(
+						jsonObject, BQSalesforceEntity.class);
 
-				salesforceEntity.setIsNew(Boolean.TRUE);
-				salesforceEntity.setType(type);
+				bqSalesforceEntity.setIsNew(Boolean.TRUE);
+				bqSalesforceEntity.setType(type);
 
-				_salesforceEntityRepository.save(salesforceEntity);
+				_bqSalesforceEntityRepository.save(bqSalesforceEntity);
 
 				return null;
 			}
@@ -157,12 +158,12 @@ public class SalesforceEntityMigrationUpgradeStep implements UpgradeStep {
 					"dataSourceId", String.valueOf(dataSourceId))
 			).mustNot(
 				QueryBuilders.termsQuery(
-					"id", _getSalesforceEntityIds(dataSourceId, true, type))
+					"id", _getBQSalesforceEntityIds(dataSourceId, true, type))
 			)
 		).iterate();
 	}
 
-	private void _upgradeCollection(SalesforceEntity.Type type)
+	private void _upgradeCollection(BQSalesforceEntity.Type type)
 		throws Exception {
 
 		List<Long> dataSourceIds = _getDataSourceIds(type);
@@ -176,15 +177,15 @@ public class SalesforceEntityMigrationUpgradeStep implements UpgradeStep {
 		SalesforceEntityMigrationUpgradeStep.class);
 
 	@Autowired
+	private BQSalesforceEntityRepository _bqSalesforceEntityRepository;
+
+	@Autowired
 	private DataSource _dataSource;
 
 	private NamedParameterJdbcTemplate _namedParameterJdbcTemplate;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private SalesforceEntityRepository _salesforceEntityRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;

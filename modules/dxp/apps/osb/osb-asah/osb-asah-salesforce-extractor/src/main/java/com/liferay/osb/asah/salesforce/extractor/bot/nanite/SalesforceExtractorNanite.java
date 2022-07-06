@@ -19,12 +19,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -130,27 +130,29 @@ public class SalesforceExtractorNanite implements Nanite {
 	}
 
 	private void _addAuditEvent(
-		JSONObject additionalInfoJSONObject, String recordId,
-		SalesforceAuditEvent.Type salesforceAuditEventType,
-		SalesforceEntity.Type salesforceEntityType) {
+		JSONObject additionalInfoJSONObject,
+		BQSalesforceAuditEvent.Type bqSalesforceAuditEventType,
+		BQSalesforceEntity.Type bqSalesforceEntityType, String recordId) {
 
-		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
+		BQSalesforceAuditEvent bqSalesforceAuditEvent =
+			new BQSalesforceAuditEvent();
 
-		salesforceAuditEvent.setAdditionalInfoJSONObject(
+		bqSalesforceAuditEvent.setAdditionalInfoJSONObject(
 			additionalInfoJSONObject);
-		salesforceAuditEvent.setCreateDate(new Date());
-		salesforceAuditEvent.setDataSourceId(_dataSourceId);
-		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.getValue());
-		salesforceAuditEvent.setRecordId(recordId);
-		salesforceAuditEvent.setType(salesforceAuditEventType);
+		bqSalesforceAuditEvent.setCreateDate(new Date());
+		bqSalesforceAuditEvent.setDataSourceId(_dataSourceId);
+		bqSalesforceAuditEvent.setEntityTypeName(
+			bqSalesforceEntityType.getValue());
+		bqSalesforceAuditEvent.setRecordId(recordId);
+		bqSalesforceAuditEvent.setType(bqSalesforceAuditEventType);
 
 		try {
-			_salesforceAuditEventDog.addSalesforceAuditEvent(
-				salesforceAuditEvent);
+			_bqSalesforceAuditEventDog.addBQSalesforceAuditEvent(
+				bqSalesforceAuditEvent);
 		}
 		catch (Exception exception) {
 			JSONObject auditEventJSONObject = _objectMapper.convertValue(
-				salesforceAuditEvent, JSONObject.class);
+				bqSalesforceAuditEvent, JSONObject.class);
 
 			_log.error(
 				String.format(
@@ -251,34 +253,34 @@ public class SalesforceExtractorNanite implements Nanite {
 			String tableName = iterator.next();
 
 			long salesforceEntitiesCount =
-				_salesforceEntityDog.getSalesforceEntitiesCount(
-					_dataSourceId, SalesforceEntity.Type.of(tableName));
+				_bqSalesforceEntityDog.getBQSalesforceEntitiesCount(
+					_dataSourceId, BQSalesforceEntity.Type.of(tableName));
 
 			if (!tableNamesSet.contains(tableName) &&
 				(salesforceEntitiesCount > 0)) {
 
 				while (true) {
-					Page<SalesforceEntity> salesforceEntityPage =
-						_salesforceEntityDog.getSalesforceEntityPage(
+					Page<BQSalesforceEntity> bqSalesforceEntityPage =
+						_bqSalesforceEntityDog.getBQSalesforceEntityPage(
 							_dataSourceId, 0, 10000,
-							SalesforceEntity.Type.of(tableName));
+							BQSalesforceEntity.Type.of(tableName));
 
-					if (salesforceEntityPage.getNumberOfElements() == 0) {
+					if (bqSalesforceEntityPage.getNumberOfElements() == 0) {
 						break;
 					}
 
-					for (SalesforceEntity salesforceEntity :
-							salesforceEntityPage.getContent()) {
+					for (BQSalesforceEntity bqSalesforceEntity :
+							bqSalesforceEntityPage.getContent()) {
 
-						_salesforceEntityDog.deleteSalesforceEntity(
-							salesforceEntity);
+						_bqSalesforceEntityDog.deleteBQSalesforceEntity(
+							bqSalesforceEntity);
 
 						_addAuditEvent(
 							_objectMapper.convertValue(
-								salesforceEntity, JSONObject.class),
-							salesforceEntity.getId(),
-							SalesforceAuditEvent.Type.DELETE,
-							SalesforceEntity.Type.of(tableName));
+								bqSalesforceEntity, JSONObject.class),
+							BQSalesforceAuditEvent.Type.DELETE,
+							BQSalesforceEntity.Type.of(tableName),
+							bqSalesforceEntity.getId());
 					}
 				}
 
@@ -466,15 +468,15 @@ public class SalesforceExtractorNanite implements Nanite {
 				describeSObjectResult,
 				(JSONArray jsonArray) -> {
 					try {
-						_salesforceEntityDog.saveSalesforceEntities(
+						_bqSalesforceEntityDog.saveSalesforceEntities(
 							JSONUtil.toList(
 								jsonArray,
-								jsonObject -> new SalesforceEntity(
+								jsonObject -> new BQSalesforceEntity(
 									jsonObject.getString("id"),
 									Long.valueOf(
 										jsonObject.getString("dataSourceId")),
 									jsonObject,
-									SalesforceEntity.Type.of(
+									BQSalesforceEntity.Type.of(
 										describeSObjectResult.getName()))));
 					}
 					catch (Exception exception) {
@@ -571,12 +573,12 @@ public class SalesforceExtractorNanite implements Nanite {
 							describeSObjectResult, exceptions,
 							_salesforceConfigurableBot::isStop,
 							_salesforceExtractorConfiguration.getDataSourceId(),
-							(List<SalesforceAuditEvent>
+							(List<BQSalesforceAuditEvent>
 								salesforceAuditEvents) -> {
 
 								try {
-									_salesforceAuditEventDog.
-										addSalesforceAuditEvents(
+									_bqSalesforceAuditEventDog.
+										addBQSalesforceAuditEvents(
 											salesforceAuditEvents);
 								}
 								catch (Exception exception) {
@@ -772,16 +774,16 @@ public class SalesforceExtractorNanite implements Nanite {
 					describeSObjectResult,
 					(JSONArray jsonArray) -> {
 						try {
-							_salesforceEntityDog.saveSalesforceEntities(
+							_bqSalesforceEntityDog.saveSalesforceEntities(
 								JSONUtil.toList(
 									jsonArray,
-									jsonObject -> new SalesforceEntity(
+									jsonObject -> new BQSalesforceEntity(
 										jsonObject.getString("id"),
 										Long.valueOf(
 											jsonObject.getString(
 												"dataSourceId")),
 										jsonObject,
-										SalesforceEntity.Type.of(
+										BQSalesforceEntity.Type.of(
 											describeSObjectResult.getName()))));
 						}
 						catch (Exception exception) {
@@ -850,20 +852,22 @@ public class SalesforceExtractorNanite implements Nanite {
 		int deleteRecordsCount = 0;
 
 		for (DeletedRecord deletedRecord : deletedRecords) {
-			SalesforceEntity deletedSalesforceEntity =
-				_salesforceEntityDog.fetchSalesforceEntity(
+			BQSalesforceEntity deletedBQSalesforceEntity =
+				_bqSalesforceEntityDog.fetchBQSalesforceEntity(
 					_dataSourceId, deletedRecord.getId(),
-					SalesforceEntity.Type.of(describeSObjectResult.getName()));
+					BQSalesforceEntity.Type.of(
+						describeSObjectResult.getName()));
 
-			if (deletedSalesforceEntity != null) {
-				_salesforceEntityDog.deleteSalesforceEntity(
-					deletedSalesforceEntity);
+			if (deletedBQSalesforceEntity != null) {
+				_bqSalesforceEntityDog.deleteBQSalesforceEntity(
+					deletedBQSalesforceEntity);
 
 				_addAuditEvent(
 					_objectMapper.convertValue(
-						deletedSalesforceEntity, JSONObject.class),
-					deletedRecord.getId(), SalesforceAuditEvent.Type.DELETE,
-					SalesforceEntity.Type.of(describeSObjectResult.getName()));
+						deletedBQSalesforceEntity, JSONObject.class),
+					BQSalesforceAuditEvent.Type.DELETE,
+					BQSalesforceEntity.Type.of(describeSObjectResult.getName()),
+					deletedRecord.getId());
 
 				deleteRecordsCount++;
 			}
@@ -931,6 +935,12 @@ public class SalesforceExtractorNanite implements Nanite {
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
+	@Autowired
+	private BQSalesforceAuditEventDog _bqSalesforceAuditEventDog;
+
+	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
+
 	private final Long _dataSourceId;
 
 	@Autowired
@@ -940,16 +950,10 @@ public class SalesforceExtractorNanite implements Nanite {
 	private RunLogDog _runLogDog;
 
 	@Autowired
-	private SalesforceAuditEventDog _salesforceAuditEventDog;
-
-	@Autowired
 	private SalesforceBulkClientInvoker _salesforceBulkClientInvoker;
 
 	@Autowired
 	private SalesforceConfigurableBot _salesforceConfigurableBot;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 	private final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration;

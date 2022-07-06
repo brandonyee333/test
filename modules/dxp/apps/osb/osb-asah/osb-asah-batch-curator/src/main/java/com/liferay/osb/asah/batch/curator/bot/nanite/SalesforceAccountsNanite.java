@@ -15,14 +15,14 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.dog.AccountDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -55,33 +55,33 @@ public class SalesforceAccountsNanite extends BaseNanite {
 	}
 
 	protected void processAccountSalesforceEntity(
-			SalesforceEntity accountSalesforceEntity)
+			BQSalesforceEntity accountBQSalesforceEntity)
 		throws Exception {
 
 		DataSource dataSource = _dataSourceDog.fetchDataSource(
-			accountSalesforceEntity.getDataSourceId());
+			accountBQSalesforceEntity.getDataSourceId());
 
 		if (dataSource == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to get data source " +
-						accountSalesforceEntity.getDataSourceId());
+						accountBQSalesforceEntity.getDataSourceId());
 			}
 
 			return;
 		}
 
 		Account account = _accountDog.fetchByAccountPKAndDataSourceId(
-			accountSalesforceEntity.getId(), dataSource.getId());
+			accountBQSalesforceEntity.getId(), dataSource.getId());
 
 		if (account == null) {
 			_accountDog.addAccount(
-				accountSalesforceEntity.getId(),
-				accountSalesforceEntity.getFieldsJSONObject(), dataSource);
+				accountBQSalesforceEntity.getId(),
+				accountBQSalesforceEntity.getFieldsJSONObject(), dataSource);
 		}
 		else {
 			_accountDog.updateAccount(
-				account, accountSalesforceEntity.getFieldsJSONObject(),
+				account, accountBQSalesforceEntity.getFieldsJSONObject(),
 				dataSource);
 		}
 	}
@@ -92,29 +92,30 @@ public class SalesforceAccountsNanite extends BaseNanite {
 		_runLogDog.log(
 			dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
-			_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-				dataSourceId, SalesforceEntity.Type.ACCOUNT.getValue()));
+			_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
+				dataSourceId, BQSalesforceEntity.Type.ACCOUNT.getValue()));
 
 		try {
 			int page = 0;
 
 			while (true) {
-				List<SalesforceAuditEvent> salesforceAuditEvents =
-					_salesforceAuditEventDog.getSalesforceAuditEvents(
-						dataSourceId, SalesforceEntity.Type.ACCOUNT.getValue(),
-						page++, 10000, Sort.asc("id"));
+				List<BQSalesforceAuditEvent> bqSalesforceAuditEvents =
+					_bqSalesforceAuditEventDog.getBQSalesforceAuditEvents(
+						dataSourceId,
+						BQSalesforceEntity.Type.ACCOUNT.getValue(), page++,
+						10000, Sort.asc("id"));
 
-				if (salesforceAuditEvents.isEmpty()) {
+				if (bqSalesforceAuditEvents.isEmpty()) {
 					break;
 				}
 
-				for (SalesforceAuditEvent salesforceAuditEvent :
-						salesforceAuditEvents) {
+				for (BQSalesforceAuditEvent bqSalesforceAuditEvent :
+						bqSalesforceAuditEvents) {
 
-					processSalesforceAuditEvent(salesforceAuditEvent);
+					processSalesforceAuditEvent(bqSalesforceAuditEvent);
 				}
 
-				if (salesforceAuditEvents.size() < 10000) {
+				if (bqSalesforceAuditEvents.size() < 10000) {
 					break;
 				}
 			}
@@ -133,29 +134,32 @@ public class SalesforceAccountsNanite extends BaseNanite {
 	}
 
 	protected void processSalesforceAuditEvent(
-			SalesforceAuditEvent salesforceAuditEvent)
+			BQSalesforceAuditEvent bqSalesforceAuditEvent)
 		throws Exception {
 
-		SalesforceAuditEvent.Type salesforceAuditEventType =
-			salesforceAuditEvent.getType();
+		BQSalesforceAuditEvent.Type bqSalesforceAuditEventType =
+			bqSalesforceAuditEvent.getType();
 
-		if ((salesforceAuditEventType == SalesforceAuditEvent.Type.ADD) ||
-			(salesforceAuditEventType == SalesforceAuditEvent.Type.UPDATE)) {
+		if ((bqSalesforceAuditEventType == BQSalesforceAuditEvent.Type.ADD) ||
+			(bqSalesforceAuditEventType ==
+				BQSalesforceAuditEvent.Type.UPDATE)) {
 
-			SalesforceEntity accountSalesforceEntity =
-				_salesforceEntityDog.fetchSalesforceEntity(
-					salesforceAuditEvent.getDataSourceId(),
-					salesforceAuditEvent.getRecordId(),
-					SalesforceEntity.Type.ACCOUNT);
+			BQSalesforceEntity accountBQSalesforceEntity =
+				_bqSalesforceEntityDog.fetchBQSalesforceEntity(
+					bqSalesforceAuditEvent.getDataSourceId(),
+					bqSalesforceAuditEvent.getRecordId(),
+					BQSalesforceEntity.Type.ACCOUNT);
 
-			if (accountSalesforceEntity != null) {
-				processAccountSalesforceEntity(accountSalesforceEntity);
+			if (accountBQSalesforceEntity != null) {
+				processAccountSalesforceEntity(accountBQSalesforceEntity);
 			}
 		}
-		else if (salesforceAuditEventType == SalesforceAuditEvent.Type.DELETE) {
+		else if (bqSalesforceAuditEventType ==
+					BQSalesforceAuditEvent.Type.DELETE) {
+
 			Account account = _accountDog.fetchByAccountPKAndDataSourceId(
-				salesforceAuditEvent.getRecordId(),
-				salesforceAuditEvent.getDataSourceId());
+				bqSalesforceAuditEvent.getRecordId(),
+				bqSalesforceAuditEvent.getDataSourceId());
 
 			if (account != null) {
 				_accountDog.deleteAccount(account);
@@ -163,12 +167,12 @@ public class SalesforceAccountsNanite extends BaseNanite {
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
-				"Unknown event type " + salesforceAuditEventType +
-					" for audit event " + salesforceAuditEvent.getId());
+				"Unknown event type " + bqSalesforceAuditEventType +
+					" for audit event " + bqSalesforceAuditEvent.getId());
 		}
 
-		_salesforceAuditEventDog.deleteSalesforceAuditEvent(
-			salesforceAuditEvent);
+		_bqSalesforceAuditEventDog.deleteBQSalesforceAuditEvent(
+			bqSalesforceAuditEvent);
 	}
 
 	private static final Log _log = LogFactory.getLog(
@@ -178,15 +182,15 @@ public class SalesforceAccountsNanite extends BaseNanite {
 	private AccountDog _accountDog;
 
 	@Autowired
+	private BQSalesforceAuditEventDog _bqSalesforceAuditEventDog;
+
+	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
+
+	@Autowired
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private RunLogDog _runLogDog;
-
-	@Autowired
-	private SalesforceAuditEventDog _salesforceAuditEventDog;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 }

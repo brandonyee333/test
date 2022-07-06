@@ -40,9 +40,9 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcellus Tavares
  */
 @Table
-public class SalesforceAuditEvent implements Persistable<Long> {
+public class BQSalesforceAuditEvent implements Persistable<Long> {
 
-	public SalesforceAuditEvent() {
+	public BQSalesforceAuditEvent() {
 	}
 
 	@Override
@@ -51,24 +51,26 @@ public class SalesforceAuditEvent implements Persistable<Long> {
 			return true;
 		}
 
-		if (!(obj instanceof SalesforceAuditEvent)) {
+		if (!(obj instanceof BQSalesforceAuditEvent)) {
 			return false;
 		}
 
-		SalesforceAuditEvent salesforceAuditEvent = (SalesforceAuditEvent)obj;
+		BQSalesforceAuditEvent bqSalesforceAuditEvent =
+			(BQSalesforceAuditEvent)obj;
 
 		if (Objects.equals(
 				JSONUtil.toMap(_additionalInfoJSONObject),
 				JSONUtil.toMap(
-					salesforceAuditEvent._additionalInfoJSONObject)) &&
-			Objects.equals(_createDate, salesforceAuditEvent._createDate) &&
-			Objects.equals(_dataSourceId, salesforceAuditEvent._dataSourceId) &&
+					bqSalesforceAuditEvent._additionalInfoJSONObject)) &&
+			Objects.equals(_createDate, bqSalesforceAuditEvent._createDate) &&
 			Objects.equals(
-				_entityTypeName, salesforceAuditEvent._entityTypeName) &&
-			Objects.equals(_id, salesforceAuditEvent._id) &&
-			Objects.equals(_recordId, salesforceAuditEvent._recordId) &&
-			Objects.equals(_type, salesforceAuditEvent._type) &&
-			Objects.equals(_userId, salesforceAuditEvent._userId)) {
+				_dataSourceId, bqSalesforceAuditEvent._dataSourceId) &&
+			Objects.equals(
+				_entityTypeName, bqSalesforceAuditEvent._entityTypeName) &&
+			Objects.equals(_id, bqSalesforceAuditEvent._id) &&
+			Objects.equals(_recordId, bqSalesforceAuditEvent._recordId) &&
+			Objects.equals(_type, bqSalesforceAuditEvent._type) &&
+			Objects.equals(_userId, bqSalesforceAuditEvent._userId)) {
 
 			return true;
 		}

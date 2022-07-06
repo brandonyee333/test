@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +37,7 @@ public class AccountsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "0") int start) {
 
 		return getFields(
-			dataSourceId, end, start, SalesforceEntity.Type.ACCOUNT);
+			dataSourceId, end, start, BQSalesforceEntity.Type.ACCOUNT);
 	}
 
 }

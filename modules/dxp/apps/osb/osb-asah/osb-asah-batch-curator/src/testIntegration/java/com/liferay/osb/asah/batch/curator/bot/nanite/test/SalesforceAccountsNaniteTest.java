@@ -20,11 +20,11 @@ import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.BQSalesforceAuditEventRepository;
+import com.liferay.osb.asah.common.repository.BQSalesforceEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
-import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
-import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -57,11 +57,11 @@ public class SalesforceAccountsNaniteTest
 		resourcePath = "osbasahsalesforceraw/run_logs.json"
 	)
 	@RepositoryResource(
-		repositoryClass = SalesforceAuditEventRepository.class,
+		repositoryClass = BQSalesforceAuditEventRepository.class,
 		resourcePath = "osbasahsalesforceraw/audit_events.json"
 	)
 	@RepositoryResource(
-		repositoryClass = SalesforceEntityRepository.class,
+		repositoryClass = BQSalesforceEntityRepository.class,
 		resourcePath = "osbasahsalesforceraw/account.json"
 	)
 	@Test

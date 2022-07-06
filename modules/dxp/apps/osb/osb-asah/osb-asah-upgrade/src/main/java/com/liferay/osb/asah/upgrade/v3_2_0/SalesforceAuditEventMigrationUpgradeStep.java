@@ -17,9 +17,9 @@ package com.liferay.osb.asah.upgrade.v3_2_0;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
+import com.liferay.osb.asah.common.repository.BQSalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -64,13 +64,13 @@ public class SalesforceAuditEventMigrationUpgradeStep implements UpgradeStep {
 		JSONArrayIterator.of(
 			"audit-events", _salesforceRawElasticsearchInvoker,
 			jsonObject -> {
-				SalesforceAuditEvent salesforceAuditEvent =
+				BQSalesforceAuditEvent bqSalesforceAuditEvent =
 					_objectMapper.convertValue(
-						jsonObject, SalesforceAuditEvent.class);
+						jsonObject, BQSalesforceAuditEvent.class);
 
-				salesforceAuditEvent.setIsNew(Boolean.TRUE);
+				bqSalesforceAuditEvent.setIsNew(Boolean.TRUE);
 
-				_salesforceAuditEventRepository.save(salesforceAuditEvent);
+				_bqSalesforceAuditEventRepository.save(bqSalesforceAuditEvent);
 
 				return null;
 			}
@@ -150,10 +150,14 @@ public class SalesforceAuditEventMigrationUpgradeStep implements UpgradeStep {
 			Long.class);
 	}
 
-	private static final String _SEQUENCE_NAME = "salesforceauditevent_id_seq";
+	private static final String _SEQUENCE_NAME =
+		"bqsalesforceauditevent_id_seq";
 
 	private static final Log _log = LogFactory.getLog(
 		BaseMigrationUpgradeStep.class);
+
+	@Autowired
+	private BQSalesforceAuditEventRepository _bqSalesforceAuditEventRepository;
 
 	@Autowired
 	private DataSource _dataSource;
@@ -162,9 +166,6 @@ public class SalesforceAuditEventMigrationUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private SalesforceAuditEventRepository _salesforceAuditEventRepository;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;

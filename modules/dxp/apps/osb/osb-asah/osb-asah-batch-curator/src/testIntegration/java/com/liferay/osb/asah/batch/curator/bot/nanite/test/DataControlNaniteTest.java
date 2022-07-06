@@ -15,15 +15,15 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.DataControlTask;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
+import com.liferay.osb.asah.common.repository.BQSalesforceEntityRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.SalesforceEntityRepository;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -98,7 +98,7 @@ public class DataControlNaniteTest
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@RepositoryResource(
-		repositoryClass = SalesforceEntityRepository.class,
+		repositoryClass = BQSalesforceEntityRepository.class,
 		resourcePath = "osbasahsalesforceraw/individuals.json"
 	)
 	@RepositoryResource(
@@ -133,12 +133,12 @@ public class DataControlNaniteTest
 				QueryBuilders.termQuery(
 					"demographics.email.value", "john.doe@liferay.com")));
 
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
 				1L, "email", "john.doe@liferay.com",
-				SalesforceEntity.Type.INDIVIDUAL);
+				BQSalesforceEntity.Type.INDIVIDUAL);
 
-		Assertions.assertTrue(salesforceEntities.isEmpty());
+		Assertions.assertTrue(bqSalesforceEntities.isEmpty());
 
 		Path path = Paths.get(_exportPath.toString(), "1.zip");
 
@@ -151,7 +151,7 @@ public class DataControlNaniteTest
 		DataControlNaniteTest.class);
 
 	@Autowired
-	private BQUserRepository _bqUserRepository;
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
 
 	@Autowired
 	private DataControlNanite _dataControlNanite;
@@ -160,9 +160,6 @@ public class DataControlNaniteTest
 	private DataControlTaskRepository _dataDataControlTaskRepository;
 
 	private Path _exportPath;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SuppressionRepository _suppressionRepository;

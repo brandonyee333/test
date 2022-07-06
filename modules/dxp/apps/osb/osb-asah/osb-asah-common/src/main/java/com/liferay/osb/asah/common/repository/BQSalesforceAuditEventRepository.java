@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
 
 import java.util.List;
 
@@ -24,15 +24,15 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Marcellus Tavares
  */
-public interface SalesforceAuditEventRepository
-	extends Repository<SalesforceAuditEvent, Long> {
+public interface BQSalesforceAuditEventRepository
+	extends Repository<BQSalesforceAuditEvent, Long> {
 
 	@Cacheable
 	public long countByDataSourceIdAndEntityTypeNameIn(
 		Long dataSourceId, List<String> entityTypeNames);
 
 	@Cacheable
-	public List<SalesforceAuditEvent> findByDataSourceIdAndEntityTypeName(
+	public List<BQSalesforceAuditEvent> findByDataSourceIdAndEntityTypeName(
 		Long dataSourceId, String entityTypeName, Pageable pageable);
 
 }

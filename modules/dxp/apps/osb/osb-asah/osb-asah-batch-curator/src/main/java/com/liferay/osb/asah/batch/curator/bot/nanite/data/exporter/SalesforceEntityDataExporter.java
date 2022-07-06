@@ -17,8 +17,8 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -35,7 +35,8 @@ public class SalesforceEntityDataExporter extends BaseDataExporter {
 	public SalesforceEntityDataExporter(
 			String fieldName, String fieldValue, JsonFactory jsonFactory,
 			ObjectMapper objectMapper, OutputStream outputStream,
-			SalesforceEntityDog salesforceEntityDog, SalesforceEntity.Type type)
+			BQSalesforceEntityDog salesforceEntityDog,
+			BQSalesforceEntity.Type type)
 		throws Exception {
 
 		super(jsonFactory, outputStream, null);
@@ -43,8 +44,9 @@ public class SalesforceEntityDataExporter extends BaseDataExporter {
 		_fieldName = fieldName;
 		_fieldValue = fieldValue;
 		_objectMapper = objectMapper;
-		_salesforceEntityDog = salesforceEntityDog;
 		_type = type;
+
+		_bqSalesforceEntityDog = salesforceEntityDog;
 
 		jsonGenerator.useDefaultPrettyPrinter();
 	}
@@ -55,21 +57,21 @@ public class SalesforceEntityDataExporter extends BaseDataExporter {
 			"results",
 			new JSONArray(
 				ListUtil.map(
-					_salesforceEntityDog.getSalesforceEntities(
+					_bqSalesforceEntityDog.getBQSalesforceEntities(
 						after, _fieldName, _fieldValue, _PAGE_SIZE, _type),
 					this::_toJSONObject)));
 	}
 
-	private JSONObject _toJSONObject(SalesforceEntity salesforceEntity) {
-		return _objectMapper.convertValue(salesforceEntity, JSONObject.class);
+	private JSONObject _toJSONObject(BQSalesforceEntity bqSalesforceEntity) {
+		return _objectMapper.convertValue(bqSalesforceEntity, JSONObject.class);
 	}
 
 	private static final int _PAGE_SIZE = 50;
 
+	private final BQSalesforceEntityDog _bqSalesforceEntityDog;
 	private final String _fieldName;
 	private final String _fieldValue;
 	private final ObjectMapper _objectMapper;
-	private final SalesforceEntityDog _salesforceEntityDog;
-	private final SalesforceEntity.Type _type;
+	private final BQSalesforceEntity.Type _type;
 
 }

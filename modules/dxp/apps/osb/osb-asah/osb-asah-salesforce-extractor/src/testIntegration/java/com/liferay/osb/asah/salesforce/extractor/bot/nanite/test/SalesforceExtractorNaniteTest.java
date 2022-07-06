@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -104,7 +104,7 @@ public class SalesforceExtractorNaniteTest
 	public void tearDown() {
 		_asahMarkerRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
-		_salesforceEntityDog.deleteSalesforceEntities(1L);
+		_bqSalesforceEntityDog.deleteBQSalesforceEntities(1L);
 		_salesforceRawElasticsearchInvoker.delete(
 			"audit-events", QueryBuilders.matchAllQuery());
 
@@ -188,23 +188,23 @@ public class SalesforceExtractorNaniteTest
 
 		_asahMarkerRepository.save(asahMarker);
 
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
-				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
+				1L, 0, 100, BQSalesforceEntity.Type.ACCOUNT);
 
-		for (SalesforceEntity salesforceEntity : salesforceEntities) {
-			JSONObject jsonObject = salesforceEntity.getFieldsJSONObject();
+		for (BQSalesforceEntity bqSalesforceEntity : bqSalesforceEntities) {
+			JSONObject jsonObject = bqSalesforceEntity.getFieldsJSONObject();
 
 			jsonObject.remove("Name");
 		}
 
-		_salesforceEntityDog.saveSalesforceEntities(salesforceEntities);
+		_bqSalesforceEntityDog.saveSalesforceEntities(bqSalesforceEntities);
 
-		salesforceEntities = _salesforceEntityDog.getSalesforceEntities(
-			1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+		bqSalesforceEntities = _bqSalesforceEntityDog.getBQSalesforceEntities(
+			1L, 0, 100, BQSalesforceEntity.Type.ACCOUNT);
 
-		for (SalesforceEntity salesforceEntity : salesforceEntities) {
-			JSONObject jsonObject = salesforceEntity.getFieldsJSONObject();
+		for (BQSalesforceEntity bqSalesforceEntity : bqSalesforceEntities) {
+			JSONObject jsonObject = bqSalesforceEntity.getFieldsJSONObject();
 
 			Assertions.assertNotNull(jsonObject.opt("Name"));
 		}
@@ -223,15 +223,15 @@ public class SalesforceExtractorNaniteTest
 
 		_asahMarkerRepository.save(asahMarker);
 
-		_salesforceEntityDog.deleteSalesforceEntities(1L);
+		_bqSalesforceEntityDog.deleteBQSalesforceEntities(1L);
 
 		_salesforceExtractorNanite.run();
 
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
-				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
+				1L, 0, 100, BQSalesforceEntity.Type.ACCOUNT);
 
-		Assertions.assertFalse(salesforceEntities.isEmpty());
+		Assertions.assertFalse(bqSalesforceEntities.isEmpty());
 	}
 
 	private void _testAuditEventsTable() {
@@ -294,27 +294,27 @@ public class SalesforceExtractorNaniteTest
 
 		_asahMarkerRepository.save(asahMarker);
 
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
-				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
+				1L, 0, 100, BQSalesforceEntity.Type.ACCOUNT);
 
-		for (SalesforceEntity salesforceEntity : salesforceEntities) {
+		for (BQSalesforceEntity bqSalesforceEntity : bqSalesforceEntities) {
 			JSONObject curTableJSONObject =
-				salesforceEntity.getFieldsJSONObject();
+				bqSalesforceEntity.getFieldsJSONObject();
 
 			curTableJSONObject.put("OSBAsahTest__c", "test");
 		}
 
-		_salesforceEntityDog.saveSalesforceEntities(salesforceEntities);
+		_bqSalesforceEntityDog.saveSalesforceEntities(bqSalesforceEntities);
 
 		_salesforceExtractorNanite.run();
 
-		salesforceEntities = _salesforceEntityDog.getSalesforceEntities(
-			1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+		bqSalesforceEntities = _bqSalesforceEntityDog.getBQSalesforceEntities(
+			1L, 0, 100, BQSalesforceEntity.Type.ACCOUNT);
 
-		for (SalesforceEntity salesforceEntity : salesforceEntities) {
+		for (BQSalesforceEntity bqSalesforceEntity : bqSalesforceEntities) {
 			JSONObject curTableJSONObject =
-				salesforceEntity.getFieldsJSONObject();
+				bqSalesforceEntity.getFieldsJSONObject();
 
 			Assertions.assertNull(curTableJSONObject.opt("OSBAsahTest__c"));
 		}
@@ -341,11 +341,11 @@ public class SalesforceExtractorNaniteTest
 
 		_salesforceExtractorNanite.run();
 
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
-				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
+				1L, 0, 100, BQSalesforceEntity.Type.ACCOUNT);
 
-		Assertions.assertEquals(0, salesforceEntities.size());
+		Assertions.assertEquals(0, bqSalesforceEntities.size());
 	}
 
 	private void _testPopulateNewTables() throws Exception {
@@ -365,11 +365,11 @@ public class SalesforceExtractorNaniteTest
 
 		Assertions.assertNotNull(tableJSONObject);
 
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
-				1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
+				1L, 0, 100, BQSalesforceEntity.Type.ACCOUNT);
 
-		Assertions.assertFalse(salesforceEntities.isEmpty());
+		Assertions.assertFalse(bqSalesforceEntities.isEmpty());
 	}
 
 	private void _testSyncExistingTable() throws Exception {
@@ -392,12 +392,12 @@ public class SalesforceExtractorNaniteTest
 		for (int i = 0; i < 3; i++) {
 			_salesforceExtractorNanite.run();
 
-			List<SalesforceEntity> salesforceEntities =
-				_salesforceEntityDog.getSalesforceEntities(
-					1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+			List<BQSalesforceEntity> bqSalesforceEntities =
+				_bqSalesforceEntityDog.getBQSalesforceEntities(
+					1L, 0, 100, BQSalesforceEntity.Type.ACCOUNT);
 
-			for (SalesforceEntity salesforceEntity : salesforceEntities) {
-				if (Objects.equals(salesforceEntity.getId(), salesforceKey)) {
+			for (BQSalesforceEntity bqSalesforceEntity : bqSalesforceEntities) {
+				if (Objects.equals(bqSalesforceEntity.getId(), salesforceKey)) {
 					added = true;
 
 					break;
@@ -427,15 +427,15 @@ public class SalesforceExtractorNaniteTest
 		for (int i = 0; i < 3; i++) {
 			_salesforceExtractorNanite.run();
 
-			List<SalesforceEntity> salesforceEntities =
-				_salesforceEntityDog.getSalesforceEntities(
-					1L, 0, 100, SalesforceEntity.Type.ACCOUNT);
+			List<BQSalesforceEntity> bqSalesforceEntities =
+				_bqSalesforceEntityDog.getBQSalesforceEntities(
+					1L, 0, 100, BQSalesforceEntity.Type.ACCOUNT);
 
 			boolean exists = false;
 
-			for (SalesforceEntity salesforceEntity : salesforceEntities) {
+			for (BQSalesforceEntity bqSalesforceEntity : bqSalesforceEntities) {
 				if (Objects.equals(
-						salesforceEntity.getId(), deleteResult.getId())) {
+						bqSalesforceEntity.getId(), deleteResult.getId())) {
 
 					exists = true;
 
@@ -463,13 +463,13 @@ public class SalesforceExtractorNaniteTest
 	private AsahMarkerRepository _asahMarkerRepository;
 
 	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
+
+	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceExtractorNanite _salesforceExtractorNanite;

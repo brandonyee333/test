@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.SalesforceAuditEventRepository;
+import com.liferay.osb.asah.common.repository.BQSalesforceAuditEventRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,45 +31,45 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class SalesforceAuditEventDog {
+public class BQSalesforceAuditEventDog {
 
-	public SalesforceAuditEvent addSalesforceAuditEvent(
-		SalesforceAuditEvent salesforceAuditEvent) {
+	public BQSalesforceAuditEvent addBQSalesforceAuditEvent(
+		BQSalesforceAuditEvent bqSalesforceAuditEvent) {
 
-		return _salesforceAuditEventRepository.save(salesforceAuditEvent);
+		return _bqSalesforceAuditEventRepository.save(bqSalesforceAuditEvent);
 	}
 
-	public List<SalesforceAuditEvent> addSalesforceAuditEvents(
-		List<SalesforceAuditEvent> salesforceAuditEvents) {
+	public List<BQSalesforceAuditEvent> addBQSalesforceAuditEvents(
+		List<BQSalesforceAuditEvent> bqSalesforceAuditEvents) {
 
 		return IterableUtils.toList(
-			_salesforceAuditEventRepository.saveAll(salesforceAuditEvents));
+			_bqSalesforceAuditEventRepository.saveAll(bqSalesforceAuditEvents));
 	}
 
-	public void deleteSalesforceAuditEvent(
-		SalesforceAuditEvent salesforceAuditEvent) {
+	public void deleteBQSalesforceAuditEvent(
+		BQSalesforceAuditEvent bqSalesforceAuditEvent) {
 
-		_salesforceAuditEventRepository.delete(salesforceAuditEvent);
+		_bqSalesforceAuditEventRepository.delete(bqSalesforceAuditEvent);
 	}
 
-	public List<SalesforceAuditEvent> getSalesforceAuditEvents(
+	public List<BQSalesforceAuditEvent> getBQSalesforceAuditEvents(
 		Long dataSourceId, String entityTypeName, int page, int size,
 		Sort sort) {
 
-		return _salesforceAuditEventRepository.
+		return _bqSalesforceAuditEventRepository.
 			findByDataSourceIdAndEntityTypeName(
 				dataSourceId, entityTypeName, PageRequest.of(page, size, sort));
 	}
 
-	public long getSalesforceAuditEventsCount(
+	public long getBQSalesforceAuditEventsCount(
 		Long dataSourceId, String... entityTypeName) {
 
-		return _salesforceAuditEventRepository.
+		return _bqSalesforceAuditEventRepository.
 			countByDataSourceIdAndEntityTypeNameIn(
 				dataSourceId, Arrays.asList(entityTypeName));
 	}
 
 	@Autowired
-	private SalesforceAuditEventRepository _salesforceAuditEventRepository;
+	private BQSalesforceAuditEventRepository _bqSalesforceAuditEventRepository;
 
 }

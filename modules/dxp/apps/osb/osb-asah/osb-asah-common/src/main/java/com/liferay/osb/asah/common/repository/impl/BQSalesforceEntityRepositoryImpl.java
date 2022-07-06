@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
-import com.liferay.osb.asah.common.repository.CustomSalesforceEntityRepository;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
+import com.liferay.osb.asah.common.repository.CustomBQSalesforceEntityRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,22 +33,22 @@ import org.springframework.lang.Nullable;
 /**
  * @author Marcellus Tavares
  */
-public class SalesforceEntityRepositoryImpl
-	extends BaseRepository implements CustomSalesforceEntityRepository {
+public class BQSalesforceEntityRepositoryImpl
+	extends BaseRepository implements CustomBQSalesforceEntityRepository {
 
-	public SalesforceEntityRepositoryImpl(DSLContext dslContext) {
+	public BQSalesforceEntityRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
 	@Override
-	public List<SalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
+	public List<BQSalesforceEntity> findByAfterAndFieldKeyAndFieldValueAndType(
 		String after, String fieldKey, String fieldValue, int size,
-		SalesforceEntity.Type type) {
+		BQSalesforceEntity.Type type) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
-			"SalesforceEntity"
+			"BQSalesforceEntity"
 		).where(
 			_getConditions(after, null, fieldKey, fieldValue, type)
 		).orderBy(
@@ -58,23 +58,23 @@ public class SalesforceEntityRepositoryImpl
 		).limit(
 			size
 		).fetch(
-			record -> new SalesforceEntity(record.intoMap())
+			record -> new BQSalesforceEntity(record.intoMap())
 		);
 	}
 
 	@Override
-	public List<SalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
+	public List<BQSalesforceEntity> findByDataSourceIdAndFieldKeyEqualsAndType(
 		Long dataSourceId, String fieldKey, String fieldValue,
-		SalesforceEntity.Type type) {
+		BQSalesforceEntity.Type type) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
-			"SalesforceEntity"
+			"BQSalesforceEntity"
 		).where(
 			_getConditions(null, dataSourceId, fieldKey, fieldValue, type)
 		).fetch(
-			record -> new SalesforceEntity(record.intoMap())
+			record -> new BQSalesforceEntity(record.intoMap())
 		);
 	}
 
@@ -82,7 +82,7 @@ public class SalesforceEntityRepositoryImpl
 	public List<String>
 		findByDataSourceIdAndFieldKeyEqualsAndTypeGroupByFieldKey(
 			Long dataSourceId, String fieldKey, String fieldValue,
-			SalesforceEntity.Type type, String groupByFieldKey) {
+			BQSalesforceEntity.Type type, String groupByFieldKey) {
 
 		Field<Object> groupByField = DSL.field(
 			String.format("fields ->> '%s'", groupByFieldKey));
@@ -91,7 +91,7 @@ public class SalesforceEntityRepositoryImpl
 			groupByField.as(groupByFieldKey));
 
 		return selectSelectStep.from(
-			"SalesforceEntity"
+			"BQSalesforceEntity"
 		).where(
 			_getConditions(null, dataSourceId, fieldKey, fieldValue, type)
 		).groupBy(
@@ -103,7 +103,7 @@ public class SalesforceEntityRepositoryImpl
 
 	private List<Condition> _getConditions(
 		@Nullable String after, @Nullable Long dataSourceId, String fieldKey,
-		String fieldValue, SalesforceEntity.Type type) {
+		String fieldValue, BQSalesforceEntity.Type type) {
 
 		List<Condition> conditions = new ArrayList<>();
 

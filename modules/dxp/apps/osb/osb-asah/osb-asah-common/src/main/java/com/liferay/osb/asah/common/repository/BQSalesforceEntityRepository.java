@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,13 +30,13 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Marcellus Tavares
  */
-public interface SalesforceEntityRepository
-	extends CustomSalesforceEntityRepository,
-			Repository<SalesforceEntity, String> {
+public interface BQSalesforceEntityRepository
+	extends CustomBQSalesforceEntityRepository,
+			Repository<BQSalesforceEntity, String> {
 
 	@Cacheable
 	public long countByDataSourceIdAndType(
-		Long dataSourceId, SalesforceEntity.Type type);
+		Long dataSourceId, BQSalesforceEntity.Type type);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -47,25 +47,25 @@ public interface SalesforceEntityRepository
 	public void deleteByFieldKeyAndFieldValueAndType(
 		@Param("fieldKey") String fieldKey,
 		@Param("fieldValue") String fieldValue,
-		@Param("type") SalesforceEntity.Type type);
+		@Param("type") BQSalesforceEntity.Type type);
 
 	@Cacheable
 	public boolean existsByDataSourceIdAndIdAndType(
-		Long dataSourceId, String id, SalesforceEntity.Type type);
+		Long dataSourceId, String id, BQSalesforceEntity.Type type);
 
 	@Cacheable
-	public Optional<SalesforceEntity> findByDataSourceIdAndIdAndType(
-		Long dataSourceId, String id, SalesforceEntity.Type type);
+	public Optional<BQSalesforceEntity> findByDataSourceIdAndIdAndType(
+		Long dataSourceId, String id, BQSalesforceEntity.Type type);
 
 	@Cacheable
-	public List<SalesforceEntity> findByDataSourceIdAndType(
-		Long dataSourceId, SalesforceEntity.Type type, Pageable pageable);
+	public List<BQSalesforceEntity> findByDataSourceIdAndType(
+		Long dataSourceId, BQSalesforceEntity.Type type, Pageable pageable);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void updateSalesforceEntityFields(
+	public void updateBQSalesforceEntityFields(
 		@Param("dataSourceId") Long dataSourceId,
 		@Param("fields") JSONObject fieldsJSONObject, @Param("id") String id,
-		@Param("type") SalesforceEntity.Type type);
+		@Param("type") BQSalesforceEntity.Type type);
 
 }

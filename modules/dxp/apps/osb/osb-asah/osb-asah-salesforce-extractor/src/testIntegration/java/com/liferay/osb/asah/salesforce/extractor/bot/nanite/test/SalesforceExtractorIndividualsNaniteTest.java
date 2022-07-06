@@ -14,13 +14,13 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 
-import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -72,11 +72,11 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 		_dataSource = _dataSourceRepository.save(dataSource);
 
-		SalesforceEntity accountSalesforceEntity = new SalesforceEntity(
+		BQSalesforceEntity accountBQSalesforceEntity = new BQSalesforceEntity(
 			"1", _dataSource.getId(), JSONUtil.put("Name", "Liferay, Inc."),
-			SalesforceEntity.Type.ACCOUNT);
+			BQSalesforceEntity.Type.ACCOUNT);
 
-		_contactSalesforceEntity = new SalesforceEntity(
+		_contactBQSalesforceEntity = new BQSalesforceEntity(
 			"2", _dataSource.getId(),
 			JSONUtil.put(
 				"AccountId", "1"
@@ -113,9 +113,9 @@ public class SalesforceExtractorIndividualsNaniteTest
 			).put(
 				"Title", "Administrator"
 			),
-			SalesforceEntity.Type.CONTACT);
+			BQSalesforceEntity.Type.CONTACT);
 
-		_leadSalesforceEntity = new SalesforceEntity(
+		_leadBQSalesforceEntity = new BQSalesforceEntity(
 			"3", _dataSource.getId(),
 			JSONUtil.put(
 				"City", "Diamond Bar"
@@ -148,26 +148,28 @@ public class SalesforceExtractorIndividualsNaniteTest
 			).put(
 				"Title", "Administrator"
 			),
-			SalesforceEntity.Type.LEAD);
+			BQSalesforceEntity.Type.LEAD);
 
-		_salesforceEntityDog.saveSalesforceEntities(
+		_bqSalesforceEntityDog.saveSalesforceEntities(
 			Arrays.asList(
-				accountSalesforceEntity, _contactSalesforceEntity,
-				_leadSalesforceEntity));
+				accountBQSalesforceEntity, _contactBQSalesforceEntity,
+				_leadBQSalesforceEntity));
 
-		_salesforceAuditEventDog.addSalesforceAuditEvents(
+		_bqSalesforceAuditEventDog.addBQSalesforceAuditEvents(
 			Arrays.asList(
-				_buildSalesforceAuditEvent(
-					_contactSalesforceEntity, SalesforceAuditEvent.Type.UPDATE),
-				_buildSalesforceAuditEvent(
-					_leadSalesforceEntity, SalesforceAuditEvent.Type.UPDATE)));
+				_buildBQSalesforceAuditEvent(
+					_contactBQSalesforceEntity,
+					BQSalesforceAuditEvent.Type.UPDATE),
+				_buildBQSalesforceAuditEvent(
+					_leadBQSalesforceEntity,
+					BQSalesforceAuditEvent.Type.UPDATE)));
 	}
 
 	@AfterEach
 	public void tearDown() {
 		_dataSourceRepository.delete(_dataSource);
 		_elasticsearchIndexManager.clearIndices();
-		_salesforceEntityDog.deleteSalesforceEntities(_dataSource.getId());
+		_bqSalesforceEntityDog.deleteBQSalesforceEntities(_dataSource.getId());
 	}
 
 	@Test
@@ -192,100 +194,107 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 	}
 
-	private SalesforceAuditEvent _buildSalesforceAuditEvent(
-		SalesforceEntity salesforceEntity, SalesforceAuditEvent.Type type) {
+	private BQSalesforceAuditEvent _buildBQSalesforceAuditEvent(
+		BQSalesforceEntity bqSalesforceEntity,
+		BQSalesforceAuditEvent.Type type) {
 
-		SalesforceAuditEvent salesforceAuditEvent = new SalesforceAuditEvent();
+		BQSalesforceAuditEvent bqSalesforceAuditEvent =
+			new BQSalesforceAuditEvent();
 
-		salesforceAuditEvent.setAdditionalInfoJSONObject(
-			salesforceEntity.getFieldsJSONObject());
-		salesforceAuditEvent.setCreateDate(new Date());
-		salesforceAuditEvent.setDataSourceId(
-			salesforceEntity.getDataSourceId());
+		bqSalesforceAuditEvent.setAdditionalInfoJSONObject(
+			bqSalesforceEntity.getFieldsJSONObject());
+		bqSalesforceAuditEvent.setCreateDate(new Date());
+		bqSalesforceAuditEvent.setDataSourceId(
+			bqSalesforceEntity.getDataSourceId());
 
-		SalesforceEntity.Type salesforceEntityType = salesforceEntity.getType();
+		BQSalesforceEntity.Type bqSalesforceEntityType =
+			bqSalesforceEntity.getType();
 
-		salesforceAuditEvent.setEntityTypeName(salesforceEntityType.getValue());
+		bqSalesforceAuditEvent.setEntityTypeName(
+			bqSalesforceEntityType.getValue());
 
-		salesforceAuditEvent.setRecordId(salesforceEntity.getId());
-		salesforceAuditEvent.setType(type);
+		bqSalesforceAuditEvent.setRecordId(bqSalesforceEntity.getId());
+		bqSalesforceAuditEvent.setType(type);
 
-		return salesforceAuditEvent;
+		return bqSalesforceAuditEvent;
 	}
 
-	private void _delete(SalesforceEntity salesforceEntity) {
-		_salesforceEntityDog.deleteSalesforceEntity(salesforceEntity);
+	private void _delete(BQSalesforceEntity bqSalesforceEntity) {
+		_bqSalesforceEntityDog.deleteBQSalesforceEntity(bqSalesforceEntity);
 
-		_salesforceAuditEventDog.addSalesforceAuditEvent(
-			_buildSalesforceAuditEvent(
-				salesforceEntity, SalesforceAuditEvent.Type.DELETE));
+		_bqSalesforceAuditEventDog.addBQSalesforceAuditEvent(
+			_buildBQSalesforceAuditEvent(
+				bqSalesforceEntity, BQSalesforceAuditEvent.Type.DELETE));
 	}
 
 	private void _testDeleteContact() {
-		_delete(_contactSalesforceEntity);
+		_delete(_contactBQSalesforceEntity);
 
 		_salesforceExtractorIndividualsNanite.run();
 
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
-				_dataSource.getId(), 0, 100, SalesforceEntity.Type.INDIVIDUAL);
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
+				_dataSource.getId(), 0, 100,
+				BQSalesforceEntity.Type.INDIVIDUAL);
 
-		Assertions.assertEquals(1, salesforceEntities.size());
+		Assertions.assertEquals(1, bqSalesforceEntities.size());
 
-		SalesforceEntity salesforceEntity = salesforceEntities.get(0);
+		BQSalesforceEntity bqSalesforceEntity = bqSalesforceEntities.get(0);
 
-		JSONObject jsonObject = salesforceEntity.getFieldsJSONObject();
+		JSONObject jsonObject = bqSalesforceEntity.getFieldsJSONObject();
 
 		Assertions.assertNull(jsonObject.optJSONArray("accountPKs"));
 		Assertions.assertNull(jsonObject.optString("contactId", null));
 	}
 
 	private void _testDeleteLead() {
-		_delete(_leadSalesforceEntity);
+		_delete(_leadBQSalesforceEntity);
 
 		_salesforceExtractorIndividualsNanite.run();
 
 		Assertions.assertEquals(
 			0,
-			_salesforceEntityDog.getSalesforceEntitiesCount(
-				1L, SalesforceEntity.Type.INDIVIDUAL));
+			_bqSalesforceEntityDog.getBQSalesforceEntitiesCount(
+				1L, BQSalesforceEntity.Type.INDIVIDUAL));
 	}
 
 	private void _testMergeIndividual() {
 		_salesforceExtractorIndividualsNanite.run();
 
-		List<SalesforceEntity> salesforceEntities =
-			_salesforceEntityDog.getSalesforceEntities(
-				_dataSource.getId(), 0, 100, SalesforceEntity.Type.INDIVIDUAL);
+		List<BQSalesforceEntity> bqSalesforceEntities =
+			_bqSalesforceEntityDog.getBQSalesforceEntities(
+				_dataSource.getId(), 0, 100,
+				BQSalesforceEntity.Type.INDIVIDUAL);
 
 		Assertions.assertEquals(
 			1,
-			_salesforceEntityDog.getSalesforceEntitiesCount(
-				_dataSource.getId(), SalesforceEntity.Type.INDIVIDUAL));
+			_bqSalesforceEntityDog.getBQSalesforceEntitiesCount(
+				_dataSource.getId(), BQSalesforceEntity.Type.INDIVIDUAL));
 
-		SalesforceEntity salesforceEntity = salesforceEntities.get(0);
+		BQSalesforceEntity bqSalesforceEntity = bqSalesforceEntities.get(0);
 
-		JSONObject individualFieldsJSONObject =
-			salesforceEntity.getFieldsJSONObject();
+		JSONObject fieldsJSONObject = bqSalesforceEntity.getFieldsJSONObject();
 
-		JSONArray accountPKsJSONArray = individualFieldsJSONObject.getJSONArray(
+		JSONArray accountPKsJSONArray = fieldsJSONObject.getJSONArray(
 			"accountPKs");
 
 		Assertions.assertEquals("1", accountPKsJSONArray.get(0));
 
+		Assertions.assertEquals("2", fieldsJSONObject.getString("contactId"));
+		Assertions.assertNotNull(fieldsJSONObject.optString("dataSourceId"));
 		Assertions.assertEquals(
-			"2", individualFieldsJSONObject.getString("contactId"));
-		Assertions.assertNotNull(
-			individualFieldsJSONObject.optString("dataSourceId"));
-		Assertions.assertEquals(
-			"true", individualFieldsJSONObject.getString("doNotCall"));
-		Assertions.assertEquals(
-			"3", individualFieldsJSONObject.getString("leadId"));
-		Assertions.assertNotNull(
-			individualFieldsJSONObject.optString("modifiedDate"));
+			"true", fieldsJSONObject.getString("doNotCall"));
+		Assertions.assertEquals("3", fieldsJSONObject.getString("leadId"));
+		Assertions.assertNotNull(fieldsJSONObject.optString("modifiedDate"));
 	}
 
-	private SalesforceEntity _contactSalesforceEntity;
+	@Autowired
+	private BQSalesforceAuditEventDog _bqSalesforceAuditEventDog;
+
+	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
+
+	private BQSalesforceEntity _contactBQSalesforceEntity;
 	private DataSource _dataSource;
 
 	@Autowired
@@ -297,13 +306,7 @@ public class SalesforceExtractorIndividualsNaniteTest
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
-	private SalesforceEntity _leadSalesforceEntity;
-
-	@Autowired
-	private SalesforceAuditEventDog _salesforceAuditEventDog;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
+	private BQSalesforceEntity _leadBQSalesforceEntity;
 
 	@Autowired
 	private SalesforceExtractorIndividualsNanite

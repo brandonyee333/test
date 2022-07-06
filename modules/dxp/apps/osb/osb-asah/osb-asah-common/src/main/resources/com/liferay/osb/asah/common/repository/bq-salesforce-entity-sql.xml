@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="BQSalesforceEntity.deleteByDataSourceId">
+		<![CDATA[
+			DELETE FROM BQSalesforceEntity WHERE BQSalesforceEntity.dataSourceId = :dataSourceId
+		]]>
+	</entry>
+	<entry key="BQSalesforceEntity.deleteByFieldKeyAndFieldValueAndType">
+		<![CDATA[
+			DELETE FROM
+				BQSalesforceEntity
+			WHERE
+				BQSalesforceEntity.fields ->> :fieldKey = :fieldValue AND
+				BQSalesforceEntity.type = :type
+		]]>
+	</entry>
+	<entry key="BQSalesforceEntity.updateBQSalesforceEntityFields">
+		<![CDATA[
+			UPDATE
+				BQSalesforceEntity
+			SET
+				fields = :fields
+			WHERE
+				BQSalesforceEntity.dataSourceId = :dataSourceId AND
+				BQSalesforceEntity.id = :id AND
+				BQSalesforceEntity.type = :type
+		]]>
+	</entry>
+</properties>

@@ -21,13 +21,13 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.BQCSVUserDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.RunLog;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -342,8 +342,8 @@ public class DataSourcesRestController extends BaseRestController {
 					"totalOperations");
 			totalOperations = 2 * totalOperations;
 
-			long salesforceAuditEventsCount =
-				_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+			long bqSalesforceAuditEventsCount =
+				_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
 					salesforceExtractorNaniteRunLog.getDataSourceId(),
 					"Account");
 
@@ -351,7 +351,7 @@ public class DataSourcesRestController extends BaseRestController {
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				totalOperations - salesforceAuditEventsCount
+				totalOperations - bqSalesforceAuditEventsCount
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -447,8 +447,8 @@ public class DataSourcesRestController extends BaseRestController {
 				salesforceExtractorIndividualsNaniteRunLogContextJSONObject.
 					getInt("totalOperations");
 
-			long salesforceAuditEventsCount =
-				_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+			long bqSalesforceAuditEventsCount =
+				_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
 					salesforceExtractorNaniteRunLog.getDataSourceId(),
 					"Contact", "Lead");
 
@@ -456,7 +456,7 @@ public class DataSourcesRestController extends BaseRestController {
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				(totalOperations * 2) - salesforceAuditEventsCount
+				(totalOperations * 2) - bqSalesforceAuditEventsCount
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -522,8 +522,8 @@ public class DataSourcesRestController extends BaseRestController {
 
 			totalOperations = 3 * totalOperations;
 
-			long salesforceAuditEventsCount =
-				_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+			long bqSalesforceAuditEventsCount =
+				_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
 					salesforceExtractorNaniteRunLog.getDataSourceId(),
 					"individuals");
 
@@ -531,7 +531,7 @@ public class DataSourcesRestController extends BaseRestController {
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				totalOperations - salesforceAuditEventsCount
+				totalOperations - bqSalesforceAuditEventsCount
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -616,13 +616,13 @@ public class DataSourcesRestController extends BaseRestController {
 					"initial" + tableName + "Run")) {
 
 				processedOperations +=
-					_salesforceEntityDog.getSalesforceEntitiesCount(
+					_bqSalesforceEntityDog.getBQSalesforceEntitiesCount(
 						salesforceExtractorNaniteRunLog.getDataSourceId(),
-						SalesforceEntity.Type.of(tableName));
+						BQSalesforceEntity.Type.of(tableName));
 			}
 			else {
 				processedOperations +=
-					_salesforceAuditEventDog.getSalesforceAuditEventsCount(
+					_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
 						salesforceExtractorNaniteRunLog.getDataSourceId(),
 						tableName);
 			}
@@ -680,6 +680,12 @@ public class DataSourcesRestController extends BaseRestController {
 	private BQCSVUserDog _bqCSVUserDog;
 
 	@Autowired
+	private BQSalesforceAuditEventDog _bqSalesforceAuditEventDog;
+
+	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
+
+	@Autowired
 	private ConfigurationHttp _configurationHttp;
 
 	@Autowired
@@ -693,12 +699,6 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@Autowired
 	private RunLogDog _runLogDog;
-
-	@Autowired
-	private SalesforceAuditEventDog _salesforceAuditEventDog;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceExtractorConfigurationDog

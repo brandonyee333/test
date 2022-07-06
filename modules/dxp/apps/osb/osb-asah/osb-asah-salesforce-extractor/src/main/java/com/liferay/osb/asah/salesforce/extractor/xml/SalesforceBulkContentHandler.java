@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.salesforce.extractor.xml;
 
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
 import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.salesforce.extractor.bot.exception.InterruptBotException;
@@ -51,14 +51,15 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 	public SalesforceBulkContentHandler(
 		DescribeSObjectResult describeSObjectResult, List<Exception> exceptions,
 		Supplier<Boolean> isStopSupplier, String osbAsahDataSourceId,
-		Function<List<SalesforceAuditEvent>, Exception>
-			saveSalesforceAuditEventsFunction,
+		Function<List<BQSalesforceAuditEvent>, Exception>
+			saveBQSalesforceAuditEventsFunction,
 		Function<JSONArray, Exception> saveJSONArrayFunction) {
 
 		_exceptions = exceptions;
 		_isStopSupplier = isStopSupplier;
 		_osbAsahDataSourceId = osbAsahDataSourceId;
-		_saveSalesforceAuditEventsFunction = saveSalesforceAuditEventsFunction;
+		_saveBQSalesforceAuditEventsFunction =
+			saveBQSalesforceAuditEventsFunction;
 		_saveJSONArrayFunction = saveJSONArrayFunction;
 
 		_fields = SchemaUtil.getFields(describeSObjectResult);
@@ -91,8 +92,8 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 	public void endDocument() {
 		if (!_jsonObjects.isEmpty()) {
 			_addException(
-				_saveSalesforceAuditEventsFunction.apply(
-					_salesforceAuditEvents));
+				_saveBQSalesforceAuditEventsFunction.apply(
+					_bqSalesforceAuditEvents));
 			_addException(
 				_saveJSONArrayFunction.apply(new JSONArray(_jsonObjects)));
 		}
@@ -158,18 +159,18 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 
 			jsonObject.put("dataSourceId", _osbAsahDataSourceId);
 
-			SalesforceAuditEvent salesforceAuditEvent =
-				new SalesforceAuditEvent();
+			BQSalesforceAuditEvent bqSalesforceAuditEvent =
+				new BQSalesforceAuditEvent();
 
-			salesforceAuditEvent.setAdditionalInfoJSONObject(jsonObject);
-			salesforceAuditEvent.setCreateDate(new Date());
-			salesforceAuditEvent.setDataSourceId(
+			bqSalesforceAuditEvent.setAdditionalInfoJSONObject(jsonObject);
+			bqSalesforceAuditEvent.setCreateDate(new Date());
+			bqSalesforceAuditEvent.setDataSourceId(
 				Long.valueOf(_osbAsahDataSourceId));
-			salesforceAuditEvent.setEntityTypeName(_typeName);
-			salesforceAuditEvent.setRecordId(jsonObject.getString("id"));
-			salesforceAuditEvent.setType(SalesforceAuditEvent.Type.UPDATE);
+			bqSalesforceAuditEvent.setEntityTypeName(_typeName);
+			bqSalesforceAuditEvent.setRecordId(jsonObject.getString("id"));
+			bqSalesforceAuditEvent.setType(BQSalesforceAuditEvent.Type.UPDATE);
 
-			_salesforceAuditEvents.add(salesforceAuditEvent);
+			_bqSalesforceAuditEvents.add(bqSalesforceAuditEvent);
 
 			_jsonObjects.add(jsonObject);
 		}
@@ -185,10 +186,10 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 
 			if ((_count % _DELTA) == 0) {
 				_addException(
-					_saveSalesforceAuditEventsFunction.apply(
-						_salesforceAuditEvents));
+					_saveBQSalesforceAuditEventsFunction.apply(
+						_bqSalesforceAuditEvents));
 
-				_salesforceAuditEvents.clear();
+				_bqSalesforceAuditEvents.clear();
 
 				_addException(
 					_saveJSONArrayFunction.apply(new JSONArray(_jsonObjects)));
@@ -236,6 +237,8 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 	private static final Log _log = LogFactory.getLog(
 		SalesforceBulkContentHandler.class);
 
+	private final List<BQSalesforceAuditEvent> _bqSalesforceAuditEvents =
+		new ArrayList<>();
 	private int _count;
 	private final List<Exception> _exceptions;
 	private final Map<String, Field> _fields;
@@ -245,11 +248,9 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 	private final Map<String, char[]> _recordFieldChars = new HashMap<>();
 	private String _recordFieldName;
 	private String _recordType;
-	private final List<SalesforceAuditEvent> _salesforceAuditEvents =
-		new ArrayList<>();
+	private final Function<List<BQSalesforceAuditEvent>, Exception>
+		_saveBQSalesforceAuditEventsFunction;
 	private final Function<JSONArray, Exception> _saveJSONArrayFunction;
-	private final Function<List<SalesforceAuditEvent>, Exception>
-		_saveSalesforceAuditEventsFunction;
 	private final String _typeName;
 
 }

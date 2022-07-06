@@ -536,7 +536,7 @@ public class DataSourceDog {
 			_deleteAccountReferences(dataSourceId);
 
 			_fieldDog.deleteFields(dataSourceId);
-			_salesforceEntityDog.deleteSalesforceEntities(dataSourceId);
+			_bqSalesforceEntityDog.deleteBQSalesforceEntities(dataSourceId);
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
@@ -815,6 +815,9 @@ public class DataSourceDog {
 	private BQCSVUserDog _bqCSVUserDog;
 
 	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
+
+	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
@@ -851,9 +854,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private RunLogDog _runLogDog;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 	@Autowired
 	private SalesforceExtractorConfigurationDog

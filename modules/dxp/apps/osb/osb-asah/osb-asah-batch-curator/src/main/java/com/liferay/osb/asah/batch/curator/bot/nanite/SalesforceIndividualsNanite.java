@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.dog.SalesforceAuditEventDog;
-import com.liferay.osb.asah.common.dog.SalesforceEntityDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceAuditEventDog;
+import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
+import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
+import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.RunLog;
-import com.liferay.osb.asah.common.entity.SalesforceAuditEvent;
-import com.liferay.osb.asah.common.entity.SalesforceEntity;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -69,8 +69,8 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 		runLogDog.log(
 			dataSourceId, this, "STARTED",
 			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
-			_salesforceAuditEventDog.getSalesforceAuditEventsCount(
-				dataSourceId, SalesforceEntity.Type.INDIVIDUAL.getValue()));
+			_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
+				dataSourceId, BQSalesforceEntity.Type.INDIVIDUAL.getValue()));
 
 		try {
 			int page = 0;
@@ -82,23 +82,23 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 					return;
 				}
 
-				List<SalesforceAuditEvent> salesforceAuditEvents =
-					_salesforceAuditEventDog.getSalesforceAuditEvents(
+				List<BQSalesforceAuditEvent> bqSalesforceAuditEvents =
+					_bqSalesforceAuditEventDog.getBQSalesforceAuditEvents(
 						dataSourceId,
-						SalesforceEntity.Type.INDIVIDUAL.getValue(), page++,
+						BQSalesforceEntity.Type.INDIVIDUAL.getValue(), page++,
 						10000, Sort.desc("id"));
 
-				if (salesforceAuditEvents.isEmpty()) {
+				if (bqSalesforceAuditEvents.isEmpty()) {
 					break;
 				}
 
-				for (SalesforceAuditEvent salesforceAuditEvent :
-						salesforceAuditEvents) {
+				for (BQSalesforceAuditEvent bqSalesforceAuditEvent :
+						bqSalesforceAuditEvents) {
 
-					processSalesforceAuditEvent(salesforceAuditEvent);
+					processSalesforceAuditEvent(bqSalesforceAuditEvent);
 				}
 
-				if (salesforceAuditEvents.size() < 10000) {
+				if (bqSalesforceAuditEvents.size() < 10000) {
 					break;
 				}
 			}
@@ -117,52 +117,55 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	protected void processSalesforceAuditEvent(
-			SalesforceAuditEvent salesforceAuditEvent)
+			BQSalesforceAuditEvent bqSalesforceAuditEvent)
 		throws Exception {
 
-		SalesforceAuditEvent.Type salesforceAuditEventType =
-			salesforceAuditEvent.getType();
+		BQSalesforceAuditEvent.Type bqSalesforceAuditEventType =
+			bqSalesforceAuditEvent.getType();
 
 		Log log = getLog();
 
-		if ((salesforceAuditEventType == SalesforceAuditEvent.Type.ADD) ||
-			(salesforceAuditEventType == SalesforceAuditEvent.Type.UPDATE)) {
+		if ((bqSalesforceAuditEventType == BQSalesforceAuditEvent.Type.ADD) ||
+			(bqSalesforceAuditEventType ==
+				BQSalesforceAuditEvent.Type.UPDATE)) {
 
-			SalesforceEntity individualSalesforceEntity =
-				_salesforceEntityDog.fetchSalesforceEntity(
-					salesforceAuditEvent.getDataSourceId(),
-					salesforceAuditEvent.getRecordId(),
-					SalesforceEntity.Type.INDIVIDUAL);
+			BQSalesforceEntity individualBQSalesforceEntity =
+				_bqSalesforceEntityDog.fetchBQSalesforceEntity(
+					bqSalesforceAuditEvent.getDataSourceId(),
+					bqSalesforceAuditEvent.getRecordId(),
+					BQSalesforceEntity.Type.INDIVIDUAL);
 
-			if (individualSalesforceEntity != null) {
+			if (individualBQSalesforceEntity != null) {
 				JSONObject individualSalesforceEntityFieldsJSONObject =
-					individualSalesforceEntity.getFieldsJSONObject();
+					individualBQSalesforceEntity.getFieldsJSONObject();
 
 				processData(
-					individualSalesforceEntity.getId(),
-					individualSalesforceEntity.getDataSourceId(),
+					individualBQSalesforceEntity.getId(),
+					individualBQSalesforceEntity.getDataSourceId(),
 					individualSalesforceEntityFieldsJSONObject,
 					individualSalesforceEntityFieldsJSONObject.optString(
 						"email", null));
 			}
 		}
-		else if (salesforceAuditEventType == SalesforceAuditEvent.Type.DELETE) {
+		else if (bqSalesforceAuditEventType ==
+					BQSalesforceAuditEvent.Type.DELETE) {
+
 			JSONObject additionalInfoJSONObject =
-				salesforceAuditEvent.getAdditionalInfoJSONObject();
+				bqSalesforceAuditEvent.getAdditionalInfoJSONObject();
 
 			delete(
-				salesforceAuditEvent.getDataSourceId(),
-				salesforceAuditEvent.getCreateDate(),
+				bqSalesforceAuditEvent.getDataSourceId(),
+				bqSalesforceAuditEvent.getCreateDate(),
 				additionalInfoJSONObject.getString("Email"));
 		}
 		else if (log.isWarnEnabled()) {
 			log.warn(
-				"Unknown event type " + salesforceAuditEventType +
-					" for audit event " + salesforceAuditEvent.getId());
+				"Unknown event type " + bqSalesforceAuditEventType +
+					" for audit event " + bqSalesforceAuditEvent.getId());
 		}
 
-		_salesforceAuditEventDog.deleteSalesforceAuditEvent(
-			salesforceAuditEvent);
+		_bqSalesforceAuditEventDog.deleteBQSalesforceAuditEvent(
+			bqSalesforceAuditEvent);
 	}
 
 	@Override
@@ -184,24 +187,24 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 					return;
 				}
 
-				List<SalesforceEntity> individualSalesforceEntities =
-					_salesforceEntityDog.getSalesforceEntities(
+				List<BQSalesforceEntity> individualBQSalesforceEntities =
+					_bqSalesforceEntityDog.getBQSalesforceEntities(
 						dataSourceId, page++, 10000,
-						SalesforceEntity.Type.INDIVIDUAL);
+						BQSalesforceEntity.Type.INDIVIDUAL);
 
-				if (individualSalesforceEntities.isEmpty()) {
+				if (individualBQSalesforceEntities.isEmpty()) {
 					break;
 				}
 
-				for (SalesforceEntity individualSalesforceEntity :
-						individualSalesforceEntities) {
+				for (BQSalesforceEntity individualBQSalesforceEntity :
+						individualBQSalesforceEntities) {
 
 					JSONObject fieldsJSONObject =
-						individualSalesforceEntity.getFieldsJSONObject();
+						individualBQSalesforceEntity.getFieldsJSONObject();
 
 					processData(
-						individualSalesforceEntity.getId(),
-						individualSalesforceEntity.getDataSourceId(),
+						individualBQSalesforceEntity.getId(),
+						individualBQSalesforceEntity.getDataSourceId(),
 						fieldsJSONObject,
 						fieldsJSONObject.optString("email", null));
 
@@ -220,7 +223,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 						WeDeployDataService.OSB_ASAH_FARO_INFO);
 				}
 
-				if (individualSalesforceEntities.size() < 10000) {
+				if (individualBQSalesforceEntities.size() < 10000) {
 					break;
 				}
 			}
@@ -248,13 +251,13 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 		_runningMap.put(dataSourceId, running);
 	}
 
+	@Autowired
+	private BQSalesforceAuditEventDog _bqSalesforceAuditEventDog;
+
+	@Autowired
+	private BQSalesforceEntityDog _bqSalesforceEntityDog;
+
 	private final Map<Long, Boolean> _interruptedMap = new HashMap<>();
 	private final Map<Long, Boolean> _runningMap = new HashMap<>();
-
-	@Autowired
-	private SalesforceAuditEventDog _salesforceAuditEventDog;
-
-	@Autowired
-	private SalesforceEntityDog _salesforceEntityDog;
 
 }

@@ -40,18 +40,18 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcellus Tavares
  */
 @Table
-public class SalesforceEntity implements Persistable<String> {
+public class BQSalesforceEntity implements Persistable<String> {
 
-	public SalesforceEntity() {
+	public BQSalesforceEntity() {
 	}
 
-	public SalesforceEntity(Map<String, Object> source) {
+	public BQSalesforceEntity(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
 	}
 
-	public SalesforceEntity(
+	public BQSalesforceEntity(
 		String id, Long dataSourceId, JSONObject fieldsJSONObject,
-		SalesforceEntity.Type type) {
+		BQSalesforceEntity.Type type) {
 
 		_id = id;
 		_dataSourceId = dataSourceId;
@@ -67,17 +67,17 @@ public class SalesforceEntity implements Persistable<String> {
 			return true;
 		}
 
-		if (!(obj instanceof SalesforceEntity)) {
+		if (!(obj instanceof BQSalesforceEntity)) {
 			return false;
 		}
 
-		SalesforceEntity salesforceEntity = (SalesforceEntity)obj;
+		BQSalesforceEntity bqSalesforceEntity = (BQSalesforceEntity)obj;
 
-		if (Objects.equals(_id, salesforceEntity._id) &&
+		if (Objects.equals(_id, bqSalesforceEntity._id) &&
 			Objects.equals(
 				JSONUtil.toMap(_fieldsJSONObject),
-				JSONUtil.toMap(salesforceEntity._fieldsJSONObject)) &&
-			Objects.equals(_type, salesforceEntity._type)) {
+				JSONUtil.toMap(bqSalesforceEntity._fieldsJSONObject)) &&
+			Objects.equals(_type, bqSalesforceEntity._type)) {
 
 			return true;
 		}
