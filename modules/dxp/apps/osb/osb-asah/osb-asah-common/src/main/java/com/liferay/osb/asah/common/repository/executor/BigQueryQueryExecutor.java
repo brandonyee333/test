@@ -102,7 +102,9 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		TableResult tableResult = _query(selectFinalStep);
 
 		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			list.add((T)fieldValueList.get(0));
+			FieldValue fieldValue = fieldValueList.get(0);
+
+			list.add((T)fieldValue.getValue());
 		}
 
 		return list;
