@@ -125,10 +125,10 @@ public class FilterOperatorTest {
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
-			DSL.field(
-				"testField"
-			).containsIgnoreCase(
-				"testValue"
+			DSL.lower(
+				DSL.field("testField", String.class)
+			).like(
+				"%testvalue%"
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
@@ -425,11 +425,12 @@ public class FilterOperatorTest {
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
-			DSL.field(
-				"testField"
-			).notContainsIgnoreCase(
-				"testValue"
-			),
+			DSL.not(
+				DSL.lower(
+					DSL.field("testField", String.class)
+				).like(
+					"%testvalue%"
+				)),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
 
