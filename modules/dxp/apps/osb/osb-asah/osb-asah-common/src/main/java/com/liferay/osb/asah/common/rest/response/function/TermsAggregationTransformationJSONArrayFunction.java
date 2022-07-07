@@ -38,6 +38,7 @@ import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.IncludeExclude;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
@@ -108,6 +109,12 @@ public class TermsAggregationTransformationJSONArrayFunction
 						).size(
 							size
 						)
+					).includeExclude(
+						new IncludeExclude(
+							FilterStringToQueryBuilderConverter.
+								buildIgnoreCaseRegExp(
+									StringUtil.unquote(containsField)),
+							null)
 					);
 
 				searchSourceBuilder.aggregation(aggregationBuilder);
