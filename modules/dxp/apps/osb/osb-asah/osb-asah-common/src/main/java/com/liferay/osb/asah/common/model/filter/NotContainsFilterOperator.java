@@ -19,8 +19,11 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.impl.DSL;
 
 /**
  * @author Leslie Wong
@@ -35,7 +38,14 @@ public class NotContainsFilterOperator extends FilterOperator {
 
 	@Override
 	public Condition getCondition(Field field) {
-		return field.notContainsIgnoreCase(getValue(dataType, values.get(0)));
+		String value = (String)getValue(dataType, values.get(0));
+
+		return DSL.not(
+			DSL.lower(
+				field
+			).like(
+				"%" + StringUtils.lowerCase(value) + "%"
+			));
 	}
 
 	@Override
