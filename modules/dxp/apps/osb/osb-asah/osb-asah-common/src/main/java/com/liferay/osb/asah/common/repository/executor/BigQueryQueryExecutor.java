@@ -137,9 +137,12 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		TableResult tableResult = _query(selectFinalStep);
 
 		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
+			FieldValue keyFieldValue = fieldValueList.get(0);
+			FieldValue valueFieldValue = fieldValueList.get(1);
+
 			map.put(
-				keyMapperFunction.apply(fieldValueList.get(0)),
-				valueMapperFunction.apply(fieldValueList.get(1)));
+				keyMapperFunction.apply(keyFieldValue.getValue()),
+				valueMapperFunction.apply(valueFieldValue.getValue()));
 		}
 
 		return map;
@@ -154,7 +157,10 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		TableResult tableResult = _query(selectFinalStep);
 
 		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			map.put((T)fieldValueList.get(0), (R)fieldValueList.get(1));
+			FieldValue keyFieldValue = fieldValueList.get(0);
+			FieldValue valueFieldValue = fieldValueList.get(1);
+
+			map.put((T)keyFieldValue.getValue(), (R)valueFieldValue.getValue());
 		}
 
 		return map;
