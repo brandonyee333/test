@@ -48,7 +48,11 @@ public class EqualsFilterOperator extends FilterOperator {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.STRING)) {
-			return field.equalIgnoreCase((String)getValue(dataType, value));
+			Field<String> stringField = DSL.field(
+				field.toString(), String.class);
+
+			return stringField.equalIgnoreCase(
+				(String)getValue(dataType, value));
 		}
 
 		return field.eq(getValue(dataType, value));

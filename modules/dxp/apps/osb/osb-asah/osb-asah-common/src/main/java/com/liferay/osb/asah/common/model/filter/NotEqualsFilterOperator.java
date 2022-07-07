@@ -45,7 +45,10 @@ public class NotEqualsFilterOperator extends FilterOperator {
 			}
 
 			if (dataType.equals(EventAttributeDefinition.DataType.STRING)) {
-				return field.notEqualIgnoreCase(
+				Field<String> stringField = DSL.field(
+					field.toString(), String.class);
+
+				return stringField.notEqualIgnoreCase(
 					(String)getValue(dataType, value));
 			}
 
