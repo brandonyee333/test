@@ -184,7 +184,7 @@ public class FilterOperatorTest {
 
 		Assertions.assertEquals(
 			DSL.field(
-				"testField"
+				"testField", String.class
 			).equalIgnoreCase(
 				"testValue"
 			),
@@ -470,7 +470,7 @@ public class FilterOperatorTest {
 
 		Assertions.assertEquals(
 			DSL.field(
-				"testField"
+				"testField", String.class
 			).notEqualIgnoreCase(
 				"testValue"
 			),
