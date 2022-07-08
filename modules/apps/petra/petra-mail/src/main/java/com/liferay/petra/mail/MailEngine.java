@@ -53,12 +53,15 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 
 import javax.mail.Address;
+import javax.mail.Flags;
+import javax.mail.Folder;
 import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Part;
 import javax.mail.SendFailedException;
 import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.InternetHeaders;
@@ -75,6 +78,27 @@ import javax.mail.internet.MimeMultipart;
  * @see    com.liferay.util.mail.MailEngine
  */
 public class MailEngine {
+
+	public static Message[] getMessages() throws MessagingException {
+		try (Store store = _getStore()) {
+			try (Folder inboxFolder = _getInboxFolder(store)) {
+				Message[] messages = inboxFolder.getMessages();
+
+				if (messages == null) {
+					return null;
+				}
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Deleting messages");
+				}
+
+				inboxFolder.setFlags(
+					messages, new Flags(Flags.Flag.DELETED), true);
+
+				return messages;
+			}
+		}
+	}
 
 	public static Session getSession() {
 		Session session = null;
@@ -368,6 +392,24 @@ public class MailEngine {
 		return ArrayUtil.subset(addresses, start, end);
 	}
 
+	private static Folder _getInboxFolder(Store store)
+		throws MessagingException {
+
+		Folder defaultFolder = store.getDefaultFolder();
+
+		Folder[] folders = defaultFolder.list();
+
+		if (folders.length == 0) {
+			throw new MessagingException("Inbox not found");
+		}
+
+		Folder inboxFolder = folders[0];
+
+		inboxFolder.open(Folder.READ_WRITE);
+
+		return inboxFolder;
+	}
+
 	private static Properties _getProperties(Account account) {
 		Properties properties = new Properties();
 
@@ -409,6 +451,39 @@ public class MailEngine {
 		}
 
 		return session.getProperty("mail.smtp." + suffix);
+	}
+
+	private static Store _getStore() throws MessagingException {
+		Session session = getSession();
+
+		String storeProtocol = GetterUtil.getString(
+			session.getProperty("mail.store.protocol"));
+
+		if (!storeProtocol.equals(Account.PROTOCOL_POPS)) {
+			storeProtocol = Account.PROTOCOL_POP;
+		}
+
+		Store store = session.getStore(storeProtocol);
+
+		String prefix = "mail." + storeProtocol + ".";
+
+		String host = session.getProperty(prefix + "host");
+
+		String user = session.getProperty(prefix + "user");
+
+		if (Validator.isNull(user)) {
+			user = session.getProperty("mail.smtp.user");
+		}
+
+		String password = session.getProperty(prefix + "password");
+
+		if (Validator.isNull(password)) {
+			password = session.getProperty("mail.smtp.password");
+		}
+
+		store.connect(host, user, password);
+
+		return store;
 	}
 
 	private static boolean _isThrowsExceptionOnFailure() {
