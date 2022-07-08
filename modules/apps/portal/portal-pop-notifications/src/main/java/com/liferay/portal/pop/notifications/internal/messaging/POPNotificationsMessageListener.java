@@ -109,18 +109,8 @@ public class POPNotificationsMessageListener extends BaseMessageListener {
 			com.liferay.portal.kernel.messaging.Message message)
 		throws MessagingException {
 
-		Store store = null;
-
-		try {
-			store = _getStore();
-
-			Folder inboxFolder = _getInboxFolder(store);
-
-			if (inboxFolder == null) {
-				return;
-			}
-
-			try {
+		try (Store store = _getStore()) {
+			try (Folder inboxFolder = _getInboxFolder(store)) {
 				Message[] messages = inboxFolder.getMessages();
 
 				if (messages == null) {
@@ -135,14 +125,6 @@ public class POPNotificationsMessageListener extends BaseMessageListener {
 					messages, new Flags(Flags.Flag.DELETED), true);
 
 				_notifyMessageListeners(messages);
-			}
-			finally {
-				inboxFolder.close(true);
-			}
-		}
-		finally {
-			if (store != null) {
-				store.close();
 			}
 		}
 	}
