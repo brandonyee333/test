@@ -14,8 +14,7 @@
 
 package com.liferay.portal.pop.notifications.internal.messaging;
 
-import com.liferay.mail.kernel.model.Account;
-import com.liferay.petra.mail.MailEngine;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -31,8 +30,6 @@ import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.pop.notifications.internal.MessageListenerWrapper;
 import com.liferay.portal.util.PropsValues;
 
@@ -42,12 +39,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.mail.Address;
-import javax.mail.Flags;
-import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 
 import org.osgi.service.component.annotations.Activate;
@@ -109,24 +102,13 @@ public class POPNotificationsMessageListener extends BaseMessageListener {
 			com.liferay.portal.kernel.messaging.Message message)
 		throws MessagingException {
 
-		try (Store store = _getStore()) {
-			try (Folder inboxFolder = _getInboxFolder(store)) {
-				Message[] messages = inboxFolder.getMessages();
+		Message[] messages = _mailService.getMessages();
 
-				if (messages == null) {
-					return;
-				}
-
-				if (_log.isDebugEnabled()) {
-					_log.debug("Deleting messages");
-				}
-
-				inboxFolder.setFlags(
-					messages, new Flags(Flags.Flag.DELETED), true);
-
-				_notifyMessageListeners(messages);
-			}
+		if (messages == null) {
+			return;
 		}
+
+		_notifyMessageListeners(messages);
 	}
 
 	protected void removeMessageListener(MessageListener messageListener) {
@@ -171,55 +153,6 @@ public class POPNotificationsMessageListener extends BaseMessageListener {
 		return emailAddresses;
 	}
 
-	private Folder _getInboxFolder(Store store) throws MessagingException {
-		Folder defaultFolder = store.getDefaultFolder();
-
-		Folder[] folders = defaultFolder.list();
-
-		if (folders.length == 0) {
-			throw new MessagingException("Inbox not found");
-		}
-
-		Folder inboxFolder = folders[0];
-
-		inboxFolder.open(Folder.READ_WRITE);
-
-		return inboxFolder;
-	}
-
-	private Store _getStore() throws MessagingException {
-		Session session = MailEngine.getSession();
-
-		String storeProtocol = GetterUtil.getString(
-			session.getProperty("mail.store.protocol"));
-
-		if (!storeProtocol.equals(Account.PROTOCOL_POPS)) {
-			storeProtocol = Account.PROTOCOL_POP;
-		}
-
-		Store store = session.getStore(storeProtocol);
-
-		String prefix = "mail." + storeProtocol + ".";
-
-		String host = session.getProperty(prefix + "host");
-
-		String user = session.getProperty(prefix + "user");
-
-		if (Validator.isNull(user)) {
-			user = session.getProperty("mail.smtp.user");
-		}
-
-		String password = session.getProperty(prefix + "password");
-
-		if (Validator.isNull(password)) {
-			password = session.getProperty("mail.smtp.password");
-		}
-
-		store.connect(host, user, password);
-
-		return store;
-	}
-
 	private void _notifyMessageListeners(Message[] messages)
 		throws MessagingException {
 
@@ -259,6 +192,9 @@ public class POPNotificationsMessageListener extends BaseMessageListener {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		POPNotificationsMessageListener.class);
+
+	@Reference
+	private MailService _mailService;
 
 	private final Map<MessageListener, MessageListenerWrapper>
 		_messageListenerWrappers = new ConcurrentHashMap<>();
