@@ -155,9 +155,9 @@ public class FinalizeUserSessionArmTest
 			},
 			pastUserSessionDates);
 
-		Set<Date> keySet = pastUserSessionDates.keySet();
+		Set<Date> set = pastUserSessionDates.keySet();
 
-		Stream<Date> stream = keySet.stream();
+		Stream<Date> stream = set.stream();
 
 		List<String> pastUserSessionDateStrings = stream.map(
 			DateUtil::toUTCString
@@ -223,9 +223,9 @@ public class FinalizeUserSessionArmTest
 			},
 			finalizablePastUserSessions);
 
-		Set<Date> keySet = finalizablePastUserSessions.keySet();
+		Set<Date> set = finalizablePastUserSessions.keySet();
 
-		Stream<Date> stream = keySet.stream();
+		Stream<Date> stream = set.stream();
 
 		List<String> pastUserSessionDateStrings = stream.map(
 			DateUtil::toUTCString
@@ -305,9 +305,9 @@ public class FinalizeUserSessionArmTest
 			},
 			pastUserSessionDates);
 
-		Set<Date> keySet = pastUserSessionDates.keySet();
+		Set<Date> set = pastUserSessionDates.keySet();
 
-		Stream<Date> stream = keySet.stream();
+		Stream<Date> stream = set.stream();
 
 		List<String> pastUserSessionDateStrings = stream.map(
 			DateUtil::toUTCString
