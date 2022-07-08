@@ -327,6 +327,10 @@ public class SegmentRepositoryImpl
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
 		FilterHelper filterHelper, Pageable pageable) {
 
+		if (CollectionUtils.isEmpty(dataSourceFieldMappingIds)) {
+			return new ArrayList<>();
+		}
+
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
