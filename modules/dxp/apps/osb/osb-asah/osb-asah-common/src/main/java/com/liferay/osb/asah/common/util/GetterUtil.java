@@ -21,6 +21,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 /**
  * @author Marcellus Tavares
  */
@@ -43,6 +45,10 @@ public class GetterUtil {
 			return fieldValue.getStringValue();
 		}
 
+		if (object instanceof String) {
+			return (String)object;
+		}
+
 		OffsetDateTime offsetDateTime = (OffsetDateTime)object;
 
 		LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
@@ -57,6 +63,10 @@ public class GetterUtil {
 			return (int)fieldValue.getLongValue();
 		}
 
+		if (object instanceof String) {
+			return Integer.parseInt((String)object);
+		}
+
 		return (int)object;
 	}
 
@@ -65,6 +75,10 @@ public class GetterUtil {
 			FieldValue fieldValue = (FieldValue)object;
 
 			return fieldValue.getNumericValue();
+		}
+
+		if (object instanceof String) {
+			return NumberUtils.createNumber((String)object);
 		}
 
 		return (Number)object;
