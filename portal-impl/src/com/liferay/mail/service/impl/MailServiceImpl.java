@@ -19,6 +19,7 @@ import com.liferay.mail.kernel.model.Filter;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.kernel.util.Hook;
+import com.liferay.petra.mail.MailEngine;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -47,6 +48,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
@@ -173,6 +176,11 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 
 				return null;
 			});
+	}
+
+	@Override
+	public Message[] getMessages() throws MessagingException {
+		return MailEngine.getMessages();
 	}
 
 	@Override

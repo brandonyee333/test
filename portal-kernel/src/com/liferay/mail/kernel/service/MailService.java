@@ -22,6 +22,8 @@ import com.liferay.portal.kernel.transaction.Transactional;
 
 import java.util.List;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Session;
 
 /**
@@ -49,6 +51,8 @@ public interface MailService {
 	public void deleteEmailAddress(long companyId, long userId);
 
 	public void deleteUser(long companyId, long userId);
+
+	public Message[] getMessages() throws MessagingException;
 
 	public Session getSession();
 
