@@ -18,11 +18,7 @@ import ClayModal from '@clayui/modal';
 import {Input, InputLocalized} from '@liferay/object-js-components-web';
 import React, {FormEvent, useContext, useState} from 'react';
 
-import {
-	availableLocales,
-	defaultLanguageId,
-	defaultLocale,
-} from '../../../utils/locale';
+import {defaultLanguageId} from '../../../utils/locale';
 import ViewContext, {TYPES} from '../context';
 
 interface IProps {
@@ -48,13 +44,6 @@ export function ModalEditViewColumn({
 	);
 
 	const {label} = editingColumn;
-
-	const [selectedLocale, setSelectedLocale] = useState(
-		defaultLocale as {
-			label: string;
-			symbol: string;
-		}
-	);
 
 	const [translations, setTranslations] = useState(label);
 
@@ -91,14 +80,10 @@ export function ModalEditViewColumn({
 					/>
 
 					<InputLocalized
-						defaultLanguageId={defaultLanguageId}
 						id="locale"
 						label={Liferay.Language.get('column-label')}
-						locales={availableLocales}
-						onSelectedLocaleChange={setSelectedLocale}
-						onTranslationsChange={setTranslations}
+						onChange={setTranslations}
 						required
-						selectedLocale={selectedLocale}
 						translations={translations}
 					/>
 				</ClayModal.Body>

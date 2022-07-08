@@ -16,34 +16,25 @@ import 'codemirror/mode/groovy/groovy';
 import {SidebarCategory} from '@liferay/object-js-components-web';
 import {ChangeEventHandler} from 'react';
 import {ObjectValidationErrors} from '../ObjectValidationFormBase';
-declare function BasicInfo({
+export declare function BasicInfo({
 	componentLabel,
-	defaultLocale,
 	disabled,
 	errors,
-	locales,
 	setValues,
 	values,
 }: IBasicInfo): JSX.Element;
-declare function Conditions({
-	defaultLocale,
+export declare function Conditions({
 	disabled,
 	errors,
 	ffUseMetadataAsSystemFields,
-	locales,
 	objectValidationRuleElements,
 	setValues,
 	values,
 }: IConditions): JSX.Element;
 interface ITabs {
-	defaultLocale: {
-		label: string;
-		symbol: string;
-	};
 	disabled: boolean;
 	errors: ObjectValidationErrors;
 	handleChange: ChangeEventHandler<HTMLInputElement>;
-	locales: Array<any>;
 	setValues: (values: Partial<ObjectValidation>) => void;
 	values: Partial<ObjectValidation>;
 }
@@ -54,4 +45,4 @@ interface IConditions extends ITabs {
 	ffUseMetadataAsSystemFields: boolean;
 	objectValidationRuleElements: SidebarCategory[];
 }
-export {BasicInfo, Conditions};
+export {};

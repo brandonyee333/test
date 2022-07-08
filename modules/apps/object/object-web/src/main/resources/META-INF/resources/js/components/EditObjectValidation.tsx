@@ -23,11 +23,7 @@ import {fetch} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
 import {HEADERS} from '../utils/constants';
-import {
-	availableLocales,
-	defaultLanguageId,
-	defaultLocale,
-} from '../utils/locale';
+import {defaultLanguageId} from '../utils/locale';
 import {BasicInfo, Conditions} from './DataValidation/ObjectValidationTabs';
 import {
 	ObjectValidationErrors,
@@ -128,7 +124,6 @@ export default function EditObjectValidation({
 						<ClayTabs.TabPane key={index}>
 							<Component
 								componentLabel={label}
-								defaultLocale={defaultLocale!}
 								disabled={readOnly}
 								errors={
 									Object.keys(errors).length !== 0
@@ -139,7 +134,6 @@ export default function EditObjectValidation({
 									values.ffUseMetadataAsSystemFields as boolean
 								}
 								handleChange={handleChange}
-								locales={availableLocales}
 								objectValidationRuleElements={
 									objectValidationRuleElements
 								}

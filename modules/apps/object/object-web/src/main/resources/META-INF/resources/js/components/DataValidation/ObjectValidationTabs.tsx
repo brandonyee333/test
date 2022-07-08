@@ -22,43 +22,29 @@ import {
 	Select,
 	SidebarCategory,
 } from '@liferay/object-js-components-web';
-import React, {ChangeEventHandler, useState} from 'react';
+import React, {ChangeEventHandler} from 'react';
 
 import useMetadata from '../../hooks/useMetadata';
-import {defaultLanguageId} from '../../utils/locale';
 import {ObjectValidationErrors} from '../ObjectValidationFormBase';
 
-function BasicInfo({
+export function BasicInfo({
 	componentLabel,
-	defaultLocale,
 	disabled,
 	errors,
-	locales,
 	setValues,
 	values,
 }: IBasicInfo) {
-	const [locale, setSelectedLocale] = useState(
-		defaultLocale as {
-			label: string;
-			symbol: string;
-		}
-	);
-
 	return (
 		<>
 			<Card title={componentLabel}>
 				<InputLocalized
-					defaultLanguageId={defaultLanguageId}
 					disabled={disabled}
 					error={errors.name}
 					label={Liferay.Language.get('label')}
-					locales={locales}
-					onSelectedLocaleChange={setSelectedLocale}
-					onTranslationsChange={(label) => setValues({name: label})}
+					onChange={(label) => setValues({name: label})}
 					placeholder={Liferay.Language.get('add-a-label')}
 					required
-					selectedLocale={locale}
-					translations={values.name as LocalizedValue<string>}
+					translations={values.name!}
 				/>
 
 				<Input
@@ -83,23 +69,14 @@ function BasicInfo({
 	);
 }
 
-function Conditions({
-	defaultLocale,
+export function Conditions({
 	disabled,
 	errors,
 	ffUseMetadataAsSystemFields,
-	locales,
 	objectValidationRuleElements,
 	setValues,
 	values,
 }: IConditions) {
-	const [locale, setSelectedLocale] = useState(
-		defaultLocale as {
-			label: string;
-			symbol: string;
-		}
-	);
-
 	const sidebarElements = useMetadata(
 		objectValidationRuleElements,
 		ffUseMetadataAsSystemFields
@@ -148,19 +125,13 @@ function Conditions({
 
 			<Card title={Liferay.Language.get('error-message')}>
 				<InputLocalized
-					defaultLanguageId={defaultLanguageId}
 					disabled={disabled}
 					error={errors.errorLabel}
 					label={Liferay.Language.get('message')}
-					locales={locales}
-					onSelectedLocaleChange={setSelectedLocale}
-					onTranslationsChange={(message) =>
-						setValues({errorLabel: message})
-					}
+					onChange={(message) => setValues({errorLabel: message})}
 					placeholder={Liferay.Language.get('add-an-error-message')}
 					required
-					selectedLocale={locale}
-					translations={values.errorLabel as LocalizedValue<string>}
+					translations={values.errorLabel!}
 				/>
 			</Card>
 		</>
@@ -186,11 +157,9 @@ interface ITriggerEventProps {
 }
 
 interface ITabs {
-	defaultLocale: {label: string; symbol: string};
 	disabled: boolean;
 	errors: ObjectValidationErrors;
 	handleChange: ChangeEventHandler<HTMLInputElement>;
-	locales: Array<any>;
 	setValues: (values: Partial<ObjectValidation>) => void;
 	values: Partial<ObjectValidation>;
 }
@@ -203,5 +172,3 @@ interface IConditions extends ITabs {
 	ffUseMetadataAsSystemFields: boolean;
 	objectValidationRuleElements: SidebarCategory[];
 }
-
-export {BasicInfo, Conditions};
