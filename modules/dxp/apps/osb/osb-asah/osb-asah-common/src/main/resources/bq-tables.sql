@@ -290,6 +290,16 @@ CREATE TABLE IF NOT EXISTS BQIdentityChannel (
     PRIMARY KEY (channelId, identityId)
 );
 
+CREATE TABLE IF NOT EXISTS Interest (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT,
+    ownerId BIGINT,
+    ownerType TEXT,
+    recordedDate TIMESTAMPTZ,
+    score DOUBLE PRECISION,
+    views BIGINT
+);
+
 CREATE TABLE IF NOT EXISTS BQJournal (
 	assetId TEXT,
 	assetPrimaryKey TEXT,

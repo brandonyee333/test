@@ -17,9 +17,9 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.entity.Interest;
+import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -37,9 +37,9 @@ public class InterestDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests_info.json"
 	)
 	@Test
 	public void testGetInterest() {
@@ -50,9 +50,9 @@ public class InterestDogTest
 		Assertions.assertEquals("sales", interest.getName());
 	}
 
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests_info.json"
 	)
 	@Test
 	public void testGetInterestBadRequest() {
@@ -61,9 +61,9 @@ public class InterestDogTest
 			() -> _interestDog.getInterest(374790572703144534L));
 	}
 
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests_info.json"
 	)
 	@Test
 	public void testGetInterestPage() {
@@ -79,9 +79,9 @@ public class InterestDogTest
 		Assertions.assertEquals("compelling metrics", interest.getName());
 	}
 
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests_info.json"
 	)
 	@Test
 	public void testGetInterestPageByFilterStringAndScore() {
