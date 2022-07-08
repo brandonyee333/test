@@ -202,13 +202,13 @@ public class FinalizeUserSessionArm {
 				ZonedDateTime zonedDateTime = ZonedDateTime.parse(
 					bucket.getKeyAsString());
 
-				Set<String> userSessionFinalizeDates =
+				Set<String> userSessionFinalizeDateStrings =
 					PastUserSessionFinalizerNanite.getUserSessionFinalizeDates(
 						projectId);
 
 				Date date = DateUtil.toUTCDate(zonedDateTime.toLocalDateTime());
 
-				if (userSessionFinalizeDates.contains(
+				if (userSessionFinalizeDateStrings.contains(
 						DateUtil.toUTCString(date))) {
 
 					continue;
