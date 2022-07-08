@@ -203,8 +203,8 @@ public class FinalizeUserSessionArm {
 					bucket.getKeyAsString());
 
 				Set<String> userSessionFinalizeDateStrings =
-					PastUserSessionFinalizerNanite.getUserSessionFinalizeDates(
-						projectId);
+					PastUserSessionFinalizerNanite.
+						getUserSessionFinalizeDateStrings(projectId);
 
 				Date date = DateUtil.toUTCDate(zonedDateTime.toLocalDateTime());
 

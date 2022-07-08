@@ -58,20 +58,23 @@ import org.springframework.stereotype.Component;
 public class PastUserSessionFinalizerNanite extends BaseNanite {
 
 	public static void addUserSessionFinalizeDates(Date... dates) {
-		Set<String> userSessionFinalizeDates =
-			_userSessionFinalizeDatesByProjectId.computeIfAbsent(
+		Set<String> userSessionFinalizeDateStrings =
+			_userSessionFinalizeDateStringsByProjectId.computeIfAbsent(
 				ProjectIdThreadLocal.getProjectId(),
 				projectId -> new HashSet<>());
 
-		userSessionFinalizeDates.addAll(
+		userSessionFinalizeDateStrings.addAll(
 			ListUtil.map(Arrays.asList(dates), DateUtil::toUTCString));
 
-		_userSessionFinalizeDatesByProjectId.put(
-			ProjectIdThreadLocal.getProjectId(), userSessionFinalizeDates);
+		_userSessionFinalizeDateStringsByProjectId.put(
+			ProjectIdThreadLocal.getProjectId(),
+			userSessionFinalizeDateStrings);
 	}
 
-	public static Set<String> getUserSessionFinalizeDates(String projectId) {
-		return _userSessionFinalizeDatesByProjectId.getOrDefault(
+	public static Set<String> getUserSessionFinalizeDateStrings(
+		String projectId) {
+
+		return _userSessionFinalizeDateStringsByProjectId.getOrDefault(
 			projectId, Collections.emptySet());
 	}
 
@@ -86,13 +89,13 @@ public class PastUserSessionFinalizerNanite extends BaseNanite {
 
 		String dayDateString = contextJSONObject.getString("dayDateString");
 
-		Set<String> projectDateStrings =
-			_userSessionFinalizeDatesByProjectId.computeIfAbsent(
+		Set<String> projectUserSessionFinalizeDateStrings =
+			_userSessionFinalizeDateStringsByProjectId.computeIfAbsent(
 				ProjectIdThreadLocal.getProjectId(),
 				projectId -> new HashSet<>());
 
 		try {
-			projectDateStrings.add(dayDateString);
+			projectUserSessionFinalizeDateStrings.add(dayDateString);
 
 			_processDay(dayDateString);
 		}
@@ -104,7 +107,7 @@ public class PastUserSessionFinalizerNanite extends BaseNanite {
 				exception);
 		}
 		finally {
-			projectDateStrings.remove(dayDateString);
+			projectUserSessionFinalizeDateStrings.remove(dayDateString);
 		}
 	}
 
@@ -213,7 +216,7 @@ public class PastUserSessionFinalizerNanite extends BaseNanite {
 		PastUserSessionFinalizerNanite.class);
 
 	private static final Map<String, Set<String>>
-		_userSessionFinalizeDatesByProjectId = new ConcurrentHashMap<>();
+		_userSessionFinalizeDateStringsByProjectId = new ConcurrentHashMap<>();
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
