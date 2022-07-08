@@ -43,6 +43,8 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.jooq.Record;
 import org.jooq.Record1;
@@ -233,8 +235,17 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	private TableResult _query(SelectFinalStep selectFinalStep) {
+		String translatedQuery = _translate(
+			String.valueOf(selectFinalStep.getQuery()));
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Executing the following query in BigQuery: " +
+					translatedQuery);
+		}
+
 		QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(
-			_translate(String.valueOf(selectFinalStep.getQuery()))
+			translatedQuery
 		).build();
 
 		try {
@@ -317,6 +328,9 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	private static final String[] _TABLE_NAMES = {
 		"BQEvent", "BQEventProperty", "BQOrder", "BQSession"
 	};
+
+	private static final Log _log = LogFactory.getLog(
+		BigQueryQueryExecutor.class);
 
 	private BigQuery _bigQuery;
 	private String _googleProjectId;
