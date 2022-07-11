@@ -1053,6 +1053,7 @@ public class ObjectEntryLocalServiceImpl
 				if (Objects.equals(
 						objectFieldSetting.getName(), "fileSource")) {
 
+
 					fileSource = objectFieldSetting.getValue();
 				}
 				else if (Objects.equals(
@@ -2334,11 +2335,17 @@ public class ObjectEntryLocalServiceImpl
 					objectField.getBusinessType(),
 					ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
 
-			JSONObject entryJsonObject = JSONFactoryUtil.createJSONObject(entry.getValue().toString());
-			Long fileEntryId = GetterUtil.getLong(entryJsonObject.get("fileEntryId"));
+			Serializable entryValue = entry.getValue();
+
+			String entryValueString = entryValue.toString();
+
+			JSONObject entryJSONObject = JSONFactoryUtil.createJSONObject(
+				entryValueString);
+
+			Long fileEntryId = entryJSONObject.getLong("fileEntryId");
 
 			DLFileEntry dlFileEntry = _dlFileEntryLocalService.fetchDLFileEntry(
-					fileEntryId);
+				fileEntryId);
 
 			if (dlFileEntry != null) {
 				_validateFileExtension(
