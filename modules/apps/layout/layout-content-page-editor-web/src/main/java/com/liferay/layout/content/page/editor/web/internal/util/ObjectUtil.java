@@ -43,8 +43,7 @@ public class ObjectUtil {
 		Map<String, List<Map<String, Object>>> layoutElementMapsListMap =
 			new HashMap<>(ContentPageEditorConstants.layoutElementMapsListMap);
 
-		if (!GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-150277")) ||
-			hideInputFragments(companyId)) {
+		if (hideInputFragments(companyId)) {
 
 			layoutElementMapsListMap.remove("INPUTS");
 		}
