@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.executor;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.Field;
+import com.google.cloud.bigquery.FieldList;
 import com.google.cloud.bigquery.FieldValue;
 import com.google.cloud.bigquery.FieldValueList;
 import com.google.cloud.bigquery.JobException;
@@ -138,13 +139,19 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 		TableResult tableResult = _query(selectFinalStep);
 
+		Schema schema = tableResult.getSchema();
+
+		FieldList fieldList = schema.getFields();
+
+		Field field = fieldList.get(1);
+
 		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
 			FieldValue keyFieldValue = fieldValueList.get(0);
 			FieldValue valueFieldValue = fieldValueList.get(1);
 
 			map.put(
 				keyMapperFunction.apply(keyFieldValue.getValue()),
-				valueMapperFunction.apply(valueFieldValue.getValue()));
+				valueMapperFunction.apply(_getField(valueFieldValue, field)));
 		}
 
 		return map;
@@ -158,11 +165,19 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 		TableResult tableResult = _query(selectFinalStep);
 
+		Schema schema = tableResult.getSchema();
+
+		FieldList fieldList = schema.getFields();
+
+		Field field = fieldList.get(1);
+
 		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
 			FieldValue keyFieldValue = fieldValueList.get(0);
 			FieldValue valueFieldValue = fieldValueList.get(1);
 
-			map.put((T)keyFieldValue.getValue(), (R)valueFieldValue.getValue());
+			map.put(
+				(T)keyFieldValue.getValue(),
+				(R)_getField(valueFieldValue, field));
 		}
 
 		return map;
