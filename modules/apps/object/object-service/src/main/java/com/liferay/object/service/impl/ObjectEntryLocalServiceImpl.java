@@ -78,6 +78,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -1053,6 +1054,7 @@ public class ObjectEntryLocalServiceImpl
 				if (Objects.equals(
 						objectFieldSetting.getName(), "fileSource")) {
 
+
 					fileSource = objectFieldSetting.getValue();
 				}
 				else if (Objects.equals(
@@ -1068,10 +1070,6 @@ public class ObjectEntryLocalServiceImpl
 
 					storageDLFolderPath = objectFieldSetting.getValue();
 				}
-			}
-
-			if (Objects.equals("documentsAndMedia", fileSource)) {
-				return;
 			}
 
 			DLFolder dlFileEntryFolder = dlFileEntry.getFolder();
@@ -2338,8 +2336,17 @@ public class ObjectEntryLocalServiceImpl
 					objectField.getBusinessType(),
 					ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
 
+			Serializable entryValue = entry.getValue();
+
+			String entryValueString = entryValue.toString();
+
+			JSONObject entryJSONObject = JSONFactoryUtil.createJSONObject(
+				entryValueString);
+
+			Long fileEntryId = entryJSONObject.getLong("fileEntryId");
+
 			DLFileEntry dlFileEntry = _dlFileEntryLocalService.fetchDLFileEntry(
-				GetterUtil.getLong(entry.getValue()));
+				fileEntryId);
 
 			if (dlFileEntry != null) {
 				_validateFileExtension(
