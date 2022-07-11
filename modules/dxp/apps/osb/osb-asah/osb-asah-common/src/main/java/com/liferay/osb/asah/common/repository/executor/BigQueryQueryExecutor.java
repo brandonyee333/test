@@ -293,7 +293,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 			return null;
 		}
 
-		return new Date(fieldValue.getTimestampValue());
+		return new Date(fieldValue.getTimestampValue() / 1000);
 	}
 
 	private long _toLongValue(FieldValue fieldValue) {
