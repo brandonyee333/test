@@ -39,19 +39,21 @@ public class GetterUtil {
 	}
 
 	public static String getDateString(Object object) {
+		LocalDateTime localDateTime = null;
+
 		if (object instanceof FieldValue) {
 			FieldValue fieldValue = (FieldValue)object;
 
-			return fieldValue.getStringValue();
+			localDateTime = LocalDateTime.parse(fieldValue.getStringValue());
 		}
-
-		if (object instanceof String) {
-			return (String)object;
+		else if (object instanceof String) {
+			localDateTime = LocalDateTime.parse((String)object);
 		}
+		else {
+			OffsetDateTime offsetDateTime = (OffsetDateTime)object;
 
-		OffsetDateTime offsetDateTime = (OffsetDateTime)object;
-
-		LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
+			localDateTime = offsetDateTime.toLocalDateTime();
+		}
 
 		return localDateTime.toString();
 	}
