@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.integration.impl.internal;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lock.DuplicateLockException;
@@ -24,6 +25,7 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupGroupRole;
 import com.liferay.portal.kernel.model.UserGroupRole;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupGroupRoleLocalService;
@@ -36,6 +38,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
+import com.liferay.portal.kernel.workflow.WorkflowTaskAssignee;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.workflow.kaleo.KaleoWorkflowModelConverter;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
@@ -121,6 +124,19 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 			Map<String, Serializable> workflowContext)
 		throws WorkflowException {
 
+		WorkflowTask workflowTask = getWorkflowTask(
+			companyId, workflowTaskInstanceId);
+
+		List<WorkflowTaskAssignee> workflowTaskAssignees =
+			workflowTask.getWorkflowTaskAssignees();
+
+		WorkflowTaskAssignee workflowTaskAssignee = workflowTaskAssignees.get(
+			0);
+
+		if (workflowTaskAssignee.getAssigneeClassPK() != userId) {
+			ReflectionUtil.throwException(new PrincipalException());
+		}
+
 		Lock lock = null;
 
 		try {
@@ -148,7 +164,7 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 			serviceContext.setCompanyId(companyId);
 			serviceContext.setUserId(userId);
 
-			WorkflowTask workflowTask = _taskManager.completeWorkflowTask(
+			workflowTask = _taskManager.completeWorkflowTask(
 				workflowTaskInstanceId, transitionName, comment,
 				workflowContext, serviceContext);
 
