@@ -20,7 +20,9 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
@@ -266,42 +268,51 @@ public class AnalyticsEventsRestController {
 		for (AnalyticsEventsMessage.Event event :
 				analyticsEventsMessage.getEvents()) {
 
-			AnalyticsEvent analyticsEvent = new AnalyticsEvent();
+			EventDefinition eventDefinition =
+				_eventDefinitionDog.fetchEventDefinitionByName(
+					event.getEventId());
 
-			analyticsEvent.setApplicationId(event.getApplicationId());
-			analyticsEvent.setChannelId(channelId);
-			analyticsEvent.setClientIP(analyticsEventsMessage.getClientIP());
-			analyticsEvent.setContext(analyticsEventsMessage.getContext());
-			analyticsEvent.setCreateDate(
-				analyticsEventsMessage.getCreateDate());
-			analyticsEvent.setDataSourceId(dataSourceId);
-			analyticsEvent.setEventDate(event.getEventDate());
-			analyticsEvent.setEventId(event.getEventId());
-			analyticsEvent.setEventProperties(event.getProperties());
-			analyticsEvent.setId(
-				AnalyticsEventUtil.generateAnalyticsEventId(
-					dataSourceId, event, analyticsEventsMessage.getProjectId(),
-					analyticsEventsMessage.getUserId()));
-			analyticsEvent.setProjectId(ProjectIdThreadLocal.getProjectId());
-			analyticsEvent.setProjectTimeZoneId(projectTimeZoneId);
-			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
+			if ((eventDefinition == null) || !eventDefinition.isBlocked()) {
+				AnalyticsEvent analyticsEvent = new AnalyticsEvent();
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Pushing analytics event message to the queue: " +
-						analyticsEvent.toJSON());
+				analyticsEvent.setApplicationId(event.getApplicationId());
+				analyticsEvent.setChannelId(channelId);
+				analyticsEvent.setClientIP(
+					analyticsEventsMessage.getClientIP());
+				analyticsEvent.setContext(analyticsEventsMessage.getContext());
+				analyticsEvent.setCreateDate(
+					analyticsEventsMessage.getCreateDate());
+				analyticsEvent.setDataSourceId(dataSourceId);
+				analyticsEvent.setEventDate(event.getEventDate());
+				analyticsEvent.setEventId(event.getEventId());
+				analyticsEvent.setEventProperties(event.getProperties());
+				analyticsEvent.setId(
+					AnalyticsEventUtil.generateAnalyticsEventId(
+						dataSourceId, event,
+						analyticsEventsMessage.getProjectId(),
+						analyticsEventsMessage.getUserId()));
+				analyticsEvent.setProjectId(
+					ProjectIdThreadLocal.getProjectId());
+				analyticsEvent.setProjectTimeZoneId(projectTimeZoneId);
+				analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Pushing analytics event message to the queue: " +
+							analyticsEvent.toJSON());
+				}
+
+				Map<String, String> messageAttributes = new HashMap<>();
+
+				messageAttributes.put(
+					"eventDate",
+					DateUtil.toUTCString(analyticsEvent.getEventDate()));
+				messageAttributes.put("id", analyticsEvent.getId());
+
+				_messageBus.sendMessage(
+					Channel.ANALYTICS_EVENTS, analyticsEvent.toJSON(),
+					messageAttributes);
 			}
-
-			Map<String, String> messageAttributes = new HashMap<>();
-
-			messageAttributes.put(
-				"eventDate",
-				DateUtil.toUTCString(analyticsEvent.getEventDate()));
-			messageAttributes.put("id", analyticsEvent.getId());
-
-			_messageBus.sendMessage(
-				Channel.ANALYTICS_EVENTS, analyticsEvent.toJSON(),
-				messageAttributes);
 		}
 	}
 
@@ -327,6 +338,9 @@ public class AnalyticsEventsRestController {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
 	private MessageBus _messageBus;
