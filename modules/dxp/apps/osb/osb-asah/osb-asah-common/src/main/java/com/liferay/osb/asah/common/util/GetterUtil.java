@@ -60,11 +60,19 @@ public class GetterUtil {
 		if (object instanceof FieldValue) {
 			FieldValue fieldValue = (FieldValue)object;
 
-			return (int)fieldValue.getLongValue();
+			Long longFieldValue = fieldValue.getLongValue();
+
+			return longFieldValue.intValue();
 		}
 
 		if (object instanceof String) {
 			return Integer.parseInt((String)object);
+		}
+
+		if (object instanceof Long) {
+			Long longFieldValue = (Long)object;
+
+			return longFieldValue.intValue();
 		}
 
 		return (int)object;
