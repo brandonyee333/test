@@ -22,7 +22,6 @@ import com.liferay.osb.asah.upgrade.v3_2_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.BlockedKeywordMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.CSVUserMigrationUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_2_0.DXPEntitiesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DXPEntityMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DataControlTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DataExportTaskMigrationUpgradeStep;
@@ -71,7 +70,6 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_csvUserMigrationUpgradeStep);
 		upgradeSteps.add(_dataControlTaskMigrationUpgradeStep);
 		upgradeSteps.add(_dataExportTaskMigrationUpgradeStep);
-		upgradeSteps.add(_dxpEntitiesUpgradeStep);
 		upgradeSteps.add(_dxpEntityMigrationUpgradeStep);
 		upgradeSteps.add(_experimentMigrationUpgradeStep);
 		upgradeSteps.add(_identityMigrationUpgradeStep);
@@ -110,9 +108,6 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private DataExportTaskMigrationUpgradeStep
 		_dataExportTaskMigrationUpgradeStep;
-
-	@Autowired
-	private DXPEntitiesUpgradeStep _dxpEntitiesUpgradeStep;
 
 	@Autowired
 	private DXPEntityMigrationUpgradeStep _dxpEntityMigrationUpgradeStep;
