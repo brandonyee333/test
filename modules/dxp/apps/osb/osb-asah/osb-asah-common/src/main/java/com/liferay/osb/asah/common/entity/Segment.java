@@ -30,6 +30,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -177,6 +179,18 @@ public class Segment implements Persistable<Long> {
 	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	public Set<Long> getReferencedAssetDataSourceIds() {
 		return _referencedAssetDataSourceIds;
+	}
+
+	public Set<Long> getReferencedAssetIds() {
+		Matcher matcher = _pattern.matcher(_filter);
+
+		Set<Long> assetsIds = new HashSet<>();
+
+		while (matcher.find()) {
+			assetsIds.add(Long.parseLong(matcher.group()));
+		}
+
+		return assetsIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -332,6 +346,9 @@ public class Segment implements Persistable<Long> {
 	protected void setAuthor(Author author) {
 		_author = author;
 	}
+
+	private static final Pattern _pattern = Pattern.compile(
+		"(?<=\\#)([0-9]{10,})(?=\\')");
 
 	@Transient
 	private Author _author;

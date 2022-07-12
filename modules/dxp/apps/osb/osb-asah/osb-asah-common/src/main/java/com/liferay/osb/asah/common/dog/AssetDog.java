@@ -33,14 +33,11 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -132,18 +129,6 @@ public class AssetDog {
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no asset with ID " + assetId));
-	}
-
-	public Set<Long> getAssetIdsFromSegmentFilter(String filterString) {
-		Matcher matcher = _pattern.matcher(filterString);
-
-		Set<Long> assetsIds = new HashSet<>();
-
-		while (matcher.find()) {
-			assetsIds.add(Long.parseLong(matcher.group()));
-		}
-
-		return assetsIds;
 	}
 
 	public Map<String, Set<String>> getAssetIdsGroupedByKeywords(
@@ -310,9 +295,6 @@ public class AssetDog {
 
 		return _assetRepository.save(asset);
 	}
-
-	private static final Pattern _pattern = Pattern.compile(
-		"(?<=\\#)([0-9]{10,})(?=\\')");
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;

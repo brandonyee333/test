@@ -399,9 +399,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		jsonObject.put(
 			"assets",
 			JSONUtil.toJSONArray(
-				_assetDog.getAssets(
-					_assetDog.getAssetIdsFromSegmentFilter(
-						segment.getFilter())),
+				_assetDog.getAssets(segment.getReferencedAssetIds()),
 				asset -> objectMapper.convertValue(asset, JSONObject.class)));
 		jsonObject.put(
 			"field-mappings",
