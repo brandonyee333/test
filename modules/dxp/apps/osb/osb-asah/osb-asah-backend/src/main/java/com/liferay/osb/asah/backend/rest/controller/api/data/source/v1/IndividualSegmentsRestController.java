@@ -24,6 +24,7 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
@@ -395,7 +396,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		JSONObject jsonObject = new JSONObject();
 
-		jsonObject.put("assets", Collections.emptyList());
+		jsonObject.put(
+			"assets",
+			JSONUtil.toJSONArray(
+				_assetDog.getAssets(
+					_assetDog.getAssetIdsFromSegmentFilter(
+						segment.getFilter())),
+				asset -> objectMapper.convertValue(asset, JSONObject.class)));
 		jsonObject.put(
 			"field-mappings",
 			JSONUtil.toJSONArray(
@@ -493,6 +500,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		IndividualSegmentsRestController.class);
+
+	@Autowired
+	private AssetDog _assetDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
