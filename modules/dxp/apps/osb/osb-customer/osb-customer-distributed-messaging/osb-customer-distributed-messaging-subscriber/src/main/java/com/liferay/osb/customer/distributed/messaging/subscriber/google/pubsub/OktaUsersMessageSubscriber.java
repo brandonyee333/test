@@ -55,6 +55,9 @@ public class OktaUsersMessageSubscriber
 		if (eventType.equals(_EVENT_TYPE_DEACTIVATE)) {
 			_downgradeZendeskAgent(jsonObject.getJSONObject("user"));
 		}
+		else if (eventType.equals(_EVENT_TYPE_DELETE)) {
+			_deleteUser(jsonObject.getJSONObject("user"));
+		}
 		else if (eventType.equals(_EVENT_TYPE_GROUP_REMOVE)) {
 			if (_isGroupEmployee(jsonObject)) {
 				_downgradeZendeskAgent(jsonObject.getJSONObject("user"));
@@ -63,6 +66,17 @@ public class OktaUsersMessageSubscriber
 		else if (eventType.equals(_EVENT_TYPE_UPDATE)) {
 			_updateUser(jsonObject.getJSONObject("user"));
 		}
+	}
+
+	private void _deleteUser(JSONObject jsonObject) throws Exception {
+		User user = _fetchUserByEmailAddress(
+			jsonObject.getJSONObject("profile"));
+
+		if (user == null) {
+			return;
+		}
+
+		_userLocalService.deleteUser(user.getUserId());
 	}
 
 	private void _downgradeZendeskAgent(JSONObject jsonObject)
@@ -87,6 +101,25 @@ public class OktaUsersMessageSubscriber
 		for (Company company : companies) {
 			User user = _userLocalService.fetchUserByUuidAndCompanyId(
 				uuid, company.getCompanyId());
+
+			if (user != null) {
+				return user;
+			}
+		}
+
+		return null;
+	}
+
+	private User _fetchUserByEmailAddress(JSONObject jsonObject)
+		throws Exception {
+
+		String emailAddress = jsonObject.getString("email");
+
+		List<Company> companies = _companyLocalService.getCompanies();
+
+		for (Company company : companies) {
+			User user = _userLocalService.fetchUserByEmailAddress(
+				company.getCompanyId(), emailAddress);
 
 			if (user != null) {
 				return user;
@@ -227,6 +260,9 @@ public class OktaUsersMessageSubscriber
 
 	private static final String _EVENT_TYPE_DEACTIVATE =
 		"user.lifecycle.deactivate";
+
+	private static final String _EVENT_TYPE_DELETE =
+		"user.lifecycle.delete.initiated";
 
 	private static final String _EVENT_TYPE_GROUP_REMOVE =
 		"group.user_membership.remove";

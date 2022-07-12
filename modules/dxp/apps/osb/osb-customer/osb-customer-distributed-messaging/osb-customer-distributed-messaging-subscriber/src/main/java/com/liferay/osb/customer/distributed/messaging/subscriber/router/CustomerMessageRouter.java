@@ -35,7 +35,6 @@ import com.liferay.osb.customer.legacy.message.subscriber.OrganizationUpdateMess
 import com.liferay.osb.customer.legacy.message.subscriber.RoleAssignmentMessageSubscriber;
 import com.liferay.osb.customer.legacy.message.subscriber.RoleUnassignmentMessageSubscriber;
 import com.liferay.osb.customer.legacy.message.subscriber.RoleUpdateMessageSubscriber;
-import com.liferay.osb.customer.legacy.message.subscriber.UserDeleteMessageSubscriber;
 import com.liferay.osb.customer.legacy.message.subscriber.UserUpdateMessageSubscriber;
 import com.liferay.osb.customer.legacy.message.subscriber.ZendeskOrganizationCreateMessageSubscriber;
 import com.liferay.osb.customer.legacy.message.subscriber.ZendeskUserCreateMessageSubscriber;
@@ -247,14 +246,6 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(teamUpdateMessageSubscriber, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserDeleteMessageSubscriber(
-		UserDeleteMessageSubscriber userDeleteMessageSubscriber,
-		Map<String, Object> properties) {
-
-		addRoute(userDeleteMessageSubscriber, properties);
 	}
 
 	@Reference(unbind = "-")
