@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -32,6 +33,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -182,6 +185,10 @@ public class Segment implements Persistable<Long> {
 	}
 
 	public Set<Long> getReferencedAssetIds() {
+		if (StringUtils.isBlank(_filter)) {
+			return Collections.emptySet();
+		}
+
 		Matcher matcher = _pattern.matcher(_filter);
 
 		Set<Long> assetsIds = new HashSet<>();
