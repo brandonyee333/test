@@ -24,9 +24,6 @@ import com.liferay.osb.asah.common.repository.BQOrderRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +55,7 @@ public class CommerceDashboardDog {
 			null;
 
 		if (compareToPrevious) {
-			TimeRange previousTimeRange = _getPreviousTimeRange(timeRange);
+			TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
 
 			previousOrderAccountAverageCurrencyValues =
 				_bqOrderRepository.getOrderAccountAverageCurrencyValues(
@@ -112,7 +109,7 @@ public class CommerceDashboardDog {
 		Map<String, BigDecimal> previousOrderAverageCurrencyValues = null;
 
 		if (compareToPrevious) {
-			TimeRange previousTimeRange = _getPreviousTimeRange(timeRange);
+			TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
 
 			previousOrderAverageCurrencyValues =
 				_bqOrderRepository.getOrderAverageCurrencyValues(
@@ -163,7 +160,7 @@ public class CommerceDashboardDog {
 		Map<String, BigDecimal> previousOrderIncompleteCurrencyValues = null;
 
 		if (compareToPrevious) {
-			TimeRange previousTimeRange = _getPreviousTimeRange(timeRange);
+			TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
 
 			previousOrderIncompleteCurrencyValues =
 				_bqOrderRepository.getOrderIncompleteCurrencyValues(
@@ -215,7 +212,7 @@ public class CommerceDashboardDog {
 		Map<String, BigDecimal> previousOrderTotalCurrencyValues = null;
 
 		if (compareToPrevious) {
-			TimeRange previousTimeRange = _getPreviousTimeRange(timeRange);
+			TimeRange previousTimeRange = timeRange.getPreviousTimeRange();
 
 			previousOrderTotalCurrencyValues =
 				_bqOrderRepository.getOrderTotalCurrencyValues(
@@ -280,23 +277,6 @@ public class CommerceDashboardDog {
 		delta = delta.divide(currentValue, RoundingMode.HALF_UP);
 
 		return delta.doubleValue() * 100;
-	}
-
-	private TimeRange _getPreviousTimeRange(TimeRange timeRange) {
-		LocalDateTime previousEndLocalDateTime =
-			timeRange.getStartLocalDateTime();
-
-		previousEndLocalDateTime = previousEndLocalDateTime.minusDays(1);
-		previousEndLocalDateTime = previousEndLocalDateTime.with(LocalTime.MAX);
-
-		LocalDateTime previousStartLocalDateTime =
-			previousEndLocalDateTime.with(LocalTime.MIN);
-
-		previousStartLocalDateTime = previousStartLocalDateTime.minusDays(
-			timeRange.getDeltaDays() - 1);
-
-		return TimeRange.of(
-			previousEndLocalDateTime, previousStartLocalDateTime);
 	}
 
 	@Autowired
