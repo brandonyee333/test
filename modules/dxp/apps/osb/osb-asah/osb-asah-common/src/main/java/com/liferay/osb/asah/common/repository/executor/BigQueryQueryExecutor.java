@@ -239,9 +239,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 			String.valueOf(selectFinalStep.getQuery()));
 
 		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Executing the following query in BigQuery: " +
-					translatedQuery);
+			_log.debug("Executing query: " + translatedQuery);
 		}
 
 		QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(
