@@ -109,13 +109,16 @@ public class TermsAggregationTransformationJSONArrayFunction
 						).size(
 							size
 						)
-					).includeExclude(
+					);
+
+				if (containsField != null) {
+					aggregationBuilder = aggregationBuilder.includeExclude(
 						new IncludeExclude(
 							FilterStringToQueryBuilderConverter.
 								buildIgnoreCaseRegExp(
 									StringUtil.unquote(containsField)),
-							null)
-					);
+							null));
+				}
 
 				searchSourceBuilder.aggregation(aggregationBuilder);
 
