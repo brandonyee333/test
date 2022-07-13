@@ -255,6 +255,39 @@ public class PlacedOrderItem implements Serializable {
 
 	@Schema
 	@Valid
+	public PlacedOrderItemShipment[] getPlacedOrderItemShipment() {
+		return placedOrderItemShipment;
+	}
+
+	public void setPlacedOrderItemShipment(
+		PlacedOrderItemShipment[] placedOrderItemShipment) {
+
+		this.placedOrderItemShipment = placedOrderItemShipment;
+	}
+
+	@JsonIgnore
+	public void setPlacedOrderItemShipment(
+		UnsafeSupplier<PlacedOrderItemShipment[], Exception>
+			placedOrderItemShipmentUnsafeSupplier) {
+
+		try {
+			placedOrderItemShipment =
+				placedOrderItemShipmentUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected PlacedOrderItemShipment[] placedOrderItemShipment;
+
+	@Schema
+	@Valid
 	public PlacedOrderItem[] getPlacedOrderItems() {
 		return placedOrderItems;
 	}
@@ -684,6 +717,26 @@ public class PlacedOrderItem implements Serializable {
 			sb.append("\"parentOrderItemId\": ");
 
 			sb.append(parentOrderItemId);
+		}
+
+		if (placedOrderItemShipment != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"placedOrderItemShipment\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < placedOrderItemShipment.length; i++) {
+				sb.append(String.valueOf(placedOrderItemShipment[i]));
+
+				if ((i + 1) < placedOrderItemShipment.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
 		}
 
 		if (placedOrderItems != null) {

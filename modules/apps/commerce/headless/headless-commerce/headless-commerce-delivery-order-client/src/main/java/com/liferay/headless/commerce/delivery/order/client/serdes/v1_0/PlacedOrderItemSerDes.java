@@ -15,6 +15,7 @@
 package com.liferay.headless.commerce.delivery.order.client.serdes.v1_0;
 
 import com.liferay.headless.commerce.delivery.order.client.dto.v1_0.PlacedOrderItem;
+import com.liferay.headless.commerce.delivery.order.client.dto.v1_0.PlacedOrderItemShipment;
 import com.liferay.headless.commerce.delivery.order.client.json.BaseJSONParser;
 
 import java.util.Iterator;
@@ -152,6 +153,32 @@ public class PlacedOrderItemSerDes {
 			sb.append("\"parentOrderItemId\": ");
 
 			sb.append(placedOrderItem.getParentOrderItemId());
+		}
+
+		if (placedOrderItem.getPlacedOrderItemShipment() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"placedOrderItemShipment\": ");
+
+			sb.append("[");
+
+			for (int i = 0;
+				 i < placedOrderItem.getPlacedOrderItemShipment().length; i++) {
+
+				sb.append(
+					String.valueOf(
+						placedOrderItem.getPlacedOrderItemShipment()[i]));
+
+				if ((i + 1) <
+						placedOrderItem.getPlacedOrderItemShipment().length) {
+
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
 		}
 
 		if (placedOrderItem.getPlacedOrderItems() != null) {
@@ -361,6 +388,15 @@ public class PlacedOrderItemSerDes {
 				String.valueOf(placedOrderItem.getParentOrderItemId()));
 		}
 
+		if (placedOrderItem.getPlacedOrderItemShipment() == null) {
+			map.put("placedOrderItemShipment", null);
+		}
+		else {
+			map.put(
+				"placedOrderItemShipment",
+				String.valueOf(placedOrderItem.getPlacedOrderItemShipment()));
+		}
+
 		if (placedOrderItem.getPlacedOrderItems() == null) {
 			map.put("placedOrderItems", null);
 		}
@@ -508,6 +544,21 @@ public class PlacedOrderItemSerDes {
 				if (jsonParserFieldValue != null) {
 					placedOrderItem.setParentOrderItemId(
 						Long.valueOf((String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(
+						jsonParserFieldName, "placedOrderItemShipment")) {
+
+				if (jsonParserFieldValue != null) {
+					placedOrderItem.setPlacedOrderItemShipment(
+						Stream.of(
+							toStrings((Object[])jsonParserFieldValue)
+						).map(
+							object -> PlacedOrderItemShipmentSerDes.toDTO(
+								(String)object)
+						).toArray(
+							size -> new PlacedOrderItemShipment[size]
+						));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "placedOrderItems")) {

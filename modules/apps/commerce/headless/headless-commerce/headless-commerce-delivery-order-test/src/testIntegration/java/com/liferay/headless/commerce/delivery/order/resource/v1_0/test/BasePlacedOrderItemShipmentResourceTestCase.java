@@ -22,12 +22,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
-import com.liferay.headless.commerce.delivery.order.client.dto.v1_0.PlacedOrderItem;
+import com.liferay.headless.commerce.delivery.order.client.dto.v1_0.PlacedOrderItemShipment;
 import com.liferay.headless.commerce.delivery.order.client.http.HttpInvoker;
 import com.liferay.headless.commerce.delivery.order.client.pagination.Page;
-import com.liferay.headless.commerce.delivery.order.client.pagination.Pagination;
-import com.liferay.headless.commerce.delivery.order.client.resource.v1_0.PlacedOrderItemResource;
-import com.liferay.headless.commerce.delivery.order.client.serdes.v1_0.PlacedOrderItemSerDes;
+import com.liferay.headless.commerce.delivery.order.client.resource.v1_0.PlacedOrderItemShipmentResource;
+import com.liferay.headless.commerce.delivery.order.client.serdes.v1_0.PlacedOrderItemShipmentSerDes;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -69,6 +68,8 @@ import javax.annotation.Generated;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 
+import org.apache.commons.lang.time.DateUtils;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -82,7 +83,7 @@ import org.junit.Test;
  * @generated
  */
 @Generated("")
-public abstract class BasePlacedOrderItemResourceTestCase {
+public abstract class BasePlacedOrderItemShipmentResourceTestCase {
 
 	@ClassRule
 	@Rule
@@ -103,12 +104,12 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 		testCompany = CompanyLocalServiceUtil.getCompany(
 			testGroup.getCompanyId());
 
-		_placedOrderItemResource.setContextCompany(testCompany);
+		_placedOrderItemShipmentResource.setContextCompany(testCompany);
 
-		PlacedOrderItemResource.Builder builder =
-			PlacedOrderItemResource.builder();
+		PlacedOrderItemShipmentResource.Builder builder =
+			PlacedOrderItemShipmentResource.builder();
 
-		placedOrderItemResource = builder.authentication(
+		placedOrderItemShipmentResource = builder.authentication(
 			"test@liferay.com", "test"
 		).locale(
 			LocaleUtil.getDefault()
@@ -139,13 +140,16 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 			}
 		};
 
-		PlacedOrderItem placedOrderItem1 = randomPlacedOrderItem();
+		PlacedOrderItemShipment placedOrderItemShipment1 =
+			randomPlacedOrderItemShipment();
 
-		String json = objectMapper.writeValueAsString(placedOrderItem1);
+		String json = objectMapper.writeValueAsString(placedOrderItemShipment1);
 
-		PlacedOrderItem placedOrderItem2 = PlacedOrderItemSerDes.toDTO(json);
+		PlacedOrderItemShipment placedOrderItemShipment2 =
+			PlacedOrderItemShipmentSerDes.toDTO(json);
 
-		Assert.assertTrue(equals(placedOrderItem1, placedOrderItem2));
+		Assert.assertTrue(
+			equals(placedOrderItemShipment1, placedOrderItemShipment2));
 	}
 
 	@Test
@@ -165,10 +169,12 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 			}
 		};
 
-		PlacedOrderItem placedOrderItem = randomPlacedOrderItem();
+		PlacedOrderItemShipment placedOrderItemShipment =
+			randomPlacedOrderItemShipment();
 
-		String json1 = objectMapper.writeValueAsString(placedOrderItem);
-		String json2 = PlacedOrderItemSerDes.toJSON(placedOrderItem);
+		String json1 = objectMapper.writeValueAsString(placedOrderItemShipment);
+		String json2 = PlacedOrderItemShipmentSerDes.toJSON(
+			placedOrderItemShipment);
 
 		Assert.assertEquals(
 			objectMapper.readTree(json1), objectMapper.readTree(json2));
@@ -178,265 +184,153 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 	public void testEscapeRegexInStringFields() throws Exception {
 		String regex = "^[0-9]+(\\.[0-9]{1,2})\"?";
 
-		PlacedOrderItem placedOrderItem = randomPlacedOrderItem();
+		PlacedOrderItemShipment placedOrderItemShipment =
+			randomPlacedOrderItemShipment();
 
-		placedOrderItem.setAdaptiveMediaImageHTMLTag(regex);
-		placedOrderItem.setName(regex);
-		placedOrderItem.setOptions(regex);
-		placedOrderItem.setSku(regex);
-		placedOrderItem.setThumbnail(regex);
+		placedOrderItemShipment.setCarrier(regex);
+		placedOrderItemShipment.setShippingOptionName(regex);
+		placedOrderItemShipment.setTrackingNumber(regex);
+		placedOrderItemShipment.setUserName(regex);
 
-		String json = PlacedOrderItemSerDes.toJSON(placedOrderItem);
+		String json = PlacedOrderItemShipmentSerDes.toJSON(
+			placedOrderItemShipment);
 
 		Assert.assertFalse(json.contains(regex));
 
-		placedOrderItem = PlacedOrderItemSerDes.toDTO(json);
+		placedOrderItemShipment = PlacedOrderItemShipmentSerDes.toDTO(json);
 
+		Assert.assertEquals(regex, placedOrderItemShipment.getCarrier());
 		Assert.assertEquals(
-			regex, placedOrderItem.getAdaptiveMediaImageHTMLTag());
-		Assert.assertEquals(regex, placedOrderItem.getName());
-		Assert.assertEquals(regex, placedOrderItem.getOptions());
-		Assert.assertEquals(regex, placedOrderItem.getSku());
-		Assert.assertEquals(regex, placedOrderItem.getThumbnail());
+			regex, placedOrderItemShipment.getShippingOptionName());
+		Assert.assertEquals(regex, placedOrderItemShipment.getTrackingNumber());
+		Assert.assertEquals(regex, placedOrderItemShipment.getUserName());
 	}
 
 	@Test
-	public void testGetPlacedOrderItem() throws Exception {
-		PlacedOrderItem postPlacedOrderItem =
-			testGetPlacedOrderItem_addPlacedOrderItem();
+	public void testGetPlacedOrderItemShipmentsPage() throws Exception {
+		Long placedOrderItemId =
+			testGetPlacedOrderItemShipmentsPage_getPlacedOrderItemId();
+		Long irrelevantPlacedOrderItemId =
+			testGetPlacedOrderItemShipmentsPage_getIrrelevantPlacedOrderItemId();
 
-		PlacedOrderItem getPlacedOrderItem =
-			placedOrderItemResource.getPlacedOrderItem(
-				postPlacedOrderItem.getId());
-
-		assertEquals(postPlacedOrderItem, getPlacedOrderItem);
-		assertValid(getPlacedOrderItem);
-	}
-
-	protected PlacedOrderItem testGetPlacedOrderItem_addPlacedOrderItem()
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
-	}
-
-	@Test
-	public void testGraphQLGetPlacedOrderItem() throws Exception {
-		PlacedOrderItem placedOrderItem =
-			testGraphQLGetPlacedOrderItem_addPlacedOrderItem();
-
-		Assert.assertTrue(
-			equals(
-				placedOrderItem,
-				PlacedOrderItemSerDes.toDTO(
-					JSONUtil.getValueAsString(
-						invokeGraphQLQuery(
-							new GraphQLField(
-								"placedOrderItem",
-								new HashMap<String, Object>() {
-									{
-										put(
-											"placedOrderItemId",
-											placedOrderItem.getId());
-									}
-								},
-								getGraphQLFields())),
-						"JSONObject/data", "Object/placedOrderItem"))));
-	}
-
-	@Test
-	public void testGraphQLGetPlacedOrderItemNotFound() throws Exception {
-		Long irrelevantPlacedOrderItemId = RandomTestUtil.randomLong();
-
-		Assert.assertEquals(
-			"Not Found",
-			JSONUtil.getValueAsString(
-				invokeGraphQLQuery(
-					new GraphQLField(
-						"placedOrderItem",
-						new HashMap<String, Object>() {
-							{
-								put(
-									"placedOrderItemId",
-									irrelevantPlacedOrderItemId);
-							}
-						},
-						getGraphQLFields())),
-				"JSONArray/errors", "Object/0", "JSONObject/extensions",
-				"Object/code"));
-	}
-
-	protected PlacedOrderItem testGraphQLGetPlacedOrderItem_addPlacedOrderItem()
-		throws Exception {
-
-		return testGraphQLPlacedOrderItem_addPlacedOrderItem();
-	}
-
-	@Test
-	public void testGetPlacedOrderItemsPage() throws Exception {
-		Long placedOrderId = testGetPlacedOrderItemsPage_getPlacedOrderId();
-		Long irrelevantPlacedOrderId =
-			testGetPlacedOrderItemsPage_getIrrelevantPlacedOrderId();
-
-		Page<PlacedOrderItem> page =
-			placedOrderItemResource.getPlacedOrderItemsPage(
-				placedOrderId, null, Pagination.of(1, 10));
+		Page<PlacedOrderItemShipment> page =
+			placedOrderItemShipmentResource.getPlacedOrderItemShipmentsPage(
+				placedOrderItemId);
 
 		Assert.assertEquals(0, page.getTotalCount());
 
-		if (irrelevantPlacedOrderId != null) {
-			PlacedOrderItem irrelevantPlacedOrderItem =
-				testGetPlacedOrderItemsPage_addPlacedOrderItem(
-					irrelevantPlacedOrderId, randomIrrelevantPlacedOrderItem());
+		if (irrelevantPlacedOrderItemId != null) {
+			PlacedOrderItemShipment irrelevantPlacedOrderItemShipment =
+				testGetPlacedOrderItemShipmentsPage_addPlacedOrderItemShipment(
+					irrelevantPlacedOrderItemId,
+					randomIrrelevantPlacedOrderItemShipment());
 
-			page = placedOrderItemResource.getPlacedOrderItemsPage(
-				irrelevantPlacedOrderId, null, Pagination.of(1, 2));
+			page =
+				placedOrderItemShipmentResource.getPlacedOrderItemShipmentsPage(
+					irrelevantPlacedOrderItemId);
 
 			Assert.assertEquals(1, page.getTotalCount());
 
 			assertEquals(
-				Arrays.asList(irrelevantPlacedOrderItem),
-				(List<PlacedOrderItem>)page.getItems());
+				Arrays.asList(irrelevantPlacedOrderItemShipment),
+				(List<PlacedOrderItemShipment>)page.getItems());
 			assertValid(page);
 		}
 
-		PlacedOrderItem placedOrderItem1 =
-			testGetPlacedOrderItemsPage_addPlacedOrderItem(
-				placedOrderId, randomPlacedOrderItem());
+		PlacedOrderItemShipment placedOrderItemShipment1 =
+			testGetPlacedOrderItemShipmentsPage_addPlacedOrderItemShipment(
+				placedOrderItemId, randomPlacedOrderItemShipment());
 
-		PlacedOrderItem placedOrderItem2 =
-			testGetPlacedOrderItemsPage_addPlacedOrderItem(
-				placedOrderId, randomPlacedOrderItem());
+		PlacedOrderItemShipment placedOrderItemShipment2 =
+			testGetPlacedOrderItemShipmentsPage_addPlacedOrderItemShipment(
+				placedOrderItemId, randomPlacedOrderItemShipment());
 
-		page = placedOrderItemResource.getPlacedOrderItemsPage(
-			placedOrderId, null, Pagination.of(1, 10));
+		page = placedOrderItemShipmentResource.getPlacedOrderItemShipmentsPage(
+			placedOrderItemId);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
 		assertEqualsIgnoringOrder(
-			Arrays.asList(placedOrderItem1, placedOrderItem2),
-			(List<PlacedOrderItem>)page.getItems());
+			Arrays.asList(placedOrderItemShipment1, placedOrderItemShipment2),
+			(List<PlacedOrderItemShipment>)page.getItems());
 		assertValid(page);
 	}
 
-	@Test
-	public void testGetPlacedOrderItemsPageWithPagination() throws Exception {
-		Long placedOrderId = testGetPlacedOrderItemsPage_getPlacedOrderId();
-
-		PlacedOrderItem placedOrderItem1 =
-			testGetPlacedOrderItemsPage_addPlacedOrderItem(
-				placedOrderId, randomPlacedOrderItem());
-
-		PlacedOrderItem placedOrderItem2 =
-			testGetPlacedOrderItemsPage_addPlacedOrderItem(
-				placedOrderId, randomPlacedOrderItem());
-
-		PlacedOrderItem placedOrderItem3 =
-			testGetPlacedOrderItemsPage_addPlacedOrderItem(
-				placedOrderId, randomPlacedOrderItem());
-
-		Page<PlacedOrderItem> page1 =
-			placedOrderItemResource.getPlacedOrderItemsPage(
-				placedOrderId, null, Pagination.of(1, 2));
-
-		List<PlacedOrderItem> placedOrderItems1 =
-			(List<PlacedOrderItem>)page1.getItems();
-
-		Assert.assertEquals(
-			placedOrderItems1.toString(), 2, placedOrderItems1.size());
-
-		Page<PlacedOrderItem> page2 =
-			placedOrderItemResource.getPlacedOrderItemsPage(
-				placedOrderId, null, Pagination.of(2, 2));
-
-		Assert.assertEquals(3, page2.getTotalCount());
-
-		List<PlacedOrderItem> placedOrderItems2 =
-			(List<PlacedOrderItem>)page2.getItems();
-
-		Assert.assertEquals(
-			placedOrderItems2.toString(), 1, placedOrderItems2.size());
-
-		Page<PlacedOrderItem> page3 =
-			placedOrderItemResource.getPlacedOrderItemsPage(
-				placedOrderId, null, Pagination.of(1, 3));
-
-		assertEqualsIgnoringOrder(
-			Arrays.asList(placedOrderItem1, placedOrderItem2, placedOrderItem3),
-			(List<PlacedOrderItem>)page3.getItems());
-	}
-
-	protected PlacedOrderItem testGetPlacedOrderItemsPage_addPlacedOrderItem(
-			Long placedOrderId, PlacedOrderItem placedOrderItem)
+	protected PlacedOrderItemShipment
+			testGetPlacedOrderItemShipmentsPage_addPlacedOrderItemShipment(
+				Long placedOrderItemId,
+				PlacedOrderItemShipment placedOrderItemShipment)
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected Long testGetPlacedOrderItemsPage_getPlacedOrderId()
+	protected Long testGetPlacedOrderItemShipmentsPage_getPlacedOrderItemId()
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected Long testGetPlacedOrderItemsPage_getIrrelevantPlacedOrderId()
+	protected Long
+			testGetPlacedOrderItemShipmentsPage_getIrrelevantPlacedOrderItemId()
 		throws Exception {
 
 		return null;
 	}
 
 	@Test
-	public void testGraphQLGetPlacedOrderItemsPage() throws Exception {
-		Long placedOrderId = testGetPlacedOrderItemsPage_getPlacedOrderId();
+	public void testGraphQLGetPlacedOrderItemShipmentsPage() throws Exception {
+		Long placedOrderItemId =
+			testGetPlacedOrderItemShipmentsPage_getPlacedOrderItemId();
 
 		GraphQLField graphQLField = new GraphQLField(
-			"placedOrderItems",
+			"placedOrderItemShipments",
 			new HashMap<String, Object>() {
 				{
-					put("page", 1);
-					put("pageSize", 10);
-
-					put("placedOrderId", placedOrderId);
+					put("placedOrderItemId", placedOrderItemId);
 				}
 			},
 			new GraphQLField("items", getGraphQLFields()),
 			new GraphQLField("page"), new GraphQLField("totalCount"));
 
-		JSONObject placedOrderItemsJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/placedOrderItems");
-
-		Assert.assertEquals(0, placedOrderItemsJSONObject.get("totalCount"));
-
-		PlacedOrderItem placedOrderItem1 =
-			testGraphQLGetPlacedOrderItemsPage_addPlacedOrderItem();
-		PlacedOrderItem placedOrderItem2 =
-			testGraphQLGetPlacedOrderItemsPage_addPlacedOrderItem();
-
-		placedOrderItemsJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/placedOrderItems");
+		JSONObject placedOrderItemShipmentsJSONObject =
+			JSONUtil.getValueAsJSONObject(
+				invokeGraphQLQuery(graphQLField), "JSONObject/data",
+				"JSONObject/placedOrderItemShipments");
 
 		Assert.assertEquals(
-			2, placedOrderItemsJSONObject.getLong("totalCount"));
+			0, placedOrderItemShipmentsJSONObject.get("totalCount"));
+
+		PlacedOrderItemShipment placedOrderItemShipment1 =
+			testGraphQLGetPlacedOrderItemShipmentsPage_addPlacedOrderItemShipment();
+		PlacedOrderItemShipment placedOrderItemShipment2 =
+			testGraphQLGetPlacedOrderItemShipmentsPage_addPlacedOrderItemShipment();
+
+		placedOrderItemShipmentsJSONObject = JSONUtil.getValueAsJSONObject(
+			invokeGraphQLQuery(graphQLField), "JSONObject/data",
+			"JSONObject/placedOrderItemShipments");
+
+		Assert.assertEquals(
+			2, placedOrderItemShipmentsJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
-			Arrays.asList(placedOrderItem1, placedOrderItem2),
+			Arrays.asList(placedOrderItemShipment1, placedOrderItemShipment2),
 			Arrays.asList(
-				PlacedOrderItemSerDes.toDTOs(
-					placedOrderItemsJSONObject.getString("items"))));
+				PlacedOrderItemShipmentSerDes.toDTOs(
+					placedOrderItemShipmentsJSONObject.getString("items"))));
 	}
 
-	protected PlacedOrderItem
-			testGraphQLGetPlacedOrderItemsPage_addPlacedOrderItem()
+	protected PlacedOrderItemShipment
+			testGraphQLGetPlacedOrderItemShipmentsPage_addPlacedOrderItemShipment()
 		throws Exception {
 
-		return testGraphQLPlacedOrderItem_addPlacedOrderItem();
+		return testGraphQLPlacedOrderItemShipment_addPlacedOrderItemShipment();
 	}
 
-	protected PlacedOrderItem testGraphQLPlacedOrderItem_addPlacedOrderItem()
+	protected PlacedOrderItemShipment
+			testGraphQLPlacedOrderItemShipment_addPlacedOrderItemShipment()
 		throws Exception {
 
 		throw new UnsupportedOperationException(
@@ -444,13 +338,13 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 	}
 
 	protected void assertContains(
-		PlacedOrderItem placedOrderItem,
-		List<PlacedOrderItem> placedOrderItems) {
+		PlacedOrderItemShipment placedOrderItemShipment,
+		List<PlacedOrderItemShipment> placedOrderItemShipments) {
 
 		boolean contains = false;
 
-		for (PlacedOrderItem item : placedOrderItems) {
-			if (equals(placedOrderItem, item)) {
+		for (PlacedOrderItemShipment item : placedOrderItemShipments) {
+			if (equals(placedOrderItemShipment, item)) {
 				contains = true;
 
 				break;
@@ -458,7 +352,8 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 		}
 
 		Assert.assertTrue(
-			placedOrderItems + " does not contain " + placedOrderItem,
+			placedOrderItemShipments + " does not contain " +
+				placedOrderItemShipment,
 			contains);
 	}
 
@@ -471,38 +366,50 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 	}
 
 	protected void assertEquals(
-		PlacedOrderItem placedOrderItem1, PlacedOrderItem placedOrderItem2) {
+		PlacedOrderItemShipment placedOrderItemShipment1,
+		PlacedOrderItemShipment placedOrderItemShipment2) {
 
 		Assert.assertTrue(
-			placedOrderItem1 + " does not equal " + placedOrderItem2,
-			equals(placedOrderItem1, placedOrderItem2));
+			placedOrderItemShipment1 + " does not equal " +
+				placedOrderItemShipment2,
+			equals(placedOrderItemShipment1, placedOrderItemShipment2));
 	}
 
 	protected void assertEquals(
-		List<PlacedOrderItem> placedOrderItems1,
-		List<PlacedOrderItem> placedOrderItems2) {
+		List<PlacedOrderItemShipment> placedOrderItemShipments1,
+		List<PlacedOrderItemShipment> placedOrderItemShipments2) {
 
-		Assert.assertEquals(placedOrderItems1.size(), placedOrderItems2.size());
+		Assert.assertEquals(
+			placedOrderItemShipments1.size(), placedOrderItemShipments2.size());
 
-		for (int i = 0; i < placedOrderItems1.size(); i++) {
-			PlacedOrderItem placedOrderItem1 = placedOrderItems1.get(i);
-			PlacedOrderItem placedOrderItem2 = placedOrderItems2.get(i);
+		for (int i = 0; i < placedOrderItemShipments1.size(); i++) {
+			PlacedOrderItemShipment placedOrderItemShipment1 =
+				placedOrderItemShipments1.get(i);
+			PlacedOrderItemShipment placedOrderItemShipment2 =
+				placedOrderItemShipments2.get(i);
 
-			assertEquals(placedOrderItem1, placedOrderItem2);
+			assertEquals(placedOrderItemShipment1, placedOrderItemShipment2);
 		}
 	}
 
 	protected void assertEqualsIgnoringOrder(
-		List<PlacedOrderItem> placedOrderItems1,
-		List<PlacedOrderItem> placedOrderItems2) {
+		List<PlacedOrderItemShipment> placedOrderItemShipments1,
+		List<PlacedOrderItemShipment> placedOrderItemShipments2) {
 
-		Assert.assertEquals(placedOrderItems1.size(), placedOrderItems2.size());
+		Assert.assertEquals(
+			placedOrderItemShipments1.size(), placedOrderItemShipments2.size());
 
-		for (PlacedOrderItem placedOrderItem1 : placedOrderItems1) {
+		for (PlacedOrderItemShipment placedOrderItemShipment1 :
+				placedOrderItemShipments1) {
+
 			boolean contains = false;
 
-			for (PlacedOrderItem placedOrderItem2 : placedOrderItems2) {
-				if (equals(placedOrderItem1, placedOrderItem2)) {
+			for (PlacedOrderItemShipment placedOrderItemShipment2 :
+					placedOrderItemShipments2) {
+
+				if (equals(
+						placedOrderItemShipment1, placedOrderItemShipment2)) {
+
 					contains = true;
 
 					break;
@@ -510,111 +417,66 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 			}
 
 			Assert.assertTrue(
-				placedOrderItems2 + " does not contain " + placedOrderItem1,
+				placedOrderItemShipments2 + " does not contain " +
+					placedOrderItemShipment1,
 				contains);
 		}
 	}
 
-	protected void assertValid(PlacedOrderItem placedOrderItem)
+	protected void assertValid(PlacedOrderItemShipment placedOrderItemShipment)
 		throws Exception {
 
 		boolean valid = true;
 
-		if (placedOrderItem.getId() == null) {
+		if (placedOrderItemShipment.getId() == null) {
 			valid = false;
 		}
 
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
 
-			if (Objects.equals(
-					"adaptiveMediaImageHTMLTag", additionalAssertFieldName)) {
-
-				if (placedOrderItem.getAdaptiveMediaImageHTMLTag() == null) {
+			if (Objects.equals("accountId", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getAccountId() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("customFields", additionalAssertFieldName)) {
-				if (placedOrderItem.getCustomFields() == null) {
+			if (Objects.equals("carrier", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getCarrier() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("errorMessages", additionalAssertFieldName)) {
-				if (placedOrderItem.getErrorMessages() == null) {
+			if (Objects.equals("createDate", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getCreateDate() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("name", additionalAssertFieldName)) {
-				if (placedOrderItem.getName() == null) {
+			if (Objects.equals("expectedDate", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getExpectedDate() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("options", additionalAssertFieldName)) {
-				if (placedOrderItem.getOptions() == null) {
+			if (Objects.equals("modifiedDate", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getModifiedDate() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals(
-					"parentOrderItemId", additionalAssertFieldName)) {
-
-				if (placedOrderItem.getParentOrderItemId() == null) {
-					valid = false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals(
-					"placedOrderItemShipment", additionalAssertFieldName)) {
-
-				if (placedOrderItem.getPlacedOrderItemShipment() == null) {
-					valid = false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("placedOrderItems", additionalAssertFieldName)) {
-				if (placedOrderItem.getPlacedOrderItems() == null) {
-					valid = false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("price", additionalAssertFieldName)) {
-				if (placedOrderItem.getPrice() == null) {
-					valid = false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("productId", additionalAssertFieldName)) {
-				if (placedOrderItem.getProductId() == null) {
-					valid = false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("productURLs", additionalAssertFieldName)) {
-				if (placedOrderItem.getProductURLs() == null) {
+			if (Objects.equals("orderId", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getOrderId() == null) {
 					valid = false;
 				}
 
@@ -622,55 +484,67 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 			}
 
 			if (Objects.equals("quantity", additionalAssertFieldName)) {
-				if (placedOrderItem.getQuantity() == null) {
+				if (placedOrderItemShipment.getQuantity() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("settings", additionalAssertFieldName)) {
-				if (placedOrderItem.getSettings() == null) {
+			if (Objects.equals(
+					"shippingAddressId", additionalAssertFieldName)) {
+
+				if (placedOrderItemShipment.getShippingAddressId() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("sku", additionalAssertFieldName)) {
-				if (placedOrderItem.getSku() == null) {
+			if (Objects.equals("shippingDate", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getShippingDate() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("skuId", additionalAssertFieldName)) {
-				if (placedOrderItem.getSkuId() == null) {
+			if (Objects.equals("shippingMethodId", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getShippingMethodId() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("subscription", additionalAssertFieldName)) {
-				if (placedOrderItem.getSubscription() == null) {
+			if (Objects.equals(
+					"shippingOptionName", additionalAssertFieldName)) {
+
+				if (placedOrderItemShipment.getShippingOptionName() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("thumbnail", additionalAssertFieldName)) {
-				if (placedOrderItem.getThumbnail() == null) {
+			if (Objects.equals("status", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getStatus() == null) {
 					valid = false;
 				}
 
 				continue;
 			}
 
-			if (Objects.equals("valid", additionalAssertFieldName)) {
-				if (placedOrderItem.getValid() == null) {
+			if (Objects.equals("trackingNumber", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getTrackingNumber() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("userName", additionalAssertFieldName)) {
+				if (placedOrderItemShipment.getUserName() == null) {
 					valid = false;
 				}
 
@@ -685,13 +559,13 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 		Assert.assertTrue(valid);
 	}
 
-	protected void assertValid(Page<PlacedOrderItem> page) {
+	protected void assertValid(Page<PlacedOrderItemShipment> page) {
 		boolean valid = false;
 
-		java.util.Collection<PlacedOrderItem> placedOrderItems =
+		java.util.Collection<PlacedOrderItemShipment> placedOrderItemShipments =
 			page.getItems();
 
-		int size = placedOrderItems.size();
+		int size = placedOrderItemShipments.size();
 
 		if ((page.getLastPage() > 0) && (page.getPage() > 0) &&
 			(page.getPageSize() > 0) && (page.getTotalCount() > 0) &&
@@ -713,7 +587,7 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 		for (java.lang.reflect.Field field :
 				getDeclaredFields(
 					com.liferay.headless.commerce.delivery.order.dto.v1_0.
-						PlacedOrderItem.class)) {
+						PlacedOrderItemShipment.class)) {
 
 			if (!ArrayUtil.contains(
 					getAdditionalAssertFieldNames(), field.getName())) {
@@ -762,21 +636,20 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 	}
 
 	protected boolean equals(
-		PlacedOrderItem placedOrderItem1, PlacedOrderItem placedOrderItem2) {
+		PlacedOrderItemShipment placedOrderItemShipment1,
+		PlacedOrderItemShipment placedOrderItemShipment2) {
 
-		if (placedOrderItem1 == placedOrderItem2) {
+		if (placedOrderItemShipment1 == placedOrderItemShipment2) {
 			return true;
 		}
 
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
 
-			if (Objects.equals(
-					"adaptiveMediaImageHTMLTag", additionalAssertFieldName)) {
-
+			if (Objects.equals("accountId", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getAdaptiveMediaImageHTMLTag(),
-						placedOrderItem2.getAdaptiveMediaImageHTMLTag())) {
+						placedOrderItemShipment1.getAccountId(),
+						placedOrderItemShipment2.getAccountId())) {
 
 					return false;
 				}
@@ -784,10 +657,10 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("customFields", additionalAssertFieldName)) {
-				if (!equals(
-						(Map)placedOrderItem1.getCustomFields(),
-						(Map)placedOrderItem2.getCustomFields())) {
+			if (Objects.equals("carrier", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						placedOrderItemShipment1.getCarrier(),
+						placedOrderItemShipment2.getCarrier())) {
 
 					return false;
 				}
@@ -795,10 +668,21 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("errorMessages", additionalAssertFieldName)) {
+			if (Objects.equals("createDate", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getErrorMessages(),
-						placedOrderItem2.getErrorMessages())) {
+						placedOrderItemShipment1.getCreateDate(),
+						placedOrderItemShipment2.getCreateDate())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("expectedDate", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						placedOrderItemShipment1.getExpectedDate(),
+						placedOrderItemShipment2.getExpectedDate())) {
 
 					return false;
 				}
@@ -808,7 +692,8 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 
 			if (Objects.equals("id", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getId(), placedOrderItem2.getId())) {
+						placedOrderItemShipment1.getId(),
+						placedOrderItemShipment2.getId())) {
 
 					return false;
 				}
@@ -816,10 +701,10 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("name", additionalAssertFieldName)) {
+			if (Objects.equals("modifiedDate", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getName(),
-						placedOrderItem2.getName())) {
+						placedOrderItemShipment1.getModifiedDate(),
+						placedOrderItemShipment2.getModifiedDate())) {
 
 					return false;
 				}
@@ -827,80 +712,10 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("options", additionalAssertFieldName)) {
+			if (Objects.equals("orderId", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getOptions(),
-						placedOrderItem2.getOptions())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals(
-					"parentOrderItemId", additionalAssertFieldName)) {
-
-				if (!Objects.deepEquals(
-						placedOrderItem1.getParentOrderItemId(),
-						placedOrderItem2.getParentOrderItemId())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals(
-					"placedOrderItemShipment", additionalAssertFieldName)) {
-
-				if (!Objects.deepEquals(
-						placedOrderItem1.getPlacedOrderItemShipment(),
-						placedOrderItem2.getPlacedOrderItemShipment())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("placedOrderItems", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(
-						placedOrderItem1.getPlacedOrderItems(),
-						placedOrderItem2.getPlacedOrderItems())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("price", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(
-						placedOrderItem1.getPrice(),
-						placedOrderItem2.getPrice())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("productId", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(
-						placedOrderItem1.getProductId(),
-						placedOrderItem2.getProductId())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("productURLs", additionalAssertFieldName)) {
-				if (!equals(
-						(Map)placedOrderItem1.getProductURLs(),
-						(Map)placedOrderItem2.getProductURLs())) {
+						placedOrderItemShipment1.getOrderId(),
+						placedOrderItemShipment2.getOrderId())) {
 
 					return false;
 				}
@@ -910,8 +725,8 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 
 			if (Objects.equals("quantity", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getQuantity(),
-						placedOrderItem2.getQuantity())) {
+						placedOrderItemShipment1.getQuantity(),
+						placedOrderItemShipment2.getQuantity())) {
 
 					return false;
 				}
@@ -919,10 +734,12 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("settings", additionalAssertFieldName)) {
+			if (Objects.equals(
+					"shippingAddressId", additionalAssertFieldName)) {
+
 				if (!Objects.deepEquals(
-						placedOrderItem1.getSettings(),
-						placedOrderItem2.getSettings())) {
+						placedOrderItemShipment1.getShippingAddressId(),
+						placedOrderItemShipment2.getShippingAddressId())) {
 
 					return false;
 				}
@@ -930,9 +747,10 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("sku", additionalAssertFieldName)) {
+			if (Objects.equals("shippingDate", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getSku(), placedOrderItem2.getSku())) {
+						placedOrderItemShipment1.getShippingDate(),
+						placedOrderItemShipment2.getShippingDate())) {
 
 					return false;
 				}
@@ -940,10 +758,10 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("skuId", additionalAssertFieldName)) {
+			if (Objects.equals("shippingMethodId", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getSkuId(),
-						placedOrderItem2.getSkuId())) {
+						placedOrderItemShipment1.getShippingMethodId(),
+						placedOrderItemShipment2.getShippingMethodId())) {
 
 					return false;
 				}
@@ -951,10 +769,12 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("subscription", additionalAssertFieldName)) {
+			if (Objects.equals(
+					"shippingOptionName", additionalAssertFieldName)) {
+
 				if (!Objects.deepEquals(
-						placedOrderItem1.getSubscription(),
-						placedOrderItem2.getSubscription())) {
+						placedOrderItemShipment1.getShippingOptionName(),
+						placedOrderItemShipment2.getShippingOptionName())) {
 
 					return false;
 				}
@@ -962,10 +782,10 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("thumbnail", additionalAssertFieldName)) {
+			if (Objects.equals("status", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getThumbnail(),
-						placedOrderItem2.getThumbnail())) {
+						placedOrderItemShipment1.getStatus(),
+						placedOrderItemShipment2.getStatus())) {
 
 					return false;
 				}
@@ -973,10 +793,21 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("valid", additionalAssertFieldName)) {
+			if (Objects.equals("trackingNumber", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						placedOrderItem1.getValid(),
-						placedOrderItem2.getValid())) {
+						placedOrderItemShipment1.getTrackingNumber(),
+						placedOrderItemShipment2.getTrackingNumber())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("userName", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						placedOrderItemShipment1.getUserName(),
+						placedOrderItemShipment2.getUserName())) {
 
 					return false;
 				}
@@ -1034,13 +865,15 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 	protected java.util.Collection<EntityField> getEntityFields()
 		throws Exception {
 
-		if (!(_placedOrderItemResource instanceof EntityModelResource)) {
+		if (!(_placedOrderItemShipmentResource instanceof
+				EntityModelResource)) {
+
 			throw new UnsupportedOperationException(
 				"Resource is not an instance of EntityModelResource");
 		}
 
 		EntityModelResource entityModelResource =
-			(EntityModelResource)_placedOrderItemResource;
+			(EntityModelResource)_placedOrderItemShipmentResource;
 
 		EntityModel entityModel = entityModelResource.getEntityModel(
 			new MultivaluedHashMap());
@@ -1070,7 +903,7 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 
 	protected String getFilterString(
 		EntityField entityField, String operator,
-		PlacedOrderItem placedOrderItem) {
+		PlacedOrderItemShipment placedOrderItemShipment) {
 
 		StringBundler sb = new StringBundler();
 
@@ -1082,23 +915,87 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 		sb.append(operator);
 		sb.append(" ");
 
-		if (entityFieldName.equals("adaptiveMediaImageHTMLTag")) {
+		if (entityFieldName.equals("accountId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("carrier")) {
 			sb.append("'");
-			sb.append(
-				String.valueOf(placedOrderItem.getAdaptiveMediaImageHTMLTag()));
+			sb.append(String.valueOf(placedOrderItemShipment.getCarrier()));
 			sb.append("'");
 
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("customFields")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
+		if (entityFieldName.equals("createDate")) {
+			if (operator.equals("between")) {
+				sb = new StringBundler();
+
+				sb.append("(");
+				sb.append(entityFieldName);
+				sb.append(" gt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(
+							placedOrderItemShipment.getCreateDate(), -2)));
+				sb.append(" and ");
+				sb.append(entityFieldName);
+				sb.append(" lt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(
+							placedOrderItemShipment.getCreateDate(), 2)));
+				sb.append(")");
+			}
+			else {
+				sb.append(entityFieldName);
+
+				sb.append(" ");
+				sb.append(operator);
+				sb.append(" ");
+
+				sb.append(
+					_dateFormat.format(
+						placedOrderItemShipment.getCreateDate()));
+			}
+
+			return sb.toString();
 		}
 
-		if (entityFieldName.equals("errorMessages")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
+		if (entityFieldName.equals("expectedDate")) {
+			if (operator.equals("between")) {
+				sb = new StringBundler();
+
+				sb.append("(");
+				sb.append(entityFieldName);
+				sb.append(" gt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(
+							placedOrderItemShipment.getExpectedDate(), -2)));
+				sb.append(" and ");
+				sb.append(entityFieldName);
+				sb.append(" lt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(
+							placedOrderItemShipment.getExpectedDate(), 2)));
+				sb.append(")");
+			}
+			else {
+				sb.append(entityFieldName);
+
+				sb.append(" ");
+				sb.append(operator);
+				sb.append(" ");
+
+				sb.append(
+					_dateFormat.format(
+						placedOrderItemShipment.getExpectedDate()));
+			}
+
+			return sb.toString();
 		}
 
 		if (entityFieldName.equals("id")) {
@@ -1106,92 +1003,127 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
-		if (entityFieldName.equals("name")) {
-			sb.append("'");
-			sb.append(String.valueOf(placedOrderItem.getName()));
-			sb.append("'");
+		if (entityFieldName.equals("modifiedDate")) {
+			if (operator.equals("between")) {
+				sb = new StringBundler();
+
+				sb.append("(");
+				sb.append(entityFieldName);
+				sb.append(" gt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(
+							placedOrderItemShipment.getModifiedDate(), -2)));
+				sb.append(" and ");
+				sb.append(entityFieldName);
+				sb.append(" lt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(
+							placedOrderItemShipment.getModifiedDate(), 2)));
+				sb.append(")");
+			}
+			else {
+				sb.append(entityFieldName);
+
+				sb.append(" ");
+				sb.append(operator);
+				sb.append(" ");
+
+				sb.append(
+					_dateFormat.format(
+						placedOrderItemShipment.getModifiedDate()));
+			}
 
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("options")) {
-			sb.append("'");
-			sb.append(String.valueOf(placedOrderItem.getOptions()));
-			sb.append("'");
-
-			return sb.toString();
-		}
-
-		if (entityFieldName.equals("parentOrderItemId")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
-		if (entityFieldName.equals("placedOrderItemShipment")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
-		if (entityFieldName.equals("placedOrderItems")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
-		if (entityFieldName.equals("price")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
-		if (entityFieldName.equals("productId")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
-		if (entityFieldName.equals("productURLs")) {
+		if (entityFieldName.equals("orderId")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
 
 		if (entityFieldName.equals("quantity")) {
-			sb.append(String.valueOf(placedOrderItem.getQuantity()));
+			sb.append(String.valueOf(placedOrderItemShipment.getQuantity()));
 
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("settings")) {
+		if (entityFieldName.equals("shippingAddressId")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
 
-		if (entityFieldName.equals("sku")) {
+		if (entityFieldName.equals("shippingDate")) {
+			if (operator.equals("between")) {
+				sb = new StringBundler();
+
+				sb.append("(");
+				sb.append(entityFieldName);
+				sb.append(" gt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(
+							placedOrderItemShipment.getShippingDate(), -2)));
+				sb.append(" and ");
+				sb.append(entityFieldName);
+				sb.append(" lt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(
+							placedOrderItemShipment.getShippingDate(), 2)));
+				sb.append(")");
+			}
+			else {
+				sb.append(entityFieldName);
+
+				sb.append(" ");
+				sb.append(operator);
+				sb.append(" ");
+
+				sb.append(
+					_dateFormat.format(
+						placedOrderItemShipment.getShippingDate()));
+			}
+
+			return sb.toString();
+		}
+
+		if (entityFieldName.equals("shippingMethodId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("shippingOptionName")) {
 			sb.append("'");
-			sb.append(String.valueOf(placedOrderItem.getSku()));
+			sb.append(
+				String.valueOf(
+					placedOrderItemShipment.getShippingOptionName()));
 			sb.append("'");
 
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("skuId")) {
+		if (entityFieldName.equals("status")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
 
-		if (entityFieldName.equals("subscription")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
-		if (entityFieldName.equals("thumbnail")) {
+		if (entityFieldName.equals("trackingNumber")) {
 			sb.append("'");
-			sb.append(String.valueOf(placedOrderItem.getThumbnail()));
+			sb.append(
+				String.valueOf(placedOrderItemShipment.getTrackingNumber()));
 			sb.append("'");
 
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("valid")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
+		if (entityFieldName.equals("userName")) {
+			sb.append("'");
+			sb.append(String.valueOf(placedOrderItemShipment.getUserName()));
+			sb.append("'");
+
+			return sb.toString();
 		}
 
 		throw new IllegalArgumentException(
@@ -1235,41 +1167,48 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 			invoke(queryGraphQLField.toString()));
 	}
 
-	protected PlacedOrderItem randomPlacedOrderItem() throws Exception {
-		return new PlacedOrderItem() {
+	protected PlacedOrderItemShipment randomPlacedOrderItemShipment()
+		throws Exception {
+
+		return new PlacedOrderItemShipment() {
 			{
-				adaptiveMediaImageHTMLTag = StringUtil.toLowerCase(
-					RandomTestUtil.randomString());
+				accountId = RandomTestUtil.randomLong();
+				carrier = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				createDate = RandomTestUtil.nextDate();
+				expectedDate = RandomTestUtil.nextDate();
 				id = RandomTestUtil.randomLong();
-				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
-				options = StringUtil.toLowerCase(RandomTestUtil.randomString());
-				parentOrderItemId = RandomTestUtil.randomLong();
-				productId = RandomTestUtil.randomLong();
+				modifiedDate = RandomTestUtil.nextDate();
+				orderId = RandomTestUtil.randomLong();
 				quantity = RandomTestUtil.randomInt();
-				sku = StringUtil.toLowerCase(RandomTestUtil.randomString());
-				skuId = RandomTestUtil.randomLong();
-				subscription = RandomTestUtil.randomBoolean();
-				thumbnail = StringUtil.toLowerCase(
+				shippingAddressId = RandomTestUtil.randomLong();
+				shippingDate = RandomTestUtil.nextDate();
+				shippingMethodId = RandomTestUtil.randomLong();
+				shippingOptionName = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
-				valid = RandomTestUtil.randomBoolean();
+				trackingNumber = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				userName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 			}
 		};
 	}
 
-	protected PlacedOrderItem randomIrrelevantPlacedOrderItem()
+	protected PlacedOrderItemShipment randomIrrelevantPlacedOrderItemShipment()
 		throws Exception {
 
-		PlacedOrderItem randomIrrelevantPlacedOrderItem =
-			randomPlacedOrderItem();
+		PlacedOrderItemShipment randomIrrelevantPlacedOrderItemShipment =
+			randomPlacedOrderItemShipment();
 
-		return randomIrrelevantPlacedOrderItem;
+		return randomIrrelevantPlacedOrderItemShipment;
 	}
 
-	protected PlacedOrderItem randomPatchPlacedOrderItem() throws Exception {
-		return randomPlacedOrderItem();
+	protected PlacedOrderItemShipment randomPatchPlacedOrderItemShipment()
+		throws Exception {
+
+		return randomPlacedOrderItemShipment();
 	}
 
-	protected PlacedOrderItemResource placedOrderItemResource;
+	protected PlacedOrderItemShipmentResource placedOrderItemShipmentResource;
 	protected Group irrelevantGroup;
 	protected Company testCompany;
 	protected Group testGroup;
@@ -1455,12 +1394,13 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 	}
 
 	private static final com.liferay.portal.kernel.log.Log _log =
-		LogFactoryUtil.getLog(BasePlacedOrderItemResourceTestCase.class);
+		LogFactoryUtil.getLog(
+			BasePlacedOrderItemShipmentResourceTestCase.class);
 
 	private static DateFormat _dateFormat;
 
 	@Inject
 	private com.liferay.headless.commerce.delivery.order.resource.v1_0.
-		PlacedOrderItemResource _placedOrderItemResource;
+		PlacedOrderItemShipmentResource _placedOrderItemShipmentResource;
 
 }

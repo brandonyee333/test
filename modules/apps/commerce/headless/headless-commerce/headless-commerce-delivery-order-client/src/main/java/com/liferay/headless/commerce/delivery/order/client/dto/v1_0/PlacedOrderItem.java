@@ -180,6 +180,31 @@ public class PlacedOrderItem implements Cloneable, Serializable {
 
 	protected Long parentOrderItemId;
 
+	public PlacedOrderItemShipment[] getPlacedOrderItemShipment() {
+		return placedOrderItemShipment;
+	}
+
+	public void setPlacedOrderItemShipment(
+		PlacedOrderItemShipment[] placedOrderItemShipment) {
+
+		this.placedOrderItemShipment = placedOrderItemShipment;
+	}
+
+	public void setPlacedOrderItemShipment(
+		UnsafeSupplier<PlacedOrderItemShipment[], Exception>
+			placedOrderItemShipmentUnsafeSupplier) {
+
+		try {
+			placedOrderItemShipment =
+				placedOrderItemShipmentUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected PlacedOrderItemShipment[] placedOrderItemShipment;
+
 	public PlacedOrderItem[] getPlacedOrderItems() {
 		return placedOrderItems;
 	}

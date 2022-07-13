@@ -18,9 +18,11 @@ import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrder;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrderAddress;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrderComment;
 import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrderItem;
+import com.liferay.headless.commerce.delivery.order.dto.v1_0.PlacedOrderItemShipment;
 import com.liferay.headless.commerce.delivery.order.resource.v1_0.PlacedOrderAddressResource;
 import com.liferay.headless.commerce.delivery.order.resource.v1_0.PlacedOrderCommentResource;
 import com.liferay.headless.commerce.delivery.order.resource.v1_0.PlacedOrderItemResource;
+import com.liferay.headless.commerce.delivery.order.resource.v1_0.PlacedOrderItemShipmentResource;
 import com.liferay.headless.commerce.delivery.order.resource.v1_0.PlacedOrderResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
@@ -84,6 +86,15 @@ public class Query {
 
 		_placedOrderItemResourceComponentServiceObjects =
 			placedOrderItemResourceComponentServiceObjects;
+	}
+
+	public static void
+		setPlacedOrderItemShipmentResourceComponentServiceObjects(
+			ComponentServiceObjects<PlacedOrderItemShipmentResource>
+				placedOrderItemShipmentResourceComponentServiceObjects) {
+
+		_placedOrderItemShipmentResourceComponentServiceObjects =
+			placedOrderItemShipmentResourceComponentServiceObjects;
 	}
 
 	/**
@@ -223,7 +234,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {placedOrderItem(placedOrderItemId: ___){adaptiveMediaImageHTMLTag, customFields, errorMessages, id, name, options, parentOrderItemId, placedOrderItems, price, productId, productURLs, quantity, settings, sku, skuId, subscription, thumbnail, valid}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {placedOrderItem(placedOrderItemId: ___){adaptiveMediaImageHTMLTag, customFields, errorMessages, id, name, options, parentOrderItemId, placedOrderItemShipment, placedOrderItems, price, productId, productURLs, quantity, settings, sku, skuId, subscription, thumbnail, valid}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrive information of the given Placed Order")
 	public PlacedOrderItem placedOrderItem(
@@ -256,6 +267,26 @@ public class Query {
 			placedOrderItemResource -> new PlacedOrderItemPage(
 				placedOrderItemResource.getPlacedOrderItemsPage(
 					placedOrderId, skuId, Pagination.of(page, pageSize))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {placedOrderItemShipments(placedOrderItemId: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(
+		description = "Retrive shipments information of the given Placed Order"
+	)
+	public PlacedOrderItemShipmentPage placedOrderItemShipments(
+			@GraphQLName("placedOrderItemId") Long placedOrderItemId)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_placedOrderItemShipmentResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			placedOrderItemShipmentResource -> new PlacedOrderItemShipmentPage(
+				placedOrderItemShipmentResource.getPlacedOrderItemShipmentsPage(
+					placedOrderItemId)));
 	}
 
 	@GraphQLTypeExtension(PlacedOrder.class)
@@ -328,6 +359,33 @@ public class Query {
 		}
 
 		private PlacedOrder _placedOrder;
+
+	}
+
+	@GraphQLTypeExtension(PlacedOrderItem.class)
+	public class GetPlacedOrderItemShipmentsPageTypeExtension {
+
+		public GetPlacedOrderItemShipmentsPageTypeExtension(
+			PlacedOrderItem placedOrderItem) {
+
+			_placedOrderItem = placedOrderItem;
+		}
+
+		@GraphQLField(
+			description = "Retrive shipments information of the given Placed Order"
+		)
+		public PlacedOrderItemShipmentPage shipments() throws Exception {
+			return _applyComponentServiceObjects(
+				_placedOrderItemShipmentResourceComponentServiceObjects,
+				Query.this::_populateResourceContext,
+				placedOrderItemShipmentResource ->
+					new PlacedOrderItemShipmentPage(
+						placedOrderItemShipmentResource.
+							getPlacedOrderItemShipmentsPage(
+								_placedOrderItem.getId())));
+		}
+
+		private PlacedOrderItem _placedOrderItem;
 
 	}
 
@@ -513,6 +571,39 @@ public class Query {
 
 	}
 
+	@GraphQLName("PlacedOrderItemShipmentPage")
+	public class PlacedOrderItemShipmentPage {
+
+		public PlacedOrderItemShipmentPage(Page placedOrderItemShipmentPage) {
+			actions = placedOrderItemShipmentPage.getActions();
+
+			items = placedOrderItemShipmentPage.getItems();
+			lastPage = placedOrderItemShipmentPage.getLastPage();
+			page = placedOrderItemShipmentPage.getPage();
+			pageSize = placedOrderItemShipmentPage.getPageSize();
+			totalCount = placedOrderItemShipmentPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected Map<String, Map> actions;
+
+		@GraphQLField
+		protected java.util.Collection<PlacedOrderItemShipment> items;
+
+		@GraphQLField
+		protected long lastPage;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R
 			_applyComponentServiceObjects(
 				ComponentServiceObjects<T> componentServiceObjects,
@@ -594,6 +685,24 @@ public class Query {
 		placedOrderItemResource.setRoleLocalService(_roleLocalService);
 	}
 
+	private void _populateResourceContext(
+			PlacedOrderItemShipmentResource placedOrderItemShipmentResource)
+		throws Exception {
+
+		placedOrderItemShipmentResource.setContextAcceptLanguage(
+			_acceptLanguage);
+		placedOrderItemShipmentResource.setContextCompany(_company);
+		placedOrderItemShipmentResource.setContextHttpServletRequest(
+			_httpServletRequest);
+		placedOrderItemShipmentResource.setContextHttpServletResponse(
+			_httpServletResponse);
+		placedOrderItemShipmentResource.setContextUriInfo(_uriInfo);
+		placedOrderItemShipmentResource.setContextUser(_user);
+		placedOrderItemShipmentResource.setGroupLocalService(
+			_groupLocalService);
+		placedOrderItemShipmentResource.setRoleLocalService(_roleLocalService);
+	}
+
 	private static ComponentServiceObjects<PlacedOrderResource>
 		_placedOrderResourceComponentServiceObjects;
 	private static ComponentServiceObjects<PlacedOrderAddressResource>
@@ -602,6 +711,8 @@ public class Query {
 		_placedOrderCommentResourceComponentServiceObjects;
 	private static ComponentServiceObjects<PlacedOrderItemResource>
 		_placedOrderItemResourceComponentServiceObjects;
+	private static ComponentServiceObjects<PlacedOrderItemShipmentResource>
+		_placedOrderItemShipmentResourceComponentServiceObjects;
 
 	private AcceptLanguage _acceptLanguage;
 	private com.liferay.portal.kernel.model.Company _company;
