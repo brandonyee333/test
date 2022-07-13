@@ -265,6 +265,10 @@ components:
                     format: int64
                     readOnly: true
                     type: integer
+                placedOrderItemShipment:
+                    items:
+                        $ref: "#/components/schemas/PlacedOrderItemShipment"
+                    type: array
                 placedOrderItems:
                     items:
                         $ref: "#/components/schemas/PlacedOrderItem"
@@ -310,6 +314,79 @@ components:
                 valid:
                     readOnly: true
                     type: boolean
+            type: object
+        PlacedOrderItemShipment:
+            properties:
+                accountId:
+                    example: 30130
+                    format: int64
+                    minimum: 0
+                    readOnly: true
+                    type: integer
+                carrier:
+                    example: "FedEx"
+                    readOnly: true
+                    type: string
+                createDate:
+                    format: date
+                    readOnly: true
+                    type: string
+                expectedDate:
+                    format: date
+                    readOnly: true
+                    type: string
+                id:
+                    example: 30130
+                    format: int64
+                    minimum: 0
+                    readOnly: true
+                    type: integer
+                modifiedDate:
+                    format: date
+                    readOnly: true
+                    type: string
+                orderId:
+                    example: 30130
+                    format: int64
+                    minimum: 0
+                    readOnly: true
+                    type: integer
+                quantity:
+                    format: int32
+                    readOnly: true
+                    type: integer
+                shippingAddressId:
+                    example: 31130
+                    format: int64
+                    minimum: 0
+                    readOnly: true
+                    type: integer
+                shippingDate:
+                    format: date
+                    readOnly: true
+                    type: string
+                shippingMethodId:
+                    example: 30130
+                    format: int64
+                    minimum: 0
+                    readOnly: true
+                    type: integer
+                shippingOptionName:
+                    example: "Standard Delivery"
+                    readOnly: true
+                    type: string
+                status:
+                    allOf:
+                        - $ref: "#/components/schemas/Status"
+                    readOnly: true
+                trackingNumber:
+                    example: "123AD-asd"
+                    readOnly: true
+                    type: string
+                userName:
+                    example: "Author"
+                    readOnly: true
+                    type: string
             type: object
         Price:
             properties:
@@ -718,6 +795,65 @@ paths:
                     description:
                         Unexpected error
             tags: ["PlacedOrderItem"]
+    /placed-order-items/{placedOrderItemId}/shipments:
+        get:
+            description:
+                Retrive shipments information of the given Placed Order
+            parameters:
+                - in: path
+                  explode: false
+                  name: placedOrderItemId
+                  required: true
+                  schema:
+                      description:
+                          Placed Order Item Id
+                      format: int64
+                      type: integer
+                  style: simple
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/PlacedOrderItemShipment"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/PlacedOrderItemShipment"
+                                type: array
+                401:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                    description:
+                        Authentication information is missing or invalid
+                404:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                    description:
+                        The specified resource was not found
+                500:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                    description:
+                        Unexpected error
+            tags: ["PlacedOrderItemShipment"]
     /placed-orders/{placedOrderId}:
         get:
             description:
