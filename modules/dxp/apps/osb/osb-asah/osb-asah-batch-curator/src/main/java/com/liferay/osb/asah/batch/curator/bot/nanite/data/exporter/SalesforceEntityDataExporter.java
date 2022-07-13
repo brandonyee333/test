@@ -33,20 +33,19 @@ import org.json.JSONObject;
 public class SalesforceEntityDataExporter extends BaseDataExporter {
 
 	public SalesforceEntityDataExporter(
+			BQSalesforceEntityDog bqSalesforceEntityDog,
 			String fieldName, String fieldValue, JsonFactory jsonFactory,
 			ObjectMapper objectMapper, OutputStream outputStream,
-			BQSalesforceEntityDog salesforceEntityDog,
 			BQSalesforceEntity.Type type)
 		throws Exception {
 
 		super(jsonFactory, outputStream, null);
 
+		_bqSalesforceEntityDog = bqSalesforceEntityDog;
 		_fieldName = fieldName;
 		_fieldValue = fieldValue;
 		_objectMapper = objectMapper;
 		_type = type;
-
-		_bqSalesforceEntityDog = salesforceEntityDog;
 
 		jsonGenerator.useDefaultPrettyPrinter();
 	}

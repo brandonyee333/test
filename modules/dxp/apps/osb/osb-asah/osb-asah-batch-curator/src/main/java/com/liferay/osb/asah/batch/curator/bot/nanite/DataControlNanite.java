@@ -442,8 +442,8 @@ public class DataControlNanite extends BaseNanite {
 		throws Exception {
 
 		DataExporter dataExporter = new SalesforceEntityDataExporter(
-			fieldName, fieldValue, _jsonFactory, _objectMapper, zipOutputStream,
-			_bqSalesforceEntityDog, type);
+			_bqSalesforceEntityDog, fieldName, fieldValue, _jsonFactory,
+			_objectMapper, zipOutputStream, type);
 
 		dataExporter.export();
 	}
