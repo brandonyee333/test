@@ -25,6 +25,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import java.math.BigDecimal;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
@@ -75,6 +76,21 @@ public class BQOrderRepositoryTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
+	public void testGetOrderAccountAverageCurrencyValuesWithEmptyDatasourceIds() {
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
+		Map<String, BigDecimal> orderAccountAverageCurrencyValues =
+			_bqOrderRepository.getOrderAccountAverageCurrencyValues(
+				null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Assertions.assertEquals(
+			Collections.emptyMap(), orderAccountAverageCurrencyValues);
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
 	public void testGetOrderAverageCurrencyValues() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
@@ -103,6 +119,21 @@ public class BQOrderRepositoryTest
 		Assertions.assertEquals(
 			expectedValue.stripTrailingZeros(),
 			actualValue.stripTrailingZeros());
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
+	public void testGetOrderAverageCurrencyValuesWithEmptyDatasourceIds() {
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
+		Map<String, BigDecimal> orderAverageCurrencyValues =
+			_bqOrderRepository.getOrderAverageCurrencyValues(
+				null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Assertions.assertEquals(
+			Collections.emptyMap(), orderAverageCurrencyValues);
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
@@ -139,6 +170,21 @@ public class BQOrderRepositoryTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
+	public void testGetOrderIncompleteCurrencyValuesWithEmptyDataSourceIds() {
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
+		Map<String, BigDecimal> orderIncompleteCurrencyValues =
+			_bqOrderRepository.getOrderIncompleteCurrencyValues(
+				null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Assertions.assertEquals(
+			Collections.emptyMap(), orderIncompleteCurrencyValues);
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
 	public void testGetOrderTotalCurrencyValues() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
@@ -167,6 +213,21 @@ public class BQOrderRepositoryTest
 		Assertions.assertEquals(
 			expectedValue.stripTrailingZeros(),
 			actualValue.stripTrailingZeros());
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
+	public void testGetOrderTotalCurrencyValuesWithEmptyDataSourceIds() {
+		TimeRange timeRange = TimeRange.LAST_7_DAYS;
+
+		Map<String, BigDecimal> orderTotalCurrencyValues =
+			_bqOrderRepository.getOrderTotalCurrencyValues(
+				null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Assertions.assertEquals(
+			Collections.emptyMap(), orderTotalCurrencyValues);
 	}
 
 	@Autowired
