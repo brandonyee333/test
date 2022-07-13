@@ -67,14 +67,14 @@ public class GetterUtil {
 			return longFieldValue.intValue();
 		}
 
-		if (object instanceof String) {
-			return Integer.parseInt((String)object);
-		}
-
 		if (object instanceof Long) {
 			Long longFieldValue = (Long)object;
 
 			return longFieldValue.intValue();
+		}
+
+		if (object instanceof String) {
+			return Integer.parseInt((String)object);
 		}
 
 		return (int)object;
