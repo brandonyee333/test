@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +54,10 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 	public Map<String, BigDecimal> getOrderAccountAverageCurrencyValues(
 		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+
+		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
+			return Collections.emptyMap();
+		}
 
 		AggregateFunction<Integer> accountIdCountDistinctAggregateFunction =
 			DSL.countDistinct(DSL.field("accountId"));
@@ -86,6 +91,10 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
+		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
+			return Collections.emptyMap();
+		}
+
 		return _queryExecutor.queryForMap(
 			GetterUtil::getString,
 			_getSelectHavingStep(
@@ -112,6 +121,10 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
+		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
+			return Collections.emptyMap();
+		}
+
 		return _queryExecutor.queryForMap(
 			GetterUtil::getString,
 			_getSelectHavingStep(
@@ -136,6 +149,10 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 	public Map<String, BigDecimal> getOrderTotalCurrencyValues(
 		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
+
+		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
+			return Collections.emptyMap();
+		}
 
 		return _queryExecutor.queryForMap(
 			GetterUtil::getString,
