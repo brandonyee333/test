@@ -146,6 +146,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>INVENTORY_EXPECTED_INCOMING_DELIVERY_DATE</td>
+	<td>//span[contains(@id,'displayDate')]/input[@placeholder=@placeholder='h:mm am/pm']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DISPLAY_PAGE_ANY</td>
 	<td>//span[contains (@id,'displayPageNameInput')]</td>
 	<td></td>

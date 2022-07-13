@@ -91,6 +91,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>FS_PRODUCT_DETAIL_INCOMING_DATE_QUANTITY</td>
+	<td>//p[contains(.,"Incoming Date/Quantity: ${key_incomingDate} - ${key_incomingQuantity} Items")]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>FS_PRODUCT_OPTION</td>
 	<td>//div[contains(@class,'dropdown-menu')]/ul//li/button[(normalize-space(text())='${key_optionValue}')]</td>
 	<td></td>
