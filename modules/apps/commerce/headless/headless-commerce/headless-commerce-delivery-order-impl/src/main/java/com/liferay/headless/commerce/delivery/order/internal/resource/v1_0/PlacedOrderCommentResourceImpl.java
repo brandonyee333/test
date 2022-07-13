@@ -71,21 +71,22 @@ public class PlacedOrderCommentResourceImpl
 	@NestedField(parentClass = PlacedOrder.class, value = "placedOrderComments")
 	@Override
 	public Page<PlacedOrderComment> getPlacedOrderCommentsPage(
-			@NestedFieldId("id") Long orderId, Pagination pagination)
+			@NestedFieldId("id") Long placedOrderId, Pagination pagination)
 		throws Exception {
 
 		CommerceOrder commerceOrder = _commerceOrderService.getCommerceOrder(
-			orderId);
+			placedOrderId);
 
 		if (commerceOrder.isOpen()) {
 			throw new NoSuchOrderException();
 		}
 
 		List<CommerceOrderNote> commerceOrderNotes =
-			_commerceOrderNoteService.getCommerceOrderNotes(orderId, false);
+			_commerceOrderNoteService.getCommerceOrderNotes(
+				placedOrderId, false);
 
 		int totalItems = _commerceOrderNoteService.getCommerceOrderNotesCount(
-			orderId, false);
+			placedOrderId, false);
 
 		return Page.of(
 			_toOrderComments(commerceOrderNotes), pagination, totalItems);
