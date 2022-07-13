@@ -533,10 +533,11 @@ public class DataSourceDog {
 		else if (providerType.equals("SALESFORCE")) {
 			_asahMarkerDog.deleteAsahMarker(dataSourceId.toString());
 
+			_bqSalesforceEntityDog.deleteBQSalesforceEntities(dataSourceId);
+
 			_deleteAccountReferences(dataSourceId);
 
 			_fieldDog.deleteFields(dataSourceId);
-			_bqSalesforceEntityDog.deleteBQSalesforceEntities(dataSourceId);
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
