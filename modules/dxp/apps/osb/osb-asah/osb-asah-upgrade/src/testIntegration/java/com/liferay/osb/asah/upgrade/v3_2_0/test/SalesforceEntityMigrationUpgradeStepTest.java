@@ -54,6 +54,7 @@ public class SalesforceEntityMigrationUpgradeStepTest
 		ProjectIdThreadLocal.setProjectId("test");
 
 		_bqSalesforceEntityRepository.deleteAll();
+
 		_dataSourceRepository.deleteAll();
 
 		DataSource dataSource = new DataSource("Liferay Brazil");

@@ -167,9 +167,11 @@ public class SalesforceExtractorIndividualsNaniteTest
 
 	@AfterEach
 	public void tearDown() {
-		_dataSourceRepository.delete(_dataSource);
-		_elasticsearchIndexManager.clearIndices();
 		_bqSalesforceEntityDog.deleteBQSalesforceEntities(_dataSource.getId());
+
+		_dataSourceRepository.delete(_dataSource);
+
+		_elasticsearchIndexManager.clearIndices();
 	}
 
 	@Test
