@@ -426,6 +426,8 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		dockerRemoveImage.setDescription("Removes the Docker image.");
 		dockerRemoveImage.setGroup(DOCKER_GROUP);
 
+		dockerBuildImage.dependsOn(dockerRemoveImage);
+
 		Property<Boolean> forceProperty = dockerRemoveImage.getForce();
 
 		forceProperty.set(true);
