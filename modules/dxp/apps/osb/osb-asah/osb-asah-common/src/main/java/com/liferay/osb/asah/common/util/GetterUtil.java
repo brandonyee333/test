@@ -35,6 +35,10 @@ public class GetterUtil {
 			return fieldValue.getNumericValue();
 		}
 
+		if (object instanceof String) {
+			return new BigDecimal((String)object);
+		}
+
 		return (BigDecimal)object;
 	}
 
