@@ -52,8 +52,8 @@ import org.springframework.stereotype.Component;
 public class EventDefinitionDog {
 
 	public EventDefinition addEventDefinition(
-		String description, String displayName, Date eventDate, String name,
-		EventDefinition.Type type, String url) {
+		String applicationId, String description, String displayName,
+		Date eventDate, String name, EventDefinition.Type type, String url) {
 
 		if (StringUtils.isBlank(name)) {
 			throw new IllegalArgumentException("Event name is null");
@@ -79,6 +79,7 @@ public class EventDefinitionDog {
 			}
 		}
 
+		eventDefinition.setApplicationId(applicationId);
 		eventDefinition.setDescription(description);
 		eventDefinition.setDisplayName(_getDisplayName(displayName, name));
 		eventDefinition.setName(name);
@@ -111,6 +112,17 @@ public class EventDefinitionDog {
 
 	public void deleteEventDefinitionById(Long id) {
 		_eventDefinitionRepository.deleteById(id);
+	}
+
+	public EventDefinition fetchEventDefinition(Long eventDefinitionId) {
+		if (eventDefinitionId == null) {
+			return null;
+		}
+
+		Optional<EventDefinition> eventDefinitionOptional =
+			_eventDefinitionRepository.findById(eventDefinitionId);
+
+		return eventDefinitionOptional.orElse(null);
 	}
 
 	public EventDefinition fetchEventDefinitionByDisplayName(
@@ -148,6 +160,11 @@ public class EventDefinitionDog {
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no event definition with ID " + eventDefinitionId));
+	}
+
+	public List<String> getEventDefinitionApplicationIds(boolean hidden) {
+		return _eventDefinitionRepository.getEventDefinitionApplicationIds(
+			hidden);
 	}
 
 	public List<String> getEventDefinitionNames(boolean hidden) {

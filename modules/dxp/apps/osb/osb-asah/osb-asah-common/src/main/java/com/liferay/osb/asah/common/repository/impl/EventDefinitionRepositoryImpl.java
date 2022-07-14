@@ -92,6 +92,19 @@ public class EventDefinitionRepositoryImpl
 	}
 
 	@Override
+	public List<String> getEventDefinitionApplicationIds(boolean hidden) {
+		return _dslContext.selectDistinct(
+			DSL.field("applicationId")
+		).from(
+			"EventDefinition"
+		).where(
+			_getConditions(null, null, hidden, null, null)
+		).fetch(
+			record -> String.valueOf(record.get("applicationId"))
+		);
+	}
+
+	@Override
 	public List<String> getEventDefinitionNames(boolean hidden) {
 		return _dslContext.select(
 			DSL.field("name")

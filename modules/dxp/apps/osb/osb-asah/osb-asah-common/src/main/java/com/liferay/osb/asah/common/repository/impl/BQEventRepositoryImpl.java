@@ -551,8 +551,7 @@ public class BQEventRepositoryImpl
 
 				condition = condition.and(
 					_getEventDateRangeFilter(
-						alias + ".eventDate", rangeEndDate,
-						rangeStartDate));
+						alias + ".eventDate", rangeEndDate, rangeStartDate));
 			}
 
 			selectJoinStep = selectJoinStep.join(
@@ -587,6 +586,11 @@ public class BQEventRepositoryImpl
 
 		Condition condition = DSL.and(
 			DSL.field(
+				"BQEvent.applicationId"
+			).in(
+				_eventDefinitionDog.getEventDefinitionApplicationIds(false)
+			),
+			DSL.field(
 				"BQEvent.channelId"
 			).eq(
 				channelId
@@ -599,8 +603,8 @@ public class BQEventRepositoryImpl
 			),
 			DSL.field(
 				"BQEvent.eventId"
-			).notIn(
-				_eventDefinitionDog.getEventDefinitionNames(true)
+			).in(
+				_eventDefinitionDog.getEventDefinitionNames(false)
 			));
 
 		if ((userIds != null) && !userIds.isEmpty()) {
@@ -680,16 +684,22 @@ public class BQEventRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinition(eventDefinitionId);
+
+		if (eventDefinition != null) {
+			Field<Object> field = DSL.field("BQEvent.applicationId");
+
+			conditions.add(field.eq(eventDefinition.getApplicationId()));
+		}
+
 		if (channelId != null) {
 			Field<Object> field = DSL.field("BQEvent.channelId");
 
 			conditions.add(field.eq(channelId));
 		}
 
-		if (eventDefinitionId != null) {
-			EventDefinition eventDefinition =
-				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
-
+		if (eventDefinition != null) {
 			Field<Object> field = DSL.field("BQEvent.eventId");
 
 			conditions.add(field.eq(eventDefinition.getName()));
