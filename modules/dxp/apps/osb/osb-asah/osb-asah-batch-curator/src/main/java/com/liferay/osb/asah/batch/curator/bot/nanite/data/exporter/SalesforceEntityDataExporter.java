@@ -33,8 +33,8 @@ import org.json.JSONObject;
 public class SalesforceEntityDataExporter extends BaseDataExporter {
 
 	public SalesforceEntityDataExporter(
-			BQSalesforceEntityDog bqSalesforceEntityDog,
-			String fieldName, String fieldValue, JsonFactory jsonFactory,
+			BQSalesforceEntityDog bqSalesforceEntityDog, String fieldName,
+			String fieldValue, JsonFactory jsonFactory,
 			ObjectMapper objectMapper, OutputStream outputStream,
 			BQSalesforceEntity.Type type)
 		throws Exception {
