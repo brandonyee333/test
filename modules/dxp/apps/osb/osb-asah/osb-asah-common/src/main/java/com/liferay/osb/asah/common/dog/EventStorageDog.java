@@ -148,8 +148,9 @@ public class EventStorageDog {
 
 		if (eventDefinition == null) {
 			eventDefinition = _eventDefinitionDog.addEventDefinition(
-				null, null, analyticsEvent.getEventDate(),
-				analyticsEvent.getEventId(), EventDefinition.Type.CUSTOM,
+				analyticsEvent.getApplicationId(), null, null,
+				analyticsEvent.getEventDate(), analyticsEvent.getEventId(),
+				EventDefinition.Type.CUSTOM,
 				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
 		}
 		else if (eventDefinition.isBlocked()) {
