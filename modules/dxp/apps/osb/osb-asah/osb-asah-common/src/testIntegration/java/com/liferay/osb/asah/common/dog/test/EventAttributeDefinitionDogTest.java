@@ -204,8 +204,8 @@ public class EventAttributeDefinitionDogTest
 	public void testFetchEventAttributeDefinitionByDisplayName() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent", EventDefinition.Type.CUSTOM, null);
 
 		EventAttributeDefinition expectedEventAttributeDefinition =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
@@ -223,8 +223,8 @@ public class EventAttributeDefinitionDogTest
 	public void testFetchEventAttributeDefinitionByDisplayNameIgnoreCase() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent", EventDefinition.Type.CUSTOM, null);
 
 		EventAttributeDefinition expectedEventAttributeDefinition =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(

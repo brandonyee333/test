@@ -56,8 +56,8 @@ public class EventDefinitionDogTest
 	public void testAddDefinition() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent", EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertNotNull(eventDefinition);
 		Assertions.assertEquals(
@@ -74,24 +74,24 @@ public class EventDefinitionDogTest
 	public void testAddDefinitionDuplicateDisplayName() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent1",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent1", EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertEquals(
 			"Test Event", eventDefinition1.getDisplayName());
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent2",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent2", EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertEquals(
 			"Test Event (1)", eventDefinition2.getDisplayName());
 
 		EventDefinition eventDefinition3 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent3",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent3", EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertEquals(
 			"Test Event (2)", eventDefinition3.getDisplayName());
@@ -102,8 +102,8 @@ public class EventDefinitionDogTest
 	public void testAddDefinitionLimitReached() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event 1", null, "testEvent1",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event 1", null,
+				"testEvent1", EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertNotNull(eventDefinition);
 		Assertions.assertEquals(
@@ -120,8 +120,8 @@ public class EventDefinitionDogTest
 		String url = "http://localhost:8080";
 
 		eventDefinition = _eventDefinitionDog.addEventDefinition(
-			"Testing an event", "Test Event 2", dayDate, "testEvent2",
-			EventDefinition.Type.CUSTOM, url);
+			"CustomEvent", "Testing an event", "Test Event 2", dayDate,
+			"testEvent2", EventDefinition.Type.CUSTOM, url);
 
 		Assertions.assertNotNull(eventDefinition);
 		Assertions.assertEquals(
@@ -142,7 +142,7 @@ public class EventDefinitionDogTest
 	public void testAddDefinitionNoDisplayName1() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", null, null, "testEvent",
+				"CustomEvent", "Testing an event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertNotNull(eventDefinition);
@@ -160,7 +160,7 @@ public class EventDefinitionDogTest
 	public void testAddDefinitionNoDisplayName2() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "", null, "testEvent",
+				"CustomEvent", "Testing an event", "", null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertNotNull(eventDefinition);
@@ -178,14 +178,14 @@ public class EventDefinitionDogTest
 	public void testAddDefinitionNoDisplayName3() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", null, null, "testEvent",
+				"CustomEvent", "Testing an event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertEquals("testEvent", eventDefinition1.getDisplayName());
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", null, null, "TestEvent",
+				"CustomEvent", "Testing an event", null, null, "TestEvent",
 				EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertEquals(
@@ -307,8 +307,8 @@ public class EventDefinitionDogTest
 	public void testFetchEventDefinitionByDisplayName() {
 		EventDefinition expectedEventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent", EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertEquals(
 			expectedEventDefinition,
@@ -320,8 +320,8 @@ public class EventDefinitionDogTest
 	public void testFetchEventDefinitionByDisplayNameIgnoreCase() {
 		EventDefinition expectedEventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent", EventDefinition.Type.CUSTOM, null);
 
 		Assertions.assertEquals(
 			expectedEventDefinition,
@@ -340,8 +340,8 @@ public class EventDefinitionDogTest
 	public void testFetchEventDefinitionByName() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent", EventDefinition.Type.CUSTOM, null);
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.fetchEventDefinitionByName("testEvent");
@@ -380,8 +380,8 @@ public class EventDefinitionDogTest
 	public void testGetEventDefinition() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, "testEvent",
-				EventDefinition.Type.CUSTOM, null);
+				"CustomEvent", "Testing an event", "Test Event", null,
+				"testEvent", EventDefinition.Type.CUSTOM, null);
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.getEventDefinition(eventDefinition1.getId());
