@@ -470,15 +470,31 @@ public class EventAnalysisDog {
 			parentBreakdownItem, timeRange);
 
 		if (!lastBreakdown) {
+			String projectId = ProjectIdThreadLocal.getProjectId();
+
+			CompletableFuture<Void> completableFuture =
+				CompletableFuture.allOf();
+
 			for (BreakdownItem breakdownItem : breakdownItems) {
-				breakdownItem.setBreakdownItems(
-					_getBreakdownItems(
-						analysisType, channelId, compareToPrevious, count + 1,
-						eventAnalysisValue, eventAnalysisBreakdowns,
-						eventAnalysisFilters, eventDefinitionId,
-						PageRequest.of(0, 5), breakdownItem,
-						previousEventAnalysisValue, timeRange));
+				completableFuture = CompletableFuture.allOf(
+					completableFuture,
+					CompletableFuture.runAsync(
+						() -> {
+							ProjectIdThreadLocal.setProjectId(projectId);
+
+							breakdownItem.setBreakdownItems(
+								_getBreakdownItems(
+									analysisType, channelId, compareToPrevious,
+									count + 1, eventAnalysisValue,
+									eventAnalysisBreakdowns,
+									eventAnalysisFilters, eventDefinitionId,
+									PageRequest.of(0, 5), breakdownItem,
+									previousEventAnalysisValue, timeRange));
+						},
+						_breakdownItemExecutorService));
 			}
+
+			completableFuture.join();
 		}
 
 		return breakdownItems;
@@ -619,6 +635,9 @@ public class EventAnalysisDog {
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
+
+	private final ExecutorService _breakdownItemExecutorService =
+		Executors.newFixedThreadPool(20);
 
 	@Autowired
 	private EventAnalysisRepository _eventAnalysisRepository;
