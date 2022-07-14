@@ -51,7 +51,8 @@ public class EventDefinition implements Persistable<Long> {
 
 		EventDefinition eventDefinition = (EventDefinition)obj;
 
-		if (Objects.equals(_blocked, eventDefinition._blocked) &&
+		if (Objects.equals(_applicationId, eventDefinition._applicationId) &&
+			Objects.equals(_blocked, eventDefinition._blocked) &&
 			Objects.equals(
 				_blockedLastSeenDate, eventDefinition._blockedLastSeenDate) &&
 			Objects.equals(
@@ -69,6 +70,11 @@ public class EventDefinition implements Persistable<Long> {
 		}
 
 		return false;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getApplicationId() {
+		return _applicationId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -120,7 +126,7 @@ public class EventDefinition implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_blocked, _blockedLastSeenDate, _blockedLastSeenURL,
+			_applicationId, _blocked, _blockedLastSeenDate, _blockedLastSeenURL,
 			_blockedReasonType, _description, _displayName, _type, _hidden, _id,
 			_name);
 	}
@@ -142,6 +148,10 @@ public class EventDefinition implements Persistable<Long> {
 		}
 
 		return false;
+	}
+
+	public void setApplicationId(String applicationId) {
+		_applicationId = applicationId;
 	}
 
 	public void setBlocked(boolean blocked) {
@@ -204,6 +214,9 @@ public class EventDefinition implements Persistable<Long> {
 		ALL, CUSTOM, DEFAULT
 
 	}
+
+	@Transient
+	private String _applicationId;
 
 	@Transient
 	private boolean _blocked;

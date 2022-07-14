@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 
 CREATE TABLE IF NOT EXISTS EventDefinition (
 	id BIGSERIAL PRIMARY KEY,
+	applicationId TEXT,
 	blocked BOOLEAN DEFAULT false,
 	blockedLastSeenDate TIMESTAMPTZ,
 	blockedLastSeenURL TEXT,
