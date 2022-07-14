@@ -543,18 +543,20 @@ public class BQEventRepositoryImpl
 				attributeField = DSL.field(
 					attributeType.getQualifiedAttributeValueFieldName(alias));
 
-				Field eventAttributeDefinitionIdField = DSL.field(
-					alias + ".name");
+				condition = DSL.field(
+					alias + ".name"
+				).eq(
+					eventAttributeDefinition.getName()
+				).and(
+					_getChannelIdFilter(channelId, alias + ".channelId")
+				);
 
-				condition = eventAttributeDefinitionIdField.eq(
-					eventAttributeDefinition.getName());
-
-				condition = condition.and(
-					_getEventDateRangeFilter(
-						alias + ".eventDate", rangeEndDate, rangeStartDate));
-
-				condition = condition.and(
-					_getChannelIdFilter(channelId, alias + ".channelId"));
+				if (Objects.equals(attributeType, AttributeType.EVENT)) {
+					condition = condition.and(
+						_getEventDateRangeFilter(
+							alias + ".eventDate", rangeEndDate,
+							rangeStartDate));
+				}
 			}
 
 			selectJoinStep = selectJoinStep.join(
@@ -1175,6 +1177,20 @@ public class BQEventRepositoryImpl
 			return selectJoinStep;
 		}
 
+		Condition condition = DSL.field(
+			attributeType.getQualifiedAttributeIdFieldName(null)
+		).eq(
+			eventAttributeDefinition.getName()
+		).and(
+			_getChannelIdFilter(channelId, "BQEventProperty.channelId")
+		);
+
+		if (Objects.equals(attributeType, AttributeType.EVENT)) {
+			condition = condition.and(
+				_getEventDateRangeFilter(
+					"BQEventProperty.eventDate", rangeEndDate, rangeStartDate));
+		}
+
 		return selectJoinStep.join(
 			attributeType.getTableName()
 		).on(
@@ -1184,16 +1200,7 @@ public class BQEventRepositoryImpl
 				DSL.field(attributeType.getJoinFieldName())
 			)
 		).and(
-			DSL.field(
-				attributeType.getQualifiedAttributeIdFieldName(null)
-			).eq(
-				eventAttributeDefinition.getName()
-			).and(
-				_getEventDateRangeFilter(
-					"BQEventProperty.eventDate", rangeEndDate, rangeStartDate)
-			).and(
-				_getChannelIdFilter(channelId, "BQEventProperty.channelId")
-			)
+			condition
 		);
 	}
 
