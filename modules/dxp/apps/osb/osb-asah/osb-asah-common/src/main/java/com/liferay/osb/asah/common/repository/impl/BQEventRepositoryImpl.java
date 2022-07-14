@@ -246,6 +246,7 @@ public class BQEventRepositoryImpl
 
 		SelectJoinStep<Record> selectJoinStep = _buildSelectJoinStep(
 			breakdownItem, eventAnalysisBreakdown, eventAttributeDefinition,
+			rangeEndDate, rangeStartDate,
 			selectSelectStep.select(
 				valueField, selectField
 			).from(
@@ -306,7 +307,8 @@ public class BQEventRepositoryImpl
 			"BQEvent");
 
 		selectJoinStep = _joinEventAttributeTable(
-			attributeType, eventAttributeDefinition, selectJoinStep);
+			attributeType, eventAttributeDefinition, rangeEndDate,
+			rangeStartDate, selectJoinStep);
 
 		return _queryExecutor.queryForLong(
 			selectJoinStep.where(
@@ -483,13 +485,14 @@ public class BQEventRepositoryImpl
 	private SelectJoinStep _buildSelectJoinStep(
 		BreakdownItem breakdownItem,
 		EventAnalysisBreakdown eventAnalysisBreakdown,
-		EventAttributeDefinition eventAttributeDefinition,
-		SelectJoinStep selectJoinStep, String timeZoneId) {
+		EventAttributeDefinition eventAttributeDefinition, Date rangeEndDate,
+		Date rangeStartDate, SelectJoinStep selectJoinStep, String timeZoneId) {
 
 		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
 		selectJoinStep = _joinEventAttributeTable(
-			attributeType, eventAttributeDefinition, selectJoinStep);
+			attributeType, eventAttributeDefinition, rangeEndDate,
+			rangeStartDate, selectJoinStep);
 
 		if (breakdownItem == null) {
 			return selectJoinStep;
@@ -545,6 +548,11 @@ public class BQEventRepositoryImpl
 
 				condition = eventAttributeDefinitionIdField.eq(
 					eventAttributeDefinition.getName());
+
+				condition = condition.and(
+					_getEventDateRangeFilter(
+						alias + ".eventDate", rangeEndDate,
+						rangeStartDate));
 			}
 
 			selectJoinStep = selectJoinStep.join(
@@ -687,14 +695,9 @@ public class BQEventRepositoryImpl
 			conditions.add(field.eq(eventDefinition.getName()));
 		}
 
-		if ((rangeEndDate != null) && (rangeStartDate != null)) {
-			Field<Object> field = DSL.field("BQEvent.eventDate");
-
-			conditions.add(
-				field.between(
-					_dslHelper.getDateParam(rangeStartDate),
-					_dslHelper.getDateParam(rangeEndDate)));
-		}
+		conditions.add(
+			_getEventDateRangeFilter(
+				"BQEvent.eventDate", rangeEndDate, rangeStartDate));
 
 		return conditions;
 	}
@@ -865,6 +868,20 @@ public class BQEventRepositoryImpl
 		return eventAttributeDefinitionsStream.collect(
 			Collectors.toMap(
 				EventAttributeDefinition::getId, Function.identity()));
+	}
+
+	private Condition _getEventDateRangeFilter(
+		String fieldName, Date rangeEndDate, Date rangeStartDate) {
+
+		if ((rangeEndDate != null) && (rangeStartDate != null)) {
+			Field<Object> field = DSL.field(fieldName);
+
+			return field.between(
+				_dslHelper.getDateParam(rangeStartDate),
+				_dslHelper.getDateParam(rangeEndDate));
+		}
+
+		return DSL.noCondition();
 	}
 
 	private SelectFinalStep<Record1<Integer>> _getEventsCount(
@@ -1125,8 +1142,8 @@ public class BQEventRepositoryImpl
 
 	private SelectJoinStep _joinEventAttributeTable(
 		AttributeType attributeType,
-		EventAttributeDefinition eventAttributeDefinition,
-		SelectJoinStep selectJoinStep) {
+		EventAttributeDefinition eventAttributeDefinition, Date rangeEndDate,
+		Date rangeStartDate, SelectJoinStep selectJoinStep) {
 
 		if (Objects.equals(
 				eventAttributeDefinition.getType(),
@@ -1148,6 +1165,9 @@ public class BQEventRepositoryImpl
 				attributeType.getQualifiedAttributeIdFieldName(null)
 			).eq(
 				eventAttributeDefinition.getName()
+			).and(
+				_getEventDateRangeFilter(
+					"BQEventProperty.eventDate", rangeEndDate, rangeStartDate)
 			)
 		);
 	}
