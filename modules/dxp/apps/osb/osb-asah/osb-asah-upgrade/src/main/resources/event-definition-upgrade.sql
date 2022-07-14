@@ -9,6 +9,7 @@ UPDATE EventDefinition SET applicationId = 'Custom' WHERE name = 'assetDepthReac
 UPDATE EventDefinition SET applicationId = 'Custom' WHERE name = 'assetDownloaded';
 UPDATE EventDefinition SET applicationId = 'Custom' WHERE name = 'assetSubmitted';
 UPDATE EventDefinition SET applicationId = 'Custom' WHERE name = 'assetViewed';
+UPDATE EventDefinition SET applicationId = 'CustomEvent' WHERE type = 'CUSTOM';
 UPDATE EventDefinition SET applicationId = 'Document' WHERE name = 'documentDownloaded';
 UPDATE EventDefinition SET applicationId = 'Document' WHERE name = 'documentPreviewed';
 UPDATE EventDefinition SET applicationId = 'Form' WHERE name = 'fieldBlurred';
