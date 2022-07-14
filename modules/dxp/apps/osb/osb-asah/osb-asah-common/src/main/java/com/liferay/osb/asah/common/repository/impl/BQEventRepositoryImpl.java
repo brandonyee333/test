@@ -245,8 +245,8 @@ public class BQEventRepositoryImpl
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectJoinStep<Record> selectJoinStep = _buildSelectJoinStep(
-			breakdownItem, eventAnalysisBreakdown, eventAttributeDefinition,
-			rangeEndDate, rangeStartDate,
+			breakdownItem, channelId, eventAnalysisBreakdown,
+			eventAttributeDefinition, rangeEndDate, rangeStartDate,
 			selectSelectStep.select(
 				valueField, selectField
 			).from(
@@ -307,7 +307,7 @@ public class BQEventRepositoryImpl
 			"BQEvent");
 
 		selectJoinStep = _joinEventAttributeTable(
-			attributeType, eventAttributeDefinition, rangeEndDate,
+			attributeType, channelId, eventAttributeDefinition, rangeEndDate,
 			rangeStartDate, selectJoinStep);
 
 		return _queryExecutor.queryForLong(
@@ -483,7 +483,7 @@ public class BQEventRepositoryImpl
 	}
 
 	private SelectJoinStep _buildSelectJoinStep(
-		BreakdownItem breakdownItem,
+		BreakdownItem breakdownItem, Long channelId,
 		EventAnalysisBreakdown eventAnalysisBreakdown,
 		EventAttributeDefinition eventAttributeDefinition, Date rangeEndDate,
 		Date rangeStartDate, SelectJoinStep selectJoinStep, String timeZoneId) {
@@ -491,7 +491,7 @@ public class BQEventRepositoryImpl
 		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
 		selectJoinStep = _joinEventAttributeTable(
-			attributeType, eventAttributeDefinition, rangeEndDate,
+			attributeType, channelId, eventAttributeDefinition, rangeEndDate,
 			rangeStartDate, selectJoinStep);
 
 		if (breakdownItem == null) {
@@ -552,6 +552,9 @@ public class BQEventRepositoryImpl
 				condition = condition.and(
 					_getEventDateRangeFilter(
 						alias + ".eventDate", rangeEndDate, rangeStartDate));
+
+				condition = condition.and(
+					_getChannelIdFilter(channelId, alias + ".channelId"));
 			}
 
 			selectJoinStep = selectJoinStep.join(
@@ -658,6 +661,16 @@ public class BQEventRepositoryImpl
 		}
 
 		return condition;
+	}
+
+	private Condition _getChannelIdFilter(Long channelId, String fieldName) {
+		if (channelId == null) {
+			return DSL.noCondition();
+		}
+
+		Field<Object> field = DSL.field(fieldName);
+
+		return field.eq(channelId);
 	}
 
 	private List<Condition> _getConditions(
@@ -1151,7 +1164,7 @@ public class BQEventRepositoryImpl
 	}
 
 	private SelectJoinStep _joinEventAttributeTable(
-		AttributeType attributeType,
+		AttributeType attributeType, Long channelId,
 		EventAttributeDefinition eventAttributeDefinition, Date rangeEndDate,
 		Date rangeStartDate, SelectJoinStep selectJoinStep) {
 
@@ -1178,6 +1191,8 @@ public class BQEventRepositoryImpl
 			).and(
 				_getEventDateRangeFilter(
 					"BQEventProperty.eventDate", rangeEndDate, rangeStartDate)
+			).and(
+				_getChannelIdFilter(channelId, "BQEventProperty.channelId")
 			)
 		);
 	}
