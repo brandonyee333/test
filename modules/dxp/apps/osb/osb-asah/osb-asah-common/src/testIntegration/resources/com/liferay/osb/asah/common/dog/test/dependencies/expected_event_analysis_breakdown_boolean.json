@@ -33,19 +33,19 @@
 									"breakdownItems": null,
 									"leafNode": false,
 									"name": "All Individuals",
-									"previousValue": 2,
+									"previousValue": 3,
 									"value": 2
 								}
 							],
 							"leafNode": true,
 							"name": "Test Display Name 1",
-							"previousValue": 2,
+							"previousValue": 3,
 							"value": 2
 						}
 					],
 					"leafNode": false,
 					"name": "https://www.beryl.com/design",
-					"previousValue": 2,
+					"previousValue": 3,
 					"value": 2
 				},
 				{
