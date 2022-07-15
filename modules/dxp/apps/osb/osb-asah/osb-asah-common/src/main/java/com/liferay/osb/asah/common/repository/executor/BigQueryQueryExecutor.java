@@ -221,7 +221,12 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 			return objects;
 		}
 
-		if (field.getType() == LegacySQLTypeName.BOOLEAN) {
+		if ((field.getType() == LegacySQLTypeName.BIGNUMERIC) ||
+			(field.getType() == LegacySQLTypeName.NUMERIC)) {
+
+			return _toBigDecimalValue(fieldValue);
+		}
+		else if (field.getType() == LegacySQLTypeName.BOOLEAN) {
 			return _toBooleanValue(fieldValue);
 		}
 		else if ((field.getType() == LegacySQLTypeName.DATE) ||
@@ -231,9 +236,6 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		}
 		else if (field.getType() == LegacySQLTypeName.INTEGER) {
 			return _toLongValue(fieldValue);
-		}
-		else if (field.getType() == LegacySQLTypeName.NUMERIC) {
-			return _toBigDecimalValue(fieldValue);
 		}
 		else if (field.getType() == LegacySQLTypeName.STRING) {
 			return _toStringValue(fieldValue);
