@@ -38,11 +38,12 @@ public class VerifyLayout extends VerifyProcess {
 
 	protected void deleteLinkedOrphanedLayouts() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			StringBundler sb = new StringBundler(3);
+			StringBundler sb = new StringBundler(4);
 
 			sb.append("delete from Layout where layoutPrototypeUuid != '' ");
 			sb.append("and layoutPrototypeUuid not in (select uuid_ from ");
-			sb.append("LayoutPrototype) and layoutPrototypeLinkEnabled = TRUE");
+			sb.append("LayoutPrototype) and layoutPrototypeLinkEnabled = ");
+			sb.append("[$TRUE$]");
 
 			runSQL(sb.toString());
 		}
@@ -64,7 +65,7 @@ public class VerifyLayout extends VerifyProcess {
 			sb.append("update Layout set layoutPrototypeUuid = null where ");
 			sb.append("layoutPrototypeUuid != '' and layoutPrototypeUuid not ");
 			sb.append("in (select uuid_ from LayoutPrototype) and ");
-			sb.append("layoutPrototypeLinkEnabled = FALSE");
+			sb.append("layoutPrototypeLinkEnabled = [$FALSE$]");
 
 			runSQL(sb.toString());
 		}
