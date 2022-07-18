@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.Account;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
@@ -36,7 +35,6 @@ import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
-import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
@@ -112,9 +110,6 @@ public class AdminRestController extends BaseRestController {
 
 		if (collectionName.equals("accounts")) {
 			_accountRepository.deleteAll();
-		}
-		else if (collectionName.equals("activity-groups")) {
-			_activityGroupRepository.deleteAll();
 		}
 		else if (collectionName.equals("blocked-keywords")) {
 			_blockedKeywordRepository.deleteAll();
@@ -195,9 +190,6 @@ public class AdminRestController extends BaseRestController {
 
 		if (collectionName.equals("accounts")) {
 			_addEntities(_accountRepository, json, Account.class);
-		}
-		else if (collectionName.equals("activity-groups")) {
-			_addEntities(_activityGroupRepository, json, ActivityGroup.class);
 		}
 		else if (collectionName.equals("blocked-keywords")) {
 			_addEntities(_blockedKeywordRepository, json, BlockedKeyword.class);
@@ -371,9 +363,6 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private AccountRepository _accountRepository;
-
-	@Autowired
-	private ActivityGroupRepository _activityGroupRepository;
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;

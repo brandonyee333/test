@@ -136,10 +136,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 			"user-sessions");
 		_deleteIndividualReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
-
-		_activityGroupDog.deleteActivityGroups(new HashSet<>(channelIds));
-		_faroInfoActivityDog.deleteActivies(new HashSet<>(channelIds));
-		_segmentDog.deleteSegments(new HashSet<>(channelIds));
 	}
 
 	public void deleteChannels(
@@ -629,9 +625,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 	private static final String _CHANNEL_TYPE_MULTIPLE = "multiple";
 
 	private static final Log _log = LogFactory.getLog(ChannelDog.class);
-
-	@Autowired
-	private ActivityGroupDog _activityGroupDog;
 
 	@Autowired
 	private AssetDog _assetDog;

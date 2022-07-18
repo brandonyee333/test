@@ -17,12 +17,10 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -47,7 +45,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -140,52 +137,6 @@ public class ActivitiesNanite implements Nanite {
 		_boundedExecutor.awaitPendingTasks();
 	}
 
-	private ActivityGroup _addActivityGroup(AnalyticsEvent analyticsEvent) {
-		String channelId = analyticsEvent.getChannelId();
-		String dataSourceId = analyticsEvent.getDataSourceId();
-
-		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
-			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
-
-		Date dayDate = DateUtil.toUTCDate(
-			eventLocalDateTime.with(LocalTime.MIDNIGHT));
-
-		String userId = analyticsEvent.getUserId();
-
-		ReentrantLock reentrantLock = KeyReentrantLock.getReentrantLock(
-			getClass(), ProjectIdThreadLocal.getProjectId(), "BROWSE",
-			channelId, dataSourceId, dayDate, userId);
-
-		try {
-			reentrantLock.lock();
-
-			ActivityGroup activityGroup = _activityGroupDog.fetchActivityGroup(
-				"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
-				dayDate, userId);
-
-			if (activityGroup != null) {
-				Date endDate = activityGroup.getEndDate();
-
-				if (endDate.before(analyticsEvent.getEventDate())) {
-					activityGroup = _activityGroupDog.updatedActivityGroup(
-						activityGroup.getId(), analyticsEvent.getEventDate(),
-						eventLocalDateTime);
-				}
-
-				return activityGroup;
-			}
-
-			return _activityGroupDog.addActivityGroup(
-				"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
-				dayDate, analyticsEvent.getEventDate(), eventLocalDateTime,
-				_getOwnerId(analyticsEvent), analyticsEvent.getEventDate(),
-				eventLocalDateTime, userId);
-		}
-		finally {
-			reentrantLock.unlock();
-		}
-	}
-
 	private void _addActivityJSONArray(
 		JSONArray activityJSONArray, String projectId) {
 
@@ -265,7 +216,7 @@ public class ActivitiesNanite implements Nanite {
 			String dayUTCString = DateUtil.toUTCString(
 				eventLocalDateTime.with(LocalTime.MIDNIGHT));
 
-			ActivityGroup activityGroup = _addActivityGroup(analyticsEvent);
+			Long ownerId = _getOwnerId(analyticsEvent);
 
 			JSONObject activityJSONObject = JSONUtil.put(
 				"activityKey", applicationId + "#" + eventId + "#" + assetId
@@ -290,11 +241,9 @@ public class ActivitiesNanite implements Nanite {
 			).put(
 				"eventProperties", eventPropertiesJSONObject
 			).put(
-				"groupId", String.valueOf(activityGroup.getId())
-			).put(
 				"object", objectJSONObject
 			).put(
-				"ownerId", String.valueOf(activityGroup.getOwnerId())
+				"ownerId", String.valueOf(ownerId)
 			).put(
 				"startTime", eventDateString
 			).put(
@@ -303,8 +252,7 @@ public class ActivitiesNanite implements Nanite {
 				"userId", analyticsEvent.getUserId()
 			);
 
-			String sessionId = _getSessionId(
-				analyticsEvent, activityGroup.getOwnerId());
+			String sessionId = _getSessionId(analyticsEvent, ownerId);
 
 			if (sessionId != null) {
 				activityJSONObject.put("sessionId", sessionId);
@@ -785,9 +733,6 @@ public class ActivitiesNanite implements Nanite {
 
 	@Value("${osb.asah.activities.nanite.pull.messages.size:50}")
 	private int _activitiesNanitePullMessagesSize;
-
-	@Autowired
-	private ActivityGroupDog _activityGroupDog;
 
 	@Autowired
 	private AssetDog _assetDog;

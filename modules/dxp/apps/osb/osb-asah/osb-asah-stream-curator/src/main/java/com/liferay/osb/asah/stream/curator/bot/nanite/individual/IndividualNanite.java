@@ -16,7 +16,6 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
 
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
@@ -413,13 +412,10 @@ public class IndividualNanite implements Nanite {
 		return activitiesCountsMap;
 	}
 
-	private void _updateActivitiesAndActivityGroups(
-			Individual individual, String userId)
+	private void _updateActivities(Individual individual, String userId)
 		throws Exception {
 
 		_faroInfoActivityDog.updateOwnerId(individual, userId);
-
-		_activityGroupDog.updateActivityGroup(individual.getId(), userId);
 	}
 
 	private Individual _updateIndividual(
@@ -459,7 +455,7 @@ public class IndividualNanite implements Nanite {
 			individual2 = _updateIndividual(emailAddressHashed, individual1);
 		}
 
-		_updateActivitiesAndActivityGroups(individual2, userId);
+		_updateActivities(individual2, userId);
 
 		return individual2;
 	}
@@ -542,9 +538,6 @@ public class IndividualNanite implements Nanite {
 	private static final String _BLANK_EMAIL_HASH = DigestUtils.sha256Hex("");
 
 	private static final Log _log = LogFactory.getLog(IndividualNanite.class);
-
-	@Autowired
-	private ActivityGroupDog _activityGroupDog;
 
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(15, 10);
