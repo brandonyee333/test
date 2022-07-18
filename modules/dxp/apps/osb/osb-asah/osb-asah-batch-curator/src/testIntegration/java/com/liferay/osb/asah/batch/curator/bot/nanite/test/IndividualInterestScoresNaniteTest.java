@@ -21,12 +21,10 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.NaniteTestConfiguration;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -50,6 +48,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 import org.apache.commons.collections4.map.HashedMap;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
@@ -477,17 +476,14 @@ public class IndividualInterestScoresNaniteTest
 		String dateString, Individual individual,
 		JSONObject... assetJSONObjects) {
 
-		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
-			FaroInfoTestUtil.buildActivityGroup(
-				_dataSource.getId(), DateUtil.toUTCDate(dateString),
-				individual));
+		Long channelId = Long.parseLong(RandomStringUtils.randomNumeric(4));
 
 		for (JSONObject jsonObject : assetJSONObjects) {
 			faroInfoElasticsearchInvoker.add(
 				"activities",
 				FaroInfoTestUtil.buildActivityJSONObject(
-					_objectMapper.convertValue(activityGroup, JSONObject.class),
-					jsonObject, "pageViewed", new String[0]));
+					jsonObject, channelId, _dataSource.getId(), dateString,
+					"pageViewed", new String[0], individual));
 		}
 	}
 
@@ -624,9 +620,6 @@ public class IndividualInterestScoresNaniteTest
 
 	private static final Log _log = LogFactory.getLog(
 		IndividualInterestScoresNaniteTest.class);
-
-	@Autowired
-	private ActivityGroupDog _activityGroupDog;
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;

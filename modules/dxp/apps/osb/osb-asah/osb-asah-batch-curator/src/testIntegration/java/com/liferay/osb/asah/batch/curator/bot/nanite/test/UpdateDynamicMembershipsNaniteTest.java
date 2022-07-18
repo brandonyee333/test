@@ -18,14 +18,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.Account;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
@@ -54,6 +52,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -129,22 +128,20 @@ public class UpdateDynamicMembershipsNaniteTest
 					Asset.class)),
 			JSONObject.class);
 
-		ActivityGroup activityGroup1 = _activityGroupDog.addActivityGroup(
-			FaroInfoTestUtil.buildActivityGroup(dataSourceId, individual1));
-		ActivityGroup activityGroup2 = _activityGroupDog.addActivityGroup(
-			FaroInfoTestUtil.buildActivityGroup(dataSourceId, individual2));
-
 		faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(activityGroup1, JSONObject.class),
-				assetJSONObject, "pageViewed", new String[0]));
+				assetJSONObject,
+				Long.parseLong(RandomStringUtils.randomNumeric(4)),
+				dataSourceId, DateUtil.newDateString(), "pageViewed",
+				new String[0], individual1));
 		faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(activityGroup2, JSONObject.class),
-				assetJSONObject, "pageUnloaded",
-				new String[] {"viewDuration", "1000"}));
+				assetJSONObject,
+				Long.parseLong(RandomStringUtils.randomNumeric(4)),
+				dataSourceId, DateUtil.newDateString(), "pageUnloaded",
+				new String[] {"viewDuration", "1000"}, individual2));
 
 		Long segmentId = _updateDynamicMemberships(
 			"(((activities/ever eq 'Page#pageViewed#" +
@@ -601,9 +598,6 @@ public class UpdateDynamicMembershipsNaniteTest
 
 	@Autowired
 	private AccountRepository _accountRepository;
-
-	@Autowired
-	private ActivityGroupDog _activityGroupDog;
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;

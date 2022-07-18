@@ -16,7 +16,6 @@ package com.liferay.osb.asah.test.util.faro;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Account;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
@@ -117,22 +116,25 @@ public class FaroInfoTestUtil {
 		return segment;
 	}
 
-	public static ActivityGroup buildActivityGroup(
-		Long dataSourceId, Date date, Individual individual) {
+	public static JSONObject buildActivityJSONObject(
+		JSONObject assetJSONObject, Long channelId, Long dataSourceId,
+		String dateString, String eventId, String[] eventProperties,
+		Individual individual) {
 
-		return buildActivityGroup(
-			Long.parseLong(RandomStringUtils.randomNumeric(4)), dataSourceId,
-			date, individual);
-	}
+		if ((eventProperties.length % 2) != 0) {
+			throw new IllegalArgumentException(
+				"Event properties must be an even length");
+		}
 
-	public static ActivityGroup buildActivityGroup(
-		Long dataSourceId, Individual individual) {
+		String applicationId = assetJSONObject.getString("assetType");
+		String assetId = assetJSONObject.getString("id");
 
-		return buildActivityGroup(dataSourceId, new Date(), individual);
-	}
+		JSONObject eventPropertiesJSONObject = new JSONObject();
 
-	public static ActivityGroup buildActivityGroup(
-		Long channelId, Long dataSourceId, Date date, Individual individual) {
+		for (int i = 0; i < eventProperties.length; i += 2) {
+			eventPropertiesJSONObject.put(
+				String.valueOf(eventProperties[i]), eventProperties[i + 1]);
+		}
 
 		Set<Individual.DataSourceUserPK> dataSourceUserPKs =
 			individual.getDataSourceUserPKs();
@@ -152,39 +154,6 @@ public class FaroInfoTestUtil {
 			userPKs = dataSourceUserPK.getUserPKs();
 		}
 
-		ActivityGroup activityGroup = new ActivityGroup();
-
-		activityGroup.setActivityType("BROWSE");
-		activityGroup.setChannelId(channelId);
-		activityGroup.setDataSourceId(dataSourceId);
-		activityGroup.setDayDate(date);
-		activityGroup.setEndDate(date);
-		activityGroup.setOwnerId(individual.getId());
-		activityGroup.setStartDate(date);
-		activityGroup.setUserId(userPKs.toArray(new String[0])[0]);
-
-		return activityGroup;
-	}
-
-	public static JSONObject buildActivityJSONObject(
-		JSONObject activityGroupJSONObject, JSONObject assetJSONObject,
-		Long channelId, String eventId, String[] eventProperties) {
-
-		if ((eventProperties.length % 2) != 0) {
-			throw new IllegalArgumentException(
-				"Event properties must be an even length");
-		}
-
-		String applicationId = assetJSONObject.getString("assetType");
-		String assetId = assetJSONObject.getString("id");
-
-		JSONObject eventPropertiesJSONObject = new JSONObject();
-
-		for (int i = 0; i < eventProperties.length; i += 2) {
-			eventPropertiesJSONObject.put(
-				String.valueOf(eventProperties[i]), eventProperties[i + 1]);
-		}
-
 		return JSONUtil.put(
 			"activityKey", applicationId + "#" + eventId + "#" + assetId
 		).put(
@@ -194,18 +163,15 @@ public class FaroInfoTestUtil {
 		).put(
 			"channelId", String.valueOf(channelId)
 		).put(
-			"dataSourceId",
-			String.valueOf(activityGroupJSONObject.getLong("dataSourceId"))
+			"dataSourceId", String.valueOf(dataSourceId)
 		).put(
-			"day", activityGroupJSONObject.getString("day")
+			"day", dateString
 		).put(
-			"endTime", activityGroupJSONObject.getString("endTime")
+			"endTime", dateString
 		).put(
 			"eventId", eventId
 		).put(
 			"eventProperties", eventPropertiesJSONObject
-		).put(
-			"groupId", String.valueOf(activityGroupJSONObject.getLong("id"))
 		).put(
 			"object",
 			JSONUtil.put(
@@ -219,24 +185,14 @@ public class FaroInfoTestUtil {
 				"objectType", applicationId
 			)
 		).put(
-			"ownerId", activityGroupJSONObject.getString("ownerId")
+			"ownerId", String.valueOf(individual.getId())
 		).put(
-			"startTime", activityGroupJSONObject.getString("startTime")
+			"startTime", dateString
 		).put(
 			"url", RandomTestUtil.randomURL()
 		).put(
-			"userId", activityGroupJSONObject.getString("userId")
+			"userId", userPKs.toArray(new String[0])[0]
 		);
-	}
-
-	public static JSONObject buildActivityJSONObject(
-		JSONObject activityGroupJSONObject, JSONObject assetJSONObject,
-		String eventId, String[] eventProperties) {
-
-		return buildActivityJSONObject(
-			activityGroupJSONObject, assetJSONObject,
-			Long.parseLong(RandomStringUtils.randomNumeric(4)), eventId,
-			eventProperties);
 	}
 
 	public static JSONObject buildAssetJSONObject(

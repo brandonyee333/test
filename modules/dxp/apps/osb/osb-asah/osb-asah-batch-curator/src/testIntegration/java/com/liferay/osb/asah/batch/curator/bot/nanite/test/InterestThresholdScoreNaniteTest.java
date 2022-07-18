@@ -19,10 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.batch.curator.bot.nanite.InterestThresholdScoreNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -33,6 +31,10 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+
+import java.util.Date;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -128,13 +130,6 @@ public class InterestThresholdScoreNaniteTest
 	private void _addPageVisitActivities(
 		int count, int days, String... keywords) {
 
-		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
-			FaroInfoTestUtil.buildActivityGroup(
-				_dataSource.getId(),
-				DateUtil.toUTCDate(
-					DateUtil.addDays(DateUtil.newDayDateString(), -days)),
-				_individual));
-
 		Asset pageAsset = null;
 
 		if (keywords.length > 0) {
@@ -166,18 +161,23 @@ public class InterestThresholdScoreNaniteTest
 		JSONObject pageAssetJSONObject = _objectMapper.convertValue(
 			pageAsset, JSONObject.class);
 
+		Long channelId = Long.parseLong(RandomStringUtils.randomNumeric(4));
+		Date date = DateUtil.toUTCDate(
+			DateUtil.addDays(DateUtil.newDayDateString(), -days));
+
 		for (int i = 0; i < count; i++) {
 			faroInfoElasticsearchInvoker.add(
 				"activities",
 				FaroInfoTestUtil.buildActivityJSONObject(
-					_objectMapper.convertValue(activityGroup, JSONObject.class),
-					pageAssetJSONObject, "pageUnloaded",
-					new String[] {"viewDuration", "30000"}));
+					pageAssetJSONObject, channelId, _dataSource.getId(),
+					DateUtil.toUTCString(date), "pageUnloaded",
+					new String[] {"viewDuration", "30000"}, _individual));
 			faroInfoElasticsearchInvoker.add(
 				"activities",
 				FaroInfoTestUtil.buildActivityJSONObject(
-					_objectMapper.convertValue(activityGroup, JSONObject.class),
-					pageAssetJSONObject, "pageViewed", new String[0]));
+					pageAssetJSONObject, channelId, _dataSource.getId(),
+					DateUtil.toUTCString(date), "pageViewed", new String[0],
+					_individual));
 		}
 	}
 
@@ -196,9 +196,6 @@ public class InterestThresholdScoreNaniteTest
 	}
 
 	private static final double _DELTA = 0.00001;
-
-	@Autowired
-	private ActivityGroupDog _activityGroupDog;
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;

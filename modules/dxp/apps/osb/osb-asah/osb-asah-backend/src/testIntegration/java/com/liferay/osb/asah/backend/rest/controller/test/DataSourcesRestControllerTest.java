@@ -22,13 +22,11 @@ import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
-import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Account;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQSalesforceAuditEvent;
 import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
@@ -37,7 +35,6 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
-import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQSalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -55,6 +52,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -122,10 +120,6 @@ public class DataSourcesRestControllerTest {
 
 		individual = _individualDog.addIndividual(individual, false);
 
-		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
-			FaroInfoTestUtil.buildActivityGroup(
-				dataSource.getId(), individual));
-
 		Asset asset = _assetRepository.save(
 			_objectMapper.convertValue(
 				FaroInfoTestUtil.buildAssetJSONObject(
@@ -135,9 +129,10 @@ public class DataSourcesRestControllerTest {
 		JSONObject activityJSONObject = _faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(activityGroup, JSONObject.class),
 				_objectMapper.convertValue(asset, JSONObject.class),
-				"pageViewed", new String[0]));
+				Long.parseLong(RandomStringUtils.randomNumeric(4)),
+				dataSource.getId(), DateUtil.newDateString(), "pageViewed",
+				new String[0], individual));
 
 		_dataSourcesRestController.deleteDataSource(
 			dataSourceJSONObject.getLong("id"));
@@ -158,15 +153,6 @@ public class DataSourcesRestControllerTest {
 		Assertions.assertTrue(
 			_faroInfoElasticsearchInvoker.exists(
 				"activities", activityJSONObject.getString("id")));
-
-		Long activityGroupId = activityGroup.getId();
-
-		if (activityGroupId == null) {
-			activityGroupId = 0L;
-		}
-
-		Assertions.assertTrue(
-			_activityGroupRepository.existsById(activityGroupId));
 
 		Assertions.assertTrue(_assetRepository.existsById(asset.getId()));
 		Assertions.assertFalse(
@@ -1201,12 +1187,6 @@ public class DataSourcesRestControllerTest {
 
 	@Autowired
 	private AccountRepository _accountRepository;
-
-	@Autowired
-	private ActivityGroupDog _activityGroupDog;
-
-	@Autowired
-	private ActivityGroupRepository _activityGroupRepository;
 
 	@Autowired
 	private AssetRepository _assetRepository;

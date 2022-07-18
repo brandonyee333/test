@@ -19,14 +19,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.batch.curator.bot.nanite.StaleDynamicIndividualSegmentsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQMembership;
@@ -53,6 +51,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -266,16 +266,13 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	}
 
 	private void _addActivity(String dayDateString) {
-		ActivityGroup activityGroup = _activityGroupDog.addActivityGroup(
-			FaroInfoTestUtil.buildActivityGroup(
-				_dataSource.getId(), DateUtil.toUTCDate(dayDateString),
-				_individual));
-
 		faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(activityGroup, JSONObject.class),
-				_assetJSONObject, "pageViewed", new String[0]));
+				_assetJSONObject,
+				Long.parseLong(RandomStringUtils.randomNumeric(4)),
+				_dataSource.getId(), dayDateString, "pageViewed", new String[0],
+				_individual));
 	}
 
 	private List<Long> _addBQMemberships(String... durations) {
@@ -376,9 +373,6 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	private static final Pattern _individualSegmentActivityFilterPattern =
 		Pattern.compile(".*activities/([\\w]+) eq.*");
-
-	@Autowired
-	private ActivityGroupDog _activityGroupDog;
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;

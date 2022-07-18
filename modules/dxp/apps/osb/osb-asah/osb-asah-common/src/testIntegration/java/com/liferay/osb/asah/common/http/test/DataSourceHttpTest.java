@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -38,7 +37,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -59,6 +57,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -537,7 +536,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Assertions.assertFalse(assets.isEmpty());
 
-		for (String index : new String[] {"activities", "activity-groups"}) {
+		for (String index : new String[] {"activities"}) {
 			Assertions.assertTrue(
 				faroInfoElasticsearchInvoker.exists(
 					index,
@@ -713,16 +712,11 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			return;
 		}
 
-		ActivityGroup activityGroup = FaroInfoTestUtil.buildActivityGroup(
-			dataSourceId,
-			_individualDog.addIndividual(
-				FaroInfoTestUtil.buildIndividual(dataSource), false));
-
-		activityGroup = _activityGroupRepository.save(activityGroup);
+		Individual individual = _individualDog.addIndividual(
+			FaroInfoTestUtil.buildIndividual(dataSource), false);
 
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(activityGroup, JSONObject.class),
 				_objectMapper.convertValue(
 					_assetRepository.save(
 						_objectMapper.convertValue(
@@ -730,7 +724,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 								dataSourceId),
 							Asset.class)),
 					JSONObject.class),
-				"pageViewed", new String[0]));
+				Long.parseLong(RandomStringUtils.randomNumeric(4)),
+				dataSourceId, DateUtil.newDateString(), "pageViewed",
+				new String[0], individual));
 
 		DXPEntity dxpEntity = new DXPEntity();
 
@@ -808,9 +804,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			"CREDENTIALS_VALID"
 		);
 	}
-
-	@Autowired
-	private ActivityGroupRepository _activityGroupRepository;
 
 	@Autowired
 	private AssetRepository _assetRepository;

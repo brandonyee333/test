@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -26,7 +25,6 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
-import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
@@ -257,10 +255,6 @@ public class IndividualActivityFieldsNaniteTest
 
 		Long dataSourceId = _dataSource.getId();
 
-		ActivityGroup activityGroup = _activityGroupRepository.save(
-			FaroInfoTestUtil.buildActivityGroup(
-				dataSourceId, DateUtil.toUTCDate(dateString), individual));
-
 		Asset asset = _assetRepository.save(
 			_objectMapper.convertValue(
 				FaroInfoTestUtil.buildAssetJSONObject(
@@ -270,9 +264,9 @@ public class IndividualActivityFieldsNaniteTest
 		for (int i = 0; i < activitiesCount; i++) {
 			_faroInfoActivityDog.addActivity(
 				FaroInfoTestUtil.buildActivityJSONObject(
-					_objectMapper.convertValue(activityGroup, JSONObject.class),
 					_objectMapper.convertValue(asset, JSONObject.class),
-					channelId, eventId, new String[0]));
+					channelId, dataSourceId, dateString, eventId, new String[0],
+					individual));
 
 			if (_faroInfoActivityDog.isActivity(applicationId, eventId)) {
 				_messageBus.sendMessage(
@@ -401,9 +395,6 @@ public class IndividualActivityFieldsNaniteTest
 			dateString,
 			DateUtil.toUTCString(individualLastActivityDate.getActivityDate()));
 	}
-
-	@Autowired
-	private ActivityGroupRepository _activityGroupRepository;
 
 	@Autowired
 	private AssetRepository _assetRepository;
