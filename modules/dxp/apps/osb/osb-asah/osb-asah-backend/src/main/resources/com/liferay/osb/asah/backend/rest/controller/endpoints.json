@@ -28,14 +28,6 @@
 			"href": "{url}/activities/assets{?filter,page,size,sort*}",
 			"templated": true
 		},
-		"activity-group": {
-			"href": "{url}/activity-groups/{id}",
-			"templated": true
-		},
-		"activity-groups": {
-			"href": "{url}/activity-groups{?apply,expand,expandFilter,filter,page,size,sort*}",
-			"templated": true
-		},
 		"admin-data": {
 			"href": "{url}/admin/data/{weDeployDataServiceName}/{collectionName}",
 			"templated": true
