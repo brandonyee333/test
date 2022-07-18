@@ -119,7 +119,6 @@ WHEN MATCHED AND staging.deleted IS NULL THEN
 	UPDATE SET
 		replica.className = staging.className,
 		replica.dataType = staging.dataType,
-		replica.dataType = staging.dataType,
 		replica.displayType = staging.displayType,
 		replica.modifiedDate = staging.modifiedDate,
 		replica.name = staging.name
