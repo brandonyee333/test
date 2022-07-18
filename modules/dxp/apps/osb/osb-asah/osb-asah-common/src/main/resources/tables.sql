@@ -8,20 +8,6 @@ CREATE TABLE IF NOT EXISTS Account (
 	modifiedDate TIMESTAMPTZ
 );
 
-CREATE TABLE IF NOT EXISTS ActivityGroup (
-	id BIGSERIAL PRIMARY KEY,
-	activityType TEXT,
-	channelId BIGINT,
-	dataSourceId BIGINT,
-	dayDate TIMESTAMPTZ,
-	endDate TIMESTAMPTZ,
-	endLocalDateTime TIMESTAMP,
-	ownerId BIGINT,
-	startDate TIMESTAMPTZ,
-	startLocalDateTime TIMESTAMP,
-	userId TEXT
-);
-
 CREATE TABLE IF NOT EXISTS AsahMarker (
 	id VARCHAR(50) PRIMARY KEY,
 	context JSON
