@@ -8890,8 +8890,10 @@ public class PortalImpl implements Portal {
 			for (Portlet portlet : layoutTypePortlet.getAllPortlets()) {
 				if ((portletId.equals(portlet.getPortletId()) ||
 					 portletId.equals(portlet.getRootPortletId())) &&
-					!layout.isPortletEmbedded(portletId, layout.getGroupId()) &&
-					!layoutTypePortlet.isPortletCustomizable(portletId)) {
+					!layout.isPortletEmbedded(
+						portlet.getPortletId(), layout.getGroupId()) &&
+					!layoutTypePortlet.isPortletCustomizable(
+						portlet.getPortletId())) {
 
 					return layout.getPlid();
 				}
