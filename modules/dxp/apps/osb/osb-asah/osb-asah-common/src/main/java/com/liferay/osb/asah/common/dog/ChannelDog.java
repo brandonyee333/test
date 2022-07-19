@@ -136,6 +136,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 			"user-sessions");
 		_deleteIndividualReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
+
+		_faroInfoActivityDog.deleteActivies(new HashSet<>(channelIds));
+		_segmentDog.deleteSegments(new HashSet<>(channelIds));
 	}
 
 	public void deleteChannels(
