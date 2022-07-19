@@ -229,10 +229,11 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 			return _toDateValue(fieldValue);
 		}
-		else if ((field.getType() == LegacySQLTypeName.INTEGER) ||
-				 (field.getType() == LegacySQLTypeName.NUMERIC)) {
-
+		else if (field.getType() == LegacySQLTypeName.INTEGER) {
 			return _toLongValue(fieldValue);
+		}
+		else if (field.getType() == LegacySQLTypeName.NUMERIC) {
+			return _toBigDecimalValue(fieldValue);
 		}
 		else if (field.getType() == LegacySQLTypeName.STRING) {
 			return _toStringValue(fieldValue);
