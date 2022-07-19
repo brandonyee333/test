@@ -1371,6 +1371,8 @@ app.server.type=@{app.server.type}]]></echo>
 					<test-action>
 						<database-test-run-test database.type="@{database.type}" database.version="@{database.version}" rebuild.database="false">
 							<test-action>
+								<lstopwatch action="start" name="test.execution.duration" />
+
 								<trycatch>
 									<try>
 										<get-test-batch-app-server-start-executable-arg-line />
@@ -1399,6 +1401,8 @@ app.server.type=@{app.server.type}]]></echo>
 										</if>
 									</try>
 									<finally>
+										<lstopwatch action="total" name="test.execution.duration" />
+
 										<if>
 											<equals arg1="@{test.portal.log.assert}" arg2="true" />
 											<then>
@@ -2435,6 +2439,8 @@ log.sanitizer.enabled=false</echo>
 
 							<echo>Executing Gradle task in directory "modules": testIntegration.</echo>
 
+							<lstopwatch action="start" name="test.execution.duration" />
+
 							<gradle-execute dir="modules" refreshdependencies="@{refreshdependencies}" task="testIntegration">
 								<arg value="--continue" />
 								<arg value="-Dapp.server.start.executable.arg.line=${test.batch.app.server.start.executable.arg.line}" />
@@ -2442,6 +2448,8 @@ log.sanitizer.enabled=false</echo>
 								<arg value="-Dbuild.exclude.ant.plugin=true" />
 								<arg value="-Dtest.class.group.index=${axis.variable}" />
 							</gradle-execute>
+
+							<lstopwatch action="total" name="test.execution.duration" />
 
 							<if>
 								<and>
@@ -4771,6 +4779,8 @@ log.sanitizer.enabled=false</echo>
 			<test-action>
 				<print-test-class-group test.class.group.index="${axis.variable}" />
 
+				<lstopwatch action="start" name="test.execution.duration" />
+
 				<gradle-execute dir="modules" task="test">
 					<arg value="--continue" />
 					<arg value="-Dbuild.exclude.ant.plugin=true" />
@@ -4778,6 +4788,8 @@ log.sanitizer.enabled=false</echo>
 					<arg value="-Djunit.code.coverage=${test.batch.code.coverage}" />
 					<arg value="-Dtest.class.group.index=${axis.variable}" />
 				</gradle-execute>
+
+				<lstopwatch action="total" name="test.execution.duration" />
 			</test-action>
 
 			<test-set-up>
@@ -6035,6 +6047,8 @@ ${output.content}</echo>
 			<test-action>
 				<print-test-class-group test.class.group.index="${axis.variable}" />
 
+				<lstopwatch action="start" name="test.execution.duration" />
+
 				<ant dir="portal-kernel" inheritAll="false" target="test-class-group">
 					<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
@@ -6050,6 +6064,8 @@ ${output.content}</echo>
 					<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 				</ant>
+
+				<lstopwatch action="total" name="test.execution.duration" />
 			</test-action>
 
 			<test-set-up>
