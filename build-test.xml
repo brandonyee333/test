@@ -5974,6 +5974,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 		<attribute default="" name="testable.portal.started.marker.file" />
 
 		<sequential>
+			<lstopwatch action="start" name="start.app.server.@{app.server.bundle.index}" />
+
 			<if>
 				<equals arg1="${tcat.enabled}" arg2="true" />
 				<then>
@@ -6002,6 +6004,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					/>
 				</else>
 			</if>
+
+			<lstopwatch action="total" name="start.app.server.@{app.server.bundle.index}" />
 		</sequential>
 	</macrodef>
 
@@ -6451,6 +6455,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 		<attribute default="0" name="app.server.explicit.stop.count" />
 
 		<sequential>
+			<lstopwatch action="start" name="stop.app.server.@{app.server.bundle.index}" />
+
 			<if>
 				<equals arg1="${tcat.enabled}" arg2="true" />
 				<then>
@@ -6482,6 +6488,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					/>
 				</else>
 			</if>
+
+			<lstopwatch action="total" name="stop.app.server.@{app.server.bundle.index}" />
 		</sequential>
 	</macrodef>
 
