@@ -240,6 +240,31 @@ CREATE TABLE IF NOT EXISTS BQIdentityChannel (
     PRIMARY KEY (channelId, identityId)
 );
 
+CREATE TABLE IF NOT EXISTS Journal (
+	assetId VARCHAR,
+	assetPrimaryKey VARCHAR,
+	browserName VARCHAR,
+	canonicalUrl VARCHAR,
+	channelId BIGINT,
+	city VARCHAR,
+	clicks BIGINT,
+	country VARCHAR,
+	dataSourceId BIGINT,
+	deviceType VARCHAR,
+	eventDate TIMESTAMP,
+	individualId BIGINT,
+	knownIndividual BOOLEAN,
+	platformName VARCHAR,
+	projectId VARCHAR,
+	region VARCHAR,
+	segmentNames ARRAY<VARCHAR>,
+	sessionId VARCHAR,
+	title VARCHAR,
+	userId VARCHAR,
+	variantId VARCHAR,
+	views BIGINT
+);
+
 CREATE TABLE IF NOT EXISTS BQMembership (
 	createDate TIMESTAMPTZ,
 	id BIGSERIAL PRIMARY KEY,
