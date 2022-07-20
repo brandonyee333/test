@@ -16,10 +16,11 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.model.AnalysisType;
-import com.liferay.osb.asah.common.model.BreakdownItem;
+import com.liferay.osb.asah.common.model.BreakdownRow;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.Interval;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
 
@@ -73,13 +74,11 @@ public interface CustomBQEventRepository {
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId);
 
-	public Map<Object, Number> getBQEventPropertyValues(
-		AnalysisType analysisType, @Nullable BreakdownItem breakdownItem,
-		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
-		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		@Nullable Long eventDefinitionId, Pageable pageable,
-		@Nullable Date rangeEndDate, @Nullable Date rangeStartDate,
-		String timeZoneId);
+	public List<BreakdownRow> getBQEventPropertyValues(
+		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
+		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
+		Pageable pageable, TimeRange timeRange, String timeZoneId);
 
 	public long getBQEventPropertyValuesCount(
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
