@@ -1,13 +1,9 @@
-USE hive.default;
-
-DELETE FROM Journal;
-
-INSERT INTO Journal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-1d}'), 'Windows', 'test', 1);
-INSERT INTO Journal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-5d}'), 'Ubuntu','test', 2);
-INSERT INTO Journal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-10d}'), 'Windows','test', 3);
-INSERT INTO Journal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-15d}'), 'Windows','test', 4);
-INSERT INTO Journal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-20d}'), 'Ubuntu','test', 5);
-INSERT INTO Journal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-29d}'), 'Windows','test', 6);
-INSERT INTO Journal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-12d}'), 'Ubuntu','test', 1);
-INSERT INTO Journal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-4d}'), 'Android','test', 3);
-INSERT INTO Journal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-18d}'), 'IOS','test', 9);
+INSERT INTO BQJournal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-1d}'), 'Windows', 'test', 1);
+INSERT INTO BQJournal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-5d}'), 'Ubuntu','test', 2);
+INSERT INTO BQJournal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-10d}'), 'Windows','test', 3);
+INSERT INTO BQJournal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-15d}'), 'Windows','test', 4);
+INSERT INTO BQJournal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-20d}'), 'Ubuntu','test', 5);
+INSERT INTO BQJournal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-29d}'), 'Windows','test', 6);
+INSERT INTO BQJournal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-12d}'), 'Ubuntu','test', 1);
+INSERT INTO BQJournal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-4d}'), 'Android','test', 3);
+INSERT INTO BQJournal (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-18d}'), 'IOS','test', 9);

@@ -1,6 +1,2 @@
-USE hive.default;
-
-DELETE FROM Journal;
-
-INSERT INTO Journal (assetId, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'test', 2);
-INSERT INTO Journal (assetId, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'test', 1)
+INSERT INTO BQJournal (assetId, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'test', 2);
+INSERT INTO BQJournal (assetId, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'test', 1)
