@@ -39,6 +39,7 @@ public class BreakdownItem {
 		if (Objects.equals(_breakdownItems, breakdownItem._breakdownItems) &&
 			Objects.equals(
 				_eventAnalysisFilters, breakdownItem._eventAnalysisFilters) &&
+			Objects.equals(_internalName, breakdownItem._internalName) &&
 			Objects.equals(_leafNode, breakdownItem._leafNode) &&
 			Objects.equals(_name, breakdownItem._name) &&
 			Objects.equals(_previousValue, breakdownItem._previousValue) &&
@@ -55,8 +56,14 @@ public class BreakdownItem {
 	}
 
 	@JsonIgnore
-	public List<EventAnalysisFilter> getEventAnalysisFilters() {
+	public List<EventAnalysisFilter> getEventAnalysisFilters() { //no need
+
 		return _eventAnalysisFilters;
+	}
+
+	@JsonIgnore
+	public String getInternalName() {
+		return _internalName;
 	}
 
 	public String getName() {
@@ -74,8 +81,8 @@ public class BreakdownItem {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_breakdownItems, _eventAnalysisFilters, _leafNode, _name,
-			_previousValue, _value);
+			_breakdownItems, _eventAnalysisFilters, _internalName, _leafNode,
+			_name, _previousValue, _value);
 	}
 
 	public boolean isLeafNode() {
@@ -90,6 +97,10 @@ public class BreakdownItem {
 		List<EventAnalysisFilter> eventAnalysisFilters) {
 
 		_eventAnalysisFilters = eventAnalysisFilters;
+	}
+
+	public void setInternalName(String internalName) {
+		_internalName = internalName;
 	}
 
 	public void setLeafNode(boolean leafNode) {
@@ -110,6 +121,7 @@ public class BreakdownItem {
 
 	private List<BreakdownItem> _breakdownItems;
 	private List<EventAnalysisFilter> _eventAnalysisFilters;
+	private String _internalName;
 	private boolean _leafNode;
 	private String _name;
 	private Number _previousValue;
