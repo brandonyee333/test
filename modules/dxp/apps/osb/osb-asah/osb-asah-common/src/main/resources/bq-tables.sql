@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS BQAccountGroup (
 	type TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Blog (
+CREATE TABLE IF NOT EXISTS BQBlog (
 	assetId VARCHAR,
 	assetPrimaryKey VARCHAR,
 	browserName VARCHAR,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS BQCSVUser (
     fields JSON
 );
 
-CREATE TABLE IF NOT EXISTS CustomAsset (
+CREATE TABLE IF NOT EXISTS BQCustomAsset (
 	abandonments BIGINT,
 	assetId VARCHAR,
 	assetPrimaryKey VARCHAR,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS BQDataSourceUser (
     PRIMARY KEY (dataSourceId, userId)
 );
 
-CREATE TABLE IF NOT EXISTS DocumentLibrary (
+CREATE TABLE IF NOT EXISTS BQDocumentLibrary (
 	assetId VARCHAR,
 	assetPrimaryKey VARCHAR,
 	browserName VARCHAR,
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS BQExpandoValue (
 	value TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Form (
+CREATE TABLE IF NOT EXISTS BQForm (
 	abandonments BIGINT,
 	assetId VARCHAR,
 	assetPrimaryKey VARCHAR,
@@ -240,7 +240,7 @@ CREATE TABLE IF NOT EXISTS BQIdentityChannel (
     PRIMARY KEY (channelId, identityId)
 );
 
-CREATE TABLE IF NOT EXISTS Journal (
+CREATE TABLE IF NOT EXISTS BQJournal (
 	assetId VARCHAR,
 	assetPrimaryKey VARCHAR,
 	browserName VARCHAR,
