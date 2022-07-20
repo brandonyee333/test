@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
-import com.liferay.osb.asah.backend.OSBAsahBackendTrinoSpringTestContext;
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.DocumentLibraryAssetMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.DocumentLibraryMetricType;
@@ -35,13 +35,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class DocumentLibraryAssetMetricDogTest
-	implements OSBAsahBackendTrinoSpringTestContext,
+	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_histogram_last_14_days.sql"
 	)
 	@Test

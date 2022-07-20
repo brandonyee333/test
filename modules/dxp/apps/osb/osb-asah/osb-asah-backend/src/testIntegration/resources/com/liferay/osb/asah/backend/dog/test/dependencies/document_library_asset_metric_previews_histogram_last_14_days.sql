@@ -1,13 +1,9 @@
-USE hive.default;
-
-DELETE FROM DocumentLibrary;
-
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now}'), 'test', 1);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-1d}'), 'test', 4);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-2d}'), 'test', 2);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-6d}'), 'test', 2);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-8d}'), 'test', 7);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-9d}'), 'test', 1);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-12d}'), 'test', 4);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-14d}'), 'test', 2);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-15d}'), 'test', 6);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now}'), 'test', 1);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-1d}'), 'test', 4);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-2d}'), 'test', 2);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-6d}'), 'test', 2);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-8d}'), 'test', 7);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-9d}'), 'test', 1);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-12d}'), 'test', 4);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-14d}'), 'test', 2);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-15d}'), 'test', 6);

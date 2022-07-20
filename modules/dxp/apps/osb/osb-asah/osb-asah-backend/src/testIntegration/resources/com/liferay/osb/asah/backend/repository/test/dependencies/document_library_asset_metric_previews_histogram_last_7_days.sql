@@ -1,6 +1,2 @@
-USE hive.default;
-
-DELETE FROM DocumentLibrary;
-
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'test', 2);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'test', 1)
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'test', 2);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'test', 1)

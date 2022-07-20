@@ -1,7 +1,3 @@
-USE hive.default;
-
-DELETE FROM DocumentLibrary;
-
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews, segmentNames) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-1d}'), 'test', 1, ARRAY ['A', 'B']);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews, segmentNames) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-5d}'), 'test', 2, ARRAY ['B', 'C']);
-INSERT INTO DocumentLibrary (assetId, channelId, eventDate, projectId, previews, segmentNames) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-10d}'), 'test', 3, ARRAY ['A', 'B', 'C']);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews, segmentNames) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-1d}'), 'test', 1, ARRAY ['A', 'B']);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews, segmentNames) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-5d}'), 'test', 2, ARRAY ['B', 'C']);
+INSERT INTO BQDocumentLibrary (assetId, channelId, eventDate, projectId, previews, segmentNames) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-10d}'), 'test', 3, ARRAY ['A', 'B', 'C']);

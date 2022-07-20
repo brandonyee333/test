@@ -28,14 +28,12 @@ import java.util.function.BiConsumer;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
 @Repository("DocumentLibraryAssetMetricRepository")
 public class DocumentLibraryAssetMetricRepositoryImpl
 	extends BaseAssetMetricRepository<DocumentLibraryMetric> {
@@ -101,7 +99,7 @@ public class DocumentLibraryAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName() {
-		return "hive.default.DocumentLibrary";
+		return "BQDocumentLibrary";
 	}
 
 }

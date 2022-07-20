@@ -37,12 +37,10 @@ import org.springframework.data.domain.PageRequest;
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class DocumentLibraryAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<DocumentLibraryMetric> {
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_browser_last_30_days.sql"
 	)
 	@Test
@@ -57,7 +55,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_canonical_urls_last_7_days.sql"
 	)
 	@Test
@@ -66,7 +63,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_device_last_30_days.sql"
 	)
 	@Test
@@ -80,7 +76,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_geolocation_last_30_days.sql"
 	)
 	@Test
@@ -95,7 +90,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_views_individuals_last_30_days.sql"
 	)
 	@Test
@@ -105,7 +99,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -124,7 +117,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -139,7 +131,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_histogram_last_7_days.sql"
 	)
 	@Test
@@ -152,7 +143,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -165,7 +155,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -176,7 +165,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_ratings_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -195,7 +183,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_views_segments_last_30_days.sql"
 	)
 	@Test
@@ -205,7 +192,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "document_library_asset_metric_views_segments_last_7_days.sql"
 	)
 	@Test
