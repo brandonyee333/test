@@ -22,24 +22,27 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.BreakdownItem;
-import com.liferay.osb.asah.common.model.DateGrouping;
+import com.liferay.osb.asah.common.model.BreakdownRow;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.EventAnalysisResult;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.model.comparator.BreakdownItemComparator;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahDuplicateNameException;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahNameException;
+import com.liferay.osb.asah.common.util.GetterUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.math.BigDecimal;
 
 import java.time.LocalDate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -50,6 +53,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -202,10 +207,10 @@ public class EventAnalysisDog {
 
 					eventAnalysisResult.setBreakdownItems(
 						_getBreakdownItems(
-							analysisType, channelId, compareToPrevious, 0,
+							analysisType, channelId, compareToPrevious,
 							eventAnalysisResult.getValue(),
 							eventAnalysisBreakdowns, eventAnalysisFilters,
-							eventDefinitionId, PageRequest.of(page, size), null,
+							eventDefinitionId, PageRequest.of(page, size),
 							eventAnalysisResult.getPreviousValue(), timeRange));
 				},
 				_executorService),
@@ -274,64 +279,116 @@ public class EventAnalysisDog {
 	}
 
 	private List<BreakdownItem> _createBreakdownItems(
-		AnalysisType analysisType, Map<Object, Number> bqEventPropertyValues,
-		Long channelId, boolean compareToPrevious,
-		EventAnalysisBreakdown eventAnalysisBreakdown,
-		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		String eventDefinitionName, boolean lastBreakdown,
-		BreakdownItem parentBreakdownItem, TimeRange timeRange) {
+		List<BreakdownRow> breakdownRows, boolean compareToPrevious,
+		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
+		EventDefinition eventDefinition) {
+
+		BreakdownRow firstBreakdownRow = breakdownRows.get(0);
+
+		List<BreakdownItem> breakdownItems = _createBreakdownItems(
+			breakdownRows, firstBreakdownRow.getBreakdownColumnsCount(),
+			compareToPrevious, 0, eventAnalysisBreakdowns, eventDefinition);
+
+		Stream<BreakdownItem> stream = breakdownItems.stream();
+
+		return stream.filter(
+			breakdownItem -> {
+				Number value = breakdownItem.getValue();
+
+				return value.floatValue() > 0;
+			}
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private List<BreakdownItem> _createBreakdownItems(
+		List<BreakdownRow> breakdownRows, int columnsCount,
+		boolean compareToPrevious, int currentColumnIndex,
+		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
+		EventDefinition eventDefinition) {
+
+		if ((compareToPrevious &&
+			 (currentColumnIndex ==
+				 (columnsCount - _BREAKDOWN_LEAF_INCLUDE_PREVIOUS_OFFSET))) ||
+			(currentColumnIndex == (columnsCount - _BREAKDOWN_LEAF_OFFSET))) {
+
+			Stream<BreakdownRow> stream = breakdownRows.stream();
+
+			return stream.map(
+				breakdownRow -> _createLeafBreakdownItem(
+					breakdownRow, columnsCount, currentColumnIndex,
+					eventDefinition)
+			).sorted(
+				BreakdownItemComparator.getBreakdownItemComparator("ASC")
+			).collect(
+				Collectors.toList()
+			);
+		}
 
 		List<BreakdownItem> breakdownItems = new ArrayList<>();
 
-		for (Map.Entry<Object, Number> entry :
-				bqEventPropertyValues.entrySet()) {
+		Stream<BreakdownRow> stream1 = breakdownRows.stream();
+
+		Map<BreakdownRow.BreakdownColumn, List<BreakdownRow>> breakdownRowsMap =
+			stream1.collect(
+				Collectors.groupingBy(
+					breakdownRow -> breakdownRow.getBreakdownColumn(
+						currentColumnIndex)));
+
+		EventAnalysisBreakdown eventAnalysisBreakdown =
+			eventAnalysisBreakdowns.get(currentColumnIndex);
+
+		for (Map.Entry<BreakdownRow.BreakdownColumn, List<BreakdownRow>> entry :
+				breakdownRowsMap.entrySet()) {
 
 			BreakdownItem breakdownItem = new BreakdownItem();
 
-			List<EventAnalysisFilter> breakdownEventAnalysisFilters =
-				new ArrayList<>();
+			BreakdownRow.BreakdownColumn breakdownColumn = entry.getKey();
 
-			if (parentBreakdownItem != null) {
-				breakdownEventAnalysisFilters.addAll(
-					parentBreakdownItem.getEventAnalysisFilters());
-			}
+			breakdownItem.setInternalName(
+				String.valueOf(breakdownColumn.getValue()));
 
-			breakdownEventAnalysisFilters.add(
-				_getEventAnalysisFilter(
-					eventAnalysisBreakdown, String.valueOf(entry.getKey())));
-
-			breakdownItem.setEventAnalysisFilters(
-				breakdownEventAnalysisFilters);
-
-			breakdownItem.setLeafNode(false);
 			breakdownItem.setName(
 				_getBreakdownItemName(
-					eventAnalysisBreakdown, String.valueOf(entry.getKey())));
+					eventAnalysisBreakdown,
+					String.valueOf(breakdownColumn.getValue())));
 
-			if (compareToPrevious) {
-				List<EventAnalysisFilter> previousEventAnalysisFilters =
-					new ArrayList<>(eventAnalysisFilters);
+			List<BreakdownItem> childrenBreakdownItems = new ArrayList<>();
 
-				previousEventAnalysisFilters.addAll(
-					breakdownItem.getEventAnalysisFilters());
+			BigDecimal previousValue = new BigDecimal(0);
+			BigDecimal value = new BigDecimal(0);
 
-				breakdownItem.setPreviousValue(
-					_getAnalysisCount(
-						analysisType, channelId, previousEventAnalysisFilters,
-						eventDefinitionId, timeRange.getPreviousTimeRange()));
+			for (BreakdownItem childBreakdownItem :
+					_createBreakdownItems(
+						entry.getValue(), columnsCount, compareToPrevious,
+						currentColumnIndex + 1, eventAnalysisBreakdowns,
+						eventDefinition)) {
+
+				previousValue = previousValue.add(
+					new BigDecimal(
+						String.valueOf(childBreakdownItem.getPreviousValue())));
+
+				BigDecimal childBreakdownItemValue = new BigDecimal(
+					String.valueOf(childBreakdownItem.getValue()));
+
+				value = value.add(childBreakdownItemValue);
+
+				if (childBreakdownItemValue.compareTo(new BigDecimal(0)) > 0) {
+					childrenBreakdownItems.add(childBreakdownItem);
+				}
 			}
 
-			breakdownItem.setValue(entry.getValue());
-
-			if (lastBreakdown) {
-				breakdownItem.setBreakdownItems(
-					_createLeafNodeBreakdownItems(
-						eventDefinitionName, breakdownItem.getPreviousValue(),
-						breakdownItem.getValue()));
-			}
+			breakdownItem.setBreakdownItems(childrenBreakdownItems);
+			breakdownItem.setPreviousValue(previousValue);
+			breakdownItem.setValue(value);
 
 			breakdownItems.add(breakdownItem);
 		}
+
+		breakdownItems.sort(
+			BreakdownItemComparator.getBreakdownItemComparator(
+				eventAnalysisBreakdown.getSortType()));
 
 		return breakdownItems;
 	}
@@ -348,7 +405,29 @@ public class EventAnalysisDog {
 		return Collections.singletonList(allIndividualsBreakdownItem);
 	}
 
-	private List<BreakdownItem> _createLeafNodeBreakdownItems(
+	private BreakdownItem _createLeafBreakdownItem(
+		BreakdownRow breakdownRow, int columnsCount, int currentColumnIndex,
+		EventDefinition eventDefinition) {
+
+		BreakdownRow.BreakdownColumn breakdownColumn =
+			breakdownRow.getBreakdownColumn(currentColumnIndex++);
+
+		Number value = GetterUtil.getNumber(breakdownColumn.getValue());
+
+		Number previousValue = 0;
+
+		if (currentColumnIndex == (columnsCount - 1)) {
+			breakdownColumn = breakdownRow.getBreakdownColumn(
+				currentColumnIndex);
+
+			previousValue = GetterUtil.getNumber(breakdownColumn.getValue());
+		}
+
+		return _createLeafNodeBreakdownItem(
+			eventDefinition.getDisplayName(), previousValue, value);
+	}
+
+	private BreakdownItem _createLeafNodeBreakdownItem(
 		String eventDefinitionName, Number previousValue, Number value) {
 
 		BreakdownItem eventDefinitionBreakdownItem = new BreakdownItem();
@@ -360,7 +439,7 @@ public class EventAnalysisDog {
 		eventDefinitionBreakdownItem.setPreviousValue(previousValue);
 		eventDefinitionBreakdownItem.setValue(value);
 
-		return Collections.singletonList(eventDefinitionBreakdownItem);
+		return eventDefinitionBreakdownItem;
 	}
 
 	private Number _getAnalysisCount(
@@ -395,7 +474,7 @@ public class EventAnalysisDog {
 	private String _getBreakdownItemName(
 		EventAnalysisBreakdown eventAnalysisBreakdown, String key) {
 
-		if (StringUtil.isNull(key)) {
+		if (StringUtil.isNull(key) || key.equals("undefined")) {
 			return "undefined";
 		}
 
@@ -433,123 +512,32 @@ public class EventAnalysisDog {
 
 	private List<BreakdownItem> _getBreakdownItems(
 		AnalysisType analysisType, Long channelId, boolean compareToPrevious,
-		int count, Number eventAnalysisValue,
+		Number eventAnalysisValue,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		Pageable pageable, BreakdownItem parentBreakdownItem,
-		Number previousEventAnalysisValue, TimeRange timeRange) {
+		Pageable pageable, Number previousEventAnalysisValue,
+		TimeRange timeRange) {
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.getEventDefinition(eventDefinitionId);
 
 		if (eventAnalysisBreakdowns.isEmpty()) {
-			return _createLeafNodeBreakdownItems(
-				eventDefinition.getDisplayName(), previousEventAnalysisValue,
-				eventAnalysisValue);
+			return Collections.singletonList(
+				_createLeafNodeBreakdownItem(
+					eventDefinition.getDisplayName(),
+					previousEventAnalysisValue, eventAnalysisValue));
 		}
 
-		EventAnalysisBreakdown eventAnalysisBreakdown =
-			eventAnalysisBreakdowns.get(count);
-
-		boolean lastBreakdown = false;
-
-		if (count == (eventAnalysisBreakdowns.size() - 1)) {
-			lastBreakdown = true;
-		}
-
-		List<BreakdownItem> breakdownItems = _createBreakdownItems(
-			analysisType,
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				analysisType, parentBreakdownItem, channelId,
-				eventAnalysisBreakdown, eventAnalysisFilters, eventDefinitionId,
-				pageable, timeRange.getEndDate(), timeRange.getStartDate(),
-				_timeZoneDog.getTimeZoneId()),
-			channelId, compareToPrevious, eventAnalysisBreakdown,
-			eventAnalysisFilters, eventDefinitionId,
-			eventDefinition.getDisplayName(), lastBreakdown,
-			parentBreakdownItem, timeRange);
+				analysisType, channelId, compareToPrevious,
+				eventAnalysisBreakdowns, eventAnalysisFilters,
+				eventDefinitionId, pageable, timeRange,
+				_timeZoneDog.getTimeZoneId());
 
-		if (!lastBreakdown) {
-			String projectId = ProjectIdThreadLocal.getProjectId();
-
-			CompletableFuture<Void> completableFuture =
-				CompletableFuture.allOf();
-
-			for (BreakdownItem breakdownItem : breakdownItems) {
-				completableFuture = CompletableFuture.allOf(
-					completableFuture,
-					CompletableFuture.runAsync(
-						() -> {
-							ProjectIdThreadLocal.setProjectId(projectId);
-
-							breakdownItem.setBreakdownItems(
-								_getBreakdownItems(
-									analysisType, channelId, compareToPrevious,
-									count + 1, eventAnalysisValue,
-									eventAnalysisBreakdowns,
-									eventAnalysisFilters, eventDefinitionId,
-									PageRequest.of(0, 5), breakdownItem,
-									previousEventAnalysisValue, timeRange));
-						},
-						_breakdownItemExecutorService));
-			}
-
-			completableFuture.join();
-		}
-
-		return breakdownItems;
-	}
-
-	private EventAnalysisFilter _getEventAnalysisFilter(
-		EventAnalysisBreakdown eventAnalysisBreakdown, String value) {
-
-		if (StringUtil.isNull(value)) {
-			return new EventAnalysisFilter(
-				eventAnalysisBreakdown.getAttributeId(),
-				eventAnalysisBreakdown.getAttributeType(),
-				eventAnalysisBreakdown.getDataType(),
-				eventAnalysisBreakdown.getDescription(),
-				eventAnalysisBreakdown.getDisplayName(), "eq",
-				Collections.singletonList(null));
-		}
-
-		EventAttributeDefinition.DataType dataType =
-			eventAnalysisBreakdown.getDataType();
-
-		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			DateGrouping dateGrouping =
-				eventAnalysisBreakdown.getDateGrouping();
-
-			return new EventAnalysisFilter(
-				eventAnalysisBreakdown.getAttributeId(),
-				eventAnalysisBreakdown.getAttributeType(),
-				eventAnalysisBreakdown.getDataType(),
-				eventAnalysisBreakdown.getDescription(),
-				eventAnalysisBreakdown.getDisplayName(), "dateGrouping",
-				Arrays.asList(dateGrouping.toString(), value));
-		}
-
-		if (dataType.equals(EventAttributeDefinition.DataType.DURATION) ||
-			dataType.equals(EventAttributeDefinition.DataType.NUMBER)) {
-
-			return new EventAnalysisFilter(
-				eventAnalysisBreakdown.getAttributeId(),
-				eventAnalysisBreakdown.getAttributeType(),
-				eventAnalysisBreakdown.getDataType(),
-				eventAnalysisBreakdown.getDescription(),
-				eventAnalysisBreakdown.getDisplayName(), "bin",
-				Arrays.asList(
-					String.valueOf(eventAnalysisBreakdown.getBinSize()),
-					value));
-		}
-
-		return new EventAnalysisFilter(
-			eventAnalysisBreakdown.getAttributeId(),
-			eventAnalysisBreakdown.getAttributeType(),
-			eventAnalysisBreakdown.getDataType(),
-			eventAnalysisBreakdown.getDescription(),
-			eventAnalysisBreakdown.getDisplayName(), "eq",
-			Collections.singletonList(value));
+		return _createBreakdownItems(
+			breakdownRows, compareToPrevious, eventAnalysisBreakdowns,
+			eventDefinition);
 	}
 
 	private long _getTotalPagesCount(
@@ -631,13 +619,14 @@ public class EventAnalysisDog {
 		}
 	}
 
+	private static final int _BREAKDOWN_LEAF_INCLUDE_PREVIOUS_OFFSET = 2;
+
+	private static final int _BREAKDOWN_LEAF_OFFSET = 1;
+
 	private static final Log _log = LogFactory.getLog(EventAnalysisDog.class);
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
-
-	private final ExecutorService _breakdownItemExecutorService =
-		Executors.newFixedThreadPool(20);
 
 	@Autowired
 	private EventAnalysisRepository _eventAnalysisRepository;
