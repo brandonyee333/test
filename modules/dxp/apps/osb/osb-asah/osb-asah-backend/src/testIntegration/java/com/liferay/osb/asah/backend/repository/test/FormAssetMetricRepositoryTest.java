@@ -37,12 +37,10 @@ import org.springframework.data.domain.PageRequest;
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class FormAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<FormMetric> {
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_browser_last_30_days.sql"
 	)
 	@Test
@@ -56,7 +54,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_canonical_urls_last_7_days.sql"
 	)
 	@Test
@@ -65,7 +62,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_device_last_30_days.sql"
 	)
 	@Test
@@ -78,7 +74,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_geolocation_last_30_days.sql"
 	)
 	@Test
@@ -92,7 +87,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_individuals_last_30_days.sql"
 	)
 	@Test
@@ -101,7 +95,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_segments_last_30_days.sql"
 	)
 	@Test
@@ -111,7 +104,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_segments_last_7_days.sql"
 	)
 	@Test
@@ -120,7 +112,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -137,7 +128,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -152,7 +142,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_histogram_last_7_days.sql"
 	)
 	@Test
@@ -165,7 +154,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -178,7 +166,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "form_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test

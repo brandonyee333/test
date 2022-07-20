@@ -28,14 +28,12 @@ import java.util.function.BiConsumer;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
-@ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
 @Repository("FormAssetMetricRepository")
 public class FormAssetMetricRepositoryImpl
 	extends BaseAssetMetricRepository<FormMetric> {
@@ -109,7 +107,7 @@ public class FormAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName() {
-		return "hive.default.Form";
+		return "BQForm";
 	}
 
 }
