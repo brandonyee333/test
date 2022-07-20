@@ -551,8 +551,7 @@ public class EventAnalysisDog {
 
 		return _bqEventRepository.getBQEventPropertyValuesCount(
 			channelId, eventAnalysisBreakdowns.get(0), eventAnalysisFilters,
-			eventDefinitionId, timeRange.getEndDate(), timeRange.getStartDate(),
-			_timeZoneDog.getTimeZoneId());
+			eventDefinitionId, timeRange, _timeZoneDog.getTimeZoneId());
 	}
 
 	private void _validate(Sort sort) {

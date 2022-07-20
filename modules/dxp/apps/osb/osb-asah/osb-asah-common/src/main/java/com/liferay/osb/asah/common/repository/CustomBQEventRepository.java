@@ -81,10 +81,9 @@ public interface CustomBQEventRepository {
 		Pageable pageable, TimeRange timeRange, String timeZoneId);
 
 	public long getBQEventPropertyValuesCount(
-		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
-		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate, String timeZoneId);
+		Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
+		TimeRange timeRange, String timeZoneId);
 
 	public Map<String, Integer> getBQEventsCountGroupByEventDate(
 		Long channelId, Interval interval, String keywords,

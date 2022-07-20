@@ -359,8 +359,8 @@ public class BQEventRepositoryImpl
 	public long getBQEventPropertyValuesCount(
 		@Nullable Long channelId, EventAnalysisBreakdown eventAnalysisBreakdown,
 		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
-		@Nullable Date rangeStartDate, String timeZoneId) {
+		@Nullable Long eventDefinitionId, TimeRange timeRange,
+		String timeZoneId) {
 
 		EventAttributeDefinition eventAttributeDefinition =
 			_getEventAttributeDefinition(
@@ -369,8 +369,6 @@ public class BQEventRepositoryImpl
 		if (eventAttributeDefinition == null) {
 			return 0;
 		}
-
-		AttributeType attributeType = eventAnalysisBreakdown.getAttributeType();
 
 		Field valueField = _getValueField(
 			false, eventAnalysisBreakdown, eventAttributeDefinition,
@@ -387,15 +385,19 @@ public class BQEventRepositoryImpl
 		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
 			"BQEvent");
 
-		selectJoinStep = _joinEventAttributeTable(
-			attributeType, channelId, eventAttributeDefinition, rangeEndDate,
-			rangeStartDate, selectJoinStep);
+		selectJoinStep = _buildSelectJoinStep(
+			channelId, Arrays.asList(eventAnalysisBreakdown),
+			Collections.singletonMap(
+				eventAnalysisBreakdown.getAttributeId(),
+				eventAttributeDefinition),
+			selectJoinStep, timeRange);
 
 		return _queryExecutor.queryForLong(
 			selectJoinStep.where(
 				_getConditions(
 					channelId, eventAnalysisFilters, eventDefinitionId,
-					rangeEndDate, rangeStartDate, timeZoneId)));
+					timeRange.getEndDate(), timeRange.getStartDate(),
+					timeZoneId)));
 	}
 
 	@Override
