@@ -30,12 +30,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 /**
  * @author Marcellus Tavares
  */
-@SQLResource(dataSource = "trinoDataSource", resourcePath = "/hive_tables.sql")
 public class CustomAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase {
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "custom_asset_metric_read_time_histogram_last_7_days.sql"
 	)
 	@Test
@@ -48,7 +46,6 @@ public class CustomAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "custom_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -61,7 +58,6 @@ public class CustomAssetMetricRepositoryTest
 	}
 
 	@SQLResource(
-		dataSource = "trinoDataSource",
 		resourcePath = "custom_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test

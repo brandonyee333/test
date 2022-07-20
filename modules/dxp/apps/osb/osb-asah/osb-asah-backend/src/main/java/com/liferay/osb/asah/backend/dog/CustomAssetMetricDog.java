@@ -18,14 +18,12 @@ import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Marcellus Tavares
  */
 @Component
-@ConditionalOnProperty(havingValue = "true", value = "osb.asah.trino.enabled")
 public class CustomAssetMetricDog extends BaseAssetMetricDog {
 
 	@Override
