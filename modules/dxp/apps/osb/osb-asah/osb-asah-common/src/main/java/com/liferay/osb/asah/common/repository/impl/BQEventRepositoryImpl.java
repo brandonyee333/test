@@ -1088,7 +1088,7 @@ public class BQEventRepositoryImpl
 					uniqueIndividualsField
 				)
 			).otherwise(
-				new BigDecimal(0)
+				BigDecimal.ZERO
 			);
 
 			return field.as("average");

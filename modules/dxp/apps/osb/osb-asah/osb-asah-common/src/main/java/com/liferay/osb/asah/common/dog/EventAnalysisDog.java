@@ -356,8 +356,8 @@ public class EventAnalysisDog {
 
 			List<BreakdownItem> childrenBreakdownItems = new ArrayList<>();
 
-			BigDecimal previousValue = new BigDecimal(0);
-			BigDecimal value = new BigDecimal(0);
+			BigDecimal previousValue = BigDecimal.ZERO;
+			BigDecimal value = BigDecimal.ZERO;
 
 			for (BreakdownItem childBreakdownItem :
 					_createBreakdownItems(
@@ -374,7 +374,7 @@ public class EventAnalysisDog {
 
 				value = value.add(childBreakdownItemValue);
 
-				if (childBreakdownItemValue.compareTo(new BigDecimal(0)) > 0) {
+				if (childBreakdownItemValue.compareTo(BigDecimal.ZERO) > 0) {
 					childrenBreakdownItems.add(childBreakdownItem);
 				}
 			}
