@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
-import com.liferay.osb.asah.common.model.BreakdownItem;
+import com.liferay.osb.asah.common.model.BreakdownRow;
 import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
@@ -39,7 +39,6 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 
 import java.time.LocalDateTime;
@@ -55,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.hamcrest.MatcherAssert;
@@ -292,60 +292,63 @@ public class BQEventRepositoryTest
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesAverage() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.AVERAGE, null, 1L,
-				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, null,
-					"testUrl", "DESC"),
+				AnalysisType.AVERAGE, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"12345", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.STRING, null, null,
+						"testUrl", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new String[] {
-				"https://www.beryl.com/blogs", "https://www.beryl.com/design",
-				"https://www.beryl.com/products"
-			},
-			keys.toArray());
-
-		Collection<Number> numbers = bqEventPropertyValues.values();
-
-		_assertBigDecimalEquals(
-			new BigDecimal[] {
-				BigDecimal.valueOf(1.50), BigDecimal.valueOf(1.00),
-				BigDecimal.valueOf(1.00)
-			},
-			numbers.toArray(new BigDecimal[0]), 2);
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put(
+						"https://www.beryl.com/blogs",
+						BigDecimal.valueOf(1.50));
+					put(
+						"https://www.beryl.com/design",
+						BigDecimal.valueOf(1.00));
+					put(
+						"https://www.beryl.com/products",
+						BigDecimal.valueOf(1.00));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesBoolean() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"67890", AttributeType.EVENT, 1,
-					EventAttributeDefinition.DataType.BOOLEAN, null, null,
-					"testMember", "DESC"),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"67890", AttributeType.EVENT, 1,
+						EventAttributeDefinition.DataType.BOOLEAN, null, null,
+						"testMember", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new Boolean[] {true, false, null}, keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(new Integer[] {6, 4, 1}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("false", BigDecimal.valueOf(4));
+					put("true", BigDecimal.valueOf(6));
+					put("undefined", BigDecimal.valueOf(1));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
@@ -360,8 +363,9 @@ public class BQEventRepositoryTest
 					EventAttributeDefinition.DataType.BOOLEAN, null, null,
 					"testMember", "DESC"),
 				null, 246810L,
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId()));
 	}
 
@@ -377,8 +381,9 @@ public class BQEventRepositoryTest
 					EventAttributeDefinition.DataType.DATE, DateGrouping.MONTH,
 					null, "testDate", "DESC"),
 				null, 246810L,
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId()));
 	}
 
@@ -400,8 +405,9 @@ public class BQEventRepositoryTest
 						"testDate", "between",
 						Arrays.asList("2021-05-10", "2021-06-01"))),
 				246810L,
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 10, 0, 0)),
 				"America/Los_Angeles"));
 	}
 
@@ -417,8 +423,9 @@ public class BQEventRepositoryTest
 					EventAttributeDefinition.DataType.DURATION, null, null,
 					"testDuration", "DESC"),
 				null, 246810L,
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId()));
 	}
 
@@ -434,21 +441,23 @@ public class BQEventRepositoryTest
 					EventAttributeDefinition.DataType.NUMBER, null, null,
 					"testRating", "DESC"),
 				null, 246810L,
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesDayGroupingWithTimeZone() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"56789", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
-					null, "testDate", "DESC"),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"56789", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.DATE,
+						DateGrouping.DAY, null, "testDate", "DESC")),
 				Collections.singletonList(
 					new EventAnalysisFilter(
 						"56789", AttributeType.EVENT,
@@ -456,254 +465,260 @@ public class BQEventRepositoryTest
 						"testDate", "between",
 						Arrays.asList("2021-05-10", "2021-06-01"))),
 				246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 10, 0, 0)),
 				"America/Los_Angeles");
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new String[] {"2021-5-12", "2021-5-13"}, keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(new Integer[] {5, 1}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("2021-5-12", BigDecimal.valueOf(5));
+					put("2021-5-13", BigDecimal.valueOf(1));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesDuration() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"78901", AttributeType.EVENT, 2000,
-					EventAttributeDefinition.DataType.DURATION, null, null,
-					"testDuration", "DESC"),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"78901", AttributeType.EVENT, 2000,
+						EventAttributeDefinition.DataType.DURATION, null, null,
+						"testDuration", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new BigInteger[] {
-				BigInteger.valueOf(0), BigInteger.valueOf(2000),
-				BigInteger.valueOf(4000), BigInteger.valueOf(8000),
-				BigInteger.valueOf(10000), null
-			},
-			keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(
-			new Integer[] {3, 3, 2, 1, 1, 1}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("0", BigDecimal.valueOf(3));
+					put("2000", BigDecimal.valueOf(3));
+					put("4000", BigDecimal.valueOf(2));
+					put("8000", BigDecimal.valueOf(1));
+					put("10000", BigDecimal.valueOf(1));
+					put("undefined", BigDecimal.valueOf(1));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesMonthGrouping() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"56789", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.DATE, DateGrouping.MONTH,
-					null, "testDate", "DESC"),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"56789", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.DATE,
+						DateGrouping.MONTH, null, "testDate", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new String[] {"2021-5", "2019-5", "2020-5", "2021-1", null},
-			keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(
-			new Integer[] {7, 1, 1, 1, 1}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("2019-5", BigDecimal.valueOf(1));
+					put("2020-5", BigDecimal.valueOf(1));
+					put("2021-1", BigDecimal.valueOf(1));
+					put("2021-5", BigDecimal.valueOf(7));
+					put("undefined", BigDecimal.valueOf(1));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesNullValues() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"78901", AttributeType.EVENT, 10000,
-					EventAttributeDefinition.DataType.DURATION, null, null,
-					"testDuration", "DESC"),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"78901", AttributeType.EVENT, 10000,
+						EventAttributeDefinition.DataType.DURATION, null, null,
+						"testDuration", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new BigInteger[] {
-				BigInteger.valueOf(0), BigInteger.valueOf(10000), null
-			},
-			keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(new Integer[] {9, 1, 1}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("0", BigDecimal.valueOf(9));
+					put("10000", BigDecimal.valueOf(1));
+					put("undefined", BigDecimal.valueOf(1));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesNumber() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"45678", AttributeType.EVENT, 3,
-					EventAttributeDefinition.DataType.NUMBER, null, null,
-					"testRating", "DESC"),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"45678", AttributeType.EVENT, 3,
+						EventAttributeDefinition.DataType.NUMBER, null, null,
+						"testRating", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		_assertBigDecimalEquals(
-			new BigDecimal[] {
-				BigDecimal.ZERO, BigDecimal.valueOf(3), BigDecimal.valueOf(9)
-			},
-			keys.toArray(new BigDecimal[0]), 0);
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(new Integer[] {6, 3, 2}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("0", BigDecimal.valueOf(6));
+					put("3", BigDecimal.valueOf(3));
+					put("9", BigDecimal.valueOf(2));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesTotal() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, null,
-					"testUrl", "DESC"),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"12345", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.STRING, null, null,
+						"testUrl", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new String[] {
-				"https://www.beryl.com/design",
-				"https://www.beryl.com/products", "https://www.beryl.com/blogs"
-			},
-			keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(new Integer[] {4, 4, 3}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("https://www.beryl.com/blogs", BigDecimal.valueOf(3));
+					put("https://www.beryl.com/design", BigDecimal.valueOf(4));
+					put(
+						"https://www.beryl.com/products",
+						BigDecimal.valueOf(4));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesUnique() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.UNIQUE, null, 1L,
-				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, null,
-					"testUrl", "DESC"),
+				AnalysisType.UNIQUE, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"12345", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.STRING, null, null,
+						"testUrl", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new String[] {
-				"https://www.beryl.com/design",
-				"https://www.beryl.com/products", "https://www.beryl.com/blogs"
-			},
-			keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(new Integer[] {4, 4, 2}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("https://www.beryl.com/blogs", BigDecimal.valueOf(2));
+					put("https://www.beryl.com/design", BigDecimal.valueOf(4));
+					put(
+						"https://www.beryl.com/products",
+						BigDecimal.valueOf(4));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesWithBreakdownItem() {
-		BreakdownItem breakdownItem = new BreakdownItem();
-
-		breakdownItem.setEventAnalysisFilters(
-			Collections.singletonList(
-				new EventAnalysisFilter(
-					"34567", AttributeType.EVENT,
-					EventAttributeDefinition.DataType.STRING, null, "testCode",
-					"eq", Collections.singletonList("400"))));
-
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, breakdownItem, 1L,
-				new EventAnalysisBreakdown(
-					"12345", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.STRING, null, null,
-					"testUrl", "DESC"),
-				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"12345", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.STRING, null, null,
+						"testUrl", "DESC")),
+				Collections.singletonList(
+					new EventAnalysisFilter(
+						"34567", AttributeType.EVENT,
+						EventAttributeDefinition.DataType.STRING, null,
+						"testCode", "eq", Collections.singletonList("400"))),
+				246810L, PageRequest.of(0, 10),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new String[] {
-				"https://www.beryl.com/products",
-				"https://www.beryl.com/design", "https://www.beryl.com/blogs"
-			},
-			keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(new Integer[] {4, 2, 1}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("https://www.beryl.com/blogs", BigDecimal.valueOf(1));
+					put("https://www.beryl.com/design", BigDecimal.valueOf(2));
+					put(
+						"https://www.beryl.com/products",
+						BigDecimal.valueOf(4));
+				}
+			});
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesYearGrouping() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"56789", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.DATE, DateGrouping.YEAR,
-					null, "testDate", "DESC"),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"56789", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.DATE,
+						DateGrouping.YEAR, null, "testDate", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new Integer[] {2021, 2019, 2020, null}, keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(
-			new Integer[] {8, 1, 1, 1}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("2019", BigDecimal.valueOf(1));
+					put("2020", BigDecimal.valueOf(1));
+					put("2021", BigDecimal.valueOf(8));
+					put("undefined", BigDecimal.valueOf(1));
+				}
+			});
 	}
 
 	@SQLResource(
@@ -839,39 +854,42 @@ public class BQEventRepositoryTest
 					EventAttributeDefinition.DataType.STRING, null, null,
 					"testUrl", "DESC"),
 				null, 246810L,
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetEventPropertyValuesDayGrouping() {
-		Map<Object, Number> bqEventPropertyValues =
+		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
-				AnalysisType.TOTAL, null, 1L,
-				new EventAnalysisBreakdown(
-					"56789", AttributeType.EVENT, 0,
-					EventAttributeDefinition.DataType.DATE, DateGrouping.DAY,
-					null, "testDate", "DESC"),
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"56789", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.DATE,
+						DateGrouping.DAY, null, "testDate", "DESC")),
 				null, 246810L, PageRequest.of(0, 10),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
-				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 15, 0, 0)),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
 				_timeZoneDog.getTimeZoneId());
 
-		Set<Object> keys = bqEventPropertyValues.keySet();
-
-		Assertions.assertArrayEquals(
-			new String[] {
-				"2021-5-13", "2021-5-10", "2019-5-10", "2020-5-13", "2021-1-13",
-				"2021-5-1", null
-			},
-			keys.toArray());
-
-		Collection<Number> values = bqEventPropertyValues.values();
-
-		Assertions.assertArrayEquals(
-			new Integer[] {4, 2, 1, 1, 1, 1, 1}, values.toArray());
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("2019-5-10", BigDecimal.valueOf(1));
+					put("2020-5-13", BigDecimal.valueOf(1));
+					put("2021-1-13", BigDecimal.valueOf(1));
+					put("2021-5-1", BigDecimal.valueOf(1));
+					put("2021-5-10", BigDecimal.valueOf(2));
+					put("2021-5-13", BigDecimal.valueOf(4));
+					put("undefined", BigDecimal.valueOf(1));
+				}
+			});
 	}
 
 	@SQLResource(
@@ -1042,16 +1060,39 @@ public class BQEventRepositoryTest
 		Assertions.assertEquals(1, bqEvents.size(), bqEvents.toString());
 	}
 
-	private void _assertBigDecimalEquals(
-		BigDecimal[] expectedValues, BigDecimal[] actualValues, int scale) {
+	private void _assertBreakdowRowEquals(
+		List<BreakdownRow> breakdownRows,
+		Map<String, BigDecimal> expectedValues) {
 
-		for (int i = 0; i < actualValues.length; i++) {
-			BigDecimal actualValue = actualValues[i];
+		Stream<BreakdownRow> stream = breakdownRows.stream();
 
-			actualValue = actualValue.setScale(scale, RoundingMode.HALF_UP);
+		Map<String, BigDecimal> actualValues = stream.collect(
+			Collectors.toMap(
+				breakdownRow -> (String)breakdownRow.getBreakdownColumn(
+					0
+				).getValue(),
+				breakdownRow -> new BigDecimal(
+					String.valueOf(
+						breakdownRow.getBreakdownColumn(
+							breakdownRow.getBreakdownColumnsCount() - 1
+						).getValue()))));
 
-			Assertions.assertEquals(
-				0, actualValue.compareTo(expectedValues[i]));
+		Assertions.assertEquals(expectedValues.size(), actualValues.size());
+
+		Set<String> keys = expectedValues.keySet();
+
+		Assertions.assertTrue(keys.containsAll(actualValues.keySet()));
+
+		keys = actualValues.keySet();
+
+		Assertions.assertTrue(keys.containsAll(expectedValues.keySet()));
+
+		for (Map.Entry<String, BigDecimal> entry : expectedValues.entrySet()) {
+			BigDecimal actualValue = actualValues.get(entry.getKey());
+
+			actualValue = actualValue.setScale(2, RoundingMode.HALF_UP);
+
+			Assertions.assertEquals(0, actualValue.compareTo(entry.getValue()));
 		}
 	}
 
