@@ -66,6 +66,24 @@ CREATE TABLE IF NOT EXISTS BQCSVUser (
     fields JSON
 );
 
+CREATE TABLE IF NOT EXISTS CustomAsset (
+	abandonments BIGINT,
+	assetId VARCHAR,
+	assetPrimaryKey VARCHAR,
+	category VARCHAR,
+	channelId BIGINT,
+	clicks BIGINT,
+	downloads BIGINT,
+	eventDate TIMESTAMP,
+	projectId VARCHAR,
+	readTime BIGINT,
+	submissionTime BIGINT,
+	submissions BIGINT,
+	userId VARCHAR,
+	variantId VARCHAR,
+	views BIGINT
+);
+
 CREATE TABLE IF NOT EXISTS BQDataSourceUser (
     accountPKs TEXT[],
     dataSourceId BIGINT,
