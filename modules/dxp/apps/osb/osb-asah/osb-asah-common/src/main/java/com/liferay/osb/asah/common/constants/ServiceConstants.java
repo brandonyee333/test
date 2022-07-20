@@ -36,8 +36,6 @@ public class ServiceConstants {
 
 	public static final String POSTGRESQL_SERVER_IP;
 
-	public static final String TRINO_SERVER_IP;
-
 	public static final String URL_BACKEND;
 
 	public static final String URL_BACKEND_INTERNAL;
@@ -133,16 +131,6 @@ public class ServiceConstants {
 		return _LOCALHOST_IP;
 	}
 
-	private static String _getTrinoClusterURL() {
-		String trinoServerIp = System.getenv("TRINO_SERVER_IP");
-
-		if (StringUtils.isNotEmpty(trinoServerIp)) {
-			return trinoServerIp;
-		}
-
-		return _LOCALHOST_IP;
-	}
-
 	private static String _getURL(
 		String serviceName, String port, boolean external) {
 
@@ -205,7 +193,6 @@ public class ServiceConstants {
 		}
 
 		POSTGRESQL_SERVER_IP = _getPostgreSQLClusterURL();
-		TRINO_SERVER_IP = _getTrinoClusterURL();
 
 		URL_BACKEND = _getURL("BACKEND", "8080", true);
 		URL_BACKEND_INTERNAL = _setInternalURL("BACKEND", "8080");

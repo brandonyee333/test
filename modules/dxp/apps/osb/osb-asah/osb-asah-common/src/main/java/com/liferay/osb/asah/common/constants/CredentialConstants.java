@@ -34,8 +34,6 @@ public class CredentialConstants {
 
 	public static final String POSTGRESQL_USER;
 
-	public static final String TRINO_USER;
-
 	private static String _getCredential(
 		String credentialKey, String defaultValue) {
 
@@ -70,7 +68,6 @@ public class CredentialConstants {
 		POSTGRESQL_DB = _getCredential("POSTGRESQL_DB", "osbasah");
 		POSTGRESQL_PASSWORD = _getCredential("POSTGRESQL_PASSWORD", "password");
 		POSTGRESQL_USER = _getCredential("POSTGRESQL_USER", "postgres");
-		TRINO_USER = _getCredential("TRINO_USER", "trino");
 	}
 
 }

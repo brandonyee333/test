@@ -15,13 +15,11 @@
 package com.liferay.osb.asah.test.util.spring;
 
 import com.liferay.osb.asah.common.util.ArrayUtil;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.junit.jupiter.api.ClassDescriptor;
@@ -43,19 +41,6 @@ public class OSBAsahClassOrderer implements ClassOrderer {
 		Comparator<ClassDescriptor> annotationComparator =
 			Comparator.comparingInt(
 				classDescriptor -> {
-					Optional<SQLResource> sqlResourceOptional =
-						classDescriptor.findAnnotation(SQLResource.class);
-
-					if (sqlResourceOptional.isPresent() &&
-						Objects.equals(
-							sqlResourceOptional.map(
-								SQLResource::dataSource
-							).get(),
-							"trinoDataSource")) {
-
-						return 3;
-					}
-
 					Optional<Import> importOptional =
 						classDescriptor.findAnnotation(Import.class);
 

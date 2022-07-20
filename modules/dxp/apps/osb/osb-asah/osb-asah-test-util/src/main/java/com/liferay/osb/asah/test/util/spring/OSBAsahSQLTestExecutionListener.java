@@ -85,26 +85,6 @@ public class OSBAsahSQLTestExecutionListener
 			}
 		}
 
-		if (_trinoDataSource != null) {
-			try (Connection connection = _trinoDataSource.getConnection()) {
-				DatabaseMetaData databaseMetaData = connection.getMetaData();
-
-				ResultSet resultSet = databaseMetaData.getTables(
-					connection.getCatalog(), connection.getSchema(), null,
-					new String[] {"TABLE"});
-
-				while (resultSet.next()) {
-					try (PreparedStatement preparedStatement =
-							connection.prepareStatement(
-								"DELETE FROM " +
-									resultSet.getString("TABLE_NAME"))) {
-
-						preparedStatement.execute();
-					}
-				}
-			}
-		}
-
 		for (String cacheName : _cacheManager.getCacheNames()) {
 			Cache cache = _cacheManager.getCache(cacheName);
 
@@ -162,7 +142,7 @@ public class OSBAsahSQLTestExecutionListener
 	}
 
 	private boolean _isTestExecutionListenerEnabled() {
-		if ((_postgreSQLDataSource != null) || (_trinoDataSource != null)) {
+		if (_postgreSQLDataSource != null) {
 			return true;
 		}
 
@@ -176,13 +156,10 @@ public class OSBAsahSQLTestExecutionListener
 			ClassPathResource classPathResource = new ClassPathResource(
 				_getResourcePath(sqlResource), clazz);
 
-			DataSource dataSource = _resolveDataSource(
-				sqlResource.dataSource());
-
 			if (!classPathResource.isFile()) {
 				DatabasePopulatorUtils.execute(
 					new ResourceDatabasePopulator(classPathResource),
-					dataSource);
+					_postgreSQLDataSource);
 
 				return;
 			}
@@ -199,16 +176,8 @@ public class OSBAsahSQLTestExecutionListener
 				new ResourceDatabasePopulator(
 					new ByteArrayResource(
 						replaceSQLVariables.getBytes(StandardCharsets.UTF_8))),
-				dataSource);
+				_postgreSQLDataSource);
 		}
-	}
-
-	private DataSource _resolveDataSource(String dataSource) {
-		if (Objects.equals(dataSource, "trinoDataSource")) {
-			return _trinoDataSource;
-		}
-
-		return _postgreSQLDataSource;
 	}
 
 	@Autowired
@@ -217,9 +186,5 @@ public class OSBAsahSQLTestExecutionListener
 	@Autowired(required = false)
 	@Qualifier("postgreSQLDataSource")
 	private DataSource _postgreSQLDataSource;
-
-	@Autowired(required = false)
-	@Qualifier("trinoDataSource")
-	private DataSource _trinoDataSource;
 
 }

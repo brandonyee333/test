@@ -26,8 +26,6 @@ import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -70,42 +68,6 @@ public class JooqConfiguration {
 	@Bean
 	@Primary
 	public DSLContext defaultDSLContext(org.jooq.Configuration configuration) {
-		return new DefaultDSLContext(configuration);
-	}
-
-	@Bean("trinoConfiguration")
-	@ConditionalOnProperty(
-		havingValue = "true", value = "osb.asah.trino.enabled"
-	)
-	public org.jooq.Configuration trinoConfiguration(
-		@Qualifier("trinoConnectionProvider") ConnectionProvider
-			connectionProvider) {
-
-		DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
-
-		defaultConfiguration.set(connectionProvider);
-		defaultConfiguration.setSQLDialect(SQLDialect.POSTGRES);
-
-		return defaultConfiguration;
-	}
-
-	@Bean
-	@ConditionalOnProperty(
-		havingValue = "true", value = "osb.asah.trino.enabled"
-	)
-	public ConnectionProvider trinoConnectionProvider(
-		@Qualifier("trinoDataSource") DataSource dataSource) {
-
-		return new DataSourceConnectionProvider(dataSource);
-	}
-
-	@Bean("trinoDSLContext")
-	@ConditionalOnProperty(
-		havingValue = "true", value = "osb.asah.trino.enabled"
-	)
-	public DSLContext trinoDSLContext(
-		@Qualifier("trinoConfiguration") org.jooq.Configuration configuration) {
-
 		return new DefaultDSLContext(configuration);
 	}
 
