@@ -49,7 +49,6 @@ import org.jooq.WindowOverStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -464,7 +463,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	protected abstract String getTableName();
 
 	@Autowired
-	@Qualifier("trinoDSLContext")
 	protected DSLContext dslContext;
 
 	private Condition _createWhereClause(

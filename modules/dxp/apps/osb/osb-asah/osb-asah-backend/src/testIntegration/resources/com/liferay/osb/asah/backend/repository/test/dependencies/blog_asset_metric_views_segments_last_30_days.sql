@@ -1,14 +1,10 @@
-USE hive.default;
-
-DELETE FROM Blog;
-
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-10d}'), 2, 'test', ARRAY [], 3);
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-15d}'), 2, 'test', ARRAY [], 4);
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-1d}'), 1, 'test', ARRAY ['A', 'B', 'C'], 1);
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-31d}'), 1, 'test', ARRAY ['A', 'B', 'C'], 7);
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-40d}'), 1, 'test', ARRAY [], 8);
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-5d}'), 1, 'test', ARRAY ['A', 'B', 'C'], 2);
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-1h}'), 3, 'test', ARRAY [], 5);
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-29d}'), 4, 'test', 6);
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-29d}'), 5, 'test', 0);
-INSERT INTO Blog (assetId, channelId, eventDate, individualId, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-45d}'), 1, 'test', 9);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-10d}'), 2, 'test', ARRAY[]::TEXT[], 3);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-15d}'), 2, 'test', ARRAY[]::TEXT[], 4);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-1d}'), 1, 'test', ARRAY['A', 'B', 'C']::TEXT[], 1);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-31d}'), 1, 'test', ARRAY['A', 'B', 'C']::TEXT[], 7);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-40d}'), 1, 'test', ARRAY[]::TEXT[], 8);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-5d}'), 1, 'test', ARRAY['A', 'B', 'C']::TEXT[], 2);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, segmentNames, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-1h}'), 3, 'test', ARRAY[]::TEXT[], 5);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-29d}'), 5, 'test', 0);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-29d}'), 4, 'test', 6);
+INSERT INTO BQBlog (assetId, channelId, eventDate, individualId, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-45d}'), 1, 'test', 9);

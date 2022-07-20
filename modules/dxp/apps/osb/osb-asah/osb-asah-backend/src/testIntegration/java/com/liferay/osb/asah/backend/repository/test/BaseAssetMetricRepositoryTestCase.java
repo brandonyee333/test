@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.test;
 
-import com.liferay.osb.asah.backend.OSBAsahBackendTrinoSpringTestContext;
+import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -67,7 +67,7 @@ import org.springframework.test.context.TestExecutionListeners;
 	}
 )
 public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
-	implements OSBAsahBackendTrinoSpringTestContext {
+	implements OSBAsahBackendSpringTestContext {
 
 	@BeforeEach
 	public void setUp() {

@@ -1,8 +1,4 @@
-USE hive.default;
-
-DELETE FROM Blog;
-
-INSERT INTO Blog (assetId, channelId, eventDate, projectId, canonicalUrl) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-5d}'), 'test', 'https://www.beryl.com/products/commercial/irrigation/FF-2100');
-INSERT INTO Blog (assetId, channelId, eventDate, projectId, canonicalUrl) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-8d}'), 'test', 'https://should.not.return.com');
-INSERT INTO Blog (assetId, channelId, eventDate, projectId, canonicalUrl) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'test', 'https://www.beryl.com/products/commercial/irrigation');
-INSERT INTO Blog (assetId, channelId, eventDate, projectId, canonicalUrl) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'test', 'https://www.beryl.com/delivery');
+INSERT INTO BQBlog (assetId, channelId, eventDate, projectId, canonicalUrl) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-5d}'), 'test', 'https://www.beryl.com/products/commercial/irrigation/FF-2100');
+INSERT INTO BQBlog (assetId, channelId, eventDate, projectId, canonicalUrl) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-8d}'), 'test', 'https://should.not.return.com');
+INSERT INTO BQBlog (assetId, channelId, eventDate, projectId, canonicalUrl) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'test', 'https://www.beryl.com/products/commercial/irrigation');
+INSERT INTO BQBlog (assetId, channelId, eventDate, projectId, canonicalUrl) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'test', 'https://www.beryl.com/delivery');

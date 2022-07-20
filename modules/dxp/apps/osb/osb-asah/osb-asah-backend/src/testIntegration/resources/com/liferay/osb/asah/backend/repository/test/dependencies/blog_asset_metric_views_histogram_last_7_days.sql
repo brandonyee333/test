@@ -1,6 +1,2 @@
-USE hive.default;
-
-DELETE FROM Blog;
-
-INSERT INTO Blog (assetId, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'test', 2);
-INSERT INTO Blog (assetId, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'test', 1);
+INSERT INTO BQBlog (assetId, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'test', 2);
+INSERT INTO BQBlog (assetId, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'test', 1);

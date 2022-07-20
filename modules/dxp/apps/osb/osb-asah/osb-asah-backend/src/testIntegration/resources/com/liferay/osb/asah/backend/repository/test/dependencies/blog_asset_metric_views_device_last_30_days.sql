@@ -1,13 +1,9 @@
-USE hive.default;
-
-DELETE FROM Blog;
-
-INSERT INTO Blog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-1d}'), 'Windows', 'test', 1);
-INSERT INTO Blog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-5d}'), 'Ubuntu','test', 2);
-INSERT INTO Blog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-10d}'), 'Windows','test', 3);
-INSERT INTO Blog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-15d}'), 'Windows','test', 4);
-INSERT INTO Blog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-20d}'), 'Ubuntu','test', 5);
-INSERT INTO Blog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-29d}'), 'Windows','test', 6);
-INSERT INTO Blog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-12d}'), 'Ubuntu','test', 1);
-INSERT INTO Blog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-4d}'), 'Android','test', 3);
-INSERT INTO Blog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-18d}'), 'IOS','test', 9);
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-1d}'), 'Windows', 'test', 1);
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-5d}'), 'Ubuntu','test', 2);
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-10d}'), 'Windows','test', 3);
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-15d}'), 'Windows','test', 4);
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-20d}'), 'Ubuntu','test', 5);
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-29d}'), 'Windows','test', 6);
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-12d}'), 'Ubuntu','test', 1);
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-4d}'), 'Android','test', 3);
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-18d}'), 'IOS','test', 9);
