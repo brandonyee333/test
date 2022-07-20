@@ -36,11 +36,4 @@ services:
         container_name: test_redis
         ports:
             - "6379:6379"
-    test_trino:
-        build: ./osb-asah-trino
-        container_name: test_trino
-        depends_on:
-            - test_postgresql
-        ports:
-            - "9090:8080"
 version: "2.3"

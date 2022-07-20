@@ -196,15 +196,6 @@ services:
         container_name: pubsubemulator
         ports:
             - "8095:8095"
-    trino:
-        build: ./osb-asah-trino
-        container_name: trino
-        depends_on:
-            - postgresql
-        ports:
-            - "9090:8080"
-        volumes:
-            - hive-metastore:/data/hive-metastore
     wedeploy-elasticsearch:
         container_name: wedeploy-elasticsearch
         env_file:
@@ -241,8 +232,6 @@ volumes:
     export:
         driver: local
     faro:
-        driver: local
-    hive-metastore:
         driver: local
     kibanadata:
         driver: local
