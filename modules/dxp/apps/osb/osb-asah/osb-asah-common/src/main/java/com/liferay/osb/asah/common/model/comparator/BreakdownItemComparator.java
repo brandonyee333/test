@@ -48,7 +48,7 @@ public class BreakdownItemComparator implements Comparator<BreakdownItem> {
 
 		if (compare != 0) {
 			if (_sortType.equals("DESC")) {
-				return -compare;
+				return compare * -1;
 			}
 
 			return compare;

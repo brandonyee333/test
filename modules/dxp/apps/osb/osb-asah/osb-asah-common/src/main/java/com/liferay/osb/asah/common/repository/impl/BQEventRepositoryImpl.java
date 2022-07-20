@@ -1207,6 +1207,9 @@ public class BQEventRepositoryImpl
 			else if (dateGrouping.equals(DateGrouping.YEAR)) {
 				field = DSL.extract(offsetDateTimeField, DatePart.YEAR);
 			}
+			else {
+				field = offsetDateTimeField;
+			}
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
 			field = DSL.floor(
