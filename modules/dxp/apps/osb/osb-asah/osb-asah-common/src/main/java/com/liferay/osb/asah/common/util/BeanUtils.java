@@ -18,13 +18,14 @@ import java.beans.PropertyDescriptor;
 
 import java.lang.reflect.Method;
 
-import java.sql.Array;
 import java.sql.Timestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -111,6 +112,8 @@ public class BeanUtils {
 		Class<?> targetPropertyClass =
 			targetPropertyResolvableType.getRawClass();
 
+		Class<?> targetPropertyValueClass = targetPropertyValue.getClass();
+
 		try {
 			if ((targetPropertyClass != null) && targetPropertyClass.isEnum()) {
 				targetPropertyWriteMethod.invoke(
@@ -121,7 +124,28 @@ public class BeanUtils {
 			}
 			else {
 				if ((targetPropertyClass != null) &&
-					(targetPropertyValue instanceof Timestamp)) {
+					(targetPropertyValue instanceof OffsetDateTime)) {
+
+					OffsetDateTime offsetDateTime =
+						(OffsetDateTime)targetPropertyValue;
+
+					if (targetPropertyClass.isAssignableFrom(Date.class)) {
+						targetPropertyValue = Date.from(
+							offsetDateTime.toInstant());
+					}
+					else if (targetPropertyClass.isAssignableFrom(
+								LocalDate.class)) {
+
+						targetPropertyValue = offsetDateTime.toLocalDate();
+					}
+					else if (targetPropertyClass.isAssignableFrom(
+								LocalDateTime.class)) {
+
+						targetPropertyValue = offsetDateTime.toLocalDateTime();
+					}
+				}
+				else if ((targetPropertyClass != null) &&
+						 (targetPropertyValue instanceof Timestamp)) {
 
 					Timestamp timestamp = (Timestamp)targetPropertyValue;
 
@@ -136,7 +160,7 @@ public class BeanUtils {
 						targetPropertyValue = localDateTime;
 					}
 				}
-				else if (targetPropertyValue instanceof Array) {
+				else if (targetPropertyValueClass.isArray()) {
 					Class<?> rawClass =
 						targetPropertyResolvableType.getRawClass();
 
@@ -144,14 +168,9 @@ public class BeanUtils {
 						return;
 					}
 
-					Array array = (Array)targetPropertyValue;
-
 					Class<?> componentType = rawClass.getComponentType();
 
-					if (componentType != null) {
-						targetPropertyValue = array.getArray();
-					}
-					else {
+					if (componentType == null) {
 						ResolvableType resolvableType =
 							targetPropertyResolvableType.getGeneric(0);
 
@@ -165,13 +184,13 @@ public class BeanUtils {
 								clazz.getName(), String.class.getName())) {
 
 							targetPropertyValue = new LinkedHashSet<>(
-								Arrays.asList((String[])array.getArray()));
+								Arrays.asList((String[])targetPropertyValue));
 						}
 						else if (StringUtils.equals(
 									clazz.getName(), Long.class.getName())) {
 
 							targetPropertyValue = new LinkedHashSet<>(
-								Arrays.asList((Long[])array.getArray()));
+								Arrays.asList((Long[])targetPropertyValue));
 						}
 					}
 				}

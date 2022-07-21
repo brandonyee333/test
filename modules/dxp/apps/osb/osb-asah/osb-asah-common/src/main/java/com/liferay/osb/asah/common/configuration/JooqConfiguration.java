@@ -45,6 +45,7 @@ public class JooqConfiguration {
 		DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
 
 		defaultConfiguration.set(connectionProvider);
+		defaultConfiguration.setSQLDialect(SQLDialect.POSTGRES);
 
 		Settings settings = defaultConfiguration.settings();
 
