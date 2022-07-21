@@ -320,7 +320,7 @@ public class EventAnalysisDog {
 					breakdownRow, columnsCount, currentColumnIndex,
 					eventDefinition)
 			).sorted(
-				BreakdownItemComparator.getBreakdownItemComparator("ASC")
+				new BreakdownItemComparator(true)
 			).collect(
 				Collectors.toList()
 			);

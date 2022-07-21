@@ -26,41 +26,33 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class BreakdownItemComparator implements Comparator<BreakdownItem> {
 
-	public static BreakdownItemComparator getBreakdownItemComparator(
-		String sortType) {
-
-		if (StringUtils.equals(sortType, "DESC")) {
-			return _BREAKDOWN_ITEM_COMPARATOR_DESC;
-		}
-
-		return _BREAKDOWN_ITEM_COMPARATOR_ASC;
+	public BreakdownItemComparator(boolean ascending) {
+		_ascending = ascending;
 	}
 
 	@Override
 	public int compare(
 		BreakdownItem breakdownItem1, BreakdownItem breakdownItem2) {
 
+		Number value1 = breakdownItem1.getValue();
 		Number value2 = breakdownItem2.getValue();
 
-		Number value1 = breakdownItem1.getValue();
-
-		int compare = Double.compare(
+		int value = Double.compare(
 			value1.doubleValue(), value2.doubleValue());
 
-		if (compare != 0) {
-			if (_sortType.equals("DESC")) {
-				return compare * -1;
+		if (value != 0) {
+			if (_ascending) {
+				return value;
 			}
 
-			return compare;
+			return -value;
 		}
 
+		String internalName1 = breakdownItem1.getInternalName();
 		String internalName2 = breakdownItem2.getInternalName();
 
-		String internalName1 = breakdownItem1.getInternalName();
-
-		if (NumberUtils.isCreatable(internalName2) &&
-			NumberUtils.isCreatable(internalName1)) {
+		if (NumberUtils.isCreatable(internalName1) &&
+			NumberUtils.isCreatable(internalName2)) {
 
 			return Double.compare(
 				NumberUtils.toDouble(internalName1),
@@ -70,16 +62,6 @@ public class BreakdownItemComparator implements Comparator<BreakdownItem> {
 		return internalName1.compareTo(internalName2);
 	}
 
-	private BreakdownItemComparator(String sortType) {
-		_sortType = sortType;
-	}
-
-	private static final BreakdownItemComparator
-		_BREAKDOWN_ITEM_COMPARATOR_ASC = new BreakdownItemComparator("ASC");
-
-	private static final BreakdownItemComparator
-		_BREAKDOWN_ITEM_COMPARATOR_DESC = new BreakdownItemComparator("DESC");
-
-	private final String _sortType;
+	private final boolean _ascending;
 
 }

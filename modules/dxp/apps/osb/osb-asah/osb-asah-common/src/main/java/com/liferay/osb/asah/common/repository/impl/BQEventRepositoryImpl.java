@@ -229,8 +229,8 @@ public class BQEventRepositoryImpl
 		AnalysisType analysisType, @Nullable Long channelId,
 		boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
-		@Nullable List<EventAnalysisFilter> eventAnalysisFilters,
-		@Nullable Long eventDefinitionId, Pageable pageable,
+		List<EventAnalysisFilter> eventAnalysisFilters,
+		Long eventDefinitionId, Pageable pageable,
 		TimeRange timeRange, String timeZoneId) {
 
 		Stream<EventAnalysisBreakdown> stream1 =
