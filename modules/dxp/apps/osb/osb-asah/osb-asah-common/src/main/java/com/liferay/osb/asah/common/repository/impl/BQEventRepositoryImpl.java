@@ -268,7 +268,7 @@ public class BQEventRepositoryImpl
 		}
 
 		Field<Number> selectField = _getSelectField(
-			analysisType, lastEventAnalysisBreakdown,
+			analysisType,
 			eventAttributeDefinitions.get(
 				lastEventAnalysisBreakdown.getAttributeId()),
 			timeRange);
@@ -279,7 +279,7 @@ public class BQEventRepositoryImpl
 
 		if (compareToPrevious) {
 			Field previousSelectField = _getSelectField(
-				analysisType, lastEventAnalysisBreakdown,
+				analysisType,
 				eventAttributeDefinitions.get(
 					lastEventAnalysisBreakdown.getAttributeId()),
 				timeRange.getPreviousTimeRange());
@@ -1050,7 +1050,6 @@ public class BQEventRepositoryImpl
 
 	private Field _getSelectField(
 		AnalysisType analysisType,
-		EventAnalysisBreakdown eventAnalysisBreakdown,
 		EventAttributeDefinition eventAttributeDefinition,
 		TimeRange timeRange) {
 
@@ -1069,9 +1068,9 @@ public class BQEventRepositoryImpl
 		else {
 			field = DSL.when(
 				_getEventDateRangeFilter(
-					eventAnalysisBreakdown.getDisplayName() + ".eventDate",
+					eventAttributeDefinition.getName() + ".eventDate",
 					timeRange.getEndDate(), timeRange.getStartDate()),
-				DSL.field(eventAnalysisBreakdown.getDisplayName() + ".value"));
+				DSL.field(eventAttributeDefinition.getName() + ".value"));
 		}
 
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
@@ -1177,7 +1176,7 @@ public class BQEventRepositoryImpl
 
 			attributeField = DSL.field(
 				attributeType.getQualifiedAttributeValueFieldName(
-					eventAnalysisBreakdown.getDisplayName()));
+					eventAttributeDefinition.getName()));
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
@@ -1242,7 +1241,7 @@ public class BQEventRepositoryImpl
 		);
 
 		if (alias) {
-			return field.as(eventAnalysisBreakdown.getDisplayName());
+			return field.as(eventAttributeDefinition.getName());
 		}
 
 		return field;
