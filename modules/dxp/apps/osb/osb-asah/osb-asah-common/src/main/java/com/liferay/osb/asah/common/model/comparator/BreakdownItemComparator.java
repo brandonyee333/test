@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.model.BreakdownItem;
 
 import java.util.Comparator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -28,7 +29,7 @@ public class BreakdownItemComparator implements Comparator<BreakdownItem> {
 	public static BreakdownItemComparator getBreakdownItemComparator(
 		String sortType) {
 
-		if (sortType.equals("DESC")) {
+		if (StringUtils.equals(sortType, "DESC")) {
 			return _BREAKDOWN_ITEM_COMPARATOR_DESC;
 		}
 
