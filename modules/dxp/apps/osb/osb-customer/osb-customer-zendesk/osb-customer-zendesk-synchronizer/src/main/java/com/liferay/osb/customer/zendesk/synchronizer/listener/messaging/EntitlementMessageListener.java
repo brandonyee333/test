@@ -17,15 +17,19 @@ package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
+import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.EntitlementSerDes;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
@@ -99,12 +103,59 @@ public class EntitlementMessageListener extends BaseMessageListener {
 
 		JSONObject accountJSONObject = jsonObject.getJSONObject("account");
 
-		if (accountJSONObject == null) {
-			return;
-		}
+		if (accountJSONObject != null) {
+			Entitlement entitlement = EntitlementSerDes.toDTO(
+				jsonObject.getString("entitlement"));
 
-		Entitlement entitlement = EntitlementSerDes.toDTO(
-			jsonObject.getString("entitlement"));
+			_updatePartner(accountJSONObject, entitlement);
+		}
+		else {
+			_updateCustomer(jsonObject.getJSONObject("contact"));
+		}
+	}
+
+	private void _updateCustomer(JSONObject jsonObject) throws Exception {
+		JSONArray entitlementsJSONArray = jsonObject.getJSONArray(
+			"entitlements");
+
+		for (int i = 0; i < entitlementsJSONArray.length(); i++) {
+			JSONObject entitlementJSONObject =
+				entitlementsJSONArray.getJSONObject(i);
+
+			String name = entitlementJSONObject.getString("name");
+
+			if (name.equals(EntitlementConstants.NAME_CUSTOMER)) {
+				User user = _userIdentityProvider.fetchUserByEmailAddress(
+					jsonObject.getString("emailAddress"));
+
+				if (user == null) {
+					return;
+				}
+
+				ZendeskUser zendeskUser =
+					_zendeskUserWebService.getZendeskUserByExternalId(
+						jsonObject.getString("uuid"));
+
+				if (zendeskUser != null) {
+					return;
+				}
+
+				List<Account> accounts =
+					_accountWebService.getContactAccountsByUuid(
+						jsonObject.getString("uuid"), 1, 1000);
+
+				for (Account account : accounts) {
+					_userSynchronizer.update(user, account.getName());
+				}
+
+				return;
+			}
+		}
+	}
+
+	private void _updatePartner(
+			JSONObject accountJSONObject, Entitlement entitlement)
+		throws Exception {
 
 		String name = entitlement.getName();
 
@@ -140,6 +191,9 @@ public class EntitlementMessageListener extends BaseMessageListener {
 		}
 	}
 
+	@Reference
+	private AccountWebService _accountWebService;
+
 	private volatile BundleContext _bundleContext;
 
 	@Reference
@@ -158,5 +212,8 @@ public class EntitlementMessageListener extends BaseMessageListener {
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;
+
+	@Reference
+	private ZendeskUserWebService _zendeskUserWebService;
 
 }
