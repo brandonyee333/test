@@ -219,6 +219,7 @@ definition {
 
 	@priority = "4"
 	test CanSetVirtualHostViaPages {
+		property portal.acceptance = "kvale17";
 		property test.assert.warning.exceptions = "true";
 		property test.name.skip.portal.instance = "DatabasePartitioning#CanSetVirtualHostViaPages";
 
