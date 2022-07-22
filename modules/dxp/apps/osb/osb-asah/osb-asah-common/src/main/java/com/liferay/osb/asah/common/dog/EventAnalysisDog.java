@@ -386,9 +386,13 @@ public class EventAnalysisDog {
 			breakdownItems.add(breakdownItem);
 		}
 
-		breakdownItems.sort(
-			BreakdownItemComparator.getBreakdownItemComparator(
-				eventAnalysisBreakdown.getSortType()));
+		boolean ascending = false;
+
+		if (StringUtils.equals(eventAnalysisBreakdown.getSortType(), "ASC")) {
+			ascending = true;
+		}
+
+		breakdownItems.sort(new BreakdownItemComparator(ascending));
 
 		return breakdownItems;
 	}
