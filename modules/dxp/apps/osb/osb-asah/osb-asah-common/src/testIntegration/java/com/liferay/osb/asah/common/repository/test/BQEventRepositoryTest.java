@@ -33,6 +33,7 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
+import com.liferay.osb.asah.common.util.GetterUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
@@ -690,6 +691,33 @@ public class BQEventRepositoryTest
 						BigDecimal.valueOf(4));
 				}
 			});
+	}
+
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
+	@Test
+	public void testGetBQEventPropertyValuesWithNoBreakdown() {
+		List<BreakdownRow> breakdownRows =
+			_bqEventRepository.getBQEventPropertyValues(
+				AnalysisType.TOTAL, 1L, false, Collections.emptyList(), null,
+				246810L, PageRequest.of(0, 10),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
+
+		Assertions.assertEquals(
+			1, breakdownRows.size(), breakdownRows.toString());
+
+		BreakdownRow breakdownRow = breakdownRows.get(0);
+
+		Assertions.assertEquals(1, breakdownRow.getBreakdownColumnsCount());
+
+		BreakdownRow.BreakdownColumn breakdownColumn =
+			breakdownRow.getBreakdownColumn(0);
+
+		Number number = GetterUtil.getNumber(breakdownColumn.getValue());
+
+		Assertions.assertEquals(20, number.intValue());
 	}
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
