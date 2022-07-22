@@ -1975,31 +1975,6 @@
 		],
 		"fields": [
 			{
-				"mode": "NULLABLE",
-				"name": "accountId",
-				"type": "INT64"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "birthday",
-				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "classNameId",
-				"type": "INT64"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "contactId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "createDate",
-				"type": "TIMESTAMP"
-			},
-			{
 				"mode": "REQUIRED",
 				"name": "dataSourceId",
 				"type": "INT64"
@@ -2018,6 +1993,23 @@
 				"mode": "REQUIRED",
 				"name": "emailAddressHashed",
 				"type": "STRING"
+			},
+			{
+				"fields": [
+					{
+						"mode": "REQUIRED",
+						"name": "name",
+						"type": "STRING"
+					},
+					{
+						"mode": "REQUIRED",
+						"name": "value",
+						"type": "STRING"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "fields",
+				"type": "RECORD"
 			},
 			{
 				"mode": "NULLABLE",
