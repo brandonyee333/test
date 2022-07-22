@@ -229,62 +229,58 @@ public class BQEventRepositoryImpl
 		AnalysisType analysisType, @Nullable Long channelId,
 		boolean compareToPrevious,
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
-		List<EventAnalysisFilter> eventAnalysisFilters,
-		Long eventDefinitionId, Pageable pageable,
-		TimeRange timeRange, String timeZoneId) {
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
+		Pageable pageable, TimeRange timeRange, String timeZoneId) {
 
-		Stream<EventAnalysisBreakdown> stream1 =
+		Stream<EventAnalysisBreakdown> stream =
 			eventAnalysisBreakdowns.stream();
 
 		Map<String, EventAttributeDefinition> eventAttributeDefinitions =
 			_getEventAttributeDefinitions(
-				stream1.map(
+				stream.map(
 					eventAnalysisBreakdown -> Long.valueOf(
 						eventAnalysisBreakdown.getAttributeId())
 				).collect(
 					Collectors.toList()
 				));
 
-		EventAnalysisBreakdown lastEventAnalysisBreakdown =
-			eventAnalysisBreakdowns.get(eventAnalysisBreakdowns.size() - 1);
-
-		if (!eventAttributeDefinitions.containsKey(
-				lastEventAnalysisBreakdown.getAttributeId())) {
-
-			return null;
-		}
+		EventAnalysisBreakdown lastEventAnalysisBreakdown = null;
 
 		List<Field> valueFields = new ArrayList();
 
-		for (EventAnalysisBreakdown eventAnalysisBreakdown :
-				eventAnalysisBreakdowns) {
+		if (!eventAnalysisBreakdowns.isEmpty()) {
+			lastEventAnalysisBreakdown = eventAnalysisBreakdowns.get(
+				eventAnalysisBreakdowns.size() - 1);
 
-			valueFields.add(
-				_getValueField(
-					true, eventAnalysisBreakdown,
-					eventAttributeDefinitions.get(
-						eventAnalysisBreakdown.getAttributeId()),
-					timeZoneId));
+			for (EventAnalysisBreakdown eventAnalysisBreakdown :
+					eventAnalysisBreakdowns) {
+
+				valueFields.add(
+					_getValueField(
+						true, eventAnalysisBreakdown,
+						eventAttributeDefinitions.get(
+							eventAnalysisBreakdown.getAttributeId()),
+						timeZoneId));
+			}
 		}
 
-		Field<Number> selectField = _getSelectField(
-			analysisType,
-			eventAttributeDefinitions.get(
-				lastEventAnalysisBreakdown.getAttributeId()),
-			timeRange);
+		List<Field<Number>> selectFields = new ArrayList<>();
 
-		List<Field<Number>> fields = new ArrayList<>();
-
-		fields.add(selectField);
+		selectFields.add(
+			_getSelectField(
+				analysisType,
+				_getEventAttributeDefinition(
+					lastEventAnalysisBreakdown, eventAttributeDefinitions),
+				timeRange));
 
 		if (compareToPrevious) {
 			Field previousSelectField = _getSelectField(
 				analysisType,
-				eventAttributeDefinitions.get(
-					lastEventAnalysisBreakdown.getAttributeId()),
+				_getEventAttributeDefinition(
+					lastEventAnalysisBreakdown, eventAttributeDefinitions),
 				timeRange.getPreviousTimeRange());
 
-			fields.add(previousSelectField.as("previous"));
+			selectFields.add(previousSelectField.as("previous"));
 
 			timeRange = timeRange.getIncludePreviousTimeRange();
 		}
@@ -292,64 +288,19 @@ public class BQEventRepositoryImpl
 		SelectJoinStep<Record> selectJoinStep = _buildSelectJoinStep(
 			channelId, eventAnalysisBreakdowns, eventAttributeDefinitions,
 			_dslContext.select(
-				ListUtils.union(valueFields, fields)
+				ListUtils.union(valueFields, selectFields)
 			).from(
 				"BQEvent"
 			),
 			timeRange);
 
-		List<Condition> conditions = _getConditions(
-			channelId, eventAnalysisFilters, eventDefinitionId,
-			timeRange.getEndDate(), timeRange.getStartDate(), timeZoneId);
-
-		EventAnalysisBreakdown firstEventAnalysisBreakdown =
-			eventAnalysisBreakdowns.get(0);
-
-		Field firstValueField = _getValueField(
-			false, firstEventAnalysisBreakdown,
-			eventAttributeDefinitions.get(
-				firstEventAnalysisBreakdown.getAttributeId()),
-			timeZoneId);
-
-		List<EventAnalysisFilter> filteredEventAnalysisFilters = null;
-
-		if (eventAnalysisFilters != null) {
-			Stream<EventAnalysisFilter> stream2 = eventAnalysisFilters.stream();
-
-			filteredEventAnalysisFilters = stream2.filter(
-				eventAnalysisFilter -> eventAttributeDefinitions.containsKey(
-					firstEventAnalysisBreakdown.getAttributeId())
-			).collect(
-				Collectors.toList()
-			);
-		}
-
-		conditions.add(
-			firstValueField.in(
-				_buildSelectJoinStep(
-					channelId, Arrays.asList(firstEventAnalysisBreakdown),
-					eventAttributeDefinitions,
-					DSL.selectDistinct(
-						firstValueField
-					).from(
-						"BQEvent"
-					),
-					timeRange
-				).where(
-					_getConditions(
-						channelId, filteredEventAnalysisFilters,
-						eventDefinitionId, timeRange.getEndDate(),
-						timeRange.getStartDate(), timeZoneId)
-				).limit(
-					pageable.getPageSize()
-				).offset(
-					pageable.getOffset()
-				)));
-
 		return _queryExecutor.queryForList(
 			BreakdownRow.class,
 			selectJoinStep.where(
-				conditions
+				_getConditions(
+					channelId, eventAnalysisBreakdowns, eventAnalysisFilters,
+					eventAttributeDefinitions, eventDefinitionId, pageable,
+					timeRange, timeZoneId)
 			).groupBy(
 				valueFields
 			));
@@ -726,6 +677,68 @@ public class BQEventRepositoryImpl
 	}
 
 	private List<Condition> _getConditions(
+		Long channelId, List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
+		List<EventAnalysisFilter> eventAnalysisFilters,
+		Map<String, EventAttributeDefinition> eventAttributeDefinitions,
+		Long eventDefinitionId, Pageable pageable, TimeRange timeRange,
+		String timeZoneId) {
+
+		List<Condition> conditions = _getConditions(
+			channelId, eventAnalysisFilters, eventDefinitionId,
+			timeRange.getEndDate(), timeRange.getStartDate(), timeZoneId);
+
+		if (eventAnalysisBreakdowns.isEmpty()) {
+			return conditions;
+		}
+
+		EventAnalysisBreakdown firstEventAnalysisBreakdown =
+			eventAnalysisBreakdowns.get(0);
+
+		Field firstValueField = _getValueField(
+			false, firstEventAnalysisBreakdown,
+			_getEventAttributeDefinition(
+				firstEventAnalysisBreakdown, eventAttributeDefinitions),
+			timeZoneId);
+
+		List<EventAnalysisFilter> filteredEventAnalysisFilters = null;
+
+		if (eventAnalysisFilters != null) {
+			Stream<EventAnalysisFilter> stream = eventAnalysisFilters.stream();
+
+			filteredEventAnalysisFilters = stream.filter(
+				eventAnalysisFilter -> eventAttributeDefinitions.containsKey(
+					firstEventAnalysisBreakdown.getAttributeId())
+			).collect(
+				Collectors.toList()
+			);
+		}
+
+		conditions.add(
+			firstValueField.in(
+				_buildSelectJoinStep(
+					channelId, Arrays.asList(firstEventAnalysisBreakdown),
+					eventAttributeDefinitions,
+					DSL.selectDistinct(
+						firstValueField
+					).from(
+						"BQEvent"
+					),
+					timeRange
+				).where(
+					_getConditions(
+						channelId, filteredEventAnalysisFilters,
+						eventDefinitionId, timeRange.getEndDate(),
+						timeRange.getStartDate(), timeZoneId)
+				).limit(
+					pageable.getPageSize()
+				).offset(
+					pageable.getOffset()
+				)));
+
+		return conditions;
+	}
+
+	private List<Condition> _getConditions(
 		Long channelId, List<EventAnalysisFilter> eventAnalysisFilters,
 		Long eventDefinitionId, Date rangeEndDate, Date rangeStartDate,
 		String timeZoneId) {
@@ -912,6 +925,18 @@ public class BQEventRepositoryImpl
 	}
 
 	private EventAttributeDefinition _getEventAttributeDefinition(
+		EventAnalysisBreakdown eventAnalysisBreakdown,
+		Map<String, EventAttributeDefinition> eventAttributeDefinitions) {
+
+		if (eventAnalysisBreakdown == null) {
+			return null;
+		}
+
+		return eventAttributeDefinitions.get(
+			eventAnalysisBreakdown.getAttributeId());
+	}
+
+	private EventAttributeDefinition _getEventAttributeDefinition(
 		String attributeId) {
 
 		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
@@ -1055,9 +1080,16 @@ public class BQEventRepositoryImpl
 
 		Field field = null;
 
-		if (Objects.equals(
-				eventAttributeDefinition.getType(),
-				EventAttributeDefinition.Type.GLOBAL)) {
+		if (eventAttributeDefinition == null) {
+			field = DSL.when(
+				_getEventDateRangeFilter(
+					"BQEvent.eventDate", timeRange.getEndDate(),
+					timeRange.getStartDate()),
+				DSL.field("BQEvent.id"));
+		}
+		else if (Objects.equals(
+					eventAttributeDefinition.getType(),
+					EventAttributeDefinition.Type.GLOBAL)) {
 
 			field = DSL.when(
 				_getEventDateRangeFilter(
@@ -1096,8 +1128,6 @@ public class BQEventRepositoryImpl
 		if (analysisType.equals(AnalysisType.TOTAL)) {
 			return DSL.count(
 				field
-			).as(
-				"count"
 			).as(
 				"count"
 			);
