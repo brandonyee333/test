@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.model.BreakdownItem;
 
 import java.util.Comparator;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -37,15 +36,15 @@ public class BreakdownItemComparator implements Comparator<BreakdownItem> {
 		Number value1 = breakdownItem1.getValue();
 		Number value2 = breakdownItem2.getValue();
 
-		int value = Double.compare(
+		int compare = Double.compare(
 			value1.doubleValue(), value2.doubleValue());
 
-		if (value != 0) {
+		if (compare != 0) {
 			if (_ascending) {
-				return value;
+				return compare;
 			}
 
-			return -value;
+			return -compare;
 		}
 
 		String internalName1 = breakdownItem1.getInternalName();
