@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.model.comparator;
 
 import com.liferay.osb.asah.common.model.BreakdownItem;
 
+import java.io.Serializable;
+
 import java.util.Comparator;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -23,7 +25,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 /**
  * @author Marcos Martins
  */
-public class BreakdownItemComparator implements Comparator<BreakdownItem> {
+public class BreakdownItemComparator
+	implements Comparator<BreakdownItem>, Serializable {
 
 	public BreakdownItemComparator(boolean ascending) {
 		_ascending = ascending;
@@ -44,7 +47,7 @@ public class BreakdownItemComparator implements Comparator<BreakdownItem> {
 				return compare;
 			}
 
-			return -compare;
+			return compare * -1;
 		}
 
 		String internalName1 = breakdownItem1.getInternalName();
