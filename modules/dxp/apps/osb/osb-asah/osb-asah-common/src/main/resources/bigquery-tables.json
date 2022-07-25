@@ -2033,11 +2033,6 @@
 			},
 			{
 				"mode": "NULLABLE",
-				"name": "languageId",
-				"type": "STRING"
-			},
-			{
-				"mode": "NULLABLE",
 				"name": "lastName",
 				"type": "STRING"
 			},
@@ -2057,54 +2052,14 @@
 				"type": "TIMESTAMP"
 			},
 			{
-				"mode": "REPEATED",
-				"name": "organizationIds",
-				"type": "INT64"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "parentContactId",
-				"type": "INT64"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "prefixId",
-				"type": "STRING"
-			},
-			{
 				"mode": "REQUIRED",
 				"name": "projectId",
 				"type": "STRING"
 			},
 			{
-				"mode": "REPEATED",
-				"name": "roleIds",
-				"type": "INT64"
-			},
-			{
 				"mode": "NULLABLE",
 				"name": "screenName",
 				"type": "STRING"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "suffixId",
-				"type": "STRING"
-			},
-			{
-				"mode": "REPEATED",
-				"name": "teamIds",
-				"type": "INT64"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "timeZoneId",
-				"type": "STRING"
-			},
-			{
-				"mode": "REPEATED",
-				"name": "userGroupIds",
-				"type": "INT64"
 			},
 			{
 				"mode": "NULLABLE",
