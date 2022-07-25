@@ -67,6 +67,12 @@ public class BQUserRepositoryImpl
 			"BQUser"
 		).where(
 			ConditionUtil.toConditions(fields)
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
 		).fetch(
 			record -> new BQUser(record.intoMap())
 		);
