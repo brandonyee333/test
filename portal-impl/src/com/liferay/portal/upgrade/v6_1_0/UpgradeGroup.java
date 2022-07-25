@@ -127,8 +127,8 @@ public class UpgradeGroup extends UpgradeProcess {
 						long groupId = rs.getLong("groupId");
 
 						runSQL(
-							"update Group_ set site = [$TRUE$] where groupId = " +
-								groupId);
+							"update Group_ set site = [$TRUE$] where groupId " +
+								"= " + groupId);
 					}
 				}
 			}
