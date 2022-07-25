@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -53,7 +52,9 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -299,25 +300,22 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource1);
 
+		Optional<FieldMapping> fieldMappingOptional =
+			_fieldMappingRepository.findByContextAndFieldNameAndOwnerType(
+				"demographics", "givenName", "individual");
+
+		Assertions.assertTrue(fieldMappingOptional.isPresent());
+
+		FieldMapping fieldMapping = fieldMappingOptional.get();
+
+		Map<String, String> dataSourceFieldNames =
+			fieldMapping.getDataSourceFieldNames();
+
 		Assertions.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"field-mappings",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("fieldName", "givenName")
-				).filter(
-					QueryBuilders.existsQuery(
-						"dataSourceFieldNames." + dataSourceId1)
-				)),
+			dataSourceFieldNames.containsKey(dataSourceId1.toString()),
 			"Field mapping reference to deleted data source was not removed");
 		Assertions.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"field-mappings",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("fieldName", "givenName")
-				).filter(
-					QueryBuilders.existsQuery(
-						"dataSourceFieldNames." + dataSourceId2)
-				)),
+			dataSourceFieldNames.containsKey(dataSourceId2.toString()),
 			"Field mapping reference to existing data source was removed on " +
 				"deletion of another data source");
 	}

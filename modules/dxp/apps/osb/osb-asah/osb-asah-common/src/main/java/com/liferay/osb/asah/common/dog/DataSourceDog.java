@@ -68,7 +68,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.script.Script;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -570,15 +569,10 @@ public class DataSourceDog {
 		List<FieldMapping> fieldMappings = _fieldMappingDog.getFieldMappings(
 			dataSourceId);
 
-		_elasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.existsQuery("dataSourceFieldNames." + dataSourceId),
-			true,
-			new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				"ctx._source.dataSourceFieldNames.remove(params.dataSourceId)",
-				Collections.singletonMap(
-					"dataSourceId", String.valueOf(dataSourceId))),
-			"field-mappings");
+		for (FieldMapping fieldMapping : fieldMappings) {
+			_fieldMappingDog.removeDataSourceFieldName(
+				dataSourceId, fieldMapping);
+		}
 
 		List<Long> disabledFieldMappingIds = new ArrayList<>();
 
