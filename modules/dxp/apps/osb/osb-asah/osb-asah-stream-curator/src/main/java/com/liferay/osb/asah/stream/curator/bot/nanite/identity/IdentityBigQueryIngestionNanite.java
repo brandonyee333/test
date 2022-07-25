@@ -234,9 +234,7 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 		).put(
 			"id",
 			DigestUtils.sha256Hex(
-				String.join(
-					"#", projectId, dataSourceId, channelId,
-					emailAddressHashed))
+				String.join("#", projectId, dataSourceId, channelId, userId))
 		).put(
 			"projectId", projectId
 		).put(
