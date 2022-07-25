@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.integration.impl.internal;
 
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lock.DuplicateLockException;
@@ -26,6 +25,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupGroupRole;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupGroupRoleLocalService;
@@ -122,7 +122,7 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 			long companyId, long userId, long workflowTaskInstanceId,
 			String transitionName, String comment,
 			Map<String, Serializable> workflowContext)
-		throws WorkflowException {
+		throws PortalException {
 
 		WorkflowTask workflowTask = getWorkflowTask(
 			companyId, workflowTaskInstanceId);
@@ -134,7 +134,9 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 			0);
 
 		if (workflowTaskAssignee.getAssigneeClassPK() != userId) {
-			ReflectionUtil.throwException(new PrincipalException());
+			throw new PrincipalException.MustHavePermission(
+				userId, WorkflowTask.class.getName(), workflowTaskInstanceId,
+				ActionKeys.VIEW);
 		}
 
 		Lock lock = null;
