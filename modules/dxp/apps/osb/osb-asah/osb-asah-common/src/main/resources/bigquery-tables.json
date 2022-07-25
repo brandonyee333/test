@@ -2017,29 +2017,14 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REPEATED",
-				"name": "groupIds",
-				"type": "INT64"
-			},
-			{
 				"mode": "REQUIRED",
 				"name": "id",
 				"type": "STRING"
 			},
 			{
 				"mode": "NULLABLE",
-				"name": "jobTitle",
-				"type": "STRING"
-			},
-			{
-				"mode": "NULLABLE",
 				"name": "lastName",
 				"type": "STRING"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "male",
-				"type": "BOOL"
 			},
 			{
 				"mode": "NULLABLE",
