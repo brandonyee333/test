@@ -15,13 +15,6 @@
 		"user-sessions"
 	],
 	"osbasahdxpraw": [
-		"faro-audit-events",
-		"groups",
-		"organizations",
-		"roles",
-		"teams",
-		"user-groups",
-		"users"
 	],
 	"osbasahfaroinfo": [
 		"accounts",
