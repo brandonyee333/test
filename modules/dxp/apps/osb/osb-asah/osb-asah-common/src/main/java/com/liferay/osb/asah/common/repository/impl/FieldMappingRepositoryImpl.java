@@ -95,18 +95,6 @@ public class FieldMappingRepositoryImpl
 			DSL.countDistinct(DSL.field("id"))
 		).from(
 			"FieldMapping"
-		).innerJoin(
-			DSL.table(
-				"DataSourceFieldMapping"
-			).as(
-				"datasourcefieldmapping"
-			)
-		).on(
-			DSL.field(
-				"id"
-			).eq(
-				DSL.field("datasourcefieldmapping.fieldmappingid")
-			)
 		).where(
 			condition
 		).fetchOptional(
@@ -422,25 +410,6 @@ public class FieldMappingRepositoryImpl
 		return _populateFieldMappings(
 			selectSelectStep.from(
 				"FieldMapping"
-			).innerJoin(
-				DSL.select(
-					DSL.field("dataSourceId"), DSL.field("fieldMappingId"),
-					DSL.field(
-						"fieldName"
-					).as(
-						"datasourcefieldmapping.fieldname"
-					)
-				).from(
-					"DataSourceFieldMapping"
-				).asTable(
-					"datasourcefieldmapping"
-				)
-			).on(
-				DSL.field(
-					"id"
-				).eq(
-					DSL.field("datasourcefieldmapping.fieldmappingid")
-				)
 			).where(
 				condition
 			).orderBy(
@@ -469,24 +438,26 @@ public class FieldMappingRepositoryImpl
 	}
 
 	private void _populateDataSourceFieldMappings(
-		Map<Long, FieldMapping> individualsById) {
+		Map<Long, FieldMapping> fieldMappingsById) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		Field<Object> field = DSL.field("dataSourceId");
+		Field<Object> field = DSL.field("fieldmappingid");
 
 		selectSelectStep.from(
 			"DataSourceFieldMapping"
 		).where(
-			field.in(individualsById.keySet())
+			field.in(fieldMappingsById.keySet())
 		).fetch(
 		).forEach(
 			record -> {
-				FieldMapping fieldMapping = individualsById.get(
-					record.get("datasourceid"));
+				Map<String, Object> recordMap = record.intoMap();
 
 				DataSourceFieldMapping dataSourceFieldMapping =
-					new DataSourceFieldMapping(record.intoMap());
+					new DataSourceFieldMapping(recordMap);
+
+				FieldMapping fieldMapping = fieldMappingsById.get(
+					recordMap.get("fieldmappingid"));
 
 				fieldMapping.addDataSourceFieldMapping(dataSourceFieldMapping);
 				fieldMapping.addDataSourceFieldName(

@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS FieldMapping (
 	fieldType TEXT,
 	modifiedDate TIMESTAMPTZ,
 	ownerType TEXT,
-	strategyConfiguration JSON,
+	strategyConfiguration TEXT,
 	strategyKey TEXT
 );
 

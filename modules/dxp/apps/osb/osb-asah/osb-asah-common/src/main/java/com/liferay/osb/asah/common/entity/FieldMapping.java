@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.json.JSONObject;
 
@@ -159,7 +161,17 @@ public class FieldMapping implements Persistable<Long> {
 
 	@JsonProperty("dataSourceFieldNames")
 	public Map<String, String> getDataSourceFieldNames() {
-		return _dataSourceFieldNames;
+		Set<DataSourceFieldMapping> dataSourceFieldMappings =
+			getDataSourceFieldMappings();
+
+		Stream<DataSourceFieldMapping> stream =
+			dataSourceFieldMappings.stream();
+
+		return stream.collect(
+			Collectors.toMap(
+				dataSourceFieldMapping -> String.valueOf(
+					dataSourceFieldMapping.getDataSourceId()),
+				DataSourceFieldMapping::getFieldName));
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
