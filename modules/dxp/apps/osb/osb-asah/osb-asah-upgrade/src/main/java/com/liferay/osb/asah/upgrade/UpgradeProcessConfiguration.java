@@ -16,8 +16,6 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_1_3.OrganizationUpgradeStep;
-import com.liferay.osb.asah.upgrade.v3_1_4.FieldMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.BlockedKeywordMigrationUpgradeStep;
@@ -54,12 +52,6 @@ public class UpgradeProcessConfiguration {
 
 		upgradeProcess.addUpgradeSteps(
 			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
-			"3.1.0", "3.1.3", _organizationUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
-			"3.1.3", "3.1.4", _fieldMappingUpgradeStep);
 
 		List<UpgradeStep> upgradeSteps = new ArrayList<>();
 
@@ -121,9 +113,6 @@ public class UpgradeProcessConfiguration {
 	private ExperimentMigrationUpgradeStep _experimentMigrationUpgradeStep;
 
 	@Autowired
-	private FieldMappingUpgradeStep _fieldMappingUpgradeStep;
-
-	@Autowired
 	private IdentityMigrationUpgradeStep _identityMigrationUpgradeStep;
 
 	@Autowired
@@ -131,9 +120,6 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private JobRunMigrationUpgradeStep _jobRunMigrationUpgradeStep;
-
-	@Autowired
-	private OrganizationUpgradeStep _organizationUpgradeStep;
 
 	@Autowired
 	private SalesforceEntityMigrationUpgradeStep
