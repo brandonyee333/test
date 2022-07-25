@@ -151,8 +151,8 @@ definition {
 			Navigator.openSpecificURL(url = "${portalURL}/c/portal/logout");
 
 			User.loginPG(
-				specificURL = "/web/guest/test-page-name",
 				password = "test",
+				specificURL = "/web/guest/test-page-name",
 				userEmailAddress = "test@liferay.com");
 		}
 
