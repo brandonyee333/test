@@ -61,7 +61,7 @@ public class UpgradeUserNotificationEvent extends UpgradeProcess {
 			runSQL(sb.toString());
 
 			runSQL(
-				"update UserNotificationEvent set actionRequired = FALSE " +
+				"update UserNotificationEvent set actionRequired = [$FALSE$] " +
 					"where actionRequired IS NULL");
 		}
 	}

@@ -25,8 +25,8 @@ public class UpgradeCountry extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		for (String name : _NAMES) {
 			runSQL(
-				"update Country set zipRequired = FALSE where name = '" + name +
-					"'");
+				"update Country set zipRequired = [$FALSE$] where name = '" +
+					name + "'");
 		}
 	}
 
