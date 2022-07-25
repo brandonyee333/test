@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -216,6 +217,11 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 		String emailAddressHashed = messageJSONObject.getString(
 			"emailAddressHashed");
 		String projectId = messageJSONObject.getString("projectId");
+		String userId = messageJSONObject.getString("userId");
+
+		if (Objects.equals(emailAddressHashed, _EMPTY_EMAIL_ADDRESS_HASHED)) {
+			emailAddressHashed = null;
+		}
 
 		return JSONUtil.put(
 			"channelId", Long.parseLong(channelId)
@@ -234,9 +240,12 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 		).put(
 			"projectId", projectId
 		).put(
-			"userId", messageJSONObject.getString("userId")
+			"userId", userId
 		);
 	}
+
+	private static final String _EMPTY_EMAIL_ADDRESS_HASHED =
+		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
 	private static final String _TABLE_NAME = "identity";
 
