@@ -115,63 +115,10 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		return _expandoFields;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("fields")
-	public JSONObject getFieldsJSONObject() {
-		return JSONUtil.put(
-			"accountId", _accountId
-		).put(
-			"birthday", DateUtil.toString(_birthday)
-		).put(
-			"classNameId", _classNameId
-		).put(
-			"classPK", _classPK
-		).put(
-			"contactId", _contactId
-		).put(
-			"createDate", DateUtil.toString(_createDate)
-		).put(
-			"dxpUserId", _dxpUserId
-		).put(
-			"emailAddress", _emailAddress
-		).put(
-			"firstName", _firstName
-		).put(
-			"groupIds", _groupIds
-		).put(
-			"jobTitle", _jobTitle
-		).put(
-			"languageId", _languageId
-		).put(
-			"lastName", _lastName
-		).put(
-			"male", _male
-		).put(
-			"middleName", _middleName
-		).put(
-			"modifiedDate", DateUtil.toString(_modifiedDate)
-		).put(
-			"organizationIds", _organizationIds
-		).put(
-			"parentContactId", _parentContactId
-		).put(
-			"prefixId", _prefixId
-		).put(
-			"roleIds", _roleIds
-		).put(
-			"screenName", _screenName
-		).put(
-			"suffixId", _suffixId
-		).put(
-			"teamIds", _teamIds
-		).put(
-			"timeZoneId", _timeZoneId
-		).put(
-			"userGroupIds", _userGroupIds
-		).put(
-			"userName", _userName
-		).put(
-			"uuid", _uuid
-		);
+	public JSONArray getFields() {
+		return _fields;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -350,6 +297,10 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		_expandoFields = expandoFields;
 	}
 
+	public void setFields(JSONArray fields) {
+		_fields = fields;
+	}
+
 	public void setFirstName(String firstName) {
 		_firstName = firstName;
 	}
@@ -471,7 +422,7 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	private List<ExpandoField> _expandoFields;
 
 	@Transient
-	private String _firstName;
+	private JSONArray _fields;
 
 	@Transient
 	private Long[] _groupIds = {};
