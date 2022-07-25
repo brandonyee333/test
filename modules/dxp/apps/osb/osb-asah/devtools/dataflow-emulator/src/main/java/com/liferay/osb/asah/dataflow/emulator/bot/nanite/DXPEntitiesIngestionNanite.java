@@ -351,6 +351,8 @@ public class DXPEntitiesIngestionNanite {
 						dataSourceId, expandFieldsJSONArray, projectId));
 			}
 
+			bqUser.setFields(jsonObject.optJSONArray("fields"));
+
 			bqUser.setId(
 				_generateDXPEntityId(
 					bqUser.getDXPUserId(), dataSourceId, projectId));
