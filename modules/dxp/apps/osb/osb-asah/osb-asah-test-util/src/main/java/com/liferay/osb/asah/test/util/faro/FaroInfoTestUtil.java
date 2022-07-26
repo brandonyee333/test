@@ -389,7 +389,7 @@ public class FaroInfoTestUtil {
 		fieldMapping.setFieldType(fieldType);
 		fieldMapping.setModifiedDate(date);
 		fieldMapping.setOwnerType(ownerType);
-		fieldMapping.setStrategyConfiguration(new JSONObject());
+		fieldMapping.setStrategyConfigurationJSONObject(new JSONObject());
 		fieldMapping.setStrategyKey("MOST_RECENT");
 
 		return fieldMapping;

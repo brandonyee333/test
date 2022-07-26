@@ -762,6 +762,11 @@ public class ElasticsearchIndividualRepositoryImpl
 		}
 
 		if (StringUtils.isNotEmpty(query)) {
+			fieldNames = ListUtil.map(
+				fieldNames,
+				fieldName -> String.format(
+					"demographics.%s.value.searchable", fieldName));
+
 			boolQueryBuilder.filter(
 				QueryBuilders.multiMatchQuery(
 					query, fieldNames.toArray(new String[0])));

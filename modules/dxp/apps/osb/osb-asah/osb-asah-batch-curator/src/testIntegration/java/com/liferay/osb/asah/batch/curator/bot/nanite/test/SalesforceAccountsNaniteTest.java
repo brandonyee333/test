@@ -23,10 +23,9 @@ import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.BQSalesforceAuditEventRepository;
 import com.liferay.osb.asah.common.repository.BQSalesforceEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -44,9 +43,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SalesforceAccountsNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = FieldMappingRepository.class,
+		resourcePath = "osbasahfaroinfo/field_mappings.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,

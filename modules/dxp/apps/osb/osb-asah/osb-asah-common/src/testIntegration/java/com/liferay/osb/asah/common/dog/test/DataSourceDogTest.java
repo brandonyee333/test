@@ -31,9 +31,8 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -114,9 +113,9 @@ public class DataSourceDogTest
 		Assertions.assertEquals("INACTIVE", dataSource.getStatus());
 	}
 
-	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = FieldMappingRepository.class,
+		resourcePath = "osbasahfaroinfo/field_mappings.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,

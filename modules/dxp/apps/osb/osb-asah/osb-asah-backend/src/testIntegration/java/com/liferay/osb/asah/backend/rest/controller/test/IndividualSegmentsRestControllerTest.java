@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -388,9 +389,9 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals("READY", responseJSONObject.getString("state"));
 	}
 
-	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = FieldMappingRepository.class,
+		resourcePath = "osbasahfaroinfo/field_mappings.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,

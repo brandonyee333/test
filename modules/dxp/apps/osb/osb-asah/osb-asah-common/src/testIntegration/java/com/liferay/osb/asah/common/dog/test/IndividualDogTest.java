@@ -453,16 +453,16 @@ public class IndividualDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = FieldMappingRepository.class,
+		resourcePath = "osbasahfaroinfo/field_mappings_info.json"
 	)
 	@Test
 	public void testGetIndividualPage1() {
@@ -490,16 +490,16 @@ public class IndividualDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = FieldMappingRepository.class,
+		resourcePath = "osbasahfaroinfo/field_mappings_info.json"
 	)
 	@Test
 	public void testGetIndividualPage2() {
