@@ -55,7 +55,6 @@ public class PageReferrerDog {
 		return _pageReferrerRepository.getAcquisitionChannelAccesses(
 			searchQueryContext.getCanonicalUrl(),
 			Long.valueOf(searchQueryContext.getChannelId()),
-			Long.valueOf(searchQueryContext.getDataSourceId()),
 			searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 	}
 
@@ -66,7 +65,6 @@ public class PageReferrerDog {
 			_pageReferrerRepository.getPageReferrerAccesses(
 				searchQueryContext.getCanonicalUrl(),
 				Long.valueOf(searchQueryContext.getChannelId()),
-				Long.valueOf(searchQueryContext.getDataSourceId()),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
 		if (pageReferrerAccesses.isEmpty()) {
@@ -104,7 +102,6 @@ public class PageReferrerDog {
 				getSocialPageReferrerAccessesByReferrerHost(
 					searchQueryContext.getCanonicalUrl(),
 					Long.valueOf(searchQueryContext.getChannelId()),
-					Long.valueOf(searchQueryContext.getDataSourceId()),
 					PageRequest.of(0, size), searchQueryContext.getTimeRange(),
 					_timeZoneDog.getZoneId());
 		}
@@ -113,7 +110,6 @@ public class PageReferrerDog {
 			getSocialPageReferrerAccessesByReferrerCanonicalUrl(
 				searchQueryContext.getCanonicalUrl(),
 				Long.valueOf(searchQueryContext.getChannelId()),
-				Long.valueOf(searchQueryContext.getDataSourceId()),
 				PageRequest.of(0, size), searchQueryContext.getTimeRange(),
 				_timeZoneDog.getZoneId());
 	}
@@ -125,7 +121,6 @@ public class PageReferrerDog {
 			_pageReferrerRepository.getSocialPageReferrerAccessesByReferrerHost(
 				searchQueryContext.getCanonicalUrl(),
 				Long.valueOf(searchQueryContext.getChannelId()),
-				Long.valueOf(searchQueryContext.getDataSourceId()),
 				PageRequest.of(0, 20), searchQueryContext.getTimeRange(),
 				_timeZoneDog.getZoneId());
 

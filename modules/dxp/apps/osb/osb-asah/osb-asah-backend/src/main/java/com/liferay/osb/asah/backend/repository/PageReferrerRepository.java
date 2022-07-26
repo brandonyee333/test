@@ -28,20 +28,20 @@ import org.springframework.data.domain.Pageable;
 public interface PageReferrerRepository {
 
 	public Map<String, Double> getAcquisitionChannelAccesses(
-		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange, ZoneId zoneId);
+		String canonicalUrl, Long channelId, TimeRange timeRange,
+		ZoneId zoneId);
 
 	public Map<String, Double> getPageReferrerAccesses(
-		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange, ZoneId zoneId);
+		String canonicalUrl, Long channelId, TimeRange timeRange,
+		ZoneId zoneId);
 
 	public Map<String, Double>
 		getSocialPageReferrerAccessesByReferrerCanonicalUrl(
-			String canonicalUrl, Long channelId, Long dataSourceId,
-			Pageable pageable, TimeRange timeRange, ZoneId zoneId);
+			String canonicalUrl, Long channelId, Pageable pageable,
+			TimeRange timeRange, ZoneId zoneId);
 
 	public Map<String, Double> getSocialPageReferrerAccessesByReferrerHost(
-		String canonicalUrl, Long channelId, Long dataSourceId,
-		Pageable pageable, TimeRange timeRange, ZoneId zoneId);
+		String canonicalUrl, Long channelId, Pageable pageable,
+		TimeRange timeRange, ZoneId zoneId);
 
 }

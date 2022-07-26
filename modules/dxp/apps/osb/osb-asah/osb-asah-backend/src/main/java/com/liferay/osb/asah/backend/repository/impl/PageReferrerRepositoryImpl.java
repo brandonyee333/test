@@ -42,8 +42,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 	@Override
 	public Map<String, Double> getAcquisitionChannelAccesses(
-		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange, ZoneId zoneId) {
+		String canonicalUrl, Long channelId, TimeRange timeRange,
+		ZoneId zoneId) {
 
 		Map<String, Double> result = new LinkedHashMap<>();
 
@@ -61,8 +61,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		).from(
 			"BQPageReferrers"
 		).where(
-			_createWhereClause(
-				canonicalUrl, channelId, dataSourceId, timeRange, zoneId)
+			_createWhereClause(canonicalUrl, channelId, timeRange, zoneId)
 		).groupBy(
 			acquisitionChannelField
 		).orderBy(
@@ -81,8 +80,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 	@Override
 	public Map<String, Double> getPageReferrerAccesses(
-		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange, ZoneId zoneId) {
+		String canonicalUrl, Long channelId, TimeRange timeRange,
+		ZoneId zoneId) {
 
 		Map<String, Double> result = new LinkedHashMap<>();
 
@@ -100,8 +99,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			"BQPageReferrers"
 		).where(
 			DSL.and(
-				_createWhereClause(
-					canonicalUrl, channelId, dataSourceId, timeRange, zoneId),
+				_createWhereClause(canonicalUrl, channelId, timeRange, zoneId),
 				DSL.field(
 					"referrer"
 				).notEqual(
@@ -128,8 +126,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	@Override
 	public Map<String, Double>
 		getSocialPageReferrerAccessesByReferrerCanonicalUrl(
-			String canonicalUrl, Long channelId, Long dataSourceId,
-			Pageable pageable, TimeRange timeRange, ZoneId zoneId) {
+			String canonicalUrl, Long channelId, Pageable pageable,
+			TimeRange timeRange, ZoneId zoneId) {
 
 		Map<String, Double> result = new LinkedHashMap<>();
 
@@ -148,8 +146,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			"BQPageReferrers"
 		).where(
 			DSL.and(
-				_createWhereClause(
-					canonicalUrl, channelId, dataSourceId, timeRange, zoneId),
+				_createWhereClause(canonicalUrl, channelId, timeRange, zoneId),
 				DSL.not(
 					DSL.field(
 						"acquisitionChannel"
@@ -179,8 +176,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 	@Override
 	public Map<String, Double> getSocialPageReferrerAccessesByReferrerHost(
-		String canonicalUrl, Long channelId, Long dataSourceId,
-		Pageable pageable, TimeRange timeRange, ZoneId zoneId) {
+		String canonicalUrl, Long channelId, Pageable pageable,
+		TimeRange timeRange, ZoneId zoneId) {
 
 		Map<String, Double> result = new LinkedHashMap<>();
 
@@ -199,8 +196,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			"BQPageReferrers"
 		).where(
 			DSL.and(
-				_createWhereClause(
-					canonicalUrl, channelId, dataSourceId, timeRange, zoneId),
+				_createWhereClause(canonicalUrl, channelId, timeRange, zoneId),
 				DSL.not(
 					DSL.field(
 						"acquisitionChannel"
@@ -232,15 +228,10 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	protected DSLContext dslContext;
 
 	private Condition _createWhereClause(
-		String canonicalUrl, Long channelId, Long dataSourceId,
-		TimeRange timeRange, ZoneId zoneId) {
+		String canonicalUrl, Long channelId, TimeRange timeRange,
+		ZoneId zoneId) {
 
 		return DSL.and(
-			DSL.field(
-				"dataSourceId"
-			).eq(
-				dataSourceId
-			),
 			DSL.field(
 				"channelId"
 			).eq(
