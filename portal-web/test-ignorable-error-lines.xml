@@ -172,6 +172,10 @@
 			<contains>Unable to call .* of /documents</contains>
 			<matches></matches>
 		</ignore-error>
+		<ignore-error description="LRQA-75853">
+			<contains>{code="404", msg="ProxyServlet: /company-log", uri=/o/company-log}</contains>
+			<matches></matches>
+		</ignore-error>
 		<ignore-error description="LRQA-75860">
 			<contains>Unable to find log file .* for company .*</contains>
 			<matches></matches>

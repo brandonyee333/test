@@ -116,6 +116,7 @@ definition {
 	@priority = "4"
 	test CompanyLoggingDisabled {
 		property custom.properties = "company.log.enabled=false";
+		property test.assert.warning.exceptions = "true";
 
 		task ("When the user tries navigating to the company logging UI access point with company logs disabled") {
 			var baseURL = PropsUtil.get("portal.url");
