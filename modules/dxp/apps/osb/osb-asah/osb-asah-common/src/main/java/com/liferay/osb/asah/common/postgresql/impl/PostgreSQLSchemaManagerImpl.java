@@ -176,6 +176,28 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 	}
 
 	@Override
+	public boolean existsSchema(Project project) {
+		try {
+			ProjectIdThreadLocal.setProject(project);
+
+			try (Connection connection = _dataSource.getConnection()) {
+				DatabaseMetaData databaseMetaData = connection.getMetaData();
+
+				ResultSet resultSet = databaseMetaData.getSchemas(
+					null, StringUtils.lowerCase(project.getId()));
+
+				return resultSet.next();
+			}
+			catch (SQLException sqlException) {
+				return false;
+			}
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
+	}
+
+	@Override
 	public boolean existsTable(Project project, String tableName) {
 		try {
 			ProjectIdThreadLocal.setProject(project);

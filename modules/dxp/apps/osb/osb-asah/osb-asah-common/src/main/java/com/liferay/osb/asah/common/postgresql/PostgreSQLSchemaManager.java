@@ -27,6 +27,8 @@ public interface PostgreSQLSchemaManager {
 
 	public void deleteSchema(String projectId);
 
+	public boolean existsSchema(Project project);
+
 	public boolean existsTable(Project project, String tableName);
 
 }
