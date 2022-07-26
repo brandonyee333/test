@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -33,6 +34,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.ResourceNotFoundException;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexAction;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.refresh.RefreshAction;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequestBuilder;
 import org.elasticsearch.action.admin.indices.refresh.RefreshResponse;
@@ -266,6 +269,27 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		}
 
 		return false;
+	}
+
+	@Override
+	public void deleteAll() {
+		try {
+			DeleteIndexRequestBuilder deleteIndexRequestBuilder =
+				new DeleteIndexRequestBuilder(
+					_client, DeleteIndexAction.INSTANCE,
+					"*" + ProjectIdThreadLocal.getProjectId() + "*");
+
+			ClientUtil.waitForConnection(_client);
+
+			deleteIndexRequestBuilder.get();
+		}
+		catch (IndexNotFoundException indexNotFoundException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Index does not exist for project " +
+						ProjectIdThreadLocal.getProjectId());
+			}
+		}
 	}
 
 	@Override

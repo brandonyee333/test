@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
@@ -24,6 +25,7 @@ import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +89,8 @@ public class ProjectDog {
 	}
 
 	public void deleteProject(String projectId) {
+		_elasticsearchInvoker.deleteAll();
+
 		ProjectIdThreadLocal.forProject(
 			projectId, _nanitesHttp::removeSchedule);
 
@@ -140,6 +144,9 @@ public class ProjectDog {
 	private BigQuerySchemaManager _bigQuerySchemaManager;
 
 	private final List<Consumer<String>> _consumers = new ArrayList<>();
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
