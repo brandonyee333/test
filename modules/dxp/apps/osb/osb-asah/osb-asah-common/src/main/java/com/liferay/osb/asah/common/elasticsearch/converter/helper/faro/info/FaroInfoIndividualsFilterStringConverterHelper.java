@@ -309,52 +309,9 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		return accountsFilterByCountFunctionQueryBuilder;
 	}
 
-	private QueryBuilder _getAccountsFilterFunctionQueryBuilder(
-			String filterString)
-		throws Exception {
+	private QueryBuilder _getAccountsFilterFunctionQueryBuilder() {
 
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
-
-		if (queryBuilder == null) {
-			queryBuilder = QueryBuilders.matchAllQuery();
-		}
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		JSONArrayIterator.of(
-			"accounts", _faroInfoElasticsearchInvoker,
-			accountJSONObject -> {
-				boolQueryBuilder.should(
-					QueryBuilders.nestedQuery(
-						"dataSourceAccountPKs",
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termsQuery(
-								"dataSourceAccountPKs.accountPKs",
-								accountJSONObject.getString("accountPK"))
-						).filter(
-							QueryBuilders.termQuery(
-								"dataSourceAccountPKs.dataSourceId",
-								accountJSONObject.getString("dataSourceId"))
-						),
-						ScoreMode.None));
-
-				return null;
-			}
-		).setQueryBuilder(
-			queryBuilder
-		).iterate();
-
-		if (boolQueryBuilder.hasClauses()) {
-			Long individualId = IndividualIdThreadLocal.getIndividualId();
-
-			if (individualId != null) {
-				boolQueryBuilder.filter(
-					QueryBuilders.termQuery("id", individualId));
-			}
-
-			return boolQueryBuilder;
-		}
+		// TODO Segmentation by Account attributes
 
 		return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
 	}
@@ -487,7 +444,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 		if (argumentValues[1] == null) {
 			if (type.equals("accounts")) {
-				return _getAccountsFilterFunctionQueryBuilder(filterString);
+				return _getAccountsFilterFunctionQueryBuilder();
 			}
 
 			if (type.equals("activities")) {
@@ -532,8 +489,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 					QueryBuilder queryBuilder = null;
 
 					if (type.equals("accounts")) {
-						queryBuilder = _getAccountsFilterFunctionQueryBuilder(
-							filterString);
+						queryBuilder = _getAccountsFilterFunctionQueryBuilder();
 					}
 					else if (type.equals("activities")) {
 						queryBuilder = _getActivitiesFilterFunctionQueryBuilder(
@@ -616,7 +572,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		}
 
 		if (type.equals("accounts")) {
-			return _getAccountsFilterFunctionQueryBuilder(filterString);
+			return _getAccountsFilterFunctionQueryBuilder();
 		}
 
 		if (type.equals("activities")) {

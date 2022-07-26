@@ -58,9 +58,6 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -125,8 +122,8 @@ public class ChannelDog extends BaseFaroInfoDog {
 			Consumer<Integer> queueMonitorConsumer)
 		throws Exception {
 
-		_deleteAccountReferences(
-			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
+		// TODO Remove channelId references from Account counts
+
 		_deleteAssets(channelIds);
 		_deleteData(
 			channelIds, _cerebroInfoElasticsearchInvoker, "blog-clicks",
@@ -317,35 +314,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 		}
 
 		return boolQueryBuilder;
-	}
-
-	private void _deleteAccountReferences(
-			List<Long> channelIds,
-			Consumer<Integer> processedCountMonitorConsumer,
-			Consumer<Integer> queueMonitorConsumer)
-		throws Exception {
-
-		JSONArrayIterator.of(
-			"accounts", elasticsearchInvoker,
-			accountJSONObject -> {
-				JSONObject modifiedJSONObject = new JSONObject();
-
-				_updateChannelIds(
-					channelIds, accountJSONObject, modifiedJSONObject,
-					"activitiesCounts", "individualCounts");
-
-				elasticsearchInvoker.update(
-					"accounts", accountJSONObject.getString("id"),
-					modifiedJSONObject);
-
-				return null;
-			}
-		).setMonitoringConsumers(
-			processedCountMonitorConsumer, queueMonitorConsumer
-		).setQueryBuilder(
-			_buildBoolQueryBuilder(
-				channelIds, "activitiesCounts", "individualCounts")
-		).iterate();
 	}
 
 	private void _deleteAssets(List<Long> channelIds) throws Exception {
@@ -574,33 +542,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 		}
 
 		individual.setChannelIds(oldChannelIds);
-	}
-
-	private void _updateChannelIds(
-		List<Long> channelIds, JSONObject jsonObject,
-		JSONObject modifiedJSONObject, String... propertyNames) {
-
-		for (String propertyName : propertyNames) {
-			JSONArray jsonArray = jsonObject.optJSONArray(propertyName);
-
-			if (jsonArray == null) {
-				continue;
-			}
-
-			Iterator<Object> iterator = jsonArray.iterator();
-
-			while (iterator.hasNext()) {
-				JSONObject propertyJSONObject = (JSONObject)iterator.next();
-
-				if (channelIds.contains(
-						propertyJSONObject.getLong("channelId"))) {
-
-					iterator.remove();
-				}
-			}
-
-			modifiedJSONObject.put(propertyName, jsonArray);
-		}
 	}
 
 	private void _updateLastActivityDates(
