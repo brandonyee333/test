@@ -1,13 +1,3 @@
-CREATE TABLE IF NOT EXISTS Account (
-	id BIGSERIAL PRIMARY KEY,
-	accountPK TEXT,
-	activitiesCount BIGINT,
-	createDate TIMESTAMPTZ,
-	dataSourceId BIGINT,
-	individualsCount BIGINT,
-	modifiedDate TIMESTAMPTZ
-);
-
 CREATE TABLE IF NOT EXISTS AsahMarker (
 	id VARCHAR(50) PRIMARY KEY,
 	context JSON

@@ -1,3 +1,13 @@
+CREATE TABLE IF NOT EXISTS Account (
+	id BIGSERIAL PRIMARY KEY,
+	accountPK TEXT,
+	activitiesCount BIGINT,
+	createDate TIMESTAMPTZ,
+	dataSourceId BIGINT,
+	individualsCount BIGINT,
+	modifiedDate TIMESTAMPTZ
+);
+
 CREATE TABLE IF NOT EXISTS BQAccountEntry (
 	accountEntryId BIGINT,
 	createDate TIMESTAMPTZ,
