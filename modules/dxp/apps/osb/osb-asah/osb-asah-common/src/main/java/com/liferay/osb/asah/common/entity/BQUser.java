@@ -101,18 +101,8 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getJobTitle() {
-		return _jobTitle;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getLastName() {
 		return _lastName;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Boolean getMale() {
-		return _male;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -194,16 +184,8 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		_isNew = isNew;
 	}
 
-	public void setJobTitle(String jobTitle) {
-		_jobTitle = jobTitle;
-	}
-
 	public void setLastName(String lastName) {
 		_lastName = lastName;
-	}
-
-	public void setMale(Boolean male) {
-		_male = male;
 	}
 
 	public void setMiddleName(String middleName) {
@@ -256,13 +238,7 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	private Boolean _isNew;
 
 	@Transient
-	private String _jobTitle;
-
-	@Transient
 	private String _lastName;
-
-	@Transient
-	private Boolean _male;
 
 	@Transient
 	private String _middleName;
