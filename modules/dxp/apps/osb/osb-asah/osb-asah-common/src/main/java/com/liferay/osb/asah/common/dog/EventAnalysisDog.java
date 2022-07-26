@@ -308,17 +308,32 @@ public class EventAnalysisDog {
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		EventDefinition eventDefinition) {
 
+		boolean leafBreakdownItem = false;
+
 		if ((compareToPrevious &&
 			 (currentColumnIndex ==
 				 (columnsCount - _BREAKDOWN_LEAF_INCLUDE_PREVIOUS_OFFSET))) ||
 			(currentColumnIndex == (columnsCount - _BREAKDOWN_LEAF_OFFSET))) {
 
+			leafBreakdownItem = true;
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"compareToPrevious: %b, currentColumnIndex: %d, " +
+						"columnsCount: %d, isLeaf %b",
+					compareToPrevious, currentColumnIndex, columnsCount,
+					leafBreakdownItem));
+		}
+
+		if (leafBreakdownItem) {
 			Stream<BreakdownRow> stream = breakdownRows.stream();
 
 			return stream.map(
 				breakdownRow -> _createLeafBreakdownItem(
-					breakdownRow, columnsCount, currentColumnIndex,
-					eventDefinition)
+					breakdownRow, columnsCount, compareToPrevious,
+					currentColumnIndex, eventDefinition)
 			).sorted(
 				new BreakdownItemComparator(true)
 			).collect(
@@ -410,8 +425,8 @@ public class EventAnalysisDog {
 	}
 
 	private BreakdownItem _createLeafBreakdownItem(
-		BreakdownRow breakdownRow, int columnsCount, int currentColumnIndex,
-		EventDefinition eventDefinition) {
+		BreakdownRow breakdownRow, int columnsCount, boolean compareToPrevious,
+		int currentColumnIndex, EventDefinition eventDefinition) {
 
 		BreakdownRow.BreakdownColumn breakdownColumn =
 			breakdownRow.getBreakdownColumn(currentColumnIndex++);
@@ -420,7 +435,7 @@ public class EventAnalysisDog {
 
 		Number previousValue = 0;
 
-		if (currentColumnIndex == (columnsCount - 1)) {
+		if (compareToPrevious && (currentColumnIndex == (columnsCount - 1))) {
 			breakdownColumn = breakdownRow.getBreakdownColumn(
 				currentColumnIndex);
 
@@ -541,6 +556,11 @@ public class EventAnalysisDog {
 
 		if (breakdownRows.isEmpty()) {
 			return Collections.emptyList();
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Processing breakdown rows: " + breakdownRows.toString());
 		}
 
 		return _createBreakdownItems(

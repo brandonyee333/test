@@ -74,6 +74,11 @@ public class BreakdownRow {
 		return Objects.hash(_breakdownColumns);
 	}
 
+	@Override
+	public String toString() {
+		return _breakdownColumns.toString();
+	}
+
 	public static class BreakdownColumn {
 
 		public BreakdownColumn() {
@@ -116,6 +121,11 @@ public class BreakdownRow {
 		@Override
 		public int hashCode() {
 			return Objects.hash(_name, _value);
+		}
+
+		@Override
+		public String toString() {
+			return "{name: " + _name + ", value: " + _value + "}";
 		}
 
 		private String _name;
