@@ -66,6 +66,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
+import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectHavingConditionStep;
 import org.jooq.SelectHavingStep;
@@ -294,16 +295,19 @@ public class BQEventRepositoryImpl
 			),
 			timeRange);
 
+		SelectConditionStep<Record> selectConditionStep = selectJoinStep.where(
+			_getConditions(
+				channelId, eventAnalysisBreakdowns, eventAnalysisFilters,
+				eventAttributeDefinitions, eventDefinitionId, pageable,
+				timeRange, timeZoneId));
+
+		if (!valueFields.isEmpty()) {
+			return _queryExecutor.queryForList(
+				BreakdownRow.class, selectConditionStep.groupBy(valueFields));
+		}
+
 		return _queryExecutor.queryForList(
-			BreakdownRow.class,
-			selectJoinStep.where(
-				_getConditions(
-					channelId, eventAnalysisBreakdowns, eventAnalysisFilters,
-					eventAttributeDefinitions, eventDefinitionId, pageable,
-					timeRange, timeZoneId)
-			).groupBy(
-				valueFields
-			));
+			BreakdownRow.class, selectConditionStep);
 	}
 
 	@Override
