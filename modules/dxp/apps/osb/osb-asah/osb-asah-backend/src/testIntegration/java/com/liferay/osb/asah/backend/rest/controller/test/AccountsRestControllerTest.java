@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.AccountDTO;
 import com.liferay.osb.asah.backend.rest.controller.AccountsRestController;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
@@ -50,12 +51,12 @@ public class AccountsRestControllerTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@Test
 	public void testGetAccountDTO() throws Exception {
@@ -82,16 +83,16 @@ public class AccountsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
@@ -127,12 +128,12 @@ public class AccountsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = FieldMappingRepository.class,
@@ -240,9 +241,9 @@ public class AccountsRestControllerTest
 			CoreMatchers.containsString("Unable to use non-account field"));
 	}
 
-	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@Test
 	public void testGetAccountTransformations() throws Exception {
@@ -265,12 +266,12 @@ public class AccountsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
@@ -301,12 +302,12 @@ public class AccountsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,

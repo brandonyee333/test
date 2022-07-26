@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualsRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -104,16 +105,16 @@ public class IndividualsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_3.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -143,12 +144,12 @@ public class IndividualsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_3.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -248,12 +249,12 @@ public class IndividualsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = FieldMappingRepository.class,

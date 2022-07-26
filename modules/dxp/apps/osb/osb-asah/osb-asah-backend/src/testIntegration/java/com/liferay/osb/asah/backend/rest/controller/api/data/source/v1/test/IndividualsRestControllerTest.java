@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -70,16 +71,16 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,

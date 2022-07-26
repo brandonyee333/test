@@ -37,6 +37,9 @@ public interface AccountRepository
 	public long countByIdAfter(Long accountId);
 
 	@Cacheable
+	public Boolean existsByDataSourceId(Long dataSourceId);
+
+	@Cacheable
 	public List<Account> findAllByDataSourceId(Long dataSourceId);
 
 	@Cacheable

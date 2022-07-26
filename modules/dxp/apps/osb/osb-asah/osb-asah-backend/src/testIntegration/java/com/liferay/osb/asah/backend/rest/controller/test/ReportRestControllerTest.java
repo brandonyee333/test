@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.ReportRestController;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
@@ -43,9 +44,9 @@ public class ReportRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_4.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_4.json"
 	)
 	@Test
 	public void testGetReportAccountDTOPageDTO() throws Exception {

@@ -444,6 +444,7 @@ public class UpdateDynamicMembershipsNaniteTest
 		account.setAccountPK("345");
 		account.setDataSourceId(123L);
 		account.setId(234L);
+		account.setIsNew(Boolean.TRUE);
 
 		_accountRepository.save(account);
 

@@ -17,15 +17,14 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.AdminRestController;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -73,17 +72,15 @@ public class AdminRestControllerTest
 		Assertions.assertNotNull(cache2.get("foo"));
 	}
 
-	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@Test
 	public void testDeleteData() {
-		_adminRestController.deleteData(
-			"accounts", String.valueOf(WeDeployDataService.OSB_ASAH_FARO_INFO));
+		_accountRepository.deleteAll();
 
-		Assertions.assertEquals(
-			0, _elasticsearchInvoker.count("accounts", null));
+		Assertions.assertEquals(0, _accountRepository.count());
 	}
 
 	@Test
@@ -93,8 +90,7 @@ public class AdminRestControllerTest
 			ResourceUtil.readResourceToString(
 				"dependencies/osbasahfaroinfo/accounts_1.json", this));
 
-		Assertions.assertEquals(
-			3, _elasticsearchInvoker.count("accounts", null));
+		Assertions.assertEquals(3, _accountRepository.count());
 	}
 
 	@Test
@@ -160,6 +156,9 @@ public class AdminRestControllerTest
 	}
 
 	@Autowired
+	private AccountRepository _accountRepository;
+
+	@Autowired
 	private AdminRestController _adminRestController;
 
 	@Autowired
@@ -170,8 +169,5 @@ public class AdminRestControllerTest
 
 	@Autowired
 	private CacheManager _cacheManager;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 }

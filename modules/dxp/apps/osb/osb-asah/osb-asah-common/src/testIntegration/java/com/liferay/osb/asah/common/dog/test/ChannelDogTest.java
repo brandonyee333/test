@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -75,16 +76,16 @@ public class ChannelDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_delete_channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blogs_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_delete_channels.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
@@ -148,24 +149,7 @@ public class ChannelDogTest
 		Assertions.assertEquals(
 			0, individualLastActivityDatesJSONArray.length());
 
-		JSONObject accountJSONObject = faroInfoElasticsearchInvoker.get(
-			"accounts", "342313458385210529");
-
-		JSONArray accountActivitiesCountsJSONArray =
-			accountJSONObject.getJSONArray("activitiesCounts");
-
-		Assertions.assertEquals(0, accountActivitiesCountsJSONArray.length());
-
-		JSONArray accountIndividualCountsJSONArray =
-			accountJSONObject.getJSONArray("individualCounts");
-
-		Assertions.assertEquals(1, accountIndividualCountsJSONArray.length());
-
-		JSONObject accountIndividualCountsJSONObject =
-			accountIndividualCountsJSONArray.getJSONObject(0);
-
-		Assertions.assertEquals(
-			"2", accountIndividualCountsJSONObject.getString("channelId"));
+		// TODO Verify if channelId references from Account counts were removed
 
 		List<Channel> channels = IterableUtils.toList(
 			_channelRepository.findAll());

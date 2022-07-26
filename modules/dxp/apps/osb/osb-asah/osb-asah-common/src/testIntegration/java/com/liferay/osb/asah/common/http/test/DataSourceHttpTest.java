@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -36,6 +37,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -593,17 +595,11 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		_dataSourceDog.deleteDataSource(dataSource1);
 
 		Assertions.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"accounts",
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId1))),
+			_accountRepository.existsByDataSourceId(dataSourceId1),
 			"Found entry in accounts collection with data source ID " +
 				dataSourceId1);
 		Assertions.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"accounts",
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId2))),
+			_accountRepository.existsByDataSourceId(dataSourceId2),
 			"Unable to find entry in accounts collection with data source ID " +
 				dataSourceId2);
 		Assertions.assertFalse(
@@ -757,13 +753,12 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	private void _addDataToSalesforceDataSource(
 		String dataSourceId, String dataSourceName) {
 
-		faroInfoElasticsearchInvoker.add(
-			"accounts",
-			JSONUtil.put(
-				"accountPK", RandomTestUtil.randomId()
-			).put(
-				"dataSourceId", dataSourceId
-			));
+		Account account = new Account();
+
+		account.setAccountPK(RandomTestUtil.randomId());
+		account.setDataSourceId(Long.valueOf(dataSourceId));
+
+		_accountRepository.save(account);
 
 		faroInfoElasticsearchInvoker.add(
 			"fields",
@@ -802,6 +797,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			"CREDENTIALS_VALID"
 		);
 	}
+
+	@Autowired
+	private AccountRepository _accountRepository;
 
 	@Autowired
 	private AssetRepository _assetRepository;

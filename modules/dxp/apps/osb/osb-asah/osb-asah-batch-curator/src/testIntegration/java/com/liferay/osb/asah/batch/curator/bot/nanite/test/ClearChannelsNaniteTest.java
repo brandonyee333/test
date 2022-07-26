@@ -62,8 +62,11 @@ public class ClearChannelsNaniteTest
 
 		Assertions.assertNotNull(dataSource);
 
-		Account account = _accountDog.addAccount(
-			FaroInfoTestUtil.buildAccount(dataSource));
+		Account account = FaroInfoTestUtil.buildAccount(dataSource);
+
+		account.setIsNew(Boolean.TRUE);
+
+		_accountDog.addAccount(account);
 
 		Long dataSourceId = dataSource.getId();
 

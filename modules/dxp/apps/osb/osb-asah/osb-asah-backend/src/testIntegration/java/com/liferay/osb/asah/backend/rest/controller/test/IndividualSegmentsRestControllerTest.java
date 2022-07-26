@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
@@ -103,12 +104,12 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
@@ -138,16 +139,16 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,

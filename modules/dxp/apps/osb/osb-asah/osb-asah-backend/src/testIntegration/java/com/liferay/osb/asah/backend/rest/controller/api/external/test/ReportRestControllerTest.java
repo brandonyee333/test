@@ -23,10 +23,12 @@ import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -209,9 +211,9 @@ public class ReportRestControllerTest
 		name = "field-mappings", resourcePath = "field_mappings_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_info.json"
 	)
 	@Test
 	public void testGetReportAccountDTOEntityModel() {
@@ -244,9 +246,9 @@ public class ReportRestControllerTest
 		name = "fields", resourcePath = "fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = AccountRepository.class,
+		resourcePath = "osbasahfaroinfo/accounts_info.json"
 	)
 	@Test
 	public void testGetReportAccountDTOResultBagEntityModel() {
