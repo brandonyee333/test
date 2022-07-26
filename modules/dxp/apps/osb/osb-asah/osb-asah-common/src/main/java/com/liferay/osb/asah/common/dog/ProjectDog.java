@@ -90,6 +90,7 @@ public class ProjectDog {
 
 	public void deleteProject(String projectId) {
 		_elasticsearchInvoker.deleteAll();
+		_elasticsearchSnapshotManager.deleteSnapshotLifecyclePolicy(projectId);
 
 		ProjectIdThreadLocal.forProject(
 			projectId, _nanitesHttp::removeSchedule);

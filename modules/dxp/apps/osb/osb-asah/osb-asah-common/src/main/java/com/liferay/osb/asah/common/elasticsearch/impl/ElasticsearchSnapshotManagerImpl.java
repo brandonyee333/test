@@ -22,11 +22,17 @@ import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequest;
 import org.elasticsearch.client.IndexLifecycleClient;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.SnapshotClient;
+import org.elasticsearch.client.core.AcknowledgedResponse;
+import org.elasticsearch.client.slm.DeleteSnapshotLifecyclePolicyRequest;
 import org.elasticsearch.client.slm.PutSnapshotLifecyclePolicyRequest;
 import org.elasticsearch.client.slm.SnapshotLifecyclePolicy;
 import org.elasticsearch.client.slm.SnapshotRetentionConfiguration;
@@ -64,6 +70,15 @@ public class ElasticsearchSnapshotManagerImpl
 		}
 
 		_createRepository(projectId);
+	}
+
+	@Override
+	public void deleteSnapshotLifecyclePolicy(String projectId) {
+		if (!_environment.acceptsProfiles("prod")) {
+			return;
+		}
+
+		_deleteSnapshotLifecyclePolicy(projectId);
 	}
 
 	private void _createRepository(String projectId) throws Exception {
@@ -118,6 +133,35 @@ public class ElasticsearchSnapshotManagerImpl
 			putSnapshotLifecyclePolicyRequest, RequestOptions.DEFAULT);
 	}
 
+	private void _deleteSnapshotLifecyclePolicy(String projectId) {
+		_indexLifecycleClient.deleteSnapshotLifecyclePolicyAsync(
+			new DeleteSnapshotLifecyclePolicyRequest(
+				projectId + "-hourly-snapshots"),
+			RequestOptions.DEFAULT,
+			new ActionListener<AcknowledgedResponse>() {
+
+				@Override
+				public void onFailure(Exception exception) {
+					_log.error(
+						"Unable to delete snapshot lifecycle policy for " +
+							"project " + projectId,
+						exception);
+				}
+
+				@Override
+				public void onResponse(
+					AcknowledgedResponse acknowledgedResponse) {
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Successfully deleted snapshot lifecycle policy " +
+								"for project " + projectId);
+					}
+				}
+
+			});
+	}
+
 	@PostConstruct
 	private void _init() {
 		RestHighLevelClient restHighLevelClient =
@@ -126,6 +170,9 @@ public class ElasticsearchSnapshotManagerImpl
 		_indexLifecycleClient = restHighLevelClient.indexLifecycle();
 		_snapshotClient = restHighLevelClient.snapshot();
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		ElasticsearchSnapshotManagerImpl.class);
 
 	@Autowired
 	private ElasticsearchConnection _elasticsearchConnection;

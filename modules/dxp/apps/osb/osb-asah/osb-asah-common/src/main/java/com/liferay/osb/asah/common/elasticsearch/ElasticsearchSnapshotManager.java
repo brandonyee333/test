@@ -24,4 +24,6 @@ public interface ElasticsearchSnapshotManager {
 
 	public void createSnapshotRepository(String projectId) throws Exception;
 
+	public void deleteSnapshotLifecyclePolicy(String projectId);
+
 }
