@@ -444,6 +444,8 @@ definition {
 	@description = "If a user tries to download a logging file or company that doesn’t exist it should fail and throw a suitable error message"
 	@priority = "4"
 	test GetInvalidCompanyLogs {
+		property test.assert.warning.exceptions = "true";
+
 		task ("When the user tries to download a log via an http request where the log name is invalid") {
 			var companyId = JSONCompany.getCompanyId();
 			var baseURL = PropsUtil.get("portal.url");

@@ -172,6 +172,10 @@
 			<contains>Unable to call .* of /documents</contains>
 			<matches></matches>
 		</ignore-error>
+		<ignore-error description="LRQA-75860">
+			<contains>Unable to find log file .* for company .*</contains>
+			<matches></matches>
+		</ignore-error>
 		<ignore-error description="LPS-81732">
 			<contains>There are no actions associated with the resource com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion</contains>
 			<matches></matches>
