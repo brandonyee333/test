@@ -199,9 +199,7 @@ CREATE TABLE IF NOT EXISTS FieldMapping (
 	fieldName TEXT,
 	fieldType TEXT,
 	modifiedDate TIMESTAMPTZ,
-	ownerType TEXT,
-	strategyConfiguration TEXT,
-	strategyKey TEXT
+	ownerType TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQForm (

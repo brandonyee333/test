@@ -380,8 +380,7 @@ public class FieldDog {
 					Field curOldField = curOldFields.get(0);
 
 					if (_isUpdateField(
-							context, dataSourceId, curNewField, curOldField,
-							ownerType)) {
+							dataSourceId, curNewField, curOldField)) {
 
 						BeanUtils.copyProperties(curNewField, curOldField);
 
@@ -691,23 +690,6 @@ public class FieldDog {
 			"Invalid data source provider type: " + providerType);
 	}
 
-	private FieldMapping.Strategy _getStrategy(
-		String context, Long dataSourceId, String fieldName, String ownerType) {
-
-		List<FieldMapping> fieldMappings = _getFieldMappings(
-			context, dataSourceId, fieldName, ownerType);
-
-		FieldMapping fieldMapping = fieldMappings.get(0);
-
-		FieldMapping.Strategy strategy = fieldMapping.getStrategy();
-
-		if (strategy == null) {
-			return FieldMapping.Strategy.DEFAULT;
-		}
-
-		return strategy;
-	}
-
 	private boolean _isMultiValueField(
 		String context, Long dataSourceId, String fieldName, String ownerType) {
 
@@ -724,8 +706,7 @@ public class FieldDog {
 	}
 
 	private boolean _isUpdateField(
-		String context, Long dataSourceId, Field newField, Field oldField,
-		String ownerType) {
+		Long dataSourceId, Field newField, Field oldField) {
 
 		if (Objects.equals(dataSourceId, oldField.getDataSourceId())) {
 			return true;
@@ -733,31 +714,6 @@ public class FieldDog {
 
 		if (newField.getValue() == null) {
 			return false;
-		}
-
-		FieldMapping.Strategy fieldMappingStrategy = _getStrategy(
-			context, dataSourceId, oldField.getName(), ownerType);
-
-		if (Objects.equals(
-				fieldMappingStrategy.getKey(), "PRIORITY_DATASOURCE")) {
-
-			JSONObject configurationJSONObject =
-				fieldMappingStrategy.getConfigurationJSONObject();
-
-			Long configurationDataSourceId = configurationJSONObject.getLong(
-				"dataSourceId");
-
-			if (!configurationDataSourceId.equals(dataSourceId) &&
-				configurationDataSourceId.equals(oldField.getDataSourceId())) {
-
-				return false;
-			}
-
-			if (configurationDataSourceId.equals(dataSourceId) &&
-				!configurationDataSourceId.equals(oldField.getDataSourceId())) {
-
-				return true;
-			}
 		}
 
 		Date newModifiedDate = newField.getModifiedDate();

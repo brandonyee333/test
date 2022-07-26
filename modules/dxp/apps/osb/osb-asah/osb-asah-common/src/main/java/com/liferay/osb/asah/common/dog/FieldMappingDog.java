@@ -146,7 +146,6 @@ public class FieldMappingDog {
 			_getSanitizedFieldName(context, fieldName, ownerType));
 		fieldMapping.setFieldType(fieldType);
 		fieldMapping.setOwnerType(ownerType);
-		fieldMapping.setStrategy(FieldMapping.Strategy.DEFAULT);
 
 		_fieldMappingRepository.save(fieldMapping);
 	}

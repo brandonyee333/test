@@ -36,12 +36,7 @@
 				"fieldName": "age",
 				"fieldType": "Number",
 				"id": "366588394714972833",
-				"ownerType": "individual",
-				"strategy": {
-					"configuration": {
-					},
-					"key": "MOST_RECENT"
-				}
+				"ownerType": "individual"
 			},
 			{
 				"author": {
@@ -63,12 +58,7 @@
 				"fieldName": "email",
 				"fieldType": "http://schema.org/email",
 				"id": "331238757947565158",
-				"ownerType": "individual",
-				"strategy": {
-					"configuration": {
-					},
-					"key": "MOST_RECENT"
-				}
+				"ownerType": "individual"
 			},
 			{
 				"author": {
@@ -90,12 +80,7 @@
 				"fieldName": "favoritePokemon",
 				"fieldType": "Text",
 				"id": "340477857996688156",
-				"ownerType": "individual",
-				"strategy": {
-					"configuration": {
-					},
-					"key": "MOST_RECENT"
-				}
+				"ownerType": "individual"
 			},
 			{
 				"author": {
@@ -122,12 +107,7 @@
 				"fieldName": "jobTitle",
 				"fieldType": "Text",
 				"id": "340477857996688157",
-				"ownerType": "individual",
-				"strategy": {
-					"configuration": {
-					},
-					"key": "MOST_RECENT"
-				}
+				"ownerType": "individual"
 			}
 		]
 	},

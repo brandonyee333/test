@@ -34,13 +34,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.json.JSONObject;
-
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -98,8 +95,7 @@ public class FieldMapping implements Persistable<Long> {
 			Objects.equals(_fieldType, fieldMapping._fieldType) &&
 			Objects.equals(_id, fieldMapping._id) &&
 			Objects.equals(_modifiedDate, fieldMapping._modifiedDate) &&
-			Objects.equals(_ownerType, fieldMapping._ownerType) &&
-			Objects.equals(_strategy, fieldMapping._strategy)) {
+			Objects.equals(_ownerType, fieldMapping._ownerType)) {
 
 			return true;
 		}
@@ -222,38 +218,12 @@ public class FieldMapping implements Persistable<Long> {
 		return _ownerType;
 	}
 
-	@JsonProperty("strategy")
-	public Strategy getStrategy() {
-		return _strategy;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@Column("strategyconfiguration")
-	@JsonIgnore
-	public JSONObject getStrategyConfigurationJSONObject() {
-		if (_strategy == null) {
-			return null;
-		}
-
-		return _strategy.getConfigurationJSONObject();
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonIgnore
-	public String getStrategyKey() {
-		if (_strategy == null) {
-			return null;
-		}
-
-		return _strategy.getKey();
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(
 			_author, _context, _createDate, _dataSourceFieldMappings,
 			_dataSourceFieldNames, _displayName, _displayType, _fieldName,
-			_fieldType, _id, _modifiedDate, _ownerType, _strategy);
+			_fieldType, _id, _modifiedDate, _ownerType);
 	}
 
 	@JsonIgnore
@@ -362,36 +332,6 @@ public class FieldMapping implements Persistable<Long> {
 		_ownerType = ownerType;
 	}
 
-	public void setStrategy(Strategy strategy) {
-		_strategy = strategy;
-	}
-
-	public void setStrategyConfigurationJSONObject(
-		JSONObject strategyConfigurationJSONObject) {
-
-		if (strategyConfigurationJSONObject == null) {
-			return;
-		}
-
-		if (_strategy == null) {
-			_strategy = Strategy.DEFAULT;
-		}
-
-		_strategy.setConfigurationJSONObject(strategyConfigurationJSONObject);
-	}
-
-	public void setStrategyKey(String strategyKey) {
-		if (strategyKey == null) {
-			return;
-		}
-
-		if (_strategy == null) {
-			_strategy = Strategy.DEFAULT;
-		}
-
-		_strategy.setKey(strategyKey);
-	}
-
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class Author {
 
@@ -450,86 +390,6 @@ public class FieldMapping implements Persistable<Long> {
 
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class Strategy {
-
-		public static final Strategy DEFAULT = new Strategy(
-			Key.MOST_RECENT.toString(), new HashMap<>());
-
-		public Strategy() {
-		}
-
-		public Strategy(String key, Map<String, String> configuration) {
-			_key = key;
-
-			_configurationJSONObject = _toJSONObject(configuration);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof Strategy)) {
-				return false;
-			}
-
-			Strategy strategy = (Strategy)obj;
-
-			if (Objects.equals(_key, strategy._key)) {
-				return true;
-			}
-
-			return false;
-		}
-
-		@JsonProperty("configuration")
-		public JSONObject getConfigurationJSONObject() {
-			return _configurationJSONObject;
-		}
-
-		@JsonProperty("key")
-		public String getKey() {
-			return _key;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_key);
-		}
-
-		public void setConfigurationJSONObject(
-			JSONObject configurationJSONObject) {
-
-			_configurationJSONObject = configurationJSONObject;
-		}
-
-		public void setKey(String key) {
-			_key = key;
-		}
-
-		public enum Key {
-
-			MOST_RECENT, PRIORITY_DATASOURCE
-
-		}
-
-		private JSONObject _toJSONObject(Map<String, String> configuration) {
-			JSONObject jsonObject = new JSONObject();
-
-			for (Map.Entry<String, String> entry : configuration.entrySet()) {
-				jsonObject.put(entry.getKey(), entry.getValue());
-			}
-
-			return jsonObject;
-		}
-
-		private JSONObject _configurationJSONObject;
-		private String _key;
-
-	}
-
 	@Transient
 	private Author _author;
 
@@ -569,8 +429,5 @@ public class FieldMapping implements Persistable<Long> {
 
 	@Transient
 	private String _ownerType;
-
-	@Transient
-	private Strategy _strategy;
 
 }

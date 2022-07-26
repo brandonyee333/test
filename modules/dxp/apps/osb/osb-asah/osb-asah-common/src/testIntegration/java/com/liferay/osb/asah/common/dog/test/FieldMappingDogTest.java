@@ -335,7 +335,6 @@ public class FieldMappingDogTest
 			"http://schema.org/email", fieldMapping.getFieldType());
 		Assertions.assertNotNull(fieldMapping.getModifiedDate());
 		Assertions.assertEquals("individual", fieldMapping.getOwnerType());
-		Assertions.assertEquals("MOST_RECENT", fieldMapping.getStrategyKey());
 
 		Map<String, String> dataSourceFieldNames =
 			fieldMapping.getDataSourceFieldNames();

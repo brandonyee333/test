@@ -38,8 +38,6 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 
-import org.json.JSONObject;
-
 /**
  * @author Rachael Koestartyo
  */
@@ -86,12 +84,6 @@ public class FieldMappingDTO {
 		_id = StringUtil.get(fieldMapping.getId(), null);
 		_modifiedDate = fieldMapping.getModifiedDate();
 		_ownerType = fieldMapping.getOwnerType();
-
-		StrategyDTO strategyDTO = new StrategyDTO(fieldMapping);
-
-		if (!strategyDTO.isEmpty()) {
-			_strategyDTO = strategyDTO;
-		}
 	}
 
 	public FieldMappingDTO(List<FieldMapping> fieldMappings) {
@@ -181,11 +173,6 @@ public class FieldMappingDTO {
 		return _ownerType;
 	}
 
-	@JsonProperty("strategy")
-	public StrategyDTO getStrategyDTO() {
-		return _strategyDTO;
-	}
-
 	public void setAuthorDTO(AuthorDTO authorDTO) {
 		_authorDTO = authorDTO;
 	}
@@ -244,10 +231,6 @@ public class FieldMappingDTO {
 
 	public void setOwnerType(String ownerType) {
 		_ownerType = ownerType;
-	}
-
-	public void setStrategyDTO(StrategyDTO strategyDTO) {
-		_strategyDTO = strategyDTO;
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -315,76 +298,6 @@ public class FieldMappingDTO {
 
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class StrategyDTO {
-
-		public StrategyDTO() {
-		}
-
-		public StrategyDTO(FieldMapping fieldMapping) {
-			_key = StringUtil.get(fieldMapping.getStrategyKey(), null);
-			_configurationJSONObject =
-				fieldMapping.getStrategyConfigurationJSONObject();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof StrategyDTO)) {
-				return false;
-			}
-
-			StrategyDTO strategyDTO = (StrategyDTO)obj;
-
-			if (Objects.equals(
-					_configurationJSONObject,
-					strategyDTO._configurationJSONObject) &&
-				Objects.equals(_key, strategyDTO._key)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		@JsonProperty("configuration")
-		public JSONObject getConfigurationJSONObject() {
-			return _configurationJSONObject;
-		}
-
-		@JsonProperty("key")
-		public String getKey() {
-			return _key;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_configurationJSONObject, _key);
-		}
-
-		@JsonIgnore
-		public boolean isEmpty() {
-			return equals(new StrategyDTO());
-		}
-
-		public void setConfigurationJSONObject(
-			JSONObject configurationJSONObject) {
-
-			_configurationJSONObject = configurationJSONObject;
-		}
-
-		public void setKey(String key) {
-			_key = key;
-		}
-
-		private JSONObject _configurationJSONObject;
-		private String _key;
-
-	}
-
 	private AuthorDTO _authorDTO;
 	private String _context;
 	private Date _createDate;
@@ -399,6 +312,5 @@ public class FieldMappingDTO {
 	private String _id;
 	private Date _modifiedDate;
 	private String _ownerType;
-	private StrategyDTO _strategyDTO;
 
 }
