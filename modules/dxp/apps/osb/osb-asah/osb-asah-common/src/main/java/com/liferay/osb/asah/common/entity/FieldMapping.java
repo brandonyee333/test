@@ -227,6 +227,8 @@ public class FieldMapping implements Persistable<Long> {
 		return _strategy;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("strategyconfiguration")
 	@JsonIgnore
 	public JSONObject getStrategyConfigurationJSONObject() {
 		if (_strategy == null) {
@@ -236,6 +238,7 @@ public class FieldMapping implements Persistable<Long> {
 		return _strategy.getConfigurationJSONObject();
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonIgnore
 	public String getStrategyKey() {
 		if (_strategy == null) {
@@ -363,7 +366,7 @@ public class FieldMapping implements Persistable<Long> {
 		_strategy = strategy;
 	}
 
-	public void setStrategyConfiguration(
+	public void setStrategyConfigurationJSONObject(
 		JSONObject strategyConfigurationJSONObject) {
 
 		if (strategyConfigurationJSONObject == null) {
@@ -481,15 +484,11 @@ public class FieldMapping implements Persistable<Long> {
 			return false;
 		}
 
-		@AccessType(AccessType.Type.PROPERTY)
-		@Column("strategyconfiguration")
 		@JsonProperty("configuration")
 		public JSONObject getConfigurationJSONObject() {
 			return _configurationJSONObject;
 		}
 
-		@AccessType(AccessType.Type.PROPERTY)
-		@Column("strategykey")
 		@JsonProperty("key")
 		public String getKey() {
 			return _key;
