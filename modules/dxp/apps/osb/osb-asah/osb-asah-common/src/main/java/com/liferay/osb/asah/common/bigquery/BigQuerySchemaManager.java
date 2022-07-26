@@ -23,4 +23,6 @@ public interface BigQuerySchemaManager {
 
 	public void createSchema(Project project);
 
+	public void deleteSchema(String projectId);
+
 }

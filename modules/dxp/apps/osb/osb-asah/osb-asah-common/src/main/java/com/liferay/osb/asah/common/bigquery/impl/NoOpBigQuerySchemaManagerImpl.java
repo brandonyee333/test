@@ -37,6 +37,13 @@ public class NoOpBigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		}
 	}
 
+	@Override
+	public void deleteSchema(String projectId) {
+		if (_log.isInfoEnabled()) {
+			_log.info("Skipping delete schema operation on local environments");
+		}
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		NoOpBigQuerySchemaManagerImpl.class);
 

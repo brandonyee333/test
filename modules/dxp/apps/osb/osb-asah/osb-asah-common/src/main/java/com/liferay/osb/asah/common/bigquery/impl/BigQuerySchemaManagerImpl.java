@@ -92,6 +92,34 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		}
 	}
 
+	@Override
+	public void deleteSchema(String projectId) {
+		try {
+			boolean success = _bigQuery.delete(
+				DatasetId.of(_googleProjectId, projectId),
+				BigQuery.DatasetDeleteOption.deleteContents());
+
+			if (_log.isInfoEnabled()) {
+				if (success) {
+					_log.info(
+						String.format(
+							"Schema for project %s deleted successfully",
+							projectId));
+				}
+			}
+			else {
+				_log.info(
+					String.format(
+						"Schema for project %s was not found" + projectId));
+			}
+		}
+		catch (BigQueryException bigQueryException) {
+			_log.error(
+				"Unable to delete schema for project " + projectId,
+				bigQueryException);
+		}
+	}
+
 	private Clustering _buildClustering(JSONArray clusteringFieldsJSONArray) {
 		Clustering.Builder builder = Clustering.newBuilder();
 

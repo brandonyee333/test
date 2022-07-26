@@ -89,6 +89,8 @@ public class ProjectDog {
 	}
 
 	public void deleteProject(String projectId) {
+		_bigQuerySchemaManager.deleteSchema(projectId);
+
 		_elasticsearchInvoker.deleteAll();
 		_elasticsearchSnapshotManager.deleteSnapshotLifecyclePolicy(projectId);
 
