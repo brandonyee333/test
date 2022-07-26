@@ -36,24 +36,8 @@ USING
 					FROM
 						UNNEST(user.fields)
 					WHERE
-						name = 'jobTitle'
-				) AS jobTitle,
-				(
-					SELECT
-						SAFE_CAST(value AS STRING)
-					FROM
-						UNNEST(user.fields)
-					WHERE
 						name = 'lastName'
 				) AS lastName,
-				(
-					SELECT
-						SAFE_CAST(CAST(value AS STRING) AS BOOL)
-					FROM
-						UNNEST(user.fields)
-					WHERE
-						name = 'male'
-				) AS male,
 				(
 					SELECT
 						SAFE_CAST(value AS STRING)
@@ -156,9 +140,7 @@ WHEN MATCHED AND staging.deleted IS NULL THEN
 		replica.emailAddressHashed = TO_HEX(SHA256(staging.emailAddress)),
 		replica.fields = staging.fields,
 		replica.firstName = staging.firstName,
-		replica.jobTitle = staging.jobTitle,
 		replica.lastName = staging.lastName,
-		replica.male = staging.male,
 		replica.middleName = staging.middleName,
 		replica.modifiedDate = staging.modifiedDate,
 		replica.screenName = staging.screenName,
@@ -174,9 +156,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		`fields`,
 		`firstName`,
 		`id`,
-		`jobTitle`,
 		`lastName`,
-		`male`,
 		`middleName`,
 		`modifiedDate`,
 		`projectId`,
@@ -192,9 +172,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		staging.fields,
 		staging.firstName,
 		staging.sha256HexId,
-		staging.jobTitle,
 		staging.lastName,
-		staging.male,
 		staging.middleName,
 		staging.modifiedDate,
 		staging.projectId,
