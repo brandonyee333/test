@@ -539,6 +539,10 @@ public class EventAnalysisDog {
 				eventDefinitionId, pageable, timeRange,
 				_timeZoneDog.getTimeZoneId());
 
+		if (breakdownRows.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		return _createBreakdownItems(
 			breakdownRows, compareToPrevious, eventAnalysisBreakdowns,
 			eventDefinition);
