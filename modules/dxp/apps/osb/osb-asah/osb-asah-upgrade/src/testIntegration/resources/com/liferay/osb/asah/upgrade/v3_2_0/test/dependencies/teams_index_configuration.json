@@ -1,0 +1,45 @@
+{
+	"mappings": {
+		"teams": {
+			"date_detection": false,
+			"properties": {
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"fields": {
+					"properties": {
+						"groupId": {
+							"type": "keyword"
+						},
+						"name": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"teamId": {
+							"type": "keyword"
+						}
+					},
+					"type": "object"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"type": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

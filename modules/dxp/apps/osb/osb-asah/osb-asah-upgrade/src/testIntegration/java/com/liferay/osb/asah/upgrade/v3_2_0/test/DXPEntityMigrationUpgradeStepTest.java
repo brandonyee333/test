@@ -16,6 +16,7 @@ package com.liferay.osb.asah.upgrade.v3_2_0.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -34,6 +35,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -77,6 +80,17 @@ public class DXPEntityMigrationUpgradeStepTest
 		dataSource2.setProviderType("LIFERAY");
 
 		_dataSourceRepository.saveAll(Arrays.asList(dataSource1, dataSource2));
+
+		_createIndexTemplate(
+			"field-mappings", WeDeployDataService.OSB_ASAH_FARO_INFO);
+		_createIndexTemplate("groups", WeDeployDataService.OSB_ASAH_DXP_RAW);
+		_createIndexTemplate(
+			"organizations", WeDeployDataService.OSB_ASAH_DXP_RAW);
+		_createIndexTemplate("roles", WeDeployDataService.OSB_ASAH_DXP_RAW);
+		_createIndexTemplate("teams", WeDeployDataService.OSB_ASAH_DXP_RAW);
+		_createIndexTemplate(
+			"user-groups", WeDeployDataService.OSB_ASAH_DXP_RAW);
+		_createIndexTemplate("users", WeDeployDataService.OSB_ASAH_DXP_RAW);
 	}
 
 	@AfterEach
@@ -180,6 +194,26 @@ public class DXPEntityMigrationUpgradeStepTest
 				Collections.emptyMap(), type));
 	}
 
+	private void _createIndexTemplate(
+			String collection, WeDeployDataService weDeployDataService)
+		throws Exception {
+
+		_elasticsearchIndexManager.delete(
+			String.format("test_%s_%s", weDeployDataService, collection));
+
+		_elasticsearchIndexManager.create(
+			ResourceUtil.readResourceToString(
+				String.format(
+					"dependencies/%s_index_configuration.json",
+					StringUtils.replace(collection, "-", "_")),
+				this),
+			String.format("test_%s_%s", weDeployDataService, collection));
+
+		_elasticsearchIndexManager.addAlias(
+			String.format("test_%s_%s_alias", weDeployDataService, collection),
+			String.format("test_%s_%s", weDeployDataService, collection));
+	}
+
 	private JSONArray _getJSONArray(
 			String collectionName, String weDeployDataServiceName)
 		throws Exception {
@@ -204,6 +238,9 @@ public class DXPEntityMigrationUpgradeStepTest
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

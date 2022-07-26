@@ -1,0 +1,42 @@
+{
+	"mappings": {
+		"roles": {
+			"date_detection": false,
+			"properties": {
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"fields": {
+					"properties": {
+						"name": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"roleId": {
+							"type": "keyword"
+						}
+					},
+					"type": "object"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"type": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}
