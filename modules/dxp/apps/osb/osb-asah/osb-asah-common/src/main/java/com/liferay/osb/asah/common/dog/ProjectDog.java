@@ -91,8 +91,7 @@ public class ProjectDog {
 	public void deleteProject(String projectId) {
 		_bigQuerySchemaManager.deleteSchema(projectId);
 
-		_elasticsearchInvoker.deleteAll();
-		_elasticsearchSnapshotManager.deleteSnapshotLifecyclePolicy(projectId);
+		_deleteElasticsearch(projectId);
 
 		ProjectIdThreadLocal.forProject(
 			projectId, _nanitesHttp::removeSchedule);
@@ -140,6 +139,15 @@ public class ProjectDog {
 		}
 	}
 
+	private void _deleteElasticsearch(String projectId) {
+		_cerebroInfoElasticsearchInvoker.deleteAll();
+		_dxpRawElasticsearchInvoker.deleteAll();
+		_faroInfoElasticsearchInvoker.deleteAll();
+		_salesforceRawElasticsearchInvoker.deleteAll();
+
+		_elasticsearchSnapshotManager.deleteSnapshotLifecyclePolicy(projectId);
+	}
+
 	private static final Log _log = LogFactory.getLog(ProjectDog.class);
 
 	@Autowired
@@ -148,13 +156,19 @@ public class ProjectDog {
 	@Autowired
 	private BigQuerySchemaManager _bigQuerySchemaManager;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
 	private final List<Consumer<String>> _consumers = new ArrayList<>();
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
+	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
@@ -164,5 +178,8 @@ public class ProjectDog {
 
 	@Autowired
 	private ProjectRepository _projectRepository;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
+	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }
