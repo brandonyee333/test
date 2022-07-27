@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -59,9 +60,9 @@ public class InterestsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
 	public void testGetInterestDTO() {
@@ -84,9 +85,9 @@ public class InterestsRestControllerTest
 		Assertions.assertEquals(0, embeddedMap.size(), interestDTO.toString());
 	}
 
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AsahMarkerRepository.class,
@@ -106,9 +107,9 @@ public class InterestsRestControllerTest
 			false);
 	}
 
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
 	public void testGetInterestDTOsPageDTOOrderByName() {
@@ -140,9 +141,9 @@ public class InterestsRestControllerTest
 		name = "visited-pages", resourcePath = "visited_pages_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
 	public void testGetInterestDTOWithEmbedded() {
@@ -217,9 +218,9 @@ public class InterestsRestControllerTest
 		Assertions.assertEquals(0, keywordsJSONArray.length());
 	}
 
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests_2.json"
 	)
 	@Test
 	public void testGetInterestTransformations() throws Exception {
@@ -234,9 +235,9 @@ public class InterestsRestControllerTest
 			false);
 	}
 
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests_2.json"
 	)
 	@Test
 	public void testGetInterestTransformationsByApplyAndFilter()
@@ -258,9 +259,9 @@ public class InterestsRestControllerTest
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@RepositoryResource(
 		repositoryClass = InterestTopicRepository.class,
@@ -351,9 +352,9 @@ public class InterestsRestControllerTest
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
 	public void testGetTermsWithNoIndividualInterestTerms() throws Exception {
@@ -368,9 +369,9 @@ public class InterestsRestControllerTest
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
 	public void testGetTermsWithNoTopicsRelatedToIndividualInterestTerms()
