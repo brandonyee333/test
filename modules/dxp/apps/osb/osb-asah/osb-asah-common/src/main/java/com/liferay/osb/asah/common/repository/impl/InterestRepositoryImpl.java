@@ -18,25 +18,27 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.CustomInterestRepository;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.math.BigDecimal;
 
 import java.sql.Timestamp;
 
+import java.time.OffsetDateTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
@@ -45,6 +47,7 @@ import org.jooq.Record4;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -229,16 +232,6 @@ public class InterestRepositoryImpl
 
 		Field<Date> periodField = _getPeriodField(period);
 
-		List<Condition> conditions = _getConditions(
-			filterHelper, null, null, null, null, null, null);
-
-		conditions.add(
-			DSL.field(
-				"generatedDate"
-			).between(
-				fromDate, toDate
-			));
-
 		SelectSelectStep<Record4<Date, BigDecimal, Integer, BigDecimal>>
 			selectSelectStep = _dslContext.select(
 				periodField,
@@ -260,10 +253,9 @@ public class InterestRepositoryImpl
 
 		return selectSelectStep.from(
 			"Interest"
-		).rightOuterJoin(
-			DSL.table(
-				"generate_series({0}, {1}, '1 day'::interval) generatedDate",
-				new Timestamp(fromDate.getTime()),
+		).rightJoin(
+			_dslHelper.getTimeSeriesTable(
+				_validPeriods.get(period), new Timestamp(fromDate.getTime()),
 				new Timestamp(toDate.getTime()))
 		).on(
 			DSL.and(
@@ -271,9 +263,14 @@ public class InterestRepositoryImpl
 					"recordedDate"
 				).equal(
 					DSL.field("generatedDate")
-				))
+				),
+				filterHelper.getCondition())
 		).where(
-			conditions
+			DSL.field(
+				"generatedDate"
+			).between(
+				fromDate, toDate
+			)
 		).groupBy(
 			periodField
 		).orderBy(
@@ -388,25 +385,30 @@ public class InterestRepositoryImpl
 	}
 
 	private Field _getPeriodField(String period) {
-		if (!_validPeriods.contains(period)) {
+		if (!_validPeriods.containsKey(period)) {
 			throw new IllegalArgumentException("Invalid period: " + period);
 		}
 
-		return DSL.field(
-			"date_trunc({0}, generatedDate)", Date.class, period
-		).as(
-			"intervalInitDate"
-		);
+		Field field = _dslHelper.dateTrunc(
+			_validPeriods.get(period),
+			DSL.field("generatedDate", OffsetDateTime.class));
+
+		return field.as("intervalInitDate");
 	}
 
 	private final DSLContext _dslContext;
-	private final Set<String> _validPeriods = new HashSet<String>() {
-		{
-			add("day");
-			add("hour");
-			add("month");
-			add("week");
-		}
-	};
+
+	@Autowired
+	private DSLHelper _dslHelper;
+
+	private final Map<String, DatePart> _validPeriods =
+		new HashMap<String, DatePart>() {
+			{
+				put("day", DatePart.DAY);
+				put("hour", DatePart.HOUR);
+				put("month", DatePart.MONTH);
+				put("week", DatePart.WEEK);
+			}
+		};
 
 }
