@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.entity.Interest;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -28,7 +27,6 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Robson Pastor
  */
-@Primary
 public interface InterestRepository
 	extends CustomInterestRepository,
 			PagingAndSortingRepository<Interest, Long> {
