@@ -19,6 +19,8 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import java.sql.Timestamp;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -27,6 +29,8 @@ import java.util.Date;
 
 import org.jooq.DatePart;
 import org.jooq.Field;
+import org.jooq.Record;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,6 +149,25 @@ public class DSLHelper {
 		}
 
 		return DSL.field(sb.toString(), OffsetDateTime.class);
+	}
+
+	public Table<Record> getTimeSeriesTable(
+		DatePart datePart, Timestamp timestamp1, Timestamp timestamp2) {
+
+		if (_isBigQueryDialect()) {
+			return DSL.table(
+				String.format(
+					"UNNEST(GENERATE_DATE_ARRAY({1}, {2}, INTERVAL 1 %s)) AS " +
+						"generatedDate",
+					datePart.toSQL()),
+				timestamp1, timestamp2);
+		}
+
+		return DSL.table(
+			String.format(
+				"generate_series({0}, {1}, '1 %s'::interval) AS generatedDate",
+				datePart.toSQL()),
+			timestamp1, timestamp2);
 	}
 
 	private boolean _isBigQueryDialect() {
