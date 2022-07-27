@@ -748,7 +748,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2018-02-05 16:42:33</current-version-publish-date>
-				<latest-version-publish-date>2022-06-02 14:53:36</latest-version-publish-date>
+				<latest-version-publish-date>2022-07-21 03:15:12</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.frontend.js.minifier.jar!yuicompressor.jar</file-name>
@@ -1730,7 +1730,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2020-12-03 03:01:54</current-version-publish-date>
-				<latest-version-publish-date>2022-05-31 21:56:04</latest-version-publish-date>
+				<latest-version-publish-date>2022-07-22 21:29:40</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.scripting.javascript.jar!rhino.jar</file-name>
@@ -1748,16 +1748,16 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.scripting.python.jar!jython-standalone.jar</file-name>
-				<version>2.5.3</version>
-				<project-name>Jython</project-name>
-				<project-url>http://www.jython.org/</project-url>
+				<version>2.7.2</version>
+				<project-name>Jython fat jar with stdlib</project-name>
+				<project-url>https://www.jython.org/</project-url>
 				<licenses>
 					<license>
 						<license-name>Jython Software License</license-name>
-						<license-url>http://www.jython.org/Project/license.html</license-url>
+						<license-url>https://www.jython.org/Project/license.html</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2012-08-13 15:42:15</current-version-publish-date>
+				<current-version-publish-date>2020-03-21 10:57:16</current-version-publish-date>
 				<latest-version-publish-date>2022-07-09 04:24:14</latest-version-publish-date>
 			</library>
 			<library>
@@ -2534,7 +2534,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2015-05-12 15:13:15</current-version-publish-date>
-				<latest-version-publish-date>2022-04-10 13:34:17</latest-version-publish-date>
+				<latest-version-publish-date>2022-07-22 15:54:56</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.cas.jar!bcpkix-jdk15on.jar</file-name>
@@ -2822,7 +2822,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2019-10-11 23:38:24</current-version-publish-date>
-				<latest-version-publish-date>2022-07-13 09:59:43</latest-version-publish-date>
+				<latest-version-publish-date>2022-07-22 00:17:19</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.openid.jar!guice.jar</file-name>
@@ -3154,8 +3154,8 @@
 						<license-url>https://aws.amazon.com/apache2.0</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2021-09-07 13:23:49</current-version-publish-date>
-				<latest-version-publish-date>2022-07-15 13:54:32</latest-version-publish-date>
+				<current-version-publish-date>2021-09-17 13:49:41</current-version-publish-date>
+				<latest-version-publish-date>2022-07-26 14:40:38</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-kms.jar</file-name>
@@ -3168,8 +3168,8 @@
 						<license-url>https://aws.amazon.com/apache2.0</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2021-09-07 13:24:20</current-version-publish-date>
-				<latest-version-publish-date>2022-07-15 13:54:29</latest-version-publish-date>
+				<current-version-publish-date>2021-09-17 13:51:01</current-version-publish-date>
+				<latest-version-publish-date>2022-07-26 14:40:43</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-s3.jar</file-name>
@@ -3182,8 +3182,8 @@
 						<license-url>https://aws.amazon.com/apache2.0</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2021-09-07 13:24:44</current-version-publish-date>
-				<latest-version-publish-date>2022-07-15 13:53:45</latest-version-publish-date>
+				<current-version-publish-date>2021-09-17 13:51:21</current-version-publish-date>
+				<latest-version-publish-date>2022-07-26 14:42:09</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!commons-codec.jar</file-name>
@@ -3529,7 +3529,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2015-04-10 15:08:59</current-version-publish-date>
-				<latest-version-publish-date>2022-03-07 15:11:53</latest-version-publish-date>
+				<latest-version-publish-date>2022-07-20 14:15:05</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.template.velocity.jar!org.apache.velocity.jar</file-name>
@@ -3897,7 +3897,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2017-08-31 15:21:13</current-version-publish-date>
-				<latest-version-publish-date>2022-07-13 12:20:46</latest-version-publish-date>
+				<latest-version-publish-date>2022-07-21 13:46:48</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.rss.util.jar!icu4j.jar</file-name>
