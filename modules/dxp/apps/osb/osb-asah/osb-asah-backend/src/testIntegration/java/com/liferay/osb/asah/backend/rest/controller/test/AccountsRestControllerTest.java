@@ -37,6 +37,7 @@ import org.hamcrest.MatcherAssert;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -50,6 +51,7 @@ public class AccountsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -82,6 +84,7 @@ public class AccountsRestControllerTest
 		Assertions.assertEquals(0L, (long)accountDTO.getIndividualsCount());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -127,6 +130,7 @@ public class AccountsRestControllerTest
 			false);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -241,6 +245,7 @@ public class AccountsRestControllerTest
 			CoreMatchers.containsString("Unable to use non-account field"));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = AccountRepository.class,
 		resourcePath = "osbasahfaroinfo/accounts_1.json"

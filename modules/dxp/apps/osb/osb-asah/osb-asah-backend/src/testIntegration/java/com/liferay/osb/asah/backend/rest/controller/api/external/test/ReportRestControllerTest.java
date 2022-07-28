@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -238,6 +239,7 @@ public class ReportRestControllerTest
 		Assertions.assertEquals(13, reportAccountDTO.getIndividualsCount());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
