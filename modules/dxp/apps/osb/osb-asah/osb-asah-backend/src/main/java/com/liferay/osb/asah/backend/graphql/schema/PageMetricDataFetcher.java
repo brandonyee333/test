@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.page.PageDog;
 import com.liferay.osb.asah.backend.model.PageMetric;
-import com.liferay.osb.asah.backend.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
 
 import graphql.schema.DataFetchingEnvironment;
 

@@ -12,13 +12,12 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model;
+package com.liferay.osb.asah.common.repository;
 
 /**
- * @author Leslie Wong
+ * @author Leilany Ulisses
+ * @author Marcos Martins
+ * @author Thiago Buarque
  */
-public interface AssetVisitorBehaviorMetric {
-
-	public long getViews();
-
+public interface PageHourlyRepository extends CustomPageRepository {
 }

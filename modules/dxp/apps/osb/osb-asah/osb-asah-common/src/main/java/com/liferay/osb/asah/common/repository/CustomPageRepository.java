@@ -12,26 +12,27 @@
  *
  */
 
-package com.liferay.osb.asah.backend.repository;
+package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.backend.model.PageVisitorBehaviorMetric;
+import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.time.ZoneId;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 
 /**
  * @author Leslie Wong
  */
-public interface PageRepository {
+public interface CustomPageRepository {
 
 	public long countPageVisitorBehaviorMetric(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
-	public PageVisitorBehaviorMetric getPageVisitorBehaviorMetric(
+	public Optional<PageVisitorBehaviorMetric> getPageVisitorBehaviorMetric(
 		String canonicalUrl, Long channelId, TimeRange timeRange, String title,
 		ZoneId zoneId);
 

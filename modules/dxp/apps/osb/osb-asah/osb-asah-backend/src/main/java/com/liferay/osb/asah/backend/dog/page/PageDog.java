@@ -18,14 +18,17 @@ import com.liferay.osb.asah.backend.dog.DataDog;
 import com.liferay.osb.asah.backend.dog.DogUtil;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
-import com.liferay.osb.asah.backend.model.PageVisitorBehaviorMetric;
-import com.liferay.osb.asah.backend.repository.PageRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
+import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.CustomPageRepository;
+import com.liferay.osb.asah.common.repository.PageDailyRepository;
+import com.liferay.osb.asah.common.repository.PageHourlyRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.petra.string.StringPool;
 
 import java.util.Optional;
@@ -45,6 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -87,21 +91,36 @@ public class PageDog {
 		String canonicalUrl, Long channelId, TimeRange timeRange,
 		String title) {
 
-		return _pageRepository.getPageVisitorBehaviorMetric(
-			canonicalUrl, channelId, timeRange, title,
-			_timeZoneDog.getZoneId());
+		CustomPageRepository customPageRepository = _getCustomPageRepository(
+			timeRange);
+
+		Optional<PageVisitorBehaviorMetric> pageVisitorBehaviorMetricOptional =
+			customPageRepository.getPageVisitorBehaviorMetric(
+				canonicalUrl, channelId, timeRange, title,
+				_timeZoneDog.getZoneId());
+
+		if (!pageVisitorBehaviorMetricOptional.isPresent()) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no page with canonical url " + canonicalUrl);
+		}
+
+		return pageVisitorBehaviorMetricOptional.get();
 	}
 
 	public Page<PageVisitorBehaviorMetric> getPageVisitorBehaviorMetricPage(
 		Long channelId, int page, int size, Sort sort, TimeRange timeRange) {
 
+		CustomPageRepository customPageRepository = _getCustomPageRepository(
+			timeRange);
+
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
 		return PageableExecutionUtils.getPage(
-			_pageRepository.searchPageVisitorBehaviorMetrics(
+			customPageRepository.searchPageVisitorBehaviorMetrics(
 				channelId, pageRequest, timeRange, _timeZoneDog.getZoneId()),
 			pageRequest,
-			() -> _pageRepository.countPageVisitorBehaviorMetric(
+			() -> customPageRepository.countPageVisitorBehaviorMetric(
 				channelId, timeRange, _timeZoneDog.getZoneId()));
 	}
 
@@ -160,6 +179,14 @@ public class PageDog {
 		return sumAggregationBuilder;
 	}
 
+	private CustomPageRepository _getCustomPageRepository(TimeRange timeRange) {
+		if (timeRange == TimeRange.LAST_24_HOURS) {
+			return _pageHourlyRepository;
+		}
+
+		return _pageDailyRepository;
+	}
+
 	private long _getMetricValue(
 		PageMetricType pageMetricType, QueryBuilder queryBuilder) {
 
@@ -187,7 +214,10 @@ public class PageDog {
 	private DataDog _dataDog;
 
 	@Autowired
-	private PageRepository _pageRepository;
+	private PageDailyRepository _pageDailyRepository;
+
+	@Autowired
+	private PageHourlyRepository _pageHourlyRepository;
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
