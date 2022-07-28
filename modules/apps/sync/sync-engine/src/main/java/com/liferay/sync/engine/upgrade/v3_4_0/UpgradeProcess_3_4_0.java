@@ -41,20 +41,20 @@ public class UpgradeProcess_3_4_0 extends BaseUpgradeProcess {
 	public void upgradeSchema() throws Exception {
 		runSQL(
 			"ALTER TABLE SyncAccount ADD COLUMN lanCertificate " +
-				"VARCHAR(16777216) BEFORE login;");
+				"VARCHAR(16777216) BEFORE login");
 		runSQL(
 			"ALTER TABLE SyncAccount ADD COLUMN lanEnabled TINYINT BEFORE " +
-				"login;");
+				"login");
 		runSQL(
 			"ALTER TABLE SyncAccount ADD COLUMN lanKey VARCHAR(16777216) " +
-				"BEFORE login;");
+				"BEFORE login");
 		runSQL(
 			"ALTER TABLE SyncAccount ADD COLUMN lanServerUuid VARCHAR(255) " +
-				"BEFORE login;");
+				"BEFORE login");
 
 		runSQL(
 			"ALTER TABLE SyncFile ADD COLUMN lanTokenKey VARCHAR(255) BEFORE " +
-				"localExtraSettings;");
+				"localExtraSettings");
 
 		SyncLanClientPersistence syncLanClientPersistence =
 			SyncLanClientService.getSyncLanClientPersistence();

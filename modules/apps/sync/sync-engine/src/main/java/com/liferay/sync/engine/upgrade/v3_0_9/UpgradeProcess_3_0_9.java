@@ -31,11 +31,11 @@ public class UpgradeProcess_3_0_9 extends BaseUpgradeProcess {
 	public void upgradeSchema() throws Exception {
 		runSQL(
 			"ALTER TABLE SyncAccount ADD COLUMN batchFileMaxSize " +
-				"VARCHAR(16777216) BEFORE filePathName;");
+				"VARCHAR(16777216) BEFORE filePathName");
 
 		runSQL(
 			"ALTER TABLE SyncFile ADD COLUMN previousModifiedTime LONG " +
-				"BEFORE repositoryId;");
+				"BEFORE repositoryId");
 	}
 
 }

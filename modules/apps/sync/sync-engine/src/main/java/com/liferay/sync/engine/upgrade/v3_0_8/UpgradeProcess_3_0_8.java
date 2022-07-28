@@ -35,7 +35,7 @@ public class UpgradeProcess_3_0_8 extends BaseUpgradeProcess {
 
 	@Override
 	public void upgradeSchema() throws Exception {
-		runSQL("CREATE INDEX syncfile_checksum_idx ON SyncFile(checksum);");
+		runSQL("CREATE INDEX syncfile_checksum_idx ON SyncFile(checksum)");
 	}
 
 }

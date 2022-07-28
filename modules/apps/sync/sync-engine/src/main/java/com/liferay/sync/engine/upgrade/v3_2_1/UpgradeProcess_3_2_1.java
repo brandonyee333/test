@@ -31,7 +31,7 @@ public class UpgradeProcess_3_2_1 extends BaseUpgradeProcess {
 	public void upgradeSchema() throws Exception {
 		runSQL(
 			"CREATE INDEX syncwatchevent_filepathname_idx ON " +
-				"SyncWatchEvent(filePathName);");
+				"SyncWatchEvent(filePathName)");
 	}
 
 }

@@ -31,13 +31,13 @@ public class UpgradeProcess_3_3_0 extends BaseUpgradeProcess {
 	public void upgradeSchema() throws Exception {
 		runSQL(
 			"ALTER TABLE SyncAccount ADD COLUMN maxDownloadRate " +
-				"VARCHAR(16777216) BEFORE oAuthConsumerKey;");
+				"VARCHAR(16777216) BEFORE oAuthConsumerKey");
 		runSQL(
 			"ALTER TABLE SyncAccount ADD COLUMN maxUploadRate " +
-				"VARCHAR(16777216) BEFORE oAuthConsumerKey;");
+				"VARCHAR(16777216) BEFORE oAuthConsumerKey");
 		runSQL(
 			"ALTER TABLE SyncAccount ADD COLUMN syncContextModifiedTime LONG " +
-				"BEFORE trustSelfSigned;");
+				"BEFORE trustSelfSigned");
 	}
 
 }
