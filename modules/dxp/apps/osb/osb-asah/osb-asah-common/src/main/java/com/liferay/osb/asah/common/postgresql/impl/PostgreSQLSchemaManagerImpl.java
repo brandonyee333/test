@@ -159,6 +159,23 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 	}
 
 	@Override
+	public void deleteSchema(String projectId) {
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
+
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new InMemoryResource(
+						"DROP SCHEMA IF EXISTS " +
+							ProjectIdThreadLocal.getProjectId() + " CASCADE")),
+				_dataSource);
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
+	}
+
+	@Override
 	public boolean existsTable(Project project, String tableName) {
 		try {
 			ProjectIdThreadLocal.setProject(project);

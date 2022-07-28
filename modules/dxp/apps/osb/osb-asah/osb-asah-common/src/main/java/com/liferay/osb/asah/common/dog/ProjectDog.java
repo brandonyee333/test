@@ -103,6 +103,8 @@ public class ProjectDog {
 		finally {
 			ProjectIdThreadLocal.setGlobalContext(false);
 		}
+
+		_postgreSQLSchemaManager.deleteSchema(projectId);
 	}
 
 	public List<Project> getProjects() {
