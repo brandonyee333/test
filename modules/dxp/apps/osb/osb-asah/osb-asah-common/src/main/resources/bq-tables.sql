@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS Account (
 	id BIGSERIAL PRIMARY KEY,
 	accountPK TEXT,
+	activeIndividualsCount BIGINT,
 	activitiesCount BIGINT,
 	createDate TIMESTAMPTZ,
 	dataSourceId BIGINT,

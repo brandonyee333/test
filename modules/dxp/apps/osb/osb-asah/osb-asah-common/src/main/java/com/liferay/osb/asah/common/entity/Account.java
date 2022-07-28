@@ -84,6 +84,7 @@ public class Account implements Persistable<Long> {
 		return _accountPK;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("activeIndividualsCount")
 	@JsonProperty("activeIndividualCount")
 	public Long getActiveIndividualsCount() {
