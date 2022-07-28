@@ -32,6 +32,7 @@ import com.google.cloud.bigquery.TableDefinition;
 import com.google.cloud.bigquery.TableId;
 import com.google.cloud.bigquery.TableInfo;
 import com.google.cloud.bigquery.TimePartitioning;
+import com.google.cloud.bigquery.ViewDefinition;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.entity.Project;
@@ -74,6 +75,12 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 				_createTable(
 					dataset.getDatasetId(),
 					_tablesJSONObject.getJSONObject(tableName), tableName);
+			}
+
+			for (String viewName : _viewsJSONObject.keySet()) {
+				_createView(
+					dataset.getDatasetId(),
+					_viewsJSONObject.getString(viewName), viewName);
 			}
 		}
 		catch (BigQueryException bigQueryException) {
@@ -209,6 +216,28 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		return table;
 	}
 
+	private Table _createView(
+		DatasetId datasetId, String query, String viewName) {
+
+		TableId tableId = TableId.of(datasetId.getDataset(), viewName);
+
+		ViewDefinition viewDefinition = ViewDefinition.newBuilder(
+			query
+		).setUseLegacySql(
+			false
+		).build();
+
+		Table table = _bigQuery.create(TableInfo.of(tableId, viewDefinition));
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				String.format(
+					"View %s.%s created successfully", datasetId, viewName));
+		}
+
+		return table;
+	}
+
 	@PostConstruct
 	private void _init() {
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
@@ -216,20 +245,29 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		_bigQuery = bigQueryOptions.getService();
 
 		_tablesJSONObject = new JSONObject(_readTables());
+
+		_viewsJSONObject = new JSONObject(_readViews());
 	}
 
-	private String _readTables() {
+	private String _readFile(String filePath) {
 		try {
 			Class<?> clazz = getClass();
 
-			InputStream inputStream = clazz.getResourceAsStream(
-				"/bigquery-tables.json");
+			InputStream inputStream = clazz.getResourceAsStream(filePath);
 
 			return IOUtils.toString(inputStream, Charset.defaultCharset());
 		}
 		catch (Exception exception) {
 			throw new IllegalStateException(exception);
 		}
+	}
+
+	private String _readTables() {
+		return _readFile("/bigquery-tables.json");
+	}
+
+	private String _readViews() {
+		return _readFile("/bigquery-views.json");
 	}
 
 	private static final Log _log = LogFactory.getLog(
@@ -241,5 +279,6 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	private String _location;
 
 	private JSONObject _tablesJSONObject;
+	private JSONObject _viewsJSONObject;
 
 }
