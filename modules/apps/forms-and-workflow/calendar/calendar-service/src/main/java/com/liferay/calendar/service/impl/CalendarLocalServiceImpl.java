@@ -20,6 +20,12 @@ import com.liferay.calendar.exporter.CalendarDataFormat;
 import com.liferay.calendar.exporter.CalendarDataHandler;
 import com.liferay.calendar.exporter.CalendarDataHandlerFactory;
 import com.liferay.calendar.model.Calendar;
+import com.liferay.calendar.model.CalendarNotificationTemplateConstants;
+import com.liferay.calendar.notification.NotificationField;
+import com.liferay.calendar.notification.NotificationTemplateType;
+import com.liferay.calendar.notification.NotificationType;
+import com.liferay.calendar.notification.impl.NotificationUtil;
+import com.liferay.calendar.service.CalendarNotificationTemplateLocalServiceUtil;
 import com.liferay.calendar.service.base.CalendarLocalServiceBaseImpl;
 import com.liferay.calendar.service.configuration.CalendarServiceConfigurationValues;
 import com.liferay.portal.kernel.exception.NoSuchGroupException;
@@ -36,6 +42,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PrefsPropsUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -101,6 +110,8 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 		// Calendar
 
 		updateDefaultCalendar(calendar);
+
+		_addCalendarNotificationTemplates(calendar, serviceContext);
 
 		return calendar;
 	}
@@ -396,6 +407,63 @@ public class CalendarLocalServiceImpl extends CalendarLocalServiceBaseImpl {
 
 		if (nameMap.isEmpty() || Validator.isNull(nameMap.get(locale))) {
 			throw new CalendarNameException();
+		}
+	}
+
+	private void _addCalendarNotificationTemplate(
+		Calendar calendar, NotificationTemplateType notificationTemplateType,
+		ServiceContext serviceContext) {
+
+		String fromAddress = PrefsPropsUtil.getString(
+			PropsKeys.ADMIN_EMAIL_FROM_ADDRESS);
+		String fromName = PrefsPropsUtil.getString(
+			PropsKeys.ADMIN_EMAIL_FROM_NAME);
+
+		try {
+			String subject = NotificationUtil.getDefaultTemplate(
+				NotificationType.EMAIL, notificationTemplateType,
+				NotificationField.SUBJECT);
+
+			String body = NotificationUtil.getDefaultTemplate(
+				NotificationType.EMAIL, notificationTemplateType,
+				NotificationField.BODY);
+
+			UnicodeProperties notificationTypeSettingsProperties =
+				new UnicodeProperties(true);
+
+			notificationTypeSettingsProperties.put(
+				CalendarNotificationTemplateConstants.PROPERTY_FROM_ADDRESS,
+				fromAddress);
+			notificationTypeSettingsProperties.put(
+				CalendarNotificationTemplateConstants.PROPERTY_FROM_NAME,
+				fromName);
+
+			CalendarNotificationTemplateLocalServiceUtil.
+				addCalendarNotificationTemplate(
+					calendar.getUserId(), calendar.getCalendarId(),
+					NotificationType.EMAIL,
+					notificationTypeSettingsProperties.toString(),
+					notificationTemplateType, subject, body, serviceContext);
+		}
+		catch (Exception exception) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(exception);
+			}
+		}
+	}
+
+	private void _addCalendarNotificationTemplates(
+		Calendar calendar, ServiceContext serviceContext) {
+
+		NotificationTemplateType[] notificationTemplateTypes = {
+			NotificationTemplateType.INVITE, NotificationTemplateType.REMINDER
+		};
+
+		for (NotificationTemplateType notificationTemplateType :
+				notificationTemplateTypes) {
+
+			_addCalendarNotificationTemplate(
+				calendar, notificationTemplateType, serviceContext);
 		}
 	}
 
