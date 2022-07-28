@@ -1688,4 +1688,148 @@ definition {
 		}
 	}
 
+	@description = "This test asserts that the User's available views and actions within the page shall reflect the permissions of the Role in the Selected Account."
+	@priority = "5"
+	test ThePageActionsAreConsistentWithRolesPermissionsInSelectedAccount {
+		task ("Given add three accounts a new user and three account roles with view and update and manage organizations permissions") {
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "test@liferay.com",
+				userLoginFullName = "Test Test");
+
+			JSONUser.addUser(
+				userEmailAddress = "userea2@liferay.com",
+				userFirstName = "userfn2",
+				userLastName = "userln2",
+				userScreenName = "usersn2");
+
+			JSONUser.setFirstPassword(
+				agreeToTermsAndAnswerReminderQuery = "true",
+				requireReset = "false",
+				userEmailAddress = "userea2@liferay.com");
+
+			for (var accountName : list "Account Name1,Account Name2,Account Name3") {
+				JSONAccountEntry.addAccountEntry(
+					accountEntryName = "${accountName}",
+					accountEntryType = "Business");
+			}
+
+			for (var accountName : list "Account Name1,Account Name2,Account Name3") {
+				Accounts.openAccountsAdmin();
+
+				LexiconEntry.gotoEntry(rowEntry = "${accountName}");
+
+				Accounts.assignUsers(
+					accountName = "${accountName}",
+					assigneeName = "userfn2 userln2");
+			}
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Users",
+				panel = "Control Panel",
+				portlet = "Roles");
+
+			RoleNavigator.gotoRoleType(roleType = "Account");
+
+			Role.add(roleTitle = "View Role");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "VIEW",
+				resourceName = "com.liferay.account.model.AccountEntry",
+				roleTitle = "View role",
+				roleType = "account");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Users",
+				panel = "Control Panel",
+				portlet = "Roles");
+
+			RoleNavigator.gotoRoleType(roleType = "Account");
+
+			Role.add(roleTitle = "Update Role");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "UPDATE",
+				resourceName = "com.liferay.account.model.AccountEntry",
+				roleTitle = "Update role",
+				roleType = "account");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Users",
+				panel = "Control Panel",
+				portlet = "Roles");
+
+			RoleNavigator.gotoRoleType(roleType = "Account");
+
+			Role.add(roleTitle = "Manage organization Role");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "MANAGE_ORGANIZATIONS",
+				resourceName = "com.liferay.account.model.AccountEntry",
+				roleTitle = "Manage organization Role",
+				roleType = "account");
+		}
+
+		task ("When assign the user to three account with different permissions of roles") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Name1");
+
+			Accounts.addAssigneeToRoleViaUsersTab(
+				accountRoleTitle = "View Role",
+				accountUserName = "userfn2 userln2");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Name2");
+
+			Accounts.addAssigneeToRoleViaUsersTab(
+				accountRoleTitle = "Update Role",
+				accountUserName = "userfn2 userln2");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Name3");
+
+			Accounts.addAssigneeToRoleViaUsersTab(
+				accountRoleTitle = "Manage organization Role",
+				accountUserName = "userfn2 userln2");
+		}
+
+		task ("Then in the accounts table should display account1 can view and select account2 can edit and select account3 can manage org and select") {
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "userea2@liferay.com",
+				userLoginFullName = "userfn2 userln2");
+
+			Navigator.gotoPage(pageName = "2B Account Page");
+
+			for (var accountName : list "Account Name1,Account Name2,Account Name3") {
+				LexiconEntry.viewEntryName(rowEntry = "${accountName}");
+			}
+
+			AssertElementNotPresent(
+				key_rowEntry = "Account Name1",
+				locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
+
+			Accounts.openEntryMenuItem(rowEntry = "Account Name2");
+
+			AssertElementPresent(
+				key_menuItem = "Edit",
+				locator1 = "MenuItem#ANY_MENU_ITEM");
+
+			AssertElementPresent(
+				key_menuItem = "Select Account",
+				locator1 = "MenuItem#ANY_MENU_ITEM");
+
+			Accounts.openEntryMenuItem(rowEntry = "Account Name3");
+
+			AssertElementPresent(
+				key_menuItem = "Manage Organizations",
+				locator1 = "MenuItem#ANY_MENU_ITEM");
+
+			AssertElementPresent(
+				key_menuItem = "Select Account",
+				locator1 = "MenuItem#ANY_MENU_ITEM");
+		}
+	}
+
 }
