@@ -9,6 +9,24 @@ CREATE TABLE IF NOT EXISTS Account (
 	modifiedDate TIMESTAMPTZ
 );
 
+CREATE TABLE IF NOT EXISTS Asset (
+	id BIGSERIAL PRIMARY KEY,
+	assetType TEXT,
+	canonicalURL TEXT,
+	channelIds BIGINT[],
+	dataSourceAssetPK TEXT,
+	dataSourceId BIGINT,
+	description TEXT,
+	title TEXT,
+	url TEXT
+);
+
+CREATE TABLE IF NOT EXISTS AssetKeyword (
+	assetId BIGINT,
+	keyword TEXT,
+	type TEXT
+);
+
 CREATE TABLE IF NOT EXISTS BQAccountEntry (
 	accountEntryId BIGINT,
 	createDate TIMESTAMPTZ,

@@ -11,24 +11,6 @@ CREATE TABLE IF NOT EXISTS AsahTask (
 	projectId TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Asset (
-	id BIGSERIAL PRIMARY KEY,
-	assetType TEXT,
-	canonicalURL TEXT,
-	channelIds BIGINT[],
-	dataSourceAssetPK TEXT,
-	dataSourceId BIGINT,
-	description TEXT,
-	title TEXT,
-	url TEXT
-);
-
-CREATE TABLE IF NOT EXISTS AssetKeyword (
-	assetId BIGINT,
-	keyword TEXT,
-	type TEXT
-);
-
 CREATE TABLE IF NOT EXISTS BlockedKeyword (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
