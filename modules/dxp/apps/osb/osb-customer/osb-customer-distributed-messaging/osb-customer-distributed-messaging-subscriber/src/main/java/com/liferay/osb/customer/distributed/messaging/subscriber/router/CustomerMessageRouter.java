@@ -23,9 +23,6 @@ import com.liferay.osb.customer.koroneiki.message.subscriber.EntitlementCreateMe
 import com.liferay.osb.customer.koroneiki.message.subscriber.EntitlementDeleteMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.ProductCreateMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.ProductDeleteMessageSubscriber;
-import com.liferay.osb.customer.koroneiki.message.subscriber.ProductPurchaseCreateMessageSubscriber;
-import com.liferay.osb.customer.koroneiki.message.subscriber.ProductPurchaseDeleteMessageSubscriber;
-import com.liferay.osb.customer.koroneiki.message.subscriber.ProductPurchaseUpdateMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.ProductUpdateMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.TeamContactRoleMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.TeamUpdateMessageSubscriber;
@@ -171,33 +168,6 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(productDeleteMessageSubscriber, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setProductPurchaseCreateMessageSubscriber(
-		ProductPurchaseCreateMessageSubscriber
-			productPurchaseCreateMessageSubscriber,
-		Map<String, Object> properties) {
-
-		addRoute(productPurchaseCreateMessageSubscriber, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setProductPurchaseDeleteMessageSubscriber(
-		ProductPurchaseDeleteMessageSubscriber
-			productPurchaseDeleteMessageSubscriber,
-		Map<String, Object> properties) {
-
-		addRoute(productPurchaseDeleteMessageSubscriber, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setProductPurchaseUpdateMessageSubscriber(
-		ProductPurchaseUpdateMessageSubscriber
-			productPurchaseUpdateMessageSubscriber,
-		Map<String, Object> properties) {
-
-		addRoute(productPurchaseUpdateMessageSubscriber, properties);
 	}
 
 	@Reference(unbind = "-")

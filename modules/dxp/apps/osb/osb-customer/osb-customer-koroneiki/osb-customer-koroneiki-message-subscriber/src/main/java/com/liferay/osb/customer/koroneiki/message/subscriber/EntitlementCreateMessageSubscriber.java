@@ -16,6 +16,7 @@ package com.liferay.osb.customer.koroneiki.message.subscriber;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.EntitlementConstants;
+import com.liferay.osb.customer.subscription.util.DXPCloudStatusPageSubscriptionUtil;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
@@ -24,6 +25,7 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -55,6 +57,17 @@ public class EntitlementCreateMessageSubscriber
 
 		String name = entitlementJSONObject.getString("name");
 
+		User user = userIdentityProvider.fetchUserByEmailAddress(
+			contactJSONObject.getString("emailAddress"));
+
+		if (user == null) {
+			return;
+		}
+
+		if (name.equals(EntitlementConstants.NAME_CUSTOMER_LXC_SM)) {
+			_dxpCloudStatusPageSubscriptionUtil.subscribe(user);
+		}
+
 		Organization organization = null;
 
 		if (name.equals(EntitlementConstants.NAME_LIFERAY_EMPLOYEE)) {
@@ -71,15 +84,12 @@ public class EntitlementCreateMessageSubscriber
 			return;
 		}
 
-		User user = userIdentityProvider.fetchUserByEmailAddress(
-			contactJSONObject.getString("emailAddress"));
-
-		if (user == null) {
-			return;
-		}
-
 		userLocalService.addOrganizationUser(
 			organization.getOrganizationId(), user.getUserId());
 	}
+
+	@Reference
+	private DXPCloudStatusPageSubscriptionUtil
+		_dxpCloudStatusPageSubscriptionUtil;
 
 }

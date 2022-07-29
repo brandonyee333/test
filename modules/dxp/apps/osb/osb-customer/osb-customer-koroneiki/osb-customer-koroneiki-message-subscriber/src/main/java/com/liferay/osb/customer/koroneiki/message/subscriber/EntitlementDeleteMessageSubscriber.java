@@ -57,6 +57,18 @@ public class EntitlementDeleteMessageSubscriber
 
 		String name = entitlementJSONObject.getString("name");
 
+		User user = userLocalService.fetchUserByEmailAddress(
+			OSBCustomerConstants.COMPANY_ID,
+			contactJSONObject.getString("emailAddress"));
+
+		if (user == null) {
+			return;
+		}
+
+		if (name.equals(EntitlementConstants.NAME_CUSTOMER_LXC_SM)) {
+			_dxpCloudStatusPageSubscriptionUtil.unsubscribe(user);
+		}
+
 		Organization organization = null;
 
 		if (name.equals(EntitlementConstants.NAME_LIFERAY_EMPLOYEE)) {
@@ -70,14 +82,6 @@ public class EntitlementDeleteMessageSubscriber
 		}
 
 		if (organization == null) {
-			return;
-		}
-
-		User user = userLocalService.fetchUserByEmailAddress(
-			OSBCustomerConstants.COMPANY_ID,
-			contactJSONObject.getString("emailAddress"));
-
-		if (user == null) {
 			return;
 		}
 
