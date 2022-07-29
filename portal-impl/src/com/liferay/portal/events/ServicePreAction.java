@@ -103,6 +103,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -326,12 +327,12 @@ public class ServicePreAction extends Action {
 						PortalUtil.getOriginalServletRequest(request),
 						"p_l_id");
 
-					String method = httpServletRequest.getMethod();
+					String method = request.getMethod();
 
 					if ((Objects.equals(method, HttpMethods.GET) &&
 						 (originalPlid == plid)) ||
-						(!Objects.equals(
-							method, HttpMethods.GET) && !signedIn)) {
+						(!Objects.equals(method, HttpMethods.GET) &&
+						 !signedIn)) {
 
 						String message =
 							"User layouts cannot be accessed via p_l_id";
