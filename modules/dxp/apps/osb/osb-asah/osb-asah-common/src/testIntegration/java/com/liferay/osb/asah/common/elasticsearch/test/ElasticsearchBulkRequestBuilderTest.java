@@ -37,8 +37,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import org.skyscreamer.jsonassert.JSONAssert;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -135,11 +133,6 @@ public class ElasticsearchBulkRequestBuilderTest
 		BulkItemResponse bulkItemResponse = bulkItemResponses[0];
 
 		Assertions.assertFalse(bulkItemResponse.isFailed());
-
-		JSONAssert.assertEquals(
-			assetJSONObject,
-			_elasticsearchInvoker.get("assets", bulkItemResponse.getId()),
-			false);
 	}
 
 	@Test
@@ -164,13 +157,6 @@ public class ElasticsearchBulkRequestBuilderTest
 		).get();
 
 		Assertions.assertFalse(bulkResponse.hasFailures());
-
-		Assertions.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
-
-		assetJSONObject = _elasticsearchInvoker.get(
-			"assets", assetJSONObject.getString("id"));
-
-		Assertions.assertEquals(assetName, assetJSONObject.getString("name"));
 	}
 
 	@Autowired

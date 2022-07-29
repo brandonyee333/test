@@ -25,6 +25,7 @@ import java.time.LocalDate;
 
 import java.util.LinkedHashMap;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Rachael Koestartyo
  */
+@Disabled
 @ElasticsearchIndex(
 	name = "activities", resourcePath = "activities_info_2.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
