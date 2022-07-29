@@ -38,6 +38,7 @@ import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.InputStream;
 
@@ -50,6 +51,7 @@ import java.util.Objects;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -222,7 +224,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		TableId tableId = TableId.of(datasetId.getDataset(), viewName);
 
 		ViewDefinition viewDefinition = ViewDefinition.newBuilder(
-			query
+			StringUtils.replace(query, "$[WORKSPACE_ID]", _getWorkspaceId())
 		).setUseLegacySql(
 			false
 		).build();
@@ -238,11 +240,17 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		return table;
 	}
 
+	private String _getWorkspaceId() {
+		return _googleProjectId + "." + ProjectIdThreadLocal.getProjectId();
+	}
+
 	@PostConstruct
 	private void _init() {
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
 
 		_bigQuery = bigQueryOptions.getService();
+
+		_googleProjectId = bigQueryOptions.getProjectId();
 
 		_tablesJSONObject = new JSONObject(_readTables());
 
@@ -274,6 +282,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		BigQuerySchemaManagerImpl.class);
 
 	private BigQuery _bigQuery;
+	private String _googleProjectId;
 
 	@Value("${gcloud.compute.region}")
 	private String _location;
