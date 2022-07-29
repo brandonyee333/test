@@ -41,10 +41,4 @@ public interface AssetRepository
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
 		String dataSourceAssetPK, Long dataSourceId);
 
-	@Cacheable
-	public List<String> findDataSourceAssetPKByKeyword(String keyword);
-
-	@Cacheable
-	public List<String> findKeywordByAssetType(String assetType);
-
 }

@@ -129,7 +129,7 @@ public class PropertyFilter {
 	}
 
 	public String toFilterString() {
-		String filterStringFormat = null;
+		String filterStringFormat = "";
 
 		if (_negate) {
 			filterStringFormat = "not ";

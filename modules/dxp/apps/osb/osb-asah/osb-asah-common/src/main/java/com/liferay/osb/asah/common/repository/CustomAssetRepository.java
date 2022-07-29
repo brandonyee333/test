@@ -63,6 +63,12 @@ public interface CustomAssetRepository {
 		FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
+	public List<String> findDataSourceAssetPKByKeyword(String keyword);
+
+	@Cacheable
+	public List<String> findKeywordByAssetType(String assetType);
+
+	@Cacheable
 	public List<String> getAssetKeywords(String keyword, Pageable pageable);
 
 	@Cacheable

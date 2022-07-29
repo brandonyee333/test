@@ -95,7 +95,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 		if ((sortOrderPairs == null) || sortOrderPairs.isEmpty()) {
 			sortOrderPairs = Collections.singletonList(
-				Pair.of("name", SortOrder.ASC));
+				Pair.of("title", SortOrder.ASC));
 		}
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();

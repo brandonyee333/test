@@ -56,7 +56,7 @@ public class VisitedPagesRestController extends BaseRestController {
 		return toTransformationGetResponse(
 			"visited-pages", page,
 			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			Collections.singletonMap("title", "name"), sorts,
+			Collections.emptyMap(), sorts,
 			new VisitedPagesTransformationJSONArrayFunction(
 				_asahMarkerDog, _assetDog, _bqMembershipDog, ownerId, ownerType,
 				_segmentDog, visitedPages),

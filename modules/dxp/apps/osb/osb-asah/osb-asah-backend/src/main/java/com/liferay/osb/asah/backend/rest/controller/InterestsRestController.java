@@ -102,7 +102,7 @@ public class InterestsRestController
 			"_embedded",
 			JSONUtil.put(
 				"interest-keywords",
-				_assetDog.getKeywords(name, page, size, Sort.asc("_key")))
+				_assetDog.getKeywords(name, page, size, Sort.asc("keyword")))
 		).put(
 			"page",
 			getPageJSONObject(page, size, _assetDog.getKeywordsCount(name))

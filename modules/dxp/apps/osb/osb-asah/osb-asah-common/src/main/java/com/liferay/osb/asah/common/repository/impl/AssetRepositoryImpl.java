@@ -127,10 +127,13 @@ public class AssetRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			_getAssetTable(assetType, filterHelper, null));
-
-		return selectJoinStep.fetch(this::_toAsset);
+		return selectSelectStep.from(
+			_getAssetTable(assetType, filterHelper, null)
+		).orderBy(
+			DSL.field("title")
+		).fetch(
+			this::_toAsset
+		);
 	}
 
 	@Override
@@ -197,6 +200,61 @@ public class AssetRepositoryImpl
 			pageable.getOffset()
 		).fetch(
 			this::_toAsset
+		);
+	}
+
+	@Override
+	public List<String> findDataSourceAssetPKByKeyword(String keyword) {
+		return _dslContext.select(
+			DSL.field("dataSourceAssetPK", String.class)
+		).from(
+			"Asset"
+		).join(
+			"AssetKeyword"
+		).on(
+			DSL.field(
+				"AssetKeyword.assetId"
+			).eq(
+				DSL.field("Asset.id")
+			)
+		).where(
+			DSL.field(
+				"AssetKeyword.keyword"
+			).eq(
+				keyword
+			)
+		).fetchInto(
+			String.class
+		);
+	}
+
+	@Override
+	public List<String> findKeywordByAssetType(String assetType) {
+		Field<String> keywordField = DSL.field(
+			"AssetKeyword.keyword", String.class);
+
+		return _dslContext.selectDistinct(
+			keywordField
+		).from(
+			"Asset"
+		).join(
+			"AssetKeyword"
+		).on(
+			DSL.field(
+				"AssetKeyword.assetId"
+			).eq(
+				DSL.field("Asset.id")
+			)
+		).where(
+			DSL.field(
+				"assetType"
+			).eq(
+				assetType
+			)
+		).orderBy(
+			keywordField
+		).fetchInto(
+			String.class
 		);
 	}
 
@@ -347,6 +405,8 @@ public class AssetRepositoryImpl
 			).eq(
 				assetId
 			)
+		).orderBy(
+			DSL.field("keyword")
 		).fetch(
 			record -> new AssetKeyword(record.intoMap())
 		);
