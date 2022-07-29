@@ -63,6 +63,7 @@ public class PostgreSQLSchemaManagerImplTest
 		_postgreSQLSchemaManager.deleteSchema(project.getId());
 
 		Assertions.assertFalse(_postgreSQLSchemaManager.existsSchema(project));
+
 		Assertions.assertTrue(
 			_postgreSQLSchemaManager.existsSchema(new Project("test")));
 	}
