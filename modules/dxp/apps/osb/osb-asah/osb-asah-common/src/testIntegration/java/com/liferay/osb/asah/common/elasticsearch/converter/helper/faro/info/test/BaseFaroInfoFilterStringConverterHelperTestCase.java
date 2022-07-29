@@ -116,8 +116,7 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
 	private static final String[] _COLLECTION_NAMES = {
-		"accounts", "activities", "field-mappings", "fields", "individuals",
-		"interests"
+		"accounts", "activities", "field-mappings", "fields", "individuals"
 	};
 
 }
