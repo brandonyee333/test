@@ -22,7 +22,7 @@ CREATE OR REPLACE VIEW BQPageReferrers AS (
 
 COMMIT;
 
-CREATE OR REPLACE VIEW BQPages AS (
+CREATE OR REPLACE VIEW BQPage AS (
     WITH
         FinalizedEvent AS
             (
