@@ -160,10 +160,6 @@ public class ServicePreAction extends Action {
 			dynamicResourcesCDNHost = cdnHost;
 		}
 
-		// Portal URL
-
-		String portalURL = PortalUtil.getPortalURL(request);
-
 		// Paths
 
 		String contextPath = PortalUtil.getPathContext();
@@ -273,13 +269,6 @@ public class ServicePreAction extends Action {
 			realUser = UserLocalServiceUtil.getUserById(realUserId.longValue());
 		}
 
-		String doAsUserId = ParamUtil.getString(request, "doAsUserId");
-		String doAsUserLanguageId = ParamUtil.getString(
-			request, "doAsUserLanguageId");
-		long doAsGroupId = ParamUtil.getLong(request, "doAsGroupId");
-
-		long refererGroupId = ParamUtil.getLong(request, "refererGroupId");
-
 		long refererPlid = ParamUtil.getLong(request, "refererPlid");
 
 		if ((refererPlid != 0) &&
@@ -328,7 +317,6 @@ public class ServicePreAction extends Action {
 		}
 
 		Layout layout = null;
-		List<Layout> layouts = null;
 
 		long plid = ParamUtil.getLong(request, "p_l_id");
 
@@ -404,6 +392,19 @@ public class ServicePreAction extends Action {
 				}
 			}
 		}
+
+		// Portal URL
+
+		String portalURL = PortalUtil.getPortalURL(request);
+
+		String doAsUserId = ParamUtil.getString(request, "doAsUserId");
+		String doAsUserLanguageId = ParamUtil.getString(
+			request, "doAsUserLanguageId");
+		long doAsGroupId = ParamUtil.getLong(request, "doAsGroupId");
+
+		long refererGroupId = ParamUtil.getLong(request, "refererGroupId");
+
+		List<Layout> layouts = null;
 
 		String ppid = ParamUtil.getString(request, "p_p_id");
 
