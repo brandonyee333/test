@@ -27,10 +27,10 @@ import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.UserDog;
 import com.liferay.osb.asah.backend.dog.form.FormPageDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.dto.ActivityDTO;
 import com.liferay.osb.asah.backend.dto.DataExportTaskDTO;
 import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
-import com.liferay.osb.asah.backend.dto.Activity;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.BlogMetric;
@@ -438,12 +438,12 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/individuals/{individualId}/activities")
-	public ResultBagEntityModel<Activity>
+	public ResultBagEntityModel<ActivityDTO>
 		getIndividualActivityResultBagEntityModel(
 			@PathVariable Long individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
-		ResultBag<Activity> activityResultBag =
+		ResultBag<ActivityDTO> activityResultBag =
 			_activityDog.getActivityResultBag(
 				individualId, _PAGE_SIZE, page * _PAGE_SIZE);
 
@@ -452,7 +452,7 @@ public class ReportRestController extends BaseRestController {
 			page,
 			_getIndividualActivityResultBagEntityModel(individualId, page - 1),
 			activityResultBag,
-			activity -> _toChildEntityModel(individualId, activity));
+			activityDTO -> _toChildEntityModel(individualId, activityDTO));
 	}
 
 	@GetMapping("/individuals/{individualId}/interests")
@@ -950,7 +950,7 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBagEntityModel<Activity>
+	private ResultBagEntityModel<ActivityDTO>
 		_getIndividualActivityResultBagEntityModel(
 			Long individualId, Integer page) {
 

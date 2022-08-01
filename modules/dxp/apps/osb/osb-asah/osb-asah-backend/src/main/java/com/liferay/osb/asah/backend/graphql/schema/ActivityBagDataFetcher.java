@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.ActivityDog;
-import com.liferay.osb.asah.backend.dto.Activity;
+import com.liferay.osb.asah.backend.dto.ActivityDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -37,10 +37,10 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "activities", typeName = "QueryType")
 public class ActivityBagDataFetcher
-	implements DataFetcher<ResultBag<Activity>> {
+	implements DataFetcher<ResultBag<ActivityDTO>> {
 
 	@Override
-	public ResultBag<Activity> get(
+	public ResultBag<ActivityDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		Function<Map<String, Object>, PropertyFilter> mapperFunction =

@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * @author Marcellus Tavares
  */
-public class Activity {
+public class ActivityDTO {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -33,18 +33,18 @@ public class Activity {
 			return true;
 		}
 
-		if (!(obj instanceof Activity)) {
+		if (!(obj instanceof ActivityDTO)) {
 			return false;
 		}
 
-		Activity activity = (Activity)obj;
+		ActivityDTO activityDTO = (ActivityDTO)obj;
 
-		if (Objects.equals(_applicationId, activity._applicationId) &&
-			Objects.equals(_eventId, activity._eventId) &&
-			Objects.equals(_eventContext, activity._eventContext) &&
-			Objects.equals(_eventProperties, activity._eventProperties) &&
-			Objects.equals(_ownerId, activity._ownerId) &&
-			Objects.equals(_startTime, activity._startTime)) {
+		if (Objects.equals(_applicationId, activityDTO._applicationId) &&
+			Objects.equals(_eventId, activityDTO._eventId) &&
+			Objects.equals(_eventContext, activityDTO._eventContext) &&
+			Objects.equals(_eventProperties, activityDTO._eventProperties) &&
+			Objects.equals(_ownerId, activityDTO._ownerId) &&
+			Objects.equals(_startTime, activityDTO._startTime)) {
 
 			return true;
 		}
