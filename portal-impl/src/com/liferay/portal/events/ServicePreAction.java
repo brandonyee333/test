@@ -436,7 +436,7 @@ public class ServicePreAction extends Action {
 					   !hasAccessPermission(
 						   permissionChecker, layout, doAsGroupId, false)))) {
 
-				if (user.isDefaultUser() &&
+				if (!group.isUser() && user.isDefaultUser() &&
 					PropsValues.AUTH_LOGIN_PROMPT_ENABLED) {
 
 					throw new PrincipalException.MustBeAuthenticated(
