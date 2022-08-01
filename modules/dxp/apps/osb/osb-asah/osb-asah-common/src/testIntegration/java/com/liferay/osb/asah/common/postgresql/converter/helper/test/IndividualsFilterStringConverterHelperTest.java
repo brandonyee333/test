@@ -42,12 +42,14 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
@@ -58,8 +60,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -89,17 +89,13 @@ public class IndividualsFilterStringConverterHelperTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		for (String collectionName : _COLLECTION_NAMES) {
-			_faroInfoElasticsearchInvoker.add(
-				collectionName,
-				new JSONArray(
-					TestExecutionListenerUtil.replaceVariables(
-						ResourceUtil.readResourceToString(
-							"dependencies/osbasahfaroinfo/" +
-								StringUtils.replace(collectionName, "-", "_") +
-									".json",
-							this))));
-		}
+		_faroInfoElasticsearchInvoker.add(
+			"activities",
+			new JSONArray(
+				TestExecutionListenerUtil.replaceVariables(
+					ResourceUtil.readResourceToString(
+						"dependencies/osbasahfaroinfo/activities.json",
+						this))));
 
 		_cerebroInfoElasticsearchInvoker.add(
 			"user-sessions",
@@ -1091,6 +1087,10 @@ public class IndividualsFilterStringConverterHelperTest
 		testFilterString(sb.toString(), 346468614337714393L);
 	}
 
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
+	)
 	@Test
 	public void testInterestsFilter() {
 		testFilterString(
@@ -1134,6 +1134,10 @@ public class IndividualsFilterStringConverterHelperTest
 			346468680492094349L, 346468683127812925L, 346468701457781206L);
 	}
 
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
+	)
 	@Test
 	public void testInterestsFilterWithIndividual() {
 		_asahMarkerDog.addAsahMarker(
@@ -1695,10 +1699,6 @@ public class IndividualsFilterStringConverterHelperTest
 			Assertions.assertEquals(expectedMessage, throwable.getMessage());
 		}
 	}
-
-	private static final String[] _COLLECTION_NAMES = {
-		"activities", "interests"
-	};
 
 	@Autowired
 	private AccountRepository _accountRepository;

@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -1181,6 +1182,10 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 		testFilterString("individuals", sb.toString(), "346468614337714393");
 	}
 
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
+	)
 	@Test
 	public void testInterestsFilter() throws Exception {
 		testFilterString(
@@ -1228,6 +1233,10 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468680492094349", "346468683127812925", "346468701457781206");
 	}
 
+	@RepositoryResource(
+		repositoryClass = InterestRepository.class,
+		resourcePath = "osbasahfaroinfo/interests.json"
+	)
 	@Test
 	public void testInterestsFilterWithIndividual() {
 		_asahMarkerDog.addAsahMarker(
