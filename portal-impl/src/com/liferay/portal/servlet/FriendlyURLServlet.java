@@ -30,6 +30,8 @@ import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LayoutFriendlyURLSeparatorComposite;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -37,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.servlet.PortalMessages;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.struts.LastPath;
@@ -285,6 +288,14 @@ public class FriendlyURLServlet extends HttpServlet {
 			sb.append("}");
 
 			throw new NoSuchGroupException(sb.toString());
+		}
+
+		if (group.isUser() &&
+			!GroupPermissionUtil.contains(
+				PermissionCheckerFactoryUtil.create(
+					PortalUtil.getUser(request)),
+				group, ActionKeys.VIEW)) {
+			throw new NoSuchGroupException();
 		}
 
 		// Layout friendly URL
