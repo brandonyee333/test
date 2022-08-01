@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model;
+package com.liferay.osb.asah.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
