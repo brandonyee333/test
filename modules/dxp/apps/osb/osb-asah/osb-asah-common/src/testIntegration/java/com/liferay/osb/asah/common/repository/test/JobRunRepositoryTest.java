@@ -31,6 +31,7 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -110,6 +111,9 @@ public class JobRunRepositoryTest extends BaseRepositoryTestCase<JobRun, Long> {
 
 		LocalDateTime createLocalDateTime1 =
 			createLocalDateTime2.withDayOfMonth(1);
+
+		createLocalDateTime1 = createLocalDateTime1.truncatedTo(
+			ChronoUnit.DAYS);
 
 		List<JobRun> jobRuns =
 			_jobRunRepository.findByCreateLocalDateTimeBetweenAndJobId(
