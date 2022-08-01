@@ -352,11 +352,7 @@ public class FieldMappingRepositoryImpl
 			selectJoinStep = selectJoinStep.join(
 				DSL.select(
 					DSL.field("dataSourceId"), DSL.field("fieldMappingId"),
-					DSL.field(
-						"fieldName"
-					).as(
-						"datasourcefieldmapping.fieldname"
-					)
+					DSL.field("fieldName")
 				).from(
 					"DataSourceFieldMapping"
 				).asTable(
