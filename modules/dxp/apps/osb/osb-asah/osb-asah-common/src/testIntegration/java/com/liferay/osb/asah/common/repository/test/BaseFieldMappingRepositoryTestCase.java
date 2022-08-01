@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.postgresql.converter.helper.FieldMappingFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -80,6 +84,28 @@ public abstract class BaseFieldMappingRepositoryTestCase
 		fieldMappings =
 			_fieldMappingRepository.findByContextAndDisplayNameAndOwnerType(
 				"custom", "Field 4", "individual");
+
+		Assertions.assertEquals(0, fieldMappings.size());
+	}
+
+	@Test
+	public void testSearchFieldMappings() {
+		List<FieldMapping> fieldMappings =
+			_fieldMappingRepository.searchFieldMappings(
+				new FilterHelper(
+					new DefaultFilterStringConverterHelper(),
+					"(context eq 'custom')",
+					new FieldMappingFilterStringConverterHelper()),
+				PageRequest.of(0, 10));
+
+		Assertions.assertEquals(3, fieldMappings.size());
+
+		fieldMappings = _fieldMappingRepository.searchFieldMappings(
+			new FilterHelper(
+				new DefaultFilterStringConverterHelper(),
+				"(context eq 'demographics')",
+				new FieldMappingFilterStringConverterHelper()),
+			PageRequest.of(0, 10));
 
 		Assertions.assertEquals(0, fieldMappings.size());
 	}
