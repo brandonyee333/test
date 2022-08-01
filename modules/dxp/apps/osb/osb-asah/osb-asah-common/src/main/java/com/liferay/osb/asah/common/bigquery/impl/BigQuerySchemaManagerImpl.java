@@ -224,7 +224,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		TableId tableId = TableId.of(datasetId.getDataset(), viewName);
 
 		ViewDefinition viewDefinition = ViewDefinition.newBuilder(
-			StringUtils.replace(query, "$[WORKSPACE_ID]", _getWorkspaceId())
+			StringUtils.replace(query, "$[AC_PROJECT_ID]", _getProjectId())
 		).setUseLegacySql(
 			false
 		).build();
@@ -240,7 +240,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		return table;
 	}
 
-	private String _getWorkspaceId() {
+	private String _getProjectId() {
 		return _googleProjectId + "." + ProjectIdThreadLocal.getProjectId();
 	}
 
