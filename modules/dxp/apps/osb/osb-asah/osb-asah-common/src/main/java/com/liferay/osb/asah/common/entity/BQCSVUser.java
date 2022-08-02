@@ -15,14 +15,17 @@
 package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -71,6 +74,7 @@ public class BQCSVUser implements Persistable<Long> {
 
 		if (Objects.equals(_dataSourceId, bqCSVUser._dataSourceId) &&
 			Objects.equals(_dataSourceUserPK, bqCSVUser._dataSourceUserPK) &&
+			Objects.equals(_emailAddress, bqCSVUser._emailAddress) &&
 			Objects.equals(
 				JSONUtil.toMap(_fieldsJSONObject),
 				JSONUtil.toMap(bqCSVUser._fieldsJSONObject)) &&
@@ -96,6 +100,11 @@ public class BQCSVUser implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getEmailAddress() {
+		return _emailAddress;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@Column("fields")
 	@JsonProperty("fields")
 	public JSONObject getFieldsJSONObject() {
@@ -110,10 +119,24 @@ public class BQCSVUser implements Persistable<Long> {
 		return _id;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_dataSourceId, _dataSourceUserPK, _fieldsJSONObject, _id);
+			_dataSourceId, _dataSourceUserPK, _emailAddress, _fieldsJSONObject,
+			_id);
 	}
 
 	@JsonIgnore
@@ -134,6 +157,10 @@ public class BQCSVUser implements Persistable<Long> {
 		_dataSourceUserPK = dataSourceUserPK;
 	}
 
+	public void setEmailAddress(String emailAddress) {
+		_emailAddress = emailAddress;
+	}
+
 	public void setFieldsJSONObject(JSONObject fieldsJSONObject) {
 		_fieldsJSONObject = fieldsJSONObject;
 	}
@@ -146,6 +173,12 @@ public class BQCSVUser implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
+	}
+
 	@Transient
 	private Long _dataSourceId;
 
@@ -153,12 +186,18 @@ public class BQCSVUser implements Persistable<Long> {
 	private String _dataSourceUserPK;
 
 	@Transient
-	private JSONObject _fieldsJSONObject;
+	private String _emailAddress;
+
+	@Transient
+	private JSONObject _fieldsJSONObject = new JSONObject();
 
 	@Transient
 	private Long _id;
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private Date _modifiedDate;
 
 }

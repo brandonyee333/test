@@ -14,14 +14,18 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQCSVUserDog;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +41,8 @@ public class CSVIndividualsRestController extends BaseRestController {
 
 	@PostMapping
 	public void postCSVIndividuals(@RequestBody String json) throws Exception {
+		Date date = DateUtil.newDate();
+
 		List<BQCSVUser> bqCSVUsers = JSONUtil.toList(
 			new JSONArray(json),
 			jsonObject -> {
@@ -46,8 +52,19 @@ public class CSVIndividualsRestController extends BaseRestController {
 					Long.valueOf(jsonObject.getString("dataSourceId")));
 				bqCSVUser.setDataSourceUserPK(
 					jsonObject.getString("dataSourceIndividualPK"));
-				bqCSVUser.setFieldsJSONObject(
-					jsonObject.optJSONObject("fields"));
+
+				JSONObject fieldsJSONObject = jsonObject.optJSONObject(
+					"fields");
+
+				if (fieldsJSONObject != null) {
+					fieldsJSONObject.put(
+						"dataSourceId",
+						Long.valueOf(jsonObject.getString("dataSourceId")));
+					fieldsJSONObject.put("modifiedDate", date);
+				}
+
+				bqCSVUser.setFieldsJSONObject(fieldsJSONObject);
+				bqCSVUser.setModifiedDate(date);
 
 				return bqCSVUser;
 			});
