@@ -325,12 +325,11 @@ public class InterestRepositoryTest
 		Assertions.assertEquals(
 			3, transformations.size(), transformations.toString());
 		_assertTransformation(
-			"2021-08-30T00:00:00.000Z", 0D, 0D, 0, transformations.get(0));
+			"2021-08-29T00:00:00.000Z", 0D, 0D, 0, transformations.get(0));
 		_assertTransformation(
-			"2021-09-06T00:00:00.000Z", 1.767661917648994D, 1D, 1,
-			transformations.get(1));
+			"2021-09-05T00:00:00.000Z", 0D, 0D, 0, transformations.get(1));
 		_assertTransformation(
-			"2021-09-13T00:00:00.000Z", 1.573638067121188D, 14D, 4,
+			"2021-09-12T00:00:00.000Z", 1.6124428372267494, 15D, 5,
 			transformations.get(2));
 	}
 

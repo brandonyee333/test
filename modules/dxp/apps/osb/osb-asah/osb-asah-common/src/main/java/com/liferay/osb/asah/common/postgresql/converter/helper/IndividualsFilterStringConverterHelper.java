@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
+import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
@@ -28,13 +29,11 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoInterestsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
@@ -48,7 +47,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -834,29 +832,9 @@ public class IndividualsFilterStringConverterHelper
 			return DSL.not(DSL.noCondition());
 		}
 
-		List<Long> individualIds = new ArrayList<>();
-
-		BoolQueryBuilder boolQueryBuilder = _getOwnerIdBoolQueryBuilder(null);
-
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+		List<Long> individualIds = _interestDog.getOwnerIds(
 			filterString.replaceAll(matcher.group(1), "score eq " + value),
-			_faroInfoInterestsFilterStringConverterHelper);
-
-		if (queryBuilder != null) {
-			boolQueryBuilder.filter(queryBuilder);
-		}
-
-		JSONArrayIterator.of(
-			"interests", _faroInfoElasticsearchInvoker,
-			interestJSONObject -> {
-				individualIds.add(
-					Long.valueOf(interestJSONObject.getString("ownerId")));
-
-				return null;
-			}
-		).setQueryBuilder(
-			boolQueryBuilder
-		).iterate();
+			IndividualIdThreadLocal.getIndividualId());
 
 		if (individualIds.isEmpty()) {
 			return DSL.noCondition();
@@ -1058,8 +1036,7 @@ public class IndividualsFilterStringConverterHelper
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoInterestsFilterStringConverterHelper
-		_faroInfoInterestsFilterStringConverterHelper;
+	private InterestDog _interestDog;
 
 	@Autowired
 	private OrganizationDog _organizationDog;

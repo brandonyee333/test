@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -34,9 +35,11 @@ import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -512,13 +515,13 @@ public class FaroInfoTestUtil {
 			fieldName, fieldType, "individual");
 	}
 
-	public static JSONArray buildIndividualInterestsJSONArray(
-		JSONObject assetJSONObject, String dayDateString, Long individualId,
-		double score, int views) {
+	public static List<Interest> buildIndividualInterests(
+		JSONObject assetJSONObject, Long individualId, Date recordedDate,
+		double score, Long views) {
 
-		return buildInterestsJSONArray(
-			dayDateString, assetJSONObject.getJSONArray("keywords"),
-			individualId, "individual", score, views);
+		return buildInterests(
+			assetJSONObject.getJSONArray("keywords"), individualId,
+			"individual", recordedDate, score, views);
 	}
 
 	public static JSONArray buildIndividualSegmentVisitedPagesJSONArray(
@@ -539,32 +542,28 @@ public class FaroInfoTestUtil {
 			uniqueVisitsCount);
 	}
 
-	public static JSONArray buildInterestsJSONArray(
-		String dayDateString, JSONArray keywordsJSONArray, Long ownerId,
-		String ownerType, double score, int views) {
+	public static List<Interest> buildInterests(
+		JSONArray keywordsJSONArray, Long ownerId, String ownerType,
+		Date recordedDate, double score, Long views) {
 
-		JSONArray interestsJSONArray = new JSONArray();
+		List<Interest> interests = new ArrayList<>();
 
 		for (int i = 0; i < keywordsJSONArray.length(); i++) {
 			JSONObject keywordJSONObject = keywordsJSONArray.getJSONObject(i);
+			Interest interest = new Interest();
 
-			interestsJSONArray.put(
-				JSONUtil.put(
-					"dateRecorded", dayDateString
-				).put(
-					"name", keywordJSONObject.getString("keyword")
-				).put(
-					"ownerId", String.valueOf(ownerId)
-				).put(
-					"ownerType", ownerType
-				).put(
-					"score", score
-				).put(
-					"views", views
-				));
+			interest.setIsNew(Boolean.TRUE);
+			interest.setName(keywordJSONObject.getString("keyword"));
+			interest.setOwnerId(ownerId);
+			interest.setOwnerType(ownerType);
+			interest.setRecordedDate(recordedDate);
+			interest.setScore(score);
+			interest.setViews(views);
+
+			interests.add(interest);
 		}
 
-		return interestsJSONArray;
+		return interests;
 	}
 
 	public static DataSource buildLiferayDataSource() {

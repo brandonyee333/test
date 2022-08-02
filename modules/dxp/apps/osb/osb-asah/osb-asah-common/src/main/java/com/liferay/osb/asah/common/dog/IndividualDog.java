@@ -510,7 +510,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 			QueryBuilders.termQuery("ownerType", "individual")
 		);
 
-		elasticsearchInvoker.delete("interests", boolQueryBuilder);
+		_interestRepository.deleteByOwnerIdInAndOwnerType(
+			individualIds, "individual");
+
 		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
 		_bqMembershipDog.deactivateBQMembershipByIndividuals(

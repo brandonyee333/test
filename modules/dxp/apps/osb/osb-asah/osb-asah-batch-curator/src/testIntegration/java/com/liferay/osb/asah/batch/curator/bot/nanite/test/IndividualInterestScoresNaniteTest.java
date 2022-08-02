@@ -42,6 +42,7 @@ import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,40 +109,35 @@ public class IndividualInterestScoresNaniteTest
 
 	@Test
 	public void testDeleteInterestScores() throws Exception {
-		String dayDateString = DateUtil.newDayDateString();
+		Date dayDate = DateUtil.newDayDate();
 
-		faroInfoElasticsearchInvoker.add(
-			"interests",
-			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				_assetJSONObject1, DateUtil.addDays(dayDateString, -2),
-				_individual.getId(), 1, 10));
-		faroInfoElasticsearchInvoker.add(
-			"interests",
-			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				_assetJSONObject1, DateUtil.addDays(dayDateString, -3),
-				_individual.getId(), 1, 10));
+		_interestRepository.saveAll(
+			FaroInfoTestUtil.buildIndividualInterests(
+				_assetJSONObject1, _individual.getId(),
+				DateUtil.addDays(dayDate, -2), 1, 10L));
+
+		_interestRepository.saveAll(
+			FaroInfoTestUtil.buildIndividualInterests(
+				_assetJSONObject1, _individual.getId(),
+				DateUtil.addDays(dayDate, -3), 1, 10L));
 		faroInfoElasticsearchInvoker.add(
 			"visited-pages",
 			FaroInfoTestUtil.buildIndividualVisitedPagesJSONArray(
-				_assetJSONObject1, DateUtil.addDays(dayDateString, -30),
+				_assetJSONObject1,
+				DateUtil.toString(DateUtil.addDays(dayDate, -30)),
 				_individual.getId(), 1));
 		faroInfoElasticsearchInvoker.add(
 			"visited-pages",
 			FaroInfoTestUtil.buildIndividualVisitedPagesJSONArray(
-				_assetJSONObject1, DateUtil.addDays(dayDateString, -31),
+				_assetJSONObject1,
+				DateUtil.toString(DateUtil.addDays(dayDate, -31)),
 				_individual.getId(), 1));
 
-		_runIndividualInterestScoresNanite(dayDateString);
+		_runIndividualInterestScoresNanite(DateUtil.toString(dayDate));
 
-		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
-			"interests");
-
-		for (int i = 0; i < interestsJSONArray.length(); i++) {
-			JSONObject interestJSONObject = interestsJSONArray.getJSONObject(i);
-
+		for (Interest interest : _interestRepository.findAll()) {
 			Assertions.assertEquals(
-				DateUtil.addDays(dayDateString, -2),
-				interestJSONObject.getString("dateRecorded))"));
+				DateUtil.addDays(dayDate, -2), interest.getRecordedDate());
 		}
 
 		JSONArray visitedPagesJSONArray = faroInfoElasticsearchInvoker.get(
@@ -152,7 +148,7 @@ public class IndividualInterestScoresNaniteTest
 				visitedPagesJSONArray.getJSONObject(i);
 
 			Assertions.assertEquals(
-				DateUtil.addDays(dayDateString, -30),
+				DateUtil.toString(DateUtil.addDays(dayDate, -30)),
 				visitedPageJSONObject.getString("day"));
 		}
 	}
@@ -200,67 +196,54 @@ public class IndividualInterestScoresNaniteTest
 
 	@Test
 	public void testInterestScoresDecayMultipleLoops() throws Exception {
-		String dayDateString = DateUtil.newDayDateString();
+		Date dayDate = DateUtil.newDayDate();
 
-		String previousDayDateString = DateUtil.addDays(dayDateString, -1);
+		Date previousDayDate = DateUtil.addDays(dayDate, -1);
 
-		_runIndividualInterestScoresNanite(previousDayDateString);
+		_runIndividualInterestScoresNanite(DateUtil.toString(previousDayDate));
 
-		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
-			"interests",
-			QueryBuilders.termQuery("dateRecorded", previousDayDateString));
+		Map<Pair<String, Long>, Double> interestsMap = new HashMap<>();
 
-		Map<Pair<String, String>, Double> interestsMap = new HashMap<>();
+		List<Interest> interests =
+			_interestRepository.findByNameAndOwnerIdAndRecordedDate(
+				null, null, previousDayDate);
 
-		interestsJSONArray.forEach(
-			object -> {
-				JSONObject interestJSONObject = (JSONObject)object;
-
-				interestsMap.put(
-					Pair.of(
-						interestJSONObject.getString("name"),
-						interestJSONObject.getString("ownerId")),
-					interestJSONObject.getDouble("score"));
-			});
+		for (Interest interest : interests) {
+			interestsMap.put(
+				Pair.of(interest.getName(), interest.getOwnerId()),
+				interest.getScore());
+		}
 
 		ReflectionTestUtils.setField(
 			_individualInterestScoresNanite, "_staleInterestsQuerySize",
-			interestsJSONArray.length() / 3);
+			interests.size() / 3);
 
-		_runIndividualInterestScoresNanite(dayDateString);
+		_runIndividualInterestScoresNanite(DateUtil.toString(dayDate));
 
-		for (Map.Entry<Pair<String, String>, Double> entry :
+		for (Map.Entry<Pair<String, Long>, Double> entry :
 				interestsMap.entrySet()) {
 
-			Pair<String, String> nameOwnerIdPair = entry.getKey();
+			Pair<String, Long> nameOwnerIdPair = entry.getKey();
 
-			interestsJSONArray = faroInfoElasticsearchInvoker.get(
-				"interests",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("dateRecorded", dayDateString)
-				).filter(
-					QueryBuilders.termQuery("name", nameOwnerIdPair.getKey())
-				).filter(
-					QueryBuilders.termQuery(
-						"ownerId", nameOwnerIdPair.getValue())
-				));
+			interests = _interestRepository.findByNameAndOwnerIdAndRecordedDate(
+				nameOwnerIdPair.getKey(), nameOwnerIdPair.getValue(), dayDate);
 
-			Assertions.assertEquals(1, interestsJSONArray.length());
+			Assertions.assertEquals(1, interests.size());
 
-			JSONObject interestJSONObject = interestsJSONArray.getJSONObject(0);
+			Interest interest = interests.get(0);
 
-			Assertions.assertTrue(
-				entry.getValue() > interestJSONObject.getDouble("score"));
+			Assertions.assertTrue(entry.getValue() > interest.getScore());
 
-			faroInfoElasticsearchInvoker.delete(
-				"interests", interestJSONObject.getString("id"));
+			_interestRepository.delete(interest);
 		}
 
-		Assertions.assertEquals(
-			0,
-			faroInfoElasticsearchInvoker.count(
-				"interests",
-				QueryBuilders.termQuery("dateRecorded", dayDateString)));
+		_interestRepository.findByNameAndOwnerIdAndRecordedDate(
+			null, null, dayDate);
+
+		interests = _interestRepository.findByNameAndOwnerIdAndRecordedDate(
+			null, null, dayDate);
+
+		Assertions.assertEquals(0, interests.size());
 	}
 
 	@Test
@@ -277,11 +260,11 @@ public class IndividualInterestScoresNaniteTest
 
 			_runIndividualInterestScoresNanite(dayDateString);
 
-			JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
-				"interests",
-				QueryBuilders.termQuery("dateRecorded", dayDateString));
+			List<Interest> interests =
+				_interestRepository.findByNameAndOwnerIdAndRecordedDate(
+					null, null, DateUtil.toUTCDate(dayDateString));
 
-			if (interestsJSONArray.length() == 0) {
+			if (interests.size() == 0) {
 				Assertions.assertTrue(
 					elapsedDays > 0,
 					"No positive interest scores were calculated for " +
@@ -291,9 +274,10 @@ public class IndividualInterestScoresNaniteTest
 			}
 
 			_assertInterestScoreDirection(
-				previousDayDateString, dayDateString, false);
+				DateUtil.toUTCDate(previousDayDateString),
+				DateUtil.toUTCDate(dayDateString), false);
 
-			_assertInterestScoresAboveThreshold(interestsJSONArray);
+			_assertInterestScoresAboveThreshold(interests);
 
 			previousDayDateString = dayDateString;
 
@@ -367,24 +351,22 @@ public class IndividualInterestScoresNaniteTest
 		_runIndividualInterestScoresNanite(
 			DateUtil.addDays(DateUtil.newDayDateString(), -2));
 
-		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
-			"interests");
+		long count = _interestRepository.count();
 
 		Assertions.assertEquals(
-			0, interestsJSONArray.length(),
+			0, count,
 			"Expected no interests to be generated, but interests were " +
-				"generated: " + interestsJSONArray);
+				"generated: " + count);
 	}
 
 	@Test
 	public void testRunTwice() {
-		String dayDateString = DateUtil.newDayDateString();
+		Date dayDate = DateUtil.newDayDate();
 
-		faroInfoElasticsearchInvoker.add(
-			"interests",
-			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				_assetJSONObject1, DateUtil.addDays(dayDateString, -1),
-				_individual.getId(), 1, 10));
+		_interestRepository.saveAll(
+			FaroInfoTestUtil.buildIndividualInterests(
+				_assetJSONObject1, _individual.getId(),
+				DateUtil.addDays(dayDate, -1), 1, 10L));
 
 		IntStream.range(
 			1, 3
@@ -392,7 +374,7 @@ public class IndividualInterestScoresNaniteTest
 			i -> {
 				try {
 					_runIndividualInterestScoresNanite(
-						JSONUtil.put("processDay", dayDateString));
+						JSONUtil.put("processDay", DateUtil.toString(dayDate)));
 				}
 				catch (Exception exception) {
 					_log.error(exception, exception);
@@ -402,27 +384,18 @@ public class IndividualInterestScoresNaniteTest
 			}
 		);
 
-		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
-			"interests",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("dateRecorded", dayDateString)));
-
 		Map<String, Boolean> map = new HashedMap<>();
 
-		interestsJSONArray.forEach(
-			object -> {
-				JSONObject jsonObject = (JSONObject)object;
+		for (Interest interest : _interestRepository.findAll()) {
+			String key = String.format(
+				"%s#%s", interest.getId(), interest.getName());
 
-				String key =
-					jsonObject.getString("ownerId") +
-						jsonObject.getString("name");
+			if (map.containsKey(key)) {
+				Assertions.fail();
+			}
 
-				if (map.containsKey(key)) {
-					Assertions.fail();
-				}
-
-				map.put(key, true);
-			});
+			map.put(key, true);
+		}
 
 		AsahMarker asahMarker = _asahMarkerDog.getAsahMarker(
 			"IndividualInterestScoresNanite");
@@ -431,7 +404,7 @@ public class IndividualInterestScoresNaniteTest
 			asahMarker.getContextJSONObject();
 
 		Assertions.assertEquals(
-			dayDateString,
+			DateUtil.toString(dayDate),
 			asahMarkerContextJSONObject.getString("lastSuccessfulDay"));
 	}
 
@@ -448,7 +421,8 @@ public class IndividualInterestScoresNaniteTest
 		_runIndividualInterestScoresNanite(dayDateString);
 
 		_assertInterestScoreDirection(
-			previousDayDateString, dayDateString, true);
+			DateUtil.toUTCDate(previousDayDateString),
+			DateUtil.toUTCDate(dayDateString), true);
 	}
 
 	@Test
@@ -488,20 +462,16 @@ public class IndividualInterestScoresNaniteTest
 	}
 
 	private void _assertInterestScoreDirection(
-			String previousDayDateString, String dayDateString,
-			boolean increasing)
+			Date previousDayDate, Date dayDate, boolean increasing)
 		throws Exception {
 
 		for (String keyword : _getKeywords()) {
-			JSONObject previousDayInterestJSONObject = _getInterestJSONObject(
-				previousDayDateString, keyword);
-			JSONObject currentDayInterestJSONObject = _getInterestJSONObject(
-				dayDateString, keyword);
+			Interest previousDayInterest = _getInterest(
+				previousDayDate, keyword);
+			Interest currentDayInterest = _getInterest(dayDate, keyword);
 
-			double previousDayScore = previousDayInterestJSONObject.getDouble(
-				"score");
-			double currentDayScore = currentDayInterestJSONObject.getDouble(
-				"score");
+			double previousDayScore = previousDayInterest.getScore();
+			double currentDayScore = currentDayInterest.getScore();
 
 			if (increasing) {
 				Assertions.assertTrue(
@@ -519,20 +489,16 @@ public class IndividualInterestScoresNaniteTest
 		}
 	}
 
-	private void _assertInterestScoresAboveThreshold(
-		JSONArray interestsJSONArray) {
-
-		for (int i = 0; i < interestsJSONArray.length(); i++) {
-			JSONObject interestJSONObject = interestsJSONArray.getJSONObject(i);
-
-			double score = interestJSONObject.getDouble("score");
+	private void _assertInterestScoresAboveThreshold(List<Interest> interests) {
+		for (Interest interest : interests) {
+			double score = interest.getScore();
 
 			Assertions.assertTrue(
 				score >=
 					IndividualInterestScoresNanite.
 						MINIMUM_INTEREST_SCORE_THRESHOLD,
 				"Expected interest score to be greater than or equal to the " +
-					"threshold but was " + score + ": " + interestJSONObject);
+					"threshold but was " + score + ": " + interest);
 		}
 	}
 
@@ -566,23 +532,19 @@ public class IndividualInterestScoresNaniteTest
 		);
 	}
 
-	private JSONObject _getInterestJSONObject(
-		String dayDateString, String name) {
+	private Interest _getInterest(Date dayDate, String name) {
+		List<Interest> interests =
+			_interestRepository.findByNameAndOwnerIdAndRecordedDate(
+				name, null, dayDate);
 
-		JSONObject interestJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"interests",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("dateRecorded", dayDateString)
-			).filter(
-				QueryBuilders.termQuery("name", name)
-			));
+		Interest interest = interests.get(0);
 
 		Assertions.assertNotNull(
-			interestJSONObject,
+			interest,
 			"Unable to get interest score for keyword \"" + name + "\" for " +
-				"date " + dayDateString);
+				"date " + DateUtil.toString(dayDate));
 
-		return interestJSONObject;
+		return interest;
 	}
 
 	private List<String> _getKeywords() throws Exception {
