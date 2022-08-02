@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AccountRepository;
@@ -41,6 +42,7 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -49,6 +51,7 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -205,17 +208,17 @@ public class UpdateDynamicMembershipsNaniteTest
 					Asset.class)),
 			JSONObject.class);
 
-		String dayDateString = DateUtil.newDayDateString();
+		Date dayDate = DateUtil.newDayDate();
 
 		Long individual1Id = individual1.getId();
 		Long individual2Id = individual2.getId();
 
 		_addIndividualInterests(
-			dayDateString,
-			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				assetJSONObject, dayDateString, individual1Id, 0.5, 20),
-			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				assetJSONObject, dayDateString, individual2Id, 0.1, 4));
+			DateUtil.toString(dayDate),
+			FaroInfoTestUtil.buildIndividualInterests(
+				assetJSONObject, individual1Id, dayDate, 0.5, 20L),
+			FaroInfoTestUtil.buildIndividualInterests(
+				assetJSONObject, individual2Id, dayDate, 0.1, 4L));
 
 		JSONArray keywordsJSONArray = assetJSONObject.getJSONArray("keywords");
 
@@ -228,7 +231,7 @@ public class UpdateDynamicMembershipsNaniteTest
 			new AsahMarker(
 				"InterestThresholdScoreNanite",
 				JSONUtil.put(
-					"lastSuccessfulDay", dayDateString
+					"lastSuccessfulDay", DateUtil.toString(dayDate)
 				).put(
 					"score", 0.3
 				).put(
@@ -286,7 +289,7 @@ public class UpdateDynamicMembershipsNaniteTest
 					Asset.class)),
 			JSONObject.class);
 
-		String dayDateString = DateUtil.newDayDateString();
+		Date dayDate = DateUtil.newDayDate();
 
 		Individual individual1 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
@@ -306,17 +309,17 @@ public class UpdateDynamicMembershipsNaniteTest
 		Long individual2Id = individual2.getId();
 
 		_addIndividualInterests(
-			dayDateString,
-			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				assetJSONObject, dayDateString, individual1Id, 0.5, 20),
-			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				assetJSONObject, dayDateString, individual2Id, 0.1, 4));
+			DateUtil.toString(dayDate),
+			FaroInfoTestUtil.buildIndividualInterests(
+				assetJSONObject, individual1Id, dayDate, 0.5, 20L),
+			FaroInfoTestUtil.buildIndividualInterests(
+				assetJSONObject, individual2Id, dayDate, 0.1, 4L));
 
 		_asahMarkerDog.addAsahMarker(
 			new AsahMarker(
 				"InterestThresholdScoreNanite",
 				JSONUtil.put(
-					"lastSuccessfulDay", dayDateString
+					"lastSuccessfulDay", DateUtil.toString(dayDate)
 				).put(
 					"score", 0.3
 				).put(
@@ -373,12 +376,12 @@ public class UpdateDynamicMembershipsNaniteTest
 					Asset.class)),
 			JSONObject.class);
 
-		String dayDateString = DateUtil.newDayDateString();
+		Date dayDate = DateUtil.newDayDate();
 
 		_addIndividualInterests(
-			dayDateString,
-			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				assetJSONObject, dayDateString, individual.getId(), 0.5, 20));
+			DateUtil.toString(dayDate),
+			FaroInfoTestUtil.buildIndividualInterests(
+				assetJSONObject, individual.getId(), dayDate, 0.5, 20L));
 
 		Long segmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
@@ -551,19 +554,11 @@ public class UpdateDynamicMembershipsNaniteTest
 	}
 
 	private void _addIndividualInterests(
-		String dayDateString, JSONArray... individualInterestsJSONArrays) {
+		String dayDateString, List<Interest>... interestsLists) {
 
-		JSONArray jsonArray = new JSONArray();
-
-		for (JSONArray individualInterestsJSONArray :
-				individualInterestsJSONArrays) {
-
-			for (Object value : individualInterestsJSONArray) {
-				jsonArray.put(value);
-			}
+		for (List<Interest> interests : interestsLists) {
+			_interestRepository.saveAll(interests);
 		}
-
-		faroInfoElasticsearchInvoker.add("interests", jsonArray);
 
 		_asahMarkerDog.addAsahMarker(
 			new AsahMarker(
@@ -626,6 +621,9 @@ public class UpdateDynamicMembershipsNaniteTest
 
 	@Autowired
 	private IndividualDog _individualDog;
+
+	@Autowired
+	private InterestRepository _interestRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
