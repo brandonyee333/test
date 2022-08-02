@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -38,9 +39,110 @@ public class BQSession implements Persistable<String> {
 		BeanUtils.copyProperties(source, this);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof BQSession)) {
+			return false;
+		}
+
+		BQSession bqSession = (BQSession)obj;
+
+		if (Objects.equals(
+				_acquisitionCampaign, bqSession._acquisitionCampaign) &&
+			Objects.equals(
+				_acquisitionChannel, bqSession._acquisitionChannel) &&
+			Objects.equals(
+				_acquisitionContent, bqSession._acquisitionContent) &&
+			Objects.equals(_acquisitionMedium, bqSession._acquisitionMedium) &&
+			Objects.equals(_acquisitionSource, bqSession._acquisitionSource) &&
+			Objects.equals(_acquisitionTerm, bqSession._acquisitionTerm) &&
+			Objects.equals(_bounced, bqSession._bounced) &&
+			Objects.equals(_browserName, bqSession._browserName) &&
+			Objects.equals(_channelId, bqSession._channelId) &&
+			Objects.equals(_city, bqSession._city) &&
+			Objects.equals(_country, bqSession._country) &&
+			Objects.equals(_deviceType, bqSession._deviceType) &&
+			Objects.equals(_duration, bqSession._duration) &&
+			Objects.equals(_id, bqSession._id) &&
+			Objects.equals(_platformName, bqSession._platformName) &&
+			Objects.equals(_region, bqSession._region) &&
+			Objects.equals(_sessionEnd, bqSession._sessionEnd) &&
+			Objects.equals(_sessionStart, bqSession._sessionStart) &&
+			Objects.equals(_userId, bqSession._userId)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAcquisitionCampaign() {
+		return _acquisitionCampaign;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAcquisitionChannel() {
+		return _acquisitionChannel;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAcquisitionContent() {
+		return _acquisitionContent;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAcquisitionMedium() {
+		return _acquisitionMedium;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAcquisitionSource() {
+		return _acquisitionSource;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAcquisitionTerm() {
+		return _acquisitionTerm;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public boolean getBounced() {
+		return _bounced;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getBrowserName() {
+		return _browserName;
+	}
+
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long getChannelId() {
 		return _channelId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getCity() {
+		return _city;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getCountry() {
+		return _country;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getDeviceType() {
+		return _deviceType;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getDuration() {
+		return _duration;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -48,6 +150,16 @@ public class BQSession implements Persistable<String> {
 	@Override
 	public String getId() {
 		return _id;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getPlatformName() {
+		return _platformName;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getRegion() {
+		return _region;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -68,17 +180,87 @@ public class BQSession implements Persistable<String> {
 		return new Date(_sessionStart.getTime());
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getUserId() {
+		return _userId;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+			_acquisitionCampaign, _acquisitionChannel, _acquisitionContent,
+			_acquisitionMedium, _acquisitionSource, _acquisitionTerm, _bounced,
+			_browserName, _channelId, _city, _country, _deviceType, _duration,
+			_id, _platformName, _region, _sessionEnd, _sessionStart, _userId);
+	}
+
 	@Override
 	public boolean isNew() {
 		return true;
+	}
+
+	public void setAcquisitionCampaign(String acquisitionCampaign) {
+		_acquisitionCampaign = acquisitionCampaign;
+	}
+
+	public void setAcquisitionContent(String acquisitionContent) {
+		_acquisitionContent = acquisitionContent;
+	}
+
+	public void setAcquisitionMedium(String acquisitionMedium) {
+		_acquisitionMedium = acquisitionMedium;
+	}
+
+	public void setAcquisitionSource(String acquisitionSource) {
+		_acquisitionSource = acquisitionSource;
+	}
+
+	public void setAcquisitionTerm(String acquisitionTerm) {
+		_acquisitionTerm = acquisitionTerm;
+	}
+
+	public void setAquisitionChannel(String acquisitionChannel) {
+		_acquisitionChannel = acquisitionChannel;
+	}
+
+	public void setBounced(boolean bounced) {
+		_bounced = bounced;
+	}
+
+	public void setBrowserName(String browserName) {
+		_browserName = browserName;
 	}
 
 	public void setChannelId(Long channelId) {
 		_channelId = channelId;
 	}
 
+	public void setCity(String city) {
+		_city = city;
+	}
+
+	public void setCountry(String country) {
+		_country = country;
+	}
+
+	public void setDeviceType(String deviceType) {
+		_deviceType = deviceType;
+	}
+
+	public void setDuration(Long duration) {
+		_duration = duration;
+	}
+
 	public void setId(String id) {
 		_id = id;
+	}
+
+	public void setPlatformName(String platformName) {
+		_platformName = platformName;
+	}
+
+	public void setRegion(String region) {
+		_region = region;
 	}
 
 	public void setSessionEnd(Date sessionEnd) {
@@ -99,16 +281,65 @@ public class BQSession implements Persistable<String> {
 		}
 	}
 
+	public void setUserId(String userId) {
+		_userId = userId;
+	}
+
+	@Transient
+	private String _acquisitionCampaign;
+
+	@Transient
+	private String _acquisitionChannel;
+
+	@Transient
+	private String _acquisitionContent;
+
+	@Transient
+	private String _acquisitionMedium;
+
+	@Transient
+	private String _acquisitionSource;
+
+	@Transient
+	private String _acquisitionTerm;
+
+	@Transient
+	private boolean _bounced;
+
+	@Transient
+	private String _browserName;
+
 	@Transient
 	private Long _channelId;
 
 	@Transient
+	private String _city;
+
+	@Transient
+	private String _country;
+
+	@Transient
+	private String _deviceType;
+
+	@Transient
+	private Long _duration;
+
+	@Transient
 	private String _id;
+
+	@Transient
+	private String _platformName;
+
+	@Transient
+	private String _region;
 
 	@Transient
 	private Date _sessionEnd;
 
 	@Transient
 	private Date _sessionStart;
+
+	@Transient
+	private String _userId;
 
 }
