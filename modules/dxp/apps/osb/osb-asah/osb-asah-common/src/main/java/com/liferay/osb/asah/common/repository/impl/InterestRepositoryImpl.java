@@ -297,20 +297,33 @@ public class InterestRepositoryImpl
 					"viewsSum"
 				));
 
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"recordedDate"
+			).equal(
+				DSL.field("generatedDate")
+			));
+
+		if (filterHelper != null) {
+			conditions.add(filterHelper.getCondition());
+		}
+
+		DatePart datePart = DatePart.DAY;
+
+		if (period.equals("hour")) {
+			datePart = DatePart.HOUR;
+		}
+
 		return selectSelectStep.from(
 			"Interest"
 		).rightJoin(
 			_dslHelper.getTimeSeriesTable(
-				_validPeriods.get(period), new Timestamp(fromDate.getTime()),
+				datePart, new Timestamp(fromDate.getTime()),
 				new Timestamp(toDate.getTime()))
 		).on(
-			DSL.and(
-				DSL.field(
-					"recordedDate"
-				).equal(
-					DSL.field("generatedDate")
-				),
-				filterHelper.getCondition())
+			conditions.toArray(new Condition[0])
 		).where(
 			DSL.field(
 				"generatedDate"
