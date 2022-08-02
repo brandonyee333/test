@@ -285,13 +285,13 @@ public class CommerceDashboardDog {
 
 		BigDecimal delta = currentValue.subtract(previousValue);
 
-		if (currentValue.equals(BigDecimal.ZERO) ||
-			currentValue.equals(BigDecimal.valueOf(0.0))) {
+		if (previousValue.equals(BigDecimal.ZERO) ||
+			previousValue.equals(BigDecimal.valueOf(0.0))) {
 
 			return 0.0;
 		}
 
-		delta = delta.divide(currentValue, RoundingMode.HALF_UP);
+		delta = delta.divide(previousValue, RoundingMode.HALF_UP);
 
 		return delta.doubleValue() * 100;
 	}
