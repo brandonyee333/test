@@ -1290,6 +1290,11 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "sessionId",
 				"type": "STRING"
 			},
