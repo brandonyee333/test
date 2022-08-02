@@ -172,14 +172,46 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
-				"name": "fields",
+				"mode": "NULLABLE",
+				"name": "emailAddress",
 				"type": "STRING"
+			},
+			{
+				"fields": [
+					{
+						"mode": "REQUIRED",
+						"name": "dataSourceId",
+						"type": "INT64"
+					},
+					{
+						"mode": "REQUIRED",
+						"name": "modifiedDate",
+						"type": "TIMESTAMP"
+					},
+					{
+						"mode": "REQUIRED",
+						"name": "name",
+						"type": "STRING"
+					},
+					{
+						"mode": "REQUIRED",
+						"name": "value",
+						"type": "STRING"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "fields",
+				"type": "RECORD"
 			},
 			{
 				"mode": "REQUIRED",
 				"name": "id",
 				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
 			}
 		]
 	},

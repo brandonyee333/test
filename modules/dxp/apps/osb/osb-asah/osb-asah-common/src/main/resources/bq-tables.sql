@@ -92,7 +92,9 @@ CREATE TABLE IF NOT EXISTS BQCSVUser (
     id BIGSERIAL PRIMARY KEY,
     dataSourceId BIGINT,
     dataSourceUserPK TEXT,
-    fields JSON
+	emailAddress TEXT,
+    fields JSON,
+	modifiedDate TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS BQCustomAsset (
