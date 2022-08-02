@@ -368,10 +368,25 @@ CREATE TABLE IF NOT EXISTS BQRole (
 );
 
 CREATE TABLE IF NOT EXISTS BQSession (
+    acquisitionCampaign TEXT,
+    acquisitionChannel TEXT,
+    acquisitionContent TEXT,
+    acquisitionMedium TEXT,
+    acquisitionSource TEXT,
+    acquisitionTerm TEXT,
+    bounced BOOLEAN,
+    browserName TEXT,
 	channelId BIGINT,
+    city TEXT,
+    country TEXT,
+    deviceType TEXT,
+    duration BIGINT,
 	id TEXT UNIQUE,
+    platformName TEXT,
+    region TEXT,
 	sessionEnd TIMESTAMPTZ,
-	sessionStart TIMESTAMPTZ
+	sessionStart TIMESTAMPTZ,
+	userId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQTeam (

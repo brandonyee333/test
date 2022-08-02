@@ -2011,7 +2011,67 @@
 		"fields": [
 			{
 				"mode": "REQUIRED",
+				"name": "acquisitionCampaign",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "acquisitionChannel",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "acquisitionContent",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "acquisitionMedium",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "acquisitionSource",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "acquisitionTerm",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "bounced",
+				"type": "BOOLEAN"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "browserName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "city",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "country",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "deviceType",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "duration",
 				"type": "INT64"
 			},
 			{
@@ -2021,7 +2081,17 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "platformName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "projectId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "region",
 				"type": "STRING"
 			},
 			{
@@ -2033,6 +2103,11 @@
 				"mode": "REQUIRED",
 				"name": "sessionStart",
 				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userId",
+				"type": "STRING"
 			}
 		],
 		"timePartitioning": {
