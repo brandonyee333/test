@@ -41,9 +41,15 @@ public interface CustomInterestRepository {
 		@Nullable FilterHelper filterHelper, @Nullable Double score,
 		Pageable pageable);
 
+	public List<Interest> findByNameAndOwnerIdAndRecordedDate(
+		@Nullable String name, @Nullable Long ownerId, Date recordedDate);
+
 	public List<Interest> findByOwnerTypeAndRecordedDate(
 		@Nullable Long interestId, @Nullable String ownerType,
 		@Nullable Date recordedDate, int size);
+
+	public List<Long> findOwnerIdsByFilterStringAndOwnerId(
+		FilterHelper filterHelper, @Nullable Long ownerId);
 
 	public List<Distribution> getInterestDistributions(
 		@Nullable String keyword, @Nullable List<Long> ownerIds,

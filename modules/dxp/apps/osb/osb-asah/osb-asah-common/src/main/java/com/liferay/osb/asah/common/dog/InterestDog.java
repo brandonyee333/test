@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Interest;
+import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -122,6 +123,13 @@ public class InterestDog {
 				name, ownerId, ownerType, fromRecordedDate, toRecordedDate);
 	}
 
+	public List<Long> getOwnerIds(String filterString, Long ownerId) {
+		return _interestRepository.findOwnerIdsByFilterStringAndOwnerId(
+			new FilterHelper(
+				null, filterString, _interestFilterStringConverterHelper),
+			ownerId);
+	}
+
 	public List<String> getTopNames(Long ownerId, String ownerType, int size) {
 		return _interestRepository.getTopNamesByOwnerIdAndOwnerType(
 			ownerId, ownerType, size);
@@ -158,6 +166,9 @@ public class InterestDog {
 				fromDate, new FilterHelper(filterString), period, toDate));
 	}
 
+	private static final InterestFilterStringConverterHelper
+		_interestFilterStringConverterHelper =
+			new InterestFilterStringConverterHelper();
 	private static final Pattern _periodPattern = Pattern.compile(
 		"compute\\((?<period>\\w+)\\((?<fieldName>\\w+)\\)\\)");
 

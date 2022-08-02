@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
@@ -246,6 +247,19 @@ public class InterestRepositoryTest
 	}
 
 	@Test
+	public void testFindOwnerIdsByFilterStringAndOwnerId() {
+		List<Long> ownerIds =
+			_interestRepository.findOwnerIdsByFilterStringAndOwnerId(
+				new FilterHelper(
+					null, "(name eq 'sales')",
+					_interestFilterStringConverterHelper),
+				374790572703144534L);
+
+		Assertions.assertEquals(
+			Arrays.asList(374790572703144534L), ownerIds, ownerIds.toString());
+	}
+
+	@Test
 	public void testGetByNameAndOwnerIdAndOwnerTypeAndRecordedDate() {
 		Interest interest =
 			_interestRepository.getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
@@ -349,6 +363,10 @@ public class InterestRepositoryTest
 			totalElements, transformation.get("totalElements"));
 		Assertions.assertEquals(viewsSum, transformation.get("viewsSum"));
 	}
+
+	@Autowired
+	private InterestFilterStringConverterHelper
+		_interestFilterStringConverterHelper;
 
 	@Autowired
 	private InterestRepository _interestRepository;

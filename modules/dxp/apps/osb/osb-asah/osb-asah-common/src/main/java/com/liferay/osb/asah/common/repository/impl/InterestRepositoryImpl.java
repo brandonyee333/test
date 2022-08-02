@@ -136,6 +136,28 @@ public class InterestRepositoryImpl
 	}
 
 	@Override
+	public List<Interest> findByNameAndOwnerIdAndRecordedDate(
+		@Nullable String name, @Nullable Long ownerId, Date recordedDate) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		List<Long> ownerIds = new ArrayList<>();
+
+		if (ownerId != null) {
+			ownerIds.add(ownerId);
+		}
+
+		return selectSelectStep.from(
+			"Interest"
+		).where(
+			_getConditions(null, null, name, ownerIds, null, recordedDate, null)
+		).fetch(
+		).map(
+			record -> new Interest(record.intoMap())
+		);
+	}
+
+	@Override
 	public List<Interest> findByOwnerTypeAndRecordedDate(
 		@Nullable Long interestId, @Nullable String ownerType,
 		@Nullable Date recordedDate, int size) {
@@ -154,6 +176,30 @@ public class InterestRepositoryImpl
 		).fetch(
 		).map(
 			record -> new Interest(record.intoMap())
+		);
+	}
+
+	@Override
+	public List<Long> findOwnerIdsByFilterStringAndOwnerId(
+		FilterHelper filterHelper, Long ownerId) {
+
+		Field field = DSL.field("ownerId", Long.class);
+
+		List<Long> ownerIds = new ArrayList<>();
+
+		if (ownerId != null) {
+			ownerIds.add(ownerId);
+		}
+
+		SelectSelectStep<Record1<Long>> selectSelectStep = _dslContext.select(
+			field);
+
+		return selectSelectStep.from(
+			"Interest"
+		).where(
+			_getConditions(filterHelper, null, null, ownerIds, null, null, null)
+		).fetch(
+			field
 		);
 	}
 
@@ -309,7 +355,8 @@ public class InterestRepositoryImpl
 	private List<Condition> _getConditions(
 		@Nullable FilterHelper filterHelper, @Nullable Long interestId,
 		@Nullable String keywords, @Nullable List<Long> ownerIds,
-		@Nullable String ownerType, @Nullable Date recordedDate, Double score) {
+		@Nullable String ownerType, @Nullable Date recordedDate,
+		@Nullable Double score) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -348,7 +395,7 @@ public class InterestRepositoryImpl
 		if ((ownerIds != null) && !ownerIds.isEmpty()) {
 			conditions.add(
 				DSL.field(
-					"ownerId"
+					"ownerId", Long.class
 				).in(
 					ownerIds
 				));
