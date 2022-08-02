@@ -2144,6 +2144,16 @@
 				"fields": [
 					{
 						"mode": "REQUIRED",
+						"name": "dataSourceId",
+						"type": "INT64"
+					},
+					{
+						"mode": "REQUIRED",
+						"name": "modifiedDate",
+						"type": "TIMESTAMP"
+					},
+					{
+						"mode": "REQUIRED",
 						"name": "name",
 						"type": "STRING"
 					},
