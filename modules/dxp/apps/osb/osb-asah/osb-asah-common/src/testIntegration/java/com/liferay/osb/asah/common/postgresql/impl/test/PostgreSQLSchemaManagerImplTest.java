@@ -71,12 +71,12 @@ public class PostgreSQLSchemaManagerImplTest
 	private void _createSchema(Project project) {
 		PGSimpleDataSource pgSimpleDataSource = new PGSimpleDataSource();
 
-		pgSimpleDataSource.setServerName("localhost");
-		pgSimpleDataSource.setPortNumber(5432);
-		pgSimpleDataSource.setDatabaseName(CredentialConstants.POSTGRESQL_DB);
-		pgSimpleDataSource.setUser(CredentialConstants.POSTGRESQL_USER);
-		pgSimpleDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		pgSimpleDataSource.setCurrentSchema(project.getId());
+		pgSimpleDataSource.setDatabaseName(CredentialConstants.POSTGRESQL_DB);
+		pgSimpleDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
+		pgSimpleDataSource.setPortNumber(5432);
+		pgSimpleDataSource.setServerName("localhost");
+		pgSimpleDataSource.setUser(CredentialConstants.POSTGRESQL_USER);
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
