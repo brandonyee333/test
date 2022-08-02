@@ -3,13 +3,45 @@ MERGE INTO
 USING
 	(
 		SELECT
-			*,
+			sum(bounce) bounce,
+			canonicalUrl,
+			channelId,
+			sum(entrance) entrance,
+			eventDate,
+			sum(exit) exit,
+			sessionId,
 			TO_HEX(
 				SHA256(
 					CONCAT(channelId, '#', eventDate, '#', userId, '#', sessionId, '#', canonicalUrl)
 				)
-			) AS sha256HexId
-		FROM `{{ dag.default_args['ac_project_id'] }}.pagehourly`
+			) AS sha256HexId,
+			sum(timeOnPage) timeOnPage,
+			title,
+			userId,
+			sum(views) views
+		FROM
+		(
+			SELECT
+				bounce,
+				canonicalUrl,
+				channelId,
+				entrance,
+				DATE_TRUNC(eventDate, DAY) eventDate,
+				exit,
+				sessionId,
+				timeOnPage,
+				title,
+				userId,
+				views
+			FROM `{{ dag.default_args['ac_project_id'] }}.pagehourly`
+		) pagehourly
+		GROUP BY
+			channelId,
+			canonicalUrl,
+			title,
+			userId,
+			eventDate,
+			sessionId
 	) AS staging
 ON
 	staging.channelId = replica.channelId AND
@@ -26,7 +58,6 @@ WHEN NOT MATCHED THEN
 		`eventDate`,
 		`exit`,
 		`id`,
-		`sessionDuration`,
 		`sessionId`,
 		`timeOnPage`,
 		`title`,
@@ -41,7 +72,6 @@ WHEN NOT MATCHED THEN
 		staging.eventDate,
 		staging.exit,
 		staging.sha256HexId,
-		staging.sessionDuration,
 		staging.sessionId,
 		staging.timeOnPage,
 		staging.title,
