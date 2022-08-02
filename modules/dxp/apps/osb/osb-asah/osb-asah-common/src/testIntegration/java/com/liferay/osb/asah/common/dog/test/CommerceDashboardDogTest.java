@@ -87,6 +87,24 @@ public class CommerceDashboardDogTest
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
 	@Test
+	public void testGetOrderAccountAverageCurrencyValuesWithPreviousPeriodComparison() {
+		Map<String, CurrencyValue> orderAccountAverageCurrencyValues =
+			_commerceDashboardDog.getOrderAccountAverageCurrencyValues(
+				11L, true, TimeRange.LAST_7_DAYS);
+
+		Assertions.assertNotNull(orderAccountAverageCurrencyValues);
+
+		CurrencyValue currencyValue = orderAccountAverageCurrencyValues.get(
+			"USD");
+
+		Assertions.assertNotNull(currencyValue);
+		Assertions.assertNotNull(currencyValue.getValue());
+		Assertions.assertNotNull(currencyValue.getPercentageVariation());
+		Assertions.assertEquals(5.0, currencyValue.getPercentageVariation());
+	}
+
+	@SQLResource(resourcePath = "test_bq_order.sql")
+	@Test
 	public void testGetOrderAverageCurrencyValues() {
 		Map<String, CurrencyValue> orderAverageCurrencyValues =
 			_commerceDashboardDog.getOrderAverageCurrencyValues(
@@ -115,6 +133,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertNotNull(currencyValue);
 		Assertions.assertNotNull(currencyValue.getValue());
 		Assertions.assertNotNull(currencyValue.getPercentageVariation());
+		Assertions.assertEquals(0.0, currencyValue.getPercentageVariation());
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
@@ -147,6 +166,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertNotNull(currencyValue);
 		Assertions.assertNotNull(currencyValue.getValue());
 		Assertions.assertNotNull(currencyValue.getPercentageVariation());
+		Assertions.assertEquals(0.0, currencyValue.getPercentageVariation());
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
@@ -179,6 +199,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertNotNull(currencyValue);
 		Assertions.assertNotNull(currencyValue.getValue());
 		Assertions.assertNotNull(currencyValue.getPercentageVariation());
+		Assertions.assertEquals(80.0, currencyValue.getPercentageVariation());
 	}
 
 	@Autowired
