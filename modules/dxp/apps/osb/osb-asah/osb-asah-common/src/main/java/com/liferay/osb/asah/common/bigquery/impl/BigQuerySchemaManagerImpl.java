@@ -249,12 +249,10 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
 
 		_bigQuery = bigQueryOptions.getService();
-
 		_googleProjectId = bigQueryOptions.getProjectId();
 
-		_tablesJSONObject = new JSONObject(_readTables());
-
-		_viewsJSONObject = new JSONObject(_readViews());
+		_tablesJSONObject = new JSONObject(_readFile("/bigquery-tables.json"));
+		_viewsJSONObject = new JSONObject(_readFile("/bigquery-views.json"));
 	}
 
 	private String _readFile(String filePath) {
@@ -268,14 +266,6 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		catch (Exception exception) {
 			throw new IllegalStateException(exception);
 		}
-	}
-
-	private String _readTables() {
-		return _readFile("/bigquery-tables.json");
-	}
-
-	private String _readViews() {
-		return _readFile("/bigquery-views.json");
 	}
 
 	private static final Log _log = LogFactory.getLog(
