@@ -4,15 +4,15 @@
 			{
 				"currencyCode": "EUR",
 				"trend": {
-					"percentage": 100.0,
-					"trendClassification": "POSITIVE"
+					"percentage": 0.0,
+					"trendClassification": "NEUTRAL"
 				},
 				"value": "40.0"
 			},
 			{
 				"currencyCode": "USD",
 				"trend": {
-					"percentage": 40.0,
+					"percentage": 80.0,
 					"trendClassification": "POSITIVE"
 				},
 				"value": "70.0"

@@ -4,8 +4,8 @@
 			{
 				"currencyCode": "EUR",
 				"trend": {
-					"percentage": 100.0,
-					"trendClassification": "POSITIVE"
+					"percentage": 0.0,
+					"trendClassification": "NEUTRAL"
 				},
 				"value": "10.0000000000000000"
 			},
