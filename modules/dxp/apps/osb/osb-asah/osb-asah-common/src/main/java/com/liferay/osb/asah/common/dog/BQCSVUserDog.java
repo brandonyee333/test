@@ -93,6 +93,10 @@ public class BQCSVUserDog {
 		return _bqCSVUserRepository.countByDataSourceId(dataSourceId);
 	}
 
+	public BQCSVUser updateBQCSVUser(BQCSVUser bqCSVUser) {
+		return _bqCSVUserRepository.save(bqCSVUser);
+	}
+
 	private static final Log _log = LogFactory.getLog(BQCSVUserDog.class);
 
 	@Autowired

@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -75,10 +76,18 @@ public class CSVUsersNanite extends BaseIndividualsNanite {
 
 		JSONObject fieldsJSONObject = bqCSVUser.getFieldsJSONObject();
 
+		String emailAddress = fieldsJSONObject.optString(
+			emailDataSourceFieldName, null);
+
 		processData(
 			bqCSVUser.getDataSourceUserPK(), bqCSVUser.getDataSourceId(),
-			fieldsJSONObject,
-			fieldsJSONObject.optString(emailDataSourceFieldName, null));
+			fieldsJSONObject, emailAddress);
+
+		if (!Objects.isNull(emailAddress)) {
+			bqCSVUser.setEmailAddress(emailAddress);
+
+			_bqCSVUserDog.updateBQCSVUser(bqCSVUser);
+		}
 	}
 
 	@Override
