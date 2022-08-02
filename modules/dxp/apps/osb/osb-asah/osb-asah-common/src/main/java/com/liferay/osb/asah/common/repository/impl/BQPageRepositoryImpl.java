@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.CustomPageRepository;
+import com.liferay.osb.asah.common.repository.BQPageRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
@@ -43,11 +43,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Leslie Wong
  */
-public abstract class BasePageRepository implements CustomPageRepository {
+@Repository
+public class BQPageRepositoryImpl implements BQPageRepository {
 
 	public long countPageVisitorBehaviorMetric(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
@@ -60,7 +62,7 @@ public abstract class BasePageRepository implements CustomPageRepository {
 				DSL.select(
 					DSL.field("canonicalurl"), DSL.field("title")
 				).from(
-					getTableName()
+					_getTableName(timeRange)
 				).where(
 					_createWhereClause(null, channelId, timeRange, null, zoneId)
 				).groupBy(
@@ -77,7 +79,7 @@ public abstract class BasePageRepository implements CustomPageRepository {
 			dslContext.select(
 				_getMetricFields()
 			).from(
-				getTableName()
+				_getTableName(timeRange)
 			).where(
 				_createWhereClause(
 					canonicalUrl, channelId, timeRange, title, zoneId)
@@ -97,7 +99,7 @@ public abstract class BasePageRepository implements CustomPageRepository {
 			dslContext.select(
 				metricFields.toArray(new Field[0])
 			).from(
-				getTableName()
+				_getTableName(timeRange)
 			).where(
 				_createWhereClause(null, channelId, timeRange, null, zoneId)
 			).groupBy(
@@ -110,8 +112,6 @@ public abstract class BasePageRepository implements CustomPageRepository {
 				pageable.getOffset()
 			));
 	}
-
-	protected abstract String getTableName();
 
 	protected boolean isBigQueryDialect() {
 		String googleApplicationCredentials = _environment.getProperty(
@@ -277,6 +277,18 @@ public abstract class BasePageRepository implements CustomPageRepository {
 		}
 
 		return metricFields;
+	}
+
+	private String _getTableName(TimeRange timeRange) {
+		if (!isBigQueryDialect()) {
+			return "BQPage";
+		}
+
+		if (timeRange == TimeRange.LAST_24_HOURS) {
+			return "pagehourly";
+		}
+
+		return "pagedaily";
 	}
 
 	@Autowired

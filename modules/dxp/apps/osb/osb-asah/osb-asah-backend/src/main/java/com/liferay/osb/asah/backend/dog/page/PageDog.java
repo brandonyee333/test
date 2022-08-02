@@ -25,9 +25,7 @@ import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.CustomPageRepository;
-import com.liferay.osb.asah.common.repository.PageDailyRepository;
-import com.liferay.osb.asah.common.repository.PageHourlyRepository;
+import com.liferay.osb.asah.common.repository.BQPageRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.petra.string.StringPool;
 
@@ -91,11 +89,8 @@ public class PageDog {
 		String canonicalUrl, Long channelId, TimeRange timeRange,
 		String title) {
 
-		CustomPageRepository customPageRepository = _getCustomPageRepository(
-			timeRange);
-
 		Optional<PageVisitorBehaviorMetric> pageVisitorBehaviorMetricOptional =
-			customPageRepository.getPageVisitorBehaviorMetric(
+			_bqPageRepository.getPageVisitorBehaviorMetric(
 				canonicalUrl, channelId, timeRange, title,
 				_timeZoneDog.getZoneId());
 
@@ -111,16 +106,13 @@ public class PageDog {
 	public Page<PageVisitorBehaviorMetric> getPageVisitorBehaviorMetricPage(
 		Long channelId, int page, int size, Sort sort, TimeRange timeRange) {
 
-		CustomPageRepository customPageRepository = _getCustomPageRepository(
-			timeRange);
-
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
 		return PageableExecutionUtils.getPage(
-			customPageRepository.searchPageVisitorBehaviorMetrics(
+			_bqPageRepository.searchPageVisitorBehaviorMetrics(
 				channelId, pageRequest, timeRange, _timeZoneDog.getZoneId()),
 			pageRequest,
-			() -> customPageRepository.countPageVisitorBehaviorMetric(
+			() -> _bqPageRepository.countPageVisitorBehaviorMetric(
 				channelId, timeRange, _timeZoneDog.getZoneId()));
 	}
 
@@ -179,14 +171,6 @@ public class PageDog {
 		return sumAggregationBuilder;
 	}
 
-	private CustomPageRepository _getCustomPageRepository(TimeRange timeRange) {
-		if (timeRange == TimeRange.LAST_24_HOURS) {
-			return _pageHourlyRepository;
-		}
-
-		return _pageDailyRepository;
-	}
-
 	private long _getMetricValue(
 		PageMetricType pageMetricType, QueryBuilder queryBuilder) {
 
@@ -211,13 +195,10 @@ public class PageDog {
 	}
 
 	@Autowired
+	private BQPageRepository _bqPageRepository;
+
+	@Autowired
 	private DataDog _dataDog;
-
-	@Autowired
-	private PageDailyRepository _pageDailyRepository;
-
-	@Autowired
-	private PageHourlyRepository _pageHourlyRepository;
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;

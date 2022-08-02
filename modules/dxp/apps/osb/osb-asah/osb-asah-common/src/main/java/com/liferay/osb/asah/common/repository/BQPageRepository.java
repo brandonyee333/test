@@ -27,7 +27,7 @@ import org.springframework.data.domain.Pageable;
 /**
  * @author Leslie Wong
  */
-public interface CustomPageRepository {
+public interface BQPageRepository {
 
 	public long countPageVisitorBehaviorMetric(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
