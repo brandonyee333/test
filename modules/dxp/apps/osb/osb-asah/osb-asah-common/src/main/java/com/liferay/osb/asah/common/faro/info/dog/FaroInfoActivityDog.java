@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,11 +40,7 @@ import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
-import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregation;
-import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.composite.TermsValuesSourceBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -94,18 +89,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return activitiesJSONArray.getJSONObject(0);
 	}
 
-	public JSONObject fetchLatestActivityJSONObject(String sessionId) {
-		return elasticsearchInvoker.fetch(
-			"activities",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery("eventContext")
-			).filter(
-				QueryBuilders.termQuery("sessionId", sessionId)
-			),
-			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null,
-			"eventContext");
-	}
-
 	public JSONObject fetchLatestFormViewedActivity(
 		Date eventDate, String userId) {
 
@@ -147,33 +130,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		}
 
 		return boolQueryBuilder.filter(eventsBoolQueryBuilder);
-	}
-
-	public String getFirstDayDateString() {
-		JSONArray activitiesJSONArray = elasticsearchInvoker.get(
-			"activities", SortBuilderUtil.fieldSort("day"), 1);
-
-		if (activitiesJSONArray.length() == 0) {
-			return null;
-		}
-
-		JSONObject activityJSONObject = activitiesJSONArray.getJSONObject(0);
-
-		return activityJSONObject.getString("day");
-	}
-
-	public long getIndividualPageViews(String dayDateString, Long ownerId) {
-		return elasticsearchInvoker.count(
-			"activities",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("applicationId", "Page")
-			).filter(
-				QueryBuilders.termQuery("day", dayDateString)
-			).filter(
-				QueryBuilders.termQuery("eventId", "pageViewed")
-			).filter(
-				QueryBuilders.termQuery("ownerId", ownerId)
-			));
 	}
 
 	public List<String> getOwnerIds(
@@ -257,172 +213,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		}
 
 		return ownerIds;
-	}
-
-	public Set<Long> getOwnerIds(String dayDateString) {
-		Set<Long> ownerIds = new HashSet<>();
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		TermsValuesSourceBuilder termsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("ownerIds");
-
-		termsValuesSourceBuilder.field("ownerId");
-
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite", Collections.singletonList(termsValuesSourceBuilder)
-			).size(
-				10000
-			);
-
-		searchSourceBuilder.aggregation(compositeAggregationBuilder);
-
-		searchSourceBuilder.query(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("applicationId", "Page")
-			).filter(
-				QueryBuilders.termQuery("day", dayDateString)
-			).filter(
-				QueryBuilders.termQuery("eventId", "pageViewed")
-			));
-
-		searchSourceBuilder.size(0);
-
-		while (true) {
-			SearchResponse searchResponse = elasticsearchInvoker.search(
-				"activities", searchSourceBuilder);
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Map<String, Object> keys = bucket.getKey();
-
-				ownerIds.add(Long.valueOf((String)keys.get("ownerIds")));
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
-		}
-
-		return ownerIds;
-	}
-
-	public long getTotalKeywordViews(String dayDateString, List<String> urls) {
-		return elasticsearchInvoker.count(
-			"activities",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("applicationId", "Page")
-			).filter(
-				QueryBuilders.termQuery("day", dayDateString)
-			).filter(
-				QueryBuilders.termQuery("eventId", "pageViewed")
-			).filter(
-				QueryBuilders.termsQuery("object.dataSourceAssetPK", urls)
-			));
-	}
-
-	public long getTotalPageViews(String dayDateString) {
-		return elasticsearchInvoker.count(
-			"activities",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("applicationId", "Page")
-			).filter(
-				QueryBuilders.termQuery("day", dayDateString)
-			).filter(
-				QueryBuilders.termQuery("eventId", "pageViewed")
-			));
-	}
-
-	public Map<String, Long> getURLPageViewsMap(
-		String endDayDateString, Long ownerId, String startDayDateString) {
-
-		Map<String, Long> urlsPageViewsMap = new HashMap<>();
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		TermsValuesSourceBuilder termsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("urls");
-
-		termsValuesSourceBuilder.field("object.dataSourceAssetPK");
-
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite",
-				Collections.singletonList(termsValuesSourceBuilder));
-
-		compositeAggregationBuilder.size(10000);
-
-		searchSourceBuilder.aggregation(compositeAggregationBuilder);
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("applicationId", "Page")
-		).filter(
-			QueryBuilders.termQuery("eventId", "pageViewed")
-		);
-
-		if (startDayDateString != null) {
-			boolQueryBuilder.filter(
-				QueryBuilders.rangeQuery(
-					"day"
-				).gte(
-					startDayDateString
-				).lte(
-					endDayDateString
-				));
-		}
-		else {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("day", endDayDateString));
-		}
-
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "ownerId", String.valueOf(ownerId));
-
-		searchSourceBuilder.query(boolQueryBuilder);
-
-		searchSourceBuilder.size(0);
-
-		while (true) {
-			SearchResponse searchResponse = elasticsearchInvoker.search(
-				"activities", searchSourceBuilder);
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Map<String, Object> keys = bucket.getKey();
-
-				urlsPageViewsMap.put(
-					(String)keys.get("urls"), bucket.getDocCount());
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
-		}
-
-		return urlsPageViewsMap;
 	}
 
 	public boolean isActivity(String applicationId, String eventId) {

@@ -43,32 +43,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class InterestDog {
 
-	public void addInterests(List<Interest> interests) {
-		_interestRepository.saveAll(interests);
-	}
-
 	public void deleteInterests(List<Long> ownerIds, String ownerType) {
 		_interestRepository.deleteByOwnerIdInAndOwnerType(ownerIds, ownerType);
-	}
-
-	public void deleteInterests(String ownerType, Date recordedDate) {
-		_interestRepository.deleteByOwnerTypeAndRecordedDateLessThanEqual(
-			ownerType, recordedDate);
-	}
-
-	public void deleteInterestsByExactRecordedDate(
-		String ownerType, Date recordedDate) {
-
-		_interestRepository.deleteByOwnerTypeAndRecordedDate(
-			ownerType, recordedDate);
-	}
-
-	public Interest fetchInterest(
-		String name, Long ownerId, String ownerType, Date recordedDate) {
-
-		return _interestRepository.
-			getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
-				name, ownerId, ownerType, recordedDate);
 	}
 
 	public Interest getInterest(Long id) {
@@ -105,13 +81,6 @@ public class InterestDog {
 			() ->
 				_interestRepository.countByFilterStringAndScoreGreaterThanEqual(
 					filterHelper, score));
-	}
-
-	public List<Interest> getInterests(
-		Long interestId, String ownerType, Date recordedDate, int size) {
-
-		return _interestRepository.findByOwnerTypeAndRecordedDate(
-			interestId, ownerType, recordedDate, size);
 	}
 
 	public List<Interest> getInterests(
