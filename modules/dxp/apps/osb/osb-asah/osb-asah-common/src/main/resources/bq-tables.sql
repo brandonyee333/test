@@ -292,6 +292,14 @@ CREATE TABLE IF NOT EXISTS BQIdentityChannel (
     PRIMARY KEY (channelId, identityId)
 );
 
+CREATE TABLE IF NOT EXISTS BQIndividual (
+	emailAddress TEXT,
+	emailAddressHashed TEXT,
+	fields JSON,
+	id TEXT PRIMARY KEY,
+	modifiedDate TIMESTAMPZ
+)
+
 CREATE TABLE IF NOT EXISTS Interest (
     id BIGSERIAL PRIMARY KEY,
     name TEXT,
