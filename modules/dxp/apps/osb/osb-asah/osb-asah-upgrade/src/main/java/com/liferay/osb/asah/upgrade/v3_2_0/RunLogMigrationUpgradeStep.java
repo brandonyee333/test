@@ -50,8 +50,6 @@ public class RunLogMigrationUpgradeStep implements UpgradeStep {
 	public void upgrade(String version) throws Exception {
 		_upgradeCollection(_dxpRawElasticsearchInvoker, "osbasahdxpraw");
 		_upgradeCollection(_faroInfoElasticsearchInvoker, "osbasahfaroinfo");
-		_upgradeCollection(
-			_salesforceRawElasticsearchInvoker, "osbasahsalesforceraw");
 	}
 
 	private List<Long> _getRunLogIds(boolean retry) {
@@ -132,8 +130,5 @@ public class RunLogMigrationUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private RunLogRepository _runLogRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }
