@@ -15,13 +15,11 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
@@ -104,34 +102,11 @@ public class SegmentRepositoryTest
 
 		_dataSourceRepository.save(dataSource);
 
-		Account account = new Account();
-
-		account.setAccountPK("testAccount");
-		account.setCreateDate(new Date());
-		account.setDataSourceId(dataSource.getId());
-		account.setId(123L);
-		account.setIsNew(true);
-		account.setModifiedDate(new Date());
-
-		_accountRepository.save(account);
-
-		Segment segment3 = new Segment();
-
-		segment3.setAuthorName("Test Test");
-		segment3.setChannelId(channel2.getId());
-		segment3.setCreateDate(DateUtil.addDays(new Date(), -1));
-		segment3.setFilter(
-			"((dataSourceAccountPKs/accountPKs eq 'testAccount'))");
-		segment3.setName("Account: 123");
-		segment3.setState("READY");
-		segment3.setStatus("INACTIVE");
-		segment3.setType(Segment.Type.DYNAMIC);
-
 		Segment segment4 = new Segment();
 
 		segment4.setName("Account: 456");
 
-		setUpRepository(segment1, segment2, segment3, segment4);
+		setUpRepository(segment1, segment2, segment4);
 
 		segment1 = entityModels.get(0);
 
@@ -140,10 +115,6 @@ public class SegmentRepositoryTest
 		segment2 = entityModels.get(1);
 
 		_segment2Id = segment2.getId();
-
-		segment3 = entityModels.get(2);
-
-		_segment3Id = segment3.getId();
 
 		Individual individual = new Individual();
 
@@ -176,7 +147,6 @@ public class SegmentRepositoryTest
 	public void tearDown() {
 		super.tearDown();
 
-		_accountRepository.deleteAll();
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
 		_individualRepository.deleteAll();
@@ -298,35 +268,6 @@ public class SegmentRepositoryTest
 	}
 
 	@Test
-	public void testSearchDynamicSegments() {
-		List<Segment> segments = _segmentRepository.searchDynamicSegments(
-			Collections.singleton(
-				new Individual.DataSourceAccountPK(
-					new BQDataSourceUser(
-						Collections.singleton("testAccount"), 100L,
-						_individualId, Collections.emptySet()))),
-			FilterHelper.EMPTY, false, PageRequest.of(0, 10),
-			Collections.singleton(_segment3Id));
-
-		Assertions.assertEquals(1, segments.size(), segments.toString());
-
-		Segment segment = segments.get(0);
-
-		Assertions.assertEquals(_segment3Id, segment.getId());
-
-		segments = _segmentRepository.searchDynamicSegments(
-			Collections.singleton(
-				new Individual.DataSourceAccountPK(
-					new BQDataSourceUser(
-						Collections.singleton("testAccount"), 100L,
-						_individualId, Collections.emptySet()))),
-			FilterHelper.EMPTY, true, PageRequest.of(0, 10),
-			Collections.singleton(_segment3Id));
-
-		Assertions.assertEquals(0, segments.size(), segments.toString());
-	}
-
-	@Test
 	public void testSearchSegmentsOrderByAuthorName() {
 		List<Segment> segments = _segmentRepository.searchSegments(
 			Arrays.asList(1L, 2L), FilterHelper.EMPTY,
@@ -364,9 +305,6 @@ public class SegmentRepositoryTest
 	}
 
 	@Autowired
-	private AccountRepository _accountRepository;
-
-	@Autowired
 	private ChannelRepository _channelRepository;
 
 	@Autowired
@@ -379,7 +317,6 @@ public class SegmentRepositoryTest
 
 	private Long _segment1Id;
 	private Long _segment2Id;
-	private Long _segment3Id;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;

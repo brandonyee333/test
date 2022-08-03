@@ -47,7 +47,7 @@ public class IndividualRepositoryTest extends BaseIndividualRepositoryTestCase {
 				ResourceUtil.readResourceToString(
 					"dependencies/" + WeDeployDataService.OSB_ASAH_FARO_INFO +
 						"/field_mappings.json",
-					AccountRepositoryTest.class)));
+					IndividualRepositoryTest.class)));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			FieldMapping fieldMapping = _objectMapper.convertValue(
@@ -63,7 +63,7 @@ public class IndividualRepositoryTest extends BaseIndividualRepositoryTestCase {
 				ResourceUtil.readResourceToString(
 					"dependencies/" + WeDeployDataService.OSB_ASAH_FARO_INFO +
 						"/individuals.json",
-					AccountRepositoryTest.class)));
+					IndividualRepositoryTest.class)));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			Individual individual = _objectMapper.convertValue(

@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.postgresql.converter.helper;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
-import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
@@ -29,12 +28,10 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -49,9 +46,7 @@ import java.time.LocalTime;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -150,20 +145,6 @@ public class IndividualsFilterStringConverterHelper
 				operator.equalsIgnoreCase("ne"));
 		}
 
-		if (fieldName.equals("accountId") && _isEqualityOperator(operator)) {
-			return _getAccountIdCondition(
-				(String)StringUtil.toObject(valueString), null,
-				operator.equalsIgnoreCase("ne"));
-		}
-
-		if (fieldName.equals("dataSourceAccountPKs/accountPKs") &&
-			_isEqualityOperator(operator)) {
-
-			return _getAccountIdCondition(
-				null, (String)StringUtil.toObject(valueString),
-				operator.equalsIgnoreCase("ne"));
-		}
-
 		if (fieldName.equals("dataSourceId") && _isEqualityOperator(operator)) {
 			return _getDataSourceIdCondition(
 				(String)StringUtil.toObject(valueString),
@@ -192,209 +173,6 @@ public class IndividualsFilterStringConverterHelper
 			throw new IllegalArgumentException(
 				"Expected " + s + " to be fully surrounded by single quotes");
 		}
-	}
-
-	private Condition _getAccountIdCondition(
-		String accountId, String accountPK, boolean negate) {
-
-		if ((accountId == null) && (accountPK == null)) {
-			if (negate) {
-				return DSL.exists(
-					DSL.selectOne(
-					).from(
-						"BQDataSourceUser"
-					).where(
-						DSL.field(
-							"bqdatasourceuser.accountpks"
-						).isNotNull()
-					));
-			}
-
-			return DSL.notExists(
-				DSL.selectOne(
-				).from(
-					"BQDataSourceUser"
-				).where(
-					DSL.field(
-						"bqdatasourceuser.accountpks"
-					).isNotNull()
-				));
-		}
-
-		Account account = null;
-
-		if (accountId != null) {
-			Optional<Account> accountOptional = _accountRepository.findById(
-				Long.valueOf(accountId));
-
-			account = accountOptional.orElse(null);
-		}
-		else {
-			Optional<Account> accountOptional =
-				_accountRepository.findByAccountPK(accountPK);
-
-			account = accountOptional.orElse(null);
-		}
-
-		if (account == null) {
-			return null;
-		}
-
-		if (negate) {
-			return DSL.not(
-				DSL.and(
-					DSL.field(
-						DSL.cast(
-							DSL.array(DSL.field("bqdatasourceuser.accountpks")),
-							String[].class)
-					).contains(
-						DSL.cast(
-							DSL.array(account.getAccountPK()), String[].class)
-					),
-					DSL.field(
-						"bqdatasourceuser.datasourceid"
-					).eq(
-						account.getDataSourceId()
-					)));
-		}
-
-		return DSL.and(
-			DSL.field(
-				DSL.cast(
-					DSL.array(DSL.field("bqdatasourceuser.accountpks")),
-					String[].class)
-			).contains(
-				DSL.cast(DSL.array(account.getAccountPK()), String[].class)
-			),
-			DSL.field(
-				"bqdatasourceuser.datasourceid"
-			).eq(
-				account.getDataSourceId()
-			));
-	}
-
-	private Condition _getAccountsFilterByCountFunctionCondition(
-		boolean checkEqualityOnly, String filterString, int minDocCount,
-		boolean negate, int value) {
-
-		List<String> individualSegmentNames = new LinkedList<>();
-
-		int page = 0;
-
-		while (true) {
-			List<Account> accounts = _accountDog.searchAccounts(
-				filterString, page++, 500);
-
-			if (accounts.isEmpty()) {
-				break;
-			}
-
-			for (Account account : accounts) {
-				individualSegmentNames.add("Account: " + account.getId());
-			}
-		}
-
-		if (individualSegmentNames.isEmpty()) {
-			return DSL.noCondition();
-		}
-
-		Condition condition;
-
-		Long individualId = IndividualIdThreadLocal.getIndividualId();
-
-		if (individualId != null) {
-			if (!_bqMembershipDog.isIdentityInSegments(
-					individualId.toString(),
-					_segmentDog.getSegmentIds(
-						individualSegmentNames, "INACTIVE"),
-					value, minDocCount, checkEqualityOnly)) {
-
-				return DSL.noCondition();
-			}
-
-			condition = DSL.field(
-				"individual.id"
-			).eq(
-				individualId
-			);
-		}
-		else {
-			List<Long> individualIds = ListUtil.map(
-				_bqMembershipDog.getIdentityIds(
-					_segmentDog.getSegmentIds(
-						individualSegmentNames, "INACTIVE"),
-					value, minDocCount, checkEqualityOnly),
-				Long::parseLong);
-
-			if (individualIds.isEmpty()) {
-				return DSL.noCondition();
-			}
-
-			condition = DSL.field(
-				"individual.id"
-			).in(
-				individualIds
-			);
-		}
-
-		if (negate) {
-			return DSL.not(condition);
-		}
-
-		return condition;
-	}
-
-	private Condition _getAccountsFilterFunctionCondition(String filterString) {
-		Condition condition = DSL.noCondition();
-
-		int page = 0;
-
-		while (true) {
-			List<Account> accounts = _accountDog.searchAccounts(
-				filterString, page++, 500);
-
-			if (accounts.isEmpty()) {
-				break;
-			}
-
-			for (Account account : accounts) {
-				condition = condition.or(
-					DSL.and(
-						DSL.field(
-							"bqdatasourceuser.datasourceid"
-						).eq(
-							account.getDataSourceId()
-						),
-						DSL.field(
-							DSL.cast(
-								DSL.array(
-									DSL.field("bqdatasourceuser.accountpks")),
-								String[].class)
-						).contains(
-							DSL.cast(
-								DSL.array(account.getAccountPK()),
-								String[].class)
-						)));
-			}
-		}
-
-		if (condition != DSL.noCondition()) {
-			Long individualId = IndividualIdThreadLocal.getIndividualId();
-
-			if (individualId != null) {
-				condition = DSL.and(
-					condition,
-					DSL.field(
-						"id"
-					).eq(
-						individualId
-					));
-			}
-
-			return condition;
-		}
-
-		return DSL.not(condition);
 	}
 
 	private Condition _getActivitiesFilterByCountFunctionCondition(
@@ -543,14 +321,8 @@ public class IndividualsFilterStringConverterHelper
 			filterString = StringUtil.unquoteAndDecodeInnerQuotes(filterString);
 		}
 
-		if (argumentValues[1] == null) {
-			if (type.equals("accounts")) {
-				return _getAccountsFilterFunctionCondition(filterString);
-			}
-
-			if (type.equals("activities")) {
-				return _getActivitiesFilterFunctionCondition(filterString);
-			}
+		if ((argumentValues[1] == null) && type.equals("activities")) {
+			return _getActivitiesFilterFunctionCondition(filterString);
 		}
 
 		String operator = argumentValues[1];
@@ -589,11 +361,7 @@ public class IndividualsFilterStringConverterHelper
 				if (minDocCount == 0) {
 					Condition condition = null;
 
-					if (type.equals("accounts")) {
-						condition = _getAccountsFilterFunctionCondition(
-							filterString);
-					}
-					else if (type.equals("activities")) {
+					if (type.equals("activities")) {
 						condition = _getActivitiesFilterFunctionCondition(
 							filterString);
 					}
@@ -627,12 +395,6 @@ public class IndividualsFilterStringConverterHelper
 			negate = true;
 		}
 
-		if (type.equals("accounts")) {
-			return _getAccountsFilterByCountFunctionCondition(
-				checkEqualityOnly, filterString, minDocCount, negate,
-				value.intValue());
-		}
-
 		if (type.equals("activities")) {
 			return _getActivitiesFilterByCountFunctionCondition(
 				checkEqualityOnly, filterString, minDocCount, negate, operator,
@@ -655,10 +417,6 @@ public class IndividualsFilterStringConverterHelper
 			_checkSurroundingQuotes(filterString);
 
 			filterString = StringUtil.unquoteAndDecodeInnerQuotes(filterString);
-		}
-
-		if (type.equals("accounts")) {
-			return _getAccountsFilterFunctionCondition(filterString);
 		}
 
 		if (type.equals("activities")) {
@@ -995,12 +753,6 @@ public class IndividualsFilterStringConverterHelper
 
 	private static final Pattern _pattern = Pattern.compile(
 		".*(score eq '(false|true)').*");
-
-	@Autowired
-	private AccountDog _accountDog;
-
-	@Autowired
-	private AccountRepository _accountRepository;
 
 	private final Set<String> _allowedOperators = new HashSet<String>() {
 		{

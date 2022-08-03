@@ -24,9 +24,7 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -37,7 +35,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -571,64 +568,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Test
-	public void testDeleteSalesforceDataSource() throws Exception {
-		DataSource dataSource1 = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildSalesforceDataSource());
-
-		Long dataSourceId1 = dataSource1.getId();
-
-		_addDataToSalesforceDataSource(
-			String.valueOf(dataSourceId1), dataSource1.getName());
-
-		DataSource dataSource2 = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildSalesforceDataSource());
-
-		Long dataSourceId2 = dataSource2.getId();
-
-		_addDataToSalesforceDataSource(
-			String.valueOf(dataSourceId2), dataSource2.getName());
-
-		dataSource1.setDeletionDate(new Date());
-
-		_dataSourceDog.deleteDataSource(dataSource1);
-
-		Assertions.assertFalse(
-			_accountRepository.existsByDataSourceId(dataSourceId1),
-			"Found entry in accounts collection with data source ID " +
-				dataSourceId1);
-		Assertions.assertTrue(
-			_accountRepository.existsByDataSourceId(dataSourceId2),
-			"Unable to find entry in accounts collection with data source ID " +
-				dataSourceId2);
-		Assertions.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"fields",
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId1))),
-			"Found entry in fields collection with data source ID " +
-				dataSourceId1);
-		Assertions.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"fields",
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId2))),
-			"Unable to find entry in fields collection with data source ID " +
-				dataSourceId2);
-		Assertions.assertEquals(
-			0,
-			_bqSalesforceEntityDog.getBQSalesforceEntitiesCount(
-				dataSourceId1, BQSalesforceEntity.Type.INDIVIDUAL),
-			"Found entry in individuals collection with data source ID " +
-				dataSourceId1);
-		Assertions.assertEquals(
-			1,
-			_bqSalesforceEntityDog.getBQSalesforceEntitiesCount(
-				dataSourceId2, BQSalesforceEntity.Type.INDIVIDUAL),
-			"Unable to find entry in individuals collection with data source " +
-				"ID " + dataSourceId2);
-	}
-
-	@Test
 	public void testUpdateDataSourceModifiesDataSourceName() {
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource(
@@ -748,45 +687,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		_dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.USER);
 	}
 
-	private void _addDataToSalesforceDataSource(
-		String dataSourceId, String dataSourceName) {
-
-		Account account = new Account();
-
-		account.setAccountPK(RandomTestUtil.randomId());
-		account.setDataSourceId(Long.valueOf(dataSourceId));
-
-		_accountRepository.save(account);
-
-		faroInfoElasticsearchInvoker.add(
-			"fields",
-			FaroInfoTestUtil.buildFieldJSONObject(
-				dataSourceId, dataSourceName));
-
-		BQSalesforceEntity bqSalesforceEntity = new BQSalesforceEntity(
-			RandomTestUtil.randomUUID(), Long.valueOf(dataSourceId),
-			JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"email", RandomTestUtil.randomEmailAddress()
-			).put(
-				"firstName", RandomTestUtil.randomString()
-			).put(
-				"jobTitle", RandomTestUtil.randomString()
-			).put(
-				"lastName", RandomTestUtil.randomString()
-			).put(
-				"modifiedDate", DateUtil.newDayDateString()
-			).put(
-				"subscription", RandomTestUtil.randomString()
-			),
-			BQSalesforceEntity.Type.INDIVIDUAL);
-
-		bqSalesforceEntity.setIsNew(Boolean.TRUE);
-
-		_bqSalesforceEntityDog.saveBQSalesforceEntity(bqSalesforceEntity);
-	}
-
 	private void _mock() {
 		Mockito.when(
 			_salesforceExtractorConfigurationDog.getState(
@@ -795,9 +695,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			"CREDENTIALS_VALID"
 		);
 	}
-
-	@Autowired
-	private AccountRepository _accountRepository;
 
 	@Autowired
 	private AssetRepository _assetRepository;

@@ -1,14 +1,3 @@
-CREATE TABLE IF NOT EXISTS Account (
-	id BIGSERIAL PRIMARY KEY,
-	accountPK TEXT,
-	activeIndividualsCount BIGINT,
-	activitiesCount BIGINT,
-	createDate TIMESTAMPTZ,
-	dataSourceId BIGINT,
-	individualsCount BIGINT,
-	modifiedDate TIMESTAMPTZ
-);
-
 CREATE TABLE IF NOT EXISTS Asset (
 	id BIGSERIAL PRIMARY KEY,
 	assetType TEXT,

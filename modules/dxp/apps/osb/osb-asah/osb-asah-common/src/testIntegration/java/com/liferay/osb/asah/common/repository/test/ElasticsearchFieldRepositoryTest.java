@@ -14,9 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.repository.AccountRepository;
-import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -25,11 +23,8 @@ import org.junit.jupiter.api.Test;
 public class ElasticsearchFieldRepositoryTest
 	extends BaseFieldRepositoryTestCase {
 
+	@Disabled
 	@Override
-	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts.json"
-	)
 	@Test
 	public void testFindByContextAndOwnerIdGroupByMaxModifiedDateAndName() {
 		super.testFindByContextAndOwnerIdGroupByMaxModifiedDateAndName();

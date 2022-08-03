@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
@@ -30,7 +29,6 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
@@ -399,11 +397,6 @@ public class DataSourceDog {
 		_deleteData(dataSource);
 
 		_deleteRunLogs(dataSource);
-
-		List<Account> accounts = _accountRepository.findAllByDataSourceId(
-			dataSourceId);
-
-		accounts.forEach(account -> _accountDog.deleteAccount(account));
 
 		Date deletionDate = dataSource.getDeletionDate();
 
@@ -794,15 +787,7 @@ public class DataSourceDog {
 
 	private static final Log _log = LogFactory.getLog(DataSourceDog.class);
 
-	@Autowired
-	private AccountDog _accountDog;
-
-	@Autowired
-	private AccountRepository _accountRepository;
-
-	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
-
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(10, 1);
 

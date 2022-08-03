@@ -19,9 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -892,76 +890,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return null;
 	}
 
-	private void _replaceAccount(Segment segment) {
-		if (!Objects.equals(segment.getStatus(), "INACTIVE")) {
-			return;
-		}
-
-		String name = segment.getName();
-
-		if (!name.startsWith(_ACCOUNT_PREFIX)) {
-			return;
-		}
-
-		BQMembershipChange bqMembershipChange =
-			_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(
-				segment.getId());
-
-		if (bqMembershipChange == null) {
-			return;
-		}
-
-		Account account = _accountDog.getAccount(
-			Long.valueOf(name.substring(_ACCOUNT_PREFIX.length())), null);
-
-		List<Individual.ActivitiesCount> individualActivitiesCounts =
-			_individualDog.getActivitiesCounts(
-				BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-				segment.getId());
-
-		if (!individualActivitiesCounts.isEmpty()) {
-			Set<Account.AccountActivityCount> activitiesCounts =
-				new HashSet<>();
-
-			for (Individual.ActivitiesCount individualActivitiesCount :
-					individualActivitiesCounts) {
-
-				activitiesCounts.add(
-					new Account.AccountActivityCount(
-						individualActivitiesCount.getActivitiesCount(),
-						individualActivitiesCount.getChannelId()));
-			}
-
-			account.setActivitiesCounts(activitiesCounts);
-		}
-
-		account.setIndividualsCount(bqMembershipChange.getIdentitiesCount());
-
-		if (Objects.nonNull(bqMembershipChange.getIdentitiesCount())) {
-			Map<Long, Long> channelIndividualCounts =
-				_individualDog.getIndividualCounts(
-					BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-					segment.getId());
-
-			if (!channelIndividualCounts.isEmpty()) {
-				Set<Account.AccountIndividualCount> individualsCounts =
-					new HashSet<>();
-
-				for (Map.Entry<Long, Long> entry :
-						channelIndividualCounts.entrySet()) {
-
-					individualsCounts.add(
-						new Account.AccountIndividualCount(
-							entry.getKey(), entry.getValue()));
-				}
-
-				account.setIndividualsCounts(individualsCounts);
-			}
-		}
-
-		_accountDog.updateAccount(account);
-	}
-
 	private void _setState(Segment segment) {
 		if ((segment.getType() == null) ||
 			Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
@@ -1033,8 +961,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 			_addAsahTask(existingSegment);
 		}
 
-		_replaceAccount(existingSegment);
-
 		return existingSegment;
 	}
 
@@ -1048,9 +974,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 	private static final Pattern _pattern = Pattern.compile(
 		"(?<=[ ])[0-9]+[.]{0,1}[0-9]*(([e][+]){1}[0-9]+){0,1}");
-
-	@Autowired
-	private AccountDog _accountDog;
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;

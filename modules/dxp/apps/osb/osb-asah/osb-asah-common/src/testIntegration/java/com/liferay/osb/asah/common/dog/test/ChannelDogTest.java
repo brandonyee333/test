@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
@@ -85,10 +84,6 @@ public class ChannelDogTest
 		resourcePath = "osbasahfaroinfo/individuals_delete_channels.json"
 	)
 	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts_delete_channels.json"
-	)
-	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
 		resourcePath = "osbasahfaroinfo/assets_delete_channels.json"
 	)
@@ -149,8 +144,6 @@ public class ChannelDogTest
 
 		Assertions.assertEquals(
 			0, individualLastActivityDatesJSONArray.length());
-
-		// TODO Verify if channelId references from Account counts were removed
 
 		List<Channel> channels = IterableUtils.toList(
 			_channelRepository.findAll());

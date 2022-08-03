@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
-import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
@@ -27,14 +26,11 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -46,9 +42,7 @@ import java.time.LocalTime;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -133,20 +127,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				operator.equalsIgnoreCase("ne"));
 		}
 
-		if (fieldName.equals("accountId") && _isEqualityOperator(operator)) {
-			return _getAccountIdQueryBuilder(
-				(String)StringUtil.toObject(valueString), null,
-				operator.equalsIgnoreCase("ne"));
-		}
-
-		if (fieldName.equals("dataSourceAccountPKs/accountPKs") &&
-			_isEqualityOperator(operator)) {
-
-			return _getAccountIdQueryBuilder(
-				null, (String)StringUtil.toObject(valueString),
-				operator.equalsIgnoreCase("ne"));
-		}
-
 		if (fieldName.equals("dataSourceId") && _isEqualityOperator(operator)) {
 			return _getDataSourceIdQueryBuilder(
 				(String)StringUtil.toObject(valueString),
@@ -175,147 +155,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			throw new IllegalArgumentException(
 				"Expected " + s + " to be fully surrounded by single quotes");
 		}
-	}
-
-	private QueryBuilder _getAccountIdQueryBuilder(
-		String accountId, String accountPK, boolean negate) {
-
-		if ((accountId == null) && (accountPK == null)) {
-			if (negate) {
-				return QueryBuilders.nestedQuery(
-					"dataSourceAccountPKs",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.existsQuery(
-							"dataSourceAccountPKs.dataSourceId")),
-					ScoreMode.None);
-			}
-
-			return BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.nestedQuery(
-					"dataSourceAccountPKs",
-					QueryBuilders.existsQuery(
-						"dataSourceAccountPKs.dataSourceId"),
-					ScoreMode.None));
-		}
-
-		Account account = null;
-
-		if (accountId != null) {
-			Optional<Account> accountOptional = _accountRepository.findById(
-				Long.valueOf(accountId));
-
-			account = accountOptional.orElse(null);
-		}
-		else {
-			Optional<Account> accountOptional =
-				_accountRepository.findByAccountPK(accountPK);
-
-			account = accountOptional.orElse(null);
-		}
-
-		if (account == null) {
-			return null;
-		}
-
-		if (negate) {
-			return BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.nestedQuery(
-					"dataSourceAccountPKs",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termsQuery(
-							"dataSourceAccountPKs.accountPKs",
-							account.getAccountPK())
-					).filter(
-						QueryBuilders.termQuery(
-							"dataSourceAccountPKs.dataSourceId",
-							account.getDataSourceId())
-					),
-					ScoreMode.None));
-		}
-
-		return QueryBuilders.nestedQuery(
-			"dataSourceAccountPKs",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery(
-					"dataSourceAccountPKs.accountPKs", account.getAccountPK())
-			).filter(
-				QueryBuilders.termQuery(
-					"dataSourceAccountPKs.dataSourceId",
-					account.getDataSourceId())
-			),
-			ScoreMode.None);
-	}
-
-	private QueryBuilder _getAccountsFilterByCountFunctionQueryBuilder(
-			boolean checkEqualityOnly, String filterString, int minDocCount,
-			boolean negate, int value)
-		throws Exception {
-
-		List<String> individualSegmentNames = new LinkedList<>();
-
-		int page = 0;
-
-		while (true) {
-			List<Account> accounts = _accountDog.searchAccounts(
-				filterString, page++, 500);
-
-			if (accounts.isEmpty()) {
-				break;
-			}
-
-			for (Account account : accounts) {
-				individualSegmentNames.add("Account: " + account.getId());
-			}
-		}
-
-		if (individualSegmentNames.isEmpty()) {
-			return QueryBuilders.matchAllQuery();
-		}
-
-		QueryBuilder accountsFilterByCountFunctionQueryBuilder;
-
-		Long individualId = IndividualIdThreadLocal.getIndividualId();
-
-		if (individualId != null) {
-			if (!_bqMembershipDog.isIdentityInSegments(
-					individualId.toString(),
-					_segmentDog.getSegmentIds(
-						individualSegmentNames, "INACTIVE"),
-					value, minDocCount, checkEqualityOnly)) {
-
-				return null;
-			}
-
-			accountsFilterByCountFunctionQueryBuilder = QueryBuilders.termQuery(
-				"id", String.valueOf(individualId));
-		}
-		else {
-			accountsFilterByCountFunctionQueryBuilder =
-				QueryBuilders.termsQuery(
-					"id",
-					ListUtil.map(
-						ListUtil.map(
-							_bqMembershipDog.getIdentityIds(
-								_segmentDog.getSegmentIds(
-									individualSegmentNames, "INACTIVE"),
-								value, minDocCount, checkEqualityOnly),
-							Long::parseLong),
-						String::valueOf));
-		}
-
-		if (negate) {
-			return BoolQueryBuilderUtil.mustNot(
-				accountsFilterByCountFunctionQueryBuilder);
-		}
-
-		return accountsFilterByCountFunctionQueryBuilder;
-	}
-
-	private QueryBuilder _getAccountsFilterFunctionQueryBuilder() {
-
-		// TODO Segmentation by Account attributes
-
-		return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
 	}
 
 	private QueryBuilder _getActivitiesFilterByCountFunctionQueryBuilder(
@@ -444,14 +283,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			filterString = StringUtil.unquoteAndDecodeInnerQuotes(filterString);
 		}
 
-		if (argumentValues[1] == null) {
-			if (type.equals("accounts")) {
-				return _getAccountsFilterFunctionQueryBuilder();
-			}
-
-			if (type.equals("activities")) {
-				return _getActivitiesFilterFunctionQueryBuilder(filterString);
-			}
+		if ((argumentValues[1] == null) && type.equals("activities")) {
+			return _getActivitiesFilterFunctionQueryBuilder(filterString);
 		}
 
 		String operator = argumentValues[1];
@@ -490,10 +323,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				if (minDocCount == 0) {
 					QueryBuilder queryBuilder = null;
 
-					if (type.equals("accounts")) {
-						queryBuilder = _getAccountsFilterFunctionQueryBuilder();
-					}
-					else if (type.equals("activities")) {
+					if (type.equals("activities")) {
 						queryBuilder = _getActivitiesFilterFunctionQueryBuilder(
 							filterString);
 					}
@@ -543,12 +373,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			queryBuilder = QueryBuilders.matchAllQuery();
 		}
 
-		if (type.equals("accounts")) {
-			return _getAccountsFilterByCountFunctionQueryBuilder(
-				checkEqualityOnly, filterString, minDocCount, negate,
-				value.intValue());
-		}
-
 		if (type.equals("activities")) {
 			return _getActivitiesFilterByCountFunctionQueryBuilder(
 				checkEqualityOnly, filterString, minDocCount, negate, operator,
@@ -571,10 +395,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			_checkSurroundingQuotes(filterString);
 
 			filterString = StringUtil.unquoteAndDecodeInnerQuotes(filterString);
-		}
-
-		if (type.equals("accounts")) {
-			return _getAccountsFilterFunctionQueryBuilder();
 		}
 
 		if (type.equals("activities")) {
@@ -886,12 +706,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	private static final Pattern _pattern = Pattern.compile(
 		".*(score eq '(false|true)').*");
-
-	@Autowired
-	private AccountDog _accountDog;
-
-	@Autowired
-	private AccountRepository _accountRepository;
 
 	private final Set<String> _allowedOperators = new HashSet<String>() {
 		{
