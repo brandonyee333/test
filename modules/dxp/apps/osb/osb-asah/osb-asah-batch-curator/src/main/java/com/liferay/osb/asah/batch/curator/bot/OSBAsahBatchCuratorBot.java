@@ -262,13 +262,7 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private Runnable _getInterestsRunnable() {
-		return () -> {
-			_asahTaskManager.runNanites("InterestThresholdScoreNanite");
-
-			_asahTaskManager.runNanites("InterestTopicsNanite");
-
-			_asahTaskManager.runNanites("IndividualInterestScoresNanite");
-		};
+		return () -> _asahTaskManager.runNanites("InterestTopicsNanite");
 	}
 
 	private Runnable _getStaleDynamicIndividualSegmentsRunnable() {
