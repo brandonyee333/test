@@ -61,14 +61,12 @@ public class RunLogMigrationUpgradeStepTest
 
 		_setupIndex("osbasahdxpraw");
 		_setupIndex("osbasahfaroinfo");
-		_setupIndex("osbasahsalesforceraw");
 	}
 
 	@AfterEach
 	public void tearDown() {
 		_elasticsearchIndexManager.delete("test_osbasahdxpraw_run-logs");
 		_elasticsearchIndexManager.delete("test_osbasahfaroinfo_run-logs");
-		_elasticsearchIndexManager.delete("test_osbasahsalesforceraw_run-logs");
 
 		_dataSourceRepository.deleteAll();
 		_runLogRepository.deleteAll();
@@ -86,9 +84,6 @@ public class RunLogMigrationUpgradeStepTest
 
 		JSONArray salesForceRawJSONArray = _getJSONArray(
 			"osbasahsalesforceraw");
-
-		_salesforceRawElasticsearchInvoker.add(
-			"run-logs", salesForceRawJSONArray);
 
 		_runLogMigrationUpgradeStep.upgrade("");
 
@@ -158,8 +153,5 @@ public class RunLogMigrationUpgradeStepTest
 
 	@Autowired
 	private RunLogRepository _runLogRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

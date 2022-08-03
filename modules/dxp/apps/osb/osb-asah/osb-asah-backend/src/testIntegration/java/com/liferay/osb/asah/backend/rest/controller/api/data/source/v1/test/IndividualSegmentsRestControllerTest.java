@@ -80,9 +80,6 @@ public class IndividualSegmentsRestControllerTest
 				FaroInfoTestUtil.buildAssetJSONObject("Page", 1L),
 				Asset.class));
 
-		FieldMapping accountFieldMapping = _fieldMappingRepository.save(
-			FaroInfoTestUtil.buildAccountFieldMapping(
-				"1", "shippingPostalCode", "shippingPostalCode", "Text"));
 		FieldMapping individualFieldMapping = _fieldMappingRepository.save(
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				1L, "email", "email", "Text"));
@@ -98,8 +95,7 @@ public class IndividualSegmentsRestControllerTest
 		Segment segment = new Segment();
 
 		segment.setReferencedFieldMappingIds(
-			SetUtil.of(
-				accountFieldMapping.getId(), individualFieldMapping.getId()));
+			SetUtil.of(individualFieldMapping.getId()));
 
 		segment = _segmentRepository.save(segment);
 
@@ -112,10 +108,7 @@ public class IndividualSegmentsRestControllerTest
 			"referenced-objects");
 
 		MatcherAssert.assertThat(
-			new String[] {
-				String.valueOf(accountFieldMapping.getId()),
-				String.valueOf(individualFieldMapping.getId())
-			},
+			new String[] {String.valueOf(individualFieldMapping.getId())},
 			Matchers.arrayContainingInAnyOrder(
 				_getIds("field-mappings", referencedObjectsJSONObject)));
 

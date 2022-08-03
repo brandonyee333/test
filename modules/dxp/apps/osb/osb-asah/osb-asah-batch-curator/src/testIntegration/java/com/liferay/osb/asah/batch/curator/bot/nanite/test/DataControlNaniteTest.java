@@ -15,12 +15,9 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
-import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
-import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
-import com.liferay.osb.asah.common.repository.BQSalesforceEntityRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -35,7 +32,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.logging.Log;
@@ -97,10 +93,6 @@ public class DataControlNaniteTest
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQSalesforceEntityRepository.class,
-		resourcePath = "osbasahsalesforceraw/individuals.json"
-	)
-	@RepositoryResource(
 		repositoryClass = DataControlTaskRepository.class,
 		resourcePath = "osbasahfaroinfo/data_control_tasks.json"
 	)
@@ -132,13 +124,6 @@ public class DataControlNaniteTest
 				QueryBuilders.termQuery(
 					"demographics.email.value", "john.doe@liferay.com")));
 
-		List<BQSalesforceEntity> bqSalesforceEntities =
-			_bqSalesforceEntityDog.getBQSalesforceEntities(
-				1L, "email", "john.doe@liferay.com",
-				BQSalesforceEntity.Type.INDIVIDUAL);
-
-		Assertions.assertTrue(bqSalesforceEntities.isEmpty());
-
 		Path path = Paths.get(_exportPath.toString(), "1.zip");
 
 		File file = path.toFile();
@@ -148,9 +133,6 @@ public class DataControlNaniteTest
 
 	private static final Log _log = LogFactory.getLog(
 		DataControlNaniteTest.class);
-
-	@Autowired
-	private BQSalesforceEntityDog _bqSalesforceEntityDog;
 
 	@Autowired
 	private DataControlNanite _dataControlNanite;

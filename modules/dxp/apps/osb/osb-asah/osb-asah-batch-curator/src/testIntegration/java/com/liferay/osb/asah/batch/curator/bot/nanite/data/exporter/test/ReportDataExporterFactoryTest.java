@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.test;
 
 import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
-import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.AccountDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.BaseReportDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.IndividualDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
@@ -98,10 +97,7 @@ public class ReportDataExporterFactoryTest
 
 		Class<?> dataExporterClass = null;
 
-		if (expectedType == DataExportTask.Type.ACCOUNT) {
-			dataExporterClass = AccountDataExporter.class;
-		}
-		else if (expectedType == DataExportTask.Type.INDIVIDUAL) {
+		if (expectedType == DataExportTask.Type.INDIVIDUAL) {
 			dataExporterClass = IndividualDataExporter.class;
 		}
 		else if (expectedType == DataExportTask.Type.PAGE) {

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
@@ -75,10 +74,6 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,

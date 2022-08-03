@@ -20,11 +20,8 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -70,27 +67,6 @@ public class AdminRestControllerTest
 
 		Assertions.assertNull(cache1.get("foo"));
 		Assertions.assertNotNull(cache2.get("foo"));
-	}
-
-	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts_1.json"
-	)
-	@Test
-	public void testDeleteData() {
-		_accountRepository.deleteAll();
-
-		Assertions.assertEquals(0, _accountRepository.count());
-	}
-
-	@Test
-	public void testPostData() throws Exception {
-		_adminRestController.postData(
-			"accounts", String.valueOf(WeDeployDataService.OSB_ASAH_FARO_INFO),
-			ResourceUtil.readResourceToString(
-				"dependencies/osbasahfaroinfo/accounts_1.json", this));
-
-		Assertions.assertEquals(3, _accountRepository.count());
 	}
 
 	@Test
@@ -154,9 +130,6 @@ public class AdminRestControllerTest
 			ValidationException.class,
 			() -> _adminRestController.run(jsonArray.toString()));
 	}
-
-	@Autowired
-	private AccountRepository _accountRepository;
 
 	@Autowired
 	private AdminRestController _adminRestController;

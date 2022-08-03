@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.ReportRestController;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
@@ -44,23 +43,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ReportRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
-
-	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts_4.json"
-	)
-	@Test
-	public void testGetReportAccountDTOPageDTO() throws Exception {
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONObject(
-				"dependencies/expected_accounts_2.json", this),
-			_objectMapper.convertValue(
-				_reportRestController.getReportAccountDTOPageDTO(
-					"0", "2019-03-03T13:00:00.000Z",
-					"2019-03-05T11:00:00.000Z"),
-				JSONObject.class),
-			false);
-	}
 
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_4.json",

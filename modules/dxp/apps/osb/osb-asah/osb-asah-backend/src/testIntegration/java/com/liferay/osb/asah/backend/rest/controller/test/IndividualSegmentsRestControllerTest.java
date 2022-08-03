@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
@@ -32,7 +31,6 @@ import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -43,10 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -110,10 +105,6 @@ public class IndividualSegmentsRestControllerTest
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts_1.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
@@ -138,43 +129,6 @@ public class IndividualSegmentsRestControllerTest
 			1,
 			_bqMembershipRepository.countBySegmentIdAndStatus(
 				338511451975440187L, "ACTIVE"));
-	}
-
-	@Disabled
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts_1.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
-	)
-	@RepositoryResource(
-		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
-	@Test
-	public void testGetAccounts() throws Exception {
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONObject(
-				"dependencies/expected_individual_segment_accounts.json", this),
-			_objectMapper.convertValue(
-				_individualSegmentsRestController.getAccountDTOPageDTO(
-					366637689379787789L, null, 0, 20, null),
-				JSONObject.class),
-			false);
 	}
 
 	@ElasticsearchIndex(

@@ -131,14 +131,6 @@ public class FieldMappingDogTest
 	}
 
 	@Test
-	public void testAddEmailFieldMappingSalesforceDataSource() {
-		_testAddEmailFieldMapping(
-			_dataSourceRepository.save(
-				FaroInfoTestUtil.buildSalesforceDataSource()),
-			"email");
-	}
-
-	@Test
 	public void testAddInvalidCharactersFieldMapping() {
 		DataSource dataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildLiferayDataSource());
@@ -340,11 +332,6 @@ public class FieldMappingDogTest
 			_dataSourceRepository.save(
 				FaroInfoTestUtil.buildLiferayDataSource()),
 			"emailAddress");
-
-		_testAddEmailFieldMapping(
-			_dataSourceRepository.save(
-				FaroInfoTestUtil.buildSalesforceDataSource()),
-			"email");
 	}
 
 	private void _testAddEmailFieldMapping(

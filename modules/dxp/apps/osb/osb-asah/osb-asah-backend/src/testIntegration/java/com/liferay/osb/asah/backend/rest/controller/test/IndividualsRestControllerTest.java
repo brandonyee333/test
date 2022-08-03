@@ -23,7 +23,6 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualsRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -112,10 +111,6 @@ public class IndividualsRestControllerTest
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts_3.json"
-	)
-	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources_2.json"
 	)
@@ -145,10 +140,6 @@ public class IndividualsRestControllerTest
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts_3.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -250,10 +241,6 @@ public class IndividualsRestControllerTest
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AccountRepository.class,
-		resourcePath = "osbasahfaroinfo/accounts_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = FieldMappingRepository.class,

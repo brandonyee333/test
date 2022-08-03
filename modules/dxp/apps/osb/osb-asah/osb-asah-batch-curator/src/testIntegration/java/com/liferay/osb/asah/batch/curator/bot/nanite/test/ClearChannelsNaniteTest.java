@@ -18,17 +18,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ClearChannelsNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -62,18 +59,9 @@ public class ClearChannelsNaniteTest
 
 		Assertions.assertNotNull(dataSource);
 
-		Account account = FaroInfoTestUtil.buildAccount(dataSource);
-
-		account.setIsNew(Boolean.TRUE);
-
-		_accountDog.addAccount(account);
-
 		Long dataSourceId = dataSource.getId();
 
 		Long channelId = _dataSourceDog.getDefaultChannelId(dataSourceId);
-
-		_segmentDog.addSegment(
-			FaroInfoTestUtil.buildAccountSegment(account, channelId));
 
 		Individual individual = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividual(channelId, dataSource), false);
@@ -94,7 +82,6 @@ public class ClearChannelsNaniteTest
 		_clearChannelsNanite.run(
 			JSONUtil.put("channelIds", JSONUtil.put(channelId)));
 
-		Assertions.assertTrue(_accountRepository.existsById(account.getId()));
 		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"activities", activityJSONObject.getString("id")));
@@ -111,19 +98,11 @@ public class ClearChannelsNaniteTest
 		Assertions.assertTrue(_channelRepository.existsById(channelId));
 		Assertions.assertTrue(_dataSourceRepository.existsById(dataSourceId));
 		Assertions.assertFalse(
-			_segmentRepository.existsByName("Account: " + account.getId()));
-		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.termQuery("channelIds", channelId)));
 		Assertions.assertEquals(1, _individualRepository.count());
 	}
-
-	@Autowired
-	private AccountDog _accountDog;
-
-	@Autowired
-	private AccountRepository _accountRepository;
 
 	@Autowired
 	private AssetRepository _assetRepository;

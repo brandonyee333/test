@@ -21,10 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DXPEntityDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.RawDataExporter;
-import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SalesforceEntityDataExporter;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQCSVUserDog;
-import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.BQUserDog;
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -32,7 +30,6 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -156,9 +153,6 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _deleteData(String emailAddress) {
-		_bqSalesforceEntityDog.deleteBQSalesforceEntities(
-			"email", emailAddress, BQSalesforceEntity.Type.INDIVIDUAL);
-
 		Individual individual = _individualDog.fetchIndividualByEmailAddress(
 			emailAddress);
 
@@ -221,11 +215,6 @@ public class DataControlNanite extends BaseNanite {
 				"individuals", faroInfoElasticsearchInvoker,
 				QueryBuilders.termQuery(
 					"demographics.email.value", emailAddress),
-				zipOutputStream));
-		zipFileBuilder.addToZip(
-			"salesforce-individuals.json",
-			zipOutputStream -> _writeToZip(
-				"email", emailAddress, BQSalesforceEntity.Type.INDIVIDUAL,
 				zipOutputStream));
 
 		Individual individual = _individualDog.fetchIndividualByEmailAddress(
@@ -436,18 +425,6 @@ public class DataControlNanite extends BaseNanite {
 		dataExporter.export();
 	}
 
-	private void _writeToZip(
-			String fieldName, String fieldValue, BQSalesforceEntity.Type type,
-			ZipOutputStream zipOutputStream)
-		throws Exception {
-
-		DataExporter dataExporter = new SalesforceEntityDataExporter(
-			_bqSalesforceEntityDog, fieldName, fieldValue, _jsonFactory,
-			_objectMapper, zipOutputStream, type);
-
-		dataExporter.export();
-	}
-
 	private void _writeUsersToZip(
 			String fieldName, String fieldValue,
 			ZipOutputStream zipOutputStream)
@@ -464,9 +441,6 @@ public class DataControlNanite extends BaseNanite {
 
 	@Autowired
 	private BQCSVUserDog _bqCSVUserDog;
-
-	@Autowired
-	private BQSalesforceEntityDog _bqSalesforceEntityDog;
 
 	@Autowired
 	private BQUserDog _bqUserDog;

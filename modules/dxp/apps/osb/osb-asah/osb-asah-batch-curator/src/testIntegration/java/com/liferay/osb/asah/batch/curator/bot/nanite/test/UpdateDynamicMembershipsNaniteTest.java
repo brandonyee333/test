@@ -31,7 +31,6 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
@@ -524,9 +523,6 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		return segment.getId();
 	}
-
-	@Autowired
-	private AccountRepository _accountRepository;
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;

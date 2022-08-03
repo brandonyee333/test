@@ -15,15 +15,12 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.PageDTO;
-import com.liferay.osb.asah.backend.dto.ReportAccountDTO;
 import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -50,18 +47,6 @@ import org.springframework.web.bind.annotation.RestController;
 	"com.liferay.osb.asah.backend.rest.controller.ReportRestController"
 )
 public class ReportRestController extends BaseRestController {
-
-	@GetMapping("/accounts")
-	public PageDTO<ReportAccountDTO> getReportAccountDTOPageDTO(
-		@RequestParam(defaultValue = "", value = "after") String afterId,
-		@RequestParam("fromDate") String fromDate,
-		@RequestParam("toDate") String toDate) {
-
-		return _toReportAccountDTOPageDTO(
-			_accountDog.getAccountPage(
-				_getId(afterId), DateUtil.toUTCDate(fromDate), _PAGE_SIZE,
-				Sort.by(Sort.Order.asc("id")), DateUtil.toUTCDate(toDate)));
-	}
 
 	@GetMapping("/individuals")
 	public PageDTO<ReportIndividualDTO> getReportIndividualDTOPageDTO(
@@ -95,14 +80,6 @@ public class ReportRestController extends BaseRestController {
 		return Long.valueOf(id);
 	}
 
-	private PageDTO<ReportAccountDTO> _toReportAccountDTOPageDTO(
-		Page<Account> accountPage) {
-
-		return new PageDTO<>(
-			ListUtil.map(accountPage.toList(), ReportAccountDTO::new),
-			accountPage.getTotalElements());
-	}
-
 	private PageDTO<ReportIndividualDTO> _toReportIndividualDTOPageDTO(
 		Page<Individual> individualPage) {
 
@@ -129,9 +106,6 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	private static final int _PAGE_SIZE = 100;
-
-	@Autowired
-	private AccountDog _accountDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;

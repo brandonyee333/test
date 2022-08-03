@@ -19,7 +19,6 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
-import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -81,27 +80,7 @@ public class IndividualsRestController extends BaseRestController {
 		String[] expandParts = expand.split(",");
 
 		for (String expandPart : expandParts) {
-			if (expandPart.equals("account-names")) {
-				Map<Long, JSONObject> accountNamesJSONObjects =
-					_accountDog.getAccountNamesJSONObjects(
-						Collections.singletonList(individual));
-
-				JSONObject jsonObject = accountNamesJSONObjects.get(
-					individual.getId());
-
-				expandMap.put(expandPart, jsonObject.get(expandPart));
-			}
-			else if (expandPart.equals("accounts")) {
-				Map<Long, JSONObject> accountsJSONObjects =
-					_accountDog.getAccountsJSONObjects(
-						Collections.singletonList(individual));
-
-				JSONObject jsonObject = accountsJSONObjects.get(
-					individual.getId());
-
-				expandMap.put(expandPart, jsonObject.get(expandPart));
-			}
-			else if (expandPart.equals("data-sources")) {
+			if (expandPart.equals("data-sources")) {
 				Map<Long, JSONObject> dataSourcesJSONObjects =
 					_dataSourceDog.getDataSourcesJSONObjects(
 						Collections.singletonList(individual));
@@ -163,23 +142,13 @@ public class IndividualsRestController extends BaseRestController {
 		stream.forEachOrdered(
 			individual -> individualDTOs.add(new IndividualDTO(individual)));
 
-		Map<Long, JSONObject> accountNamesJSONObjects = new HashMap<>();
-		Map<Long, JSONObject> accountsJSONObjects = new HashMap<>();
 		Map<Long, JSONObject> dataSourcesJSONObjects = new HashMap<>();
 		Map<Long, JSONObject> segmentsJSONObjects = new HashMap<>();
 
 		String[] expandParts = expand.split(",");
 
 		for (String expandPart : expandParts) {
-			if (expandPart.equals("account-names")) {
-				accountNamesJSONObjects =
-					_accountDog.getAccountNamesJSONObjects(individuals);
-			}
-			else if (expandPart.equals("accounts")) {
-				accountsJSONObjects = _accountDog.getAccountsJSONObjects(
-					individuals);
-			}
-			else if (expandPart.equals("data-sources")) {
+			if (expandPart.equals("data-sources")) {
 				dataSourcesJSONObjects =
 					_dataSourceDog.getDataSourcesJSONObjects(individuals);
 			}
@@ -194,22 +163,6 @@ public class IndividualsRestController extends BaseRestController {
 
 		for (IndividualDTO individualDTO : individualDTOs) {
 			Map<String, Object> expandMap = new HashMap<>();
-
-			JSONObject accountNameJSONObject = accountNamesJSONObjects.get(
-				Long.valueOf(individualDTO.getId()));
-
-			if (accountNameJSONObject != null) {
-				expandMap.put(
-					"account-names",
-					accountNameJSONObject.get("account-names"));
-			}
-
-			JSONObject accountJSONObject = accountsJSONObjects.get(
-				Long.valueOf(individualDTO.getId()));
-
-			if (accountJSONObject != null) {
-				expandMap.put("accounts", accountJSONObject.get("accounts"));
-			}
 
 			JSONObject dataSourceJSONObject = dataSourcesJSONObjects.get(
 				Long.valueOf(individualDTO.getId()));
@@ -390,9 +343,6 @@ public class IndividualsRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		IndividualsRestController.class);
-
-	@Autowired
-	private AccountDog _accountDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;

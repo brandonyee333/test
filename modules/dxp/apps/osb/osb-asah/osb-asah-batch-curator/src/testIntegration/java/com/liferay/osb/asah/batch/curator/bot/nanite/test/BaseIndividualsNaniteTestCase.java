@@ -62,12 +62,6 @@ public abstract class BaseIndividualsNaniteTestCase
 					FaroInfoTestUtil.buildLiferayDataSource()),
 				JSONObject.class);
 		}
-		else if (type.equals("SALESFORCE")) {
-			_dataSourceJSONObject = _objectMapper.convertValue(
-				_dataSourceDog.addDataSource(
-					FaroInfoTestUtil.buildSalesforceDataSource()),
-				JSONObject.class);
-		}
 		else {
 			throw new Exception("Unsupported data source type " + type);
 		}

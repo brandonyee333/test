@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.Field;
@@ -548,11 +547,7 @@ public class IndividualDTO {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class IndividualCountDTO {
 
-		public IndividualCountDTO(
-			Account.AccountIndividualCount accountIndividualCount) {
-
-			_channelId = String.valueOf(accountIndividualCount.getChannelId());
-			_individualsCount = accountIndividualCount.getIndividualsCount();
+		public IndividualCountDTO() {
 		}
 
 		@Override

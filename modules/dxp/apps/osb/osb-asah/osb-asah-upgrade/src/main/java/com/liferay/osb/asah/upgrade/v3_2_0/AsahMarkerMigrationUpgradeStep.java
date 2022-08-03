@@ -55,8 +55,6 @@ public class AsahMarkerMigrationUpgradeStep implements UpgradeStep {
 			_cerebroInfoElasticsearchInvoker, "osbasahcerebroinfo");
 		_upgradeCollection(_dxpRawElasticsearchInvoker, "osbasahdxpraw");
 		_upgradeCollection(_faroInfoElasticsearchInvoker, "osbasahfaroinfo");
-		_upgradeCollection(
-			_salesforceRawElasticsearchInvoker, "osbasahsalesforceraw");
 	}
 
 	private List<String> _getAsahMarkerIds(boolean retry) {
@@ -140,8 +138,5 @@ public class AsahMarkerMigrationUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

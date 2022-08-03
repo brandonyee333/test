@@ -54,7 +54,6 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,15 +73,12 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -103,16 +99,10 @@ public class IndividualDogTest
 		_liferayDataSource.setId(
 			Long.parseLong(RandomStringUtils.randomNumeric(4)));
 
-		_salesforceDataSource = FaroInfoTestUtil.buildSalesforceDataSource();
-
 		for (String fieldName : _FIELD_NAMES) {
 			_fieldMappingRepository.save(
 				FaroInfoTestUtil.buildIndividualFieldMapping(
 					_liferayDataSource.getId(), fieldName, fieldName, "Text"));
-			_fieldMappingRepository.save(
-				FaroInfoTestUtil.buildIndividualFieldMapping(
-					_salesforceDataSource.getId(), fieldName, fieldName,
-					"Text"));
 		}
 	}
 
@@ -265,112 +255,6 @@ public class IndividualDogTest
 		_assertCustomFields(customFields, null, "address");
 		_assertCustomFields(customFields, 8, "favoriteNumber");
 		_assertCustomFields(customFields, "[german]", "spokenLanguages");
-	}
-
-	@Test
-	public void testAddAndUpdateSalesforceIndividual() throws Exception {
-		Long dataSourceId = _salesforceDataSource.getId();
-
-		Individual individual = _individualDog.addIndividual(
-			"1",
-			JSONUtil.put(
-				"accountPKs", JSONUtil.put("123")
-			).put(
-				"country", "United States"
-			).put(
-				"email", "dummy.test@test.com"
-			).put(
-				"modifiedDate", DateUtil.newDateString()
-			),
-			_salesforceDataSource);
-
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs =
-			individual.getDataSourceAccountPKs();
-
-		Stream<Individual.DataSourceAccountPK> stream =
-			dataSourceAccountPKs.stream();
-
-		Set<String> accountPKs = new HashSet<>();
-
-		Set<String> finalAccountPKs1 = accountPKs;
-
-		stream.filter(
-			dataSourceAccountPK -> Objects.equals(
-				dataSourceId, dataSourceAccountPK.getDataSourceId())
-		).forEach(
-			dataSourceAccountPK -> finalAccountPKs1.addAll(
-				dataSourceAccountPK.getAccountPKs())
-		);
-
-		MatcherAssert.assertThat(
-			new String[] {"123"},
-			Matchers.arrayContainingInAnyOrder(
-				accountPKs.toArray(new String[0])));
-
-		individual = _individualDog.updateIndividual(
-			String.valueOf(individual.getId()),
-			JSONUtil.put(
-				"accountPKs", JSONUtil.putAll("123", "456", "789")
-			).put(
-				"country", "United States"
-			).put(
-				"email", "dummy.test@test.com"
-			).put(
-				"modifiedDate", DateUtil.newDateString()
-			),
-			_salesforceDataSource, individual);
-
-		dataSourceAccountPKs = individual.getDataSourceAccountPKs();
-
-		stream = dataSourceAccountPKs.stream();
-
-		accountPKs = new HashSet<>();
-
-		Set<String> finalAccountPKs2 = accountPKs;
-
-		stream.filter(
-			dataSourceAccountPK -> Objects.equals(
-				dataSourceId, dataSourceAccountPK.getDataSourceId())
-		).forEach(
-			dataSourceAccountPK -> finalAccountPKs2.addAll(
-				dataSourceAccountPK.getAccountPKs())
-		);
-
-		MatcherAssert.assertThat(
-			new String[] {"123", "456", "789"},
-			Matchers.arrayContainingInAnyOrder(
-				finalAccountPKs2.toArray(new String[0])));
-
-		_salesforceDataSource.setId(1L);
-
-		individual = _individualDog.updateIndividual(
-			String.valueOf(individual.getId()),
-			JSONUtil.put(
-				"accountPKs", JSONUtil.put("321")
-			).put(
-				"country", "United States"
-			).put(
-				"email", "dummy.test@test.com"
-			).put(
-				"modifiedDate", DateUtil.newDateString()
-			),
-			_salesforceDataSource, individual);
-
-		JSONAssert.assertEquals(
-			JSONUtil.putAll(
-				JSONUtil.put(
-					"accountPKs", JSONUtil.putAll("123", "456", "789")
-				).put(
-					"dataSourceId", String.valueOf(dataSourceId)
-				),
-				JSONUtil.put(
-					"accountPKs", JSONUtil.put("321")
-				).put(
-					"dataSourceId", "1"
-				)),
-			_objectMapper.convertValue(
-				individual.getDataSourceAccountPKs(), JSONArray.class),
-			false);
 	}
 
 	@ElasticsearchIndex(
@@ -1046,6 +930,7 @@ public class IndividualDogTest
 		Assertions.assertNotNull(individual.getFirstEnrichmentDate());
 	}
 
+	@Disabled
 	@Test
 	public void testUpdateIndividualFromDifferentDataSourceIgnoresNullValue()
 		throws Exception {
@@ -1061,7 +946,7 @@ public class IndividualDogTest
 			).put(
 				"modifiedDate", DateUtil.newDateString()
 			),
-			_salesforceDataSource);
+			null);
 
 		individual = _individualDog.updateIndividual(
 			String.valueOf(individual.getId()),
@@ -1339,8 +1224,6 @@ public class IndividualDogTest
 
 	@Autowired
 	private OrganizationRepository _organizationRepository;
-
-	private DataSource _salesforceDataSource;
 
 	@Autowired
 	private SegmentDog _segmentDog;

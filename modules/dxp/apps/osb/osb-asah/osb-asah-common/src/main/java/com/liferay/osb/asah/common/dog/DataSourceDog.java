@@ -62,7 +62,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -455,47 +454,6 @@ public class DataSourceDog {
 					individuals);
 			}
 		}
-	}
-
-	private void _deleteAccountReferences(Long dataSourceId) throws Exception {
-		JSONArrayIterator.of(
-			"individuals", _elasticsearchInvoker,
-			individualJSONObject -> {
-				Individual individual = _objectMapper.convertValue(
-					individualJSONObject, Individual.class);
-
-				Set<Individual.DataSourceAccountPK> dataSourceAccountPKs =
-					individual.getDataSourceAccountPKs();
-
-				Iterator<Individual.DataSourceAccountPK> iterator =
-					dataSourceAccountPKs.iterator();
-
-				while (iterator.hasNext()) {
-					Individual.DataSourceAccountPK dataSourceAccountPK =
-						iterator.next();
-
-					if (Objects.equals(
-							dataSourceAccountPK.getDataSourceId(),
-							dataSourceId)) {
-
-						iterator.remove();
-					}
-				}
-
-				individual.setDataSourceAccountPKs(dataSourceAccountPKs);
-
-				_individualDog.updateIndividual(individual);
-
-				return null;
-			}
-		).setQueryBuilder(
-			QueryBuilders.nestedQuery(
-				"dataSourceAccountPKs",
-				QueryBuilders.termQuery(
-					"dataSourceAccountPKs.dataSourceId",
-					String.valueOf(dataSourceId)),
-				ScoreMode.None)
-		).iterate();
 	}
 
 	private void _deleteData(DataSource dataSource) throws Exception {

@@ -56,7 +56,6 @@ public class AsahMarkerMigrationUpgradeStepTest
 		_setupIndex("osbasahcerebroinfo");
 		_setupIndex("osbasahdxpraw");
 		_setupIndex("osbasahfaroinfo");
-		_setupIndex("osbasahsalesforceraw");
 	}
 
 	@AfterEach
@@ -66,8 +65,6 @@ public class AsahMarkerMigrationUpgradeStepTest
 		_elasticsearchIndexManager.delete("test_osbasahdxpraw_osbasahmarkers");
 		_elasticsearchIndexManager.delete(
 			"test_osbasahfaroinfo_osbasahmarkers");
-		_elasticsearchIndexManager.delete(
-			"test_osbasahsalesforceraw_osbasahmarkers");
 
 		_asahMarkerRepository.deleteAll();
 	}
@@ -85,8 +82,6 @@ public class AsahMarkerMigrationUpgradeStepTest
 			"OSBAsahMarkers", cerebroInfoJSONArray);
 		_dxpRawElasticsearchInvoker.add("OSBAsahMarkers", dxpRawJSONArray);
 		_faroInfoElasticsearchInvoker.add("OSBAsahMarkers", faroInfoJSONArray);
-		_salesforceRawElasticsearchInvoker.add(
-			"OSBAsahMarkers", salesForceRawJSONArray);
 
 		JSONArray jsonArray = new JSONArray();
 
@@ -169,8 +164,5 @@ public class AsahMarkerMigrationUpgradeStepTest
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }
