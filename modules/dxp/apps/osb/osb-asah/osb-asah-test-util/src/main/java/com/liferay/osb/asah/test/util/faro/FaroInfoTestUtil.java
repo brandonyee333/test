@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.test.util.faro;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
@@ -56,68 +55,6 @@ import org.json.JSONObject;
  * @author Rachael Koestartyo
  */
 public class FaroInfoTestUtil {
-
-	public static Account buildAccount(DataSource dataSource) {
-		String accountPK = RandomStringUtils.randomAlphanumeric(18);
-		Long dataSourceId = dataSource.getId();
-		Date date = new Date();
-		Long id = _timeOrderedUuidGenerator.generateIdAsLong();
-
-		Account account = new Account();
-
-		account.setAccountPK(accountPK);
-		account.setActivitiesCount(0L);
-		account.setCreateDate(date);
-		account.setDataSourceId(dataSourceId);
-		account.setId(id);
-		account.setIndividualsCount(0L);
-
-		Field field = new Field();
-
-		field.setContext("organization");
-		field.setDataSourceId(dataSourceId);
-		field.setDataSourceName(dataSource.getName());
-		field.setFieldType("Text");
-		field.setModifiedDate(date);
-		field.setName("accountId");
-		field.setOwnerId(id);
-		field.setOwnerType("account");
-		field.setSourceName("id");
-		field.setValue("accountPK");
-
-		account.setFields(Collections.singleton(field));
-
-		return account;
-	}
-
-	public static FieldMapping buildAccountFieldMapping(
-		String dataSourceId, String dataSourceFieldName, String fieldName,
-		String fieldType) {
-
-		return buildFieldMapping(
-			_getFieldMappingAuthor(), "organization",
-			Collections.singletonMap(dataSourceId, dataSourceFieldName),
-			fieldName, fieldType, "account");
-	}
-
-	public static Segment buildAccountSegment(Account account, Long channelId) {
-		Date date = new Date();
-
-		Segment segment = new Segment();
-
-		segment.setChannelId(channelId);
-		segment.setCreateDate(date);
-		segment.setFilter(
-			"((dataSourceAccountPKs/accountPKs eq '" + account.getAccountPK() +
-				"'))");
-		segment.setModifiedDate(date);
-		segment.setName("Account: " + account.getId());
-		segment.setScope("PROJECT");
-		segment.setStatus("INACTIVE");
-		segment.setType(Segment.Type.DYNAMIC);
-
-		return segment;
-	}
 
 	public static JSONObject buildActivityJSONObject(
 		JSONObject assetJSONObject, Long channelId, Long dataSourceId,
