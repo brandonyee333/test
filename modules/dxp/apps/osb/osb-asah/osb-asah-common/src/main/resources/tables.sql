@@ -243,20 +243,6 @@ CREATE TABLE IF NOT EXISTS ExperimentVariantMetric (
 	probabilityToWin REAL
 );
 
-CREATE TABLE IF NOT EXISTS Field (
-	id BIGSERIAL PRIMARY KEY,
-	context TEXT,
-	dataSourceId BIGINT,
-	dataSourceName TEXT,
-	fieldType TEXT,
-	modifiedDate TIMESTAMPTZ,
-	name TEXT,
-	ownerId BIGINT,
-	ownerType TEXT,
-	sourceName TEXT,
-	value TEXT
-);
-
 CREATE TABLE IF NOT EXISTS Individual (
 	id BIGSERIAL PRIMARY KEY,
 	channelIds BIGINT[],
