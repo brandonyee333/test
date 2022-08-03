@@ -28,7 +28,6 @@ import com.liferay.osb.asah.backend.dog.UserDog;
 import com.liferay.osb.asah.backend.dog.form.FormPageDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.DataExportTaskDTO;
-import com.liferay.osb.asah.backend.dto.ReportAccountDTO;
 import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
 import com.liferay.osb.asah.backend.model.Activity;
@@ -51,13 +50,11 @@ import com.liferay.osb.asah.backend.model.PageMetric;
 import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.entity.Individual;
@@ -567,11 +564,6 @@ public class ReportRestController extends BaseRestController {
 				add(
 					Arrays.asList(
 						WebMvcLinkBuilder.linkTo(
-							_getAccountResultBagEntityModel(null)
-						).withRel(
-							"accounts"
-						),
-						WebMvcLinkBuilder.linkTo(
 							_getBlogAssetReportResultBagEntityModel(
 								null, null, null, null, null)
 						).withRel(
@@ -684,28 +676,6 @@ public class ReportRestController extends BaseRestController {
 			pageMetricResultBag,
 			pageMetric -> _toPageAssetReportEntityModel(
 				new PageAssetReport(new AssetReport(pageMetric)), rangeKey));
-	}
-
-	@GetMapping("/accounts/{accountId}")
-	public EntityModel<ReportAccountDTO> getReportAccountDTOEntityModel(
-		@PathVariable Long accountId) {
-
-		return _toAccountEntityModel(
-			new ReportAccountDTO(_accountDog.getAccount(accountId, null)));
-	}
-
-	@GetMapping("/accounts")
-	public ResultBagEntityModel<ReportAccountDTO>
-		getReportAccountDTOResultBagEntityModel(
-			@RequestParam(defaultValue = "0") Integer page) {
-
-		ResultBag<ReportAccountDTO> accountResultBag =
-			_getReportAccountDTOResultBag(_PAGE_SIZE, page * _PAGE_SIZE);
-
-		return _toResultBagEntityModel(
-			_getAccountResultBagEntityModel(page + 1), page,
-			_getAccountResultBagEntityModel(page - 1), accountResultBag,
-			this::_toAccountEntityModel);
 	}
 
 	@GetMapping("/individuals/{individualId}")
@@ -914,16 +884,6 @@ public class ReportRestController extends BaseRestController {
 		metricReport._audienceReport = audienceReport;
 	}
 
-	private ResultBagEntityModel<ReportAccountDTO>
-		_getAccountResultBagEntityModel(Integer page) {
-
-		return WebMvcLinkBuilder.methodOn(
-			ReportRestController.class
-		).getReportAccountDTOResultBagEntityModel(
-			page
-		);
-	}
-
 	private ResultBagEntityModel<AssetReport>
 		_getBlogAssetReportResultBagEntityModel(
 			Integer page, String keywords, Integer rangeKey, String sortMetric,
@@ -1056,24 +1016,6 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBag<ReportAccountDTO> _getReportAccountDTOResultBag(
-		int size, int start) {
-
-		ResultBag<ReportAccountDTO> resultBag = new ResultBag<>();
-
-		List<ReportAccountDTO> reportAccountDTOs = new ArrayList<>();
-
-		for (Account account : _accountDog.getAccounts(size, start)) {
-			reportAccountDTOs.add(new ReportAccountDTO(account));
-		}
-
-		resultBag.setResults(reportAccountDTOs);
-
-		resultBag.setTotal(reportAccountDTOs.size());
-
-		return resultBag;
-	}
-
 	private ResultBagEntityModel<ReportIndividualDTO>
 		_getReportIndividualDTOResultBagEntityModel(
 			Integer page, String query) {
@@ -1104,20 +1046,6 @@ public class ReportRestController extends BaseRestController {
 		).getReportSegmentDTOResultBagEntityModel(
 			page
 		);
-	}
-
-	private EntityModel<ReportAccountDTO> _toAccountEntityModel(
-		ReportAccountDTO reportAccountDTO) {
-
-		return new EntityModel<>(
-			reportAccountDTO,
-			WebMvcLinkBuilder.linkTo(
-				WebMvcLinkBuilder.methodOn(
-					ReportRestController.class
-				).getReportAccountDTOEntityModel(
-					Long.valueOf(reportAccountDTO.getId())
-				)
-			).withSelfRel());
 	}
 
 	private AssetReport _toAssetReport(
@@ -1430,9 +1358,6 @@ public class ReportRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		ReportRestController.class);
-
-	@Autowired
-	private AccountDog _accountDog;
 
 	@Autowired
 	private ActivityDog _activityDog;
