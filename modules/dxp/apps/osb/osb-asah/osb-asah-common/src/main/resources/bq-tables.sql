@@ -89,11 +89,11 @@ CREATE TABLE IF NOT EXISTS BQBlog (
 );
 
 CREATE TABLE IF NOT EXISTS BQCSVUser (
-    id BIGSERIAL PRIMARY KEY,
-    dataSourceId BIGINT,
-    dataSourceUserPK TEXT,
+	id BIGSERIAL PRIMARY KEY,
+	dataSourceId BIGINT,
+	dataSourceUserPK TEXT,
 	emailAddress TEXT,
-    fields JSON,
+	fields JSON,
 	modifiedDate TIMESTAMPTZ
 );
 
@@ -123,11 +123,11 @@ CREATE TABLE IF NOT EXISTS DataSourceFieldMapping (
 );
 
 CREATE TABLE IF NOT EXISTS BQDataSourceUser (
-    accountPKs TEXT[],
-    dataSourceId BIGINT,
-    userId BIGINT,
-    userPKs TEXT[],
-    PRIMARY KEY (dataSourceId, userId)
+	accountPKs TEXT[],
+	dataSourceId BIGINT,
+	userId BIGINT,
+	userPKs TEXT[],
+	PRIMARY KEY (dataSourceId, userId)
 );
 
 CREATE TABLE IF NOT EXISTS BQDocumentLibrary (
@@ -284,12 +284,12 @@ CREATE TABLE IF NOT EXISTS BQIdentityActivity (
 );
 
 CREATE TABLE IF NOT EXISTS BQIdentityChannel (
-    activitiesCount INTEGER,
-    channelId BIGINT,
-    identityId BIGINT,
-    lastActivityDate TIMESTAMPTZ,
-    previousActivityDate TIMESTAMPTZ,
-    PRIMARY KEY (channelId, identityId)
+	activitiesCount INTEGER,
+	channelId BIGINT,
+	identityId BIGINT,
+	lastActivityDate TIMESTAMPTZ,
+	previousActivityDate TIMESTAMPTZ,
+	PRIMARY KEY (channelId, identityId)
 );
 
 CREATE TABLE IF NOT EXISTS BQIndividual (
@@ -301,13 +301,13 @@ CREATE TABLE IF NOT EXISTS BQIndividual (
 )
 
 CREATE TABLE IF NOT EXISTS Interest (
-    id BIGSERIAL PRIMARY KEY,
-    name TEXT,
-    ownerId BIGINT,
-    ownerType TEXT,
-    recordedDate TIMESTAMPTZ,
-    score DOUBLE PRECISION,
-    views BIGINT
+	id BIGSERIAL PRIMARY KEY,
+	name TEXT,
+	ownerId BIGINT,
+	ownerType TEXT,
+	recordedDate TIMESTAMPTZ,
+	score DOUBLE PRECISION,
+	views BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS BQJournal (
@@ -398,22 +398,22 @@ CREATE TABLE IF NOT EXISTS BQRole (
 );
 
 CREATE TABLE IF NOT EXISTS BQSalesforceAuditEvent (
-    id BIGSERIAL PRIMARY KEY,
-    additionalInfo JSON,
-    createDate TIMESTAMPTZ,
-    dataSourceId BIGINT,
-    entityTypeName TEXT,
-    recordId TEXT,
-    type TEXT,
-    userId TEXT
+	id BIGSERIAL PRIMARY KEY,
+	additionalInfo JSON,
+	createDate TIMESTAMPTZ,
+	dataSourceId BIGINT,
+	entityTypeName TEXT,
+	recordId TEXT,
+	type TEXT,
+	userId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQSalesforceEntity (
-    id TEXT,
-    dataSourceId BIGINT,
-    fields JSON,
-    type TEXT,
-    PRIMARY KEY (dataSourceId, id, type)
+	id TEXT,
+	dataSourceId BIGINT,
+	fields JSON,
+	type TEXT,
+	PRIMARY KEY (dataSourceId, id, type)
 );
 
 CREATE TABLE IF NOT EXISTS BQSession (
