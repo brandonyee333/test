@@ -297,8 +297,8 @@ CREATE TABLE IF NOT EXISTS BQIndividual (
 	emailAddressHashed TEXT,
 	fields JSON,
 	id TEXT PRIMARY KEY,
-	modifiedDate TIMESTAMPZ
-)
+	modifiedDate TIMESTAMPTZ
+);
 
 CREATE TABLE IF NOT EXISTS Interest (
 	id BIGSERIAL PRIMARY KEY,
