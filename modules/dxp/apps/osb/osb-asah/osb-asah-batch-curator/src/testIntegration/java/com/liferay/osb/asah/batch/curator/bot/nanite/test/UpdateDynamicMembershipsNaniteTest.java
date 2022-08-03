@@ -23,14 +23,10 @@ import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.entity.BQDataSourceUser;
-import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -47,12 +43,9 @@ import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -438,66 +431,6 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		Assertions.assertEquals(
 			1, individualIds.size(), individualIds.toString());
-	}
-
-	@Test
-	public void testSalesforceAccountMemberships() throws Exception {
-		Account account = new Account();
-
-		account.setAccountPK("345");
-		account.setDataSourceId(123L);
-		account.setId(234L);
-		account.setIsNew(Boolean.TRUE);
-
-		_accountRepository.save(account);
-
-		Individual individual = new Individual();
-
-		BQDataSourceUser bqDataSourceUser = new BQDataSourceUser();
-
-		bqDataSourceUser.setAccountPKs(Collections.singleton("345"));
-		bqDataSourceUser.setDataSourceId(123L);
-
-		individual.setBQDataSourceUsers(
-			Collections.singleton(bqDataSourceUser));
-
-		individual.setChannelIds(Collections.singleton(1L));
-
-		Field field = new Field();
-
-		field.setContext("demographics");
-		field.setDataSourceId(123L);
-		field.setFieldType("Text");
-		field.setName("email");
-		field.setOwnerId(123L);
-		field.setOwnerType("individual");
-		field.setSourceName("email");
-		field.setValue(RandomTestUtil.randomEmailAddress());
-
-		individual.setFields(Collections.singleton(field));
-
-		individual.setSegmentIds(Collections.emptySet());
-
-		_individualDog.addIndividual(individual, false);
-
-		_updateDynamicMemberships(
-			"(((dataSourceAccountPKs/accountPKs eq '345')))");
-
-		Assertions.assertEquals(1, _bqMembershipRepository.count());
-
-		Iterable<BQMembership> iterable = _bqMembershipRepository.findAll();
-
-		Iterator<BQMembership> iterator = iterable.iterator();
-
-		BQMembership bqMembership = iterator.next();
-
-		individual = _individualDog.fetchIndividual(
-			Long.parseLong(bqMembership.getIdentityId()));
-
-		Assertions.assertEquals(
-			Collections.singleton(
-				new Individual.DataSourceAccountPK(bqDataSourceUser)),
-			individual.getDataSourceAccountPKs());
 	}
 
 	@Test

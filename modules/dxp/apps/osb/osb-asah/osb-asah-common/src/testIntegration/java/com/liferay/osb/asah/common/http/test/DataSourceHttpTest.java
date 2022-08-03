@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.http.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -41,7 +40,6 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
-import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
@@ -68,14 +66,9 @@ import org.hamcrest.MatcherAssert;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
 import org.springframework.data.domain.PageRequest;
@@ -97,11 +90,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 	}
 )
 public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
-
-	@BeforeEach
-	public void setUp() {
-		_mock();
-	}
 
 	@Test
 	public void testAddDataSource() {
@@ -687,23 +675,11 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		_dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.USER);
 	}
 
-	private void _mock() {
-		Mockito.when(
-			_salesforceExtractorConfigurationDog.getState(
-				ArgumentMatchers.any(DataSource.class))
-		).thenReturn(
-			"CREDENTIALS_VALID"
-		);
-	}
-
 	@Autowired
 	private AssetRepository _assetRepository;
 
 	@Autowired
 	private BQCSVUserRepository _bqCSVUserRepository;
-
-	@Autowired
-	private BQSalesforceEntityDog _bqSalesforceEntityDog;
 
 	@Autowired
 	private ChannelDog _channelDog;
@@ -734,10 +710,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@MockBean
-	private SalesforceExtractorConfigurationDog
-		_salesforceExtractorConfigurationDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

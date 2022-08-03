@@ -88,14 +88,6 @@
 			"href": "{url}/data-sources/{id}/progress",
 			"templated": true
 		},
-		"data-source-salesforce-accounts-fields": {
-			"href": "{url}/data-sources/{id}/salesforce-accounts/fields{?end,start}",
-			"templated": true
-		},
-		"data-source-salesforce-users-fields": {
-			"href": "{url}/data-sources/{id}/salesforce-users/fields{?end,start}",
-			"templated": true
-		},
 		"data-sources": {
 			"href": "{url}/data-sources{?apply,filter,page,size,sort*}",
 			"templated": true

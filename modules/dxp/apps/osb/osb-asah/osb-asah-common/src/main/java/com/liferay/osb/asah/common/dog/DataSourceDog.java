@@ -31,7 +31,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
-import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
@@ -106,9 +105,6 @@ public class DataSourceDog {
 			dataSource.setStatus("ACTIVE");
 
 			_updateTokenDataSourceCredentials(dataSource);
-		}
-		else if (Objects.equals(providerType, "SALESFORCE")) {
-			_salesforceExtractorConfigurationDog.addConfiguration(dataSource);
 		}
 
 		return _dataSourceRepository.save(dataSource);

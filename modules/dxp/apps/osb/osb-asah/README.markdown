@@ -49,10 +49,6 @@ This is a Message Queue service that contains messages published by [osb-asah-pu
 
 This is a Redis instance used as cache storage and message bus.
 
-### osb-asah-salesforce-extractor
-
-This service extracts and saves raw data from a customer's Salesforce account.
-
 ### osb-asah-stream-curator
 
 This service processes raw data into intelligent information using routines with a higher frequency than [osb-asah-batch-curator](#osb-asah-batch-curator) (e.g., every 5 minutes).

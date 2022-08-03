@@ -41,12 +41,6 @@ public class ReportDataExporterFactory {
 			DataExportTask dataExportTask, OutputStream outputStream)
 		throws Exception {
 
-		if (dataExportTask.getType() == DataExportTask.Type.ACCOUNT) {
-			return new AccountDataExporter(
-				dataExportTask.getFromDate(), _jsonFactory, outputStream,
-				_reportHttp, dataExportTask.getToDate());
-		}
-
 		if (dataExportTask.getType() == DataExportTask.Type.INDIVIDUAL) {
 			return new IndividualDataExporter(
 				dataExportTask.getFromDate(), _jsonFactory, outputStream,

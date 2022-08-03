@@ -39,7 +39,6 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.liferay.osb.asah.common.messaging",
 		"com.liferay.osb.asah.common.postgresql",
 		"com.liferay.osb.asah.common.repository",
-		"com.liferay.osb.asah.common.salesforce",
 		"com.liferay.osb.asah.common.security",
 		"com.liferay.osb.asah.common.servlet",
 		"com.liferay.osb.asah.common.spring.cache",

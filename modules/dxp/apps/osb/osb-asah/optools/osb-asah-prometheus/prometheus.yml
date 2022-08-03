@@ -20,10 +20,6 @@ scrape_configs:
       metrics_path: /actuator/prometheus
       static_configs:
           - targets: ['osbasahpublisher:8080']
-    - job_name: 'osbasahsalesforceextractor'
-      metrics_path: /actuator/prometheus
-      static_configs:
-          - targets: ['osbasahsalesforceextractor:8080']
     - job_name: 'osbasahstreamcurator'
       metrics_path: /actuator/prometheus
       static_configs:

@@ -52,8 +52,6 @@ public class ServiceConstants {
 
 	public static final String URL_REDIS;
 
-	public static final String URL_SALESFORCE_EXTRACTOR;
-
 	public static final String URL_STREAM_CURATOR;
 
 	public static boolean isInternalServiceURL(String url) {
@@ -202,8 +200,6 @@ public class ServiceConstants {
 		URL_PUBLISHER = _getURL("PUBLISHER", "8080", true);
 		URL_PUBSUB_EMULATOR = _getURL("PUBSUB_EMULATOR", "8095", false);
 		URL_REDIS = _getURL("REDIS", "6379", false);
-		URL_SALESFORCE_EXTRACTOR = _getURL(
-			"SALESFORCE_EXTRACTOR", "8080", false);
 		URL_STREAM_CURATOR = _getURL("STREAM_CURATOR", "8080", false);
 	}
 

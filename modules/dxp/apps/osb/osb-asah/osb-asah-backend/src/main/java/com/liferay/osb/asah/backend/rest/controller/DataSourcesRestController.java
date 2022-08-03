@@ -21,29 +21,20 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.BQCSVUserDog;
-import com.liferay.osb.asah.common.dog.BQSalesforceAuditEventDog;
-import com.liferay.osb.asah.common.dog.BQSalesforceEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.entity.BQSalesforceEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.RunLog;
-import com.liferay.osb.asah.common.http.ConfigurationHttp;
-import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -54,7 +45,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * @author Vishal Reddy
@@ -69,8 +59,6 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
 	public void deleteDataSource(@PathVariable Long id) {
-		_salesforceExtractorConfigurationDog.deleteConfiguration(id);
-
 		DataSource dataSource = _dataSourceDog.getDataSource(id);
 
 		dataSource.setDeletionDate(DateUtil.newDate());
@@ -132,32 +120,8 @@ public class DataSourcesRestController extends BaseRestController {
 			return String.valueOf(_getCSVDataSourceProgressJSONObject(id));
 		}
 
-		if (Objects.equals(providerType, "SALESFORCE")) {
-			return String.valueOf(
-				_getSalesforceDataSourceProgressJSONObject(dataSource));
-		}
-
 		throw new UnsupportedOperationException(
 			"Unknown data source type " + providerType);
-	}
-
-	@GetMapping("/{id}/salesforce-accounts/fields")
-	public String getSalesforceAccountsFields(
-		@PathVariable Long id, @RequestParam(defaultValue = "20") int end,
-		@RequestParam(defaultValue = "0") int start) {
-
-		return _exchange(
-			id,
-			() -> _dataSourceHttp.getSalesforceAccountsFields(id, end, start));
-	}
-
-	@GetMapping("/{id}/salesforce-users/fields")
-	public String getSalesforceUsersFields(
-		@PathVariable Long id, @RequestParam(defaultValue = "20") int end,
-		@RequestParam(defaultValue = "0") int start) {
-
-		return _exchange(
-			id, () -> _dataSourceHttp.getSalesforceUsersFields(id, end, start));
 	}
 
 	@PatchMapping("/{id}")
@@ -216,41 +180,6 @@ public class DataSourcesRestController extends BaseRestController {
 		dataSourceDTO.setModifiedDate(DateUtil.newDate());
 	}
 
-	private String _exchange(
-		Long dataSourceId, Supplier<ResponseEntity<String>> supplier) {
-
-		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
-
-		try {
-			ResponseEntity<String> responseEntity = supplier.get();
-
-			if (responseEntity.getStatusCode() != HttpStatus.OK) {
-				_refreshConfiguration(dataSource);
-			}
-
-			return responseEntity.getBody();
-		}
-		catch (Exception exception) {
-			_refreshConfiguration(dataSource);
-
-			if (exception instanceof HttpClientErrorException) {
-				HttpClientErrorException httpClientErrorException =
-					(HttpClientErrorException)exception;
-
-				if (httpClientErrorException.getStatusCode() ==
-						HttpStatus.INTERNAL_SERVER_ERROR) {
-
-					throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
-				}
-
-				throw new HttpClientErrorException(
-					httpClientErrorException.getStatusCode());
-			}
-
-			throw exception;
-		}
-	}
-
 	private JSONObject _getCSVDataSourceProgressJSONObject(Long dataSourceId) {
 		RunLog runLog = _runLogDog.fetchLatestRunLog(
 			dataSourceId, "CSVUsersNanite", null,
@@ -285,379 +214,6 @@ public class DataSourcesRestController extends BaseRestController {
 		);
 	}
 
-	private JSONObject _getSalesforceDataSourceAccountsProgressJSONObject(
-		Long dataSourceId) {
-
-		RunLog salesforceExtractorNaniteRunLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, "SalesforceExtractorNanite", null,
-			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
-
-		if (salesforceExtractorNaniteRunLog == null) {
-			return new JSONObject();
-		}
-
-		String salesforceExtractorNaniteRunLogStatus =
-			salesforceExtractorNaniteRunLog.getStatus();
-
-		if (salesforceExtractorNaniteRunLogStatus.equals("FAILED")) {
-			return JSONUtil.put(
-				"dateRecorded",
-				DateUtil.toUTCString(
-					salesforceExtractorNaniteRunLog.getDateLogged())
-			).put(
-				"status", "FAILED"
-			);
-		}
-
-		if (salesforceExtractorNaniteRunLogStatus.equals("STARTED")) {
-			return _getSalesforceExtractorNaniteProgressJSONObject(
-				salesforceExtractorNaniteRunLog, 2, "Account");
-		}
-
-		RunLog salesforceAccountsNaniteRunLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, "SalesforceAccountsNanite", null,
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
-
-		if (salesforceAccountsNaniteRunLog == null) {
-			return JSONUtil.put(
-				"dateRecorded", DateUtil.newDateString()
-			).put(
-				"processedOperations", 1
-			).put(
-				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 2
-			);
-		}
-
-		String salesforceAccountsNaniteRunLogStatus =
-			salesforceAccountsNaniteRunLog.getStatus();
-
-		if (salesforceAccountsNaniteRunLogStatus.equals("STARTED")) {
-			JSONObject salesforceAccountsNaniteContextJSONObject =
-				salesforceAccountsNaniteRunLog.getContextJSONObject();
-
-			int totalOperations =
-				salesforceAccountsNaniteContextJSONObject.getInt(
-					"totalOperations");
-			totalOperations = 2 * totalOperations;
-
-			long bqSalesforceAuditEventsCount =
-				_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
-					salesforceExtractorNaniteRunLog.getDataSourceId(),
-					"Account");
-
-			return JSONUtil.put(
-				"dateRecorded", DateUtil.newDateString()
-			).put(
-				"processedOperations",
-				totalOperations - bqSalesforceAuditEventsCount
-			).put(
-				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", totalOperations
-			);
-		}
-
-		Date salesforceExtractorNaniteCompletedDate =
-			salesforceExtractorNaniteRunLog.getDateLogged();
-		Date salesforceAccountsNaniteEndDate =
-			salesforceAccountsNaniteRunLog.getDateLogged();
-
-		if (!salesforceAccountsNaniteEndDate.after(
-				salesforceExtractorNaniteCompletedDate)) {
-
-			return JSONUtil.put(
-				"dateRecorded", DateUtil.newDateString()
-			).put(
-				"processedOperations", 1
-			).put(
-				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 2
-			);
-		}
-
-		return JSONUtil.put(
-			"dateRecorded",
-			DateUtil.toUTCString(salesforceAccountsNaniteRunLog.getDateLogged())
-		).put(
-			"status", salesforceAccountsNaniteRunLogStatus
-		);
-	}
-
-	private JSONObject _getSalesforceDataSourceIndividualsProgressJSONObject(
-		Long dataSourceId) {
-
-		RunLog salesforceExtractorNaniteRunLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, "SalesforceExtractorNanite", null,
-			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
-
-		if (salesforceExtractorNaniteRunLog == null) {
-			return new JSONObject();
-		}
-
-		String salesforceExtractorNaniteRunLogStatus =
-			salesforceExtractorNaniteRunLog.getStatus();
-
-		if (salesforceExtractorNaniteRunLogStatus.equals("FAILED")) {
-			return JSONUtil.put(
-				"dateRecorded",
-				DateUtil.toUTCString(
-					salesforceExtractorNaniteRunLog.getDateLogged())
-			).put(
-				"status", "FAILED"
-			);
-		}
-
-		if (salesforceExtractorNaniteRunLogStatus.equals("STARTED")) {
-			return _getSalesforceExtractorNaniteProgressJSONObject(
-				salesforceExtractorNaniteRunLog, 3, "Contact", "Lead");
-		}
-
-		RunLog salesforceExtractorIndividualsNaniteRunLog =
-			_runLogDog.fetchLatestRunLog(
-				dataSourceId, "SalesforceExtractorIndividualsNanite", null,
-				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
-
-		if (salesforceExtractorIndividualsNaniteRunLog == null) {
-			return JSONUtil.put(
-				"dateRecorded", DateUtil.newDateString()
-			).put(
-				"processedOperations", 1
-			).put(
-				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 3
-			);
-		}
-
-		String salesforceExtractorIndividualsNaniteRunLogStatus =
-			salesforceExtractorIndividualsNaniteRunLog.getStatus();
-
-		if (salesforceExtractorIndividualsNaniteRunLogStatus.equals(
-				"STARTED")) {
-
-			JSONObject
-				salesforceExtractorIndividualsNaniteRunLogContextJSONObject =
-					salesforceExtractorIndividualsNaniteRunLog.
-						getContextJSONObject();
-
-			int totalOperations =
-				salesforceExtractorIndividualsNaniteRunLogContextJSONObject.
-					getInt("totalOperations");
-
-			long bqSalesforceAuditEventsCount =
-				_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
-					salesforceExtractorNaniteRunLog.getDataSourceId(),
-					"Contact", "Lead");
-
-			return JSONUtil.put(
-				"dateRecorded", DateUtil.newDateString()
-			).put(
-				"processedOperations",
-				(totalOperations * 2) - bqSalesforceAuditEventsCount
-			).put(
-				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 3 * totalOperations
-			);
-		}
-
-		Date salesforceExtractorNaniteCompletedDate =
-			salesforceExtractorNaniteRunLog.getDateLogged();
-		Date salesforceExtractorIndividualsNaniteEndDate =
-			salesforceExtractorIndividualsNaniteRunLog.getDateLogged();
-
-		if (!salesforceExtractorIndividualsNaniteEndDate.after(
-				salesforceExtractorNaniteCompletedDate)) {
-
-			return JSONUtil.put(
-				"dateRecorded", DateUtil.newDateString()
-			).put(
-				"processedOperations", 1
-			).put(
-				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 3
-			);
-		}
-
-		if (salesforceExtractorIndividualsNaniteRunLogStatus.equals("FAILED")) {
-			return JSONUtil.put(
-				"dateRecorded",
-				DateUtil.toUTCString(
-					salesforceExtractorIndividualsNaniteRunLog.getDateLogged())
-			).put(
-				"status", "FAILED"
-			);
-		}
-
-		RunLog salesforceIndividualsNaniteRunLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, "SalesforceIndividualsNanite", null,
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
-
-		if (salesforceIndividualsNaniteRunLog == null) {
-			return JSONUtil.put(
-				"dateRecorded", DateUtil.newDateString()
-			).put(
-				"processedOperations", 2
-			).put(
-				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 3
-			);
-		}
-
-		String salesforceIndividualsNaniteRunLogStatus =
-			salesforceIndividualsNaniteRunLog.getStatus();
-
-		if (salesforceIndividualsNaniteRunLogStatus.equals("STARTED")) {
-			JSONObject salesforceIndividualsNaniteRunLogContextJSONObject =
-				salesforceIndividualsNaniteRunLog.getContextJSONObject();
-
-			int totalOperations =
-				salesforceIndividualsNaniteRunLogContextJSONObject.getInt(
-					"totalOperations");
-
-			totalOperations = 3 * totalOperations;
-
-			long bqSalesforceAuditEventsCount =
-				_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
-					salesforceExtractorNaniteRunLog.getDataSourceId(),
-					"individuals");
-
-			return JSONUtil.put(
-				"dateRecorded", DateUtil.newDateString()
-			).put(
-				"processedOperations",
-				totalOperations - bqSalesforceAuditEventsCount
-			).put(
-				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", totalOperations
-			);
-		}
-
-		Date salesforceExtractorIndividualsNaniteCompletedDate =
-			salesforceExtractorIndividualsNaniteRunLog.getDateLogged();
-		Date salesforceIndividualsNaniteEndDate =
-			salesforceIndividualsNaniteRunLog.getDateLogged();
-
-		if (!salesforceIndividualsNaniteEndDate.after(
-				salesforceExtractorIndividualsNaniteCompletedDate)) {
-
-			return JSONUtil.put(
-				"dateRecorded", DateUtil.newDateString()
-			).put(
-				"processedOperations", 2
-			).put(
-				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 3
-			);
-		}
-
-		return JSONUtil.put(
-			"dateRecorded",
-			DateUtil.toUTCString(
-				salesforceIndividualsNaniteRunLog.getDateLogged())
-		).put(
-			"status", salesforceIndividualsNaniteRunLogStatus
-		);
-	}
-
-	private JSONObject _getSalesforceDataSourceProgressJSONObject(
-		DataSource dataSource) {
-
-		JSONObject progressJSONObject = new JSONObject();
-
-		if (dataSource.getEnableAllAccounts()) {
-			progressJSONObject.put(
-				"accounts",
-				_getSalesforceDataSourceAccountsProgressJSONObject(
-					dataSource.getId()));
-		}
-
-		if (dataSource.getEnableAllContacts() ||
-			dataSource.getEnableAllLeads()) {
-
-			progressJSONObject.put(
-				"individuals",
-				_getSalesforceDataSourceIndividualsProgressJSONObject(
-					dataSource.getId()));
-		}
-
-		return progressJSONObject;
-	}
-
-	private JSONObject _getSalesforceExtractorNaniteProgressJSONObject(
-		RunLog salesforceExtractorNaniteRunLog, int totalOperationsMultiplier,
-		String... tableNames) {
-
-		int processedOperations = 0;
-		int totalOperations = 0;
-
-		JSONObject salesforceExtractorNaniteRunLogContextJSONObject =
-			salesforceExtractorNaniteRunLog.getContextJSONObject();
-
-		for (String tableName : tableNames) {
-			int totalTableNameOperations =
-				salesforceExtractorNaniteRunLogContextJSONObject.optInt(
-					"total" + tableName + "Operations");
-
-			if (totalTableNameOperations == 0) {
-				continue;
-			}
-
-			totalOperations += totalTableNameOperations;
-
-			if (salesforceExtractorNaniteRunLogContextJSONObject.getBoolean(
-					"initial" + tableName + "Run")) {
-
-				processedOperations +=
-					_bqSalesforceEntityDog.getBQSalesforceEntitiesCount(
-						salesforceExtractorNaniteRunLog.getDataSourceId(),
-						BQSalesforceEntity.Type.of(tableName));
-			}
-			else {
-				processedOperations +=
-					_bqSalesforceAuditEventDog.getBQSalesforceAuditEventsCount(
-						salesforceExtractorNaniteRunLog.getDataSourceId(),
-						tableName);
-			}
-		}
-
-		return JSONUtil.put(
-			"dateRecorded", DateUtil.newDateString()
-		).put(
-			"processedOperations", processedOperations
-		).put(
-			"status", "IN_PROGRESS"
-		).put(
-			"totalOperations", totalOperations * totalOperationsMultiplier
-		);
-	}
-
-	private void _refreshConfiguration(DataSource dataSource) {
-		String providerType = dataSource.getProviderType();
-
-		if (!Objects.equals(providerType, "SALESFORCE")) {
-			return;
-		}
-
-		DataSource newDataSource = _configurationHttp.refreshConfiguration(
-			dataSource, providerType);
-
-		if (Objects.equals(dataSource, newDataSource)) {
-			return;
-		}
-
-		_salesforceExtractorConfigurationDog.updateConfiguration(newDataSource);
-
-		_dataSourceDog.updateDataSourceConfiguration(newDataSource);
-	}
-
 	private void _sanitize(DataSource dataSource) {
 		dataSource.setFaroBackendSecuritySignature(null);
 		dataSource.setPrivateKey(null);
@@ -680,28 +236,12 @@ public class DataSourcesRestController extends BaseRestController {
 	private BQCSVUserDog _bqCSVUserDog;
 
 	@Autowired
-	private BQSalesforceAuditEventDog _bqSalesforceAuditEventDog;
-
-	@Autowired
-	private BQSalesforceEntityDog _bqSalesforceEntityDog;
-
-	@Autowired
-	private ConfigurationHttp _configurationHttp;
-
-	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private DataSourceHttp _dataSourceHttp;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private RunLogDog _runLogDog;
-
-	@Autowired
-	private SalesforceExtractorConfigurationDog
-		_salesforceExtractorConfigurationDog;
 
 }

@@ -106,28 +106,6 @@ services:
         container_name: osbasahredis
         ports:
             - "6379:6379"
-    osbasahsalesforceextractor:
-        build:
-            args:
-                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
-                LABEL_VCS_REF: ${LABEL_VCS_REF}
-            context: ./osb-asah-salesforce-extractor
-        container_name: osbasahsalesforceextractor
-        depends_on:
-            - osbasahupgrade
-        env_file:
-            - common.env
-            - local.env
-        environment:
-            - JAVA_OPTS=-Xmx256m
-        healthcheck:
-            interval: 10s
-            retries: 30
-            start_period: 120s
-            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
-        ports:
-            - "5012:5005"
-            - "8088:8080"
     osbasahstreamcurator:
         build:
             args:
