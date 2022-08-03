@@ -72,11 +72,24 @@ public class FieldMappingRepositoryImpl
 
 	@Override
 	public long countIndividualFieldMappings(@Nullable String name) {
-		Condition condition = DSL.field(
-			"ownerType"
-		).eq(
-			"individual"
-		);
+		Condition condition = DSL.and(
+			DSL.field(
+				"ownerType"
+			).eq(
+				"individual"
+			),
+			DSL.exists(
+				DSL.select(
+					DSL.abs(1)
+				).from(
+					"DataSourceFieldMapping"
+				).where(
+					DSL.field(
+						"DataSourceFieldMapping.fieldMappingId"
+					).eq(
+						DSL.field("FieldMapping.id")
+					)
+				)));
 
 		if (!StringUtils.isBlank(name)) {
 			condition = DSL.and(
@@ -385,11 +398,24 @@ public class FieldMappingRepositoryImpl
 	public List<FieldMapping> searchIndividualFieldMappings(
 		@Nullable String name, Pageable pageable) {
 
-		Condition condition = DSL.field(
-			"ownerType"
-		).eq(
-			"individual"
-		);
+		Condition condition = DSL.and(
+			DSL.field(
+				"ownerType"
+			).eq(
+				"individual"
+			),
+			DSL.exists(
+				DSL.select(
+					DSL.abs(1)
+				).from(
+					"DataSourceFieldMapping"
+				).where(
+					DSL.field(
+						"DataSourceFieldMapping.fieldMappingId"
+					).eq(
+						DSL.field("FieldMapping.id")
+					)
+				)));
 
 		if (!StringUtils.isBlank(name)) {
 			condition = DSL.and(
