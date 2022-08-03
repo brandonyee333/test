@@ -23,6 +23,8 @@ public interface BQMembershipChangeRepository
 	extends CustomBQMembershipChangeRepository,
 			Repository<BQMembershipChange, Long> {
 
+	public long countBySegmentId(Long segmentId);
+
 	public BQMembershipChange findBySegmentId(long segmentId);
 
 }

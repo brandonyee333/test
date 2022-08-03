@@ -24,6 +24,8 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
@@ -111,16 +113,14 @@ public class DeleteIndividualSegmentTasksNaniteTest
 			"Entries within visited-pages related to the deleted individual " +
 				"segment should be deleted");
 
-		for (String collectionName :
-				new String[] {"memberships", "membership-changes"}) {
-
-			Assertions.assertFalse(
-				faroInfoElasticsearchInvoker.exists(
-					collectionName,
-					QueryBuilders.termQuery("individualSegmentId", segmentId)),
-				"Entries within " + collectionName + " related to the " +
-					"deleted individual segment should be deleted");
-		}
+		Assertions.assertEquals(
+			0, _bqMembershipRepository.countBySegmentId(segmentId),
+			"Entries within memberships related to the deleted individual " +
+				"segment should be deleted");
+		Assertions.assertEquals(
+			0, _bqMembershipChangeRepository.countBySegmentId(segmentId),
+			"Entries within membership-changes related to the deleted " +
+				"individual segment should be deleted");
 
 		individual = _individualDog.fetchIndividual(individual.getId());
 
@@ -142,7 +142,13 @@ public class DeleteIndividualSegmentTasksNaniteTest
 	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
+	private BQMembershipChangeRepository _bqMembershipChangeRepository;
+
+	@Autowired
 	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
+	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
