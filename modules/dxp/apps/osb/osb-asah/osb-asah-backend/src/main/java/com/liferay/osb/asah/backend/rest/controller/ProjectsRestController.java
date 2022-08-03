@@ -40,7 +40,7 @@ public class ProjectsRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
 	public void deleteProject(
-		@RequestParam(defaultValue = "true") boolean deleteData,
+		@RequestParam(defaultValue = "false") boolean deleteData,
 		@PathVariable String id) {
 
 		_projectDog.deleteProject(deleteData, id);
