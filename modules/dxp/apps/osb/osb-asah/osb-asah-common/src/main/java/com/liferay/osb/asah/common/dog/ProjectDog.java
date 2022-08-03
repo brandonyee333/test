@@ -143,10 +143,10 @@ public class ProjectDog {
 	}
 
 	private void _deleteElasticsearch(String projectId) {
-		_cerebroInfoElasticsearchInvoker.deleteAll();
-		_dxpRawElasticsearchInvoker.deleteAll();
-		_faroInfoElasticsearchInvoker.deleteAll();
-		_salesforceRawElasticsearchInvoker.deleteAll();
+		_cerebroInfoElasticsearchInvoker.deleteIndices();
+		_dxpRawElasticsearchInvoker.deleteIndices();
+		_faroInfoElasticsearchInvoker.deleteIndices();
+		_salesforceRawElasticsearchInvoker.deleteIndices();
 
 		_elasticsearchSnapshotManager.deleteSnapshotLifecyclePolicy(projectId);
 	}

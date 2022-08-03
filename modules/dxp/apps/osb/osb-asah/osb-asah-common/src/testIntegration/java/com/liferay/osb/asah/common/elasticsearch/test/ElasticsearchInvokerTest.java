@@ -155,26 +155,6 @@ public class ElasticsearchInvokerTest
 	}
 
 	@Test
-	public void testDeleteAll() {
-		_elasticsearchInvoker.add(
-			_collectionName,
-			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
-		_elasticsearchInvoker.add(
-			_collectionName,
-			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
-
-		Assertions.assertTrue(
-			_elasticsearchInvoker.exists(
-				_collectionName, QueryBuilders.matchAllQuery()));
-
-		_elasticsearchInvoker.deleteAll();
-
-		Assertions.assertFalse(
-			_elasticsearchInvoker.exists(
-				_collectionName, QueryBuilders.matchAllQuery()));
-	}
-
-	@Test
 	public void testDeleteByQuery() {
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
@@ -201,6 +181,26 @@ public class ElasticsearchInvokerTest
 		Assertions.assertEquals(
 			0,
 			_elasticsearchInvoker.count(
+				_collectionName, QueryBuilders.matchAllQuery()));
+	}
+
+	@Test
+	public void testDeleteIndices() {
+		_elasticsearchInvoker.add(
+			_collectionName,
+			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
+		_elasticsearchInvoker.add(
+			_collectionName,
+			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
+
+		Assertions.assertTrue(
+			_elasticsearchInvoker.exists(
+				_collectionName, QueryBuilders.matchAllQuery()));
+
+		_elasticsearchInvoker.deleteIndices();
+
+		Assertions.assertFalse(
+			_elasticsearchInvoker.exists(
 				_collectionName, QueryBuilders.matchAllQuery()));
 	}
 

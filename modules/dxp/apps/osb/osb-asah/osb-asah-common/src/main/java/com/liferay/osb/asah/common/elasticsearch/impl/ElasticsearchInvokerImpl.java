@@ -272,27 +272,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
-	public void deleteAll() {
-		try {
-			DeleteIndexRequestBuilder deleteIndexRequestBuilder =
-				new DeleteIndexRequestBuilder(
-					_client, DeleteIndexAction.INSTANCE,
-					"*" + ProjectIdThreadLocal.getProjectId() + "*");
-
-			ClientUtil.waitForConnection(_client);
-
-			deleteIndexRequestBuilder.get();
-		}
-		catch (IndexNotFoundException indexNotFoundException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Index does not exist for project " +
-						ProjectIdThreadLocal.getProjectId());
-			}
-		}
-	}
-
-	@Override
 	public BulkByScrollResponse deleteByQuery(
 		QueryBuilder queryBuilder, boolean refresh, String... collectionNames) {
 
@@ -321,6 +300,27 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		ClientUtil.waitForConnection(_client);
 
 		return deleteByQueryRequestBuilder.get();
+	}
+
+	@Override
+	public void deleteIndices() {
+		try {
+			DeleteIndexRequestBuilder deleteIndexRequestBuilder =
+				new DeleteIndexRequestBuilder(
+					_client, DeleteIndexAction.INSTANCE,
+					"*" + ProjectIdThreadLocal.getProjectId() + "*");
+
+			ClientUtil.waitForConnection(_client);
+
+			deleteIndexRequestBuilder.get();
+		}
+		catch (IndexNotFoundException indexNotFoundException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Index does not exist for project " +
+						ProjectIdThreadLocal.getProjectId());
+			}
+		}
 	}
 
 	@Override

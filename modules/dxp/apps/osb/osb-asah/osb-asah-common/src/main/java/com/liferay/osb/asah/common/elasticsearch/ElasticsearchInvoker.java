@@ -64,10 +64,10 @@ public interface ElasticsearchInvoker {
 
 	public boolean delete(String collectionName, String id);
 
-	public void deleteAll();
-
 	public BulkByScrollResponse deleteByQuery(
 		QueryBuilder queryBuilder, boolean refresh, String... collectionNames);
+
+	public void deleteIndices();
 
 	public boolean exists(String collectionName, QueryBuilder queryBuilder);
 
