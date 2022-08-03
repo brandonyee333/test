@@ -25,12 +25,14 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerImpl;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -83,7 +85,7 @@ public class ElasticsearchInvokerTest
 			_collectionName, WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_elasticsearchIndexManager.create(
-			true, _createIndexConfiguration(), _indexName);
+			true, _createIndexConfiguration(_collectionName), _indexName);
 	}
 
 	@AfterEach
@@ -186,22 +188,38 @@ public class ElasticsearchInvokerTest
 
 	@Test
 	public void testDeleteIndices() {
-		_elasticsearchInvoker.add(
-			_collectionName,
-			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
-		_elasticsearchInvoker.add(
-			_collectionName,
-			JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
+		try {
+			ProjectIdThreadLocal.setProjectId(
+				StringUtils.lowerCase(RandomTestUtil.randomString()));
 
-		Assertions.assertTrue(
-			_elasticsearchInvoker.exists(
-				_collectionName, QueryBuilders.matchAllQuery()));
+			String collectionName = RandomTestUtil.randomString();
 
-		_elasticsearchInvoker.deleteIndices();
+			String indexName = ElasticsearchIndexUtil.getIndexName(
+				collectionName, WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		Assertions.assertFalse(
-			_elasticsearchInvoker.exists(
-				_collectionName, QueryBuilders.matchAllQuery()));
+			_elasticsearchIndexManager.create(
+				true, _createIndexConfiguration(collectionName), indexName);
+
+			_elasticsearchInvoker.add(
+				collectionName,
+				JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
+			_elasticsearchInvoker.add(
+				collectionName,
+				JSONUtil.put("string", RandomTestUtil.randomHexString(4096)));
+
+			Assertions.assertTrue(
+				_elasticsearchInvoker.exists(
+					collectionName, QueryBuilders.matchAllQuery()));
+
+			_elasticsearchInvoker.deleteIndices();
+
+			Assertions.assertFalse(
+				_elasticsearchInvoker.exists(
+					collectionName, QueryBuilders.matchAllQuery()));
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
 	}
 
 	@Test
@@ -563,11 +581,11 @@ public class ElasticsearchInvokerTest
 		thread.interrupt();
 	}
 
-	private String _createIndexConfiguration() {
+	private String _createIndexConfiguration(String collectionName) {
 		return JSONUtil.put(
 			"mappings",
 			JSONUtil.put(
-				_collectionName,
+				collectionName,
 				JSONUtil.put(
 					"properties",
 					JSONUtil.put(
