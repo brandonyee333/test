@@ -127,3 +127,5 @@ WHEN NOT MATCHED BY TARGET THEN
 		staging.sha256HexId,
 		staging.modifiedDate
 	)
+WHEN NOT MATCHED BY SOURCE THEN
+	DELETE
