@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.FieldMappingFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.DataSourceFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -30,11 +31,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -317,8 +322,9 @@ public class FieldMappingDog {
 			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_fieldMappingRepository.searchIndividualFieldMappings(
-				name, pageRequest),
+			_populateDataSourceFieldMappings(
+				_fieldMappingRepository.searchIndividualFieldMappings(
+					name, pageRequest)),
 			pageRequest,
 			() -> _fieldMappingRepository.countIndividualFieldMappings(name));
 	}
@@ -389,10 +395,50 @@ public class FieldMappingDog {
 			context, fieldName, ownerType);
 	}
 
+	private List<FieldMapping> _populateDataSourceFieldMappings(
+		List<FieldMapping> fieldMappings) {
+
+		Stream<FieldMapping> stream1 = fieldMappings.stream();
+
+		Map<Long, FieldMapping> fieldMappingsMap = stream1.collect(
+			Collectors.toMap(FieldMapping::getId, Function.identity()));
+
+		List<DataSourceFieldMapping> dataSourceFieldMappings =
+			_dataSourceFieldMappingRepository.findByFieldMappingIds(
+				fieldMappingsMap.keySet());
+
+		Stream<DataSourceFieldMapping> stream2 =
+			dataSourceFieldMappings.stream();
+
+		Map<Long, List<DataSourceFieldMapping>> dataSourceFieldMappingsMap =
+			stream2.collect(
+				Collectors.groupingBy(
+					DataSourceFieldMapping::getFieldMappingId));
+
+		for (Map.Entry<Long, FieldMapping> entry :
+				fieldMappingsMap.entrySet()) {
+
+			List<DataSourceFieldMapping> fieldMappingDataSourceFieldMappings =
+				dataSourceFieldMappingsMap.get(entry.getKey());
+
+			if (fieldMappingDataSourceFieldMappings != null) {
+				FieldMapping fieldMapping = entry.getValue();
+
+				fieldMapping.setDataSourceFieldMappings(
+					new HashSet<>(fieldMappingDataSourceFieldMappings));
+			}
+		}
+
+		return new ArrayList<>(fieldMappingsMap.values());
+	}
+
 	private static final Log _log = LogFactory.getLog(FieldMappingDog.class);
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private DataSourceFieldMappingRepository _dataSourceFieldMappingRepository;
 
 	private final DefaultFilterStringConverterHelper
 		_defaultFilterStringConverterHelper =
