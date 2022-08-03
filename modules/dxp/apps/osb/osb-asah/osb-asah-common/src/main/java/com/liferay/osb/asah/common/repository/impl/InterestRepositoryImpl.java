@@ -185,14 +185,14 @@ public class InterestRepositoryImpl
 
 		Field field = DSL.field("ownerId", Long.class);
 
+		SelectSelectStep<Record1<Long>> selectSelectStep = _dslContext.select(
+			field);
+
 		List<Long> ownerIds = new ArrayList<>();
 
 		if (ownerId != null) {
 			ownerIds.add(ownerId);
 		}
-
-		SelectSelectStep<Record1<Long>> selectSelectStep = _dslContext.select(
-			field);
 
 		return selectSelectStep.from(
 			"Interest"
