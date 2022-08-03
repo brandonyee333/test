@@ -16,11 +16,14 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
+import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.ReleaseInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +64,23 @@ public class ProjectDog {
 
 		_bigQuerySchemaManager.createSchema(project);
 		_postgreSQLSchemaManager.createSchema(project);
+
+		try {
+			ProjectIdThreadLocal.setProjectId(project.getId());
+
+			_asahMarkerDog.addAsahMarker(
+				new AsahMarker(
+					"Upgrade",
+					JSONUtil.put("version", ReleaseInfo.getVersion())));
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Failed to create upgrade Asah marker for " + project.getId(),
+				exception);
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
 
 		ProjectIdThreadLocal.forProject(
 			project, _nanitesHttp::rescheduleNanites);
@@ -112,6 +132,9 @@ public class ProjectDog {
 	}
 
 	private static final Log _log = LogFactory.getLog(ProjectDog.class);
+
+	@Autowired
+	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private BigQuerySchemaManager _bigQuerySchemaManager;
