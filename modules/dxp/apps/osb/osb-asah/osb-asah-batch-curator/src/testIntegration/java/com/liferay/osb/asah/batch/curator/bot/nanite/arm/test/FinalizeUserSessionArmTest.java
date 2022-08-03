@@ -92,7 +92,7 @@ public class FinalizeUserSessionArmTest
 			}
 
 			if (!projectId.equals("test")) {
-				_projectDog.deleteProject(projectId);
+				_projectDog.deleteProject(false, projectId);
 			}
 		}
 	}

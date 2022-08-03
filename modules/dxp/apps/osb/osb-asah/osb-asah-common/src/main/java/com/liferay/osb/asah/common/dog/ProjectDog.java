@@ -88,10 +88,11 @@ public class ProjectDog {
 			project, _nanitesHttp::rescheduleNanites);
 	}
 
-	public void deleteProject(String projectId) {
-		_bigQuerySchemaManager.deleteSchema(projectId);
-
-		_deleteElasticsearch(projectId);
+	public void deleteProject(boolean deleteData, String projectId) {
+		if (deleteData) {
+			_bigQuerySchemaManager.deleteSchema(projectId);
+			_deleteElasticsearch(projectId);
+		}
 
 		ProjectIdThreadLocal.forProject(
 			projectId, _nanitesHttp::removeSchedule);
@@ -105,7 +106,9 @@ public class ProjectDog {
 			ProjectIdThreadLocal.setGlobalContext(false);
 		}
 
-		_postgreSQLSchemaManager.deleteSchema(projectId);
+		if (deleteData) {
+			_postgreSQLSchemaManager.deleteSchema(projectId);
+		}
 	}
 
 	public List<Project> getProjects() {

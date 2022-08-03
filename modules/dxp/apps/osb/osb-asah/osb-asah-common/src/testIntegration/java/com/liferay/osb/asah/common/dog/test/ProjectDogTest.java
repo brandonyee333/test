@@ -85,7 +85,7 @@ public class ProjectDogTest
 	@SQLResource(resourcePath = "test_projects.sql")
 	@Test
 	public void testDeleteProject() {
-		_projectDog.deleteProject("project2");
+		_projectDog.deleteProject(false, "project2");
 
 		Mockito.verify(
 			_nanitesHttp, Mockito.times(1)
