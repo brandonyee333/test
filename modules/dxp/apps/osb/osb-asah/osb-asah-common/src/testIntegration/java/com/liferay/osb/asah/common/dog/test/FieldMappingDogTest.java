@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
@@ -26,6 +27,7 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -39,6 +41,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Vishal Reddy
@@ -293,6 +296,39 @@ public class FieldMappingDogTest
 
 		Assertions.assertFalse(dataSourceFieldNames.containsKey("123"));
 		Assertions.assertTrue(dataSourceFieldNames.containsKey("234"));
+	}
+
+	@Test
+	public void testSearchIndividualFieldMappingPage() {
+		DataSource dataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildLiferayDataSource());
+
+		_testAddEmailFieldMapping(dataSource, "emailAddress");
+
+		Page<FieldMapping> fieldMappingsPage =
+			_fieldMappingDog.searchIndividualFieldMappingPage(
+				null, 0, 10, null);
+
+		List<FieldMapping> fieldMappings = fieldMappingsPage.getContent();
+
+		Assertions.assertEquals(
+			1, fieldMappings.size(), fieldMappings.toString());
+
+		FieldMapping fieldMapping = fieldMappings.get(0);
+
+		List<DataSourceFieldMapping> dataSourceFieldMappings = new ArrayList<>(
+			fieldMapping.getDataSourceFieldMappings());
+
+		Assertions.assertFalse(dataSourceFieldMappings.isEmpty());
+
+		DataSourceFieldMapping dataSourceFieldMapping =
+			dataSourceFieldMappings.get(0);
+
+		Assertions.assertEquals(
+			"emailAddress", dataSourceFieldMapping.getFieldName());
+
+		Assertions.assertEquals(
+			dataSource.getId(), dataSourceFieldMapping.getDataSourceId());
 	}
 
 	@Test
