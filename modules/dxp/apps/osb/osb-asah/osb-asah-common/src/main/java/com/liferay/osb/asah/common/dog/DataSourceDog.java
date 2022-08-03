@@ -335,10 +335,6 @@ public class DataSourceDog {
 		if (providerType.equals("LIFERAY")) {
 			_updateTokenDataSourceCredentials(dataSource);
 		}
-		else if (providerType.equals("SALESFORCE")) {
-			_salesforceExtractorConfigurationDog.updateConfiguration(
-				dataSource);
-		}
 
 		return _dataSourceRepository.save(dataSource);
 	}
@@ -518,15 +514,6 @@ public class DataSourceDog {
 				"user-groups", "users");
 			_deleteIndividualReferences(dataSourceId);
 		}
-		else if (providerType.equals("SALESFORCE")) {
-			_asahMarkerDog.deleteAsahMarker(dataSourceId.toString());
-
-			_bqSalesforceEntityDog.deleteBQSalesforceEntities(dataSourceId);
-
-			_deleteAccountReferences(dataSourceId);
-
-			_fieldDog.deleteFields(dataSourceId);
-		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
 				"Raw data for data source " + dataSourceId +
@@ -651,11 +638,6 @@ public class DataSourceDog {
 		if (providerType.equals("LIFERAY")) {
 			_runLogDog.deleteRunLogs(
 				dataSource.getId(), WeDeployDataService.OSB_ASAH_DXP_RAW);
-		}
-		else if (providerType.equals("SALESFORCE")) {
-			_runLogDog.deleteRunLogs(
-				dataSource.getId(),
-				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 		}
 	}
 
@@ -791,9 +773,6 @@ public class DataSourceDog {
 	private BQCSVUserDog _bqCSVUserDog;
 
 	@Autowired
-	private BQSalesforceEntityDog _bqSalesforceEntityDog;
-
-	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
@@ -830,10 +809,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private RunLogDog _runLogDog;
-
-	@Autowired
-	private SalesforceExtractorConfigurationDog
-		_salesforceExtractorConfigurationDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;
