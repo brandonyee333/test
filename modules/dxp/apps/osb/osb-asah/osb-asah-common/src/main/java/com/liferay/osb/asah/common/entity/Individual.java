@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -402,6 +403,10 @@ public class Individual implements Persistable<Long> {
 
 	public void setCustomDemographics(Demographics demographics) {
 		_customDemographics = demographics;
+
+		if (demographics != null) {
+			_customFields = demographics._fields;
+		}
 	}
 
 	public void setCustomFields(Set<Field> fields) {
@@ -450,6 +455,7 @@ public class Individual implements Persistable<Long> {
 
 	public void setDemographics(Demographics demographics) {
 		_demographics = demographics;
+		_fields = demographics._fields;
 	}
 
 	public void setEmailAddressHashed(String emailAddressHashed) {
@@ -832,6 +838,15 @@ public class Individual implements Persistable<Long> {
 			_fields = fields;
 		}
 
+		@JsonAnySetter
+		public void addtField(String key, List<Field> fields) {
+			Field field = fields.get(0);
+
+			field.setName(key);
+
+			_fields.add(field);
+		}
+
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj) {
@@ -871,7 +886,7 @@ public class Individual implements Persistable<Long> {
 			return Objects.hash(_fields);
 		}
 
-		private Set<Field> _fields;
+		private Set<Field> _fields = new HashSet<>();
 
 	}
 

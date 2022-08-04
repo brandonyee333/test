@@ -43,7 +43,6 @@ import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1480,26 +1479,6 @@ public class ElasticsearchIndividualRepositoryImpl
 		return "individuals";
 	}
 
-	private Set<Field> _getFields(JSONObject jsonObject, String key) {
-		JSONObject demographicsJSONObject = jsonObject.getJSONObject(key);
-
-		Map<String, Object> map = demographicsJSONObject.toMap();
-
-		Collection<Object> values = map.values();
-
-		Stream<Object> stream = values.stream();
-
-		return stream.map(
-			value -> {
-				List<Object> list = (List<Object>)value;
-
-				return _objectMapper.convertValue(list.get(0), Field.class);
-			}
-		).collect(
-			Collectors.toSet()
-		);
-	}
-
 	private List<FieldSortBuilder> _getFieldSortBuilders(Sort sort) {
 		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
 
@@ -1786,14 +1765,6 @@ public class ElasticsearchIndividualRepositoryImpl
 
 			individual.setBQDataSourceUsers(
 				new HashSet<>(bqDataSourceUserMap.values()));
-		}
-
-		if (jsonObject.has("demographics")) {
-			individual.setFields(_getFields(jsonObject, "demographics"));
-		}
-
-		if (jsonObject.has("custom")) {
-			individual.setCustomFields(_getFields(jsonObject, "custom"));
 		}
 
 		return individual;
