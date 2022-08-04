@@ -355,7 +355,7 @@ public class Segment implements Persistable<Long> {
 	}
 
 	private static final Pattern _pattern = Pattern.compile(
-		"(?<=\\#)([0-9]{10,})(?=\\')");
+		"(?<=\\#)([0-9]+)(?=\')");
 
 	@Transient
 	private Author _author;
