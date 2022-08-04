@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -287,10 +288,6 @@ public class IndividualNaniteTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_5_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
@@ -301,6 +298,10 @@ public class IndividualNaniteTest
 	@MessageBusChannel(
 		channel = Channel.IDENTITY_MESSAGE,
 		resourcePath = "identity_message_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_5_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -318,10 +319,6 @@ public class IndividualNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_4_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
@@ -332,6 +329,10 @@ public class IndividualNaniteTest
 	@MessageBusChannel(
 		channel = Channel.IDENTITY_MESSAGE,
 		resourcePath = "identity_message_4.json"
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_4_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -353,13 +354,13 @@ public class IndividualNaniteTest
 		name = "blogs", resourcePath = "blog_info_old.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_3_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.IDENTITY_MESSAGE,
 		resourcePath = "identity_message_3.json"
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_3_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -380,16 +381,16 @@ public class IndividualNaniteTest
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@MessageBusChannel(
 		channel = Channel.IDENTITY_MESSAGE,
 		resourcePath = "identity_message_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,

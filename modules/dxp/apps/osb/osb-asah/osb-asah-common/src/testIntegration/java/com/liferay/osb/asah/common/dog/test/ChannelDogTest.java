@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -79,9 +80,9 @@ public class ChannelDogTest
 		name = "blogs", resourcePath = "blogs_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_delete_channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_delete_channels.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AccountRepository.class,

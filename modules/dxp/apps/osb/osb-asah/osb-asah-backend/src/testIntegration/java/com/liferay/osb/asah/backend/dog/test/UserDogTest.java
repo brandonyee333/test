@@ -20,8 +20,10 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Assertions;
@@ -49,13 +51,12 @@ public class UserDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals",
-		resourcePath = "user_journal_individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/user_journal_individuals_info.json"
 	)
 	@Test
 	public void testGetKnownUsersCount() {
@@ -66,13 +67,12 @@ public class UserDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals",
-		resourcePath = "user_journal_individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/user_journal_individuals_info.json"
 	)
 	@Test
 	public void testGetNonsegmentedKnownUsersCount() {
@@ -83,13 +83,12 @@ public class UserDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals",
-		resourcePath = "user_journal_individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/user_journal_individuals_info.json"
 	)
 	@Test
 	public void testGetSegmentedAnonymousUsersCount() {
@@ -100,13 +99,12 @@ public class UserDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals",
-		resourcePath = "user_journal_individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/user_journal_individuals_info.json"
 	)
 	@Test
 	public void testGetSegmentedKnownUsersCount() {

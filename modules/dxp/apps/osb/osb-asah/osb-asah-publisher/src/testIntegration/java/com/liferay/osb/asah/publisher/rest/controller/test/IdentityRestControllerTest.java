@@ -20,9 +20,8 @@ import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -143,9 +142,9 @@ public class IdentityRestControllerTest
 			messageJSONObject.getString("emailAddressHashed"));
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -157,9 +156,9 @@ public class IdentityRestControllerTest
 			"345085929068798696", RandomTestUtil.randomUUID());
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,

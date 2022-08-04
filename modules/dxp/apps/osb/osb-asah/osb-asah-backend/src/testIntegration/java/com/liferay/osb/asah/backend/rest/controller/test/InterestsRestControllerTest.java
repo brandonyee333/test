@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -255,9 +256,9 @@ public class InterestsRestControllerTest
 			false);
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
 		repositoryClass = InterestRepository.class,
@@ -348,9 +349,9 @@ public class InterestsRestControllerTest
 			"android", "multithreading", "net");
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
 		repositoryClass = InterestRepository.class,
@@ -365,9 +366,9 @@ public class InterestsRestControllerTest
 			new JSONArray());
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
 		repositoryClass = InterestRepository.class,

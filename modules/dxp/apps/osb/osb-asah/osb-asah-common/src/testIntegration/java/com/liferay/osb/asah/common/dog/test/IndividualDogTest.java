@@ -374,12 +374,12 @@ public class IndividualDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_associations.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "organizations", resourcePath = "organizations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_associations.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -404,9 +404,9 @@ public class IndividualDogTest
 				organizationIds.toArray(new Long[0])));
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
 	public void testCountActiveIndividualsFromLast30DaysBySegment() {
@@ -422,12 +422,12 @@ public class IndividualDogTest
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_associations.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
 		name = "organizations", resourcePath = "organizations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_associations.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -456,9 +456,9 @@ public class IndividualDogTest
 		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = FieldMappingRepository.class,
@@ -493,9 +493,9 @@ public class IndividualDogTest
 		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = FieldMappingRepository.class,
@@ -518,9 +518,9 @@ public class IndividualDogTest
 				individualPage.getContent(), "favoritePokemon"));
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_4.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_4.json"
 	)
 	@Test
 	public void testGetIndividualPage3() {
@@ -590,9 +590,9 @@ public class IndividualDogTest
 		_assertDataSourceUserPKs(new Object[] {uuid1, uuid2}, individual);
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@Test
 	public void testRemoveIndividualSegmentId() {
@@ -616,9 +616,9 @@ public class IndividualDogTest
 		name = "fields", resourcePath = "fields.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@Test
 	public void testSearchIndividuals1() {

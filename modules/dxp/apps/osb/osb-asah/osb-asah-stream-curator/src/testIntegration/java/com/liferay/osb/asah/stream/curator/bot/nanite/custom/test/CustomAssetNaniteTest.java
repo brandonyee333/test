@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.custom.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -24,7 +25,6 @@ import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.custom.CustomAssetNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
@@ -41,13 +41,13 @@ public class CustomAssetNaniteTest
 	extends BaseNaniteTestCase
 	implements OSBAsahStreamCuratorSpringTestContext {
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
 		resourcePath = "analytics_events_custom_asset_channel.json"
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,

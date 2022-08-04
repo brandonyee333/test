@@ -24,9 +24,8 @@ import com.liferay.osb.asah.common.repository.BQSalesforceEntityRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -86,9 +85,9 @@ public class DataControlNaniteTest
 		}
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQUserRepository.class, resourcePath = "bq_users.json"

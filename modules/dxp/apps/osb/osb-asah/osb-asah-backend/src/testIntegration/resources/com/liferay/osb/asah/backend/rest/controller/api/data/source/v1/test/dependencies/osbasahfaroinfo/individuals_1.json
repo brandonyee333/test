@@ -12,21 +12,17 @@
 		"dateCreated": "${now-32dT00:00:00.000Z}",
 		"dateModified": "${now-32dT00:00:00.000Z}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "john.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "john"
+				}
 			]
 		},
 		"id": "1",
@@ -53,21 +49,17 @@
 		"dateCreated": "${now-32dT00:00:00.000Z}",
 		"dateModified": "${now-31dT00:00:00.000Z}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "jane.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "jane"
+				}
 			]
 		},
 		"id": "2",
@@ -100,21 +92,17 @@
 		"dateCreated": "${now-30dT00:00:00.000Z}",
 		"dateModified": "${now-30dT00:00:00.000Z}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "joey.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "joey"
+				}
 			]
 		},
 		"id": "3",
@@ -147,21 +135,17 @@
 		"dateCreated": "${now-32dT00:00:00.000Z}",
 		"dateModified": "${now-28dT00:00:00.000Z}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "joe.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "joe"
+				}
 			]
 		},
 		"id": "4",
@@ -194,21 +178,17 @@
 		"dateCreated": "${now-20dT00:00:00.000Z}",
 		"dateModified": "${now-20dT00:00:00.000Z}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "john.doe.jr@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "john"
+				}
 			]
 		},
 		"id": "5",
@@ -235,21 +215,17 @@
 		"dateCreated": "${now-15dT00:00:00.000Z}",
 		"dateModified": "${now}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "jj.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "j j"
+				}
 			]
 		},
 		"id": "6",
@@ -282,21 +258,17 @@
 		"dateCreated": "${now-10dT00:00:00.000Z}",
 		"dateModified": "${now}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "john.john.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "john john"
+				}
 			]
 		},
 		"id": "7",
@@ -329,21 +301,17 @@
 		"dateCreated": "${now-8dT00:00:00.000Z}",
 		"dateModified": "${now}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "jon.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "jon"
+				}
 			]
 		},
 		"id": "8",
@@ -376,21 +344,17 @@
 		"dateCreated": "${now-1dT23:00:00.000Z}",
 		"dateModified": "${now}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "j.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "j"
+				}
 			]
 		},
 		"id": "11",
@@ -423,21 +387,17 @@
 		"dateCreated": "${now}",
 		"dateModified": "${now}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "jay.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "jay"
+				}
 			]
 		},
 		"id": "1234",
@@ -470,21 +430,17 @@
 		"dateCreated": "${now}",
 		"dateModified": "${now}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "joao.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "joao"
+				}
 			]
 		},
 		"id": "337984659206412898",
@@ -517,21 +473,17 @@
 		"dateCreated": "${now}",
 		"dateModified": "${now}",
 		"demographics": {
-			"additionalName": [
-			],
-			"age": [
-			],
-			"birthDate": [
-			],
 			"email": [
-			],
-			"familyName": [
-			],
-			"gender": [
+				{
+					"name": "email",
+					"value": "johnny.doe@liferay.com"
+				}
 			],
 			"givenName": [
-			],
-			"jobTitle": [
+				{
+					"name": "givenName",
+					"value": "johnny"
+				}
 			]
 		},
 		"id": "337984612356412845",

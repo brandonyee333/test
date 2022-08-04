@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -215,9 +216,9 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals(1, individualSegmentsJSONArray.length());
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,

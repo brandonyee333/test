@@ -17,8 +17,10 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataRetentionNanite;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Assertions;
@@ -46,9 +48,9 @@ public class DataRetentionNaniteTest
 				_cerebroInfoElasticsearchInvoker.get("blogs"), "id"));
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "data_retention_individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/data_retention_individuals.json"
 	)
 	@Test
 	public void testDeleteIndividuals() throws Exception {

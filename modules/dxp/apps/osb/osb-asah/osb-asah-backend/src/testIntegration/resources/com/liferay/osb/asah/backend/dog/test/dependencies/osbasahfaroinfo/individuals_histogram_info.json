@@ -4,6 +4,7 @@
 		"demographics": {
 			"email": [
 				{
+					"name": "email",
 					"value": "test1@liferay.com"
 				}
 			]
@@ -22,6 +23,7 @@
 		"demographics": {
 			"email": [
 				{
+					"name": "email",
 					"value": "test2@liferay.com"
 				}
 			]
@@ -40,6 +42,7 @@
 		"demographics": {
 			"email": [
 				{
+					"name": "email",
 					"value": "test3@liferay.com"
 				}
 			]
@@ -52,6 +55,7 @@
 		"demographics": {
 			"email": [
 				{
+					"name": "email",
 					"value": "test4@liferay.com"
 				}
 			]

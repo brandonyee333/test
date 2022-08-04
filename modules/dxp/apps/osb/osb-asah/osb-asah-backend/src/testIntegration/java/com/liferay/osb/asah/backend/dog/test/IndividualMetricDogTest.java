@@ -21,8 +21,8 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.IndividualMetric;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.HashSet;
@@ -39,9 +39,9 @@ public class IndividualMetricDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
 	public void testIndividualMetric() {

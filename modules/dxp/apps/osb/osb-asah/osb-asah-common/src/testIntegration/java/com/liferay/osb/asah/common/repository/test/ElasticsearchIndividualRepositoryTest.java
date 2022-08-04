@@ -17,8 +17,10 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -38,9 +40,9 @@ import org.junit.jupiter.api.Test;
 public class ElasticsearchIndividualRepositoryTest
 	extends BaseIndividualRepositoryTestCase {
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
 	public void testActivitiesDataInconsistenciesAreNotRetrieved() {
@@ -157,11 +159,11 @@ public class ElasticsearchIndividualRepositoryTest
 		name = "field-mappings", resourcePath = "field_mappings.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@Override
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
+	)
 	@Test
 	public void testGetIndividualDistributions() throws Exception {
 		super.testGetIndividualDistributions();

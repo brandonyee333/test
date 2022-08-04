@@ -11,10 +11,16 @@
 		],
 		"dataSourceIndividualPKs": [
 			{
-				"dataSourceId": "567"
+				"dataSourceId": "567",
+				"individualPKs": [
+					"765"
+				]
 			},
 			{
-				"dataSourceId": "678"
+				"dataSourceId": "678",
+				"individualPKs": [
+					"876"
+				]
 			}
 		],
 		"id": "123"

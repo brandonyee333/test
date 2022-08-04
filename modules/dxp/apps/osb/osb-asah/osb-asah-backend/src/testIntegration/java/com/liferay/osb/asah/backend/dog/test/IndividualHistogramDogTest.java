@@ -22,8 +22,8 @@ import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -40,9 +40,9 @@ public class IndividualHistogramDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
 	public void testActiveIndividualHistogramMetrics() {
@@ -61,9 +61,9 @@ public class IndividualHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
 	public void testAnonymousIndividualHistogramMetrics() {
@@ -82,9 +82,9 @@ public class IndividualHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
 	public void testInactiveIndividualHistogramMetrics() {
@@ -103,9 +103,9 @@ public class IndividualHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
 	public void testKnownIndividualHistogramMetrics() {
@@ -124,9 +124,9 @@ public class IndividualHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
 	public void testTotalIndividualHistogramMetrics() {

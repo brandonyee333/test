@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -30,7 +31,7 @@ import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.activity.ActivitiesNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 
@@ -75,9 +76,9 @@ public class ActivitiesNaniteTest
 		_dataSourceRepository.deleteById(1L);
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
 	public void testCanonicalUrlSet() throws Exception {
@@ -107,9 +108,9 @@ public class ActivitiesNaniteTest
 				)));
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
 	public void testCommentPostedActivityIsAdded() throws Exception {
@@ -152,9 +153,9 @@ public class ActivitiesNaniteTest
 				)));
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
 	public void testFormSubmittedPropertiesAreAdded() throws Exception {
@@ -183,9 +184,9 @@ public class ActivitiesNaniteTest
 			eventPropertiesJSONObject.getString("title"));
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
 	public void testKeywordsLowercase() throws Exception {

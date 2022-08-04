@@ -25,8 +25,10 @@ import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -66,9 +68,9 @@ public class ReportIndividualDogTest
 		name = "fields", resourcePath = "segment_fields_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "segment_individuals_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/segment_individuals_info_1.json"
 	)
 	@Test
 	public void testSegmentIndividuals() {
@@ -107,9 +109,9 @@ public class ReportIndividualDogTest
 		name = "fields", resourcePath = "segment_fields_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "segment_individuals_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/segment_individuals_info_1.json"
 	)
 	@Test
 	public void testSegmentIndividualsSearch() {
@@ -141,9 +143,9 @@ public class ReportIndividualDogTest
 		name = "fields", resourcePath = "segment_fields_info_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "segment_individuals_info_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/segment_individuals_info_2.json"
 	)
 	@Test
 	public void testSegmentUnknownIndividuals() {

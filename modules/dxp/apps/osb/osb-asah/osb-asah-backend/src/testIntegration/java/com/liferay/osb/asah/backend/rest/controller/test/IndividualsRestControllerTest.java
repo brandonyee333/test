@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
+import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -59,9 +60,9 @@ public class IndividualsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
@@ -106,9 +107,9 @@ public class IndividualsRestControllerTest
 		name = "fields", resourcePath = "fields_3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AccountRepository.class,
@@ -141,9 +142,9 @@ public class IndividualsRestControllerTest
 				accountNamesJSONArray, "The World's Foremost Chess Club"));
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AccountRepository.class,
@@ -166,13 +167,13 @@ public class IndividualsRestControllerTest
 		Assertions.assertEquals(4, accountsJSONArray.length());
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
 	public void testExpandDataSources() throws Exception {
@@ -188,9 +189,9 @@ public class IndividualsRestControllerTest
 		Assertions.assertEquals(2, dataSourcesJSONArray.length());
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
@@ -214,9 +215,9 @@ public class IndividualsRestControllerTest
 		Assertions.assertEquals(2, individualSegmentsJSONArray.length());
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
 	public void testGetIndividualDTOPageDTO() throws Exception {
@@ -246,9 +247,9 @@ public class IndividualsRestControllerTest
 			individualDTO.getLastActivityDate());
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AccountRepository.class,
@@ -343,9 +344,9 @@ public class IndividualsRestControllerTest
 			CoreMatchers.containsString("Invalid field mapping ID"));
 	}
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = IndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
