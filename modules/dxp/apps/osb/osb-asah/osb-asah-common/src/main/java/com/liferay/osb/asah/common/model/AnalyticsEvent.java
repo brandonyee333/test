@@ -75,7 +75,8 @@ public class AnalyticsEvent implements Serializable {
 
 		AnalyticsEvent analyticsEvent = (AnalyticsEvent)obj;
 
-		if (Objects.equals(_applicationId, analyticsEvent._applicationId) &&
+		if (Objects.equals(_acquisition, analyticsEvent._acquisition) &&
+			Objects.equals(_applicationId, analyticsEvent._applicationId) &&
 			Objects.equals(_channelId, analyticsEvent._channelId) &&
 			Objects.equals(_clientIP, analyticsEvent._clientIP) &&
 			Objects.equals(_context, analyticsEvent._context) &&
@@ -94,6 +95,10 @@ public class AnalyticsEvent implements Serializable {
 		}
 
 		return false;
+	}
+
+	public Acquisition getAcquisition() {
+		return _acquisition;
 	}
 
 	public String getApplicationId() {
@@ -187,13 +192,17 @@ public class AnalyticsEvent implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_applicationId, _channelId, _clientIP, _id, _context, _createDate,
-			_dataSourceId, _eventDate, _eventId, _eventProperties, _projectId,
-			_projectTimeZoneId, _userId);
+			_acquisition, _applicationId, _channelId, _clientIP, _id, _context,
+			_createDate, _dataSourceId, _eventDate, _eventId, _eventProperties,
+			_projectId, _projectTimeZoneId, _userId);
 	}
 
 	public boolean isKnownIndividual() {
 		return _knownIndividual;
+	}
+
+	public void setAcquisition(Acquisition acquisition) {
+		_acquisition = acquisition;
 	}
 
 	public void setApplicationId(String applicationId) {
@@ -288,6 +297,7 @@ public class AnalyticsEvent implements Serializable {
 		}
 	};
 
+	private Acquisition _acquisition;
 	private String _applicationId;
 	private String _channelId;
 	private String _clientIP;
