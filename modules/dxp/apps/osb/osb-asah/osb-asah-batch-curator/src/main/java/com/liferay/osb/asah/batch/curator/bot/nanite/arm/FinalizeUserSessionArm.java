@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.Project;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -287,7 +286,7 @@ public class FinalizeUserSessionArm {
 	public void updateActivitiesAndAssets(UserSession userSession) {
 		long start = System.currentTimeMillis();
 
-		_faroInfoActivityDog.updateSessionId(userSession);
+//		_faroInfoActivityDog.updateSessionId(userSession);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -750,9 +749,6 @@ public class FinalizeUserSessionArm {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@Autowired
 	private ProjectDog _projectDog;
