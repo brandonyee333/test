@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.model.Acquisition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
@@ -299,6 +300,10 @@ public class AnalyticsEventsIngestionNanite {
 				return;
 			}
 
+			analyticsEvent.setAcquisition(
+				new Acquisition(
+					MapUtil.getString(context, "referrer"),
+					MapUtil.getString(context, "url")));
 			analyticsEvent.setContext(context);
 
 			SessionContext sessionContext = _updateOrCreateSessionContext(
@@ -368,9 +373,34 @@ public class AnalyticsEventsIngestionNanite {
 		if (sessionContext == null) {
 			sessionContext = new SessionContext();
 
+			Map<String, String> context = analyticsEvent.getContext();
+
+			Acquisition acquisition = analyticsEvent.getAcquisition();
+
+			sessionContext.acquisitionCampaign = acquisition.getCampaign();
+			sessionContext.acquisitionChannel = acquisition.getChannel();
+			sessionContext.acquisitionContent = acquisition.getContent();
+			sessionContext.acquisitionMedium = acquisition.getMedium();
+			sessionContext.acquisitionSource = acquisition.getSource();
+			sessionContext.acquisitionTerm = acquisition.getTerm();
+
+			sessionContext.browserName = context.get("browserName");
 			sessionContext.channelId = analyticsEvent.getChannelId();
+			sessionContext.deviceType = context.get("deviceType");
 			sessionContext.id = DigestUtils.sha256Hex(
 				sessionKey + "#" + eventDate.getTime());
+
+			if (!_noninteractionEvents.contains(analyticsEvent.getEventId())) {
+				sessionContext.interactionsCount++;
+			}
+
+			if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
+				Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
+
+				sessionContext.pageViewsCount++;
+			}
+
+			sessionContext.platformName = context.get("platformName");
 			sessionContext.projectId = analyticsEvent.getProjectId();
 			sessionContext.sessionStart = analyticsEvent.getEventDate();
 			sessionContext.userId = analyticsEvent.getUserId();
@@ -475,10 +505,36 @@ public class AnalyticsEventsIngestionNanite {
 	private void _writeBQSession(SessionContext sessionContext) {
 		BQSession bqSession = new BQSession();
 
+		bqSession.setAcquisitionCampaign(sessionContext.acquisitionCampaign);
+		bqSession.setAcquisitionChannel(sessionContext.acquisitionChannel);
+		bqSession.setAcquisitionContent(sessionContext.acquisitionContent);
+		bqSession.setAcquisitionMedium(sessionContext.acquisitionMedium);
+		bqSession.setAcquisitionSource(sessionContext.acquisitionSource);
+		bqSession.setAcquisitionTerm(sessionContext.acquisitionTerm);
+
+		if ((sessionContext.interactionsCount < 1) &&
+			(sessionContext.pageViewsCount < 2)) {
+
+			bqSession.setBounced(true);
+		}
+
+		else
+		bqSession.setBounced(false);
+
+		bqSession.setBrowserName(sessionContext.browserName);
 		bqSession.setChannelId(Long.valueOf(sessionContext.channelId));
+		bqSession.setCity("Local Network");
+		bqSession.setCountry("Local Network");
+		bqSession.setDeviceType(sessionContext.deviceType);
+		bqSession.setDuration(
+			DateUtil.getDeltaMilliseconds(
+				sessionContext.sessionStart, sessionContext.sessionEnd));
 		bqSession.setId(sessionContext.id);
+		bqSession.setPlatformName(sessionContext.platformName);
+		bqSession.setRegion("Local Network");
 		bqSession.setSessionEnd(sessionContext.sessionEnd);
 		bqSession.setSessionStart(sessionContext.sessionStart);
+		bqSession.setUserId(sessionContext.userId);
 
 		_bqSessionRepository.save(bqSession);
 	}
@@ -486,6 +542,18 @@ public class AnalyticsEventsIngestionNanite {
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsIngestionNanite.class);
 
+	private static final Set<String> _noninteractionEvents =
+		new HashSet<String>() {
+			{
+				add("blogViewed");
+				add("documentPreviewed");
+				add("formViewed");
+				add("pageLoaded");
+				add("pageUnloaded");
+				add("pageViewed");
+				add("webContentViewed");
+			}
+		};
 	private static final Set<String> _projectIds = new HashSet<>();
 
 	@Value("${session.window.allowed.lateness:1}")
@@ -525,9 +593,20 @@ public class AnalyticsEventsIngestionNanite {
 
 	private static class SessionContext {
 
+		public String acquisitionCampaign;
+		public String acquisitionChannel;
+		public String acquisitionContent;
+		public String acquisitionMedium;
+		public String acquisitionSource;
+		public String acquisitionTerm;
+		public String browserName;
 		public String channelId;
+		public String deviceType;
 		public String id;
+		public long interactionsCount;
 		public long maxEventDateTimestamp;
+		public long pageViewsCount;
+		public String platformName;
 		public String projectId;
 		public Date sessionEnd;
 		public Date sessionStart;
