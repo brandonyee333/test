@@ -72,13 +72,6 @@ public class IndividualDTO {
 		_channelIds = SetUtil.map(individual.getChannelIds(), String::valueOf);
 		_createDate = individual.getCreateDate();
 
-		Set<DataSourceAccountPKDTO> dataSourceAccountPKDTOs = SetUtil.map(
-			individual.getBQDataSourceUsers(), DataSourceAccountPKDTO::new);
-
-		if (!dataSourceAccountPKDTOs.isEmpty()) {
-			_dataSourceAccountPKDTOs = dataSourceAccountPKDTOs;
-		}
-
 		Set<DataSourceIndividualPKDTO> dataSourceIndividualPKDTOs = SetUtil.map(
 			individual.getBQDataSourceUsers(), DataSourceIndividualPKDTO::new);
 
@@ -145,11 +138,6 @@ public class IndividualDTO {
 		}
 
 		return new Date(_createDate.getTime());
-	}
-
-	@JsonProperty("dataSourceAccountPKs")
-	public Set<DataSourceAccountPKDTO> getDataSourceAccountPKDTOs() {
-		return _dataSourceAccountPKDTOs;
 	}
 
 	@JsonProperty("dataSourceIndividualPKs")
@@ -407,75 +395,6 @@ public class IndividualDTO {
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class DataSourceAccountPKDTO {
-
-		public DataSourceAccountPKDTO() {
-		}
-
-		public DataSourceAccountPKDTO(BQDataSourceUser bqDataSourceUser) {
-			if (!CollectionUtils.isEmpty(bqDataSourceUser.getAccountPKs())) {
-				_accountPKs = bqDataSourceUser.getAccountPKs();
-				_dataSourceId = String.valueOf(
-					bqDataSourceUser.getDataSourceId());
-			}
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof DataSourceAccountPKDTO)) {
-				return false;
-			}
-
-			DataSourceAccountPKDTO dataSourceAccountPKDTO =
-				(DataSourceAccountPKDTO)obj;
-
-			if (Objects.equals(
-					_accountPKs, dataSourceAccountPKDTO._accountPKs) &&
-				Objects.equals(
-					_dataSourceId, dataSourceAccountPKDTO._dataSourceId)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		@JsonProperty("accountPKs")
-		public Set<String> getAccountPKs() {
-			return _accountPKs;
-		}
-
-		@JsonProperty("dataSourceId")
-		public String getDataSourceId() {
-			return _dataSourceId;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_accountPKs, _dataSourceId);
-		}
-
-		public void setAccountPKs(Set<String> accountPKs) {
-			_accountPKs = accountPKs;
-		}
-
-		public void setDataSourceId(String dataSourceId) {
-			_dataSourceId = dataSourceId;
-		}
-
-		@Transient
-		private Set<String> _accountPKs = new HashSet<>();
-
-		@Transient
-		private String _dataSourceId;
-
-	}
-
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class DataSourceIndividualPKDTO {
 
 		public DataSourceIndividualPKDTO() {
@@ -654,7 +573,6 @@ public class IndividualDTO {
 	private Set<ActivityDateDTO> _activityDateDTOs;
 	private Set<String> _channelIds;
 	private Date _createDate;
-	private Set<DataSourceAccountPKDTO> _dataSourceAccountPKDTOs;
 	private Set<DataSourceIndividualPKDTO> _dataSourceIndividualPKDTOs;
 	private String _emailAddressHashed;
 	private Map<String, Object> _embedded;

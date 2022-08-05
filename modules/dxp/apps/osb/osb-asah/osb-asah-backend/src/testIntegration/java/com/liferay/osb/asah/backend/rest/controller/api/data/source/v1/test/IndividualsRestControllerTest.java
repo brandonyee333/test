@@ -122,32 +122,6 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 		_validateTotalElements(
 			"((contains(demographics/email/value,'.*')))", 0);
 
-		// Individuals with a specific account
-
-		_validateTotalElements("((accountId eq '342313458385210529'))", 0);
-
-		_validateTotalElements("((accountId eq '342313459339515838'))", 1);
-
-		_validateTotalElements(
-			"((dataSourceAccountPKs/accountPKs eq '0016C00000BKWWKQA5'))", 0);
-
-		_validateTotalElements(
-			"((dataSourceAccountPKs/accountPKs eq '0016C00000BKWWJQA5'))", 1);
-
-		// Individuals with any accounts
-
-		_validateTotalElements("((accountId ne null))", 1);
-
-		_validateTotalElements(
-			"((dataSourceAccountPKs/accountPKs ne null))", 1);
-
-		// Individuals without any accounts
-
-		_validateTotalElements("((accountId eq null))", 1);
-
-		_validateTotalElements(
-			"((dataSourceAccountPKs/accountPKs eq null))", 1);
-
 		// Individuals in a specific data source
 
 		_validateTotalElements("((dataSourceId eq '337984445922213329'))", 2);

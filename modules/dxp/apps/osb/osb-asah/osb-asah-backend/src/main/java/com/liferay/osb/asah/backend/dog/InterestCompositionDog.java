@@ -20,9 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
-import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.InterestRepository;
@@ -48,17 +46,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class InterestCompositionDog {
-
-	public CompositionResultBag getAccountCompositionResultBag(
-		String accountId, boolean active, String channelId, String keywords,
-		int size, Sort sort, int start) {
-
-		Segment segment = _segmentDog.getSegment(
-			"Account: " + accountId, "INACTIVE");
-
-		return getIndividualSegmentCompositionResultBag(
-			active, channelId, keywords, segment.getId(), size, sort, start);
-	}
 
 	public CompositionResultBag getIndividualCompositionResultBag(
 		String channelId, String keywords, int size, Sort sort, int start) {
@@ -198,8 +185,5 @@ public class InterestCompositionDog {
 
 	@Autowired
 	private InterestRepository _interestRepository;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 }

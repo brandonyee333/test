@@ -102,62 +102,6 @@ public class IndividualsRestControllerTest
 			"ACTIVE", activeMembershipJSONObject.getString("status"));
 	}
 
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources_2.json"
-	)
-	@Test
-	public void testExpandAccountNames() throws Exception {
-		IndividualDTO individualDTO =
-			_individualsRestController.getIndividualDTO(
-				346468649722790279L, null, "account-names");
-
-		Map<String, Object> embedded = individualDTO.getEmbedded();
-
-		JSONArray accountNamesJSONArray = (JSONArray)embedded.get(
-			"account-names");
-
-		Assertions.assertEquals(4, accountNamesJSONArray.length());
-		Assertions.assertTrue(
-			JSONUtil.hasValue(accountNamesJSONArray, "Liferay, Inc."));
-		Assertions.assertTrue(
-			JSONUtil.hasValue(accountNamesJSONArray, "Nozomi Project"));
-		Assertions.assertTrue(
-			JSONUtil.hasValue(accountNamesJSONArray, "The Space Program"));
-		Assertions.assertTrue(
-			JSONUtil.hasValue(
-				accountNamesJSONArray, "The World's Foremost Chess Club"));
-	}
-
-	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources_2.json"
-	)
-	@Test
-	public void testExpandAccounts() throws Exception {
-		IndividualDTO individualDTO =
-			_individualsRestController.getIndividualDTO(
-				346468649722790279L, null, "accounts");
-
-		Map<String, Object> embedded = individualDTO.getEmbedded();
-
-		JSONArray accountsJSONArray = (JSONArray)embedded.get("accounts");
-
-		Assertions.assertEquals(4, accountsJSONArray.length());
-	}
-
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources_2.json"
@@ -256,16 +200,6 @@ public class IndividualsRestControllerTest
 	)
 	@Test
 	public void testGetIndividualsDistribution() throws Exception {
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONObject(
-				"dependencies/expected_individuals_distribution_filtered.json",
-				this),
-			_objectMapper.convertValue(
-				_individualsRestController.getDistributionDTOPageDTO(
-					366588394714972833L, "(accountId eq '342313458385210529')",
-					10, 100, null),
-				JSONObject.class),
-			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_individuals_distribution_filtered.json",

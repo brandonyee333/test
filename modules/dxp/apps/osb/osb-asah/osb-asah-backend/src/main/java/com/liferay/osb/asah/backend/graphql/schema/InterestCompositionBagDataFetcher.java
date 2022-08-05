@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component;
  * @author Matthew Kong
  */
 @Component
-@GraphQLTypeWiring(fieldName = "accountInterests", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "individualInterests", typeName = "QueryType")
 @GraphQLTypeWiring(
 	fieldName = "individualSegmentInterests", typeName = "QueryType"
@@ -51,17 +50,6 @@ public class InterestCompositionBagDataFetcher
 			executionTypeInfo.getFieldDefinition();
 
 		String name = graphQLFieldDefinition.getName();
-
-		if (name.equals("accountInterests")) {
-			return _interestCompositionDog.getAccountCompositionResultBag(
-				dataFetchingEnvironment.getArgument("accountId"),
-				dataFetchingEnvironment.getArgument("active"),
-				dataFetchingEnvironment.getArgument("channelId"),
-				dataFetchingEnvironment.getArgument("keywords"),
-				dataFetchingEnvironment.getArgument("size"),
-				Sort.of(dataFetchingEnvironment.getArgument("sort")),
-				dataFetchingEnvironment.getArgument("start"));
-		}
 
 		if (name.equals("individualInterests")) {
 			return _interestCompositionDog.getIndividualCompositionResultBag(

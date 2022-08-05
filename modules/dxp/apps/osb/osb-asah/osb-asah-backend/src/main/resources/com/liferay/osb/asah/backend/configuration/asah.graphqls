@@ -19,7 +19,6 @@ enum AssetType {
 }
 
 enum AttributeType {
-	ACCOUNT,
 	EVENT,
 	INDIVIDUAL,
 	USER_SESSION
@@ -52,7 +51,6 @@ enum DateGrouping {
 }
 
 enum EntityType {
-	ACCOUNT
 	INDIVIDUAL
 }
 
@@ -900,15 +898,6 @@ type Preference {
 }
 
 type QueryType {
-	accountInterests(
-		accountId: String!,
-		active: Boolean,
-		keywords: String,
-		size: Int!,
-		sort: Sort!
-		start: Int!
-	): CompositionBag
-
 	acquisitions(
 		acquisitionType: AcquisitionType!,
 		channelId: String,

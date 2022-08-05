@@ -101,15 +101,7 @@ public class SecurityOncePerRequestFilterTest {
 			DigestUtils.sha256Hex(
 				_osbAsahFaroBackendSecurityToken.concat("http://localhost")));
 		_testGet(
-			"/api/reports/accounts",
-			DigestUtils.sha256Hex(
-				_osbAsahFaroBackendSecurityToken.concat("http://localhost")));
-		_testGet(
 			"/api/////recommendations",
-			DigestUtils.sha256Hex(
-				_osbAsahFaroBackendSecurityToken.concat("http://localhost")));
-		_testGet(
-			"/api////reports/accounts",
 			DigestUtils.sha256Hex(
 				_osbAsahFaroBackendSecurityToken.concat("http://localhost")));
 	}

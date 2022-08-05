@@ -1,21 +1,5 @@
 {
 	"_links": {
-		"account": {
-			"href": "{url}/accounts/{id}{?channelId}",
-			"templated": true
-		},
-		"accounts": {
-			"href": "{url}/accounts{?apply,channelId,filter,page,size,sort*}",
-			"templated": true
-		},
-		"accounts-distribution": {
-			"href": "{url}/accounts/distribution{?channelId,fieldMappingId,filter,individualSegmentId,numberOfBins,size,sort*}",
-			"templated": true
-		},
-		"accounts-individual-segments": {
-			"href": "{url}/accounts/{id}/individual-segments{?apply,filter,page,size,sort*}",
-			"templated": true
-		},
 		"activities": {
 			"href": "{url}/activities{?apply,filter,includeToday,page,rangeEnd,rangeStart,size,sort*}",
 			"templated": true
@@ -126,10 +110,6 @@
 		},
 		"individual-segment": {
 			"href": "{url}/individual-segments/{id}{?expand}",
-			"templated": true
-		},
-		"individual-segment-accounts": {
-			"href": "{url}/individual-segments/{id}/accounts{?filter,page,size,sort*}",
 			"templated": true
 		},
 		"individual-segment-assign-channel": {
