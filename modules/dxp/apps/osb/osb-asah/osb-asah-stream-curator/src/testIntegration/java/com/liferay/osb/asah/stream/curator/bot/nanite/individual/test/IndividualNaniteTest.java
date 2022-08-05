@@ -342,12 +342,9 @@ public class IndividualNaniteTest
 	public void testMergeIndividualWithEmptyEmailAddress() {
 		runNanite();
 
-		JSONArray individualsJSONArray = _faroInfoElasticsearchInvoker.get(
-			"individuals",
-			QueryBuilders.termQuery(
-				"emailAddressHashed", DigestUtils.sha256Hex("")));
-
-		Assertions.assertEquals(0, individualsJSONArray.length());
+		Assertions.assertNull(
+			_individualDog.fetchIndividualByEmailAddressHashed(
+				DigestUtils.sha256Hex("")));
 	}
 
 	@ElasticsearchIndex(
@@ -414,12 +411,10 @@ public class IndividualNaniteTest
 		Assertions.assertEquals("200", jsonObject.get("individualId"));
 		Assertions.assertEquals("2", jsonObject.get("userId"));
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery(
-				"demographics.email.value", "john@liferay.com"));
+		Individual individual = _individualDog.fetchIndividualByEmailAddress(
+			"john@liferay.com");
 
-		Assertions.assertFalse(individualJSONObject.has("lastEnrichmentDate"));
+		Assertions.assertNull(individual.getLastActivityDate());
 	}
 
 	@ElasticsearchIndex(
@@ -505,9 +500,6 @@ public class IndividualNaniteTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FieldMappingRepository _fieldMappingRepository;
