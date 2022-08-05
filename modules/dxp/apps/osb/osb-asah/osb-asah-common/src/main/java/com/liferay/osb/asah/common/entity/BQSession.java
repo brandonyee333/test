@@ -203,6 +203,10 @@ public class BQSession implements Persistable<String> {
 		_acquisitionCampaign = acquisitionCampaign;
 	}
 
+	public void setAcquisitionChannel(String acquisitionChannel) {
+		_acquisitionChannel = acquisitionChannel;
+	}
+
 	public void setAcquisitionContent(String acquisitionContent) {
 		_acquisitionContent = acquisitionContent;
 	}
@@ -217,10 +221,6 @@ public class BQSession implements Persistable<String> {
 
 	public void setAcquisitionTerm(String acquisitionTerm) {
 		_acquisitionTerm = acquisitionTerm;
-	}
-
-	public void setAquisitionChannel(String acquisitionChannel) {
-		_acquisitionChannel = acquisitionChannel;
 	}
 
 	public void setBounced(boolean bounced) {
