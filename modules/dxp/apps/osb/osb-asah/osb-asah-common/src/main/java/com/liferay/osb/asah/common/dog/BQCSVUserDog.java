@@ -21,9 +21,6 @@ import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -64,24 +61,6 @@ public class BQCSVUserDog {
 			dataSourceId, dataSourceUserPKs);
 	}
 
-	public BQCSVUser fetchBQCSVUser(
-		Long dataSourceId, String fieldKey, String fieldValue) {
-
-		List<BQCSVUser> bqCSVUsers =
-			_bqCSVUserRepository.findByDataSourceIdAndFieldKeyEquals(
-				dataSourceId, fieldKey, fieldValue);
-
-		if (bqCSVUsers.isEmpty()) {
-			return null;
-		}
-
-		if ((bqCSVUsers.size() > 1) && _log.isWarnEnabled()) {
-			_log.warn("Multiple CSV Individuals were fetched");
-		}
-
-		return bqCSVUsers.get(0);
-	}
-
 	public List<BQCSVUser> getBQCSVUsers(
 		Long dataSourceId, int page, int size, Sort sort) {
 
@@ -92,12 +71,6 @@ public class BQCSVUserDog {
 	public long getBQCSVUsersCount(Long dataSourceId) {
 		return _bqCSVUserRepository.countByDataSourceId(dataSourceId);
 	}
-
-	public BQCSVUser updateBQCSVUser(BQCSVUser bqCSVUser) {
-		return _bqCSVUserRepository.save(bqCSVUser);
-	}
-
-	private static final Log _log = LogFactory.getLog(BQCSVUserDog.class);
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;

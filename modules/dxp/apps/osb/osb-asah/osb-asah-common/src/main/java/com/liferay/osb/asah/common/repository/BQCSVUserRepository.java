@@ -31,8 +31,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQCSVUserRepository
-	extends CustomBQCSVUserRepository,
-			PagingAndSortingRepository<BQCSVUser, Long> {
+	extends PagingAndSortingRepository<BQCSVUser, Long> {
 
 	@Cacheable
 	public long countByDataSourceId(Long dataSourceId);
