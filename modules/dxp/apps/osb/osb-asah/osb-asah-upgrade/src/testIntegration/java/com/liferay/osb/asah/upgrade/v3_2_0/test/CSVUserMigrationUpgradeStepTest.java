@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.upgrade.v3_2_0.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
@@ -30,10 +28,11 @@ import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v3_2_0.CSVUserMigrationUpgradeStep;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import org.apache.commons.collections4.IterableUtils;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -103,17 +102,24 @@ public class CSVUserMigrationUpgradeStepTest
 
 		_csvUserMigrationUpgradeStep.upgrade("");
 
-		List<Object> jsonObjectList = jsonArray.toList();
+		List<BQCSVUser> bqCSVUsers = IterableUtils.toList(
+			_bqCSVUserRepository.findAll());
 
-		Stream<Object> stream = jsonObjectList.stream();
+		Assertions.assertEquals(1, bqCSVUsers.size());
+
+		BQCSVUser bqCSVUser = bqCSVUsers.get(0);
 
 		Assertions.assertEquals(
-			stream.map(
-				object -> _objectMapper.convertValue(object, BQCSVUser.class)
-			).collect(
-				Collectors.toList()
-			),
-			_bqCSVUserRepository.findAll());
+			337984445922213329L, bqCSVUser.getDataSourceId());
+
+		JSONArray fieldsJSONArray = bqCSVUser.getFieldsJSONArray();
+
+		Assertions.assertEquals(1, fieldsJSONArray.length());
+
+		JSONObject fieldJSONObject = fieldsJSONArray.getJSONObject(0);
+
+		Assertions.assertEquals("name", fieldJSONObject.getString("name"));
+		Assertions.assertEquals("Guest", fieldJSONObject.getString("value"));
 	}
 
 	@Autowired
@@ -130,8 +136,5 @@ public class CSVUserMigrationUpgradeStepTest
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }

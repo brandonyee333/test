@@ -17,11 +17,13 @@ package com.liferay.osb.asah.upgrade.v3_2_0;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.entity.BQCSVUser;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 
 import java.util.function.Consumer;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +38,12 @@ public class CSVUserMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 	@Override
 	protected Consumer<JSONObject> getConsumer() {
 		return jsonObject -> {
-			BQCSVUser bqCSVUser = _objectMapper.convertValue(
-				jsonObject, BQCSVUser.class);
+			BQCSVUser bqCSVUser = new BQCSVUser();
 
+			bqCSVUser.setDataSourceId(
+				Long.valueOf(jsonObject.getString("dataSourceId")));
+			bqCSVUser.setFieldsJSONArray(
+				_toFieldsJSONArray(jsonObject.getJSONObject("fields")));
 			bqCSVUser.setIsNew(Boolean.TRUE);
 
 			_bqCSVUserRepository.save(bqCSVUser);
@@ -58,6 +63,21 @@ public class CSVUserMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 	@Override
 	protected String getSequenceName() {
 		return "bqcsvuser_id_seq";
+	}
+
+	private JSONArray _toFieldsJSONArray(JSONObject fieldsJSONObject) {
+		JSONArray fieldsJSONArray = new JSONArray();
+
+		for (String key : fieldsJSONObject.keySet()) {
+			fieldsJSONArray.put(
+				JSONUtil.put(
+					"name", key
+				).put(
+					"value", fieldsJSONObject.getString(key)
+				));
+		}
+
+		return fieldsJSONArray;
 	}
 
 	@Autowired
