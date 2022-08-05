@@ -47,11 +47,10 @@ public class ReportDataExporterFactoryTest
 	implements OSBAsahBatchCuratorSpringTestContext {
 
 	@EnumSource(
-		names = {"ACCOUNT", "INDIVIDUAL", "SEGMENT"},
-		value = DataExportTask.Type.class
+		names = {"INDIVIDUAL", "SEGMENT"}, value = DataExportTask.Type.class
 	)
 	@ParameterizedTest
-	public void testCreateReportDataExporterForAccountIndividualAndSegment(
+	public void testCreateReportDataExporterForIndividualAndSegment(
 			DataExportTask.Type type)
 		throws Exception {
 

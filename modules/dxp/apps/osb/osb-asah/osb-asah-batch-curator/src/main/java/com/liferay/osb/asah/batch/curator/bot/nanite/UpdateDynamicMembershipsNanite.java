@@ -52,9 +52,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
-
 /**
  * @author Michael Bowerman
  */
@@ -159,9 +156,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 			while (true) {
 				List<Segment> segments = _segmentDog.searchDynamicSegments(
-					individual.getDataSourceAccountPKs(), filterString,
-					includeAnonymousUsers, page++, individual.getSegmentIds(),
-					10000, Sort.asc("id"));
+					filterString, includeAnonymousUsers, page++,
+					individual.getSegmentIds(), 10000, Sort.asc("id"));
 
 				if (segments.isEmpty()) {
 					break;
@@ -194,28 +190,20 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		Stream<Individual> stream = StreamSupport.stream(
 			individuals.spliterator(), false);
 
-		Map
-			<Tuple2<Set<Individual.DataSourceAccountPK>, Set<Long>>,
-			 List<Individual>> tuple2 = stream.collect(
-				Collectors.groupingBy(
-					individual -> Tuples.of(
-						individual.getDataSourceAccountPKs(),
-						individual.getSegmentIds())));
+		Map<Set<Long>, List<Individual>> individualsMap = stream.collect(
+			Collectors.groupingBy(individual -> individual.getSegmentIds()));
 
-		for (Map.Entry
-				<Tuple2<Set<Individual.DataSourceAccountPK>, Set<Long>>,
-				 List<Individual>> entry : tuple2.entrySet()) {
+		for (Map.Entry<Set<Long>, List<Individual>> entry :
+				individualsMap.entrySet()) {
 
-			Tuple2<Set<Individual.DataSourceAccountPK>, Set<Long>> key =
-				entry.getKey();
+			Set<Long> key = entry.getKey();
 
 			try {
 				int page = 0;
 
 				while (true) {
 					List<Segment> segments = _segmentDog.searchDynamicSegments(
-						key.getT1(), null, false, page++, key.getT2(), 10000,
-						Sort.asc("id"));
+						null, false, page++, key, 10000, Sort.asc("id"));
 
 					if (segments.isEmpty()) {
 						break;

@@ -128,7 +128,7 @@ public class DataControlNaniteTest
 
 		File file = path.toFile();
 
-		Assertions.assertTrue(file.length() > 2000);
+		Assertions.assertTrue(file.length() > 1900);
 	}
 
 	private static final Log _log = LogFactory.getLog(

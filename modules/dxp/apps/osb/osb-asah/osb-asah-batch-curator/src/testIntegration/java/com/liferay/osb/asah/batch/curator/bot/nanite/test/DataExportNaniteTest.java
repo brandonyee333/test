@@ -84,7 +84,7 @@ public class DataExportNaniteTest
 	}
 
 	@EnumSource(
-		names = {"ACCOUNT", "INDIVIDUAL", "PAGE", "SEGMENT"},
+		names = {"INDIVIDUAL", "PAGE", "SEGMENT"},
 		value = DataExportTask.Type.class
 	)
 	@ParameterizedTest
@@ -103,7 +103,7 @@ public class DataExportNaniteTest
 	}
 
 	@EnumSource(
-		names = {"ACCOUNT", "INDIVIDUAL", "PAGE", "SEGMENT"},
+		names = {"INDIVIDUAL", "PAGE", "SEGMENT"},
 		value = DataExportTask.Type.class
 	)
 	@ParameterizedTest
