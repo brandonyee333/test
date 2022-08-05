@@ -214,13 +214,11 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_bqCSVUserRepository.save(
 			FaroInfoTestUtil.buildBQCSVUser(
-				RandomTestUtil.randomUUID(), dataSource1.getId(),
-				_objectMapper.convertValue(new HashMap<>(), JSONObject.class)));
+				RandomTestUtil.randomUUID(), dataSource1.getId()));
 
 		_bqCSVUserRepository.save(
 			FaroInfoTestUtil.buildBQCSVUser(
-				RandomTestUtil.randomUUID(), dataSource2.getId(),
-				_objectMapper.convertValue(new HashMap<>(), JSONObject.class)));
+				RandomTestUtil.randomUUID(), dataSource2.getId()));
 
 		dataSource1.setDeletionDate(new Date());
 

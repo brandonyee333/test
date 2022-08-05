@@ -50,8 +50,7 @@ public class CSVIndividualsRestController extends BaseRestController {
 					Long.valueOf(jsonObject.getString("dataSourceId")));
 				bqCSVUser.setDataSourceUserPK(
 					jsonObject.getString("dataSourceIndividualPK"));
-				bqCSVUser.setFieldsJSONObject(
-					jsonObject.optJSONObject("fields"));
+				bqCSVUser.setFieldsJSONArray(jsonObject.optJSONArray("fields"));
 				bqCSVUser.setModifiedDate(date);
 
 				return bqCSVUser;

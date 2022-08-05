@@ -223,13 +223,12 @@ public class FaroInfoTestUtil {
 	}
 
 	public static BQCSVUser buildBQCSVUser(
-		String dataSourceUserPK, Long dataSourceId, JSONObject fieldsMap) {
+		String dataSourceUserPK, Long dataSourceId) {
 
 		BQCSVUser bqCSVUser = new BQCSVUser();
 
 		bqCSVUser.setDataSourceUserPK(dataSourceUserPK);
 		bqCSVUser.setDataSourceId(dataSourceId);
-		bqCSVUser.setFieldsJSONObject(fieldsMap);
 		bqCSVUser.setId(Long.valueOf(_timeOrderedUuidGenerator.generateId()));
 		bqCSVUser.setIsNew(Boolean.TRUE);
 
