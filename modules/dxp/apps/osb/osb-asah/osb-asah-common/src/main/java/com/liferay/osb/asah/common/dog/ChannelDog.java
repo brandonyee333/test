@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
@@ -134,7 +133,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 		_deleteIndividualReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 
-		_faroInfoActivityDog.deleteActivies(new HashSet<>(channelIds));
+//		_faroInfoActivityDog.deleteActivies(new HashSet<>(channelIds));
 		_segmentDog.deleteSegments(new HashSet<>(channelIds));
 	}
 
@@ -584,9 +583,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@Autowired
 	private IndividualDog _individualDog;
