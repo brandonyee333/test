@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -24,11 +23,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
-import java.util.Iterator;
-import java.util.Set;
-
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -71,36 +66,12 @@ public class IndividualRepositoryTest extends BaseIndividualRepositoryTestCase {
 					AccountRepositoryTest.class)));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
 			Individual individual = _objectMapper.convertValue(
-				jsonObject, Individual.class);
+				jsonArray.getJSONObject(i), Individual.class);
 
 			individual.setIsNew(true);
 
 			individualRepository.save(individual);
-
-			JSONObject demographicsJSONObject = jsonObject.optJSONObject(
-				"demographics");
-
-			if (demographicsJSONObject == null) {
-				continue;
-			}
-
-			Set<String> keys = demographicsJSONObject.keySet();
-
-			Iterator<String> iterator = keys.iterator();
-
-			while (iterator.hasNext()) {
-				String key = iterator.next();
-
-				JSONArray fieldJSONArray = demographicsJSONObject.getJSONArray(
-					key);
-
-				fieldRepository.save(
-					_objectMapper.convertValue(
-						fieldJSONArray.getJSONObject(0), Field.class));
-			}
 		}
 
 		super.testGetIndividualDistributions();
