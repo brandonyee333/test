@@ -50,7 +50,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndividualNanite {
 
-	public void run() throws Exception {
+	public void run() {
 		List<BQIndividual> bqIndividuals = _mergeBQIndividuals(
 			_fetchBQCSVUsersIndividuals(), _fetchBQUsersIndividuals());
 

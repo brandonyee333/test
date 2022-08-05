@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.AnalyticsEventsIngestionNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.DXPEntitiesIngestionNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IdentityIngestionNanite;
+import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IndividualNanite;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,6 +77,11 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 		}
 	}
 
+	@Scheduled(fixedDelay = 1 * DateUtil.MINUTE)
+	public void runIndividualNanite() {
+		_individualNanite.run();
+	}
+
 	@Bean
 	public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
 		ThreadPoolTaskScheduler threadPoolTaskScheduler =
@@ -97,5 +103,8 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 
 	@Autowired
 	private IdentityIngestionNanite _identityIngestionNanite;
+
+	@Autowired
+	private IndividualNanite _individualNanite;
 
 }
