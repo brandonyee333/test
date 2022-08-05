@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -51,9 +51,9 @@ public class BQCSVUser implements Persistable<Long> {
 		this(dataSourceId, null);
 	}
 
-	public BQCSVUser(Long dataSourceId, JSONObject fieldsJSONObject) {
+	public BQCSVUser(Long dataSourceId, JSONArray fieldsJSONArray) {
 		_dataSourceId = dataSourceId;
-		_fieldsJSONObject = fieldsJSONObject;
+		_fieldsJSONArray = fieldsJSONArray;
 	}
 
 	public BQCSVUser(Map<String, Object> source) {
@@ -76,8 +76,9 @@ public class BQCSVUser implements Persistable<Long> {
 			Objects.equals(_dataSourceUserPK, bqCSVUser._dataSourceUserPK) &&
 			Objects.equals(_emailAddress, bqCSVUser._emailAddress) &&
 			Objects.equals(
-				JSONUtil.toMap(_fieldsJSONObject),
-				JSONUtil.toMap(bqCSVUser._fieldsJSONObject)) &&
+				JSONUtil.toSafeList(_fieldsJSONArray, JSONUtil::toMap),
+				JSONUtil.toSafeList(
+					bqCSVUser._fieldsJSONArray, JSONUtil::toMap)) &&
 			Objects.equals(_id, bqCSVUser._id)) {
 
 			return true;
@@ -107,8 +108,8 @@ public class BQCSVUser implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	@Column("fields")
 	@JsonProperty("fields")
-	public JSONObject getFieldsJSONObject() {
-		return _fieldsJSONObject;
+	public JSONArray getFieldsJSONArray() {
+		return _fieldsJSONArray;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -135,7 +136,7 @@ public class BQCSVUser implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_dataSourceId, _dataSourceUserPK, _emailAddress, _fieldsJSONObject,
+			_dataSourceId, _dataSourceUserPK, _emailAddress, _fieldsJSONArray,
 			_id);
 	}
 
@@ -161,8 +162,8 @@ public class BQCSVUser implements Persistable<Long> {
 		_emailAddress = emailAddress;
 	}
 
-	public void setFieldsJSONObject(JSONObject fieldsJSONObject) {
-		_fieldsJSONObject = fieldsJSONObject;
+	public void setFieldsJSONArray(JSONArray fieldsJSONArray) {
+		_fieldsJSONArray = fieldsJSONArray;
 	}
 
 	public void setId(Long id) {
@@ -189,7 +190,7 @@ public class BQCSVUser implements Persistable<Long> {
 	private String _emailAddress;
 
 	@Transient
-	private JSONObject _fieldsJSONObject = new JSONObject();
+	private JSONArray _fieldsJSONArray;
 
 	@Transient
 	private Long _id;

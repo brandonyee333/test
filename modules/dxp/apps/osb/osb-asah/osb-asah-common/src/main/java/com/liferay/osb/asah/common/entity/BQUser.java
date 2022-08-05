@@ -30,6 +30,7 @@ import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -75,9 +76,10 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@Column("fields")
 	@JsonProperty("fields")
-	public JSONArray getFields() {
-		return _fields;
+	public JSONArray getFieldsJSONArray() {
+		return _fieldsJSONArray;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -168,8 +170,8 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		_expandoFields = expandoFields;
 	}
 
-	public void setFields(JSONArray fields) {
-		_fields = fields;
+	public void setFieldsJSONArray(JSONArray fieldsJSONArray) {
+		_fieldsJSONArray = fieldsJSONArray;
 	}
 
 	public void setFirstName(String firstName) {
@@ -226,7 +228,7 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	private List<ExpandoField> _expandoFields;
 
 	@Transient
-	private JSONArray _fields;
+	private JSONArray _fieldsJSONArray;
 
 	@Transient
 	private String _firstName;

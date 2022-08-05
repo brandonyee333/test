@@ -14,19 +14,18 @@
 
 package com.liferay.osb.asah.common.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
 import java.util.Map;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -52,9 +51,10 @@ public class BQIndividual implements Persistable<String> {
 		return _emailAddressHashed;
 	}
 
-	@JsonProperty("fields")
-	public JSONObject getFieldsJSONObject() {
-		return _fieldsJSONObject;
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("fields")
+	public JSONArray getFieldsJSONArray() {
+		return _fieldsJSONArray;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -90,8 +90,8 @@ public class BQIndividual implements Persistable<String> {
 		_emailAddressHashed = emailAddressHashed;
 	}
 
-	public void setFieldsJSONObject(JSONObject fieldsJSONObject) {
-		_fieldsJSONObject = fieldsJSONObject;
+	public void setFieldsJSONArray(JSONArray fieldsJSONArray) {
+		_fieldsJSONArray = fieldsJSONArray;
 	}
 
 	public void setId(String id) {
@@ -115,7 +115,7 @@ public class BQIndividual implements Persistable<String> {
 	private String _emailAddressHashed;
 
 	@Transient
-	private JSONObject _fieldsJSONObject;
+	private JSONArray _fieldsJSONArray;
 
 	@Transient
 	private String _id;

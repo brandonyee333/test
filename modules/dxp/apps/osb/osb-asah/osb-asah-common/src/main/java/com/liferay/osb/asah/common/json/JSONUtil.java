@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -562,6 +563,22 @@ public class JSONUtil {
 
 	public static Stream<Object> toObjectStream(JSONArray jsonArray) {
 		return StreamSupport.stream(jsonArray.spliterator(), false);
+	}
+
+	public static <T> List<T> toSafeList(
+		JSONArray jsonArray, Function<JSONObject, T> safeFunction) {
+
+		if (jsonArray == null) {
+			return new ArrayList<>();
+		}
+
+		List<T> values = new ArrayList<>(jsonArray.length());
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			values.add(safeFunction.apply(jsonArray.getJSONObject(i)));
+		}
+
+		return values;
 	}
 
 	public static String[] toStringArray(JSONArray jsonArray) {
