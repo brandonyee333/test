@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.FieldMappingDog;
-import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -28,7 +27,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -173,20 +171,16 @@ public class FieldDogTest
 	private void _testDateField(Object date, String expectedDateString)
 		throws Exception {
 
-		BQCSVUser bqCSVUser = _bqCSVUserRepository.save(
-			FaroInfoTestUtil.buildBQCSVUser(
-				RandomTestUtil.randomUUID(), _dataSource.getId(),
-				_objectMapper.convertValue(
-					new HashMap<String, Object>() {
-						{
-							put("date", date);
-						}
-					},
-					JSONObject.class)));
-
 		List<Field> fields = _fieldDog.addFields(
-			"demographics", bqCSVUser.getFieldsJSONObject(), _dataSource, null,
-			"individual");
+			"demographics",
+			_objectMapper.convertValue(
+				new HashMap<String, Object>() {
+					{
+						put("date", date);
+					}
+				},
+				JSONObject.class),
+			_dataSource, null, "individual");
 
 		Field dateField = fields.get(0);
 

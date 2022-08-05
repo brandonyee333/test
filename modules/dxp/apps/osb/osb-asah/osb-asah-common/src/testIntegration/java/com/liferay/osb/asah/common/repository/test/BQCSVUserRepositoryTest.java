@@ -68,12 +68,29 @@ public class BQCSVUserRepositoryTest
 		_dataSourceRepository.save(dataSource);
 
 		BQCSVUser bqCSVUser1 = new BQCSVUser(
-			1L, JSONUtil.put("givenName", "Bennie"));
+			1L,
+			JSONUtil.putAll(
+				JSONUtil.put(
+					"name", "givenName"
+				).put(
+					"value", "Bennie"
+				),
+				JSONUtil.put(
+					"name", "age"
+				).put(
+					"value", "20"
+				)));
 
 		bqCSVUser1.setDataSourceUserPK("1");
 
 		BQCSVUser bqCSVUser2 = new BQCSVUser(
-			1L, JSONUtil.put("givenName", "Ellie"));
+			1L,
+			JSONUtil.putAll(
+				JSONUtil.put(
+					"name", "givenName"
+				).put(
+					"value", "Ellie"
+				)));
 
 		bqCSVUser2.setDataSourceUserPK("2");
 
@@ -120,14 +137,6 @@ public class BQCSVUserRepositoryTest
 			_bqCSVUserRepository.findByDataSourceId(1L, PageRequest.of(0, 10));
 
 		Assertions.assertEquals(2L, bqCSVIdentitiesById.size());
-	}
-
-	@Test
-	public void testFindByDataSourceIdAndFieldKeyEquals() {
-		Assertions.assertEquals(
-			Arrays.asList(_bqCSVUser2),
-			_bqCSVUserRepository.findByDataSourceIdAndFieldKeyEquals(
-				1L, "givenName", "Ellie"));
 	}
 
 	@Override
