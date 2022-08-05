@@ -75,15 +75,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 		QueryBuilder queryBuilder = null;
 
-		if (customFunctionName.equals("accounts.filter")) {
-			queryBuilder = _getFilterFunctionQueryBuilder(
-				arguments, "accounts");
-		}
-		else if (customFunctionName.equals("accounts.filterByCount")) {
-			queryBuilder = _getFilterByCountFunctionQueryBuilder(
-				arguments, "accounts");
-		}
-		else if (customFunctionName.equals("activities.filter")) {
+		if (customFunctionName.equals("activities.filter")) {
 			queryBuilder = _getFilterFunctionQueryBuilder(
 				arguments, "activities");
 		}

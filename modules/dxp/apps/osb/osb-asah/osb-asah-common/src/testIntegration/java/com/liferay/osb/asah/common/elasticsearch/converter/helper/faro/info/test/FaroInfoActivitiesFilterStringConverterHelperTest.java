@@ -16,8 +16,6 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.tes
 
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.SegmentRepository;
-import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,29 +30,6 @@ public class FaroInfoActivitiesFilterStringConverterHelperTest
 	@Override
 	public FilterStringConverterHelper getFilterStringConverterHelper() {
 		return _faroInfoActivitiesFilterStringConverterHelper;
-	}
-
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
-	@Test
-	public void testAccountIdEq() throws Exception {
-		testFilterString(
-			"activities", "accountId eq '346306769708391202'",
-			"348853926240043268", "348853926240043280", "348853926240065234",
-			"348853932273096308", "357731168283574900", "357731168283574901",
-			"357731168283574902", "357731168283574903", "357731168283574904",
-			"349395508504086369");
-	}
-
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
-	@Test
-	public void testAccountIdNe() throws Exception {
-		testFilterString("activities", "accountId ne '346306769708391202'");
 	}
 
 	@Test

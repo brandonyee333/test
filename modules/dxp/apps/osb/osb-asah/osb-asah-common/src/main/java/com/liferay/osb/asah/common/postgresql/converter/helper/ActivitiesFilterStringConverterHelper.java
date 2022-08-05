@@ -15,10 +15,7 @@
 package com.liferay.osb.asah.common.postgresql.converter.helper;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -26,10 +23,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.sql.Timestamp;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -54,14 +48,6 @@ public class ActivitiesFilterStringConverterHelper
 	@Override
 	public Condition getLogicFunctionCondition(
 		String fieldName, String operator, String valueString) {
-
-		if (fieldName.equals("accountId") &&
-			_isIdFilter(operator, valueString)) {
-
-			return _getAccountIdCondition(
-				StringUtil.unquote(valueString),
-				operator.equalsIgnoreCase("ne"));
-		}
 
 		if (fieldName.equals("channelId") || fieldName.equals("ownerId")) {
 			Field<Long> field = DSL.field(
@@ -94,49 +80,6 @@ public class ActivitiesFilterStringConverterHelper
 		return null;
 	}
 
-	private Condition _getAccountIdCondition(String accountId, boolean negate) {
-		Segment segment = _segmentDog.fetchSegment(
-			"Account: " + accountId, "INACTIVE");
-
-		if (segment == null) {
-			return null;
-		}
-
-		List<Individual> individuals = _individualRepository.findBySegmentIds(
-			segment.getId());
-
-		Stream<Individual> stream = individuals.stream();
-
-		List<String> individualIds = stream.map(
-			individual -> String.valueOf(individual.getId())
-		).collect(
-			Collectors.toList()
-		);
-
-		Condition condition = null;
-
-		if (individualIds.isEmpty()) {
-			condition = DSL.field(
-				"ownerId"
-			).eq(
-				0
-			);
-		}
-		else {
-			condition = DSL.field(
-				"ownerId"
-			).in(
-				individualIds
-			);
-		}
-
-		if (negate) {
-			return DSL.not(condition);
-		}
-
-		return condition;
-	}
-
 	private Condition _getDayDateCondition(
 		String operator, String valueString) {
 
@@ -156,26 +99,11 @@ public class ActivitiesFilterStringConverterHelper
 		return condition;
 	}
 
-	private boolean _isIdFilter(String operator, String valueString) {
-		if ((operator.equalsIgnoreCase("eq") ||
-			 operator.equalsIgnoreCase("ne")) &&
-			(valueString.length() >= 2) && valueString.startsWith("'") &&
-			valueString.endsWith("'")) {
-
-			return true;
-		}
-
-		return false;
-	}
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	@Lazy
 	private IndividualRepository _individualRepository;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 }

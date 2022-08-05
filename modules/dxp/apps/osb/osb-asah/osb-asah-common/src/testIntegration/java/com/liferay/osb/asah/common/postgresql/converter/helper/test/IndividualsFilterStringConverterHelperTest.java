@@ -987,24 +987,6 @@ public class IndividualsFilterStringConverterHelperTest
 
 			Map<Long, BQDataSourceUser> bqDataSourceUsers = new HashMap<>();
 
-			JSONArray dataSourceAccountPKsJSONArray = jsonObject.optJSONArray(
-				"dataSourceAccountPKs");
-
-			if (dataSourceAccountPKsJSONArray != null) {
-				for (int j = 0; j < dataSourceAccountPKsJSONArray.length();
-					 j++) {
-
-					JSONObject dataSourceAccountPKJSONObject =
-						dataSourceAccountPKsJSONArray.getJSONObject(j);
-
-					bqDataSourceUsers.put(
-						dataSourceAccountPKJSONObject.getLong("dataSourceId"),
-						_objectMapper.convertValue(
-							dataSourceAccountPKJSONObject,
-							BQDataSourceUser.class));
-				}
-			}
-
 			JSONArray dataSourceIndividualPKsJSONArray =
 				jsonObject.optJSONArray("dataSourceIndividualPKs");
 

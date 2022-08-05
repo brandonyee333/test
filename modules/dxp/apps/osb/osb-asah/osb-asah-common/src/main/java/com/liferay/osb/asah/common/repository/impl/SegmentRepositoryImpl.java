@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.CustomSegmentRepository;
@@ -24,7 +23,6 @@ import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -172,35 +170,6 @@ public class SegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchDynamicSegments(
-		FilterHelper filterHelper, Pageable pageable) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.from(
-			"Segment"
-		).where(
-			DSL.and(
-				filterHelper.getCondition(),
-				DSL.field(
-					"type"
-				).eq(
-					Segment.Type.DYNAMIC.toString()
-				))
-		).orderBy(
-			getSortFields(
-				_getSortFieldNameConversionMap(), pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new Segment(record.intoMap())
-		);
-	}
-
-	@Override
-	public List<Segment> searchDynamicSegments(
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
 		FilterHelper filterHelper, @Nullable Boolean includeAnonymousUsers,
 		Pageable pageable, Set<Long> segmentIds) {
 
@@ -217,60 +186,24 @@ public class SegmentRepositoryImpl
 			conditions.add(filterHelper.getCondition());
 		}
 
-		if (CollectionUtils.isEmpty(dataSourceAccountPKs)) {
-			conditions.add(
-				DSL.not(
-					DSL.and(
-						DSL.field(
-							"filter"
-						).startsWith(
-							"((dataSourceAccountPKs/accountPKs eq '"
-						),
-						DSL.field(
-							"name"
-						).startsWith(
-							"Account: "
-						),
-						DSL.field(
-							"status"
-						).eq(
-							"INACTIVE"
-						))));
-		}
-		else {
-			Set<String> filterStrings = new HashSet<>();
-
-			for (Individual.DataSourceAccountPK dataSourceAccountPK :
-					dataSourceAccountPKs) {
-
-				Set<String> accountPKs = dataSourceAccountPK.getAccountPKs();
-
-				for (String accountPK : accountPKs) {
-					filterStrings.add(
-						"((dataSourceAccountPKs/accountPKs eq '" + accountPK +
-							"'))");
-				}
-			}
-
-			conditions.add(
-				DSL.or(
+		conditions.add(
+			DSL.not(
+				DSL.and(
+					DSL.field(
+						"filter"
+					).startsWith(
+						"((dataSourceAccountPKs/accountPKs eq '"
+					),
+					DSL.field(
+						"name"
+					).startsWith(
+						"Account: "
+					),
 					DSL.field(
 						"status"
 					).eq(
-						"ACTIVE"
-					),
-					DSL.and(
-						DSL.field(
-							"status"
-						).eq(
-							"INACTIVE"
-						),
-						DSL.field(
-							"filter"
-						).in(
-							filterStrings
-						))));
-		}
+						"INACTIVE"
+					))));
 
 		if (includeAnonymousUsers != null) {
 			if (!includeAnonymousUsers) {
@@ -310,6 +243,34 @@ public class SegmentRepositoryImpl
 			"Segment"
 		).where(
 			conditions
+		).orderBy(
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+			record -> new Segment(record.intoMap())
+		);
+	}
+
+	@Override
+	public List<Segment> searchDynamicSegments(
+		FilterHelper filterHelper, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			DSL.and(
+				filterHelper.getCondition(),
+				DSL.field(
+					"type"
+				).eq(
+					Segment.Type.DYNAMIC.toString()
+				))
 		).orderBy(
 			getSortFields(
 				_getSortFieldNameConversionMap(), pageable.getSort(), null)

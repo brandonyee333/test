@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 
@@ -106,21 +105,8 @@ public class VisitedPagesTransformationJSONArrayFunction
 					"Owner ID must be accompanied by owner type");
 			}
 
-			if (_ownerType.equals("account") ||
-				_ownerType.equals("individual-segment")) {
-
+			if (_ownerType.equals("individual-segment")) {
 				Long segmentId = _ownerId;
-
-				if (_ownerType.equals("account")) {
-					Segment segment = _segmentDog.fetchSegment(
-						"Account: " + _ownerId, "INACTIVE");
-
-					if (segment == null) {
-						return new JSONArray();
-					}
-
-					segmentId = segment.getId();
-				}
 
 				List<String> identityIds =
 					_bqMembershipDog.getActiveIdentityIds(segmentId);

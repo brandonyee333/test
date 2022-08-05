@@ -76,7 +76,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -239,18 +238,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		BQDataSourceUser bqDataSourceUser = new BQDataSourceUser();
 
 		bqDataSourceUser.setDataSourceId(dataSource.getId());
-
-		String providerType = dataSource.getProviderType();
-
-		if (providerType.equals("SALESFORCE")) {
-			JSONArray dataAccountPKsJSONArray = dataJSONObject.optJSONArray(
-				"accountPKs");
-
-			if (dataAccountPKsJSONArray != null) {
-				bqDataSourceUser.setAccountPKs(
-					JSONUtil.toStringSet(dataAccountPKsJSONArray));
-			}
-		}
 
 		if (dataId != null) {
 			bqDataSourceUser.setUserPKs(Collections.singleton(dataId));
@@ -630,13 +617,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	public Iterable<Individual> fetchIndividuals(Set<Long> individualIds) {
 		return _individualRepository.findAllById(individualIds);
-	}
-
-	public List<String> getAccountPKs(
-		Long channelId, Long individualSegmentId) {
-
-		return _individualRepository.findAccountPKsByChannelIdAndSegmentId(
-			channelId, individualSegmentId);
 	}
 
 	public List<Individual.ActivitiesCount> getActivitiesCounts(
@@ -1075,29 +1055,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 			List<Individual> individuals)
 		throws Exception {
 
-		Long dataSourceId = dataSource.getId();
-
-		boolean dataAccountPKsUpdated = false;
-
-		String providerType = dataSource.getProviderType();
-
-		if (providerType.equals("SALESFORCE")) {
-			JSONArray dataAccountPKsJSONArray = dataJSONObject.optJSONArray(
-				"accountPKs");
-
-			if (dataAccountPKsJSONArray != null) {
-				Set<String> accountPKs = JSONUtil.toStringSet(
-					dataAccountPKsJSONArray);
-
-				for (Individual individual : individuals) {
-					_addDataSourceAccountPKs(
-						accountPKs, dataSourceId, individual);
-				}
-
-				dataAccountPKsUpdated = true;
-			}
-		}
-
 		List<Long> individualIds = ListUtil.map(individuals, Individual::getId);
 
 		List<Field> previousFields = _fieldDog.getFields(
@@ -1153,7 +1110,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		if ((fieldsJSONObject.names() != null) &&
 			((previousFields.size() != fields.size()) ||
 			 !previousFields.containsAll(fields) ||
-			 !fields.containsAll(previousFields) || dataAccountPKsUpdated)) {
+			 !fields.containsAll(previousFields))) {
 
 			for (Individual individual : updatedIndividuals) {
 				individual.setLastEnrichmentDate(new Date());
@@ -1267,24 +1224,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 			addDataSourceUserPK(dataId, dataSourceId, individual);
 		}
 
-		boolean dataAccountPKsUpdated = false;
-
-		String providerType = dataSource.getProviderType();
-
-		if (providerType.equals("SALESFORCE")) {
-			JSONArray dataAccountPKsJSONArray = dataJSONObject.optJSONArray(
-				"accountPKs");
-
-			if (dataAccountPKsJSONArray != null) {
-				Set<String> accountPKs = JSONUtil.toStringSet(
-					dataAccountPKsJSONArray);
-
-				_addDataSourceAccountPKs(accountPKs, dataSourceId, individual);
-
-				dataAccountPKsUpdated = true;
-			}
-		}
-
 		_setFirstEnrichmentDate(individual);
 
 		List<Field> previousFields = _fieldDog.getOwnerIdFields(
@@ -1328,7 +1267,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		if ((fieldsJSONObject.names() != null) &&
 			((previousFields.size() != fields.size()) ||
 			 !previousFields.containsAll(fields) ||
-			 !fields.containsAll(previousFields) || dataAccountPKsUpdated)) {
+			 !fields.containsAll(previousFields))) {
 
 			individual.setLastEnrichmentDate(new Date());
 		}
@@ -1380,40 +1319,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		_individualModified(individual);
 
 		return individual;
-	}
-
-	private void _addDataSourceAccountPKs(
-		Set<String> accountPKs, Long dataSourceId, Individual individual) {
-
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs =
-			individual.getDataSourceAccountPKs();
-
-		Stream<Individual.DataSourceAccountPK> stream =
-			dataSourceAccountPKs.stream();
-
-		if (stream.noneMatch(
-				dataSourceAccountPK -> Objects.equals(
-					dataSourceId, dataSourceAccountPK.getDataSourceId()))) {
-
-			dataSourceAccountPKs.add(
-				new Individual.DataSourceAccountPK(
-					new BQDataSourceUser(
-						accountPKs, dataSourceId, individual.getId(),
-						Collections.emptySet())));
-		}
-		else {
-			stream = dataSourceAccountPKs.stream();
-
-			stream.filter(
-				dataSourceAccountPK -> Objects.equals(
-					dataSourceId, dataSourceAccountPK.getDataSourceId())
-			).forEach(
-				dataSourceAccountPK -> dataSourceAccountPK.setAccountPKs(
-					accountPKs)
-			);
-		}
-
-		individual.setDataSourceAccountPKs(dataSourceAccountPKs);
 	}
 
 	private String _escapeKeywords(String keywords) {

@@ -192,22 +192,6 @@ public class VisitedPagesTransformationJSONArrayFunctionTest
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
 			new VisitedPagesTransformationJSONArrayFunction(
 				_asahMarkerDog, _assetDog, _bqMembershipDog,
-				386700291682772906L, "account", _segmentDog, true);
-
-		JSONAssert.assertEquals(
-			new JSONArray(
-				ResourceUtil.readResourceToString(
-					"dependencies/expected_visited_pages_account.json", this)),
-			transformationJSONArrayFunction.apply(
-				"visited-pages", null, _elasticsearchInvoker, 0, 20,
-				Collections.singletonList(
-					Pair.of("uniqueVisitsCount", SortOrder.DESC)),
-				"url", null),
-			true);
-
-		transformationJSONArrayFunction =
-			new VisitedPagesTransformationJSONArrayFunction(
-				_asahMarkerDog, _assetDog, _bqMembershipDog,
 				386700289195644932L, "individual-segment", _segmentDog, true);
 
 		JSONAssert.assertEquals(

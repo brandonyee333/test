@@ -72,12 +72,6 @@ public class Individual implements Persistable<Long> {
 
 		_bqDataSourceUsers.add(bqDataSourceUser);
 
-		if (_dataSourceAccountPKs == null) {
-			_dataSourceAccountPKs = new HashSet<>();
-		}
-
-		_dataSourceAccountPKs.add(new DataSourceAccountPK(bqDataSourceUser));
-
 		if (_dataSourceUserPKs == null) {
 			_dataSourceUserPKs = new HashSet<>();
 		}
@@ -188,12 +182,6 @@ public class Individual implements Persistable<Long> {
 		).collect(
 			Collectors.toSet()
 		);
-	}
-
-	@JsonAlias("dataSourceAccountPKs")
-	@JsonProperty("dataSourceAccountPKs")
-	public Set<DataSourceAccountPK> getDataSourceAccountPKs() {
-		return _dataSourceAccountPKs;
 	}
 
 	@JsonAlias("dataSourceUserPKs")
@@ -353,8 +341,6 @@ public class Individual implements Persistable<Long> {
 	public void setBQDataSourceUsers(Set<BQDataSourceUser> bqDataSourceUsers) {
 		_bqDataSourceUsers = bqDataSourceUsers;
 
-		_dataSourceAccountPKs = SetUtil.map(
-			_bqDataSourceUsers, DataSourceAccountPK::new);
 		_dataSourceUserPKs = SetUtil.map(
 			_bqDataSourceUsers, DataSourceUserPK::new);
 	}
@@ -413,26 +399,6 @@ public class Individual implements Persistable<Long> {
 		_customFields = fields;
 
 		_customDemographics = new Demographics(fields);
-	}
-
-	public void setDataSourceAccountPKs(
-		Set<DataSourceAccountPK> dataSourceAccountPKs) {
-
-		_dataSourceAccountPKs = dataSourceAccountPKs;
-
-		for (DataSourceAccountPK dataSourceAccountPK : dataSourceAccountPKs) {
-			Stream<BQDataSourceUser> bqDataSourceUserStream =
-				_bqDataSourceUsers.stream();
-
-			bqDataSourceUserStream.filter(
-				bqDataSourceUser -> Objects.equals(
-					bqDataSourceUser.getDataSourceId(),
-					dataSourceAccountPK.getDataSourceId())
-			).forEach(
-				bqDataSourceUser -> bqDataSourceUser.setAccountPKs(
-					dataSourceAccountPK.getAccountPKs())
-			);
-		}
 	}
 
 	public void setDataSourceUserPKs(Set<DataSourceUserPK> dataSourceUserPKs) {
@@ -695,73 +661,6 @@ public class Individual implements Persistable<Long> {
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class DataSourceAccountPK {
-
-		public DataSourceAccountPK() {
-		}
-
-		public DataSourceAccountPK(BQDataSourceUser bqDataSourceUser) {
-			if (!CollectionUtils.isEmpty(bqDataSourceUser.getAccountPKs())) {
-				_accountPKs = bqDataSourceUser.getAccountPKs();
-				_dataSourceId = bqDataSourceUser.getDataSourceId();
-			}
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof DataSourceAccountPK)) {
-				return false;
-			}
-
-			DataSourceAccountPK dataSourceAccountPK = (DataSourceAccountPK)obj;
-
-			if (Objects.equals(_accountPKs, dataSourceAccountPK._accountPKs) &&
-				Objects.equals(
-					_dataSourceId, dataSourceAccountPK._dataSourceId)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		@JsonProperty("accountPKs")
-		public Set<String> getAccountPKs() {
-			return _accountPKs;
-		}
-
-		@JsonProperty("dataSourceId")
-		@JsonSerialize(using = ToStringSerializer.class)
-		public Long getDataSourceId() {
-			return _dataSourceId;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_accountPKs, _dataSourceId);
-		}
-
-		public void setAccountPKs(Set<String> accountPKs) {
-			_accountPKs = accountPKs;
-		}
-
-		public void setDataSourceId(Long dataSourceId) {
-			_dataSourceId = dataSourceId;
-		}
-
-		@Transient
-		private Set<String> _accountPKs = new HashSet<>();
-
-		@Transient
-		private Long _dataSourceId;
-
-	}
-
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class DataSourceUserPK {
 
 		public DataSourceUserPK() {
@@ -913,9 +812,6 @@ public class Individual implements Persistable<Long> {
 
 	@Transient
 	private Set<Field> _customFields = new HashSet<>();
-
-	@Transient
-	private Set<DataSourceAccountPK> _dataSourceAccountPKs = new HashSet<>();
 
 	@Transient
 	private Set<DataSourceUserPK> _dataSourceUserPKs = new HashSet<>();

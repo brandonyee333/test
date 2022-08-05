@@ -27,12 +27,6 @@ public class SegmentDogTest {
 	@Test
 	public void testParserFilter() {
 		Assertions.assertEquals(
-			"(accounts.filter(filter='(organization/rating/value eq '4.6')'))",
-			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
-				"(accounts.filter(filter='(organization/rating/value eq " +
-					"'4.6')'))"));
-		Assertions.assertEquals(
 			"demographics/additionalName/value eq 'Miles'",
 			ReflectionTestUtils.invokeMethod(
 				_segmentDog, "_parserFilter",

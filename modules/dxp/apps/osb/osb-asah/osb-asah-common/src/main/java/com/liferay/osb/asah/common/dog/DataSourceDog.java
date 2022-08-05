@@ -723,7 +723,9 @@ public class DataSourceDog {
 
 	private static final Log _log = LogFactory.getLog(DataSourceDog.class);
 
+	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
+
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(10, 1);
 

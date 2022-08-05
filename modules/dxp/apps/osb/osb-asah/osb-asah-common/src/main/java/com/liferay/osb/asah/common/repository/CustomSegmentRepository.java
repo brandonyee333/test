@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -51,13 +50,12 @@ public interface CustomSegmentRepository {
 
 	@Cacheable
 	public List<Segment> searchDynamicSegments(
-		FilterHelper filterHelper, Pageable pageable);
+		FilterHelper filterHelper, @Nullable Boolean includeAnonymousUsers,
+		Pageable pageable, Set<Long> segmentIds);
 
 	@Cacheable
 	public List<Segment> searchDynamicSegments(
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
-		FilterHelper filterHelper, @Nullable Boolean includeAnonymousUsers,
-		Pageable pageable, Set<Long> segmentIds);
+		FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
 	public List<Segment> searchPreviewDisabledSegments(

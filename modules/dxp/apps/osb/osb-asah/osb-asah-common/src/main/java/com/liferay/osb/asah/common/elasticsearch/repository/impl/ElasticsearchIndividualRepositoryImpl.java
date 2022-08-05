@@ -414,68 +414,6 @@ public class ElasticsearchIndividualRepositoryImpl
 	}
 
 	@Override
-	public List<String> findAccountPKsByChannelIdAndSegmentId(
-		Long channelId, Long segmentId) {
-
-		List<String> accountPKs = new ArrayList<>();
-
-		if ((channelId == null) && (segmentId == null)) {
-			return accountPKs;
-		}
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		if (channelId != null) {
-			BoolQueryBuilderUtil.filterTerm(
-				boolQueryBuilder, "channelIds", String.valueOf(channelId));
-		}
-
-		if (segmentId != null) {
-			BoolQueryBuilderUtil.filterTerm(
-				boolQueryBuilder, "individualSegmentIds",
-				String.valueOf(segmentId));
-		}
-
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			_getCollectionName(),
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.nested(
-						"dataSourceAccountPKs", "dataSourceAccountPKs"
-					).subAggregation(
-						AggregationBuilders.terms(
-							"accountPKs"
-						).field(
-							"dataSourceAccountPKs.accountPKs"
-						).size(
-							Integer.MAX_VALUE
-						)
-					));
-				searchSourceBuilder.query(boolQueryBuilder);
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		if (_isEmpty(aggregations)) {
-			return accountPKs;
-		}
-
-		InternalNested internalNested = aggregations.get(
-			"dataSourceAccountPKs");
-
-		Aggregations internalAggregations = internalNested.getAggregations();
-
-		Terms terms = internalAggregations.get("accountPKs");
-
-		for (Terms.Bucket termsBucket : terms.getBuckets()) {
-			accountPKs.add(termsBucket.getKeyAsString());
-		}
-
-		return accountPKs;
-	}
-
-	@Override
 	public List<Individual.ActivitiesCount> findActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 
@@ -1698,26 +1636,6 @@ public class ElasticsearchIndividualRepositoryImpl
 		individual.setBQIdentityChannels(
 			new HashSet<>(bqIdentityChannelsMap.values()));
 
-		if (jsonObject.has("dataSourceAccountPKs")) {
-			JSONArray dataSourceAccountPKsJSONArray = jsonObject.getJSONArray(
-				"dataSourceAccountPKs");
-
-			for (int i = 0; i < dataSourceAccountPKsJSONArray.length(); i++) {
-				JSONObject dataSourceAccountPKJSONObject =
-					dataSourceAccountPKsJSONArray.getJSONObject(i);
-
-				JSONArray accountPKsJSONArray =
-					dataSourceAccountPKJSONObject.getJSONArray("accountPKs");
-
-				individual.addBQDataSourceUser(
-					new BQDataSourceUser(
-						SetUtil.map(
-							accountPKsJSONArray.toList(), String::valueOf),
-						dataSourceAccountPKJSONObject.getLong("dataSourceId"),
-						individual.getId(), null));
-			}
-		}
-
 		if (jsonObject.has("dataSourceIndividualPKs")) {
 			JSONArray dataSourceIndividualPKsJSONArray =
 				jsonObject.getJSONArray("dataSourceIndividualPKs");
@@ -1821,41 +1739,6 @@ public class ElasticsearchIndividualRepositoryImpl
 			catch (Exception exception) {
 				throw new RuntimeException(exception);
 			}
-		}
-
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs =
-			individual.getDataSourceAccountPKs();
-
-		if (CollectionUtils.isNotEmpty(dataSourceAccountPKs)) {
-			JSONArray dataSourceAccountPKsJSONArray = new JSONArray();
-
-			for (Individual.DataSourceAccountPK dataSourceAccountPK :
-					dataSourceAccountPKs) {
-
-				if (CollectionUtils.isNotEmpty(
-						dataSourceAccountPK.getAccountPKs())) {
-
-					try {
-						dataSourceAccountPKsJSONArray.put(
-							JSONUtil.put(
-								"accountPKs",
-								new JSONArray(
-									_objectMapper.writeValueAsString(
-										dataSourceAccountPK.getAccountPKs()))
-							).put(
-								"dataSourceId",
-								String.valueOf(
-									dataSourceAccountPK.getDataSourceId())
-							));
-					}
-					catch (JsonProcessingException jsonProcessingException) {
-						throw new RuntimeException(jsonProcessingException);
-					}
-				}
-			}
-
-			jsonObject.put(
-				"dataSourceAccountPKs", dataSourceAccountPKsJSONArray);
 		}
 
 		Set<Individual.DataSourceUserPK> dataSourceUserPKs =

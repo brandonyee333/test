@@ -15,19 +15,10 @@
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
-import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.List;
-
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,61 +35,11 @@ public class FaroInfoActivitiesFilterStringConverterHelper
 			String fieldName, String operator, String valueString)
 		throws Exception {
 
-		if (fieldName.equals("accountId") &&
-			_isIdFilter(operator, valueString)) {
-
-			return _getAccountIdQueryBuilder(
-				StringUtil.unquote(valueString),
-				operator.equalsIgnoreCase("ne"));
-		}
-
 		return getTimeFrameQueryBuilder(
 			fieldName, operator, "activities", valueString);
 	}
 
-	private QueryBuilder _getAccountIdQueryBuilder(
-			String accountId, boolean negate)
-		throws Exception {
-
-		Segment segment = _segmentDog.fetchSegment(
-			"Account: " + accountId, "INACTIVE");
-
-		if (segment == null) {
-			return null;
-		}
-
-		List<Long> individualIds = _individualDog.getIdsBySegmentId(
-			segment.getId());
-
-		if (negate) {
-			return BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.termsQuery(
-					"ownerId", ListUtil.map(individualIds, String::valueOf)));
-		}
-
-		return QueryBuilders.termsQuery(
-			"ownerId", ListUtil.map(individualIds, String::valueOf));
-	}
-
-	private boolean _isIdFilter(String operator, String valueString) {
-		if ((operator.equalsIgnoreCase("eq") ||
-			 operator.equalsIgnoreCase("ne")) &&
-			(valueString.length() >= 2) && valueString.startsWith("'") &&
-			valueString.endsWith("'")) {
-
-			return true;
-		}
-
-		return false;
-	}
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private IndividualDog _individualDog;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 }

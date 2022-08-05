@@ -371,69 +371,6 @@ public class IndividualRepositoryImpl
 	}
 
 	@Override
-	public List<String> findAccountPKsByChannelIdAndSegmentId(
-		@Nullable Long channelId, @Nullable Long segmentId) {
-
-		List<Condition> conditions = new ArrayList<>();
-
-		if (channelId != null) {
-			conditions.add(
-				DSL.field(
-					DSL.cast(
-						DSL.array(DSL.field("individual.channelids")),
-						Long[].class)
-				).contains(
-					DSL.cast(DSL.array(channelId), Long[].class)
-				));
-		}
-
-		if (segmentId != null) {
-			conditions.add(
-				DSL.field(
-					DSL.cast(
-						DSL.array(DSL.field("individual.segmentids")),
-						Long[].class)
-				).contains(
-					DSL.cast(DSL.array(segmentId), Long[].class)
-				));
-		}
-
-		Field<Object> accountPKField = DSL.field("accountPK");
-
-		SelectSelectStep<Record1<Object>> selectSelectStep =
-			_dslContext.selectDistinct(accountPKField);
-
-		return selectSelectStep.from(
-			_dslContext.select(
-				DSL.function(
-					"unnest", String.class,
-					DSL.field("BQDataSourceUser.accountPKs")
-				).as(
-					accountPKField
-				)
-			).from(
-				"Individual"
-			).join(
-				"BQDataSourceUser"
-			).on(
-				DSL.field(
-					"individual.id"
-				).eq(
-					DSL.field("bqdatasourceuser.userid")
-				)
-			).where(
-				conditions
-			)
-		).groupBy(
-			accountPKField
-		).orderBy(
-			accountPKField
-		).fetch(
-			record -> (String)record.get(accountPKField)
-		);
-	}
-
-	@Override
 	public List<Individual.ActivitiesCount> findActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId) {
 

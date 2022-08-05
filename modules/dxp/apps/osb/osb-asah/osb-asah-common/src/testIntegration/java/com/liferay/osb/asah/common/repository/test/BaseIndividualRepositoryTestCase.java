@@ -430,15 +430,6 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Test
-	public void testFindAccountPKsByChannelIdAndSegmentId() {
-		List<String> accountPKs =
-			individualRepository.findAccountPKsByChannelIdAndSegmentId(
-				11L, _segmentId);
-
-		Assertions.assertEquals(Arrays.asList("1234", "5678"), accountPKs);
-	}
-
-	@Test
 	public void testFindActivitiesCounts() {
 		List<Individual.ActivitiesCount> activitiesCounts =
 			individualRepository.findActivitiesCounts(false, _segmentId);

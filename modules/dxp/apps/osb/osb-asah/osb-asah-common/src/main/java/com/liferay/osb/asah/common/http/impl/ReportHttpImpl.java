@@ -36,14 +36,6 @@ public class ReportHttpImpl implements ReportHttp {
 	}
 
 	@Override
-	public JSONObject getAccountsJSONObject(
-		String afterId, String fromDate, String toDate) {
-
-		return _httpGetJSONObject(
-			_getPath(afterId, fromDate, toDate, "accounts"));
-	}
-
-	@Override
 	public JSONObject getIndividualsJSONObject(
 		String afterId, String fromDate, String toDate) {
 

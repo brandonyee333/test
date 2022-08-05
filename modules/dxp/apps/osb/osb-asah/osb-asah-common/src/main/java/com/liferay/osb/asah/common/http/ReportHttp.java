@@ -21,9 +21,6 @@ import org.json.JSONObject;
  */
 public interface ReportHttp {
 
-	public JSONObject getAccountsJSONObject(
-		String afterId, String fromDate, String toDate);
-
 	public JSONObject getIndividualsJSONObject(
 		String afterId, String fromDate, String toDate);
 

@@ -102,11 +102,11 @@ public class SegmentRepositoryTest
 
 		_dataSourceRepository.save(dataSource);
 
-		Segment segment4 = new Segment();
+		Segment segment3 = new Segment();
 
-		segment4.setName("Account: 456");
+		segment3.setName("Account: 456");
 
-		setUpRepository(segment1, segment2, segment4);
+		setUpRepository(segment1, segment2, segment3);
 
 		segment1 = entityModels.get(0);
 
@@ -169,12 +169,12 @@ public class SegmentRepositoryTest
 
 	@Test
 	public void testCountByIdAfter() {
-		Assertions.assertEquals(4, _segmentRepository.countByIdAfter(0L));
+		Assertions.assertEquals(3, _segmentRepository.countByIdAfter(0L));
 
 		Segment segment = entityModels.get(0);
 
 		Assertions.assertEquals(
-			3, _segmentRepository.countByIdAfter(segment.getId()));
+			2, _segmentRepository.countByIdAfter(segment.getId()));
 	}
 
 	@Test
@@ -194,7 +194,7 @@ public class SegmentRepositoryTest
 			SetUtil.of(segment1.getChannelId(), segment2.getChannelId()),
 			PageRequest.of(0, 10));
 
-		Assertions.assertEquals(3, segments.size(), segments.toString());
+		Assertions.assertEquals(2, segments.size(), segments.toString());
 	}
 
 	@Test
@@ -273,7 +273,7 @@ public class SegmentRepositoryTest
 			Arrays.asList(1L, 2L), FilterHelper.EMPTY,
 			PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "author/name")));
 
-		Assertions.assertEquals(3, segments.size(), segments.toString());
+		Assertions.assertEquals(2, segments.size(), segments.toString());
 
 		Segment segment = segments.get(0);
 
@@ -283,7 +283,7 @@ public class SegmentRepositoryTest
 			Arrays.asList(1L, 2L), FilterHelper.EMPTY,
 			PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "author/name")));
 
-		segment = segments.get(2);
+		segment = segments.get(1);
 
 		Assertions.assertEquals("Marcos Martins", segment.getAuthorName());
 	}

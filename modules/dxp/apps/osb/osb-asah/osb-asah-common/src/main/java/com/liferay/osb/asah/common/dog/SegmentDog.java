@@ -157,6 +157,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 			segments.addAll(curSegments);
 		}
 
+		if (segments.isEmpty()) {
+			return;
+		}
+
 		_segmentRepository.deleteAll(segments);
 
 		_asahTaskDog.scheduleAsahTask(
@@ -356,34 +360,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public Page<Transformation> getTransformationPage(
-			Long accountId, String apply, @Nullable String filterString,
-			int page, int size)
-		throws Exception {
-
-		Segment segment = fetchSegment(_ACCOUNT_PREFIX + accountId, "INACTIVE");
-
-		if (segment == null) {
-			throw new Exception(
-				"Unable to find individual segment associated with account " +
-					accountId);
-		}
-
-		PageRequest pageRequest = PageRequest.of(
-			page, size,
-			SortUtil.getSort(
-				Sort.by(Sort.Order.desc("totalElements")),
-				new String[] {"totalElements", "desc", "terms", "asc"}));
-
-		List<Transformation> transformations =
-			_segmentRepository.getSegmentTransformations(
-				apply, new FilterHelper(filterString), pageRequest,
-				_getIndividualSegmentIds(segment.getId()));
-
-		return PageableExecutionUtils.getPage(
-			transformations, pageRequest, transformations::size);
-	}
-
-	public Page<Transformation> getTransformationPage(
 		String apply, @Nullable String filterString, int page, int size) {
 
 		PageRequest pageRequest = PageRequest.of(
@@ -406,35 +382,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers());
 	}
 
-	public Page<Segment> searchAccountSegmentPage(
-		Long accountId, @Nullable String filterString, int page, int size,
-		@Nullable String[] sorts) {
-
-		Segment segment = fetchSegment(_ACCOUNT_PREFIX + accountId, "INACTIVE");
-
-		if (segment == null) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"Unable to find individual segment associated with account " +
-					accountId);
-		}
-
-		FilterHelper filterHelper = new FilterHelper(filterString);
-
-		PageRequest pageRequest = PageRequest.of(
-			page, size, SortUtil.getSort(sorts));
-
-		return PageableExecutionUtils.getPage(
-			_segmentRepository.searchSegments(
-				filterHelper, _getIndividualSegmentIds(segment.getId()),
-				pageRequest),
-			pageRequest,
-			() -> _segmentRepository.countSegments(
-				filterHelper, _getIndividualSegmentIds(segment.getId())));
-	}
-
 	public List<Segment> searchDynamicSegments(
-		Set<Individual.DataSourceAccountPK> dataSourceAccountPKs,
 		String filterString, Boolean includeAnonymousUsers, int page,
 		Set<Long> segmentIds, int size,
 		com.liferay.osb.asah.common.model.Sort sort) {
@@ -442,8 +390,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
 		return _segmentRepository.searchDynamicSegments(
-			dataSourceAccountPKs, new FilterHelper(filterString),
-			includeAnonymousUsers, pageRequest, segmentIds);
+			new FilterHelper(filterString), includeAnonymousUsers, pageRequest,
+			segmentIds);
 	}
 
 	public List<Segment> searchDynamicSegments(
@@ -590,9 +538,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 			if (context.equals("custom") || context.equals("demographics")) {
 				ownerType = "individual";
 			}
-			else if (context.equals("organization")) {
-				ownerType = "account";
-			}
 			else {
 				return null;
 			}
@@ -662,17 +607,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		return Long.valueOf(
 			activityKey.substring(activityKey.lastIndexOf("#") + 1));
-	}
-
-	private List<Long> _getIndividualSegmentIds(Long segmentId) {
-		List<Long> individualIds = _individualDog.getIdsBySegmentId(segmentId);
-
-		if (individualIds.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		return _bqMembershipDog.getActiveSegmentIds(
-			ListUtil.map(individualIds, String::valueOf));
 	}
 
 	private Map<String, Set<String>> _getReferencedObjectIds(
@@ -820,9 +754,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		String name = (String)functionData[2];
 
-		if (Objects.equals(name, "accounts.filter") ||
-			Objects.equals(name, "accounts.filterByCount") ||
-			Objects.equals(name, "activities.filter") ||
+		if (Objects.equals(name, "activities.filter") ||
 			Objects.equals(name, "activities.filterByCount") ||
 			Objects.equals(name, "organizations.filter")) {
 
@@ -963,8 +895,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		return existingSegment;
 	}
-
-	private static final String _ACCOUNT_PREFIX = "Account: ";
 
 	private static final String[] _REFERENCED_OBJECT_NAMES = {
 		"referencedAssetDataSourceIds", "referencedFieldMappingIds"

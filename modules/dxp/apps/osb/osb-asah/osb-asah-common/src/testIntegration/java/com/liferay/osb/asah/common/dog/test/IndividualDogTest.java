@@ -938,8 +938,6 @@ public class IndividualDogTest
 		Individual individual = _individualDog.addIndividual(
 			"2",
 			JSONUtil.put(
-				"accountPKs", JSONUtil.put("123")
-			).put(
 				"country", "United States"
 			).put(
 				"email", "dummy.test@test.com"

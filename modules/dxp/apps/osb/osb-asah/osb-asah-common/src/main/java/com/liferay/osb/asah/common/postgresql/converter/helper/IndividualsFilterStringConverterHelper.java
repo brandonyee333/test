@@ -81,14 +81,7 @@ public class IndividualsFilterStringConverterHelper
 
 		Condition condition = null;
 
-		if (customFunctionName.equals("accounts.filter")) {
-			condition = _getFilterFunctionCondition(arguments, "accounts");
-		}
-		else if (customFunctionName.equals("accounts.filterByCount")) {
-			condition = _getFilterByCountFunctionCondition(
-				arguments, "accounts");
-		}
-		else if (customFunctionName.equals("activities.filter")) {
+		if (customFunctionName.equals("activities.filter")) {
 			condition = _getFilterFunctionCondition(arguments, "activities");
 		}
 		else if (customFunctionName.equals("activities.filterByCount")) {

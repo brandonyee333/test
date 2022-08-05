@@ -151,7 +151,7 @@ public class FieldDog {
 
 				if (value != null) {
 					String modifiedDateString = _getModifiedDateString(
-						dataJSONObject, dataSource, ownerType);
+						dataJSONObject, dataSource);
 
 					Field field = _buildField(
 						context, dataSourceId, dataSource.getName(), fieldType,
@@ -469,7 +469,7 @@ public class FieldDog {
 				value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
-				dataJSONObject, dataSource, ownerType);
+				dataJSONObject, dataSource);
 
 			for (Long ownerId : ownerIds) {
 				List<Field> fields = fieldsMap.getOrDefault(
@@ -655,7 +655,7 @@ public class FieldDog {
 	}
 
 	private String _getModifiedDateString(
-			JSONObject dataJSONObject, DataSource dataSource, String ownerType)
+			JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
 		String providerType = dataSource.getProviderType();
@@ -672,18 +672,6 @@ public class FieldDog {
 
 			return DateUtil.toUTCString(
 				new Date(dataJSONObject.getLong("modifiedDate")));
-		}
-
-		if (providerType.equals("SALESFORCE")) {
-			if (ownerType.equals("account")) {
-				return dataJSONObject.getString("LastModifiedDate");
-			}
-
-			if (ownerType.equals("individual")) {
-				return dataJSONObject.getString("modifiedDate");
-			}
-
-			throw new Exception("Invalid owner type: " + ownerType);
 		}
 
 		throw new Exception(

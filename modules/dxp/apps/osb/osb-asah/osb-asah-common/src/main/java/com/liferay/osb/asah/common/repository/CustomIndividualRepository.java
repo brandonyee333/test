@@ -57,9 +57,6 @@ public interface CustomIndividualRepository {
 	public boolean existsByFilterStringAndId(
 		FilterHelper filterHelper, @Nullable Long id);
 
-	public List<String> findAccountPKsByChannelIdAndSegmentId(
-		@Nullable Long channelId, @Nullable Long segmentId);
-
 	public List<Individual.ActivitiesCount> findActivitiesCounts(
 		boolean includeAnonymousUsers, Long segmentId);
 
