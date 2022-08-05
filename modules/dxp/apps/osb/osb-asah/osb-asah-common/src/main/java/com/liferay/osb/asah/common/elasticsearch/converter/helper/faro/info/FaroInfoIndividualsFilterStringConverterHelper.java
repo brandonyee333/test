@@ -28,7 +28,6 @@ import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -111,13 +110,13 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			String fieldName, String operator, String valueString)
 		throws Exception {
 
-		if (fieldName.startsWith(_BEHAVIORAL_CRITERIA_FIELD_NAME_PREFIX) &&
-			_isEqualityOperator(operator)) {
-
-			return _getBehavioralCriteriaQueryBuilder(
-				(String)StringUtil.toObject(valueString), fieldName,
-				operator.equalsIgnoreCase("ne"));
-		}
+//		if (fieldName.startsWith(_BEHAVIORAL_CRITERIA_FIELD_NAME_PREFIX) &&
+//			_isEqualityOperator(operator)) {
+//
+//			return _getBehavioralCriteriaQueryBuilder(
+//				(String)StringUtil.toObject(valueString), fieldName,
+//				operator.equalsIgnoreCase("ne"));
+//		}
 
 		if (fieldName.equals("dataSourceId") && _isEqualityOperator(operator)) {
 			return _getDataSourceIdQueryBuilder(
@@ -157,8 +156,10 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			FilterStringToQueryBuilderConverter.convert(
 				filterString, _faroInfoActivitiesFilterStringConverterHelper));
 
-		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
-			checkEqualityOnly, minDocCount, boolQueryBuilder, value);
+		// TODO: Fix
+//		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
+//			checkEqualityOnly, minDocCount, boolQueryBuilder, value);
+		List<String> ownerIds = Collections.emptyList();
 
 		if (ownerIds.isEmpty()) {
 			if (operator.equals("le") || operator.equals("lt")) {
@@ -190,8 +191,10 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			queryBuilder = QueryBuilders.matchAllQuery();
 		}
 
-		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
-			_getOwnerIdBoolQueryBuilder(queryBuilder));
+		// TODO Fix
+//		List<String> ownerIds = _faroInfoActivityDog.getOwnerIds(
+//			_getOwnerIdBoolQueryBuilder(queryBuilder));
+		List<String> ownerIds = Collections.emptyList();
 
 		if (!ownerIds.isEmpty()) {
 			return QueryBuilders.termsQuery("id", ownerIds);
@@ -200,19 +203,19 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		return QueryBuilders.matchAllQuery();
 	}
 
-	private QueryBuilder _getBehavioralCriteriaQueryBuilder(
-			String activityKey, String fieldName, boolean negate)
-		throws Exception {
-
-		List<String> individualIds = _getIndividualIds(activityKey, fieldName);
-
-		if (negate) {
-			return BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.termsQuery("id", individualIds));
-		}
-
-		return QueryBuilders.termsQuery("id", individualIds);
-	}
+//	private QueryBuilder _getBehavioralCriteriaQueryBuilder(
+//			String activityKey, String fieldName, boolean negate)
+//		throws Exception {
+//
+//		List<String> individualIds = _getIndividualIds(activityKey, fieldName);
+//
+//		if (negate) {
+//			return BoolQueryBuilderUtil.mustNot(
+//				QueryBuilders.termsQuery("id", individualIds));
+//		}
+//
+//		return QueryBuilders.termsQuery("id", individualIds);
+//	}
 
 	private QueryBuilder _getDataSourceIdQueryBuilder(
 		String dataSourceId, boolean negate) {
@@ -405,73 +408,73 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			"id", _userSessionDog.getIndividualIds(filterString));
 	}
 
-	private List<String> _getIndividualIds(String activityKey, String fieldName)
-		throws Exception {
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("activityKey", activityKey));
-
-		String timeFrame = fieldName.substring(
-			_BEHAVIORAL_CRITERIA_FIELD_NAME_PREFIX.length());
-
-		LocalDateTime localDateTime = LocalDateTime.of(
-			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
-
-		if (timeFrame.equalsIgnoreCase("ever")) {
-		}
-		else if (timeFrame.equalsIgnoreCase("last7Days")) {
-			localDateTime = localDateTime.minusDays(7);
-
-			boolQueryBuilder.filter(
-				QueryBuilders.rangeQuery(
-					"day"
-				).gt(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
-		}
-		else if (timeFrame.equalsIgnoreCase("last30Days")) {
-			localDateTime = localDateTime.minusDays(30);
-
-			boolQueryBuilder.filter(
-				QueryBuilders.rangeQuery(
-					"day"
-				).gt(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
-		}
-		else if (timeFrame.equalsIgnoreCase("lastYear")) {
-			localDateTime = localDateTime.minusDays(365);
-
-			boolQueryBuilder.filter(
-				QueryBuilders.rangeQuery(
-					"day"
-				).gt(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
-		}
-		else if (timeFrame.equalsIgnoreCase("today")) {
-			boolQueryBuilder.filter(
-				QueryBuilders.rangeQuery(
-					"day"
-				).gte(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
-		}
-		else {
-			throw new Exception("Invalid time frame: " + timeFrame);
-		}
-
-		return _faroInfoActivityDog.getOwnerIds(
-			_getOwnerIdBoolQueryBuilder(boolQueryBuilder));
-	}
+//	private List<String> _getIndividualIds(String activityKey, String fieldName)
+//		throws Exception {
+//
+//		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+//			QueryBuilders.termQuery("activityKey", activityKey));
+//
+//		String timeFrame = fieldName.substring(
+//			_BEHAVIORAL_CRITERIA_FIELD_NAME_PREFIX.length());
+//
+//		LocalDateTime localDateTime = LocalDateTime.of(
+//			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+//
+//		if (timeFrame.equalsIgnoreCase("ever")) {
+//		}
+//		else if (timeFrame.equalsIgnoreCase("last7Days")) {
+//			localDateTime = localDateTime.minusDays(7);
+//
+//			boolQueryBuilder.filter(
+//				QueryBuilders.rangeQuery(
+//					"day"
+//				).gt(
+//					localDateTime.toString()
+//				).timeZone(
+//					TimeZoneDogUtil.getTimeZoneId()
+//				));
+//		}
+//		else if (timeFrame.equalsIgnoreCase("last30Days")) {
+//			localDateTime = localDateTime.minusDays(30);
+//
+//			boolQueryBuilder.filter(
+//				QueryBuilders.rangeQuery(
+//					"day"
+//				).gt(
+//					localDateTime.toString()
+//				).timeZone(
+//					TimeZoneDogUtil.getTimeZoneId()
+//				));
+//		}
+//		else if (timeFrame.equalsIgnoreCase("lastYear")) {
+//			localDateTime = localDateTime.minusDays(365);
+//
+//			boolQueryBuilder.filter(
+//				QueryBuilders.rangeQuery(
+//					"day"
+//				).gt(
+//					localDateTime.toString()
+//				).timeZone(
+//					TimeZoneDogUtil.getTimeZoneId()
+//				));
+//		}
+//		else if (timeFrame.equalsIgnoreCase("today")) {
+//			boolQueryBuilder.filter(
+//				QueryBuilders.rangeQuery(
+//					"day"
+//				).gte(
+//					localDateTime.toString()
+//				).timeZone(
+//					TimeZoneDogUtil.getTimeZoneId()
+//				));
+//		}
+//		else {
+//			throw new Exception("Invalid time frame: " + timeFrame);
+//		}
+//
+//		return _faroInfoActivityDog.getOwnerIds(
+//			_getOwnerIdBoolQueryBuilder(boolQueryBuilder));
+//	}
 
 	private QueryBuilder _getIndividualPKQueryBuilder(
 		String individualPKs, boolean negate) {
@@ -725,9 +728,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	@Autowired
 	private FaroInfoActivitiesFilterStringConverterHelper
 		_faroInfoActivitiesFilterStringConverterHelper;
-
-	@Autowired
-	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
