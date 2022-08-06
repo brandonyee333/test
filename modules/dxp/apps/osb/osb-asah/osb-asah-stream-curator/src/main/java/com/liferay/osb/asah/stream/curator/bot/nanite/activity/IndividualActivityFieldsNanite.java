@@ -26,20 +26,15 @@ import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.PreDestroy;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -78,31 +73,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 
 		_boundedExecutor.awaitPendingTasks();
-	}
-
-	private Map<Long, Date> _convertActivityDatesSetToMap(
-		Set<Individual.ActivityDate> activityDates) {
-
-		Map<Long, Date> activityDatesMap = new HashMap<>();
-		activityDates = Optional.ofNullable(
-			activityDates
-		).orElse(
-			new HashSet<>()
-		);
-
-		if (!activityDates.isEmpty()) {
-			for (Individual.ActivityDate activityDate : activityDates) {
-				if ((activityDate.getChannelId() != null) &&
-					(activityDate.getActivityDate() != null)) {
-
-					activityDatesMap.put(
-						activityDate.getChannelId(),
-						activityDate.getActivityDate());
-				}
-			}
-		}
-
-		return activityDatesMap;
 	}
 
 	@PreDestroy
@@ -154,64 +124,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 
 		return activitiesCounts;
-	}
-
-	private Set<Individual.ActivityDate> _getPreviousActivityDates(
-		Individual individual, Map<Long, Date> oldLastActivityDatesMap) {
-
-		Map<Long, Individual.ActivityDate> previousActivityDatesMap =
-			new HashMap<>();
-		Set<Individual.ActivityDate> previousActivityDates =
-			Optional.ofNullable(
-				individual.getPreviousActivityDates()
-			).orElse(
-				new HashSet<>()
-			);
-
-		if (!previousActivityDates.isEmpty()) {
-			for (Individual.ActivityDate previousActivityDate :
-					previousActivityDates) {
-
-				if ((previousActivityDate.getChannelId() != null) &&
-					(previousActivityDate.getActivityDate() != null)) {
-
-					previousActivityDatesMap.put(
-						previousActivityDate.getChannelId(),
-						previousActivityDate);
-				}
-			}
-		}
-
-		previousActivityDates = new HashSet<>(
-			previousActivityDatesMap.values());
-		Map<Long, Date> lastActivityDatesMap = _convertActivityDatesSetToMap(
-			individual.getLastActivityDates());
-
-		for (Map.Entry<Long, Date> entrySet :
-				oldLastActivityDatesMap.entrySet()) {
-
-			if (DateUtils.isSameDay(entrySet.getValue(), DateUtil.newDate()) ||
-				DateUtils.isSameInstant(
-					entrySet.getValue(),
-					lastActivityDatesMap.get(entrySet.getKey()))) {
-
-				continue;
-			}
-
-			Individual.ActivityDate previousActivityDate =
-				previousActivityDatesMap.get(entrySet.getKey());
-
-			if (previousActivityDate == null) {
-				previousActivityDates.add(
-					new Individual.ActivityDate(
-						entrySet.getValue(), entrySet.getKey()));
-			}
-			else {
-				previousActivityDate.setActivityDate(entrySet.getValue());
-			}
-		}
-
-		return previousActivityDates;
 	}
 
 	private void _run() {
@@ -276,21 +188,17 @@ public class IndividualActivityFieldsNanite implements Nanite {
 						Stream<Message<JSONObject>> messagesStream =
 							messages.stream();
 
-						Map<String, Long> channelIdsCounts = messagesStream.map(
-							Message::getObject
-						).collect(
-							Collectors.groupingBy(
-								jsonObject -> String.valueOf(
-									jsonObject.get("channelId")),
-								Collectors.counting())
-						);
-
 						individual.setActivitiesCounts(
-							_getActivitiesCounts(channelIdsCounts, individual));
-
-						Map<Long, Date> lastActivityDatesMap =
-							_convertActivityDatesSetToMap(
-								individual.getLastActivityDates());
+							_getActivitiesCounts(
+								messagesStream.map(
+									Message::getObject
+								).collect(
+									Collectors.groupingBy(
+										jsonObject -> String.valueOf(
+											jsonObject.get("channelId")),
+										Collectors.counting())
+								),
+								individual));
 
 						// TODO Set Individual last activity dates
 
