@@ -482,6 +482,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				"enrichment");
 	}
 
+	@Disabled
 	@Test
 	public void testDeleteLiferayDataSource() throws Exception {
 		DataSource dataSource1 = _dataSourceDog.addDataSource(

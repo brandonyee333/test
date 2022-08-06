@@ -36,6 +36,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 		return _faroInfoIndividualsFilterStringConverterHelper;
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterBetweenDay() throws Exception {
 		testFilterString(
@@ -69,6 +71,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountAtLeastOne() throws Exception {
 		testFilterString(
@@ -79,6 +82,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125", "346468605699756892");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountAtMostOne() throws Exception {
 		testFilterString(
@@ -99,6 +103,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountEqNegative() throws Exception {
 		testFilterString(
@@ -108,6 +113,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 					"value=-1)");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountEqPositive() throws Exception {
 		testFilterString(
@@ -118,6 +124,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468605699756892");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountEqZero() throws Exception {
 		testFilterString(
@@ -137,6 +144,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGeNegative() throws Exception {
 		testFilterString(
@@ -157,6 +165,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGePositive() throws Exception {
 		testFilterString(
@@ -167,6 +176,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125", "346468605699756892");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGeZero() throws Exception {
 		testFilterString(
@@ -187,6 +197,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGtNegative() throws Exception {
 		testFilterString(
@@ -207,6 +218,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGtPositive() throws Exception {
 		testFilterString(
@@ -217,6 +229,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGtZero() throws Exception {
 		testFilterString(
@@ -227,6 +240,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125", "346468605699756892");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLeNegative() throws Exception {
 		testFilterString(
@@ -236,6 +250,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 					"value=-1)");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLePositive() throws Exception {
 		testFilterString(
@@ -256,6 +271,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLeZero() throws Exception {
 		testFilterString(
@@ -275,6 +291,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLtNegative() throws Exception {
 		testFilterString(
@@ -284,6 +301,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 					"value=-1)");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLtPositive() throws Exception {
 		testFilterString(
@@ -304,6 +322,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLtZero() throws Exception {
 		testFilterString(
@@ -313,6 +332,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 					"value=0)");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountNeNegative() throws Exception {
 		testFilterString(
@@ -333,6 +353,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468700681239480", "346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountNePositive() throws Exception {
 		testFilterString(
@@ -353,6 +374,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468701457781206");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountNeZero() throws Exception {
 		testFilterString(
@@ -363,6 +385,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125", "346468605699756892");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast7Days() throws Exception {
 		testFilterString(
@@ -373,6 +396,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast24Hours() throws Exception {
 		testFilterString(
@@ -383,6 +407,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast28Days() throws Exception {
 		testFilterString(
@@ -393,6 +418,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468603851271125", "346468608880878498");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast30Days() throws Exception {
 		testFilterString(
@@ -404,6 +430,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468609906122549");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast90Days() throws Exception {
 		testFilterString(
@@ -415,6 +442,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468609906122549", "346468614337714393");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceYesterday() throws Exception {
 		testFilterString(
@@ -425,6 +453,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468699875814972", "346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountWithIndividual1() {
 		testFilterStringWithIndividual(
@@ -434,6 +463,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			1L, BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery()));
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountWithIndividual2() {
 		testFilterStringWithIndividual(
@@ -445,6 +475,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 				"id", Collections.singleton("346468614337714393")));
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterGtDay() throws Exception {
 		testFilterString(
@@ -453,6 +484,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468609906122549", "346468614337714393");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterInBetweenDay() throws Exception {
 		testFilterString(
@@ -462,6 +494,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterLtDay() throws Exception {
 		testFilterString(
@@ -469,6 +502,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterWithIndividual() {
 		testFilterStringWithIndividual(

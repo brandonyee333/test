@@ -125,6 +125,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468603851271125L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountAtLeastOne() {
 		testFilterString(
@@ -134,6 +135,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468603851271125L, 346468605699756892L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountAtMostOne() {
 		testFilterString(
@@ -153,6 +155,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468701457781206L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountEqNegative() {
 		testFilterString(
@@ -161,6 +164,7 @@ public class IndividualsFilterStringConverterHelperTest
 					"value=-1)");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountEqPositive() {
 		testFilterString(
@@ -189,6 +193,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468699875814972L, 346468700681239480L, 346468701457781206L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGeNegative() {
 		testFilterString(
@@ -208,6 +213,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468700681239480L, 346468701457781206L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGePositive() {
 		testFilterString(
@@ -217,6 +223,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468603851271125L, 346468605699756892L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGeZero() {
 		testFilterString(
@@ -236,6 +243,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468700681239480L, 346468701457781206L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGtNegative() {
 		testFilterString(
@@ -255,6 +263,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468700681239480L, 346468701457781206L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGtPositive() {
 		testFilterString(
@@ -264,6 +273,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468603851271125L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountGtZero() {
 		testFilterString(
@@ -273,6 +283,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468603851271125L, 346468605699756892L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLeNegative() {
 		testFilterString(
@@ -281,6 +292,7 @@ public class IndividualsFilterStringConverterHelperTest
 					"value=-1)");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLePositive() {
 		testFilterString(
@@ -300,6 +312,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468700681239480L, 346468701457781206L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLeZero() {
 		testFilterString(
@@ -318,6 +331,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468699875814972L, 346468700681239480L, 346468701457781206L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLtNegative() {
 		testFilterString(
@@ -326,6 +340,7 @@ public class IndividualsFilterStringConverterHelperTest
 					"value=-1)");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLtPositive() {
 		testFilterString(
@@ -345,6 +360,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468701457781206L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountLtZero() {
 		testFilterString(
@@ -353,6 +369,7 @@ public class IndividualsFilterStringConverterHelperTest
 					"value=0)");
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountNeNegative() {
 		testFilterString(
@@ -372,6 +389,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468700681239480L, 346468701457781206L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountNePositive() {
 		testFilterString(
@@ -401,6 +419,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468603851271125L, 346468605699756892L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast7Days() {
 		testFilterString(
@@ -410,6 +429,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468699875814972L, 346468603851271125L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast24Hours() {
 		testFilterString(
@@ -419,6 +439,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468699875814972L, 346468603851271125L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast28Days() {
 		testFilterString(
@@ -428,6 +449,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468699875814972L, 346468603851271125L, 346468608880878498L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast30Days() {
 		testFilterString(
@@ -438,6 +460,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468609906122549L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceLast90Days() {
 		testFilterString(
@@ -448,6 +471,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468609906122549L, 346468614337714393L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountSinceYesterday() {
 		testFilterString(
@@ -457,6 +481,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468699875814972L, 346468603851271125L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterByCountWithIndividual() {
 		testFilterStringWithIndividual(
@@ -497,6 +522,7 @@ public class IndividualsFilterStringConverterHelperTest
 			346468603851271125L);
 	}
 
+	@Disabled
 	@Test
 	public void testActivitiesFilterWithIndividual() {
 		testFilterStringWithIndividual(
@@ -850,6 +876,7 @@ public class IndividualsFilterStringConverterHelperTest
 			));
 	}
 
+	@Disabled
 	@Test
 	public void testSessionsFilterWithIndividual2() {
 		testFilterStringWithIndividual(

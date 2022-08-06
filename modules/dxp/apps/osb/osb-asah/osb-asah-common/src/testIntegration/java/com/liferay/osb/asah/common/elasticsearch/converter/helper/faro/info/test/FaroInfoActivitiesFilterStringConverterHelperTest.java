@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.tes
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class FaroInfoActivitiesFilterStringConverterHelperTest
 		return _faroInfoActivitiesFilterStringConverterHelper;
 	}
 
+	@Disabled
 	@Test
 	public void testActivityTypeEq() throws Exception {
 		testFilterString(
@@ -46,12 +48,14 @@ public class FaroInfoActivitiesFilterStringConverterHelperTest
 		testFilterString("activities", "activityType ne 'BROWSE'");
 	}
 
+	@Disabled
 	@Test
 	public void testApplicationIdNe() throws Exception {
 		testFilterString(
 			"activities", "applicationId ne 'Page'", "349395508504086369");
 	}
 
+	@Disabled
 	@Test
 	public void testObjectNameEq() throws Exception {
 		testFilterString(

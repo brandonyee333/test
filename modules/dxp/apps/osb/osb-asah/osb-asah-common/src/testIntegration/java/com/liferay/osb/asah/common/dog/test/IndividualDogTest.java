@@ -538,6 +538,7 @@ public class IndividualDogTest
 			_getGivenNames(individuals));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
