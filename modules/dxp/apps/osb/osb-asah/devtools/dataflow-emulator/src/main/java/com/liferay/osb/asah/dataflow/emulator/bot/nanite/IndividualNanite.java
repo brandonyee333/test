@@ -52,7 +52,7 @@ public class IndividualNanite {
 
 	public void run() {
 		List<BQIndividual> bqIndividuals = _mergeBQIndividuals(
-			_fetchBQCSVUsersIndividuals(), _fetchBQUsersIndividuals());
+			_fetchBQCSVUsersBQIndividuals(), _fetchBQUsersBQIndividuals());
 
 		if (bqIndividuals.isEmpty()) {
 			return;
@@ -62,7 +62,7 @@ public class IndividualNanite {
 		_bqIndividualRepository.saveAll(bqIndividuals);
 	}
 
-	private List<BQIndividual> _fetchBQCSVUsersIndividuals() {
+	private List<BQIndividual> _fetchBQCSVUsersBQIndividuals() {
 		List<BQCSVUser> bqCSVUsers = IterableUtils.toList(
 			_bqCSVUserRepository.findAll());
 
@@ -77,7 +77,7 @@ public class IndividualNanite {
 		);
 	}
 
-	private List<BQIndividual> _fetchBQUsersIndividuals() {
+	private List<BQIndividual> _fetchBQUsersBQIndividuals() {
 		List<BQUser> bqUsers = IterableUtils.toList(
 			_bqUserRepository.findAll());
 
