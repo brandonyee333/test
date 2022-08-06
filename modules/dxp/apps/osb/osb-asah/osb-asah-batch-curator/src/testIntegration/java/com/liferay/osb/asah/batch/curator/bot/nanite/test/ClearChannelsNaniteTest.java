@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ClearChannelsNanite;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -37,8 +36,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import java.util.Optional;
 
 import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -72,19 +69,12 @@ public class ClearChannelsNaniteTest
 					"Page", channelId, dataSourceId),
 				Asset.class));
 
-		JSONObject activityJSONObject = faroInfoElasticsearchInvoker.add(
-			"activities",
-			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(asset, JSONObject.class), channelId,
-				dataSourceId, DateUtil.newDateString(), "pageViewed",
-				new String[0], individual));
+		// TODO Add BQEvent with corresponding channel ID
 
 		_clearChannelsNanite.run(
 			JSONUtil.put("channelIds", JSONUtil.put(channelId)));
 
-		Assertions.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"activities", activityJSONObject.getString("id")));
+		// TODO Assert BQEvent is removed
 
 		Optional<Asset> assetOptional = _assetRepository.findById(
 			Optional.ofNullable(
