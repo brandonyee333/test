@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -157,47 +156,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		return activitiesCounts;
 	}
 
-	private Set<Individual.ActivityDate> _getLastActivityDates(
-		Map<String, Long> channelIdsCounts, Individual individual) {
-
-		Set<Individual.ActivityDate> lastActivityDates =
-			individual.getLastActivityDates();
-
-		for (String channelId : channelIdsCounts.keySet()) {
-			JSONObject activityJSONObject =
-				_faroInfoActivityDog.fetchLatestActivityJSONObject(
-					Long.valueOf(channelId), individual.getId());
-
-			if (activityJSONObject == null) {
-				continue;
-			}
-
-			Stream<Individual.ActivityDate> stream = lastActivityDates.stream();
-
-			Individual.ActivityDate individualLastActivityDate = stream.filter(
-				lastActivityDate -> Objects.equals(
-					Long.valueOf(channelId), lastActivityDate.getChannelId())
-			).findFirst(
-			).orElse(
-				null
-			);
-
-			if (individualLastActivityDate == null) {
-				individualLastActivityDate = new Individual.ActivityDate();
-
-				individualLastActivityDate.setChannelId(
-					Long.valueOf(channelId));
-
-				lastActivityDates.add(individualLastActivityDate);
-			}
-
-			individualLastActivityDate.setActivityDate(
-				DateUtil.toUTCDate(activityJSONObject.getString("endTime")));
-		}
-
-		return lastActivityDates;
-	}
-
 	private Set<Individual.ActivityDate> _getPreviousActivityDates(
 		Individual individual, Map<Long, Date> oldLastActivityDatesMap) {
 
@@ -334,15 +292,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 							_convertActivityDatesSetToMap(
 								individual.getLastActivityDates());
 
-						individual.setLastActivityDates(
-							_getLastActivityDates(
-								channelIdsCounts, individual));
-
-						if (!lastActivityDatesMap.isEmpty()) {
-							individual.setPreviousActivityDates(
-								_getPreviousActivityDates(
-									individual, lastActivityDatesMap));
-						}
+						// TODO Set Individual last activity dates
 
 						_individualDog.updateIndividual(individual);
 					}
@@ -379,9 +329,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(15, 10);
-
-	@Autowired
-	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@Value(
 		"${osb.asah.individual.activity.fields.nanite.pull.messages.size:100}"

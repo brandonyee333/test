@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -412,12 +411,6 @@ public class IndividualNanite implements Nanite {
 		return activitiesCountsMap;
 	}
 
-	private void _updateActivities(Individual individual, String userId)
-		throws Exception {
-
-		_faroInfoActivityDog.updateOwnerId(individual, userId);
-	}
-
 	private Individual _updateIndividual(
 			Long channelId, Long dataSourceId, String emailAddressHashed,
 			String userId)
@@ -455,7 +448,7 @@ public class IndividualNanite implements Nanite {
 			individual2 = _updateIndividual(emailAddressHashed, individual1);
 		}
 
-		_updateActivities(individual2, userId);
+		// TODO Update activities
 
 		return individual2;
 	}
@@ -555,12 +548,6 @@ public class IndividualNanite implements Nanite {
 
 	@Autowired
 	private EventDog _eventDog;
-
-	@Autowired
-	private FaroInfoActivityDog _faroInfoActivityDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FieldDog _fieldDog;
