@@ -44,7 +44,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -103,13 +102,7 @@ public class DataSourcesRestControllerTest {
 					"Page", dataSource.getId()),
 				Asset.class));
 
-		JSONObject activityJSONObject = _faroInfoElasticsearchInvoker.add(
-			"activities",
-			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(asset, JSONObject.class),
-				Long.parseLong(RandomStringUtils.randomNumeric(4)),
-				dataSource.getId(), DateUtil.newDateString(), "pageViewed",
-				new String[0], individual));
+		// TODO Add BQEvent to Data source
 
 		_dataSourcesRestController.deleteDataSource(
 			dataSourceJSONObject.getLong("id"));
@@ -126,9 +119,7 @@ public class DataSourcesRestControllerTest {
 
 		_runDeleteDataSourcesNanite(updateDataSourceJSONObject);
 
-		Assertions.assertTrue(
-			_faroInfoElasticsearchInvoker.exists(
-				"activities", activityJSONObject.getString("id")));
+		// TODO Assert BQ event is not deleted
 
 		Assertions.assertTrue(_assetRepository.existsById(asset.getId()));
 		Assertions.assertFalse(

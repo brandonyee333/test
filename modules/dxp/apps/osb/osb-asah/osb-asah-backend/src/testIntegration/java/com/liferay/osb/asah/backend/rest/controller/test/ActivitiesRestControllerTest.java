@@ -16,24 +16,20 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.ActivitiesRestController;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,87 +40,7 @@ public class ActivitiesRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@Test
-	public void testGetActivities() throws Exception {
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONObject(
-				"dependencies/expected_activities.json", this),
-			new JSONObject(
-				_activitiesRestController.getActivities(null, 0, 20, null)),
-			false);
-	}
-
-	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@Test
-	public void testGetActivity() throws Exception {
-		JSONAssert.assertEquals(
-			_elasticsearchInvoker.fetch("activities", "348853926240043267"),
-			new JSONObject(
-				_activitiesRestController.getActivity("348853926240043267")),
-			false);
-	}
-
-	@Test
-	public void testGetActivityTransformations1() throws Exception {
-		_elasticsearchInvoker.add(
-			"activities",
-			JSONUtil.put(
-				"day", DateUtil.newDayDateString()
-			).put(
-				"startTimeLocal", DateUtil.newDateString()
-			).put(
-				"userId", "311355742999294554"
-			));
-
-		JSONObject activityTransformationsJSONObject = new JSONObject(
-			_activitiesRestController.getActivityTransformations(
-				"compute(day(day) as temp)/groupby((temp))",
-				"userId eq '311355742999294554'", true, 0, null, null, 0));
-
-		JSONArray jsonArray = (JSONArray)JSONUtil.getValue(
-			activityTransformationsJSONObject, "JSONObject/_embedded",
-			"JSONArray/activity-transformations");
-
-		Assertions.assertEquals(48, jsonArray.length());
-		Assertions.assertEquals(
-			1,
-			JSONUtil.getValue(
-				jsonArray.getJSONObject(jsonArray.length() - 1),
-				"Object/totalElements"));
-	}
-
-	@Test
-	public void testGetActivityTransformations2() throws Exception {
-		_elasticsearchInvoker.add(
-			"activities",
-			JSONUtil.put(
-				"day", DateUtil.newDayDateString()
-			).put(
-				"startTimeLocal", DateUtil.newDateString()
-			).put(
-				"userId", "311355742999294554"
-			));
-
-		JSONObject activityTransformationsJSONObject = new JSONObject(
-			_activitiesRestController.getActivityTransformations(
-				"compute(day(day) as temp)/groupby((temp))", "userId eq 'abc'",
-				true, 0, null, null, 1));
-
-		Assertions.assertEquals(
-			0,
-			JSONUtil.getValue(
-				activityTransformationsJSONObject, "JSONObject/_embedded",
-				"JSONArray/activity-transformations", "Object/0",
-				"Object/totalElements"));
-	}
-
+	@Disabled
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -162,6 +78,7 @@ public class ActivitiesRestControllerTest
 				"JSONArray/asset-transformations", "Object/0", "Object/count"));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
