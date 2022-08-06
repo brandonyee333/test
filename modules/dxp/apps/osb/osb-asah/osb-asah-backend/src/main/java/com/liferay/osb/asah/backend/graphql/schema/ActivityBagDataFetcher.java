@@ -14,21 +14,13 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.dto.ActivityDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -43,30 +35,9 @@ public class ActivityBagDataFetcher
 	public ResultBag<ActivityDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Function<Map<String, Object>, PropertyFilter> mapperFunction =
-			propertyFilterMap -> {
-				PropertyFilter propertyFilter = PropertyFilter.of(
-					propertyFilterMap);
+		// TODO Return matching events from BQEvent tables
 
-				propertyFilter.setPropertyNamespace("eventContext.");
-
-				return propertyFilter;
-			};
-
-		List<PropertyFilter> eventContextPropertyFilters = ListUtil.map(
-			dataFetchingEnvironment.getArgument("eventContextPropertyFilters"),
-			mapperFunction);
-
-		return _activityDog.getActivityResultBag(
-			dataFetchingEnvironment.getArgument("applicationId"),
-			eventContextPropertyFilters,
-			dataFetchingEnvironment.getArgument("eventId"),
-			dataFetchingEnvironment.getArgument("rangeKey"),
-			dataFetchingEnvironment.getArgument("size"),
-			dataFetchingEnvironment.getArgument("start"));
+		return null;
 	}
-
-	@Autowired
-	private ActivityDog _activityDog;
 
 }

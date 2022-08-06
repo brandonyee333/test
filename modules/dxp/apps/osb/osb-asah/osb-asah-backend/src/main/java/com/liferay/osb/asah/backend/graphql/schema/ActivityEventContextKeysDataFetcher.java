@@ -14,15 +14,14 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
+import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,10 +36,7 @@ public class ActivityEventContextKeysDataFetcher
 
 	@Override
 	public List<String> get(DataFetchingEnvironment dataFetchingEnvironment) {
-		return _activityDog.getEventContextKeys();
+		return Collections.emptyList();
 	}
-
-	@Autowired
-	private ActivityDog _activityDog;
 
 }

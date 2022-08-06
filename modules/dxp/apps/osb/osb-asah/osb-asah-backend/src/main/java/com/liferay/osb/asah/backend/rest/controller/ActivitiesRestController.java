@@ -14,17 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
-import com.liferay.osb.asah.common.rest.response.function.ActivitiesAssetTransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.rest.response.function.ActivitiesHistogramTransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.spring.annotation.Cacheable;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,51 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("/activities")
 @RestController
-public class ActivitiesRestController extends BaseRestController {
-
-	@GetMapping(params = "!apply")
-	public String getActivities(
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
-
-		return toCollectionGetResponse(
-			"activities", null, page,
-			FilterStringToQueryBuilderConverter.convert(
-				filterString, _faroInfoActivitiesFilterStringConverterHelper),
-			size, sorts);
-	}
-
-	@GetMapping("/{id}")
-	public String getActivity(@PathVariable String id) throws Exception {
-		return toItemGetResponse("activities", id);
-	}
-
-	@Cacheable
-	@GetMapping(params = "apply")
-	public String getActivityTransformations(
-			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "true") boolean includeToday,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(required = false) String rangeEnd,
-			@RequestParam(required = false) String rangeStart,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
-
-		return toTransformationGetResponse(
-			apply, "activities", page,
-			FilterStringToQueryBuilderConverter.convert(
-				filterString, _faroInfoActivitiesFilterStringConverterHelper),
-			size, "day",
-			new ActivitiesHistogramTransformationJSONArrayFunction(
-				includeToday, rangeEnd, rangeStart),
-			"activity-transformations");
-	}
+public class ActivitiesRestController {
 
 	@GetMapping("/assets")
 	public String getAssetTransformations(
@@ -89,24 +35,9 @@ public class ActivitiesRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		return toTransformationGetResponse(
-			null, "activities", faroInfoElasticsearchInvoker, page,
-			FilterStringToQueryBuilderConverter.convert(
-				filterString, _faroInfoActivitiesFilterStringConverterHelper),
-			size, null, sorts, null,
-			new ActivitiesAssetTransformationJSONArrayFunction(
-				_assetDog, _dataSourceDog),
-			"asset-transformations");
+		// TODO Return assets with corresponding default metric value
+
+		return null;
 	}
-
-	@Autowired
-	private AssetDog _assetDog;
-
-	@Autowired
-	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private FaroInfoActivitiesFilterStringConverterHelper
-		_faroInfoActivitiesFilterStringConverterHelper;
 
 }

@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.rest.controller.api.external;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
@@ -443,9 +442,9 @@ public class ReportRestController extends BaseRestController {
 			@PathVariable Long individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
-		ResultBag<ActivityDTO> activityResultBag =
-			_activityDog.getActivityResultBag(
-				individualId, _PAGE_SIZE, page * _PAGE_SIZE);
+		// TODO Return individual's events from BQEvent table
+
+		ResultBag<ActivityDTO> activityResultBag = new ResultBag<>();
 
 		return _toResultBagEntityModel(
 			_getIndividualActivityResultBagEntityModel(individualId, page + 1),
@@ -1358,9 +1357,6 @@ public class ReportRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		ReportRestController.class);
-
-	@Autowired
-	private ActivityDog _activityDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
