@@ -293,6 +293,8 @@ public class CommerceDashboardDog {
 
 		delta = delta.divide(previousValue, RoundingMode.HALF_UP);
 
+		delta = delta.setScale(3, RoundingMode.HALF_UP);
+
 		return delta.doubleValue() * 100;
 	}
 
