@@ -29,6 +29,7 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,7 +74,7 @@ public class CSVIndividualsRestControllerTest
 
 		Assertions.assertEquals(2, _bqCSVUserRepository.count());
 
-		_assertIds(_bqCSVUserRepository.findAll());
+		_assertBQCSVUsers(_bqCSVUserRepository.findAll());
 
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
@@ -94,10 +95,19 @@ public class CSVIndividualsRestControllerTest
 			asahTask.getContextJSONObject(), false);
 	}
 
-	private void _assertIds(Iterable<BQCSVUser> bqCSVUsers) {
+	private void _assertBQCSVUsers(Iterable<BQCSVUser> bqCSVUsers) {
 		for (BQCSVUser bqCSVUser : bqCSVUsers) {
 			Assertions.assertEquals(123L, bqCSVUser.getDataSourceId());
 			Assertions.assertNotNull(bqCSVUser.getId());
+
+			JSONArray fieldsJSONArray = bqCSVUser.getFieldsJSONArray();
+
+			Assertions.assertEquals(1, fieldsJSONArray.length());
+
+			JSONObject fieldJSONObject = fieldsJSONArray.getJSONObject(0);
+
+			Assertions.assertNotNull(fieldJSONObject.optString("name"));
+			Assertions.assertNotNull(fieldJSONObject.optString("value"));
 		}
 	}
 
