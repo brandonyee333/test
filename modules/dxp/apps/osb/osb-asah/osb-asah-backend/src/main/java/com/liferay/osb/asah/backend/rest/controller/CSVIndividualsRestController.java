@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,13 +51,31 @@ public class CSVIndividualsRestController extends BaseRestController {
 					Long.valueOf(jsonObject.getString("dataSourceId")));
 				bqCSVUser.setDataSourceUserPK(
 					jsonObject.getString("dataSourceIndividualPK"));
-				bqCSVUser.setFieldsJSONArray(jsonObject.optJSONArray("fields"));
+				bqCSVUser.setFieldsJSONArray(
+					_toFieldsJSONArray(jsonObject.optJSONObject("fields")));
 				bqCSVUser.setModifiedDate(date);
 
 				return bqCSVUser;
 			});
 
 		_bqCSVUserDog.addBQCSVUsers(bqCSVUsers);
+	}
+
+	private JSONArray _toFieldsJSONArray(JSONObject fieldsJSONObject) {
+		JSONArray fieldsJSONArray = new JSONArray();
+
+		if (fieldsJSONObject != null) {
+			for (String key : fieldsJSONObject.keySet()) {
+				fieldsJSONArray.put(
+					JSONUtil.put(
+						"name", key
+					).put(
+						"value", fieldsJSONObject.getString(key)
+					));
+			}
+		}
+
+		return fieldsJSONArray;
 	}
 
 	@Autowired
