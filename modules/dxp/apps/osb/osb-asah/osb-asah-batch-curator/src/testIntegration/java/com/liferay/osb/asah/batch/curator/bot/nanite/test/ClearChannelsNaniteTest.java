@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
@@ -60,8 +59,8 @@ public class ClearChannelsNaniteTest
 
 		Long channelId = _dataSourceDog.getDefaultChannelId(dataSourceId);
 
-		Individual individual = _individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividual(channelId, dataSource), false);
+		//Individual individual = _individualDog.addIndividual(
+		//	FaroInfoTestUtil.buildIndividual(channelId, dataSource), false);
 
 		Asset asset = _assetRepository.save(
 			_objectMapper.convertValue(
