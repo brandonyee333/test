@@ -31,7 +31,6 @@ import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
@@ -55,7 +54,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -519,20 +517,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Assertions.assertFalse(assets.isEmpty());
 
-		for (String index : new String[] {"activities"}) {
-			Assertions.assertTrue(
-				faroInfoElasticsearchInvoker.exists(
-					index,
-					QueryBuilders.termQuery("dataSourceId", dataSourceId1)),
-				"Unable to find entry in " + index + " collection with data " +
-					"source ID " + dataSourceId1);
-			Assertions.assertTrue(
-				faroInfoElasticsearchInvoker.exists(
-					index,
-					QueryBuilders.termQuery("dataSourceId", dataSourceId2)),
-				"Unable to find entry in " + index + " collection with data " +
-					"source ID " + dataSourceId2);
-		}
+		// TODO Assert BQEvent was not removed
 
 		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
@@ -634,18 +619,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Individual individual = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividual(dataSource), false);
 
-		_faroInfoActivityDog.addActivity(
-			FaroInfoTestUtil.buildActivityJSONObject(
-				_objectMapper.convertValue(
-					_assetRepository.save(
-						_objectMapper.convertValue(
-							FaroInfoTestUtil.buildPageAssetJSONObject(
-								dataSourceId),
-							Asset.class)),
-					JSONObject.class),
-				Long.parseLong(RandomStringUtils.randomNumeric(4)),
-				dataSourceId, DateUtil.newDateString(), "pageViewed",
-				new String[0], individual));
+		// TODO Add BQEvent
 
 		DXPEntity dxpEntity = new DXPEntity();
 
@@ -692,9 +666,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private FaroInfoActivityDog _faroInfoActivityDog;
 
 	@Autowired
 	private FieldMappingDog _fieldMappingDog;
