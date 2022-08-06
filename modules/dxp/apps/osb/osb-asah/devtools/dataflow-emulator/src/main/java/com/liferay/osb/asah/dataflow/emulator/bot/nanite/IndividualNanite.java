@@ -38,6 +38,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
 
@@ -117,7 +118,7 @@ public class IndividualNanite {
 		mergedBQIndividual.setEmailAddress(bqIndividual1.getEmailAddress());
 
 		String emailAddressHashed = DigestUtils.sha256Hex(
-			bqIndividual1.getEmailAddress());
+			StringUtils.lowerCase(bqIndividual1.getEmailAddress()));
 
 		mergedBQIndividual.setEmailAddressHashed(emailAddressHashed);
 
