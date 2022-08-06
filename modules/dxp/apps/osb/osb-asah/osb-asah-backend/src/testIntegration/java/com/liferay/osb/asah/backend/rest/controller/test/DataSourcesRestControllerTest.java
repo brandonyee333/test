@@ -94,7 +94,7 @@ public class DataSourcesRestControllerTest {
 
 		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource);
 
-		individual = _individualDog.addIndividual(individual, false);
+		_individualDog.addIndividual(individual, false);
 
 		Asset asset = _assetRepository.save(
 			_objectMapper.convertValue(
