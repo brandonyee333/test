@@ -61,8 +61,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 
-import org.json.JSONObject;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -616,8 +614,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			return;
 		}
 
-		Individual individual = _individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividual(dataSource), false);
+		//		Individual individual = _individualDog.addIndividual(
+		//			FaroInfoTestUtil.buildIndividual(dataSource), false);
 
 		// TODO Add BQEvent
 
