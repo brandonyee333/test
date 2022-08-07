@@ -398,22 +398,22 @@ public class FieldMappingDog {
 	private List<FieldMapping> _populateDataSourceFieldMappings(
 		List<FieldMapping> fieldMappings) {
 
-		Stream<FieldMapping> stream1 = fieldMappings.stream();
-
-		Map<Long, FieldMapping> fieldMappingsMap = stream1.collect(
-			Collectors.toMap(FieldMapping::getId, Function.identity()));
-
 		List<DataSourceFieldMapping> dataSourceFieldMappings =
 			_dataSourceFieldMappingRepository.findByFieldMappingIds(
 				fieldMappingsMap.keySet());
 
-		Stream<DataSourceFieldMapping> stream2 =
+		Stream<DataSourceFieldMapping> dataSourceFieldMappingStream =
 			dataSourceFieldMappings.stream();
 
 		Map<Long, List<DataSourceFieldMapping>> dataSourceFieldMappingsMap =
-			stream2.collect(
+			dataSourceFieldMappingStream.collect(
 				Collectors.groupingBy(
 					DataSourceFieldMapping::getFieldMappingId));
+
+		Stream<FieldMapping> fieldMappingsStream = fieldMappings.stream();
+
+		Map<Long, FieldMapping> fieldMappingsMap = fieldMappingsStream.collect(
+			Collectors.toMap(FieldMapping::getId, Function.identity()));
 
 		for (Map.Entry<Long, FieldMapping> entry :
 				fieldMappingsMap.entrySet()) {
@@ -421,12 +421,14 @@ public class FieldMappingDog {
 			List<DataSourceFieldMapping> fieldMappingDataSourceFieldMappings =
 				dataSourceFieldMappingsMap.get(entry.getKey());
 
-			if (fieldMappingDataSourceFieldMappings != null) {
-				FieldMapping fieldMapping = entry.getValue();
-
-				fieldMapping.setDataSourceFieldMappings(
-					new HashSet<>(fieldMappingDataSourceFieldMappings));
+			if (fieldMappingDataSourceFieldMappings == null) {
+				continue;
 			}
+
+			FieldMapping fieldMapping = entry.getValue();
+
+			fieldMapping.setDataSourceFieldMappings(
+				new HashSet<>(fieldMappingDataSourceFieldMappings));
 		}
 
 		return new ArrayList<>(fieldMappingsMap.values());
