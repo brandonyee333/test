@@ -75,7 +75,7 @@ public class ProjectDog {
 		}
 		catch (Exception exception) {
 			_log.error(
-				"Failed to create upgrade Asah marker for " + project.getId(),
+				"Unable to create upgrade Asah marker for " + project.getId(),
 				exception);
 		}
 		finally {
