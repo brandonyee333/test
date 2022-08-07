@@ -325,10 +325,9 @@ public class FieldMappingDogTest
 			dataSourceFieldMappings.get(0);
 
 		Assertions.assertEquals(
-			"emailAddress", dataSourceFieldMapping.getFieldName());
-
-		Assertions.assertEquals(
 			dataSource.getId(), dataSourceFieldMapping.getDataSourceId());
+		Assertions.assertEquals(
+			"emailAddress", dataSourceFieldMapping.getFieldName());
 	}
 
 	@Test
