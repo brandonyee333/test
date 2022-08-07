@@ -40,7 +40,6 @@ public class SegmentTest {
 
 		Assertions.assertEquals(
 			1, referencedAssetIds.size(), referencedAssetIds.toString());
-
 		Assertions.assertEquals(5687, referencedAssetIds.get(0));
 	}
 
