@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.repository.FieldRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,8 +37,5 @@ public class FieldNamesRestController extends BaseRestController {
 
 		return null;
 	}
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 }
