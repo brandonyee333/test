@@ -5,7 +5,7 @@
 		"id": "1",
 		"startedDate": "${now-40d}",
 		"status": "COMPLETED",
-		"type": "ACCOUNT"
+		"type": "SEGMENT"
 	},
 	{
 		"createDate": "${now-39d}",
@@ -33,6 +33,6 @@
 		"id": "1978",
 		"startedDate": "${now-1d}",
 		"status": "COMPLETED",
-		"type": "ACCOUNT"
+		"type": "PAGE"
 	}
 ]

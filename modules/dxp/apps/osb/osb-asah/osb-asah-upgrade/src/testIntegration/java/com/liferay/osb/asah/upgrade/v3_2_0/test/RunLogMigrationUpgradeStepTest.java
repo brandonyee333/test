@@ -82,15 +82,11 @@ public class RunLogMigrationUpgradeStepTest
 
 		_faroInfoElasticsearchInvoker.add("run-logs", faroInfoJSONArray);
 
-		JSONArray salesForceRawJSONArray = _getJSONArray(
-			"osbasahsalesforceraw");
-
 		_runLogMigrationUpgradeStep.upgrade("");
 
 		Assertions.assertEquals(
 			JSONUtil.toList(
-				_toJSONArray(
-					dxpRawJSONArray, faroInfoJSONArray, salesForceRawJSONArray),
+				_toJSONArray(dxpRawJSONArray, faroInfoJSONArray),
 				jsonObject -> _objectMapper.convertValue(
 					jsonObject, RunLog.class)),
 			_runLogRepository.findAll());

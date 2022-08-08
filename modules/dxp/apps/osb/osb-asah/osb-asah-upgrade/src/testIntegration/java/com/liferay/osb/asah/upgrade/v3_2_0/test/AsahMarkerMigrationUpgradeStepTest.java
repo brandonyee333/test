@@ -75,8 +75,6 @@ public class AsahMarkerMigrationUpgradeStepTest
 		JSONArray dxpRawJSONArray = _getJSONArray("osbasahdxpraw");
 
 		JSONArray faroInfoJSONArray = _getJSONArray("osbasahfaroinfo");
-		JSONArray salesForceRawJSONArray = _getJSONArray(
-			"osbasahsalesforceraw");
 
 		_cerebroInfoElasticsearchInvoker.add(
 			"OSBAsahMarkers", cerebroInfoJSONArray);
@@ -95,10 +93,6 @@ public class AsahMarkerMigrationUpgradeStepTest
 
 		for (Object faroInfoObject : faroInfoJSONArray) {
 			jsonArray.put(faroInfoObject);
-		}
-
-		for (Object salesForceRawObject : salesForceRawJSONArray) {
-			jsonArray.put(salesForceRawObject);
 		}
 
 		_asahMarkerMigrationUpgradeStep.upgrade("");
