@@ -398,6 +398,11 @@ public class FieldMappingDog {
 	private List<FieldMapping> _populateDataSourceFieldMappings(
 		List<FieldMapping> fieldMappings) {
 
+		Stream<FieldMapping> fieldMappingsStream = fieldMappings.stream();
+
+		Map<Long, FieldMapping> fieldMappingsMap = fieldMappingsStream.collect(
+			Collectors.toMap(FieldMapping::getId, Function.identity()));
+
 		List<DataSourceFieldMapping> dataSourceFieldMappings =
 			_dataSourceFieldMappingRepository.findByFieldMappingIds(
 				fieldMappingsMap.keySet());
@@ -409,11 +414,6 @@ public class FieldMappingDog {
 			dataSourceFieldMappingStream.collect(
 				Collectors.groupingBy(
 					DataSourceFieldMapping::getFieldMappingId));
-
-		Stream<FieldMapping> fieldMappingsStream = fieldMappings.stream();
-
-		Map<Long, FieldMapping> fieldMappingsMap = fieldMappingsStream.collect(
-			Collectors.toMap(FieldMapping::getId, Function.identity()));
 
 		for (Map.Entry<Long, FieldMapping> entry :
 				fieldMappingsMap.entrySet()) {
