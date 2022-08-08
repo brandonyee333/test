@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.VirtualLayoutConstants;
 import com.liferay.portal.kernel.portlet.LayoutFriendlyURLSeparatorComposite;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
@@ -131,6 +132,11 @@ public class FriendlyURLServlet extends HttpServlet {
 
 		String layoutFriendlyURL = null;
 
+		boolean skipRedirect = ParamUtil.getBoolean(
+			httpServletRequest, "p_l_skip_redirect");
+
+		Redirect skippedRedirect = null;
+
 		if ((pos != -1) && ((pos + 1) != path.length())) {
 			layoutFriendlyURL = path.substring(pos);
 
@@ -142,7 +148,10 @@ public class FriendlyURLServlet extends HttpServlet {
 			RedirectEntryLocalService currentRedirectEntryLocalService =
 				redirectEntryLocalService;
 
-			if (currentRedirectEntryLocalService != null) {
+			if ((currentRedirectEntryLocalService != null) &&
+				!LiferayWindowState.isExclusive(httpServletRequest) &&
+				!LiferayWindowState.isPopUp(httpServletRequest)) {
+
 				HttpServletRequest originalHttpServletRequest =
 					portal.getOriginalServletRequest(httpServletRequest);
 
@@ -161,9 +170,13 @@ public class FriendlyURLServlet extends HttpServlet {
 				}
 
 				if (redirectEntry != null) {
-					return new Redirect(
+					skippedRedirect = new Redirect(
 						redirectEntry.getDestinationURL(), true,
 						redirectEntry.isPermanent());
+
+					if (!skipRedirect) {
+						return skippedRedirect;
+					}
 				}
 			}
 		}
@@ -240,6 +253,13 @@ public class FriendlyURLServlet extends HttpServlet {
 						permissionChecker, layout, ActionKeys.VIEW)) {
 
 					throw new LayoutPermissionException();
+				}
+
+				if ((skippedRedirect != null) &&
+					!LayoutPermissionUtil.containsLayoutUpdatePermission(
+						permissionChecker, layout)) {
+
+					return skippedRedirect;
 				}
 			}
 
