@@ -85,10 +85,9 @@ public class SiteVisitorHeatMapDogTest
 				}
 			};
 
-		double[] expectedValues = _getExpectedValues(
-			expectedValuesMap, "UTC", heatMapMetrics.size());
-
-		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(
+			_getExpectedValues(expectedValuesMap, "UTC", heatMapMetrics.size()),
+			actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -128,11 +127,9 @@ public class SiteVisitorHeatMapDogTest
 				}
 			};
 
-		double[] expectedValues = _getExpectedValues(
-			expectedValuesMap, "UTC", heatMapMetrics.size());
-
 		Assertions.assertArrayEquals(
-			expectedValues, _getActualValues(heatMapMetrics), 0);
+			_getExpectedValues(expectedValuesMap, "UTC", heatMapMetrics.size()),
+			_getActualValues(heatMapMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -158,10 +155,9 @@ public class SiteVisitorHeatMapDogTest
 				}
 			};
 
-		double[] expectedValues = _getExpectedValues(
-			expectedValuesMap, "UTC", heatMapMetrics.size());
-
-		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(
+			_getExpectedValues(expectedValuesMap, "UTC", heatMapMetrics.size()),
+			actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -193,10 +189,9 @@ public class SiteVisitorHeatMapDogTest
 				}
 			};
 
-		double[] expectedValues = _getExpectedValues(
-			expectedValuesMap, "UTC", heatMapMetrics.size());
-
-		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(
+			_getExpectedValues(expectedValuesMap, "UTC", heatMapMetrics.size()),
+			actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -231,10 +226,9 @@ public class SiteVisitorHeatMapDogTest
 				}
 			};
 
-		double[] expectedValues = _getExpectedValues(
-			expectedValuesMap, "UTC", heatMapMetrics.size());
-
-		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(
+			_getExpectedValues(expectedValuesMap, "UTC", heatMapMetrics.size()),
+			actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -270,10 +264,9 @@ public class SiteVisitorHeatMapDogTest
 				}
 			};
 
-		double[] expectedValues = _getExpectedValues(
-			expectedValuesMap, "UTC", heatMapMetrics.size());
-
-		Assertions.assertArrayEquals(expectedValues, actualValues, 0);
+		Assertions.assertArrayEquals(
+			_getExpectedValues(expectedValuesMap, "UTC", heatMapMetrics.size()),
+			actualValues, 0);
 	}
 
 	@Disabled
@@ -351,11 +344,9 @@ public class SiteVisitorHeatMapDogTest
 				}
 			};
 
-		double[] expectedValues = _getExpectedValues(
-			expectedValuesMap, "UTC", heatMapMetrics.size());
-
 		Assertions.assertArrayEquals(
-			expectedValues, _getActualValues(heatMapMetrics), 0);
+			_getExpectedValues(expectedValuesMap, "UTC", heatMapMetrics.size()),
+			_getActualValues(heatMapMetrics), 0);
 	}
 
 	private double[] _getActualValues(List<HeatMapMetric> heatMapMetrics) {

@@ -73,12 +73,10 @@ public class IndividualsRestControllerTest
 	)
 	@Test
 	public void testActiveMembershipReturned() {
-		PageDTO<SegmentDTO> segmentDTOPageDTO =
-			_individualsRestController.getSegmentDTOPageDTO(
-				123L, "active-membership", null, 0, 10, null);
-
 		JSONObject segmentsJSONObject = _objectMapper.convertValue(
-			segmentDTOPageDTO, JSONObject.class);
+			_individualsRestController.getSegmentDTOPageDTO(
+				123L, "active-membership", null, 0, 10, null),
+			JSONObject.class);
 
 		JSONObject embeddedJSONObject = segmentsJSONObject.getJSONObject(
 			"_embedded");

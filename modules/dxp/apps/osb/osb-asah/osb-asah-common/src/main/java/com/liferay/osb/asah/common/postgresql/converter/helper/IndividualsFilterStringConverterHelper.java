@@ -319,12 +319,12 @@ public class IndividualsFilterStringConverterHelper
 			);
 		}
 		else {
-			List<String> identityIds = _bqMembershipDog.getIdentityIds(
-				_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
-				value, minDocCount, checkEqualityOnly);
-
 			List<Long> individualIds = ListUtil.map(
-				identityIds, Long::parseLong);
+				_bqMembershipDog.getIdentityIds(
+					_segmentDog.getSegmentIds(
+						individualSegmentNames, "INACTIVE"),
+					value, minDocCount, checkEqualityOnly),
+				Long::parseLong);
 
 			if (individualIds.isEmpty()) {
 				return DSL.noCondition();

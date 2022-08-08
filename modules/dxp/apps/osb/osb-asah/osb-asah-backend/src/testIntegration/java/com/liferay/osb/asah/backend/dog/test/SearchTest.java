@@ -51,10 +51,8 @@ public class SearchTest
 		searchQueryContext.setKeywords("titul");
 		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
 
-		int assetMetricsCount = _metricDog.getAssetMetricsCount(
-			searchQueryContext);
-
-		Assertions.assertEquals(2, assetMetricsCount);
+		Assertions.assertEquals(
+			2, _metricDog.getAssetMetricsCount(searchQueryContext));
 	}
 
 	@ElasticsearchIndex(
@@ -83,10 +81,8 @@ public class SearchTest
 		searchQueryContext.setKeywords("pag");
 		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
 
-		int assetMetricsCount = _metricDog.getAssetMetricsCount(
-			searchQueryContext);
-
-		Assertions.assertEquals(3, assetMetricsCount);
+		Assertions.assertEquals(
+			3, _metricDog.getAssetMetricsCount(searchQueryContext));
 	}
 
 	@Autowired

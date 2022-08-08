@@ -151,13 +151,10 @@ public class DataControlTaskDogTest
 	)
 	@Test
 	public void testGetDataControlTaskResultBagBatch() {
-		Page<DataControlTask> dataControlTaskPage =
-			_dataControlTaskDog.getDataControlTaskPage(
-				102L, null, null, 0, 10, Sort.desc("createDate"), null, null);
-
 		_checkResults(
 			2, Arrays.asList("jane.doe@liferay.com", "test@liferay.com"),
-			dataControlTaskPage);
+			_dataControlTaskDog.getDataControlTaskPage(
+				102L, null, null, 0, 10, Sort.desc("createDate"), null, null));
 	}
 
 	@RepositoryResource(
@@ -166,17 +163,14 @@ public class DataControlTaskDogTest
 	)
 	@Test
 	public void testGetDataControlTaskResultBagCombination() {
-		Page<DataControlTask> dataControlTaskPage =
+		_checkResults(
+			1, Collections.singletonList("john.doe@liferay.com"),
 			_dataControlTaskDog.getDataControlTaskPage(
 				101L, "liferay", 30, 0, 10, Sort.desc("createDate"),
 				Collections.singletonList(
 					DataControlTaskStatus.COMPLETED.toString()),
 				Collections.singletonList(
-					DataControlTaskType.SUPPRESS.toString()));
-
-		_checkResults(
-			1, Collections.singletonList("john.doe@liferay.com"),
-			dataControlTaskPage);
+					DataControlTaskType.SUPPRESS.toString())));
 	}
 
 	@RepositoryResource(
@@ -185,13 +179,10 @@ public class DataControlTaskDogTest
 	)
 	@Test
 	public void testGetDataControlTaskResultBagPagination() {
-		Page<DataControlTask> dataControlTaskPage =
-			_dataControlTaskDog.getDataControlTaskPage(
-				null, null, null, 1, 1, Sort.desc("createDate"), null, null);
-
 		_checkResults(
 			4, Collections.singletonList("test@liferay.com"),
-			dataControlTaskPage);
+			_dataControlTaskDog.getDataControlTaskPage(
+				null, null, null, 1, 1, Sort.desc("createDate"), null, null));
 	}
 
 	@RepositoryResource(
@@ -200,16 +191,13 @@ public class DataControlTaskDogTest
 	)
 	@Test
 	public void testGetDataControlTaskResultBagRange() {
-		Page<DataControlTask> dataControlTaskPage =
-			_dataControlTaskDog.getDataControlTaskPage(
-				null, null, 30, 0, 10, Sort.desc("createDate"), null, null);
-
 		_checkResults(
 			3,
 			Arrays.asList(
 				"jane.doe@liferay.com", "test@liferay.com",
 				"john.doe@liferay.com"),
-			dataControlTaskPage);
+			_dataControlTaskDog.getDataControlTaskPage(
+				null, null, 30, 0, 10, Sort.desc("createDate"), null, null));
 	}
 
 	@RepositoryResource(
@@ -218,13 +206,10 @@ public class DataControlTaskDogTest
 	)
 	@Test
 	public void testGetDataControlTaskResultBagSearch() {
-		Page<DataControlTask> dataControlTaskPage =
-			_dataControlTaskDog.getDataControlTaskPage(
-				null, "doe", null, 0, 10, Sort.desc("createDate"), null, null);
-
 		_checkResults(
 			2, Arrays.asList("jane.doe@liferay.com", "john.doe@liferay.com"),
-			dataControlTaskPage);
+			_dataControlTaskDog.getDataControlTaskPage(
+				null, "doe", null, 0, 10, Sort.desc("createDate"), null, null));
 	}
 
 	@RepositoryResource(
@@ -233,16 +218,13 @@ public class DataControlTaskDogTest
 	)
 	@Test
 	public void testGetDataControlTaskResultBagStatus() {
-		Page<DataControlTask> dataControlTaskPage =
+		_checkResults(
+			1, Collections.singletonList("jane.doe@liferay.com"),
 			_dataControlTaskDog.getDataControlTaskPage(
 				null, null, null, 0, 10, Sort.desc("createDate"),
 				Collections.singletonList(
 					DataControlTaskStatus.PENDING.toString()),
-				null);
-
-		_checkResults(
-			1, Collections.singletonList("jane.doe@liferay.com"),
-			dataControlTaskPage);
+				null));
 	}
 
 	@RepositoryResource(
@@ -251,15 +233,12 @@ public class DataControlTaskDogTest
 	)
 	@Test
 	public void testGetDataControlTaskResultBagTypes() {
-		Page<DataControlTask> dataControlTaskPage =
+		_checkResults(
+			1, Collections.singletonList("test@liferay.com"),
 			_dataControlTaskDog.getDataControlTaskPage(
 				null, null, null, 0, 10, Sort.desc("createDate"), null,
 				Collections.singletonList(
-					DataControlTaskType.UNSUPPRESS.toString()));
-
-		_checkResults(
-			1, Collections.singletonList("test@liferay.com"),
-			dataControlTaskPage);
+					DataControlTaskType.UNSUPPRESS.toString())));
 	}
 
 	private void _checkResults(

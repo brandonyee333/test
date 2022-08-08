@@ -56,11 +56,10 @@ public class OSBAsahElasticsearchTestExecutionListener
 			ElasticsearchIndex.class);
 
 		for (ElasticsearchIndex elasticsearchIndex : elasticsearchIndices) {
-			String indexName = ElasticsearchIndexUtil.getIndexName(
-				elasticsearchIndex.name(),
-				elasticsearchIndex.weDeployDataService());
-
-			_elasticsearchIndexManager.clear(indexName);
+			_elasticsearchIndexManager.clear(
+				ElasticsearchIndexUtil.getIndexName(
+					elasticsearchIndex.name(),
+					elasticsearchIndex.weDeployDataService()));
 		}
 
 		ProjectIdThreadLocal.remove();

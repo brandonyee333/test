@@ -19,7 +19,6 @@ import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.MetricType;
 
 import graphql.execution.ExecutionTypeInfo;
 
@@ -52,11 +51,11 @@ public class DeviceDataFetcher extends BaseDataFetcher<List<Metric>> {
 		GraphQLFieldDefinition graphQLFieldDefinition =
 			parentExecutionTypeInfo.getFieldDefinition();
 
-		MetricType metricType = _metricTypeDog.getMetricType(
-			searchQueryContext.getAssetType(),
-			graphQLFieldDefinition.getName());
-
-		return _technologyDog.getDeviceMetrics(metricType, searchQueryContext);
+		return _technologyDog.getDeviceMetrics(
+			_metricTypeDog.getMetricType(
+				searchQueryContext.getAssetType(),
+				graphQLFieldDefinition.getName()),
+			searchQueryContext);
 	}
 
 	@Autowired

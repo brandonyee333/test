@@ -543,11 +543,12 @@ public class MetricDogTest
 	)
 	@Test
 	public void testJournalMetricsCount() {
-		int assetMetricsCount = _metricDog.getAssetMetricsCount(
-			_createSearchQuery(
-				null, AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS, null));
-
-		Assertions.assertEquals(4, assetMetricsCount);
+		Assertions.assertEquals(
+			4,
+			_metricDog.getAssetMetricsCount(
+				_createSearchQuery(
+					null, AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS,
+					null)));
 	}
 
 	@ElasticsearchIndex(

@@ -29,7 +29,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -66,15 +65,13 @@ public class RecommendationRestControllerTest
 	)
 	@Test
 	public void testGetPageRecommendationEntityModel() {
-		EntityModel<?> pageRecommendationEntityModel =
+		Assertions.assertNotNull(
 			_recommendationRestController.getPageRecommendationEntityModel(
 				JSONUtil.put(
 					"modelId", "1"
 				).put(
 					"url", "https://page-a"
-				).toString());
-
-		Assertions.assertNotNull(pageRecommendationEntityModel);
+				).toString()));
 	}
 
 	@Autowired

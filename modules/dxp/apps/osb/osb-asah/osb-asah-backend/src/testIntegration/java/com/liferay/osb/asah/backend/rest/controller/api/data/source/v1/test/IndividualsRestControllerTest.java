@@ -23,7 +23,6 @@ import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import io.restassured.http.Method;
-import io.restassured.response.ValidatableResponse;
 
 import org.hamcrest.Matchers;
 
@@ -64,10 +63,8 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 	)
 	@Test
 	public void testGetIndividuals() {
-		ValidatableResponse validatableResponse = getValidatableResponse(
-			Method.GET, "/api/1.0/individuals");
-
-		validateIndividuals(validatableResponse);
+		validateIndividuals(
+			getValidatableResponse(Method.GET, "/api/1.0/individuals"));
 	}
 
 	@ElasticsearchIndex(
@@ -170,11 +167,10 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 	}
 
 	private void _validateTotalElements(String filterString, int elements) {
-		ValidatableResponse validatableResponse = getValidatableResponse(
-			Method.GET, "/api/1.0/individuals?filter=" + filterString);
-
 		validateResponse(
-			Matchers.is(elements), "page.totalElements", validatableResponse);
+			Matchers.is(elements), "page.totalElements",
+			getValidatableResponse(
+				Method.GET, "/api/1.0/individuals?filter=" + filterString));
 	}
 
 }

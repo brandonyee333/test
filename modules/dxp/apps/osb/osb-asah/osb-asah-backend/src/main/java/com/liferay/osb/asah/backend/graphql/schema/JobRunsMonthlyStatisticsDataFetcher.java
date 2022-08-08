@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.dog.JobRunDog;
-import com.liferay.osb.asah.common.entity.Job;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
 
@@ -40,10 +39,9 @@ public class JobRunsMonthlyStatisticsDataFetcher
 	public JobRunsMonthlyStatistics get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Job job = _jobDog.getJob(
-			Long.valueOf(dataFetchingEnvironment.getArgument("jobId")));
-
-		return _jobRunDog.getJobRunsMonthlyStatistics(job);
+		return _jobRunDog.getJobRunsMonthlyStatistics(
+			_jobDog.getJob(
+				Long.valueOf(dataFetchingEnvironment.getArgument("jobId"))));
 	}
 
 	@Autowired

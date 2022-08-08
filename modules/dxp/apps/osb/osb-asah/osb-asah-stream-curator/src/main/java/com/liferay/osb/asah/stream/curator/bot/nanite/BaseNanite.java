@@ -387,10 +387,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			Function<T, String> assetPrimaryKeyGeneratorFunction =
 				getAssetPrimaryKeyGeneratorFunction();
 
-			String assetPrimaryKey = assetPrimaryKeyGeneratorFunction.apply(
-				model);
-
-			baseAssetModel.setAssetPrimaryKey(assetPrimaryKey);
+			baseAssetModel.setAssetPrimaryKey(
+				assetPrimaryKeyGeneratorFunction.apply(model));
 		}
 	}
 

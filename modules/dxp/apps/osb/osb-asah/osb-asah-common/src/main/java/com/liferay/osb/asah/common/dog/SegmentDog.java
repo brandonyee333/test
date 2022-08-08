@@ -342,15 +342,14 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Map<Long, JSONObject> segmentsJSONObjects = new HashMap<>();
 
 		for (Individual individual : individuals) {
-			List<Long> segmentIds = _bqMembershipDog.getSegmentIds(
-				String.valueOf(individual.getId()));
-
 			segmentsJSONObjects.put(
 				individual.getId(),
 				JSONUtil.put(
 					"individual-segments",
 					JSONUtil.toJSONArray(
-						getSegments(segmentIds),
+						getSegments(
+							_bqMembershipDog.getSegmentIds(
+								String.valueOf(individual.getId()))),
 						segment -> _objectMapper.convertValue(
 							segment, JSONObject.class))));
 		}

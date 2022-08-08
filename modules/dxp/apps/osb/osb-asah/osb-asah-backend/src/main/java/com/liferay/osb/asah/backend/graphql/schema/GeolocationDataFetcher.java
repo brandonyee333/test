@@ -19,7 +19,6 @@ import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.MetricType;
 
 import graphql.execution.ExecutionTypeInfo;
 
@@ -52,12 +51,11 @@ public class GeolocationDataFetcher extends BaseDataFetcher<List<Metric>> {
 		GraphQLFieldDefinition graphQLFieldDefinition =
 			parentExecutionTypeInfo.getFieldDefinition();
 
-		MetricType metricType = _metricTypeDog.getMetricType(
-			searchQueryContext.getAssetType(),
-			graphQLFieldDefinition.getName());
-
 		return _geolocationDog.getGeolocationMetrics(
-			metricType, searchQueryContext);
+			_metricTypeDog.getMetricType(
+				searchQueryContext.getAssetType(),
+				graphQLFieldDefinition.getName()),
+			searchQueryContext);
 	}
 
 	@Autowired

@@ -38,7 +38,6 @@ import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
 import io.restassured.http.Method;
-import io.restassured.response.ValidatableResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,11 +163,10 @@ public class IndividualSegmentsRestControllerTest
 	)
 	@Test
 	public void testGetIndividualSegments() {
-		ValidatableResponse validatableResponse = getValidatableResponse(
-			Method.GET,
-			"/api/1.0/individual-segments/327968823603500655/individuals");
-
-		validateIndividuals(validatableResponse);
+		validateIndividuals(
+			getValidatableResponse(
+				Method.GET,
+				"/api/1.0/individual-segments/327968823603500655/individuals"));
 	}
 
 	@RepositoryResource(

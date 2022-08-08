@@ -42,10 +42,10 @@ public class UserDogTest
 	)
 	@Test
 	public void testGetAnonymousUsersCount() {
-		long anonymousUsersCount = _userDog.getAnonymousUsersCount(
-			JournalMetricType.VIEWS, _searchQueryContext);
-
-		Assertions.assertEquals(2, anonymousUsersCount);
+		Assertions.assertEquals(
+			2,
+			_userDog.getAnonymousUsersCount(
+				JournalMetricType.VIEWS, _searchQueryContext));
 	}
 
 	@ElasticsearchIndex(
@@ -59,10 +59,10 @@ public class UserDogTest
 	)
 	@Test
 	public void testGetKnownUsersCount() {
-		long knownUsersCount = _userDog.getKnownUsersCount(
-			JournalMetricType.VIEWS, _searchQueryContext);
-
-		Assertions.assertEquals(4, knownUsersCount);
+		Assertions.assertEquals(
+			4,
+			_userDog.getKnownUsersCount(
+				JournalMetricType.VIEWS, _searchQueryContext));
 	}
 
 	@ElasticsearchIndex(
@@ -76,11 +76,10 @@ public class UserDogTest
 	)
 	@Test
 	public void testGetNonsegmentedKnownUsersCount() {
-		long nonsegmentedKnownUsersCount =
+		Assertions.assertEquals(
+			2,
 			_userDog.getNonsegmentedKnownUsersCount(
-				JournalMetricType.VIEWS, _searchQueryContext);
-
-		Assertions.assertEquals(2, nonsegmentedKnownUsersCount);
+				JournalMetricType.VIEWS, _searchQueryContext));
 	}
 
 	@ElasticsearchIndex(
@@ -94,11 +93,10 @@ public class UserDogTest
 	)
 	@Test
 	public void testGetSegmentedAnonymousUsersCount() {
-		long segmentedAnonymousUsersCount =
+		Assertions.assertEquals(
+			1,
 			_userDog.getSegmentedAnonymousUsersCount(
-				JournalMetricType.VIEWS, _searchQueryContext);
-
-		Assertions.assertEquals(1, segmentedAnonymousUsersCount);
+				JournalMetricType.VIEWS, _searchQueryContext));
 	}
 
 	@ElasticsearchIndex(
@@ -112,10 +110,10 @@ public class UserDogTest
 	)
 	@Test
 	public void testGetSegmentedKnownUsersCount() {
-		long segmentedKnownUsersCount = _userDog.getSegmentedKnownUsersCount(
-			JournalMetricType.VIEWS, _searchQueryContext);
-
-		Assertions.assertEquals(2, segmentedKnownUsersCount);
+		Assertions.assertEquals(
+			2,
+			_userDog.getSegmentedKnownUsersCount(
+				JournalMetricType.VIEWS, _searchQueryContext));
 	}
 
 	private final SearchQueryContext _searchQueryContext =

@@ -90,17 +90,13 @@ public class InterestsRestController extends BaseRestController {
 			return toCollectionGetResponse("interest-topics", new JSONArray());
 		}
 
-		List<InterestTopic> interestTopics =
-			_interestTopicDog.getInterestTopics(
-				termsPerTopic, "keyword", topics);
-
-		List<Topic> topTermsTopics = _getTopTermsTopics(
-			interestTopics, topicsLength);
-
 		return toCollectionGetResponse(
 			"interest-topics",
 			JSONUtil.toJSONArray(
-				topTermsTopics,
+				_getTopTermsTopics(
+					_interestTopicDog.getInterestTopics(
+						termsPerTopic, "keyword", topics),
+					topicsLength),
 				topic -> JSONUtil.put(
 					"id", topic._id
 				).put(

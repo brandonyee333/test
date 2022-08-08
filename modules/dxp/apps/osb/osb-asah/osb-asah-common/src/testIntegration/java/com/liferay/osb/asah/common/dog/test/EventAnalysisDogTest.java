@@ -275,20 +275,19 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
 				"DESC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.AVERAGE, 1L, true,
-				Collections.singletonList(eventAnalysisBreakdown),
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_event_analysis_breakdown_average.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.AVERAGE, 1L, true,
+					Collections.singletonList(eventAnalysisBreakdown),
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
@@ -306,25 +305,24 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
 				"DESC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.TOTAL, 1L, true,
-				new ArrayList<EventAnalysisBreakdown>() {
-					{
-						add(eventAnalysisBreakdown1);
-						add(eventAnalysisBreakdown2);
-					}
-				},
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_event_analysis_breakdown_boolean.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.TOTAL, 1L, true,
+					new ArrayList<EventAnalysisBreakdown>() {
+						{
+							add(eventAnalysisBreakdown1);
+							add(eventAnalysisBreakdown2);
+						}
+					},
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
@@ -342,50 +340,48 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
 				"DESC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.TOTAL, 1L, true,
-				new ArrayList<EventAnalysisBreakdown>() {
-					{
-						add(eventAnalysisBreakdown1);
-						add(eventAnalysisBreakdown2);
-					}
-				},
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies" +
 					"/expected_event_analysis_breakdown_day_grouping.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.TOTAL, 1L, true,
+					new ArrayList<EventAnalysisBreakdown>() {
+						{
+							add(eventAnalysisBreakdown1);
+							add(eventAnalysisBreakdown2);
+						}
+					},
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownDuration() throws Exception {
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.UNIQUE, 1L, true,
-				Collections.singletonList(
-					new EventAnalysisBreakdown(
-						"34567", AttributeType.EVENT, 2000,
-						EventAttributeDefinition.DataType.DURATION, null, null,
-						"testCode", "DESC")),
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_event_analysis_breakdown_duration.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.UNIQUE, 1L, true,
+					Collections.singletonList(
+						new EventAnalysisBreakdown(
+							"34567", AttributeType.EVENT, 2000,
+							EventAttributeDefinition.DataType.DURATION, null,
+							null, "testCode", "DESC")),
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
@@ -403,26 +399,25 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
 				"DESC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.TOTAL, 1L, true,
-				new ArrayList<EventAnalysisBreakdown>() {
-					{
-						add(eventAnalysisBreakdown1);
-						add(eventAnalysisBreakdown2);
-					}
-				},
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies" +
 					"/expected_event_analysis_breakdown_month_grouping.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.TOTAL, 1L, true,
+					new ArrayList<EventAnalysisBreakdown>() {
+						{
+							add(eventAnalysisBreakdown1);
+							add(eventAnalysisBreakdown2);
+						}
+					},
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
@@ -440,50 +435,48 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
 				"DESC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.TOTAL, 1L, true,
-				new ArrayList<EventAnalysisBreakdown>() {
-					{
-						add(eventAnalysisBreakdown1);
-						add(eventAnalysisBreakdown2);
-					}
-				},
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies" +
 					"/expected_event_analysis_breakdown_null_values.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.TOTAL, 1L, true,
+					new ArrayList<EventAnalysisBreakdown>() {
+						{
+							add(eventAnalysisBreakdown1);
+							add(eventAnalysisBreakdown2);
+						}
+					},
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownNumber() throws Exception {
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.TOTAL, 1L, true,
-				Collections.singletonList(
-					new EventAnalysisBreakdown(
-						"45678", AttributeType.EVENT, 2,
-						EventAttributeDefinition.DataType.NUMBER, null, null,
-						"testRating", "DESC")),
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_event_analysis_breakdown_number.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.TOTAL, 1L, true,
+					Collections.singletonList(
+						new EventAnalysisBreakdown(
+							"45678", AttributeType.EVENT, 2,
+							EventAttributeDefinition.DataType.NUMBER, null,
+							null, "testRating", "DESC")),
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
@@ -506,26 +499,25 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null,
 				"testCode", "DESC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.TOTAL, 1L, true,
-				new ArrayList<EventAnalysisBreakdown>() {
-					{
-						add(eventAnalysisBreakdown1);
-						add(eventAnalysisBreakdown2);
-						add(eventAnalysisBreakdown3);
-					}
-				},
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_event_analysis_breakdown_total.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.TOTAL, 1L, true,
+					new ArrayList<EventAnalysisBreakdown>() {
+						{
+							add(eventAnalysisBreakdown1);
+							add(eventAnalysisBreakdown2);
+							add(eventAnalysisBreakdown3);
+						}
+					},
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
@@ -548,26 +540,25 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
 				"DESC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.UNIQUE, 1L, true,
-				new ArrayList<EventAnalysisBreakdown>() {
-					{
-						add(eventAnalysisBreakdown1);
-						add(eventAnalysisBreakdown2);
-						add(eventAnalysisBreakdown3);
-					}
-				},
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_event_analysis_breakdown_unique.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.UNIQUE, 1L, true,
+					new ArrayList<EventAnalysisBreakdown>() {
+						{
+							add(eventAnalysisBreakdown1);
+							add(eventAnalysisBreakdown2);
+							add(eventAnalysisBreakdown3);
+						}
+					},
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
@@ -678,34 +669,33 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null,
 				"testCode", "ASC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.TOTAL, 1L, true,
-				new ArrayList<EventAnalysisBreakdown>() {
-					{
-						add(eventAnalysisBreakdown1);
-						add(eventAnalysisBreakdown2);
-						add(eventAnalysisBreakdown3);
-					}
-				},
-				Collections.singletonList(
-					new EventAnalysisFilter(
-						"12345", AttributeType.EVENT,
-						EventAttributeDefinition.DataType.STRING, null,
-						"testUrl", "eq",
-						Collections.singletonList(
-							"https://www.beryl.com/design"))),
-				246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies" +
 					"/expected_event_analysis_breakdown_with_filter.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.TOTAL, 1L, true,
+					new ArrayList<EventAnalysisBreakdown>() {
+						{
+							add(eventAnalysisBreakdown1);
+							add(eventAnalysisBreakdown2);
+							add(eventAnalysisBreakdown3);
+						}
+					},
+					Collections.singletonList(
+						new EventAnalysisFilter(
+							"12345", AttributeType.EVENT,
+							EventAttributeDefinition.DataType.STRING, null,
+							"testUrl", "eq",
+							Collections.singletonList(
+								"https://www.beryl.com/design"))),
+					246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
@@ -723,26 +713,25 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
 				"DESC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.TOTAL, 1L, true,
-				new ArrayList<EventAnalysisBreakdown>() {
-					{
-						add(eventAnalysisBreakdown1);
-						add(eventAnalysisBreakdown2);
-					}
-				},
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies" +
 					"/expected_event_analysis_breakdown_year_grouping.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.TOTAL, 1L, true,
+					new ArrayList<EventAnalysisBreakdown>() {
+						{
+							add(eventAnalysisBreakdown1);
+							add(eventAnalysisBreakdown2);
+						}
+					},
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 

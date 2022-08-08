@@ -550,11 +550,9 @@ public class SalesforceExtractorNanite implements Nanite {
 		BatchInfo batchInfo = null;
 
 		try {
-			String soql = SOQLUtil.getSOQL(
-				describeSObjectResult, salesforceKeys);
-
 			batchInfo = _salesforceBulkClientInvoker.getBatchInfo(
-				_salesforceExtractorConfiguration, soql,
+				_salesforceExtractorConfiguration,
+				SOQLUtil.getSOQL(describeSObjectResult, salesforceKeys),
 				describeSObjectResult.getName());
 
 			QueryResultList queryResultList =

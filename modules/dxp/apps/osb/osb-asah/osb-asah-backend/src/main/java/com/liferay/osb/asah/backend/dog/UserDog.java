@@ -166,14 +166,12 @@ public class UserDog {
 			searchSourceBuilder::aggregation
 		);
 
-		DogConfiguration dogConfiguration =
-			_dogConfigurationBag.getDogConfiguration(
-				searchQueryContext.getAssetType());
-
 		BoolQueryBuilder boolQueryBuilder =
 			_searchQueryHelper.createFilterBoolQueryBuilder(
 				DogUtil.getAssetIdOptional(
-					searchQueryContext.getAssetId(), dogConfiguration),
+					searchQueryContext.getAssetId(),
+					_dogConfigurationBag.getDogConfiguration(
+						searchQueryContext.getAssetType())),
 				metricType, searchQueryContext, _timeZoneDog.getTimeZoneId());
 
 		boolQueryBuilder.filter(queryBuilder);

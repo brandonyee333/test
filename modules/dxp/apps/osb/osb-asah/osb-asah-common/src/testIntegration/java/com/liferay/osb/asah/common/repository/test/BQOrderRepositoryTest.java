@@ -79,14 +79,12 @@ public class BQOrderRepositoryTest
 	public void testGetOrderAccountAverageCurrencyValuesWithEmptyDatasourceIds() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
-		Map<String, BigDecimal> orderAccountAverageCurrencyValues =
+		Assertions.assertEquals(
+			Collections.emptyMap(),
 			_bqOrderRepository.getOrderAccountAverageCurrencyValues(
 				null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
-
-		Assertions.assertEquals(
-			Collections.emptyMap(), orderAccountAverageCurrencyValues);
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
@@ -126,14 +124,12 @@ public class BQOrderRepositoryTest
 	public void testGetOrderAverageCurrencyValuesWithEmptyDatasourceIds() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
-		Map<String, BigDecimal> orderAverageCurrencyValues =
+		Assertions.assertEquals(
+			Collections.emptyMap(),
 			_bqOrderRepository.getOrderAverageCurrencyValues(
 				null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
-
-		Assertions.assertEquals(
-			Collections.emptyMap(), orderAverageCurrencyValues);
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
@@ -173,14 +169,12 @@ public class BQOrderRepositoryTest
 	public void testGetOrderIncompleteCurrencyValuesWithEmptyDataSourceIds() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
-		Map<String, BigDecimal> orderIncompleteCurrencyValues =
+		Assertions.assertEquals(
+			Collections.emptyMap(),
 			_bqOrderRepository.getOrderIncompleteCurrencyValues(
 				null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
-
-		Assertions.assertEquals(
-			Collections.emptyMap(), orderIncompleteCurrencyValues);
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@SQLResource(resourcePath = "test_bq_order.sql")
@@ -220,14 +214,12 @@ public class BQOrderRepositoryTest
 	public void testGetOrderTotalCurrencyValuesWithEmptyDataSourceIds() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
-		Map<String, BigDecimal> orderTotalCurrencyValues =
+		Assertions.assertEquals(
+			Collections.emptyMap(),
 			_bqOrderRepository.getOrderTotalCurrencyValues(
 				null, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
-				_timeZoneDog.getTimeZoneId());
-
-		Assertions.assertEquals(
-			Collections.emptyMap(), orderTotalCurrencyValues);
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	@Autowired

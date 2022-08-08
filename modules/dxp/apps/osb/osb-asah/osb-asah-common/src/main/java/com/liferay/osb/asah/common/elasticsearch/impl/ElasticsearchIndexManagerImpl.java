@@ -556,10 +556,7 @@ public class ElasticsearchIndexManagerImpl
 		}
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			String indexAlias = _getIndexAlias(
-				weDeployDataService, jsonArray.getString(i));
-
-			clear(indexAlias);
+			clear(_getIndexAlias(weDeployDataService, jsonArray.getString(i)));
 		}
 	}
 

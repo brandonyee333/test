@@ -1135,19 +1135,17 @@ public class ReportRestController extends BaseRestController {
 			}
 
 			if (expands.contains("browser")) {
-				List<Metric> browserMetrics = _technologyDog.getBrowserMetrics(
-					metric.getMetricType(), searchQueryContext);
-
 				_expandMetricReport(
-					browserMetrics, metricReport::_addBrowserMetricReport);
+					_technologyDog.getBrowserMetrics(
+						metric.getMetricType(), searchQueryContext),
+					metricReport::_addBrowserMetricReport);
 			}
 
 			if (expands.contains("device")) {
-				List<Metric> deviceMetrics = _technologyDog.getDeviceMetrics(
-					metric.getMetricType(), searchQueryContext);
-
 				_expandMetricReport(
-					deviceMetrics, metricReport::_addDeviceMetricReport);
+					_technologyDog.getDeviceMetrics(
+						metric.getMetricType(), searchQueryContext),
+					metricReport::_addDeviceMetricReport);
 			}
 
 			if (expands.contains("histogram")) {
@@ -1160,12 +1158,9 @@ public class ReportRestController extends BaseRestController {
 			}
 
 			if (expands.contains("location")) {
-				List<Metric> geolocationMetrics =
-					_geolocationDog.getGeolocationMetrics(
-						metric.getMetricType(), searchQueryContext);
-
 				_expandMetricReport(
-					geolocationMetrics,
+					_geolocationDog.getGeolocationMetrics(
+						metric.getMetricType(), searchQueryContext),
 					metricReport::_addGeolocationMetricReport);
 			}
 

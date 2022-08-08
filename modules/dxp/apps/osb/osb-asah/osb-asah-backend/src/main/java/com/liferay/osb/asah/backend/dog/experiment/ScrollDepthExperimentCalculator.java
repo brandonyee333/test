@@ -137,13 +137,11 @@ public class ScrollDepthExperimentCalculator
 			experimentVariant.isControl(), experimentVariant.getDXPVariantId(),
 			experimentVariant.getTrafficSplit());
 
-		List<ExperimentDataPoint<Double[]>> experimentDataPoints =
+		variant.setExperimentDataPoints(
 			_experimentDataDog.fetchContinuousDataPoints(
 				ExperimentUtil.getPageMetricType(experiment),
 				experiment.getStartedDateLocalDateTime(),
-				experimentVariant.getDXPVariantId());
-
-		variant.setExperimentDataPoints(experimentDataPoints);
+				experimentVariant.getDXPVariantId()));
 
 		setVariantEstimatedTrafficRate(variant);
 

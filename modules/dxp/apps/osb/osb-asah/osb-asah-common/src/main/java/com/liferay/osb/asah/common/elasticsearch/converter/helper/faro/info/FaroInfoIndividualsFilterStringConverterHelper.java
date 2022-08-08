@@ -290,15 +290,16 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				"id", String.valueOf(individualId));
 		}
 		else {
-			List<String> identityIds = _bqMembershipDog.getIdentityIds(
-				_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
-				value, minDocCount, checkEqualityOnly);
-
 			accountsFilterByCountFunctionQueryBuilder =
 				QueryBuilders.termsQuery(
 					"id",
 					ListUtil.map(
-						ListUtil.map(identityIds, Long::parseLong),
+						ListUtil.map(
+							_bqMembershipDog.getIdentityIds(
+								_segmentDog.getSegmentIds(
+									individualSegmentNames, "INACTIVE"),
+								value, minDocCount, checkEqualityOnly),
+							Long::parseLong),
 						String::valueOf));
 		}
 

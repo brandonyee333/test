@@ -70,12 +70,14 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 
 		LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
 
-		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
-			Interval.DAY,
-			TimeRange.of(localDate.minusDays(85), localDate.minusDays(105)));
-
 		Assertions.assertArrayEquals(
-			expectedValues, _getActualValues(histogramMetrics), 0);
+			expectedValues,
+			_getActualValues(
+				_getHistogramMetrics(
+					Interval.DAY,
+					TimeRange.of(
+						localDate.minusDays(85), localDate.minusDays(105)))),
+			0);
 	}
 
 	@ElasticsearchIndex(
@@ -150,11 +152,11 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	public void testHistogramMetricsLast90Days() {
 		double[] expectedValues = DogTestUtil.create90DaysHistogramBuckets();
 
-		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
-			Interval.WEEK, TimeRange.LAST_90_DAYS);
-
 		Assertions.assertArrayEquals(
-			expectedValues, _getActualValues(histogramMetrics), 0);
+			expectedValues,
+			_getActualValues(
+				_getHistogramMetrics(Interval.WEEK, TimeRange.LAST_90_DAYS)),
+			0);
 	}
 
 	@ElasticsearchIndex(
