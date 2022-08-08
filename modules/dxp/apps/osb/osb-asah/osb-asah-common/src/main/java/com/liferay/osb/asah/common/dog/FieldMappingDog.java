@@ -407,11 +407,11 @@ public class FieldMappingDog {
 			_dataSourceFieldMappingRepository.findByFieldMappingIds(
 				fieldMappingsMap.keySet());
 
-		Stream<DataSourceFieldMapping> dataSourceFieldMappingStream =
+		Stream<DataSourceFieldMapping> dataSourceFieldMappingsStream =
 			dataSourceFieldMappings.stream();
 
 		Map<Long, List<DataSourceFieldMapping>> dataSourceFieldMappingsMap =
-			dataSourceFieldMappingStream.collect(
+			dataSourceFieldMappingsStream.collect(
 				Collectors.groupingBy(
 					DataSourceFieldMapping::getFieldMappingId));
 
