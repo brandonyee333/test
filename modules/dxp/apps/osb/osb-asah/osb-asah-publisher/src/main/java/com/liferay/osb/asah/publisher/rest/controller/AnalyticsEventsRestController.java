@@ -17,10 +17,12 @@ package com.liferay.osb.asah.publisher.rest.controller;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
+import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
+import com.liferay.osb.asah.common.dog.EventStorageDog;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -312,6 +314,25 @@ public class AnalyticsEventsRestController {
 				_messageBus.sendMessage(
 					Channel.ANALYTICS_EVENTS, analyticsEvent.toJSON(),
 					messageAttributes);
+
+				if (eventDefinition == null) {
+					_boundedExecutor.runAsync(
+						() -> {
+							try {
+								ProjectIdThreadLocal.setProjectId(
+									analyticsEvent.getProjectId());
+
+								_eventStorageDog.storeEventDefinition(
+									analyticsEvent);
+							}
+							catch (Exception exception) {
+								_log.error(
+									"Unable to store event definition " +
+										analyticsEvent.toJSON(),
+									exception);
+							}
+						});
+				}
 			}
 		}
 	}
@@ -336,11 +357,17 @@ public class AnalyticsEventsRestController {
 	private static final Pattern _pattern = Pattern.compile(
 		"^events\\[(\\d+)].*");
 
+	private final BoundedExecutor _boundedExecutor =
+		BoundedExecutor.newBoundedExecutor(5, 1);
+
 	@Autowired
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
+
+	@Autowired
+	private EventStorageDog _eventStorageDog;
 
 	@Autowired
 	private MessageBus _messageBus;

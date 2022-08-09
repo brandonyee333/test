@@ -71,7 +71,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -490,11 +489,8 @@ public class UserSessionNanite implements Nanite {
 			_updateUserSession(analyticsEvents, userSession);
 		}
 		else {
-			userSession = _mergeUserSessions(analyticsEvents, userSessions);
+			_mergeUserSessions(analyticsEvents, userSessions);
 		}
-
-		_storeEventDefinitions(
-			analyticsEvents.getAnalyticsEventsList(), userSession.getId());
 	}
 
 	private void _run() throws Exception {
@@ -589,34 +585,6 @@ public class UserSessionNanite implements Nanite {
 				}
 			},
 			KeyReentrantLock.getReentrantLock(getClass(), tuple2));
-	}
-
-	private void _storeEventDefinitions(
-		List<AnalyticsEvent> analyticsEvents, String sessionId) {
-
-		try {
-			Assert.hasText(sessionId, "Session ID is blank");
-
-			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-				try {
-					_eventStorageDog.storeEventDefinition(analyticsEvent);
-				}
-				catch (Exception exception) {
-					_log.error(
-						"Unable to store event definition " +
-							analyticsEvent.toJSON(),
-						exception);
-				}
-			}
-		}
-		catch (Exception exception) {
-			List<String> analyticsEventsString = ListUtil.map(
-				analyticsEvents, AnalyticsEvent::toJSON);
-
-			_log.error(
-				"Unable to store analytics events " + analyticsEventsString,
-				exception);
-		}
 	}
 
 	private void _updateUserSession(
