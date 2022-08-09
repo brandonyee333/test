@@ -16,11 +16,9 @@ package com.liferay.osb.asah.common.postgresql.converter.helper;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.OrganizationDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
@@ -28,20 +26,12 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
-import java.math.BigDecimal;
-
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -70,8 +60,10 @@ public class IndividualsFilterStringConverterHelper
 			condition = _getFilterFunctionCondition(arguments, "activities");
 		}
 		else if (customFunctionName.equals("activities.filterByCount")) {
-			condition = _getFilterByCountFunctionCondition(
-				arguments, "activities");
+
+			// TODO Implement filter by count
+
+			condition = DSL.noCondition();
 		}
 		else if (customFunctionName.equals("interests.filter")) {
 			condition = _getFilterFunctionCondition(arguments, "interests");
@@ -188,105 +180,6 @@ public class IndividualsFilterStringConverterHelper
 		).eq(
 			dataSourceId
 		);
-	}
-
-	private Condition _getFilterByCountFunctionCondition(
-			List<String> arguments, String type)
-		throws Exception {
-
-		String[] argumentValues = FilterUtil.getArgumentValues(
-			arguments, new String[] {"filter", "operator", "value"});
-
-		if ((argumentValues[1] == null) ^ (argumentValues[2] == null)) {
-			throw new IllegalArgumentException(
-				"The arguments operator and value must either both be set or " +
-					"both be null");
-		}
-
-		String filterString = argumentValues[0];
-
-		if (filterString != null) {
-			_checkSurroundingQuotes(filterString);
-
-			filterString = StringUtil.unquoteAndDecodeInnerQuotes(filterString);
-		}
-
-		if (argumentValues[1] == null) {
-			if (type.equals("activities")) {
-				return DSL.noCondition();
-			}
-		}
-
-		String operator = argumentValues[1];
-
-		_checkSurroundingQuotes(operator);
-
-		operator = StringUtil.unquoteAndDecodeInnerQuotes(argumentValues[1]);
-
-		if (!_allowedOperators.contains(operator)) {
-			throw new IllegalArgumentException("Unknown operator: " + operator);
-		}
-
-		BigDecimal value = new BigDecimal(argumentValues[2]);
-
-		if (value.compareTo(BigDecimal.valueOf(Integer.MAX_VALUE)) > 0) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Invalid value: " + value);
-			}
-
-			value = BigDecimal.valueOf(Integer.MAX_VALUE);
-		}
-
-		boolean checkEqualityOnly = _isEqualityOperator(operator);
-
-		int minDocCount;
-
-		if (operator.equals("gt") || operator.equals("le")) {
-			minDocCount = value.intValue() + 1;
-		}
-		else {
-			minDocCount = value.intValue();
-		}
-
-		if (minDocCount <= 0) {
-			if (checkEqualityOnly) {
-				if (minDocCount == 0) {
-					Condition condition = null;
-
-					// TODO Add activities filter function condition
-
-					if (operator.equals("ne")) {
-						return condition;
-					}
-
-					return DSL.not(condition);
-				}
-
-				if (operator.equals("ne")) {
-					return DSL.noCondition();
-				}
-
-				return DSL.not(DSL.noCondition());
-			}
-
-			if (operator.equals("ge") || operator.equals("gt")) {
-				return DSL.noCondition();
-			}
-
-			return DSL.not(DSL.noCondition());
-		}
-
-		boolean negate = false;
-
-		if (operator.equals("le") || operator.equals("lt") ||
-			operator.equals("ne")) {
-
-			negate = true;
-		}
-
-		// TODO Add activities filter by count function condition
-
-		return DSL.noCondition();
 	}
 
 	private Condition _getFilterFunctionCondition(
@@ -539,28 +432,11 @@ public class IndividualsFilterStringConverterHelper
 		return false;
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		IndividualsFilterStringConverterHelper.class);
-
 	private static final Pattern _pattern = Pattern.compile(
 		".*(score eq '(false|true)').*");
 
-	private final Set<String> _allowedOperators = new HashSet<String>() {
-		{
-			add("eq");
-			add("ge");
-			add("gt");
-			add("le");
-			add("lt");
-			add("ne");
-		}
-	};
-
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
-
-	@Autowired
-	private BQMembershipDog _bqMembershipDog;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
@@ -574,9 +450,6 @@ public class IndividualsFilterStringConverterHelper
 	@Autowired
 	private OrganizationsFilterStringConverterHelper
 		_organizationsFilterStringConverterHelper;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 	@Autowired
 	private UserSessionDog _userSessionDog;

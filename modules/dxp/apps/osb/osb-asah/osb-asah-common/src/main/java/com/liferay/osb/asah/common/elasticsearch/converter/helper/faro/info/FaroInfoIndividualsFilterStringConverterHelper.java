@@ -16,10 +16,8 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -32,8 +30,6 @@ import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.math.BigDecimal;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -41,8 +37,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -74,8 +68,10 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				arguments, "activities");
 		}
 		else if (customFunctionName.equals("activities.filterByCount")) {
-			queryBuilder = _getFilterByCountFunctionQueryBuilder(
-				arguments, "activities");
+
+			// TODO Implement filter by count
+
+			return null;
 		}
 		else if (customFunctionName.equals("interests.filter")) {
 			queryBuilder = _getFilterFunctionQueryBuilder(
@@ -175,115 +171,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				QueryBuilders.termQuery(
 					"dataSourceIndividualPKs.dataSourceId", dataSourceId)),
 			ScoreMode.None);
-	}
-
-	private QueryBuilder _getFilterByCountFunctionQueryBuilder(
-			List<String> arguments, String type)
-		throws Exception {
-
-		String[] argumentValues = FilterUtil.getArgumentValues(
-			arguments, new String[] {"filter", "operator", "value"});
-
-		if ((argumentValues[1] == null) ^ (argumentValues[2] == null)) {
-			throw new IllegalArgumentException(
-				"The arguments operator and value must either both be set or " +
-					"both be null");
-		}
-
-		String filterString = argumentValues[0];
-
-		if (filterString != null) {
-			_checkSurroundingQuotes(filterString);
-
-			filterString = StringUtil.unquoteAndDecodeInnerQuotes(filterString);
-		}
-
-		String operator = argumentValues[1];
-
-		_checkSurroundingQuotes(operator);
-
-		operator = StringUtil.unquoteAndDecodeInnerQuotes(argumentValues[1]);
-
-		if (!_allowedOperators.contains(operator)) {
-			throw new IllegalArgumentException("Unknown operator: " + operator);
-		}
-
-		BigDecimal value = new BigDecimal(argumentValues[2]);
-
-		if (value.compareTo(BigDecimal.valueOf(Integer.MAX_VALUE)) > 0) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Invalid value: " + value);
-			}
-
-			value = BigDecimal.valueOf(Integer.MAX_VALUE);
-		}
-
-		boolean checkEqualityOnly = _isEqualityOperator(operator);
-
-		int minDocCount;
-
-		if (operator.equals("gt") || operator.equals("le")) {
-			minDocCount = value.intValue() + 1;
-		}
-		else {
-			minDocCount = value.intValue();
-		}
-
-		if (minDocCount <= 0) {
-			if (checkEqualityOnly) {
-				if (minDocCount == 0) {
-					QueryBuilder queryBuilder = null;
-
-					// TODO Add activities filter function condition
-
-					if (operator.equals("ne")) {
-						return queryBuilder;
-					}
-
-					return BoolQueryBuilderUtil.mustNot(queryBuilder);
-				}
-
-				if (operator.equals("ne")) {
-					return QueryBuilders.matchAllQuery();
-				}
-
-				return BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.matchAllQuery());
-			}
-
-			if (operator.equals("ge") || operator.equals("gt")) {
-				return QueryBuilders.matchAllQuery();
-			}
-
-			return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
-		}
-
-		boolean negate = false;
-
-		if (operator.equals("le") || operator.equals("lt") ||
-			operator.equals("ne")) {
-
-			negate = true;
-		}
-
-		QueryBuilder queryBuilder = null;
-
-		if (type.equals("activities")) {
-			queryBuilder = FilterStringToQueryBuilderConverter.convert(
-				filterString, _faroInfoActivitiesFilterStringConverterHelper);
-		}
-		else {
-			queryBuilder = FilterStringToQueryBuilderConverter.convert(
-				filterString);
-		}
-
-		if (queryBuilder == null) {
-			queryBuilder = QueryBuilders.matchAllQuery();
-		}
-
-		// TODO Add activities filter by count function query builder
-
-		return queryBuilder;
 	}
 
 	private QueryBuilder _getFilterFunctionQueryBuilder(
@@ -513,35 +400,14 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		return false;
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		FaroInfoIndividualsFilterStringConverterHelper.class);
-
 	private static final Pattern _pattern = Pattern.compile(
 		".*(score eq '(false|true)').*");
-
-	private final Set<String> _allowedOperators = new HashSet<String>() {
-		{
-			add("eq");
-			add("ge");
-			add("gt");
-			add("le");
-			add("lt");
-			add("ne");
-		}
-	};
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
-	private BQMembershipDog _bqMembershipDog;
-
-	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private FaroInfoActivitiesFilterStringConverterHelper
-		_faroInfoActivitiesFilterStringConverterHelper;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
@@ -552,9 +418,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	@Autowired
 	private InterestDog _interestDog;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 	@Autowired
 	private UserSessionDog _userSessionDog;
