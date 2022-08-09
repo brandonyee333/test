@@ -38,7 +38,6 @@ import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
@@ -67,7 +66,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
@@ -482,7 +480,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				"enrichment");
 	}
 
-	@Disabled
 	@Test
 	public void testDeleteLiferayDataSource() throws Exception {
 		DataSource dataSource1 = _dataSourceDog.addDataSource(
@@ -504,19 +501,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Long dataSourceId1 = dataSource1.getId();
 		Long dataSourceId2 = dataSource2.getId();
 
-		List<Asset> assets = _assetRepository.findByFilterString(
-			new FilterHelper("dataSourceId eq '" + dataSourceId1 + "'"),
-			PageRequest.of(0, 10));
-
-		Assertions.assertFalse(assets.isEmpty());
-
-		assets = _assetRepository.findByFilterString(
-			new FilterHelper("dataSourceId eq '" + dataSourceId2 + "'"),
-			PageRequest.of(0, 10));
-
-		Assertions.assertFalse(assets.isEmpty());
-
-		// TODO Assert BQEvent was not removed
+		// TODO Assert BQEvent and Assets are not deleted
 
 		Assertions.assertFalse(
 			faroInfoElasticsearchInvoker.exists(
@@ -615,8 +600,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			return;
 		}
 
-		//		Individual individual = _individualDog.addIndividual(
-		//			FaroInfoTestUtil.buildIndividual(dataSource), false);
+		_individualDog.addIndividual(
+			FaroInfoTestUtil.buildIndividual(dataSource), false);
 
 		// TODO Add BQEvent
 
