@@ -188,12 +188,6 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	@Scheduled(fixedDelay = DateUtil.MINUTE)
-	public void runIndividualSegmentActivityFieldsNanite() {
-		_asahTaskManager.runNanitesForAllProjects(
-			"IndividualSegmentActivityFieldsNanite");
-	}
-
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runPastUserSessionFinalizerNanite() {
 		int availablePastUserSessionFinalizerTasks =
