@@ -146,7 +146,6 @@ public class ProjectDog {
 		_cerebroInfoElasticsearchInvoker.deleteIndices();
 		_dxpRawElasticsearchInvoker.deleteIndices();
 		_faroInfoElasticsearchInvoker.deleteIndices();
-		_salesforceRawElasticsearchInvoker.deleteIndices();
 
 		_elasticsearchSnapshotManager.deleteSnapshotLifecyclePolicy(projectId);
 	}
@@ -181,8 +180,5 @@ public class ProjectDog {
 
 	@Autowired
 	private ProjectRepository _projectRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
-	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }
