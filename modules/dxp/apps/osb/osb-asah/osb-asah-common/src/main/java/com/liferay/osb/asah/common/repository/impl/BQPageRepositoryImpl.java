@@ -285,10 +285,10 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		}
 
 		if (timeRange == TimeRange.LAST_24_HOURS) {
-			return "pagehourly";
+			return "PageHourly";
 		}
 
-		return "pagedaily";
+		return "PageDaily";
 	}
 
 	@Autowired
