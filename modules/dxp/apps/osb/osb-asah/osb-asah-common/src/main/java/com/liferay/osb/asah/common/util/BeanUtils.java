@@ -207,10 +207,10 @@ public class BeanUtils {
 					}
 				}
 
-				Class<?>[] parameterTypes =
+				Class<?>[] classes =
 					targetPropertyWriteMethod.getParameterTypes();
 
-				if (parameterTypes[0] == BigDecimal.class) {
+				if (classes[0] == BigDecimal.class) {
 					targetPropertyValue = new BigDecimal(
 						String.valueOf(targetPropertyValue));
 				}
