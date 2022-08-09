@@ -18,6 +18,8 @@ import java.beans.PropertyDescriptor;
 
 import java.lang.reflect.Method;
 
+import java.math.BigDecimal;
+
 import java.sql.Timestamp;
 
 import java.time.LocalDate;
@@ -203,6 +205,14 @@ public class BeanUtils {
 					else if (json.startsWith("[")) {
 						targetPropertyValue = new JSONArray(json);
 					}
+				}
+
+				Class<?>[] parameterTypes =
+					targetPropertyWriteMethod.getParameterTypes();
+
+				if (parameterTypes[0] == BigDecimal.class) {
+					targetPropertyValue = new BigDecimal(
+						String.valueOf(targetPropertyValue));
 				}
 
 				targetPropertyWriteMethod.invoke(target, targetPropertyValue);
