@@ -37,7 +37,6 @@ import java.util.Optional;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 /**
  * @author André Miranda
  */
-@Disabled
 public class ClearChannelsNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
@@ -61,8 +59,8 @@ public class ClearChannelsNaniteTest
 
 		Long channelId = _dataSourceDog.getDefaultChannelId(dataSourceId);
 
-		//Individual individual = _individualDog.addIndividual(
-		//	FaroInfoTestUtil.buildIndividual(channelId, dataSource), false);
+		_individualDog.addIndividual(
+			FaroInfoTestUtil.buildIndividual(channelId, dataSource), false);
 
 		Asset asset = _assetRepository.save(
 			_objectMapper.convertValue(
@@ -70,12 +68,8 @@ public class ClearChannelsNaniteTest
 					"Page", channelId, dataSourceId),
 				Asset.class));
 
-		// TODO Add BQEvent with corresponding channel ID
-
 		_clearChannelsNanite.run(
 			JSONUtil.put("channelIds", JSONUtil.put(channelId)));
-
-		// TODO Assert BQEvent is removed
 
 		Optional<Asset> assetOptional = _assetRepository.findById(
 			Optional.ofNullable(
@@ -93,6 +87,9 @@ public class ClearChannelsNaniteTest
 				"individuals",
 				QueryBuilders.termQuery("channelIds", channelId)));
 		Assertions.assertEquals(1, _individualRepository.count());
+
+		// TODO Test BQEvent removal
+
 	}
 
 	@Autowired
