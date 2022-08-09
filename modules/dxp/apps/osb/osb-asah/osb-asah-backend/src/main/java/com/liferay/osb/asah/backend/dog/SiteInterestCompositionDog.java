@@ -29,7 +29,7 @@ public class SiteInterestCompositionDog {
 		String channelId, String dataSourceId, int size, int start,
 		TimeRange timeRange) {
 
-		// TODO Implement Interest Composition
+		// TODO Implement interest composition
 
 		return null;
 	}

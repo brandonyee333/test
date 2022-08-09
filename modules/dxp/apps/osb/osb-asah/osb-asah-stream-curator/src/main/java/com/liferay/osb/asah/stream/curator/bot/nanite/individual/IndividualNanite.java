@@ -17,7 +17,6 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;

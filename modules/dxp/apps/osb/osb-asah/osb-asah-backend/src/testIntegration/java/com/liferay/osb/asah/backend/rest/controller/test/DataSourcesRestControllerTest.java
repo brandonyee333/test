@@ -102,7 +102,7 @@ public class DataSourcesRestControllerTest {
 					"Page", dataSource.getId()),
 				Asset.class));
 
-		// TODO Add BQEvent to Data source
+		// TODO Add BQEvent
 
 		_dataSourcesRestController.deleteDataSource(
 			dataSourceJSONObject.getLong("id"));
@@ -119,7 +119,7 @@ public class DataSourcesRestControllerTest {
 
 		_runDeleteDataSourcesNanite(updateDataSourceJSONObject);
 
-		// TODO Assert BQ event is not deleted
+		// TODO Assert BQEvent is not deleted
 
 		Assertions.assertTrue(_assetRepository.existsById(asset.getId()));
 		Assertions.assertFalse(
