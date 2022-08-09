@@ -448,8 +448,6 @@ public class IndividualNanite implements Nanite {
 			individual2 = _updateIndividual(emailAddressHashed, individual1);
 		}
 
-		// TODO Update activities
-
 		return individual2;
 	}
 
@@ -545,9 +543,6 @@ public class IndividualNanite implements Nanite {
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	@Autowired
-	private EventDog _eventDog;
 
 	@Autowired
 	private FieldDog _fieldDog;
