@@ -286,8 +286,6 @@ public class FinalizeUserSessionArm {
 	public void updateActivitiesAndAssets(UserSession userSession) {
 		long start = System.currentTimeMillis();
 
-		//		_faroInfoActivityDog.updateSessionId(userSession);
-
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(

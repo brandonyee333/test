@@ -121,8 +121,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 			Consumer<Integer> queueMonitorConsumer)
 		throws Exception {
 
-		// TODO Remove channelId references from Account counts
-
 		_deleteAssets(channelIds);
 		_deleteData(
 			channelIds, _cerebroInfoElasticsearchInvoker, "blog-clicks",
@@ -133,7 +131,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 		_deleteIndividualReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 
-		//		_faroInfoActivityDog.deleteActivies(new HashSet<>(channelIds));
 		_segmentDog.deleteSegments(new HashSet<>(channelIds));
 	}
 
