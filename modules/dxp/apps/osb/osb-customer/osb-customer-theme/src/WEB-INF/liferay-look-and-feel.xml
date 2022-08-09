@@ -24,12 +24,18 @@
 			<setting configurable="true" key="site-logo-url" value="/home" />
 			<setting configurable="true" key="site-name" value="Help Center" />
 			<setting configurable="true" key="site-name-url" value="https://help.liferay.com" />
+			<setting configurable="true" key="social-link-five-name" value="twitter" />
+			<setting configurable="true" key="social-link-five-url" value="https://twitter.com/liferay" />
+			<setting configurable="true" key="social-link-four-name" value="linkedin" />
+			<setting configurable="true" key="social-link-four-url" value="https://www.linkedin.com/company/liferay-inc-" />
 			<setting configurable="true" key="social-link-one-name" value="facebook" />
 			<setting configurable="true" key="social-link-one-url" value="https://www.facebook.com/liferay" />
-			<setting configurable="true" key="social-link-three-name" value="linkedin" />
-			<setting configurable="true" key="social-link-three-url" value="https://www.linkedin.com/company/liferay-inc-" />
-			<setting configurable="true" key="social-link-two-name" value="twitter" />
-			<setting configurable="true" key="social-link-two-url" value="https://twitter.com/liferay" />
+			<setting configurable="true" key="social-link-six-name" value="youtube" />
+			<setting configurable="true" key="social-link-six-url" value="https://www.youtube.com/user/liferayinc" />
+			<setting configurable="true" key="social-link-three-name" value="instagram" />
+			<setting configurable="true" key="social-link-three-url" value="https://www.instagram.com/liferayinc" />
+			<setting configurable="true" key="social-link-two-name" value="github" />
+			<setting configurable="true" key="social-link-two-url" value="https://www.github.com/liferay" />
 			<setting configurable="true" key="zendesk-url" value="" />
 		</settings>
 	</theme>

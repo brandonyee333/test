@@ -60,6 +60,36 @@
 							</a>
 						</div>
 					</#if>
+
+					<#if validator.isNotNull(social_link_four_name) && validator.isNotNull(social_link_four_url)>
+						<div class="social-icon">
+							<a aria-label="${social_link_four_name}" href="${social_link_four_url}">
+								<svg class="lexicon-icon lexicon-icon-${social_link_four_name}">
+									<use xlink:href="#social-${social_link_four_name}" />
+								</svg>
+							</a>
+						</div>
+					</#if>
+
+					<#if validator.isNotNull(social_link_five_name) && validator.isNotNull(social_link_five_url)>
+						<div class="social-icon">
+							<a aria-label="${social_link_five_name}" href="${social_link_five_url}">
+								<svg class="lexicon-icon lexicon-icon-${social_link_five_name}">
+									<use xlink:href="#social-${social_link_five_name}" />
+								</svg>
+							</a>
+						</div>
+					</#if>
+
+					<#if validator.isNotNull(social_link_six_name) && validator.isNotNull(social_link_six_url)>
+						<div class="social-icon">
+							<a aria-label="${social_link_six_name}" href="${social_link_six_url}">
+								<svg class="lexicon-icon lexicon-icon-${social_link_six_name}">
+									<use xlink:href="#social-${social_link_six_name}" />
+								</svg>
+							</a>
+						</div>
+					</#if>
 				</div>
 			</#if>
 		</div>
