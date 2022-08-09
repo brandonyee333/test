@@ -105,13 +105,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			String fieldName, String operator, String valueString)
 		throws Exception {
 
-//		if (fieldName.startsWith(_BEHAVIORAL_CRITERIA_FIELD_NAME_PREFIX) &&
-//			_isEqualityOperator(operator)) {
-//
-//			return _getBehavioralCriteriaQueryBuilder(
-//				(String)StringUtil.toObject(valueString), fieldName,
-//				operator.equalsIgnoreCase("ne"));
-//		}
+		// TODO Add activities criteria condition
 
 		if (fieldName.equals("dataSourceId") && _isEqualityOperator(operator)) {
 			return _getDataSourceIdQueryBuilder(
@@ -240,10 +234,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 				if (minDocCount == 0) {
 					QueryBuilder queryBuilder = null;
 
-					//if (type.equals("activities")) {
-					//	queryBuilder = _getActivitiesFilterFunctionQueryBuilder(
-					//		filterString);
-					//}
+					// TODO Add activities filter function condition
 
 					if (operator.equals("ne")) {
 						return queryBuilder;
@@ -290,11 +281,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			queryBuilder = QueryBuilders.matchAllQuery();
 		}
 
-		//if (type.equals("activities")) {
-		//	return _getActivitiesFilterByCountFunctionQueryBuilder(
-		//		checkEqualityOnly, filterString, minDocCount, negate, operator,
-		//		value.intValue());
-		//}
+		// TODO Add activities filter by count function query builder
 
 		return queryBuilder;
 	}
@@ -314,9 +301,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			filterString = StringUtil.unquoteAndDecodeInnerQuotes(filterString);
 		}
 
-		//if (type.equals("activities")) {
-		//	return _getActivitiesFilterFunctionQueryBuilder(filterString);
-		//}
+		// TODO Add activities filter function query builder
 
 		if (type.equals("interests")) {
 			return _getInterestsFilterFunctionQueryBuilder(filterString);
@@ -550,9 +535,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;

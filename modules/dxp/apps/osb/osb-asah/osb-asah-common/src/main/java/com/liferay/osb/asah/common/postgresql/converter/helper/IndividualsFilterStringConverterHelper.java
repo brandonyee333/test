@@ -22,9 +22,7 @@ import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Organization;
@@ -32,7 +30,6 @@ import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.math.BigDecimal;
 
@@ -118,15 +115,7 @@ public class IndividualsFilterStringConverterHelper
 			String fieldName, String operator, String valueString)
 		throws Exception {
 
-		//if (fieldName.startsWith(_BEHAVIORAL_CRITERIA_FIELD_NAME_PREFIX) &&
-
-		// 	_isEqualityOperator(operator)) {
-
-		//
-		//	return _getBehavioralCriteriaCondition(
-		//		(String)StringUtil.toObject(valueString), fieldName,
-		//		operator.equalsIgnoreCase("ne"));
-		//}
+		// TODO Add activities criteria condition
 
 		if (fieldName.equals("dataSourceId") && _isEqualityOperator(operator)) {
 			return _getDataSourceIdCondition(
@@ -264,10 +253,7 @@ public class IndividualsFilterStringConverterHelper
 				if (minDocCount == 0) {
 					Condition condition = null;
 
-					// if (type.equals("activities")) {
-					// 	condition = _getActivitiesFilterFunctionCondition(
-					// 	filterString);
-					// }
+					// TODO Add activities filter function condition
 
 					if (operator.equals("ne")) {
 						return condition;
@@ -298,13 +284,7 @@ public class IndividualsFilterStringConverterHelper
 			negate = true;
 		}
 
-		// TODO Fix _getActivitiesFilterByCountFunctionCondition
-
-		//		if (type.equals("activities")) {
-		//			return _getActivitiesFilterByCountFunctionCondition(
-		//				checkEqualityOnly, filterString, minDocCount, negate,
-		//				operator, value.intValue());
-		//		}
+		// TODO Add activities filter by count function condition
 
 		return DSL.noCondition();
 	}
@@ -324,9 +304,7 @@ public class IndividualsFilterStringConverterHelper
 			filterString = StringUtil.unquoteAndDecodeInnerQuotes(filterString);
 		}
 
-		//		if (type.equals("activities")) {
-		//			return _getActivitiesFilterFunctionCondition(filterString);
-		//		}
+		// TODO Add activities filter function condition
 
 		if (type.equals("interests")) {
 			return _getInterestsFilterFunctionCondition(filterString);
@@ -584,18 +562,8 @@ public class IndividualsFilterStringConverterHelper
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private FaroInfoActivitiesFilterStringConverterHelper
-		_faroInfoActivitiesFilterStringConverterHelper;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private InterestDog _interestDog;
