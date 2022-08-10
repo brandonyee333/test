@@ -14,8 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.Organization;
-import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
@@ -27,19 +26,19 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface CustomOrganizationRepository {
+public interface CustomBQOrganizationRepository {
 
 	public long countByName(@Nullable String name);
 
 	@Cacheable
-	public List<Organization> findByName(
+	public List<BQOrganization> findByName(
 		@Nullable String name, Pageable pageable);
 
-	public List<Transformation> getOrganizationTransformations(
+	public List<Transformation> getBQOrganizationTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable
-	public List<Organization> searchOrganizations(
+	public List<BQOrganization> searchBQOrganizations(
 		FilterHelper filterHelper, Pageable pageable);
 
 }

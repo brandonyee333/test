@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.model.BQDXPEntity;
 import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,14 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 
 	public BQOrganization(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
+	}
+
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -146,6 +155,12 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 		return false;
 	}
 
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
+	}
+
 	public void setDataSourceId(Long dataSourceId) {
 		_dataSourceId = dataSourceId;
 	}
@@ -155,7 +170,9 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 	}
 
 	public void setExpandoFields(List<ExpandoField> expandoFields) {
-		_expandoFields = expandoFields;
+		if (expandoFields != null) {
+			_expandoFields = new ArrayList<>(expandoFields);
+		}
 	}
 
 	public void setId(String id) {
@@ -195,6 +212,9 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 	public void setType(String type) {
 		_type = type;
 	}
+
+	@Transient
+	private Date _createDate;
 
 	@Transient
 	private Long _dataSourceId;

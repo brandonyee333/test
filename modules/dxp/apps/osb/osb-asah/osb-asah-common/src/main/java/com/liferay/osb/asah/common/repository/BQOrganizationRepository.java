@@ -16,13 +16,19 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Marcos Martins
  */
-@Repository
 public interface BQOrganizationRepository
-	extends PagingAndSortingRepository<BQOrganization, String> {
+	extends CustomBQOrganizationRepository, Repository<BQOrganization, String> {
+
+	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
+		Long dataSourceId, Long organizationId);
+
+	public List<BQOrganization> findByDataSourceIdAndOrganizationIdIn(
+		Long dataSourceId, Collection<Long> organizationIds);
+
 }

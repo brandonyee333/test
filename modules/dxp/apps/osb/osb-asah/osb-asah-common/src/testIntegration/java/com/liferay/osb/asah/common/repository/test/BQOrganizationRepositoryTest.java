@@ -14,30 +14,34 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.Organization;
+import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.OrganizationRepository;
+import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Rachael Koestartyo
  */
-public abstract class BaseOrganizationRepositoryTestCase
-	extends BaseRepositoryTestCase<Organization, Long> {
+@Import(JDBCTestConfiguration.class)
+public class BQOrganizationRepositoryTest
+	extends BaseRepositoryTestCase<BQOrganization, String> {
 
 	@BeforeEach
 	public void setUp() {
@@ -63,18 +67,19 @@ public abstract class BaseOrganizationRepositoryTestCase
 
 		_dataSourceRepository.save(dataSource1);
 
-		Organization organization = new Organization();
+		BQOrganization bqOrganization = new BQOrganization();
 
-		organization.setOrganizationPK(123L);
-		organization.setName("Organization 1");
-		organization.setDataSourceId(dataSource1.getId());
-		organization.setCreateDate(new Date());
-		organization.setModifiedDate(new Date());
-		organization.setParentOrganizationPK(0L);
+		bqOrganization.setOrganizationId(123L);
+		bqOrganization.setName("Organization 1");
+		bqOrganization.setDataSourceId(dataSource1.getId());
+		bqOrganization.setCreateDate(new Date());
+		bqOrganization.setModifiedDate(new Date());
+		bqOrganization.setParentOrganizationId(0L);
 
-		setUpRepository(organization);
+		setUpRepository(bqOrganization);
 	}
 
+	@AfterEach
 	@Override
 	public void tearDown() {
 		super.tearDown();
@@ -82,52 +87,53 @@ public abstract class BaseOrganizationRepositoryTestCase
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
 
-		_organizationRepository.deleteAll();
+		_bqOrganizationRepository.deleteAll();
 	}
 
 	@Test
 	public void testCountByName() {
-		Assertions.assertEquals(1, _organizationRepository.countByName("Org"));
+		Assertions.assertEquals(
+			1, _bqOrganizationRepository.countByName("Org"));
 	}
 
 	@Test
-	public void testFindByDataSourceIdAndOrganizationPK() {
+	public void testFindByDataSourceIdAndOrganizationId() {
 		Assertions.assertNotNull(
-			_organizationRepository.findByDataSourceIdAndOrganizationPK(
+			_bqOrganizationRepository.findByDataSourceIdAndOrganizationId(
 				1L, 123L));
 	}
 
 	@Test
-	public void testFindByDataSourceIdAndOrganizationPKIn() {
-		List<Organization> organizations =
-			_organizationRepository.findByDataSourceIdAndOrganizationPKIn(
+	public void testFindByDataSourceIdAndOrganizationIdIn() {
+		List<BQOrganization> bqOrganizations =
+			_bqOrganizationRepository.findByDataSourceIdAndOrganizationIdIn(
 				1L, Collections.singleton(123L));
 
-		Assertions.assertEquals(1, organizations.size());
+		Assertions.assertEquals(1, bqOrganizations.size());
 	}
 
 	@Test
 	public void testFindByName() {
-		List<Organization> organizations = _organizationRepository.findByName(
-			"Org", PageRequest.of(0, 10));
+		List<BQOrganization> bqOrganizations =
+			_bqOrganizationRepository.findByName("Org", PageRequest.of(0, 10));
 
-		Assertions.assertEquals(1, organizations.size());
+		Assertions.assertEquals(1, bqOrganizations.size());
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Organization, Long>
+	protected PagingAndSortingRepository<BQOrganization, String>
 		getPagingAndSortingRepository() {
 
-		return _organizationRepository;
+		return _bqOrganizationRepository;
 	}
+
+	@Autowired
+	private BQOrganizationRepository _bqOrganizationRepository;
 
 	@Autowired
 	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private OrganizationRepository _organizationRepository;
 
 }

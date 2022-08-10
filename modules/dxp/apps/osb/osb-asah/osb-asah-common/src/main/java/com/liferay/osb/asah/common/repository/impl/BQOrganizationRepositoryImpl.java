@@ -14,26 +14,19 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.entity.Organization;
-import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.CustomOrganizationRepository;
+import com.liferay.osb.asah.common.entity.BQOrganization;
+import com.liferay.osb.asah.common.repository.CustomBQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
-import com.liferay.osb.asah.common.util.MatcherUtil;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import org.eclipse.jetty.util.StringUtil;
 
-import org.jooq.AggregateFunction;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
-import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
@@ -42,10 +35,10 @@ import org.springframework.lang.Nullable;
 /**
  * @author Rachael Koestartyo
  */
-public class OrganizationRepositoryImpl
-	extends BaseRepository implements CustomOrganizationRepository {
+public class BQOrganizationRepositoryImpl
+	extends BaseRepository implements CustomBQOrganizationRepository {
 
-	public OrganizationRepositoryImpl(DSLContext dslContext) {
+	public BQOrganizationRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 	}
 
@@ -55,7 +48,7 @@ public class OrganizationRepositoryImpl
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
-			"Organization"
+			"BQOrganization"
 		).where(
 			_getCondition(name)
 		).fetchOptional(
@@ -66,13 +59,13 @@ public class OrganizationRepositoryImpl
 	}
 
 	@Override
-	public List<Organization> findByName(
+	public List<BQOrganization> findByName(
 		@Nullable String name, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
-			"Organization"
+			"BQOrganization"
 		).where(
 			_getCondition(name)
 		).limit(
@@ -80,12 +73,12 @@ public class OrganizationRepositoryImpl
 		).offset(
 			pageable.getOffset()
 		).fetch(
-			record -> new Organization(record.intoMap())
+			record -> new BQOrganization(record.intoMap())
 		);
 	}
 
 	@Override
-	public List<Transformation> getOrganizationTransformations(
+	public List<Transformation> getBQOrganizationTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable) {
 
 		Matcher matcher = MatcherUtil.getMatcher(apply);
@@ -171,13 +164,13 @@ public class OrganizationRepositoryImpl
 	}
 
 	@Override
-	public List<Organization> searchOrganizations(
+	public List<BQOrganization> searchBQOrganizations(
 		FilterHelper filterHelper, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
-			"Organization"
+			"BQOrganization"
 		).where(
 			filterHelper.getCondition()
 		).limit(
@@ -185,7 +178,7 @@ public class OrganizationRepositoryImpl
 		).offset(
 			pageable.getOffset()
 		).fetch(
-			record -> new Organization(record.intoMap())
+			record -> new BQOrganization(record.intoMap())
 		);
 	}
 
@@ -198,18 +191,6 @@ public class OrganizationRepositoryImpl
 			"name"
 		).contains(
 			name
-		);
-	}
-
-	private Condition _getIncludeCondition(String contains) {
-		if (contains == null) {
-			return DSL.noCondition();
-		}
-
-		return DSL.field(
-			"value"
-		).containsIgnoreCase(
-			contains
 		);
 	}
 
