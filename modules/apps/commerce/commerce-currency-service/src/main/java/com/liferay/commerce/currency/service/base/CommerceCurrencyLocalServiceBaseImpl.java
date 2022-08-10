@@ -573,6 +573,7 @@ public abstract class CommerceCurrencyLocalServiceBaseImpl
 		}
 	}
 
+	@Reference
 	protected CommerceCurrencyLocalService commerceCurrencyLocalService;
 
 	@Reference
