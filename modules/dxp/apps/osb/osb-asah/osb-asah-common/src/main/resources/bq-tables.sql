@@ -367,6 +367,7 @@ CREATE TABLE IF NOT EXISTS BQOrder(
 );
 
 CREATE TABLE IF NOT EXISTS BQOrganization (
+    createDate TIMESTAMPTZ,
 	dataSourceId BIGINT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,

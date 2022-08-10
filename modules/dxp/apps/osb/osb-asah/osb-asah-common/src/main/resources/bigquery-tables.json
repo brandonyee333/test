@@ -1326,6 +1326,11 @@
 		],
 		"fields": [
 			{
+				"mode": "NULLABLE",
+				"name": "createDate",
+				"type": "TIMESTAMP"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "dataSourceId",
 				"type": "INT64"
