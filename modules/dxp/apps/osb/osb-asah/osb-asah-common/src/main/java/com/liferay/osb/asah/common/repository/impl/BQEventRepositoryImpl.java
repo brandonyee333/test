@@ -1224,7 +1224,7 @@ public class BQEventRepositoryImpl
 				_dslHelper.getDateValueField(attributeField, timeZoneId);
 
 			if (dateGrouping.equals(DateGrouping.DAY)) {
-				field = DSL.concat(
+				field = _dslHelper.concat(
 					DSL.extract(offsetDateTimeField, DatePart.YEAR),
 					DSL.val("-"),
 					DSL.extract(offsetDateTimeField, DatePart.MONTH),
@@ -1232,7 +1232,7 @@ public class BQEventRepositoryImpl
 					DSL.extract(offsetDateTimeField, DatePart.DAY));
 			}
 			else if (dateGrouping.equals(DateGrouping.MONTH)) {
-				field = DSL.concat(
+				field = _dslHelper.concat(
 					DSL.extract(offsetDateTimeField, DatePart.YEAR),
 					DSL.val("-"),
 					DSL.extract(offsetDateTimeField, DatePart.MONTH));

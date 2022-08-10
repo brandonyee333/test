@@ -25,7 +25,10 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
 import org.jooq.DatePart;
 import org.jooq.Field;
@@ -42,6 +45,30 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DSLHelper {
+
+	public Field concat(Field... fields) {
+		if (_isBigQueryDialect()) {
+			StringBuffer stringBuffer = new StringBuffer("CONCAT(");
+
+			Stream<Field> stream = Arrays.stream(fields);
+
+			Iterator<Field> iterator = stream.iterator();
+
+			while (iterator.hasNext()) {
+				stringBuffer.append(String.valueOf(iterator.next()));
+
+				if (iterator.hasNext()) {
+					stringBuffer.append(",");
+				}
+			}
+
+			stringBuffer.append(")");
+
+			return DSL.field(stringBuffer.toString());
+		}
+
+		return DSL.concat(fields);
+	}
 
 	public Field<OffsetDateTime> dateTrunc(
 		DatePart datePart, Field<OffsetDateTime> field) {
