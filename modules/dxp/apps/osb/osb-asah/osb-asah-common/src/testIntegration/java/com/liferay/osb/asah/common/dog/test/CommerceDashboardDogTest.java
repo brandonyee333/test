@@ -199,7 +199,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertNotNull(currencyValue);
 		Assertions.assertNotNull(currencyValue.getValue());
 		Assertions.assertNotNull(currencyValue.getPercentageVariation());
-		Assertions.assertEquals(80.0, currencyValue.getPercentageVariation());
+		Assertions.assertEquals(75.0, currencyValue.getPercentageVariation());
 	}
 
 	@Autowired

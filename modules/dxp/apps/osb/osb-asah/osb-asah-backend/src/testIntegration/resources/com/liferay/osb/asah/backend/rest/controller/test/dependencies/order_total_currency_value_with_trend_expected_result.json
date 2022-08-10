@@ -12,7 +12,7 @@
 			{
 				"currencyCode": "USD",
 				"trend": {
-					"percentage": 80.0,
+					"percentage": 75.0,
 					"trendClassification": "POSITIVE"
 				},
 				"value": "70.0"
