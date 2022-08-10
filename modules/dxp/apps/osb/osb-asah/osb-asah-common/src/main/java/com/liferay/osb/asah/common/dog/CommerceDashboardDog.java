@@ -283,13 +283,17 @@ public class CommerceDashboardDog {
 	private double _getPercentageVariation(
 		BigDecimal currentValue, BigDecimal previousValue) {
 
-		BigDecimal delta = currentValue.subtract(previousValue);
-
 		if (previousValue.equals(BigDecimal.ZERO) ||
 			previousValue.equals(BigDecimal.valueOf(0.0))) {
 
 			return 0.0;
 		}
+
+		currentValue = currentValue.setScale(3, RoundingMode.HALF_UP);
+
+		previousValue = previousValue.setScale(3, RoundingMode.HALF_UP);
+
+		BigDecimal delta = currentValue.subtract(previousValue);
 
 		delta = delta.divide(previousValue, RoundingMode.HALF_UP);
 
