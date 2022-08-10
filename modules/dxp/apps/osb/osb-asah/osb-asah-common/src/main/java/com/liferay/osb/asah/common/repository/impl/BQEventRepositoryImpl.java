@@ -781,7 +781,8 @@ public class BQEventRepositoryImpl
 		if (eventDefinition != null) {
 			Field<Object> field = DSL.field("BQEvent.applicationId");
 
-			conditions.add(field.eq(eventDefinition.getApplicationId()));
+			conditions.add(
+				field.in("CustomEvent", eventDefinition.getApplicationId()));
 		}
 
 		if (channelId != null) {
