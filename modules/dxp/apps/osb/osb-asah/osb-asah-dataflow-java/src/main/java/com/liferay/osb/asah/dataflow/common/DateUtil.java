@@ -18,11 +18,21 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author Marcellus Tavares
  */
 public class DateUtil {
+
+	public static long getDeltaMilliseconds(
+		String dateString1, String dateString2) {
+
+		ZonedDateTime zonedDateTime1 = toUTCZonedDateTime(dateString1);
+		ZonedDateTime zonedDateTime2 = toUTCZonedDateTime(dateString2);
+
+		return ChronoUnit.MILLIS.between(zonedDateTime1, zonedDateTime2);
+	}
 
 	public static ZonedDateTime toUTCZonedDateTime(String dateString) {
 		LocalDateTime localDateTime = LocalDateTime.parse(
