@@ -155,7 +155,125 @@ public class IndividualNaniteTest
 	}
 
 	@Test
-	public void testRun() {
+	public void testMergeCustomFieldNameDifferentType() {
+
+		// BQUser 1
+
+		BQUser bqUser1 = new BQUser();
+
+		bqUser1.setDXPUserId(RandomTestUtil.randomNumber());
+		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
+		bqUser1.setEmailAddress("joe@liferay.com");
+		bqUser1.setId(RandomTestUtil.randomString());
+		bqUser1.setIsNew(Boolean.TRUE);
+		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
+
+		_bqUserRepository.save(bqUser1);
+
+		BQExpandoColumn bqExpandoColumn1 = new BQExpandoColumn();
+
+		bqExpandoColumn1.setColumnId(RandomTestUtil.randomString());
+		bqExpandoColumn1.setClassName(DXPEntity.Type.CLASS_NAME_USER);
+		bqExpandoColumn1.setDataSourceId(bqUser1.getDataSourceId());
+		bqExpandoColumn1.setDataType("string");
+		bqExpandoColumn1.setDisplayType("selection-list");
+		bqExpandoColumn1.setId(RandomTestUtil.randomString());
+		bqExpandoColumn1.setIsNew(Boolean.TRUE);
+		bqExpandoColumn1.setName("age");
+
+		_bqExpandoColumnRepository.save(bqExpandoColumn1);
+
+		BQExpandoValue bqExpandoValue1 = new BQExpandoValue();
+
+		bqExpandoValue1.setClassPK(bqUser1.getDXPUserId());
+		bqExpandoValue1.setClassType(DXPEntity.Type.CLASS_NAME_USER);
+		bqExpandoValue1.setColumnId(bqExpandoColumn1.getColumnId());
+		bqExpandoValue1.setDataSourceId(bqUser1.getDataSourceId());
+		bqExpandoValue1.setId(RandomTestUtil.randomString());
+		bqExpandoValue1.setIsNew(Boolean.TRUE);
+		bqExpandoValue1.setValue("[18]");
+		bqExpandoValue1.setModifiedDate(bqUser1.getModifiedDate());
+
+		_bqExpandoValueRepository.save(bqExpandoValue1);
+
+		// BQUser 2
+
+		BQUser bqUser2 = new BQUser();
+
+		bqUser2.setDXPUserId(RandomTestUtil.randomNumber());
+		bqUser2.setDataSourceId(RandomTestUtil.randomNumber());
+		bqUser2.setEmailAddress("joe@liferay.com");
+		bqUser2.setId(RandomTestUtil.randomString());
+		bqUser2.setIsNew(Boolean.TRUE);
+		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-05T12:00:00.000Z"));
+
+		_bqUserRepository.save(bqUser2);
+
+		BQExpandoColumn bqExpandoColumn2 = new BQExpandoColumn();
+
+		bqExpandoColumn2.setColumnId(RandomTestUtil.randomString());
+		bqExpandoColumn2.setClassName(DXPEntity.Type.CLASS_NAME_USER);
+		bqExpandoColumn2.setDataSourceId(bqUser2.getDataSourceId());
+		bqExpandoColumn2.setDataType("string");
+		bqExpandoColumn2.setDisplayType("input-field");
+		bqExpandoColumn2.setId(RandomTestUtil.randomString());
+		bqExpandoColumn2.setIsNew(Boolean.TRUE);
+		bqExpandoColumn2.setName("age");
+
+		_bqExpandoColumnRepository.save(bqExpandoColumn2);
+
+		BQExpandoValue bqExpandoValue2 = new BQExpandoValue();
+
+		bqExpandoValue2.setClassPK(bqUser2.getDXPUserId());
+		bqExpandoValue2.setClassType(DXPEntity.Type.CLASS_NAME_USER);
+		bqExpandoValue2.setColumnId(bqExpandoColumn2.getColumnId());
+		bqExpandoValue2.setDataSourceId(bqUser2.getDataSourceId());
+		bqExpandoValue2.setId(RandomTestUtil.randomString());
+		bqExpandoValue2.setIsNew(Boolean.TRUE);
+		bqExpandoValue2.setValue("20");
+		bqExpandoValue2.setModifiedDate(bqUser2.getModifiedDate());
+
+		_bqExpandoValueRepository.save(bqExpandoValue2);
+
+		_individualNanite.run();
+
+		Optional<BQIndividual> bqIndividualOptional =
+			_bqIndividualRepository.findByEmailAddress("joe@liferay.com");
+
+		BQIndividual bqIndividual = bqIndividualOptional.get();
+
+		Assertions.assertEquals(
+			"joe@liferay.com", bqIndividual.getEmailAddress());
+		Assertions.assertEquals(
+			bqUser2.getModifiedDate(), bqIndividual.getModifiedDate());
+
+		JSONAssert.assertEquals(
+			JSONUtil.putAll(
+				JSONUtil.put(
+					"dataSourceId", String.valueOf(bqUser1.getDataSourceId())
+				).put(
+					"modifiedDate",
+					DateUtil.toUTCString(bqUser1.getModifiedDate())
+				).put(
+					"name", "age_string_array"
+				).put(
+					"value", "[18]"
+				),
+				JSONUtil.put(
+					"dataSourceId", String.valueOf(bqUser2.getDataSourceId())
+				).put(
+					"modifiedDate",
+					DateUtil.toUTCString(bqUser2.getModifiedDate())
+				).put(
+					"name", "age_string"
+				).put(
+					"value", "20"
+				)),
+			bqIndividual.getFieldsJSONArray(), false);
+	}
+
+	@Test
+	public void testMergeDefaultField() {
 		BQUser bqUser1 = new BQUser();
 
 		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
