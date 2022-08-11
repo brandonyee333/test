@@ -39,6 +39,11 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getClassName() {
+		return _className;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getColumnId() {
 		return _columnId;
 	}
@@ -108,6 +113,10 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 		return false;
 	}
 
+	public void setClassName(String className) {
+		_className = className;
+	}
+
 	public void setColumnId(String columnId) {
 		_columnId = columnId;
 	}
@@ -145,6 +154,9 @@ public class BQExpandoColumn implements BQDXPEntity, Persistable<String> {
 	public void setName(String name) {
 		_name = name;
 	}
+
+	@Transient
+	private String _className;
 
 	@Transient
 	private String _columnId;

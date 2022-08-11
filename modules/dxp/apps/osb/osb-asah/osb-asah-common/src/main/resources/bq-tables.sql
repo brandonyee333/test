@@ -189,7 +189,8 @@ CREATE TABLE IF NOT EXISTS BQEventProperty (
 );
 
 CREATE TABLE IF NOT EXISTS BQExpandoColumn (
-	columnId TEXT,
+	className TEXT,
+    columnId TEXT,
 	dataSourceId BIGINT,
 	dataType TEXT,
 	displayType TEXT,
