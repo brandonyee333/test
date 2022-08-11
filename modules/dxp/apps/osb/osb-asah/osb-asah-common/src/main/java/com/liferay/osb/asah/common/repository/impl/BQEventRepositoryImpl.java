@@ -545,26 +545,33 @@ public class BQEventRepositoryImpl
 			Table<Record> table = DSL.table(
 				String.format(
 					"%s as %s", attributeType.getTableName(),
-					eventAttributeDefinition.getName()));
+					_getEventAttributeDefinitionName(
+						eventAttributeDefinition)));
 
 			Condition condition = DSL.and(
 				_getChannelIdFilter(
 					channelId,
 					String.format(
-						"%s.channelId", eventAttributeDefinition.getName()))
+						"%s.channelId",
+						_getEventAttributeDefinitionName(
+							eventAttributeDefinition)))
 			).and(
 				DSL.field(
 					_getJoinFieldTableName(attributeType)
 				).eq(
 					DSL.field(
 						String.format(
-							"%s.%s", eventAttributeDefinition.getName(),
+							"%s.%s",
+							_getEventAttributeDefinitionName(
+								eventAttributeDefinition),
 							attributeType.getJoinFieldName()))
 				)
 			).and(
 				DSL.field(
 					String.format(
-						"%s.%s", eventAttributeDefinition.getName(),
+						"%s.%s",
+						_getEventAttributeDefinitionName(
+							eventAttributeDefinition),
 						attributeType.getAttributeIdFieldName())
 				).eq(
 					eventAttributeDefinition.getName()
@@ -575,7 +582,9 @@ public class BQEventRepositoryImpl
 				condition = condition.and(
 					_getEventDateRangeFilter(
 						String.format(
-							"%s.eventDate", eventAttributeDefinition.getName()),
+							"%s.eventDate",
+							_getEventAttributeDefinitionName(
+								eventAttributeDefinition)),
 						timeRange.getEndDate(), timeRange.getStartDate()));
 			}
 
@@ -975,6 +984,12 @@ public class BQEventRepositoryImpl
 				EventAttributeDefinition::getId, Function.identity()));
 	}
 
+	private String _getEventAttributeDefinitionName(
+		EventAttributeDefinition eventAttributeDefinition) {
+
+		return "_" + eventAttributeDefinition.getName();
+	}
+
 	private Map<String, EventAttributeDefinition> _getEventAttributeDefinitions(
 		List<Long> attributeIds) {
 
@@ -1104,9 +1119,12 @@ public class BQEventRepositoryImpl
 		else {
 			field = DSL.when(
 				_getEventDateRangeFilter(
-					eventAttributeDefinition.getName() + ".eventDate",
+					_getEventAttributeDefinitionName(eventAttributeDefinition) +
+						".eventDate",
 					timeRange.getEndDate(), timeRange.getStartDate()),
-				DSL.field(eventAttributeDefinition.getName() + ".value"));
+				DSL.field(
+					_getEventAttributeDefinitionName(eventAttributeDefinition) +
+						".value"));
 		}
 
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
@@ -1210,7 +1228,8 @@ public class BQEventRepositoryImpl
 
 			attributeField = DSL.field(
 				attributeType.getQualifiedAttributeValueFieldName(
-					eventAttributeDefinition.getName()));
+					_getEventAttributeDefinitionName(
+						eventAttributeDefinition)));
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.BOOLEAN)) {
@@ -1275,7 +1294,8 @@ public class BQEventRepositoryImpl
 		);
 
 		if (alias) {
-			return field.as(eventAttributeDefinition.getName());
+			return field.as(
+				_getEventAttributeDefinitionName(eventAttributeDefinition));
 		}
 
 		return field;
