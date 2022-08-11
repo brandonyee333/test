@@ -15,11 +15,9 @@
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IndividualNanite;
@@ -45,27 +43,28 @@ public class IndividualNaniteTest
 
 	@Test
 	public void testRun() throws Exception {
-		BQCSVUser bqCSVUser = new BQCSVUser();
+		BQUser bqUser1 = new BQUser();
 
-		bqCSVUser.setDataSourceId(RandomTestUtil.randomNumber());
-		bqCSVUser.setEmailAddress("joe@liferay.com");
-		bqCSVUser.setFieldsJSONArray(
+		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
+		bqUser1.setEmailAddress("joe@liferay.com");
+		bqUser1.setFieldsJSONArray(
 			JSONUtil.putAll(
 				JSONUtil.put(
 					"name", "country"
 				).put(
 					"value", "Brazil"
 				)));
-		bqCSVUser.setModifiedDate(
-			DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
+		bqUser1.setId(RandomTestUtil.randomString());
+		bqUser1.setIsNew(Boolean.TRUE);
+		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
 
-		_bqCSVUserRepository.save(bqCSVUser);
+		_bqUserRepository.save(bqUser1);
 
-		BQUser bqUser = new BQUser();
+		BQUser bqUser2 = new BQUser();
 
-		bqUser.setDataSourceId(RandomTestUtil.randomNumber());
-		bqUser.setEmailAddress("joe@liferay.com");
-		bqUser.setFieldsJSONArray(
+		bqUser2.setDataSourceId(RandomTestUtil.randomNumber());
+		bqUser2.setEmailAddress("joe@liferay.com");
+		bqUser2.setFieldsJSONArray(
 			JSONUtil.putAll(
 				JSONUtil.put(
 					"name", "country"
@@ -77,11 +76,11 @@ public class IndividualNaniteTest
 				).put(
 					"value", "Liferay"
 				)));
-		bqUser.setId(RandomTestUtil.randomString());
-		bqUser.setIsNew(Boolean.TRUE);
-		bqUser.setModifiedDate(DateUtil.toUTCDate("2022-08-03T12:00:00.000Z"));
+		bqUser2.setId(RandomTestUtil.randomString());
+		bqUser2.setIsNew(Boolean.TRUE);
+		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-03T12:00:00.000Z"));
 
-		_bqUserRepository.save(bqUser);
+		_bqUserRepository.save(bqUser2);
 
 		_individualNanite.run();
 
@@ -93,25 +92,25 @@ public class IndividualNaniteTest
 		Assertions.assertEquals(
 			"joe@liferay.com", bqIndividual.getEmailAddress());
 		Assertions.assertEquals(
-			bqCSVUser.getModifiedDate(), bqIndividual.getModifiedDate());
+			bqUser1.getModifiedDate(), bqIndividual.getModifiedDate());
 
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
 				JSONUtil.put(
-					"dataSourceId", String.valueOf(bqCSVUser.getDataSourceId())
+					"dataSourceId", String.valueOf(bqUser1.getDataSourceId())
 				).put(
 					"modifiedDate",
-					DateUtil.toUTCString(bqCSVUser.getModifiedDate())
+					DateUtil.toUTCString(bqUser1.getModifiedDate())
 				).put(
 					"name", "country"
 				).put(
 					"value", "Brazil"
 				),
 				JSONUtil.put(
-					"dataSourceId", String.valueOf(bqUser.getDataSourceId())
+					"dataSourceId", String.valueOf(bqUser2.getDataSourceId())
 				).put(
 					"modifiedDate",
-					DateUtil.toUTCString(bqUser.getModifiedDate())
+					DateUtil.toUTCString(bqUser2.getModifiedDate())
 				).put(
 					"name", "company"
 				).put(
@@ -119,9 +118,6 @@ public class IndividualNaniteTest
 				)),
 			bqIndividual.getFieldsJSONArray(), false);
 	}
-
-	@Autowired
-	private BQCSVUserRepository _bqCSVUserRepository;
 
 	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;

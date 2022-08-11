@@ -17,10 +17,8 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQUser;
-import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.dataflow.emulator.model.Field;
@@ -53,7 +51,7 @@ public class IndividualNanite {
 
 	public void run() {
 		List<BQIndividual> bqIndividuals = _mergeBQIndividuals(
-			_fetchBQCSVUsersBQIndividuals(), _fetchBQUsersBQIndividuals());
+			_fetchBQUsersBQIndividuals());
 
 		if (bqIndividuals.isEmpty()) {
 			return;
@@ -61,21 +59,6 @@ public class IndividualNanite {
 
 		_bqIndividualRepository.deleteAll();
 		_bqIndividualRepository.saveAll(bqIndividuals);
-	}
-
-	private List<BQIndividual> _fetchBQCSVUsersBQIndividuals() {
-		List<BQCSVUser> bqCSVUsers = IterableUtils.toList(
-			_bqCSVUserRepository.findAll());
-
-		Stream<BQCSVUser> stream = bqCSVUsers.stream();
-
-		return stream.map(
-			bqCSVUser -> _toBQIndividual(
-				bqCSVUser.getDataSourceId(), bqCSVUser.getEmailAddress(),
-				bqCSVUser.getFieldsJSONArray(), bqCSVUser.getModifiedDate())
-		).collect(
-			Collectors.toList()
-		);
 	}
 
 	private List<BQIndividual> _fetchBQUsersBQIndividuals() {
@@ -169,23 +152,13 @@ public class IndividualNanite {
 	}
 
 	private List<BQIndividual> _mergeBQIndividuals(
-		List<BQIndividual> bqIndividuals1, List<BQIndividual> bqIndividuals2) {
+		List<BQIndividual> bqIndividuals) {
 
-		if (bqIndividuals1.isEmpty() && bqIndividuals2.isEmpty()) {
+		if (bqIndividuals.isEmpty()) {
 			return Collections.emptyList();
 		}
 
-		if (bqIndividuals1.isEmpty()) {
-			return bqIndividuals2;
-		}
-
-		if (bqIndividuals2.isEmpty()) {
-			return bqIndividuals1;
-		}
-
-		bqIndividuals1.addAll(bqIndividuals2);
-
-		Stream<BQIndividual> stream1 = bqIndividuals1.stream();
+		Stream<BQIndividual> stream1 = bqIndividuals.stream();
 
 		Map<String, Optional<BQIndividual>> map = stream1.collect(
 			Collectors.groupingBy(
@@ -234,9 +207,6 @@ public class IndividualNanite {
 
 		return fields;
 	}
-
-	@Autowired
-	private BQCSVUserRepository _bqCSVUserRepository;
 
 	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;
