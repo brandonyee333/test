@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -57,6 +59,15 @@ public class BQExpandoValue implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getValue() {
 		return _value;
 	}
@@ -94,6 +105,12 @@ public class BQExpandoValue implements Persistable<String> {
 		_isNew = isNew;
 	}
 
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
+	}
+
 	public void setValue(String value) {
 		_value = value;
 	}
@@ -115,6 +132,9 @@ public class BQExpandoValue implements Persistable<String> {
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private Date _modifiedDate;
 
 	@Transient
 	private String _value;
