@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.VisitedPagesRestController;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -27,6 +26,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import org.json.JSONObject;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -40,6 +40,7 @@ public class VisitedPagesRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -47,13 +48,14 @@ public class VisitedPagesRestControllerTest
 	@Test
 	public void testGetVisitedPage() throws Exception {
 		JSONAssert.assertEquals(
-			_elasticsearchInvoker.fetch("visited-pages", "356972058733468926"),
+			new JSONObject(),
 			new JSONObject(
 				_visitedPagesRestController.getVisitedPages(
 					"356972058733468926")),
 			false);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -116,9 +118,6 @@ public class VisitedPagesRestControllerTest
 					"individual", 0, 20, new String[] {"title", "asc"}, true)),
 			false);
 	}
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private VisitedPagesRestController _visitedPagesRestController;

@@ -72,7 +72,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
@@ -414,14 +413,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		_fieldRepository.deleteByOwnerIdAndOwnerType(
 			individualId, "individual");
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("ownerId", String.valueOf(individualId))
-		).filter(
-			QueryBuilders.termQuery("ownerType", "individual")
-		);
-
-		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
-
 		_interestRepository.deleteByOwnerIdInAndOwnerType(
 			Collections.singletonList(individualId), "individual");
 
@@ -490,17 +481,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 		_fieldRepository.deleteByOwnerIdInAndOwnerType(
 			individualIds, "individual");
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termsQuery(
-				"ownerId", ListUtil.map(individualIds, String::valueOf))
-		).filter(
-			QueryBuilders.termQuery("ownerType", "individual")
-		);
-
 		_interestRepository.deleteByOwnerIdInAndOwnerType(
 			individualIds, "individual");
-
-		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
 		_bqMembershipDog.deactivateBQMembershipByIndividuals(
 			deletionDate, individuals);

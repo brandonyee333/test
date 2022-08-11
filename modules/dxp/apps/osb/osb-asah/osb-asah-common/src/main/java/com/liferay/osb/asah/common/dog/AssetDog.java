@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverter
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoAssetFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.Asset;
@@ -42,8 +41,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -95,21 +92,6 @@ public class AssetDog {
 				_interestRepository.deleteByNameAndRecordedDateGreaterThanEqual(
 					assetKeyword.getKeyword(),
 					DateUtil.toUTCDate(deletionDayDateString));
-
-				_elasticsearchInvoker.delete(
-					"visited-pages",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.rangeQuery(
-							"day"
-						).gte(
-							deletionDayDateString
-						).timeZone(
-							_timeZoneDog.getTimeZoneId()
-						)
-					).filter(
-						QueryBuilders.termQuery(
-							"interestName", assetKeyword.getKeyword())
-					));
 			}
 		}
 	}

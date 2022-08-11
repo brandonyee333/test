@@ -18,10 +18,6 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.rest.response.function.VisitedPagesTransformationJSONArrayFunction;
-
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +35,10 @@ public class VisitedPagesRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
 	public String getVisitedPages(@PathVariable String id) throws Exception {
-		return toItemGetResponse("visited-pages", id);
+
+		// TODO Get visited pages
+
+		return null;
 	}
 
 	@GetMapping
@@ -53,14 +52,9 @@ public class VisitedPagesRestController extends BaseRestController {
 			@RequestParam(defaultValue = "true") boolean visitedPages)
 		throws Exception {
 
-		return toTransformationGetResponse(
-			"visited-pages", page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			Collections.emptyMap(), sorts,
-			new VisitedPagesTransformationJSONArrayFunction(
-				_asahMarkerDog, _assetDog, _bqMembershipDog, ownerId, ownerType,
-				_segmentDog, visitedPages),
-			"visited-pages-transformation");
+		// TODO Get visited pages
+
+		return null;
 	}
 
 	@Autowired

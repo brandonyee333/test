@@ -19,7 +19,6 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
@@ -31,6 +30,7 @@ import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -39,8 +39,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -161,7 +159,10 @@ public class InterestsRestController
 		}
 
 		if (addPageVisited) {
-			embedded.put("pages-visited", _getVisitedPages(interest));
+
+			// TODO Get visited pages
+
+			embedded.put("pages-visited", Collections.emptyList());
 		}
 
 		interestDTO.setEmbedded(embedded);
@@ -272,23 +273,6 @@ public class InterestsRestController
 		}
 
 		return null;
-	}
-
-	private List<Object> _getVisitedPages(Interest interest) {
-		return JSONUtil.toObjectList(
-			faroInfoElasticsearchInvoker.get(
-				"visited-pages",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"day", DateUtil.toUTCString(interest.getRecordedDate()))
-				).filter(
-					QueryBuilders.termQuery("interestName", interest.getName())
-				).filter(
-					QueryBuilders.termQuery("ownerId", interest.getOwnerId())
-				).filter(
-					QueryBuilders.termQuery(
-						"ownerType", interest.getOwnerType())
-				)));
 	}
 
 	private PageDTO<InterestDTO> _toPageDTO(

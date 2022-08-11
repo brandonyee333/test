@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
-import com.liferay.osb.asah.common.dog.VisitedPageDog;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.List;
@@ -50,8 +49,6 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 		_interestDog.deleteInterests(
 			individualSegmentIds, "individual-segment");
 
-		_visitedPageDog.deleteVisitedPages(individualSegmentIds);
-
 		bqMembershipChangeDog.deleteBQMembershipChanges(individualSegmentIds);
 
 		bqMembershipDog.deleteBQMemberships(individualSegmentIds);
@@ -76,8 +73,5 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 	@Autowired
 	private InterestDog _interestDog;
-
-	@Autowired
-	private VisitedPageDog _visitedPageDog;
 
 }

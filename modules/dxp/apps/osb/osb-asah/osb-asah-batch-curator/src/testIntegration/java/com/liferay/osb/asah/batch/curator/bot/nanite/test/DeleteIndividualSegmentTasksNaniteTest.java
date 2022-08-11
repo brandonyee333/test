@@ -15,11 +15,9 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteIndividualSegmentTasksNanite;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -39,11 +37,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.RandomUtils;
-
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -65,7 +58,6 @@ public class DeleteIndividualSegmentTasksNaniteTest
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				dataSource.getId(), "email", "email", "Text"));
 
-		String dayDateString = DateUtil.newDayDateString();
 		Long segmentId = RandomTestUtil.randomNumber();
 
 		Segment segment = new Segment();
@@ -74,9 +66,6 @@ public class DeleteIndividualSegmentTasksNaniteTest
 		segment.setIsNew(Boolean.TRUE);
 
 		_segmentRepository.save(segment);
-
-		JSONObject assetJSONObject = FaroInfoTestUtil.buildPageAssetJSONObject(
-			dataSource.getId());
 
 		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource);
 
@@ -93,25 +82,8 @@ public class DeleteIndividualSegmentTasksNaniteTest
 			FaroInfoTestUtil.buildBQMembership(
 				String.valueOf(individual.getId()), segmentId));
 
-		faroInfoElasticsearchInvoker.add(
-			"visited-pages",
-			FaroInfoTestUtil.buildIndividualSegmentVisitedPagesJSONArray(
-				assetJSONObject, dayDateString, segmentId,
-				RandomUtils.nextInt()));
-
 		_deleteIndividualSegmentTasksNanite.run(
 			JSONUtil.put("individualSegmentIds", JSONUtil.put(segmentId)));
-
-		Assertions.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"visited-pages",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("ownerId", segmentId)
-				).filter(
-					QueryBuilders.termQuery("ownerType", "individual-segment")
-				)),
-			"Entries within visited-pages related to the deleted individual " +
-				"segment should be deleted");
 
 		Assertions.assertEquals(
 			0, _bqMembershipRepository.countBySegmentId(segmentId),

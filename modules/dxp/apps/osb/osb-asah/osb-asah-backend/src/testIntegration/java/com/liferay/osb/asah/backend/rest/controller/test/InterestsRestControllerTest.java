@@ -46,6 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -138,6 +139,7 @@ public class InterestsRestControllerTest
 		Assertions.assertEquals("web", lastInterestDTO.getName());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "visited-pages", resourcePath = "visited_pages_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
