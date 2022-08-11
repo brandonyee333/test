@@ -17,8 +17,14 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.entity.BQExpandoColumn;
+import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQUser;
+import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
+import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
+import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.dataflow.emulator.model.Field;
@@ -30,11 +36,13 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -68,9 +76,31 @@ public class IndividualNanite {
 		Stream<BQUser> stream = bqUsers.stream();
 
 		return stream.map(
-			bqUser -> _toBQIndividual(
-				bqUser.getDataSourceId(), bqUser.getEmailAddress(),
-				bqUser.getFieldsJSONArray(), bqUser.getModifiedDate())
+			this::_toBQIndividual
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private List<Field> _fetchCustomFields(BQUser bqUser) {
+		List<BQExpandoValue> bqExpandoValues =
+			_bqExpandoValueRepository.findByClassPKAndClassTypeAndDataSourceId(
+				bqUser.getDXPUserId(), DXPEntity.Type.CLASS_NAME_USER,
+				bqUser.getDataSourceId());
+
+		Stream<BQExpandoValue> stream = bqExpandoValues.stream();
+
+		return stream.map(
+			bqExpandoValue -> {
+				Field field = new Field();
+
+				field.setName(_resolveFieldName(bqExpandoValue));
+				field.setValue(bqExpandoValue.getValue());
+				field.setDataSourceId(bqExpandoValue.getDataSourceId());
+				field.setModifiedDate(bqExpandoValue.getModifiedDate());
+
+				return field;
+			}
 		).collect(
 			Collectors.toList()
 		);
@@ -178,27 +208,58 @@ public class IndividualNanite {
 		);
 	}
 
-	private BQIndividual _toBQIndividual(
-		Long dataSourceId, String emailAddress, JSONArray fieldJSONArray,
-		Date modifiedDate) {
+	private String _resolveFieldName(BQExpandoValue bqExpandoValue) {
+		BQExpandoColumn bqExpandoColumn =
+			_bqExpandoColumnRepository.findByColumnIdAndDataSourceId(
+				bqExpandoValue.getColumnId(), bqExpandoValue.getDataSourceId());
 
+		String displayType = bqExpandoColumn.getDisplayType();
+
+		String fieldName =
+			bqExpandoColumn.getName() + "_" + bqExpandoColumn.getDataType();
+
+		if (Objects.equals(displayType, "checkbox") ||
+			Objects.equals(displayType, "radio") ||
+			Objects.equals(displayType, "selection-list")) {
+
+			return fieldName + "_array";
+		}
+
+		return fieldName;
+	}
+
+	private BQIndividual _toBQIndividual(BQUser bqUser) {
 		BQIndividual bqIndividual = new BQIndividual();
 
-		bqIndividual.setEmailAddress(emailAddress);
+		bqIndividual.setEmailAddress(bqUser.getEmailAddress());
+
+		List<Field> defaultFields = _toFields(
+			bqUser.getDataSourceId(), bqUser.getFieldsJSONArray(),
+			bqUser.getModifiedDate());
+
+		List<Field> customFields = _fetchCustomFields(bqUser);
+
 		bqIndividual.setFieldsJSONArray(
 			_objectMapper.convertValue(
-				_toFields(dataSourceId, fieldJSONArray, modifiedDate),
+				CollectionUtils.union(defaultFields, customFields),
 				JSONArray.class));
-		bqIndividual.setModifiedDate(modifiedDate);
+
+		bqIndividual.setModifiedDate(bqUser.getModifiedDate());
 
 		return bqIndividual;
 	}
 
-	private Field[] _toFields(
+	private List<Field> _toFields(
 		Long dataSourceId, JSONArray fieldsJSONArray, Date modifiedDate) {
 
-		Field[] fields = _objectMapper.convertValue(
-			fieldsJSONArray, Field[].class);
+		List<Field> fields = _objectMapper.convertValue(
+			fieldsJSONArray,
+			new TypeReference<List<Field>>() {
+			});
+
+		if (fields == null) {
+			return Collections.emptyList();
+		}
 
 		for (Field field : fields) {
 			field.setDataSourceId(dataSourceId);
@@ -207,6 +268,15 @@ public class IndividualNanite {
 
 		return fields;
 	}
+
+	@Autowired
+	private BQExpandoColumnRepository _bqExpandoColumnRepository;
+
+	@Autowired
+	private BQExpandoValueRepository _bqExpandoValueRepository;
+
+	@Autowired
+	private BQFieldMappingRepository _bqFieldMappingRepository;
 
 	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;
