@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.repository.CustomCustomAssetDashboardRepository;
 
@@ -92,7 +93,9 @@ public class CustomAssetDashboardRepositoryImpl
 			Field<Object> field = DSL.field("assetTitle");
 
 			conditions.add(
-				field.likeIgnoreCase(String.format("%%%s%%", keywords)));
+				field.likeIgnoreCase(
+					String.format(
+						"%%%s%%", QueryUtil.escapeKeywords(keywords))));
 		}
 
 		return conditions;
