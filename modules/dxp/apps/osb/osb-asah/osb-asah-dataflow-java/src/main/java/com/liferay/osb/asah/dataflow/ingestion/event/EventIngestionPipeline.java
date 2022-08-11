@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.dataflow.ingestion.event;
 
 import com.google.api.services.bigquery.model.TableRow;
+import com.google.common.collect.Lists;
 
 import com.liferay.osb.asah.dataflow.common.DateUtil;
 import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
@@ -24,11 +25,17 @@ import com.liferay.osb.asah.dataflow.ingestion.event.ip.geocoder.IPGeocoder;
 import com.liferay.osb.asah.dataflow.ingestion.event.ip.geocoder.IPInfo;
 import com.liferay.osb.asah.dataflow.io.WriteToText;
 
+import java.net.URISyntaxException;
+
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.PipelineResult;
@@ -618,14 +625,96 @@ public class EventIngestionPipeline {
 
 		String[] sessionKeyParts = sessionKey.split("#");
 
-		tableRow.set("channelId", Long.parseLong(sessionKeyParts[2]));
+		List<AnalyticsEvent> analyticsEvents = Lists.newArrayList(
+			element.getValue());
 
+		analyticsEvents.sort(
+			Comparator.comparing(
+				analyticsEvent -> DateUtil.toUTCZonedDateTime(
+					analyticsEvent.eventDate)));
+
+		AnalyticsEvent firstAnalyticsEvent = analyticsEvents.get(0);
+		AnalyticsEvent lastAnalyticsEvent = analyticsEvents.get(
+			analyticsEvents.size() - 1);
+
+		Map<String, String> context = firstAnalyticsEvent.context;
+
+		try {
+			Acquisition acquisition = new Acquisition(
+				context.get("referrer"), context.get("url"));
+
+			tableRow.set("acquisitionCampaign", acquisition.getCampaign());
+			tableRow.set("acquisitionChannel", acquisition.getChannel());
+			tableRow.set("acquisitionContent", acquisition.getContent());
+			tableRow.set("acquisitionMedium", acquisition.getMedium());
+			tableRow.set("acquisitionSource", acquisition.getSource());
+			tableRow.set("acquisitionTerm", acquisition.getTerm());
+		}
+		catch (URISyntaxException uriSyntaxException) {
+		}
+
+		int interactionsCount = 0;
+		int pageViewsCount = 0;
+
+		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+			String eventId = analyticsEvent.eventId;
+
+			if (analyticsEvent.applicationId.equals("Page") &&
+				eventId.equals("pageViewed")) {
+
+				pageViewsCount++;
+			}
+
+			if (!eventId.equals("blogViewed") &&
+				!eventId.equals("documentPreviewed") &&
+				!eventId.equals("formViewed") &&
+				!eventId.equals("pageLoaded") &&
+				!eventId.equals("pageUnloaded") &&
+				!eventId.equals("pageViewed") &&
+				!eventId.equals("webContentViewed")) {
+
+				interactionsCount++;
+			}
+		}
+
+		tableRow.set(
+			"bounced", (pageViewsCount > 1) || (interactionsCount > 0));
+		tableRow.set("browserName", context.get("browserName"));
+		tableRow.set("channelId", Long.parseLong(sessionKeyParts[2]));
+		tableRow.set("city", context.get("city"));
+		tableRow.set("country", context.get("country"));
+		tableRow.set("deviceType", context.get("deviceType"));
+		tableRow.set(
+			"duration",
+			DateUtil.getDeltaMilliseconds(
+				firstAnalyticsEvent.eventDate, lastAnalyticsEvent.eventDate));
 		tableRow.set(
 			"id",
 			DigestUtils.sha256Hex(sessionKey + "#" + intervalWindow.start()));
+		tableRow.set("platformName", context.get("platformName"));
 		tableRow.set("projectId", sessionKeyParts[0]);
-		tableRow.set("sessionEnd", String.valueOf(intervalWindow.end()));
-		tableRow.set("sessionStart", String.valueOf(intervalWindow.start()));
+
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		tableRow.set(
+			"referrers",
+			stream.map(
+				analyticsEvent -> {
+					Map<String, String> analyticsEventContext =
+						analyticsEvent.context;
+
+					return analyticsEventContext.get("referrer");
+				}
+			).filter(
+				StringUtils::isNotEmpty
+			).collect(
+				Collectors.toSet()
+			));
+
+		tableRow.set("region", context.get("region"));
+		tableRow.set("sessionEnd", lastAnalyticsEvent.eventDate);
+		tableRow.set("sessionStart", firstAnalyticsEvent.eventDate);
+		tableRow.set("userId", sessionKeyParts[3]);
 
 		processContext.output(tableRow);
 	}
