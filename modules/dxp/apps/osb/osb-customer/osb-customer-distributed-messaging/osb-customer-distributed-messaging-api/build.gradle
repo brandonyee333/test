@@ -1,8 +1,8 @@
 dependencies {
 	compileInclude fileTree(dir: "lib-distributed-messaging", include: "*.jar")
-	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.10.3"
-	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.9.8"
-	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.9.8"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.13.2"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.13.2"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.13.2.2"
 	compileInclude group: "com.fasterxml.jackson.dataformat", name: "jackson-dataformat-xml", version: "2.9.8"
 	compileInclude group: "com.fasterxml.jackson.dataformat", name: "jackson-dataformat-yaml", version: "2.9.8"
 	compileInclude group: "com.fasterxml.jackson.module", name: "jackson-module-jaxb-annotations", version: "2.9.8"
