@@ -33,7 +33,6 @@ public class CommerceDashboardDogTest {
 			ReflectionTestUtils.invokeMethod(
 				_commerceDashboardDog, "_getPercentageVariation",
 				new BigDecimal("737"), BigDecimal.ZERO));
-
 		Assertions.assertEquals(
 			659.8,
 			ReflectionTestUtils.invokeMethod(
