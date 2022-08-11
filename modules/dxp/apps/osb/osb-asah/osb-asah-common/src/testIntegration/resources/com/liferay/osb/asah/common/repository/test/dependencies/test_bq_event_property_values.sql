@@ -2,11 +2,13 @@ INSERT INTO Channel (id, createDate) VALUES (1, '2021-05-31');
 INSERT INTO Channel (id, createDate) VALUES (2, '2021-06-01');
 INSERT INTO Channel (id, createDate) VALUES (3, '2021-06-02');
 
+INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('STRING', 'TEST_NAME', 13456, 'name', 'LOCAL');
 INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('STRING', 'TEST_URL', 12345, 'testUrl', 'LOCAL');
 INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('STRING', 'TEST_TITLE', 23456, 'testTitle', 'LOCAL');
 INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('NUMBER', 'TEST_CODE', 34567, 'testCode', 'LOCAL');
 INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('NUMBER', 'TEST_RATING', 45678, 'testRating', 'LOCAL');
 INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('DATE', 'TEST_DATE', 56789, 'testDate', 'LOCAL');
+INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('BOOLEAN', 'TEST_BOOLEAN', 12456, 'like', 'LOCAL');
 INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('BOOLEAN', 'TEST_MEMBER', 67890, 'testMember', 'LOCAL');
 INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('NUMBER', 'TEST_DURATION', 78901, 'testDuration', 'LOCAL');
 
@@ -111,11 +113,13 @@ INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 13, 'testDate', '2021-05-13 01:30:00');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 13, 'testMember', 'true');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 13, 'testDuration', '1010');
+INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 14, 'name', 'liferay1');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 14, 'testUrl', 'https://www.beryl.com/blogs');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 14, 'testTitle', 'Beryl Blogs');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 12:00:00', 14, 'testCode', '400');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 14, 'testRating', '5.10');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 14, 'testDate', '2021-05-13 03:30:00');
+INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 14, 'like', 'true');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 14, 'testMember', 'true');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-22 10:00:00', 14, 'testDuration', '5100');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-23 10:00:00', 15, 'testUrl', 'https://www.beryl.com/Blogs');

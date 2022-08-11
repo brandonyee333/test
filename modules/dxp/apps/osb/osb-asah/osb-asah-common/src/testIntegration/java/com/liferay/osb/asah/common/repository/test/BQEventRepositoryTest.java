@@ -695,6 +695,58 @@ public class BQEventRepositoryTest
 
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
+	public void testGetBQEventPropertyValuesWithBreakdownItemWithReservedWords1() {
+		List<BreakdownRow> breakdownRows =
+			_bqEventRepository.getBQEventPropertyValues(
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"12456", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.BOOLEAN, null, null,
+						"like", "DESC")),
+				null, 246810L, PageRequest.of(0, 10),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
+
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("true", BigDecimal.valueOf(1));
+				}
+			});
+	}
+
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
+	@Test
+	public void testGetBQEventPropertyValuesWithBreakdownItemWithReservedWords2() {
+		List<BreakdownRow> breakdownRows =
+			_bqEventRepository.getBQEventPropertyValues(
+				AnalysisType.TOTAL, 1L, false,
+				Arrays.asList(
+					new EventAnalysisBreakdown(
+						"13456", AttributeType.EVENT, 0,
+						EventAttributeDefinition.DataType.STRING, null, null,
+						"name", "DESC")),
+				null, 246810L, PageRequest.of(0, 10),
+				TimeRange.of(
+					LocalDateTime.of(2021, 6, 1, 23, 59),
+					LocalDateTime.of(2021, 5, 15, 0, 0)),
+				_timeZoneDog.getTimeZoneId());
+
+		_assertBreakdowRowEquals(
+			breakdownRows,
+			new HashMap<String, BigDecimal>() {
+				{
+					put("liferay1", BigDecimal.valueOf(1));
+				}
+			});
+	}
+
+	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
+	@Test
 	public void testGetBQEventPropertyValuesWithNoBreakdown() {
 		List<BreakdownRow> breakdownRows =
 			_bqEventRepository.getBQEventPropertyValues(
