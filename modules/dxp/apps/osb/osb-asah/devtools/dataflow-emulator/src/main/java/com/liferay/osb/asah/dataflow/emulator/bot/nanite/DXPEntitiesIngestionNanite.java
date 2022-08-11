@@ -341,14 +341,14 @@ public class DXPEntitiesIngestionNanite {
 
 			bqUser.setDataSourceId(dataSourceId);
 
-			JSONArray expandFieldsJSONArray = jsonObject.optJSONArray(
+			JSONArray expandoFieldsJSONArray = jsonObject.optJSONArray(
 				"expandoFields");
 
-			if (expandFieldsJSONArray != null) {
+			if (expandoFieldsJSONArray != null) {
 				_bqExpandoValueRepository.saveAll(
 					_getExpandoValues(
 						bqUser.getDXPUserId(), DXPEntity.Type.CLASS_NAME_USER,
-						dataSourceId, expandFieldsJSONArray, projectId));
+						dataSourceId, expandoFieldsJSONArray, projectId));
 			}
 
 			bqUser.setFieldsJSONArray(jsonObject.optJSONArray("fields"));
