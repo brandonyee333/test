@@ -1,3 +1,84 @@
+CREATE OR REPLACE VIEW BQFieldMapping AS (
+	WITH DemographicsFieldMapping AS (
+		SELECT * FROM ( VALUES
+			('demographics', ARRAY[NULL::BIGINT], 'address', 'input-field', 'addresses', 'text', NOW(), 'individual', false),
+			('demographics', ARRAY[NULL::BIGINT], 'birthDate', 'input-field', 'birthday', 'date', NOW(), 'individual', false),
+			('demographics', ARRAY[NULL::BIGINT], 'email', 'input-field', 'emailAddress', 'text', NOW(), 'individual', false),
+			('demographics', ARRAY[NULL::BIGINT], 'givenName', 'input-field', 'firstName', 'text', NOW(), 'individual', false),
+			('demographics', ARRAY[NULL::BIGINT], 'gender', 'input-field', 'gender', 'text', NOW(), 'individual', false),
+			('demographics', ARRAY[NULL::BIGINT], 'jobTitle', 'input-field',  'jobTitle', 'text', NOW(), 'individual', false),
+			('demographics', ARRAY[NULL::BIGINT], 'familyName', 'input-field', 'lastName', 'text', NOW(), 'individual', false),
+			('demographics', ARRAY[NULL::BIGINT], 'additionalName', 'input-field', 'middleName', 'text', NOW(), 'individual', false),
+			('demographics', ARRAY[NULL::BIGINT], 'telephone', 'input-field', 'phones', 'text', NOW(), 'individual', false),
+			('demographics', ARRAY[NULL::BIGINT], 'familyName', 'input-field', 'emailAddress', 'text', NOW(), 'individual', false)
+		) AS TMP (
+			context, dataSourceIds, displayName, displayType, fieldName, fieldType, modifiedDate, ownerType, repeatable_
+		)
+	),
+	CustomFieldMapping AS (
+		SELECT
+			'custom' as context, datasourceids,
+			CASE
+				WHEN
+				    rn = 1
+				THEN
+				    name
+				ELSE
+				    name || (rn - 1)
+			END displayname,
+			displaytype,
+			CASE
+				WHEN
+				    displaytype IN ('checkbox', 'radio', 'selection-list')
+				THEN
+				    CONCAT(name, '_', datatype, '_array')
+				ELSE
+				    CONCAT(name, '_', datatype)
+			END fieldname,
+			datatype as fieldtype,
+			modifieddate,
+			ownertype,
+			CASE
+				WHEN
+				    displaytype IN ('checkbox', 'radio', 'selection-list')
+				THEN
+				    TRUE
+				ELSE
+				    FALSE
+			END repeatable_
+		FROM
+			(
+				SELECT
+					   *, row_number() OVER (partition by name, ownertype order by modifieddate asc) rn
+				FROM
+					(
+						SELECT
+							name, displaytype, datatype, max(modifieddate) as modifieddate,
+							ARRAY_AGG(datasourceid) as datasourceids,
+							CASE
+								WHEN classname = 'com.liferay.portal.kernel.model.User' then 'individual'
+								WHEN classname = 'com.liferay.portal.kernel.model.Organization' then 'organization'
+							END ownertype
+						FROM
+							BQExpandoColumn
+						GROUP BY
+							name, datatype, displaytype, ownertype
+					) TMP1
+			) TMP2
+	)
+	SELECT
+	       *
+	FROM
+		 DemographicsFieldMapping
+	UNION ALL
+	SELECT
+	       *
+	FROM
+	     CustomFieldMapping
+);
+
+COMMIT;
+
 CREATE OR REPLACE VIEW BQPageReferrers AS (
 	SELECT
 		dataSourceId,
