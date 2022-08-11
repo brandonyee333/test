@@ -468,8 +468,8 @@ public class DataSourceDog {
 			_asahMarkerDog.deleteAsahMarker(dataSourceId.toString());
 
 			_deleteData(
-				dataSourceId, "groups", "organizations", "roles", "teams",
-				"user-groups", "users");
+				dataSourceId, "groups", "roles", "teams", "user-groups",
+				"users");
 			_deleteIndividualReferences(dataSourceId);
 		}
 		else if (_log.isWarnEnabled()) {
@@ -491,10 +491,9 @@ public class DataSourceDog {
 				DXPEntity.Type.ofCollectionName(collectionName));
 
 			if (StringUtils.equals(collectionName, "organizations")) {
-				_elasticsearchInvoker.deleteByQuery(
-					QueryBuilders.termQuery(
-						"dataSourceId", String.valueOf(dataSourceId)),
-					true, collectionName);
+
+				// TODO Delete organizations
+
 			}
 		}
 	}
@@ -540,9 +539,7 @@ public class DataSourceDog {
 		throws Exception {
 
 		for (String collectionName :
-				Arrays.asList(
-					"groups", "organizations", "roles", "teams",
-					"user-groups")) {
+				Arrays.asList("groups", "roles", "teams", "user-groups")) {
 
 			DXPEntity.Type dxpEntityType = DXPEntity.Type.ofCollectionName(
 				collectionName);

@@ -23,12 +23,12 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
@@ -612,14 +612,16 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Long dataSourceId, DXPEntity.Type dxpEntityType, List<Long> classPKs) {
 
 		if (dxpEntityType.isOrganization()) {
-			List<Organization> organizations =
-				_organizationDog.findByDataSourceIdAndOrganizationPKIn(
+			List<BQOrganization> bqOrganizations =
+				_bqOrganizationDog.findByDataSourceIdAndOrganizationIdIn(
 					dataSourceId, classPKs);
 
-			Stream<Organization> stream = organizations.stream();
+			Stream<BQOrganization> stream = bqOrganizations.stream();
 
 			return stream.map(
-				Organization::getId
+				BQOrganization::getId
+			).map(
+				Long::valueOf
 			).collect(
 				Collectors.toSet()
 			);
@@ -1668,6 +1670,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;
 
+	@Autowired
+	private BQOrganizationDog _bqOrganizationDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
@@ -1701,9 +1706,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private InterestRepository _interestRepository;
-
-	@Autowired
-	private OrganizationDog _organizationDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

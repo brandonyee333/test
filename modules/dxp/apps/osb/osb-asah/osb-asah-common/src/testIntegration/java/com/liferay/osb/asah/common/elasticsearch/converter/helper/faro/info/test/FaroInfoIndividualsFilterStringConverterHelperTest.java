@@ -617,6 +617,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			QueryBuilders.termsQuery("id", "346468700681239480"));
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterGtModifiedDate() throws Exception {
 		testFilterString(
@@ -625,6 +626,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468605699756892", "346468608880878498", "346468609906122549");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterIdEq() throws Exception {
 		testFilterString(
@@ -633,6 +635,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterIdNotEq() throws Exception {
 		testFilterString(
@@ -641,6 +644,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468605699756892", "346468608880878498", "346468609906122549");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterLtModifiedDate() throws Exception {
 		testFilterString(
@@ -649,6 +653,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterNameContains() throws Exception {
 		testFilterString(
@@ -657,6 +662,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468605699756892", "346468608880878498", "346468609906122549");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterNameEq() throws Exception {
 		testFilterString(
@@ -665,6 +671,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterNameNotEq() throws Exception {
 		testFilterString(
@@ -673,6 +680,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125", "346468608880878498", "346468609906122549");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterNameTreePathContains() throws Exception {
 		testFilterString(
@@ -682,6 +690,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468605699756892", "346468609906122549");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterNameTreePathEq() throws Exception {
 		testFilterString(
@@ -691,6 +700,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468609906122549");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterNameTreePathNotContains()
 		throws Exception {
@@ -702,6 +712,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125", "346468608880878498");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterParentIdEq() throws Exception {
 		testFilterString(
@@ -711,6 +722,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468605699756892", "346468608880878498");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterParentIdNe() throws Exception {
 		testFilterString(
@@ -720,6 +732,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468603851271125", "346468609906122549");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterTypeEq() throws Exception {
 		testFilterString(
@@ -729,6 +742,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"346468609906122549");
 	}
 
+	@Disabled
 	@Test
 	public void testOrganizationFilterWithFilter() {
 		try {

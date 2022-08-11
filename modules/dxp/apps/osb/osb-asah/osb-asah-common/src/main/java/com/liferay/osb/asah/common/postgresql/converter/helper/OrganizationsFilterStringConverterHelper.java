@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.common.postgresql.converter.helper;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
-import com.liferay.osb.asah.common.entity.Organization;
-import com.liferay.osb.asah.common.repository.OrganizationRepository;
+import com.liferay.osb.asah.common.entity.BQOrganization;
+import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.HashMap;
@@ -55,26 +55,25 @@ public class OrganizationsFilterStringConverterHelper
 			return null;
 		}
 
-		Optional<Organization> organizationOptional =
-			_organizationRepository.findById(
-				Long.valueOf(StringUtil.unquote(valueString)));
+		Optional<BQOrganization> bqOrganizationOptional =
+			_bqOrganizationRepository.findById(StringUtil.unquote(valueString));
 
-		if (!organizationOptional.isPresent()) {
+		if (!bqOrganizationOptional.isPresent()) {
 			return null;
 		}
 
-		Organization organization = organizationOptional.get();
+		BQOrganization bqOrganization = bqOrganizationOptional.get();
 
 		Condition condition = DSL.and(
 			DSL.field(
 				"organization.dataSourceId"
 			).eq(
-				organization.getDataSourceId()
+				bqOrganization.getDataSourceId()
 			),
 			DSL.field(
-				"organization.parentOrganizationPK"
+				"organization.parentOrganizationId"
 			).eq(
-				organization.getOrganizationPK()
+				bqOrganization.getOrganizationId()
 			));
 
 		if (operator.equalsIgnoreCase("eq")) {
@@ -89,6 +88,6 @@ public class OrganizationsFilterStringConverterHelper
 	}
 
 	@Autowired
-	private OrganizationRepository _organizationRepository;
+	private BQOrganizationRepository _bqOrganizationRepository;
 
 }

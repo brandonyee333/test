@@ -67,27 +67,6 @@ public class BQOrganizationDog {
 			pageRequest, () -> _bqOrganizationRepository.countByName(name));
 	}
 
-	public Page<Transformation> getTransformationPage(
-		String apply, @Nullable String filterString, int page, int size) {
-
-		PageRequest pageRequest = PageRequest.of(
-			page, size,
-			SortUtil.getSort(
-				Sort.by(Sort.Order.desc("totalElements")),
-				new String[] {"totalElements", "desc", "terms", "asc"}));
-
-		List<Transformation> transformations =
-			_bqOrganizationRepository.getBQOrganizationTransformations(
-				apply,
-				new FilterHelper(
-					null, filterString,
-					_organizationsFilterStringConverterHelper),
-				pageRequest);
-
-		return PageableExecutionUtils.getPage(
-			transformations, pageRequest, transformations::size);
-	}
-
 	public List<BQOrganization> searchBQOrganizations(
 		String filterString, int page, int size) {
 

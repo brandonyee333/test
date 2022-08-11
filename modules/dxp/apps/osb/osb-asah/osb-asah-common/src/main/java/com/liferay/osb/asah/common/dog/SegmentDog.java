@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.FieldMapping;
@@ -565,23 +566,23 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Set<String> referencedAssetDataSourceIds = referencedObjectSets.get(
 			"referencedAssetDataSourceIds");
 
-		JSONObject referencedJSONObject = null;
-
 		if (collectionName.equalsIgnoreCase("organizations") ||
 			(DXPEntity.Type.ofCollectionName(collectionName) == null)) {
 
-			referencedJSONObject = elasticsearchInvoker.get(collectionName, id);
+			BQOrganization bqOrganization =
+				_bqOrganizationDog.getBQOrganization(id);
+
+			referencedAssetDataSourceIds.add(
+				String.valueOf(bqOrganization.getDataSourceId()));
 		}
 		else {
-			referencedJSONObject = _objectMapper.convertValue(
-				_dxpEntityDog.fetchByFieldsAndType(
-					Collections.singletonMap("id", Long.valueOf(id)),
-					DXPEntity.Type.ofCollectionName(collectionName)),
-				JSONObject.class);
-		}
+			DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
+				Collections.singletonMap("id", Long.valueOf(id)),
+				DXPEntity.Type.ofCollectionName(collectionName));
 
-		referencedAssetDataSourceIds.add(
-			String.valueOf(referencedJSONObject.getLong("dataSourceId")));
+			referencedAssetDataSourceIds.add(
+				String.valueOf(dxpEntity.getDataSourceId()));
+		}
 
 		return null;
 	}
@@ -916,6 +917,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
+	private BQOrganizationDog _bqOrganizationDog;
 
 	@Autowired
 	private ChannelDog _channelDog;

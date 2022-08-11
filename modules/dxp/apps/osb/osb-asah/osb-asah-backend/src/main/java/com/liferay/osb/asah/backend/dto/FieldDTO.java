@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Field;
+import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -37,6 +38,19 @@ import java.util.Set;
 public class FieldDTO {
 
 	public FieldDTO() {
+	}
+
+	public FieldDTO(ExpandoField expandoField) {
+		_dataSourceId = StringUtil.get(expandoField.getDataSourceId(), null);
+		_dataSourceName = expandoField.getDataSourceName();
+		_fieldType = expandoField.getDataType();
+		_id = StringUtil.get(expandoField.getId(), null);
+		_modifiedDate = expandoField.getModifiedDate();
+		_name = expandoField.getName();
+		_ownerId = StringUtil.get(expandoField.getClassPK(), null);
+		_ownerType = expandoField.getClassType();
+		_sourceName = expandoField.getColumnId();
+		_value = expandoField.getValue();
 	}
 
 	public FieldDTO(Field field) {

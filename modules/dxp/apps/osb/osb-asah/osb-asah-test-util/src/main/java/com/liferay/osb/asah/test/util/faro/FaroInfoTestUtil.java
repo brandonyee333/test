@@ -19,13 +19,13 @@ import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Interest;
-import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
@@ -196,6 +196,26 @@ public class FaroInfoTestUtil {
 		bqMembershipChange.setSegmentId(segmentId);
 
 		return bqMembershipChange;
+	}
+
+	public static BQOrganization buildBQOrganization(Long dataSourceId) {
+		Date date = new Date();
+		String name = RandomTestUtil.randomString();
+		long organizationPK = RandomTestUtil.randomNumber();
+
+		BQOrganization bqOrganization = new BQOrganization();
+
+		bqOrganization.setCreateDate(date);
+		bqOrganization.setDataSourceId(dataSourceId);
+		bqOrganization.setId(_timeOrderedUuidGenerator.generateId());
+		bqOrganization.setName(name);
+		bqOrganization.setOrganizationId(organizationPK);
+		bqOrganization.setParentOrganizationName("");
+		bqOrganization.setParentOrganizationId(0L);
+		bqOrganization.setTreePath("/" + organizationPK + "/");
+		bqOrganization.setType("organization");
+
+		return bqOrganization;
 	}
 
 	public static JSONObject buildChannelJSONObject(
@@ -585,27 +605,6 @@ public class FaroInfoTestUtil {
 		dataSource.setProviderType("LIFERAY");
 
 		return dataSource;
-	}
-
-	public static Organization buildOrganization(Long dataSourceId) {
-		Date date = new Date();
-		String name = RandomTestUtil.randomString();
-		long organizationPK = RandomTestUtil.randomNumber();
-
-		Organization organization = new Organization();
-
-		organization.setCreateDate(date);
-		organization.setDataSourceId(dataSourceId);
-		organization.setId(_timeOrderedUuidGenerator.generateIdAsLong());
-		organization.setName(name);
-		organization.setNameTreePath(name);
-		organization.setOrganizationPK(organizationPK);
-		organization.setParentName("");
-		organization.setParentOrganizationPK(0L);
-		organization.setTreePath("/" + organizationPK + "/");
-		organization.setType("organization");
-
-		return organization;
 	}
 
 	public static JSONObject buildOrganizationJSONObject(String dataSourceId) {

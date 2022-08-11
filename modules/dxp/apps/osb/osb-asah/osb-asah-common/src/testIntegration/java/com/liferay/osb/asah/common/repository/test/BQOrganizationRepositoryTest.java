@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.Date;
@@ -69,11 +70,14 @@ public class BQOrganizationRepositoryTest
 
 		BQOrganization bqOrganization = new BQOrganization();
 
-		bqOrganization.setOrganizationId(123L);
-		bqOrganization.setName("Organization 1");
-		bqOrganization.setDataSourceId(dataSource1.getId());
 		bqOrganization.setCreateDate(new Date());
+
+		bqOrganization.setDataSourceId(dataSource1.getId());
+		bqOrganization.setId(RandomTestUtil.randomUUID());
+		bqOrganization.setIsNew(true);
 		bqOrganization.setModifiedDate(new Date());
+		bqOrganization.setName("Organization 1");
+		bqOrganization.setOrganizationId(123L);
 		bqOrganization.setParentOrganizationId(0L);
 
 		setUpRepository(bqOrganization);

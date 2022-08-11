@@ -34,9 +34,6 @@ public interface CustomBQOrganizationRepository {
 	public List<BQOrganization> findByName(
 		@Nullable String name, Pageable pageable);
 
-	public List<Transformation> getBQOrganizationTransformations(
-		String apply, FilterHelper filterHelper, Pageable pageable);
-
 	@Cacheable
 	public List<BQOrganization> searchBQOrganizations(
 		FilterHelper filterHelper, Pageable pageable);

@@ -16,14 +16,14 @@ package com.liferay.osb.asah.common.postgresql.converter.helper;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.BQOrganizationDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
-import com.liferay.osb.asah.common.dog.OrganizationDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -330,21 +330,23 @@ public class IndividualsFilterStringConverterHelper
 		int page = 0;
 
 		while (true) {
-			List<Organization> organizations =
-				_organizationDog.searchOrganizations(filterString, page++, 500);
+			List<BQOrganization> bqOrganizations =
+				_bqOrganizationDog.searchBQOrganizations(
+					filterString, page++, 500);
 
-			if (organizations.isEmpty()) {
+			if (bqOrganizations.isEmpty()) {
 				break;
 			}
 
-			for (Organization organization : organizations) {
+			for (BQOrganization bqOrganization : bqOrganizations) {
 				condition = condition.or(
 					DSL.field(
 						DSL.cast(
 							DSL.array(DSL.field("individual.organizationids")),
 							Long[].class)
 					).contains(
-						DSL.cast(DSL.array(organization.getId()), Long[].class)
+						DSL.cast(
+							DSL.array(bqOrganization.getId()), Long[].class)
 					));
 			}
 		}
@@ -439,13 +441,13 @@ public class IndividualsFilterStringConverterHelper
 	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
+	private BQOrganizationDog _bqOrganizationDog;
+
+	@Autowired
 	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private InterestDog _interestDog;
-
-	@Autowired
-	private OrganizationDog _organizationDog;
 
 	@Autowired
 	private OrganizationsFilterStringConverterHelper

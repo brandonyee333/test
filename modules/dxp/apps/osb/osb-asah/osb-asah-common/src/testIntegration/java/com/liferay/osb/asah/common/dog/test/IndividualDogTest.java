@@ -23,12 +23,12 @@ import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
-import com.liferay.osb.asah.common.entity.Organization;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -36,12 +36,12 @@ import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
+import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
-import com.liferay.osb.asah.common.repository.OrganizationRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -273,10 +273,14 @@ public class IndividualDogTest
 		repositoryClass = DXPEntityRepository.class,
 		resourcePath = "osbasahdxpraw/users.json"
 	)
+	@RepositoryResource(
+		repositoryClass = BQOrganizationRepository.class,
+		resourcePath = "osbasahfaroinfo/organizations.json"
+	)
 	@Test
 	public void testAddIndividualAssociation() {
 		Individual individual = _individualDog.addIndividualAssociation(
-			33134, 402139209179557944L,
+			33134, 405201047787757795L,
 			DXPEntity.Type.of(DXPEntityType.CLASS_NAME_ORGANIZATION),
 			_individualDog.fetchIndividualByEmailAddress("test1@liferay.com"));
 
@@ -320,6 +324,10 @@ public class IndividualDogTest
 	@RepositoryResource(
 		repositoryClass = DXPEntityRepository.class,
 		resourcePath = "osbasahdxpraw/users.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQOrganizationRepository.class,
+		resourcePath = "osbasahfaroinfo/organizations.json"
 	)
 	@Test
 	public void testDeleteIndividualAssociation() {
@@ -825,23 +833,25 @@ public class IndividualDogTest
 
 		_dataSourceRepository.save(dataSource);
 
-		Organization organization1 = new Organization();
+		BQOrganization bqOrganization1 = new BQOrganization();
 
-		organization1.setDataSourceId(402139209179557944L);
-		organization1.setId(402139267512234420L);
-		organization1.setName("engineering");
-		organization1.setOrganizationPK(33120L);
+		bqOrganization1.setDataSourceId(402139209179557944L);
+		bqOrganization1.setId("402139267512234420");
+		bqOrganization1.setIsNew(true);
+		bqOrganization1.setName("engineering");
+		bqOrganization1.setOrganizationId(33120L);
 
-		_organizationRepository.save(organization1);
+		_bqOrganizationRepository.save(bqOrganization1);
 
-		Organization organization2 = new Organization();
+		BQOrganization bqOrganization2 = new BQOrganization();
 
-		organization2.setDataSourceId(402139209179557944L);
-		organization2.setId(402139268847589064L);
-		organization2.setName("marketing");
-		organization2.setOrganizationPK(33134L);
+		bqOrganization2.setDataSourceId(402139209179557944L);
+		bqOrganization2.setId("402139268847589064");
+		bqOrganization2.setIsNew(true);
+		bqOrganization2.setName("marketing");
+		bqOrganization2.setOrganizationId(33134L);
 
-		_organizationRepository.save(organization2);
+		_bqOrganizationRepository.save(bqOrganization2);
 
 		Individual individual = new Individual();
 
@@ -1205,6 +1215,9 @@ public class IndividualDogTest
 	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
+	private BQOrganizationRepository _bqOrganizationRepository;
+
+	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
@@ -1220,9 +1233,6 @@ public class IndividualDogTest
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private OrganizationRepository _organizationRepository;
 
 	@Autowired
 	private SegmentDog _segmentDog;

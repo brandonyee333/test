@@ -22,8 +22,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.entity.Organization;
+import com.liferay.osb.asah.common.entity.BQOrganization;
+import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -45,27 +45,27 @@ public class OrganizationDTO {
 	public OrganizationDTO() {
 	}
 
-	public OrganizationDTO(List<Organization> organizations) {
-		_organizationDTOs = SetUtil.map(organizations, OrganizationDTO::new);
-	}
-
-	public OrganizationDTO(Organization organization) {
-		_createDate = organization.getCreateDate();
-		_dataSourceId = StringUtil.get(organization.getDataSourceId(), null);
-		_id = StringUtil.get(organization.getId(), null);
-		_modifiedDate = organization.getModifiedDate();
-		_name = organization.getName();
+	public OrganizationDTO(BQOrganization bqOrganization) {
+		_createDate = bqOrganization.getCreateDate();
+		_dataSourceId = StringUtil.get(bqOrganization.getDataSourceId(), null);
+		_id = StringUtil.get(bqOrganization.getId(), null);
+		_modifiedDate = bqOrganization.getModifiedDate();
+		_name = bqOrganization.getName();
 
 		_organizationCustomFieldDTO = new OrganizationCustomFieldDTO(
-			organization.getCustomFields());
+			bqOrganization.getExpandoFields());
 
 		_organizationPK = StringUtil.get(
-			organization.getOrganizationPK(), null);
-		_parentName = organization.getParentName();
+			bqOrganization.getOrganizationId(), null);
+		_parentName = bqOrganization.getParentOrganizationName();
 		_parentOrganizationPK = StringUtil.get(
-			organization.getParentOrganizationPK(), null);
-		_treePath = organization.getTreePath();
-		_type = organization.getType();
+			bqOrganization.getParentOrganizationId(), null);
+		_treePath = bqOrganization.getTreePath();
+		_type = bqOrganization.getType();
+	}
+
+	public OrganizationDTO(List<BQOrganization> bqOrganizations) {
+		_organizationDTOs = SetUtil.map(bqOrganizations, OrganizationDTO::new);
 	}
 
 	@JsonAlias("createDate")
@@ -147,11 +147,11 @@ public class OrganizationDTO {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class OrganizationCustomFieldDTO {
 
-		public OrganizationCustomFieldDTO(Set<Field> fields) {
-			for (Field field : fields) {
+		public OrganizationCustomFieldDTO(List<ExpandoField> expandoFields) {
+			for (ExpandoField expandoField : expandoFields) {
 				_fieldMap.put(
-					field.getName(),
-					Collections.singletonList(new FieldDTO(field)));
+					expandoField.getName(),
+					Collections.singletonList(new FieldDTO(expandoField)));
 			}
 		}
 

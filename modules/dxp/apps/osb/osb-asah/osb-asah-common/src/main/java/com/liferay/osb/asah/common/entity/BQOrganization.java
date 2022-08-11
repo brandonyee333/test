@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.json.JSONObject;
 
@@ -46,6 +47,40 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 
 	public BQOrganization(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof BQOrganization)) {
+			return false;
+		}
+
+		BQOrganization bqOrganization = (BQOrganization)obj;
+
+		if (Objects.equals(_createDate, bqOrganization._createDate) &&
+			Objects.equals(_dataSourceId, bqOrganization._dataSourceId) &&
+			Objects.equals(_dataSourceId, bqOrganization._dataSourceId) &&
+			Objects.equals(_dataSourceName, bqOrganization._dataSourceName) &&
+			Objects.equals(_id, bqOrganization._id) &&
+			Objects.equals(_modifiedDate, bqOrganization._modifiedDate) &&
+			Objects.equals(_name, bqOrganization._name) &&
+			Objects.equals(_organizationId, bqOrganization._organizationId) &&
+			Objects.equals(
+				_parentOrganizationId, bqOrganization._parentOrganizationId) &&
+			Objects.equals(
+				_parentOrganizationName,
+				bqOrganization._parentOrganizationName) &&
+			Objects.equals(_treePath, bqOrganization._treePath) &&
+			Objects.equals(_type, bqOrganization._type)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public Date getCreateDate() {
@@ -144,6 +179,14 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 	@Column("organizationtype")
 	public String getType() {
 		return _type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+			_createDate, _dataSourceId, _dataSourceName, _id, _modifiedDate,
+			_name, _organizationId, _parentOrganizationId,
+			_parentOrganizationName, _treePath, _type);
 	}
 
 	@Override

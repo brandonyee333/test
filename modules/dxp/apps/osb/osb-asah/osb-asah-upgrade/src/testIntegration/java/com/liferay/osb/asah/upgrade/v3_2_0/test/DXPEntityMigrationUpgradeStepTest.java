@@ -84,8 +84,6 @@ public class DXPEntityMigrationUpgradeStepTest
 		_createIndexTemplate(
 			"field-mappings", WeDeployDataService.OSB_ASAH_FARO_INFO);
 		_createIndexTemplate("groups", WeDeployDataService.OSB_ASAH_DXP_RAW);
-		_createIndexTemplate(
-			"organizations", WeDeployDataService.OSB_ASAH_DXP_RAW);
 		_createIndexTemplate("roles", WeDeployDataService.OSB_ASAH_DXP_RAW);
 		_createIndexTemplate("teams", WeDeployDataService.OSB_ASAH_DXP_RAW);
 		_createIndexTemplate(
@@ -134,8 +132,6 @@ public class DXPEntityMigrationUpgradeStepTest
 			WeDeployDataService.OSB_ASAH_FARO_INFO.toString());
 		JSONArray groupsJSONArray = _getJSONArray(
 			"groups", WeDeployDataService.OSB_ASAH_DXP_RAW.toString());
-		JSONArray organizationsJSONArray = _getJSONArray(
-			"organizations", WeDeployDataService.OSB_ASAH_DXP_RAW.toString());
 		JSONArray rolesJSONArray = _getJSONArray(
 			"roles", WeDeployDataService.OSB_ASAH_DXP_RAW.toString());
 		JSONArray teamsJSONArray = _getJSONArray(
@@ -149,9 +145,6 @@ public class DXPEntityMigrationUpgradeStepTest
 			"field-mappings", fieldMappingsJSONArray);
 		_dxpRawElasticsearchInvoker.add(
 			DXPEntity.Type.GROUP.getCollectionName(), groupsJSONArray);
-		_dxpRawElasticsearchInvoker.add(
-			DXPEntity.Type.ORGANIZATION.getCollectionName(),
-			organizationsJSONArray);
 		_dxpRawElasticsearchInvoker.add(
 			DXPEntity.Type.ROLE.getCollectionName(), rolesJSONArray);
 		_dxpRawElasticsearchInvoker.add(
@@ -170,7 +163,6 @@ public class DXPEntityMigrationUpgradeStepTest
 						"dependencies/expected_expando_columns.json", this))),
 			DXPEntity.Type.EXPANDO_COLUMN);
 		_assertDXPEntities(groupsJSONArray, DXPEntity.Type.GROUP);
-		_assertDXPEntities(organizationsJSONArray, DXPEntity.Type.ORGANIZATION);
 		_assertDXPEntities(rolesJSONArray, DXPEntity.Type.ROLE);
 		_assertDXPEntities(teamsJSONArray, DXPEntity.Type.TEAM);
 		_assertDXPEntities(usersJSONArray, DXPEntity.Type.USER);

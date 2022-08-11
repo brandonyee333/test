@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dto.OrganizationDTO;
-import com.liferay.osb.asah.common.dog.OrganizationDog;
-import com.liferay.osb.asah.common.entity.Organization;
+import com.liferay.osb.asah.common.dog.BQOrganizationDog;
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
@@ -41,8 +41,8 @@ public class OrganizationBagDataFetcher
 	public ResultBag<OrganizationDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		Page<Organization> organizationPage =
-			_organizationDog.getOrganizationPage(
+		Page<BQOrganization> bqOrganizationPage =
+			_bqOrganizationDog.getBQOrganizationPage(
 				dataFetchingEnvironment.getArgument("keywords"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")),
@@ -50,12 +50,12 @@ public class OrganizationBagDataFetcher
 
 		return new ResultBag<>(
 			ListUtil.map(
-				organizationPage.getContent(),
-				organization -> new OrganizationDTO(organization)),
-			organizationPage.getTotalElements());
+				bqOrganizationPage.getContent(),
+				bqOrganization -> new OrganizationDTO(bqOrganization)),
+			bqOrganizationPage.getTotalElements());
 	}
 
 	@Autowired
-	private OrganizationDog _organizationDog;
+	private BQOrganizationDog _bqOrganizationDog;
 
 }

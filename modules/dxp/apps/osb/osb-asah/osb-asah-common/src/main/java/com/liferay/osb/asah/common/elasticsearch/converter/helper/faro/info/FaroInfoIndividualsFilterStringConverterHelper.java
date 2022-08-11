@@ -20,15 +20,11 @@ import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,7 +35,6 @@ import java.util.regex.Pattern;
 
 import org.apache.lucene.search.join.ScoreMode;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -195,7 +190,9 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		}
 
 		if (type.equals("organizations")) {
-			return _getOrganizationsFilterFunctionQueryBuilder(filterString);
+
+			// TODO Add organizations filter function query builder
+
 		}
 
 		return QueryBuilders.termsQuery(
@@ -319,47 +316,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		return QueryBuilders.termsQuery("id", individualIds);
 	}
 
-	private QueryBuilder _getOrganizationsFilterFunctionQueryBuilder(
-			String filterString)
-		throws Exception {
-
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString, _faroInfoOrganizationsFilterStringConverterHelper);
-
-		if (queryBuilder == null) {
-			queryBuilder = QueryBuilders.matchAllQuery();
-		}
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		JSONArrayIterator.of(
-			"organizations", _faroInfoElasticsearchInvoker,
-			organizationJSONObject -> {
-				boolQueryBuilder.should(
-					QueryBuilders.termQuery(
-						"organizationIds",
-						organizationJSONObject.getString("id")));
-
-				return null;
-			}
-		).setQueryBuilder(
-			queryBuilder
-		).iterate();
-
-		if (boolQueryBuilder.hasClauses()) {
-			Long individualId = IndividualIdThreadLocal.getIndividualId();
-
-			if (individualId != null) {
-				boolQueryBuilder.filter(
-					QueryBuilders.termQuery("id", individualId));
-			}
-
-			return boolQueryBuilder;
-		}
-
-		return BoolQueryBuilderUtil.mustNot(QueryBuilders.matchAllQuery());
-	}
-
 	private QueryBuilder _getUserIdQueryBuilder(boolean negate, Long userId) {
 		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
 			Collections.singletonMap("id", userId), DXPEntity.Type.USER);
@@ -408,13 +364,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoOrganizationsFilterStringConverterHelper
-		_faroInfoOrganizationsFilterStringConverterHelper;
 
 	@Autowired
 	private InterestDog _interestDog;

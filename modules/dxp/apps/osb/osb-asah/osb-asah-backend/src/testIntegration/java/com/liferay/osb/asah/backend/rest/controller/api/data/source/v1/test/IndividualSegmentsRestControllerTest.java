@@ -84,14 +84,6 @@ public class IndividualSegmentsRestControllerTest
 			FaroInfoTestUtil.buildIndividualFieldMapping(
 				1L, "email", "email", "Text"));
 
-		_faroInfoElasticsearchInvoker.add(
-			"organizations",
-			JSONUtil.put(
-				"dataSourceId", 1L
-			).put(
-				"name", "organizationName"
-			));
-
 		Segment segment = new Segment();
 
 		segment.setReferencedFieldMappingIds(
