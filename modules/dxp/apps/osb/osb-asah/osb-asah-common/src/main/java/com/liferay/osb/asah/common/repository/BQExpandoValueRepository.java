@@ -29,6 +29,6 @@ public interface BQExpandoValueRepository
 	extends PagingAndSortingRepository<BQExpandoValue, String> {
 
 	public List<BQExpandoValue> findByClassPKAndClassTypeAndDataSourceId(
-		String classPK, String classType, Long dataSourceId);
+		Long classPK, String classType, Long dataSourceId);
 
 }

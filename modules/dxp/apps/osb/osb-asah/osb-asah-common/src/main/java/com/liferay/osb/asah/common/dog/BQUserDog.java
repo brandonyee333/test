@@ -75,7 +75,7 @@ public class BQUserDog extends BaseBQDXPEntityDog {
 			getExpandoFields(
 				_expandoValueRepository.
 					findByClassPKAndClassTypeAndDataSourceId(
-						bqUser.getId(), DXPEntity.Type.CLASS_NAME_USER,
+						bqUser.getDXPUserId(), DXPEntity.Type.CLASS_NAME_USER,
 						bqUser.getDataSourceId())));
 
 		return bqUser;
