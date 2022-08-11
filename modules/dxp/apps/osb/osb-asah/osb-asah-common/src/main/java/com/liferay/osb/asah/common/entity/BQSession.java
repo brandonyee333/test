@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -69,6 +70,7 @@ public class BQSession implements Persistable<String> {
 			Objects.equals(_duration, bqSession._duration) &&
 			Objects.equals(_id, bqSession._id) &&
 			Objects.equals(_platformName, bqSession._platformName) &&
+			Objects.equals(_referrers, bqSession._referrers) &&
 			Objects.equals(_region, bqSession._region) &&
 			Objects.equals(_sessionEnd, bqSession._sessionEnd) &&
 			Objects.equals(_sessionStart, bqSession._sessionStart) &&
@@ -158,6 +160,11 @@ public class BQSession implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Set<String> getReferrers() {
+		return _referrers;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getRegion() {
 		return _region;
 	}
@@ -191,7 +198,8 @@ public class BQSession implements Persistable<String> {
 			_acquisitionCampaign, _acquisitionChannel, _acquisitionContent,
 			_acquisitionMedium, _acquisitionSource, _acquisitionTerm, _bounced,
 			_browserName, _channelId, _city, _country, _deviceType, _duration,
-			_id, _platformName, _region, _sessionEnd, _sessionStart, _userId);
+			_id, _platformName, _referrers, _region, _sessionEnd, _sessionStart,
+			_userId);
 	}
 
 	@Override
@@ -257,6 +265,10 @@ public class BQSession implements Persistable<String> {
 
 	public void setPlatformName(String platformName) {
 		_platformName = platformName;
+	}
+
+	public void setReferrers(Set<String> referrers) {
+		_referrers = referrers;
 	}
 
 	public void setRegion(String region) {
@@ -329,6 +341,9 @@ public class BQSession implements Persistable<String> {
 
 	@Transient
 	private String _platformName;
+
+	@Transient
+	private Set<String> _referrers;
 
 	@Transient
 	private String _region;

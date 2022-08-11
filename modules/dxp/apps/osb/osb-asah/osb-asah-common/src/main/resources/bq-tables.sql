@@ -383,6 +383,7 @@ CREATE TABLE IF NOT EXISTS BQSession (
     duration BIGINT,
 	id TEXT UNIQUE,
     platformName TEXT,
+    referrers TEXT[],
     region TEXT,
 	sessionEnd TIMESTAMPTZ,
 	sessionStart TIMESTAMPTZ,

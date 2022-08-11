@@ -370,10 +370,10 @@ public class AnalyticsEventsIngestionNanite {
 
 		SessionContext sessionContext = _sessions.get(sessionKey);
 
+		Map<String, String> context = analyticsEvent.getContext();
+
 		if (sessionContext == null) {
 			sessionContext = new SessionContext();
-
-			Map<String, String> context = analyticsEvent.getContext();
 
 			Acquisition acquisition = analyticsEvent.getAcquisition();
 
@@ -422,6 +422,7 @@ public class AnalyticsEventsIngestionNanite {
 					sessionContext.userId, sessionContext.id, sessionEnd));
 		}
 
+		sessionContext.referrers.add(context.get("url"));
 		sessionContext.sessionEnd = sessionEnd;
 
 		return sessionContext;
@@ -531,6 +532,7 @@ public class AnalyticsEventsIngestionNanite {
 				sessionContext.sessionStart, sessionContext.sessionEnd));
 		bqSession.setId(sessionContext.id);
 		bqSession.setPlatformName(sessionContext.platformName);
+		bqSession.setReferrers(sessionContext.referrers);
 		bqSession.setRegion("Local Network");
 		bqSession.setSessionEnd(sessionContext.sessionEnd);
 		bqSession.setSessionStart(sessionContext.sessionStart);
@@ -608,6 +610,7 @@ public class AnalyticsEventsIngestionNanite {
 		public long pageViewsCount;
 		public String platformName;
 		public String projectId;
+		public Set<String> referrers = new HashSet<>();
 		public Date sessionEnd;
 		public Date sessionStart;
 		public String userId;

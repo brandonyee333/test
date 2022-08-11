@@ -2090,6 +2090,11 @@
 				"type": "STRING"
 			},
 			{
+				"mode": "REPEATED",
+				"name": "referrers",
+				"type": "STRING"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "region",
 				"type": "STRING"
