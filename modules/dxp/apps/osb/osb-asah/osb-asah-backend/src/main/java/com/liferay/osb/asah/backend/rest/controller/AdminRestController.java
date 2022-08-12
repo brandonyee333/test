@@ -33,6 +33,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
@@ -43,6 +44,7 @@ import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
@@ -256,6 +258,19 @@ public class AdminRestController extends BaseRestController {
 		_nanitesHttp.run(jsonArray);
 	}
 
+	@PostMapping("/dag/run/{dagId}")
+	public void triggerAirflowDag(@PathVariable String dagId) {
+		String projectId = ProjectIdThreadLocal.getProjectId();
+
+		_messageBus.sendMessage(
+			com.liferay.osb.asah.common.messaging.Channel.COMPOSER,
+			JSONUtil.put(
+				"projectId", projectId
+			).put(
+				"triggerDagId", dagId + "_" + projectId
+			).toString());
+	}
+
 	private <T, ID> void _addEntities(
 			CrudRepository<T, ID> crudRepository, String json,
 			Class<T> modelClass)
@@ -395,6 +410,9 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private ExperimentRepository _experimentRepository;
+
+	@Autowired
+	private MessageBus _messageBus;
 
 	private Schema _naniteListSchema;
 
