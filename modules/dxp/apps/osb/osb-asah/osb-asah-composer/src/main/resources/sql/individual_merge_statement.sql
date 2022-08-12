@@ -7,7 +7,14 @@ USING
 				expandoValue.dataSourceId,
 				user.emailAddress,
 				user.modifiedDate,
-				expandoColumn.name,
+				CASE
+					WHEN
+						expandoColumn.displayType IN ('checkbox', 'radio', 'selection-list')
+					THEN
+						CONCAT(expandoColumn.name, '_', expandoColumn.dataType, '_array')
+					ELSE
+						CONCAT(expandoColumn.name, '_', expandoColumn.dataType)
+				END name,
 				expandoValue.value
 			FROM
 				`{{ dag.default_args['ac_project_id'] }}.expandovalue` AS expandoValue
@@ -27,13 +34,6 @@ USING
 				* EXCEPT(fields)
 			FROM
 				`{{ dag.default_args['ac_project_id'] }}.user`,
-				UNNEST(fields)
-		),
-		CSVUserFields AS (
-			SELECT
-				* EXCEPT(fields)
-			FROM
-				`{{ dag.default_args['ac_project_id'] }}.csvuser`,
 				UNNEST(fields)
 		)
 
@@ -70,7 +70,7 @@ USING
 							emailAddress,
 							name
 						ORDER BY
-							modifieddate DESC
+							modifiedDate DESC
 					) AS rowNumber
 				FROM (
 					SELECT
@@ -80,7 +80,7 @@ USING
 						name,
 						value
 					FROM
-						CSVUserFields
+						BQUserExpandoFields
 					UNION ALL
 					SELECT
 						dataSourceId,
@@ -90,15 +90,6 @@ USING
 						value
 					FROM
 						BQUserFields
-					UNION ALL
-					SELECT
-						dataSourceId,
-						emailAddress,
-						modifiedDate,
-						name,
-						value
-					FROM
-						BQUserExpandoFields
 				)
 			)
 			WHERE
