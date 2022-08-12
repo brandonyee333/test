@@ -1,7 +1,7 @@
 File Name,Version,Project,License,Comments
 com.liferay.adaptive.media.image.impl.jar!metadata-extractor.jar,2.10.0,metadata-extractor,"The Apache Software License, Version 2.0",
 com.liferay.adaptive.media.image.impl.jar!xmpcore.jar,5.1.3,XMP Library for Java,The BSD License,
-com.liferay.adaptive.media.image.service.jar!jsoup.jar,1.10.2,jsoup Java HTML Parser,The MIT License,
+com.liferay.adaptive.media.image.service.jar!jsoup.jar,1.15.1,jsoup Java HTML Parser,The MIT License,
 com.liferay.alloy.mvc.jar!asm-util.jar,4.1,ASM Utilities,"The Apache Software License, Version 2.0",
 com.liferay.alloy.mvc.jar!asm.jar,4.1,ASM Core,"The Apache Software License, Version 2.0",
 com.liferay.blogs.service.jar!jericho-html.jar,3.1,Jericho HTML Parser,GNU Lesser General Public License (LGPL),
