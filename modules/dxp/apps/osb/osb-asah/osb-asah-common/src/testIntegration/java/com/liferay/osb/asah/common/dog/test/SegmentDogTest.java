@@ -440,8 +440,6 @@ public class SegmentDogTest
 	@Disabled
 	@Test
 	public void testAddOrganizationCustomField() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		// TODO Save BQFieldMapping "department", "Text"
 
@@ -456,8 +454,6 @@ public class SegmentDogTest
 	@Disabled
 	@Test
 	public void testAddOrganizationCustomStringFunctionField() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
 		// TODO Save BQFieldMapping "department", "Text"
 

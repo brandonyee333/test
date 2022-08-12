@@ -30,6 +30,8 @@ import org.apache.commons.math3.util.Pair;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +54,10 @@ public class DefinitionsRestController extends BaseRestController {
 
 		_addDataSources(fieldMappingDTOs);
 
-		return _toPageDTO(new FieldMappingDTO(fieldMappingDTOs.values()), null);
+		return _toPageDTO(
+			new FieldMappingDTO(fieldMappingDTOs.values()),
+			PageableExecutionUtils.getPage(
+				Collections.emptyList(), PageRequest.of(0, 0), () -> 0));
 	}
 
 	private void _addDataSources(

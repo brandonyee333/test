@@ -93,9 +93,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		DataSource dataSource2 = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
-		Long dataSourceId1 = dataSource1.getId();
-		Long dataSourceId2 = dataSource2.getId();
-
 		// TODO Add BQFieldMapping "email", "Text"
 		// TODO Add BQFieldMapping "givenName", "Text"
 
@@ -244,11 +241,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		DataSource dataSource1 = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
-		DataSource dataSource2 = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildLiferayDataSource());
-
-		Long dataSourceId1 = dataSource1.getId();
-		Long dataSourceId2 = dataSource2.getId();
 
 		// TODO Add BQFieldMapping "givenName", "Text"
 

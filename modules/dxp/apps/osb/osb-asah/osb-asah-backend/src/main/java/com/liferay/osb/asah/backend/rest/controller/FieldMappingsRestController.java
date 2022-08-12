@@ -18,7 +18,11 @@ import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 
+import java.util.Collections;
+
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +54,9 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		// TODO Implement getFieldMappingDTOPageDTO
 
-		return _toPageDTO(null);
+		return _toPageDTO(
+			PageableExecutionUtils.getPage(
+				Collections.emptyList(), PageRequest.of(0, 0), () -> 0));
 	}
 
 	private PageDTO<FieldMappingDTO> _toPageDTO(
