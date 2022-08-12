@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -125,10 +126,44 @@ public class BQOrganizationRepositoryTest
 	}
 
 	@Override
+	@Test
+	public void testSave() {
+		BQOrganization bqOrganization = _randomBQOrganization();
+
+		Assertions.assertEquals(
+			bqOrganization, _bqOrganizationRepository.save(bqOrganization));
+	}
+
+	@Override
+	@Test
+	public void testSaveAll() {
+		BQOrganization bqOrganization = _randomBQOrganization();
+
+		Assertions.assertEquals(
+			Arrays.asList(bqOrganization),
+			_bqOrganizationRepository.saveAll(Arrays.asList(bqOrganization)));
+	}
+
+	@Override
 	protected PagingAndSortingRepository<BQOrganization, String>
 		getPagingAndSortingRepository() {
 
 		return _bqOrganizationRepository;
+	}
+
+	private BQOrganization _randomBQOrganization() {
+		BQOrganization bqOrganization = new BQOrganization();
+
+		bqOrganization.setCreateDate(new Date());
+		bqOrganization.setDataSourceId(RandomTestUtil.randomNumber());
+		bqOrganization.setId(RandomTestUtil.randomUUID());
+		bqOrganization.setIsNew(Boolean.TRUE);
+		bqOrganization.setModifiedDate(new Date());
+		bqOrganization.setName(RandomTestUtil.randomString());
+		bqOrganization.setOrganizationId(RandomTestUtil.randomNumber());
+		bqOrganization.setParentOrganizationId(RandomTestUtil.randomNumber());
+
+		return bqOrganization;
 	}
 
 	@Autowired

@@ -257,10 +257,7 @@ public class IndividualDogTest
 		_assertCustomFields(customFields, "[german]", "spokenLanguages");
 	}
 
-	@ElasticsearchIndex(
-		name = "organizations", resourcePath = "organizations.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_associations.json"

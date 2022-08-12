@@ -82,6 +82,7 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 		return false;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
