@@ -161,7 +161,7 @@ public class DSLHelper {
 
 		if (_isBigQueryDialect()) {
 			return DSL.field(
-				"SAFE_CAST({0} as DATE)", OffsetDateTime.class, field);
+				"SAFE_CAST({0} as TIMESTAMP)", OffsetDateTime.class, field);
 		}
 
 		StringBuilder sb = new StringBuilder();
