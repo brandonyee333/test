@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
@@ -36,6 +35,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author André Miranda
  */
+@Disabled
 public class ReportIndividualDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
@@ -53,11 +54,8 @@ public class ReportIndividualDogTest
 
 		_dataSourceRepository.save(dataSource);
 
-		for (String fieldName : _FIELD_NAMES) {
-			_fieldMappingRepository.save(
-				FaroInfoTestUtil.buildIndividualFieldMapping(
-					dataSource.getId(), fieldName, fieldName, "Text"));
-		}
+		// TODO Add BQFieldMapping with _FIELD_NAMES
+
 	}
 
 	@ElasticsearchIndex(
@@ -175,9 +173,6 @@ public class ReportIndividualDogTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private ReportIndividualDog _reportIndividualDog;

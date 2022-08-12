@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -76,11 +75,8 @@ public class IndividualNaniteTest
 
 		dataSource.setId(Long.parseLong(RandomTestUtil.randomId()));
 
-		dataSource = _dataSourceRepository.save(dataSource);
+		// TODO Add BQFieldMapping "email", "Text"
 
-		_fieldMappingRepository.save(
-			FaroInfoTestUtil.buildIndividualFieldMapping(
-				dataSource.getId(), "email", "email", "Text"));
 	}
 
 	@MessageBusChannel(
@@ -500,9 +496,6 @@ public class IndividualNaniteTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

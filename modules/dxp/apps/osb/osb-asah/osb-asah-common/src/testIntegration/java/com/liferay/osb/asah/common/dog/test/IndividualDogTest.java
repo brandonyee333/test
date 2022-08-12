@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
@@ -39,7 +38,6 @@ import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -88,6 +86,7 @@ import org.yaml.snakeyaml.util.ArrayUtils;
 /**
  * @author Rachael Koestartyo
  */
+@Disabled
 public class IndividualDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
@@ -99,11 +98,8 @@ public class IndividualDogTest
 		_liferayDataSource.setId(
 			Long.parseLong(RandomStringUtils.randomNumeric(4)));
 
-		for (String fieldName : _FIELD_NAMES) {
-			_fieldMappingRepository.save(
-				FaroInfoTestUtil.buildIndividualFieldMapping(
-					_liferayDataSource.getId(), fieldName, fieldName, "Text"));
-		}
+		// TODO Save BQFieldMapping with _FIELD_NAMES
+
 	}
 
 	@Test
@@ -168,32 +164,9 @@ public class IndividualDogTest
 	public void testAddAndUpdateLiferayIndividualCustomFields()
 		throws Exception {
 
-		FieldMapping fieldMapping =
-			FaroInfoTestUtil.buildIndividualFieldMapping(
-				_liferayDataSource.getId(), "address", "address", "Text");
-
-		fieldMapping.setContext("custom");
-		fieldMapping.setDisplayType("text-box");
-
-		_fieldMappingRepository.save(fieldMapping);
-
-		fieldMapping = FaroInfoTestUtil.buildIndividualFieldMapping(
-			_liferayDataSource.getId(), "spokenLanguages", "spokenLanguages",
-			"Text");
-
-		fieldMapping.setContext("custom");
-		fieldMapping.setDisplayType("checkbox");
-
-		_fieldMappingRepository.save(fieldMapping);
-
-		fieldMapping = FaroInfoTestUtil.buildIndividualFieldMapping(
-			_liferayDataSource.getId(), "favoriteNumber", "favoriteNumber",
-			"Number");
-
-		fieldMapping.setContext("custom");
-		fieldMapping.setDisplayType("input-field");
-
-		_fieldMappingRepository.save(fieldMapping);
+		// TODO Add BQFieldMapping "address", "Text"
+		// TODO Add BQFieldMapping "spokenLanguages", "Text"
+		// TODO Add BQFieldMapping "favoriteNumber", "Number"
 
 		JSONObject userJSONObject = JSONUtil.put(
 			"contact",
@@ -349,20 +322,11 @@ public class IndividualDogTest
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
-	@RepositoryResource(
-		repositoryClass = FieldMappingRepository.class,
-		resourcePath = "osbasahfaroinfo/field_mappings_info.json"
-	)
 	@Test
 	public void testGetIndividualPage1() {
-		_fieldMappingRepository.save(
-			FaroInfoTestUtil.buildIndividualFieldMapping(
-				"custom", _liferayDataSource.getId(), "client_id", "client_id",
-				"Text"));
-		_fieldMappingRepository.save(
-			FaroInfoTestUtil.buildIndividualFieldMapping(
-				_liferayDataSource.getId(), "favoritePokemon",
-				"favoritePokemon", "Text"));
+
+		// TODO Add BQFieldMapping "client_id", "Text"
+		// TODO Add BQFieldMapping "favoritePokemon", "Text"
 
 		Page<Individual> individualPage = _individualDog.getIndividualPage(
 			"", null, 0, 10);
@@ -386,16 +350,10 @@ public class IndividualDogTest
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
-	@RepositoryResource(
-		repositoryClass = FieldMappingRepository.class,
-		resourcePath = "osbasahfaroinfo/field_mappings_info.json"
-	)
 	@Test
 	public void testGetIndividualPage2() {
-		_fieldMappingRepository.save(
-			FaroInfoTestUtil.buildIndividualFieldMapping(
-				_liferayDataSource.getId(), "favoritePokemon",
-				"favoritePokemon", "Text"));
+
+		// TODO Add BQFieldMapping "favoritePokemon", "Text"
 
 		Page<Individual> individualPage = _individualDog.getIndividualPage(
 			"mander", null, 0, 10);
@@ -511,9 +469,8 @@ public class IndividualDogTest
 	)
 	@Test
 	public void testSearchIndividuals1() {
-		_fieldMappingRepository.save(
-			FaroInfoTestUtil.buildIndividualFieldMapping(
-				_liferayDataSource.getId(), "givenName", "givenName", "Text"));
+
+		// TODO Add BQFieldMapping "givenName", "Text"
 
 		List<Individual> individuals = _individualDog.searchIndividuals(
 			100L, null, false, 0, 10,
@@ -884,9 +841,7 @@ public class IndividualDogTest
 
 		_individualDog.updateIndividual(individual);
 
-		_fieldMappingRepository.save(
-			FaroInfoTestUtil.buildIndividualFieldMapping(
-				dataSource.getId(), "emailAddress", "email", "Text"));
+		// TODO Add BQFieldMapping "email", "Text"
 
 		individual = _individualDog.updateIndividual(
 			"402139280465582637",
@@ -1216,9 +1171,6 @@ public class IndividualDogTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

@@ -28,7 +28,6 @@ import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -38,7 +37,6 @@ import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
@@ -80,6 +78,7 @@ import org.springframework.data.domain.PageRequest;
 /**
  * @author Rachael Koestartyo
  */
+@Disabled
 @Import(JDBCTestConfiguration.class)
 public class IndividualsFilterStringConverterHelperTest
 	implements OSBAsahCommonSpringTestContext,
@@ -104,8 +103,6 @@ public class IndividualsFilterStringConverterHelperTest
 						this))));
 
 		_setUpDataSources();
-
-		_setUpFieldMappings();
 
 		_setUpBQOrganizations();
 		_setUpIndividuals();
@@ -997,22 +994,6 @@ public class IndividualsFilterStringConverterHelperTest
 		}
 	}
 
-	private void _setUpFieldMappings() throws Exception {
-		JSONArray jsonArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies/osbasahfaroinfo/field_mappings.json", this)));
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			FieldMapping fieldMapping = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), FieldMapping.class);
-
-			fieldMapping.setIsNew(Boolean.TRUE);
-
-			_fieldMappingRepository.save(fieldMapping);
-		}
-	}
-
 	private void _setUpFields() throws Exception {
 		JSONArray jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
@@ -1125,9 +1106,6 @@ public class IndividualsFilterStringConverterHelperTest
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

@@ -35,7 +35,6 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -397,9 +396,7 @@ public class UpdateDynamicMembershipsNaniteTest
 		Segment segment = _segmentRepository.save(
 			FaroInfoTestUtil.buildDynamicSegment(1L, "id gt '0'"));
 
-		_fieldMappingRepository.save(
-			FaroInfoTestUtil.buildIndividualFieldMapping(
-				dataSource.getId(), "email", "email", "Text"));
+		// TODO Add BQFieldMapping "email", "Text"
 
 		Individual individual1 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
@@ -541,9 +538,6 @@ public class UpdateDynamicMembershipsNaniteTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

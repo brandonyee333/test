@@ -14,23 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.entity.FieldMapping;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
-import com.liferay.osb.asah.common.util.ArrayUtil;
-import com.liferay.osb.asah.common.util.ListUtil;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,51 +36,10 @@ public class FieldNamesRestController extends BaseRestController {
 		@RequestParam(required = false) String ownerType,
 		@RequestParam(required = false) String[] values) {
 
-		Set<String> fieldNames = new TreeSet<>();
+		// TODO Implement operation
 
-		if (StringUtils.isNotEmpty(label)) {
-			long count = _fieldMappingRepository.countByFieldNameAndOwnerType(
-				label, ownerType);
-
-			if (count > 0) {
-				fieldNames.add(label);
-			}
-
-			for (Long dataSourceId :
-					ListUtil.map(
-						_dataSourceDog.getDataSources(), DataSource::getId)) {
-
-				List<FieldMapping> fieldMappings =
-					_fieldMappingRepository.
-						findByDataSourceFieldNameAndDataSourceIdAndOwnerType(
-							label, dataSourceId, ownerType);
-
-				for (FieldMapping fieldMapping : fieldMappings) {
-					fieldNames.add(fieldMapping.getFieldName());
-				}
-			}
-		}
-
-		if (ArrayUtil.isNotEmpty(values)) {
-			List<Field> fields =
-				_fieldRepository.findByFieldTypeAndOwnerTypeAndValueIn(
-					"Text", ownerType, Arrays.asList(values));
-
-			for (Field field : fields) {
-				fieldNames.add(field.getName());
-			}
-		}
-
-		JSONArray fieldNamesJSONArray = new JSONArray(fieldNames);
-
-		return fieldNamesJSONArray.toString();
+		return null;
 	}
-
-	@Autowired
-	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

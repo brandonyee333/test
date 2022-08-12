@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -263,8 +262,6 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		segmentRepository.deleteAll();
 
-		_fieldMappingRepository.deleteAll();
-
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
 
@@ -348,10 +345,10 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testCountByFieldNamesAndQueryAndSegmentId() {
-		List<String> fieldNames =
-			_fieldMappingRepository.
-				findFieldNameByContextAndFieldTypeAndOwnerType(
-					"demographics", "Text", "individual");
+
+		// TODO Fetch all individual field names
+
+		List<String> fieldNames = Collections.emptyList();
 
 		Assertions.assertEquals(
 			1,
@@ -549,10 +546,10 @@ public abstract class BaseIndividualRepositoryTestCase
 
 	@Test
 	public void testFindByQueryAndSegmentId() {
-		List<String> fieldNames =
-			_fieldMappingRepository.
-				findFieldNameByContextAndFieldTypeAndOwnerType(
-					"demographics", "Text", "individual");
+
+		// TODO Fetch all individual field names
+
+		List<String> fieldNames = Collections.emptyList();
 
 		List<Individual> individuals =
 			individualRepository.findByFieldNamesAndQueryAndSegmentId(
@@ -936,9 +933,6 @@ public abstract class BaseIndividualRepositoryTestCase
 	}
 
 	@Autowired
-	protected FieldMappingRepository fieldMappingRepository;
-
-	@Autowired
 	protected FieldRepository fieldRepository;
 
 	@Autowired
@@ -983,9 +977,6 @@ public abstract class BaseIndividualRepositoryTestCase
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	private Long _individual1Id;
 	private Long _individual2Id;

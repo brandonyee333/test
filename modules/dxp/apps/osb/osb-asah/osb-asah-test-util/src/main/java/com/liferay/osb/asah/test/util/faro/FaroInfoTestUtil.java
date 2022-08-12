@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -330,28 +329,6 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static FieldMapping buildFieldMapping(
-		FieldMapping.Author author, String context,
-		Map<String, String> dataSourceFieldNames, String fieldName,
-		String fieldType, String ownerType) {
-
-		FieldMapping fieldMapping = new FieldMapping();
-
-		Date date = new Date();
-
-		fieldMapping.setAuthor(author);
-		fieldMapping.setContext(context);
-		fieldMapping.setCreateDate(date);
-		fieldMapping.setDataSourceFieldNames(dataSourceFieldNames);
-		fieldMapping.setDisplayName(fieldName);
-		fieldMapping.setFieldName(fieldName);
-		fieldMapping.setFieldType(fieldType);
-		fieldMapping.setModifiedDate(date);
-		fieldMapping.setOwnerType(ownerType);
-
-		return fieldMapping;
-	}
-
 	public static Individual buildIndividual(DataSource dataSource) {
 		return buildIndividual(
 			Long.parseLong(RandomStringUtils.randomNumeric(4)), dataSource);
@@ -427,48 +404,6 @@ public class FaroInfoTestUtil {
 		field.setValue(fieldValue);
 
 		return field;
-	}
-
-	public static FieldMapping buildIndividualFieldMapping(
-		FieldMapping.Author author, Long dataSourceId,
-		String dataSourceFieldName, String fieldName, String fieldType) {
-
-		return buildFieldMapping(
-			author, "demographics",
-			Collections.singletonMap(
-				String.valueOf(dataSourceId), dataSourceFieldName),
-			fieldName, fieldType, "individual");
-	}
-
-	public static FieldMapping buildIndividualFieldMapping(
-		Long dataSourceId, String dataSourceFieldName, String fieldName,
-		String fieldType) {
-
-		return buildFieldMapping(
-			_getFieldMappingAuthor(), "demographics",
-			Collections.singletonMap(
-				String.valueOf(dataSourceId), dataSourceFieldName),
-			fieldName, fieldType, "individual");
-	}
-
-	public static FieldMapping buildIndividualFieldMapping(
-		Map<String, String> dataSourceFieldNames, String fieldName,
-		String fieldType) {
-
-		return buildFieldMapping(
-			_getFieldMappingAuthor(), "demographics", dataSourceFieldNames,
-			fieldName, fieldType, "individual");
-	}
-
-	public static FieldMapping buildIndividualFieldMapping(
-		String context, Long dataSourceId, String dataSourceFieldName,
-		String fieldName, String fieldType) {
-
-		return buildFieldMapping(
-			_getFieldMappingAuthor(), context,
-			Collections.singletonMap(
-				String.valueOf(dataSourceId), dataSourceFieldName),
-			fieldName, fieldType, "individual");
 	}
 
 	public static List<Interest> buildIndividualInterests(
@@ -821,12 +756,6 @@ public class FaroInfoTestUtil {
 
 		throw new IllegalArgumentException(
 			"Unsupported authentication type: " + type);
-	}
-
-	private static FieldMapping.Author _getFieldMappingAuthor() {
-		return new FieldMapping.Author(
-			RandomStringUtils.randomNumeric(5, 7),
-			RandomTestUtil.randomFullName());
 	}
 
 	private static JSONObject _getOAuth2CredentialsJSONObject() {

@@ -28,7 +28,6 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.http.NanitesHttp;
@@ -41,7 +40,6 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
@@ -124,7 +122,9 @@ public class AdminRestController extends BaseRestController {
 			_experimentRepository.deleteAll();
 		}
 		else if (collectionName.equals("field-mappings")) {
-			_fieldMappingRepository.deleteAll();
+
+			// TODO Add BQFieldMappings
+
 		}
 		else if (collectionName.equals("individual-segments")) {
 			_segmentRepository.deleteAll();
@@ -206,7 +206,9 @@ public class AdminRestController extends BaseRestController {
 			_addEntities(_experimentRepository, json, Experiment.class);
 		}
 		else if (collectionName.equals("field-mappings")) {
-			_addEntities(_fieldMappingRepository, json, FieldMapping.class);
+
+			// TODO Add BQFieldMappings
+
 		}
 		else if (collectionName.equals("individual-segments")) {
 			_addEntities(_segmentRepository, json, Segment.class);
@@ -393,9 +395,6 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private ExperimentRepository _experimentRepository;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	private Schema _naniteListSchema;
 

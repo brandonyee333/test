@@ -20,7 +20,6 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.ReportRestController;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -51,10 +50,6 @@ public class ReportRestControllerTest
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_3.json"
-	)
-	@RepositoryResource(
-		repositoryClass = FieldMappingRepository.class,
-		resourcePath = "osbasahfaroinfo/field_mappings_2.json"
 	)
 	@Test
 	public void testGetReportIndividualDTOPageDTO() throws Exception {

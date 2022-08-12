@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -347,10 +346,6 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals("READY", responseJSONObject.getString("state"));
 	}
 
-	@RepositoryResource(
-		repositoryClass = FieldMappingRepository.class,
-		resourcePath = "osbasahfaroinfo/field_mappings.json"
-	)
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels_2.json"

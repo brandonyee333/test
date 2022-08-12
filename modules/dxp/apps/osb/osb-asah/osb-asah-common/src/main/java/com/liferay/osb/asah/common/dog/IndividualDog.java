@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
@@ -36,7 +35,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
@@ -59,7 +57,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -400,10 +397,10 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public long countIndividuals(String query, Long segmentId) {
-		List<String> fieldNames =
-			_fieldMappingRepository.
-				findFieldNameByContextAndFieldTypeAndOwnerType(
-					"demographics", "Text", "individual");
+
+		// TODO Fetch all individual field names
+
+		List<String> fieldNames = Collections.emptyList();
 
 		return _individualRepository.countByFieldNamesAndQueryAndSegmentId(
 			fieldNames, query, segmentId);
@@ -745,10 +742,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		PageRequest pageRequest = PageRequest.of(page, size);
 
-		List<String> fieldNames =
-			_fieldMappingRepository.
-				findFieldNameByContextAndFieldTypeAndOwnerType(
-					"demographics", "Text", "individual");
+		// TODO Fetch all individual field names
+
+		List<String> fieldNames = Collections.emptyList();
 
 		List<Individual> individuals =
 			_individualRepository.findByFieldNamesAndQueryAndSegmentId(
@@ -1344,24 +1340,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 	private Set<Field> _getFields(String context, Long individualId) {
 		Set<Field> fields = new HashSet<>();
 
-		List<FieldMapping> fieldMappings =
-			_fieldMappingRepository.findByContextAndDataSourceIdAndOwnerType(
-				context, null, "individual");
-
-		Stream<FieldMapping> stream = fieldMappings.stream();
-
-		Map<String, FieldMapping> fieldMappingsMap = stream.collect(
-			Collectors.toMap(
-				FieldMapping::getFieldName, Function.identity(),
-				(existing, replacement) -> replacement));
-
-		for (Field field : _fieldDog.getOwnerIdFields(context, individualId)) {
-			if (!fieldMappingsMap.containsKey(field.getName())) {
-				continue;
-			}
-
-			fields.add(field);
-		}
+		// TODO Fetch all individual fields
 
 		return fields;
 	}
@@ -1690,9 +1669,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FieldDog _fieldDog;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

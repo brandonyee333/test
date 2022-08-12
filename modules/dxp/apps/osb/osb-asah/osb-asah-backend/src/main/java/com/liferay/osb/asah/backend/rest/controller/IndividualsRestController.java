@@ -16,9 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.DistributionDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
-import com.liferay.osb.asah.common.dog.FieldMappingDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.model.Distribution;
 
@@ -52,26 +50,11 @@ public class IndividualsRestController
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
-			fieldMappingId);
-
-		if (fieldMapping == null) {
-			throw new IllegalArgumentException(
-				"Invalid field mapping ID " + fieldMappingId);
-		}
-
-		String ownerType = fieldMapping.getOwnerType();
-
-		if (!ownerType.equals("individual")) {
-			throw new IllegalArgumentException(
-				"Unable to use non-individual field " +
-					fieldMapping.getFieldName() + " to distribute individuals");
-		}
+		// TODO Implement operation
 
 		return _toDistributionDTOPageDTO(
 			_individualDog.getDistributionPage(
-				fieldMapping.getFieldName(), fieldMapping.getFieldType(),
-				filterString, numberOfBins, size, sorts));
+				"", "", filterString, numberOfBins, size, sorts));
 	}
 
 	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(
@@ -92,9 +75,6 @@ public class IndividualsRestController
 				"individuals-distribution-transformations"),
 			distributionsPage);
 	}
-
-	@Autowired
-	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private IndividualDog _individualDog;

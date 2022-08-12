@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
@@ -409,8 +408,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Long dataSourceId, String filterString, int page, int size,
 		String[] sorts) {
 
-		List<Long> fieldMappingIds = _fieldMappingDog.getFieldMappingIds(
-			dataSourceId);
+		List<Long> fieldMappingIds = Collections.emptyList();
 
 		FilterHelper filterHelper = new FilterHelper(filterString);
 
@@ -533,28 +531,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		String context = fieldNameParts[0];
-
-		if (ownerType == null) {
-			if (context.equals("custom") || context.equals("demographics")) {
-				ownerType = "individual";
-			}
-			else {
-				return null;
-			}
-		}
-
 		String fieldName = fieldNameParts[1];
 
-		FieldMapping fieldMapping = _fieldMappingDog.fetchFieldMapping(
-			context, fieldName, ownerType);
-
-		if (fieldMapping == null) {
-			return new Exception(
-				"Unable to get field mapping with field name " + fieldName);
-		}
-
-		referencedFieldMappingIds.add(String.valueOf(fieldMapping.getId()));
+		referencedFieldMappingIds.add(fieldName);
 
 		return null;
 	}
@@ -926,9 +905,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private IndividualDog _individualDog;

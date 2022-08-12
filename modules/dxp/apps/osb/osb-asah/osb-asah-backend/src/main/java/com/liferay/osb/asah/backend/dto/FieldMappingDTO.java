@@ -22,8 +22,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -35,9 +35,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-
 /**
  * @author Rachael Koestartyo
  */
@@ -48,46 +45,30 @@ public class FieldMappingDTO {
 	public FieldMappingDTO() {
 	}
 
-	public FieldMappingDTO(Collection<FieldMappingDTO> fieldMappingDTOs) {
-		_fieldMappingDTOs = new LinkedHashSet<>(fieldMappingDTOs);
-	}
-
-	public FieldMappingDTO(FieldMapping fieldMapping) {
-		AuthorDTO authorDTO = new AuthorDTO(fieldMapping);
+	public FieldMappingDTO(BQFieldMapping bqFieldMapping) {
+		AuthorDTO authorDTO = new AuthorDTO();
 
 		if (!authorDTO.isEmpty()) {
 			_authorDTO = authorDTO;
 		}
 
-		_context = fieldMapping.getContext();
-		_createDate = fieldMapping.getCreateDate();
+		_context = bqFieldMapping.getContext();
 
-		_dataSourceFieldMappings = fieldMapping.getDataSourceFieldMappings();
-		_dataSourceFieldNames = fieldMapping.getDataSourceFieldNames();
-
-		if (CollectionUtils.isNotEmpty(_dataSourceFieldMappings) &&
-			MapUtils.isEmpty(_dataSourceFieldNames)) {
-
-			for (DataSourceFieldMapping dataSourceFieldMapping :
-					_dataSourceFieldMappings) {
-
-				_dataSourceFieldNames.put(
-					String.valueOf(dataSourceFieldMapping.getDataSourceId()),
-					dataSourceFieldMapping.getFieldName());
-			}
-		}
-
-		_displayName = fieldMapping.getDisplayName();
-		_displayType = fieldMapping.getDisplayType();
-		_fieldName = fieldMapping.getFieldName();
-		_fieldType = fieldMapping.getFieldType();
-		_id = StringUtil.get(fieldMapping.getId(), null);
-		_modifiedDate = fieldMapping.getModifiedDate();
-		_ownerType = fieldMapping.getOwnerType();
+		_displayName = bqFieldMapping.getDisplayName();
+		_displayType = bqFieldMapping.getDisplayType();
+		_fieldName = bqFieldMapping.getFieldName();
+		_fieldType = bqFieldMapping.getFieldType();
+		_id = StringUtil.get(bqFieldMapping.getFieldName(), null);
+		_modifiedDate = bqFieldMapping.getModifiedDate();
+		_ownerType = bqFieldMapping.getOwnerType();
 	}
 
-	public FieldMappingDTO(List<FieldMapping> fieldMappings) {
-		_fieldMappingDTOs = SetUtil.map(fieldMappings, FieldMappingDTO::new);
+	public FieldMappingDTO(Collection<FieldMappingDTO> fieldMappingDTOs) {
+		_fieldMappingDTOs = new LinkedHashSet<>(fieldMappingDTOs);
+	}
+
+	public FieldMappingDTO(List<BQFieldMapping> bqFieldMappings) {
+		_fieldMappingDTOs = SetUtil.map(bqFieldMappings, FieldMappingDTO::new);
 	}
 
 	@JsonProperty("author")
@@ -237,11 +218,6 @@ public class FieldMappingDTO {
 	public static class AuthorDTO {
 
 		public AuthorDTO() {
-		}
-
-		public AuthorDTO(FieldMapping fieldMapping) {
-			_id = StringUtil.get(fieldMapping.getAuthorId(), null);
-			_name = fieldMapping.getAuthorName();
 		}
 
 		@Override

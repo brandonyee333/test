@@ -17,16 +17,14 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.FieldMappingDog;
-import com.liferay.osb.asah.common.entity.FieldMapping;
+import com.liferay.osb.asah.common.entity.BQFieldMapping;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.apache.commons.math3.util.Pair;
 
@@ -48,31 +46,13 @@ public class DefinitionsRestController extends BaseRestController {
 	public PageDTO<FieldMappingDTO> getIndividualFieldMappingDTOPageDTO(
 		@RequestParam(required = false) String name) {
 
-		Page<FieldMapping> fieldMappingPage =
-			_fieldMappingDog.searchIndividualFieldMappingPage(
-				name, 0,
-				Math.max(
-					1,
-					(int)_fieldMappingDog.countIndividualFieldMappings(name)),
-				new String[] {"fieldName", "asc"});
+		// TODO Implement operation
 
-		Map<String, FieldMappingDTO> fieldMappingDTOs = Stream.of(
-			fieldMappingPage.getContent()
-		).flatMap(
-			List::stream
-		).map(
-			FieldMappingDTO::new
-		).collect(
-			LinkedHashMap::new,
-			(map, fieldMappingDTO) -> map.put(
-				fieldMappingDTO.getId(), fieldMappingDTO),
-			Map::putAll
-		);
+		Map<String, FieldMappingDTO> fieldMappingDTOs = Collections.emptyMap();
 
 		_addDataSources(fieldMappingDTOs);
 
-		return _toPageDTO(
-			new FieldMappingDTO(fieldMappingDTOs.values()), fieldMappingPage);
+		return _toPageDTO(new FieldMappingDTO(fieldMappingDTOs.values()), null);
 	}
 
 	private void _addDataSources(
@@ -117,7 +97,8 @@ public class DefinitionsRestController extends BaseRestController {
 	}
 
 	private PageDTO<FieldMappingDTO> _toPageDTO(
-		FieldMappingDTO fieldMappingDTO, Page<FieldMapping> fieldMappingsPage) {
+		FieldMappingDTO fieldMappingDTO,
+		Page<BQFieldMapping> fieldMappingsPage) {
 
 		return new PageDTO<>(
 			"_embedded", fieldMappingDTO, fieldMappingsPage.getNumber(),
@@ -127,8 +108,5 @@ public class DefinitionsRestController extends BaseRestController {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private FieldMappingDog _fieldMappingDog;
 
 }

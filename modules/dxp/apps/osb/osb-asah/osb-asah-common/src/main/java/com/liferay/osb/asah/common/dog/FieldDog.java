@@ -21,11 +21,9 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Field;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -40,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -107,65 +104,7 @@ public class FieldDog {
 			Long ownerId, String ownerType)
 		throws Exception {
 
-		List<Field> fields = new ArrayList<>();
-
-		JSONObject fieldsJSONObject = getFieldsJSONObject(
-			context, dataJSONObject, dataSource);
-
-		Long dataSourceId = dataSource.getId();
-
-		List<FieldMapping> fieldMappings = _getFieldMappings(
-			context, dataSourceId, ownerType);
-
-		Stream<FieldMapping> stream = fieldMappings.stream();
-
-		Map<String, List<FieldMapping>> fieldMappingsMap = stream.collect(
-			Collectors.groupingBy(
-				fieldMapping -> _getDataSourceFieldName(
-					dataSourceId, fieldMapping)));
-
-		for (Map.Entry<String, List<FieldMapping>> entry :
-				fieldMappingsMap.entrySet()) {
-
-			String dataSourceFieldName = entry.getKey();
-
-			List<FieldMapping> fieldMappingsList = entry.getValue();
-
-			Iterator<FieldMapping> iterator = fieldMappingsList.iterator();
-
-			while (iterator.hasNext()) {
-				FieldMapping fieldMapping = iterator.next();
-
-				Object initialValue = fieldsJSONObject.opt(dataSourceFieldName);
-
-				if (initialValue == null) {
-					continue;
-				}
-
-				String fieldName = fieldMapping.getFieldName();
-				String fieldType = fieldMapping.getFieldType();
-
-				Object value = _deserializeValue(
-					fieldMapping.getDisplayType(), fieldName, fieldType,
-					!iterator.hasNext(), initialValue.toString());
-
-				if (value != null) {
-					String modifiedDateString = _getModifiedDateString(
-						dataJSONObject, dataSource);
-
-					Field field = _buildField(
-						context, dataSourceId, dataSource.getName(), fieldType,
-						modifiedDateString, fieldName, ownerId, ownerType,
-						dataSourceFieldName, value);
-
-					fields.add(field);
-
-					break;
-				}
-			}
-		}
-
-		return fields;
+		return Collections.emptyList();
 	}
 
 	public void deleteField(Long fieldId) {
@@ -438,55 +377,7 @@ public class FieldDog {
 			List<Long> ownerIds, String ownerType)
 		throws Exception {
 
-		Map<Long, List<Field>> fieldsMap = new HashMap<>();
-
-		JSONObject fieldsJSONObject = getFieldsJSONObject(
-			context, dataJSONObject, dataSource);
-
-		Long dataSourceId = dataSource.getId();
-
-		List<FieldMapping> fieldMappings = _getFieldMappings(
-			context, dataSourceId, ownerType);
-
-		for (FieldMapping fieldMapping : fieldMappings) {
-			Map<String, String> dataSourceFieldNames =
-				fieldMapping.getDataSourceFieldNames();
-
-			String dataSourceFieldName = dataSourceFieldNames.getOrDefault(
-				String.valueOf(dataSourceId), null);
-
-			Object value = fieldsJSONObject.opt(dataSourceFieldName);
-
-			if (value == null) {
-				continue;
-			}
-
-			String fieldName = fieldMapping.getFieldName();
-			String fieldType = fieldMapping.getFieldType();
-
-			value = _deserializeValue(
-				fieldMapping.getDisplayType(), fieldName, fieldType, true,
-				value.toString());
-
-			String modifiedDateString = _getModifiedDateString(
-				dataJSONObject, dataSource);
-
-			for (Long ownerId : ownerIds) {
-				List<Field> fields = fieldsMap.getOrDefault(
-					ownerId, new ArrayList<>());
-
-				Field field = _buildField(
-					context, dataSourceId, dataSource.getName(), fieldType,
-					modifiedDateString, fieldName, ownerId, ownerType,
-					dataSourceFieldName, value);
-
-				fields.add(field);
-
-				fieldsMap.put(ownerId, fields);
-			}
-		}
-
-		return fieldsMap;
+		return Collections.emptyMap();
 	}
 
 	private Object _deserializeValue(
@@ -570,30 +461,6 @@ public class FieldDog {
 		}
 
 		return null;
-	}
-
-	private String _getDataSourceFieldName(
-		Long dataSourceId, FieldMapping fieldMapping) {
-
-		Map<String, String> dataSourceFieldNames =
-			fieldMapping.getDataSourceFieldNames();
-
-		return dataSourceFieldNames.get(String.valueOf(dataSourceId));
-	}
-
-	private List<FieldMapping> _getFieldMappings(
-		String context, Long dataSourceId, String ownerType) {
-
-		return _fieldMappingRepository.findByContextAndDataSourceIdAndOwnerType(
-			context, dataSourceId, ownerType);
-	}
-
-	private List<FieldMapping> _getFieldMappings(
-		String context, Long dataSourceId, String fieldName, String ownerType) {
-
-		return _fieldMappingRepository.
-			findByContextAndDataSourceIdAndFieldNameAndOwnerType(
-				context, dataSourceId, fieldName, ownerType);
 	}
 
 	private Map<String, List<Field>> _getFieldNames(
@@ -681,14 +548,7 @@ public class FieldDog {
 	private boolean _isMultiValueField(
 		String context, Long dataSourceId, String fieldName, String ownerType) {
 
-		List<FieldMapping> fieldMappings = _getFieldMappings(
-			context, dataSourceId, fieldName, ownerType);
-
-		FieldMapping fieldMapping = fieldMappings.get(0);
-
-		if (Objects.equals(fieldMapping.getDisplayType(), "checkbox")) {
-			return true;
-		}
+		// TODO Check if fieldName is multi value
 
 		return false;
 	}
@@ -787,9 +647,6 @@ public class FieldDog {
 	}
 
 	private static final Log _log = LogFactory.getLog(FieldDog.class);
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;

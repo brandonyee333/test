@@ -19,12 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.FieldMappingRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -68,21 +66,9 @@ public abstract class BaseIndividualsNaniteTestCase
 	}
 
 	protected void addEmailFieldMapping() {
-		_fieldMappingRepository.save(
-			FaroInfoTestUtil.buildIndividualFieldMapping(
-				getDataSourceId(), getEmailDataSourceFieldName(), "email",
-				"http://schema.org/email"));
 	}
 
 	protected void addStandardFieldMappings() {
-		_fieldMappingRepository.saveAll(
-			Arrays.asList(
-				FaroInfoTestUtil.buildIndividualFieldMapping(
-					getDataSourceId(), "lastName", "familyName", "Text"),
-				FaroInfoTestUtil.buildIndividualFieldMapping(
-					getDataSourceId(), "firstName", "givenName", "Text"),
-				FaroInfoTestUtil.buildIndividualFieldMapping(
-					getDataSourceId(), "jobTitle", "jobTitle", "Text")));
 	}
 
 	protected void assertDemographicsJSONObject(
@@ -283,9 +269,6 @@ public abstract class BaseIndividualsNaniteTestCase
 	private DataSourceDog _dataSourceDog;
 
 	private JSONObject _dataSourceJSONObject;
-
-	@Autowired
-	private FieldMappingRepository _fieldMappingRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

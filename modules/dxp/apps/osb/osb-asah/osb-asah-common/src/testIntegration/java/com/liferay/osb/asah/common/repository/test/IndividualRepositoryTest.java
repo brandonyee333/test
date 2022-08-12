@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -26,6 +25,7 @@ import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 import org.json.JSONArray;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +34,7 @@ import org.springframework.context.annotation.Import;
 /**
  * @author Rachael Koestartyo
  */
+@Disabled
 @Import(JDBCTestConfiguration.class)
 public class IndividualRepositoryTest extends BaseIndividualRepositoryTestCase {
 
@@ -42,23 +43,9 @@ public class IndividualRepositoryTest extends BaseIndividualRepositoryTestCase {
 	public void testGetIndividualDistributions() throws Exception {
 		setUpDataSources();
 
+		// TODO Add BQFieldMapping from field_mappings.json
+
 		JSONArray jsonArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies/" + WeDeployDataService.OSB_ASAH_FARO_INFO +
-						"/field_mappings.json",
-					IndividualRepositoryTest.class)));
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			FieldMapping fieldMapping = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), FieldMapping.class);
-
-			fieldMapping.setIsNew(true);
-
-			fieldMappingRepository.save(fieldMapping);
-		}
-
-		jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies/" + WeDeployDataService.OSB_ASAH_FARO_INFO +

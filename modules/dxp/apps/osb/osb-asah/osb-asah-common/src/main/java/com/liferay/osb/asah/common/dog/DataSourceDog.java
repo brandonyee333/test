@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.FieldMapping;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -499,37 +498,10 @@ public class DataSourceDog {
 	}
 
 	private void _deleteFieldMappings(Long dataSourceId) {
-		List<FieldMapping> fieldMappings = _fieldMappingDog.getFieldMappings(
-			dataSourceId);
 
-		for (FieldMapping fieldMapping : fieldMappings) {
-			_fieldMappingDog.removeDataSourceFieldName(
-				dataSourceId, fieldMapping);
-		}
+		// TODO Disable segments referencing fields from data source
 
 		List<Long> disabledFieldMappingIds = new ArrayList<>();
-
-		for (FieldMapping fieldMapping : fieldMappings) {
-			Long fieldMappingId = fieldMapping.getId();
-
-			if (fieldMappingId != null) {
-				fieldMapping = _fieldMappingDog.fetchFieldMapping(
-					fieldMappingId);
-			}
-
-			if (fieldMapping == null) {
-				continue;
-			}
-
-			Map<String, String> dataSourceFieldNames =
-				fieldMapping.getDataSourceFieldNames();
-
-			if (dataSourceFieldNames.isEmpty() &&
-				_fieldMappingDog.deleteFieldMapping(fieldMapping)) {
-
-				disabledFieldMappingIds.add(fieldMapping.getId());
-			}
-		}
 
 		_segmentDog.disableDynamicSegments(
 			dataSourceId, disabledFieldMappingIds);
@@ -754,9 +726,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private FieldDog _fieldDog;
-
-	@Autowired
-	private FieldMappingDog _fieldMappingDog;
 
 	@Autowired
 	private IndividualDog _individualDog;
