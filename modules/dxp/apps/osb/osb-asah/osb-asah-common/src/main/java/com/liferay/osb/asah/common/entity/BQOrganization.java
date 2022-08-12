@@ -63,7 +63,6 @@ public class BQOrganization implements BQDXPEntity, Persistable<String> {
 
 		if (Objects.equals(_createDate, bqOrganization._createDate) &&
 			Objects.equals(_dataSourceId, bqOrganization._dataSourceId) &&
-			Objects.equals(_dataSourceId, bqOrganization._dataSourceId) &&
 			Objects.equals(_dataSourceName, bqOrganization._dataSourceName) &&
 			Objects.equals(_id, bqOrganization._id) &&
 			Objects.equals(_modifiedDate, bqOrganization._modifiedDate) &&
