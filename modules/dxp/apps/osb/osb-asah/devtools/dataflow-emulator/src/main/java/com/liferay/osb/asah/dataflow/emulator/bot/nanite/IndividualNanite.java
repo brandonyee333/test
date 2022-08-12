@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
-import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.dataflow.emulator.model.Field;
@@ -94,10 +93,10 @@ public class IndividualNanite {
 			bqExpandoValue -> {
 				Field field = new Field();
 
-				field.setName(_resolveFieldName(bqExpandoValue));
-				field.setValue(bqExpandoValue.getValue());
 				field.setDataSourceId(bqExpandoValue.getDataSourceId());
 				field.setModifiedDate(bqExpandoValue.getModifiedDate());
+				field.setName(_resolveFieldName(bqExpandoValue));
+				field.setValue(bqExpandoValue.getValue());
 
 				return field;
 			}
@@ -274,9 +273,6 @@ public class IndividualNanite {
 
 	@Autowired
 	private BQExpandoValueRepository _bqExpandoValueRepository;
-
-	@Autowired
-	private BQFieldMappingRepository _bqFieldMappingRepository;
 
 	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;
