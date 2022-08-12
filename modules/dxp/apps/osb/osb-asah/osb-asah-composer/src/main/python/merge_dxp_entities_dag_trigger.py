@@ -35,7 +35,6 @@ def create_dag(ac_project_id, dag_id, dag_description):
 			BigQueryInsertJobFromTemplateOperator(task_id='expando_value_delete'),
 			BigQueryInsertJobFromTemplateOperator(task_id='expando_value_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='group_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='individual_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='order_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='organization_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='product_merge'),
@@ -43,7 +42,7 @@ def create_dag(ac_project_id, dag_id, dag_description):
 			BigQueryInsertJobFromTemplateOperator(task_id='team_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='user_group_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='user_merge')
-		]
+		] >> BigQueryInsertJobFromTemplateOperator(task_id='individual_merge')
 
 		return dag
 
