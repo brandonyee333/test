@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.util.GetterUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.math.BigDecimal;
 
@@ -782,7 +783,9 @@ public class BQEventRepositoryImpl
 			Field<Object> field = DSL.field("BQEvent.applicationId");
 
 			conditions.add(
-				field.in("CustomEvent", eventDefinition.getApplicationId()));
+				field.in(
+					SetUtil.of(
+						"CustomEvent", eventDefinition.getApplicationId())));
 		}
 
 		if (channelId != null) {
