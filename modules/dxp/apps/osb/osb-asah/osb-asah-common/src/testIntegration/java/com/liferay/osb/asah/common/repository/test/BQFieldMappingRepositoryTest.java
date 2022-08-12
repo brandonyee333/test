@@ -35,7 +35,7 @@ public class BQFieldMappingRepositoryTest
 
 	@Test
 	public void testCount() {
-		Assertions.assertEquals(10, _bqFieldMappingRepository.count());
+		Assertions.assertEquals(9, _bqFieldMappingRepository.count());
 	}
 
 	@Autowired

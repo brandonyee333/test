@@ -57,7 +57,7 @@ public class DefinitionsRestController extends BaseRestController {
 		return _toPageDTO(
 			new FieldMappingDTO(fieldMappingDTOs.values()),
 			PageableExecutionUtils.getPage(
-				Collections.emptyList(), PageRequest.of(0, 0), () -> 0));
+				Collections.emptyList(), PageRequest.of(0, 1), () -> 0));
 	}
 
 	private void _addDataSources(

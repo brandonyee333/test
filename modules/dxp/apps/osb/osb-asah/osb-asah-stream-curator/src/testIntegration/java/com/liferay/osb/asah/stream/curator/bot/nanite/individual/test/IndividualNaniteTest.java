@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
 
 import com.liferay.osb.asah.common.dog.IndividualDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
@@ -43,13 +42,8 @@ import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -237,46 +231,8 @@ public class IndividualNaniteTest
 
 		Assertions.assertFalse(_individualDog.existsById(200L));
 
-		Individual individual3 = _individualDog.fetchIndividualByEmailAddress(
-			"john@liferay.com");
+		// TODO Test individual activities count
 
-		Set<Individual.ActivitiesCount> activitiesCounts =
-			individual3.getActivitiesCounts();
-
-		Stream<Individual.ActivitiesCount> stream = activitiesCounts.stream();
-
-		Individual.ActivitiesCount individualActivitiesCount = stream.filter(
-			activitiesCount -> Objects.equals(
-				1L, activitiesCount.getChannelId())
-		).findFirst(
-		).orElse(
-			null
-		);
-
-		Assertions.assertEquals(
-			2, (long)individualActivitiesCount.getActivitiesCount());
-
-		stream = activitiesCounts.stream();
-
-		individualActivitiesCount = stream.filter(
-			activitiesCount -> Objects.equals(
-				2L, activitiesCount.getChannelId())
-		).findFirst(
-		).orElse(
-			null
-		);
-
-		Assertions.assertEquals(
-			1, (long)individualActivitiesCount.getActivitiesCount());
-
-		Assertions.assertFalse(
-			_cerebroInfoElasticsearchInvoker.exists(
-				"pages",
-				BoolQueryBuilderUtil.shouldNot(
-					QueryBuilders.termQuery("individualId", "100")
-				).should(
-					QueryBuilders.termQuery("knownIndividual", false)
-				)));
 	}
 
 	@ElasticsearchIndex(
@@ -479,11 +435,8 @@ public class IndividualNaniteTest
 		Assertions.assertEquals("100", jsonObject.get("individualId"));
 		Assertions.assertEquals("2", jsonObject.get("userId"));
 
-		Individual individual3 = _individualDog.fetchIndividualByEmailAddress(
-			"john@liferay.com");
+		// TODO Test individual enrichment
 
-		Assertions.assertTrue(
-			!Objects.isNull(individual3.getLastEnrichmentDate()));
 	}
 
 	@Override

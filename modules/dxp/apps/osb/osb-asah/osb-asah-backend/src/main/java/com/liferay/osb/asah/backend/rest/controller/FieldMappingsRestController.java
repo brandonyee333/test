@@ -56,7 +56,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		return _toPageDTO(
 			PageableExecutionUtils.getPage(
-				Collections.emptyList(), PageRequest.of(0, 0), () -> 0));
+				Collections.emptyList(), PageRequest.of(0, 1), () -> 0));
 	}
 
 	private PageDTO<FieldMappingDTO> _toPageDTO(
