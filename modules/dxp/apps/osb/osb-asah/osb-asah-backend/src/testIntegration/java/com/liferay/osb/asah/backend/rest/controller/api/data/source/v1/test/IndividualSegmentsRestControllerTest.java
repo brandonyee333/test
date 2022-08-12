@@ -84,7 +84,7 @@ public class IndividualSegmentsRestControllerTest
 		segment = _segmentRepository.save(segment);
 
 		SegmentDTO segmentDTO =
-			_FieldNamesRestControllerindividualSegmentsRestController.
+			_individualSegmentsRestController.
 				getSegmentDTO(segment.getId(), "referenced-objects");
 
 		Map<String, Object> embedded = segmentDTO.getEmbedded();

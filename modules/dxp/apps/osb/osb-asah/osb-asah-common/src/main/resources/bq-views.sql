@@ -212,7 +212,7 @@ CREATE OR REPLACE VIEW BQPage AS (
 								channelId,
 								userId
 							ORDER BY
-								eventDate ASC
+								eventDate DESC
 						) AS rank,
 						sessionId,
 						title,
