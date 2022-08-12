@@ -67,6 +67,6 @@ public class QueryUtil {
 	}
 
 	private static final String _CHARACTERS_TO_BE_ESCAPED_IN_QUERY_STRING =
-		"+-=&&||><!(){}[]^\"~*?:\\/";
+		"_+-=&&||><!(){}[]^\"~*?:\\/";
 
 }
