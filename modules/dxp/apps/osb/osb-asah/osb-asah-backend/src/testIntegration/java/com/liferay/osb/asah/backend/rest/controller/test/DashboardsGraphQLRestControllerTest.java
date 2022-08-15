@@ -14,16 +14,15 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 /**
  * @author André Miranda
  */
-@ElasticsearchIndex(
-	name = "custom-asset-dashboards",
-	resourcePath = "custom_asset_dashboards_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+@RepositoryResource(
+	repositoryClass = CustomAssetDashboardRepository.class,
+	resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
 )
 public class DashboardsGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {

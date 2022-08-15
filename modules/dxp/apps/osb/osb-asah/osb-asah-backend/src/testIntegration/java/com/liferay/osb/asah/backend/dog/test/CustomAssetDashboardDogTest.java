@@ -18,8 +18,8 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -37,10 +37,9 @@ public class CustomAssetDashboardDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CustomAssetDashboardRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
 	)
 	@Test
 	public void testCustomAssetDashboardNotFound() {
@@ -48,10 +47,9 @@ public class CustomAssetDashboardDogTest
 			_customAssetDashboardDog.fetchCustomAssetDashboard("0"));
 	}
 
-	@ElasticsearchIndex(
-		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CustomAssetDashboardRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
 	)
 	@Test
 	public void testGetCustomAssetDashboard() {
@@ -67,10 +65,9 @@ public class CustomAssetDashboardDogTest
 			"Asset Title 1", customAssetDashboard.getAssetTitle());
 	}
 
-	@ElasticsearchIndex(
-		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CustomAssetDashboardRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
 	)
 	@Test
 	public void testGetCustomAssetDashboardPageAll() {
@@ -88,10 +85,9 @@ public class CustomAssetDashboardDogTest
 			3, customAssetDashboards.size(), customAssetDashboards.toString());
 	}
 
-	@ElasticsearchIndex(
-		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CustomAssetDashboardRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
 	)
 	@Test
 	public void testGetCustomAssetDashboardPagePaginated() {
@@ -115,10 +111,9 @@ public class CustomAssetDashboardDogTest
 			"Asset Title 2", customAssetDashboard.getAssetTitle());
 	}
 
-	@ElasticsearchIndex(
-		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CustomAssetDashboardRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
 	)
 	@Test
 	public void testUpdateCustomAssetDashboard() {

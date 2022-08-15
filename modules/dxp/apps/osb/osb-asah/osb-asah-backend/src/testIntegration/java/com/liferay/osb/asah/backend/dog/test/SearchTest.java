@@ -22,8 +22,10 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Assertions;
@@ -57,10 +59,9 @@ public class SearchTest
 			2, _metricDog.getAssetMetricsCount(searchQueryContext));
 	}
 
-	@ElasticsearchIndex(
-		name = "custom-asset-dashboards",
-		resourcePath = "search_custom_asset_dashboards_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CustomAssetDashboardRepository.class,
+		resourcePath = "osbasahcerebroinfo/search_custom_asset_dashboards_info.json"
 	)
 	@Test
 	public void testCustomAssetDashboardSearch() {
@@ -68,7 +69,7 @@ public class SearchTest
 			_customAssetDashboardDog.getCustomAssetDashboardPage(
 				1L, "ASSET", 0, 10, Sort.asc("assetTitle"));
 
-		Assertions.assertEquals(3, customAssetDashboardPage.getTotalElements());
+		Assertions.assertEquals(2, customAssetDashboardPage.getTotalElements());
 	}
 
 	@ElasticsearchIndex(

@@ -14,11 +14,13 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.custom.test;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.custom.CustomAssetDashboardNanite;
@@ -26,8 +28,11 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 
+import java.util.List;
+
+import org.apache.commons.collections4.IterableUtils;
+
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -55,7 +60,8 @@ public class CustomAssetDashboardNaniteTest
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_custom_asset_dashboards_info.json",
 				this),
-			_cerebroInfoElasticsearchInvoker.get("custom-asset-dashboards"),
+			_objectMapper.convertValue(
+				_customAssetDashboardRepository.findAll(), JSONArray.class),
 			false);
 	}
 
@@ -83,7 +89,8 @@ public class CustomAssetDashboardNaniteTest
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_custom_asset_dashboards_info.json",
 				this),
-			_cerebroInfoElasticsearchInvoker.get("custom-asset-dashboards"),
+			_objectMapper.convertValue(
+				_customAssetDashboardRepository.findAll(), JSONArray.class),
 			false);
 	}
 
@@ -112,15 +119,16 @@ public class CustomAssetDashboardNaniteTest
 
 		runNanite();
 
-		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
-			"custom-asset-dashboards");
+		List<CustomAssetDashboard> customAssetDashboards = IterableUtils.toList(
+			_customAssetDashboardRepository.findAll());
 
-		Assertions.assertEquals(1, jsonArray.length());
+		Assertions.assertEquals(1, customAssetDashboards.size());
 
-		JSONObject jsonObject = jsonArray.getJSONObject(0);
+		CustomAssetDashboard customAssetDashboard = customAssetDashboards.get(
+			0);
 
 		Assertions.assertEquals(
-			"Asset's Title Update 2", jsonObject.getString("assetTitle"));
+			"Asset's Title Update 2", customAssetDashboard.getAssetTitle());
 	}
 
 	@Override
@@ -128,13 +136,16 @@ public class CustomAssetDashboardNaniteTest
 		return _customAssetDashboardNanite;
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
 	@Autowired
 	private CustomAssetDashboardNanite _customAssetDashboardNanite;
 
 	@Autowired
+	private CustomAssetDashboardRepository _customAssetDashboardRepository;
+
+	@Autowired
 	private MessageBus _messageBus;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
