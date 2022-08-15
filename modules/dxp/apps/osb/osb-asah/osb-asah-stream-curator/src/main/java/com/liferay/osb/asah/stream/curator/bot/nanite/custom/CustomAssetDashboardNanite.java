@@ -154,7 +154,7 @@ public class CustomAssetDashboardNanite implements Nanite {
 							tuple2.getT2());
 
 					if (!customAssetDashboardOptional.isPresent()) {
-						customAssetDashboard.setIsNew(true);
+						customAssetDashboard.setIsNew(Boolean.TRUE);
 					}
 
 					_customAssetDashboardRepository.save(customAssetDashboard);
