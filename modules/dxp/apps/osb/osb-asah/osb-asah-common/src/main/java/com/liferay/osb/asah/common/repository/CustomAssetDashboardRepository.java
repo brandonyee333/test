@@ -16,12 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 
-import org.springframework.context.annotation.Primary;
-
 /**
  * @author André Miranda
  */
-@Primary
 public interface CustomAssetDashboardRepository
 	extends CustomCustomAssetDashboardRepository,
 			Repository<CustomAssetDashboard, String> {
