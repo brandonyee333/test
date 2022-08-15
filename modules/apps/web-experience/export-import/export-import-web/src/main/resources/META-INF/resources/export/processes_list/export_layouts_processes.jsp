@@ -229,7 +229,7 @@ portletURL.setParameter("searchContainerId", searchContainerId);
 						cssClass="table-cell-content"
 						name="title"
 					>
-						<span id="<%= liferayPortletResponse.getNamespace() + "backgroundTaskName" + String.valueOf(backgroundTask.getBackgroundTaskId()) %>">
+						<span id="<%= liferayPortletResponse.getNamespace() %>backgroundTaskName<%= String.valueOf(backgroundTask.getBackgroundTaskId()) %>">
 							<liferay-ui:message key="<%= HtmlUtil.escape(backgroundTaskName) %>" />
 						</span>
 					</liferay-ui:search-container-column-text>

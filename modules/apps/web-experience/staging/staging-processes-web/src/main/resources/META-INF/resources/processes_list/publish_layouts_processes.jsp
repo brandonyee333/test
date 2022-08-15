@@ -248,7 +248,7 @@ String taskExecutorClassName = localPublishing ? BackgroundTaskExecutorNames.LAY
 					<liferay-ui:search-container-column-text
 						name="title"
 					>
-						<span id="<%= liferayPortletResponse.getNamespace() + "backgroundTaskName" + String.valueOf(backgroundTask.getBackgroundTaskId()) %>">
+						<span id="<%= liferayPortletResponse.getNamespace() %>backgroundTaskName<%= String.valueOf(backgroundTask.getBackgroundTaskId()) %>">
 							<liferay-ui:message key="<%= HtmlUtil.escape(backgroundTaskName) %>" />
 						</span>
 					</liferay-ui:search-container-column-text>
