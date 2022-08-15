@@ -17,9 +17,12 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 
+import org.junit.jupiter.api.Disabled;
+
 /**
  * @author André Miranda
  */
+@Disabled
 @ElasticsearchIndex(
 	name = "blogs", resourcePath = "blog_info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
