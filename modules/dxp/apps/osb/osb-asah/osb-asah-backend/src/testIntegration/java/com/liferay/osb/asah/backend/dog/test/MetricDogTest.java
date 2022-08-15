@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ public class MetricDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -74,6 +76,7 @@ public class MetricDogTest
 		Assertions.assertEquals(1, urls.size(), urls.toString());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -92,6 +95,7 @@ public class MetricDogTest
 		Assertions.assertTrue(urls.isEmpty());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "asset_metric_blog_average_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -114,6 +118,7 @@ public class MetricDogTest
 		Assertions.assertEquals(0.8, ratingsMetric.getValue(), 0.01);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "asset_metric_blog_info_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -136,6 +141,7 @@ public class MetricDogTest
 		Assertions.assertEquals(0.6, ratingsMetric.getValue(), 0.1);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -185,6 +191,7 @@ public class MetricDogTest
 		Assertions.assertEquals(3, ctrMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "custom-assets", resourcePath = "custom_assets_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

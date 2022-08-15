@@ -111,14 +111,7 @@ public class ChannelDogTest
 			Matchers.arrayContainingInAnyOrder(
 				_getChannelAssetChannelIds(386700631786606772L)));
 
-		JSONArray blogsJSONArray = _cerebroInfoElasticsearchInvoker.get(
-			"blogs");
-
-		Assertions.assertEquals(1, blogsJSONArray.length());
-
-		JSONObject blogsJSONObject = blogsJSONArray.getJSONObject(0);
-
-		Assertions.assertEquals("2", blogsJSONObject.getString("channelId"));
+		// TODO Asset only Blog entries data from not deleted channel is present
 
 		List<Segment> segments = _segmentRepository.findByChannelIdIn(
 			Collections.singleton(2L), PageRequest.of(0, 10));

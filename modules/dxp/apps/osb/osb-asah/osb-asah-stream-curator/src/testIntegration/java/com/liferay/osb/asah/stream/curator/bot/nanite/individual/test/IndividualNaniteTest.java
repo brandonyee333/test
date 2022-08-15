@@ -50,6 +50,7 @@ import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -91,6 +92,7 @@ public class IndividualNaniteTest
 					"4ca495991b7852b851"));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blog_info_old.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

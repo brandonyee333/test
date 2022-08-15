@@ -24,6 +24,7 @@ import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DataRetentionNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "data_retention_blogs.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
