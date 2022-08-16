@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -87,26 +86,6 @@ public abstract class BaseNaniteTestCase {
 		).thenReturn(
 			new JSONArray()
 		);
-
-		if (nanite instanceof BaseNanite) {
-			IndividualDog individualDog = Mockito.mock(IndividualDog.class);
-
-			ReflectionTestUtils.setField(
-				nanite, "_individualDog", individualDog);
-
-			Mockito.when(
-				individualDog.existsById(ArgumentMatchers.anyLong())
-			).thenReturn(
-				true
-			);
-
-			Mockito.when(
-				individualDog.fetchIndividual(
-					ArgumentMatchers.anyLong(), ArgumentMatchers.anyString())
-			).thenReturn(
-				null
-			);
-		}
 
 		String fileName = getJSONFileName(clazz);
 
