@@ -66,6 +66,7 @@ public class SegmentMetricDogTest
 		DogTestUtil.assertMetric(2, segmentMetrics, "Developer");
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "forms", resourcePath = "segment_forms_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -88,6 +89,7 @@ public class SegmentMetricDogTest
 		DogTestUtil.assertMetric(1, segmentMetrics, "Marketeer");
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "journals", resourcePath = "segment_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

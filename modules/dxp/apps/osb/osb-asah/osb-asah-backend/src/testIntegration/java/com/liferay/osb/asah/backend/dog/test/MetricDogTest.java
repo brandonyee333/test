@@ -215,12 +215,12 @@ public class MetricDogTest
 		Assertions.assertEquals(7, metric.getValue(), 0);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "document-libraries",
 		resourcePath = "document_library_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@Disabled
 	@Test
 	public void testDocumentLibraryMetrics() {
 		DocumentLibraryMetric documentLibraryMetric = _metricDog.getAssetMetric(
@@ -497,6 +497,7 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "journals", resourcePath = "asset_metric_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -516,6 +517,7 @@ public class MetricDogTest
 		Assertions.assertEquals(2, metric.getValue(), 0);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "journals", resourcePath = "asset_metric_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -545,6 +547,7 @@ public class MetricDogTest
 		}
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "journals", resourcePath = "asset_metric_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

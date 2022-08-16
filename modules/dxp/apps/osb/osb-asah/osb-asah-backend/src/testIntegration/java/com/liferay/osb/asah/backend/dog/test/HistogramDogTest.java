@@ -42,6 +42,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -51,6 +52,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author Lino Alves
  */
+@Disabled
 @ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(
 	classes = {HistogramDog.class, OSBAsahBackendSpringBootApplication.class}
