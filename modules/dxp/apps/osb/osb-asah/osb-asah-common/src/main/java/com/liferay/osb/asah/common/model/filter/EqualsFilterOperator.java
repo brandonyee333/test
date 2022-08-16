@@ -45,10 +45,8 @@ public class EqualsFilterOperator extends FilterOperator {
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			Object dataTypeObject = dslHelper.getDataType(
-				(Date)getValue(dataType, value));
-
-			return field.eq(dataTypeObject);
+			return field.eq(
+				dslHelper.getDateValue((Date)getValue(dataType, value)));
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.STRING)) {

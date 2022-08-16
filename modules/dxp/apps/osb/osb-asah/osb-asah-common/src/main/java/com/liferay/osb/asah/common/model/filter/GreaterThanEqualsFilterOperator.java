@@ -40,10 +40,8 @@ public class GreaterThanEqualsFilterOperator extends FilterOperator {
 		String value = values.get(0);
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			Object dataTypeObject = dslHelper.getDataType(
-				(Date)getValue(dataType, value));
-
-			return field.ge(dataTypeObject);
+			return field.ge(
+				dslHelper.getDateValue((Date)getValue(dataType, value)));
 		}
 
 		return field.ge(getValue(dataType, value));

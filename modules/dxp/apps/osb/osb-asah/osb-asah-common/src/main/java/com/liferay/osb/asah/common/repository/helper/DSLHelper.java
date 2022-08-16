@@ -125,14 +125,6 @@ public class DSLHelper {
 		return field.cast(String.class);
 	}
 
-	public Object getDataType(Date dataType) {
-		if (_isBigQueryDialect()) {
-			return DSL.timestamp(dataType);
-		}
-
-		return DSL.date(dataType);
-	}
-
 	public Field getDateAtTimeZoneField(String fieldName, String timeZoneId) {
 		if (_isBigQueryDialect()) {
 			return DSL.field(
@@ -162,6 +154,14 @@ public class DSLHelper {
 		}
 
 		return localDateTime;
+	}
+
+	public Object getDateValue(Date date) {
+		if (_isBigQueryDialect()) {
+			return DSL.timestamp(date);
+		}
+
+		return DSL.date(date);
 	}
 
 	public Field<OffsetDateTime> getDateValueField(

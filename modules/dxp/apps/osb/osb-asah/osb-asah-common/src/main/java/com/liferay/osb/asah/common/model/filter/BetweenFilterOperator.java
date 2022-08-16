@@ -39,13 +39,13 @@ public class BetweenFilterOperator extends FilterOperator {
 	@Override
 	public Condition getCondition(DSLHelper dslHelper, Field field) {
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			Object dataTypeObject1 = dslHelper.getDataType(
-				(Date)getValue(dataType, values.get(0)));
-			Object dataTypeObject2 = dslHelper.getDataType(
-				(Date)getValue(dataType, values.get(1)));
-
 			return DSL.and(
-				field.ge(dataTypeObject1), field.le(dataTypeObject2));
+				field.ge(
+					dslHelper.getDateValue(
+						(Date)getValue(dataType, values.get(0)))),
+				field.le(
+					dslHelper.getDateValue(
+						(Date)getValue(dataType, values.get(1)))));
 		}
 
 		return DSL.and(

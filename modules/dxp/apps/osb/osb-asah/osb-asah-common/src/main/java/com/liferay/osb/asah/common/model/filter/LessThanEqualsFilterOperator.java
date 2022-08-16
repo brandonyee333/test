@@ -40,10 +40,8 @@ public class LessThanEqualsFilterOperator extends FilterOperator {
 		String value = values.get(0);
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			Object dataTypeObject = dslHelper.getDataType(
-				(Date)getValue(dataType, value));
-
-			return field.le(dataTypeObject);
+			return field.le(
+				dslHelper.getDateValue((Date)getValue(dataType, value)));
 		}
 
 		return field.le(getValue(dataType, value));

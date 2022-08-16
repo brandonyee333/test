@@ -42,10 +42,8 @@ public class NotEqualsFilterOperator extends FilterOperator {
 
 		if (value != null) {
 			if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-				Object dataTypeObject = dslHelper.getDataType(
-					(Date)getValue(dataType, value));
-
-				return field.ne(dataTypeObject);
+				return field.ne(
+					dslHelper.getDateValue((Date)getValue(dataType, value)));
 			}
 
 			if (dataType.equals(EventAttributeDefinition.DataType.STRING)) {
