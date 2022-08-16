@@ -20,6 +20,7 @@ import com.liferay.osb.asah.upgrade.v3_2_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.BlockedKeywordMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.CSVUserMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v3_2_0.CustomAssetDashboardMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DXPEntityMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DataControlTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v3_2_0.DataExportTaskMigrationUpgradeStep;
@@ -60,6 +61,7 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_asahTaskMigrationUpgradeStep);
 		upgradeSteps.add(_blockedKeywordMigrationUpgradeStep);
 		upgradeSteps.add(_csvUserMigrationUpgradeStep);
+		upgradeSteps.add(_customAssetDashboardMigrationUpgradeStep);
 		upgradeSteps.add(_dataControlTaskMigrationUpgradeStep);
 		upgradeSteps.add(_dataExportTaskMigrationUpgradeStep);
 		upgradeSteps.add(_dxpEntityMigrationUpgradeStep);
@@ -89,6 +91,10 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private CSVUserMigrationUpgradeStep _csvUserMigrationUpgradeStep;
+
+	@Autowired
+	private CustomAssetDashboardMigrationUpgradeStep
+		_customAssetDashboardMigrationUpgradeStep;
 
 	@Autowired
 	private DatabaseSchemaUpgradeStep _databaseSchemaUpgradeStep;
