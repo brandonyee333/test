@@ -1,7 +1,5 @@
 {
 	"osbasahcerebroinfo": [
-		"journal-clicks",
-		"journals",
 		"pages",
 		"user-sessions"
 	],
