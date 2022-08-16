@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
@@ -100,7 +99,7 @@ public class ReportIndividualDTO {
 			return Collections.emptyMap();
 		}
 
-		return FieldDog.toMap(demographics.getFields());
+		return Collections.emptyMap();
 	}
 
 	private Map<String, String> _custom = new HashMap<>();
