@@ -34,8 +34,7 @@ commerce_dataproc_trigger:
                     "spark.yarn.appMasterEnv.GOOGLE_STORAGE_BUCKET": "{{ dag.default_args['project_id'] }}-dataflow"
                 }
 pubsub_dag_trigger:
+    dag:
+        id: commerce_dataproc_trigger
     pubsub:
         subscription: ac-{{ dag.default_args['lcp_project_id'] }}_composer
-    trigger:
-        dag:
-            id: commerce_dataproc_trigger

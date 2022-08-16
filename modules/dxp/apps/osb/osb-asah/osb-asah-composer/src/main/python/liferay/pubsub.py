@@ -58,8 +58,10 @@ class PubSubDagTriggerOperator(BaseOperator):
 		for message in messages:
 			data = json.loads(message.message.data.decode("utf-8"))
 
-			trigger_dag_id = data['triggerDagId'] if 'triggerDagId' in data \
-								else dag_configuration['trigger.dag.id']
+			dag_id = dag_configuration['dag.id']
+
+			if 'dagId' in data:
+				dag_id = data['dagId']
 
 			self.log.info(
 				'Trigger {} with conf: {}'.format(
@@ -69,7 +71,7 @@ class PubSubDagTriggerOperator(BaseOperator):
 			)
 
 			client.trigger_dag(
-				dag_id=trigger_dag_id,
+				dag_id=dag_id,
 				conf=data
 			)
 

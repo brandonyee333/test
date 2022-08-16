@@ -258,16 +258,14 @@ public class AdminRestController extends BaseRestController {
 		_nanitesHttp.run(jsonArray);
 	}
 
-	@PostMapping("/dag/run/{dagId}")
-	public void triggerAirflowDag(@PathVariable String dagId) {
-		String projectId = ProjectIdThreadLocal.getProjectId();
-
+	@PostMapping("/dag/{dagId}/run")
+	public void runDag(@PathVariable String dagId) {
 		_messageBus.sendMessage(
 			com.liferay.osb.asah.common.messaging.Channel.COMPOSER,
 			JSONUtil.put(
-				"projectId", projectId
+				"dagId", dagId
 			).put(
-				"triggerDagId", dagId + "_" + projectId
+				"projectId", ProjectIdThreadLocal.getProjectId()
 			).toString());
 	}
 
