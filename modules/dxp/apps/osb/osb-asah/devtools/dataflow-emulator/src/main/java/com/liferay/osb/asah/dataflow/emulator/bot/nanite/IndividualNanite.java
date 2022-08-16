@@ -208,14 +208,14 @@ public class IndividualNanite {
 	}
 
 	private String _resolveFieldName(BQExpandoValue bqExpandoValue) {
+		String fieldName =
+			bqExpandoColumn.getName() + "_" + bqExpandoColumn.getDataType();
+
 		BQExpandoColumn bqExpandoColumn =
 			_bqExpandoColumnRepository.findByColumnIdAndDataSourceId(
 				bqExpandoValue.getColumnId(), bqExpandoValue.getDataSourceId());
 
 		String displayType = bqExpandoColumn.getDisplayType();
-
-		String fieldName =
-			bqExpandoColumn.getName() + "_" + bqExpandoColumn.getDataType();
 
 		if (Objects.equals(displayType, "checkbox") ||
 			Objects.equals(displayType, "radio") ||
