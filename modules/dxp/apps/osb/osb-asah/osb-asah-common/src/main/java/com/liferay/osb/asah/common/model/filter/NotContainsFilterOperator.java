@@ -32,13 +32,14 @@ import org.jooq.impl.DSL;
 public class NotContainsFilterOperator extends FilterOperator {
 
 	public NotContainsFilterOperator(
-		EventAttributeDefinition.DataType dataType, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values) {
 
-		super(dataType, "notContains", values);
+		super(dataType, dslHelper, "notContains", values);
 	}
 
 	@Override
-	public Condition getCondition(DSLHelper dslHelper, Field field) {
+	public Condition getCondition(Field field) {
 		String value = (String)getValue(dataType, values.get(0));
 
 		return DSL.not(

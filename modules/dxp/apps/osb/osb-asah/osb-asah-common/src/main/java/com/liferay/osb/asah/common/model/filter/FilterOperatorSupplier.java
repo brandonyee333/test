@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import java.util.List;
 public interface FilterOperatorSupplier {
 
 	public FilterOperator get(
-		EventAttributeDefinition.DataType dataType, List<String> values);
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values);
 
 }

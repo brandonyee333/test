@@ -31,13 +31,14 @@ import org.jooq.impl.DSL;
 public class NotEqualsFilterOperator extends FilterOperator {
 
 	public NotEqualsFilterOperator(
-		EventAttributeDefinition.DataType dataType, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values) {
 
-		super(dataType, "ne", values);
+		super(dataType, dslHelper, "ne", values);
 	}
 
 	@Override
-	public Condition getCondition(DSLHelper dslHelper, Field field) {
+	public Condition getCondition(Field field) {
 		String value = values.get(0);
 
 		if (value != null) {

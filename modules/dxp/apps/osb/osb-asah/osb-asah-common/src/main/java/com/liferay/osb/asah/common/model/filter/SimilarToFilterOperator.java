@@ -32,13 +32,14 @@ import org.jooq.impl.DSL;
 public class SimilarToFilterOperator extends FilterOperator {
 
 	public SimilarToFilterOperator(
-		EventAttributeDefinition.DataType dataType, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values) {
 
-		super(dataType, "similarTo", values);
+		super(dataType, dslHelper, "similarTo", values);
 	}
 
 	@Override
-	public Condition getCondition(DSLHelper dslHelper, Field field) {
+	public Condition getCondition(Field field) {
 		String value = (String)getValue(dataType, values.get(0));
 
 		return DSL.lower(

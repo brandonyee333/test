@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +28,8 @@ import java.util.Optional;
 public class FilterOperators {
 
 	public static FilterOperator of(
-		EventAttributeDefinition.DataType dataType, String name,
-		List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		String name, List<String> values) {
 
 		FilterOperatorSupplier filterOperatorSupplier = Optional.ofNullable(
 			_filterOperatorSuppliers.get(name)
@@ -36,7 +37,7 @@ public class FilterOperators {
 			() -> new IllegalArgumentException("Invalid operator: " + name)
 		);
 
-		return filterOperatorSupplier.get(dataType, values);
+		return filterOperatorSupplier.get(dataType, dslHelper, values);
 	}
 
 	private static final Map<String, FilterOperatorSupplier>

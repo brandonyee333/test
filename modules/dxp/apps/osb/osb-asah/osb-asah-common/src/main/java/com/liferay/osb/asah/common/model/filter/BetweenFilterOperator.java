@@ -31,13 +31,14 @@ import org.jooq.impl.DSL;
 public class BetweenFilterOperator extends FilterOperator {
 
 	public BetweenFilterOperator(
-		EventAttributeDefinition.DataType dataType, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values) {
 
-		super(dataType, 2, "between", values);
+		super(dataType, dslHelper, 2, "between", values);
 	}
 
 	@Override
-	public Condition getCondition(DSLHelper dslHelper, Field field) {
+	public Condition getCondition(Field field) {
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
 			return DSL.and(
 				field.ge(

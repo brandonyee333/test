@@ -30,13 +30,14 @@ import org.jooq.Field;
 public class GreaterThanEqualsFilterOperator extends FilterOperator {
 
 	public GreaterThanEqualsFilterOperator(
-		EventAttributeDefinition.DataType dataType, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values) {
 
-		super(dataType, "ge", values);
+		super(dataType, dslHelper, "ge", values);
 	}
 
 	@Override
-	public Condition getCondition(DSLHelper dslHelper, Field field) {
+	public Condition getCondition(Field field) {
 		String value = values.get(0);
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {

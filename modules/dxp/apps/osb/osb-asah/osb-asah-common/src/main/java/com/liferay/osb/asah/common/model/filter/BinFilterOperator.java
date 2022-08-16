@@ -30,13 +30,14 @@ import org.jooq.impl.DSL;
 public class BinFilterOperator extends FilterOperator {
 
 	public BinFilterOperator(
-		EventAttributeDefinition.DataType dataType, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values) {
 
-		super(dataType, 2, "bin", values);
+		super(dataType, dslHelper, 2, "bin", values);
 	}
 
 	@Override
-	public Condition getCondition(DSLHelper dslHelper, Field field) {
+	public Condition getCondition(Field field) {
 		Number binSize = (Number)getValue(dataType, values.get(0));
 
 		return DSL.floor(

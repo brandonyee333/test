@@ -32,13 +32,14 @@ import org.jooq.impl.DSL;
 public class ContainsFilterOperator extends FilterOperator {
 
 	public ContainsFilterOperator(
-		EventAttributeDefinition.DataType dataType, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values) {
 
-		super(dataType, "contains", values);
+		super(dataType, dslHelper, "contains", values);
 	}
 
 	@Override
-	public Condition getCondition(DSLHelper dslHelper, Field field) {
+	public Condition getCondition(Field field) {
 		String value = (String)getValue(dataType, values.get(0));
 
 		return DSL.lower(

@@ -32,13 +32,14 @@ import org.jooq.impl.DSL;
 public class DateGroupingFilterOperator extends FilterOperator {
 
 	public DateGroupingFilterOperator(
-		EventAttributeDefinition.DataType dataType, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values) {
 
-		super(dataType, 2, "dateGrouping", values);
+		super(dataType, dslHelper, 2, "dateGrouping", values);
 	}
 
 	@Override
-	public Condition getCondition(DSLHelper dslHelper, Field field) {
+	public Condition getCondition(Field field) {
 		DateGrouping dateGrouping = DateGrouping.valueOf(values.get(0));
 
 		if (dateGrouping.equals(DateGrouping.DAY)) {

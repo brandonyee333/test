@@ -835,7 +835,7 @@ public class BQEventRepositoryImpl
 
 			for (EventAnalysisFilter eventAnalysisFilter : entry.getValue()) {
 				FilterOperator filterOperator = FilterOperators.of(
-					eventAnalysisFilter.getDataType(),
+					eventAnalysisFilter.getDataType(), _dslHelper,
 					eventAnalysisFilter.getOperator(),
 					eventAnalysisFilter.getValues());
 
@@ -851,7 +851,6 @@ public class BQEventRepositoryImpl
 
 				condition = condition.and(
 					filterOperator.getCondition(
-						_dslHelper,
 						_getField(eventAnalysisFilter, field, timeZoneId)));
 			}
 

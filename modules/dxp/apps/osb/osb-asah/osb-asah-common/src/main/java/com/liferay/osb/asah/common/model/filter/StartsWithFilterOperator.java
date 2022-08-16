@@ -29,13 +29,14 @@ import org.jooq.Field;
 public class StartsWithFilterOperator extends FilterOperator {
 
 	public StartsWithFilterOperator(
-		EventAttributeDefinition.DataType dataType, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		List<String> values) {
 
-		super(dataType, "startsWith", values);
+		super(dataType, dslHelper, "startsWith", values);
 	}
 
 	@Override
-	public Condition getCondition(DSLHelper dslHelper, Field field) {
+	public Condition getCondition(Field field) {
 		return field.startsWithIgnoreCase(getValue(dataType, values.get(0)));
 	}
 

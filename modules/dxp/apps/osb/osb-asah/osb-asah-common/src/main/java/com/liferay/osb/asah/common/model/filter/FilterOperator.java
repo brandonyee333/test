@@ -31,25 +31,27 @@ import org.jooq.Field;
  */
 public abstract class FilterOperator {
 
-	public abstract Condition getCondition(DSLHelper dslHelper, Field field);
+	public abstract Condition getCondition(Field field);
 
 	protected FilterOperator(
-		EventAttributeDefinition.DataType dataType, int expectedArgumentCount,
-		String name, List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		int expectedArgumentCount, String name, List<String> values) {
 
 		_validate(dataType, expectedArgumentCount, name, values);
 
 		this.dataType = dataType;
+		this.dslHelper = dslHelper;
 		this.values = values;
 	}
 
 	protected FilterOperator(
-		EventAttributeDefinition.DataType dataType, String name,
-		List<String> values) {
+		EventAttributeDefinition.DataType dataType, DSLHelper dslHelper,
+		String name, List<String> values) {
 
 		_validate(dataType, 1, name, values);
 
 		this.dataType = dataType;
+		this.dslHelper = dslHelper;
 		this.values = values;
 	}
 
@@ -81,6 +83,7 @@ public abstract class FilterOperator {
 	}
 
 	protected EventAttributeDefinition.DataType dataType;
+	protected DSLHelper dslHelper;
 	protected List<String> values;
 
 	private void _validate(
