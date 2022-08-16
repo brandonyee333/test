@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -26,17 +27,37 @@ import java.util.Collections;
 import org.jooq.impl.DSL;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import org.mockito.Mockito;
+
+import org.springframework.core.env.Environment;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Leslie Wong
  */
 public class FilterOperatorTest {
 
+	@BeforeEach
+	public void setUp() {
+		Environment environment = Mockito.mock(Environment.class);
+
+		Mockito.when(
+			environment.getProperty(
+				Mockito.eq("GOOGLE_APPLICATION_CREDENTIALS"))
+		).thenReturn(
+			null
+		);
+
+		ReflectionTestUtils.setField(_dslHelper, "_environment", environment);
+	}
+
 	@Test
 	public void testBetweenFilterOperatorDate() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DATE, "between",
+			EventAttributeDefinition.DataType.DATE, _dslHelper, "between",
 			new ArrayList<String>() {
 				{
 					add("2021-06-01");
@@ -69,7 +90,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testBetweenFilterOperatorDuration() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DURATION, "between",
+			EventAttributeDefinition.DataType.DURATION, _dslHelper, "between",
 			new ArrayList<String>() {
 				{
 					add("3600");
@@ -95,7 +116,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testBetweenFilterOperatorNumber() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.NUMBER, "between",
+			EventAttributeDefinition.DataType.NUMBER, _dslHelper, "between",
 			new ArrayList<String>() {
 				{
 					add("20");
@@ -121,7 +142,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testContainsFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "contains",
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "contains",
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
@@ -136,7 +157,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testEndsWithFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "endsWith",
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "endsWith",
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
@@ -151,7 +172,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testEqualsFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DURATION, "eq",
+			EventAttributeDefinition.DataType.DURATION, _dslHelper, "eq",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -166,7 +187,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testEqualsFilterOperatorNull() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "eq",
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "eq",
 			Collections.singletonList(null));
 
 		Assertions.assertEquals(
@@ -179,7 +200,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testEqualsFilterOperatorString() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "eq",
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "eq",
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
@@ -196,7 +217,8 @@ public class FilterOperatorTest {
 		Assertions.assertThrows(
 			IllegalArgumentException.class,
 			() -> FilterOperators.of(
-				EventAttributeDefinition.DataType.STRING, "contains",
+				EventAttributeDefinition.DataType.STRING, _dslHelper,
+				"contains",
 				new ArrayList<String>() {
 					{
 						add("test1");
@@ -210,7 +232,7 @@ public class FilterOperatorTest {
 		Assertions.assertThrows(
 			IllegalArgumentException.class,
 			() -> FilterOperators.of(
-				EventAttributeDefinition.DataType.STRING, "gt",
+				EventAttributeDefinition.DataType.STRING, _dslHelper, "gt",
 				new ArrayList<String>() {
 					{
 						add("test");
@@ -223,7 +245,7 @@ public class FilterOperatorTest {
 		String dateString = "2021-06-01";
 
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DATE, "ge",
+			EventAttributeDefinition.DataType.DATE, _dslHelper, "ge",
 			Collections.singletonList(dateString));
 
 		LocalDate localDate = LocalDate.parse(dateString);
@@ -241,7 +263,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testGreaterThanEqualsFilterOperatorDuration() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DURATION, "ge",
+			EventAttributeDefinition.DataType.DURATION, _dslHelper, "ge",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -256,7 +278,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testGreaterThanEqualsFilterOperatorNumber() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.NUMBER, "ge",
+			EventAttributeDefinition.DataType.NUMBER, _dslHelper, "ge",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -273,7 +295,7 @@ public class FilterOperatorTest {
 		String dateString = "2021-06-01";
 
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DATE, "gt",
+			EventAttributeDefinition.DataType.DATE, _dslHelper, "gt",
 			Collections.singletonList(dateString));
 
 		LocalDate localDate = LocalDate.parse(dateString);
@@ -291,7 +313,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testGreaterThanFilterOperatorDuration() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DURATION, "gt",
+			EventAttributeDefinition.DataType.DURATION, _dslHelper, "gt",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -306,7 +328,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testGreaterThanFilterOperatorNumber() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.NUMBER, "gt",
+			EventAttributeDefinition.DataType.NUMBER, _dslHelper, "gt",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -323,7 +345,7 @@ public class FilterOperatorTest {
 		String dateString = "2020-06-01";
 
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DATE, "le",
+			EventAttributeDefinition.DataType.DATE, _dslHelper, "le",
 			Collections.singletonList(dateString));
 
 		LocalDate localDate = LocalDate.parse(dateString);
@@ -341,7 +363,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testLessThanEqualsFilterOperatorDuration() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DURATION, "le",
+			EventAttributeDefinition.DataType.DURATION, _dslHelper, "le",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -356,7 +378,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testLessThanEqualsFilterOperatorNumber() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.NUMBER, "le",
+			EventAttributeDefinition.DataType.NUMBER, _dslHelper, "le",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -373,7 +395,7 @@ public class FilterOperatorTest {
 		String dateString = "2021-06-01";
 
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DATE, "lt",
+			EventAttributeDefinition.DataType.DATE, _dslHelper, "lt",
 			Collections.singletonList(dateString));
 
 		LocalDate localDate = LocalDate.parse(dateString);
@@ -391,7 +413,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testLessThanFilterOperatorDuration() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DURATION, "lt",
+			EventAttributeDefinition.DataType.DURATION, _dslHelper, "lt",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -406,7 +428,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testLessThanFilterOperatorNumber() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.NUMBER, "lt",
+			EventAttributeDefinition.DataType.NUMBER, _dslHelper, "lt",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -421,7 +443,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testNotContainsFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "notContains",
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "notContains",
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
@@ -437,7 +459,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testNotEqualsFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.DURATION, "ne",
+			EventAttributeDefinition.DataType.DURATION, _dslHelper, "ne",
 			Collections.singletonList("123"));
 
 		Assertions.assertEquals(
@@ -452,7 +474,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testNotEqualsFilterOperatorNull() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "ne",
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "ne",
 			Collections.singletonList(null));
 
 		Assertions.assertEquals(
@@ -465,7 +487,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testNotEqualsFilterOperatorString() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "ne",
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "ne",
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
@@ -480,7 +502,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testSimilarToFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "similarTo",
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "similarTo",
 			Collections.singletonList("test.*Value"));
 
 		Assertions.assertEquals(
@@ -495,7 +517,7 @@ public class FilterOperatorTest {
 	@Test
 	public void testStartsWithFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
-			EventAttributeDefinition.DataType.STRING, "startsWith",
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "startsWith",
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
@@ -506,5 +528,7 @@ public class FilterOperatorTest {
 			),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
+
+	private final DSLHelper _dslHelper = new DSLHelper();
 
 }
