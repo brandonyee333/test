@@ -30,7 +30,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -199,8 +198,6 @@ public class BQMembershipDogTest
 		field1.setSourceName("email");
 		field1.setValue("test2@liferay.com");
 
-		_fieldRepository.save(field1);
-
 		individual1.setFields(Collections.singleton(field1));
 
 		_individualDog.updateIndividual(individual1);
@@ -224,8 +221,6 @@ public class BQMembershipDogTest
 		field2.setOwnerType("individual");
 		field2.setSourceName("email");
 		field2.setValue("test1@liferay.com");
-
-		_fieldRepository.save(field2);
 
 		individual2.setFields(Collections.singleton(field2));
 
@@ -351,9 +346,6 @@ public class BQMembershipDogTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;

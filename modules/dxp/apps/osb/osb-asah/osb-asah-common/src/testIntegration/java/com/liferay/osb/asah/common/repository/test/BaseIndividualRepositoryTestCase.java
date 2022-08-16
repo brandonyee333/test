@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -142,8 +141,6 @@ public abstract class BaseIndividualRepositoryTestCase
 		field1.setSourceName("emailAddress");
 		field1.setValue(emailAddress);
 
-		fieldRepository.save(field1);
-
 		Field field2 = new Field();
 
 		field2.setContext("demographics");
@@ -157,8 +154,6 @@ public abstract class BaseIndividualRepositoryTestCase
 		field2.setSourceName("Field 1");
 		field2.setValue("field two");
 
-		fieldRepository.save(field2);
-
 		Field field3 = new Field();
 
 		field3.setContext("demographics");
@@ -171,8 +166,6 @@ public abstract class BaseIndividualRepositoryTestCase
 		field3.setOwnerType("individual");
 		field3.setSourceName("Field 3");
 		field3.setValue("field three");
-
-		fieldRepository.save(field3);
 
 		Set<Field> fields = new HashSet<>();
 
@@ -194,8 +187,6 @@ public abstract class BaseIndividualRepositoryTestCase
 		field4.setOwnerType("individual");
 		field4.setSourceName("Field 4");
 		field4.setValue("field four");
-
-		fieldRepository.save(field4);
 
 		individual1.setCustomFields(Collections.singleton(field4));
 
@@ -265,7 +256,6 @@ public abstract class BaseIndividualRepositoryTestCase
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
 
-		fieldRepository.deleteAll();
 		individualRepository.deleteAll();
 	}
 
@@ -931,9 +921,6 @@ public abstract class BaseIndividualRepositoryTestCase
 
 		_dataSourceRepository.save(dataSource);
 	}
-
-	@Autowired
-	protected FieldRepository fieldRepository;
 
 	@Autowired
 	protected IndividualRepository individualRepository;

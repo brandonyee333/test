@@ -34,7 +34,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -219,8 +218,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 			String dataId, JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
-		List<Field> fields = _fieldDog.buildFields(
-			"demographics", dataJSONObject, dataSource, null, "individual");
+		List<Field> fields = new ArrayList<>();
 
 		Stream<Field> stream = fields.stream();
 
@@ -253,15 +251,11 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 		individual = _individualRepository.save(individual);
 
-		List<Field> customFields = _fieldDog.addFields(
-			"custom", dataJSONObject, dataSource, individual.getId(),
-			"individual");
+		List<Field> customFields = new ArrayList();
 
 		individual.setCustomFields(new HashSet<>(customFields));
 
-		fields = _fieldDog.addFields(
-			"demographics", dataJSONObject, dataSource, individual.getId(),
-			"individual");
+		fields = new ArrayList();
 
 		individual.setFields(new HashSet<>(fields));
 
@@ -406,9 +400,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public void deleteIndividual(Date deletionDate, Long individualId) {
-		_fieldRepository.deleteByOwnerIdAndOwnerType(
-			individualId, "individual");
-
 		_interestRepository.deleteByOwnerIdInAndOwnerType(
 			Collections.singletonList(individualId), "individual");
 
@@ -473,9 +464,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 		Date deletionDate, List<Individual> individuals) {
 
 		List<Long> individualIds = ListUtil.map(individuals, Individual::getId);
-
-		_fieldRepository.deleteByOwnerIdInAndOwnerType(
-			individualIds, "individual");
 
 		_interestRepository.deleteByOwnerIdInAndOwnerType(
 			individualIds, "individual");
@@ -858,8 +846,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	public Individual removeDemographics(Individual individual) {
-		_fieldDog.deleteFields("demographics", individual.getId());
-
 		individual.setFields(Collections.emptySet());
 
 		return updateIndividual(individual);
@@ -1032,23 +1018,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 			List<Individual> individuals)
 		throws Exception {
 
-		List<Long> individualIds = ListUtil.map(individuals, Individual::getId);
-
-		List<Field> previousFields = _fieldDog.getFields(
-			"demographics", individualIds);
-
-		_fieldDog.updateFields(
-			"custom", dataJSONObject, dataSource, individualIds, "individual");
-		_fieldDog.updateFields(
-			"demographics", dataJSONObject, dataSource, individualIds,
-			"individual");
+		List<Field> previousFields = new ArrayList<>();
 
 		List<Individual> deletedIndividuals = new ArrayList<>();
 		List<Individual> updatedIndividuals = new ArrayList<>();
 
 		for (Individual individual : individuals) {
-			List<Field> fields = _fieldDog.getOwnerIdFields(
-				"demographics", individual.getId());
+			List<Field> fields = new ArrayList<>();
 
 			Stream<Field> stream = fields.stream();
 
@@ -1079,10 +1055,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 			deleteIndividuals(new Date(), deletedIndividuals);
 		}
 
-		List<Field> fields = _fieldDog.getFields("demographics", individualIds);
+		List<Field> fields = new ArrayList<>();
 
-		JSONObject fieldsJSONObject = _fieldDog.getFieldsJSONObject(
-			"demographics", dataJSONObject, dataSource);
+		JSONObject fieldsJSONObject = new JSONObject();
 
 		if ((fieldsJSONObject.names() != null) &&
 			((previousFields.size() != fields.size()) ||
@@ -1195,29 +1170,13 @@ public class IndividualDog extends BaseFaroInfoDog {
 			return individual;
 		}
 
-		Long dataSourceId = dataSource.getId();
-
 		if ((dataId != null) && !dataId.equals(String.valueOf(individualId))) {
-			addDataSourceUserPK(dataId, dataSourceId, individual);
+			addDataSourceUserPK(dataId, dataSource.getId(), individual);
 		}
 
 		_setFirstEnrichmentDate(individual);
 
-		List<Field> previousFields = _fieldDog.getOwnerIdFields(
-			"demographics", individualId);
-
-		if (dataJSONObject.has("expando")) {
-			_fieldDog.updateFields(
-				"custom", dataJSONObject, dataSource,
-				Collections.singletonList(individualId), "individual");
-		}
-
-		_fieldDog.updateFields(
-			"demographics", dataJSONObject, dataSource,
-			Collections.singletonList(individualId), "individual");
-
-		List<Field> fields = _fieldDog.getOwnerIdFields(
-			"demographics", individualId);
+		List<Field> fields = new ArrayList<>();
 
 		Stream<Field> stream = fields.stream();
 
@@ -1228,9 +1187,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		individual = _populateIndividual(
 			_individualRepository.save(individual));
 
-		List<Field> emailFields =
-			_fieldRepository.findByContextAndNameAndOwnerIdAndOwnerType(
-				"demographics", "email", individualId, "individual");
+		List<Field> emailFields = new ArrayList<>();
 
 		if (emailFields.isEmpty()) {
 			deleteIndividual(new Date(), individualId);
@@ -1238,8 +1195,9 @@ public class IndividualDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		JSONObject fieldsJSONObject = _fieldDog.getFieldsJSONObject(
-			"demographics", dataJSONObject, dataSource);
+		List<Field> previousFields = new ArrayList<>();
+
+		JSONObject fieldsJSONObject = new JSONObject();
 
 		if ((fieldsJSONObject.names() != null) &&
 			((previousFields.size() != fields.size()) ||
@@ -1334,7 +1292,7 @@ public class IndividualDog extends BaseFaroInfoDog {
 		);
 	}
 
-	private Set<Field> _getFields(String context, Long individualId) {
+	private Set<Field> _getFields(String context) {
 		Set<Field> fields = new HashSet<>();
 
 		// TODO Fetch all individual fields
@@ -1402,8 +1360,8 @@ public class IndividualDog extends BaseFaroInfoDog {
 			return null;
 		}
 
-		individual.setCustomFields(_getFields("custom", individual.getId()));
-		individual.setFields(_getFields("demographics", individual.getId()));
+		individual.setCustomFields(_getFields("custom"));
+		individual.setFields(_getFields("demographics"));
 
 		return individual;
 	}
@@ -1459,12 +1417,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 	}
 
 	private void _setFirstEnrichmentDate(Individual individual) {
-		if (_fieldRepository.existsByNameAndOwnerId(
-				"email", individual.getId())) {
-
-			return;
-		}
-
 		individual.setFirstEnrichmentDate(new Date());
 	}
 
@@ -1660,12 +1612,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
-
-	@Autowired
-	private FieldDog _fieldDog;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualRepository _individualRepository;

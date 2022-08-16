@@ -34,7 +34,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
@@ -99,10 +98,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Individual individual = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividual(dataSource1), false);
 
-		_fieldRepository.save(
-			FaroInfoTestUtil.buildIndividualField(
-				dataSource1, "email", "http://schema.org/email",
-				RandomTestUtil.randomString(), individual, "email"));
+		FaroInfoTestUtil.buildIndividualField(
+			dataSource1, "email", "http://schema.org/email",
+			RandomTestUtil.randomString(), individual, "email");
 
 		individual = _individualDog.updateIndividual(
 			RandomTestUtil.randomUUID(),
@@ -352,10 +350,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Individual individual = _individualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividual(dataSource1), false);
 
-		_fieldRepository.save(
-			FaroInfoTestUtil.buildIndividualField(
-				dataSource1, "email", "http://schema.org/email",
-				RandomTestUtil.randomString(), individual, "email"));
+		FaroInfoTestUtil.buildIndividualField(
+			dataSource1, "email", "http://schema.org/email",
+			RandomTestUtil.randomString(), individual, "email");
 
 		individual = _individualDog.updateIndividual(
 			RandomTestUtil.randomUUID(),
@@ -594,9 +591,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;

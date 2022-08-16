@@ -37,7 +37,6 @@ import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -999,8 +998,6 @@ public class IndividualsFilterStringConverterHelperTest
 				jsonArray.getJSONObject(i), Field.class);
 
 			field.setIsNew(Boolean.TRUE);
-
-			_fieldRepository.save(field);
 		}
 	}
 
@@ -1097,9 +1094,6 @@ public class IndividualsFilterStringConverterHelperTest
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualRepository _individualRepository;

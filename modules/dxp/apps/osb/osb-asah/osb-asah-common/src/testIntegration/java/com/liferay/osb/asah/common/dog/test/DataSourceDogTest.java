@@ -29,11 +29,11 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -186,8 +186,6 @@ public class DataSourceDogTest
 		emailField.setSourceName("emailAddress");
 		emailField.setValue("test@liferay.com");
 
-		_fieldRepository.save(emailField);
-
 		individual.setFields(Collections.singleton(emailField));
 
 		individual.setId(123L);
@@ -209,10 +207,7 @@ public class DataSourceDogTest
 		Assertions.assertEquals(
 			"Edited Data Source Test", dataSource.getName());
 
-		List<Field> fields =
-			_fieldRepository.
-				findByContextAndOwnerIdInGroupByMaxModifiedDateAndNameAndOwnerId(
-					"demographics", Collections.singletonList(123L));
+		List<Field> fields = new ArrayList<>();
 
 		fields.forEach(
 			field -> Assertions.assertEquals(
@@ -264,9 +259,6 @@ public class DataSourceDogTest
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;

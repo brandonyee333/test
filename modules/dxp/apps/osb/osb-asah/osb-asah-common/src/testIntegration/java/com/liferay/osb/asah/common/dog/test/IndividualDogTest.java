@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
@@ -38,7 +37,6 @@ import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -332,14 +330,13 @@ public class IndividualDogTest
 			"", null, 0, 10);
 
 		Assertions.assertEquals(5, individualPage.getTotalElements());
+
 		Assertions.assertEquals(
 			SetUtil.of("123", "124", "125", "126", "127"),
-			_getIndividualsCustomFieldValues(
-				individualPage.getContent(), "client_id"));
+			Collections.emptySet());
 		Assertions.assertEquals(
 			SetUtil.of("Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Mew"),
-			_getIndividualsDemographicsFieldValues(
-				individualPage.getContent(), "favoritePokemon"));
+			Collections.emptySet());
 	}
 
 	@ElasticsearchIndex(
@@ -359,10 +356,9 @@ public class IndividualDogTest
 			"mander", null, 0, 10);
 
 		Assertions.assertEquals(1, individualPage.getTotalElements());
+
 		Assertions.assertEquals(
-			SetUtil.of("Charmander"),
-			_getIndividualsDemographicsFieldValues(
-				individualPage.getContent(), "favoritePokemon"));
+			SetUtil.of("Charmander"), Collections.emptySet());
 	}
 
 	@RepositoryResource(
@@ -700,8 +696,6 @@ public class IndividualDogTest
 		field.setSourceName("email");
 		field.setValue("test1@liferay.com");
 
-		_fieldRepository.save(field);
-
 		individual.setFields(Collections.singleton(field));
 
 		_individualDog.updateIndividual(individual);
@@ -835,8 +829,6 @@ public class IndividualDogTest
 		field.setOwnerType("individual");
 		field.setSourceName("email");
 		field.setValue("test1@liferay.com");
-
-		_fieldRepository.save(field);
 
 		individual.setFields(Collections.singleton(field));
 
@@ -1090,42 +1082,6 @@ public class IndividualDogTest
 		return givenNames;
 	}
 
-	private Set<String> _getIndividualsCustomFieldValues(
-		List<Individual> individuals, String fieldName) {
-
-		Stream<Individual> stream = individuals.stream();
-
-		return stream.map(
-			Individual::getCustomFields
-		).map(
-			FieldDog::toMap
-		).map(
-			customFieldsMap -> customFieldsMap.get(fieldName)
-		).filter(
-			fieldValue -> !Objects.isNull(fieldValue)
-		).collect(
-			Collectors.toSet()
-		);
-	}
-
-	private Set<String> _getIndividualsDemographicsFieldValues(
-		List<Individual> individuals, String fieldName) {
-
-		Stream<Individual> stream = individuals.stream();
-
-		return stream.map(
-			Individual::getFields
-		).map(
-			FieldDog::toMap
-		).map(
-			demographicsMap -> demographicsMap.get(fieldName)
-		).filter(
-			fieldValue -> !Objects.isNull(fieldValue)
-		).collect(
-			Collectors.toSet()
-		);
-	}
-
 	private void _updateIndividualAsync(
 			JSONObject dataJSONObject, Individual individual)
 		throws Exception {
@@ -1173,9 +1129,6 @@ public class IndividualDogTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;

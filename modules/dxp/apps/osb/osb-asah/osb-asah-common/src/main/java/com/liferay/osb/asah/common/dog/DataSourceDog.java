@@ -303,8 +303,6 @@ public class DataSourceDog {
 				() -> {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
-					_fieldDog.updateDataSourceName(id, dataSource.getName());
-
 					_individualDog.updateDataSourceName(
 						id, dataSource.getName());
 				});
@@ -723,9 +721,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private Encryptor _encryptor;
-
-	@Autowired
-	private FieldDog _fieldDog;
 
 	@Autowired
 	private IndividualDog _individualDog;
