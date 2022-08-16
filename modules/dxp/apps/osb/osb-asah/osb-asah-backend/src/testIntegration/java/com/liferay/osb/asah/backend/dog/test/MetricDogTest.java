@@ -220,6 +220,7 @@ public class MetricDogTest
 		resourcePath = "document_library_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Disabled
 	@Test
 	public void testDocumentLibraryMetrics() {
 		DocumentLibraryMetric documentLibraryMetric = _metricDog.getAssetMetric(
