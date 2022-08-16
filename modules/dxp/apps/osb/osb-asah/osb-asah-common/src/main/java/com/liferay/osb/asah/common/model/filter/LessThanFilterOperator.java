@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +23,6 @@ import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.impl.DSL;
 
 /**
  * @author Leslie Wong
@@ -36,11 +36,14 @@ public class LessThanFilterOperator extends FilterOperator {
 	}
 
 	@Override
-	public Condition getCondition(Field field) {
+	public Condition getCondition(DSLHelper dslHelper, Field field) {
 		String value = values.get(0);
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			return field.lt(DSL.date((Date)getValue(dataType, value)));
+			Object dataTypeObject = dslHelper.getDataType(
+				(Date)getValue(dataType, value));
+
+			return field.lt(dataTypeObject);
 		}
 
 		return field.lt(getValue(dataType, value));

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +35,7 @@ public class StartsWithFilterOperator extends FilterOperator {
 	}
 
 	@Override
-	public Condition getCondition(Field field) {
+	public Condition getCondition(DSLHelper dslHelper, Field field) {
 		return field.startsWithIgnoreCase(getValue(dataType, values.get(0)));
 	}
 

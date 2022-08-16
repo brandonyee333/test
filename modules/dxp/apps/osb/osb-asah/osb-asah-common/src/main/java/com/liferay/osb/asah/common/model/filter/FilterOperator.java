@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ import org.jooq.Field;
  */
 public abstract class FilterOperator {
 
-	public abstract Condition getCondition(Field field);
+	public abstract Condition getCondition(DSLHelper dslHelper, Field field);
 
 	protected FilterOperator(
 		EventAttributeDefinition.DataType dataType, int expectedArgumentCount,

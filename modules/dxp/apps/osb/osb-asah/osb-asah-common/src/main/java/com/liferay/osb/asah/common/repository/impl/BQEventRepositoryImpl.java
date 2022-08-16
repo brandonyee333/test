@@ -851,6 +851,7 @@ public class BQEventRepositoryImpl
 
 				condition = condition.and(
 					filterOperator.getCondition(
+						_dslHelper,
 						_getField(eventAnalysisFilter, field, timeZoneId)));
 			}
 

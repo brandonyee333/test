@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,11 +37,15 @@ public class BetweenFilterOperator extends FilterOperator {
 	}
 
 	@Override
-	public Condition getCondition(Field field) {
+	public Condition getCondition(DSLHelper dslHelper, Field field) {
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
+			Object dataTypeObject1 = dslHelper.getDataType(
+				(Date)getValue(dataType, values.get(0)));
+			Object dataTypeObject2 = dslHelper.getDataType(
+				(Date)getValue(dataType, values.get(1)));
+
 			return DSL.and(
-				field.ge(DSL.date((Date)getValue(dataType, values.get(0)))),
-				field.le(DSL.date((Date)getValue(dataType, values.get(1)))));
+				field.ge(dataTypeObject1), field.le(dataTypeObject2));
 		}
 
 		return DSL.and(

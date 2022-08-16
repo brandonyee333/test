@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.model.filter;
 
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.DateGrouping;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,17 +38,17 @@ public class DateGroupingFilterOperator extends FilterOperator {
 	}
 
 	@Override
-	public Condition getCondition(Field field) {
+	public Condition getCondition(DSLHelper dslHelper, Field field) {
 		DateGrouping dateGrouping = DateGrouping.valueOf(values.get(0));
 
 		if (dateGrouping.equals(DateGrouping.DAY)) {
-			field = DSL.concat(
+			field = dslHelper.concat(
 				DSL.extract(field, DatePart.YEAR), DSL.val("-"),
 				DSL.extract(field, DatePart.MONTH), DSL.val("-"),
 				DSL.extract(field, DatePart.DAY));
 		}
 		else if (dateGrouping.equals(DateGrouping.MONTH)) {
-			field = DSL.concat(
+			field = dslHelper.concat(
 				DSL.extract(field, DatePart.YEAR), DSL.val("-"),
 				DSL.extract(field, DatePart.MONTH));
 		}
