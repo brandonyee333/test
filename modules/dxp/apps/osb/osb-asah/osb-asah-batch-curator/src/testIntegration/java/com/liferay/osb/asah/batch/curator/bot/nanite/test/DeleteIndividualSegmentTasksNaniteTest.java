@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -69,8 +68,6 @@ public class DeleteIndividualSegmentTasksNaniteTest
 		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource);
 
 		individual.setSegmentIds(Collections.singleton(segmentId));
-
-		_fieldRepository.saveAll(individual.getFields());
 
 		_individualDog.addIndividual(individual, false);
 
@@ -127,9 +124,6 @@ public class DeleteIndividualSegmentTasksNaniteTest
 	@Autowired
 	private DeleteIndividualSegmentTasksNanite
 		_deleteIndividualSegmentTasksNanite;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;

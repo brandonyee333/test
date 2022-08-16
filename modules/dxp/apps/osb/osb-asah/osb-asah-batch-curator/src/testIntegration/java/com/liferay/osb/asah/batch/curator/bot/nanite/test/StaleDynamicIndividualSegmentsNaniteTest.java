@@ -35,7 +35,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
@@ -105,8 +104,6 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		// TODO Add BQFieldMapping "email", "Text"
 
 		Individual individual = FaroInfoTestUtil.buildIndividual(_dataSource);
-
-		_fieldRepository.saveAll(individual.getFields());
 
 		_individual = _individualDog.addIndividual(individual, false);
 	}
@@ -383,9 +380,6 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	private Individual _individual;
 

@@ -35,7 +35,6 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -102,14 +101,10 @@ public class UpdateDynamicMembershipsNaniteTest
 		Individual individual1 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
 
-		_fieldRepository.saveAll(individual1.getFields());
-
 		individual1 = _individualDog.addIndividual(individual1, false);
 
 		Individual individual2 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
-
-		_fieldRepository.saveAll(individual2.getFields());
 
 		individual2 = _individualDog.addIndividual(individual2, false);
 
@@ -172,21 +167,15 @@ public class UpdateDynamicMembershipsNaniteTest
 		Individual individual1 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
 
-		_fieldRepository.saveAll(individual1.getFields());
-
 		individual1 = _individualDog.addIndividual(individual1, false);
 
 		Individual individual2 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
 
-		_fieldRepository.saveAll(individual2.getFields());
-
 		individual2 = _individualDog.addIndividual(individual2, false);
 
 		Individual individual3 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
-
-		_fieldRepository.saveAll(individual3.getFields());
 
 		individual3 = _individualDog.addIndividual(individual3, false);
 
@@ -285,14 +274,10 @@ public class UpdateDynamicMembershipsNaniteTest
 		Individual individual1 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
 
-		_fieldRepository.saveAll(individual1.getFields());
-
 		individual1 = _individualDog.addIndividual(individual1, false);
 
 		Individual individual2 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
-
-		_fieldRepository.saveAll(individual2.getFields());
 
 		individual2 = _individualDog.addIndividual(individual2, false);
 
@@ -349,8 +334,6 @@ public class UpdateDynamicMembershipsNaniteTest
 		Individual individual = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
 
-		_fieldRepository.saveAll(individual.getFields());
-
 		individual = _individualDog.addIndividual(individual, false);
 
 		JSONObject assetJSONObject = _objectMapper.convertValue(
@@ -401,14 +384,10 @@ public class UpdateDynamicMembershipsNaniteTest
 		Individual individual1 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
 
-		_fieldRepository.saveAll(individual1.getFields());
-
 		individual1 = _individualDog.addIndividual(individual1, false);
 
 		Individual individual2 = FaroInfoTestUtil.buildIndividual(
 			2L, dataSource);
-
-		_fieldRepository.saveAll(individual2.getFields());
 
 		individual2 = _individualDog.addIndividual(individual2, false);
 
@@ -458,16 +437,12 @@ public class UpdateDynamicMembershipsNaniteTest
 
 		individual1.setSegmentIds(SetUtil.of(segment.getId()));
 
-		_fieldRepository.saveAll(individual1.getFields());
-
 		individuals.add(_individualDog.addIndividual(individual1, false));
 
 		Individual individual2 = FaroInfoTestUtil.buildIndividual(
 			1L, dataSource);
 
 		individual2.setSegmentIds(SetUtil.of(segment.getId()));
-
-		_fieldRepository.saveAll(individual2.getFields());
 
 		individuals.add(_individualDog.addIndividual(individual2, false));
 
@@ -538,9 +513,6 @@ public class UpdateDynamicMembershipsNaniteTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;
