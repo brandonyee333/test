@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
@@ -133,8 +132,6 @@ public class IndividualNaniteTest
 		field1.setOwnerId(100L);
 		field1.setValue("john@liferay.com");
 
-		_fieldRepository.save(field1);
-
 		_individualDog.addIndividual(individual1, false);
 
 		Individual individual2 = new Individual();
@@ -154,8 +151,6 @@ public class IndividualNaniteTest
 		field2.setName("email");
 		field2.setOwnerId(200L);
 		field2.setValue("jane@liferay.com");
-
-		_fieldRepository.save(field2);
 
 		_individualDog.addIndividual(individual2, false);
 
@@ -207,8 +202,6 @@ public class IndividualNaniteTest
 		field1.setName("email");
 		field1.setOwnerId(100L);
 		field1.setValue("john@liferay.com");
-
-		_fieldRepository.save(field1);
 
 		_individualDog.addIndividual(individual1, false);
 
@@ -406,8 +399,6 @@ public class IndividualNaniteTest
 		field1.setOwnerId(100L);
 		field1.setValue("john@liferay.com");
 
-		_fieldRepository.save(field1);
-
 		_individualDog.addIndividual(individual1, false);
 
 		Individual individual2 = new Individual();
@@ -451,9 +442,6 @@ public class IndividualNaniteTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private IndividualDog _individualDog;
