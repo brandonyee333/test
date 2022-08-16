@@ -101,8 +101,8 @@ public class EventIngestionPipeline {
 				eventIngestionPipelineOptions.getOutputFileNamePrefix(),
 				eventIngestionPipelineOptions.getWriteInterval()));
 
-		PCollection<KV<String, Iterable<AnalyticsEvent>>>
-			sessionizedAnalyticsEventsPCollection = pipeline.apply(
+		PCollection<KV<String, Iterable<AnalyticsEvent>>> pCollection =
+			pipeline.apply(
 				"Read PubSub Messages",
 				PubsubIO.readStrings(
 				).fromSubscription(
@@ -118,21 +118,63 @@ public class EventIngestionPipeline {
 				"Extract Geolocation/Device Information",
 				ParDo.of(new AnalyticsEventExtractor())
 			).apply(
-				"Create Sessions",
-				new Sessionizer(
-					eventIngestionPipelineOptions.
-						getSessionWindowAllowedLateness(),
-					eventIngestionPipelineOptions.
-						getSessionWindowEarlyFiringsInterval(),
-					eventIngestionPipelineOptions.getSessionWindowGapDuration())
+				"Add Session Key", _buildWithKeysPTransform()
+			).apply(
+				GroupByKey.create()
 			);
 
-		sessionizedAnalyticsEventsPCollection.apply(
+		PCollection<KV<String, Iterable<AnalyticsEvent>>>
+			analyticsEventsPCollection = pCollection.apply(
+				"Create Analytics Events Session Windowing",
+				Window.<KV<String, Iterable<AnalyticsEvent>>>into(
+					Sessions.withGapDuration(
+						Duration.standardMinutes(
+							eventIngestionPipelineOptions.
+								getSessionWindowGapDuration()))
+				).triggering(
+					Repeatedly.forever(
+						AfterWatermark.pastEndOfWindow(
+						).withEarlyFirings(
+							AfterProcessingTime.pastFirstElementInPane(
+							).plusDelayOf(
+								Duration.standardMinutes(
+									eventIngestionPipelineOptions.
+										getSessionWindowEarlyFiringsInterval())
+							)
+						))
+				).withAllowedLateness(
+					Duration.standardMinutes(
+						eventIngestionPipelineOptions.
+							getSessionWindowAllowedLateness()),
+					Window.ClosingBehavior.FIRE_ALWAYS
+				).discardingFiredPanes(
+				).withTimestampCombiner(
+					TimestampCombiner.END_OF_WINDOW
+				));
+
+		PCollection<KV<String, Iterable<AnalyticsEvent>>> sessionPCollection =
+			pCollection.apply(
+				"Create Session Windowing",
+				Window.<KV<String, Iterable<AnalyticsEvent>>>into(
+					Sessions.withGapDuration(
+						Duration.standardMinutes(
+							eventIngestionPipelineOptions.
+								getSessionWindowGapDuration()))
+				).withAllowedLateness(
+					Duration.standardMinutes(
+						eventIngestionPipelineOptions.
+							getSessionWindowAllowedLateness()),
+					Window.ClosingBehavior.FIRE_ALWAYS
+				).discardingFiredPanes(
+				).withTimestampCombiner(
+					TimestampCombiner.END_OF_WINDOW
+				));
+
+		analyticsEventsPCollection.apply(
 			"Write Events", new EventBigQueryWriter());
-		sessionizedAnalyticsEventsPCollection.apply(
+		analyticsEventsPCollection.apply(
 			"Write Event Properties", new EventPropertyBigQueryWriter());
-		sessionizedAnalyticsEventsPCollection.apply(
-			"Write Sessions", new SessionBigQueryWriter());
+		sessionPCollection.apply("Write Sessions", new SessionBigQueryWriter());
 
 		return pipeline.run();
 	}
@@ -458,92 +500,29 @@ public class EventIngestionPipeline {
 
 	}
 
-	public static class Sessionizer
-		extends PTransform
-			<PCollection<AnalyticsEvent>,
-			 PCollection<KV<String, Iterable<AnalyticsEvent>>>> {
+	private static WithKeys<String, AnalyticsEvent> _buildWithKeysPTransform() {
+		WithKeys<String, AnalyticsEvent> withKeys = WithKeys.of(
+			new SerializableFunction<AnalyticsEvent, String>() {
 
-		public Sessionizer(
-			long sessionWindowAllowedLatenessInMinutes,
-			long sessionWindowEarlyFiringIntervalInMinutes,
-			long sessionWindowGapDurationInMinutes) {
+				@Override
+				public String apply(AnalyticsEvent analyticsEvent) {
+					ZonedDateTime utcZonedDateTime =
+						DateUtil.toUTCZonedDateTime(analyticsEvent.eventDate);
 
-			_sessionWindowAllowedLatenessInMinutes =
-				sessionWindowAllowedLatenessInMinutes;
-			_sessionWindowEarlyFiringIntervalInMinutes =
-				sessionWindowEarlyFiringIntervalInMinutes;
-			_sessionWindowGapDurationInMinutes =
-				sessionWindowGapDurationInMinutes;
-		}
+					ZonedDateTime projectZonedDateTime =
+						utcZonedDateTime.withZoneSameInstant(
+							ZoneId.of(analyticsEvent.projectTimeZoneId));
 
-		@Override
-		public PCollection<KV<String, Iterable<AnalyticsEvent>>> expand(
-			PCollection<AnalyticsEvent> pCollection) {
+					return String.format(
+						"%s#%s#%s#%s#%s", analyticsEvent.projectId,
+						analyticsEvent.dataSourceId, analyticsEvent.channelId,
+						analyticsEvent.userId,
+						projectZonedDateTime.toLocalDate());
+				}
 
-			return pCollection.apply(
-				"Add Session Key", _buildWithKeysPTransform()
-			).apply(
-				"Apply Session Window", _buildSessionWindow()
-			).apply(
-				GroupByKey.create()
-			);
-		}
+			});
 
-		private Window<KV<String, AnalyticsEvent>> _buildSessionWindow() {
-			return Window.<KV<String, AnalyticsEvent>>into(
-				Sessions.withGapDuration(
-					Duration.standardMinutes(
-						_sessionWindowGapDurationInMinutes))
-			).triggering(
-				Repeatedly.forever(
-					AfterWatermark.pastEndOfWindow(
-					).withEarlyFirings(
-						AfterProcessingTime.pastFirstElementInPane(
-						).plusDelayOf(
-							Duration.standardMinutes(
-								_sessionWindowEarlyFiringIntervalInMinutes)
-						)
-					))
-			).withAllowedLateness(
-				Duration.standardMinutes(
-					_sessionWindowAllowedLatenessInMinutes),
-				Window.ClosingBehavior.FIRE_ALWAYS
-			).discardingFiredPanes(
-			).withTimestampCombiner(
-				TimestampCombiner.END_OF_WINDOW
-			);
-		}
-
-		private WithKeys<String, AnalyticsEvent> _buildWithKeysPTransform() {
-			WithKeys<String, AnalyticsEvent> withKeys = WithKeys.of(
-				new SerializableFunction<AnalyticsEvent, String>() {
-
-					@Override
-					public String apply(AnalyticsEvent analyticsEvent) {
-						ZonedDateTime utcZonedDateTime =
-							DateUtil.toUTCZonedDateTime(
-								analyticsEvent.eventDate);
-
-						ZonedDateTime projectZonedDateTime =
-							utcZonedDateTime.withZoneSameInstant(
-								ZoneId.of(analyticsEvent.projectTimeZoneId));
-
-						return String.format(
-							"%s#%s#%s#%s#%s", analyticsEvent.projectId,
-							analyticsEvent.dataSourceId,
-							analyticsEvent.channelId, analyticsEvent.userId,
-							projectZonedDateTime.toLocalDate());
-					}
-
-				});
-
-			return withKeys.withKeyType(TypeDescriptor.of(String.class));
-		}
-
-		private final long _sessionWindowAllowedLatenessInMinutes;
-		private final long _sessionWindowEarlyFiringIntervalInMinutes;
-		private final long _sessionWindowGapDurationInMinutes;
-
+		return withKeys.withKeyType(TypeDescriptor.of(String.class));
 	}
 
 	private static void _outputEventPropertyTableRows(
