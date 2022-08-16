@@ -2349,7 +2349,7 @@ public class LayoutUtil {
 	 *
 	 * @param groupId the group ID
 	 * @param privateLayout the private layout
-	 * @param parentLayoutId the parent layout ID
+	 * @param parentLayoutIds the parent layout IDs
 	 * @param start the lower bound of the range of layouts
 	 * @param end the upper bound of the range of layouts (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)

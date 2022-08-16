@@ -727,7 +727,7 @@ public interface CollaboratorPersistence extends BasePersistence<Collaborator> {
 	 * </p>
 	 *
 	 * @param gitHubUserName the git hub user name
-	 * @param status the status
+	 * @param statuses the statuses
 	 * @param start the lower bound of the range of collaborators
 	 * @param end the upper bound of the range of collaborators (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)

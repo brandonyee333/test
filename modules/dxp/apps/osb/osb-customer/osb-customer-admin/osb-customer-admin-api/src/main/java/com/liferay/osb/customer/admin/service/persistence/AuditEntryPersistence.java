@@ -412,7 +412,7 @@ public interface AuditEntryPersistence extends BasePersistence<AuditEntry> {
 	 *
 	 * @param classNameId the class name ID
 	 * @param classPK the class pk
-	 * @param visibility the visibility
+	 * @param visibilities the visibilities
 	 * @param start the lower bound of the range of audit entries
 	 * @param end the upper bound of the range of audit entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)

@@ -1201,7 +1201,7 @@ public class MBThreadUtil {
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param categoryId the category ID
+	 * @param categoryIds the category IDs
 	 * @param start the lower bound of the range of message boards threads
 	 * @param end the upper bound of the range of message boards threads (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -2871,7 +2871,7 @@ public class MBThreadUtil {
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param categoryId the category ID
+	 * @param categoryIds the category IDs
 	 * @param status the status
 	 * @param start the lower bound of the range of message boards threads
 	 * @param end the upper bound of the range of message boards threads (not inclusive)
@@ -3343,7 +3343,7 @@ public class MBThreadUtil {
 	 * </p>
 	 *
 	 * @param groupId the group ID
-	 * @param categoryId the category ID
+	 * @param categoryIds the category IDs
 	 * @param status the status
 	 * @param start the lower bound of the range of message boards threads
 	 * @param end the upper bound of the range of message boards threads (not inclusive)

@@ -565,7 +565,7 @@ public interface EventPersistence extends BasePersistence<Event> {
 	 *
 	 * @param classNameId the class name ID
 	 * @param classPK the class pk
-	 * @param type the type
+	 * @param types the types
 	 * @param start the lower bound of the range of events
 	 * @param end the upper bound of the range of events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)

@@ -532,7 +532,7 @@ public interface TicketAttachmentPersistence
 	 * </p>
 	 *
 	 * @param zendeskTicketId the zendesk ticket ID
-	 * @param type the type
+	 * @param types the types
 	 * @param start the lower bound of the range of ticket attachments
 	 * @param end the upper bound of the range of ticket attachments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
