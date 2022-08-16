@@ -50,7 +50,7 @@ AUI.add(
 		const TPL_ICON = '<i class="{iconClass}"></i>';
 
 		const TPL_SIMPLE_MENU_ITEM =
-			'<li class="{cssClass}" data-id="{id}">{icon} {caption}</li>';
+			'<li class="{cssClass}" data-id="{id}" role="{role}" tabindex="-1"></li>';
 
 		const getItemHandler = A.cached((id, items) => {
 			let found = null;
@@ -208,9 +208,11 @@ AUI.add(
 						const id = item.id;
 
 						let cssClass = CSS_SIMPLE_MENU_ITEM;
+						let role = "menuitem";
 
 						if (caption === STR_DASH) {
 							cssClass = CSS_SIMPLE_MENU_SEPARATOR;
+							role = "";
 						}
 
 						if (hiddenItems.indexOf(id) > -1) {
@@ -231,11 +233,13 @@ AUI.add(
 							caption = [icon, caption].join(STR_SPACE);
 						}
 
+
 						const li = A.Node.create(
 							Lang.sub(TPL_SIMPLE_MENU_ITEM, {
 								cssClass,
 								icon,
 								id,
+								role,
 							})
 						);
 
