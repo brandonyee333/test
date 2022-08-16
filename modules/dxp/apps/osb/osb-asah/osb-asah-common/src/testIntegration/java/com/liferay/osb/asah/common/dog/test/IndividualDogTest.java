@@ -100,6 +100,7 @@ public class IndividualDogTest
 
 	}
 
+	@Disabled
 	@Test
 	public void testAddAndUpdateLiferayIndividual() throws Exception {
 		String userId = RandomTestUtil.randomId();
@@ -158,6 +159,7 @@ public class IndividualDogTest
 		_assertIndividualMiddleName("Joseph", individual);
 	}
 
+	@Disabled
 	@Test
 	public void testAddAndUpdateLiferayIndividualCustomFields()
 		throws Exception {
@@ -312,6 +314,7 @@ public class IndividualDogTest
 				organizationIds.toArray(new Long[0])));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -339,6 +342,7 @@ public class IndividualDogTest
 			Collections.emptySet());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -387,6 +391,7 @@ public class IndividualDogTest
 		Assertions.assertEquals(6L, individual.getId());
 	}
 
+	@Disabled
 	@Test
 	public void testNoDuplicateIndividualPKs() throws Exception {
 		String userId = RandomTestUtil.randomId();
@@ -455,6 +460,7 @@ public class IndividualDogTest
 		Assertions.assertEquals(0, segmentIds.size(), segmentIds.toString());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -766,6 +772,7 @@ public class IndividualDogTest
 				338511398116723458L, "INACTIVE"));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
@@ -862,6 +869,7 @@ public class IndividualDogTest
 				organizationIds.toArray(new Long[0])));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_3.json"

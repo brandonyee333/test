@@ -148,6 +148,7 @@ public class DataSourceDogTest
 		Assertions.assertTrue(dataSourcePage.isEmpty());
 	}
 
+	@Disabled
 	@Test
 	public void testPatchDataSource() throws Exception {
 		DataSource dataSource = new DataSource();
