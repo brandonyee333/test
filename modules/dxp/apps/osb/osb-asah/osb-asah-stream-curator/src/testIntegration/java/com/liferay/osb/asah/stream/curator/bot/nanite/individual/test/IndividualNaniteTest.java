@@ -294,6 +294,7 @@ public class IndividualNaniteTest
 				DigestUtils.sha256Hex("")));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blog_info_old.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
