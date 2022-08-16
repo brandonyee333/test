@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -87,6 +88,7 @@ public class UserSessionNaniteTest extends BaseNaniteTestCase {
 			userSessionJSONObject.getString("userId"));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info_old_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

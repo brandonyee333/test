@@ -72,6 +72,7 @@ public class SearchTest
 		Assertions.assertEquals(2, customAssetDashboardPage.getTotalElements());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "search_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

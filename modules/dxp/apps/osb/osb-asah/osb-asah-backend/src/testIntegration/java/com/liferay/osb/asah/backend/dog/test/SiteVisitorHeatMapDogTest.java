@@ -47,6 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Leslie Wong
  */
+@Disabled
 public class SiteVisitorHeatMapDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {

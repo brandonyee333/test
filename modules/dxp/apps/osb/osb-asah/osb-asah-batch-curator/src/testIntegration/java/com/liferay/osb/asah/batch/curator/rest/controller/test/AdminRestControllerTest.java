@@ -25,6 +25,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -39,6 +40,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class AdminRestControllerTest
 	implements OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

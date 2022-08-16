@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Marcellus Tavares
  */
+@Disabled
 public class ExperimentDataDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {

@@ -169,6 +169,7 @@ public class IndividualNaniteTest
 			jsonArray, false);
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -237,6 +238,7 @@ public class IndividualNaniteTest
 
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -272,6 +274,7 @@ public class IndividualNaniteTest
 		Assertions.assertFalse(_individualDog.existsById(200L));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

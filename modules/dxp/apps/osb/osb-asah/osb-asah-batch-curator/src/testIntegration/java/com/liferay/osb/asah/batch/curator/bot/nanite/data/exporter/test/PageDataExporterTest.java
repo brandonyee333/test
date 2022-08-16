@@ -35,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -56,6 +57,7 @@ public class PageDataExporterTest
 				DateUtil.toUTCDate("2022-01-06T13:00:00.000Z"), null));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

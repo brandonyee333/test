@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,7 @@ public class PageReferrerDogTest
 			0, pageReferrers.size(), pageReferrers.toString());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
