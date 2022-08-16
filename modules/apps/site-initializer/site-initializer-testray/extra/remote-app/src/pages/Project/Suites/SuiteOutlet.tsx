@@ -13,24 +13,61 @@
  */
 
 import {useEffect} from 'react';
-import {Outlet, useOutletContext, useParams} from 'react-router-dom';
+import {
+	Outlet,
+	useLocation,
+	useOutletContext,
+	useParams,
+} from 'react-router-dom';
 
-import {useHeader} from '../../../hooks';
 import {useFetch} from '../../../hooks/useFetch';
+import useHeader from '../../../hooks/useHeader';
 import i18n from '../../../i18n';
-import {TestraySuite} from '../../../services/rest';
+import {TestrayProject, TestraySuite} from '../../../services/rest';
+import useSuiteActions from './useSuiteActions';
 
 const SuiteOutlet = () => {
-	const {projectId, suiteId} = useParams();
-	const {testrayProject}: any = useOutletContext();
-	const {setHeading} = useHeader({timeout: 100});
+	const {actions} = useSuiteActions({isHeaderActions: true});
+	const {pathname} = useLocation();
+	const {projectId, suiteId, ...otherParams} = useParams();
+	const {
+		testrayProject,
+	}: {testrayProject: TestrayProject} = useOutletContext();
 
-	const {data: testraySuite, mutate: mutateSuite} = useFetch<TestraySuite>(
+	const {data: testraySuite, mutate} = useFetch<TestraySuite>(
 		`/suites/${suiteId}`
 	);
 
+	const hasOtherParams = !!Object.values(otherParams).length;
+
+	const {setHeaderActions, setHeading, setTabs} = useHeader({
+		shouldUpdate: !hasOtherParams,
+		timeout: 100,
+	});
+
 	useEffect(() => {
-		if (testraySuite && testrayProject) {
+		setHeaderActions({actions, item: testraySuite, mutate});
+	}, [actions, mutate, setHeaderActions, testraySuite]);
+
+	const basePath = `/project/${projectId}/suites/${suiteId}`;
+
+	useEffect(() => {
+		setTabs([
+			{
+				active: pathname === basePath,
+				path: basePath,
+				title: i18n.translate('current'),
+			},
+			{
+				active: pathname !== basePath,
+				path: `${basePath}/archived`,
+				title: i18n.translate('archived'),
+			},
+		]);
+	}, [basePath, pathname, setTabs]);
+
+	useEffect(() => {
+		if (testrayProject && testraySuite) {
 			setHeading([
 				{
 					category: i18n.translate('project').toUpperCase(),
@@ -39,17 +76,26 @@ const SuiteOutlet = () => {
 				},
 				{
 					category: i18n.translate('suite').toUpperCase(),
+					path: `/project/${testrayProject.id}/suites/${testraySuite.id}`,
 					title: testraySuite.name,
 				},
 			]);
 		}
-	}, [testraySuite, testrayProject, setHeading]);
+	}, [setHeading, testrayProject, testraySuite]);
 
-	if (!testraySuite) {
-		return null;
+	if (testrayProject && testraySuite) {
+		return (
+			<Outlet
+				context={{
+					mutateTestraySuite: mutate,
+					testrayProject,
+					testraySuite,
+				}}
+			/>
+		);
 	}
 
-	return <Outlet context={{mutateSuite, projectId, testraySuite}} />;
+	return null;
 };
 
 export default SuiteOutlet;
