@@ -14,18 +14,8 @@
 
 package com.liferay.osb.asah.common.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.model.Field;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
+import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -41,19 +31,12 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.util.CollectionUtils;
 
 /**
  * @author Rachael Koestartyo
  */
-@Table
-public class Individual implements Persistable<Long> {
+public class Individual {
 
 	public Individual() {
 	}
@@ -123,42 +106,26 @@ public class Individual implements Persistable<Long> {
 		return false;
 	}
 
-	@JsonIgnore
 	public Long getActivitiesCount() {
 		return _activitiesCount;
 	}
 
-	@JsonProperty("activitiesCounts")
 	public Set<ActivitiesCount> getActivitiesCounts() {
 		return _activitiesCounts;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonIgnore
-	@MappedCollection(idColumn = "userid")
 	public Set<BQDataSourceUser> getBQDataSourceUsers() {
 		return _bqDataSourceUsers;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonIgnore
-	@MappedCollection(idColumn = "identityid")
 	public Set<BQIdentityChannel> getBQIdentityChannels() {
 		return _bqIdentityChannels;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Set<Long> getChannelIds() {
 		return _channelIds;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonAlias("createDate")
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
-	@JsonProperty("dateCreated")
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -167,14 +134,10 @@ public class Individual implements Persistable<Long> {
 		return new Date(_createDate.getTime());
 	}
 
-	@JsonProperty("custom")
 	public Demographics getCustomDemographics() {
 		return new Demographics(_customFields);
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonIgnore
-	@MappedCollection(idColumn = "ownerid")
 	public Set<Field> getCustomFields() {
 		Stream<Field> stream = _customFields.stream();
 
@@ -185,25 +148,18 @@ public class Individual implements Persistable<Long> {
 		);
 	}
 
-	@JsonAlias("dataSourceUserPKs")
-	@JsonProperty("dataSourceIndividualPKs")
 	public Set<DataSourceUserPK> getDataSourceUserPKs() {
 		return _dataSourceUserPKs;
 	}
 
-	@JsonProperty("demographics")
 	public Demographics getDemographics() {
 		return new Demographics(_fields);
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddressHashed() {
 		return _emailAddressHashed;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonIgnore
-	@MappedCollection(idColumn = "ownerid")
 	public Set<Field> getFields() {
 		Stream<Field> stream = _fields.stream();
 
@@ -214,11 +170,6 @@ public class Individual implements Persistable<Long> {
 		);
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
 	public Date getFirstEnrichmentDate() {
 		if (_firstEnrichmentDate == null) {
 			return null;
@@ -227,20 +178,14 @@ public class Individual implements Persistable<Long> {
 		return new Date(_firstEnrichmentDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Set<Long> getGroupIds() {
 		return _groupIds;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
-	@JsonSerialize(using = ToStringSerializer.class)
-	@Override
 	public Long getId() {
 		return _id;
 	}
 
-	@JsonIgnore
 	public Date getLastActivityDate() {
 		if (_lastActivityDate == null) {
 			return null;
@@ -249,16 +194,10 @@ public class Individual implements Persistable<Long> {
 		return new Date(_lastActivityDate.getTime());
 	}
 
-	@JsonProperty("lastActivityDates")
 	public Set<ActivityDate> getLastActivityDates() {
 		return _lastActivityDates;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
 	public Date getLastEnrichmentDate() {
 		if (_lastEnrichmentDate == null) {
 			return null;
@@ -267,13 +206,6 @@ public class Individual implements Persistable<Long> {
 		return new Date(_lastEnrichmentDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonAlias("modifiedDate")
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
-	@JsonProperty("dateModified")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -282,33 +214,26 @@ public class Individual implements Persistable<Long> {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Set<Long> getOrganizationIds() {
 		return _organizationIds;
 	}
 
-	@JsonProperty("previousActivityDates")
 	public Set<ActivityDate> getPreviousActivityDates() {
 		return _previousActivityDates;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Set<Long> getRoleIds() {
 		return _roleIds;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonProperty("individualSegmentIds")
 	public Set<Long> getSegmentIds() {
 		return _segmentIds;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Set<Long> getTeamIds() {
 		return _teamIds;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Set<Long> getUserGroupIds() {
 		return _userGroupIds;
 	}
@@ -319,16 +244,6 @@ public class Individual implements Persistable<Long> {
 			_channelIds, _createDate, _emailAddressHashed, _firstEnrichmentDate,
 			_groupIds, _id, _lastEnrichmentDate, _modifiedDate,
 			_organizationIds, _roleIds, _segmentIds, _teamIds, _userGroupIds);
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	public void setActivitiesCount(Long activitiesCount) {
@@ -501,7 +416,6 @@ public class Individual implements Persistable<Long> {
 		_userGroupIds = userGroupIds;
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class ActivitiesCount {
 
 		public ActivitiesCount() {
@@ -543,13 +457,10 @@ public class Individual implements Persistable<Long> {
 			return false;
 		}
 
-		@JsonProperty("activitiesCount")
 		public Long getActivitiesCount() {
 			return _activitiesCount;
 		}
 
-		@JsonProperty("channelId")
-		@JsonSerialize(using = ToStringSerializer.class)
 		public Long getChannelId() {
 			return _channelId;
 		}
@@ -567,15 +478,11 @@ public class Individual implements Persistable<Long> {
 			_channelId = channelId;
 		}
 
-		@Transient
 		private Long _activitiesCount;
-
-		@Transient
 		private Long _channelId;
 
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class ActivityDate {
 
 		public ActivityDate() {
@@ -619,11 +526,6 @@ public class Individual implements Persistable<Long> {
 			return false;
 		}
 
-		@JsonFormat(
-			pattern = DateUtil.PATTERN_ISO_8601,
-			shape = JsonFormat.Shape.STRING, timezone = "UTC"
-		)
-		@JsonProperty("lastActivityDate")
 		public Date getActivityDate() {
 			if (_activityDate == null) {
 				return null;
@@ -632,8 +534,6 @@ public class Individual implements Persistable<Long> {
 			return new Date(_activityDate.getTime());
 		}
 
-		@JsonProperty("channelId")
-		@JsonSerialize(using = ToStringSerializer.class)
 		public Long getChannelId() {
 			return _channelId;
 		}
@@ -653,15 +553,11 @@ public class Individual implements Persistable<Long> {
 			_channelId = channelId;
 		}
 
-		@Transient
 		private Date _activityDate;
-
-		@Transient
 		private Long _channelId;
 
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class DataSourceUserPK {
 
 		public DataSourceUserPK() {
@@ -695,14 +591,10 @@ public class Individual implements Persistable<Long> {
 			return false;
 		}
 
-		@JsonProperty("dataSourceId")
-		@JsonSerialize(using = ToStringSerializer.class)
 		public Long getDataSourceId() {
 			return _dataSourceId;
 		}
 
-		@JsonAlias("userPKs")
-		@JsonProperty("individualPKs")
 		public Set<String> getUserPKs() {
 			return _userPKs;
 		}
@@ -720,15 +612,11 @@ public class Individual implements Persistable<Long> {
 			_userPKs = userPKs;
 		}
 
-		@Transient
 		private Long _dataSourceId;
-
-		@Transient
 		private Set<String> _userPKs = new HashSet<>();
 
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class Demographics {
 
 		public Demographics() {
@@ -738,7 +626,6 @@ public class Individual implements Persistable<Long> {
 			_fields = fields;
 		}
 
-		@JsonAnySetter
 		public void addtField(String key, List<Field> fields) {
 			Field field = fields.get(0);
 
@@ -766,7 +653,6 @@ public class Individual implements Persistable<Long> {
 			return false;
 		}
 
-		@JsonAnyGetter
 		public Map<String, List<Field>> getField() {
 			Stream<Field> stream = _fields.stream();
 
@@ -776,7 +662,6 @@ public class Individual implements Persistable<Long> {
 					(existing, replacement) -> replacement));
 		}
 
-		@JsonIgnore
 		public Set<Field> getFields() {
 			return _fields;
 		}
@@ -790,82 +675,31 @@ public class Individual implements Persistable<Long> {
 
 	}
 
-	@Transient
 	private Long _activitiesCount;
-
-	@Transient
 	private Set<ActivitiesCount> _activitiesCounts = new HashSet<>();
-
-	@Transient
 	private Set<BQDataSourceUser> _bqDataSourceUsers = new HashSet<>();
-
-	@Transient
 	private Set<BQIdentityChannel> _bqIdentityChannels = new HashSet<>();
-
-	@Transient
 	private Set<Long> _channelIds = new HashSet<>();
-
-	@Transient
 	private Date _createDate;
-
-	@Transient
 	private Demographics _customDemographics;
-
-	@Transient
 	private Set<Field> _customFields = new HashSet<>();
-
-	@Transient
 	private Set<DataSourceUserPK> _dataSourceUserPKs = new HashSet<>();
-
-	@Transient
 	private Demographics _demographics;
-
-	@Transient
 	private String _emailAddressHashed;
-
-	@Transient
 	private Set<Field> _fields = new HashSet<>();
-
-	@Transient
 	private Date _firstEnrichmentDate;
-
-	@Transient
 	private Set<Long> _groupIds = new HashSet<>();
-
-	@Transient
 	private Long _id;
-
-	@Transient
 	private Boolean _isNew;
-
-	@Transient
 	private Date _lastActivityDate;
-
-	@Transient
 	private Set<ActivityDate> _lastActivityDates = new HashSet<>();
-
-	@Transient
 	private Date _lastEnrichmentDate;
-
-	@Transient
 	private Date _modifiedDate;
-
-	@Transient
 	private Set<Long> _organizationIds = new HashSet<>();
-
-	@Transient
 	private Set<ActivityDate> _previousActivityDates = new HashSet<>();
-
-	@Transient
 	private Set<Long> _roleIds = new HashSet<>();
-
-	@Transient
 	private Set<Long> _segmentIds = new HashSet<>();
-
-	@Transient
 	private Set<Long> _teamIds = new HashSet<>();
-
-	@Transient
 	private Set<Long> _userGroupIds = new HashSet<>();
 
 }
