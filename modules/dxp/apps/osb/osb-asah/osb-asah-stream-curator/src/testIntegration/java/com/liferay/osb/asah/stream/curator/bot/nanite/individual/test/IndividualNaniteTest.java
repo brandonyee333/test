@@ -60,6 +60,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author André Miranda
  */
+@Disabled
 public class IndividualNaniteTest
 	extends BaseNaniteTestCase
 	implements OSBAsahStreamCuratorSpringTestContext {
@@ -92,7 +93,6 @@ public class IndividualNaniteTest
 					"4ca495991b7852b851"));
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blog_info_old.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -169,7 +169,6 @@ public class IndividualNaniteTest
 			jsonArray, false);
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -238,7 +237,6 @@ public class IndividualNaniteTest
 
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -274,7 +272,6 @@ public class IndividualNaniteTest
 		Assertions.assertFalse(_individualDog.existsById(200L));
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -374,7 +371,6 @@ public class IndividualNaniteTest
 		Assertions.assertNull(individual.getLastActivityDate());
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

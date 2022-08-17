@@ -39,6 +39,7 @@ import org.elasticsearch.script.Script;
 import org.json.JSONArray;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentCaptor;
@@ -52,6 +53,7 @@ import org.springframework.test.util.ReflectionTestUtils;
  */
 public class UserSessionNaniteTest extends BaseNaniteTestCase {
 
+	@Disabled
 	@Test
 	public void testUserSessionNanite() throws Exception {
 		test(UserSessionNanite.class);
