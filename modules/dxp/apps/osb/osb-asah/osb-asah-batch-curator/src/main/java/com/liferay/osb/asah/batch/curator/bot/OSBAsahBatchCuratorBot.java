@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.batch.curator.bot;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.arm.FinalizeUserSessionArm;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
@@ -25,16 +24,12 @@ import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Project;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import javax.annotation.PreDestroy;
@@ -188,51 +183,6 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
-	public void runPastUserSessionFinalizerNanite() {
-		int availablePastUserSessionFinalizerTasks =
-			_asahTaskManager.getAvailablePastUserSessionFinalizerTasks();
-
-		Map<Date, List<String>> finalizablePastUserSessions =
-			_finalizeUserSessionArm.getFinalizablePastUserSessions();
-
-		for (Map.Entry<Date, List<String>> entry :
-				finalizablePastUserSessions.entrySet()) {
-
-			List<String> projectIds = entry.getValue();
-
-			for (String projectId : projectIds) {
-				if (availablePastUserSessionFinalizerTasks <= 0) {
-					return;
-				}
-
-				try {
-					ProjectIdThreadLocal.setProjectId(projectId);
-
-					AsahTask asahTask = new AsahTask(
-						"PastUserSessionFinalizerNanite",
-						JSONUtil.put(
-							"dayDateString",
-							DateUtil.toUTCString(entry.getKey())),
-						projectId);
-
-					_asahTaskManager.executeAsahTask(asahTask, true);
-
-					availablePastUserSessionFinalizerTasks--;
-				}
-				finally {
-					ProjectIdThreadLocal.remove();
-				}
-			}
-		}
-	}
-
-	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
-	public void runPresentUserSessionFinalizerNanite() {
-		_asahTaskManager.runNanitesForAllProjects(
-			"PresentUserSessionFinalizerNanite");
-	}
-
 	private String _buildCronExpression(int second, int minute) {
 		return String.format("%d %d 0 * * ?", second, minute);
 	}
@@ -375,9 +325,6 @@ public class OSBAsahBatchCuratorBot {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private FinalizeUserSessionArm _finalizeUserSessionArm;
 
 	@Autowired
 	private ProjectDog _projectDog;
