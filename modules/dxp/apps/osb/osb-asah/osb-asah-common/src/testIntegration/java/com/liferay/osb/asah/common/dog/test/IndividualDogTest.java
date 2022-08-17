@@ -25,12 +25,12 @@ import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
@@ -100,7 +100,6 @@ public class IndividualDogTest
 
 	}
 
-	@Disabled
 	@Test
 	public void testAddAndUpdateLiferayIndividual() throws Exception {
 		String userId = RandomTestUtil.randomId();
@@ -159,7 +158,6 @@ public class IndividualDogTest
 		_assertIndividualMiddleName("Joseph", individual);
 	}
 
-	@Disabled
 	@Test
 	public void testAddAndUpdateLiferayIndividualCustomFields()
 		throws Exception {
@@ -230,7 +228,6 @@ public class IndividualDogTest
 		_assertCustomFields(customFields, "[german]", "spokenLanguages");
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_associations.json"
@@ -314,7 +311,6 @@ public class IndividualDogTest
 				organizationIds.toArray(new Long[0])));
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -342,7 +338,6 @@ public class IndividualDogTest
 			Collections.emptySet());
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "individuals_fields_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -391,7 +386,6 @@ public class IndividualDogTest
 		Assertions.assertEquals(6L, individual.getId());
 	}
 
-	@Disabled
 	@Test
 	public void testNoDuplicateIndividualPKs() throws Exception {
 		String userId = RandomTestUtil.randomId();
@@ -460,7 +454,6 @@ public class IndividualDogTest
 		Assertions.assertEquals(0, segmentIds.size(), segmentIds.toString());
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -502,7 +495,6 @@ public class IndividualDogTest
 			_getGivenNames(individuals));
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -597,7 +589,6 @@ public class IndividualDogTest
 		Assertions.assertEquals(0, individuals.size(), individuals.toString());
 	}
 
-	@Disabled
 	@Test
 	public void testUpdateDynamicAddMemberships() {
 		Individual individual = new Individual();
@@ -628,7 +619,6 @@ public class IndividualDogTest
 			new Long[] {234L}, segmentIds.toArray(new Long[0]));
 	}
 
-	@Disabled
 	@Test
 	public void testUpdateDynamicMemberships() {
 		Segment segment1 = new Segment();
@@ -772,7 +762,6 @@ public class IndividualDogTest
 				338511398116723458L, "INACTIVE"));
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
@@ -869,7 +858,6 @@ public class IndividualDogTest
 				organizationIds.toArray(new Long[0])));
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_3.json"
@@ -894,7 +882,6 @@ public class IndividualDogTest
 		Assertions.assertNotNull(individual.getFirstEnrichmentDate());
 	}
 
-	@Disabled
 	@Test
 	public void testUpdateIndividualFromDifferentDataSourceIgnoresNullValue()
 		throws Exception {
@@ -938,7 +925,6 @@ public class IndividualDogTest
 		Assertions.assertEquals("United States", countryField.getValue());
 	}
 
-	@Disabled
 	@Test
 	public void testUpdateIndividualUpdatesPagesAndAssets() throws Exception {
 		Date date = DateUtil.toUTCDate(DateUtil.newDayDateString());

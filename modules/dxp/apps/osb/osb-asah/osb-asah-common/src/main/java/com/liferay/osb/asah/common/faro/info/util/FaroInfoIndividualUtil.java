@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.faro.info.util;
 
-import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.model.Field;
 
 import java.util.Collections;
 import java.util.HashMap;
