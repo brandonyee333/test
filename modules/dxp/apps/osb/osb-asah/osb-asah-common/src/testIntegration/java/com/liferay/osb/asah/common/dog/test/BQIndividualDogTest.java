@@ -85,7 +85,7 @@ import org.yaml.snakeyaml.util.ArrayUtils;
  * @author Rachael Koestartyo
  */
 @Disabled
-public class IndividualDogTest
+public class BQIndividualDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
