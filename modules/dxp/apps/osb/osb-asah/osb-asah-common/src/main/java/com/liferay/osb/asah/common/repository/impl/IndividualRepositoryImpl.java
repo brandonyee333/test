@@ -16,8 +16,8 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
-import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.CustomIndividualRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;

@@ -25,11 +25,11 @@ import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
@@ -228,6 +228,7 @@ public class IndividualDogTest
 		_assertCustomFields(customFields, "[german]", "spokenLanguages");
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_associations.json"
@@ -495,6 +496,7 @@ public class IndividualDogTest
 			_getGivenNames(individuals));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -589,6 +591,7 @@ public class IndividualDogTest
 		Assertions.assertEquals(0, individuals.size(), individuals.toString());
 	}
 
+	@Disabled
 	@Test
 	public void testUpdateDynamicAddMemberships() {
 		Individual individual = new Individual();
@@ -619,6 +622,7 @@ public class IndividualDogTest
 			new Long[] {234L}, segmentIds.toArray(new Long[0]));
 	}
 
+	@Disabled
 	@Test
 	public void testUpdateDynamicMemberships() {
 		Segment segment1 = new Segment();
@@ -882,6 +886,7 @@ public class IndividualDogTest
 		Assertions.assertNotNull(individual.getFirstEnrichmentDate());
 	}
 
+	@Disabled
 	@Test
 	public void testUpdateIndividualFromDifferentDataSourceIgnoresNullValue()
 		throws Exception {
@@ -925,6 +930,7 @@ public class IndividualDogTest
 		Assertions.assertEquals("United States", countryField.getValue());
 	}
 
+	@Disabled
 	@Test
 	public void testUpdateIndividualUpdatesPagesAndAssets() throws Exception {
 		Date date = DateUtil.toUTCDate(DateUtil.newDayDateString());

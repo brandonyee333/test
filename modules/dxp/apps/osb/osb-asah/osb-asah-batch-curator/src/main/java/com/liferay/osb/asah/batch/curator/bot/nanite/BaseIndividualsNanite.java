@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.model.Individual;
 
 import java.util.Date;
 import java.util.Iterator;

@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;

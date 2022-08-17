@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.Individual;
+import com.liferay.osb.asah.common.model.Individual;
 
 import java.util.Date;
 import java.util.List;
