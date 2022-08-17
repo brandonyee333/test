@@ -101,37 +101,32 @@ public class EventIngestionPipeline {
 				eventIngestionPipelineOptions.getOutputFileNamePrefix(),
 				eventIngestionPipelineOptions.getWriteInterval()));
 
-		PCollection<KV<String, Iterable<AnalyticsEvent>>> pCollection =
-			pipeline.apply(
-				"Read PubSub Messages",
-				PubsubIO.readStrings(
-				).fromSubscription(
-					eventIngestionPipelineOptions.getInputSubscription()
-				).withIdAttribute(
-					"id"
-				).withTimestampAttribute(
-					"eventDate"
-				)
-			).apply(
-				"Parse Analytics Events", ParDo.of(new AnalyticsEventParser())
-			).apply(
-				"Extract Geolocation/Device Information",
-				ParDo.of(new AnalyticsEventExtractor())
-			).apply(
-				"Add Session Key", _buildWithKeysPTransform()
-			).apply(
-				GroupByKey.create()
-			);
+		PCollection<KV<String, AnalyticsEvent>> pCollection = pipeline.apply(
+			"Read PubSub Messages",
+			PubsubIO.readStrings(
+			).fromSubscription(
+				eventIngestionPipelineOptions.getInputSubscription()
+			).withIdAttribute(
+				"id"
+			).withTimestampAttribute(
+				"eventDate"
+			)
+		).apply(
+			"Parse Analytics Events", ParDo.of(new AnalyticsEventParser())
+		).apply(
+			"Extract Geolocation/Device Information",
+			ParDo.of(new AnalyticsEventExtractor())
+		).apply(
+			"Add Session Key", _buildWithKeysPTransform()
+		);
 
-		PCollection<KV<String, Iterable<AnalyticsEvent>>>
-			analyticsEventsPCollection = pCollection.apply(
-				"Create Analytics Events Session Windowing",
-				Window.<KV<String, Iterable<AnalyticsEvent>>>into(
-					Sessions.withGapDuration(
-						Duration.standardMinutes(
-							eventIngestionPipelineOptions.
-								getSessionWindowGapDuration()))
-				).triggering(
+		Window<KV<String, AnalyticsEvent>> sessionWindow = _buildSessionWindow(
+			eventIngestionPipelineOptions);
+
+		PCollection<KV<String, Iterable<AnalyticsEvent>>> eventsPCollection =
+			pCollection.apply(
+				"Create Events Windowing",
+				sessionWindow.triggering(
 					Repeatedly.forever(
 						AfterWatermark.pastEndOfWindow(
 						).withEarlyFirings(
@@ -141,40 +136,23 @@ public class EventIngestionPipeline {
 									eventIngestionPipelineOptions.
 										getSessionWindowEarlyFiringsInterval())
 							)
-						))
-				).withAllowedLateness(
-					Duration.standardMinutes(
-						eventIngestionPipelineOptions.
-							getSessionWindowAllowedLateness()),
-					Window.ClosingBehavior.FIRE_ALWAYS
-				).discardingFiredPanes(
-				).withTimestampCombiner(
-					TimestampCombiner.END_OF_WINDOW
-				));
+						)))
+			).apply(
+				GroupByKey.create()
+			);
 
-		PCollection<KV<String, Iterable<AnalyticsEvent>>> sessionPCollection =
+		PCollection<KV<String, Iterable<AnalyticsEvent>>> sessionsPCollection =
 			pCollection.apply(
-				"Create Session Windowing",
-				Window.<KV<String, Iterable<AnalyticsEvent>>>into(
-					Sessions.withGapDuration(
-						Duration.standardMinutes(
-							eventIngestionPipelineOptions.
-								getSessionWindowGapDuration()))
-				).withAllowedLateness(
-					Duration.standardMinutes(
-						eventIngestionPipelineOptions.
-							getSessionWindowAllowedLateness()),
-					Window.ClosingBehavior.FIRE_ALWAYS
-				).discardingFiredPanes(
-				).withTimestampCombiner(
-					TimestampCombiner.END_OF_WINDOW
-				));
+				"Create Sessions Windowing", sessionWindow
+			).apply(
+				GroupByKey.create()
+			);
 
-		analyticsEventsPCollection.apply(
-			"Write Events", new EventBigQueryWriter());
-		analyticsEventsPCollection.apply(
+		eventsPCollection.apply("Write Events", new EventBigQueryWriter());
+		eventsPCollection.apply(
 			"Write Event Properties", new EventPropertyBigQueryWriter());
-		sessionPCollection.apply("Write Sessions", new SessionBigQueryWriter());
+		sessionsPCollection.apply(
+			"Write Sessions", new SessionBigQueryWriter());
 
 		return pipeline.run();
 	}
@@ -498,6 +476,25 @@ public class EventIngestionPipeline {
 			);
 		}
 
+	}
+
+	private static Window<KV<String, AnalyticsEvent>> _buildSessionWindow(
+		EventIngestionPipelineOptions eventIngestionPipelineOptions) {
+
+		return Window.<KV<String, AnalyticsEvent>>into(
+			Sessions.withGapDuration(
+				Duration.standardMinutes(
+					eventIngestionPipelineOptions.
+						getSessionWindowGapDuration()))
+		).withAllowedLateness(
+			Duration.standardMinutes(
+				eventIngestionPipelineOptions.
+					getSessionWindowAllowedLateness()),
+			Window.ClosingBehavior.FIRE_ALWAYS
+		).discardingFiredPanes(
+		).withTimestampCombiner(
+			TimestampCombiner.END_OF_WINDOW
+		);
 	}
 
 	private static WithKeys<String, AnalyticsEvent> _buildWithKeysPTransform() {
