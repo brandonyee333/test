@@ -26,18 +26,17 @@ import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -86,7 +85,6 @@ import org.yaml.snakeyaml.util.ArrayUtils;
  */
 @Disabled
 public class BQIndividualDogTest
-	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
@@ -230,7 +228,7 @@ public class BQIndividualDogTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_associations.json"
 	)
 	@RepositoryResource(
@@ -261,7 +259,7 @@ public class BQIndividualDogTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
@@ -282,7 +280,7 @@ public class BQIndividualDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_associations.json"
 	)
 	@RepositoryResource(
@@ -317,7 +315,7 @@ public class BQIndividualDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@Test
@@ -344,7 +342,7 @@ public class BQIndividualDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@Test
@@ -362,7 +360,7 @@ public class BQIndividualDogTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_4.json"
 	)
 	@Test
@@ -434,7 +432,7 @@ public class BQIndividualDogTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@Test
@@ -460,7 +458,7 @@ public class BQIndividualDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@Test
@@ -502,7 +500,7 @@ public class BQIndividualDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@Test
@@ -863,7 +861,7 @@ public class BQIndividualDogTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_3.json"
 	)
 	@Test
@@ -957,21 +955,7 @@ public class BQIndividualDogTest
 
 		individual = _individualDog.addIndividual(individual, false);
 
-		JSONObject page1JSONObject = cerebroInfoElasticsearchInvoker.add(
-			"pages",
-			JSONUtil.put(
-				"individualId", String.valueOf(individual.getId())
-			).put(
-				"knownIndividual", false
-			));
-
-		JSONObject page2JSONObject = cerebroInfoElasticsearchInvoker.add(
-			"pages",
-			JSONUtil.put(
-				"individualId", String.valueOf(individual.getId())
-			).put(
-				"knownIndividual", true
-			));
+		// TODO Add page record associated with individual
 
 		_updateIndividualAsync(
 			JSONUtil.put(
@@ -986,15 +970,8 @@ public class BQIndividualDogTest
 			),
 			individual);
 
-		page1JSONObject = cerebroInfoElasticsearchInvoker.fetch(
-			"pages", page1JSONObject.getString("id"));
+		// TODO Assert page record is now associated to a known individual
 
-		Assertions.assertTrue(page1JSONObject.getBoolean("knownIndividual"));
-
-		page2JSONObject = cerebroInfoElasticsearchInvoker.fetch(
-			"pages", page2JSONObject.getString("id"));
-
-		Assertions.assertTrue(page2JSONObject.getBoolean("knownIndividual"));
 	}
 
 	private void _assertCustomFields(
