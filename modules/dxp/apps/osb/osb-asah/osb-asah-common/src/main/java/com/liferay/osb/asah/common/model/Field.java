@@ -14,31 +14,16 @@
 
 package com.liferay.osb.asah.common.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Rachael Koestartyo
  */
-@Table
-public class Field implements Persistable<Long> {
+public class Field {
 
 	public Field() {
 	}
@@ -91,43 +76,26 @@ public class Field implements Persistable<Long> {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
 	public String getContext() {
 		return _context;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getDataSourceName() {
 		return _dataSourceName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getFieldType() {
 		return _fieldType;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
-	@JsonSerialize(using = ToStringSerializer.class)
-	@Override
 	public Long getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonAlias("modifiedDate")
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
-	@JsonProperty("dateModified")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -136,28 +104,22 @@ public class Field implements Persistable<Long> {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getOwnerId() {
 		return _ownerId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getOwnerType() {
 		return _ownerType;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getSourceName() {
 		return _sourceName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Object getValue() {
 		return _value;
 	}
@@ -167,16 +129,6 @@ public class Field implements Persistable<Long> {
 		return Objects.hash(
 			_context, _dataSourceId, _fieldType, _id, _modifiedDate, _name,
 			_ownerId, _ownerType, _sourceName, _value);
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	public void setContext(String context) {
@@ -197,10 +149,6 @@ public class Field implements Persistable<Long> {
 
 	public void setId(Long id) {
 		_id = id;
-	}
-
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
@@ -229,40 +177,16 @@ public class Field implements Persistable<Long> {
 		_value = value;
 	}
 
-	@Transient
 	private String _context;
-
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private String _dataSourceName;
-
-	@Transient
 	private String _fieldType;
-
-	@Transient
 	private Long _id;
-
-	@Transient
-	private Boolean _isNew;
-
-	@Transient
 	private Date _modifiedDate = new Date();
-
-	@Transient
 	private String _name;
-
-	@Transient
 	private Long _ownerId;
-
-	@Transient
 	private String _ownerType;
-
-	@Transient
 	private String _sourceName;
-
-	@Transient
 	private Object _value;
 
 }
