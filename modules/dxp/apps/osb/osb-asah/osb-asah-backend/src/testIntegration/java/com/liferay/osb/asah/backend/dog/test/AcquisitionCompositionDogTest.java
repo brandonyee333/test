@@ -23,6 +23,7 @@ import java.time.LocalDate;
 
 import java.util.LinkedHashMap;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Matthew Kong
  */
+@Disabled
 @ElasticsearchIndex(
 	name = "user-sessions", resourcePath = "user_sessions_info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

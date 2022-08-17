@@ -14,18 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
-
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,31 +38,9 @@ public class SessionsRestController extends BaseRestController {
 			@RequestParam(required = false) String value)
 		throws Exception {
 
-		QueryBuilder queryBuilder = null;
+		// TODO transform user-sessions to "session-values"
 
-		if (StringUtils.isNotBlank(filterString)) {
-			queryBuilder = FilterStringToQueryBuilderConverter.convert(
-				filterString.replace("context/", ""));
-		}
-
-		fieldName = fieldName.replace("context/", "");
-
-		if (_contextFieldNames.contains(fieldName)) {
-			fieldName = fieldName + "s";
-		}
-
-		TransformationJSONArrayFunction transformationJSONArrayFunction =
-			new TermsAggregationTransformationJSONArrayFunction(
-				value, fieldName,
-				MultiBucketsAggregation.Bucket::getKeyAsString);
-
-		return toTransformationGetResponse(
-			null, "user-sessions", cerebroInfoElasticsearchInvoker, page,
-			queryBuilder, size, null, new String[] {"_key", "asc"}, null,
-			transformationJSONArrayFunction, "session-values");
+		return null;
 	}
-
-	private final List<String> _contextFieldNames = Arrays.asList(
-		"canonicalUrl", "referrer", "url");
 
 }
