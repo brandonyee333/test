@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v3_2_0.test;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -45,8 +46,20 @@ public class IdentityMigrationUpgradeStepTest
 	implements OSBAsahUpgradeSpringTestContext {
 
 	@BeforeEach
-	public void setUp() {
+	public void setUp() throws Exception {
 		ProjectIdThreadLocal.setProjectId("test");
+
+		_elasticsearchIndexManager.delete(
+			"test_osbasahcerebroinfo_user-sessions");
+
+		_elasticsearchIndexManager.create(
+			ResourceUtil.readResourceToString(
+				"dependencies/user_sessions_index_configuration.json", this),
+			"test_osbasahcerebroinfo_user-sessions");
+
+		_elasticsearchIndexManager.addAlias(
+			"test_osbasahcerebroinfo_user-sessions_alias",
+			"test_osbasahcerebroinfo_user-sessions");
 
 		tearDown();
 	}
@@ -113,6 +126,9 @@ public class IdentityMigrationUpgradeStepTest
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
