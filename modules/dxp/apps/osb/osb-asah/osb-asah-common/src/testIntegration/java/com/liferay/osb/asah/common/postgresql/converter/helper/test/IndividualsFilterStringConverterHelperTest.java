@@ -94,13 +94,7 @@ public class IndividualsFilterStringConverterHelperTest
 						"dependencies/osbasahfaroinfo/activities.json",
 						this))));
 
-		_cerebroInfoElasticsearchInvoker.add(
-			"user-sessions",
-			new JSONArray(
-				TestExecutionListenerUtil.replaceVariables(
-					ResourceUtil.readResourceToString(
-						"dependencies/osbasahcerebroinfo/user_sessions.json",
-						this))));
+		// TODO Add user session collections
 
 		_setUpDataSources();
 
@@ -1093,9 +1087,6 @@ public class IndividualsFilterStringConverterHelperTest
 
 	@Autowired
 	private BQOrganizationRepository _bqOrganizationRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

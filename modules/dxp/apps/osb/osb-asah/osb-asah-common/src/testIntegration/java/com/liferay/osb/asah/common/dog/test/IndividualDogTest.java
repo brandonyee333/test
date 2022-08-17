@@ -549,6 +549,7 @@ public class IndividualDogTest
 		Assertions.assertEquals(4, individuals.size(), individuals.toString());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_sessions.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

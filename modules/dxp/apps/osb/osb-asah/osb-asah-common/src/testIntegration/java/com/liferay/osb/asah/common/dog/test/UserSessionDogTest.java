@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ public class UserSessionDogTest
 		Assertions.assertEquals(2, bqSessions3.size());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "user_sessions_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

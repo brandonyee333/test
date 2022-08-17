@@ -45,6 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Michael Bowerman
  * @author Rachael Koestartyo
  */
+@Disabled
 @ElasticsearchIndex(
 	name = "organizations", resourcePath = "organizations.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO

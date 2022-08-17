@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
@@ -827,12 +826,10 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@PostConstruct
 	public void init() {
-		String[] collections = JSONUtil.toStringArray(
-			_elasticsearchIndexManager.getCollectionsJSONArray(
-				WeDeployDataService.OSB_ASAH_CEREBRO_INFO));
 
-		_collections = ArrayUtils.remove(
-			collections, ArrayUtils.indexOf(collections, "user-sessions"));
+		// TODO Get collections, remove user-sessions
+
+		_collections = new String[0];
 	}
 
 	public Individual removeDataSourceUserPKs(
@@ -1659,9 +1656,6 @@ public class IndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
