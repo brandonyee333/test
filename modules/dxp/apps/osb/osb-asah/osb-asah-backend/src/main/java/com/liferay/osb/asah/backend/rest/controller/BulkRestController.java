@@ -18,6 +18,8 @@ import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.http.Http;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,31 +46,40 @@ public class BulkRestController {
 
 		JSONObject jsonObject = new JSONObject(json);
 
-		JSONArray operationsJSONArray = jsonObject.getJSONArray("operations");
+		try {
+			JSONArray operationsJSONArray = jsonObject.getJSONArray(
+				"operations");
 
-		for (int i = 0; i < operationsJSONArray.length(); i++) {
-			JSONObject operationJSONObject = operationsJSONArray.getJSONObject(
-				i);
+			for (int i = 0; i < operationsJSONArray.length(); i++) {
+				JSONObject operationJSONObject =
+					operationsJSONArray.getJSONObject(i);
 
-			String response = StringUtils.trim(
-				_http.exchange(
-					ServiceConstants.URL_BACKEND_INTERNAL,
-					operationJSONObject.getString("url"),
-					HttpMethod.resolve(operationJSONObject.getString("method")),
-					operationJSONObject.optJSONObject("body")));
+				String response = StringUtils.trim(
+					_http.exchange(
+						ServiceConstants.URL_BACKEND_INTERNAL,
+						operationJSONObject.getString("url"),
+						HttpMethod.resolve(
+							operationJSONObject.getString("method")),
+						operationJSONObject.optJSONObject("body")));
 
-			if (StringUtils.startsWith(response, "[")) {
-				responseJSONArray.put(new JSONArray(response));
+				if (StringUtils.startsWith(response, "[")) {
+					responseJSONArray.put(new JSONArray(response));
+				}
+				else {
+					responseJSONArray.put(new JSONObject(response));
+				}
 			}
-			else {
-				responseJSONArray.put(new JSONObject(response));
-			}
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
 		responseJSONObject.put("responses", responseJSONArray);
 
 		return responseJSONObject.toString();
 	}
+
+	private static final Log _log = LogFactory.getLog(BulkRestController.class);
 
 	@Autowired
 	private Http _http;
