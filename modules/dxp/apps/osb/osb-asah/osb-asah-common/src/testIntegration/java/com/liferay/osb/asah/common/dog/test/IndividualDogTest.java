@@ -937,6 +937,7 @@ public class IndividualDogTest
 		Assertions.assertEquals("United States", countryField.getValue());
 	}
 
+	@Disabled
 	@Test
 	public void testUpdateIndividualUpdatesPagesAndAssets() throws Exception {
 		Date date = DateUtil.toUTCDate(DateUtil.newDayDateString());

@@ -16,9 +16,12 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
+import org.junit.jupiter.api.Disabled;
+
 /**
  * @author André Miranda
  */
+@Disabled
 @SQLResource(resourcePath = "page_metrics_graphql_rest_controller_test.sql")
 public class PageMetricsGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {

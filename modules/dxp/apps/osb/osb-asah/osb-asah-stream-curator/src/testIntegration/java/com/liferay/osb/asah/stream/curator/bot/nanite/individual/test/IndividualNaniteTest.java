@@ -374,6 +374,7 @@ public class IndividualNaniteTest
 		Assertions.assertNull(individual.getLastActivityDate());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO

@@ -42,6 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author André Miranda
  */
+@Disabled
 public class VisitorHistogramDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
@@ -108,7 +109,6 @@ public class VisitorHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "pages",
 		resourcePath = "visitor_histogram_page_last_90_days_info.json",

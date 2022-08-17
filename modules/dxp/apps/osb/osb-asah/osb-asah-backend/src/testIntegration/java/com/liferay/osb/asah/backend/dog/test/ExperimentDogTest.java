@@ -47,6 +47,7 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
@@ -61,6 +62,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 /**
  * @author André Miranda
  */
+@Disabled
 @TestExecutionListeners(
 	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
 	value = {
