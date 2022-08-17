@@ -18,12 +18,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.BQSession;
-import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -32,7 +30,6 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
-import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapDevice;
@@ -50,16 +47,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -150,35 +143,6 @@ public class AnalyticsEventsIngestionNanite {
 			));
 	}
 
-	private Individual _addIndividual(AnalyticsEvent analyticsEvent) {
-		Long channelId = Long.valueOf(analyticsEvent.getChannelId());
-
-		Long dataSourceId = Long.valueOf(analyticsEvent.getDataSourceId());
-
-		Individual individual = _individualDog.fetchIndividual(
-			dataSourceId, analyticsEvent.getUserId());
-
-		if (individual == null) {
-			individual = _individualDog.addIndividual(
-				channelId, dataSourceId, null, analyticsEvent.getUserId());
-		}
-		else {
-			Set<Long> channelIds = individual.getChannelIds();
-
-			if (CollectionUtils.isEmpty(channelIds)) {
-				channelIds = new HashSet<>();
-			}
-
-			if (channelIds.add(channelId)) {
-				individual.setChannelIds(channelIds);
-
-				individual = _individualDog.updateIndividual(individual);
-			}
-		}
-
-		return individual;
-	}
-
 	private void _advanceWatermark(List<AnalyticsEvent> analyticsEvents) {
 		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
@@ -254,13 +218,6 @@ public class AnalyticsEventsIngestionNanite {
 		return context;
 	}
 
-	private Set<String> _getSegmentNames(
-		Long channelId, Individual individual) {
-
-		return new HashSet<>(
-			_segmentDog.getSegmentNames(channelId, individual.getSegmentIds()));
-	}
-
 	private String _getSessionKey(AnalyticsEvent analyticsEvent) {
 		return String.format(
 			"%s#%s#%s#%s", analyticsEvent.getProjectId(),
@@ -270,16 +227,6 @@ public class AnalyticsEventsIngestionNanite {
 
 	private boolean _isCrawler(Map<String, String> context) {
 		if (Boolean.parseBoolean(context.getOrDefault("crawler", null))) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private boolean _isKnownIndividual(Individual individual) {
-		if (_fieldRepository.existsByNameAndOwnerId(
-				"email", individual.getId())) {
-
 			return true;
 		}
 
@@ -401,16 +348,6 @@ public class AnalyticsEventsIngestionNanite {
 	}
 
 	private void _sendAnalyticsEvent(AnalyticsEvent analyticsEvent) {
-		Individual individual = _addIndividual(analyticsEvent);
-
-		analyticsEvent.setIndividualId(String.valueOf(individual.getId()));
-		analyticsEvent.setKnownIndividual(_isKnownIndividual(individual));
-
-		Set<String> segmentNames = _getSegmentNames(
-			Long.valueOf(analyticsEvent.getChannelId()), individual);
-
-		analyticsEvent.setSegmentNames(segmentNames);
-
 		String analyticsEventJSON = analyticsEvent.toJSON();
 
 		for (Channel channel :
@@ -570,18 +507,8 @@ public class AnalyticsEventsIngestionNanite {
 	@Autowired
 	private BrowscapEngine _browscapEngine;
 
-	@Autowired
-	@Qualifier("postgreSQLDataSource")
-	private DataSource _dataSource;
-
-	@Autowired
-	private FieldRepository _fieldRepository;
-
 	@Value("${session.window.gap.duration:3}")
 	private long _gapDuration;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private MessageBus _messageBus;
