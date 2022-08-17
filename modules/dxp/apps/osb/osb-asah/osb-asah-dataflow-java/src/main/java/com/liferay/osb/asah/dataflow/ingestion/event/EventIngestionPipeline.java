@@ -25,8 +25,6 @@ import com.liferay.osb.asah.dataflow.ingestion.event.ip.geocoder.IPGeocoder;
 import com.liferay.osb.asah.dataflow.ingestion.event.ip.geocoder.IPInfo;
 import com.liferay.osb.asah.dataflow.io.WriteToText;
 
-import java.net.URISyntaxException;
-
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -615,19 +613,15 @@ public class EventIngestionPipeline {
 
 		Map<String, String> context = firstAnalyticsEvent.context;
 
-		try {
-			Acquisition acquisition = new Acquisition(
-				context.get("referrer"), context.get("url"));
+		Acquisition acquisition = new Acquisition(
+			context.get("referrer"), context.get("url"));
 
-			tableRow.set("acquisitionCampaign", acquisition.getCampaign());
-			tableRow.set("acquisitionChannel", acquisition.getChannel());
-			tableRow.set("acquisitionContent", acquisition.getContent());
-			tableRow.set("acquisitionMedium", acquisition.getMedium());
-			tableRow.set("acquisitionSource", acquisition.getSource());
-			tableRow.set("acquisitionTerm", acquisition.getTerm());
-		}
-		catch (URISyntaxException uriSyntaxException) {
-		}
+		tableRow.set("acquisitionCampaign", acquisition.getCampaign());
+		tableRow.set("acquisitionChannel", acquisition.getChannel());
+		tableRow.set("acquisitionContent", acquisition.getContent());
+		tableRow.set("acquisitionMedium", acquisition.getMedium());
+		tableRow.set("acquisitionSource", acquisition.getSource());
+		tableRow.set("acquisitionTerm", acquisition.getTerm());
 
 		int interactionsCount = 0;
 		int pageViewsCount = 0;

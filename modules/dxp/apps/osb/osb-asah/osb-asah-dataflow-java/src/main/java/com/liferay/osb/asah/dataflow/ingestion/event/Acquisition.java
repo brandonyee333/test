@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.dataflow.ingestion.event;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLDecoder;
 
 import java.nio.charset.StandardCharsets;
@@ -36,42 +35,43 @@ public class Acquisition {
 	public Acquisition() {
 	}
 
-	public Acquisition(String referrer, String url) throws URISyntaxException {
-		URI uri = new URI(url);
+	public Acquisition(String referrer, String url) {
+		try {
+			URI uri = new URI(url);
 
-		String query = uri.getQuery();
+			String query = uri.getQuery();
 
-		for (String queryParam : query.split("&")) {
-			int index = queryParam.indexOf("=");
+			Map<String, String> queryParams = new HashMap<>();
 
-			if (index != -1) {
-				String key = queryParam.substring(0, index);
+			for (String queryParam : query.split("&")) {
+				int index = queryParam.indexOf("=");
 
-				if (!queryParams.containsKey(key)) {
-					queryParams.put(key, queryParam.substring(index + 1));
+				if (index != -1) {
+					String key = queryParam.substring(0, index);
+
+					if (!queryParams.containsKey(key)) {
+						queryParams.put(key, queryParam.substring(index + 1));
+					}
 				}
 			}
-		}
 
-		_campaign = decode(queryParams.get("utm_campaign"));
-		_content = decode(queryParams.get("utm_content"));
-		_medium = decode(queryParams.get("utm_medium"));
+			_campaign = decode(queryParams.get("utm_campaign"));
+			_content = decode(queryParams.get("utm_content"));
+			_medium = decode(queryParams.get("utm_medium"));
 
-		try {
 			if (StringUtils.isNotEmpty(referrer)) {
 				URI referrerURI = new URI(referrer);
 
-				referrerHost = referrerURI.getHost();
+				_referrerHost = referrerURI.getHost();
 			}
+
+			_source = decode(queryParams.get("utm_source"));
+			_term = decode(queryParams.get("utm_term"));
 		}
 		catch (Exception exception) {
-			throw new IllegalArgumentException(exception);
+			_log.error(
+				"Unable to create acquisition from analytics event", exception);
 		}
-
-		_source = decode(queryParams.get("utm_source"));
-		_term = decode(queryParams.get("utm_term"));
-
-		this.url = url;
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class Acquisition {
 			return _medium;
 		}
 
-		if (!StringUtils.isEmpty(referrerHost)) {
+		if (!StringUtils.isEmpty(_referrerHost)) {
 			return "referral";
 		}
 
@@ -178,8 +178,8 @@ public class Acquisition {
 			return _source;
 		}
 
-		if (!StringUtils.isEmpty(referrerHost)) {
-			return referrerHost;
+		if (!StringUtils.isEmpty(_referrerHost)) {
+			return _referrerHost;
 		}
 
 		return null;
@@ -229,15 +229,12 @@ public class Acquisition {
 		}
 	}
 
-	protected Map<String, String> queryParams = new HashMap<>();
-	protected String referrerHost;
-	protected String url;
-
 	private static final Log _log = LogFactory.getLog(Acquisition.class);
 
 	private String _campaign;
 	private String _content;
 	private String _medium;
+	private String _referrerHost;
 	private String _source;
 	private String _term;
 
