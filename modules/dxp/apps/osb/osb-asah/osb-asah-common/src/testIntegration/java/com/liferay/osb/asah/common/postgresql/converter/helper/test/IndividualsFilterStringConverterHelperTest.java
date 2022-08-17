@@ -30,7 +30,6 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Individual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
@@ -99,7 +98,6 @@ public class IndividualsFilterStringConverterHelperTest
 
 		_setUpBQOrganizations();
 		_setUpIndividuals();
-		_setUpFields();
 
 		_setUpBQMemberships();
 		_setUpBQMembershipChanges();
@@ -984,20 +982,6 @@ public class IndividualsFilterStringConverterHelperTest
 			dataSource.setIsNew(Boolean.TRUE);
 
 			_dataSourceRepository.save(dataSource);
-		}
-	}
-
-	private void _setUpFields() throws Exception {
-		JSONArray jsonArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
-				ResourceUtil.readResourceToString(
-					"dependencies/osbasahfaroinfo/fields.json", this)));
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			Field field = _objectMapper.convertValue(
-				jsonArray.getJSONObject(i), Field.class);
-
-			field.setIsNew(Boolean.TRUE);
 		}
 	}
 
