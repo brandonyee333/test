@@ -14,27 +14,10 @@
 
 package com.liferay.osb.asah.backend.dog.experiment;
 
-import com.liferay.osb.asah.backend.dog.DataDog;
-import com.liferay.osb.asah.backend.dog.HistogramDog;
-import com.liferay.osb.asah.backend.dog.MetricDog;
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
-import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.backend.model.HistogramMetricBag;
-import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.model.PageMetric;
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.model.MetricType;
-import com.liferay.osb.asah.common.model.PageMetricType;
-import com.liferay.osb.asah.common.model.TimeRange;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -52,9 +35,23 @@ import org.elasticsearch.search.aggregations.bucket.composite.TermsValuesSourceB
 import org.elasticsearch.search.aggregations.metrics.Sum;
 import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.liferay.osb.asah.backend.dog.HistogramDog;
+import com.liferay.osb.asah.backend.dog.MetricDog;
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
+import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
+import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.backend.model.PageMetric;
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.PageMetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 /**
  * @author Marcellus Tavares
@@ -183,70 +180,7 @@ public class ExperimentDataDog {
 		LocalDate localDate, MetricType metricType,
 		SearchQueryContext searchQueryContext) {
 
-		List<Double> dataPoints = new LinkedList<>();
-
-		TermsValuesSourceBuilder termsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("sessions");
-
-		termsValuesSourceBuilder.field("sessionId");
-
-		SumAggregationBuilder sumAggregationBuilder = AggregationBuilders.sum(
-			"sum");
-
-		sumAggregationBuilder.field(metricType.getFieldName());
-
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite", Collections.singletonList(termsValuesSourceBuilder)
-			).size(
-				10000
-			).subAggregation(
-				sumAggregationBuilder
-			);
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.rangeQuery(
-				"eventDate"
-			).gte(
-				localDate + "||/d"
-			).lt(
-				localDate + "||+1d/d"
-			).timeZone(
-				_timeZoneDog.getTimeZoneId()
-			));
-
-		SearchSourceBuilder searchSourceBuilder =
-			_searchQueryHelper.createSearchSourceBuilder(
-				compositeAggregationBuilder, Optional.empty(), boolQueryBuilder,
-				searchQueryContext);
-
-		while (true) {
-			Aggregations aggregations = _dataDog.queryAggregations(
-				"pages", searchSourceBuilder);
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Aggregations bucketAggregations = bucket.getAggregations();
-
-				Sum sumAggregation = bucketAggregations.get("sum");
-
-				dataPoints.add(sumAggregation.getValue());
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
-		}
-
-		return dataPoints;
+		return new LinkedList<>();
 	}
 
 	private double _getMetricValue(Metric metric) {
@@ -258,9 +192,6 @@ public class ExperimentDataDog {
 
 		return value.longValue();
 	}
-
-	@Autowired
-	private DataDog _dataDog;
 
 	@Autowired
 	private HistogramDog _histogramDog;

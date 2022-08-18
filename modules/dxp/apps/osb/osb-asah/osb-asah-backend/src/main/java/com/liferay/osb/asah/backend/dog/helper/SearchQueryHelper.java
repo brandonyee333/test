@@ -14,27 +14,14 @@
 
 package com.liferay.osb.asah.backend.dog.helper;
 
-import com.liferay.osb.asah.backend.constants.DataConstants;
-import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
-import com.liferay.osb.asah.backend.model.AssetId;
-import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.model.Geolocation;
-import com.liferay.osb.asah.backend.model.Technology;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.model.MetricType;
-import com.liferay.osb.asah.common.model.TimeRange;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
-
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -47,8 +34,17 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-
 import org.springframework.stereotype.Component;
+
+import com.liferay.osb.asah.backend.constants.DataConstants;
+import com.liferay.osb.asah.backend.model.AssetId;
+import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.Geolocation;
+import com.liferay.osb.asah.backend.model.Technology;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 /**
  * @author Marcellus Tavares
@@ -171,34 +167,6 @@ public class SearchQueryHelper {
 		}
 
 		return rangeQueryBuilder;
-	}
-
-	public SearchSourceBuilder createRangeSearchSourceBuilder(
-		AggregationBuilder aggregationBuilder,
-		Optional<AssetId> assetIdOptional, Set<String> assetIds,
-		AssetResolver<?> assetResolver, SearchQueryContext searchQueryContext,
-		String timeZoneId) {
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		BoolQueryBuilder assetIdsBoolQueryBuilder = QueryBuilders.boolQuery();
-
-		if (!assetIds.isEmpty()) {
-			assetIdsBoolQueryBuilder.filter(
-				QueryBuilders.termsQuery(
-					assetResolver.getAssetIdFieldName(), assetIds));
-		}
-
-		boolQueryBuilder.filter(assetIdsBoolQueryBuilder);
-
-		_addTimeRangeFilter(
-			assetIds, boolQueryBuilder, searchQueryContext.getTimeRange(),
-			timeZoneId);
-
-		return createSearchSourceBuilder(
-			_createDateRangeAggregationBuilder(
-				aggregationBuilder, searchQueryContext, timeZoneId),
-			assetIdOptional, boolQueryBuilder, searchQueryContext);
 	}
 
 	public SearchSourceBuilder createRangeSearchSourceBuilder(

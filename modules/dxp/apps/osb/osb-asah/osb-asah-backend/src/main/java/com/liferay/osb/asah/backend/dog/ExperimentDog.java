@@ -14,6 +14,34 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
+
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
@@ -38,37 +66,6 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 
 /**
  * @author André Miranda
@@ -218,28 +215,11 @@ public class ExperimentDog {
 	}
 
 	public Long getExperimentSessions(Long experimentId) {
-		Aggregations aggregations = _dataDog.queryAggregations(
-			"pages", _buildTotalSessionsSearchSourceBuilder(experimentId));
-
-		if (DogUtil.isEmpty(aggregations)) {
-			return 0L;
-		}
-
-		return DogUtil.getCardinalityAsLong(aggregations.get("sessions_count"));
+		return 0L;
 	}
 
 	public Long getVariantUniqueVisitors(Long experimentId, String variantId) {
-		Aggregations aggregations = _dataDog.queryAggregations(
-			"pages",
-			_buildVariantUniqueVisitorsSearchSourceBuilder(
-				experimentId, variantId));
-
-		if (DogUtil.isEmpty(aggregations)) {
-			return 0L;
-		}
-
-		return DogUtil.getCardinalityAsLong(
-			aggregations.get("individuals_count"));
+		return 0L;
 	}
 
 	public Experiment patchExperiment(
@@ -310,54 +290,6 @@ public class ExperimentDog {
 		experiment.setModifiedDate(new Date());
 
 		return _experimentRepository.save(experiment);
-	}
-
-	private SearchSourceBuilder _buildTotalSessionsSearchSourceBuilder(
-		Long experimentId) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		CardinalityAggregationBuilder cardinalityAggregationBuilder =
-			AggregationBuilders.cardinality("sessions_count");
-
-		cardinalityAggregationBuilder.field("sessionId");
-
-		cardinalityAggregationBuilder.precisionThreshold(2000);
-
-		searchSourceBuilder.aggregation(cardinalityAggregationBuilder);
-
-		searchSourceBuilder.query(
-			QueryBuilders.termQuery("experimentId", experimentId));
-		searchSourceBuilder.size(0);
-
-		return searchSourceBuilder;
-	}
-
-	private SearchSourceBuilder _buildVariantUniqueVisitorsSearchSourceBuilder(
-		Long experimentId, String variantId) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		CardinalityAggregationBuilder cardinalityAggregationBuilder =
-			AggregationBuilders.cardinality("individuals_count");
-
-		cardinalityAggregationBuilder.field("individualId");
-
-		cardinalityAggregationBuilder.precisionThreshold(2000);
-
-		searchSourceBuilder.aggregation(cardinalityAggregationBuilder);
-
-		searchSourceBuilder.query(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("experimentId", experimentId)
-			).filter(
-				QueryBuilders.termQuery("variantId", variantId)
-			));
-		searchSourceBuilder.size(0);
-
-		return searchSourceBuilder;
 	}
 
 	private ExperimentMetric _createEmptyExperimentMetric(Long experimentId) {
@@ -556,9 +488,6 @@ public class ExperimentDog {
 	}
 
 	private static final Log _log = LogFactory.getLog(ExperimentDog.class);
-
-	@Autowired
-	private DataDog _dataDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
