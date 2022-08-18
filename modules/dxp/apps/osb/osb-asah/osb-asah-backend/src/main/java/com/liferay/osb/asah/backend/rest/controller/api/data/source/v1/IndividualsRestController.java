@@ -129,7 +129,7 @@ public class IndividualsRestController extends BaseRestController {
 		// TODO Fetch individuals by channelId, filterString and
 		// includeAnonymousUsers
 
-		Page<Individual> individualPage = null;
+		Page<Individual> individualPage = Page.empty();
 
 		if (StringUtils.isEmpty(expand)) {
 			return _toIndividualDTOPageDTO(individualPage);
@@ -271,7 +271,7 @@ public class IndividualsRestController extends BaseRestController {
 
 		// TODO Implement operation
 
-		return _toTransformationDTOPageDTO(null);
+		return _toTransformationDTOPageDTO(Page.empty());
 	}
 
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(

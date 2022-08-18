@@ -32,7 +32,6 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -291,15 +290,9 @@ public class DataSourceDog {
 		BeanUtils.copyProperties(dataSource, existingDataSource);
 
 		if (!StringUtils.equals(dataSource.getName(), name)) {
-			String projectId = ProjectIdThreadLocal.getProjectId();
 
-			_boundedExecutor.runAsync(
-				() -> {
-					ProjectIdThreadLocal.setProjectId(projectId);
+			// TODO Update Individual's data source name reference
 
-					// TODO Update Individual's data source name reference
-
-				});
 		}
 
 		return updateDataSourceConfiguration(existingDataSource);
@@ -374,8 +367,6 @@ public class DataSourceDog {
 	}
 
 	private void _clearDataSource(DataSource dataSource) throws Exception {
-		Long dataSourceId = dataSource.getId();
-
 		_deleteData(dataSource);
 
 		_deleteRunLogs(dataSource);

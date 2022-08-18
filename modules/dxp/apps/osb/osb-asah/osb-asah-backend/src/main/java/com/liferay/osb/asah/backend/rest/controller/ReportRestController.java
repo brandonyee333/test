@@ -55,7 +55,7 @@ public class ReportRestController extends BaseRestController {
 
 		// TODO Implement operation
 
-		return _toReportIndividualDTOPageDTO(null);
+		return _toReportIndividualDTOPageDTO(Page.empty());
 	}
 
 	@GetMapping("/segments")

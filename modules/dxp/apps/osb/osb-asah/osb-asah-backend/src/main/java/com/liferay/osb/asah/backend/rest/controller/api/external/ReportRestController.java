@@ -681,7 +681,7 @@ public class ReportRestController extends BaseRestController {
 
 		// TODO Implement operation
 
-		return _toReportIndividualDTOEntityModel(new ReportIndividualDTO(null));
+		return _toReportIndividualDTOEntityModel(new ReportIndividualDTO());
 	}
 
 	@GetMapping("/individuals")
@@ -692,7 +692,7 @@ public class ReportRestController extends BaseRestController {
 
 		// TODO Fetch individualPage by query
 
-		Page<Individual> individualPage = null;
+		Page<Individual> individualPage = Page.empty();
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(
@@ -747,7 +747,7 @@ public class ReportRestController extends BaseRestController {
 
 		// TODO Fetch individualPage by query and segmentId
 
-		Page<Individual> individualPage = null;
+		Page<Individual> individualPage = Page.empty();
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(

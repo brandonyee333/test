@@ -97,7 +97,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		// TODO Implement operation
 
-		return _toIndividualDTOPageDTO(null);
+		return _toIndividualDTOPageDTO(Page.empty());
 	}
 
 	@GetMapping(params = "!apply", value = "/{id}/membership-changes")
@@ -231,7 +231,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		// TODO Implement operation
 
-		return _toTransformationDTOPageDTO("individual-transformations", null);
+		return _toTransformationDTOPageDTO(
+			"individual-transformations", Page.empty());
 	}
 
 	@GetMapping(params = "apply")

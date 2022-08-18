@@ -543,14 +543,6 @@ public class BQIndividualDogTest
 	)
 	@Test
 	public void testSearchIndividuals3() {
-		Individual individual = new Individual();
-
-		individual.setChannelIds(Collections.singleton(100L));
-		individual.setId(1L);
-		individual.setSegmentIds(Collections.emptySet());
-
-		// TODO Add Individual
-
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("(channelIds eq '100' and (sessions.filter(filter=");

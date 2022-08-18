@@ -155,14 +155,8 @@ public class DataControlNanite extends BaseNanite {
 
 		// TODO Fetch Individual by emailAddress
 
-		Individual individual = new Individual();
-
-		if (individual == null) {
-			return;
-		}
-
 		Map<Long, List<String>> dataSourceIdUsersPKs =
-			_getBQDataSourceIdUserPKs("CSV", individual);
+			_getBQDataSourceIdUserPKs("CSV", new Individual());
 
 		if (!dataSourceIdUsersPKs.isEmpty()) {
 			for (Map.Entry<Long, List<String>> entry :
@@ -219,12 +213,6 @@ public class DataControlNanite extends BaseNanite {
 		// TODO Fetch Individual by emailAddress
 
 		Individual individual = new Individual();
-
-		if (individual == null) {
-			_exportDataControlTask(dataControlTask, zipFileBuilder);
-
-			return;
-		}
 
 		QueryBuilder csvIndividualQueryBuilder = _buildIndividualQueryBuilder(
 			"CSV", individual, "dataSourceIndividualPK");

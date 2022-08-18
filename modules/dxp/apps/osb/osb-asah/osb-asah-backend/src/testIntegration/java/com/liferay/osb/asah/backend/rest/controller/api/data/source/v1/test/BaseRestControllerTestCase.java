@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -33,7 +32,6 @@ import java.util.List;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,14 +47,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 )
 public abstract class BaseRestControllerTestCase
 	implements OSBAsahTestExecutionListenersContext {
-
-	@BeforeEach
-	public void setUp() throws Exception {
-		Segment segment = new Segment();
-
-		segment.setFilter("(((demographics/age/value gt '50')))");
-		segment.setId(327968823603500655L);
-	}
 
 	protected ValidatableResponse getValidatableResponse(
 		Method method, String path) {

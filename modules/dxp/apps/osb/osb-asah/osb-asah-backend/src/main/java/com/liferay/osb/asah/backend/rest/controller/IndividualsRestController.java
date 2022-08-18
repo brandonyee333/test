@@ -50,7 +50,7 @@ public class IndividualsRestController
 
 		// TODO Implement operation
 
-		return _toDistributionDTOPageDTO(null);
+		return _toDistributionDTOPageDTO(Page.empty());
 	}
 
 	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(

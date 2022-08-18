@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
@@ -104,9 +103,7 @@ public class DataSourceDogTest
 
 		dataSource = _dataSourceDog.addDataSource(dataSource);
 
-		Channel channel = _channelDog.fetchDefaultChannel(dataSource.getId());
-
-		//TODO Add individual related to channel, dataSource and id =123
+		// TODO Add individual related to channel, dataSource and ID
 
 		Individual individual = new Individual();
 

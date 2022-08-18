@@ -286,7 +286,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildLiferayDataSource());
 
 		Long dataSourceId1 = dataSource1.getId();
-		Long dataSourceId2 = dataSource2.getId();
 
 		// TODO Add BQFieldMapping "email", "Text"
 		// TODO Add BQFieldMapping "givenName", "Text"
