@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ClearChannelsNanite;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -27,7 +26,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -59,8 +57,7 @@ public class ClearChannelsNaniteTest
 
 		Long channelId = _dataSourceDog.getDefaultChannelId(dataSourceId);
 
-		_individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividual(channelId, dataSource), false);
+		// TODO Add Individual with dataSourceId and channelId
 
 		Asset asset = _assetRepository.save(
 			_objectMapper.convertValue(
@@ -86,7 +83,10 @@ public class ClearChannelsNaniteTest
 			faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.termQuery("channelIds", channelId)));
-		Assertions.assertEquals(1, _individualRepository.count());
+
+		// TODO Assert individual count
+
+		Assertions.assertEquals(1, 0);
 
 		// TODO Test BQEvent removal
 
@@ -109,12 +109,6 @@ public class ClearChannelsNaniteTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private IndividualDog _individualDog;
-
-	@Autowired
-	private IndividualRepository _individualRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
