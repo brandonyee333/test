@@ -14,11 +14,14 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import org.junit.jupiter.api.Disabled;
+
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
 /**
  * @author Leslie Wong
  */
+@Disabled
 @SQLResource(
 	resourcePath = "event_analysis_with_breakdown_graphql_rest_controller_test.sql"
 )

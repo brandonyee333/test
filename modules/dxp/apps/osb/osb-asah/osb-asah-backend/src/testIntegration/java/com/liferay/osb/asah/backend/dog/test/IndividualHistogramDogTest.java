@@ -29,6 +29,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class IndividualHistogramDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
@@ -61,6 +63,7 @@ public class IndividualHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
@@ -82,6 +85,7 @@ public class IndividualHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
@@ -103,6 +107,7 @@ public class IndividualHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
@@ -124,6 +129,7 @@ public class IndividualHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
