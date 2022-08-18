@@ -39,6 +39,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * @author Inácio Nery
  */
+@Disabled
 @Import(JDBCTestConfiguration.class)
 public class SegmentRepositoryTest
 	extends BaseRepositoryTestCase<Segment, Long> {

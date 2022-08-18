@@ -31,6 +31,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -42,6 +43,7 @@ public class NumbersDistributionTransformationJSONArrayTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = IndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"

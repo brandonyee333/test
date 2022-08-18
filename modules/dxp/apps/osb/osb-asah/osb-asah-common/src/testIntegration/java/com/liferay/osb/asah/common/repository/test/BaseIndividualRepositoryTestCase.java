@@ -51,6 +51,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -519,6 +520,7 @@ public abstract class BaseIndividualRepositoryTestCase
 		Assertions.assertEquals(_individual1Id, individual.getId());
 	}
 
+	@Disabled
 	@Test
 	public void testFindByIdWithCustomFields() {
 		Optional<Individual> individualOptional = individualRepository.findById(
@@ -832,6 +834,7 @@ public abstract class BaseIndividualRepositoryTestCase
 			Collections.singleton(234L), individual.getOrganizationIds());
 	}
 
+	@Disabled
 	@Test
 	public void testUpdateDataSourceNameByDataSourceId() {
 		individualRepository.updateDataSourceNameByDataSourceId(
