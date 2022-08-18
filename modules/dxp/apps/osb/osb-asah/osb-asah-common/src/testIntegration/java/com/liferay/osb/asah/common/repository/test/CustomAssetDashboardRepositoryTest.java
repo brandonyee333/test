@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -84,9 +85,43 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard4.setId("4");
 		customAssetDashboard4.setIsNew(true);
 
+		CustomAssetDashboard customAssetDashboard5 = new CustomAssetDashboard();
+
+		customAssetDashboard5.setAssetId("5");
+		customAssetDashboard5.setAssetTitle("16-654-jmtr_jun2022");
+		customAssetDashboard5.setCreateDate(new Date());
+		customAssetDashboard5.setCategory("default");
+		customAssetDashboard5.setChannelId(3L);
+		customAssetDashboard5.setDataSourceId(3L);
+		customAssetDashboard5.setId("5");
+		customAssetDashboard5.setIsNew(true);
+
+		CustomAssetDashboard customAssetDashboard6 = new CustomAssetDashboard();
+
+		customAssetDashboard6.setAssetId("6");
+		customAssetDashboard6.setAssetTitle("16-654-jmtr.jun2022");
+		customAssetDashboard6.setCreateDate(new Date());
+		customAssetDashboard6.setCategory("default");
+		customAssetDashboard6.setChannelId(4L);
+		customAssetDashboard6.setDataSourceId(4L);
+		customAssetDashboard6.setId("6");
+		customAssetDashboard6.setIsNew(true);
+
+		CustomAssetDashboard customAssetDashboard7 = new CustomAssetDashboard();
+
+		customAssetDashboard7.setAssetId("7");
+		customAssetDashboard7.setAssetTitle("16-654-jmtr/jun2022");
+		customAssetDashboard7.setCreateDate(new Date());
+		customAssetDashboard7.setCategory("default");
+		customAssetDashboard7.setChannelId(4L);
+		customAssetDashboard7.setDataSourceId(4L);
+		customAssetDashboard7.setId("7");
+		customAssetDashboard7.setIsNew(true);
+
 		setUpRepository(
 			customAssetDashboard1, customAssetDashboard2, customAssetDashboard3,
-			customAssetDashboard4);
+			customAssetDashboard4, customAssetDashboard5, customAssetDashboard6,
+			customAssetDashboard7);
 	}
 
 	@Test
@@ -106,7 +141,7 @@ public class CustomAssetDashboardRepositoryTest
 		Assertions.assertEquals(
 			0,
 			_customAssetDashboardRepository.countCustomAssetDashboards(
-				3L, null));
+				5L, null));
 	}
 
 	@Override
@@ -127,17 +162,19 @@ public class CustomAssetDashboardRepositoryTest
 
 	@Test
 	public void testSearchCustomAssetDashboards() {
+		Pageable pageable = PageRequest.of(
+			0, 10, Sort.by(Sort.Order.asc("id")));
+
 		List<CustomAssetDashboard> customAssetDashboards =
 			_customAssetDashboardRepository.searchCustomAssetDashboards(
-				1L, null, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+				1L, null, pageable);
 
 		Assertions.assertEquals(
 			3, customAssetDashboards.size(), customAssetDashboards.toString());
 
 		customAssetDashboards =
 			_customAssetDashboardRepository.searchCustomAssetDashboards(
-				1L, "banner",
-				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+				1L, "banner", pageable);
 
 		Assertions.assertEquals(
 			1, customAssetDashboards.size(), customAssetDashboards.toString());
@@ -146,6 +183,41 @@ public class CustomAssetDashboardRepositoryTest
 			0);
 
 		Assertions.assertEquals("1", customAssetDashboard.getAssetId());
+
+		customAssetDashboards =
+			_customAssetDashboardRepository.searchCustomAssetDashboards(
+				3L, "jun", pageable);
+
+		Assertions.assertEquals(
+			1, customAssetDashboards.size(), customAssetDashboards.toString());
+
+		customAssetDashboards =
+			_customAssetDashboardRepository.searchCustomAssetDashboards(
+				3L, "-", pageable);
+
+		Assertions.assertEquals(
+			1, customAssetDashboards.size(), customAssetDashboards.toString());
+
+		customAssetDashboards =
+			_customAssetDashboardRepository.searchCustomAssetDashboards(
+				3L, "_", pageable);
+
+		Assertions.assertEquals(
+			1, customAssetDashboards.size(), customAssetDashboards.toString());
+
+		customAssetDashboards =
+			_customAssetDashboardRepository.searchCustomAssetDashboards(
+				4L, ".", pageable);
+
+		Assertions.assertEquals(
+			1, customAssetDashboards.size(), customAssetDashboards.toString());
+
+		customAssetDashboards =
+			_customAssetDashboardRepository.searchCustomAssetDashboards(
+				4L, "/", pageable);
+
+		Assertions.assertEquals(
+			1, customAssetDashboards.size(), customAssetDashboards.toString());
 	}
 
 	@Override
