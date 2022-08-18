@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
-import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
@@ -30,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,38 +48,27 @@ public class BQMembershipChangeDog extends BaseFaroInfoDog {
 		_bqMembershipChangeRepository.save(bqMembershipChange);
 	}
 
-	public void addBQMembershipChanges(
-		boolean includeAnonymousUsers, long identitiesCount,
-		long knownIdentitiesCount, List<BQMembership> bqMemberships) {
+	public void addBQMembershipChange(List<BQMembership> bqMemberships) {
+		BQMembership bqMembership = bqMemberships.get(0);
 
-		List<BQMembershipChange> bqMembershipChanges = new ArrayList<>();
+		Segment segment = _segmentDog.getSegment(bqMembership.getSegmentId());
 
-		for (BQMembership bqMembership : bqMemberships) {
-			String individualEmail = FaroInfoIndividualUtil.getIndividualEmail(
-				_individualDog.getIndividual(
-					Long.parseLong(bqMembership.getIdentityId())));
+		long knownIdentitiesCount = bqMemberships.size();
 
-			if (individualEmail != null) {
-				knownIdentitiesCount++;
-			}
+		if (BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())) {
 
-			if (includeAnonymousUsers ||
-				(!includeAnonymousUsers && (individualEmail != null))) {
+			// TODO Set knownIdentitiesCount with known identities count
 
-				identitiesCount++;
-			}
-
-			BQMembershipChange bqMembershipChange = new BQMembershipChange();
-
-			bqMembershipChange.setCreateDate(bqMembership.getCreateDate());
-			bqMembershipChange.setIdentitiesCount(identitiesCount);
-			bqMembershipChange.setKnownIdentitiesCount(knownIdentitiesCount);
-			bqMembershipChange.setSegmentId(bqMembership.getSegmentId());
-
-			bqMembershipChanges.add(bqMembershipChange);
 		}
 
-		_bqMembershipChangeRepository.saveAll(bqMembershipChanges);
+		BQMembershipChange bqMembershipChange = new BQMembershipChange();
+
+		bqMembershipChange.setCreateDate(bqMembership.getCreateDate());
+		bqMembershipChange.setIdentitiesCount((long)bqMemberships.size());
+		bqMembershipChange.setKnownIdentitiesCount(knownIdentitiesCount);
+		bqMembershipChange.setSegmentId(bqMembership.getSegmentId());
+
+		addBQMembershipChange(bqMembershipChange);
 	}
 
 	public void deleteBQMembershipChanges(List<Long> segmentIds) {
@@ -154,6 +143,6 @@ public class BQMembershipChangeDog extends BaseFaroInfoDog {
 	private BQMembershipChangeRepository _bqMembershipChangeRepository;
 
 	@Autowired
-	private IndividualDog _individualDog;
+	private SegmentDog _segmentDog;
 
 }

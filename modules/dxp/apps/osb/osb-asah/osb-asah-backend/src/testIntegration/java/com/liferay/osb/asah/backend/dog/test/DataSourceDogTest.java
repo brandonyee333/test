@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.Individual;
@@ -107,8 +106,9 @@ public class DataSourceDogTest
 
 		Channel channel = _channelDog.fetchDefaultChannel(dataSource.getId());
 
-		Individual individual = _individualDog.addIndividual(
-			channel.getId(), dataSource.getId(), null, "123");
+		//TODO Add individual related to channel, dataSource and id =123
+
+		Individual individual = new Individual();
 
 		Map<Long, JSONObject> dataSourcesJSONObjects =
 			_dataSourceDog.getDataSourcesJSONObjects(
@@ -184,9 +184,6 @@ public class DataSourceDogTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
@@ -519,9 +518,6 @@ public class AnalyticsEventsIngestionNanite {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 	private final Map<String, SessionContext> _sessions =
 		new ConcurrentHashMap<>();

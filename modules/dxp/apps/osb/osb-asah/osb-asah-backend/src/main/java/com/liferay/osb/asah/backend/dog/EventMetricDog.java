@@ -19,11 +19,10 @@ import com.liferay.osb.asah.backend.model.EventMetric;
 import com.liferay.osb.asah.backend.model.EventMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 
-import java.util.Set;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,8 +40,7 @@ public class EventMetricDog {
 
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 
-		Set<String> userIds = _individualDog.getIndividualUserIds(
-			Long.valueOf(searchQueryContext.getEntityId()));
+		// TODO Change countBQEvents to use individualId instead of userIds
 
 		totalEventsMetric.setValue(
 			(double)_bqEventRepository.countBQEvents(
@@ -50,11 +48,13 @@ public class EventMetricDog {
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
-				userIds));
+				Collections.emptySet()));
 
 		eventMetric.setTotalEventsMetric(totalEventsMetric);
 
 		Metric totalSessionsMetric = new Metric(EventMetricType.TOTAL_SESSIONS);
+
+		// TODO Change countEventSessions to use individualId instead of userIds
 
 		totalSessionsMetric.setValue(
 			(double)_bqEventRepository.countEventSessions(
@@ -62,7 +62,7 @@ public class EventMetricDog {
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
-				userIds));
+				Collections.emptySet()));
 
 		eventMetric.setTotalSessionsMetric(totalSessionsMetric);
 
@@ -71,9 +71,6 @@ public class EventMetricDog {
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

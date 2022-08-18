@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -40,7 +39,6 @@ import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.rest.response.function.MembershipChangesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Collections;
 import java.util.Date;
@@ -97,9 +95,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		return _toIndividualDTOPageDTO(
-			_individualDog.searchIndividualPage(
-				filterString, includeAnonymousUsers, id, page, size, sorts));
+		// TODO Implement operation
+
+		return _toIndividualDTOPageDTO(null);
 	}
 
 	@GetMapping(params = "!apply", value = "/{id}/membership-changes")
@@ -164,12 +162,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		if (!segmentDog.isIncludeAnonymousUsers(id)) {
+
+			// TODO Change getBQMembershipPage to use filterString instead of
+			//  individualIds
+
 			return _toMembershipDTOPageDTO(
 				bqMembershipDog.getBQMembershipPage(
-					ListUtil.map(
-						_individualDog.getKnownIndividualIds(filterString, id),
-						String::valueOf),
-					id, "ACTIVE", page, size, sorts));
+					Collections.emptyList(), id, "ACTIVE", page, size, sorts));
 		}
 
 		return _toMembershipDTOPageDTO(
@@ -230,11 +229,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
-		return _toTransformationDTOPageDTO(
-			"individual-transformations",
-			_individualDog.getTransformationPage(
-				apply, null, filterString, includeAnonymousUsers, id, page,
-				size));
+		// TODO Implement operation
+
+		return _toTransformationDTOPageDTO("individual-transformations", null);
 	}
 
 	@GetMapping(params = "apply")
@@ -500,8 +497,5 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 }

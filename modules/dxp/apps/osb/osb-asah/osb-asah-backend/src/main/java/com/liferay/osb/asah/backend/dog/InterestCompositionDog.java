@@ -17,15 +17,11 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.InterestRepository;
-
-import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +29,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import org.json.JSONObject;
 
@@ -129,17 +124,9 @@ public class InterestCompositionDog {
 	private List<Long> _getIndividualIds(
 		boolean active, String channelId, Long segmentId) {
 
-		Date date = null;
+		// TODO fetch individualIds by channelId, date and segmentId
 
-		if (active) {
-			LocalDateTime newDayLocalDateTime = DateUtil.newDayLocalDateTime(
-				TimeZoneDogUtil.getZoneId());
-
-			date = DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30));
-		}
-
-		return _individualDog.getIndividualIds(
-			NumberUtils.createLong(channelId), date, segmentId);
+		return Collections.emptyList();
 	}
 
 	private Date _getLastSuccessfulDate() {
@@ -179,9 +166,6 @@ public class InterestCompositionDog {
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private InterestRepository _interestRepository;

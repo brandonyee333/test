@@ -20,7 +20,6 @@ import com.liferay.osb.asah.backend.model.EventMetricType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -28,6 +27,7 @@ import com.liferay.osb.asah.common.repository.BQEventRepository;
 
 import java.time.Clock;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +45,9 @@ public class EventHistogramDog {
 
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 
+		// TODO Change getBQEventsCountGroupByEventDate to use individualId as
+		//  parameter instead of userIds
+
 		return _createHistogramBag(
 			EventMetricType.TOTAL_EVENTS, searchQueryContext,
 			_bqEventRepository.getBQEventsCountGroupByEventDate(
@@ -53,14 +56,16 @@ public class EventHistogramDog {
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
-				_individualDog.getIndividualUserIds(
-					Long.valueOf(searchQueryContext.getEntityId()))));
+				Collections.emptySet()));
 	}
 
 	public HistogramMetricBag getSessionsCountHistogram(
 		SearchQueryContext searchQueryContext) {
 
 		TimeRange timeRange = searchQueryContext.getTimeRange();
+
+		// TODO Change getEventSessionsCountGroupByEventDate to use individualId
+		//  as parameter instead of userIds
 
 		return _createHistogramBag(
 			EventMetricType.TOTAL_SESSIONS, searchQueryContext,
@@ -70,8 +75,7 @@ public class EventHistogramDog {
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
-				_individualDog.getIndividualUserIds(
-					Long.valueOf(searchQueryContext.getEntityId()))));
+				Collections.emptySet()));
 	}
 
 	private HistogramMetricBag _createHistogramBag(
@@ -112,9 +116,6 @@ public class EventHistogramDog {
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private MetricHelper _metricHelper;

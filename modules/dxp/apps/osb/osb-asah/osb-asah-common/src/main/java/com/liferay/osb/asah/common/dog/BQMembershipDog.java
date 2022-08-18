@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,11 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -56,23 +52,7 @@ import org.springframework.stereotype.Component;
 public class BQMembershipDog extends BaseFaroInfoDog {
 
 	public BQMembership addBQMembership(BQMembership bqMembership) {
-		bqMembership = _bqMembershipRepository.save(bqMembership);
-
-		String status = bqMembership.getStatus();
-
-		if (!status.equals("ACTIVE")) {
-			return bqMembership;
-		}
-
-		Individual individual = _individualDog.addSegmentId(
-			Long.parseLong(bqMembership.getIdentityId()),
-			bqMembership.getSegmentId());
-
-		if (individual == null) {
-			return null;
-		}
-
-		return bqMembership;
+		return _bqMembershipRepository.save(bqMembership);
 	}
 
 	public void addBQMemberships(
@@ -93,8 +73,6 @@ public class BQMembershipDog extends BaseFaroInfoDog {
 		}
 
 		_bqMembershipRepository.saveAll(bqMemberships);
-
-		_individualDog.addSegmentId(individuals, segmentId);
 	}
 
 	public List<BQMembership> addBQMemberships(
@@ -106,24 +84,7 @@ public class BQMembershipDog extends BaseFaroInfoDog {
 
 		_bqMembershipRepository.saveAll(bqMemberships);
 
-		BQMembership bqMembership = bqMemberships.get(0);
-
-		_individualDog.addIndividualSegmentIds(
-			ListUtil.map(
-				ListUtil.map(bqMemberships, BQMembership::getIdentityId),
-				Long::parseLong),
-			bqMembership.getSegmentId());
-
-		Segment segment = _segmentDog.getSegment(bqMembership.getSegmentId());
-
-		long knownIndividualsCount = _individualDog.getKnownIndividualsCount(
-			ListUtil.map(
-				ListUtil.map(bqMemberships, BQMembership::getIdentityId),
-				Long::parseLong));
-
-		_membershipChangeDog.addBQMembershipChanges(
-			BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers()),
-			bqMemberships.size(), knownIndividualsCount, bqMemberships);
+		_membershipChangeDog.addBQMembershipChange(bqMemberships);
 
 		return bqMemberships;
 	}
@@ -139,11 +100,7 @@ public class BQMembershipDog extends BaseFaroInfoDog {
 		bqMembership.setRemovedDate(deletionDate);
 		bqMembership.setStatus("INACTIVE");
 
-		bqMembership = _bqMembershipRepository.save(bqMembership);
-
-		_individualDog.removeSegmentId(
-			Long.parseLong(bqMembership.getIdentityId()),
-			bqMembership.getSegmentId());
+		_bqMembershipRepository.save(bqMembership);
 	}
 
 	public void deactivateBQMembership(
@@ -153,87 +110,6 @@ public class BQMembershipDog extends BaseFaroInfoDog {
 			deletionDate,
 			_bqMembershipRepository.findByIdentityIdAndSegmentIdAndStatus(
 				identityId, segmentId, "ACTIVE"));
-	}
-
-	public void deactivateBQMembershipByIndividuals(
-		Date deletionDate, List<Individual> individuals) {
-
-		List<BQMembership> bqMemberships =
-			_bqMembershipRepository.findByIdentityIdInAndStatus(
-				ListUtil.map(
-					ListUtil.map(individuals, Individual::getId),
-					String::valueOf),
-				"ACTIVE");
-
-		for (BQMembership bqMembership : bqMemberships) {
-			bqMembership.setModifiedDate(deletionDate);
-			bqMembership.setRemovedDate(deletionDate);
-			bqMembership.setStatus("INACTIVE");
-		}
-
-		_bqMembershipRepository.saveAll(bqMemberships);
-
-		Stream<BQMembership> bqMembershipsStream = bqMemberships.stream();
-
-		Map<Long, List<BQMembership>> bqMembershipsMap =
-			bqMembershipsStream.collect(
-				Collectors.groupingBy(BQMembership::getSegmentId));
-
-		for (Map.Entry<Long, List<BQMembership>> entry :
-				bqMembershipsMap.entrySet()) {
-
-			List<String> identityIdsByMembership = ListUtil.map(
-				entry.getValue(), BQMembership::getIdentityId);
-
-			Stream<Individual> individualsStream = individuals.stream();
-
-			List<Individual> individualsByMembership = individualsStream.filter(
-				individual -> identityIdsByMembership.contains(
-					String.valueOf(individual.getId()))
-			).collect(
-				Collectors.toList()
-			);
-
-			_individualDog.removeSegmentId(
-				SetUtil.map(individualsByMembership, Individual::getId),
-				entry.getKey());
-		}
-	}
-
-	public void deactivateBQMemberships(
-		Date deletionDate, List<BQMembership> bqMemberships) {
-
-		for (BQMembership bqMembership : bqMemberships) {
-			bqMembership.setModifiedDate(deletionDate);
-			bqMembership.setRemovedDate(deletionDate);
-			bqMembership.setStatus("INACTIVE");
-		}
-
-		_bqMembershipRepository.saveAll(bqMemberships);
-
-		Stream<BQMembership> stream = bqMemberships.stream();
-
-		Map<Long, List<BQMembership>> bqMembershipsMap = stream.collect(
-			Collectors.groupingBy(BQMembership::getSegmentId));
-
-		for (Map.Entry<Long, List<BQMembership>> entry :
-				bqMembershipsMap.entrySet()) {
-
-			_individualDog.removeSegmentId(
-				SetUtil.map(
-					SetUtil.map(entry.getValue(), BQMembership::getIdentityId),
-					Long::parseLong),
-				entry.getKey());
-		}
-	}
-
-	public void deactivateBQMemberships(Date deletionDate, String identityId) {
-		for (BQMembership bqMembership :
-				_bqMembershipRepository.findByIdentityIdAndStatus(
-					identityId, "ACTIVE")) {
-
-			deactivateBQMembership(deletionDate, bqMembership);
-		}
 	}
 
 	public void deleteBQMemberships(List<Long> segmentIds) {
@@ -250,11 +126,6 @@ public class BQMembershipDog extends BaseFaroInfoDog {
 	public List<String> getActiveIdentityIds(Long segmentId) {
 		return _bqMembershipRepository.findIdentityIdBySegmentIdAndStatus(
 			segmentId, "ACTIVE");
-	}
-
-	public List<Long> getActiveSegmentIds(List<String> identityIds) {
-		return _bqMembershipRepository.findSegmentIdByIdentityIdInAndStatus(
-			identityIds, "ACTIVE");
 	}
 
 	public List<Long> getActiveSegmentIds(String identityId) {
@@ -351,17 +222,6 @@ public class BQMembershipDog extends BaseFaroInfoDog {
 			identityId);
 	}
 
-	public boolean isIdentityInSegments(
-		String identityId, List<Long> segmentIds, int max, int min,
-		boolean ascending) {
-
-		List<String> identityIds =
-			_bqMembershipRepository.findIdentityIdBySegmentIdIn(
-				identityId, segmentIds, max, min, ascending);
-
-		return !identityIds.isEmpty();
-	}
-
 	public List<String> isMember(List<String> identityIds, Long segmentId) {
 		return _bqMembershipRepository.
 			findIdentityIdByIdentityIdInAndSegmentIdAndStatus(
@@ -405,15 +265,9 @@ public class BQMembershipDog extends BaseFaroInfoDog {
 	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
-	private IndividualDog _individualDog;
-
-	@Autowired
 	private BQMembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 }

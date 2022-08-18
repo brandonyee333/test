@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.dog.BQCSVUserDog;
 import com.liferay.osb.asah.common.dog.BQUserDog;
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -153,8 +152,10 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _deleteData(String emailAddress) {
-		Individual individual = _individualDog.fetchIndividualByEmailAddress(
-			emailAddress);
+
+		// TODO Fetch Individual by emailAddress
+
+		Individual individual = new Individual();
 
 		if (individual == null) {
 			return;
@@ -171,8 +172,6 @@ public class DataControlNanite extends BaseNanite {
 					entry.getKey(), entry.getValue());
 			}
 		}
-
-		_individualDog.removeDemographics(individual);
 	}
 
 	private void _deleteSuppression(String emailAddress) {
@@ -217,8 +216,9 @@ public class DataControlNanite extends BaseNanite {
 					"demographics.email.value", emailAddress),
 				zipOutputStream));
 
-		Individual individual = _individualDog.fetchIndividualByEmailAddress(
-			emailAddress);
+		// TODO Fetch Individual by emailAddress
+
+		Individual individual = new Individual();
 
 		if (individual == null) {
 			_exportDataControlTask(dataControlTask, zipFileBuilder);
@@ -459,9 +459,6 @@ public class DataControlNanite extends BaseNanite {
 
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPathName;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	private final JsonFactory _jsonFactory = new JsonFactory() {
 		{

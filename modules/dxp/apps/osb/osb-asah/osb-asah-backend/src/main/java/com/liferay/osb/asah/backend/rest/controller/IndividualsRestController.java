@@ -16,11 +16,9 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.DistributionDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.model.Distribution;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,9 +50,7 @@ public class IndividualsRestController
 
 		// TODO Implement operation
 
-		return _toDistributionDTOPageDTO(
-			_individualDog.getDistributionPage(
-				"", "", filterString, numberOfBins, size, sorts));
+		return _toDistributionDTOPageDTO(null);
 	}
 
 	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(
@@ -75,8 +71,5 @@ public class IndividualsRestController
 				"individuals-distribution-transformations"),
 			distributionsPage);
 	}
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 }

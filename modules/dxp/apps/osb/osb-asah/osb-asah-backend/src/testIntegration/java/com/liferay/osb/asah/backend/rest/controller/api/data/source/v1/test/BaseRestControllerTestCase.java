@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -29,7 +28,6 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.hamcrest.Matcher;
@@ -38,7 +36,6 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -59,8 +56,6 @@ public abstract class BaseRestControllerTestCase
 
 		segment.setFilter("(((demographics/age/value gt '50')))");
 		segment.setId(327968823603500655L);
-
-		_individualDog.updateDynamicMemberships(new Date(), segment);
 	}
 
 	protected ValidatableResponse getValidatableResponse(
@@ -168,9 +163,6 @@ public abstract class BaseRestControllerTestCase
 
 		return response.then();
 	}
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@LocalServerPort
 	private int _serverPort;

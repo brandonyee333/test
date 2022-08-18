@@ -22,7 +22,6 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Individual;
@@ -67,7 +66,9 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
-		Individual individual = _individualDog.getIndividual(channelId, id);
+		// TOFO Fetch Individual by id and channelId
+
+		Individual individual = new Individual();
 
 		IndividualDTO individualDTO = new IndividualDTO(individual);
 
@@ -125,9 +126,10 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		Page<Individual> individualPage = _individualDog.searchIndividualPage(
-			channelId, filterString, includeAnonymousUsers, page,
-			Math.max(1, size), sorts);
+		// TODO Fetch individuals by channelId, filterString and
+		// includeAnonymousUsers
+
+		Page<Individual> individualPage = null;
 
 		if (StringUtils.isEmpty(expand)) {
 			return _toIndividualDTOPageDTO(individualPage);
@@ -194,8 +196,9 @@ public class IndividualsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "false", required = false) boolean
 			includeAnonymousUsers) {
 
-		return _individualDog.countIndividuals(
-			null, null, includeAnonymousUsers);
+		// TODO Implement operation
+
+		return 0;
 	}
 
 	@GetMapping("/{id}/individual-segments")
@@ -266,10 +269,9 @@ public class IndividualsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
-		return _toTransformationDTOPageDTO(
-			_individualDog.getTransformationPage(
-				apply, channelId, filterString, includeAnonymousUsers, null,
-				page, size));
+		// TODO Implement operation
+
+		return _toTransformationDTOPageDTO(null);
 	}
 
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
@@ -352,9 +354,6 @@ public class IndividualsRestController extends BaseRestController {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

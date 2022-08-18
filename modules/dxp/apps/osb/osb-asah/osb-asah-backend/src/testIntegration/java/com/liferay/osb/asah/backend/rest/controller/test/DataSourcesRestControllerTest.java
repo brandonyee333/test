@@ -21,14 +21,12 @@ import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
@@ -92,9 +90,7 @@ public class DataSourcesRestControllerTest {
 
 		dataSource.setId(Long.valueOf(dataSourceJSONObject.getString("id")));
 
-		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource);
-
-		_individualDog.addIndividual(individual, false);
+		// TODO Add individual related to dataSource
 
 		Asset asset = _assetRepository.save(
 			_objectMapper.convertValue(
@@ -317,9 +313,6 @@ public class DataSourcesRestControllerTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

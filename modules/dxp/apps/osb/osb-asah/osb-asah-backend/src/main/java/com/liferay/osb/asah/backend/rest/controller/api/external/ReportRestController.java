@@ -51,7 +51,6 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
@@ -477,10 +476,9 @@ public class ReportRestController extends BaseRestController {
 		getIndividualSegmentResultBagEntityModel(
 			@PathVariable Long individualId) {
 
-		Individual individual = _individualDog.getIndividual(individualId);
+		// TODO Fetch segments by individualId
 
-		List<Segment> segments = _segmentDog.getSegments(
-			individual.getSegmentIds());
+		List<Segment> segments = Collections.emptyList();
 
 		return _toResultBagEntityModel(
 			null, 0, null, new ResultBag<>(segments, segments.size()),
@@ -681,9 +679,9 @@ public class ReportRestController extends BaseRestController {
 	public EntityModel<ReportIndividualDTO> getReportIndividualDTOEntityModel(
 		@PathVariable Long individualId) {
 
-		return _toReportIndividualDTOEntityModel(
-			new ReportIndividualDTO(
-				_individualDog.getIndividual(individualId)));
+		// TODO Implement operation
+
+		return _toReportIndividualDTOEntityModel(new ReportIndividualDTO(null));
 	}
 
 	@GetMapping("/individuals")
@@ -692,8 +690,9 @@ public class ReportRestController extends BaseRestController {
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
-		Page<Individual> individualPage = _individualDog.getIndividualPage(
-			query, null, page, _PAGE_SIZE);
+		// TODO Fetch individualPage by query
+
+		Page<Individual> individualPage = null;
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(
@@ -746,8 +745,9 @@ public class ReportRestController extends BaseRestController {
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
-		Page<Individual> individualPage = _individualDog.getIndividualPage(
-			query, segmentId, page, _PAGE_SIZE);
+		// TODO Fetch individualPage by query and segmentId
+
+		Page<Individual> individualPage = null;
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(
@@ -1375,9 +1375,6 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private HistogramDog _histogramDog;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private InterestDog _interestDog;

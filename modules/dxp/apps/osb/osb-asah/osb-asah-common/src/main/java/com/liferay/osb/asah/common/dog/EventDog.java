@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -124,10 +125,12 @@ public class EventDog {
 		Long channelId, @Nullable Long individualId, @Nullable String keywords,
 		TimeRange timeRange) {
 
+		// TODO Change countBQEvents to use individualId instead of userIds
+
 		return _bqEventRepository.countBQEvents(
 			channelId, keywords, timeRange.getEndLocalDateTime(),
 			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
-			_individualDog.getIndividualUserIds(individualId));
+			Collections.emptySet());
 	}
 
 	public BQEvent fetchBQEvent(Long id) {
@@ -168,12 +171,13 @@ public class EventDog {
 		Long channelId, @Nullable Long individualId, @Nullable String keywords,
 		int page, int size, TimeRange timeRange) {
 
+		// TODO Change searchBQEvents to use individualId instead of userIds
+
 		return _bqEventRepository.searchBQEvents(
 			channelId, keywords,
 			PageRequest.of(page, size, Sort.asc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
-			_timeZoneDog.getTimeZoneId(),
-			_individualDog.getIndividualUserIds(individualId));
+			_timeZoneDog.getTimeZoneId(), Collections.emptySet());
 	}
 
 	public Map<BQSession, List<BQEvent>> searchBQEventsGroupByUserSessionId(
@@ -231,9 +235,6 @@ public class EventDog {
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

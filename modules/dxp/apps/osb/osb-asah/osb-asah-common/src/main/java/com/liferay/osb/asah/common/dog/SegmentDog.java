@@ -54,7 +54,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -231,25 +230,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public Date getLastActivityDate(Segment segment) {
-		List<Individual> individuals = _individualDog.searchIndividuals(
-			segment.getChannelId(), segment.getIncludeAnonymousUsers(),
-			segment.getId(), 0, 1, new String[] {"lastActivityDate", "desc"});
 
-		if (individuals.isEmpty()) {
-			return null;
-		}
-
-		Individual individual = individuals.get(0);
-
-		for (Individual.ActivityDate lastActivityDate :
-				individual.getLastActivityDates()) {
-
-			if (Objects.equals(
-					lastActivityDate.getChannelId(), segment.getChannelId())) {
-
-				return lastActivityDate.getActivityDate();
-			}
-		}
+		// TODO Implement operation
 
 		return null;
 	}
@@ -816,27 +798,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private void _updateMemberships(Segment segment) {
 		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 			_addAsahTask(segment);
-
-			return;
-		}
-
-		List<String> identityIds = _bqMembershipDog.getActiveIdentityIds(
-			segment.getId());
-
-		for (String identityId : identityIds) {
-			Individual individual = _individualDog.fetchIndividual(
-				Long.parseLong(identityId));
-
-			if (individual == null) {
-				continue;
-			}
-
-			if (!CollectionUtils.containsAny(
-					individual.getChannelIds(), segment.getChannelId())) {
-
-				_bqMembershipDog.deactivateBQMembership(
-					new Date(), identityId, segment.getId());
-			}
 		}
 	}
 
@@ -905,9 +866,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

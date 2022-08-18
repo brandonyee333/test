@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -82,56 +81,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddDataSource() {
 		_dataSourceDog.addDataSource(FaroInfoTestUtil.buildLiferayDataSource());
-	}
-
-	@Disabled
-	@Test
-	public void testAddDataSourceUpdatesExistingIndividual() throws Exception {
-		DataSource dataSource1 = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildLiferayDataSource());
-		DataSource dataSource2 = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildLiferayDataSource());
-
-		// TODO Add BQFieldMapping "email", "Text"
-		// TODO Add BQFieldMapping "givenName", "Text"
-
-		Individual individual = _individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividual(dataSource1), false);
-
-		FaroInfoTestUtil.buildIndividualField(
-			dataSource1, "email", "http://schema.org/email",
-			RandomTestUtil.randomString(), individual, "email");
-
-		individual = _individualDog.updateIndividual(
-			RandomTestUtil.randomUUID(),
-			JSONUtil.put(
-				"contact",
-				JSONUtil.put(
-					"emailAddress", RandomTestUtil.randomEmailAddress()
-				).put(
-					"givenName", RandomTestUtil.randomString()
-				)
-			).put(
-				"modifiedDate", System.currentTimeMillis()
-			),
-			dataSource2, individual);
-
-		individual = _individualDog.fetchIndividual(individual.getId());
-
-		Set<Field> fields = individual.getFields();
-
-		Stream<Field> stream = fields.stream();
-
-		Assertions.assertTrue(
-			stream.anyMatch(
-				field -> Objects.equals(field.getName(), "givenName")),
-			"Adding data source with information on existing individual " +
-				"should update fields of existing individual");
-
-		Assertions.assertTrue(
-			!Objects.isNull(individual.getLastEnrichmentDate()),
-			"Updating individual from new data source should add an " +
-				"enrichment date");
 	}
 
 	@Test
@@ -213,21 +162,16 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSource());
 
-		Individual individual = _individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividual(dataSource), false);
+		// TODO Add Individual related to dataSource
 
 		dataSource.setDeletionDate(new Date());
 
 		_dataSourceDog.deleteDataSource(dataSource);
 
-		Long individualId = individual.getId();
-
-		if (individualId == null) {
-			individualId = 0L;
-		}
+		// TODO Check if exists Individual with individual's Id
 
 		Assertions.assertFalse(
-			_individualDog.existsById(individualId),
+			true,
 			"Individual was not deleted on data source deletion despite only " +
 				"containing fields from the deleted data source");
 	}
@@ -347,26 +291,15 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		// TODO Add BQFieldMapping "email", "Text"
 		// TODO Add BQFieldMapping "givenName", "Text"
 
-		Individual individual = _individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividual(dataSource1), false);
+		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource1);
+
+		// TODO Add individual
 
 		FaroInfoTestUtil.buildIndividualField(
 			dataSource1, "email", "http://schema.org/email",
 			RandomTestUtil.randomString(), individual, "email");
 
-		individual = _individualDog.updateIndividual(
-			RandomTestUtil.randomUUID(),
-			JSONUtil.put(
-				"contact",
-				JSONUtil.put(
-					"emailAddress", RandomTestUtil.randomEmailAddress()
-				).put(
-					"givenName", RandomTestUtil.randomString()
-				)
-			).put(
-				"modifiedDate", System.currentTimeMillis()
-			),
-			dataSource2, individual);
+		// TODO Add dataSource2 to individual
 
 		Date lastEnrichmentDate = individual.getLastEnrichmentDate();
 
@@ -374,22 +307,17 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource2);
 
-		Long individualId = individual.getId();
-
-		if (individualId == null) {
-			individualId = 0L;
-		}
+		// TODO check if individual with individualId was not deleted
 
 		Assertions.assertTrue(
-			_individualDog.existsById(individualId),
+			false,
 			"Individual was deleted even though another data source with " +
 				"data on the individual exists");
 
-		individual = _individualDog.fetchIndividual(individualId);
+		// TODO check if theres individuals related to deleted dataSourceId2
 
 		Assertions.assertFalse(
-			_individualDog.existsByDataSourceUserPK(
-				dataSourceId2, individualId),
+			true,
 			"Data source individual PK was not deleted on data source " +
 				"deletion");
 
@@ -541,8 +469,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			return;
 		}
 
-		_individualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividual(dataSource), false);
+		// TODO Add Individual related to dataSourceId
 
 		// TODO Add BQEvent
 
@@ -591,9 +518,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

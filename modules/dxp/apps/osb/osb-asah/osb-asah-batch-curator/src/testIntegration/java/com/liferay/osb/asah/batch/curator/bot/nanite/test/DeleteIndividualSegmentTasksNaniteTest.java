@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteIndividualSegmentTasksNanite;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -69,7 +68,7 @@ public class DeleteIndividualSegmentTasksNaniteTest
 
 		individual.setSegmentIds(Collections.singleton(segmentId));
 
-		_individualDog.addIndividual(individual, false);
+		// TODO Add individual
 
 		_bqMembershipChangeDog.addBQMembershipChange(
 			FaroInfoTestUtil.buildBQMembershipChange(segmentId));
@@ -89,8 +88,6 @@ public class DeleteIndividualSegmentTasksNaniteTest
 			0, _bqMembershipChangeRepository.countBySegmentId(segmentId),
 			"Entries within membership-changes related to the deleted " +
 				"individual segment should be deleted");
-
-		individual = _individualDog.fetchIndividual(individual.getId());
 
 		Assertions.assertFalse(CollectionUtils.isEmpty(individual.getFields()));
 
@@ -124,9 +121,6 @@ public class DeleteIndividualSegmentTasksNaniteTest
 	@Autowired
 	private DeleteIndividualSegmentTasksNanite
 		_deleteIndividualSegmentTasksNanite;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;

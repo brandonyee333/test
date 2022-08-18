@@ -18,22 +18,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
-import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
@@ -44,11 +40,9 @@ import java.util.Set;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -88,7 +82,7 @@ public class BQMembershipDogTest
 		individual.setId(123L);
 		individual.setSegmentIds(Collections.singleton(456L));
 
-		individual = _individualDog.addIndividual(individual, false);
+		// TODO Add individual
 
 		BQMembership bqMembership = new BQMembership();
 
@@ -116,8 +110,6 @@ public class BQMembershipDogTest
 
 		Assertions.assertNotNull(bqMembership.getId());
 
-		individual = _individualDog.fetchIndividual(individual.getId());
-
 		Set<Long> segmentIds = individual.getSegmentIds();
 
 		MatcherAssert.assertThat(
@@ -144,120 +136,6 @@ public class BQMembershipDogTest
 		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
 
 		Assertions.assertNotNull(bqMembership.getId());
-	}
-
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_memberships.json"
-	)
-	@Test
-	public void testDeactivateMembershipWithIndividuals() {
-		Segment segment1 = new Segment();
-
-		segment1.setFilter("");
-		segment1.setFilterMetadata("0");
-		segment1.setId(338511398116723458L);
-		segment1.setIsNew(Boolean.TRUE);
-		segment1.setModifiedDate(
-			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
-		segment1.setName("Test Segment 1");
-		segment1.setScope("PROJECT");
-		segment1.setType(Segment.Type.STATIC);
-		segment1.setState("READY");
-		segment1.setStatus("ACTIVE");
-
-		_segmentDog.addSegment(segment1);
-
-		DataSource dataSource = _dataSourceRepository.save(
-			FaroInfoTestUtil.buildLiferayDataSource());
-
-		// TODO Add BQFieldMapping "email", "Text"
-
-		Individual individual1 = new Individual();
-
-		individual1.setId(338486041327913341L);
-		individual1.setSegmentIds(Collections.singleton(338511398116723458L));
-
-		_individualDog.addIndividual(individual1, false);
-
-		Field field1 = new Field();
-
-		field1.setContext("demographics");
-		field1.setDataSourceId(dataSource.getId());
-		field1.setDataSourceName("Test Data Source");
-		field1.setFieldType("Text");
-		field1.setModifiedDate(DateUtil.toUTCDate("2019-02-11T17:05:06.814Z"));
-		field1.setName("email");
-		field1.setOwnerId(338486041327913341L);
-		field1.setOwnerType("individual");
-		field1.setSourceName("email");
-		field1.setValue("test2@liferay.com");
-
-		individual1.setFields(Collections.singleton(field1));
-
-		_individualDog.updateIndividual(individual1);
-
-		Individual individual2 = new Individual();
-
-		individual2.setId(338486037253283140L);
-		individual2.setSegmentIds(Collections.singleton(338511398116723458L));
-
-		_individualDog.addIndividual(individual1, false);
-
-		Field field2 = new Field();
-
-		field2.setContext("demographics");
-		field2.setDataSourceId(dataSource.getId());
-		field2.setDataSourceName("Test Data Source");
-		field2.setFieldType("Text");
-		field2.setModifiedDate(DateUtil.toUTCDate("2019-02-11T17:05:06.814Z"));
-		field2.setName("email");
-		field2.setOwnerId(338486037253283140L);
-		field2.setOwnerType("individual");
-		field2.setSourceName("email");
-		field2.setValue("test1@liferay.com");
-
-		individual2.setFields(Collections.singleton(field2));
-
-		_individualDog.updateIndividual(individual2);
-
-		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.218Z");
-
-		_bqMembershipDog.deactivateBQMembership(
-			deletionDate, "338486041327913341", 338511398116723458L);
-
-		BQMembership bqMembership =
-			_bqMembershipRepository.findByIdentityIdAndSegmentIdAndStatus(
-				"338486041327913341", 338511398116723458L, "INACTIVE");
-
-		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
-			bqMembership.getCreateDate());
-		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
-			bqMembership.getModifiedDate());
-		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
-			bqMembership.getRemovedDate());
-		Assertions.assertEquals(338511398389279308L, bqMembership.getId());
-		Assertions.assertEquals(
-			"338486041327913341", bqMembership.getIdentityId());
-		Assertions.assertEquals(
-			338511398116723458L, bqMembership.getSegmentId());
-		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
-
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"individuals", "338486041327913341");
-
-		JSONArray individualSegmentIdsJSONArray =
-			individualJSONObject.getJSONArray("individualSegmentIds");
-
-		Assertions.assertEquals(0, individualSegmentIdsJSONArray.length());
 	}
 
 	@RepositoryResource(
@@ -301,7 +179,7 @@ public class BQMembershipDogTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
@@ -346,9 +224,6 @@ public class BQMembershipDogTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

@@ -15,15 +15,12 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Preference;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,22 +59,8 @@ public class DataRetentionNanite extends BaseNanite {
 			),
 			true, _COLLECTION_NAMES);
 
-		Long currentIndividualId = null;
+		// TODO delete BQIdentities created before date
 
-		while (true) {
-			List<Individual> individuals = _individualDog.searchIndividuals(
-				date, currentIndividualId, 10000);
-
-			if (individuals.isEmpty()) {
-				break;
-			}
-
-			_individualDog.deleteIndividuals(new Date(), individuals);
-
-			Individual individual = individuals.get(individuals.size() - 1);
-
-			currentIndividualId = individual.getId();
-		}
 	}
 
 	@Override
@@ -93,9 +76,6 @@ public class DataRetentionNanite extends BaseNanite {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private PreferenceDog _preferenceDog;

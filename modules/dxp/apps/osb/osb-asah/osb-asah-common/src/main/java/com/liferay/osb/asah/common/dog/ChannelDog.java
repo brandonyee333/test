@@ -378,8 +378,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 				_updateChannelIds(channelIds, individual);
 				_updateLastActivityDates(channelIds, individual);
 
-				_individualDog.updateIndividual(individual);
-
 				return null;
 			}
 		).setMonitoringConsumers(
@@ -580,9 +578,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
@@ -191,7 +190,7 @@ public class DataSourceDogTest
 
 		individual.setId(123L);
 
-		individual = _individualDog.addIndividual(individual, false);
+		// TODO Add individual
 
 		dataSource.setName("Edited Data Source Test");
 
@@ -213,8 +212,6 @@ public class DataSourceDogTest
 		fields.forEach(
 			field -> Assertions.assertEquals(
 				"Edited Data Source Test", field.getDataSourceName()));
-
-		individual = _individualDog.getIndividual(individual.getId());
 
 		Set<Field> customFields = individual.getCustomFields();
 
@@ -260,8 +257,5 @@ public class DataSourceDogTest
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 }
