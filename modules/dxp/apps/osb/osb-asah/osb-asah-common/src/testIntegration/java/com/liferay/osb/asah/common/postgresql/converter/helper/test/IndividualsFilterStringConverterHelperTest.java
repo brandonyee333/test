@@ -36,10 +36,8 @@ import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -48,6 +46,7 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -71,7 +70,6 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.PageRequest;
 
 /**
  * @author Rachael Koestartyo
@@ -885,11 +883,9 @@ public class IndividualsFilterStringConverterHelperTest
 	protected void testFilterString(
 		String filterString, Long... expectedIndividualIds) {
 
-		List<Individual> individuals = _individualRepository.searchIndividuals(
-			new FilterHelper(
-				_faroInfoIndividualsFilterStringConverterHelper, filterString,
-				_individualsFilterStringConverterHelper),
-			PageRequest.of(0, 100));
+		// TODO Search individuals by filterString
+
+		List<Individual> individuals = Collections.emptyList();
 
 		Stream<Individual> stream = individuals.stream();
 
@@ -1036,7 +1032,8 @@ public class IndividualsFilterStringConverterHelperTest
 				new HashSet<>(bqDataSourceUsers.values()));
 			individual.setIsNew(Boolean.TRUE);
 
-			_individualRepository.save(individual);
+			// TODO Add individual
+
 		}
 	}
 
@@ -1078,9 +1075,6 @@ public class IndividualsFilterStringConverterHelperTest
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
-
-	@Autowired
-	private IndividualRepository _individualRepository;
 
 	@Autowired
 	private IndividualsFilterStringConverterHelper

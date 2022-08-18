@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -130,7 +129,7 @@ public class SegmentRepositoryTest
 		individual.setModifiedDate(new Date());
 		individual.setSegmentIds(Collections.singleton(segment1.getId()));
 
-		individual = _individualRepository.save(individual);
+		// TODO Add Individual
 
 		_individualId = individual.getId();
 
@@ -141,7 +140,8 @@ public class SegmentRepositoryTest
 					_individualId,
 					Collections.singleton("23432-cd-3242-asf23"))));
 
-		_individualRepository.save(individual);
+		// TODO Add Individual
+
 	}
 
 	@AfterEach
@@ -151,7 +151,9 @@ public class SegmentRepositoryTest
 
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
-		_individualRepository.deleteAll();
+
+		// TODO Delete all Individuals
+
 	}
 
 	@Test
@@ -313,10 +315,6 @@ public class SegmentRepositoryTest
 	private DataSourceRepository _dataSourceRepository;
 
 	private Long _individualId;
-
-	@Autowired
-	private IndividualRepository _individualRepository;
-
 	private Long _segment1Id;
 	private Long _segment2Id;
 

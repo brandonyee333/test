@@ -27,8 +27,8 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Field;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
@@ -1070,8 +1070,8 @@ public class BQIndividualDogTest
 	}
 
 	private Page<Individual> _getIndividualPage(
-		Date fromCreateDate, Long individualId, int size, org.springframework.data.domain.Sort sort,
-		Date toCreateDate) {
+		Date fromCreateDate, Long individualId, int size,
+		org.springframework.data.domain.Sort sort, Date toCreateDate) {
 
 		return Page.empty();
 	}
@@ -1081,6 +1081,7 @@ public class BQIndividualDogTest
 
 		return Page.empty();
 	}
+
 	private List<Individual> _searchIndividuals(
 		Long channelId, String filterString, Boolean includeAnonymousUsers,
 		int page, int size, String[] sorts) {
