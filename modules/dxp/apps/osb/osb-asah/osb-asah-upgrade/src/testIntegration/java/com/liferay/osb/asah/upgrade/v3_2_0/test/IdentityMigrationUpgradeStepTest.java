@@ -28,6 +28,8 @@ import java.util.Objects;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.jooq.tools.StringUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -49,17 +51,8 @@ public class IdentityMigrationUpgradeStepTest
 	public void setUp() throws Exception {
 		ProjectIdThreadLocal.setProjectId("test");
 
-		_elasticsearchIndexManager.delete(
-			"test_osbasahcerebroinfo_user-sessions");
-
-		_elasticsearchIndexManager.create(
-			ResourceUtil.readResourceToString(
-				"dependencies/user_sessions_index_configuration.json", this),
-			"test_osbasahcerebroinfo_user-sessions");
-
-		_elasticsearchIndexManager.addAlias(
-			"test_osbasahcerebroinfo_user-sessions_alias",
-			"test_osbasahcerebroinfo_user-sessions");
+		_setupIndex("individuals", "osbasahfaroinfo");
+		_setupIndex("user-sessions", "osbasahcerebroinfo");
 
 		tearDown();
 	}
@@ -122,6 +115,26 @@ public class IdentityMigrationUpgradeStepTest
 
 		Assertions.assertNotNull(identityJSONArray);
 		Assertions.assertTrue(identityJSONArray.isEmpty());
+	}
+
+	private void _setupIndex(String collectionName, String namespace)
+		throws Exception {
+
+		String indexName = String.format(
+			"test_%s_%s", namespace, collectionName);
+
+		_elasticsearchIndexManager.delete(indexName);
+
+		_elasticsearchIndexManager.create(
+			ResourceUtil.readResourceToString(
+				String.format(
+					"dependencies/%s_index_configuration.json",
+					StringUtils.replace(collectionName, "-", "_")),
+				this),
+			indexName);
+
+		_elasticsearchIndexManager.addAlias(
+			String.format("%s_alias", indexName), indexName);
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
