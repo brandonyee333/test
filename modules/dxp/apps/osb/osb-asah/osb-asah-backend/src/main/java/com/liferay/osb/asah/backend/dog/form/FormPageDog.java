@@ -14,13 +14,13 @@
 
 package com.liferay.osb.asah.backend.dog.form;
 
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.FormPageMetric;
+
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.model.FormPageMetric;
 
 /**
  * @author Marcellus Tavares
@@ -31,6 +31,7 @@ public class FormPageDog {
 	public List<FormPageMetric> getFormPageMetrics(
 		SearchQueryContext searchQueryContext) {
 
-			return Collections.emptyList();
+		return Collections.emptyList();
 	}
+
 }

@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.liferay.osb.asah.backend.model.CompositionResultBag;
+import com.liferay.osb.asah.common.model.TimeRange;
+
 import java.util.Collections;
 
 import org.springframework.stereotype.Component;
-
-import com.liferay.osb.asah.backend.model.CompositionResultBag;
-import com.liferay.osb.asah.common.model.TimeRange;
 
 /**
  * @author Rachael Koestartyo
@@ -31,9 +31,7 @@ public class SearchTermCompositionDog {
 		String channelId, String dataSourceId, int size, int start,
 		TimeRange timeRange) {
 
-		return new CompositionResultBag(
-			Collections.emptyList(), 0,
-			0);
+		return new CompositionResultBag(Collections.emptyList(), 0, 0);
 	}
 
 }

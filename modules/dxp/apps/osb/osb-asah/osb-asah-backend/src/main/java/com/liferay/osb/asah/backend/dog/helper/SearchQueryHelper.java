@@ -14,14 +14,26 @@
 
 package com.liferay.osb.asah.backend.dog.helper;
 
+import com.liferay.osb.asah.backend.constants.DataConstants;
+import com.liferay.osb.asah.backend.model.AssetId;
+import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.Geolocation;
+import com.liferay.osb.asah.backend.model.Technology;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
+
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -34,17 +46,8 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.springframework.stereotype.Component;
 
-import com.liferay.osb.asah.backend.constants.DataConstants;
-import com.liferay.osb.asah.backend.model.AssetId;
-import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.model.Geolocation;
-import com.liferay.osb.asah.backend.model.Technology;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.model.MetricType;
-import com.liferay.osb.asah.common.model.TimeRange;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Marcellus Tavares

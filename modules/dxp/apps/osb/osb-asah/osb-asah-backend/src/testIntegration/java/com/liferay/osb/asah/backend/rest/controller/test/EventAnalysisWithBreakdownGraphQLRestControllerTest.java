@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import org.junit.jupiter.api.Disabled;
-
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
+
+import org.junit.jupiter.api.Disabled;
 
 /**
  * @author Leslie Wong

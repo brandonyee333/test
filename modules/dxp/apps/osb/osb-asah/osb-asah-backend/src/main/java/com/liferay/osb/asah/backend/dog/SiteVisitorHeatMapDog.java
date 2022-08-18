@@ -14,13 +14,13 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.liferay.osb.asah.backend.model.HeatMapMetric;
+import com.liferay.osb.asah.common.model.TimeRange;
+
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-
-import com.liferay.osb.asah.backend.model.HeatMapMetric;
-import com.liferay.osb.asah.common.model.TimeRange;
 
 /**
  * @author Leslie Wong
@@ -31,6 +31,7 @@ public class SiteVisitorHeatMapDog {
 	public List<HeatMapMetric> getHeatMapMetrics(
 		String assetId, String channelId, TimeRange timeRange) {
 
-			return Collections.emptyList();
+		return Collections.emptyList();
 	}
+
 }

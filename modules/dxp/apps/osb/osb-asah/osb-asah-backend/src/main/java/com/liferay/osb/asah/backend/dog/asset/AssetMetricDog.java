@@ -14,12 +14,13 @@
 
 package com.liferay.osb.asah.backend.dog.asset;
 
+import com.liferay.osb.asah.common.model.MetricType;
+
 import java.time.LocalDate;
+
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
-
-import com.liferay.osb.asah.common.model.MetricType;
 
 /**
  * @author Matthew Kong
