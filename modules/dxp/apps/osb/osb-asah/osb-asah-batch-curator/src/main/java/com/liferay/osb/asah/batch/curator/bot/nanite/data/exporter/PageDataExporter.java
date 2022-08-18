@@ -16,16 +16,11 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.io.OutputStream;
 
 import java.util.Date;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,42 +32,18 @@ public class PageDataExporter extends BaseReportDataExporter {
 
 	public PageDataExporter(
 			Date fromDate, JsonFactory jsonFactory, OutputStream outputStream,
-			Date toDate, ElasticsearchInvoker elasticsearchInvoker)
+			Date toDate)
 		throws Exception {
 
 		super(fromDate, jsonFactory, outputStream, null, toDate);
-
-		if (elasticsearchInvoker == null) {
-			throw new IllegalArgumentException("Elasticsearch invoker is null");
-		}
-
-		_elasticsearchInvoker = elasticsearchInvoker;
 	}
 
 	@Override
 	protected JSONObject doGetResultPageJSONObject(String afterId) {
-		JSONArray jsonArray = _elasticsearchInvoker.get(
-			"pages", SortBuilderUtil.fieldSort("id"),
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					"eventDate"
-				).gte(
-					fromDate
-				).lte(
-					toDate
-				)
-			).filter(
-				QueryBuilders.rangeQuery(
-					"id"
-				).gt(
-					afterId
-				)
-			),
-			50);
 
-		return JSONUtil.put("results", jsonArray);
+		// TODO Implement Page data export
+
+		return JSONUtil.put("results", new JSONArray());
 	}
-
-	private final ElasticsearchInvoker _elasticsearchInvoker;
 
 }

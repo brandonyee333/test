@@ -27,15 +27,12 @@ import com.liferay.osb.asah.common.dog.BQUserDog;
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.http.EmailHttp;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.Individual;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.common.zip.ZipFileBuilder;
 
 import java.io.File;
@@ -55,10 +52,6 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -115,42 +108,6 @@ public class DataControlNanite extends BaseNanite {
 			DataControlTaskStatus.COMPLETED.toString(), emailAddress);
 	}
 
-	private QueryBuilder _buildIndividualQueryBuilder(
-		String dataSourceType, Individual individual,
-		String individualPKFieldName) {
-
-		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-
-		for (Individual.DataSourceUserPK dataSourceUserPK :
-				individual.getDataSourceUserPKs()) {
-
-			DataSource dataSource = _dataSourceDog.getDataSource(
-				dataSourceUserPK.getDataSourceId());
-
-			if (!StringUtils.equals(
-					dataSource.getProviderType(), dataSourceType)) {
-
-				continue;
-			}
-
-			for (String userPK : dataSourceUserPK.getUserPKs()) {
-				boolQueryBuilder.should(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termsQuery(
-							"dataSourceId", String.valueOf(dataSource.getId()))
-					).filter(
-						QueryBuilders.termsQuery(individualPKFieldName, userPK)
-					));
-			}
-		}
-
-		if (boolQueryBuilder.hasClauses()) {
-			return boolQueryBuilder;
-		}
-
-		return null;
-	}
-
 	private void _deleteData(String emailAddress) {
 
 		// TODO Fetch Individual by emailAddress
@@ -195,6 +152,8 @@ public class DataControlNanite extends BaseNanite {
 			DataControlTask dataControlTask, String emailAddress)
 		throws Exception {
 
+		// TODO Implement Export Data
+
 		ZipFileBuilder zipFileBuilder = new ZipFileBuilder(
 			_exportPathName + "/" + dataControlTask.getId() + ".zip");
 
@@ -204,67 +163,35 @@ public class DataControlNanite extends BaseNanite {
 				"emailAddress", emailAddress, zipOutputStream));
 		zipFileBuilder.addToZip(
 			"individuals.json",
-			zipOutputStream -> _writeToZip(
-				"individuals", faroInfoElasticsearchInvoker,
-				QueryBuilders.termQuery(
-					"demographics.email.value", emailAddress),
-				zipOutputStream));
+			zipOutputStream -> _writeToZip("individuals", zipOutputStream));
 
 		// TODO Fetch Individual by emailAddress
 
-		Individual individual = new Individual();
-
-		QueryBuilder csvIndividualQueryBuilder = _buildIndividualQueryBuilder(
-			"CSV", individual, "dataSourceIndividualPK");
-
-		if (csvIndividualQueryBuilder != null) {
-			zipFileBuilder.addToZip(
-				"csv-individuals.json",
-				zipOutputStream -> _writeToZip(
-					"csv-individuals", faroInfoElasticsearchInvoker,
-					_buildIndividualQueryBuilder(
-						"CSV", individual, "dataSourceIndividualPK"),
-					zipOutputStream));
-		}
-
-		QueryBuilder individualIdQueryBuilder = QueryBuilders.termQuery(
-			"individualId", String.valueOf(individual.getId()));
-
+		zipFileBuilder.addToZip(
+			"csv-individuals.json",
+			zipOutputStream -> _writeToZip("csv-individuals", zipOutputStream));
 		zipFileBuilder.addToZip(
 			"blogs.json",
-			zipOutputStream -> _writeToZip(
-				"blogs", _cerebroInfoElasticsearchInvoker,
-				individualIdQueryBuilder, zipOutputStream));
+			zipOutputStream -> _writeToZip("blogs", zipOutputStream));
 		zipFileBuilder.addToZip(
 			"document-libraries.json",
 			zipOutputStream -> _writeToZip(
-				"document-libraries", _cerebroInfoElasticsearchInvoker,
-				individualIdQueryBuilder, zipOutputStream));
+				"document-libraries", zipOutputStream));
 		zipFileBuilder.addToZip(
 			"forms.json",
-			zipOutputStream -> _writeToZip(
-				"forms", _cerebroInfoElasticsearchInvoker,
-				individualIdQueryBuilder, zipOutputStream));
+			zipOutputStream -> _writeToZip("forms", zipOutputStream));
 		zipFileBuilder.addToZip(
 			"journals.json",
-			zipOutputStream -> _writeToZip(
-				"journals", _cerebroInfoElasticsearchInvoker,
-				individualIdQueryBuilder, zipOutputStream));
+			zipOutputStream -> _writeToZip("journals", zipOutputStream));
 		zipFileBuilder.addToZip(
 			"page-referrers.json",
-			zipOutputStream -> _writeToZip(
-				"page-referrers", _cerebroInfoElasticsearchInvoker,
-				individualIdQueryBuilder, zipOutputStream));
+			zipOutputStream -> _writeToZip("page-referrers", zipOutputStream));
 		zipFileBuilder.addToZip(
 			"pages.json",
-			zipOutputStream -> _writeToZip(
-				"pages", _cerebroInfoElasticsearchInvoker,
-				individualIdQueryBuilder, zipOutputStream));
+			zipOutputStream -> _writeToZip("pages", zipOutputStream));
 		zipFileBuilder.addToZip(
 			"user-sessions.json",
-			zipOutputStream -> _writeToZip(
-				"user-sessions", _cerebroInfoElasticsearchInvoker,
-				individualIdQueryBuilder, zipOutputStream));
+			zipOutputStream -> _writeToZip("user-sessions", zipOutputStream));
 
 		_exportDataControlTask(dataControlTask, zipFileBuilder);
 	}
@@ -402,13 +329,11 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _writeToZip(
-			String collectionName, ElasticsearchInvoker elasticsearchInvoker,
-			QueryBuilder queryBuilder, ZipOutputStream zipOutputStream)
+			String collectionName, ZipOutputStream zipOutputStream)
 		throws Exception {
 
 		DataExporter dataExporter = new RawDataExporter(
-			collectionName, elasticsearchInvoker, _jsonFactory, zipOutputStream,
-			queryBuilder);
+			collectionName, _jsonFactory, zipOutputStream);
 
 		dataExporter.export();
 	}
@@ -432,9 +357,6 @@ public class DataControlNanite extends BaseNanite {
 
 	@Autowired
 	private BQUserDog _bqUserDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private DataControlTaskDog _dataControlTaskDog;

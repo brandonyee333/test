@@ -16,16 +16,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.io.OutputStream;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,40 +29,25 @@ import org.json.JSONObject;
 public class RawDataExporter extends BaseDataExporter {
 
 	public RawDataExporter(
-			String collectionName, ElasticsearchInvoker elasticsearchInvoker,
-			JsonFactory jsonFactory, OutputStream outputStream,
-			QueryBuilder queryBuilder)
+			String collectionName, JsonFactory jsonFactory,
+			OutputStream outputStream)
 		throws Exception {
 
 		super(jsonFactory, outputStream, null);
 
 		_collectionName = collectionName;
-		_elasticsearchInvoker = elasticsearchInvoker;
-		_queryBuilder = queryBuilder;
 
 		jsonGenerator.useDefaultPrettyPrinter();
 	}
 
 	@Override
 	protected JSONObject doGetResultPageJSONObject(String after) {
-		JSONArray jsonArray = _elasticsearchInvoker.get(
-			_collectionName, SortBuilderUtil.fieldSort("id", SortOrder.ASC),
-			BoolQueryBuilderUtil.filter(
-				_queryBuilder
-			).filter(
-				QueryBuilders.rangeQuery(
-					"id"
-				).gt(
-					after
-				)
-			),
-			50);
 
-		return JSONUtil.put("results", jsonArray);
+		// TODO Implement Data Export
+
+		return JSONUtil.put("results", new JSONArray());
 	}
 
 	private final String _collectionName;
-	private final ElasticsearchInvoker _elasticsearchInvoker;
-	private final QueryBuilder _queryBuilder;
 
 }
