@@ -22,7 +22,7 @@ import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -37,13 +37,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Matthew Kong
  */
+@Disabled
 public class IndividualHistogramDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
@@ -65,7 +66,7 @@ public class IndividualHistogramDogTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
@@ -87,7 +88,7 @@ public class IndividualHistogramDogTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
@@ -109,7 +110,7 @@ public class IndividualHistogramDogTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test
@@ -131,7 +132,7 @@ public class IndividualHistogramDogTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test

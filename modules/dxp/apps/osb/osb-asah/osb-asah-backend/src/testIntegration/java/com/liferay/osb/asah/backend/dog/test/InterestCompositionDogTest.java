@@ -17,12 +17,13 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.dog.InterestCompositionDog;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import java.util.LinkedHashMap;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Matthew Kong
  */
+@Disabled
 public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@RepositoryResource(
@@ -37,7 +39,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/interests_info.json"
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@Test
@@ -65,7 +67,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_1.json"
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@Test
@@ -93,7 +95,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_2.json"
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@Test
@@ -116,7 +118,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/interests_info.json"
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@Test
@@ -142,7 +144,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_1.json"
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@Test
@@ -170,7 +172,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_1.json"
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
 	@Test

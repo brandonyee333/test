@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.rest.response.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.rest.response.ItemGetResponse;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -35,7 +35,7 @@ public class ItemGetResponseTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/item_get_response_individuals.json"
 	)
 	@Test

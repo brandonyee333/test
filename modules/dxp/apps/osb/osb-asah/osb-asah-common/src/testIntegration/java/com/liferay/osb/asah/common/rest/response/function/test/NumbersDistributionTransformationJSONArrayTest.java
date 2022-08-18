@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.rest.response.function.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.function.NumbersDistributionTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -45,7 +45,7 @@ public class NumbersDistributionTransformationJSONArrayTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@Test

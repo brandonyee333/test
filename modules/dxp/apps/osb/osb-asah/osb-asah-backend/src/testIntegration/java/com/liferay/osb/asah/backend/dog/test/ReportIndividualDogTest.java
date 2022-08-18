@@ -23,8 +23,8 @@ import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -67,7 +67,7 @@ public class ReportIndividualDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/segment_individuals_info_1.json"
 	)
 	@Test
@@ -108,7 +108,7 @@ public class ReportIndividualDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/segment_individuals_info_1.json"
 	)
 	@Test
@@ -142,7 +142,7 @@ public class ReportIndividualDogTest
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/segment_individuals_info_2.json"
 	)
 	@Test

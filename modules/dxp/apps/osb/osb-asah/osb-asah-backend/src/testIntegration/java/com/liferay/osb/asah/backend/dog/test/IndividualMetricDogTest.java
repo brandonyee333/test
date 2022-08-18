@@ -21,7 +21,7 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.IndividualMetric;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -42,7 +42,7 @@ public class IndividualMetricDogTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
 	@Test

@@ -23,10 +23,10 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualsRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.IndividualRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -58,7 +58,7 @@ public class IndividualsRestControllerTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@RepositoryResource(
@@ -105,7 +105,7 @@ public class IndividualsRestControllerTest
 		resourcePath = "osbasahfaroinfo/data_sources_2.json"
 	)
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
@@ -123,7 +123,7 @@ public class IndividualsRestControllerTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@RepositoryResource(
@@ -149,7 +149,7 @@ public class IndividualsRestControllerTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@Test
@@ -182,7 +182,7 @@ public class IndividualsRestControllerTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
@@ -258,7 +258,7 @@ public class IndividualsRestControllerTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = IndividualRepository.class,
+		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
 	)
 	@RepositoryResource(
