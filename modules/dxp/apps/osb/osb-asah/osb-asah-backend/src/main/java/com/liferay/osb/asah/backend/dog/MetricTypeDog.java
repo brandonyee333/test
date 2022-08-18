@@ -14,16 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.common.model.MetricType;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,29 +27,11 @@ import org.springframework.stereotype.Component;
 public class MetricTypeDog {
 
 	@Autowired
-	public MetricTypeDog(List<DogConfiguration> dogConfigurations) {
-		Stream<DogConfiguration> stream = dogConfigurations.stream();
-
-		stream.forEach(this::_cacheDogConfiguration);
+	public MetricTypeDog() {
 	}
 
 	public MetricType getMetricType(AssetType assetType, String name) {
-		return Optional.ofNullable(
-			_metricTypeResolverFunctions.get(assetType)
-		).map(
-			metricTypeResolver -> metricTypeResolver.apply(name)
-		).orElseThrow(
-			IllegalArgumentException::new
-		);
+		return null;
 	}
-
-	private void _cacheDogConfiguration(DogConfiguration dogConfiguration) {
-		_metricTypeResolverFunctions.put(
-			dogConfiguration.getAssetType(),
-			dogConfiguration.getMetricTypeResolverFunction());
-	}
-
-	private final Map<AssetType, Function<String, MetricType>>
-		_metricTypeResolverFunctions = new HashMap<>();
 
 }

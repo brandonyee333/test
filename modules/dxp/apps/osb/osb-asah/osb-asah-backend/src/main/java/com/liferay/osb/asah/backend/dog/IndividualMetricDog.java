@@ -14,18 +14,14 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.liferay.osb.asah.backend.dog.configuration.IndividualMetricDogConfiguration;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.IndividualMetric;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
-import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.MetricType;
-import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.LocalDate;
@@ -33,7 +29,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.Set;
-import java.util.function.BiConsumer;
 
 import org.apache.lucene.search.join.ScoreMode;
 
@@ -52,25 +47,7 @@ public class IndividualMetricDog {
 	public IndividualMetric getIndividualMetric(
 		SearchQueryContext searchQueryContext, Set<String> selectedMetrics) {
 
-		IndividualMetric individualMetric = new IndividualMetric();
-
-		IndividualMetricDogConfiguration individualMetricDogConfiguration =
-			new IndividualMetricDogConfiguration();
-
-		Set<MetricResolver> metricResolvers =
-			individualMetricDogConfiguration.getMetricResolvers(
-				selectedMetrics);
-
-		for (MetricResolver metricResolver : metricResolvers) {
-			BiConsumer<IndividualMetric, Metric> metricSetterBiConsumer =
-				metricResolver.getSetterBiConsumer();
-
-			metricSetterBiConsumer.accept(
-				individualMetric,
-				_getIndividualCountMetric(metricResolver, searchQueryContext));
-		}
-
-		return individualMetric;
+		return new IndividualMetric();
 	}
 
 	public double getIndividualsCount(
@@ -117,38 +94,6 @@ public class IndividualMetricDog {
 		}
 
 		return _elasticsearchInvoker.count("individuals", boolQueryBuilder);
-	}
-
-	private Metric _getIndividualCountMetric(
-		MetricResolver metricResolver, SearchQueryContext searchQueryContext) {
-
-		Metric metric = new Metric(metricResolver.getMetricType());
-
-		LocalDate localDate = LocalDate.now(_timeZoneDog.getZoneId());
-
-		LocalDate previousLocalDate = _getPreviousLocalDate(
-			localDate, searchQueryContext.getTimeRange());
-
-		metric.setPreviousValue(
-			getIndividualsCount(
-				previousLocalDate, metricResolver.getMetricType(),
-				searchQueryContext));
-		metric.setPreviousValueKey(previousLocalDate.toString());
-
-		metric.setValue(
-			getIndividualsCount(
-				localDate, metricResolver.getMetricType(), searchQueryContext));
-		metric.setValueKey(localDate.toString());
-
-		return metric;
-	}
-
-	private LocalDate _getPreviousLocalDate(
-		LocalDate localDate, TimeRange timeRange) {
-
-		LocalDate previousLocalDate = LocalDate.from(localDate);
-
-		return previousLocalDate.minusDays(timeRange.getDeltaDays());
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)

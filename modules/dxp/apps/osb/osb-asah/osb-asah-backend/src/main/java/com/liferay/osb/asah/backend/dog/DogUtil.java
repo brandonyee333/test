@@ -16,8 +16,6 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
-import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetId;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -225,20 +223,8 @@ public class DogUtil {
 		return resultBag;
 	}
 
-	public static Optional<AssetId> getAssetIdOptional(
-		String assetId, DogConfiguration dogConfiguration) {
-
-		AssetResolver<?> assetResolver = dogConfiguration.getAssetResolver();
-
-		if (assetResolver == null) {
-			return Optional.empty();
-		}
-
-		return Optional.ofNullable(
-			assetId
-		).map(
-			assetResolver::getAssetId
-		);
+	public static Optional<AssetId> getAssetIdOptional(String assetId) {
+		return Optional.empty();
 	}
 
 	public static long getCardinalityAsLong(Cardinality cardinality) {
