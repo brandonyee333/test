@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
@@ -42,9 +41,7 @@ import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -62,9 +59,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -303,8 +297,8 @@ public class DataSourceDog {
 				() -> {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
-					_individualDog.updateDataSourceName(
-						id, dataSource.getName());
+					// TODO Update Individual's data source name reference
+
 				});
 		}
 
@@ -386,71 +380,8 @@ public class DataSourceDog {
 
 		_deleteRunLogs(dataSource);
 
-		Date deletionDate = dataSource.getDeletionDate();
+		// TODO Remove Individual if it is a single data source case
 
-		Long currentIndividualId = null;
-
-		while (true) {
-			List<Individual> individuals = _individualDog.searchIndividuals(
-				dataSourceId, currentIndividualId, 10000);
-
-			if (individuals.isEmpty()) {
-				break;
-			}
-
-			Individual lastIndividual = individuals.get(individuals.size() - 1);
-
-			currentIndividualId = lastIndividual.getId();
-
-			Stream<Individual> stream = individuals.stream();
-
-			List<Individual> singleDataSourceIndividuals = stream.filter(
-				individual -> {
-					Set<Individual.DataSourceUserPK> dataSourceUserPKs =
-						individual.getDataSourceUserPKs();
-
-					return dataSourceUserPKs.size() == 1;
-				}
-			).collect(
-				Collectors.toList()
-			);
-
-			if (!singleDataSourceIndividuals.isEmpty()) {
-				_individualDog.deleteIndividuals(
-					deletionDate, singleDataSourceIndividuals);
-
-				individuals.removeAll(singleDataSourceIndividuals);
-			}
-
-			if (!individuals.isEmpty()) {
-				for (Individual individual : individuals) {
-					Set<BQDataSourceUser> bqDataSourceUsers =
-						individual.getBQDataSourceUsers();
-
-					Iterator<BQDataSourceUser> iterator =
-						bqDataSourceUsers.iterator();
-
-					while (iterator.hasNext()) {
-						BQDataSourceUser bqDataSourceUser = iterator.next();
-
-						if (Objects.equals(
-								dataSourceId,
-								bqDataSourceUser.getDataSourceId())) {
-
-							iterator.remove();
-
-							break;
-						}
-					}
-
-					individual.setBQDataSourceUsers(bqDataSourceUsers);
-				}
-
-				_individualDog.updateIndividual(
-					_getEmptyDataJSONObject(dataSource), dataSource,
-					individuals);
-			}
-		}
 	}
 
 	private void _deleteData(DataSource dataSource) throws Exception {
@@ -523,35 +454,8 @@ public class DataSourceDog {
 	private void _deleteIndividualReferences(String fieldName, List<Long> ids)
 		throws Exception {
 
-		JSONArrayIterator.of(
-			"individuals", _elasticsearchInvoker,
-			individualJSONObject -> {
-				JSONArray idsJSONArray = individualJSONObject.getJSONArray(
-					fieldName);
+		// TODO Remove data source field name from Individual
 
-				Iterator<Object> iterator = idsJSONArray.iterator();
-
-				while (iterator.hasNext()) {
-					String id = (String)iterator.next();
-
-					if (ids.contains(Long.parseLong(id))) {
-						iterator.remove();
-					}
-				}
-
-				individualJSONObject.put(fieldName, idsJSONArray);
-
-				_individualDog.updateIndividual(
-					individualJSONObject.getLong("id"),
-					_objectMapper.convertValue(
-						individualJSONObject, Individual.class),
-					false);
-
-				return null;
-			}
-		).setQueryBuilder(
-			QueryBuilders.termsQuery(fieldName, ids)
-		).iterate();
 	}
 
 	private void _deleteRunLogs(DataSource dataSource) {
@@ -721,9 +625,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private Encryptor _encryptor;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
