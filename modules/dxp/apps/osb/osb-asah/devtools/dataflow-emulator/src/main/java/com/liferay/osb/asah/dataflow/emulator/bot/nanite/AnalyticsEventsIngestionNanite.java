@@ -35,6 +35,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapDevice;
 import com.liferay.osb.asah.dataflow.emulator.browscap.BrowscapEngine;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,6 +44,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -300,10 +303,6 @@ public class AnalyticsEventsIngestionNanite {
 				return;
 			}
 
-			analyticsEvent.setAcquisition(
-				new Acquisition(
-					MapUtil.getString(context, "referrer"),
-					MapUtil.getString(context, "url")));
 			analyticsEvent.setContext(context);
 
 			SessionContext sessionContext = _updateOrCreateSessionContext(
@@ -370,43 +369,20 @@ public class AnalyticsEventsIngestionNanite {
 
 		SessionContext sessionContext = _sessions.get(sessionKey);
 
-		Map<String, String> context = analyticsEvent.getContext();
-
 		if (sessionContext == null) {
 			sessionContext = new SessionContext();
 
-			Acquisition acquisition = analyticsEvent.getAcquisition();
-
-			sessionContext.acquisitionCampaign = acquisition.getCampaign();
-			sessionContext.acquisitionChannel = acquisition.getChannel();
-			sessionContext.acquisitionContent = acquisition.getContent();
-			sessionContext.acquisitionMedium = acquisition.getMedium();
-			sessionContext.acquisitionSource = acquisition.getSource();
-			sessionContext.acquisitionTerm = acquisition.getTerm();
-
-			sessionContext.browserName = context.get("browserName");
 			sessionContext.channelId = analyticsEvent.getChannelId();
-			sessionContext.deviceType = context.get("deviceType");
 			sessionContext.id = DigestUtils.sha256Hex(
 				sessionKey + "#" + eventDate.getTime());
-
-			if (!_noninteractionEvents.contains(analyticsEvent.getEventId())) {
-				sessionContext.interactionsCount++;
-			}
-
-			if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
-				Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
-
-				sessionContext.pageViewsCount++;
-			}
-
-			sessionContext.platformName = context.get("platformName");
 			sessionContext.projectId = analyticsEvent.getProjectId();
 			sessionContext.sessionStart = analyticsEvent.getEventDate();
 			sessionContext.userId = analyticsEvent.getUserId();
 
 			_sessions.put(sessionKey, sessionContext);
 		}
+
+		sessionContext.analyticsEvents.add(analyticsEvent);
 
 		sessionContext.maxEventDateTimestamp = Math.max(
 			sessionContext.maxEventDateTimestamp, eventDate.getTime());
@@ -422,7 +398,6 @@ public class AnalyticsEventsIngestionNanite {
 					sessionContext.userId, sessionContext.id, sessionEnd));
 		}
 
-		sessionContext.referrers.add(context.get("url"));
 		sessionContext.sessionEnd = sessionEnd;
 
 		return sessionContext;
@@ -506,33 +481,71 @@ public class AnalyticsEventsIngestionNanite {
 	private void _writeBQSession(SessionContext sessionContext) {
 		BQSession bqSession = new BQSession();
 
-		bqSession.setAcquisitionCampaign(sessionContext.acquisitionCampaign);
-		bqSession.setAcquisitionChannel(sessionContext.acquisitionChannel);
-		bqSession.setAcquisitionContent(sessionContext.acquisitionContent);
-		bqSession.setAcquisitionMedium(sessionContext.acquisitionMedium);
-		bqSession.setAcquisitionSource(sessionContext.acquisitionSource);
-		bqSession.setAcquisitionTerm(sessionContext.acquisitionTerm);
+		SortedSet<AnalyticsEvent> analyticsEvents =
+			sessionContext.analyticsEvents;
 
-		if ((sessionContext.interactionsCount < 1) &&
-			(sessionContext.pageViewsCount < 2)) {
+		AnalyticsEvent firstAnalyticsEvent = analyticsEvents.first();
+		AnalyticsEvent lastAnalyticsEvent = analyticsEvents.last();
 
-			bqSession.setBounced(true);
+		Map<String, String> context = firstAnalyticsEvent.getContext();
+
+		Acquisition acquisition = new Acquisition(
+			MapUtil.getString(context, "referrer"),
+			MapUtil.getString(context, "url"));
+
+		bqSession.setAcquisitionCampaign(acquisition.getCampaign());
+		bqSession.setAcquisitionChannel(acquisition.getChannel());
+		bqSession.setAcquisitionContent(acquisition.getContent());
+		bqSession.setAcquisitionMedium(acquisition.getMedium());
+		bqSession.setAcquisitionSource(acquisition.getSource());
+		bqSession.setAcquisitionTerm(acquisition.getTerm());
+
+		int interactionsCount = 0;
+		int pageViewsCount = 0;
+
+		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
+			String eventId = analyticsEvent.getEventId();
+
+			if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
+				eventId.equals("pageViewed")) {
+
+				pageViewsCount++;
+			}
+
+			if (!_noninteractionEvents.contains(analyticsEvent.getEventId())) {
+				interactionsCount++;
+			}
 		}
 
-		else
-		bqSession.setBounced(false);
-
-		bqSession.setBrowserName(sessionContext.browserName);
+		bqSession.setBounced((pageViewsCount > 1) || (interactionsCount > 0));
+		bqSession.setBrowserName(context.get("browserName"));
 		bqSession.setChannelId(Long.valueOf(sessionContext.channelId));
 		bqSession.setCity("Local Network");
 		bqSession.setCountry("Local Network");
-		bqSession.setDeviceType(sessionContext.deviceType);
+		bqSession.setDeviceType(context.get("deviceType"));
 		bqSession.setDuration(
 			DateUtil.getDeltaMilliseconds(
-				sessionContext.sessionStart, sessionContext.sessionEnd));
+				firstAnalyticsEvent.getEventDate(),
+				lastAnalyticsEvent.getEventDate()));
 		bqSession.setId(sessionContext.id);
-		bqSession.setPlatformName(sessionContext.platformName);
-		bqSession.setReferrers(sessionContext.referrers);
+		bqSession.setPlatformName(context.get("platformName"));
+
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		bqSession.setReferrers(
+			stream.map(
+				analyticsEvent -> {
+					Map<String, String> analyticsEventContext =
+						analyticsEvent.getContext();
+
+					return analyticsEventContext.get("referrer");
+				}
+			).filter(
+				StringUtils::isNotEmpty
+			).collect(
+				Collectors.toSet()
+			));
+
 		bqSession.setRegion("Local Network");
 		bqSession.setSessionEnd(sessionContext.sessionEnd);
 		bqSession.setSessionStart(sessionContext.sessionStart);
@@ -595,22 +608,12 @@ public class AnalyticsEventsIngestionNanite {
 
 	private static class SessionContext {
 
-		public String acquisitionCampaign;
-		public String acquisitionChannel;
-		public String acquisitionContent;
-		public String acquisitionMedium;
-		public String acquisitionSource;
-		public String acquisitionTerm;
-		public String browserName;
+		public SortedSet<AnalyticsEvent> analyticsEvents = new TreeSet<>(
+			Comparator.comparing(AnalyticsEvent::getEventDate));
 		public String channelId;
-		public String deviceType;
 		public String id;
-		public long interactionsCount;
 		public long maxEventDateTimestamp;
-		public long pageViewsCount;
-		public String platformName;
 		public String projectId;
-		public Set<String> referrers = new HashSet<>();
 		public Date sessionEnd;
 		public Date sessionStart;
 		public String userId;
