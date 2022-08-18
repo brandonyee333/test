@@ -79,6 +79,7 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
+	@Disabled
 	@Test
 	public void testGetIndividualsWithFilter() {
 

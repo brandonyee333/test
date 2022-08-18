@@ -204,6 +204,7 @@ public class IndividualSegmentsRestControllerTest
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments_1.json"
 	)
+	@Disabled
 	@Test
 	public void testGetSegmentDTO1() throws Exception {
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(

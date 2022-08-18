@@ -43,6 +43,7 @@ import org.hamcrest.Matchers;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -57,6 +58,7 @@ public class BQMembershipDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@Test
 	public void testAddMembershipWithActiveStatusAndAnonymousIndividual() {
 		Segment segment1 = new Segment();
@@ -194,6 +196,7 @@ public class BQMembershipDogTest
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
+	@Disabled
 	@Test
 	public void testGetIndividualSegmentIndividualIds() {
 		List<String> identityIds = _bqMembershipDog.getActiveIdentityIds(

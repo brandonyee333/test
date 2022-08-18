@@ -50,6 +50,7 @@ public class DataRetentionNaniteTest
 				_cerebroInfoElasticsearchInvoker.get("blogs"), "id"));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/data_retention_individuals.json"

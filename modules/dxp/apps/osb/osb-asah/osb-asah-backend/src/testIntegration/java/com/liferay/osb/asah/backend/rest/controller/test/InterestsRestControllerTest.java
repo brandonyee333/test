@@ -270,6 +270,7 @@ public class InterestsRestControllerTest
 		repositoryClass = InterestTopicRepository.class,
 		resourcePath = "osbasahfaroinfo/interest_topics.json"
 	)
+	@Disabled
 	@Test
 	public void testGetTerms() throws Exception {
 		_assertTermsByTopic(
@@ -359,6 +360,7 @@ public class InterestsRestControllerTest
 		repositoryClass = InterestRepository.class,
 		resourcePath = "osbasahfaroinfo/interests.json"
 	)
+	@Disabled
 	@Test
 	public void testGetTermsWithNoIndividualInterestTerms() throws Exception {
 		_assertTermsByTopic(
@@ -376,6 +378,7 @@ public class InterestsRestControllerTest
 		repositoryClass = InterestRepository.class,
 		resourcePath = "osbasahfaroinfo/interests.json"
 	)
+	@Disabled
 	@Test
 	public void testGetTermsWithNoTopicsRelatedToIndividualInterestTerms()
 		throws Exception {

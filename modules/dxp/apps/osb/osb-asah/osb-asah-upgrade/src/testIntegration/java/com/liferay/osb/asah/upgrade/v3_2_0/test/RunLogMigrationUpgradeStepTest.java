@@ -100,8 +100,8 @@ public class RunLogMigrationUpgradeStepTest
 					this)));
 	}
 
-	private void _setupIndex(String indexSource) throws Exception {
-		String indexName = String.format("test_%s_run-logs", indexSource);
+	private void _setupIndex(String namespace) throws Exception {
+		String indexName = String.format("test_%s_run-logs", namespace);
 
 		_elasticsearchIndexManager.delete(indexName);
 
@@ -109,7 +109,7 @@ public class RunLogMigrationUpgradeStepTest
 			ResourceUtil.readResourceToString(
 				String.format(
 					"dependencies/%s/run_logs_index_configuration.json",
-					indexSource),
+					namespace),
 				this),
 			indexName);
 

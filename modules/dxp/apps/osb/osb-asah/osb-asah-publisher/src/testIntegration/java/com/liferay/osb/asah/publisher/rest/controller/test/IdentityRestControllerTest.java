@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentCaptor;
@@ -150,6 +151,7 @@ public class IdentityRestControllerTest
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
+	@Disabled
 	@Test
 	public void testUpdateIndividual1() {
 		_testUpdateIndividual(
@@ -164,6 +166,7 @@ public class IdentityRestControllerTest
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
+	@Disabled
 	@Test
 	public void testUpdateIndividual2() {
 		_testUpdateIndividual(

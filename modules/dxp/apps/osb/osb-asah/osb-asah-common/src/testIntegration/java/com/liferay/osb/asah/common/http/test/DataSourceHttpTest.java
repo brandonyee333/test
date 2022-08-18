@@ -157,6 +157,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			"Field mapping should have been deleted on data source deletion");
 	}
 
+	@Disabled
 	@Test
 	public void testDeleteDataSourceDeletesIndividual() throws Exception {
 		DataSource dataSource = _dataSourceDog.addDataSource(
@@ -348,6 +349,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				"enrichment");
 	}
 
+	@Disabled
 	@Test
 	public void testDeleteLiferayDataSource() throws Exception {
 		DataSource dataSource1 = _dataSourceDog.addDataSource(

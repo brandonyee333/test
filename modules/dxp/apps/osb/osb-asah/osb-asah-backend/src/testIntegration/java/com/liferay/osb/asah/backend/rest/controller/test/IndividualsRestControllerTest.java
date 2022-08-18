@@ -53,6 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Leslie Wong
  */
+@Disabled
 public class IndividualsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {

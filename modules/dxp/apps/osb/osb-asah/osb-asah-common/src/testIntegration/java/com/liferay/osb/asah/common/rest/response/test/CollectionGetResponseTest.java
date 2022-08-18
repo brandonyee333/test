@@ -34,6 +34,7 @@ import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -55,6 +56,7 @@ public class CollectionGetResponseTest
 					this)));
 	}
 
+	@Disabled
 	@Test
 	public void testRespondWithCustomPageNumber() throws Exception {
 		JSONObject responseJSONObject = _getResponseJSONObject(
@@ -64,6 +66,7 @@ public class CollectionGetResponseTest
 		_assertPage(responseJSONObject, 2, 20, 41, 3);
 	}
 
+	@Disabled
 	@Test
 	public void testRespondWithCustomPageNumberAndPageSize() throws Exception {
 		JSONObject responseJSONObject = _getResponseJSONObject(
@@ -73,6 +76,7 @@ public class CollectionGetResponseTest
 		_assertPage(responseJSONObject, 2, 10, 41, 5);
 	}
 
+	@Disabled
 	@Test
 	public void testRespondWithCustomPageSize() throws Exception {
 		JSONObject responseJSONObject = _getResponseJSONObject(
@@ -82,6 +86,7 @@ public class CollectionGetResponseTest
 		_assertPage(responseJSONObject, 0, 4, 41, 11);
 	}
 
+	@Disabled
 	@Test
 	public void testRespondWithDefaultProperties() throws Exception {
 		JSONObject responseJSONObject = _getResponseJSONObject(
@@ -91,6 +96,7 @@ public class CollectionGetResponseTest
 		_assertPage(responseJSONObject, 0, 20, 41, 3);
 	}
 
+	@Disabled
 	@Test
 	public void testRespondWithNestedSort() throws Exception {
 		JSONObject responseJSONObject = _getResponseJSONObject(
@@ -108,6 +114,7 @@ public class CollectionGetResponseTest
 		_assertPage(responseJSONObject, 0, 20, 41, 3);
 	}
 
+	@Disabled
 	@Test
 	public void testRespondWithQueryBuilder() throws Exception {
 		JSONObject responseJSONObject = _getResponseJSONObject(
@@ -120,6 +127,7 @@ public class CollectionGetResponseTest
 		_assertPage(responseJSONObject, 0, 20, 13, 1);
 	}
 
+	@Disabled
 	@Test
 	public void testRespondWithSort() throws Exception {
 		JSONObject responseJSONObject = _getResponseJSONObject(

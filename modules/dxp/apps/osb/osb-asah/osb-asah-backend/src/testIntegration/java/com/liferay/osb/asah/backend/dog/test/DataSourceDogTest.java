@@ -34,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +95,7 @@ public class DataSourceDogTest
 		Assertions.assertEquals("http://portal:8081", dataSource.getURL());
 	}
 
+	@Disabled
 	@Test
 	public void testGetDataSourcesJSONObjects() throws Exception {
 		DataSource dataSource = new DataSource();

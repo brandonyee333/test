@@ -35,6 +35,7 @@ import org.elasticsearch.action.support.WriteRequest;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Rachael Koestartyo
  */
+@Disabled
 public class ElasticsearchBulkRequestBuilderTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {

@@ -37,6 +37,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.json.JSONArray;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -52,6 +53,7 @@ public class TermsAggregationTransformationJSONArrayFunctionTest
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
+	@Disabled
 	@Test
 	public void testApply() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
@@ -101,6 +103,7 @@ public class TermsAggregationTransformationJSONArrayFunctionTest
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
+	@Disabled
 	@Test
 	public void testApplyWithFilter() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
@@ -151,6 +154,7 @@ public class TermsAggregationTransformationJSONArrayFunctionTest
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
+	@Disabled
 	@Test
 	public void testApplyWithGroupByString() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
@@ -172,6 +176,7 @@ public class TermsAggregationTransformationJSONArrayFunctionTest
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
+	@Disabled
 	@Test
 	public void testApplyWithResponseFormatter() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =

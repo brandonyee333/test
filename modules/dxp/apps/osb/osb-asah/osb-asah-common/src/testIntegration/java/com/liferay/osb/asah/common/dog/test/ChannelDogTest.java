@@ -51,6 +51,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,7 @@ public class ChannelDogTest
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments_delete_channels.json"
 	)
+	@Disabled
 	@Test
 	public void testDeleteChannels() throws Exception {
 		_channelDog.deleteChannels(Arrays.asList(1L, 3L), null, null);

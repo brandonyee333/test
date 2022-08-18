@@ -121,8 +121,8 @@ public class AsahMarkerMigrationUpgradeStepTest
 					this)));
 	}
 
-	private void _setupIndex(String indexSource) throws Exception {
-		String indexName = String.format("test_%s_osbasahmarkers", indexSource);
+	private void _setupIndex(String namespace) throws Exception {
+		String indexName = String.format("test_%s_osbasahmarkers", namespace);
 
 		_elasticsearchIndexManager.delete(indexName);
 
@@ -130,7 +130,7 @@ public class AsahMarkerMigrationUpgradeStepTest
 			ResourceUtil.readResourceToString(
 				String.format(
 					"dependencies/%s/osbasahmarkers_index_configuration.json",
-					indexSource),
+					namespace),
 				this),
 			indexName);
 

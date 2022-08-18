@@ -35,6 +35,7 @@ import java.util.Optional;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class ClearChannelsNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@Test
 	public void test() throws Exception {
 		DataSource dataSource = _dataSourceDog.addDataSource(

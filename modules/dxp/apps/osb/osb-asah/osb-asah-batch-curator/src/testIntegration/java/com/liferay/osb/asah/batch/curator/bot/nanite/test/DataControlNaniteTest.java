@@ -42,6 +42,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 /**
  * @author Matthew Kong
  */
+@Disabled
 public class DataControlNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
