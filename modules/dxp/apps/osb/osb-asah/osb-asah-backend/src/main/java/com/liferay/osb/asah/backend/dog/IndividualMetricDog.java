@@ -16,26 +16,12 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.IndividualMetric;
-import com.liferay.osb.asah.backend.model.IndividualMetricType;
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.MetricType;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import java.util.Set;
 
-import org.apache.lucene.search.join.ScoreMode;
-
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -54,52 +40,7 @@ public class IndividualMetricDog {
 		LocalDate localDate, MetricType metricType,
 		SearchQueryContext searchQueryContext) {
 
-		LocalDateTime localDateTime = localDate.atTime(LocalTime.MAX);
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.rangeQuery(
-				metricType.getFieldName()
-			).lte(
-				localDateTime.toString()
-			).timeZone(
-				_timeZoneDog.getTimeZoneId()
-			));
-
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelIds", searchQueryContext.getChannelId());
-
-		if (metricType == IndividualMetricType.ANONYMOUS_INDIVIDUALS) {
-			boolQueryBuilder.mustNot(
-				QueryBuilders.existsQuery("demographics.email"));
-		}
-		else if (metricType == IndividualMetricType.KNOWN_INDIVIDUALS) {
-			boolQueryBuilder.filter(
-				QueryBuilders.existsQuery("demographics.email"));
-		}
-
-		if ((searchQueryContext.isActive() != null) &&
-			searchQueryContext.isActive()) {
-
-			LocalDateTime nowLocalDateTime = LocalDateTime.now();
-
-			boolQueryBuilder.filter(
-				QueryBuilders.nestedQuery(
-					"lastActivityDates",
-					QueryBuilders.rangeQuery(
-						"lastActivityDates.lastActivityDate"
-					).gt(
-						DateUtil.toUTCString(nowLocalDateTime.minusDays(30))
-					),
-					ScoreMode.None));
-		}
-
-		return _elasticsearchInvoker.count("individuals", boolQueryBuilder);
+		return 0;
 	}
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }
