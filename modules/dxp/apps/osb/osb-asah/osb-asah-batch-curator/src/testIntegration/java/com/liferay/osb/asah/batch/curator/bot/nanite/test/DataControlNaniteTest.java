@@ -83,6 +83,7 @@ public class DataControlNaniteTest
 		}
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_1.json"

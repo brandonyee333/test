@@ -43,6 +43,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 /**
  * @author Marcellus Tavares
  */
+@Disabled
 public class PageDataExporterTest
 	implements OSBAsahBatchCuratorSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
@@ -54,10 +55,9 @@ public class PageDataExporterTest
 			() -> new PageDataExporter(
 				DateUtil.toUTCDate("2022-01-04T11:00:00.000Z"),
 				new JsonFactory(), new ByteArrayOutputStream(),
-				DateUtil.toUTCDate("2022-01-06T13:00:00.000Z"), null));
+				DateUtil.toUTCDate("2022-01-06T13:00:00.000Z")));
 	}
 
-	@Disabled
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -70,8 +70,7 @@ public class PageDataExporterTest
 		PageDataExporter pageDataExporter = new PageDataExporter(
 			DateUtil.toUTCDate("2022-01-04T11:00:00.000Z"), new JsonFactory(),
 			byteArrayOutputStream,
-			DateUtil.toUTCDate("2022-01-06T13:00:00.000Z"),
-			_elasticsearchInvoker);
+			DateUtil.toUTCDate("2022-01-06T13:00:00.000Z"));
 
 		pageDataExporter.export();
 
