@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.IndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
@@ -102,7 +101,7 @@ public class BQIndividualDogTest
 	public void testAddAndUpdateLiferayIndividual() throws Exception {
 		String userId = RandomTestUtil.randomId();
 
-		Individual individual = _individualDog.addIndividual(
+		Individual individual = _addIndividual(
 			"3",
 			JSONUtil.put(
 				"contact",
@@ -139,7 +138,7 @@ public class BQIndividualDogTest
 
 		_assertIndividualMiddleName("James", individual);
 
-		individual = _individualDog.updateIndividual(
+		individual = _updateIndividual(
 			"3",
 			JSONUtil.put(
 				"contact",
@@ -190,7 +189,7 @@ public class BQIndividualDogTest
 			"userId", 12345
 		);
 
-		Individual individual = _individualDog.addIndividual(
+		Individual individual = _addIndividual(
 			"1", userJSONObject, _liferayDataSource);
 
 		Set<Field> customFields = individual.getCustomFields();
@@ -201,14 +200,14 @@ public class BQIndividualDogTest
 
 		userJSONObject.remove("expando");
 
-		individual = _individualDog.updateIndividual(
+		individual = _updateIndividual(
 			"1", userJSONObject, _liferayDataSource, individual);
 
 		_assertCustomFields(customFields, "1400 Montefino Ave", "address");
 		_assertCustomFields(customFields, 42, "favoriteNumber");
 		_assertCustomFields(customFields, "[english]", "spokenLanguages");
 
-		individual = _individualDog.updateIndividual(
+		individual = _updateIndividual(
 			"1",
 			userJSONObject.put(
 				"expando",
@@ -245,10 +244,9 @@ public class BQIndividualDogTest
 	)
 	@Test
 	public void testAddIndividualAssociation() {
-		Individual individual = _individualDog.addIndividualAssociation(
+		Individual individual = _addIndividualAssociation(
 			33134, 405201047787757795L,
-			DXPEntity.Type.of(DXPEntityType.CLASS_NAME_ORGANIZATION),
-			_individualDog.fetchIndividualByEmailAddress("test1@liferay.com"));
+			DXPEntity.Type.of(DXPEntityType.CLASS_NAME_ORGANIZATION), null);
 
 		Set<Long> organizationIds = individual.getOrganizationIds();
 
@@ -270,9 +268,7 @@ public class BQIndividualDogTest
 		segment.setId(123L);
 
 		Assertions.assertEquals(
-			3,
-			_individualDog.countActiveIndividualsFromLast30DaysBySegment(
-				segment));
+			3, _countActiveIndividualsFromLast30DaysBySegment(segment));
 	}
 
 	@ElasticsearchIndex(
@@ -297,10 +293,9 @@ public class BQIndividualDogTest
 	)
 	@Test
 	public void testDeleteIndividualAssociation() {
-		Individual individual = _individualDog.deleteIndividualAssociation(
+		Individual individual = _deleteIndividualAssociation(
 			33134, 402139209179557944L,
-			DXPEntity.Type.of(DXPEntityType.CLASS_NAME_ORGANIZATION),
-			_individualDog.fetchIndividualByEmailAddress("test1@liferay.com"));
+			DXPEntity.Type.of(DXPEntityType.CLASS_NAME_ORGANIZATION), null);
 
 		Set<Long> organizationIds = individual.getOrganizationIds();
 
@@ -324,8 +319,7 @@ public class BQIndividualDogTest
 		// TODO Add BQFieldMapping "client_id", "Text"
 		// TODO Add BQFieldMapping "favoritePokemon", "Text"
 
-		Page<Individual> individualPage = _individualDog.getIndividualPage(
-			"", null, 0, 10);
+		Page<Individual> individualPage = _getIndividualPage("", null, 0, 10);
 
 		Assertions.assertEquals(5, individualPage.getTotalElements());
 
@@ -350,7 +344,7 @@ public class BQIndividualDogTest
 
 		// TODO Add BQFieldMapping "favoritePokemon", "Text"
 
-		Page<Individual> individualPage = _individualDog.getIndividualPage(
+		Page<Individual> individualPage = _getIndividualPage(
 			"mander", null, 0, 10);
 
 		Assertions.assertEquals(1, individualPage.getTotalElements());
@@ -365,7 +359,7 @@ public class BQIndividualDogTest
 	)
 	@Test
 	public void testGetIndividualPage3() {
-		Page<Individual> individualPage = _individualDog.getIndividualPage(
+		Page<Individual> individualPage = _getIndividualPage(
 			DateUtil.toUTCDate("2019-02-10T10:00:00.000Z"), -1L, 2,
 			Sort.by(Sort.Order.asc("id")),
 			DateUtil.toUTCDate("2019-02-12T14:00:00.000Z"));
@@ -411,20 +405,20 @@ public class BQIndividualDogTest
 			"uuid", uuid1
 		);
 
-		Individual individual = _individualDog.addIndividual(
+		Individual individual = _addIndividual(
 			uuid1, dataJSONObject, _liferayDataSource);
 
 		_assertDataSourceUserPKs(new String[] {uuid1}, individual);
 
 		String uuid2 = RandomTestUtil.randomUUID();
 
-		individual = _individualDog.updateIndividual(
+		individual = _updateIndividual(
 			uuid2, dataJSONObject.put("uuid", uuid2), _liferayDataSource,
 			individual);
 
 		_assertDataSourceUserPKs(new Object[] {uuid1, uuid2}, individual);
 
-		individual = _individualDog.updateIndividual(
+		individual = _updateIndividual(
 			uuid2, dataJSONObject.put("test", "test"), _liferayDataSource,
 			individual);
 
@@ -437,16 +431,15 @@ public class BQIndividualDogTest
 	)
 	@Test
 	public void testRemoveIndividualSegmentId() {
-		Individual individual = _individualDog.fetchIndividual(
-			338486041327913341L);
+		Individual individual = _fetchIndividual(338486041327913341L);
 
 		Set<Long> segmentIds = individual.getSegmentIds();
 
 		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
 
-		_individualDog.removeSegmentId(individual.getId(), 338511398116723458L);
+		// TODO Remove Individual from segment
 
-		individual = _individualDog.fetchIndividual(338486041327913341L);
+		individual = _fetchIndividual(338486041327913341L);
 
 		segmentIds = individual.getSegmentIds();
 
@@ -466,7 +459,7 @@ public class BQIndividualDogTest
 
 		// TODO Add BQFieldMapping "givenName", "Text"
 
-		List<Individual> individuals = _individualDog.searchIndividuals(
+		List<Individual> individuals = _searchIndividuals(
 			100L, null, false, 0, 10,
 			new String[] {"demographics/givenName/value,asc"});
 
@@ -475,7 +468,7 @@ public class BQIndividualDogTest
 				new String[] {"alpha", "beta", "gamma", "omega", "theta"}),
 			_getGivenNames(individuals));
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			100L, null, false, 0, 10,
 			new String[] {"demographics/givenName/value,desc"});
 
@@ -484,7 +477,7 @@ public class BQIndividualDogTest
 				new String[] {"theta", "omega", "gamma", "beta", "alpha"}),
 			_getGivenNames(individuals));
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			null, null, false, 0, 10,
 			new String[] {"demographics/givenName/value,desc"});
 
@@ -512,32 +505,32 @@ public class BQIndividualDogTest
 		sb.append("''Form#formViewed#511687236573013375'' and day gt ");
 		sb.append("''last24Hours'')',operator='%s',value=%s)))");
 
-		List<Individual> individuals = _individualDog.searchIndividuals(
+		List<Individual> individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "eq", 2), true, 0, 10, null);
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "ge", 2), true, 0, 10, null);
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "ge", 3), true, 0, 10, null);
 
 		Assertions.assertEquals(0, individuals.size(), individuals.toString());
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "gt", 0), true, 0, 10, null);
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "le", 3), true, 0, 10, null);
 
 		Assertions.assertEquals(5, individuals.size(), individuals.toString());
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "lt", 2), true, 0, 10, null);
 
 		Assertions.assertEquals(4, individuals.size(), individuals.toString());
@@ -556,7 +549,7 @@ public class BQIndividualDogTest
 		individual.setId(1L);
 		individual.setSegmentIds(Collections.emptySet());
 
-		_individualDog.addIndividual(individual, false);
+		// TODO Add Individual
 
 		StringBuilder sb = new StringBuilder();
 
@@ -564,25 +557,25 @@ public class BQIndividualDogTest
 		sb.append(
 			"'(context/country %s ''%s'' and context/city %s ''%s'')')))");
 
-		List<Individual> individuals = _individualDog.searchIndividuals(
+		List<Individual> individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "eq", "Japan", "eq", "Tokyo"),
 			true, 0, 10, null);
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "ne", "Japan", "ne", "Tokyo"),
 			true, 0, 10, null);
 
 		Assertions.assertEquals(0, individuals.size(), individuals.toString());
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "eq", "japan", "eq", "tokyo"),
 			true, 0, 10, null);
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 
-		individuals = _individualDog.searchIndividuals(
+		individuals = _searchIndividuals(
 			100L, String.format(sb.toString(), "ne", "japan", "ne", "tokyo"),
 			true, 0, 10, null);
 
@@ -597,7 +590,7 @@ public class BQIndividualDogTest
 		individual.setId(123L);
 		individual.setSegmentIds(Collections.emptySet());
 
-		individual = _individualDog.addIndividual(individual, false);
+		// TODO Add Individual
 
 		Segment segment = new Segment();
 
@@ -609,10 +602,9 @@ public class BQIndividualDogTest
 
 		_segmentDog.addSegment(segment);
 
-		_individualDog.updateDynamicMemberships(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"), segment);
+		// TODO Update Dynamic Memberships
 
-		individual = _individualDog.fetchIndividual(individual.getId());
+		individual = _fetchIndividual(individual.getId());
 
 		Set<Long> segmentIds = individual.getSegmentIds();
 
@@ -679,7 +671,7 @@ public class BQIndividualDogTest
 		individual.setId(338486037253283140L);
 		individual.setSegmentIds(Collections.singleton(338511398116723458L));
 
-		_individualDog.addIndividual(individual, false);
+		// TODO Add Individual
 
 		Field field = new Field();
 
@@ -696,7 +688,7 @@ public class BQIndividualDogTest
 
 		individual.setFields(Collections.singleton(field));
 
-		_individualDog.updateIndividual(individual);
+		// TODO Update Individual
 
 		BQMembership bqMembership = new BQMembership();
 
@@ -708,11 +700,9 @@ public class BQIndividualDogTest
 
 		_bqMembershipDog.addBQMembership(bqMembership);
 
-		_individualDog.updateDynamicMemberships(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
-			_segmentDog.getSegment(338511451975440187L));
+		// TODO Update Dynamic Memberships
 
-		individual = _individualDog.fetchIndividual(338486037253283140L);
+		individual = _fetchIndividual(338486037253283140L);
 
 		Set<Long> segmentIds = individual.getSegmentIds();
 
@@ -721,20 +711,15 @@ public class BQIndividualDogTest
 			Matchers.arrayContainingInAnyOrder(
 				segmentIds.toArray(new Long[0])));
 
-		_individualDog.deleteIndividual(new Date(), individual.getId());
-
-		_individualDog.updateDynamicMemberships(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
-			_segmentDog.getSegment(338511398116723458L));
+		// TODO Delete Individual
+		// TODO Update Dynamic Memberships
 
 		Assertions.assertEquals(
 			0,
 			_bqMembershipRepository.countByIdentityIdAndSegmentId(
 				"338486037253283140", 338511398116723458L));
 
-		_individualDog.updateDynamicMemberships(
-			DateUtil.toUTCDate("2022-01-06T20:26:53.218Z"),
-			_segmentDog.getSegment(338511451975440190L));
+		// TODO Update Dynamic Memberships
 
 		Assertions.assertEquals(
 			0, _bqMembershipRepository.countBySegmentId(338511451975440190L));
@@ -754,10 +739,6 @@ public class BQIndividualDogTest
 	)
 	@Test
 	public void testUpdateDynamicRemoveMemberships() {
-		_individualDog.updateDynamicRemoveMemberships(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"),
-			_segmentDog.getSegment(338511398116723458L));
-
 		Assertions.assertEquals(
 			3,
 			_bqMembershipRepository.countBySegmentIdAndStatus(
@@ -813,7 +794,7 @@ public class BQIndividualDogTest
 		individual.setOrganizationIds(
 			Collections.singleton(402139267512234420L));
 
-		individual = _individualDog.addIndividual(individual, false);
+		// TODO Add Individual
 
 		Field field = new Field();
 
@@ -830,11 +811,11 @@ public class BQIndividualDogTest
 
 		individual.setFields(Collections.singleton(field));
 
-		_individualDog.updateIndividual(individual);
+		// TODO Update Individual
 
 		// TODO Add BQFieldMapping "email", "Text"
 
-		individual = _individualDog.updateIndividual(
+		individual = _updateIndividual(
 			"402139280465582637",
 			JSONUtil.put(
 				"createDate", System.currentTimeMillis()
@@ -866,7 +847,7 @@ public class BQIndividualDogTest
 	)
 	@Test
 	public void testUpdateIndividualFirstEnrichmentDate() throws Exception {
-		Individual individual = _individualDog.updateIndividual(
+		Individual individual = _updateIndividual(
 			null,
 			JSONUtil.put(
 				"contact",
@@ -878,8 +859,7 @@ public class BQIndividualDogTest
 			).put(
 				"modifiedDate", System.currentTimeMillis()
 			),
-			_liferayDataSource,
-			_individualDog.getIndividual(523130384134494521L));
+			_liferayDataSource, _fetchIndividual(523130384134494521L));
 
 		Assertions.assertNotNull(individual.getFirstEnrichmentDate());
 	}
@@ -889,7 +869,7 @@ public class BQIndividualDogTest
 	public void testUpdateIndividualFromDifferentDataSourceIgnoresNullValue()
 		throws Exception {
 
-		Individual individual = _individualDog.addIndividual(
+		Individual individual = _addIndividual(
 			"2",
 			JSONUtil.put(
 				"country", "United States"
@@ -900,7 +880,7 @@ public class BQIndividualDogTest
 			),
 			null);
 
-		individual = _individualDog.updateIndividual(
+		individual = _updateIndividual(
 			String.valueOf(individual.getId()),
 			JSONUtil.put(
 				"contact",
@@ -953,8 +933,7 @@ public class BQIndividualDogTest
 		individual.setModifiedDate(date);
 		individual.setSegmentIds(Collections.emptySet());
 
-		individual = _individualDog.addIndividual(individual, false);
-
+		// TODO Add Individual
 		// TODO Add page record associated with individual
 
 		_updateIndividualAsync(
@@ -972,6 +951,20 @@ public class BQIndividualDogTest
 
 		// TODO Assert page record is now associated to a known individual
 
+	}
+
+	private Individual _addIndividual(
+		String dataId, JSONObject dataJSONObject,
+		DataSource liferayDataSource) {
+
+		return null;
+	}
+
+	private Individual _addIndividualAssociation(
+		int classPK, long dataSourceId, DXPEntity.Type dxpEntityType,
+		Individual individual) {
+
+		return null;
 	}
 
 	private void _assertCustomFields(
@@ -1037,6 +1030,23 @@ public class BQIndividualDogTest
 		Assertions.assertEquals(expectedMiddleName, middleNameField.getValue());
 	}
 
+	private int _countActiveIndividualsFromLast30DaysBySegment(
+		Segment segment) {
+
+		return 0;
+	}
+
+	private Individual _deleteIndividualAssociation(
+		int classPK, long dataSourceId, DXPEntity.Type dxpEntityType,
+		Individual individual) {
+
+		return new Individual();
+	}
+
+	private Individual _fetchIndividual(long individualId) {
+		return new Individual();
+	}
+
 	private List<String> _getGivenNames(List<Individual> individuals) {
 		List<String> givenNames = new LinkedList<>();
 
@@ -1059,6 +1069,32 @@ public class BQIndividualDogTest
 		return givenNames;
 	}
 
+	private Page<Individual> _getIndividualPage(
+		Date fromCreateDate, Long individualId, int size, org.springframework.data.domain.Sort sort,
+		Date toCreateDate) {
+
+		return Page.empty();
+	}
+
+	private Page<Individual> _getIndividualPage(
+		String query, Long segmentId, int page, int size) {
+
+		return Page.empty();
+	}
+	private List<Individual> _searchIndividuals(
+		Long channelId, String filterString, Boolean includeAnonymousUsers,
+		int page, int size, String[] sorts) {
+
+		return Collections.emptyList();
+	}
+
+	private Individual _updateIndividual(
+		String dataId, JSONObject dataJSONObject, DataSource liferayDataSource,
+		Individual individual) {
+
+		return new Individual();
+	}
+
 	private void _updateIndividualAsync(
 			JSONObject dataJSONObject, Individual individual)
 		throws Exception {
@@ -1072,9 +1108,8 @@ public class BQIndividualDogTest
 				try {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
-					_individualDog.updateIndividual(
-						String.valueOf(individual.getId()), dataJSONObject,
-						_liferayDataSource, individual);
+					// TODO Update Individual
+
 				}
 				catch (Exception exception) {
 				}
@@ -1106,9 +1141,6 @@ public class BQIndividualDogTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private IndividualDog _individualDog;
 
 	private DataSource _liferayDataSource;
 
