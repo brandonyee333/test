@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.dog.experiment;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -187,9 +186,6 @@ public class ExperimentDataDog {
 
 	@Autowired
 	private MetricDog _metricDog;
-
-	@Autowired
-	private SearchQueryHelper _searchQueryHelper;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -41,9 +40,6 @@ public class AcquisitionCompositionDog {
 
 	private static final Pattern _pattern = Pattern.compile(
 		"\\[(?<source>[^]]*)] \\[(?<medium>[^]]*)]");
-
-	@Autowired
-	private SearchQueryHelper _searchQueryHelper;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
