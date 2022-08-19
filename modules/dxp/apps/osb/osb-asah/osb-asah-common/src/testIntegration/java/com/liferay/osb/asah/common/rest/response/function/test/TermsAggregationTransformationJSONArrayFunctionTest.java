@@ -49,11 +49,11 @@ public class TermsAggregationTransformationJSONArrayFunctionTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
-	@Disabled
 	@Test
 	public void testApply() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
@@ -99,11 +99,11 @@ public class TermsAggregationTransformationJSONArrayFunctionTest
 		Assertions.assertEquals(0, jsonArray.length());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
-	@Disabled
 	@Test
 	public void testApplyWithFilter() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
@@ -150,11 +150,11 @@ public class TermsAggregationTransformationJSONArrayFunctionTest
 			true);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
-	@Disabled
 	@Test
 	public void testApplyWithGroupByString() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
@@ -172,11 +172,11 @@ public class TermsAggregationTransformationJSONArrayFunctionTest
 			true);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
-	@Disabled
 	@Test
 	public void testApplyWithResponseFormatter() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =

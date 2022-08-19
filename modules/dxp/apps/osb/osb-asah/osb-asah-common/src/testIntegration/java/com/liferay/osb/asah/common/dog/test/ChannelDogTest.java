@@ -76,6 +76,7 @@ public class ChannelDogTest
 		Assertions.assertEquals("channel1 (1)", channel.getName());
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blogs_delete_channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -96,7 +97,6 @@ public class ChannelDogTest
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments_delete_channels.json"
 	)
-	@Disabled
 	@Test
 	public void testDeleteChannels() throws Exception {
 		_channelDog.deleteChannels(Arrays.asList(1L, 3L), null, null);

@@ -67,6 +67,7 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 			getValidatableResponse(Method.GET, "/api/1.0/individuals"));
 	}
 
+	@Disabled
 	@ElasticsearchIndex(
 		name = "fields", resourcePath = "fields.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -79,7 +80,6 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
-	@Disabled
 	@Test
 	public void testGetIndividualsWithFilter() {
 

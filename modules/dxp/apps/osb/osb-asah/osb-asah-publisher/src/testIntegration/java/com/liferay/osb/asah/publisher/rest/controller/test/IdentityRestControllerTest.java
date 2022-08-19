@@ -143,6 +143,7 @@ public class IdentityRestControllerTest
 			messageJSONObject.getString("emailAddressHashed"));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
@@ -151,13 +152,13 @@ public class IdentityRestControllerTest
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
-	@Disabled
 	@Test
 	public void testUpdateIndividual1() {
 		_testUpdateIndividual(
 			"345085929068798696", RandomTestUtil.randomUUID());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
@@ -166,7 +167,6 @@ public class IdentityRestControllerTest
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
-	@Disabled
 	@Test
 	public void testUpdateIndividual2() {
 		_testUpdateIndividual(

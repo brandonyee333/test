@@ -180,6 +180,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
@@ -196,7 +197,6 @@ public class BQMembershipDogTest
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
-	@Disabled
 	@Test
 	public void testGetIndividualSegmentIndividualIds() {
 		List<String> identityIds = _bqMembershipDog.getActiveIdentityIds(
