@@ -62,11 +62,6 @@ import org.springframework.stereotype.Component;
 public class IdentityBigQueryIngestionNanite implements Nanite {
 
 	@Override
-	public String getCollectionName() {
-		return "identities";
-	}
-
-	@Override
 	public long getInterval() {
 		return DateUtil.MINUTE;
 	}

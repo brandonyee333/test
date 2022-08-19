@@ -56,11 +56,6 @@ import reactor.util.function.Tuples;
 public class CustomAssetDashboardNanite implements Nanite {
 
 	@Override
-	public String getCollectionName() {
-		return "custom-asset-dashboards";
-	}
-
-	@Override
 	public long getInterval() {
 		return DateUtil.MINUTE;
 	}

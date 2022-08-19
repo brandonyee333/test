@@ -49,16 +49,19 @@ public class OSBAsahStreamCuratorBot {
 		Stream<Nanite> stream = _nanites.stream();
 
 		stream.collect(
-			Collectors.groupingBy(Nanite::getCollectionName)
+			Collectors.groupingBy(
+				nanite -> {
+					Class<?> clazz = nanite.getClass();
+
+					return clazz.getName();
+				})
 		).forEach(
-			(collectionName, nanites) -> _addScheduledExecutorFactoryBeans(
-				collectionName, nanites.get(0))
+			(name, nanites) -> _addScheduledExecutorFactoryBeans(
+				name, nanites.get(0))
 		);
 	}
 
-	private void _addScheduledExecutorFactoryBeans(
-		String collectionName, Nanite nanite) {
-
+	private void _addScheduledExecutorFactoryBeans(String name, Nanite nanite) {
 		ScheduledExecutorFactoryBean scheduledExecutorFactoryBean =
 			new ScheduledExecutorFactoryBean();
 
@@ -68,7 +71,7 @@ public class OSBAsahStreamCuratorBot {
 			new ScheduledExecutorTask(
 				nanite, DateUtil.SECOND * 5, nanite.getInterval(), false));
 		scheduledExecutorFactoryBean.setThreadNamePrefix(
-			String.format("osb-asah-stream-curator-bot[%s]", collectionName));
+			String.format("osb-asah-stream-curator-bot[%s]", name));
 
 		scheduledExecutorFactoryBean.initialize();
 

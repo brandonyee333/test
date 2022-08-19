@@ -19,8 +19,6 @@ package com.liferay.osb.asah.stream.curator.bot.nanite;
  */
 public interface Nanite extends Runnable {
 
-	public String getCollectionName();
-
 	public long getInterval();
 
 	@Override

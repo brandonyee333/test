@@ -68,11 +68,6 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 	}
 
 	@Override
-	public String getCollectionName() {
-		return "DXPEntity";
-	}
-
-	@Override
 	public long getInterval() {
 		return -1;
 	}
