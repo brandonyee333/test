@@ -13,12 +13,18 @@
  */
 
 import ClayButton from '@clayui/button';
+import ClayChart from '@clayui/charts';
+import classNames from 'classnames';
 import {ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import classNames from 'classnames';
 import React, {useState} from 'react';
 
 import Header from '../../../common/components/header';
+
+
+
+
+
 
 const PRODUCT_LIST = [
 	'All',
@@ -30,6 +36,156 @@ const PRODUCT_LIST = [
 ];
 
 const TIME_PERIODS = ['YTD', '3 MO', '6 MO'];
+
+
+	
+
+type BarChartPerformanceTypes = {
+    colors: string[],
+	dataColumns: string[],
+	height: number,
+    groups: string[],
+	labelColumns: string[],
+	showLegend: boolean,
+	showTooltip: boolean,
+	titleTotal: boolean,
+	totalSum: number,
+	width: number,
+}
+
+const colors:string[] = [
+    '#DCF1FD',
+    '#55C2FF',
+    '#FFD76E',
+];
+
+const dataColumn: any = {
+	yearly: {
+		jan:[
+			{goals: 200,
+			currentValue: 25,}
+			
+		],
+		feb:[
+			{goals: 210,
+			currentValue: 25}
+		],
+		mar:[
+			{goals: 250,
+			currentValue: 25}
+		],
+		apr:[
+			{goals: 320,
+			currentValue: 25}
+		],
+		may:[
+			{goals: 200,
+			currentValue: 25}
+		],
+		jun:[
+			{goals: 120,
+			currentValue: 25}
+		],
+		jul:[
+			{goals: 320,
+			currentValue: 25}
+		],
+		aug:[
+			{goals: 220,
+			currentValue: 25}
+		],
+		sep:[
+			{goals: 20,
+			currentValue: 25}
+		],
+		oct:[
+			{goals: 320,
+			currentValue: 25}
+		],
+		nov:[
+			{goals: 420,
+			currentValue: 25}
+		],
+		dec:[
+			{goals: 210,
+			currentValue: 25}
+		],
+
+	}	,
+	threeMonths: {
+
+		
+	},
+	sixMonths: {
+
+		
+	}	
+}
+
+const chart=  {
+	data: {
+		columns: [
+		["goal", 200, 200, 200, 400, 150, 250],
+		["exceeded", 130, 100, 100, 200, 150, 50],
+		["achieved", 230, 200, 200, 300, 250, 250]
+		], 
+		groups: [
+			[
+				"goal",
+				"exceeded",
+				"achieved"
+			]
+		],
+		type: "bar", 
+		},
+	grid:{
+		y: {
+			lines: [
+			{
+				value: 0
+			}
+			]
+			}
+		},
+};
+
+
+const teste: any = {
+
+	
+
+
+}
+
+const labelColumns = [
+	'Jan 2022',
+	'Feb 2022',
+	'Mar 2022',
+	'Apr 2022',
+	'May 2022',
+	'Jun 2022',
+	'Jul 2022',
+	'Ago 2022',
+	'Sep 2022',
+	'Oct 2022',
+	'Nov 2022',
+	'Dec 2022',
+];
+
+
+const BarChartPerformancee: BarChartPerformanceTypes  = {
+    colors:[],
+	dataColumns:[],
+	height : 300,
+    groups : [''],
+	labelColumns:[],
+	showLegend : true,
+	showTooltip : true,
+	titleTotal : true,
+	totalSum : 0,
+	width : 450,
+}
+
 
 const ProductPerformance = () => {
 	const [choosenProduct, setChoosenProduct] = useState(PRODUCT_LIST[0]);
@@ -89,9 +245,67 @@ const ProductPerformance = () => {
 					</ClaySelect>
 				</div>
 
-				<div className="p-5"></div>
+				<div className="p-5"> 
+
+						{/* <ClayChart
+							data={{
+							columns: chart.data.columns,
+							groups: chart.data.groups,
+							type: chart.data.type,
+							}}
+						/> */}
+				
+				<ClayChart
+				axis={{
+					x: {
+						type: 'category',
+						show: true,
+						categories: [...labelColumns]
+
+					},
+					y: {
+						show: true,
+
+					},
+				}}
+				bar={{
+					radius: {
+						ratio: 0.2,
+					},
+					width: {
+						data: 20,
+					},
+
+				}}
+				data={{
+
+					columns:chart.data.columns,
+                    groups: chart.data.groups,
+					type: chart.data.type,
+					labels: {						
+						colors: '#272898',
+						position: {
+							y: -10,
+						},
+
+					},
+				}}
+				legend={{
+					show: BarChartPerformancee.showLegend,
+				}}
+				size={{
+					height: BarChartPerformancee.height,
+					width: BarChartPerformancee.width
+				}}
+				tooltip={{
+					show: BarChartPerformancee.showTooltip,
+				}}
+			/>
+					</div>
+
+
+				</div>
 			</div>
-		</div>
 	);
 };
 
