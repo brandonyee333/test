@@ -173,6 +173,8 @@ public class EventAnalysisDog {
 
 		String projectId = ProjectIdThreadLocal.getProjectId();
 
+		String timeZoneId = _timeZoneDog.getTimeZoneId();
+
 		CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(
 			() -> {
 				ProjectIdThreadLocal.setProjectId(projectId);
@@ -180,7 +182,7 @@ public class EventAnalysisDog {
 				eventAnalysisResult.setValue(
 					_getAnalysisCount(
 						analysisType, channelId, eventAnalysisFilters,
-						eventDefinitionId, timeRange));
+						eventDefinitionId, timeRange, timeZoneId));
 			},
 			_executorService);
 
@@ -195,7 +197,7 @@ public class EventAnalysisDog {
 							_getAnalysisCount(
 								analysisType, channelId, eventAnalysisFilters,
 								eventDefinitionId,
-								timeRange.getPreviousTimeRange()));
+								timeRange.getPreviousTimeRange(), timeZoneId));
 					},
 					_executorService));
 		}
@@ -211,7 +213,8 @@ public class EventAnalysisDog {
 							eventAnalysisResult.getValue(),
 							eventAnalysisBreakdowns, eventAnalysisFilters,
 							eventDefinitionId, PageRequest.of(page, size),
-							eventAnalysisResult.getPreviousValue(), timeRange));
+							eventAnalysisResult.getPreviousValue(), timeRange,
+							timeZoneId));
 				},
 				_executorService),
 			CompletableFuture.runAsync(
@@ -221,8 +224,8 @@ public class EventAnalysisDog {
 					eventAnalysisResult.setCount(
 						_getTotalPagesCount(
 							channelId, eventAnalysisBreakdowns,
-							eventAnalysisFilters, eventDefinitionId,
-							timeRange));
+							eventAnalysisFilters, eventDefinitionId, timeRange,
+							timeZoneId));
 				},
 				_executorService));
 
@@ -464,27 +467,24 @@ public class EventAnalysisDog {
 	private Number _getAnalysisCount(
 		AnalysisType analysisType, Long channelId,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		TimeRange timeRange) {
+		TimeRange timeRange, String timeZoneId) {
 
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
 			return _bqEventRepository.getAverageBQEventCountPerIndividual(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				timeRange.getEndDate(), timeRange.getStartDate(),
-				_timeZoneDog.getTimeZoneId());
+				timeRange.getEndDate(), timeRange.getStartDate(), timeZoneId);
 		}
 
 		if (analysisType.equals(AnalysisType.TOTAL)) {
 			return _bqEventRepository.countTotalBQEvents(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				timeRange.getEndDate(), timeRange.getStartDate(),
-				_timeZoneDog.getTimeZoneId());
+				timeRange.getEndDate(), timeRange.getStartDate(), timeZoneId);
 		}
 
 		if (analysisType.equals(AnalysisType.UNIQUE)) {
 			return _bqEventRepository.countUniqueIndividuals(
 				channelId, eventAnalysisFilters, eventDefinitionId,
-				timeRange.getEndDate(), timeRange.getStartDate(),
-				_timeZoneDog.getTimeZoneId());
+				timeRange.getEndDate(), timeRange.getStartDate(), timeZoneId);
 		}
 
 		return null;
@@ -535,7 +535,7 @@ public class EventAnalysisDog {
 		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
 		Pageable pageable, Number previousEventAnalysisValue,
-		TimeRange timeRange) {
+		TimeRange timeRange, String timeZoneId) {
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.getEventDefinition(eventDefinitionId);
@@ -551,8 +551,7 @@ public class EventAnalysisDog {
 			_bqEventRepository.getBQEventPropertyValues(
 				analysisType, channelId, compareToPrevious,
 				eventAnalysisBreakdowns, eventAnalysisFilters,
-				eventDefinitionId, pageable, timeRange,
-				_timeZoneDog.getTimeZoneId());
+				eventDefinitionId, pageable, timeRange, timeZoneId);
 
 		if (breakdownRows.isEmpty()) {
 			return Collections.emptyList();
@@ -571,7 +570,7 @@ public class EventAnalysisDog {
 	private long _getTotalPagesCount(
 		Long channelId, List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		TimeRange timeRange) {
+		TimeRange timeRange, String timeZoneId) {
 
 		if (CollectionUtils.isEmpty(eventAnalysisBreakdowns)) {
 			return 1;
@@ -579,7 +578,7 @@ public class EventAnalysisDog {
 
 		return _bqEventRepository.getBQEventPropertyValuesCount(
 			channelId, eventAnalysisBreakdowns.get(0), eventAnalysisFilters,
-			eventDefinitionId, timeRange, _timeZoneDog.getTimeZoneId());
+			eventDefinitionId, timeRange, timeZoneId);
 	}
 
 	private void _validate(Sort sort) {
