@@ -26,8 +26,8 @@ import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,6 +37,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.PreDestroy;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -81,11 +82,28 @@ public class CustomAssetDashboardNanite implements Nanite {
 		_boundedExecutor.shutdown();
 	}
 
+	private String _digest(Object... objects) {
+		StringBuilder sb = new StringBuilder();
+
+		for (Object object : objects) {
+			if (object instanceof Date) {
+				Date date = (Date)object;
+
+				sb.append(DateUtil.toUTCString(date));
+			}
+			else {
+				sb.append(object);
+			}
+		}
+
+		return DigestUtils.sha256Hex(sb.toString());
+	}
+
 	private String _getCustomAssetPrimaryKey(AnalyticsEvent analyticsEvent) {
 		Map<String, String> eventProperties =
 			analyticsEvent.getEventProperties();
 
-		return NaniteUtil.digest(
+		return _digest(
 			eventProperties.get("assetId"),
 			eventProperties.getOrDefault("category", "default"),
 			analyticsEvent.getChannelId());
