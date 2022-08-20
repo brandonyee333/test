@@ -172,7 +172,6 @@ public class EventAnalysisDog {
 		eventAnalysisResult.setPage(page);
 
 		String projectId = ProjectIdThreadLocal.getProjectId();
-
 		String timeZoneId = _timeZoneDog.getTimeZoneId();
 
 		CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(
