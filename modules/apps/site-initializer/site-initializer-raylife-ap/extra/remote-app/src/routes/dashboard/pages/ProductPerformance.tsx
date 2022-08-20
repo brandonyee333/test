@@ -14,9 +14,9 @@
 
 import ClayButton from '@clayui/button';
 import ClayChart from '@clayui/charts';
-import classNames from 'classnames';
 import {ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import classNames from 'classnames';
 import React, {useState} from 'react';
 
 import Header from '../../../common/components/header';
@@ -53,67 +53,97 @@ const colors:string[] = [
 ];
 
 const dataColumn: any = {
-	yearly: {
-		jan:[
-			{goals: 200,
-			currentValue: 100,}
-			
-		],
-		feb:[
-			{goals: 210,
-			currentValue: 25}
-		],
-		mar:[
-			{goals: 250,
-			currentValue: 25}
-		],
-		apr:[
-			{goals: 320,
-			currentValue: 25}
-		],
-		may:[
-			{goals: 200,
-			currentValue: 25}
-		],
-		jun:[
-			{goals: 120,
-			currentValue: 25}
-		],
-		jul:[
-			{goals: 320,
-			currentValue: 25}
-		],
-		aug:[
-			{goals: 220,
-			currentValue: 25}
-		],
-		sep:[
-			{goals: 20,
-			currentValue: 25}
-		],
-		oct:[
-			{goals: 320,
-			currentValue: 25}
-		],
-		nov:[
-			{goals: 420,
-			currentValue: 25}
-		],
-		dec:[
-			{goals: 210,
-			currentValue: 25}
-		],
-
-	}	,
 	threeMonths: {
 
 		
 	},
+
 	sixMonths: {
 
 		
-	}	
+	},
+	
+	
+	yearly: {
+		jan:{
+			currentValue: 100,
+			goals: 200,
+			}	
+		,
+		feb:{
+			currentValue: 25,
+			goals: 210,
+		},
+			
+		mar:{
+			
+			currentValue: 25,
+			goals: 250,
+		}
+			,
+		apr:{
+			
+			currentValue: 25,
+			goals: 320,
+		}
+			,
+		may:{
+			
+			currentValue: 25,
+			goals: 200,
+		}
+			,
+		jun:
+		{
+			currentValue: 25,
+			goals: 120,
+		}
+			,
+		jul:
+		{
+			currentValue: 25,
+			goals: 320,
+		}
+			,
+		aug:
+		{
+			currentValue: 25,
+			goals: 220,
+		}
+			,
+		sep:
+		
+		{  
+			currentValue: 25,
+
+			goals: 20,
+	}
+		,
+	
+		oct:
+		{
+			currentValue: 25,
+			goals: 320,
+		}
+			,
+		nov:
+		{
+			currentValue: 25,
+			goals: 420,
+		}
+			,
+		dec:
+		{
+			currentValue: 25,
+			goals: 210,
+		}
+			,
+
+	}	,
+
+	
 }
+
 
 
 const chart=  {
@@ -143,6 +173,9 @@ const chart=  {
 		},
 };
 
+const achieved = Object.values(dataColumn.yearly).map((item: any) => item.currentValue)
+const goals = Object.values(dataColumn.yearly).map((item: any) => item.goals)
+
 
 const teste: any = {
 
@@ -150,8 +183,8 @@ const teste: any = {
 
 		columns: [
 			
-			["goal", dataColumn.yearly.jan[0].goals, dataColumn.yearly.feb[0].goals ],
-			["exceeded", dataColumn.yearly.jan[0].currentValue, dataColumn.yearly.feb[0].currentValue ]
+			["goal", ...goals ],
+			["exceeded",  ...achieved]
 		],
 		groups: [
 			[
@@ -196,10 +229,7 @@ const BarChartPerformancee: BarChartPerformanceTypes  = {
 const ProductPerformance = () => {
 	const [choosenProduct, setChoosenProduct] = useState(PRODUCT_LIST[0]);
 	const [timePeriod, setTimePeriod] = useState(TIME_PERIODS[0]);
-	console.log(dataColumn.yearly.jan[0])
-	console.log(chart.data.groups)
-	console.log('teste')
-	console.log(teste.columns)
+
 	return (
 		<div className="d-flex flex-wrap ray-dashboard-product-performance">
 			<div className="col-5 left-container px-0">
@@ -254,7 +284,7 @@ const ProductPerformance = () => {
 					</ClaySelect>
 				</div>
 
-				<div className="p-5"> 
+				<div className="p-5 overflow-auto" > 
 
 						{/* <ClayChart
 							data={{
@@ -265,6 +295,10 @@ const ProductPerformance = () => {
 						/> */}
 				
 				<ClayChart
+			
+
+				
+						
 				axis={{
 					x: {
 						type: 'category',
@@ -287,7 +321,7 @@ const ProductPerformance = () => {
 
 				}}
 				data={{
-
+					
 					columns:teste.data.columns,
                     groups: teste.data.groups,
 					type: chart.data.type,
@@ -299,6 +333,7 @@ const ProductPerformance = () => {
 
 					},
 				}}
+				
 				legend={{
 					show: BarChartPerformancee.showLegend,
 				}}
