@@ -21,11 +21,6 @@ import React, {useState} from 'react';
 
 import Header from '../../../common/components/header';
 
-
-
-
-
-
 const PRODUCT_LIST = [
 	'All',
 	'Auto',
@@ -37,8 +32,6 @@ const PRODUCT_LIST = [
 
 const TIME_PERIODS = ['YTD', '3 MO', '6 MO'];
 
-
-	
 
 type BarChartPerformanceTypes = {
     colors: string[],
@@ -63,7 +56,7 @@ const dataColumn: any = {
 	yearly: {
 		jan:[
 			{goals: 200,
-			currentValue: 25,}
+			currentValue: 100,}
 			
 		],
 		feb:[
@@ -122,18 +115,19 @@ const dataColumn: any = {
 	}	
 }
 
+
 const chart=  {
 	data: {
 		columns: [
 		["goal", 200, 200, 200, 400, 150, 250],
-		["exceeded", 130, 100, 100, 200, 150, 50],
+		["exceeded", 30, 100, 100, 200, 150, 50],
 		["achieved", 230, 200, 200, 300, 250, 250]
 		], 
 		groups: [
 			[
-				"goal",
-				"exceeded",
-				"achieved"
+				'goal',
+				'exceeded',
+				'achieved'
 			]
 		],
 		type: "bar", 
@@ -152,11 +146,23 @@ const chart=  {
 
 const teste: any = {
 
-	
+	data:{
 
-
+		columns: [
+			
+			["goal", dataColumn.yearly.jan[0].goals, dataColumn.yearly.feb[0].goals ],
+			["exceeded", dataColumn.yearly.jan[0].currentValue, dataColumn.yearly.feb[0].currentValue ]
+		],
+		groups: [
+			[
+				'goal',
+				'exceeded',
+				
+			]
+		],
+		
+	}
 }
-
 const labelColumns = [
 	'Jan 2022',
 	'Feb 2022',
@@ -190,7 +196,10 @@ const BarChartPerformancee: BarChartPerformanceTypes  = {
 const ProductPerformance = () => {
 	const [choosenProduct, setChoosenProduct] = useState(PRODUCT_LIST[0]);
 	const [timePeriod, setTimePeriod] = useState(TIME_PERIODS[0]);
-
+	console.log(dataColumn.yearly.jan[0])
+	console.log(chart.data.groups)
+	console.log('teste')
+	console.log(teste.columns)
 	return (
 		<div className="d-flex flex-wrap ray-dashboard-product-performance">
 			<div className="col-5 left-container px-0">
@@ -279,8 +288,8 @@ const ProductPerformance = () => {
 				}}
 				data={{
 
-					columns:chart.data.columns,
-                    groups: chart.data.groups,
+					columns:teste.data.columns,
+                    groups: teste.data.groups,
 					type: chart.data.type,
 					labels: {						
 						colors: '#272898',
