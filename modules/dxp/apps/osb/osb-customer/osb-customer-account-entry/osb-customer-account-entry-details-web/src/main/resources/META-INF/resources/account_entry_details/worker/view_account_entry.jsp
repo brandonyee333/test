@@ -65,6 +65,6 @@ if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
 		<liferay-util:include page="/account_entry_details/team_members.jsp" servletContext="<%= application %>" />
 	</c:when>
 	<c:otherwise>
-		<liferay-util:include page="/account_entry_details/worker/overview.jsp" servletContext="<%= application %>" />
+		<liferay-util:include page="/account_entry_details/customer_portal_banner.jsp" servletContext="<%= application %>" />
 	</c:otherwise>
 </c:choose>

@@ -29,6 +29,12 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface AccountEntryDetailsConfiguration {
 
 	@Meta.AD(
+		deflt = "https://support.liferay.com", name = "customer-portal-url",
+		required = false
+	)
+	public String customerPortalURL();
+
+	@Meta.AD(
 		deflt = "https://help.liferay.com/hc/articles/4403652209933",
 		name = "data-access-article-url", required = false
 	)
