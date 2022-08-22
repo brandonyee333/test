@@ -138,10 +138,26 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 	public List<PageVisitorBehaviorMetric> searchPageVisitorBehaviorMetrics(
 		Long channelId, Pageable pageable, TimeRange timeRange, ZoneId zoneId) {
 
-		List<Field<?>> metricFields = _getMetricFields();
+		List<Field<?>> metricFields = _getMetricFields(
+			_getTableName(timeRange));
 
-		metricFields.add(DSL.field("canonicalurl", String.class));
-		metricFields.add(DSL.field("title", String.class));
+		String tableName = _getTableName(timeRange);
+
+		Field<String> canonicalUrlField = DSL.field(
+			_getFieldName("canonicalurl", tableName), String.class
+		).as(
+			"canonicalurl"
+		);
+
+		metricFields.add(canonicalUrlField);
+
+		Field<String> titleField = DSL.field(
+			_getFieldName("title", tableName), String.class
+		).as(
+			"title"
+		);
+
+		metricFields.add(titleField);
 
 		return _queryExecutor.queryForList(
 			PageVisitorBehaviorMetric.class,
@@ -155,7 +171,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 			).where(
 				_createWhereClause(null, channelId, timeRange, null, zoneId)
 			).groupBy(
-				DSL.field("canonicalurl"), DSL.field("title")
+				canonicalUrlField, titleField
 			).orderBy(
 				_getSortFields(pageable.getSort())
 			).limit(
@@ -197,14 +213,16 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		String canonicalUrl, Long channelId, TimeRange timeRange, String title,
 		ZoneId zoneId) {
 
+		String tableName = _getTableName(timeRange);
+
 		Condition condition = DSL.and(
 			DSL.field(
-				"channelId"
+				_getFieldName("channelId", tableName)
 			).eq(
 				channelId
 			),
 			DSL.field(
-				"eventDate"
+				_getFieldName("eventDate", tableName)
 			).between(
 				_dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(), zoneId.toString()),
@@ -215,7 +233,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		if (canonicalUrl != null) {
 			condition = condition.and(
 				DSL.field(
-					"canonicalUrl"
+					_getFieldName("canonicalUrl", tableName)
 				).eq(
 					canonicalUrl
 				));
@@ -224,7 +242,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		if (title != null) {
 			condition = condition.and(
 				DSL.field(
-					"title"
+					_getFieldName("title", tableName)
 				).eq(
 					title
 				));
@@ -233,14 +251,16 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		return condition;
 	}
 
-	private List<Field<?>> _getAvgMetricFields(Map<String, String> fieldNames) {
+	private List<Field<?>> _getAvgMetricFields(
+		Map<String, String> fieldNames, String tableName) {
+
 		List<Field<?>> metricFields = new ArrayList<>();
 
 		for (Map.Entry<String, String> entry : fieldNames.entrySet()) {
 			metricFields.add(
 				DSL.sum(
 					DSL.field(
-						entry.getKey()
+						_getFieldName(entry.getKey(), tableName)
 					).cast(
 						BigDecimal.class
 					)
@@ -258,7 +278,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		return String.format("%s.%s", tableName, fieldName);
 	}
 
-	private List<Field<?>> _getMetricFields() {
+	private List<Field<?>> _getMetricFields(String tableName) {
 		List<Field<?>> metricFields = _getSumMetricFields(
 			new HashMap<String, String>() {
 				{
@@ -268,7 +288,8 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 					put("timeonpage", "timeonpage");
 					put("views", "views");
 				}
-			});
+			},
+			tableName);
 
 		metricFields.add(
 			DSL.countDistinct(
@@ -289,7 +310,8 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 						put("exit", "exitrate");
 						put("timeonpage", "avgtimeonpage");
 					}
-				}));
+				},
+				tableName));
 
 		return metricFields;
 	}
@@ -317,13 +339,16 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		return sortFields;
 	}
 
-	private List<Field<?>> _getSumMetricFields(Map<String, String> fieldNames) {
+	private List<Field<?>> _getSumMetricFields(
+		Map<String, String> fieldNames, String tableName) {
+
 		List<Field<?>> metricFields = new ArrayList<>();
 
 		for (Map.Entry<String, String> entry : fieldNames.entrySet()) {
 			metricFields.add(
 				DSL.sum(
-					DSL.field(entry.getKey(), Long.class)
+					DSL.field(
+						_getFieldName(entry.getKey(), tableName), Long.class)
 				).as(
 					entry.getValue()
 				));
