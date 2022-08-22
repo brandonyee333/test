@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
+import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQPageRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
@@ -35,6 +36,9 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record1;
+import org.jooq.SelectFinalStep;
+import org.jooq.SelectJoinStep;
+import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
 import org.jooq.impl.DSL;
@@ -86,6 +90,46 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 			));
 	}
 
+	@Override
+	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(
+		Long channelId, boolean includePrevious, TimeRange timeRange,
+		ZoneId zoneId) {
+
+		String tableName = _getTableName(timeRange);
+
+		Field<Integer> field = DSL.when(
+			DSL.field(
+				_getFieldName("eventDate", tableName)
+			).gt(
+				_dslHelper.getDateParam(
+					timeRange.getStartLocalDateTime(), zoneId.toString())
+			),
+			1
+		).otherwise(
+			0
+		).as(
+			"groupByField"
+		);
+
+		return _queryExecutor.queryForList(
+			SiteVisitorBehaviorMetric.class,
+			(SelectFinalStep)_joinWithIdentityTable(
+				dslContext.select(
+					field, _getUniqueVisitorsField(tableName)
+				).from(
+					tableName
+				),
+				tableName
+			).where(
+				_createWhereClause(
+					null, channelId, includePrevious, timeRange, null, zoneId)
+			).groupBy(
+				field
+			).orderBy(
+				field.desc()
+			));
+	}
+
 	public List<PageVisitorBehaviorMetric> searchPageVisitorBehaviorMetrics(
 		Long channelId, Pageable pageable, TimeRange timeRange, ZoneId zoneId) {
 
@@ -126,6 +170,20 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 
 	@Autowired
 	protected DSLContext dslContext;
+
+	private Condition _createWhereClause(
+		String canonicalUrl, Long channelId, boolean includePrevious,
+		TimeRange timeRange, String title, ZoneId zoneId) {
+
+		TimeRange whereClauseTimeRange = timeRange;
+
+		if (includePrevious) {
+			whereClauseTimeRange = timeRange.getIncludePreviousTimeRange();
+		}
+
+		return _createWhereClause(
+			canonicalUrl, channelId, whereClauseTimeRange, title, zoneId);
+	}
 
 	private Condition _createWhereClause(
 		String canonicalUrl, Long channelId, TimeRange timeRange, String title,
@@ -188,6 +246,8 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		return metricFields;
 	}
 
+	private String _getFieldName(String fieldName, String tableName) {
+		return String.format("%s.%s", tableName, fieldName);
 	}
 
 	private List<Field<?>> _getMetricFields() {
@@ -288,6 +348,20 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 					DSL.field(_getFieldName("userid", tableName))))
 		).as(
 			"visitors"
+		);
+	}
+
+	private SelectOnConditionStep _joinWithIdentityTable(
+		SelectJoinStep selectJoinStep, String tableName) {
+
+		return selectJoinStep.leftJoin(
+			"BQIdentity"
+		).on(
+			DSL.field(
+				"BQIdentity.userid"
+			).eq(
+				DSL.field(_getFieldName("userid", tableName))
+			)
 		);
 	}
 
