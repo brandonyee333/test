@@ -22,7 +22,6 @@ import com.liferay.osb.asah.backend.ext.seo.spring.OSBAsahBackendExtSEOSpringBoo
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
@@ -59,7 +58,6 @@ import org.springframework.web.client.HttpClientErrorException;
 @TestExecutionListeners(
 	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
 	value = {
-		OSBAsahElasticsearchTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class
 	}

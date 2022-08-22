@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.ActivitiesRestController;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -106,8 +105,5 @@ public class ActivitiesRestControllerTest
 
 	@Autowired
 	private ActivitiesRestController _activitiesRestController;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 }

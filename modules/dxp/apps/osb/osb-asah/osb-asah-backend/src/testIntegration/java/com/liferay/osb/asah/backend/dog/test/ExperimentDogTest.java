@@ -29,7 +29,6 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
@@ -68,7 +67,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 	value = {
 		DependencyInjectionTestExecutionListener.class,
 		MockitoTestExecutionListener.class,
-		OSBAsahElasticsearchTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class
 	}

@@ -16,11 +16,8 @@ package com.liferay.osb.asah.backend.servlet.filter.test;
 
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
@@ -57,7 +54,6 @@ import org.springframework.test.web.servlet.result.StatusResultMatchers;
 	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
 	value = {
 		DependencyInjectionTestExecutionListener.class,
-		OSBAsahElasticsearchTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class,
 		ServletTestExecutionListener.class
@@ -150,9 +146,6 @@ public class SecurityOncePerRequestFilterTest {
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private MockMvc _mockMvc;

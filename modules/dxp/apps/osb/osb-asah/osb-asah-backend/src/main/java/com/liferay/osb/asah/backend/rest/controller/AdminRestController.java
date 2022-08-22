@@ -17,10 +17,6 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
@@ -31,7 +27,6 @@ import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.http.NanitesHttp;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
@@ -52,12 +47,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.nio.charset.StandardCharsets;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.annotation.PostConstruct;
@@ -65,8 +54,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
@@ -141,11 +128,9 @@ public class AdminRestController extends BaseRestController {
 			_preferenceRepository.deleteAll();
 		}
 		else {
-			ElasticsearchInvoker elasticsearchInvoker =
-				_elasticsearchInvokers.get(weDeployDataServiceName);
 
-			elasticsearchInvoker.delete(
-				collectionName, QueryBuilders.matchAllQuery());
+			// TODO
+
 		}
 	}
 
@@ -158,14 +143,8 @@ public class AdminRestController extends BaseRestController {
 
 	@PostConstruct
 	public void init() {
-		for (WeDeployDataService weDeployDataService :
-				WeDeployDataService.values()) {
 
-			_elasticsearchInvokers.put(
-				weDeployDataService.toString(),
-				_elasticsearchInvokerManager.forWeDeployDataService(
-					weDeployDataService));
-		}
+		// TODO
 
 		Class<?> clazz = getClass();
 
@@ -226,10 +205,9 @@ public class AdminRestController extends BaseRestController {
 			_addPreferences(new JSONArray(json));
 		}
 		else {
-			ElasticsearchInvoker elasticsearchInvoker =
-				_elasticsearchInvokers.get(weDeployDataServiceName);
 
-			elasticsearchInvoker.add(collectionName, new JSONArray(json));
+			// TODO
+
 		}
 	}
 
@@ -322,55 +300,6 @@ public class AdminRestController extends BaseRestController {
 			WeDeployDataService weDeployDataService,
 			ZipOutputStream zipOutputStream)
 		throws Exception {
-
-		ElasticsearchInvoker elasticsearchInvoker = _elasticsearchInvokers.get(
-			weDeployDataService.toString());
-
-		JSONArray collectionsJSONArray =
-			_elasticsearchIndexManager.getCollectionsJSONArray(
-				weDeployDataService);
-
-		for (int i = 0; i < collectionsJSONArray.length(); i++) {
-			String collectionName = collectionsJSONArray.getString(i);
-
-			String indexName = ElasticsearchIndexUtil.getIndexName(
-				collectionName, weDeployDataService.toString());
-
-			AtomicInteger atomicInteger = new AtomicInteger();
-
-			JSONArrayIterator.of(
-				collectionName, elasticsearchInvoker, null
-			).setBatchSize(
-				10000
-			).setProcessJSONArrayUnsafeFunction(
-				jsonArray -> {
-					if (jsonArray.length() == 0) {
-						return null;
-					}
-
-					String fileName =
-						indexName + "_" + atomicInteger.getAndIncrement() +
-							".json";
-
-					zipOutputStream.putNextEntry(new ZipEntry(fileName));
-
-					String json = jsonArray.toString();
-
-					zipOutputStream.write(
-						json.getBytes(StandardCharsets.UTF_8));
-
-					zipOutputStream.closeEntry();
-
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Copied " + jsonArray.length() + " objects to " +
-								fileName);
-					}
-
-					return null;
-				}
-			).iterate();
-		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
@@ -396,15 +325,6 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	@Autowired
-	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
-
-	private final Map<String, ElasticsearchInvoker> _elasticsearchInvokers =
-		new HashMap<>();
 
 	@Autowired
 	private ExperimentRepository _experimentRepository;

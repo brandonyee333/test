@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
@@ -44,7 +43,6 @@ import org.springframework.test.context.TestExecutionListeners;
 @TestExecutionListeners(
 	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
 	value = {
-		OSBAsahElasticsearchTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class
 	}

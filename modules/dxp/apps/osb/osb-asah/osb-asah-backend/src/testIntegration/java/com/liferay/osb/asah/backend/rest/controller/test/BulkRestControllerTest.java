@@ -19,7 +19,6 @@ import com.liferay.osb.asah.backend.rest.controller.BulkRestController;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.Http;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
@@ -47,7 +46,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 	value = {
 		DependencyInjectionTestExecutionListener.class,
 		MockitoTestExecutionListener.class,
-		OSBAsahElasticsearchTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class
 	}

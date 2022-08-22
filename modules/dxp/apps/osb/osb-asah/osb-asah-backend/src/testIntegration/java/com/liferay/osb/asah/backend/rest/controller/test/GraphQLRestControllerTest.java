@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.graphql.GraphQLRestController;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
@@ -50,7 +49,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 	value = {
 		DependencyInjectionTestExecutionListener.class,
 		MockitoTestExecutionListener.class,
-		OSBAsahElasticsearchTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class
 	}

@@ -20,17 +20,14 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ChannelsRestController;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -68,7 +65,6 @@ import org.springframework.web.client.HttpClientErrorException;
 	value = {
 		DependencyInjectionTestExecutionListener.class,
 		MockitoTestExecutionListener.class,
-		OSBAsahElasticsearchTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class,
 		ResetMocksTestExecutionListener.class
@@ -387,9 +383,6 @@ public class ChannelsRestControllerTest
 
 	@Autowired
 	private DataSourcesRestController _dataSourcesRestController;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

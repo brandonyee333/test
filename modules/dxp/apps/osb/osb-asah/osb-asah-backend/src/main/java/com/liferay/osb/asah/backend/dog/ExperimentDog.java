@@ -22,7 +22,6 @@ import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dxp.DXPClient;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
@@ -36,7 +35,6 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -496,9 +494,6 @@ public class ExperimentDog {
 
 	@Autowired
 	private ExperimentRepository _experimentRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private HistogramDog _histogramDog;

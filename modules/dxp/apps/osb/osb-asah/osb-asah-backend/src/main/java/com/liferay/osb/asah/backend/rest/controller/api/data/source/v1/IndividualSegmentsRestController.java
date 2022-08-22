@@ -27,8 +27,6 @@ import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -36,7 +34,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
-import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
 
 import java.util.Collections;
 import java.util.Date;
@@ -47,15 +44,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.ResourceNotFoundException;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -84,7 +75,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndividualSegmentsRestController {
 
 	@GetMapping(params = "!apply", value = "/{id}/individuals")
-	@SuppressErrorLogging(ResourceNotFoundException.class)
 	public PageDTO<IndividualDTO> getIndividualDTOPageDTO(
 		@PathVariable Long id,
 		@RequestParam(name = "filter", required = false) String filterString,
@@ -360,27 +350,6 @@ public class IndividualSegmentsRestController {
 
 	@Autowired
 	protected SegmentDog segmentDog;
-
-	private QueryBuilder _getMembershipChangesQueryBuilder(
-		String filterString, String segmentId) {
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("individualSegmentId", segmentId));
-
-		Segment segment = segmentDog.getSegment(Long.valueOf(segmentId));
-
-		if (!BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())) {
-			boolQueryBuilder.filter(
-				QueryBuilders.existsQuery("individualEmail"));
-		}
-
-		if (StringUtils.isEmpty(filterString)) {
-			return boolQueryBuilder;
-		}
-
-		return boolQueryBuilder.filter(
-			FilterStringToQueryBuilderConverter.convert(filterString));
-	}
 
 	private JSONObject _getReferencedObjectsJSONObject(Segment segment)
 		throws Exception {

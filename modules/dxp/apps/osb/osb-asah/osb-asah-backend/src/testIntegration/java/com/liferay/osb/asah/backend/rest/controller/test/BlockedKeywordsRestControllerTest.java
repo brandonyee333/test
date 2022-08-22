@@ -39,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -162,6 +163,7 @@ public class BlockedKeywordsRestControllerTest
 			false);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BlockedKeywordRepository.class,
 		resourcePath = "osbasahfaroinfo/blocked_keywords.json"

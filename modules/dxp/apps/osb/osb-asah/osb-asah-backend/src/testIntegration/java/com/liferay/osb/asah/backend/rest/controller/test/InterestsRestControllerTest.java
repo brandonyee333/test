@@ -295,6 +295,7 @@ public class InterestsRestControllerTest
 		}
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = InterestTopicRepository.class,
 		resourcePath = "osbasahfaroinfo/interest_topics.json"
@@ -339,6 +340,7 @@ public class InterestsRestControllerTest
 			"css", "canvas", "sql-server", "python", "multithreading");
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = InterestTopicRepository.class,
 		resourcePath = "osbasahfaroinfo/interest_topics.json"

@@ -22,7 +22,6 @@ import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.RunLog;
@@ -30,9 +29,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
@@ -41,10 +38,6 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.lucene.search.join.ScoreMode;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -73,7 +66,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 	value = {
 		DependencyInjectionTestExecutionListener.class,
 		MockitoTestExecutionListener.class,
-		OSBAsahElasticsearchTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class
 	}
@@ -121,15 +113,9 @@ public class DataSourcesRestControllerTest {
 		Assertions.assertFalse(
 			_dataSourceRepository.existsById(
 				dataSourceJSONObject.getLong("id")));
-		Assertions.assertFalse(
-			_faroInfoElasticsearchInvoker.exists(
-				"individuals",
-				QueryBuilders.nestedQuery(
-					"dataSourceIndividualPKs",
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId",
-						dataSourceJSONObject.getString("id")),
-					ScoreMode.None)));
+
+		// TODO Assert individuals do not exist
+
 	}
 
 	@Test
@@ -310,9 +296,6 @@ public class DataSourcesRestControllerTest {
 
 	@Autowired
 	private DataSourcesRestController _dataSourcesRestController;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
