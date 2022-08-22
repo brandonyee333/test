@@ -18,29 +18,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.JobRunDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.JobRun;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.storage.impl.GoogleStorageArchiver;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
 import java.io.FileInputStream;
 
-import java.nio.charset.StandardCharsets;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -138,25 +131,8 @@ public class ContentRecommendationDataprocMessageProcessor
 
 			ZipEntry nextEntry = zipInputStream.getNextEntry();
 
-			if (nextEntry == null) {
-				return;
-			}
+			// TODO Replace recommended items
 
-			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-				_faroInfoElasticsearchInvoker.
-					createElasticsearchBulkRequestBuilder();
-
-			List<String> lines = IOUtils.readLines(
-				zipInputStream, StandardCharsets.UTF_8);
-
-			for (String line : lines) {
-				elasticsearchBulkRequestBuilder.replace(
-					"recommended-items", new JSONObject(line));
-			}
-
-			if (elasticsearchBulkRequestBuilder.hasActions()) {
-				elasticsearchBulkRequestBuilder.get();
-			}
 		}
 	}
 
@@ -167,9 +143,6 @@ public class ContentRecommendationDataprocMessageProcessor
 		"${osb.asah.content.recommendations.google.bucket:analytics-cloud-content-recommendations-{region}}}"
 	)
 	private String _contentRecommendationsBucketTemplate;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private GoogleStorageArchiver _googleStorageArchiver;

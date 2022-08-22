@@ -32,8 +32,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import java.util.Optional;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -81,10 +79,8 @@ public class ClearChannelsNaniteTest
 
 		Assertions.assertTrue(_channelRepository.existsById(channelId));
 		Assertions.assertTrue(_dataSourceRepository.existsById(dataSourceId));
-		Assertions.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"individuals",
-				QueryBuilders.termQuery("channelIds", channelId)));
+
+		// TODO Assert individuals do not exist
 
 		// TODO Assert individual count
 

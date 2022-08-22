@@ -14,18 +14,13 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Preference;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -48,16 +43,10 @@ public class DataRetentionNanite extends BaseNanite {
 		Preference preference = _preferenceDog.getPreference(
 			"data-retention-period");
 
-		Date date = new Date(
+		new Date(
 			System.currentTimeMillis() - Long.parseLong(preference.getValue()));
 
-		_cerebroInfoElasticsearchInvoker.deleteByQuery(
-			QueryBuilders.rangeQuery(
-				"lastEventDate"
-			).lt(
-				DateUtil.toUTCString(date)
-			),
-			true, _COLLECTION_NAMES);
+		// TODO Delete
 
 		// TODO delete BQIdentities created before date
 
@@ -73,9 +62,6 @@ public class DataRetentionNanite extends BaseNanite {
 		"document-libraries", "forms", "journals", "journal-clicks",
 		"page-referrers", "pages", "user-sessions"
 	};
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private PreferenceDog _preferenceDog;

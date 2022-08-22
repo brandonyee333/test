@@ -37,8 +37,6 @@ import java.util.Optional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,11 +119,7 @@ public class DataControlNaniteTest
 
 		Assertions.assertTrue(suppressionOptional.isPresent());
 
-		Assertions.assertNull(
-			faroInfoElasticsearchInvoker.fetch(
-				"individuals",
-				QueryBuilders.termQuery(
-					"demographics.email.value", "john.doe@liferay.com")));
+		// TODO Assert individuals do not exist
 
 		Path path = Paths.get(_exportPath.toString(), "1.zip");
 

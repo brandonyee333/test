@@ -16,7 +16,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
@@ -165,9 +164,6 @@ public abstract class BaseNanite implements Nanite {
 
 	@Autowired
 	protected AsahMarkerDog asahMarkerDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
 	private void _log(String message) {
 		Log log = getLog();

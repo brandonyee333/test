@@ -21,15 +21,12 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.Collections;
 import java.util.TimeZone;
 
 import javax.annotation.PreDestroy;
@@ -39,9 +36,6 @@ import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.script.Script;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -218,13 +212,7 @@ public class OSBAsahBatchCuratorBot {
 		try {
 			ProjectIdThreadLocal.setProjectId(projectId);
 
-			_elasticsearchInvoker.updateByQueryWithRetry(
-				QueryBuilders.termQuery("status", "STARTED"), true,
-				new Script(
-					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-					"ctx._source.status = 'INTERRUPTED'",
-					Collections.emptyMap()),
-				"run-logs");
+			// TODO
 
 			_asahTaskManager.runNanites("DeleteTempFilesNanite");
 
@@ -308,9 +296,6 @@ public class OSBAsahBatchCuratorBot {
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(50, 40);
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
 	@Autowired(required = false)
 	@Qualifier("contentRecommendationDataSolutionNaniteRunnable")
 	private Runnable _contentRecommendationDataSolutionNaniteRunnable;
@@ -322,9 +307,6 @@ public class OSBAsahBatchCuratorBot {
 	@Autowired(required = false)
 	@Qualifier("deleteDXPBatchEntitiesNaniteRunnable")
 	private Runnable _deleteDXPBatchEntitiesNaniteRunnable;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private ProjectDog _projectDog;

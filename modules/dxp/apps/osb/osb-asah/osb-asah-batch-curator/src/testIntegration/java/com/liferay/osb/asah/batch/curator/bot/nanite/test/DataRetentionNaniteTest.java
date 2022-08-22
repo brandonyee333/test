@@ -15,15 +15,12 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataRetentionNanite;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -44,10 +41,8 @@ public class DataRetentionNaniteTest
 	public void testDeleteAssets() throws Exception {
 		_dataRetentionNanite.run(null);
 
-		Assertions.assertArrayEquals(
-			new String[] {"101", "102"},
-			JSONUtil.toStringArray(
-				_cerebroInfoElasticsearchInvoker.get("blogs"), "id"));
+		// TODO Assert ids
+
 	}
 
 	@Disabled
@@ -59,14 +54,9 @@ public class DataRetentionNaniteTest
 	public void testDeleteIndividuals() throws Exception {
 		_dataRetentionNanite.run(null);
 
-		Assertions.assertArrayEquals(
-			new String[] {"101", "104", "105"},
-			JSONUtil.toStringArray(
-				faroInfoElasticsearchInvoker.get("individuals"), "id"));
-	}
+		// TODO Assert ids
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+	}
 
 	@Autowired
 	private DataRetentionNanite _dataRetentionNanite;
