@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.util.CSVUtil;
 
 import java.io.File;
@@ -43,9 +42,7 @@ public class SuppressionsRestController extends BaseRestController {
 		throws Exception {
 
 		File file = CSVUtil.createCSVFile(
-			"suppressions", faroInfoElasticsearchInvoker, _fieldNames,
-			"suppression-logs-", new File(_tempPath),
-			FilterStringToQueryBuilderConverter.convert(filterString));
+			_fieldNames, "suppression-logs-", new File(_tempPath));
 
 		return toDownloadResponse(file, "suppression-logs.csv");
 	}

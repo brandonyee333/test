@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.util;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
-
 import com.univocity.parsers.csv.CsvWriter;
 import com.univocity.parsers.csv.CsvWriterSettings;
 
@@ -28,14 +25,31 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.elasticsearch.index.query.QueryBuilder;
-
 import org.json.JSONObject;
 
 /**
  * @author Matthew Kong
  */
 public class CSVUtil {
+
+	public static File createCSVFile(
+			Map<String, String> fieldNames, String fileNamePrefix, File folder)
+		throws Exception {
+
+		File file = File.createTempFile(fileNamePrefix, ".csv", folder);
+
+		file.deleteOnExit();
+
+		CsvWriter csvWriter = new CsvWriter(file, new CsvWriterSettings());
+
+		csvWriter.writeHeaders(fieldNames.values());
+
+		// TODO Write suppression rows to CSV
+
+		csvWriter.close();
+
+		return file;
+	}
 
 	public static File createCSVFile(
 			Map<String, String> fieldNames, String fileNamePrefix, File folder,
@@ -65,45 +79,6 @@ public class CSVUtil {
 						Collectors.toList()
 					));
 			});
-
-		csvWriter.close();
-
-		return file;
-	}
-
-	public static File createCSVFile(
-			String collectionName, ElasticsearchInvoker elasticsearchInvoker,
-			Map<String, String> fieldNames, String fileNamePrefix, File folder,
-			QueryBuilder queryBuilder)
-		throws Exception {
-
-		File file = File.createTempFile(fileNamePrefix, ".csv", folder);
-
-		file.deleteOnExit();
-
-		CsvWriter csvWriter = new CsvWriter(file, new CsvWriterSettings());
-
-		csvWriter.writeHeaders(fieldNames.values());
-
-		Set<String> keys = fieldNames.keySet();
-
-		JSONArrayIterator.of(
-			collectionName, elasticsearchInvoker,
-			jsonObject -> {
-				Stream<String> stream = keys.stream();
-
-				csvWriter.writeRow(
-					stream.map(
-						jsonObject::get
-					).collect(
-						Collectors.toList()
-					));
-
-				return null;
-			}
-		).setQueryBuilder(
-			queryBuilder
-		).iterate();
 
 		csvWriter.close();
 
