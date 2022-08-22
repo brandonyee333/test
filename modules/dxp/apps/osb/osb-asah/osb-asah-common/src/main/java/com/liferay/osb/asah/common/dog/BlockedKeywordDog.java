@@ -14,9 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
-import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -45,7 +43,7 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-public class BlockedKeywordDog extends BaseFaroInfoDog {
+public class BlockedKeywordDog {
 
 	public List<BlockedKeyword> addMissingBlockedKeywords(
 		Set<String> keywords) {
@@ -132,7 +130,10 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 	}
 
 	private Sort _getSort(String[] sorts) {
-		List<Sort.Order> orders = SortBuilderUtil.getOrders(sorts);
+
+		// TODO sort orders
+
+		List<Sort.Order> orders = Collections.emptyList();
 
 		if (orders.isEmpty()) {
 			return Sort.by(Sort.Order.asc("keyword"));

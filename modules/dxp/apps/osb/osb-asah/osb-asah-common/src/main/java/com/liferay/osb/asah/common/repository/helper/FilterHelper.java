@@ -15,12 +15,9 @@
 package com.liferay.osb.asah.common.repository.helper;
 
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.Objects;
-
-import org.elasticsearch.index.query.QueryBuilder;
 
 import org.jooq.Condition;
 
@@ -87,15 +84,6 @@ public class FilterHelper {
 
 	public String getFilterString() {
 		return _filterString;
-	}
-
-	public QueryBuilder getQueryBuilder() {
-		if (_elasticsearchFilterStringConverterHelper == null) {
-			return FilterStringToQueryBuilderConverter.convert(_filterString);
-		}
-
-		return FilterStringToQueryBuilderConverter.convert(
-			_filterString, _elasticsearchFilterStringConverterHelper);
 	}
 
 	@Override

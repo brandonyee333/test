@@ -16,22 +16,8 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.tes
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
-import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-
-import org.json.JSONArray;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
 /**
@@ -46,17 +32,9 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		for (String collectionName : _COLLECTION_NAMES) {
-			faroInfoElasticsearchInvoker.add(
-				collectionName,
-				new JSONArray(
-					TestExecutionListenerUtil.replaceVariables(
-						ResourceUtil.readResourceToString(
-							"dependencies/osbasahfaroinfo/" +
-								StringUtils.replace(collectionName, "-", "_") +
-									".json",
-							this))));
-		}
+
+		// TODO Add  collections
+
 	}
 
 	protected void testFilterString(
@@ -64,59 +42,8 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase
 			String... expectedIndividualIds)
 		throws Exception {
 
-		MatcherAssert.assertThat(
-			expectedIndividualIds,
-			Matchers.arrayContainingInAnyOrder(
-				JSONUtil.toStringArray(
-					faroInfoElasticsearchInvoker.get(
-						collection,
-						FilterStringToQueryBuilderConverter.convert(
-							filterString, getFilterStringConverterHelper())),
-					"id")));
+		// TODO Assert;
+
 	}
-
-	protected void testFilterStringThrowsException(
-		Class<? extends Throwable> expectedExceptionClass,
-		String expectedMessage, String filterString) {
-
-		try {
-			FilterStringToQueryBuilderConverter.convert(
-				filterString, getFilterStringConverterHelper());
-
-			Assertions.fail();
-		}
-		catch (Exception exception) {
-			if (expectedExceptionClass == null) {
-				return;
-			}
-
-			Throwable throwable = exception;
-
-			while (throwable.getCause() != null) {
-				throwable = throwable.getCause();
-			}
-
-			Class<?> clazz = throwable.getClass();
-
-			Assertions.assertEquals(
-				clazz, expectedExceptionClass,
-				"Expected innermost throwable to be of type " +
-					expectedExceptionClass.getName() + ", but was " +
-						clazz.getName());
-
-			if (expectedMessage == null) {
-				return;
-			}
-
-			Assertions.assertEquals(expectedMessage, throwable.getMessage());
-		}
-	}
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
-
-	private static final String[] _COLLECTION_NAMES = {
-		"activities", "field-mappings", "fields", "individuals"
-	};
 
 }

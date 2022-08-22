@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.upgrade.test;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -63,7 +62,9 @@ public class UpgradeCheckTest
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		_elasticsearchIndexManager.delete("project1_*");
+
+		// TODO
+
 	}
 
 	@Test
@@ -101,9 +102,6 @@ public class UpgradeCheckTest
 
 	@Autowired
 	private AsahMarkerDog _asahMarkerDog;
-
-	@Autowired
-	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Mock
 	private ProjectDog _projectDog;

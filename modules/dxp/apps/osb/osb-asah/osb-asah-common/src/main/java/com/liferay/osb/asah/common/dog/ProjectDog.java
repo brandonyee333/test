@@ -15,8 +15,6 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
@@ -25,7 +23,6 @@ import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +88,6 @@ public class ProjectDog {
 	public void deleteProject(boolean deleteData, String projectId) {
 		if (deleteData) {
 			_bigQuerySchemaManager.deleteSchema(projectId);
-			_deleteElasticsearch(projectId);
 		}
 
 		ProjectIdThreadLocal.forProject(
@@ -130,24 +126,6 @@ public class ProjectDog {
 	}
 
 	private void _createSnapshots(String projectId) {
-		try {
-			_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
-				projectId);
-		}
-		catch (Exception exception) {
-			_log.error(
-				"Unable to create snapshot lifecycle policy for project " +
-					projectId,
-				exception);
-		}
-	}
-
-	private void _deleteElasticsearch(String projectId) {
-		_cerebroInfoElasticsearchInvoker.deleteIndices();
-		_dxpRawElasticsearchInvoker.deleteIndices();
-		_faroInfoElasticsearchInvoker.deleteIndices();
-
-		_elasticsearchSnapshotManager.deleteSnapshotLifecyclePolicy(projectId);
 	}
 
 	private static final Log _log = LogFactory.getLog(ProjectDog.class);
@@ -158,19 +136,7 @@ public class ProjectDog {
 	@Autowired
 	private BigQuerySchemaManager _bigQuerySchemaManager;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
 	private final List<Consumer<String>> _consumers = new ArrayList<>();
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;

@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.ChannelDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
@@ -120,8 +119,9 @@ public class ChannelDogTest
 
 		Assertions.assertEquals(1, segments.size());
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.get(
-			"individuals", "338486037253283140");
+		// TODO Fetch individual
+
+		JSONObject individualJSONObject = new JSONObject();
 
 		JSONArray individualActivitiesCountsJSONArray =
 			individualJSONObject.getJSONArray("activitiesCounts");
@@ -317,9 +317,6 @@ public class ChannelDogTest
 
 	@Autowired
 	private AssetRepository _assetRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ChannelDog _channelDog;

@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
@@ -49,7 +48,7 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class BQMembershipDog extends BaseFaroInfoDog {
+public class BQMembershipDog {
 
 	public BQMembership addBQMembership(BQMembership bqMembership) {
 		return _bqMembershipRepository.save(bqMembership);

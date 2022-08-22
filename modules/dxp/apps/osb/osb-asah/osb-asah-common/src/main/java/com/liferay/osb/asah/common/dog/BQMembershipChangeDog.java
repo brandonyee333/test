@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
@@ -42,7 +41,7 @@ import org.springframework.stereotype.Component;
  * @author Inácio Nery
  */
 @Component
-public class BQMembershipChangeDog extends BaseFaroInfoDog {
+public class BQMembershipChangeDog {
 
 	public void addBQMembershipChange(BQMembershipChange bqMembershipChange) {
 		_bqMembershipChangeRepository.save(bqMembershipChange);

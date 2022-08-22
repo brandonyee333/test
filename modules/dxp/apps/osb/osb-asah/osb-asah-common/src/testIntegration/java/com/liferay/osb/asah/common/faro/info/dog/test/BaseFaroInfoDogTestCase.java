@@ -15,19 +15,10 @@
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 /**
  * @author Michael Bowerman
  */
 public abstract class BaseFaroInfoDogTestCase
 	implements OSBAsahCommonSpringTestContext {
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	protected ElasticsearchInvoker cerebroInfoElasticsearchInvoker;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
-
 }

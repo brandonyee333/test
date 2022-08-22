@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
@@ -40,7 +39,6 @@ import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -82,13 +80,8 @@ public class IndividualsFilterStringConverterHelperTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		_faroInfoElasticsearchInvoker.add(
-			"activities",
-			new JSONArray(
-				TestExecutionListenerUtil.replaceVariables(
-					ResourceUtil.readResourceToString(
-						"dependencies/osbasahfaroinfo/activities.json",
-						this))));
+
+		// TODO Add activities
 
 		// TODO Add user session collections
 
@@ -1068,9 +1061,6 @@ public class IndividualsFilterStringConverterHelperTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper

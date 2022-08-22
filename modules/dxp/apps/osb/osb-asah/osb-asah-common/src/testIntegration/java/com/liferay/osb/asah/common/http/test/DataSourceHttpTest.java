@@ -34,7 +34,6 @@ import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahElasticsearchTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -44,10 +43,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import org.apache.lucene.search.join.ScoreMode;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
@@ -70,7 +65,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 	value = {
 		DependencyInjectionTestExecutionListener.class,
 		MockitoTestExecutionListener.class,
-		OSBAsahElasticsearchTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class,
 		ResetMocksTestExecutionListener.class
@@ -368,30 +362,10 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource1);
 
-		Long dataSourceId1 = dataSource1.getId();
-		Long dataSourceId2 = dataSource2.getId();
-
 		// TODO Assert BQEvent and Assets are not deleted
 
-		Assertions.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"individuals",
-				QueryBuilders.nestedQuery(
-					"dataSourceIndividualPKs",
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId", dataSourceId1),
-					ScoreMode.None)),
-			"Individuals from deleted data source still exist");
-		Assertions.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"individuals",
-				QueryBuilders.nestedQuery(
-					"dataSourceIndividualPKs",
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId", dataSourceId2),
-					ScoreMode.None)),
-			"Individuals from data source " + dataSourceId2 + " were deleted " +
-				"when deleting data source " + dataSourceId1);
+		// TODO Assert individuals
+
 	}
 
 	@Test

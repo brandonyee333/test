@@ -17,36 +17,11 @@ package com.liferay.osb.asah.common.elasticsearch;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
 /**
  * @author Geyson Silva
  * @author André Miranda
  */
 public class QueryUtil {
-
-	public static QueryBuilder buildSearchQueryBuilder(
-		String field, String filter) {
-
-		if (StringUtils.isBlank(filter)) {
-			return QueryBuilders.matchAllQuery();
-		}
-
-		return BoolQueryBuilderUtil.should(
-			QueryBuilders.queryStringQuery(
-				String.format("%s:*%s*", field, escapeKeywords(filter)))
-		).should(
-			QueryBuilders.matchQuery(
-				field, filter
-			).fuzziness(
-				Fuzziness.AUTO
-			)
-		);
-	}
 
 	public static String escapeKeywords(String keywords) {
 		IntStream intStream = keywords.codePoints();

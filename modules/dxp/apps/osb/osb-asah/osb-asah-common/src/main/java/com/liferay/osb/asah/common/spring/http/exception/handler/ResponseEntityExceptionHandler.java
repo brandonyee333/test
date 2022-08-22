@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.ResourceNotFoundException;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,16 +87,6 @@ public class ResponseEntityExceptionHandler {
 		return _getResponseEntity(
 			null, osbAsahException, handlerMethod, httpServletRequest,
 			osbAsahException.getHttpStatus(), osbAsahException.getMessageKey());
-	}
-
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<OSBAsahError> handleResourceNotFoundException(
-		HandlerMethod handlerMethod, HttpServletRequest httpServletRequest,
-		ResourceNotFoundException resourceNotFoundException) {
-
-		return _getResponseEntity(
-			resourceNotFoundException, handlerMethod, httpServletRequest,
-			HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(RestClientException.class)

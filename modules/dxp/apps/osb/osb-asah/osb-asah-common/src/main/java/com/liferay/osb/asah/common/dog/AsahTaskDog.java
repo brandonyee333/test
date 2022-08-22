@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.AsahTask;
-import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahTaskRepository;
@@ -39,7 +38,7 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-public class AsahTaskDog extends BaseFaroInfoDog {
+public class AsahTaskDog {
 
 	public void deleteAsahTask(Long asahTaskId) {
 		_asahTaskRepository.deleteById(asahTaskId);

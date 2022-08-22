@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.converter.helper;
 
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.sql.Timestamp;
@@ -27,9 +26,6 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -51,14 +47,6 @@ public class DefaultFilterStringConverterHelper
 	}
 
 	@Override
-	public QueryBuilder getCustomFunctionQueryBuilder(
-			List<String> arguments, String customFunctionName, boolean negated)
-		throws Exception {
-
-		return null;
-	}
-
-	@Override
 	public Map<String, String> getFieldNameConversionMap() {
 		return Collections.emptyMap();
 	}
@@ -70,14 +58,6 @@ public class DefaultFilterStringConverterHelper
 
 	@Override
 	public Condition getLogicFunctionCondition(
-			String fieldName, String operator, String valueString)
-		throws Exception {
-
-		return null;
-	}
-
-	@Override
-	public QueryBuilder getLogicFunctionQueryBuilder(
 			String fieldName, String operator, String valueString)
 		throws Exception {
 
@@ -137,66 +117,6 @@ public class DefaultFilterStringConverterHelper
 		}
 
 		return condition;
-	}
-
-	public QueryBuilder getTimeFrameQueryBuilder(
-		String fieldName, String operator, String type, String valueString) {
-
-		if ((!fieldName.equalsIgnoreCase("completeDate") &&
-			 type.equalsIgnoreCase("sessions")) ||
-			(!fieldName.equalsIgnoreCase("day") &&
-			 type.equalsIgnoreCase("activities"))) {
-
-			return null;
-		}
-
-		String value = (String)StringUtil.toObject(valueString);
-
-		if ((value == null) || value.equalsIgnoreCase("ever")) {
-			return null;
-		}
-
-		LocalDateTime localDateTime = LocalDateTime.of(
-			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
-
-		if (value.equalsIgnoreCase("last24Hours")) {
-			localDateTime = localDateTime.minusHours(24);
-		}
-		else if (value.equalsIgnoreCase("last28Days")) {
-			localDateTime = localDateTime.minusDays(28);
-		}
-		else if (value.equalsIgnoreCase("last30Days")) {
-			localDateTime = localDateTime.minusDays(30);
-		}
-		else if (value.equalsIgnoreCase("last7Days")) {
-			localDateTime = localDateTime.minusDays(7);
-		}
-		else if (value.equalsIgnoreCase("last90Days")) {
-			localDateTime = localDateTime.minusDays(90);
-		}
-		else if (value.equalsIgnoreCase("yesterday")) {
-			localDateTime = localDateTime.minusDays(1);
-		}
-		else {
-			return null;
-		}
-
-		QueryBuilder queryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.rangeQuery(
-				fieldName
-			).gte(
-				localDateTime.toString()
-			).timeZone(
-				TimeZoneDogUtil.getTimeZoneId()
-			));
-
-		if (!operator.equals("eq") && !operator.equals("ge") &&
-			!operator.equals("gt")) {
-
-			return BoolQueryBuilderUtil.mustNot(queryBuilder);
-		}
-
-		return queryBuilder;
 	}
 
 	protected String toFieldName(String fieldName) {

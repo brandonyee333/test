@@ -18,28 +18,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -52,10 +45,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
-
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,7 +59,7 @@ import org.springframework.stereotype.Component;
  * @author Geyson Silva
  */
 @Component
-public class ChannelDog extends BaseFaroInfoDog {
+public class ChannelDog {
 
 	public Channel addChannel(
 		Map<Long, Set<Long>> dataSources, boolean defaultChannel, String name,
@@ -122,12 +111,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 		throws Exception {
 
 		_deleteAssets(channelIds);
-		_deleteData(
-			channelIds, _cerebroInfoElasticsearchInvoker, "blog-clicks",
-			"blog-social-shares", "blog-traffic-sources", "blogs",
-			"custom-assets", "custom-asset-dashboards", "document-libraries",
-			"forms", "journal-clicks", "journals", "page-referrers", "pages",
-			"user-sessions");
+
+		// TODO delete data
+
 		_deleteIndividualReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 
@@ -294,24 +280,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 		_channelRepository.saveAll(channels);
 	}
 
-	private BoolQueryBuilder _buildBoolQueryBuilder(
-		List<Long> channelIds, String... propertyNames) {
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		for (String propertyName : propertyNames) {
-			boolQueryBuilder.should(
-				QueryBuilders.nestedQuery(
-					propertyName,
-					QueryBuilders.termsQuery(
-						propertyName + ".channelId",
-						ListUtil.map(channelIds, String::valueOf)),
-					ScoreMode.None));
-		}
-
-		return boolQueryBuilder;
-	}
-
 	private void _deleteAssets(List<Long> channelIds) throws Exception {
 		while (true) {
 			List<Asset> assets = _assetDog.getAssets(channelIds, 0, 10000);
@@ -343,48 +311,14 @@ public class ChannelDog extends BaseFaroInfoDog {
 		}
 	}
 
-	private void _deleteData(
-		List<Long> channelIds, ElasticsearchInvoker elasticsearchInvoker,
-		String... collectionNames) {
-
-		for (String collectionName : collectionNames) {
-			elasticsearchInvoker.delete(
-				collectionName,
-				QueryBuilders.termsQuery(
-					"channelId", ListUtil.map(channelIds, String::valueOf)));
-		}
-	}
-
 	private void _deleteIndividualReferences(
 			List<Long> channelIds,
 			Consumer<Integer> processedCountMonitorConsumer,
 			Consumer<Integer> queueMonitorConsumer)
 		throws Exception {
 
-		BoolQueryBuilder boolQueryBuilder = _buildBoolQueryBuilder(
-			channelIds, "activitiesCounts", "lastActivityDates");
+		// TODO delete individual references
 
-		boolQueryBuilder.should(
-			QueryBuilders.termsQuery(
-				"channelIds", ListUtil.map(channelIds, String::valueOf)));
-
-		JSONArrayIterator.of(
-			"individuals", elasticsearchInvoker,
-			individualJSONObject -> {
-				Individual individual = _objectMapper.convertValue(
-					individualJSONObject, Individual.class);
-
-				_updateActivitiesCounts(channelIds, individual);
-				_updateChannelIds(channelIds, individual);
-				_updateLastActivityDates(channelIds, individual);
-
-				return null;
-			}
-		).setMonitoringConsumers(
-			processedCountMonitorConsumer, queueMonitorConsumer
-		).setQueryBuilder(
-			boolQueryBuilder
-		).iterate();
 	}
 
 	private Set<ChannelDataSource> _getChannelDataSources(
@@ -498,77 +432,12 @@ public class ChannelDog extends BaseFaroInfoDog {
 		return channels;
 	}
 
-	private void _updateActivitiesCounts(
-		List<Long> channelIds, Individual individual) {
-
-		Set<Individual.ActivitiesCount> activitiesCounts =
-			individual.getActivitiesCounts();
-
-		if (activitiesCounts != null) {
-			Iterator<Individual.ActivitiesCount> iterator =
-				activitiesCounts.iterator();
-
-			while (iterator.hasNext()) {
-				Individual.ActivitiesCount activitiesCount = iterator.next();
-
-				if (channelIds.contains(activitiesCount.getChannelId())) {
-					iterator.remove();
-				}
-			}
-
-			individual.setActivitiesCounts(activitiesCounts);
-		}
-	}
-
-	private void _updateChannelIds(
-		List<Long> channelIds, Individual individual) {
-
-		Set<Long> oldChannelIds = individual.getChannelIds();
-
-		Iterator<Long> iterator = oldChannelIds.iterator();
-
-		while (iterator.hasNext()) {
-			Long channelId = iterator.next();
-
-			if (channelIds.contains(channelId)) {
-				iterator.remove();
-			}
-		}
-
-		individual.setChannelIds(oldChannelIds);
-	}
-
-	private void _updateLastActivityDates(
-		List<Long> channelIds, Individual individual) {
-
-		Set<Individual.ActivityDate> lastActivityDates =
-			individual.getLastActivityDates();
-
-		if (lastActivityDates != null) {
-			Iterator<Individual.ActivityDate> iterator =
-				lastActivityDates.iterator();
-
-			while (iterator.hasNext()) {
-				Individual.ActivityDate activityDate = iterator.next();
-
-				if (channelIds.contains(activityDate.getChannelId())) {
-					iterator.remove();
-				}
-			}
-
-			individual.setLastActivityDates(lastActivityDates);
-		}
-	}
-
 	private static final String _CHANNEL_TYPE_MULTIPLE = "multiple";
 
 	private static final Log _log = LogFactory.getLog(ChannelDog.class);
 
 	@Autowired
 	private AssetDog _assetDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ChannelHttp _channelHttp;

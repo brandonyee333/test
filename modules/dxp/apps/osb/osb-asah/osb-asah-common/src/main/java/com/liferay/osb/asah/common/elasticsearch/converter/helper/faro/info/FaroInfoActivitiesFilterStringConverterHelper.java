@@ -15,12 +15,7 @@
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import org.elasticsearch.index.query.QueryBuilder;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -29,17 +24,4 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaroInfoActivitiesFilterStringConverterHelper
 	extends DefaultFilterStringConverterHelper {
-
-	@Override
-	public QueryBuilder getLogicFunctionQueryBuilder(
-			String fieldName, String operator, String valueString)
-		throws Exception {
-
-		return getTimeFrameQueryBuilder(
-			fieldName, operator, "activities", valueString);
-	}
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
-
 }
