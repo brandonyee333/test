@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchIndexUtil;
 
 import java.util.Map;
 import java.util.Objects;

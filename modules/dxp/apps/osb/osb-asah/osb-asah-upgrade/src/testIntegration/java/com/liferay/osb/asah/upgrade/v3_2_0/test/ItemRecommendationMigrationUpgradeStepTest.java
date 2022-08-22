@@ -16,14 +16,14 @@ package com.liferay.osb.asah.upgrade.v3_2_0.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.ItemRecommendation;
 import com.liferay.osb.asah.common.repository.ItemRecommendationRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.upgrade.v3_2_0.ItemRecommendationMigrationUpgradeStep;
 
 import java.util.List;

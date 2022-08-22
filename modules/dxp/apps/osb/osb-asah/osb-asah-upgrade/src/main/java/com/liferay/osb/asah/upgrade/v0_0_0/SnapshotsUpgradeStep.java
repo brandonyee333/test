@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.upgrade.v0_0_0;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchSnapshotManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;

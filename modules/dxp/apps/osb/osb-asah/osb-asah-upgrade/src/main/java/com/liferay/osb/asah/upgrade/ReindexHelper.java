@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.common.elasticsearch.ClientUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.upgrade.elasticsearch.ClientUtil;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchConnection;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchIndexManager;
 
 import java.util.List;
 import java.util.Map;

@@ -16,13 +16,13 @@ package com.liferay.osb.asah.upgrade.v3_2_0;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.RunLog;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
+import com.liferay.osb.asah.upgrade.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.upgrade.json.JSONArrayIterator;
 
 import java.util.Collections;
 import java.util.List;

@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.upgrade.json.JSONArrayIterator;
 
 import java.util.Collections;
 import java.util.HashMap;

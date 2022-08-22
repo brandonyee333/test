@@ -28,12 +28,12 @@ import com.google.cloud.bigquery.storage.v1.WriteStream;
 import com.google.common.util.concurrent.MoreExecutors;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
+import com.liferay.osb.asah.upgrade.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
 
 import java.util.Date;
 import java.util.HashMap;
