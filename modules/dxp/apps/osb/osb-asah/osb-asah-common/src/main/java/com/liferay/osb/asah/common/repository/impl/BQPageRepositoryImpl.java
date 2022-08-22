@@ -188,23 +188,6 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		return metricFields;
 	}
 
-	private List<Field<?>> _getDistinctMetricFields(
-		Map<String, String> fieldNames) {
-
-		List<Field<?>> metricFields = new ArrayList<>();
-
-		for (Map.Entry<String, String> entry : fieldNames.entrySet()) {
-			metricFields.add(
-				DSL.countDistinct(
-					DSL.field(entry.getKey())
-				).cast(
-					BigDecimal.class
-				).as(
-					entry.getValue()
-				));
-		}
-
-		return metricFields;
 	}
 
 	private List<Field<?>> _getMetricFields() {
@@ -219,14 +202,16 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 				}
 			});
 
-		metricFields.addAll(
-			_getDistinctMetricFields(
-				new HashMap<String, String>() {
-					{
-						put("sessionid", "sessions");
-						put("userid", "visitors");
-					}
-				}));
+		metricFields.add(
+			DSL.countDistinct(
+				DSL.field(_getFieldName("sessionid", tableName))
+			).cast(
+				BigDecimal.class
+			).as(
+				"sessions"
+			));
+
+		metricFields.add(_getUniqueVisitorsField(tableName));
 
 		metricFields.addAll(
 			_getAvgMetricFields(
@@ -289,6 +274,21 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		}
 
 		return "PageDaily";
+	}
+
+	private Field<Integer> _getUniqueVisitorsField(String tableName) {
+		return DSL.countDistinct(
+			DSL.field("BQIdentity.emailaddresshashed")
+		).plus(
+			DSL.countDistinct(
+				DSL.when(
+					DSL.field(
+						"BQIdentity.emailaddresshashed"
+					).isNull(),
+					DSL.field(_getFieldName("userid", tableName))))
+		).as(
+			"visitors"
+		);
 	}
 
 	@Autowired
