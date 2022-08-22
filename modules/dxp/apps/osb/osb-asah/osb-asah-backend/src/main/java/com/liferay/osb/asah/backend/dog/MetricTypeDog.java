@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.PageMetricType;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,11 +26,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class MetricTypeDog {
 
-	@Autowired
-	public MetricTypeDog() {
-	}
-
 	public MetricType getMetricType(AssetType assetType, String name) {
+		if (assetType == AssetType.PAGE) {
+			return PageMetricType.of(name);
+		}
+
 		return null;
 	}
 
