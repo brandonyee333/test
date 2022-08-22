@@ -15,24 +15,10 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
-import com.liferay.osb.asah.common.rest.response.ItemGetResponse;
-import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
-import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
 
-import java.util.List;
-import java.util.Map;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,28 +46,6 @@ public abstract class BaseRestController {
 		);
 	}
 
-	protected String toCollectionGetResponse(
-			String collectionName,
-			EmbeddedJSONObjectCreator embeddedJSONObjectCreator, int page,
-			QueryBuilder queryBuilder, int size, String[] sorts)
-		throws Exception {
-
-		return _toCollectionGetResponse(
-			collectionName, null, null, embeddedJSONObjectCreator, null, page,
-			queryBuilder, size, sorts);
-	}
-
-	protected String toCollectionGetResponse(
-			String collectionName, JSONArray embeddedJSONArray,
-			String embeddedJSONArrayKey, int page, QueryBuilder queryBuilder,
-			int size)
-		throws Exception {
-
-		return _toCollectionGetResponse(
-			collectionName, embeddedJSONArray, embeddedJSONArrayKey, null, null,
-			page, queryBuilder, size, null);
-	}
-
 	protected ResponseEntity toDownloadResponse(File file, String fileName) {
 		if (!file.exists()) {
 			return toNotFoundResponse();
@@ -96,27 +60,6 @@ public abstract class BaseRestController {
 		return bodyBuilder.body(new FileSystemResource(file.getAbsolutePath()));
 	}
 
-	protected String toItemGetResponse(
-			String collectionName,
-			EmbeddedJSONObjectCreator embeddedJSONObjectCreator, String id)
-		throws Exception {
-
-		ItemGetResponse itemGetResponse = new ItemGetResponse();
-
-		itemGetResponse.setCollectionName(collectionName);
-		itemGetResponse.setElasticsearchInvoker(faroInfoElasticsearchInvoker);
-		itemGetResponse.setEmbeddedJSONObjectCreator(embeddedJSONObjectCreator);
-		itemGetResponse.setId(id);
-
-		return itemGetResponse.respond();
-	}
-
-	protected String toItemGetResponse(String collectionName, String id)
-		throws Exception {
-
-		return toItemGetResponse(collectionName, null, id);
-	}
-
 	protected ResponseEntity toNotFoundResponse() {
 		ResponseEntity.HeadersBuilder headersBuilder =
 			ResponseEntity.notFound();
@@ -124,100 +67,7 @@ public abstract class BaseRestController {
 		return headersBuilder.build();
 	}
 
-	protected String toTransformationGetResponse(
-			String collectionName, int page, QueryBuilder queryBuilder,
-			int size, Map<String, String> sortFieldMappings, String[] sorts,
-			TransformationJSONArrayFunction transformationJSONArrayFunction,
-			String transformationName)
-		throws Exception {
-
-		return toTransformationGetResponse(
-			null, collectionName, faroInfoElasticsearchInvoker, page,
-			queryBuilder, size, sortFieldMappings, sorts, null,
-			transformationJSONArrayFunction, transformationName);
-	}
-
-	protected String toTransformationGetResponse(
-			String apply, String collectionName,
-			ElasticsearchInvoker elasticsearchInvoker, int page,
-			QueryBuilder queryBuilder, int size,
-			Map<String, String> sortFieldMappings, String[] sorts,
-			String supportedFieldName,
-			TransformationJSONArrayFunction transformationJSONArrayFunction,
-			String transformationName)
-		throws Exception {
-
-		if ((supportedFieldName != null) &&
-			(transformationJSONArrayFunction == null)) {
-
-			throw new IllegalArgumentException();
-		}
-
-		TransformationGetResponse transformationGetResponse =
-			new TransformationGetResponse();
-
-		transformationGetResponse.setApply(apply);
-		transformationGetResponse.setCollectionName(collectionName);
-		transformationGetResponse.setElasticsearchInvoker(elasticsearchInvoker);
-		transformationGetResponse.setPage(page);
-		transformationGetResponse.setQueryBuilder(queryBuilder);
-		transformationGetResponse.setSize(size);
-		transformationGetResponse.setSorts(sortFieldMappings, sorts);
-		transformationGetResponse.setSupportedFieldName(supportedFieldName);
-		transformationGetResponse.setTransformationJSONArrayFunction(
-			transformationJSONArrayFunction);
-		transformationGetResponse.setTransformationName(transformationName);
-
-		return transformationGetResponse.respond();
-	}
-
-	protected String toTransformationGetResponse(
-			String apply, String collectionName, int page,
-			QueryBuilder queryBuilder, int size, String supportedFieldName,
-			TransformationJSONArrayFunction transformationJSONArrayFunction,
-			String transformationName)
-		throws Exception {
-
-		return toTransformationGetResponse(
-			apply, collectionName, faroInfoElasticsearchInvoker, page,
-			queryBuilder, size, null, null, supportedFieldName,
-			transformationJSONArrayFunction, transformationName);
-	}
-
 	@Autowired
 	protected AsahMarkerDog asahMarkerDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	protected ElasticsearchInvoker cerebroInfoElasticsearchInvoker;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
-
-	private String _toCollectionGetResponse(
-			String collectionName, JSONArray embeddedJSONArray,
-			String embeddedJSONArrayKey,
-			EmbeddedJSONObjectCreator embeddedJSONObjectCreator,
-			List<FieldSortBuilder> fieldSortBuilders, int page,
-			QueryBuilder queryBuilder, int size, String[] sorts)
-		throws Exception {
-
-		CollectionGetResponse collectionGetResponse =
-			new CollectionGetResponse();
-
-		collectionGetResponse.setCollectionName(collectionName);
-		collectionGetResponse.setElasticsearchInvoker(
-			faroInfoElasticsearchInvoker);
-		collectionGetResponse.setEmbeddedJSONArray(embeddedJSONArray);
-		collectionGetResponse.setEmbeddedJSONArrayKey(embeddedJSONArrayKey);
-		collectionGetResponse.setEmbeddedJSONObjectCreator(
-			embeddedJSONObjectCreator);
-		collectionGetResponse.setFieldSortBuilders(fieldSortBuilders);
-		collectionGetResponse.setPage(page);
-		collectionGetResponse.setQueryBuilder(queryBuilder);
-		collectionGetResponse.setSize(size);
-		collectionGetResponse.setSorts(sorts);
-
-		return collectionGetResponse.respond();
-	}
 
 }
