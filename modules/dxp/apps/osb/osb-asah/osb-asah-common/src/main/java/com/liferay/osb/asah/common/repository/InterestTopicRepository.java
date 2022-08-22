@@ -28,6 +28,10 @@ public interface InterestTopicRepository
 	extends Repository<InterestTopic, Long> {
 
 	@Cacheable
+	public long countByTermNotInAndTermTypeAndTopicIn(
+		List<String> termsExclude, String termType, List<Integer> topics);
+
+	@Cacheable
 	public List<Integer>
 		findTopicsByTermInAndTermTypeAndTermWeightGreaterThanEqual(
 			@Param("terms") List<String> terms,
@@ -43,7 +47,7 @@ public interface InterestTopicRepository
 
 	@Cacheable
 	public List<String>
-		findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn(
+		findTopTermsByTermRankBetweenAndTermNotInAndTermTypeAndTopicIn(
 			@Param("termRank1") Integer termRank1,
 			@Param("termRank2") Integer termRank2,
 			@Param("terms") List<String> terms,

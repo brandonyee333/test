@@ -302,9 +302,10 @@ public class InterestsRestControllerTest
 	@Test
 	public void testGetTermsRelated() throws Exception {
 		_assertTerms(
-			new JSONObject(
+			_objectMapper.convertValue(
 				_interestsRestController.getTermsRelated(
-					0, 5, Arrays.asList("javascript", "php"), 0.01)),
+					0, 5, Arrays.asList("javascript", "php"), 0.01),
+				JSONObject.class),
 			"jquery", "html", "sql", "mysql", "java");
 	}
 
@@ -323,6 +324,7 @@ public class InterestsRestControllerTest
 		}
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = InterestTopicRepository.class,
 		resourcePath = "osbasahfaroinfo/interest_topics.json"
@@ -330,9 +332,10 @@ public class InterestsRestControllerTest
 	@Test
 	public void testGetTermsRelatedPaged() throws Exception {
 		_assertTerms(
-			new JSONObject(
+			_objectMapper.convertValue(
 				_interestsRestController.getTermsRelated(
-					1, 5, Arrays.asList("javascript", "php"), 0.01)),
+					1, 5, Arrays.asList("javascript", "php"), 0.01),
+				JSONObject.class),
 			"css", "canvas", "sql-server", "python", "multithreading");
 	}
 
@@ -345,9 +348,10 @@ public class InterestsRestControllerTest
 		throws Exception {
 
 		_assertTerms(
-			new JSONObject(
+			_objectMapper.convertValue(
 				_interestsRestController.getTermsRelated(
-					0, 10, Arrays.asList("javascript", "php"), 0.01)),
+					0, 10, Arrays.asList("javascript", "php"), 0.01),
+				JSONObject.class),
 			"jquery", "html", "css", "sql", "mysql", "sql-server", "java",
 			"android", "multithreading", "net");
 	}

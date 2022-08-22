@@ -14,10 +14,11 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
+import com.liferay.osb.asah.backend.dto.InterestTopicDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.entity.InterestTopic;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -33,14 +34,12 @@ import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -114,7 +113,7 @@ public class InterestsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/terms/related")
-	public String getTermsRelated(
+	public PageDTO<InterestTopicDTO> getTermsRelated(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "5") int size,
 			@RequestParam List<String> terms,
@@ -130,25 +129,12 @@ public class InterestsRestController extends BaseRestController {
 		List<Integer> topics = _getTopics(terms, termWeightThreshold);
 
 		if (topics.isEmpty()) {
-			return toCollectionGetResponse("interest-terms", new JSONArray());
+			return _toPageDTO(Page.empty());
 		}
 
-		List<String> topTerms = _interestTopicDog.getInterestTopicTerms(
-			page, size, terms, "keyword", topics);
-
-		size = Math.min(size, topTerms.size());
-
-		return toCollectionGetResponse(
-			"interest-topics", new JSONArray(topTerms.subList(0, size)),
-			"interest-terms", page,
-			BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.termsQuery("term", terms)
-			).filter(
-				QueryBuilders.termQuery("termType", "keyword")
-			).filter(
-				QueryBuilders.termsQuery("topic", topics)
-			),
-			size);
+		return _toPageDTO(
+			_interestTopicDog.getInterestTopicTermsPage(
+				page, size, terms, "keyword", topics));
 	}
 
 	protected String toCollectionGetResponse(
@@ -178,14 +164,10 @@ public class InterestsRestController extends BaseRestController {
 	}
 
 	private JSONObject _fetchIndividual(String userId) {
-		return faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.nestedQuery(
-				"dataSourceIndividualPKs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.matchQuery(
-						"dataSourceIndividualPKs.individualPKs", userId)),
-				ScoreMode.None));
+
+		// TODO Fetch BQIndividual by userId
+
+		return null;
 	}
 
 	private List<Integer> _getTopics(
@@ -238,6 +220,18 @@ public class InterestsRestController extends BaseRestController {
 		).collect(
 			Collectors.toList()
 		);
+	}
+
+	private PageDTO<InterestTopicDTO> _toPageDTO(
+		Page<String> interestTopicTermsPage) {
+
+		return new PageDTO<>(
+			"_embedded",
+			new InterestTopicDTO(interestTopicTermsPage.getContent()),
+			interestTopicTermsPage.getNumber(),
+			interestTopicTermsPage.getSize(),
+			interestTopicTermsPage.getTotalElements(),
+			interestTopicTermsPage.getTotalPages());
 	}
 
 	private static final Log _log = LogFactory.getLog(

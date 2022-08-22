@@ -41,7 +41,7 @@
 				rank <= :termRankEnd
 		]]>
 	</entry>
-	<entry key="InterestTopic.findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn">
+	<entry key="InterestTopic.findTopTermsByTermRankBetweenAndTermNotInAndTermTypeAndTopicIn">
 		<![CDATA[
 			SELECT
 				term
@@ -66,6 +66,8 @@
 			WHERE
 				rank > :termRank1 AND
 				rank <= :termRank2
+			ORDER BY
+				topicWeight DESC, termWeight DESC
 		]]>
 	</entry>
 </properties>

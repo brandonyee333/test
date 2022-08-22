@@ -96,7 +96,7 @@ public class InterestTopicRepositoryTest
 	public void testFindTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn() {
 		List<String> interestTerms =
 			_interestTopicRepository.
-				findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn(
+				findTopTermsByTermRankBetweenAndTermNotInAndTermTypeAndTopicIn(
 					0, 2, Arrays.asList("objective-c"), "keyword",
 					Arrays.asList(2, 1));
 

@@ -22,6 +22,9 @@ import java.util.List;
 import org.apache.commons.collections4.IterableUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -53,15 +56,23 @@ public class InterestTopicDog {
 				termsPerTopic, termType, topics);
 	}
 
-	public List<String> getInterestTopicTerms(
+	public Page<String> getInterestTopicTermsPage(
 		int page, int size, List<String> termsExclude, String termType,
 		List<Integer> topics) {
 
-		return _interestTopicRepository.
-			findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn(
-				_calculateTermRankStart(page, size, topics.size()),
-				_calculateTermRankEnd(size, topics.size()), termsExclude,
-				termType, topics);
+		List<String> topTerms =
+			_interestTopicRepository.
+				findTopTermsByTermRankBetweenAndTermNotInAndTermTypeAndTopicIn(
+					_calculateTermRankStart(page, size, topics.size()),
+					_calculateTermRankEnd(size, topics.size()), termsExclude,
+					termType, topics);
+
+		return PageableExecutionUtils.getPage(
+			topTerms.subList(0, size),
+			PageRequest.of(page, Math.min(size, topTerms.size())),
+			() ->
+				_interestTopicRepository.countByTermNotInAndTermTypeAndTopicIn(
+					termsExclude, termType, topics));
 	}
 
 	public List<Integer> getInterestTopicTopics(
