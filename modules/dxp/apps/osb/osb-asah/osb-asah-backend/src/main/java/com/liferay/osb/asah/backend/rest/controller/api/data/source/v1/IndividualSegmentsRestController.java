@@ -22,7 +22,6 @@ import com.liferay.osb.asah.backend.dto.IndividualDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
-import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
@@ -36,7 +35,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.rest.response.function.MembershipChangesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
 
@@ -83,7 +81,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController(
 	"com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController"
 )
-public class IndividualSegmentsRestController extends BaseRestController {
+public class IndividualSegmentsRestController {
 
 	@GetMapping(params = "!apply", value = "/{id}/individuals")
 	@SuppressErrorLogging(ResourceNotFoundException.class)
@@ -144,13 +142,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
 
-		return toTransformationGetResponse(
-			apply, "membership-changes", page,
-			_getMembershipChangesQueryBuilder(filterString, id), size,
-			"dateChanged",
-			new MembershipChangesHistogramTransformationJSONArrayFunction(
-				includeToday),
-			"membership-change-transformations");
+		// TODO Implement Membership Changes histogram
+
+		return null;
 	}
 
 	@GetMapping("/{id}/memberships")
