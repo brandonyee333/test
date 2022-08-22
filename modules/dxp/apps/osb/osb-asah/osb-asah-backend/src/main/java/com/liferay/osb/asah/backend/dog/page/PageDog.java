@@ -61,13 +61,10 @@ public class PageDog {
 				canonicalUrl, channelId, timeRange, title,
 				_timeZoneDog.getZoneId());
 
-		if (!pageVisitorBehaviorMetricOptional.isPresent()) {
-			throw new OSBAsahException(
+		return pageVisitorBehaviorMetricOptional.orElseThrow(
+			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
-				"There is no page with canonical url " + canonicalUrl);
-		}
-
-		return pageVisitorBehaviorMetricOptional.get();
+				"There is no page with canonical url " + canonicalUrl));
 	}
 
 	public Page<PageVisitorBehaviorMetric> getPageVisitorBehaviorMetricPage(
