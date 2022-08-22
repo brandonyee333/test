@@ -64,8 +64,8 @@ class PubSubDagTriggerOperator(BaseOperator):
 				dag_id = data['dagId']
 
 			self.log.info(
-				'Trigger {} with conf: {}'.format(
-					trigger_dag_id,
+				'Trigger DAG {} with conf: {}'.format(
+					dag_id,
 					data
 				)
 			)
