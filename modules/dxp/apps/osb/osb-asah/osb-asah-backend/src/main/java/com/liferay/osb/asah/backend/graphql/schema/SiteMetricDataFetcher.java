@@ -14,42 +14,32 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.dog.site.SiteMetricDog;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Inácio Nery
+ * @author Marcos Martins
  */
 @Component
-@GraphQLTypeWiring(fieldName = "blog", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "custom", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "document", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "form", typeName = "QueryType")
-@GraphQLTypeWiring(fieldName = "journal", typeName = "QueryType")
-public class AssetMetricDataFetcher extends BaseDataFetcher<AssetMetric> {
+@GraphQLTypeWiring(fieldName = "site", typeName = "QueryType")
+public class SiteMetricDataFetcher extends BaseDataFetcher<AssetMetric> {
 
 	@Override
 	public AssetMetric get(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		Map<String, Object> context = dataFetchingEnvironment.getContext();
-
-		return _metricDog.getAssetMetric(
-			searchQueryContext, (Set<String>)context.get("selectedMetrics"));
+		return _siteMetricDog.getSiteMetric(searchQueryContext);
 	}
 
 	@Autowired
-	private MetricDog _metricDog;
+	private SiteMetricDog _siteMetricDog;
 
 }
