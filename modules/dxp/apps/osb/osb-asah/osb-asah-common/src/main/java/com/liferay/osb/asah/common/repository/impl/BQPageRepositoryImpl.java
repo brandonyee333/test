@@ -78,12 +78,17 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		String canonicalUrl, Long channelId, TimeRange timeRange, String title,
 		ZoneId zoneId) {
 
+		String tableName = _getTableName(timeRange);
+
 		return _queryExecutor.queryForObject(
 			PageVisitorBehaviorMetric.class,
-			dslContext.select(
-				_getMetricFields()
-			).from(
-				_getTableName(timeRange)
+			_joinWithIdentityTable(
+				dslContext.select(
+					_getMetricFields(tableName)
+				).from(
+					tableName
+				),
+				tableName
 			).where(
 				_createWhereClause(
 					canonicalUrl, channelId, timeRange, title, zoneId)
@@ -140,10 +145,13 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 
 		return _queryExecutor.queryForList(
 			PageVisitorBehaviorMetric.class,
-			dslContext.select(
-				metricFields.toArray(new Field[0])
-			).from(
-				_getTableName(timeRange)
+			_joinWithIdentityTable(
+				dslContext.select(
+					metricFields.toArray(new Field[0])
+				).from(
+					tableName
+				),
+				tableName
 			).where(
 				_createWhereClause(null, channelId, timeRange, null, zoneId)
 			).groupBy(
