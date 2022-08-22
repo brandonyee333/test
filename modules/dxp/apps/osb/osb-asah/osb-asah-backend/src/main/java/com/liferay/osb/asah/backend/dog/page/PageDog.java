@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQPageRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -54,7 +56,18 @@ public class PageDog {
 		String canonicalUrl, Long channelId, TimeRange timeRange,
 		String title) {
 
-		return null;
+		Optional<PageVisitorBehaviorMetric> pageVisitorBehaviorMetricOptional =
+			_bqPageRepository.getPageVisitorBehaviorMetric(
+				canonicalUrl, channelId, timeRange, title,
+				_timeZoneDog.getZoneId());
+
+		if (!pageVisitorBehaviorMetricOptional.isPresent()) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no page with canonical url " + canonicalUrl);
+		}
+
+		return pageVisitorBehaviorMetricOptional.get();
 	}
 
 	public Page<PageVisitorBehaviorMetric> getPageVisitorBehaviorMetricPage(
