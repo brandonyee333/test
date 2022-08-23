@@ -22,6 +22,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
@@ -140,6 +141,77 @@ public class FileInstallConfigTest {
 		Assert.assertArrayEquals(
 			new String[] {"testUntypedString", "testUntypedString2"},
 			(String[])properties.get("configUntypedStringArray"));
+	}
+
+	@Test
+	public void testConfigurationArrayValuesInCustomDir() throws Exception {
+		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
+			".testConfigurationArrayValues");
+
+		String defaultValue =
+			PropsUtil.get(PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
+
+		try {
+			com.liferay.portal.util.PropsUtil.set(
+				PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+				PropsValues.MODULE_FRAMEWORK_BASE_DIR + "/testConfig");
+
+			_configurationPath = Paths.get(
+				PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+				configurationPid.concat(".config"));
+
+			_configuration = _createConfiguration(
+				configurationPid,
+				StringBundler.concat(
+					"configBooleanArray=B[\"True\",\"False\"]\n",
+					"configByteArray=X[\"1\",\"3\"]\n",
+					"configCharacterArray=C[\"A\",\"Z\"]\n",
+					"configDoubleArray=D[\"12.2\",\"12.3\"]\n",
+					"configFloatArray=F[\"12.2\",\"12.3\"]\n",
+					"configIntegerArray=I[\"20\",\"21\"]\n",
+					"configLongArray=L[\"30\",\"31\"]\n",
+					"configShortArray=S[\"2\",\"3\"]\n",
+					"configStringArray=T[\"testString\",\"testString2\"]\n",
+					"configUntypedStringArray=[\"testUntypedString\"",
+					",\"testUntypedString2\"]"));
+
+			Dictionary<String, Object> properties =
+				_configuration.getProperties();
+
+			Assert.assertArrayEquals(
+				new Boolean[]{true, false},
+				(Boolean[]) properties.get("configBooleanArray"));
+			Assert.assertArrayEquals(
+				new Byte[]{0b1, 0b11},
+				(Byte[]) properties.get("configByteArray"));
+			Assert.assertArrayEquals(
+				new Character[]{'A', 'Z'},
+				(Character[]) properties.get("configCharacterArray"));
+			Assert.assertArrayEquals(
+				new Double[]{12.2D, 12.3D},
+				(Double[]) properties.get("configDoubleArray"));
+			Assert.assertArrayEquals(
+				new Float[]{12.2F, 12.3F},
+				(Float[]) properties.get("configFloatArray"));
+			Assert.assertArrayEquals(
+				new Integer[]{20, 21},
+				(Integer[]) properties.get("configIntegerArray"));
+			Assert.assertArrayEquals(
+				new Long[]{30L, 31L},
+				(Long[]) properties.get("configLongArray"));
+			Assert.assertArrayEquals(
+				new Short[]{(short) 2, (short) 3},
+				(Short[]) properties.get("configShortArray"));
+			Assert.assertArrayEquals(
+				new String[]{"testString", "testString2"},
+				(String[]) properties.get("configStringArray"));
+			Assert.assertArrayEquals(
+				new String[]{"testUntypedString", "testUntypedString2"},
+				(String[]) properties.get("configUntypedStringArray"));
+		} finally {
+			com.liferay.portal.util.PropsUtil.set(
+				PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR, defaultValue);
+		}
 	}
 
 	@Test
