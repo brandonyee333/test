@@ -122,7 +122,8 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 			SiteVisitorBehaviorMetric.class,
 			(SelectFinalStep)_joinWithIdentityTable(
 				dslContext.select(
-					field, _getUniqueVisitorsField(tableName)
+					field, _getKnownVisitorsField(true),
+					_getUniqueVisitorsField(tableName)
 				).from(
 					tableName
 				),
