@@ -1,9 +1,9 @@
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now}'), 'test', 1);
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-1d}'), 'test', 4);
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-2d}'), 'test', 2);
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-6d}'), 'test', 2);
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-8d}'), 'test', 7);
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-9d}'), 'test', 1);
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-12d}'), 'test', 4);
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-14d}'), 'test', 2);
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, projectId, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-15d}'), 'test', 6);
+INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now}'), 1);
+INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-1d}'), 4);
+INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-2d}'), 2);
+INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-6d}'), 2);
+INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-8d}'), 7);
+INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-9d}'), 1);
+INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-12d}'), 4);
+INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-14d}'), 2);
+INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, views) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${now-15d}'), 6);
