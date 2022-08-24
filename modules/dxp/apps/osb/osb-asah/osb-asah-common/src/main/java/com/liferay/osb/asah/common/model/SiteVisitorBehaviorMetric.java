@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.math.BigDecimal;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -66,6 +67,14 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		}
 
 		return _entrances.longValue();
+	}
+
+	public Date getEventDate() {
+		if (_eventDate == null) {
+			return null;
+		}
+
+		return new Date(_eventDate.getTime());
 	}
 
 	public double getExitRate() {
@@ -119,6 +128,15 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		_entrances = entrances;
 	}
 
+	public void setEventDate(Date eventDate) {
+		if (eventDate != null) {
+			_eventDate = new Date(eventDate.getTime());
+		}
+		else {
+			_eventDate = null;
+		}
+	}
+
 	public void setExits(BigDecimal exits) {
 		_exits = exits;
 	}
@@ -141,6 +159,7 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 
 	private BigDecimal _bounces;
 	private BigDecimal _entrances;
+	private Date _eventDate;
 	private BigDecimal _exits;
 	private BigDecimal _sessions;
 	private BigDecimal _timeOnPage;
