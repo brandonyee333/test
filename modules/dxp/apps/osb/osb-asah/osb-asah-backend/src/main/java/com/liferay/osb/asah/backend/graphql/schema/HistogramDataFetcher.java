@@ -18,11 +18,14 @@ import com.liferay.osb.asah.backend.dog.EventHistogramDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.IndividualHistogramDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
+import com.liferay.osb.asah.backend.dog.SiteHistogramDog;
 import com.liferay.osb.asah.backend.dog.VisitorHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.EventMetricType;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
+import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
@@ -89,6 +92,12 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 				searchQueryContext);
 		}
 
+		if (searchQueryContext.getAssetType() == AssetType.SITE) {
+			return _siteHistogramDog.getHistogramMetricBag(
+				searchQueryContext.isIncludePrevious(), searchQueryContext,
+				(SiteMetricType)metricType);
+		}
+
 		return _histogramDog.getHistogramMetricBag(
 			metricType, searchQueryContext);
 	}
@@ -104,6 +113,9 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 
 	@Autowired
 	private MetricTypeDog _metricTypeDog;
+
+	@Autowired
+	private SiteHistogramDog _siteHistogramDog;
 
 	@Autowired
 	private VisitorHistogramDog _visitorHistogramDog;
