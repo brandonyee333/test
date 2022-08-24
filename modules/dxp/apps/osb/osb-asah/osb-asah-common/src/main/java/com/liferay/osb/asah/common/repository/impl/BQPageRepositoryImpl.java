@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -34,6 +35,7 @@ import java.util.Optional;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.SelectFinalStep;
@@ -132,6 +134,39 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 				field
 			).orderBy(
 				field.desc()
+			));
+	}
+
+	@Override
+	public List<SiteVisitorBehaviorMetric>
+		getSiteVisitorBehaviorMetricsGroupedByEventDate(
+			Long channelId, boolean includePrevious, Interval interval,
+			TimeRange timeRange, ZoneId zoneId) {
+
+		String tableName = _getTableName(timeRange);
+
+		Field field = _dslHelper.dateTrunc(
+			DatePart.valueOf(interval.name()),
+			_dslHelper.getDateAtTimeZoneField(
+				_getFieldName("eventdate", tableName), zoneId.toString()));
+
+		field = field.as("eventdate");
+
+		return _queryExecutor.queryForList(
+			SiteVisitorBehaviorMetric.class,
+			(SelectFinalStep)_joinWithIdentityTable(
+				dslContext.select(
+					field, _getKnownVisitorsField(true),
+					_getUniqueVisitorsField(tableName)
+				).from(
+					tableName
+				),
+				tableName
+			).where(
+				_createWhereClause(
+					null, channelId, includePrevious, timeRange, null, zoneId)
+			).groupBy(
+				field
 			));
 	}
 
@@ -278,6 +313,17 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		return String.format("%s.%s", tableName, fieldName);
 	}
 
+	private Field<Integer> _getKnownVisitorsField(boolean alias) {
+		Field<Integer> field = DSL.countDistinct(
+			DSL.field("BQIdentity.emailaddresshashed"));
+
+		if (alias) {
+			return field.as("knownvisitors");
+		}
+
+		return field;
+	}
+
 	private List<Field<?>> _getMetricFields(String tableName) {
 		List<Field<?>> metricFields = _getSumMetricFields(
 			new HashMap<String, String>() {
@@ -370,8 +416,8 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 	}
 
 	private Field<Integer> _getUniqueVisitorsField(String tableName) {
-		return DSL.countDistinct(
-			DSL.field("BQIdentity.emailaddresshashed")
+		return _getKnownVisitorsField(
+			false
 		).plus(
 			DSL.countDistinct(
 				DSL.when(
