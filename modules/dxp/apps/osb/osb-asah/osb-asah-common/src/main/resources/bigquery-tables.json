@@ -2010,32 +2010,32 @@
 		],
 		"fields": [
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "acquisitionCampaign",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "acquisitionChannel",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "acquisitionContent",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "acquisitionMedium",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "acquisitionSource",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "acquisitionTerm",
 				"type": "STRING"
 			},
@@ -2045,7 +2045,7 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "browserName",
 				"type": "STRING"
 			},
@@ -2055,17 +2055,17 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "city",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "country",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "deviceType",
 				"type": "STRING"
 			},
@@ -2080,7 +2080,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "platformName",
 				"type": "STRING"
 			},
@@ -2095,7 +2095,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "region",
 				"type": "STRING"
 			},
