@@ -45,26 +45,57 @@ public class SiteMetricDog {
 			return siteMetric;
 		}
 
-		Metric metric = siteMetric.getVisitorsMetric();
-
 		SiteVisitorBehaviorMetric siteVisitorBehaviorMetric =
 			siteVisitorBehaviorMetrics.get(0);
 
-		metric.setValue(
+		_setMetricValue(
+			siteMetric.getVisitorsMetric(),
 			Double.parseDouble(
 				String.valueOf(siteVisitorBehaviorMetric.getVisitors())));
+
+		_setMetricValue(
+			siteMetric.getKnownVisitorsMetric(),
+			Double.parseDouble(
+				String.valueOf(siteVisitorBehaviorMetric.getKnownVisitors())));
+
+		_setMetricValue(
+			siteMetric.getAnonymousVisitorsMetric(),
+			Double.parseDouble(
+				String.valueOf(
+					siteVisitorBehaviorMetric.getAnonymousVisitors())));
 
 		if (searchQueryContext.isIncludePrevious() &&
 			(siteVisitorBehaviorMetrics.size() > 1)) {
 
 			siteVisitorBehaviorMetric = siteVisitorBehaviorMetrics.get(1);
 
-			metric.setPreviousValue(
+			_setMetricPreviousValue(
+				siteMetric.getVisitorsMetric(),
 				Double.parseDouble(
 					String.valueOf(siteVisitorBehaviorMetric.getVisitors())));
+
+			_setMetricPreviousValue(
+				siteMetric.getKnownVisitorsMetric(),
+				Double.parseDouble(
+					String.valueOf(
+						siteVisitorBehaviorMetric.getKnownVisitors())));
+
+			_setMetricPreviousValue(
+				siteMetric.getAnonymousVisitorsMetric(),
+				Double.parseDouble(
+					String.valueOf(
+						siteVisitorBehaviorMetric.getAnonymousVisitors())));
 		}
 
 		return siteMetric;
+	}
+
+	private void _setMetricPreviousValue(Metric metric, Double value) {
+		metric.setPreviousValue(value);
+	}
+
+	private void _setMetricValue(Metric metric, Double value) {
+		metric.setValue(value);
 	}
 
 	@Autowired

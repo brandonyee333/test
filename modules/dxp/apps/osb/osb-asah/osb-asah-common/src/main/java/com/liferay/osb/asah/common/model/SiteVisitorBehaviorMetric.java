@@ -33,6 +33,10 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		BeanUtils.copyProperties(source, this);
 	}
 
+	public long getAnonymousVisitors() {
+		return getVisitors() - getKnownVisitors();
+	}
+
 	public long getAvgTimeOnPage() {
 		if ((_timeOnPage == null) || (_sessions == null) ||
 			(_sessions.longValue() <= 0)) {
@@ -85,6 +89,14 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		}
 
 		return _exits.doubleValue() / _sessions.doubleValue();
+	}
+
+	public long getKnownVisitors() {
+		if (_knownVisitors == null) {
+			return 0;
+		}
+
+		return _knownVisitors.longValue();
 	}
 
 	public long getSessions() {
@@ -141,6 +153,10 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		_exits = exits;
 	}
 
+	public void setKnownVisitors(BigDecimal knownVisitors) {
+		_knownVisitors = knownVisitors;
+	}
+
 	public void setSessions(BigDecimal sessions) {
 		_sessions = sessions;
 	}
@@ -161,6 +177,7 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 	private BigDecimal _entrances;
 	private Date _eventDate;
 	private BigDecimal _exits;
+	private BigDecimal _knownVisitors;
 	private BigDecimal _sessions;
 	private BigDecimal _timeOnPage;
 	private BigDecimal _views;
