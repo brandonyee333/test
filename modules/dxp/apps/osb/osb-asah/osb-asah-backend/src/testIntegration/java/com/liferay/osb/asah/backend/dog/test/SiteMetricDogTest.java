@@ -43,6 +43,17 @@ public class SiteMetricDogTest
 		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
 			_getSearchQueryContext());
 
+		Metric anonymousVisitorsMetric =
+			siteMetric.getAnonymousVisitorsMetric();
+
+		Assertions.assertNull(anonymousVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(0, anonymousVisitorsMetric.getValue());
+
+		Metric knownVisitorsMetric = siteMetric.getKnownVisitorsMetric();
+
+		Assertions.assertNull(knownVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(0, knownVisitorsMetric.getValue());
+
 		Metric visitorsMetric = siteMetric.getVisitorsMetric();
 
 		Assertions.assertNull(visitorsMetric.getPreviousValue());
@@ -54,6 +65,17 @@ public class SiteMetricDogTest
 	public void testGetSiteMetric2() {
 		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
 			_getSearchQueryContext());
+
+		Metric anonymousVisitorsMetric =
+			siteMetric.getAnonymousVisitorsMetric();
+
+		Assertions.assertNull(anonymousVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(1, anonymousVisitorsMetric.getValue());
+
+		Metric knownVisitorsMetric = siteMetric.getKnownVisitorsMetric();
+
+		Assertions.assertNull(knownVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(1, knownVisitorsMetric.getValue());
 
 		Metric visitorsMetric = siteMetric.getVisitorsMetric();
 
@@ -70,6 +92,17 @@ public class SiteMetricDogTest
 
 		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
 			searchQueryContext);
+
+		Metric anonymousVisitorsMetric =
+			siteMetric.getAnonymousVisitorsMetric();
+
+		Assertions.assertEquals(0, anonymousVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(1, anonymousVisitorsMetric.getValue());
+
+		Metric knownVisitorsMetric = siteMetric.getKnownVisitorsMetric();
+
+		Assertions.assertEquals(1, knownVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(1, knownVisitorsMetric.getValue());
 
 		Metric visitorsMetric = siteMetric.getVisitorsMetric();
 
