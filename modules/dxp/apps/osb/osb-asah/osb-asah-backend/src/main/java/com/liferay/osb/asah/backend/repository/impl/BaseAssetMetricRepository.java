@@ -487,11 +487,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					_timeZoneDog.getZoneId()),
 				DateUtil.toUTCLocalDateTime(
 					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
-			),
-			DSL.field(
-				"projectId"
-			).eq(
-				ProjectIdThreadLocal.getProjectId()
 			));
 	}
 
