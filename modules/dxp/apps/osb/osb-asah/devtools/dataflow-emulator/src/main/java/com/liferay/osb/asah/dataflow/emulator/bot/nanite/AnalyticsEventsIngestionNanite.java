@@ -517,7 +517,13 @@ public class AnalyticsEventsIngestionNanite {
 			}
 		}
 
-		bqSession.setBounced((pageViewsCount > 1) || (interactionsCount > 0));
+		if ((interactionsCount < 1) && (pageViewsCount < 2)) {
+			bqSession.setBounced(1);
+		}
+		else {
+			bqSession.setBounced(0);
+		}
+
 		bqSession.setBrowserName(context.get("browserName"));
 		bqSession.setChannelId(Long.valueOf(sessionContext.channelId));
 		bqSession.setCity("Local Network");

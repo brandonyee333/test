@@ -647,8 +647,13 @@ public class EventIngestionPipeline {
 			}
 		}
 
-		tableRow.set(
-			"bounced", (pageViewsCount > 1) || (interactionsCount > 0));
+		if ((interactionsCount < 1) && (pageViewsCount < 2)) {
+			tableRow.set("bounced", 1);
+		}
+		else {
+			tableRow.set("bounced", 0);
+		}
+
 		tableRow.set("browserName", context.get("browserName"));
 		tableRow.set("channelId", Long.parseLong(sessionKeyParts[2]));
 		tableRow.set("city", context.get("city"));
