@@ -2041,8 +2041,8 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "bounced",
-				"type": "BOOLEAN"
+				"name": "bounce",
+				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",

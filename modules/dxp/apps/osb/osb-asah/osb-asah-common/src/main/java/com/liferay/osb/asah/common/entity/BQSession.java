@@ -113,7 +113,7 @@ public class BQSession implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public boolean getBounced() {
+	public Integer getBounced() {
 		return _bounced;
 	}
 
@@ -231,7 +231,7 @@ public class BQSession implements Persistable<String> {
 		_acquisitionTerm = acquisitionTerm;
 	}
 
-	public void setBounced(boolean bounced) {
+	public void setBounced(Integer bounced) {
 		_bounced = bounced;
 	}
 
@@ -316,7 +316,7 @@ public class BQSession implements Persistable<String> {
 	private String _acquisitionTerm;
 
 	@Transient
-	private boolean _bounced;
+	private Integer _bounced;
 
 	@Transient
 	private String _browserName;

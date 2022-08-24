@@ -374,7 +374,7 @@ CREATE TABLE IF NOT EXISTS BQSession (
     acquisitionMedium TEXT,
     acquisitionSource TEXT,
     acquisitionTerm TEXT,
-    bounced BOOLEAN,
+    bounced INTEGER,
     browserName TEXT,
 	channelId BIGINT,
     city TEXT,
