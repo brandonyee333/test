@@ -1,0 +1,35 @@
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (1, 'http://liferay.com', 1, timestamp '${today-1d}', 'assetClicked', '1', 'Liferay', '1');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (2, 'http://liferay.com', 1, timestamp '${today-1d}', 'assetClicked', '2', 'Liferay', '2');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (3, 'http://liferay.com', 1, timestamp '${today-1d}', 'assetClicked', '3', 'Liferay', '3');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (4, 'http://liferay.com', 1, timestamp '${today-1d}', 'assetClicked', '4', 'Liferay', '4');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (5, 'http://liferay.com', 1, timestamp '${today-3d}', 'assetClicked', '5', 'Liferay', '1');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (6, 'http://liferay.com', 1, timestamp '${today-3d}', 'assetClicked', '6', 'Liferay', '2');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (7, 'http://liferay.com', 1, timestamp '${today-4d}', 'assetClicked', '7', 'Liferay', '1');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (8, 'http://liferay.com', 1, timestamp '${today-6d}', 'assetClicked', '7', 'Liferay', '1');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (9, 'http://liferay.com', 1, timestamp '${today-6d}', 'assetClicked', '8', 'Liferay', '1');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (10, 'http://liferay.com', 1, timestamp '${today-6d}', 'assetClicked', '9', 'Liferay', '3');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (11, 'http://liferay.com', 1, timestamp '${today-6d}', 'assetClicked', '10', 'Liferay', '3');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (12, 'http://liferay.com', 1, timestamp '${today-10d}', 'assetClicked', '11', 'Liferay', '1');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (13, 'http://liferay.com', 1, timestamp '${today-10d}', 'assetClicked', '12', 'Liferay', '4');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (14, 'http://liferay.com', 1, timestamp '${today-11d}', 'assetClicked', '13', 'Liferay', '5');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (15, 'http://liferay.com', 1, timestamp '${today-12d}', 'assetClicked', '14', 'Liferay', '6');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (16, 'http://liferay.com', 1, timestamp '${today-12d}', 'assetClicked', '14', 'Liferay', '6');
+INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (17, 'http://liferay.com', 1, timestamp '${today-12d}', 'assetClicked', '15', 'Liferay', '1');
+
+INSERT INTO BQIdentity (emailAddressHashed, id, userId) VALUES (1, 1, '1');
+
+INSERT INTO BQSession (channelId, id) VALUES (1, '1');
+INSERT INTO BQSession (channelId, id) VALUES (1, '2');
+INSERT INTO BQSession (channelId, id) VALUES (1, '3');
+INSERT INTO BQSession (channelId, id) VALUES (1, '4');
+INSERT INTO BQSession (channelId, id) VALUES (1, '5');
+INSERT INTO BQSession (channelId, id) VALUES (1, '6');
+INSERT INTO BQSession (channelId, id) VALUES (1, '7');
+INSERT INTO BQSession (channelId, id) VALUES (1, '8');
+INSERT INTO BQSession (channelId, id) VALUES (1, '9');
+INSERT INTO BQSession (channelId, id) VALUES (1, '10');
+INSERT INTO BQSession (channelId, id) VALUES (1, '11');
+INSERT INTO BQSession (channelId, id) VALUES (1, '12');
+INSERT INTO BQSession (channelId, id) VALUES (1, '13');
+INSERT INTO BQSession (channelId, id) VALUES (1, '14');
+INSERT INTO BQSession (channelId, id) VALUES (1, '15');
