@@ -57,7 +57,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author Lino Alves
  */
-@Disabled
 @ExtendWith(OSBAsahSpringExtension.class)
 @SpringBootTest(
 	classes = {HistogramDog.class, OSBAsahBackendSpringBootApplication.class}
@@ -215,6 +214,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_last_90_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsCustomRange() {
 		double[] expectedValues = {
@@ -239,6 +239,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_last_7_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsLast7Days() {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
@@ -259,6 +260,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_last_24_hours_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsLast24Hours() {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
@@ -282,6 +284,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_last_28_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsLast28Days() {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
@@ -305,6 +308,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_last_90_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsLast90Days() {
 		double[] expectedValues = DogTestUtil.create90DaysHistogramBuckets();
@@ -326,6 +330,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		repositoryClass = PreferenceRepository.class,
 		resourcePath = "osbasahfaroinfo/preference_time_zone_america_los_angeles.json"
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsTimeZoneDayInterval() {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
@@ -353,6 +358,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		repositoryClass = PreferenceRepository.class,
 		resourcePath = "osbasahfaroinfo/preference_time_zone_america_los_angeles.json"
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsTimeZoneMonthInterval() {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
@@ -380,6 +386,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		repositoryClass = PreferenceRepository.class,
 		resourcePath = "osbasahfaroinfo/preference_time_zone_america_los_angeles.json"
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsTimeZoneWeekInterval() {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
@@ -403,6 +410,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_last_7_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsTrendLast7Days() {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
@@ -440,6 +448,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		resourcePath = "histogram_journal_yesterday_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Disabled
 	@Test
 	public void testHistogramMetricsYesterday() {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
@@ -462,6 +471,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		name = "pages", resourcePath = "histogram_pages_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Disabled
 	@Test
 	public void testHistogramPagesMetricsMissingSessionId() {
 		HistogramMetricBag histogramMetricBag =
