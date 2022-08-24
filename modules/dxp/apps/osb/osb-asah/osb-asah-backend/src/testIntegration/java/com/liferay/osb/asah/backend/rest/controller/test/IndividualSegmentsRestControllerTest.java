@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
@@ -30,8 +31,6 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -132,9 +131,9 @@ public class IndividualSegmentsRestControllerTest
 				338511451975440187L, "ACTIVE"));
 	}
 
-	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQEventRepository.class,
+		resourcePath = "osbasahfaroinfo/events.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
@@ -184,9 +183,9 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals(1, individualsJSONArray.length());
 	}
 
-	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQEventRepository.class,
+		resourcePath = "osbasahfaroinfo/events.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
@@ -259,9 +258,9 @@ public class IndividualSegmentsRestControllerTest
 			0, membershipJSONObject.getInt("knownIndividualsCount"));
 	}
 
-	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQEventRepository.class,
+		resourcePath = "osbasahfaroinfo/events.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,

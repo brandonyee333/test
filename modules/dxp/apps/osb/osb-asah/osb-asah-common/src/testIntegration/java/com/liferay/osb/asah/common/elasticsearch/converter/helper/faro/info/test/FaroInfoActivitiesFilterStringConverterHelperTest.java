@@ -16,6 +16,12 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.tes
 
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -25,6 +31,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Vishal Reddy
  */
+@Disabled
+@RepositoryResource(
+	repositoryClass = BQOrganizationRepository.class,
+	resourcePath = "osbasahfaroinfo/organizations.json"
+)
+@RepositoryResource(
+	repositoryClass = BQEventRepository.class,
+	resourcePath = "osbasahfaroinfo/events.json"
+)
+@RepositoryResource(
+	repositoryClass = BQFieldMappingRepository.class,
+	resourcePath = "osbasahfaroinfo/field_mappings.json"
+)
+@RepositoryResource(
+	repositoryClass = BQIndividualRepository.class,
+	resourcePath = "osbasahfaroinfo/individuals.json"
+)
+@RepositoryResource(
+	repositoryClass = BQSessionRepository.class,
+	resourcePath = "osbasahcerebroinfo/user_sessions.json"
+)
 public class FaroInfoActivitiesFilterStringConverterHelperTest
 	extends BaseFaroInfoFilterStringConverterHelperTestCase {
 

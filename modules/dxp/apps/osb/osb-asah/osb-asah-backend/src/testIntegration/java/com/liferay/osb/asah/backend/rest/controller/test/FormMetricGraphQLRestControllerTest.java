@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQFormRepository;
 
 import org.junit.jupiter.api.Disabled;
 
@@ -23,9 +23,9 @@ import org.junit.jupiter.api.Disabled;
  * @author André Miranda
  */
 @Disabled
-@ElasticsearchIndex(
-	name = "forms", resourcePath = "form_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+@RepositoryResource(
+	repositoryClass = CrudBQFormRepository.class,
+	resourcePath = "osbasahcerebroinfo/form_info.json"
 )
 public class FormMetricGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {

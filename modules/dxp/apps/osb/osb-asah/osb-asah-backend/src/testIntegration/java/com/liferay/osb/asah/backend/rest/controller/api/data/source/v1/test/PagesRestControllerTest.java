@@ -18,8 +18,8 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.PagesRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Interval;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
@@ -40,9 +40,9 @@ public class PagesRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages.json"
 	)
 	@Test
 	public void testGetReadCounts() {
@@ -62,9 +62,9 @@ public class PagesRestControllerTest
 		Assertions.assertTrue(histogramMetricJSONObject.has("value"));
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages.json"
 	)
 	@Test
 	public void testGetReadsCount() {
@@ -72,9 +72,9 @@ public class PagesRestControllerTest
 			"3", _pagesRestController.getReadsCount("https://liferay.com"));
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages.json"
 	)
 	@Test
 	public void testGetViewCounts() {
@@ -94,9 +94,9 @@ public class PagesRestControllerTest
 		Assertions.assertTrue(histogramMetricJSONObject.has("value"));
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages.json"
 	)
 	@Test
 	public void testGetViewsCount() {

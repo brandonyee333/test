@@ -22,8 +22,9 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQFormRepository;
+import com.liferay.osb.asah.test.util.repository.CrudBQJournalRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -42,9 +43,9 @@ public class GeolocationDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "geolocation_journal_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/geolocation_journal_info.json"
 	)
 	@Test
 	public void testGeolocationMetrics() {
@@ -61,9 +62,9 @@ public class GeolocationDogTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "forms", resourcePath = "forms_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQFormRepository.class,
+		resourcePath = "osbasahcerebroinfo/forms_info.json"
 	)
 	@Test
 	public void testUnknownGeolocationMetric() {

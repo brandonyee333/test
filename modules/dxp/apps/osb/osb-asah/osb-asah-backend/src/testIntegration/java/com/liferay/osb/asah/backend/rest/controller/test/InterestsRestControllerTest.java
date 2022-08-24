@@ -28,9 +28,8 @@ import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQVisitedPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
@@ -140,9 +139,9 @@ public class InterestsRestControllerTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited_pages_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQVisitedPageRepository.class,
+		resourcePath = "osbasahfaroinfo/visited_pages_1.json"
 	)
 	@RepositoryResource(
 		repositoryClass = InterestRepository.class,

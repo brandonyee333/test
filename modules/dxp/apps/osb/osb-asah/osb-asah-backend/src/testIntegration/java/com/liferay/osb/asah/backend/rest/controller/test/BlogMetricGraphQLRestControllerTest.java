@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
 
 import org.junit.jupiter.api.Disabled;
 
@@ -23,9 +23,9 @@ import org.junit.jupiter.api.Disabled;
  * @author André Miranda
  */
 @Disabled
-@ElasticsearchIndex(
-	name = "blogs", resourcePath = "blog_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+@RepositoryResource(
+	repositoryClass = CrudBQBlogRepository.class,
+	resourcePath = "osbasahcerebroinfo/blog_info.json"
 )
 public class BlogMetricGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {

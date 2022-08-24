@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.DocumentLibrariesRestController;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQDocumentLibraryRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
@@ -36,9 +36,9 @@ public class DocumentLibrariesRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "document-libraries", resourcePath = "document-libraries.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQDocumentLibraryRepository.class,
+		resourcePath = "osbasahcerebroinfo/document_libraries.json"
 	)
 	@Test
 	public void testGetDownloadCountWithDates() {
@@ -49,9 +49,9 @@ public class DocumentLibrariesRestControllerTest
 				LocalDate.of(2021, 5, 20), LocalDate.of(2021, 5, 1)));
 	}
 
-	@ElasticsearchIndex(
-		name = "document-libraries", resourcePath = "document-libraries.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQDocumentLibraryRepository.class,
+		resourcePath = "osbasahcerebroinfo/document_libraries.json"
 	)
 	@Test
 	public void testGetDownloadsCount() {
@@ -62,9 +62,9 @@ public class DocumentLibrariesRestControllerTest
 				null));
 	}
 
-	@ElasticsearchIndex(
-		name = "document-libraries", resourcePath = "document-libraries.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQDocumentLibraryRepository.class,
+		resourcePath = "osbasahcerebroinfo/document_libraries.json"
 	)
 	@Test
 	public void testGetPreviewCountWithDates() {
@@ -75,9 +75,9 @@ public class DocumentLibrariesRestControllerTest
 				LocalDate.of(2021, 5, 20), LocalDate.of(2021, 5, 1)));
 	}
 
-	@ElasticsearchIndex(
-		name = "document-libraries", resourcePath = "document-libraries.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQDocumentLibraryRepository.class,
+		resourcePath = "osbasahcerebroinfo/document_libraries.json"
 	)
 	@Test
 	public void testGetPreviewsCount() {

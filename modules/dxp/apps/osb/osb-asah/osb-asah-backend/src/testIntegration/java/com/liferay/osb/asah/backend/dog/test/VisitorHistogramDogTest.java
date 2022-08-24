@@ -23,8 +23,8 @@ import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.DayOfWeek;
@@ -47,10 +47,9 @@ public class VisitorHistogramDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "pages",
-		resourcePath = "visitor_histogram_page_last_7_days_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_histogram_page_last_7_days_info.json"
 	)
 	@Test
 	public void testVisitorHistogramMetricsLast7Days() {
@@ -66,10 +65,9 @@ public class VisitorHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages",
-		resourcePath = "visitor_histogram_page_last_24_hours_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_histogram_page_last_24_hours_info.json"
 	)
 	@Test
 	public void testVisitorHistogramMetricsLast24Hours() {
@@ -88,10 +86,9 @@ public class VisitorHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages",
-		resourcePath = "visitor_histogram_page_last_28_days_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_histogram_page_last_28_days_info.json"
 	)
 	@Test
 	public void testVisitorHistogramMetricsLast28Days() {
@@ -109,10 +106,9 @@ public class VisitorHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages",
-		resourcePath = "visitor_histogram_page_last_90_days_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_histogram_page_last_90_days_info.json"
 	)
 	@Test
 	public void testVisitorHistogramMetricsLast90Days() {

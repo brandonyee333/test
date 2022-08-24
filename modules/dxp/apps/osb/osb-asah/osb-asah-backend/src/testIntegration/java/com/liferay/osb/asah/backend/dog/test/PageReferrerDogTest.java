@@ -19,9 +19,9 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.page.PageReferrerDog;
 import com.liferay.osb.asah.backend.model.PageReferrerMetric;
 import com.liferay.osb.asah.common.model.Interval;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -79,9 +79,9 @@ public class PageReferrerDogTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_2.json"
 	)
 	@SQLResource(resourcePath = "page_referrers_events.sql")
 	@Test

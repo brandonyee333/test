@@ -20,8 +20,8 @@ import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.DayOfWeek;
@@ -57,9 +57,9 @@ public class SiteVisitorHeatMapDogTest
 		_preferenceDog.savePreference("time-zone-id", "UTC");
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_heat_map_page_info.json"
 	)
 	@Test
 	public void testVisitorHeatMapMetricsCustomRange() {
@@ -91,9 +91,9 @@ public class SiteVisitorHeatMapDogTest
 			actualValues, 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_heat_map_page_info.json"
 	)
 	@Test
 	public void testVisitorHeatMapMetricsLast24Hours() {
@@ -107,9 +107,9 @@ public class SiteVisitorHeatMapDogTest
 			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_heat_map_page_info.json"
 	)
 	@Test
 	public void testVisitorHeatMapMetricsLast28Days() {
@@ -133,9 +133,9 @@ public class SiteVisitorHeatMapDogTest
 			_getActualValues(heatMapMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_heat_map_page_info.json"
 	)
 	@Test
 	public void testVisitorHeatMapMetricsLast30Days() {
@@ -161,9 +161,9 @@ public class SiteVisitorHeatMapDogTest
 			actualValues, 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_heat_map_page_info.json"
 	)
 	@Test
 	public void testVisitorHeatMapMetricsLast90Days() {
@@ -195,9 +195,9 @@ public class SiteVisitorHeatMapDogTest
 			actualValues, 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_heat_map_page_info.json"
 	)
 	@Test
 	public void testVisitorHeatMapMetricsLast180Days() {
@@ -232,9 +232,9 @@ public class SiteVisitorHeatMapDogTest
 			actualValues, 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_heat_map_page_info.json"
 	)
 	@Test
 	public void testVisitorHeatMapMetricsLastYear() {
@@ -271,9 +271,9 @@ public class SiteVisitorHeatMapDogTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_heat_map_page_info.json"
 	)
 	@Test
 	public void testVisitorHeatMapMetricsWithTimeZone() {
@@ -328,9 +328,9 @@ public class SiteVisitorHeatMapDogTest
 			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/visitor_heat_map_page_info.json"
 	)
 	@Test
 	public void testVisitorHeatMapMetricsYesterday() {

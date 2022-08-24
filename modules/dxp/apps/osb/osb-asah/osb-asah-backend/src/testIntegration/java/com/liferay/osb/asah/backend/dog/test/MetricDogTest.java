@@ -30,8 +30,11 @@ import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
+import com.liferay.osb.asah.test.util.repository.CrudBQDocumentLibraryRepository;
+import com.liferay.osb.asah.test.util.repository.CrudBQJournalRepository;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDateTime;
@@ -58,9 +61,9 @@ public class MetricDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/asset_metric_blog_info_1.json"
 	)
 	@Test
 	public void testBlogMetricShouldContainURL() {
@@ -76,9 +79,9 @@ public class MetricDogTest
 		Assertions.assertEquals(1, urls.size(), urls.toString());
 	}
 
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/asset_metric_blog_info_1.json"
 	)
 	@Test
 	public void testBlogMetricShouldReturnEmptyListIfNoURLsAreFetched() {
@@ -94,9 +97,9 @@ public class MetricDogTest
 		Assertions.assertTrue(urls.isEmpty());
 	}
 
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset_metric_blog_average_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/asset_metric_blog_average_info.json"
 	)
 	@Test
 	public void testBlogRatingAverage() {
@@ -116,9 +119,9 @@ public class MetricDogTest
 		Assertions.assertEquals(0.8, ratingsMetric.getValue(), 0.01);
 	}
 
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset_metric_blog_info_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/asset_metric_blog_info_2.json"
 	)
 	@Test
 	public void testBlogRatingMetric() {
@@ -138,9 +141,9 @@ public class MetricDogTest
 		Assertions.assertEquals(0.6, ratingsMetric.getValue(), 0.1);
 	}
 
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset_metric_blog_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/asset_metric_blog_info_1.json"
 	)
 	@Test
 	public void testBlogRatingMetricShouldNotBeNegative() {
@@ -160,9 +163,9 @@ public class MetricDogTest
 		Assertions.assertEquals(0, ratingsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testCTAClicksMetrics() {
@@ -187,33 +190,9 @@ public class MetricDogTest
 		Assertions.assertEquals(3, ctrMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "custom-assets", resourcePath = "custom_assets_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@Test
-	public void testCustomAssetDefaultMetric() {
-		String assetId =
-			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9";
-
-		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			_createSearchQuery(
-				assetId, AssetType.CUSTOM, null, TimeRange.LAST_24_HOURS,
-				null));
-
-		Assertions.assertNotNull(assetMetric);
-
-		Assertions.assertEquals(assetId, assetMetric.getAssetId());
-
-		Metric metric = assetMetric.getDefaultMetric();
-
-		Assertions.assertEquals(7, metric.getValue(), 0);
-	}
-
-	@ElasticsearchIndex(
-		name = "document-libraries",
-		resourcePath = "document_library_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQDocumentLibraryRepository.class,
+		resourcePath = "osbasahcerebroinfo/document_library_info.json"
 	)
 	@Test
 	public void testDocumentLibraryMetrics() {
@@ -233,9 +212,9 @@ public class MetricDogTest
 		Assertions.assertEquals(0.5, ratingsMetric.getValue(), 0.1);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testGetAssetMetricLast7Days() {
@@ -255,9 +234,9 @@ public class MetricDogTest
 		Assertions.assertEquals(9, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testGetAssetMetricLast24Hours() {
@@ -277,9 +256,9 @@ public class MetricDogTest
 		Assertions.assertEquals(0, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testGetAssetMetricLast28Days() {
@@ -299,9 +278,9 @@ public class MetricDogTest
 		Assertions.assertEquals(11, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testGetAssetMetricLast30Days() {
@@ -321,9 +300,9 @@ public class MetricDogTest
 		Assertions.assertEquals(11, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testGetAssetMetricLast90Days() {
@@ -343,9 +322,9 @@ public class MetricDogTest
 		Assertions.assertEquals(14, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testGetAssetMetricLast180Days() {
@@ -365,9 +344,9 @@ public class MetricDogTest
 		Assertions.assertEquals(15, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testGetAssetMetricLastCustomRange() {
@@ -395,9 +374,9 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testGetAssetMetricLastYear() {
@@ -417,9 +396,9 @@ public class MetricDogTest
 		Assertions.assertEquals(17, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_3.json"
 	)
 	@Test
 	public void testGetAssetMetricMissingSessionId() {
@@ -439,9 +418,9 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_4.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_4.json"
 	)
 	@Test
 	public void testgetAssetMetricsCount() {
@@ -469,9 +448,9 @@ public class MetricDogTest
 			1, _metricDog.getAssetMetricsCount(searchQueryContext));
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testGetAssetMetricYesterday() {
@@ -491,9 +470,9 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "asset_metric_journal_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/asset_metric_journal_info.json"
 	)
 	@Test
 	public void testJournalDefaultMetric() {
@@ -510,9 +489,9 @@ public class MetricDogTest
 		Assertions.assertEquals(2, metric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "asset_metric_journal_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/asset_metric_journal_info.json"
 	)
 	@Test
 	public void testJournalMetrics() {
@@ -539,9 +518,9 @@ public class MetricDogTest
 		}
 	}
 
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "asset_metric_journal_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/asset_metric_journal_info.json"
 	)
 	@Test
 	public void testJournalMetricsCount() {
@@ -553,9 +532,9 @@ public class MetricDogTest
 					null)));
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testPageAssetIdsFilter() {
@@ -584,9 +563,9 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testPagesExperimentFilter() {
@@ -606,9 +585,9 @@ public class MetricDogTest
 		Assertions.assertEquals(3, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testPagesMaxScrollDepthMetric() {
@@ -628,9 +607,9 @@ public class MetricDogTest
 		Assertions.assertEquals(100, maxScrollDepthMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testPagesVariantFilter() {
@@ -650,9 +629,9 @@ public class MetricDogTest
 		Assertions.assertEquals(2, viewsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testPagesVisitorMetrics() {
@@ -672,9 +651,9 @@ public class MetricDogTest
 		Assertions.assertEquals(4, visitorsMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testSessionsMetrics() {
@@ -706,9 +685,9 @@ public class MetricDogTest
 			1.6666666666666667, sessionsPerVisitorMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testSiteBounceRateMetric() {
@@ -729,9 +708,9 @@ public class MetricDogTest
 			0.16666666666666666, bounceRateMetric.getValue(), 0);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testSiteVisitorsMetrics() {

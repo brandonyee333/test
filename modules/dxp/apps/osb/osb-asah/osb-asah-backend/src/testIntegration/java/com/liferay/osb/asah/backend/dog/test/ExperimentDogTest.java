@@ -26,9 +26,8 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
@@ -233,9 +232,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertEquals(3, experiments.size(), experiments.toString());
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
@@ -283,9 +282,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertEquals("Crazy test", experiment.getName());
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
@@ -314,9 +313,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			experimentSessionHistogramMetrics.get(2));
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
@@ -345,9 +344,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			experimentSessionHistogramMetrics.get(2));
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@Test
 	public void testGetTotalSessions() {
@@ -357,9 +356,9 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertEquals(9L, totalSessions);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@Test
 	public void testGetVariantUniqueVisitors() {

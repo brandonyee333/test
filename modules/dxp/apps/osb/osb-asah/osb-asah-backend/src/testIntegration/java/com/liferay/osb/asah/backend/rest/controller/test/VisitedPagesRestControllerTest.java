@@ -19,9 +19,8 @@ import com.liferay.osb.asah.backend.rest.controller.VisitedPagesRestController;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQVisitedPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.json.JSONObject;
@@ -41,9 +40,9 @@ public class VisitedPagesRestControllerTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited_pages.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQVisitedPageRepository.class,
+		resourcePath = "osbasahfaroinfo/visited_pages.json"
 	)
 	@Test
 	public void testGetVisitedPage() throws Exception {
@@ -56,9 +55,9 @@ public class VisitedPagesRestControllerTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "visited-pages", resourcePath = "visited_pages.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQVisitedPageRepository.class,
+		resourcePath = "osbasahfaroinfo/visited_pages.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AsahMarkerRepository.class,

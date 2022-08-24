@@ -30,17 +30,17 @@ import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -271,9 +271,9 @@ public class BQIndividualDogTest
 			3, _countActiveIndividualsFromLast30DaysBySegment(segment));
 	}
 
-	@ElasticsearchIndex(
-		name = "organizations", resourcePath = "organizations.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQOrganizationRepository.class,
+		resourcePath = "osbasahfaroinfo/organizations.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
@@ -305,10 +305,6 @@ public class BQIndividualDogTest
 				organizationIds.toArray(new Long[0])));
 	}
 
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "individuals_fields_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
@@ -331,10 +327,6 @@ public class BQIndividualDogTest
 			Collections.emptySet());
 	}
 
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "individuals_fields_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
@@ -446,10 +438,6 @@ public class BQIndividualDogTest
 		Assertions.assertEquals(0, segmentIds.size(), segmentIds.toString());
 	}
 
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
@@ -487,10 +475,9 @@ public class BQIndividualDogTest
 			_getGivenNames(individuals));
 	}
 
-	@Disabled
-	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = BQEventRepository.class,
+		resourcePath = "osbasahfaroinfo/events.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
@@ -537,9 +524,9 @@ public class BQIndividualDogTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_sessions.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = BQSessionRepository.class,
+		resourcePath = "osbasahcerebroinfo/user_sessions.json"
 	)
 	@Test
 	public void testSearchIndividuals3() {

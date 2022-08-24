@@ -23,9 +23,9 @@ import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Assertions;
@@ -43,9 +43,9 @@ public class SearchTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "search_blogs_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/search_blogs_info.json"
 	)
 	@Test
 	public void testAssetSearch() {
@@ -73,9 +73,9 @@ public class SearchTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "search_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/search_pages_info.json"
 	)
 	@Test
 	public void testPageSearch() {

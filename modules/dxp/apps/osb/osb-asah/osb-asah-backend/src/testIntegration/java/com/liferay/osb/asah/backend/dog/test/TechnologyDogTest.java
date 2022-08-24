@@ -21,8 +21,8 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQJournalRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -41,9 +41,9 @@ public class TechnologyDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "technology_journal_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/technology_journal_info.json"
 	)
 	@Test
 	public void testBrowserMetrics() {
@@ -59,9 +59,9 @@ public class TechnologyDogTest
 			3, browserMetrics.size(), browserMetrics.toString());
 	}
 
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "technology_journal_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/technology_journal_info.json"
 	)
 	@Test
 	public void testDeviceMetrics() {

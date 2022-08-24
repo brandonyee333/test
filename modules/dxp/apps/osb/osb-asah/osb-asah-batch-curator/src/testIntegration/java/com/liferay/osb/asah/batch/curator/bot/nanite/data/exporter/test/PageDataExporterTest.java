@@ -20,8 +20,8 @@ import com.liferay.osb.asah.batch.curator.OSBAsahBatchCuratorSpringTestContext;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.io.ByteArrayOutputStream;
@@ -57,9 +57,9 @@ public class PageDataExporterTest
 				DateUtil.toUTCDate("2022-01-06T13:00:00.000Z")));
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
 	public void testExport() throws Exception {

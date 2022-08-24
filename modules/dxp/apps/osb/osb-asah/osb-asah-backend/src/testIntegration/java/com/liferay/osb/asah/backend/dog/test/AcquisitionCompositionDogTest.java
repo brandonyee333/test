@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.AcquisitionCompositionDog;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import java.time.LocalDate;
 
@@ -32,9 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Matthew Kong
  */
 @Disabled
-@ElasticsearchIndex(
-	name = "user-sessions", resourcePath = "user_sessions_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+@RepositoryResource(
+	repositoryClass = BQSessionRepository.class,
+	resourcePath = "osbasahcerebroinfo/user_sessions_info.json"
 )
 public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 

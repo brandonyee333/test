@@ -15,8 +15,7 @@
 package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.common.repository.AssetRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import org.junit.jupiter.api.Disabled;
@@ -25,9 +24,9 @@ import org.junit.jupiter.api.Disabled;
  * @author Geyson Silva
  */
 @Disabled
-@ElasticsearchIndex(
-	name = "activities", resourcePath = "activities_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+@RepositoryResource(
+	repositoryClass = BQEventRepository.class,
+	resourcePath = "osbasahfaroinfo/events.json"
 )
 @RepositoryResource(
 	repositoryClass = AssetRepository.class,

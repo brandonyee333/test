@@ -16,9 +16,8 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataRetentionNanite;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Disabled;
@@ -33,9 +32,9 @@ public class DataRetentionNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "data_retention_blogs.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/data_retention_blogs.json"
 	)
 	@Test
 	public void testDeleteAssets() throws Exception {

@@ -20,9 +20,8 @@ import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataPoint;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
@@ -45,9 +44,9 @@ public class ExperimentDataDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
@@ -76,9 +75,9 @@ public class ExperimentDataDogTest
 			new Double[] {44000D, 28000D, 1800D});
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
@@ -96,9 +95,9 @@ public class ExperimentDataDogTest
 			9, 7D);
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
@@ -133,9 +132,9 @@ public class ExperimentDataDogTest
 			experimentDataPoints.get(1), 2, new Double[] {44000D, 28000D});
 	}
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,

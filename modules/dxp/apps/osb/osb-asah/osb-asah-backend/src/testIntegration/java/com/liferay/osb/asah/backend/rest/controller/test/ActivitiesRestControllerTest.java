@@ -18,9 +18,8 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.ActivitiesRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -35,18 +34,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Shinn Lok
  */
+@Disabled
 public class ActivitiesRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@Disabled
-	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
 		resourcePath = "osbasahfaroinfo/assets.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQEventRepository.class,
+		resourcePath = "osbasahfaroinfo/events.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
@@ -77,14 +76,13 @@ public class ActivitiesRestControllerTest
 				"JSONArray/asset-transformations", "Object/0", "Object/count"));
 	}
 
-	@Disabled
-	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = AssetRepository.class,
 		resourcePath = "osbasahfaroinfo/assets.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQEventRepository.class,
+		resourcePath = "osbasahfaroinfo/events.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,

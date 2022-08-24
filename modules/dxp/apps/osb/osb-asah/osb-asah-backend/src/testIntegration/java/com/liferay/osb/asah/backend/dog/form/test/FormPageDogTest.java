@@ -21,8 +21,8 @@ import com.liferay.osb.asah.backend.dog.test.DogTestUtil;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.FormFieldMetric;
 import com.liferay.osb.asah.backend.model.FormPageMetric;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQFormRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -41,9 +41,9 @@ public class FormPageDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "forms", resourcePath = "forms_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQFormRepository.class,
+		resourcePath = "osbasahcerebroinfo/forms_info.json"
 	)
 	@Test
 	public void testFormPageMetrics() {

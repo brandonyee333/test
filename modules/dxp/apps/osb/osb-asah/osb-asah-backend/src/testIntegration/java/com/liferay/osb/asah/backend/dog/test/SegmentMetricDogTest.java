@@ -24,8 +24,10 @@ import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
+import com.liferay.osb.asah.test.util.repository.CrudBQFormRepository;
+import com.liferay.osb.asah.test.util.repository.CrudBQJournalRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -45,9 +47,9 @@ public class SegmentMetricDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment_blogs_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/segment_blogs_info.json"
 	)
 	@Test
 	public void testBlogViewsSegmentMetrics() {
@@ -67,9 +69,9 @@ public class SegmentMetricDogTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "forms", resourcePath = "segment_forms_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQFormRepository.class,
+		resourcePath = "osbasahcerebroinfo/segment_forms_info.json"
 	)
 	@Test
 	public void testFormViewsSegmentMetrics() {
@@ -90,9 +92,9 @@ public class SegmentMetricDogTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "segment_journal_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/segment_journal_info.json"
 	)
 	@Test
 	public void testJournalViewsSegmentMetrics() {

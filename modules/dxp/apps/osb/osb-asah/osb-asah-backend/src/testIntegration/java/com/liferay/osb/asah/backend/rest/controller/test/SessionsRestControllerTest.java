@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.SessionsRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
+import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.json.JSONArray;
@@ -39,9 +39,9 @@ public class SessionsRestControllerTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "user_sessions_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = BQSessionRepository.class,
+		resourcePath = "osbasahcerebroinfo/user_sessions_info.json"
 	)
 	@Test
 	public void testGetSessionValues() throws Exception {

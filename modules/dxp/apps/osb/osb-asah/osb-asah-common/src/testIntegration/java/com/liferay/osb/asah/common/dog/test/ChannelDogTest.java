@@ -25,9 +25,8 @@ import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -76,9 +75,9 @@ public class ChannelDogTest
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "blogs_delete_channels.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/blogs_delete_channels.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,

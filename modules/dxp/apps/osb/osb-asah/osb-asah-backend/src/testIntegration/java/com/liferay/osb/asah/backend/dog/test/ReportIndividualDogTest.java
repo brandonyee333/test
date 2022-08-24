@@ -25,10 +25,9 @@ import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -58,13 +57,9 @@ public class ReportIndividualDogTest
 
 	}
 
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "segment_fields_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/segment_individuals_blogs_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
@@ -99,13 +94,9 @@ public class ReportIndividualDogTest
 			"test2@liferay.com", individual.getEmailAddress());
 	}
 
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "segment_fields_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/segment_individuals_blogs_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
@@ -133,13 +124,9 @@ public class ReportIndividualDogTest
 		Assertions.assertEquals("john@acme.com", individual.getEmailAddress());
 	}
 
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "segment_fields_info_2.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQBlogRepository.class,
+		resourcePath = "osbasahcerebroinfo/segment_individuals_blogs_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,

@@ -23,14 +23,13 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
@@ -113,17 +112,13 @@ public class IndividualSegmentsRestControllerTest
 	 * before the tests cleaned up the data.
 	 */
 	@Disabled
-	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "fields", resourcePath = "fields_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQFieldMappingRepository.class,
+		resourcePath = "osbasahfaroinfo/field_mappings.json"
 	)
 	@RepositoryResource(
 		repositoryClass = DXPEntityRepository.class,

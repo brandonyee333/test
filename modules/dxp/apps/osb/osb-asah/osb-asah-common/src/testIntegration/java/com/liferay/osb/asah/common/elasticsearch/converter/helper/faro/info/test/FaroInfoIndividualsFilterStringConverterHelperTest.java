@@ -20,12 +20,15 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import org.junit.jupiter.api.Assertions;
@@ -39,13 +42,25 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Rachael Koestartyo
  */
 @Disabled
-@ElasticsearchIndex(
-	name = "organizations", resourcePath = "organizations.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+@RepositoryResource(
+	repositoryClass = BQOrganizationRepository.class,
+	resourcePath = "osbasahfaroinfo/organizations.json"
 )
-@ElasticsearchIndex(
-	name = "user-sessions", resourcePath = "user_sessions.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+@RepositoryResource(
+	repositoryClass = BQEventRepository.class,
+	resourcePath = "osbasahfaroinfo/events.json"
+)
+@RepositoryResource(
+	repositoryClass = BQFieldMappingRepository.class,
+	resourcePath = "osbasahfaroinfo/field_mappings.json"
+)
+@RepositoryResource(
+	repositoryClass = BQIndividualRepository.class,
+	resourcePath = "osbasahfaroinfo/individuals.json"
+)
+@RepositoryResource(
+	repositoryClass = BQSessionRepository.class,
+	resourcePath = "osbasahcerebroinfo/user_sessions.json"
 )
 public class FaroInfoIndividualsFilterStringConverterHelperTest
 	extends BaseFaroInfoFilterStringConverterHelperTestCase {

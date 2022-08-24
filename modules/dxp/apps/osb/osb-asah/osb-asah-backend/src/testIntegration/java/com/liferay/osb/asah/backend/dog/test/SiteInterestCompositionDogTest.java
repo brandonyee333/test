@@ -17,8 +17,7 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.dog.SiteInterestCompositionDog;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.AssetRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import java.time.LocalDate;
@@ -34,9 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Rachael Koestartyo
  */
 @Disabled
-@ElasticsearchIndex(
-	name = "activities", resourcePath = "activities_info_2.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+@RepositoryResource(
+	repositoryClass = BQEventRepository.class,
+	resourcePath = "osbasahfaroinfo/events.json"
 )
 @RepositoryResource(
 	repositoryClass = AssetRepository.class,

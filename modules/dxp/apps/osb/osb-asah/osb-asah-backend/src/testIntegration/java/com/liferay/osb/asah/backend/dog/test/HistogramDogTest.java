@@ -31,10 +31,10 @@ import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.TrendClassification;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.annotation.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.repository.CrudBQJournalRepository;
+import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -209,10 +209,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_last_90_days_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_last_90_days_info.json"
 	)
 	@Test
 	public void testHistogramMetricsCustomRange() {
@@ -233,10 +232,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_last_7_days_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_last_7_days_info.json"
 	)
 	@Test
 	public void testHistogramMetricsLast7Days() {
@@ -253,10 +251,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_last_24_hours_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_last_24_hours_info.json"
 	)
 	@Test
 	public void testHistogramMetricsLast24Hours() {
@@ -276,10 +273,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_last_28_days_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_last_28_days_info.json"
 	)
 	@Test
 	public void testHistogramMetricsLast28Days() {
@@ -299,10 +295,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_last_90_days_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_last_90_days_info.json"
 	)
 	@Test
 	public void testHistogramMetricsLast90Days() {
@@ -316,10 +311,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_day_interval_time_zone_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_day_interval_time_zone_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = PreferenceRepository.class,
@@ -343,10 +337,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_month_interval_time_zone_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_month_interval_time_zone_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = PreferenceRepository.class,
@@ -370,10 +363,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_week_interval_time_zone_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_week_interval_time_zone_info.json"
 	)
 	@RepositoryResource(
 		repositoryClass = PreferenceRepository.class,
@@ -397,10 +389,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_last_7_days_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_last_7_days_info.json"
 	)
 	@Test
 	public void testHistogramMetricsTrendLast7Days() {
@@ -434,10 +425,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "journals",
-		resourcePath = "histogram_journal_yesterday_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQJournalRepository.class,
+		resourcePath = "osbasahcereroinfo/histogram_journal_yesterday_info.json"
 	)
 	@Test
 	public void testHistogramMetricsYesterday() {
@@ -457,9 +447,9 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 	}
 
 	@Disabled
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "histogram_pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/histogram_pages_info.json"
 	)
 	@Test
 	public void testHistogramPagesMetricsMissingSessionId() {
