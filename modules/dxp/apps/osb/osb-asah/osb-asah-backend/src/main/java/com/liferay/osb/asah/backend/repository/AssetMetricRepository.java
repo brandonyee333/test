@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.repository;
 
 import com.liferay.osb.asah.backend.model.AssetMetric;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.Interval;
@@ -39,6 +40,8 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 	public List<T> getAssetMetrics(
 		Long channelId, Pageable pageable, Set<String> selectedMetrics,
 		TimeRange timeRange);
+
+	public AssetType getAssetType();
 
 	public List<Metric> getBrowserMetrics(
 		String assetId, Long channelId, MetricType metricType,

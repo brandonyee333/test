@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.JournalMetric;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -37,6 +38,11 @@ import org.springframework.stereotype.Repository;
 @Repository("JournalAssetMetricRepository")
 public class JournalAssetMetricRepositoryImpl
 	extends BaseAssetMetricRepository<JournalMetric> {
+
+	@Override
+	public AssetType getAssetType() {
+		return AssetType.JOURNAL;
+	}
 
 	@Override
 	protected JournalMetric createAssetMetric() {

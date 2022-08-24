@@ -16,21 +16,25 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.MetricHelper;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.MetricType;
-
 import com.liferay.osb.asah.common.model.TimeRange;
+
 import java.time.Clock;
 import java.time.LocalDateTime;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,15 +45,24 @@ import org.springframework.stereotype.Component;
 public class HistogramDog {
 
 	@Autowired
-	public HistogramDog() {
+	public HistogramDog(List<AssetMetricRepository> assetMetricRepositories) {
+		assetMetricRepositories.forEach(
+			assetMetricAssetMetricRepository -> _assetMetricRepositoryMap.put(
+				assetMetricAssetMetricRepository.getAssetType(),
+				assetMetricAssetMetricRepository));
 	}
 
 	public HistogramMetricBag getHistogramMetricBag(
-		boolean includePrevious, MetricType metricType,
-		SearchQueryContext searchQueryContext) {
+		MetricType metricType, SearchQueryContext searchQueryContext) {
 
 		AssetMetricRepository assetMetricRepository =
-			getAssetMetricRepository();
+			_assetMetricRepositoryMap.get(searchQueryContext.getAssetType());
+
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					searchQueryContext.getAssetType());
+		}
 
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 
@@ -119,9 +132,13 @@ public class HistogramDog {
 			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
 	}
 
+	private final Map<AssetType, AssetMetricRepository>
+		_assetMetricRepositoryMap = new HashMap<>();
+
 	@Autowired
 	private MetricHelper _metricHelper;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
+
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.DocumentLibraryMetric;
 import com.liferay.osb.asah.backend.model.DocumentLibraryMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -37,6 +38,11 @@ import org.springframework.stereotype.Repository;
 @Repository("DocumentLibraryAssetMetricRepository")
 public class DocumentLibraryAssetMetricRepositoryImpl
 	extends BaseAssetMetricRepository<DocumentLibraryMetric> {
+
+	@Override
+	public AssetType getAssetType() {
+		return AssetType.DOCUMENT;
+	}
 
 	@Override
 	protected DocumentLibraryMetric createAssetMetric() {

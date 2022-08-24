@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.BlogMetric;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -37,6 +38,11 @@ import org.springframework.stereotype.Repository;
 @Repository("BlogAssetMetricRepository")
 public class BlogAssetMetricRepositoryImpl
 	extends BaseAssetMetricRepository<BlogMetric> {
+
+	@Override
+	public AssetType getAssetType() {
+		return AssetType.BLOG;
+	}
 
 	@Override
 	protected BlogMetric createAssetMetric() {

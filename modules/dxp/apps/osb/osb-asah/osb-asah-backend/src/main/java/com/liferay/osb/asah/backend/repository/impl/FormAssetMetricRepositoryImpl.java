@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -37,6 +38,11 @@ import org.springframework.stereotype.Repository;
 @Repository("FormAssetMetricRepository")
 public class FormAssetMetricRepositoryImpl
 	extends BaseAssetMetricRepository<FormMetric> {
+
+	@Override
+	public AssetType getAssetType() {
+		return AssetType.FORM;
+	}
 
 	@Override
 	protected FormMetric createAssetMetric() {

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.CustomAssetMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
@@ -36,6 +37,11 @@ import org.springframework.stereotype.Repository;
 @Repository("CustomAssetMetricRepository")
 public class CustomAssetMetricRepositoryImpl
 	extends BaseAssetMetricRepository<CustomAssetMetric> {
+
+	@Override
+	public AssetType getAssetType() {
+		return AssetType.CUSTOM;
+	}
 
 	@Override
 	protected CustomAssetMetric createAssetMetric() {
