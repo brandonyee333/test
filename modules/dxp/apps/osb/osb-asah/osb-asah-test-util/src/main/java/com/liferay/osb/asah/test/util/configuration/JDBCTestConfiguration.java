@@ -23,7 +23,10 @@ import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
  * @author Marcellus Tavares
  */
 @EnableJdbcRepositories(
-	basePackages = "com.liferay.osb.asah.common.repository",
+	basePackages = {
+		"com.liferay.osb.asah.common.repository",
+		"com.liferay.osb.asah.test.util.repository"
+	},
 	namedQueriesLocation = "classpath*:com/liferay/osb/asah/common/repository/*-sql.xml"
 )
 @TestConfiguration
