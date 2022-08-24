@@ -15,8 +15,19 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.BlogMetricType;
+import com.liferay.osb.asah.backend.model.DocumentLibraryMetricType;
+import com.liferay.osb.asah.backend.model.FormMetricType;
+import com.liferay.osb.asah.backend.model.JournalMetricType;
+import com.liferay.osb.asah.backend.model.SiteMetricType;
+import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 import org.springframework.stereotype.Component;
 
@@ -27,11 +38,27 @@ import org.springframework.stereotype.Component;
 public class MetricTypeDog {
 
 	public MetricType getMetricType(AssetType assetType, String name) {
-		if (assetType == AssetType.PAGE) {
-			return PageMetricType.of(name);
-		}
-
-		return null;
+		return Optional.ofNullable(
+			_metricTypeSuppliers.get(assetType)
+		).map(
+			metricTypeResolver -> metricTypeResolver.apply(name)
+		).orElseThrow(
+			IllegalArgumentException::new
+		);
 	}
+
+	private final Map<AssetType, Function<String, MetricType>>
+		_metricTypeSuppliers =
+			new HashMap<AssetType, Function<String, MetricType>>() {
+				{
+					put(AssetType.BLOG, BlogMetricType::of);
+					put(AssetType.CUSTOM, CustomAssetMetricType::of);
+					put(AssetType.DOCUMENT, DocumentLibraryMetricType::of);
+					put(AssetType.FORM, FormMetricType::of);
+					put(AssetType.JOURNAL, JournalMetricType::of);
+					put(AssetType.PAGE, PageMetricType::of);
+					put(AssetType.SITE, SiteMetricType::of);
+				}
+			};
 
 }
