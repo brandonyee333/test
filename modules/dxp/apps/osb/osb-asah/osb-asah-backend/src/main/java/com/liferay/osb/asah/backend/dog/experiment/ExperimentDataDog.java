@@ -125,6 +125,7 @@ public class ExperimentDataDog {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setExperienceId(experienceId);
+				setIncludePrevious(Boolean.FALSE);
 				setVariantId(variantId);
 			}
 		};
@@ -148,7 +149,7 @@ public class ExperimentDataDog {
 
 		HistogramMetricBag histogramMetricBag =
 			_histogramDog.getHistogramMetricBag(
-				false, PageMetricType.SESSIONS, searchQueryContext);
+				PageMetricType.SESSIONS, searchQueryContext);
 
 		List<HistogramMetric> sessionHistogramMetrics =
 			histogramMetricBag.getMetrics();

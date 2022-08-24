@@ -195,6 +195,7 @@ public class ExperimentDog {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setExperimentId(experimentId);
+				setIncludePrevious(Boolean.FALSE);
 				setTimeRange(
 					_getTimeRange(experiment.getStartedDateLocalDateTime()));
 				setVariantId(variantId);
@@ -203,7 +204,7 @@ public class ExperimentDog {
 
 		HistogramMetricBag histogramMetricBag =
 			_histogramDog.getHistogramMetricBag(
-				false, PageMetricType.SESSIONS, searchQueryContext);
+				PageMetricType.SESSIONS, searchQueryContext);
 
 		return histogramMetricBag.getMetrics();
 	}

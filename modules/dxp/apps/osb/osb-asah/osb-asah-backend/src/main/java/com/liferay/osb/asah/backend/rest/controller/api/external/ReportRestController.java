@@ -127,6 +127,7 @@ public class ReportRestController extends BaseRestController {
 			{
 				setAssetId(blogId);
 				setAssetType(AssetType.BLOG);
+				setIncludePrevious(Boolean.FALSE);
 				setTimeRange(TimeRange.of(rangeKey));
 
 				if (StringUtils.isNotEmpty(blogTitle)) {
@@ -1078,7 +1079,7 @@ public class ReportRestController extends BaseRestController {
 			if (expands.contains("histogram")) {
 				HistogramMetricBag histogramMetricBag =
 					_histogramDog.getHistogramMetricBag(
-						false, metric.getMetricType(), searchQueryContext);
+						metric.getMetricType(), searchQueryContext);
 
 				metricReport._histogramReport = new HistogramReport(
 					histogramMetricBag.getMetrics());

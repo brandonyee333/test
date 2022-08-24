@@ -253,11 +253,12 @@ public class PagesRestController extends BaseRestController {
 
 		HistogramMetricBag histogramMetricBag =
 			_histogramDog.getHistogramMetricBag(
-				true, pageMetricType,
+				pageMetricType,
 				new SearchQueryContext() {
 					{
 						setCanonicalUrl(canonicalUrl);
-						setIncludeActiveSessions(true);
+						setIncludeActiveSessions(Boolean.TRUE);
+						setIncludePrevious(Boolean.TRUE);
 						setInterval(interval);
 						setTimeRange(
 							TimeRange.of(endLocalDate, startLocalDate));

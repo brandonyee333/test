@@ -90,8 +90,7 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 		}
 
 		return _histogramDog.getHistogramMetricBag(
-			searchQueryContext.isIncludePrevious(), metricType,
-			searchQueryContext);
+			metricType, searchQueryContext);
 	}
 
 	@Autowired
