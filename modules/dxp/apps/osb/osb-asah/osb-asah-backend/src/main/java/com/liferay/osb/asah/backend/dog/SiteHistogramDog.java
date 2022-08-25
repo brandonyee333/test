@@ -45,8 +45,7 @@ import org.springframework.stereotype.Component;
 public class SiteHistogramDog {
 
 	public HistogramMetricBag getHistogramMetricBag(
-		SearchQueryContext searchQueryContext,
-		SiteMetricType siteMetricType) {
+		SearchQueryContext searchQueryContext, SiteMetricType siteMetricType) {
 
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 		ZoneId zoneId = _timeZoneDog.getZoneId();
