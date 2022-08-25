@@ -57,7 +57,7 @@ public class OSBAsahSpringExtension extends SpringExtension {
 
 	@Override
 	public void beforeAll(ExtensionContext extensionContext) throws Exception {
-		if (!_isElasticsearchUp() || !_isPostgreSQLUp()) {
+		if (!_isPostgreSQLUp()) {
 			throw new IllegalStateException(
 				"Integration test infrastructure is not up. Please run " +
 					"\"docker-compose -f docker-compose.integration-test.yml " +
@@ -90,11 +90,6 @@ public class OSBAsahSpringExtension extends SpringExtension {
 	public void postProcessTestInstance(
 			Object testInstance, ExtensionContext extensionContext)
 		throws Exception {
-	}
-
-	private boolean _isElasticsearchUp() {
-		return _pingHost(
-			ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP, 9200, 3000);
 	}
 
 	private boolean _isPostgreSQLUp() {
