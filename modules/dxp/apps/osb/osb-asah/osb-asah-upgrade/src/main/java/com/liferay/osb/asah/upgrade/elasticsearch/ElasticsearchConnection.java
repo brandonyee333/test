@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.upgrade.elasticsearch;
 
-import com.liferay.osb.asah.common.constants.CredentialConstants;
-import com.liferay.osb.asah.common.constants.ServiceConstants;
-
 import java.io.InputStream;
 
 import java.nio.charset.Charset;
@@ -52,6 +49,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElasticsearchConnection {
 
+	public static final String LCP_ENGINE_ELASTICSEARCH_SERVER_IP;
+
 	public ClusterHealthResponse getClusterHealthResponse() {
 		AdminClient adminClient = _transportClient.admin();
 
@@ -75,15 +74,24 @@ public class ElasticsearchConnection {
 		return _transportClient;
 	}
 
+	private static String _getElasticsearchServerIP() {
+		String lcpEngineElasticsearchServerIP = System.getenv(
+			"LCP_ENGINE_ELASTICSEARCH_SERVER_IP");
+
+		if (StringUtils.isNotEmpty(lcpEngineElasticsearchServerIP)) {
+			return lcpEngineElasticsearchServerIP;
+		}
+
+		return _LOCALHOST_IP;
+	}
+
 	@PostConstruct
 	private void _connect() {
 		Settings.Builder builder = Settings.builder();
 
 		builder.loadFromSource(_readSettings(), XContentType.JSON);
 
-		if (StringUtils.isBlank(
-				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP)) {
-
+		if (StringUtils.isBlank(LCP_ENGINE_ELASTICSEARCH_SERVER_IP)) {
 			throw new IllegalStateException(
 				"Unable to connect to Elasticsearch server. Please configure " +
 					"the LCP_ENGINE_ELASTICSEARCH_SERVER_IP environment " +
@@ -93,12 +101,13 @@ public class ElasticsearchConnection {
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				"Connecting to Elasticsearch server at " +
-					ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP);
+					LCP_ENGINE_ELASTICSEARCH_SERVER_IP);
 		}
 
-		String keyPassphrase = CredentialConstants.ELASTICSEARCH_KEY_PASSPHRASE;
-		String password = CredentialConstants.ELASTICSEARCH_PASSWORD;
-		String user = CredentialConstants.ELASTICSEARCH_USER;
+		String keyPassphrase = _getCredential(
+			"ELASTICSEARCH_KEY_PASSPHRASE", null);
+		String password = _getCredential("ELASTICSEARCH_PASSWORD", null);
+		String user = _getCredential("ELASTICSEARCH_USER", null);
 
 		if (!StringUtils.isAnyBlank(keyPassphrase, password, user)) {
 			builder.put(
@@ -155,6 +164,27 @@ public class ElasticsearchConnection {
 		}
 	}
 
+	private String _getCredential(String credentialKey, String defaultValue) {
+		String credential = defaultValue;
+
+		String overrideCredential = System.getenv(credentialKey);
+
+		if (overrideCredential != null) {
+			credential = overrideCredential;
+		}
+
+		if (_log.isInfoEnabled()) {
+			if (credential != null) {
+				_log.info(credentialKey + " found");
+			}
+			else {
+				_log.info(credentialKey + " not found");
+			}
+		}
+
+		return credential;
+	}
+
 	private String _readSettings() {
 		try {
 			Class<?> clazz = getClass();
@@ -198,8 +228,15 @@ public class ElasticsearchConnection {
 		}
 	}
 
+	@SuppressWarnings("PMD.AvoidUsingHardCodedIP")
+	private static final String _LOCALHOST_IP = "127.0.0.1";
+
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchConnection.class);
+
+	static {
+		LCP_ENGINE_ELASTICSEARCH_SERVER_IP = _getElasticsearchServerIP();
+	}
 
 	private RestHighLevelClient _restHighLevelClient;
 

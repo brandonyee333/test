@@ -26,8 +26,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ServiceConstants {
 
-	public static final String LCP_ENGINE_ELASTICSEARCH_SERVER_IP;
-
 	/**
 	 * @deprecated As of 2.10.0, replaced by {@link ProjectThreadLocal#getProjectId()}}
 	 */
@@ -78,45 +76,6 @@ public class ServiceConstants {
 		}
 
 		return internalServiceURL;
-	}
-
-	private static String _getElasticsearchClusterURL() {
-		String lcpEngineElasticsearchServerIP = System.getenv(
-			"LCP_ENGINE_ELASTICSEARCH_SERVER_IP");
-
-		if (StringUtils.isNotEmpty(lcpEngineElasticsearchServerIP)) {
-			return lcpEngineElasticsearchServerIP;
-		}
-
-		String lcpProjectCluster = System.getenv("LCP_PROJECT_CLUSTER");
-
-		if (StringUtils.isEmpty(lcpProjectCluster)) {
-			return _LOCALHOST_IP;
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("esmaster--cluster.");
-
-		if (lcpProjectCluster.equals("europe-west2-c1")) {
-			sb.append("qbcxohfftcjtgoiczl");
-		}
-		else if (lcpProjectCluster.equals("europe-west3-c1")) {
-			sb.append("qiwvfjzwojvfzdelon");
-		}
-		else if (lcpProjectCluster.equals("southamerica-east1-c1")) {
-			sb.append("djjykaalhvzcovrqam");
-		}
-		else if (lcpProjectCluster.equals("us-west1-c1")) {
-			sb.append("oweobqtbjflwouqzpe");
-		}
-		else {
-			throw new RuntimeException("Invalid LCP project cluster");
-		}
-
-		sb.append(".svc.cluster.local");
-
-		return sb.toString();
 	}
 
 	private static String _getPostgreSQLClusterURL() {
@@ -174,15 +133,9 @@ public class ServiceConstants {
 	private static final Set<String> _internalServiceURLs;
 
 	static {
-		LCP_ENGINE_ELASTICSEARCH_SERVER_IP = _getElasticsearchClusterURL();
-
 		_internalServiceURLs = new HashSet<>();
 
 		if (_log.isInfoEnabled()) {
-			_log.info(
-				"LCP_ENGINE_ELASTICSEARCH_SERVER_IP: " +
-					LCP_ENGINE_ELASTICSEARCH_SERVER_IP);
-
 			_log.info("LCP_PROJECT_ID: " + LCP_PROJECT_ID);
 		}
 

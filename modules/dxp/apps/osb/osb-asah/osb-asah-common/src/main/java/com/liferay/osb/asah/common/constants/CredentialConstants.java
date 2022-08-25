@@ -22,12 +22,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class CredentialConstants {
 
-	public static final String ELASTICSEARCH_KEY_PASSPHRASE;
-
-	public static final String ELASTICSEARCH_PASSWORD;
-
-	public static final String ELASTICSEARCH_USER;
-
 	public static final String POSTGRESQL_DB;
 
 	public static final String POSTGRESQL_PASSWORD;
@@ -61,10 +55,6 @@ public class CredentialConstants {
 		CredentialConstants.class);
 
 	static {
-		ELASTICSEARCH_KEY_PASSPHRASE = _getCredential(
-			"ELASTICSEARCH_KEY_PASSPHRASE", null);
-		ELASTICSEARCH_PASSWORD = _getCredential("ELASTICSEARCH_PASSWORD", null);
-		ELASTICSEARCH_USER = _getCredential("ELASTICSEARCH_USER", null);
 		POSTGRESQL_DB = _getCredential("POSTGRESQL_DB", "osbasah");
 		POSTGRESQL_PASSWORD = _getCredential("POSTGRESQL_PASSWORD", "password");
 		POSTGRESQL_USER = _getCredential("POSTGRESQL_USER", "postgres");

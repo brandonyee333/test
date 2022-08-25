@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.upgrade.elasticsearch;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
-
 import java.net.InetSocketAddress;
 
 import java.util.List;
@@ -36,7 +34,7 @@ public class ClientUtil {
 
 	public static TransportAddress getTransportAddress() {
 		String[] transportAddressParts = StringUtils.split(
-			ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP, ':');
+			ElasticsearchConnection.LCP_ENGINE_ELASTICSEARCH_SERVER_IP, ':');
 
 		int port = 9300;
 
