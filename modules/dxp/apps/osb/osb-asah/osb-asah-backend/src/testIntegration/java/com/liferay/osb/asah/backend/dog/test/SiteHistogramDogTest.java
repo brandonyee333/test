@@ -50,7 +50,7 @@ public class SiteHistogramDogTest
 			new double[] {0, 1, 0, 0, 1, 0, 3},
 			_getActualValues(
 				_siteHistogramDog.getHistogramMetricBag(
-					true, _getSearchQueryContext(),
+					_getSearchQueryContext(),
 					SiteMetricType.ANONYMOUS_VISITORS)),
 			0);
 
@@ -58,7 +58,7 @@ public class SiteHistogramDogTest
 			new double[] {0, 0, 1, 1, 1, 0, 0},
 			_getPreviousValues(
 				_siteHistogramDog.getHistogramMetricBag(
-					true, _getSearchQueryContext(),
+					_getSearchQueryContext(),
 					SiteMetricType.ANONYMOUS_VISITORS)),
 			0);
 
@@ -66,7 +66,7 @@ public class SiteHistogramDogTest
 			new double[] {0, 1, 0, 1, 1, 0, 1},
 			_getActualValues(
 				_siteHistogramDog.getHistogramMetricBag(
-					true, _getSearchQueryContext(),
+					_getSearchQueryContext(),
 					SiteMetricType.KNOWN_VISITORS)),
 			0);
 
@@ -74,7 +74,7 @@ public class SiteHistogramDogTest
 			new double[] {0, 0, 1, 0, 1, 0, 0},
 			_getPreviousValues(
 				_siteHistogramDog.getHistogramMetricBag(
-					true, _getSearchQueryContext(),
+					_getSearchQueryContext(),
 					SiteMetricType.KNOWN_VISITORS)),
 			0);
 
@@ -82,14 +82,14 @@ public class SiteHistogramDogTest
 			new double[] {0, 2, 0, 1, 2, 0, 4},
 			_getActualValues(
 				_siteHistogramDog.getHistogramMetricBag(
-					true, _getSearchQueryContext(), SiteMetricType.VISITORS)),
+					_getSearchQueryContext(), SiteMetricType.VISITORS)),
 			0);
 
 		Assertions.assertArrayEquals(
 			new double[] {0, 0, 2, 1, 2, 0, 0},
 			_getPreviousValues(
 				_siteHistogramDog.getHistogramMetricBag(
-					true, _getSearchQueryContext(), SiteMetricType.VISITORS)),
+					_getSearchQueryContext(), SiteMetricType.VISITORS)),
 			0);
 	}
 
@@ -105,7 +105,7 @@ public class SiteHistogramDogTest
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
 		searchQueryContext.setChannelId("1");
-		searchQueryContext.setIncludePrevious(true);
+		searchQueryContext.setIncludePrevious(Boolean.TRUE);
 		searchQueryContext.setInterval(Interval.DAY.getKey());
 		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
 

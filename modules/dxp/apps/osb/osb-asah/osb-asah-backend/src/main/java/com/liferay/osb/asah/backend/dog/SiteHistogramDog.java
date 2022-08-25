@@ -45,7 +45,7 @@ import org.springframework.stereotype.Component;
 public class SiteHistogramDog {
 
 	public HistogramMetricBag getHistogramMetricBag(
-		boolean includePrevious, SearchQueryContext searchQueryContext,
+		SearchQueryContext searchQueryContext,
 		SiteMetricType siteMetricType) {
 
 		TimeRange timeRange = searchQueryContext.getTimeRange();
@@ -54,8 +54,8 @@ public class SiteHistogramDog {
 		List<SiteVisitorBehaviorMetric> siteVisitorBehaviorMetrics =
 			_bqPageRepository.getSiteVisitorBehaviorMetricsGroupedByEventDate(
 				Long.parseLong(searchQueryContext.getChannelId()),
-				includePrevious, searchQueryContext.getInterval(), timeRange,
-				zoneId);
+				searchQueryContext.isIncludePrevious(),
+				searchQueryContext.getInterval(), timeRange, zoneId);
 
 		if (siteVisitorBehaviorMetrics.isEmpty()) {
 			return new HistogramMetricBag();
@@ -74,7 +74,7 @@ public class SiteHistogramDog {
 
 		HistogramMetricBag histogramMetricBag =
 			_metricHelper.createHistogramMetricBag(
-				Clock.system(zoneId), includePrevious,
+				Clock.system(zoneId), searchQueryContext.isIncludePrevious(),
 				searchQueryContext.getInterval(), siteMetricType, timeRange);
 
 		Map<String, Metric> metrics = _getMetrics(histogramMetricBag);
@@ -89,7 +89,7 @@ public class SiteHistogramDog {
 					siteMetricType,
 					siteVisitorBehaviorMetricsMap.get(dateString)));
 
-			if (includePrevious) {
+			if (searchQueryContext.isIncludePrevious()) {
 				metric.setPreviousValue(
 					_getMetricValue(
 						siteMetricType,

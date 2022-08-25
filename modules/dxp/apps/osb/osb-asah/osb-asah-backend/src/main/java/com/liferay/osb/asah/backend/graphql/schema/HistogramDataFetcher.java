@@ -94,8 +94,7 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 
 		if (searchQueryContext.getAssetType() == AssetType.SITE) {
 			return _siteHistogramDog.getHistogramMetricBag(
-				searchQueryContext.isIncludePrevious(), searchQueryContext,
-				(SiteMetricType)metricType);
+				searchQueryContext, (SiteMetricType)metricType);
 		}
 
 		return _histogramDog.getHistogramMetricBag(
