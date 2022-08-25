@@ -63,16 +63,20 @@ definition {
 
 		AssetPublisherPortlet.configureDisplaySettings(displaySettings = "Set as the Default Asset Publisher for This Page");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		WebContentNavigator.gotoAddCP();
+		WebContentNavigator.openToAddBasicArticle(
+			groupName = "Test Site Name",
+			siteURLKey = "test-site-name");
 
 		WebContent.addWithFriendlyURL(
 			friendlyURL = '''link&''',
 			webContentContent = "WC WebContent Content",
 			webContentTitle = "WC WebContent Title");
 
-		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
+		WebContentNavigator.openToEditWCInSite(
+			groupName = "Test Site Name",
+			siteURLKey = "test-site-name",
+			urlTitle = '''link-''',
+			webContentTitle = "WC WebContent Title");
 
 		WebContent.editDisplayPage(
 			pageName = "Test Source Page",
@@ -120,7 +124,12 @@ definition {
 
 		PortletEntry.publish();
 
-		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Article");
+		WebContentNavigator.openToEditWCInSite(
+			groupName = "Test Site Name",
+			siteURLKey = "test-site-name",
+			urlTitle = "friendlyurl",
+			version = "1.1",
+			webContentTitle = "Web Content Article");
 
 		WebContent.editFriendlyURL(webContentFriendlyURL = "web-content-article");
 
@@ -147,16 +156,20 @@ definition {
 
 		AssetPublisherPortlet.configureDisplaySettings(displaySettings = "Set as the Default Asset Publisher for This Page");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		WebContentNavigator.gotoAddCP();
+		WebContentNavigator.openToAddBasicArticle(
+			groupName = "Test Site Name",
+			siteURLKey = "test-site-name");
 
 		WebContent.addWithFriendlyURL(
 			friendlyURL = "friendlyUrl",
 			webContentContent = "WC WebContent Content",
 			webContentTitle = "WC WebContent Title");
 
-		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
+		WebContentNavigator.openToEditWCInSite(
+			groupName = "Test Site Name",
+			siteURLKey = "test-site-name",
+			urlTitle = "friendlyurl",
+			webContentTitle = "Web Content Article");
 
 		WebContent.editFriendlyURL(webContentFriendlyURL = "editedfriendlyUrl");
 
@@ -264,11 +277,10 @@ definition {
 	test RedirectToUpdatedFriendlyURL {
 		var portalURL = PropsUtil.get("portal.url");
 
-		PagesAdmin.openPagesAdmin(siteURLKey = "test-site-name");
-
-		PagesAdmin.gotoPageEllipsisMenuItem(
-			menuItem = "Configure",
-			pageName = "Test Source Page");
+		PagesAdmin.openToConfigurePublicPage(
+			groupName = "Test Site Name",
+			layoutName = "Test Source Page",
+			siteURLKey = "test-site-name");
 
 		PagesAdmin.editFriendlyURL(friendlyURLEdit = "/new-test-page");
 
