@@ -995,17 +995,28 @@ public class CommerceOrderLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public CommerceOrder resetCommerceOrderShipping(long commerceOrderId)
-		throws PortalException {
-
-		CommerceOrder commerceOrder =
-			commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+	public CommerceOrder resetCommerceOrderShipping(
+		CommerceOrder commerceOrder) {
 
 		commerceOrder.setCommerceShippingMethodId(0);
 		commerceOrder.setShippingAmount(BigDecimal.ZERO);
 		commerceOrder.setShippingOptionName(null);
 
 		return commerceOrderPersistence.update(commerceOrder);
+	}
+
+	@Override
+	public void resetCommerceOrderShipping(long shippingAddressId) {
+		if (shippingAddressId > 0) {
+			List<CommerceOrder> commerceOrders =
+				commerceOrderLocalService.getCommerceOrdersByShippingAddress(
+					shippingAddressId);
+
+			for (CommerceOrder commerceOrder : commerceOrders) {
+				commerceOrderLocalService.resetCommerceOrderShipping(
+					commerceOrder);
+			}
+		}
 	}
 
 	@Override
