@@ -359,7 +359,7 @@ CREATE TABLE IF NOT EXISTS BQSession (
     acquisitionMedium TEXT,
     acquisitionSource TEXT,
     acquisitionTerm TEXT,
-    bounced INTEGER,
+    bounce INTEGER,
     browserName TEXT,
 	channelId BIGINT,
     city TEXT,
