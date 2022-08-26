@@ -39,18 +39,21 @@ public class Acquisition {
 		try {
 			URI uri = new URI(url);
 
-			String query = uri.getQuery();
-
 			Map<String, String> queryParams = new HashMap<>();
 
-			for (String queryParam : query.split("&")) {
-				int index = queryParam.indexOf("=");
+			String query = uri.getQuery();
 
-				if (index != -1) {
-					String key = queryParam.substring(0, index);
+			if (query != null) {
+				for (String queryParam : query.split("&")) {
+					int index = queryParam.indexOf("=");
 
-					if (!queryParams.containsKey(key)) {
-						queryParams.put(key, queryParam.substring(index + 1));
+					if (index != -1) {
+						String key = queryParam.substring(0, index);
+
+						if (!queryParams.containsKey(key)) {
+							queryParams.put(
+								key, queryParam.substring(index + 1));
+						}
 					}
 				}
 			}
