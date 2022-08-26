@@ -518,10 +518,10 @@ public class AnalyticsEventsIngestionNanite {
 		}
 
 		if ((interactionsCount < 1) && (pageViewsCount < 2)) {
-			bqSession.setBounced(1);
+			bqSession.setBounce(1);
 		}
 		else {
-			bqSession.setBounced(0);
+			bqSession.setBounce(0);
 		}
 
 		bqSession.setBrowserName(context.get("browserName"));

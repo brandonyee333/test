@@ -61,7 +61,7 @@ public class BQSession implements Persistable<String> {
 			Objects.equals(_acquisitionMedium, bqSession._acquisitionMedium) &&
 			Objects.equals(_acquisitionSource, bqSession._acquisitionSource) &&
 			Objects.equals(_acquisitionTerm, bqSession._acquisitionTerm) &&
-			Objects.equals(_bounced, bqSession._bounced) &&
+			Objects.equals(_bounce, bqSession._bounce) &&
 			Objects.equals(_browserName, bqSession._browserName) &&
 			Objects.equals(_channelId, bqSession._channelId) &&
 			Objects.equals(_city, bqSession._city) &&
@@ -113,8 +113,8 @@ public class BQSession implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Integer getBounced() {
-		return _bounced;
+	public Integer getBounce() {
+		return _bounce;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -196,7 +196,7 @@ public class BQSession implements Persistable<String> {
 	public int hashCode() {
 		return Objects.hash(
 			_acquisitionCampaign, _acquisitionChannel, _acquisitionContent,
-			_acquisitionMedium, _acquisitionSource, _acquisitionTerm, _bounced,
+			_acquisitionMedium, _acquisitionSource, _acquisitionTerm, _bounce,
 			_browserName, _channelId, _city, _country, _deviceType, _duration,
 			_id, _platformName, _referrers, _region, _sessionEnd, _sessionStart,
 			_userId);
@@ -231,8 +231,8 @@ public class BQSession implements Persistable<String> {
 		_acquisitionTerm = acquisitionTerm;
 	}
 
-	public void setBounced(Integer bounced) {
-		_bounced = bounced;
+	public void setBounce(Integer bounce) {
+		_bounce = bounce;
 	}
 
 	public void setBrowserName(String browserName) {
@@ -316,7 +316,7 @@ public class BQSession implements Persistable<String> {
 	private String _acquisitionTerm;
 
 	@Transient
-	private Integer _bounced;
+	private Integer _bounce;
 
 	@Transient
 	private String _browserName;
