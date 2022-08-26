@@ -146,10 +146,11 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 
 		String tableName = _getTableName(timeRange);
 
-		Field field = _dslHelper.dateTrunc(
-			DatePart.valueOf(interval.name()),
-			_dslHelper.getDateAtTimeZoneField(
-				_getFieldName("eventdate", tableName), zoneId.toString()));
+		Field field = DSL.timestamp(
+			_dslHelper.dateTrunc(
+				DatePart.valueOf(interval.name()),
+				_dslHelper.getDateAtTimeZoneField(
+					_getFieldName("eventdate", tableName), zoneId.toString())));
 
 		field = field.as("eventdate");
 
