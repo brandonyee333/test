@@ -221,7 +221,7 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 		return JSONUtil.put(
 			"channelId", Long.parseLong(channelId)
 		).put(
-			"createDate", new Date()
+			"createDate", DateUtil.toString(new Date())
 		).put(
 			"dataSourceId", Long.parseLong(dataSourceId)
 		).put(
