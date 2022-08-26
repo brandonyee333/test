@@ -63,14 +63,17 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			dslContext.selectCount();
 
+		String tableName = _getTableName(timeRange);
+
 		return _queryExecutor.queryForLong(
 			selectSelectStep.from(
 				DSL.select(
 					DSL.field("canonicalurl"), DSL.field("title")
 				).from(
-					_getTableName(timeRange)
+					tableName
 				).where(
-					_createWhereClause(null, channelId, timeRange, null, zoneId)
+					_createWhereClause(
+						null, channelId, tableName, timeRange, null, zoneId)
 				).groupBy(
 					DSL.field("canonicalurl"), DSL.field("title")
 				)));
@@ -93,7 +96,8 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 				tableName
 			).where(
 				_createWhereClause(
-					canonicalUrl, channelId, timeRange, title, zoneId)
+					canonicalUrl, channelId, tableName, timeRange, title,
+					zoneId)
 			));
 	}
 
@@ -206,7 +210,8 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 				),
 				tableName
 			).where(
-				_createWhereClause(null, channelId, timeRange, null, zoneId)
+				_createWhereClause(
+					null, channelId, tableName, timeRange, null, zoneId)
 			).groupBy(
 				canonicalUrlField, titleField
 			).orderBy(
@@ -243,14 +248,13 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		}
 
 		return _createWhereClause(
-			canonicalUrl, channelId, whereClauseTimeRange, title, zoneId);
+			canonicalUrl, channelId, _getTableName(timeRange),
+			whereClauseTimeRange, title, zoneId);
 	}
 
 	private Condition _createWhereClause(
-		String canonicalUrl, Long channelId, TimeRange timeRange, String title,
-		ZoneId zoneId) {
-
-		String tableName = _getTableName(timeRange);
+		String canonicalUrl, Long channelId, String tableName,
+		TimeRange timeRange, String title, ZoneId zoneId) {
 
 		Condition condition = DSL.and(
 			DSL.field(
