@@ -49,20 +49,18 @@ public class SiteMetricDog {
 			siteVisitorBehaviorMetrics.get(0);
 
 		_setMetricValue(
-			siteMetric.getVisitorsMetric(),
-			Double.parseDouble(
-				String.valueOf(siteVisitorBehaviorMetric.getVisitors())));
-
-		_setMetricValue(
-			siteMetric.getKnownVisitorsMetric(),
-			Double.parseDouble(
-				String.valueOf(siteVisitorBehaviorMetric.getKnownVisitors())));
-
-		_setMetricValue(
 			siteMetric.getAnonymousVisitorsMetric(),
 			Double.parseDouble(
 				String.valueOf(
 					siteVisitorBehaviorMetric.getAnonymousVisitors())));
+		_setMetricValue(
+			siteMetric.getKnownVisitorsMetric(),
+			Double.parseDouble(
+				String.valueOf(siteVisitorBehaviorMetric.getKnownVisitors())));
+		_setMetricValue(
+			siteMetric.getVisitorsMetric(),
+			Double.parseDouble(
+				String.valueOf(siteVisitorBehaviorMetric.getVisitors())));
 
 		if (searchQueryContext.isIncludePrevious() &&
 			(siteVisitorBehaviorMetrics.size() > 1)) {
@@ -70,21 +68,19 @@ public class SiteMetricDog {
 			siteVisitorBehaviorMetric = siteVisitorBehaviorMetrics.get(1);
 
 			_setMetricPreviousValue(
-				siteMetric.getVisitorsMetric(),
+				siteMetric.getAnonymousVisitorsMetric(),
 				Double.parseDouble(
-					String.valueOf(siteVisitorBehaviorMetric.getVisitors())));
-
+					String.valueOf(
+						siteVisitorBehaviorMetric.getAnonymousVisitors())));
 			_setMetricPreviousValue(
 				siteMetric.getKnownVisitorsMetric(),
 				Double.parseDouble(
 					String.valueOf(
 						siteVisitorBehaviorMetric.getKnownVisitors())));
-
 			_setMetricPreviousValue(
-				siteMetric.getAnonymousVisitorsMetric(),
+				siteMetric.getVisitorsMetric(),
 				Double.parseDouble(
-					String.valueOf(
-						siteVisitorBehaviorMetric.getAnonymousVisitors())));
+					String.valueOf(siteVisitorBehaviorMetric.getVisitors())));
 		}
 
 		return siteMetric;
