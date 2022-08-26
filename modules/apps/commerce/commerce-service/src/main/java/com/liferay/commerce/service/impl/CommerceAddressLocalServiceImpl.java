@@ -579,17 +579,6 @@ public class CommerceAddressLocalServiceImpl
 			CommerceAddressImpl.toAddressTypeId(type), address.isMailing(),
 			address.isPrimary(), phoneNumber);
 
-		// Commerce orders
-
-		List<CommerceOrder> commerceOrders =
-			_commerceOrderLocalService.getCommerceOrdersByShippingAddress(
-				commerceAddressId);
-
-		for (CommerceOrder commerceOrder : commerceOrders) {
-			_commerceOrderLocalService.resetCommerceOrderShipping(
-				commerceOrder.getCommerceOrderId());
-		}
-
 		return CommerceAddressImpl.fromAddress(address);
 	}
 
