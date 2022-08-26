@@ -53,7 +53,6 @@ public class SiteHistogramDogTest
 					_getSearchQueryContext(),
 					SiteMetricType.ANONYMOUS_VISITORS)),
 			0);
-
 		Assertions.assertArrayEquals(
 			new double[] {0, 0, 1, 1, 1, 0, 0},
 			_getPreviousValues(
@@ -61,28 +60,24 @@ public class SiteHistogramDogTest
 					_getSearchQueryContext(),
 					SiteMetricType.ANONYMOUS_VISITORS)),
 			0);
-
 		Assertions.assertArrayEquals(
 			new double[] {0, 1, 0, 1, 1, 0, 1},
 			_getActualValues(
 				_siteHistogramDog.getHistogramMetricBag(
 					_getSearchQueryContext(), SiteMetricType.KNOWN_VISITORS)),
 			0);
-
 		Assertions.assertArrayEquals(
 			new double[] {0, 0, 1, 0, 1, 0, 0},
 			_getPreviousValues(
 				_siteHistogramDog.getHistogramMetricBag(
 					_getSearchQueryContext(), SiteMetricType.KNOWN_VISITORS)),
 			0);
-
 		Assertions.assertArrayEquals(
 			new double[] {0, 2, 0, 1, 2, 0, 4},
 			_getActualValues(
 				_siteHistogramDog.getHistogramMetricBag(
 					_getSearchQueryContext(), SiteMetricType.VISITORS)),
 			0);
-
 		Assertions.assertArrayEquals(
 			new double[] {0, 0, 2, 1, 2, 0, 0},
 			_getPreviousValues(
