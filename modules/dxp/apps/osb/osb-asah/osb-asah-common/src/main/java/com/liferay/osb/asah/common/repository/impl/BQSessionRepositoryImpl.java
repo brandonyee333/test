@@ -15,15 +15,23 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQSession;
+import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.CustomBQSessionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
+
+import java.time.ZoneId;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.SelectFinalStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
@@ -64,7 +72,92 @@ public class BQSessionRepositoryImpl
 			));
 	}
 
+	@Override
+	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(
+		Long channelId, boolean includePrevious, TimeRange timeRange,
+		ZoneId zoneId) {
+
+		String tableName = "BQSession";
+
+		Field<Integer> field = DSL.when(
+			DSL.field(
+				_getFieldName("sessionStart", tableName)
+			).gt(
+				_dslHelper.getDateParam(
+					timeRange.getStartLocalDateTime(), zoneId.toString())
+			),
+			1
+		).otherwise(
+			0
+		).as(
+			"groupByField"
+		);
+
+		return _queryExecutor.queryForList(
+			SiteVisitorBehaviorMetric.class,
+			(SelectFinalStep)_dslContext.select(
+				field,
+				DSL.sum(
+					DSL.field("bounce", Integer.class)
+				).as(
+					"bounces"
+				),
+				DSL.count(
+				).as(
+					"sessions"
+				)
+			).from(
+				DSL.table("BQSession")
+			).where(
+				_createWhereClause(
+					channelId, includePrevious, timeRange, zoneId)
+			).groupBy(
+				field
+			).orderBy(
+				field.desc()
+			));
+	}
+
+	private Condition _createWhereClause(
+		Long channelId, boolean includePrevious, TimeRange timeRange,
+		ZoneId zoneId) {
+
+		TimeRange whereClauseTimeRange = timeRange;
+
+		if (includePrevious) {
+			whereClauseTimeRange = timeRange.getIncludePreviousTimeRange();
+		}
+
+		return _createWhereClause(channelId, whereClauseTimeRange, zoneId);
+	}
+
+	private Condition _createWhereClause(
+		Long channelId, TimeRange timeRange, ZoneId zoneId) {
+
+		return DSL.and(
+			DSL.field(
+				_getFieldName("channelId", "BQSession")
+			).eq(
+				channelId
+			),
+			DSL.field(
+				_getFieldName("sessionStart", "BQSession")
+			).between(
+				_dslHelper.getDateParam(
+					timeRange.getStartLocalDateTime(), zoneId.toString()),
+				_dslHelper.getDateParam(
+					timeRange.getEndLocalDateTime(), zoneId.toString())
+			));
+	}
+
+	private String _getFieldName(String fieldName, String tableName) {
+		return String.format("%s.%s", tableName, fieldName);
+	}
+
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private DSLHelper _dslHelper;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;
