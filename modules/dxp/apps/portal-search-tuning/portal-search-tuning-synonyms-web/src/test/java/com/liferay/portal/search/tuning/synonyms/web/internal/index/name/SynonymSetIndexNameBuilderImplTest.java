@@ -14,8 +14,8 @@
 
 package com.liferay.portal.search.tuning.synonyms.web.internal.index.name;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.index.IndexNameBuilder;
-import com.liferay.portal.search.tuning.synonyms.index.name.SynonymSetIndexName;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.Assert;
@@ -35,23 +35,25 @@ public class SynonymSetIndexNameBuilderImplTest {
 
 	@Test
 	public void testMultiTenancy() {
-		_assertIndexName(
-			2021, companyId -> "liferay-" + companyId,
-			"liferay-2021-search-tuning-synonyms");
-	}
-
-	private void _assertIndexName(
-		int companyId, IndexNameBuilder indexNameBuilder, String expected) {
-
 		SynonymSetIndexNameBuilderImpl synonymSetIndexNameBuilderImpl =
 			new SynonymSetIndexNameBuilderImpl();
 
-		synonymSetIndexNameBuilderImpl.setIndexNameBuilder(indexNameBuilder);
+		ReflectionTestUtil.setFieldValue(
+			synonymSetIndexNameBuilderImpl, "_indexNameBuilder",
+			new IndexNameBuilder() {
 
-		SynonymSetIndexName synonymSetIndexName =
-			synonymSetIndexNameBuilderImpl.getSynonymSetIndexName(companyId);
+				@Override
+				public String getIndexName(long companyId) {
+					return "liferay-" + companyId;
+				}
 
-		Assert.assertEquals(expected, synonymSetIndexName.getIndexName());
+			});
+
+		Assert.assertEquals(
+			"liferay-2021-search-tuning-synonyms",
+			synonymSetIndexNameBuilderImpl.getSynonymSetIndexName(
+				2021
+			).getIndexName());
 	}
 
 }
