@@ -110,6 +110,38 @@ public class SiteMetricDogTest
 		Assertions.assertEquals(2, visitorsMetric.getValue());
 	}
 
+	@SQLResource(resourcePath = "test_bq_events_1.sql")
+	@Test
+	public void testGetSiteMetric4() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
+
+		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
+			searchQueryContext);
+
+		Metric bounceRateMetric = siteMetric.getBounceRateMetric();
+
+		Assertions.assertEquals(0.5, bounceRateMetric.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_bq_events_1.sql")
+	@Test
+	public void testGetSiteMetric5() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		searchQueryContext.setIncludePrevious(true);
+		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
+
+		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
+			searchQueryContext);
+
+		Metric bounceRateMetric = siteMetric.getBounceRateMetric();
+
+		Assertions.assertEquals(1, bounceRateMetric.getPreviousValue());
+		Assertions.assertEquals(0.5, bounceRateMetric.getValue());
+	}
+
 	private SearchQueryContext _getSearchQueryContext() {
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
