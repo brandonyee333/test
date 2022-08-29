@@ -12,10 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model;
-
-import com.liferay.osb.asah.common.model.MetricType;
-import com.liferay.osb.asah.common.model.TrendClassification;
+package com.liferay.osb.asah.common.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,13 +25,14 @@ import java.util.stream.Stream;
 public enum IndividualMetricType implements MetricType {
 
 	ANONYMOUS_INDIVIDUALS(
-		"dateCreated", "anonymousIndividualsMetric",
+		"identity.createDate", "anonymousIndividualsMetric",
 		TrendClassification.Order.ASC),
 	KNOWN_INDIVIDUALS(
-		"firstEnrichmentDate", "knownIndividualsMetric",
+		"individual.createDate", "knownIndividualsMetric",
 		TrendClassification.Order.ASC),
 	TOTAL_INDIVIDUALS(
-		"dateCreated", "totalIndividualsMetric", TrendClassification.Order.ASC);
+		"identity.createDate", "totalIndividualsMetric",
+		TrendClassification.Order.ASC);
 
 	public static IndividualMetricType of(String name) {
 		return Optional.ofNullable(

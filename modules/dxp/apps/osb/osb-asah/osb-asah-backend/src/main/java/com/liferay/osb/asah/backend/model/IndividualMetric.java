@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.model;
 
 import com.liferay.osb.asah.backend.model.util.MetricUtil;
+import com.liferay.osb.asah.common.model.IndividualMetricType;
 
 import java.util.List;
 import java.util.Objects;
