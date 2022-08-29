@@ -86,24 +86,6 @@ CREATE TABLE IF NOT EXISTS BQCSVUser (
 	modifiedDate TIMESTAMPTZ
 );
 
-CREATE TABLE IF NOT EXISTS BQCustomAsset (
-	abandonments BIGINT,
-	assetId TEXT,
-	assetPrimaryKey TEXT,
-	category TEXT,
-	channelId BIGINT,
-	clicks BIGINT,
-	downloads BIGINT,
-	eventDate TIMESTAMPTZ,
-	projectId TEXT,
-	readTime BIGINT,
-	submissionTime BIGINT,
-	submissions BIGINT,
-	userId TEXT,
-	variantId TEXT,
-	views BIGINT
-);
-
 CREATE TABLE IF NOT EXISTS BQDataSourceUser (
 	accountPKs TEXT[],
 	dataSourceId BIGINT,
