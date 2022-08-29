@@ -18,15 +18,11 @@ import com.liferay.osb.asah.common.entity.BQIndividual;
 
 import java.util.Optional;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
-
 /**
  * @author Marcellus Tavares
  */
-@Repository
 public interface BQIndividualRepository
-	extends CrudRepository<BQIndividual, String> {
+	extends Repository<BQIndividual, String> {
 
 	public Optional<BQIndividual> findByEmailAddress(String emailAddresses);
 
