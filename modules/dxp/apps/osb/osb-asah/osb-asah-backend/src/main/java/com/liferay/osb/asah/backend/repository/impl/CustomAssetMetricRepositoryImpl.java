@@ -100,13 +100,13 @@ public class CustomAssetMetricRepositoryImpl
 			);
 		}
 
-		Field<Long> longField = DSL.field(
-			metricType.getFieldName(), Long.class);
-
 		if ((metricType == CustomAssetMetricType.CLICKS) ||
 			(metricType == CustomAssetMetricType.DOWNLOADS) ||
 			(metricType == CustomAssetMetricType.SUBMISSIONS) ||
 			(metricType == CustomAssetMetricType.VIEWS)) {
+
+			Field<Long> longField = DSL.field(
+				metricType.getFieldName(), Long.class);
 
 			return DSL.sum(
 				longField
@@ -115,10 +115,14 @@ public class CustomAssetMetricRepositoryImpl
 			);
 		}
 
-		return DSL.avg(
-			longField
+		return DSL.sum(
+			DSL.field(metricType.getFieldName(), Long.class)
+		).div(
+			DSL.sum(
+				DSL.field(
+					CustomAssetMetricType.VISITORS.getFieldName(), Long.class))
 		).as(
-			longField.getName()
+			metricType.getFieldName()
 		);
 	}
 
