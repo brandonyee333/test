@@ -144,7 +144,7 @@ public class SiteMetricDogTest
 
 	@SQLResource(resourcePath = "test_bq_events_2.sql")
 	@Test
-	public void testSessionDuration1() {
+	public void testGetSiteMetric6() {
 		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
 			_getSearchQueryContext());
 
@@ -155,7 +155,7 @@ public class SiteMetricDogTest
 
 	@SQLResource(resourcePath = "test_bq_events_2.sql")
 	@Test
-	public void testSessionDuration2() {
+	public void testGetSiteMetric7() {
 		SearchQueryContext searchQueryContext = _getSearchQueryContext();
 
 		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
