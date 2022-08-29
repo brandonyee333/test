@@ -31,4 +31,9 @@ public class ZendeskSynchronizerConfigurationValues {
 			ZendeskSynchronizerConfigurationUtil.get(
 				"zendesk.account.entry.sync.interval"));
 
+	public static final long ZENDESK_TICKET_LONG_TERM_RESOLUTION_FIELD_ID =
+		GetterUtil.getLong(
+			ZendeskSynchronizerConfigurationUtil.get(
+				"zendesk.ticket.long.term.resolution.field.Id"));
+
 }

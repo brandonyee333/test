@@ -38,6 +38,7 @@ import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.synchronizer.configuration.ZendeskSynchronizerConfigurationValues;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AddressUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
@@ -69,6 +70,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
@@ -171,49 +173,6 @@ public class AccountSynchronizer {
 
 			addOrganizationMemberships(
 				zendeskUserId, new long[] {zendeskOrganizationId});
-		}
-	}
-
-	public void closeZendeskTickets(AccountEntry accountEntry, User user)
-		throws Exception {
-
-		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
-			return;
-		}
-
-		long zendeskOrganizationId =
-			_zendeskMapperUtil.fetchZendeskOrganizationId(
-				accountEntry.getAccountEntryId());
-
-		Set<String> criteria = new HashSet<>();
-
-		criteria.add("organization:" + zendeskOrganizationId);
-
-		if (user != null) {
-			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				user.getUserId());
-
-			criteria.add("requester:" + zendeskUserId);
-		}
-
-		criteria.add("status<" + ZendeskTicketConstants.STATUS_CLOSED);
-
-		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
-			getDefaultUserEmail(accountEntry.getAccountEntryId()));
-
-		checkAndAddOrganizationMembership(
-			zendeskUser.getZendeskUserId(), zendeskOrganizationId);
-
-		List<ZendeskTicket> zendeskTickets =
-			_zendeskTicketWebService.getZendeskTickets(criteria);
-
-		for (ZendeskTicket zendeskTicket : zendeskTickets) {
-			zendeskTicket.setRequesterId(zendeskUser.getZendeskUserId());
-			zendeskTicket.setStatus("closed");
-		}
-
-		if (!zendeskTickets.isEmpty()) {
-			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 		}
 	}
 
@@ -560,6 +519,61 @@ public class AccountSynchronizer {
 			}
 
 			_userSynchronizer.update(user, null);
+		}
+	}
+
+	public void solveZendeskTickets(AccountEntry accountEntry, User user)
+		throws Exception {
+
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountEntry.getAccountEntryId());
+
+		Set<String> criteria = new HashSet<>();
+
+		criteria.add("organization:" + zendeskOrganizationId);
+
+		if (user != null) {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				user.getUserId());
+
+			criteria.add("requester:" + zendeskUserId);
+		}
+
+		criteria.add("status<" + ZendeskTicketConstants.STATUS_SOLVED);
+
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
+			getDefaultUserEmail(accountEntry.getAccountEntryId()));
+
+		checkAndAddOrganizationMembership(
+			zendeskUser.getZendeskUserId(), zendeskOrganizationId);
+
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		long longTermResolutionId =
+			ZendeskSynchronizerConfigurationValues.
+				ZENDESK_TICKET_LONG_TERM_RESOLUTION_FIELD_ID;
+
+		for (ZendeskTicket zendeskTicket : zendeskTickets) {
+			Map<Long, String> customFields = zendeskTicket.getCustomFields();
+
+			if (!customFields.containsKey(longTermResolutionId)) {
+				customFields.put(
+					longTermResolutionId, "n_a_customer_inactivity");
+			}
+
+			zendeskTicket.setCustomFields(customFields);
+			zendeskTicket.setRequesterId(zendeskUser.getZendeskUserId());
+			zendeskTicket.setStatus("solved");
+		}
+
+		if (!zendeskTickets.isEmpty()) {
+			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 		}
 	}
 

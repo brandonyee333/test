@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.model;
 
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,6 +25,10 @@ import java.util.Set;
 public class ZendeskTicket {
 
 	public ZendeskTicket() {
+	}
+
+	public Map<Long, String> getCustomFields() {
+		return _customFields;
 	}
 
 	public String getDescription() {
@@ -62,6 +67,10 @@ public class ZendeskTicket {
 		return false;
 	}
 
+	public void setCustomFields(Map<Long, String> customFields) {
+		_customFields = customFields;
+	}
+
 	public void setDescription(String description) {
 		_description = description;
 	}
@@ -90,6 +99,7 @@ public class ZendeskTicket {
 		_zendeskTicketId = zendeskTicketId;
 	}
 
+	private Map<Long, String> _customFields;
 	private String _description;
 	private long _requesterId;
 	private String _status;

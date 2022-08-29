@@ -28,14 +28,17 @@ import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
@@ -314,18 +317,41 @@ public class ZendeskConverter {
 	public ZendeskTicket toZendeskTicket(JSONObject jsonObject) {
 		ZendeskTicket zendeskTicket = new ZendeskTicket();
 
+		JSONArray customFieldsJSONArray = jsonObject.getJSONArray(
+			"custom_fields");
+
+		if (customFieldsJSONArray != null) {
+			Map<Long, String> customFields = new HashMap<>();
+
+			for (int i = 0; i < customFieldsJSONArray.length(); i++) {
+				JSONObject customFieldJSONObject =
+					customFieldsJSONArray.getJSONObject(i);
+
+				String customFieldValue = customFieldJSONObject.getString(
+					"value");
+
+				if (Validator.isNotNull(customFieldValue)) {
+					long customFieldId = customFieldJSONObject.getLong("id");
+
+					customFields.put(customFieldId, customFieldValue);
+				}
+			}
+
+			zendeskTicket.setCustomFields(customFields);
+		}
+
 		zendeskTicket.setDescription(jsonObject.getString("description"));
 		zendeskTicket.setRequesterId(jsonObject.getLong("requester_id"));
 		zendeskTicket.setStatus(jsonObject.getString("status"));
 		zendeskTicket.setSubject(jsonObject.getString("subject"));
 
-		JSONArray jsonArray = jsonObject.getJSONArray("tags");
+		JSONArray tagsJSONArray = jsonObject.getJSONArray("tags");
 
-		if (jsonArray != null) {
+		if (tagsJSONArray != null) {
 			Set<String> tags = new HashSet<>();
 
-			for (int i = 0; i < jsonArray.length(); i++) {
-				tags.add(jsonArray.getString(i));
+			for (int i = 0; i < tagsJSONArray.length(); i++) {
+				tags.add(tagsJSONArray.getString(i));
 			}
 
 			zendeskTicket.setTags(tags);

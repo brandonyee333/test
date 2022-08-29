@@ -115,6 +115,8 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 				String.valueOf(zendeskTicket.getZendeskTicketId()), ".json");
 
 			ticketJSONObject.put(
+				"custom_fields", zendeskTicket.getCustomFields());
+			ticketJSONObject.put(
 				"organization_id", zendeskTicket.getZendeskOrganizationId());
 			ticketJSONObject.put(
 				"requester_id", zendeskTicket.getRequesterId());

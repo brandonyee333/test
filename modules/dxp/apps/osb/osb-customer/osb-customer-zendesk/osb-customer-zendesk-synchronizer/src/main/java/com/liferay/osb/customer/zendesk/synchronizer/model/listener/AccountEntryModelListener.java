@@ -97,7 +97,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			if (oldAccountEntry.isActiveTicketSupport() &&
 				!accountEntry.isActiveTicketSupport()) {
 
-				_accountSynchronizer.closeZendeskTickets(accountEntry, null);
+				_accountSynchronizer.solveZendeskTickets(accountEntry, null);
 
 				List<Contact> contacts =
 					_contactWebService.getAccountCustomerContacts(
