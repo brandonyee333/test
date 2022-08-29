@@ -16,13 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQIdentityActivity;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
-
 /**
  * @author Ivica Cardic
  */
-@Repository
 public interface BQIdentityActivityRepository
-	extends CrudRepository<BQIdentityActivity, String> {
+	extends Repository<BQIdentityActivity, String> {
 }
