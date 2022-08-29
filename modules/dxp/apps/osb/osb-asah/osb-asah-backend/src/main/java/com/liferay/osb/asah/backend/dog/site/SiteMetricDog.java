@@ -106,16 +106,17 @@ public class SiteMetricDog {
 				sessionSiteVisitorBehaviorMetrics.get(0);
 
 			_setMetricValue(
-				siteMetric.getSessionsMetric(),
-				Double.parseDouble(
-					String.valueOf(
-						sessionSiteVisitorBehaviorMetric.getSessions())));
-
-			_setMetricValue(
 				siteMetric.getBounceRateMetric(),
 				Double.parseDouble(
 					String.valueOf(
 						sessionSiteVisitorBehaviorMetric.getBounceRate())));
+
+			_setMetricValue(
+				siteMetric.getSessionDurationMetric(),
+				Double.parseDouble(
+					String.valueOf(
+						sessionSiteVisitorBehaviorMetric.
+							getSessionDuration())));
 
 			_setMetricValue(
 				siteMetric.getSessionsMetric(),
@@ -130,10 +131,10 @@ public class SiteMetricDog {
 					sessionSiteVisitorBehaviorMetrics.get(1);
 
 				_setMetricPreviousValue(
-					siteMetric.getSessionsMetric(),
+					siteMetric.getBounceRateMetric(),
 					Double.parseDouble(
 						String.valueOf(
-							sessionSiteVisitorBehaviorMetric.getSessions())));
+							sessionSiteVisitorBehaviorMetric.getBounceRate())));
 
 				_setMetricValue(
 					siteMetric.getSessionDurationMetric(),
@@ -143,10 +144,10 @@ public class SiteMetricDog {
 								getSessionDuration())));
 
 				_setMetricPreviousValue(
-					siteMetric.getBounceRateMetric(),
+					siteMetric.getSessionsMetric(),
 					Double.parseDouble(
 						String.valueOf(
-							sessionSiteVisitorBehaviorMetric.getBounceRate())));
+							sessionSiteVisitorBehaviorMetric.getSessions())));
 			}
 		}
 
