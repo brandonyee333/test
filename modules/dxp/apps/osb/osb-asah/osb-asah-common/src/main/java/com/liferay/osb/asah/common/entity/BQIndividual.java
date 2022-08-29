@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 import org.json.JSONArray;
 
@@ -39,6 +40,34 @@ public class BQIndividual implements Persistable<String> {
 
 	public BQIndividual(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof BQIndividual)) {
+			return false;
+		}
+
+		BQIndividual bqIndividual = (BQIndividual)obj;
+
+		if (Objects.equals(_id, bqIndividual._id)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -74,12 +103,23 @@ public class BQIndividual implements Persistable<String> {
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash(_id);
+	}
+
+	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {
 			return true;
 		}
 
 		return false;
+	}
+
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
 	}
 
 	public void setEmailAddress(String emailAddress) {
@@ -107,6 +147,9 @@ public class BQIndividual implements Persistable<String> {
 			_modifiedDate = new Date(modifiedDate.getTime());
 		}
 	}
+
+	@Transient
+	private Date _createDate;
 
 	@Transient
 	private String _emailAddress;

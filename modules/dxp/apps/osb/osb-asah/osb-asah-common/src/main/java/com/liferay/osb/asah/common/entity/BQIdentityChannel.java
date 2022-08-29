@@ -26,20 +26,22 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Rachael Koestartyo
  */
 @Table
-public class BQIdentityChannel {
+public class BQIdentityChannel implements Persistable<String> {
 
 	public BQIdentityChannel() {
 	}
 
 	public BQIdentityChannel(
-		Long activitiesCount, Long channelId, Long identityId,
+		Long activitiesCount, Long channelId, String identityId,
 		Date lastActivityDate, Date previousActivityDate) {
 
 		_activitiesCount = activitiesCount;
@@ -71,16 +73,7 @@ public class BQIdentityChannel {
 
 		BQIdentityChannel bqIdentityChannel = (BQIdentityChannel)obj;
 
-		if (Objects.equals(
-				_activitiesCount, bqIdentityChannel._activitiesCount) &&
-			Objects.equals(_channelId, bqIdentityChannel._channelId) &&
-			Objects.equals(_identityId, bqIdentityChannel._identityId) &&
-			Objects.equals(
-				_lastActivityDate, bqIdentityChannel._lastActivityDate) &&
-			Objects.equals(
-				_previousActivityDate,
-				bqIdentityChannel._previousActivityDate)) {
-
+		if (Objects.equals(_id, bqIdentityChannel._id)) {
 			return true;
 		}
 
@@ -99,8 +92,24 @@ public class BQIdentityChannel {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@Override
+	public String getId() {
+		return _id;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getIdentityId() {
+	public String getIdentityId() {
 		return _identityId;
 	}
 
@@ -118,6 +127,15 @@ public class BQIdentityChannel {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -132,9 +150,16 @@ public class BQIdentityChannel {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(
-			_activitiesCount, _channelId, _identityId, _lastActivityDate,
-			_previousActivityDate);
+		return Objects.hash(_id);
+	}
+
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void setActivitiesCount(Long activitiesCount) {
@@ -145,13 +170,33 @@ public class BQIdentityChannel {
 		_channelId = channelId;
 	}
 
-	public void setIdentityId(Long identityId) {
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
+	}
+
+	public void setId(String id) {
+		_id = id;
+	}
+
+	public void setIdentityId(String identityId) {
 		_identityId = identityId;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
 	}
 
 	public void setLastActivityDate(Date lastActivityDate) {
 		if (lastActivityDate != null) {
 			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
 		}
 	}
 
@@ -168,10 +213,22 @@ public class BQIdentityChannel {
 	private Long _channelId;
 
 	@Transient
-	private Long _identityId;
+	private Date _createDate;
+
+	@Transient
+	private String _id;
+
+	@Transient
+	private String _identityId;
+
+	@Transient
+	private Boolean _isNew;
 
 	@Transient
 	private Date _lastActivityDate;
+
+	@Transient
+	private Date _modifiedDate;
 
 	@Transient
 	private Date _previousActivityDate;

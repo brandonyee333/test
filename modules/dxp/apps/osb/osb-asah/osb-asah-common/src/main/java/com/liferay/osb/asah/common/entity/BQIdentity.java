@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -27,6 +28,25 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class BQIdentity implements Persistable<String> {
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof BQIdentity)) {
+			return false;
+		}
+
+		BQIdentity bqIdentity = (BQIdentity)obj;
+
+		if (Objects.equals(_id, bqIdentity._id)) {
+			return true;
+		}
+
+		return false;
+	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
@@ -52,6 +72,11 @@ public class BQIdentity implements Persistable<String> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getUserId() {
 		return _userId;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(_id);
 	}
 
 	@Override

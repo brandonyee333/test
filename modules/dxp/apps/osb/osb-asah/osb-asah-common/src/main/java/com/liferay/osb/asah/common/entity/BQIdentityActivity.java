@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -27,6 +28,25 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class BQIdentityActivity implements Persistable<String> {
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof BQIdentityActivity)) {
+			return false;
+		}
+
+		BQIdentityActivity bqIdentityActivity = (BQIdentityActivity)obj;
+
+		if (Objects.equals(_id, bqIdentityActivity._id)) {
+			return true;
+		}
+
+		return false;
+	}
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long getChannelId() {
@@ -57,6 +77,11 @@ public class BQIdentityActivity implements Persistable<String> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getIdentityId() {
 		return _identityId;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(_id);
 	}
 
 	@Override
