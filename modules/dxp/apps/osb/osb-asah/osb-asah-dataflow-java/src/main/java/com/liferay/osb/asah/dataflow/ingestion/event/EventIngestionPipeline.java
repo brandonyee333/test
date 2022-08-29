@@ -648,10 +648,10 @@ public class EventIngestionPipeline {
 		}
 
 		if ((interactionsCount < 1) && (pageViewsCount < 2)) {
-			tableRow.set("bounced", 1);
+			tableRow.set("bounce", 1);
 		}
 		else {
-			tableRow.set("bounced", 0);
+			tableRow.set("bounce", 0);
 		}
 
 		tableRow.set("browserName", context.get("browserName"));
