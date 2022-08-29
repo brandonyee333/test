@@ -14,11 +14,17 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.BQIdentity;
+import com.liferay.osb.asah.common.model.MetricType;
+
+import java.time.LocalDate;
 
 /**
- * @author Marcellus Tavares
+ * @author Ivica Cardic
  */
-public interface BQIdentityRepository
-	extends CustomBQIdentityRepository, Repository<BQIdentity, String> {
+public interface CustomBQIdentityRepository {
+
+	public long getIndividualsCount(
+		Boolean active, Long channelId, LocalDate localDate,
+		MetricType metricType);
+
 }
