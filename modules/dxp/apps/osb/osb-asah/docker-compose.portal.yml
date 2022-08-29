@@ -1,7 +1,7 @@
 services:
-    osbasahdxpserver73:
-        build: ./osb-asah-dxp-server/7.3
-        container_name: osbasahdxpserver73
+    osbasahdxpserver74:
+        build: ./osb-asah-dxp-server/7.4
+        container_name: osbasahdxpserver74
         env_file:
             - common.env
             - local.env
