@@ -36,7 +36,8 @@ public enum CustomAssetMetricType implements MetricType {
 		TrendClassification.Order.ASC),
 	SUBMISSIONS(
 		"submissions", "submissionsMetric", TrendClassification.Order.ASC),
-	VIEWS("views", "viewsMetric", TrendClassification.Order.ASC);
+	VIEWS("views", "viewsMetric", TrendClassification.Order.ASC),
+	VISITORS("visitors", "visitorsMetric", TrendClassification.Order.ASC);
 
 	public static CustomAssetMetricType of(String name) {
 		return Optional.ofNullable(
