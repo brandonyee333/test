@@ -16,10 +16,14 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetMetric;
+import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +37,11 @@ import org.springframework.stereotype.Component;
 public class MetricDog {
 
 	@Autowired
-	public MetricDog() {
+	public MetricDog(List<AssetMetricRepository> assetMetricRepositories) {
+		assetMetricRepositories.forEach(
+			assetMetricAssetMetricRepository -> _assetMetricRepositoryMap.put(
+				assetMetricAssetMetricRepository.getAssetType(),
+				assetMetricAssetMetricRepository));
 	}
 
 	public <T extends AssetMetric> T getAssetMetric(
@@ -45,7 +53,20 @@ public class MetricDog {
 	public <T extends AssetMetric> T getAssetMetric(
 		SearchQueryContext searchQueryContext, Set<String> selectedMetrics) {
 
-		return null;
+		AssetMetricRepository<T> assetMetricRepository =
+			(AssetMetricRepository<T>)_assetMetricRepositoryMap.get(
+				searchQueryContext.getAssetType());
+
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					searchQueryContext.getAssetType());
+		}
+
+		return assetMetricRepository.getAssetMetric(
+			searchQueryContext.getAssetId(),
+			Long.valueOf(searchQueryContext.getChannelId()), selectedMetrics,
+			searchQueryContext.getTimeRange());
 	}
 
 	public <T extends AssetMetric> List<T> getAssetMetrics(
@@ -85,5 +106,8 @@ public class MetricDog {
 
 		return Collections.emptyList();
 	}
+
+	private final Map<AssetType, AssetMetricRepository>
+		_assetMetricRepositoryMap = new HashMap<>();
 
 }
