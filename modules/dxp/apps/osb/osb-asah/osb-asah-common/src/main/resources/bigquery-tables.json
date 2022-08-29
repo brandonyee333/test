@@ -725,7 +725,7 @@
 			{
 				"mode": "REQUIRED",
 				"name": "identityId",
-				"type": "INT64"
+				"type": "STRING"
 			}
 		]
 	},
@@ -734,6 +734,11 @@
 			"channelId"
 		],
 		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "createDate",
+				"type": "TIMESTAMP"
+			},
 			{
 				"mode": "REQUIRED",
 				"name": "activitiesCount",
@@ -746,12 +751,22 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "identityId",
-				"type": "INT64"
+				"type": "STRING"
 			},
 			{
 				"mode": "NULLABLE",
 				"name": "lastActivityDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
 				"type": "TIMESTAMP"
 			},
 			{
@@ -768,6 +783,11 @@
 			"emailAddressHashed"
 		],
 		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "createDate",
+				"type": "TIMESTAMP"
+			},
 			{
 				"mode": "REQUIRED",
 				"name": "emailAddress",
