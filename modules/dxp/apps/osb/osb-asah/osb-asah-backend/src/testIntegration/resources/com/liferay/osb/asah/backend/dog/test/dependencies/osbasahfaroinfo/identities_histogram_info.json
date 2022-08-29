@@ -1,0 +1,26 @@
+[
+	{
+		"createDate": "${now-3d}",
+		"emailAddressHashed": "test1@liferay.com",
+		"id": "1"
+	},
+	{
+		"createDate": "${now-5d}",
+		"emailAddressHashed": "test2@liferay.com",
+		"id": "2"
+	},
+	{
+		"createDate": "${now-11d}",
+		"emailAddressHashed": "test3@liferay.com",
+		"id": "3"
+	},
+	{
+		"createDate": "${now-36d}",
+		"emailAddressHashed": "test4@liferay.com",
+		"id": "4"
+	},
+	{
+		"createDate": "${now-11d}",
+		"id": "5"
+	}
+]

@@ -1,78 +1,26 @@
 [
 	{
-		"dateCreated": "${now-2d}",
-		"demographics": {
-			"email": [
-				{
-					"name": "email",
-					"value": "test1@liferay.com"
-				}
-			]
-		},
-		"firstEnrichmentDate": "${now-2d}",
-		"id": "1",
-		"lastActivityDates": [
-			{
-				"channelId": "1",
-				"lastActivityDate": "${now-2d}"
-			}
-		]
+		"createDate": "${now-2d}",
+		"emailAddress": "test1@liferay.com",
+		"emailAddressHashed": "test1@liferay.com",
+		"id": "1"
 	},
 	{
-		"dateCreated": "${now-25d}",
-		"demographics": {
-			"email": [
-				{
-					"name": "email",
-					"value": "test2@liferay.com"
-				}
-			]
-		},
-		"firstEnrichmentDate": "${now-4d}",
-		"id": "2",
-		"lastActivityDates": [
-			{
-				"channelId": "1",
-				"lastActivityDate": "${now-4d}"
-			}
-		]
+		"createDate": "${now-4d}",
+		"emailAddress": "test2@liferay.com",
+		"emailAddressHashed": "test2@liferay.com",
+		"id": "2"
 	},
 	{
-		"dateCreated": "${now-20d}",
-		"demographics": {
-			"email": [
-				{
-					"name": "email",
-					"value": "test3@liferay.com"
-				}
-			]
-		},
-		"firstEnrichmentDate": "${now-10d}",
+		"createDate": "${now-10d}",
+		"emailAddress": "test3@liferay.com",
+		"emailAddressHashed": "test3@liferay.com",
 		"id": "3"
 	},
 	{
-		"dateCreated": "${now-35d}",
-		"demographics": {
-			"email": [
-				{
-					"name": "email",
-					"value": "test4@liferay.com"
-				}
-			]
-		},
-		"firstEnrichmentDate": "${now-35d}",
-		"id": "4",
-		"lastActivityDates": [
-			{
-				"channelId": "1",
-				"lastActivityDate": "${now-35d}"
-			}
-		]
-	},
-	{
-		"dateCreated": "${now-10d}",
-		"demographics": {
-		},
-		"id": "5"
+		"createDate": "${now-35d}",
+		"emailAddress": "test4@liferay.com",
+		"emailAddressHashed": "test4@liferay.com",
+		"id": "4"
 	}
 ]
