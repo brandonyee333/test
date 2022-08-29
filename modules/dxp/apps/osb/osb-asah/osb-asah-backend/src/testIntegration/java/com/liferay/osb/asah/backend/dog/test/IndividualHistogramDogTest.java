@@ -20,7 +20,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
-import com.liferay.osb.asah.backend.model.IndividualMetricType;
+import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;

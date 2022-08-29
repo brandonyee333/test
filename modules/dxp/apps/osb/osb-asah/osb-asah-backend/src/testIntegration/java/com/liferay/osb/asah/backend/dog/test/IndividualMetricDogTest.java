@@ -19,8 +19,11 @@ import com.liferay.osb.asah.backend.dog.IndividualMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.IndividualMetric;
-import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.common.model.IndividualMetricType;
+import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityChannelRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -28,7 +31,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import java.util.HashSet;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,18 @@ public class IndividualMetricDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@Disabled
+	@RepositoryResource(
+		repositoryClass = BQIdentityRepository.class,
+		resourcePath = "osbasahfaroinfo/identities_histogram_info.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQIdentityActivityRepository.class,
+		resourcePath = "osbasahfaroinfo/identity_activities_histogram_info.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQIdentityChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/identity_channels_histogram_info.json"
+	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
