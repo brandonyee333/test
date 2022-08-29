@@ -1578,7 +1578,6 @@ public class CommerceOrderLocalServiceImpl
 		return commerceOrderPersistence.update(commerceOrder);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public CommerceOrder updateShippingAddress(
 			long commerceOrderId, String name, String description,
