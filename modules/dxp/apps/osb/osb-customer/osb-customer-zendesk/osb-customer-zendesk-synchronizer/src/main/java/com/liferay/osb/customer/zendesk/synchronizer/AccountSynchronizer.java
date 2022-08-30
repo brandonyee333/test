@@ -546,35 +546,33 @@ public class AccountSynchronizer {
 
 		criteria.add("status<" + ZendeskTicketConstants.STATUS_SOLVED);
 
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		if (zendeskTickets.isEmpty()) {
+			return;
+		}
+
 		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
 			getDefaultUserEmail(accountEntry.getAccountEntryId()));
 
 		checkAndAddOrganizationMembership(
 			zendeskUser.getZendeskUserId(), zendeskOrganizationId);
 
-		List<ZendeskTicket> zendeskTickets =
-			_zendeskTicketWebService.getZendeskTickets(criteria);
-
-		long longTermResolutionId =
-			ZendeskSynchronizerConfigurationValues.
-				ZENDESK_TICKET_LONG_TERM_RESOLUTION_FIELD_ID;
-
 		for (ZendeskTicket zendeskTicket : zendeskTickets) {
 			Map<Long, String> customFields = zendeskTicket.getCustomFields();
 
-			if (!customFields.containsKey(longTermResolutionId)) {
-				customFields.put(
-					longTermResolutionId, "n_a_customer_inactivity");
-			}
+			customFields.putIfAbsent(
+				ZendeskSynchronizerConfigurationValues.
+					ZENDESK_TICKET_LONG_TERM_RESOLUTION_FIELD_ID,
+				"n_a_customer_inactivity");
 
 			zendeskTicket.setCustomFields(customFields);
 			zendeskTicket.setRequesterId(zendeskUser.getZendeskUserId());
 			zendeskTicket.setStatus("solved");
 		}
 
-		if (!zendeskTickets.isEmpty()) {
-			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
-		}
+		_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 	}
 
 	public void update(Account account, AccountEntry accountEntry)
