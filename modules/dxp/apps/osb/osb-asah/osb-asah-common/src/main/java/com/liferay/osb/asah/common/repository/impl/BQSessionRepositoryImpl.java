@@ -77,11 +77,9 @@ public class BQSessionRepositoryImpl
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId) {
 
-		String tableName = "BQSession";
-
 		Field<Integer> field = DSL.when(
 			DSL.field(
-				_getFieldName("sessionStart", tableName)
+				_getFieldName("sessionStart", "BQSession")
 			).gt(
 				_dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(), zoneId.toString())
@@ -90,7 +88,7 @@ public class BQSessionRepositoryImpl
 		).otherwise(
 			0
 		).as(
-			"groupByField"
+			"rowNumber"
 		);
 
 		return _queryExecutor.queryForList(
@@ -101,6 +99,13 @@ public class BQSessionRepositoryImpl
 					DSL.field("bounce", Integer.class)
 				).as(
 					"bounces"
+				),
+				DSL.avg(
+					DSL.epoch(DSL.field("AGE(sessionEnd, sessionStart)"))
+				).multiply(
+					1000
+				).as(
+					"sessionduration"
 				),
 				DSL.count(
 				).as(

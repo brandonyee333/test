@@ -108,7 +108,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 
 		String tableName = _getTableName(timeRange);
 
-		Field<Integer> field = DSL.when(
+		Field<Integer> rowNumberField = DSL.when(
 			DSL.field(
 				_getFieldName("eventDate", tableName)
 			).gt(
@@ -119,14 +119,14 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		).otherwise(
 			0
 		).as(
-			"groupByField"
+			"rowNumber"
 		);
 
 		return _queryExecutor.queryForList(
 			SiteVisitorBehaviorMetric.class,
 			(SelectFinalStep)_joinWithIdentityTable(
 				dslContext.select(
-					field, _getKnownVisitorsField(true),
+					rowNumberField, _getKnownVisitorsField(true),
 					_getUniqueVisitorsField(tableName)
 				).from(
 					tableName
@@ -136,9 +136,11 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 				_createWhereClause(
 					null, channelId, includePrevious, timeRange, null, zoneId)
 			).groupBy(
-				field
+				rowNumberField
 			).orderBy(
-				field.desc()
+				DSL.field(
+					"rowNumber"
+				).desc()
 			));
 	}
 
@@ -256,20 +258,23 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		String canonicalUrl, Long channelId, String tableName,
 		TimeRange timeRange, String title, ZoneId zoneId) {
 
-		Condition condition = DSL.and(
-			DSL.field(
-				_getFieldName("channelId", tableName)
-			).eq(
-				channelId
-			),
-			DSL.field(
-				_getFieldName("eventDate", tableName)
-			).between(
-				_dslHelper.getDateParam(
-					timeRange.getStartLocalDateTime(), zoneId.toString()),
-				_dslHelper.getDateParam(
-					timeRange.getEndLocalDateTime(), zoneId.toString())
-			));
+		Condition condition = DSL.field(
+			_getFieldName("eventDate", tableName)
+		).between(
+			_dslHelper.getDateParam(
+				timeRange.getStartLocalDateTime(), zoneId.toString()),
+			_dslHelper.getDateParam(
+				timeRange.getEndLocalDateTime(), zoneId.toString())
+		);
+
+		if (channelId != null) {
+			condition = condition.and(
+				DSL.field(
+					_getFieldName("channelId", tableName)
+				).eq(
+					channelId
+				));
+		}
 
 		if (canonicalUrl != null) {
 			condition = condition.and(

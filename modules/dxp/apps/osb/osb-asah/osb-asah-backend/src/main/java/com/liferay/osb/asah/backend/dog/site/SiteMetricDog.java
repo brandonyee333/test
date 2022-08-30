@@ -117,6 +117,12 @@ public class SiteMetricDog {
 					String.valueOf(
 						sessionSiteVisitorBehaviorMetric.getBounceRate())));
 
+			_setMetricValue(
+				siteMetric.getSessionsMetric(),
+				Double.parseDouble(
+					String.valueOf(
+						sessionSiteVisitorBehaviorMetric.getSessions())));
+
 			if (searchQueryContext.isIncludePrevious() &&
 				(sessionSiteVisitorBehaviorMetrics.size() > 1)) {
 
@@ -128,6 +134,13 @@ public class SiteMetricDog {
 					Double.parseDouble(
 						String.valueOf(
 							sessionSiteVisitorBehaviorMetric.getSessions())));
+
+				_setMetricValue(
+					siteMetric.getSessionDurationMetric(),
+					Double.parseDouble(
+						String.valueOf(
+							sessionSiteVisitorBehaviorMetric.
+								getSessionDuration())));
 
 				_setMetricPreviousValue(
 					siteMetric.getBounceRateMetric(),
