@@ -27,12 +27,16 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
+
+import org.springframework.lang.Nullable;
 
 /**
  * @author Ivica Cardic
@@ -46,7 +50,7 @@ public class BQIdentityRepositoryImpl
 
 	@Override
 	public long getIndividualsCount(
-		Boolean active, Long channelId, LocalDate localDate,
+		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
@@ -59,7 +63,7 @@ public class BQIdentityRepositoryImpl
 				"identity"
 			));
 
-		if ((active != null) && active) {
+		if (BooleanUtils.isTrue(active)) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"BQIdentityChannel"
@@ -147,7 +151,7 @@ public class BQIdentityRepositoryImpl
 				).isNull());
 		}
 
-		if ((active != null) && active) {
+		if (BooleanUtils.isTrue(active)) {
 			LocalDateTime nowLocalDateTime = LocalDateTime.now();
 
 			conditions.add(
