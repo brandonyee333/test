@@ -46,6 +46,8 @@ import java.time.ZoneOffset;
 
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -102,7 +104,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 				CustomAssetMetricType.VIEWS,
 				new SearchQueryContext() {
 					{
-						setAssetId("e131fabc");
+						setAssetId(DigestUtils.sha256Hex("Adefault1"));
 						setAssetType(AssetType.CUSTOM);
 						setChannelId("1");
 						setIncludePrevious(Boolean.TRUE);
@@ -117,8 +119,8 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		HistogramMetric lastHistogramMetric = histogramMetrics.get(
 			histogramMetrics.size() - 1);
 
-		Assertions.assertEquals(7, lastHistogramMetric.getPreviousValue());
-		Assertions.assertEquals(4, lastHistogramMetric.getValue());
+		Assertions.assertEquals(0, lastHistogramMetric.getPreviousValue());
+		Assertions.assertEquals(2, lastHistogramMetric.getValue());
 	}
 
 	@SQLResource(

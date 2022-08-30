@@ -26,7 +26,7 @@ create or replace view BQCustomAsset as (
 																		   and category.name = 'category'
 																	   )
 
-												where BQEvent.applicationid = 'Custom' and BQEvent.channelid = 572586405338076359 and assetId.value is not null
+												where BQEvent.applicationid = 'Custom' and assetId.value is not null
 											),
 											CustomAssetFinalizedEvent AS
 												(

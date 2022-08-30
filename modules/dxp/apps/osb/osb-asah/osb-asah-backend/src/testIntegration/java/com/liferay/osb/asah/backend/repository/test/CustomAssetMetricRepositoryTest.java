@@ -22,6 +22,8 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,27 +36,15 @@ public class CustomAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase {
 
 	@SQLResource(
-		resourcePath = "custom_asset_metric_read_time_histogram_last_7_days.sql"
-	)
-	@Test
-	public void testGetReadingTimeHistogramMetricsLast7days() {
-		assertHistogramMetrics(
-			SetUtil.of((double)750),
-			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.DAY,
-				CustomAssetMetricType.READING_TIME, TimeRange.LAST_7_DAYS));
-	}
-
-	@SQLResource(
 		resourcePath = "custom_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
 	public void testGetViewsHistogramMetricsLast24Hours() {
 		assertHistogramMetrics(
-			SetUtil.of((double)1, (double)2, (double)4),
+			SetUtil.of(1D, 2D, 4D, 7D),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.HOUR, CustomAssetMetricType.VIEWS,
-				TimeRange.LAST_24_HOURS));
+				DigestUtils.sha256Hex("Adefault1"), 1L, Interval.HOUR,
+				CustomAssetMetricType.VIEWS, TimeRange.LAST_24_HOURS));
 	}
 
 	@SQLResource(
@@ -63,8 +53,8 @@ public class CustomAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsHistogramMetricsLast24HoursDifferentTimezone() {
 		assertHistogramMetricsDifferentTimezone(
-			"e131fabc", 1L, CustomAssetMetricType.VIEWS, 3,
-			"America/Fortaleza");
+			DigestUtils.sha256Hex("Adefault1"), 1L, CustomAssetMetricType.VIEWS,
+			3, "America/Fortaleza");
 	}
 
 	@Override

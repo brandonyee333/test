@@ -1,2 +1,0 @@
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, readTime) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 500);
-INSERT INTO BQCustomAsset (assetPrimaryKey, channelId, eventDate, readTime) VALUES ('e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 1000);
