@@ -102,10 +102,8 @@ public class ZendeskConverter {
 			"translations");
 
 		if (translationsJSONArray != null) {
-			List<ZendeskTranslation> zendeskTranslations =
-				toZendeskTranslations(translationsJSONArray);
-
-			zendeskArticle.setZendeskTranslations(zendeskTranslations);
+			zendeskArticle.setZendeskTranslations(
+				toZendeskTranslations(translationsJSONArray));
 		}
 
 		return zendeskArticle;
@@ -117,17 +115,13 @@ public class ZendeskConverter {
 		List<ZendeskArticle> zendeskArticles = new ArrayList<>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			zendeskArticles.add(toZendeskArticle(jsonObject));
+			zendeskArticles.add(toZendeskArticle(jsonArray.getJSONObject(i)));
 		}
 
 		return zendeskArticles;
 	}
 
-	public ZendeskAttachment toZendeskAttachment(JSONObject jsonObject)
-		throws PortalException {
-
+	public ZendeskAttachment toZendeskAttachment(JSONObject jsonObject) {
 		ZendeskAttachment zendeskAttachment = new ZendeskAttachment();
 
 		zendeskAttachment.setFileName(jsonObject.getString("file_name"));
@@ -136,15 +130,12 @@ public class ZendeskConverter {
 		return zendeskAttachment;
 	}
 
-	public List<ZendeskAttachment> toZendeskAttachments(JSONArray jsonArray)
-		throws PortalException {
-
+	public List<ZendeskAttachment> toZendeskAttachments(JSONArray jsonArray) {
 		List<ZendeskAttachment> zendeskAttachments = new ArrayList<>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			zendeskAttachments.add(toZendeskAttachment(jsonObject));
+			zendeskAttachments.add(
+				toZendeskAttachment(jsonArray.getJSONObject(i)));
 		}
 
 		return zendeskAttachments;
@@ -156,9 +147,8 @@ public class ZendeskConverter {
 		List<ZendeskCategory> zendeskCategories = new ArrayList<>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			zendeskCategories.add(toZendeskCategory(jsonObject));
+			zendeskCategories.add(
+				toZendeskCategory(jsonArray.getJSONObject(i)));
 		}
 
 		return zendeskCategories;
@@ -189,10 +179,8 @@ public class ZendeskConverter {
 		JSONArray jsonArray = jsonObject.getJSONArray("translations");
 
 		if (jsonArray != null) {
-			List<ZendeskTranslation> zendeskTranslations =
-				toZendeskTranslations(jsonArray);
-
-			zendeskCategory.setZendeskTranslations(zendeskTranslations);
+			zendeskCategory.setZendeskTranslations(
+				toZendeskTranslations(jsonArray));
 		}
 
 		return zendeskCategory;
@@ -257,10 +245,8 @@ public class ZendeskConverter {
 			new ArrayList<>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
 			zendeskOrganizationMemberships.add(
-				toZendeskOrganizationMembership(jsonObject));
+				toZendeskOrganizationMembership(jsonArray.getJSONObject(i)));
 		}
 
 		return zendeskOrganizationMemberships;
@@ -291,10 +277,8 @@ public class ZendeskConverter {
 		JSONArray jsonArray = jsonObject.getJSONArray("translations");
 
 		if (jsonArray != null) {
-			List<ZendeskTranslation> zendeskTranslations =
-				toZendeskTranslations(jsonArray);
-
-			zendeskSection.setZendeskTranslations(zendeskTranslations);
+			zendeskSection.setZendeskTranslations(
+				toZendeskTranslations(jsonArray));
 		}
 
 		return zendeskSection;
@@ -306,9 +290,7 @@ public class ZendeskConverter {
 		List<ZendeskSection> zendeskSections = new ArrayList<>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			zendeskSections.add(toZendeskSection(jsonObject));
+			zendeskSections.add(toZendeskSection(jsonArray.getJSONObject(i)));
 		}
 
 		return zendeskSections;
@@ -331,9 +313,8 @@ public class ZendeskConverter {
 					"value");
 
 				if (Validator.isNotNull(customFieldValue)) {
-					long customFieldId = customFieldJSONObject.getLong("id");
-
-					customFields.put(customFieldId, customFieldValue);
+					customFields.put(
+						customFieldJSONObject.getLong("id"), customFieldValue);
 				}
 			}
 
@@ -364,9 +345,7 @@ public class ZendeskConverter {
 		return zendeskTicket;
 	}
 
-	public ZendeskTicketComment toZendeskTicketComment(JSONObject jsonObject)
-		throws PortalException {
-
+	public ZendeskTicketComment toZendeskTicketComment(JSONObject jsonObject) {
 		ZendeskTicketComment zendeskTicketComment = new ZendeskTicketComment();
 
 		zendeskTicketComment.setZendeskTicketCommentId(
@@ -375,25 +354,21 @@ public class ZendeskConverter {
 		JSONArray jsonArray = jsonObject.getJSONArray("attachments");
 
 		if (jsonArray != null) {
-			List<ZendeskAttachment> zendeskAttachments = toZendeskAttachments(
-				jsonArray);
-
-			zendeskTicketComment.setZendeskAttachments(zendeskAttachments);
+			zendeskTicketComment.setZendeskAttachments(
+				toZendeskAttachments(jsonArray));
 		}
 
 		return zendeskTicketComment;
 	}
 
 	public List<ZendeskTicketComment> toZendeskTicketComments(
-			JSONArray jsonArray)
-		throws PortalException {
+		JSONArray jsonArray) {
 
 		List<ZendeskTicketComment> zendeskTicketComments = new ArrayList<>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			zendeskTicketComments.add(toZendeskTicketComment(jsonObject));
+			zendeskTicketComments.add(
+				toZendeskTicketComment(jsonArray.getJSONObject(i)));
 		}
 
 		return zendeskTicketComments;
@@ -417,9 +392,8 @@ public class ZendeskConverter {
 			jsonArray.length());
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			zendeskTranslations.add(toZendeskTranslation(jsonObject));
+			zendeskTranslations.add(
+				toZendeskTranslation(jsonArray.getJSONObject(i)));
 		}
 
 		return zendeskTranslations;
@@ -452,15 +426,13 @@ public class ZendeskConverter {
 	}
 
 	public List<ZendeskUserIdentity> toZendeskUserIdentities(
-			JSONArray jsonArray)
-		throws PortalException {
+		JSONArray jsonArray) {
 
 		List<ZendeskUserIdentity> zendeskUserIdentities = new ArrayList<>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			zendeskUserIdentities.add(toZendeskUserIdentity(jsonObject));
+			zendeskUserIdentities.add(
+				toZendeskUserIdentity(jsonArray.getJSONObject(i)));
 		}
 
 		return zendeskUserIdentities;
@@ -478,15 +450,11 @@ public class ZendeskConverter {
 		return zendeskUserIdentity;
 	}
 
-	public List<ZendeskUser> toZendeskUsers(JSONArray jsonArray)
-		throws PortalException {
-
+	public List<ZendeskUser> toZendeskUsers(JSONArray jsonArray) {
 		List<ZendeskUser> zendeskUsers = new ArrayList<>();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			zendeskUsers.add(toZendeskUser(jsonObject));
+			zendeskUsers.add(toZendeskUser(jsonArray.getJSONObject(i)));
 		}
 
 		return zendeskUsers;
