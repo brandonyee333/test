@@ -15,6 +15,13 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQSession;
+import com.liferay.osb.asah.common.model.Interval;
+import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
+import com.liferay.osb.asah.common.model.TimeRange;
+
+import java.time.ZoneId;
+
+import java.util.List;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -24,4 +31,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface BQSessionRepository
 	extends CustomBQSessionRepository,
 			PagingAndSortingRepository<BQSession, String> {
+
+	public List<SiteVisitorBehaviorMetric>
+		getSiteVisitorBehaviorMetricsGroupedBySessionStart(
+			Long channelId, boolean includePrevious, Interval interval,
+			TimeRange timeRange, ZoneId zoneId);
+
 }

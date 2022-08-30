@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQSession;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.CustomBQSessionRepository;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.SelectFinalStep;
@@ -120,6 +122,39 @@ public class BQSessionRepositoryImpl
 				field
 			).orderBy(
 				field.desc()
+			));
+	}
+
+	public List<SiteVisitorBehaviorMetric>
+		getSiteVisitorBehaviorMetricsGroupedBySessionStart(
+			Long channelId, boolean includePrevious, Interval interval,
+			TimeRange timeRange, ZoneId zoneId) {
+
+		Field sessionStartField = _dslHelper.dateTrunc(
+			DatePart.valueOf(interval.name()),
+			_dslHelper.getDateAtTimeZoneField(
+				"BQSession.sessionStart", zoneId.toString()));
+
+		sessionStartField = sessionStartField.as("eventdate");
+
+		return _queryExecutor.queryForList(
+			SiteVisitorBehaviorMetric.class,
+			_dslContext.select(
+				sessionStartField,
+				DSL.avg(
+					DSL.epoch(DSL.field("AGE(sessionEnd, sessionStart)"))
+				).multiply(
+					1000
+				).as(
+					"sessionduration"
+				)
+			).from(
+				"BQSession"
+			).where(
+				_createWhereClause(
+					channelId, includePrevious, timeRange, zoneId)
+			).groupBy(
+				sessionStartField
 			));
 	}
 

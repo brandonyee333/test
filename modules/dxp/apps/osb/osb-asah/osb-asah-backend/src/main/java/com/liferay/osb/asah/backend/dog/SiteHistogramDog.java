@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQPageRepository;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
 import java.time.Clock;
 import java.time.ZoneId;
@@ -50,11 +51,26 @@ public class SiteHistogramDog {
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 		ZoneId zoneId = _timeZoneDog.getZoneId();
 
-		List<SiteVisitorBehaviorMetric> siteVisitorBehaviorMetrics =
-			_bqPageRepository.getSiteVisitorBehaviorMetricsGroupedByEventDate(
-				Long.parseLong(searchQueryContext.getChannelId()),
-				searchQueryContext.isIncludePrevious(),
-				searchQueryContext.getInterval(), timeRange, zoneId);
+		List<SiteVisitorBehaviorMetric> siteVisitorBehaviorMetrics = null;
+
+		String siteMetricTypeName = siteMetricType.name();
+
+		if (siteMetricTypeName.equals("SESSION_DURATION")) {
+			siteVisitorBehaviorMetrics =
+				_bqSessionRepository.
+					getSiteVisitorBehaviorMetricsGroupedBySessionStart(
+						Long.parseLong(searchQueryContext.getChannelId()),
+						searchQueryContext.isIncludePrevious(),
+						searchQueryContext.getInterval(), timeRange, zoneId);
+		}
+		else {
+			siteVisitorBehaviorMetrics =
+				_bqPageRepository.
+					getSiteVisitorBehaviorMetricsGroupedByEventDate(
+						Long.parseLong(searchQueryContext.getChannelId()),
+						searchQueryContext.isIncludePrevious(),
+						searchQueryContext.getInterval(), timeRange, zoneId);
+		}
 
 		if (siteVisitorBehaviorMetrics.isEmpty()) {
 			return new HistogramMetricBag();
@@ -137,6 +153,11 @@ public class SiteHistogramDog {
 				String.valueOf(siteVisitorBehaviorMetric.getVisitors()));
 		}
 
+		if (siteMetricType == SiteMetricType.SESSION_DURATION) {
+			return Double.parseDouble(
+				String.valueOf(siteVisitorBehaviorMetric.getSessionDuration()));
+		}
+
 		return 0.0;
 	}
 
@@ -152,6 +173,9 @@ public class SiteHistogramDog {
 
 	@Autowired
 	private BQPageRepository _bqPageRepository;
+
+	@Autowired
+	private BQSessionRepository _bqSessionRepository;
 
 	@Autowired
 	private MetricHelper _metricHelper;
