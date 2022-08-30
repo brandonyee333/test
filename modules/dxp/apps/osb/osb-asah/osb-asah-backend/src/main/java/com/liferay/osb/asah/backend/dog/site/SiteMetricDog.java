@@ -25,7 +25,10 @@ import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
 import java.time.ZoneId;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,52 +52,9 @@ public class SiteMetricDog {
 				channelId, includePrevious, timeRange, zoneId);
 
 		if (!pageSiteVisitorBehaviorMetrics.isEmpty()) {
-			SiteVisitorBehaviorMetric pageSiteVisitorBehaviorMetric =
-				pageSiteVisitorBehaviorMetrics.get(0);
-
-			_setMetricValue(
-				siteMetric.getVisitorsMetric(),
-				Double.parseDouble(
-					String.valueOf(
-						pageSiteVisitorBehaviorMetric.getVisitors())));
-
-			_setMetricValue(
-				siteMetric.getKnownVisitorsMetric(),
-				Double.parseDouble(
-					String.valueOf(
-						pageSiteVisitorBehaviorMetric.getKnownVisitors())));
-
-			_setMetricValue(
-				siteMetric.getAnonymousVisitorsMetric(),
-				Double.parseDouble(
-					String.valueOf(
-						pageSiteVisitorBehaviorMetric.getAnonymousVisitors())));
-
-			if (searchQueryContext.isIncludePrevious() &&
-				(pageSiteVisitorBehaviorMetrics.size() > 1)) {
-
-				pageSiteVisitorBehaviorMetric =
-					pageSiteVisitorBehaviorMetrics.get(1);
-
-				_setMetricPreviousValue(
-					siteMetric.getVisitorsMetric(),
-					Double.parseDouble(
-						String.valueOf(
-							pageSiteVisitorBehaviorMetric.getVisitors())));
-
-				_setMetricPreviousValue(
-					siteMetric.getKnownVisitorsMetric(),
-					Double.parseDouble(
-						String.valueOf(
-							pageSiteVisitorBehaviorMetric.getKnownVisitors())));
-
-				_setMetricPreviousValue(
-					siteMetric.getAnonymousVisitorsMetric(),
-					Double.parseDouble(
-						String.valueOf(
-							pageSiteVisitorBehaviorMetric.
-								getAnonymousVisitors())));
-			}
+			_setMetricValues(
+				includePrevious, _pageMetricsFunctionMap,
+				pageSiteVisitorBehaviorMetrics, siteMetric);
 		}
 
 		List<SiteVisitorBehaviorMetric> sessionSiteVisitorBehaviorMetrics =
@@ -102,53 +62,9 @@ public class SiteMetricDog {
 				channelId, includePrevious, timeRange, zoneId);
 
 		if (!sessionSiteVisitorBehaviorMetrics.isEmpty()) {
-			SiteVisitorBehaviorMetric sessionSiteVisitorBehaviorMetric =
-				sessionSiteVisitorBehaviorMetrics.get(0);
-
-			_setMetricValue(
-				siteMetric.getBounceRateMetric(),
-				Double.parseDouble(
-					String.valueOf(
-						sessionSiteVisitorBehaviorMetric.getBounceRate())));
-
-			_setMetricValue(
-				siteMetric.getSessionDurationMetric(),
-				Double.parseDouble(
-					String.valueOf(
-						sessionSiteVisitorBehaviorMetric.
-							getSessionDuration())));
-
-			_setMetricValue(
-				siteMetric.getSessionsMetric(),
-				Double.parseDouble(
-					String.valueOf(
-						sessionSiteVisitorBehaviorMetric.getSessions())));
-
-			if (searchQueryContext.isIncludePrevious() &&
-				(sessionSiteVisitorBehaviorMetrics.size() > 1)) {
-
-				sessionSiteVisitorBehaviorMetric =
-					sessionSiteVisitorBehaviorMetrics.get(1);
-
-				_setMetricPreviousValue(
-					siteMetric.getBounceRateMetric(),
-					Double.parseDouble(
-						String.valueOf(
-							sessionSiteVisitorBehaviorMetric.getBounceRate())));
-
-				_setMetricValue(
-					siteMetric.getSessionDurationMetric(),
-					Double.parseDouble(
-						String.valueOf(
-							sessionSiteVisitorBehaviorMetric.
-								getSessionDuration())));
-
-				_setMetricPreviousValue(
-					siteMetric.getSessionsMetric(),
-					Double.parseDouble(
-						String.valueOf(
-							sessionSiteVisitorBehaviorMetric.getSessions())));
-			}
+			_setMetricValues(
+				includePrevious, _sessionMetricsFunctionMap,
+				sessionSiteVisitorBehaviorMetrics, siteMetric);
 		}
 
 		return siteMetric;
@@ -161,6 +77,82 @@ public class SiteMetricDog {
 	private void _setMetricValue(Metric metric, Double value) {
 		metric.setValue(value);
 	}
+
+	private void _setMetricValues(
+		boolean includePrevious,
+		Map
+			<Function<SiteMetric, Metric>,
+			 Function<SiteVisitorBehaviorMetric, Object>> metricsFunctionMap,
+		List<SiteVisitorBehaviorMetric> siteVisitorBehaviorMetrics,
+		SiteMetric siteMetric) {
+
+		for (Map.Entry
+				<Function<SiteMetric, Metric>,
+				 Function<SiteVisitorBehaviorMetric, Object>> entry :
+					metricsFunctionMap.entrySet()) {
+
+			Function<SiteMetric, Metric> metricFunction = entry.getKey();
+			Function<SiteVisitorBehaviorMetric, Object> metricValueFunction =
+				entry.getValue();
+
+			_setMetricValue(
+				metricFunction.apply(siteMetric),
+				Double.parseDouble(
+					String.valueOf(
+						metricValueFunction.apply(
+							siteVisitorBehaviorMetrics.get(0)))));
+
+			if (includePrevious && (siteVisitorBehaviorMetrics.size() > 1)) {
+				_setMetricPreviousValue(
+					metricFunction.apply(siteMetric),
+					Double.parseDouble(
+						String.valueOf(
+							metricValueFunction.apply(
+								siteVisitorBehaviorMetrics.get(1)))));
+			}
+		}
+	}
+
+	private static final Map
+		<Function<SiteMetric, Metric>,
+		 Function<SiteVisitorBehaviorMetric, Object>> _pageMetricsFunctionMap =
+			new HashMap
+				<Function<SiteMetric, Metric>,
+				 Function<SiteVisitorBehaviorMetric, Object>>() {
+
+				{
+					put(
+						SiteMetric::getAnonymousVisitorsMetric,
+						SiteVisitorBehaviorMetric::getAnonymousVisitors);
+					put(
+						SiteMetric::getKnownVisitorsMetric,
+						SiteVisitorBehaviorMetric::getKnownVisitors);
+					put(
+						SiteMetric::getVisitorsMetric,
+						SiteVisitorBehaviorMetric::getVisitors);
+				}
+			};
+
+	private static final Map
+		<Function<SiteMetric, Metric>,
+		 Function<SiteVisitorBehaviorMetric, Object>>
+			_sessionMetricsFunctionMap =
+				new HashMap
+					<Function<SiteMetric, Metric>,
+					 Function<SiteVisitorBehaviorMetric, Object>>() {
+
+					{
+						put(
+							SiteMetric::getBounceRateMetric,
+							SiteVisitorBehaviorMetric::getBounceRate);
+						put(
+							SiteMetric::getSessionDurationMetric,
+							SiteVisitorBehaviorMetric::getSessionDuration);
+						put(
+							SiteMetric::getSessionsMetric,
+							SiteVisitorBehaviorMetric::getSessions);
+					}
+				};
 
 	@Autowired
 	private BQPageRepository _bqPageRepository;
