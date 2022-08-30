@@ -1,138 +1,216 @@
-create or replace view BQCustomAsset as (
-										with
-											CustomAssetEvent AS (
-												select bqevent.*,
-													   assetId.value as assetid,
-													   formEnabled.value as formenabled,
-													   coalesce(category.value, 'default') as category ,
-
-													   encode(sha256( (assetId.value || coalesce(category.value, 'default') || bqevent.channelid)  ::bytea), 'hex') as assetprimarykey
-
-												from bqevent
-
-														 left join BQEventProperty as assetId
-																   on (
-																			   BQEvent.id = assetid.id
-																		   and assetid.name = 'assetId'
-																	   )
-														 left join BQEventProperty as formEnabled
-																   on (
-																			   BQEvent.id = formEnabled.id
-																		   and formEnabled.name = 'formEnabled'
-																	   )
-														 left join BQEventProperty as category
-																   on (
-																			   BQEvent.id = category.id
-																		   and category.name = 'category'
-																	   )
-
-												where BQEvent.applicationid = 'Custom' and assetId.value is not null
-											),
-											CustomAssetFinalizedEvent AS
-												(
-													SELECT
-														CustomAssetEvent.*
-													FROM
-														CustomAssetEvent
-															INNER JOIN
-														BQSession ON
-																CustomAssetEvent.sessionId = BQSession.id
-												),
-
-											Metrics as (
-												select assetprimarykey, channelId, DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-													   sum( case WHEN eventId = 'assetClicked' then 1 else 0 end ) as clicks,
-													   sum( case WHEN eventId = 'assetViewed' then 1 else 0 end ) as views,
-													   sum( case WHEN eventId = 'assetDownloaded' then 1 else 0 end ) as downloads,
-													   sum( case WHEN eventId = 'assetSubmitted' then 1 else 0 end ) as submissions,
-													   count(distinct(sessionId)) as visitors
-												from
-													CustomAssetEvent
-
-												group by assetprimarykey, normalizedEventDate, channelId
-											),
-											Abandoments as (
-												select assetprimarykey, DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-
-													   greatest (0, sum( case WHEN eventId = 'assetViewed' then 1 else 0 end ) - sum( case WHEN eventId = 'assetSubmitted' then 1 else 0 end )) as abandonments
-												from
-													CustomAssetFinalizedEvent
-												where formenabled = 'true'
-
-												group by assetprimarykey, normalizedEventDate
-
-											),
-											ReadTime as (
-
-
-												select  assetprimarykey, DATE_TRUNC('HOUR', max_event) AS normalizedEventDate, sum(readtime) as readtime  from  (
-																																									SELECT
-
-																																										assetprimarykey,
-																																										sessionid,
-
-																																										max(eventDate) filter (where eventid != 'assetViewed') max_event, min(eventDate) min_event,
-																																										EXTRACT(EPOCH from max(eventDate) filter (where eventid != 'assetViewed') ) - EXTRACT(EPOCH from min(eventDate)) as readtime
-
-																																									FROM CustomAssetFinalizedEvent
-
-																																									group by
-																																										assetprimarykey, sessionId
-																																								) T
-												where DATE_TRUNC('HOUR', max_event) is not null
-												group by assetprimarykey, normalizedEventDate
-
-											),
-											SubmissionTime as (
-
-												select  assetprimarykey, DATE_TRUNC('HOUR', max_event) AS normalizedEventDate, sum(completiontime) as submissionstime  from
-													(
-														SELECT
-
-															assetprimarykey,
-															sessionid,
-
-															min(eventDate) filter (where eventid = 'assetSubmitted') max_event, min(eventDate) filter (where eventid = 'assetViwed') min_event,
-															EXTRACT(EPOCH from max(eventDate) filter (where eventid = 'assetSubmitted')) - EXTRACT(EPOCH from min(eventDate) filter (where eventid = 'assetViwed')) as completiontime
-
-														FROM CustomAssetFinalizedEvent
-
-														group by
-															assetprimarykey, sessionId
-													) T
-												where DATE_TRUNC('HOUR', max_event) is not null
-												group by assetprimarykey, normalizedEventDate
-
-											)
-
-
-
-
-
-
-										select m.assetprimarykey,
-											   m.channelId,
-											   m.normalizedeventdate as eventdate,
-											   a.abandonments,
-											   m.clicks,
-											   m.views,
-											   m.visitors,
-											   m.downloads,
-											   m.submissions,
-											   coalesce (r.readtime,0)  * 1000 as readtime,
-											   coalesce (s.submissionstime,0) * 1000 as submissionstime
-
-
-
-										from Metrics m
-
-
-												 left join Abandoments a on (m.assetprimarykey = a.assetprimarykey and m.normalizedEventDate = a.normalizedEventDate)
-												 left join ReadTime r on (m.assetprimarykey = r.assetprimarykey and m.normalizedEventDate = r.normalizedEventDate)
-												 left join SubmissionTime s on (m.assetprimarykey = s.assetprimarykey and m.normalizedEventDate = s.normalizedEventDate)
-											);
-
-COMMIT;
+CREATE OR REPLACE VIEW BQCustomAsset AS (
+	WITH
+		CustomAssetEvent AS (
+			SELECT
+				BQEvent.*,
+				assetId.value AS assetId,
+				ENCODE(
+					SHA256(
+						(
+							assetId.value ||
+							COALESCE(category.value, 'default') ||
+							BQEvent.channelId
+						)::BYTEA
+					),
+					'hex'
+				) AS assetPrimaryKey,
+				COALESCE(category.value, 'default') AS category,
+				formEnabled.value AS formEnabled
+			FROM
+				BQEvent
+				LEFT JOIN BQEventProperty AS assetId ON (
+					BQEvent.id = assetid.id AND assetid.name = 'assetId'
+				)
+				LEFT JOIN BQEventProperty AS formEnabled ON (
+					BQEvent.id = formEnabled.id AND
+					formEnabled.name = 'formEnabled'
+				)
+				LEFT JOIN BQEventProperty AS category ON (
+					BQEvent.id = category.id AND category.name = 'category'
+				)
+			WHERE
+				BQEvent.applicationid = 'Custom' AND
+				assetId.value IS NOT NULL
+		),
+		CustomAssetFinalizedEvent AS (
+			SELECT
+				CustomAssetEvent.*
+			FROM
+				CustomAssetEvent INNER JOIN BQSession ON
+				    CustomAssetEvent.sessionId = BQSession.id
+		),
+		Metrics AS (
+			SELECT
+				assetPrimaryKey,
+				channelId,
+				SUM(
+				    CASE
+				        WHEN
+							eventId = 'assetClicked'
+						THEN
+							1
+				        ELSE
+							0
+					END
+				) AS clicks,
+				SUM(
+				    CASE
+				        WHEN
+				            eventId = 'assetDownloaded'
+						THEN
+							1
+						ELSE
+						    0
+					END
+				) AS downloads,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
+				SUM(
+					CASE
+					    WHEN
+					        eventId = 'assetSubmitted'
+						THEN
+					        1
+					    ELSE
+					        0
+					END
+				) AS submissions,
+				SUM(
+				    CASE
+				        WHEN
+				            eventId = 'assetViewed'
+						THEN
+				            1
+						ELSE
+						    0
+				        END
+				) AS views,
+				COUNT(DISTINCT(sessionId)) AS sessions
+			FROM
+				CustomAssetEvent
+			GROUP BY
+				assetPrimaryKey,
+				channelId,
+				normalizedEventDate
+		),
+		Abandoments AS (
+			SELECT
+				GREATEST(
+				    0,
+				    SUM(
+				        CASE
+				            WHEN
+				                eventId = 'assetViewed'
+							THEN
+				                1
+				            ELSE
+				                0
+						END
+				    ) -
+				    SUM(
+				        CASE
+				            WHEN
+				                eventId = 'assetSubmitted'
+							THEN
+				                1
+							ELSE
+							    0
+						END
+					)
+				) AS abandonments,
+				assetPrimaryKey,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate
+			FROM
+				CustomAssetFinalizedEvent
+			WHERE
+				formenabled = 'true'
+			GROUP BY
+				assetPrimaryKey,
+				normalizedEventDate
+		),
+		ReadTime AS (
+			SELECT
+				assetPrimaryKey,
+				DATE_TRUNC('HOUR', maxEventDate) AS normalizedEventDate,
+				SUM(readtime) AS readTime
+			FROM
+				(
+					SELECT
+						assetPrimaryKey,
+						MAX(eventDate) filter (where eventid != 'assetViewed') maxEventDate,
+						(
+						    EXTRACT(EPOCH FROM MAX(eventDate) FILTER (WHERE eventId != 'assetViewed')) -
+							EXTRACT(EPOCH FROM MIN(eventDate))
+						) AS readTime,
+						sessionId
+					FROM
+						CustomAssetFinalizedEvent
+					GROUP BY
+						assetPrimaryKey,
+						sessionId
+				 ) TMP
+			WHERE
+				maxEventDate IS NOT NULL
+			GROUP BY
+				assetprimarykey,
+				normalizedEventDate
+		),
+		SubmissionTime AS (
+			SELECT
+				assetPrimaryKey,
+				DATE_TRUNC('HOUR', minSubmissionDate) AS normalizedEventDate,
+				SUM(submissionTime) AS submissionsTime
+			FROM (
+				SELECT
+					assetprimarykey,
+					MIN(eventDate) FILTER (WHERE eventid = 'assetSubmitted') AS minSubmissionDate,
+					sessionid,
+					(
+						EXTRACT(
+							EPOCH FROM MAX(eventDate) FILTER (WHERE eventid = 'assetSubmitted')
+						) -
+						EXTRACT(
+							EPOCH FROM MIN(eventDate) FILTER (WHERE eventid = 'assetViewed')
+						)
+					) AS submissionTime
+				FROM
+				CustomAssetFinalizedEvent
+				GROUP BY
+					assetPrimaryKey,
+					sessionId
+			) TMP
+			WHERE
+				minSubmissionDate IS NOT NULL
+			GROUP BY
+				assetPrimaryKey,
+				normalizedEventDate
+		)
+	SELECT
+		abandonments.abandonments,
+		metrics.assetPrimaryKey,
+		metrics.channelId,
+		metrics.clicks,
+		metrics.downloads,
+		metrics.normalizedEventDate AS eventDate,
+		metrics.submissions,
+		metrics.views,
+		metrics.sessions,
+		COALESCE (readTime.readtime, 0) * 1000 AS readTime,
+		COALESCE (submissionTime.submissionstime, 0) * 1000 AS submissionsTime
+	FROM
+		Metrics metrics
+		LEFT JOIN Abandoments abandonments ON (
+			metrics.assetPrimaryKey = abandonments.assetprimarykey AND
+			metrics.normalizedEventDate = abandonments.normalizedEventDate
+		)
+		LEFT JOIN ReadTime readTime ON (
+			metrics.assetPrimaryKey = readTime.assetPrimaryKey AND
+			metrics.normalizedEventDate = readTime.normalizedEventDate
+		)
+		LEFT JOIN SubmissionTime submissionTime ON (
+			metrics.assetPrimaryKey = submissionTime.assetPrimaryKey AND
+			metrics.normalizedEventDate = submissionTime.normalizedEventDate
+		)
+);
 
 CREATE OR REPLACE VIEW BQFieldMapping AS (
 	WITH

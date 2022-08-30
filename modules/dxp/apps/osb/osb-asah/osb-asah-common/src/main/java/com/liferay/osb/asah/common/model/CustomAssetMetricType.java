@@ -34,10 +34,10 @@ public enum CustomAssetMetricType implements MetricType {
 	READING_TIME(
 		"avgReadTime", "readTime", "readingTimeMetric",
 		TrendClassification.Order.ASC),
+	SESSIONS("sessions", "sessionsMetric", TrendClassification.Order.ASC),
 	SUBMISSIONS(
 		"submissions", "submissionsMetric", TrendClassification.Order.ASC),
-	VIEWS("views", "viewsMetric", TrendClassification.Order.ASC),
-	VISITORS("visitors", "visitorsMetric", TrendClassification.Order.ASC);
+	VIEWS("views", "viewsMetric", TrendClassification.Order.ASC);
 
 	public static CustomAssetMetricType of(String name) {
 		return Optional.ofNullable(

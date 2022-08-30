@@ -120,7 +120,7 @@ public class CustomAssetMetricRepositoryImpl
 		).div(
 			DSL.sum(
 				DSL.field(
-					CustomAssetMetricType.VISITORS.getFieldName(), Long.class))
+					CustomAssetMetricType.SESSIONS.getFieldName(), Long.class))
 		).as(
 			metricType.getFieldName()
 		);
