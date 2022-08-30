@@ -99,6 +99,14 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		return _knownVisitors.longValue();
 	}
 
+	public long getSessionDuration() {
+		if (_sessionDuration == null) {
+			return 0;
+		}
+
+		return _sessionDuration.longValue();
+	}
+
 	public long getSessions() {
 		if (_sessions == null) {
 			return 0;
@@ -157,6 +165,10 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		_knownVisitors = knownVisitors;
 	}
 
+	public void setSessionDuration(BigDecimal sessionDuration) {
+		_sessionDuration = sessionDuration;
+	}
+
 	public void setSessions(BigDecimal sessions) {
 		_sessions = sessions;
 	}
@@ -178,6 +190,7 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 	private Date _eventDate;
 	private BigDecimal _exits;
 	private BigDecimal _knownVisitors;
+	private BigDecimal _sessionDuration;
 	private BigDecimal _sessions;
 	private BigDecimal _timeOnPage;
 	private BigDecimal _views;
