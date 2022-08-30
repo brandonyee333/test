@@ -86,6 +86,34 @@ public class SiteHistogramDogTest
 			0);
 	}
 
+	@SQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
+	@Test
+	public void testGetHistogramMetricBag1() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		searchQueryContext.setInterval(Interval.HOUR.getKey());
+		searchQueryContext.setTimeRange(TimeRange.LAST_24_HOURS);
+
+		Assertions.assertArrayEquals(
+			new double[] {
+				3600000.0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 3600000.0, 0, 0, 179999.0
+			},
+			_getActualValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.SESSION_DURATION)),
+			0.01);
+		Assertions.assertArrayEquals(
+			new double[] {
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 3600000.0, 0, 0,
+				0, 0, 0, 0, 0, 3600000.0, 0, 0
+			},
+			_getPreviousValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.SESSION_DURATION)),
+			0.01);
+	}
+
 	private double[] _getActualValues(HistogramMetricBag histogramMetricBag) {
 		return _getValue(HistogramMetric::getValue, histogramMetricBag);
 	}
