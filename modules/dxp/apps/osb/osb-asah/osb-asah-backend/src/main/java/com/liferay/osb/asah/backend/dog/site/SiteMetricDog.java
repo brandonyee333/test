@@ -147,7 +147,8 @@ public class SiteMetricDog {
 							SiteVisitorBehaviorMetric::getBounceRate);
 						put(
 							SiteMetric::getSessionDurationMetric,
-							SiteVisitorBehaviorMetric::getSessionDuration);
+							SiteVisitorBehaviorMetric::
+								getAverageSessionDuration);
 						put(
 							SiteMetric::getSessionsMetric,
 							SiteVisitorBehaviorMetric::getSessions);

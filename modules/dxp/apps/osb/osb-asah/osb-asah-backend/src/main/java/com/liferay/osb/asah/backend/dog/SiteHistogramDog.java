@@ -148,7 +148,8 @@ public class SiteHistogramDog {
 
 		if (siteMetricType == SiteMetricType.SESSION_DURATION) {
 			return Double.parseDouble(
-				String.valueOf(siteVisitorBehaviorMetric.getSessionDuration()));
+				String.valueOf(
+					siteVisitorBehaviorMetric.getAverageSessionDuration()));
 		}
 
 		if (siteMetricType == SiteMetricType.VISITORS) {

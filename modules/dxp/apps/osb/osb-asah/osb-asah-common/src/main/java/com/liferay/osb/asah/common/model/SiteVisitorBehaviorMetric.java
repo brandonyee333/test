@@ -33,6 +33,14 @@ public class SiteVisitorBehaviorMetric extends VisitorBehaviorMetric {
 		BeanUtils.copyProperties(source, this);
 	}
 
+	public long getAverageSessionDuration() {
+		if (_averageSessionDuration == null) {
+			return 0;
+		}
+
+		return _averageSessionDuration.longValue();
+	}
+
 	public double getBounceRate() {
 		if ((_bounces == null) || (getSessions() <= 0)) {
 			return 0;
@@ -65,12 +73,8 @@ public class SiteVisitorBehaviorMetric extends VisitorBehaviorMetric {
 		return new Date(_eventDate.getTime());
 	}
 
-	public long getSessionDuration() {
-		if (_sessionDuration == null) {
-			return 0;
-		}
-
-		return _sessionDuration.longValue();
+	public void setAverageSessionDuration(BigDecimal averageSessionDuration) {
+		_averageSessionDuration = averageSessionDuration;
 	}
 
 	public void setBounces(BigDecimal bounces) {
@@ -90,13 +94,9 @@ public class SiteVisitorBehaviorMetric extends VisitorBehaviorMetric {
 		}
 	}
 
-	public void setSessionDuration(BigDecimal sessionDuration) {
-		_sessionDuration = sessionDuration;
-	}
-
+	private BigDecimal _averageSessionDuration;
 	private BigDecimal _bounces;
 	private BigDecimal _entrances;
 	private Date _eventDate;
-	private BigDecimal _sessionDuration;
 
 }

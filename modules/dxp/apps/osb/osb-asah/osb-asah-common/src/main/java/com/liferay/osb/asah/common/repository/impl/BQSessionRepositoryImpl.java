@@ -107,7 +107,7 @@ public class BQSessionRepositoryImpl
 				).multiply(
 					1000
 				).as(
-					"sessionduration"
+					"averagesessionduration"
 				),
 				DSL.count(
 				).as(
