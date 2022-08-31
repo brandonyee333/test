@@ -828,11 +828,16 @@ public class CommerceOrderLocalServiceWrapper
 
 	@Override
 	public com.liferay.commerce.model.CommerceOrder resetCommerceOrderShipping(
-			long commerceOrderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		com.liferay.commerce.model.CommerceOrder commerceOrder) {
 
 		return _commerceOrderLocalService.resetCommerceOrderShipping(
-			commerceOrderId);
+			commerceOrder);
+	}
+
+	@Override
+	public void resetCommerceOrderShipping(long shippingAddressId) {
+		_commerceOrderLocalService.resetCommerceOrderShipping(
+			shippingAddressId);
 	}
 
 	@Override
