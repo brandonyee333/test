@@ -62,7 +62,8 @@ public interface QueryExecutor {
 		Class<T> clazz, SelectFinalStep<Record> selectFinalStep);
 
 	public <T> List<T> queryForList(
-		SelectFinalStep<Record1<T>> selectFinalStep);
+		Function<Map<String, Object>, T> rowMapperFunction,
+		SelectFinalStep<? extends Record> selectFinalStep);
 
 	public long queryForLong(SelectFinalStep<Record1<Integer>> selectFinalStep);
 

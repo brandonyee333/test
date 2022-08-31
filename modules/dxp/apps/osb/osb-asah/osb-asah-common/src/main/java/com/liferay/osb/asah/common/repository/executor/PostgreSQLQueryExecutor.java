@@ -26,6 +26,7 @@ import java.util.function.Function;
 
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.Result;
 import org.jooq.SelectFinalStep;
 
 import org.springframework.stereotype.Component;
@@ -56,10 +57,14 @@ public class PostgreSQLQueryExecutor implements QueryExecutor {
 			record -> getObject(getConstructor(clazz), record.intoMap()));
 	}
 
+	@Override
 	public <T> List<T> queryForList(
-		SelectFinalStep<Record1<T>> selectFinalStep) {
+		Function<Map<String, Object>, T> rowMapperFunction,
+		SelectFinalStep<? extends Record> selectFinalStep) {
 
-		return selectFinalStep.fetch(Record1::value1);
+		Result<? extends Record> result = selectFinalStep.fetch();
+
+		return result.map(record -> rowMapperFunction.apply(record.intoMap()));
 	}
 
 	@Override

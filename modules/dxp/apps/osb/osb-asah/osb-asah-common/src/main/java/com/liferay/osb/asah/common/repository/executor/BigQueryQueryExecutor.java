@@ -97,16 +97,17 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 	@Override
 	public <T> List<T> queryForList(
-		SelectFinalStep<Record1<T>> selectFinalStep) {
+		Function<Map<String, Object>, T> rowMapperFunction,
+		SelectFinalStep<? extends Record> selectFinalStep) {
 
 		List<T> list = new ArrayList<>();
 
 		TableResult tableResult = _query(selectFinalStep);
 
 		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			FieldValue fieldValue = fieldValueList.get(0);
-
-			list.add((T)fieldValue.getValue());
+			list.add(
+				rowMapperFunction.apply(
+					_toObjectMap(fieldValueList, tableResult)));
 		}
 
 		return list;
