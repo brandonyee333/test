@@ -25,7 +25,11 @@ import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 
 import java.time.LocalDate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.springframework.stereotype.Component;
 
@@ -47,38 +51,44 @@ public class IndividualMetricDog {
 
 		IndividualMetric individualMetric = new IndividualMetric();
 
-		if (selectedMetrics.contains(
-				IndividualMetricType.ANONYMOUS_INDIVIDUALS.getName())) {
+		List<Consumer<Metric>> consumers = new ArrayList<>();
+		List<MetricType> metricTypes = new ArrayList<>();
 
-			individualMetric.setAnonymousIndividualsMetric(
-				_getIndividualCountMetric(
-					IndividualMetricType.ANONYMOUS_INDIVIDUALS,
-					searchQueryContext));
+		for (String selectedMetric : selectedMetrics) {
+			if (selectedMetric.equals(
+					IndividualMetricType.ANONYMOUS_INDIVIDUALS.getName())) {
+
+				consumers.add(individualMetric::setAnonymousIndividualsMetric);
+				metricTypes.add(IndividualMetricType.ANONYMOUS_INDIVIDUALS);
+			}
+
+			if (selectedMetric.equals(
+					IndividualMetricType.KNOWN_INDIVIDUALS.getName())) {
+
+				consumers.add(individualMetric::setKnownIndividualsMetric);
+				metricTypes.add(IndividualMetricType.KNOWN_INDIVIDUALS);
+			}
+
+			if (selectedMetric.equals(
+					IndividualMetricType.TOTAL_INDIVIDUALS.getName())) {
+
+				consumers.add(individualMetric::setTotalIndividualsMetric);
+				metricTypes.add(IndividualMetricType.TOTAL_INDIVIDUALS);
+			}
+
+			if (selectedMetric.equals("defaultMetric")) {
+				consumers.add(individualMetric::setKnownIndividualsMetric);
+				metricTypes.add(IndividualMetricType.KNOWN_INDIVIDUALS);
+			}
 		}
 
-		if (selectedMetrics.contains(
-				IndividualMetricType.KNOWN_INDIVIDUALS.getName())) {
+		List<Metric> metrics = _getIndividualCountMetrics(
+			metricTypes, searchQueryContext);
 
-			individualMetric.setKnownIndividualsMetric(
-				_getIndividualCountMetric(
-					IndividualMetricType.KNOWN_INDIVIDUALS,
-					searchQueryContext));
-		}
+		for (int i = 0; i < metrics.size(); i++) {
+			Consumer<Metric> metricConsumer = consumers.get(i);
 
-		if (selectedMetrics.contains(
-				IndividualMetricType.TOTAL_INDIVIDUALS.getName())) {
-
-			individualMetric.setTotalIndividualsMetric(
-				_getIndividualCountMetric(
-					IndividualMetricType.TOTAL_INDIVIDUALS,
-					searchQueryContext));
-		}
-
-		if (selectedMetrics.contains("defaultMetric")) {
-			individualMetric.setKnownIndividualsMetric(
-				_getIndividualCountMetric(
-					IndividualMetricType.KNOWN_INDIVIDUALS,
-					searchQueryContext));
+			metricConsumer.accept(metrics.get(i));
 		}
 
 		return individualMetric;
@@ -98,26 +108,46 @@ public class IndividualMetricDog {
 			searchQueryContext.isActive(), channelId, localDate, metricType);
 	}
 
-	private Metric _getIndividualCountMetric(
-		MetricType metricType, SearchQueryContext searchQueryContext) {
+	private List<Metric> _getIndividualCountMetrics(
+		List<MetricType> metricTypes, SearchQueryContext searchQueryContext) {
 
-		Metric metric = new Metric(metricType);
+		List<Metric> metrics = new ArrayList<>();
+
+		Long channelId = null;
+
+		if (searchQueryContext.getChannelId() != null) {
+			channelId = Long.valueOf(searchQueryContext.getChannelId());
+		}
 
 		LocalDate localDate = LocalDate.now(_timeZoneDog.getZoneId());
 
 		LocalDate previousLocalDate = _getPreviousLocalDate(
 			localDate, searchQueryContext.getTimeRange());
 
-		metric.setPreviousValue(
-			getIndividualsCount(
-				previousLocalDate, metricType, searchQueryContext));
-		metric.setPreviousValueKey(previousLocalDate.toString());
+		List<Long> individualsCounts =
+			_bqIdentityRepository.getIndividualsCounts(
+				searchQueryContext.isActive(), channelId,
+				Arrays.asList(localDate, previousLocalDate), metricTypes);
 
-		metric.setValue(
-			getIndividualsCount(localDate, metricType, searchQueryContext));
-		metric.setValueKey(localDate.toString());
+		for (int i = 0; i < metricTypes.size(); i++) {
+			Metric metric = new Metric(metricTypes.get(i));
 
-		return metric;
+			Long previousValue = individualsCounts.get(i + metricTypes.size());
+
+			metric.setPreviousValue(previousValue.doubleValue());
+
+			metric.setPreviousValueKey(previousLocalDate.toString());
+
+			Long value = individualsCounts.get(i);
+
+			metric.setValue(value.doubleValue());
+
+			metric.setValueKey(localDate.toString());
+
+			metrics.add(metric);
+		}
+
+		return metrics;
 	}
 
 	private LocalDate _getPreviousLocalDate(
