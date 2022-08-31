@@ -23,13 +23,17 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.math.BigDecimal;
 
-import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -292,49 +296,38 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		String assetId, Long channelId, Interval interval,
 		MetricType metricType, TimeRange timeRange) {
 
-		Field<OffsetDateTime> eventDateField = DSL.field(
-			"eventDate", OffsetDateTime.class);
+		Field field = DSL.timestamp(
+			_dslHelper.dateTrunc(
+				DatePart.valueOf(interval.name()),
+				_dslHelper.getDateAtTimeZoneField(
+					"eventdate", String.valueOf(_timeZoneDog.getZoneId()))));
 
-		if (interval == Interval.DAY) {
-			eventDateField = DSL.trunc(eventDateField, DatePart.DAY);
-		}
-		else if (interval == Interval.HOUR) {
-			eventDateField = DSL.trunc(eventDateField, DatePart.HOUR);
-		}
-		else if (interval == Interval.MONTH) {
-			eventDateField = DSL.trunc(eventDateField, DatePart.MONTH);
-		}
-		else {
-			eventDateField = DSL.trunc(eventDateField, DatePart.WEEK);
-		}
+		field = field.as("key");
 
-		return dslContext.select(
-			eventDateField, getMetricField(metricType)
-		).from(
-			getTableName()
-		).where(
-			_createWhereClause(assetId, channelId, timeRange)
-		).groupBy(
-			eventDateField
-		).fetch(
-		).map(
-			record -> {
-				OffsetDateTime offsetDateTime = record.value1();
-
+		return _queryExecutor.queryForList(
+			rowMap -> {
 				Metric metric = new Metric(metricType);
 
-				BigDecimal bigDecimal = record.value2();
+				BigDecimal bigDecimal = (BigDecimal)rowMap.get(
+					metricType.getFieldName());
 
 				metric.setValue(bigDecimal.doubleValue());
 
 				return new HistogramMetric(
 					String.valueOf(
-						DateUtil.toUTCLocalDateTime(
-							offsetDateTime.toLocalDateTime(),
-							_timeZoneDog.getZoneId())),
+						DateUtil.toLocalDateTime(
+							(Date)rowMap.get("key"), ZoneOffset.UTC)),
 					metric);
-			}
-		);
+			},
+			dslContext.select(
+				field, getMetricField(metricType)
+			).from(
+				getTableName()
+			).where(
+				_createWhereClause(assetId, channelId, timeRange)
+			).groupBy(
+				field
+			));
 	}
 
 	@Override
@@ -468,6 +461,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	private Condition _createWhereClause(
 		String assetId, Long channelId, TimeRange timeRange) {
 
+		ZoneId zoneId = _timeZoneDog.getZoneId();
+
 		return DSL.and(
 			DSL.field(
 				getAssetIdFieldName()
@@ -482,11 +477,10 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			DSL.field(
 				"eventDate"
 			).between(
-				DateUtil.toUTCLocalDateTime(
-					timeRange.getStartLocalDateTime(),
-					_timeZoneDog.getZoneId()),
-				DateUtil.toUTCLocalDateTime(
-					timeRange.getEndLocalDateTime(), _timeZoneDog.getZoneId())
+				_dslHelper.getDateParam(
+					timeRange.getStartLocalDateTime(), zoneId.toString()),
+				_dslHelper.getDateParam(
+					timeRange.getEndLocalDateTime(), zoneId.toString())
 			));
 	}
 
@@ -563,6 +557,12 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		return assetMetric;
 	}
+
+	@Autowired
+	private DSLHelper _dslHelper;
+
+	@Autowired
+	private QueryExecutor _queryExecutor;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
