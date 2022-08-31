@@ -18,6 +18,8 @@ import com.liferay.osb.asah.common.model.MetricType;
 
 import java.time.LocalDate;
 
+import java.util.List;
+
 import org.springframework.lang.Nullable;
 
 /**
@@ -28,5 +30,9 @@ public interface CustomBQIdentityRepository {
 	public long getIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType);
+
+	public List<Long> getIndividualsCounts(
+		@Nullable Boolean active, @Nullable Long channelId,
+		List<LocalDate> localDates, List<MetricType> metricTypes);
 
 }
