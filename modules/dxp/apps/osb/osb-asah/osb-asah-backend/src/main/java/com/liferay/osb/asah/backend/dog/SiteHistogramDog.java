@@ -53,9 +53,7 @@ public class SiteHistogramDog {
 
 		List<SiteVisitorBehaviorMetric> siteVisitorBehaviorMetrics = null;
 
-		String siteMetricTypeName = siteMetricType.name();
-
-		if (siteMetricTypeName.equals("SESSION_DURATION")) {
+		if (siteMetricType == SiteMetricType.SESSION_DURATION) {
 			siteVisitorBehaviorMetrics =
 				_bqSessionRepository.
 					getSiteVisitorBehaviorMetricsGroupedBySessionStart(
