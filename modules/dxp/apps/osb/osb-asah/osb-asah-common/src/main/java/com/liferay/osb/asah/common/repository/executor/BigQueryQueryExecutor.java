@@ -158,29 +158,19 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	@Override
-	public <T, R> Map<T, R> queryForMap(
+	public Map<String, Object> queryForMap(
 		SelectFinalStep<? extends Record> selectFinalStep) {
-
-		Map<T, R> map = new LinkedHashMap<>();
 
 		TableResult tableResult = _query(selectFinalStep);
 
-		Schema schema = tableResult.getSchema();
+		List<FieldValueList> fieldValueList = IterableUtils.toList(
+			tableResult.getValues());
 
-		FieldList fieldList = schema.getFields();
-
-		Field field = fieldList.get(1);
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			FieldValue keyFieldValue = fieldValueList.get(0);
-			FieldValue valueFieldValue = fieldValueList.get(1);
-
-			map.put(
-				(T)keyFieldValue.getValue(),
-				(R)_getField(valueFieldValue, field));
+		if (fieldValueList.isEmpty()) {
+			return null;
 		}
 
-		return map;
+		return _toObjectMap(fieldValueList.get(0), tableResult);
 	}
 
 	@Override

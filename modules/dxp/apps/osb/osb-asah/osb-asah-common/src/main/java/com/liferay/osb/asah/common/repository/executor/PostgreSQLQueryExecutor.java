@@ -96,17 +96,13 @@ public class PostgreSQLQueryExecutor implements QueryExecutor {
 	}
 
 	@Override
-	public <T, R> Map<T, R> queryForMap(
+	public Map<String, Object> queryForMap(
 		SelectFinalStep<? extends Record> selectFinalStep) {
 
-		Map<T, R> map = new LinkedHashMap<>();
-
-		selectFinalStep.fetch(
-		).forEach(
-			record -> map.put((T)record.get(0), (R)record.get(1))
+		return selectFinalStep.fetchOne(
+		).map(
+			Record::intoMap
 		);
-
-		return map;
 	}
 
 	@Override

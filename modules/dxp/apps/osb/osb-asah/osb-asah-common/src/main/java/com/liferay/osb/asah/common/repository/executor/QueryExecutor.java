@@ -72,7 +72,7 @@ public interface QueryExecutor {
 		SelectFinalStep<? extends Record> selectFinalStep,
 		Function<Object, R> valueMapperFunction);
 
-	public <T, R> Map<T, R> queryForMap(
+	public Map<String, Object> queryForMap(
 		SelectFinalStep<? extends Record> selectFinalStep);
 
 	public <T> Optional<T> queryForObject(
