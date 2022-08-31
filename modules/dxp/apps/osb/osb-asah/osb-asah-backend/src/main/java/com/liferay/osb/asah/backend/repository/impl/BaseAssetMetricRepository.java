@@ -67,15 +67,16 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		String assetId, Long channelId, Set<String> selectedMetrics,
 		TimeRange timeRange) {
 
-		Record record = dslContext.select(
-			_getMetricFields(selectedMetrics)
-		).from(
-			getTableName()
-		).where(
-			_createWhereClause(assetId, channelId, timeRange)
-		).fetchOne();
+		Map<String, Object> recordMap = _queryExecutor.queryForMap(
+			dslContext.select(
+				_getMetricFields(selectedMetrics)
+			).from(
+				getTableName()
+			).where(
+				_createWhereClause(assetId, channelId, timeRange)
+			));
 
-		return _toMetric(record, selectedMetrics);
+		return _toMetric(recordMap, selectedMetrics);
 	}
 
 	@Override
@@ -529,6 +530,35 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).collect(
 			Collectors.toList()
 		);
+	}
+
+	private T _toMetric(
+		Map<String, Object> recordMap, Set<String> selectedMetrics) {
+
+		T assetMetric = createAssetMetric();
+
+		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
+			getAssetMetricSetters();
+
+		for (String selectedMetric : selectedMetrics) {
+			MetricType metricType = getMetricType(selectedMetric);
+
+			Metric metric = new Metric(metricType);
+
+			BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
+				metricType.getFieldName());
+
+			if (metricValueBigDecimal != null) {
+				metric.setValue(metricValueBigDecimal.doubleValue());
+			}
+
+			BiConsumer<T, Metric> metricSetterBiConsumer =
+				assetMetricSetters.get(selectedMetric);
+
+			metricSetterBiConsumer.accept(assetMetric, metric);
+		}
+
+		return assetMetric;
 	}
 
 	private T _toMetric(Record record, Set<String> selectedMetrics) {
