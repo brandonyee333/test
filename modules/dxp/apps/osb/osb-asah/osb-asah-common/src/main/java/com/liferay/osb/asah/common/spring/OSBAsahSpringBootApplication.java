@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.spring;
 import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
@@ -34,6 +35,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootApplication(
 	exclude = {
+		DataSourceHealthContributorAutoConfiguration.class,
 		JooqAutoConfiguration.class,
 		ManagementWebSecurityAutoConfiguration.class,
 		RedisRepositoriesAutoConfiguration.class,
