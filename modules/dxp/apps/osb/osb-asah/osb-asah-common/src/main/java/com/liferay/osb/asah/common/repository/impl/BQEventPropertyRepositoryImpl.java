@@ -138,6 +138,7 @@ public class BQEventPropertyRepositoryImpl
 				selectField, keywords);
 
 		return _queryExecutor.queryForList(
+			rowMap -> (String)rowMap.get("temp"),
 			eventPropertySelectStep.orderBy(
 				selectField.asc()
 			).limit(
