@@ -160,7 +160,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	@Test
 	public void testGetPreviewsHistogramMetricsLast24HoursDifferentTimezone() {
 		assertHistogramMetricsDifferentTimezone(
-			"e131fabc", 1L, DocumentLibraryMetricType.PREVIEWS, 3,
+			"e131fabc", 1L, DocumentLibraryMetricType.PREVIEWS, -3,
 			"America/Fortaleza");
 	}
 

@@ -266,7 +266,6 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 			HistogramMetric::getKey
 		).map(
 			LocalDateTime::parse
-		).sorted(
 		).collect(
 			Collectors.toList()
 		);

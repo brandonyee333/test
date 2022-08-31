@@ -54,7 +54,7 @@ public class CustomAssetMetricRepositoryTest
 	public void testGetViewsHistogramMetricsLast24HoursDifferentTimezone() {
 		assertHistogramMetricsDifferentTimezone(
 			DigestUtils.sha256Hex("Adefault1"), 1L, CustomAssetMetricType.VIEWS,
-			3, "America/Fortaleza");
+			-3, "America/Fortaleza");
 	}
 
 	@Override

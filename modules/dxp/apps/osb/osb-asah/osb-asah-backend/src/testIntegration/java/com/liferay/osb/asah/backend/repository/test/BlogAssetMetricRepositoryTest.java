@@ -171,7 +171,7 @@ public class BlogAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsHistogramMetricsLast24HoursDifferentTimezone() {
 		assertHistogramMetricsDifferentTimezone(
-			"e131fabc", 1L, BlogMetricType.VIEWS, 3, "America/Fortaleza");
+			"e131fabc", 1L, BlogMetricType.VIEWS, -3, "America/Fortaleza");
 	}
 
 	@Override
