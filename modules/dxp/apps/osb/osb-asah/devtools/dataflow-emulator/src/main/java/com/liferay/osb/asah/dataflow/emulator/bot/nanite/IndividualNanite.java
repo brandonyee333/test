@@ -17,16 +17,19 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.DXPEntity;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,15 +60,19 @@ import org.springframework.stereotype.Component;
 public class IndividualNanite {
 
 	public void run() {
-		List<BQIndividual> bqIndividuals = _mergeBQIndividuals(
-			_fetchBQUsersBQIndividuals());
+		for (Project project : _projectDog.getProjects()) {
+			ProjectIdThreadLocal.setProjectId(project.getId());
 
-		if (bqIndividuals.isEmpty()) {
-			return;
+			List<BQIndividual> bqIndividuals = _mergeBQIndividuals(
+				_fetchBQUsersBQIndividuals());
+
+			if (bqIndividuals.isEmpty()) {
+				continue;
+			}
+
+			_bqIndividualRepository.deleteAll();
+			_bqIndividualRepository.saveAll(bqIndividuals);
 		}
-
-		_bqIndividualRepository.deleteAll();
-		_bqIndividualRepository.saveAll(bqIndividuals);
 	}
 
 	private List<BQIndividual> _fetchBQUsersBQIndividuals() {
@@ -282,5 +289,8 @@ public class IndividualNanite {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 }
