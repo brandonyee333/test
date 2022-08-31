@@ -87,7 +87,7 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		).updateDXPExperimentStatus(
 			ArgumentMatchers.eq(1L), ArgumentMatchers.eq(1L),
 			ArgumentMatchers.eq(ExperimentStatus.FINISHED_NO_WINNER),
-			ArgumentMatchers.isNull(String.class)
+			ArgumentMatchers.isNull()
 		);
 	}
 

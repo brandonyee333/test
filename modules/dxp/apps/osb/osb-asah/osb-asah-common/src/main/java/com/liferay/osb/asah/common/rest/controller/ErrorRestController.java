@@ -34,7 +34,6 @@ public class ErrorRestController extends AbstractErrorController {
 		super(errorAttributes);
 	}
 
-	@Override
 	public String getErrorPath() {
 		return "/error";
 	}

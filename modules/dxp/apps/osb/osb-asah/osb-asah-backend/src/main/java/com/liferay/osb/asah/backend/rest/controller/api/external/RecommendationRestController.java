@@ -482,7 +482,7 @@ public class RecommendationRestController extends BaseRestController {
 		public ResultBagEntityModel(
 			ResultBag<EntityModel<T>> content, Link... links) {
 
-			super(content, links);
+			super.of(content, links);
 		}
 
 	}

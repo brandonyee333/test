@@ -75,7 +75,7 @@ public class ExperimentsRestControllerTest
 
 		Assertions.assertNull(_experimentDog.fetchExperiment(1L));
 
-		Mockito.verifyZeroInteractions(_dxpClient);
+		Mockito.verifyNoInteractions(_dxpClient);
 	}
 
 	@RepositoryResource(

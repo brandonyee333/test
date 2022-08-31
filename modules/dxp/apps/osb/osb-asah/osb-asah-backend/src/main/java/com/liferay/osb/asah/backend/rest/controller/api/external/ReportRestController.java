@@ -1103,7 +1103,7 @@ public class ReportRestController extends BaseRestController {
 	private EntityModel<AssetReport> _toBlogAssetReportEntityModel(
 		AssetReport assetReport, int rangeKey) {
 
-		return new EntityModel<>(
+		return EntityModel.of(
 			assetReport,
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
@@ -1116,7 +1116,7 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	private <T> EntityModel<T> _toChildEntityModel(Long parentId, T t) {
-		return new EntityModel<>(
+		return EntityModel.of(
 			t,
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
@@ -1132,7 +1132,7 @@ public class ReportRestController extends BaseRestController {
 	private EntityModel<AssetReport> _toDocumentLibraryAssetReportEntityModel(
 		AssetReport assetReport, int rangeKey) {
 
-		return new EntityModel<>(
+		return EntityModel.of(
 			assetReport,
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
@@ -1147,7 +1147,7 @@ public class ReportRestController extends BaseRestController {
 	private EntityModel<AssetReport> _toFormAssetReportEntityModel(
 		AssetReport assetReport, int rangeKey) {
 
-		return new EntityModel<>(
+		return EntityModel.of(
 			assetReport,
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
@@ -1171,7 +1171,7 @@ public class ReportRestController extends BaseRestController {
 	private EntityModel<FormPagesReport> _toFormPagesReportEntityModel(
 		FormPagesReport formPagesReport, int rangeKey) {
 
-		return new EntityModel<>(
+		return EntityModel.of(
 			formPagesReport,
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
@@ -1196,7 +1196,7 @@ public class ReportRestController extends BaseRestController {
 	private EntityModel<AssetReport> _toJournalAssetReportEntityModel(
 		AssetReport assetReport, int rangeKey) {
 
-		return new EntityModel<>(
+		return EntityModel.of(
 			assetReport,
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
@@ -1218,7 +1218,7 @@ public class ReportRestController extends BaseRestController {
 	private EntityModel<PageAssetReport> _toPageAssetReportEntityModel(
 		PageAssetReport pageAssetReport, int rangeKey) {
 
-		return new EntityModel<>(
+		return EntityModel.of(
 			pageAssetReport,
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
@@ -1233,7 +1233,7 @@ public class ReportRestController extends BaseRestController {
 	private EntityModel<ReportIndividualDTO> _toReportIndividualDTOEntityModel(
 		ReportIndividualDTO reportIndividualDTO) {
 
-		return new EntityModel<>(
+		return EntityModel.of(
 			reportIndividualDTO,
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
@@ -1268,7 +1268,7 @@ public class ReportRestController extends BaseRestController {
 	private EntityModel<ReportSegmentDTO> _toReportSegmentDTOEntityModel(
 		BQMembershipChange bqMembershipChange, Segment segment) {
 
-		return new EntityModel<>(
+		return EntityModel.of(
 			new ReportSegmentDTO(bqMembershipChange, segment),
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
@@ -1750,7 +1750,7 @@ public class ReportRestController extends BaseRestController {
 		public ResultBagEntityModel(
 			ResultBag<EntityModel<T>> content, Link... links) {
 
-			super(content, links);
+			super.of(content, links);
 		}
 
 	}
