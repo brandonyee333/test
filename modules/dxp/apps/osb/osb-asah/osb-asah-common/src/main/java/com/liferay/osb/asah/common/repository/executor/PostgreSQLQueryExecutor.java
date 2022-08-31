@@ -99,10 +99,7 @@ public class PostgreSQLQueryExecutor implements QueryExecutor {
 	public Map<String, Object> queryForMap(
 		SelectFinalStep<? extends Record> selectFinalStep) {
 
-		return selectFinalStep.fetchOne(
-		).map(
-			Record::intoMap
-		);
+		return selectFinalStep.fetchOneMap();
 	}
 
 	@Override
