@@ -212,8 +212,9 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		}
 
 		if ((field.getType() == LegacySQLTypeName.BIGNUMERIC) ||
-			(field.getType() == LegacySQLTypeName.NUMERIC) ||
-			(field.getType() == LegacySQLTypeName.INTEGER)) {
+			(field.getType() == LegacySQLTypeName.FLOAT) ||
+			(field.getType() == LegacySQLTypeName.INTEGER) ||
+			(field.getType() == LegacySQLTypeName.NUMERIC)) {
 
 			return _toBigDecimalValue(fieldValue);
 		}
