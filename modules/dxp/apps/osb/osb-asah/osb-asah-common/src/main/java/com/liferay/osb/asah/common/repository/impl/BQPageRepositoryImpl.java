@@ -419,7 +419,9 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 			return "BQPage";
 		}
 
-		if (timeRange == TimeRange.LAST_24_HOURS) {
+		if ((timeRange == TimeRange.LAST_24_HOURS) ||
+			(timeRange == TimeRange.YESTERDAY)) {
+
 			return "PageHourly";
 		}
 
