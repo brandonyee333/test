@@ -102,7 +102,7 @@ public class SiteHistogramDogTest
 			_getActualValues(
 				_siteHistogramDog.getHistogramMetricBag(
 					searchQueryContext, SiteMetricType.SESSION_DURATION)),
-			0.01);
+			1);
 		Assertions.assertArrayEquals(
 			new double[] {
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 3600000.0, 0, 0,
@@ -111,7 +111,7 @@ public class SiteHistogramDogTest
 			_getPreviousValues(
 				_siteHistogramDog.getHistogramMetricBag(
 					searchQueryContext, SiteMetricType.SESSION_DURATION)),
-			0.01);
+			1);
 	}
 
 	private double[] _getActualValues(HistogramMetricBag histogramMetricBag) {
