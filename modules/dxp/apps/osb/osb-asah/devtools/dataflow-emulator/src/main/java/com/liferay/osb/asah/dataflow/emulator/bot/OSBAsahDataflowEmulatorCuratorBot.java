@@ -15,6 +15,8 @@
 package com.liferay.osb.asah.dataflow.emulator.bot;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.ProjectDog;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.AnalyticsEventsIngestionNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.DXPEntitiesIngestionNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IdentityIngestionNanite;
@@ -79,7 +81,8 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 
 	@Scheduled(fixedDelay = 1 * DateUtil.MINUTE)
 	public void runIndividualNanite() {
-		_individualNanite.run();
+		ProjectIdThreadLocal.forProjects(
+			_projectDog.getProjects(), _individualNanite::run);
 	}
 
 	@Bean
@@ -106,5 +109,8 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 
 	@Autowired
 	private IndividualNanite _individualNanite;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 }
