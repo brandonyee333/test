@@ -32,8 +32,7 @@ public enum CustomAssetMetricType implements MetricType {
 		TrendClassification.Order.DESC),
 	DOWNLOADS("downloads", "downloadsMetric", TrendClassification.Order.ASC),
 	READING_TIME(
-		"avgReadTime", "readTime", "readingTimeMetric",
-		TrendClassification.Order.ASC),
+		"readTime", "readingTimeMetric", TrendClassification.Order.ASC),
 	SESSIONS("sessions", "sessionsMetric", TrendClassification.Order.ASC),
 	SUBMISSIONS(
 		"submissions", "submissionsMetric", TrendClassification.Order.ASC),
