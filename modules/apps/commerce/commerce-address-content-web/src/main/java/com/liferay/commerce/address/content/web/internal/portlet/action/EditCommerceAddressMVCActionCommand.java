@@ -22,6 +22,7 @@ import com.liferay.commerce.exception.CommerceAddressStreetException;
 import com.liferay.commerce.exception.NoSuchAddressException;
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.service.CommerceAddressService;
+import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -146,11 +147,17 @@ public class EditCommerceAddressMVCActionCommand extends BaseMVCActionCommand {
 				commerceAddressId, name, description, street1, street2, street3,
 				city, zip, regionId, countryId, phoneNumber, defaultBilling,
 				defaultShipping, serviceContext);
+
+			_commerceOrderLocalService.resetCommerceOrderShipping(
+				commerceAddressId);
 		}
 	}
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;
+
+	@Reference
+	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	@Reference
 	private Portal _portal;

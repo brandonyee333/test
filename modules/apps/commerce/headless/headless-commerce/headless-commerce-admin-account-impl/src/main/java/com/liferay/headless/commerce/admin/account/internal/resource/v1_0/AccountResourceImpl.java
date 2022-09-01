@@ -33,6 +33,7 @@ import com.liferay.commerce.account.service.persistence.CommerceAccountUserRelPK
 import com.liferay.commerce.constants.CommerceAddressConstants;
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.service.CommerceAddressService;
+import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.headless.commerce.admin.account.dto.v1_0.Account;
 import com.liferay.headless.commerce.admin.account.dto.v1_0.AccountAddress;
 import com.liferay.headless.commerce.admin.account.dto.v1_0.AccountMember;
@@ -563,6 +564,9 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 								ADDRESS_TYPE_BILLING_AND_SHIPPING),
 						serviceContext);
 
+					_commerceOrderLocalService.resetCommerceOrderShipping(
+						exisitingCommerceAddress.getCommerceAddressId());
+
 					if (GetterUtil.get(
 							accountAddress.getDefaultBilling(), false)) {
 
@@ -705,6 +709,9 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;
+
+	@Reference
+	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	@Reference
 	private CountryService _countryService;

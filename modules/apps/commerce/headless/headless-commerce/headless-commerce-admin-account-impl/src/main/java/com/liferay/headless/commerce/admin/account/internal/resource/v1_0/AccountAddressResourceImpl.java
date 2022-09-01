@@ -22,6 +22,7 @@ import com.liferay.commerce.constants.CommerceAddressConstants;
 import com.liferay.commerce.exception.NoSuchAddressException;
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.service.CommerceAddressService;
+import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.headless.commerce.admin.account.dto.v1_0.Account;
 import com.liferay.headless.commerce.admin.account.dto.v1_0.AccountAddress;
 import com.liferay.headless.commerce.admin.account.internal.dto.v1_0.converter.AccountAddressDTOConverter;
@@ -185,6 +186,9 @@ public class AccountAddressResourceImpl
 				accountAddress.getType(), commerceAddress.getType()),
 			_serviceContextHelper.getServiceContext());
 
+		_commerceOrderLocalService.resetCommerceOrderShipping(
+			commerceAddress.getCommerceAddressId());
+
 		return _toAccountAddress(commerceAddress);
 	}
 
@@ -235,6 +239,9 @@ public class AccountAddressResourceImpl
 				accountAddress.getType(), commerceAddress.getType()),
 			_serviceContextHelper.getServiceContext());
 
+		_commerceOrderLocalService.resetCommerceOrderShipping(
+			commerceAddress.getCommerceAddressId());
+
 		Response.ResponseBuilder responseBuilder = Response.noContent();
 
 		return responseBuilder.build();
@@ -273,25 +280,29 @@ public class AccountAddressResourceImpl
 				commerceAddress.getCompanyId(),
 				accountAddress.getCountryISOCode());
 
-			return _toAccountAddress(
-				_commerceAddressService.updateCommerceAddress(
-					commerceAddress.getCommerceAddressId(),
-					GetterUtil.getString(accountAddress.getName(), null),
-					GetterUtil.getString(accountAddress.getDescription(), null),
-					GetterUtil.getString(accountAddress.getStreet1(), null),
-					GetterUtil.getString(accountAddress.getStreet2(), null),
-					GetterUtil.getString(accountAddress.getStreet3(), null),
-					GetterUtil.getString(accountAddress.getCity(), null),
-					GetterUtil.getString(accountAddress.getZip(), null),
-					GetterUtil.getLong(
-						_getRegionId(country, accountAddress),
-						commerceAddress.getRegionId()),
-					GetterUtil.getLong(
-						_getCountryId(country), commerceAddress.getCountryId()),
-					GetterUtil.getString(accountAddress.getPhoneNumber(), null),
-					GetterUtil.getInteger(
-						accountAddress.getType(), commerceAddress.getType()),
-					_serviceContextHelper.getServiceContext()));
+			commerceAddress = _commerceAddressService.updateCommerceAddress(
+				commerceAddress.getCommerceAddressId(),
+				GetterUtil.getString(accountAddress.getName(), null),
+				GetterUtil.getString(accountAddress.getDescription(), null),
+				GetterUtil.getString(accountAddress.getStreet1(), null),
+				GetterUtil.getString(accountAddress.getStreet2(), null),
+				GetterUtil.getString(accountAddress.getStreet3(), null),
+				GetterUtil.getString(accountAddress.getCity(), null),
+				GetterUtil.getString(accountAddress.getZip(), null),
+				GetterUtil.getLong(
+					_getRegionId(country, accountAddress),
+					commerceAddress.getRegionId()),
+				GetterUtil.getLong(
+					_getCountryId(country), commerceAddress.getCountryId()),
+				GetterUtil.getString(accountAddress.getPhoneNumber(), null),
+				GetterUtil.getInteger(
+					accountAddress.getType(), commerceAddress.getType()),
+				_serviceContextHelper.getServiceContext());
+
+			_commerceOrderLocalService.resetCommerceOrderShipping(
+				commerceAddress.getCommerceAddressId());
+
+			return _toAccountAddress(commerceAddress);
 		}
 
 		return _addAccountAddress(commerceAccount, accountAddress);
@@ -334,6 +345,9 @@ public class AccountAddressResourceImpl
 			GetterUtil.getString(accountAddress.getPhoneNumber()),
 			GetterUtil.getInteger(accountAddress.getType()),
 			_serviceContextHelper.getServiceContext());
+
+		_commerceOrderLocalService.resetCommerceOrderShipping(
+			commerceAddress.getCommerceAddressId());
 
 		return _toAccountAddress(commerceAddress);
 	}
@@ -443,6 +457,9 @@ public class AccountAddressResourceImpl
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;
+
+	@Reference
+	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	@Reference
 	private CountryLocalService _countryService;
