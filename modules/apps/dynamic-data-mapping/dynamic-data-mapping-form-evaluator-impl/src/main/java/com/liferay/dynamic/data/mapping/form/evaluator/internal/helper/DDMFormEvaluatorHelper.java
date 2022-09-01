@@ -135,6 +135,16 @@ public class DDMFormEvaluatorHelper {
 
 		_evaluateDDMFormRules(ddmFormRules, false);
 
+		Boolean viewMode = _ddmFormEvaluatorEvaluateRequest.isViewMode();
+
+		for (Map.Entry<DDMFormEvaluatorFieldContextKey, Map<String, Object>>
+				entry : _ddmFormFieldsPropertyChanges.entrySet()) {
+
+			if (!_isFieldNative(entry.getKey()) && !viewMode) {
+				_ddmFormFieldsPropertyChanges.remove(entry.getKey());
+			}
+		}
+
 		_evaluateDDMFormRules(ddmFormRules, true);
 
 		_validateFields();
