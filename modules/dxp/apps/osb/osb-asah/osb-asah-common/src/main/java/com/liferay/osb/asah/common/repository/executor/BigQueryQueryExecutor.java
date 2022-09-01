@@ -212,7 +212,8 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		}
 
 		if ((field.getType() == LegacySQLTypeName.BIGNUMERIC) ||
-			(field.getType() == LegacySQLTypeName.NUMERIC)) {
+			(field.getType() == LegacySQLTypeName.NUMERIC) ||
+			(field.getType() == LegacySQLTypeName.INTEGER)) {
 
 			return _toBigDecimalValue(fieldValue);
 		}
@@ -223,9 +224,6 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 				 (field.getType() == LegacySQLTypeName.TIMESTAMP)) {
 
 			return _toDateValue(fieldValue);
-		}
-		else if (field.getType() == LegacySQLTypeName.INTEGER) {
-			return _toLongValue(fieldValue);
 		}
 		else if (field.getType() == LegacySQLTypeName.STRING) {
 			return _toStringValue(fieldValue);
