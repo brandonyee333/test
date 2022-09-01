@@ -45,7 +45,7 @@ public class SiteHistogramDogTest
 
 	@SQLResource(resourcePath = "test_bq_events_site_histogram.sql")
 	@Test
-	public void testGetHistogramMetricBag() {
+	public void testGetHistogramMetricBag1() {
 		Assertions.assertArrayEquals(
 			new double[] {0, 1, 0, 0, 1, 0, 3},
 			_getActualValues(
@@ -88,7 +88,7 @@ public class SiteHistogramDogTest
 
 	@SQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
 	@Test
-	public void testGetHistogramMetricBag1() {
+	public void testGetHistogramMetricBag2() {
 		SearchQueryContext searchQueryContext = _getSearchQueryContext();
 
 		searchQueryContext.setInterval(Interval.HOUR.getKey());
