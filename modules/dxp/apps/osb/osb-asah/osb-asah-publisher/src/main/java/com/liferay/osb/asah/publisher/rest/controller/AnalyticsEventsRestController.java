@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.util.AnalyticsEventUtil;
+import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -314,6 +315,17 @@ public class AnalyticsEventsRestController {
 				_messageBus.sendMessage(
 					Channel.ANALYTICS_EVENTS, analyticsEvent.toJSON(),
 					messageAttributes);
+
+				if (Objects.equals(
+						analyticsEvent.getApplicationId(), "Custom") &&
+					StringUtils.isNotBlank(
+						MapUtil.getString(
+							analyticsEvent.getEventProperties(), "assetId"))) {
+
+					_messageBus.sendMessage(
+						Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
+						analyticsEvent.toJSON(), messageAttributes);
+				}
 
 				if (eventDefinition == null) {
 					_boundedExecutor.runAsync(
