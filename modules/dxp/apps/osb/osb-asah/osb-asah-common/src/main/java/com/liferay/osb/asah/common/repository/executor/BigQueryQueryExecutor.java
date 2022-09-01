@@ -304,7 +304,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 		for (Field field : schema.getFields()) {
 			objectMap.put(
-				StringUtils.lowerCase(field.getName()),
+				field.getName(),
 				_getField(fieldValueList.get(field.getName()), field));
 		}
 
