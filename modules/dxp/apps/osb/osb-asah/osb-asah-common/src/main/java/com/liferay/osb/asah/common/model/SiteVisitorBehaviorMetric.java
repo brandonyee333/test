@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * @author Marcos Martins
  */
-public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
+public class SiteVisitorBehaviorMetric extends VisitorBehaviorMetric {
 
 	public SiteVisitorBehaviorMetric() {
 	}
@@ -33,28 +33,12 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		BeanUtils.copyProperties(source, this);
 	}
 
-	public long getAnonymousVisitors() {
-		return getVisitors() - getKnownVisitors();
-	}
-
-	public long getAvgTimeOnPage() {
-		if ((_timeOnPage == null) || (_sessions == null) ||
-			(_sessions.longValue() <= 0)) {
-
-			return 0;
-		}
-
-		return _timeOnPage.longValue() / _sessions.longValue();
-	}
-
 	public double getBounceRate() {
-		if ((_bounces == null) || (_sessions == null) ||
-			(_sessions.doubleValue() <= 0)) {
-
+		if ((_bounces == null) || (getSessions() <= 0)) {
 			return 0;
 		}
 
-		return _bounces.doubleValue() / _sessions.doubleValue();
+		return _bounces.doubleValue() / getSessions();
 	}
 
 	public long getBounces() {
@@ -81,63 +65,12 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		return new Date(_eventDate.getTime());
 	}
 
-	public double getExitRate() {
-		if ((_exits == null) || (_sessions == null) ||
-			(_sessions.doubleValue() <= 0)) {
-
-			return 0;
-		}
-
-		return _exits.doubleValue() / _sessions.doubleValue();
-	}
-
-	public long getKnownVisitors() {
-		if (_knownVisitors == null) {
-			return 0;
-		}
-
-		return _knownVisitors.longValue();
-	}
-
 	public long getSessionDuration() {
 		if (_sessionDuration == null) {
 			return 0;
 		}
 
 		return _sessionDuration.longValue();
-	}
-
-	public long getSessions() {
-		if (_sessions == null) {
-			return 0;
-		}
-
-		return _sessions.longValue();
-	}
-
-	public long getTimeOnPage() {
-		if (_timeOnPage == null) {
-			return 0;
-		}
-
-		return _timeOnPage.longValue();
-	}
-
-	@Override
-	public long getViews() {
-		if (_views == null) {
-			return 0;
-		}
-
-		return _views.longValue();
-	}
-
-	public long getVisitors() {
-		if (_visitors == null) {
-			return 0;
-		}
-
-		return _visitors.longValue();
 	}
 
 	public void setBounces(BigDecimal bounces) {
@@ -157,43 +90,13 @@ public class SiteVisitorBehaviorMetric implements AssetVisitorBehaviorMetric {
 		}
 	}
 
-	public void setExits(BigDecimal exits) {
-		_exits = exits;
-	}
-
-	public void setKnownVisitors(BigDecimal knownVisitors) {
-		_knownVisitors = knownVisitors;
-	}
-
 	public void setSessionDuration(BigDecimal sessionDuration) {
 		_sessionDuration = sessionDuration;
-	}
-
-	public void setSessions(BigDecimal sessions) {
-		_sessions = sessions;
-	}
-
-	public void setTimeOnPage(BigDecimal timeOnPage) {
-		_timeOnPage = timeOnPage;
-	}
-
-	public void setViews(BigDecimal views) {
-		_views = views;
-	}
-
-	public void setVisitors(BigDecimal visitors) {
-		_visitors = visitors;
 	}
 
 	private BigDecimal _bounces;
 	private BigDecimal _entrances;
 	private Date _eventDate;
-	private BigDecimal _exits;
-	private BigDecimal _knownVisitors;
 	private BigDecimal _sessionDuration;
-	private BigDecimal _sessions;
-	private BigDecimal _timeOnPage;
-	private BigDecimal _views;
-	private BigDecimal _visitors;
 
 }
