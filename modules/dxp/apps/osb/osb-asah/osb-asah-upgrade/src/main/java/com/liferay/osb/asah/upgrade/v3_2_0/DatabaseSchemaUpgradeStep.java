@@ -42,12 +42,12 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 		try {
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					new ClassPathResource("tables-3.2.0.sql")),
+					new ClassPathResource("tables_3.2.0.sql")),
 				_postgreSQLDataSource);
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					new ClassPathResource("constraints-3.2.0.sql")),
+					new ClassPathResource("constraints_3.2.0.sql")),
 				_postgreSQLDataSource);
 		}
 		catch (Exception exception) {

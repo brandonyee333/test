@@ -70,7 +70,7 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					new ClassPathResource("tables-global.sql")),
+					new ClassPathResource("tables_global.sql")),
 				_dataSource);
 
 			if (_log.isInfoEnabled()) {
@@ -110,24 +110,24 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					new ClassPathResource("tables-current.sql")),
+					new ClassPathResource("tables_current.sql")),
 				_dataSource);
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					true, true, null,
-					new ClassPathResource("constraints-current.sql")),
+					new ClassPathResource("constraints_current.sql")),
 				_dataSource);
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					new ClassPathResource("indexes-current.sql")),
+					new ClassPathResource("indexes_current.sql")),
 				_dataSource);
 
 			if (_environment.acceptsProfiles(Profiles.of("dev"))) {
 				ResourceDatabasePopulator resourceDatabasePopulator =
 					new ResourceDatabasePopulator(
-						new ClassPathResource("bq-functions.sql"));
+						new ClassPathResource("bigquery_functions.sql"));
 
 				resourceDatabasePopulator.setSeparator("COMMIT;");
 
@@ -136,8 +136,8 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 				DatabasePopulatorUtils.execute(
 					new ResourceDatabasePopulator(
-						new ClassPathResource("bq-tables.sql"),
-						new ClassPathResource("bq-views.sql")),
+						new ClassPathResource("bigqquery_tables.sql"),
+						new ClassPathResource("bigquery_views.sql")),
 					_dataSource);
 			}
 

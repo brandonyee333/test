@@ -34,7 +34,7 @@ public class EventDefinitionUpgradeStep implements UpgradeStep {
 	public void upgrade(String version) {
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
-				new ClassPathResource("event-definition-upgrade.sql")),
+				new ClassPathResource("event_definition_upgrade.sql")),
 			_dataSource);
 	}
 

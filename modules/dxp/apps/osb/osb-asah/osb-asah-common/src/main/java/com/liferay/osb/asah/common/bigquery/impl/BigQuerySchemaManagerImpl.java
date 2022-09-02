@@ -282,8 +282,8 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		_bigQuery = bigQueryOptions.getService();
 		_googleProjectId = bigQueryOptions.getProjectId();
 
-		_tablesJSONObject = new JSONObject(_readFile("/bigquery-tables.json"));
-		_viewsJSONArray = new JSONArray(_readFile("/bigquery-views.json"));
+		_tablesJSONObject = new JSONObject(_readFile("/bigquery_tables.json"));
+		_viewsJSONArray = new JSONArray(_readFile("/bigquery_views.json"));
 	}
 
 	private String _readFile(String filePath) {
