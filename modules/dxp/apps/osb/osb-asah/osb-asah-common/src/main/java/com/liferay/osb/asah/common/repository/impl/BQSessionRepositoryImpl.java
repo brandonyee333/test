@@ -146,16 +146,20 @@ public class BQSessionRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			SiteVisitorBehaviorMetric.class,
-			_dslContext.select(
-				sessionStartField,
-				DSL.avg(
-					DSL.epoch(DSL.field("AGE(sessionEnd, sessionStart)"))
-				).multiply(
-					1000
-				).as(
-					"sessionduration"
-				)
-			).from(
+			_joinWithIdentityTable(
+				_dslContext.select(
+					sessionStartField, _getKnownVisitorsField(true),
+					_getUniqueVisitorsField("BQSession"),
+					DSL.avg(
+						DSL.epoch(DSL.field("AGE(sessionEnd, sessionStart)"))
+					).multiply(
+						1000
+					).as(
+						"sessionduration"
+					)
+				).from(
+					"BQSession"
+				),
 				"BQSession"
 			).where(
 				_createWhereClause(
