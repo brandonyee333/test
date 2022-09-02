@@ -22,6 +22,7 @@ import com.liferay.info.localized.InfoLocalizedValue;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Collection;
@@ -34,7 +35,7 @@ public class MappingTypesUtil {
 
 	public static JSONArray getMappingTypesJSONArray(
 		InfoItemServiceTracker infoItemServiceTracker, String itemCapabilityKey,
-		long groupId, Locale locale) {
+		ThemeDisplay themeDisplay) {
 
 		JSONArray mappingTypesJSONArray = JSONFactoryUtil.createJSONArray();
 
@@ -44,12 +45,14 @@ public class MappingTypesUtil {
 
 			mappingTypesJSONArray.put(
 				JSONUtil.put(
-					"label", infoItemClassDetails.getLabel(locale)
+					"label",
+					infoItemClassDetails.getLabel(themeDisplay.getLocale())
 				).put(
 					"subtypes",
 					_getMappingFormVariationsJSONArray(
-						infoItemClassDetails, infoItemServiceTracker, groupId,
-						locale)
+						infoItemClassDetails, infoItemServiceTracker,
+						themeDisplay.getScopeGroupId(),
+						themeDisplay.getLocale())
 				).put(
 					"value",
 					String.valueOf(
