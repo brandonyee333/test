@@ -817,6 +817,14 @@ public class CommerceOrderLocalServiceWrapper
 	}
 
 	@Override
+	public void removeCommerceOrderAddresses(long commerceAddressId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_commerceOrderLocalService.removeCommerceOrderAddresses(
+			commerceAddressId);
+	}
+
+	@Override
 	public com.liferay.commerce.model.CommerceOrder reorderCommerceOrder(
 			long userId, long commerceOrderId,
 			com.liferay.commerce.context.CommerceContext commerceContext)

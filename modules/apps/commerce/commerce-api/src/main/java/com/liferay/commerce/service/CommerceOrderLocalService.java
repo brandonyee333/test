@@ -549,6 +549,9 @@ public interface CommerceOrderLocalService
 			long commerceOrderId, CommerceContext commerceContext)
 		throws PortalException;
 
+	public void removeCommerceOrderAddresses(long commerceAddressId)
+		throws PortalException;
+
 	public CommerceOrder reorderCommerceOrder(
 			long userId, long commerceOrderId, CommerceContext commerceContext)
 		throws PortalException;
