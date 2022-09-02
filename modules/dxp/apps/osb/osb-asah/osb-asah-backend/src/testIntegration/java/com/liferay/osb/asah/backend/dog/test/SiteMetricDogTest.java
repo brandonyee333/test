@@ -150,7 +150,7 @@ public class SiteMetricDogTest
 
 		Metric sessionDurationMetric = siteMetric.getSessionDurationMetric();
 
-		Assertions.assertEquals(1.296E8, sessionDurationMetric.getValue());
+		Assertions.assertEquals(8.64E7, sessionDurationMetric.getValue());
 	}
 
 	@SQLResource(resourcePath = "test_bq_events_2.sql")
@@ -158,14 +158,14 @@ public class SiteMetricDogTest
 	public void testGetSiteMetric7() {
 		SearchQueryContext searchQueryContext = _getSearchQueryContext();
 
-		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
+		searchQueryContext.setTimeRange(TimeRange.LAST_24_HOURS);
 
 		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
 			searchQueryContext);
 
 		Metric sessionDurationMetric = siteMetric.getSessionDurationMetric();
 
-		Assertions.assertEquals(8.64E7, sessionDurationMetric.getValue());
+		Assertions.assertEquals(3600000.0, sessionDurationMetric.getValue());
 	}
 
 	@SQLResource(resourcePath = "test_bq_events.sql")

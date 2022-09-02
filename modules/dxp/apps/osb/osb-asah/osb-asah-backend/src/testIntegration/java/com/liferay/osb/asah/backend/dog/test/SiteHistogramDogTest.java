@@ -97,7 +97,7 @@ public class SiteHistogramDogTest
 		Assertions.assertArrayEquals(
 			new double[] {
 				3600000.0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 3600000.0, 0, 0, 179999.0
+				0, 0, 0, 0, 3600000.0, 0, 0, 180000.0
 			},
 			_getActualValues(
 				_siteHistogramDog.getHistogramMetricBag(
