@@ -44,6 +44,7 @@ import com.liferay.info.item.translator.InfoItemIdentifierTranslator;
 import com.liferay.info.item.updater.InfoItemFieldValuesUpdater;
 import com.liferay.info.list.renderer.InfoListRenderer;
 import com.liferay.info.localized.InfoLocalizedValue;
+import com.liferay.info.permission.provider.InfoPermissionProvider;
 import com.liferay.info.type.Keyed;
 import com.liferay.osgi.service.tracker.collections.ServiceReferenceServiceTuple;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
@@ -266,8 +267,9 @@ public class InfoItemServiceTrackerImpl implements InfoItemServiceTracker {
 			InfoItemObjectProvider.class, InfoItemObjectVariationProvider.class,
 			InfoItemPermissionProvider.class, InfoItemRenderer.class,
 			InfoItemSelector.class, InfoItemWorkflowProvider.class,
-			InfoListRenderer.class, InfoRequestItemProvider.class,
-			InfoTextFormatter.class, RelatedInfoItemCollectionProvider.class
+			InfoListRenderer.class, InfoPermissionProvider.class,
+			InfoRequestItemProvider.class, InfoTextFormatter.class,
+			RelatedInfoItemCollectionProvider.class
 		};
 
 		for (Class<?> serviceClass : serviceClasses) {
