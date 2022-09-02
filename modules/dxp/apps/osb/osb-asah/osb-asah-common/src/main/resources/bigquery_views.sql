@@ -185,7 +185,7 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 				normalizedEventDate
 		)
 	SELECT
-		abandonments.abandonments,
+		COALESCE(abandonments.abandonments, 0) AS abandonments,
 		metrics.assetPrimaryKey,
 		metrics.channelId,
 		metrics.clicks,
@@ -194,8 +194,8 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 		metrics.submissions,
 		metrics.views,
 		metrics.sessions,
-		COALESCE (readTime.readtime, 0) * 1000 AS readTime,
-		COALESCE (submissionTime.submissionstime, 0) * 1000 AS submissionsTime
+		COALESCE(readTime.readtime, 0) * 1000 AS readTime,
+		COALESCE(submissionTime.submissionstime, 0) * 1000 AS submissionsTime
 	FROM
 		Metrics metrics
 		LEFT JOIN Abandoments abandonments ON (
