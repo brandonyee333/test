@@ -34,6 +34,8 @@ import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.SelectFinalStep;
+import org.jooq.SelectJoinStep;
+import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
@@ -95,26 +97,30 @@ public class BQSessionRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			SiteVisitorBehaviorMetric.class,
-			(SelectFinalStep)_dslContext.select(
-				field,
-				DSL.sum(
-					DSL.field("bounce", Integer.class)
-				).as(
-					"bounces"
+			(SelectFinalStep)_joinWithIdentityTable(
+				_dslContext.select(
+					field, _getKnownVisitorsField(true),
+					_getUniqueVisitorsField("BQSession"),
+					DSL.sum(
+						DSL.field("bounce", Integer.class)
+					).as(
+						"bounces"
+					),
+					DSL.avg(
+						DSL.epoch(DSL.field("AGE(sessionEnd, sessionStart)"))
+					).multiply(
+						1000
+					).as(
+						"averagesessionduration"
+					),
+					DSL.count(
+					).as(
+						"sessions"
+					)
+				).from(
+					DSL.table("BQSession")
 				),
-				DSL.avg(
-					DSL.epoch(DSL.field("AGE(sessionEnd, sessionStart)"))
-				).multiply(
-					1000
-				).as(
-					"averagesessionduration"
-				),
-				DSL.count(
-				).as(
-					"sessions"
-				)
-			).from(
-				DSL.table("BQSession")
+				"BQSession"
 			).where(
 				_createWhereClause(
 					channelId, includePrevious, timeRange, zoneId)
@@ -192,6 +198,46 @@ public class BQSessionRepositoryImpl
 
 	private String _getFieldName(String fieldName, String tableName) {
 		return String.format("%s.%s", tableName, fieldName);
+	}
+
+	private Field<Integer> _getKnownVisitorsField(boolean alias) {
+		Field<Integer> field = DSL.countDistinct(
+			DSL.field("BQIdentity.emailaddresshashed"));
+
+		if (alias) {
+			return field.as("knownvisitors");
+		}
+
+		return field;
+	}
+
+	private Field<Integer> _getUniqueVisitorsField(String tableName) {
+		return _getKnownVisitorsField(
+			false
+		).plus(
+			DSL.countDistinct(
+				DSL.when(
+					DSL.field(
+						"BQIdentity.emailaddresshashed"
+					).isNull(),
+					DSL.field(_getFieldName("userid", tableName))))
+		).as(
+			"visitors"
+		);
+	}
+
+	private SelectOnConditionStep _joinWithIdentityTable(
+		SelectJoinStep selectJoinStep, String tableName) {
+
+		return selectJoinStep.leftJoin(
+			"BQIdentity"
+		).on(
+			DSL.field(
+				"BQIdentity.userid"
+			).eq(
+				DSL.field(_getFieldName("userid", tableName))
+			)
+		);
 	}
 
 	private final DSLContext _dslContext;

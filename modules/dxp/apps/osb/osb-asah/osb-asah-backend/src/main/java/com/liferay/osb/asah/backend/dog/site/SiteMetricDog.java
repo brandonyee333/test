@@ -18,13 +18,9 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
-import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQPageRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
-
-import java.time.ZoneId;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,24 +39,13 @@ public class SiteMetricDog {
 	public SiteMetric getSiteMetric(SearchQueryContext searchQueryContext) {
 		SiteMetric siteMetric = new SiteMetric();
 
-		Long channelId = Long.parseLong(searchQueryContext.getChannelId());
 		boolean includePrevious = searchQueryContext.isIncludePrevious();
-		TimeRange timeRange = searchQueryContext.getTimeRange();
-		ZoneId zoneId = _timeZoneDog.getZoneId();
-
-		List<PageVisitorBehaviorMetric> pageSiteVisitorBehaviorMetrics =
-			_bqPageRepository.getPageVisitorBehaviorMetrics(
-				channelId, includePrevious, timeRange, zoneId);
-
-		if (!pageSiteVisitorBehaviorMetrics.isEmpty()) {
-			_setMetricValues(
-				includePrevious, _pageMetricsFunctionMap,
-				pageSiteVisitorBehaviorMetrics, siteMetric);
-		}
 
 		List<SiteVisitorBehaviorMetric> sessionSiteVisitorBehaviorMetrics =
 			_bqSessionRepository.getSiteVisitorBehaviorMetrics(
-				channelId, includePrevious, timeRange, zoneId);
+				Long.parseLong(searchQueryContext.getChannelId()),
+				includePrevious, searchQueryContext.getTimeRange(),
+				_timeZoneDog.getZoneId());
 
 		if (!sessionSiteVisitorBehaviorMetrics.isEmpty()) {
 			_setMetricValues(
@@ -116,26 +101,6 @@ public class SiteMetricDog {
 
 	private static final Map
 		<Function<SiteMetric, Metric>,
-		 Function<SiteVisitorBehaviorMetric, Object>> _pageMetricsFunctionMap =
-			new HashMap
-				<Function<SiteMetric, Metric>,
-				 Function<SiteVisitorBehaviorMetric, Object>>() {
-
-				{
-					put(
-						SiteMetric::getAnonymousVisitorsMetric,
-						SiteVisitorBehaviorMetric::getAnonymousVisitors);
-					put(
-						SiteMetric::getKnownVisitorsMetric,
-						SiteVisitorBehaviorMetric::getKnownVisitors);
-					put(
-						SiteMetric::getVisitorsMetric,
-						SiteVisitorBehaviorMetric::getVisitors);
-				}
-			};
-
-	private static final Map
-		<Function<SiteMetric, Metric>,
 		 Function<SiteVisitorBehaviorMetric, Object>>
 			_sessionMetricsFunctionMap =
 				new HashMap
@@ -144,8 +109,14 @@ public class SiteMetricDog {
 
 					{
 						put(
+							SiteMetric::getAnonymousVisitorsMetric,
+							SiteVisitorBehaviorMetric::getAnonymousVisitors);
+						put(
 							SiteMetric::getBounceRateMetric,
 							SiteVisitorBehaviorMetric::getBounceRate);
+						put(
+							SiteMetric::getKnownVisitorsMetric,
+							SiteVisitorBehaviorMetric::getKnownVisitors);
 						put(
 							SiteMetric::getSessionDurationMetric,
 							SiteVisitorBehaviorMetric::
@@ -153,6 +124,9 @@ public class SiteMetricDog {
 						put(
 							SiteMetric::getSessionsMetric,
 							SiteVisitorBehaviorMetric::getSessions);
+						put(
+							SiteMetric::getVisitorsMetric,
+							SiteVisitorBehaviorMetric::getVisitors);
 					}
 				};
 
