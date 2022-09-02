@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
-import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQPageRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
@@ -145,8 +144,8 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 	}
 
 	@Override
-	public List<SiteVisitorBehaviorMetric>
-		getSiteVisitorBehaviorMetricsGroupedByEventDate(
+	public List<PageVisitorBehaviorMetric>
+		getPageVisitorBehaviorMetricsGroupedByEventDate(
 			Long channelId, boolean includePrevious, Interval interval,
 			TimeRange timeRange, ZoneId zoneId) {
 
@@ -161,7 +160,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		field = field.as("eventdate");
 
 		return _queryExecutor.queryForList(
-			SiteVisitorBehaviorMetric.class,
+			PageVisitorBehaviorMetric.class,
 			(SelectFinalStep)_joinWithIdentityTable(
 				dslContext.select(
 					field, _getKnownVisitorsField(true),

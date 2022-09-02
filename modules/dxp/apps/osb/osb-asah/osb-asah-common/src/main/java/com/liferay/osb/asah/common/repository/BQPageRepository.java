@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
-import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.time.ZoneId;
@@ -42,8 +41,8 @@ public interface BQPageRepository {
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId);
 
-	public List<SiteVisitorBehaviorMetric>
-		getSiteVisitorBehaviorMetricsGroupedByEventDate(
+	public List<PageVisitorBehaviorMetric>
+		getPageVisitorBehaviorMetricsGroupedByEventDate(
 			Long channelId, boolean includePrevious, Interval interval,
 			TimeRange timeRange, ZoneId zoneId);
 
