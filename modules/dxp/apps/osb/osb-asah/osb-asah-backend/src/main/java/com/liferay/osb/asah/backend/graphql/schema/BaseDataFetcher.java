@@ -142,8 +142,14 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 						dataFetchingEnvironment.getArgument("rangeStart"))));
 		}
 		else if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
-			searchQueryContext.setRangeKey(
-				dataFetchingEnvironment.getArgument("rangeKey"));
+			TimeRange timeRange = TimeRange.of(
+				(int)dataFetchingEnvironment.getArgument("rangeKey"));
+
+			if (timeRange == TimeRange.LAST_24_HOURS) {
+				searchQueryContext.setInterval("H");
+			}
+
+			searchQueryContext.setTimeRange(timeRange);
 		}
 
 		searchQueryContext.setTerms(
