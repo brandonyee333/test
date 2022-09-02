@@ -18,18 +18,18 @@ INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId,
 
 INSERT INTO BQIdentity (emailAddressHashed, id, userId) VALUES (1, 1, '1');
 
-INSERT INTO BQSession (channelId, id) VALUES (1, '1');
-INSERT INTO BQSession (channelId, id) VALUES (1, '2');
-INSERT INTO BQSession (channelId, id) VALUES (1, '3');
-INSERT INTO BQSession (channelId, id) VALUES (1, '4');
-INSERT INTO BQSession (channelId, id) VALUES (1, '5');
-INSERT INTO BQSession (channelId, id) VALUES (1, '6');
-INSERT INTO BQSession (channelId, id) VALUES (1, '7');
-INSERT INTO BQSession (channelId, id) VALUES (1, '8');
-INSERT INTO BQSession (channelId, id) VALUES (1, '9');
-INSERT INTO BQSession (channelId, id) VALUES (1, '10');
-INSERT INTO BQSession (channelId, id) VALUES (1, '11');
-INSERT INTO BQSession (channelId, id) VALUES (1, '12');
-INSERT INTO BQSession (channelId, id) VALUES (1, '13');
-INSERT INTO BQSession (channelId, id) VALUES (1, '14');
-INSERT INTO BQSession (channelId, id) VALUES (1, '15');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '1', timestamp '${today-1d}', timestamp '${today-1d}', '1');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '2', timestamp '${today-1d}', timestamp '${today-1d}', '2');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '3', timestamp '${today-1d}', timestamp '${today-1d}', '3');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '4', timestamp '${today-1d}', timestamp '${today-1d}', '4');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '5', timestamp '${today-3d}', timestamp '${today-3d}', '1');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '6', timestamp '${today-3d}', timestamp '${today-3d}', '2');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '7', timestamp '${today-4d}', timestamp '${today-4d}', '1');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '8', timestamp '${today-6d}', timestamp '${today-6d}', '1');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '9', timestamp '${today-6d}', timestamp '${today-6d}', '3');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '10', timestamp '${today-6d}', timestamp '${today-6d}', '3');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '11', timestamp '${today-10d}', timestamp '${today-10d}', '1');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '12', timestamp '${today-10d}', timestamp '${today-10d}', '4');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '13', timestamp '${today-11d}', timestamp '${today-11d}', '5');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '14', timestamp '${today-12d}', timestamp '${today-12d}', '6');
+INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '15', timestamp '${today-12d}', timestamp '${today-12d}', '1');
