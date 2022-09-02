@@ -14,14 +14,18 @@
 
 package com.liferay.layout.content.page.editor.web.internal.util;
 
+import com.liferay.info.exception.InfoPermissionException;
 import com.liferay.info.item.InfoItemClassDetails;
 import com.liferay.info.item.InfoItemFormVariation;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemFormVariationsProvider;
 import com.liferay.info.localized.InfoLocalizedValue;
+import com.liferay.info.permission.provider.InfoPermissionProvider;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -42,6 +46,13 @@ public class MappingTypesUtil {
 		for (InfoItemClassDetails infoItemClassDetails :
 				infoItemServiceTracker.getInfoItemClassDetails(
 					itemCapabilityKey)) {
+
+			if (!_hasViewPermission(
+					infoItemClassDetails.getClassName(), infoItemServiceTracker,
+					themeDisplay)) {
+
+				continue;
+			}
 
 			mappingTypesJSONArray.put(
 				JSONUtil.put(
@@ -102,5 +113,37 @@ public class MappingTypesUtil {
 
 		return jsonArray;
 	}
+
+	private static boolean _hasViewPermission(
+		String className, InfoItemServiceTracker infoItemServiceTracker,
+		ThemeDisplay themeDisplay) {
+
+		InfoPermissionProvider infoPermissionProvider =
+			infoItemServiceTracker.getFirstInfoItemService(
+				InfoPermissionProvider.class, className);
+
+		if (infoPermissionProvider == null) {
+			return true;
+		}
+
+		try {
+			if (infoPermissionProvider.hasViewPermission(
+					themeDisplay.getScopeGroupId(),
+					themeDisplay.getPermissionChecker())) {
+
+				return true;
+			}
+		}
+		catch (InfoPermissionException infoPermissionException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(infoPermissionException);
+			}
+		}
+
+		return false;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		MappingTypesUtil.class);
 
 }
