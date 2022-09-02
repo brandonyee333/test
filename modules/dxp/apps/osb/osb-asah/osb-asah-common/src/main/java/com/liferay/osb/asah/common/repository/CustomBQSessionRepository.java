@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQSession;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 
@@ -33,5 +34,10 @@ public interface CustomBQSessionRepository {
 	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId);
+
+	public List<SiteVisitorBehaviorMetric>
+		getSiteVisitorBehaviorMetricsGroupedBySessionStart(
+			Long channelId, boolean includePrevious, Interval interval,
+			TimeRange timeRange, ZoneId zoneId);
 
 }

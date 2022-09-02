@@ -131,6 +131,7 @@ public class BQSessionRepositoryImpl
 			));
 	}
 
+	@Override
 	public List<SiteVisitorBehaviorMetric>
 		getSiteVisitorBehaviorMetricsGroupedBySessionStart(
 			Long channelId, boolean includePrevious, Interval interval,
