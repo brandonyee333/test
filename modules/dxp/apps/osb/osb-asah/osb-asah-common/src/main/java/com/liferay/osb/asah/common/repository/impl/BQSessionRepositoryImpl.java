@@ -101,17 +101,17 @@ public class BQSessionRepositoryImpl
 				_dslContext.select(
 					field, _getKnownVisitorsField(true),
 					_getUniqueVisitorsField("BQSession"),
-					DSL.sum(
-						DSL.field("bounce", Integer.class)
-					).as(
-						"bounces"
-					),
 					DSL.avg(
 						DSL.epoch(DSL.field("AGE(sessionEnd, sessionStart)"))
 					).multiply(
 						1000
 					).as(
 						"averagesessionduration"
+					),
+					DSL.sum(
+						DSL.field("bounce", Integer.class)
+					).as(
+						"bounces"
 					),
 					DSL.count(
 					).as(
