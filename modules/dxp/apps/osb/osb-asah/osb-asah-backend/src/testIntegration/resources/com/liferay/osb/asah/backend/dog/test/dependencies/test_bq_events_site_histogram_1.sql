@@ -5,5 +5,3 @@ INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd) VALUES (1, '4', 
 INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd) VALUES (1, '5', timestamp '${now-26h}', timestamp '${now-25h}');
 INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd) VALUES (1, '6', timestamp '${now-34h}', timestamp '${now-33h}');
 INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd) VALUES (1, '7', timestamp '${now-38h}', timestamp '${now-36h}');
-
-
