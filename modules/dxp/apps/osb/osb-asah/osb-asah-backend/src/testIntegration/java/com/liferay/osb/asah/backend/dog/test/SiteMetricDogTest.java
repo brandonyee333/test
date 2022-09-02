@@ -142,6 +142,32 @@ public class SiteMetricDogTest
 		Assertions.assertEquals(0.5, bounceRateMetric.getValue());
 	}
 
+	@SQLResource(resourcePath = "test_bq_events_2.sql")
+	@Test
+	public void testSessionDuration1() {
+		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
+			_getSearchQueryContext());
+
+		Metric sessionDurationMetric = siteMetric.getSessionDurationMetric();
+
+		Assertions.assertEquals(1.296E8, sessionDurationMetric.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_bq_events_2.sql")
+	@Test
+	public void testSessionDuration2() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
+
+		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
+			searchQueryContext);
+
+		Metric sessionDurationMetric = siteMetric.getSessionDurationMetric();
+
+		Assertions.assertEquals(8.64E7, sessionDurationMetric.getValue());
+	}
+
 	private SearchQueryContext _getSearchQueryContext() {
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
