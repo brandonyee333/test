@@ -102,7 +102,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 	}
 
 	@Override
-	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(
+	public List<PageVisitorBehaviorMetric> getPageVisitorBehaviorMetrics(
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId) {
 
@@ -123,7 +123,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		);
 
 		return _queryExecutor.queryForList(
-			SiteVisitorBehaviorMetric.class,
+			PageVisitorBehaviorMetric.class,
 			(SelectFinalStep)_joinWithIdentityTable(
 				dslContext.select(
 					rowNumberField, _getKnownVisitorsField(true),

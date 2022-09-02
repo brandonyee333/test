@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQPageRepository;
@@ -47,8 +48,8 @@ public class SiteMetricDog {
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 		ZoneId zoneId = _timeZoneDog.getZoneId();
 
-		List<SiteVisitorBehaviorMetric> pageSiteVisitorBehaviorMetrics =
-			_bqPageRepository.getSiteVisitorBehaviorMetrics(
+		List<PageVisitorBehaviorMetric> pageSiteVisitorBehaviorMetrics =
+			_bqPageRepository.getPageVisitorBehaviorMetrics(
 				channelId, includePrevious, timeRange, zoneId);
 
 		if (!pageSiteVisitorBehaviorMetrics.isEmpty()) {

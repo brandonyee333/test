@@ -38,7 +38,7 @@ public interface BQPageRepository {
 		String canonicalUrl, Long channelId, TimeRange timeRange, String title,
 		ZoneId zoneId);
 
-	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(
+	public List<PageVisitorBehaviorMetric> getPageVisitorBehaviorMetrics(
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId);
 
