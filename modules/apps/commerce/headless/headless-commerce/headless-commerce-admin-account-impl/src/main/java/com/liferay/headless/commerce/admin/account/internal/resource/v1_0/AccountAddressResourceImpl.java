@@ -65,6 +65,8 @@ public class AccountAddressResourceImpl
 	public Response deleteAccountAddress(Long id) throws Exception {
 		_commerceAddressService.deleteCommerceAddress(id);
 
+		_commerceOrderLocalService.removeCommerceOrderAddresses(id);
+
 		Response.ResponseBuilder responseBuilder = Response.noContent();
 
 		return responseBuilder.build();
@@ -86,6 +88,9 @@ public class AccountAddressResourceImpl
 		}
 
 		_commerceAddressService.deleteCommerceAddress(
+			commerceAddress.getCommerceAddressId());
+
+		_commerceOrderLocalService.removeCommerceOrderAddresses(
 			commerceAddress.getCommerceAddressId());
 
 		Response.ResponseBuilder responseBuilder = Response.noContent();

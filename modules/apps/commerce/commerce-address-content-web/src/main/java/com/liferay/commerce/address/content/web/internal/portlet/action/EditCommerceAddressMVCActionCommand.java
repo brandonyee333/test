@@ -105,6 +105,9 @@ public class EditCommerceAddressMVCActionCommand extends BaseMVCActionCommand {
 
 		if (commerceAddressId > 0) {
 			_commerceAddressService.deleteCommerceAddress(commerceAddressId);
+
+			_commerceOrderLocalService.removeCommerceOrderAddresses(
+				commerceAddressId);
 		}
 	}
 
