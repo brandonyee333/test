@@ -151,45 +151,10 @@ public class AccountAddressResourceImpl
 			Long id, AccountAddress accountAddress)
 		throws Exception {
 
-		CommerceAddress commerceAddress =
-			_commerceAddressService.getCommerceAddress(id);
-
-		Country country = _countryService.getCountryByA2(
-			commerceAddress.getCompanyId(), accountAddress.getCountryISOCode());
-
-		commerceAddress = _commerceAddressService.updateCommerceAddress(
-			commerceAddress.getCommerceAddressId(),
-			GetterUtil.getString(
-				accountAddress.getName(), commerceAddress.getName()),
-			GetterUtil.getString(
-				accountAddress.getDescription(),
-				commerceAddress.getDescription()),
-			GetterUtil.getString(
-				accountAddress.getStreet1(), commerceAddress.getStreet1()),
-			GetterUtil.getString(
-				accountAddress.getStreet2(), commerceAddress.getStreet2()),
-			GetterUtil.getString(
-				accountAddress.getStreet3(), commerceAddress.getStreet3()),
-			GetterUtil.getString(
-				accountAddress.getCity(), commerceAddress.getCity()),
-			GetterUtil.getString(
-				accountAddress.getZip(), commerceAddress.getZip()),
-			GetterUtil.getLong(
-				_getRegionId(country, accountAddress),
-				commerceAddress.getRegionId()),
-			GetterUtil.getLong(
-				_getCountryId(country), commerceAddress.getCountryId()),
-			GetterUtil.getString(
-				accountAddress.getPhoneNumber(),
-				commerceAddress.getPhoneNumber()),
-			GetterUtil.getInteger(
-				accountAddress.getType(), commerceAddress.getType()),
-			_serviceContextHelper.getServiceContext());
-
-		_commerceOrderLocalService.resetCommerceOrderShipping(
-			commerceAddress.getCommerceAddressId());
-
-		return _toAccountAddress(commerceAddress);
+		return _toAccountAddress(
+			_updateCommerceAddress(
+				_commerceAddressService.getCommerceAddress(id),
+				accountAddress));
 	}
 
 	@Override
@@ -207,40 +172,7 @@ public class AccountAddressResourceImpl
 					externalReferenceCode);
 		}
 
-		Country country = _countryService.getCountryByA2(
-			commerceAddress.getCompanyId(), accountAddress.getCountryISOCode());
-
-		_commerceAddressService.updateCommerceAddress(
-			commerceAddress.getCommerceAddressId(),
-			GetterUtil.getString(
-				accountAddress.getName(), commerceAddress.getName()),
-			GetterUtil.getString(
-				accountAddress.getDescription(),
-				commerceAddress.getDescription()),
-			GetterUtil.getString(
-				accountAddress.getStreet1(), commerceAddress.getStreet1()),
-			GetterUtil.getString(
-				accountAddress.getStreet2(), commerceAddress.getStreet2()),
-			GetterUtil.getString(
-				accountAddress.getStreet3(), commerceAddress.getStreet3()),
-			GetterUtil.getString(
-				accountAddress.getCity(), commerceAddress.getCity()),
-			GetterUtil.getString(
-				accountAddress.getZip(), commerceAddress.getZip()),
-			GetterUtil.getLong(
-				_getRegionId(country, accountAddress),
-				commerceAddress.getRegionId()),
-			GetterUtil.getLong(
-				_getCountryId(country), commerceAddress.getCountryId()),
-			GetterUtil.getString(
-				accountAddress.getPhoneNumber(),
-				commerceAddress.getPhoneNumber()),
-			GetterUtil.getInteger(
-				accountAddress.getType(), commerceAddress.getType()),
-			_serviceContextHelper.getServiceContext());
-
-		_commerceOrderLocalService.resetCommerceOrderShipping(
-			commerceAddress.getCommerceAddressId());
+		_updateCommerceAddress(commerceAddress, accountAddress);
 
 		Response.ResponseBuilder responseBuilder = Response.noContent();
 
@@ -276,33 +208,8 @@ public class AccountAddressResourceImpl
 		}
 
 		if (commerceAddress != null) {
-			Country country = _countryService.getCountryByA2(
-				commerceAddress.getCompanyId(),
-				accountAddress.getCountryISOCode());
-
-			commerceAddress = _commerceAddressService.updateCommerceAddress(
-				commerceAddress.getCommerceAddressId(),
-				GetterUtil.getString(accountAddress.getName(), null),
-				GetterUtil.getString(accountAddress.getDescription(), null),
-				GetterUtil.getString(accountAddress.getStreet1(), null),
-				GetterUtil.getString(accountAddress.getStreet2(), null),
-				GetterUtil.getString(accountAddress.getStreet3(), null),
-				GetterUtil.getString(accountAddress.getCity(), null),
-				GetterUtil.getString(accountAddress.getZip(), null),
-				GetterUtil.getLong(
-					_getRegionId(country, accountAddress),
-					commerceAddress.getRegionId()),
-				GetterUtil.getLong(
-					_getCountryId(country), commerceAddress.getCountryId()),
-				GetterUtil.getString(accountAddress.getPhoneNumber(), null),
-				GetterUtil.getInteger(
-					accountAddress.getType(), commerceAddress.getType()),
-				_serviceContextHelper.getServiceContext());
-
-			_commerceOrderLocalService.resetCommerceOrderShipping(
-				commerceAddress.getCommerceAddressId());
-
-			return _toAccountAddress(commerceAddress);
+			return _toAccountAddress(
+				_updateCommerceAddress(commerceAddress, accountAddress));
 		}
 
 		return _addAccountAddress(commerceAccount, accountAddress);
@@ -322,34 +229,10 @@ public class AccountAddressResourceImpl
 			Long id, AccountAddress accountAddress)
 		throws Exception {
 
-		CommerceAddress commerceAddress =
-			_commerceAddressService.getCommerceAddress(id);
-
-		Country country = _countryService.getCountryByA2(
-			commerceAddress.getCompanyId(), accountAddress.getCountryISOCode());
-
-		commerceAddress = _commerceAddressService.updateCommerceAddress(
-			commerceAddress.getCommerceAddressId(),
-			GetterUtil.getString(accountAddress.getName()),
-			GetterUtil.getString(accountAddress.getDescription()),
-			GetterUtil.getString(accountAddress.getStreet1()),
-			GetterUtil.getString(accountAddress.getStreet2()),
-			GetterUtil.getString(accountAddress.getStreet3()),
-			GetterUtil.getString(accountAddress.getCity()),
-			GetterUtil.getString(accountAddress.getZip()),
-			GetterUtil.getLong(
-				_getRegionId(country, accountAddress),
-				commerceAddress.getRegionId()),
-			GetterUtil.getLong(
-				_getCountryId(country), commerceAddress.getCountryId()),
-			GetterUtil.getString(accountAddress.getPhoneNumber()),
-			GetterUtil.getInteger(accountAddress.getType()),
-			_serviceContextHelper.getServiceContext());
-
-		_commerceOrderLocalService.resetCommerceOrderShipping(
-			commerceAddress.getCommerceAddressId());
-
-		return _toAccountAddress(commerceAddress);
+		return _toAccountAddress(
+			_updateCommerceAddress(
+				_commerceAddressService.getCommerceAddress(id),
+				accountAddress));
 	}
 
 	private AccountAddress _addAccountAddress(
@@ -447,6 +330,48 @@ public class AccountAddressResourceImpl
 		}
 
 		return accountAddresses;
+	}
+
+	private CommerceAddress _updateCommerceAddress(
+			CommerceAddress commerceAddress, AccountAddress accountAddress)
+		throws Exception {
+
+		Country country = _countryService.getCountryByA2(
+			commerceAddress.getCompanyId(), accountAddress.getCountryISOCode());
+
+		commerceAddress = _commerceAddressService.updateCommerceAddress(
+			commerceAddress.getCommerceAddressId(),
+			GetterUtil.getString(
+				accountAddress.getName(), commerceAddress.getName()),
+			GetterUtil.getString(
+				accountAddress.getDescription(),
+				commerceAddress.getDescription()),
+			GetterUtil.getString(
+				accountAddress.getStreet1(), commerceAddress.getStreet1()),
+			GetterUtil.getString(
+				accountAddress.getStreet2(), commerceAddress.getStreet2()),
+			GetterUtil.getString(
+				accountAddress.getStreet3(), commerceAddress.getStreet3()),
+			GetterUtil.getString(
+				accountAddress.getCity(), commerceAddress.getCity()),
+			GetterUtil.getString(
+				accountAddress.getZip(), commerceAddress.getZip()),
+			GetterUtil.getLong(
+				_getRegionId(country, accountAddress),
+				commerceAddress.getRegionId()),
+			GetterUtil.getLong(
+				_getCountryId(country), commerceAddress.getCountryId()),
+			GetterUtil.getString(
+				accountAddress.getPhoneNumber(),
+				commerceAddress.getPhoneNumber()),
+			GetterUtil.getInteger(
+				accountAddress.getType(), commerceAddress.getType()),
+			_serviceContextHelper.getServiceContext());
+
+		_commerceOrderLocalService.resetCommerceOrderShipping(
+			commerceAddress.getCommerceAddressId());
+
+		return commerceAddress;
 	}
 
 	@Reference
