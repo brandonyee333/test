@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.BQPageRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
 import java.time.Clock;
@@ -51,24 +50,12 @@ public class SiteHistogramDog {
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 		ZoneId zoneId = _timeZoneDog.getZoneId();
 
-		List<SiteVisitorBehaviorMetric> siteVisitorBehaviorMetrics = null;
-
-		if (siteMetricType == SiteMetricType.SESSION_DURATION) {
-			siteVisitorBehaviorMetrics =
-				_bqSessionRepository.
-					getSiteVisitorBehaviorMetricsGroupedBySessionStart(
-						Long.parseLong(searchQueryContext.getChannelId()),
-						searchQueryContext.isIncludePrevious(),
-						searchQueryContext.getInterval(), timeRange, zoneId);
-		}
-		else {
-			siteVisitorBehaviorMetrics =
-				_bqPageRepository.
-					getSiteVisitorBehaviorMetricsGroupedByEventDate(
-						Long.parseLong(searchQueryContext.getChannelId()),
-						searchQueryContext.isIncludePrevious(),
-						searchQueryContext.getInterval(), timeRange, zoneId);
-		}
+		List<SiteVisitorBehaviorMetric> siteVisitorBehaviorMetrics =
+			_bqSessionRepository.
+				getSiteVisitorBehaviorMetricsGroupedBySessionStart(
+					Long.parseLong(searchQueryContext.getChannelId()),
+					searchQueryContext.isIncludePrevious(),
+					searchQueryContext.getInterval(), timeRange, zoneId);
 
 		if (siteVisitorBehaviorMetrics.isEmpty()) {
 			return new HistogramMetricBag();
@@ -169,9 +156,6 @@ public class SiteHistogramDog {
 					DateUtil.addDays(dateString, -timeRange.getDeltaDays())),
 				ZoneId.of("UTC")));
 	}
-
-	@Autowired
-	private BQPageRepository _bqPageRepository;
 
 	@Autowired
 	private BQSessionRepository _bqSessionRepository;
