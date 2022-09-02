@@ -102,9 +102,7 @@ public class BQSessionRepositoryImpl
 					field, _getKnownVisitorsField(true),
 					_getUniqueVisitorsField("BQSession"),
 					DSL.avg(
-						DSL.epoch(DSL.field("AGE(sessionEnd, sessionStart)"))
-					).multiply(
-						1000
+						DSL.field("duration", Long.class)
 					).as(
 						"averagesessionduration"
 					),
