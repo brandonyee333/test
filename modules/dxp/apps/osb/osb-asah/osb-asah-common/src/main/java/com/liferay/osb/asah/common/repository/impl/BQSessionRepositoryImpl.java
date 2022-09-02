@@ -81,7 +81,7 @@ public class BQSessionRepositoryImpl
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId) {
 
-		Field<Integer> field = DSL.when(
+		Field<Integer> rowNumberField = DSL.when(
 			DSL.field(
 				_getFieldName("sessionStart", "BQSession")
 			).gt(
@@ -99,7 +99,7 @@ public class BQSessionRepositoryImpl
 			SiteVisitorBehaviorMetric::new,
 			(SelectFinalStep)_joinWithIdentityTable(
 				_dslContext.select(
-					field, _getKnownVisitorsField(true),
+					rowNumberField, _getKnownVisitorsField(true),
 					_getUniqueVisitorsField("BQSession"),
 					DSL.avg(
 						DSL.field("duration", Long.class)
@@ -123,9 +123,9 @@ public class BQSessionRepositoryImpl
 				_createWhereClause(
 					channelId, includePrevious, timeRange, zoneId)
 			).groupBy(
-				field
+				rowNumberField
 			).orderBy(
-				field.desc()
+				rowNumberField.desc()
 			));
 	}
 
@@ -135,10 +135,12 @@ public class BQSessionRepositoryImpl
 			Long channelId, boolean includePrevious, Interval interval,
 			TimeRange timeRange, ZoneId zoneId) {
 
-		Field sessionStartField = _dslHelper.dateTrunc(
-			DatePart.valueOf(interval.name()),
-			_dslHelper.getDateAtTimeZoneField(
-				"BQSession.sessionStart", zoneId.toString()));
+		Field sessionStartField = DSL.timestamp(
+			_dslHelper.dateTrunc(
+				DatePart.valueOf(interval.name()),
+				_dslHelper.getDateAtTimeZoneField(
+					_getFieldName("sessionStart", "BQSession"),
+					zoneId.toString())));
 
 		sessionStartField = sessionStartField.as("eventdate");
 
@@ -149,9 +151,7 @@ public class BQSessionRepositoryImpl
 					sessionStartField, _getKnownVisitorsField(true),
 					_getUniqueVisitorsField("BQSession"),
 					DSL.avg(
-						DSL.epoch(DSL.field("AGE(sessionEnd, sessionStart)"))
-					).multiply(
-						1000
+						DSL.field("duration", Long.class)
 					).as(
 						"averagesessionduration"
 					),
