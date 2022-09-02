@@ -20,10 +20,12 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
+import com.liferay.info.exception.InfoPermissionException;
 import com.liferay.info.item.InfoItemClassDetails;
 import com.liferay.info.item.InfoItemFormVariation;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemFormVariationsProvider;
+import com.liferay.info.permission.provider.InfoPermissionProvider;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -188,6 +190,10 @@ public class InformationTemplatesManagementToolbarDisplayContext
 				_infoItemServiceTracker.getInfoItemClassDetails(
 					TemplateInfoItemCapability.KEY)) {
 
+			if (!_hasViewPermission(infoItemClassDetails.getClassName())) {
+				continue;
+			}
+
 			InfoItemFormVariationsProvider<?> infoItemFormVariationsProvider =
 				_infoItemServiceTracker.getFirstInfoItemService(
 					InfoItemFormVariationsProvider.class,
@@ -246,6 +252,32 @@ public class InformationTemplatesManagementToolbarDisplayContext
 		}
 
 		return itemTypesJSONArray;
+	}
+
+	private boolean _hasViewPermission(String className) {
+		InfoPermissionProvider infoPermissionProvider =
+			_infoItemServiceTracker.getFirstInfoItemService(
+				InfoPermissionProvider.class, className);
+
+		if (infoPermissionProvider == null) {
+			return true;
+		}
+
+		try {
+			if (infoPermissionProvider.hasViewPermission(
+					_themeDisplay.getScopeGroupId(),
+					_themeDisplay.getPermissionChecker())) {
+
+				return true;
+			}
+		}
+		catch (InfoPermissionException infoPermissionException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(infoPermissionException);
+			}
+		}
+
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
