@@ -103,6 +103,9 @@ public class AddressResourceTest extends BaseAddressResourceTestCase {
 		if (_commerceAddress != null) {
 			_commerceAddressLocalService.deleteCommerceAddress(
 				_commerceAddress);
+
+			_commerceOrderLocalService.removeCommerceOrderAddresses(
+				_commerceAddress.getCommerceAddressId());
 		}
 
 		if (_commerceAccount != null) {

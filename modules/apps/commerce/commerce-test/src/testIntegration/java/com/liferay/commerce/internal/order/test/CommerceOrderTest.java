@@ -750,8 +750,12 @@ public class CommerceOrderTest {
 		_commerceOrderLocalService.deleteCommerceOrder(commerceOrder);
 		_commerceOrderLocalService.deleteCommerceOrder(secondCommerceOrder);
 		_commerceAddressLocalService.deleteCommerceAddress(commerceAddress);
+		_commerceOrderLocalService.removeCommerceOrderAddresses(
+			commerceAddress.getCommerceAddressId());
 		_commerceAddressLocalService.deleteCommerceAddress(
 			secondCommerceAddress);
+		_commerceOrderLocalService.removeCommerceOrderAddresses(
+			secondCommerceAddress.getCommerceAddressId());
 		_commerceAccountLocalService.deleteCommerceAccount(commerceAccount);
 		_commerceAccountLocalService.deleteCommerceAccount(
 			secondCommerceAccount);
@@ -965,6 +969,8 @@ public class CommerceOrderTest {
 		_commerceOrderLocalService.deleteCommerceOrders(commerceChannelGroupId);
 		_commerceAccountLocalService.deleteCommerceAccount(commerceAccount);
 		_commerceAddressLocalService.deleteCommerceAddress(commerceAddress);
+		_commerceOrderLocalService.removeCommerceOrderAddresses(
+			commerceAddress.getCommerceAddressId());
 	}
 
 	@Test

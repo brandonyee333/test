@@ -44,6 +44,7 @@ import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.product.service.CommerceChannelService;
 import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.service.CommerceOrderItemService;
+import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.commerce.service.CommerceOrderTypeLocalService;
 import com.liferay.commerce.service.CommerceOrderTypeService;
@@ -484,6 +485,9 @@ public class CartResourceImpl extends BaseCartResourceImpl {
 		if (commerceOrder.getShippingAddressId() > 0) {
 			_updateCommerceOrderAddress(
 				commerceOrder, address, type, serviceContext);
+
+			_commerceOrderLocalService.resetCommerceOrderShipping(
+				commerceOrder.getShippingAddressId());
 		}
 		else {
 			CommerceAddress commerceAddress = _addCommerceAddress(
@@ -830,6 +834,9 @@ public class CartResourceImpl extends BaseCartResourceImpl {
 
 	@Reference
 	private CommerceOrderItemService _commerceOrderItemService;
+
+	@Reference
+	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	@Reference
 	private CommerceOrderService _commerceOrderService;

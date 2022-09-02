@@ -549,13 +549,18 @@ public interface CommerceOrderLocalService
 			long commerceOrderId, CommerceContext commerceContext)
 		throws PortalException;
 
+	public void removeCommerceOrderAddresses(long commerceAddressId)
+		throws PortalException;
+
 	public CommerceOrder reorderCommerceOrder(
 			long userId, long commerceOrderId, CommerceContext commerceContext)
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
-	public CommerceOrder resetCommerceOrderShipping(long commerceOrderId)
-		throws PortalException;
+	public CommerceOrder resetCommerceOrderShipping(
+		CommerceOrder commerceOrder);
+
+	public void resetCommerceOrderShipping(long shippingAddressId);
 
 	public CommerceOrder resetTermsAndConditions(
 			long commerceOrderId, boolean resetDeliveryCommerceTerm,
@@ -747,7 +752,6 @@ public interface CommerceOrderLocalService
 			long commerceOrderId, long shippingAddressId)
 		throws PortalException;
 
-	@Indexable(type = IndexableType.REINDEX)
 	public CommerceOrder updateShippingAddress(
 			long commerceOrderId, String name, String description,
 			String street1, String street2, String street3, String city,

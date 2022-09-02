@@ -914,6 +914,22 @@ public class CommerceOrderLocalServiceImpl
 		return commerceOrderPersistence.update(commerceOrder);
 	}
 
+	public void removeCommerceOrderAddresses(long commerceAddressId)
+		throws PortalException {
+
+		if (commerceAddressId > 0) {
+			_removeCommerceOrderAddresses(
+				commerceOrderLocalService.getCommerceOrdersByBillingAddress(
+					commerceAddressId),
+				commerceAddressId);
+
+			_removeCommerceOrderAddresses(
+				commerceOrderLocalService.getCommerceOrdersByShippingAddress(
+					commerceAddressId),
+				commerceAddressId);
+		}
+	}
+
 	@Override
 	public CommerceOrder reorderCommerceOrder(
 			long userId, long commerceOrderId, CommerceContext commerceContext)
@@ -995,17 +1011,28 @@ public class CommerceOrderLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public CommerceOrder resetCommerceOrderShipping(long commerceOrderId)
-		throws PortalException {
-
-		CommerceOrder commerceOrder =
-			commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+	public CommerceOrder resetCommerceOrderShipping(
+		CommerceOrder commerceOrder) {
 
 		commerceOrder.setCommerceShippingMethodId(0);
 		commerceOrder.setShippingAmount(BigDecimal.ZERO);
 		commerceOrder.setShippingOptionName(null);
 
 		return commerceOrderPersistence.update(commerceOrder);
+	}
+
+	@Override
+	public void resetCommerceOrderShipping(long shippingAddressId) {
+		if (shippingAddressId > 0) {
+			List<CommerceOrder> commerceOrders =
+				commerceOrderLocalService.getCommerceOrdersByShippingAddress(
+					shippingAddressId);
+
+			for (CommerceOrder commerceOrder : commerceOrders) {
+				commerceOrderLocalService.resetCommerceOrderShipping(
+					commerceOrder);
+			}
+		}
 	}
 
 	@Override
@@ -1567,7 +1594,6 @@ public class CommerceOrderLocalServiceImpl
 		return commerceOrderPersistence.update(commerceOrder);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public CommerceOrder updateShippingAddress(
 			long commerceOrderId, String name, String description,
@@ -1576,11 +1602,16 @@ public class CommerceOrderLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		return updateAddress(
+		CommerceOrder commerceOrder = updateAddress(
 			commerceOrderId, name, description, street1, street2, street3, city,
 			zip, regionId, countryId, phoneNumber,
 			CommerceOrder::getShippingAddressId,
 			CommerceOrder::setShippingAddressId, serviceContext);
+
+		resetCommerceOrderShipping(commerceOrder.getShippingAddressId());
+
+		return commerceOrderPersistence.findByPrimaryKey(
+			commerceOrder.getCommerceOrderId());
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -2017,6 +2048,29 @@ public class CommerceOrderLocalServiceImpl
 
 		if (Validator.isNull(purchaseOrderNumber)) {
 			throw new CommerceOrderPurchaseOrderNumberException();
+		}
+	}
+
+	private void _removeCommerceOrderAddresses(
+			List<CommerceOrder> commerceOrders, long commerceAddressId)
+		throws PortalException {
+
+		for (CommerceOrder commerceOrder : commerceOrders) {
+			long billingAddressId = commerceOrder.getBillingAddressId();
+			long shippingAddressId = commerceOrder.getShippingAddressId();
+
+			if (billingAddressId == commerceAddressId) {
+				commerceOrder.setBillingAddressId(0);
+			}
+
+			if (shippingAddressId == commerceAddressId) {
+				commerceOrder.setCommerceShippingMethodId(0);
+				commerceOrder.setShippingAddressId(0);
+				commerceOrder.setShippingAmount(BigDecimal.ZERO);
+				commerceOrder.setShippingOptionName(null);
+			}
+
+			commerceOrderLocalService.updateCommerceOrder(commerceOrder);
 		}
 	}
 
