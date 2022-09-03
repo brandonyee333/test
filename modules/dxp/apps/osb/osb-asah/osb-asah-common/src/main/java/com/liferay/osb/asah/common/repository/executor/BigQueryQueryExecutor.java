@@ -79,24 +79,6 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 	@Override
 	public <T> List<T> queryForList(
-		Class<T> clazz, SelectFinalStep<Record> selectFinalStep) {
-
-		List<T> list = new ArrayList<>();
-
-		TableResult tableResult = _query(selectFinalStep);
-
-		for (FieldValueList fieldValueList : tableResult.iterateAll()) {
-			list.add(
-				getObject(
-					getConstructor(clazz),
-					_toObjectMap(fieldValueList, tableResult)));
-		}
-
-		return list;
-	}
-
-	@Override
-	public <T> List<T> queryForList(
 		Function<Map<String, Object>, T> rowMapperFunction,
 		SelectFinalStep<? extends Record> selectFinalStep) {
 
@@ -175,7 +157,8 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 	@Override
 	public <T> Optional<T> queryForObject(
-		Class<T> clazz, SelectFinalStep<Record> selectFinalStep) {
+		Function<Map<String, Object>, T> rowMapperFunction,
+		SelectFinalStep<Record> selectFinalStep) {
 
 		TableResult tableResult = _query(selectFinalStep);
 
@@ -187,8 +170,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		}
 
 		return Optional.ofNullable(
-			getObject(
-				getConstructor(clazz),
+			rowMapperFunction.apply(
 				_toObjectMap(fieldValueLists.get(0), tableResult)));
 	}
 

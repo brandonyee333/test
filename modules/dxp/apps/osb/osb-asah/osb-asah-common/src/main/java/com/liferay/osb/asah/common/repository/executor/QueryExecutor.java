@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.repository.executor;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import java.math.BigDecimal;
 
 import java.util.List;
@@ -33,33 +30,8 @@ import org.jooq.SelectFinalStep;
  */
 public interface QueryExecutor {
 
-	public default <T> Constructor<T> getConstructor(Class<T> clazz) {
-		try {
-			return clazz.getConstructor(Map.class);
-		}
-		catch (NoSuchMethodException noSuchMethodException) {
-			throw new RuntimeException(noSuchMethodException);
-		}
-	}
-
-	public default <T> T getObject(
-		Constructor<T> constructor, Map<String, Object> objectMap) {
-
-		try {
-			return constructor.newInstance(objectMap);
-		}
-		catch (IllegalAccessException | InstantiationException |
-			   InvocationTargetException exception) {
-
-			throw new RuntimeException(exception);
-		}
-	}
-
 	public BigDecimal queryForBigDecimal(
 		SelectFinalStep<Record1<Number>> selectFinalStep);
-
-	public <T> List<T> queryForList(
-		Class<T> clazz, SelectFinalStep<Record> selectFinalStep);
 
 	public <T> List<T> queryForList(
 		Function<Map<String, Object>, T> rowMapperFunction,
@@ -76,6 +48,7 @@ public interface QueryExecutor {
 		SelectFinalStep<? extends Record> selectFinalStep);
 
 	public <T> Optional<T> queryForObject(
-		Class<T> clazz, SelectFinalStep<Record> selectFinalStep);
+		Function<Map<String, Object>, T> rowMapperFunction,
+		SelectFinalStep<Record> selectFinalStep);
 
 }

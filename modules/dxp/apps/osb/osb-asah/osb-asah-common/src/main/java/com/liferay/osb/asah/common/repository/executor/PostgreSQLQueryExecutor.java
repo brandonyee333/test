@@ -51,14 +51,6 @@ public class PostgreSQLQueryExecutor implements QueryExecutor {
 
 	@Override
 	public <T> List<T> queryForList(
-		Class<T> clazz, SelectFinalStep<Record> selectFinalStep) {
-
-		return selectFinalStep.fetch(
-			record -> getObject(getConstructor(clazz), record.intoMap()));
-	}
-
-	@Override
-	public <T> List<T> queryForList(
 		Function<Map<String, Object>, T> rowMapperFunction,
 		SelectFinalStep<? extends Record> selectFinalStep) {
 
@@ -104,11 +96,12 @@ public class PostgreSQLQueryExecutor implements QueryExecutor {
 
 	@Override
 	public <T> Optional<T> queryForObject(
-		Class<T> clazz, SelectFinalStep<Record> selectFinalStep) {
+		Function<Map<String, Object>, T> rowMapperFunction,
+		SelectFinalStep<Record> selectFinalStep) {
 
 		return Optional.ofNullable(
 			selectFinalStep.fetchAny(
-				record -> getObject(getConstructor(clazz), record.intoMap())));
+				record -> rowMapperFunction.apply(record.intoMap())));
 	}
 
 }
