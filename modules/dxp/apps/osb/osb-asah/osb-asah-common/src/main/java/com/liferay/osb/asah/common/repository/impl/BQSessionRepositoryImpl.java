@@ -64,7 +64,7 @@ public class BQSessionRepositoryImpl
 			sessionTable.asterisk());
 
 		return _queryExecutor.queryForList(
-			BQSession.class,
+			BQSession::new,
 			selectSelectStep.from(
 				"BQSession"
 			).where(
@@ -96,7 +96,7 @@ public class BQSessionRepositoryImpl
 		);
 
 		return _queryExecutor.queryForList(
-			SiteVisitorBehaviorMetric.class,
+			SiteVisitorBehaviorMetric::new,
 			(SelectFinalStep)_joinWithIdentityTable(
 				_dslContext.select(
 					field, _getKnownVisitorsField(true),
@@ -143,7 +143,7 @@ public class BQSessionRepositoryImpl
 		sessionStartField = sessionStartField.as("eventdate");
 
 		return _queryExecutor.queryForList(
-			SiteVisitorBehaviorMetric.class,
+			SiteVisitorBehaviorMetric::new,
 			_joinWithIdentityTable(
 				_dslContext.select(
 					sessionStartField, _getKnownVisitorsField(true),

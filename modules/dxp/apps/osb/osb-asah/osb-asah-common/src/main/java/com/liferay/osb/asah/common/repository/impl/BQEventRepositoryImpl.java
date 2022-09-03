@@ -187,7 +187,7 @@ public class BQEventRepositoryImpl
 		}
 
 		return _queryExecutor.queryForObject(
-			BQEvent.class,
+			BQEvent::new,
 			selectSelectStep.from(
 				"BQEvent"
 			).where(
@@ -304,11 +304,11 @@ public class BQEventRepositoryImpl
 
 		if (!valueFields.isEmpty()) {
 			return _queryExecutor.queryForList(
-				BreakdownRow.class, selectConditionStep.groupBy(valueFields));
+				BreakdownRow::new, selectConditionStep.groupBy(valueFields));
 		}
 
 		return _queryExecutor.queryForList(
-			BreakdownRow.class, selectConditionStep);
+			BreakdownRow::new, selectConditionStep);
 	}
 
 	@Override
@@ -505,7 +505,7 @@ public class BQEventRepositoryImpl
 			eventTable.asterisk());
 
 		return _queryExecutor.queryForList(
-			BQEvent.class,
+			BQEvent::new,
 			selectSelectStep.from(
 				eventTable
 			).where(

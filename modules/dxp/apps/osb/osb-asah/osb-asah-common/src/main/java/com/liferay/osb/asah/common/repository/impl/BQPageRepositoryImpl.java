@@ -85,7 +85,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		String tableName = _getTableName(timeRange);
 
 		return _queryExecutor.queryForObject(
-			PageVisitorBehaviorMetric.class,
+			PageVisitorBehaviorMetric::new,
 			_joinWithIdentityTable(
 				dslContext.select(
 					_getMetricFields(tableName)
@@ -122,7 +122,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		);
 
 		return _queryExecutor.queryForList(
-			PageVisitorBehaviorMetric.class,
+			PageVisitorBehaviorMetric::new,
 			(SelectFinalStep)_joinWithIdentityTable(
 				dslContext.select(
 					rowNumberField, _getKnownVisitorsField(true),
@@ -160,8 +160,8 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		field = field.as("eventdate");
 
 		return _queryExecutor.queryForList(
-			PageVisitorBehaviorMetric.class,
-			(SelectFinalStep)_joinWithIdentityTable(
+			PageVisitorBehaviorMetric::new,
+			_joinWithIdentityTable(
 				dslContext.select(
 					field, _getKnownVisitorsField(true),
 					_getUniqueVisitorsField(tableName)
@@ -202,7 +202,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 		metricFields.add(titleField);
 
 		return _queryExecutor.queryForList(
-			PageVisitorBehaviorMetric.class,
+			PageVisitorBehaviorMetric::new,
 			_joinWithIdentityTable(
 				dslContext.select(
 					metricFields.toArray(new Field[0])
