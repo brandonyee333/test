@@ -83,7 +83,7 @@ public class BQSessionRepositoryImpl
 
 		Field<Boolean> previousField = DSL.when(
 			DSL.field(
-				_getFieldName("sessionStart", "BQSession")
+				"BQSession.sessionStart"
 			).gt(
 				_dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(), zoneId.toString())
@@ -100,7 +100,7 @@ public class BQSessionRepositoryImpl
 			(SelectFinalStep)_joinWithIdentityTable(
 				_dslContext.select(
 					previousField, _getKnownVisitorsField(true),
-					_getUniqueVisitorsField("BQSession"),
+					_getUniqueVisitorsField(),
 					DSL.avg(
 						DSL.field("duration", Long.class)
 					).as(
@@ -117,8 +117,7 @@ public class BQSessionRepositoryImpl
 					)
 				).from(
 					DSL.table("BQSession")
-				),
-				"BQSession"
+				)
 			).where(
 				_createWhereClause(
 					channelId, includePrevious, timeRange, zoneId)
@@ -137,8 +136,7 @@ public class BQSessionRepositoryImpl
 			_dslHelper.dateTrunc(
 				DatePart.valueOf(interval.name()),
 				_dslHelper.getDateAtTimeZoneField(
-					_getFieldName("sessionStart", "BQSession"),
-					zoneId.toString())));
+					"BQSession.sessionStart", zoneId.toString())));
 
 		sessionStartField = sessionStartField.as("eventdate");
 
@@ -147,7 +145,7 @@ public class BQSessionRepositoryImpl
 			_joinWithIdentityTable(
 				_dslContext.select(
 					sessionStartField, _getKnownVisitorsField(true),
-					_getUniqueVisitorsField("BQSession"),
+					_getUniqueVisitorsField(),
 					DSL.avg(
 						DSL.field("duration", Long.class)
 					).as(
@@ -159,8 +157,7 @@ public class BQSessionRepositoryImpl
 					)
 				).from(
 					"BQSession"
-				),
-				"BQSession"
+				)
 			).where(
 				_createWhereClause(
 					channelId, includePrevious, timeRange, zoneId)
@@ -187,22 +184,18 @@ public class BQSessionRepositoryImpl
 
 		return DSL.and(
 			DSL.field(
-				_getFieldName("channelId", "BQSession")
+				"BQSession.channelId"
 			).eq(
 				channelId
 			),
 			DSL.field(
-				_getFieldName("sessionStart", "BQSession")
+				"BQSession.sessionStart"
 			).between(
 				_dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(), zoneId.toString()),
 				_dslHelper.getDateParam(
 					timeRange.getEndLocalDateTime(), zoneId.toString())
 			));
-	}
-
-	private String _getFieldName(String fieldName, String tableName) {
-		return String.format("%s.%s", tableName, fieldName);
 	}
 
 	private Field<Integer> _getKnownVisitorsField(boolean alias) {
@@ -216,7 +209,7 @@ public class BQSessionRepositoryImpl
 		return field;
 	}
 
-	private Field<Integer> _getUniqueVisitorsField(String tableName) {
+	private Field<Integer> _getUniqueVisitorsField() {
 		return _getKnownVisitorsField(
 			false
 		).plus(
@@ -225,14 +218,14 @@ public class BQSessionRepositoryImpl
 					DSL.field(
 						"BQIdentity.emailaddresshashed"
 					).isNull(),
-					DSL.field(_getFieldName("userid", tableName))))
+					DSL.field("BQSession.userid")))
 		).as(
 			"visitors"
 		);
 	}
 
 	private SelectOnConditionStep _joinWithIdentityTable(
-		SelectJoinStep selectJoinStep, String tableName) {
+		SelectJoinStep selectJoinStep) {
 
 		return selectJoinStep.leftJoin(
 			"BQIdentity"
@@ -240,7 +233,7 @@ public class BQSessionRepositoryImpl
 			DSL.field(
 				"BQIdentity.userid"
 			).eq(
-				DSL.field(_getFieldName("userid", tableName))
+				DSL.field("BQSession.userid")
 			)
 		);
 	}
