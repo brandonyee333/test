@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -36,6 +37,18 @@ public class BQFieldMappingRepositoryTest
 	@Test
 	public void testCount() {
 		Assertions.assertEquals(9, _bqFieldMappingRepository.count());
+	}
+
+	@Test
+	public void testCountBQFieldMappings() {
+		Assertions.assertEquals(
+			9,
+			_bqFieldMappingRepository.countBQFieldMappings(
+				new FilterHelper("(context eq 'demographics')")));
+		Assertions.assertEquals(
+			0,
+			_bqFieldMappingRepository.countBQFieldMappings(
+				new FilterHelper("(context eq 'custom')")));
 	}
 
 	@Autowired

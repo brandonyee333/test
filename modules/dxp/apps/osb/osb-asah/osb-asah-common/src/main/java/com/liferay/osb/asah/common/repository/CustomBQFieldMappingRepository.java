@@ -15,11 +15,20 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 
 /**
- * @author Marcellus Tavares
+ * @author Robson Pastor
  */
-public interface BQFieldMappingRepository
-	extends CustomBQFieldMappingRepository,
-			ReadOnlyRepository<BQFieldMapping, String> {
+public interface CustomBQFieldMappingRepository {
+
+	public long countBQFieldMappings(FilterHelper filterHelper);
+
+	public List<BQFieldMapping> searchBQFieldMappings(
+		FilterHelper filterHelper, Pageable pageable);
+
 }
