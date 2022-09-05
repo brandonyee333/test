@@ -67,6 +67,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
+import org.jooq.Record3;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectHavingConditionStep;
@@ -134,14 +135,25 @@ public class BQEventRepositoryImpl
 		@Nullable Long eventDefinitionId, @Nullable Date rangeEndDate,
 		@Nullable Date rangeStartDate, String timeZoneId) {
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep =
-			_getEventSelectJoinStep(_dslContext.selectCount());
+		SelectJoinStep<Record1<Integer>> selectJoinStep;
+
+		String commonTableName = null;
+
+		if (eventAnalysisFilters.size() < 2) {
+			selectJoinStep = _getEventSelectJoinStep(_dslContext.selectCount());
+		}
+		else {
+			selectJoinStep = _getFiltersCommonTableSelectJoinStep(
+				channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
+			commonTableName = _getFiltersCommonTable();
+		}
 
 		return _queryExecutor.queryForLong(
 			selectJoinStep.where(
 				_getConditions(
-					channelId, eventAnalysisFilters, eventDefinitionId,
-					rangeEndDate, rangeStartDate, timeZoneId)));
+					channelId, commonTableName, eventAnalysisFilters,
+					eventDefinitionId, rangeEndDate, rangeStartDate,
+					timeZoneId)));
 	}
 
 	@Override
@@ -757,17 +769,9 @@ public class BQEventRepositoryImpl
 		Long eventDefinitionId, Date rangeEndDate, Date rangeStartDate,
 		String timeZoneId) {
 
-		List<Condition> conditions = _getConditions(
-			channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
-
-		if (eventAnalysisFilters != null) {
-			conditions.addAll(
-				_getEventAnalysisFilterConditions(
-					eventAnalysisFilters, rangeEndDate, rangeStartDate,
-					timeZoneId));
-		}
-
-		return conditions;
+		return _getConditions(
+			channelId, null, eventAnalysisFilters, eventDefinitionId,
+			rangeEndDate, rangeStartDate, timeZoneId);
 	}
 
 	private List<Condition> _getConditions(
@@ -807,10 +811,33 @@ public class BQEventRepositoryImpl
 		return conditions;
 	}
 
+	private List<Condition> _getConditions(
+		Long channelId, String commonTableName,
+		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
+		Date rangeEndDate, Date rangeStartDate, String timeZoneId) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (commonTableName == null) {
+			conditions = _getConditions(
+				channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
+		}
+
+		if (eventAnalysisFilters != null) {
+			conditions.addAll(
+				_getEventAnalysisFilterConditions(
+					commonTableName, eventAnalysisFilters, rangeEndDate,
+					rangeStartDate, timeZoneId));
+		}
+
+		return conditions;
+	}
+
 	private Condition _getEventAnalysisFilterCondition(
 		AttributeType attributeType,
-		List<EventAnalysisFilter> eventAnalysisFilters, Date rangeEndDate,
-		Date rangeStartDate, String timeZoneId) {
+		String commonTableName,
+		List<EventAnalysisFilter> eventAnalysisFilters,
+		Date rangeEndDate, Date rangeStartDate, String timeZoneId) {
 
 		Condition conditions = DSL.noCondition();
 
@@ -830,8 +857,8 @@ public class BQEventRepositoryImpl
 				eventAttributeDefinitionMap.get(Long.valueOf(entry.getKey()));
 
 			Condition condition = _getValueCondition(
-				attributeType, eventAttributeDefinition, rangeEndDate,
-				rangeStartDate);
+				attributeType, commonTableName, eventAttributeDefinition,
+				rangeEndDate, rangeStartDate);
 
 			for (EventAnalysisFilter eventAnalysisFilter : entry.getValue()) {
 				FilterOperator filterOperator = FilterOperators.of(
@@ -839,14 +866,29 @@ public class BQEventRepositoryImpl
 					eventAnalysisFilter.getOperator(),
 					eventAnalysisFilter.getValues());
 
-				Field field = DSL.field("BQEventProperty.value");
+				String fieldTableName = "BQEventProperty";
+
+				if (commonTableName != null) {
+					fieldTableName = commonTableName;
+				}
+
+				Field field = DSL.field(fieldTableName + ".value");
 
 				if (Objects.equals(
 						eventAttributeDefinition.getType(),
 						EventAttributeDefinition.Type.GLOBAL)) {
 
-					field = _getGlobalAttributeField(
-						eventAttributeDefinition.getName());
+					if (commonTableName == null) {
+						field = _getGlobalAttributeField(
+							eventAttributeDefinition.getName());
+					}
+					else {
+						String attributeDefinitionName = _globalAttributes.get(
+							eventAttributeDefinition.getName());
+
+						field = DSL.field(
+							commonTableName + "." + attributeDefinitionName);
+					}
 				}
 
 				condition = condition.and(
@@ -854,88 +896,35 @@ public class BQEventRepositoryImpl
 						_getField(eventAnalysisFilter, field, timeZoneId)));
 			}
 
-			conditions = conditions.or(condition);
+			conditions = conditions.and(condition);
 		}
-
-		if ((rangeEndDate != null) && (rangeStartDate != null)) {
-			Field<Object> eventDateField = DSL.field("BQEvent.eventDate");
-
-			conditions = conditions.and(
-				eventDateField.between(
-					_dslHelper.getDateParam(rangeStartDate),
-					_dslHelper.getDateParam(rangeEndDate)));
-		}
-
-		Field<Object> field = DSL.field(_getJoinFieldTableName(attributeType));
-
-		SelectJoinStep<Record1<Object>> selectJoinStep = _dslContext.select(
-			field
-		).from(
-			"BQEvent"
-		);
-
-		if (_hasNonglobalAttributes(eventAttributeDefinitionMap)) {
-			selectJoinStep = selectJoinStep.join(
-				attributeType.getTableName()
-			).on(
-				field.eq(
-					DSL.field(attributeType.getQualifiedJoinFieldName(null)))
-			);
-		}
-
-		Set<String> keySet = eventAnalysisFiltersByField.keySet();
-
-		Stream<String> keyStream = keySet.stream();
-
-		Long localAttributesCount = Long.valueOf(
-			keyStream.filter(
-				key -> {
-					EventAttributeDefinition eventAttributeDefinition =
-						eventAttributeDefinitionMap.get(Long.valueOf(key));
-
-					return eventAttributeDefinition.getType() ==
-						EventAttributeDefinition.Type.LOCAL;
-				}
-			).count());
-
-		SelectHavingConditionStep<Record1<Object>> selectHavingConditionStep =
-			selectJoinStep.where(
-				conditions
-			).groupBy(
-				field
-			).having(
-				DSL.count(
-					field
-				).ge(
-					localAttributesCount.intValue()
-				)
-			);
 
 		Field<Object> joinFieldTableField = DSL.field(
 			_getJoinFieldTableName(attributeType));
 
-		return joinFieldTableField.in(selectHavingConditionStep);
+		if (commonTableName == null) {
+			return joinFieldTableField.in(
+				_getFilterCondition(
+					attributeType, conditions, eventAnalysisFiltersByField,
+					eventAttributeDefinitionMap, rangeEndDate, rangeStartDate));
+		}
+
+		return joinFieldTableField.in(
+			_getFilterConditionForCommonTable(commonTableName, conditions));
 	}
 
 	private List<Condition> _getEventAnalysisFilterConditions(
-		List<EventAnalysisFilter> eventAnalysisFilters, Date rangeEndDate,
-		Date rangeStartDate, String timeZoneId) {
+		String commonTableName, List<EventAnalysisFilter> eventAnalysisFilters,
+		Date rangeEndDate, Date rangeStartDate, String timeZoneId) {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		Stream<EventAnalysisFilter> stream = eventAnalysisFilters.stream();
-
-		Map<AttributeType, List<EventAnalysisFilter>>
-			eventAnalysisFiltersByAttributeType = stream.collect(
-				Collectors.groupingBy(EventAnalysisFilter::getAttributeType));
-
-		for (Map.Entry<AttributeType, List<EventAnalysisFilter>> entry :
-				eventAnalysisFiltersByAttributeType.entrySet()) {
-
+		for (EventAnalysisFilter filter : eventAnalysisFilters) {
 			conditions.add(
 				_getEventAnalysisFilterCondition(
-					entry.getKey(), entry.getValue(), rangeEndDate,
-					rangeStartDate, timeZoneId));
+					filter.getAttributeType(), commonTableName,
+					Collections.singletonList(filter),
+					rangeEndDate, rangeStartDate, timeZoneId));
 		}
 
 		return conditions;
@@ -1075,6 +1064,119 @@ public class BQEventRepositoryImpl
 		return field;
 	}
 
+	private SelectHavingConditionStep<Record1<Object>> _getFilterCondition(
+		AttributeType attributeType, Condition conditions,
+		Map<String, List<EventAnalysisFilter>> eventAnalysisFiltersByField,
+		Map<Long, EventAttributeDefinition> eventAttributeDefinitionMap,
+		Date rangeEndDate, Date rangeStartDate) {
+
+		if ((rangeEndDate != null) && (rangeStartDate != null)) {
+			Field<Object> eventDateField = DSL.field("BQEvent.eventDate");
+
+			conditions = conditions.and(
+				eventDateField.between(
+					_dslHelper.getDateParam(rangeStartDate),
+					_dslHelper.getDateParam(rangeEndDate)));
+		}
+
+		Field<Object> field = DSL.field(_getJoinFieldTableName(attributeType));
+
+		SelectJoinStep<Record1<Object>> selectJoinStep = _dslContext.select(
+			field
+		).from(
+			"BQEvent"
+		);
+
+		if (_hasNonglobalAttributes(eventAttributeDefinitionMap)) {
+			selectJoinStep = selectJoinStep.join(
+				attributeType.getTableName()
+			).on(
+				field.eq(
+					DSL.field(attributeType.getQualifiedJoinFieldName(null)))
+			);
+		}
+
+		Set<String> keySet = eventAnalysisFiltersByField.keySet();
+
+		Stream<String> keyStream = keySet.stream();
+
+		Long localAttributesCount = Long.valueOf(
+			keyStream.filter(
+				key -> {
+					EventAttributeDefinition eventAttributeDefinition =
+						eventAttributeDefinitionMap.get(Long.valueOf(key));
+
+					return eventAttributeDefinition.getType() ==
+						EventAttributeDefinition.Type.LOCAL;
+				}
+			).count());
+
+		return selectJoinStep.where(
+			conditions
+		).groupBy(
+			field
+		).having(
+			DSL.count(
+				field
+			).ge(
+				localAttributesCount.intValue()
+			)
+		);
+	}
+
+	private SelectConditionStep<Record1<Object>>
+		_getFilterConditionForCommonTable(
+			String commonTableName, Condition conditions) {
+
+		Field<Object> field = DSL.field("id");
+
+		SelectJoinStep<Record1<Object>> selectJoinStep = _dslContext.select(
+			field
+		).from(
+			commonTableName
+		);
+
+		return selectJoinStep.where(conditions);
+	}
+
+	private String _getFiltersCommonTable() {
+		return "_events";
+	}
+
+	private SelectJoinStep<Record1<Integer>>
+		_getFiltersCommonTableSelectJoinStep(
+			Long channelId, Long eventDefinitionId, Date rangeEndDate,
+			Date rangeStartDate) {
+
+		List<Condition> conditions = _getConditions(
+			channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
+
+		SelectSelectStep<Record3<Object, Object, Object>> selectConditionStep =
+			_dslContext.select(
+				DSL.field("BQEvent.*"), DSL.field("BQEventProperty.name"),
+				DSL.field("BQEventProperty.value"));
+
+		SelectConditionStep<Record3<Object, Object, Object>>
+			filtersCommonTable = selectConditionStep.from(
+				"BQEvent"
+			).join(
+				"BQEventProperty"
+			).on(
+				"BQEvent.id = BQEventProperty.id"
+			).where(
+				conditions
+			);
+
+		return _getEventSelectJoinStep(
+			_dslContext.with(
+				_getFiltersCommonTable()
+			).as(
+				filtersCommonTable
+			).select(
+				DSL.count(DSL.field("BQEvent.eventId"))
+			));
+	}
+
 	private Field _getGlobalAttributeField(String name) {
 		return _getGlobalAttributeField("BQEvent", name);
 	}
@@ -1177,8 +1279,9 @@ public class BQEventRepositoryImpl
 
 	private Condition _getValueCondition(
 		AttributeType attributeFilterType,
-		EventAttributeDefinition eventAttributeDefinition, Date rangeEndDate,
-		Date rangeStartDate) {
+		String commonTableName,
+		EventAttributeDefinition eventAttributeDefinition,
+		Date rangeEndDate, Date rangeStartDate) {
 
 		Condition condition = DSL.noCondition();
 
@@ -1187,8 +1290,12 @@ public class BQEventRepositoryImpl
 				eventAttributeDefinition.getType(),
 				EventAttributeDefinition.Type.GLOBAL)) {
 
+			if (commonTableName == null) {
+				commonTableName = "BQEventProperty";
+			}
+
 			Field eventAttributeDefinitionIdField = DSL.field(
-				"BQEventProperty.name");
+				commonTableName + ".name");
 
 			condition = condition.and(
 				eventAttributeDefinitionIdField.eq(
@@ -1196,7 +1303,7 @@ public class BQEventRepositoryImpl
 
 			if ((rangeEndDate != null) && (rangeStartDate != null)) {
 				Field<Object> eventDateField = DSL.field(
-					"BQEventProperty.eventDate");
+					commonTableName + ".eventDate");
 
 				condition = condition.and(
 					eventDateField.between(
