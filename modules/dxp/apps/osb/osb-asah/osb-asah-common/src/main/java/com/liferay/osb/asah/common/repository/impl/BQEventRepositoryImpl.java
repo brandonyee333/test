@@ -70,7 +70,6 @@ import org.jooq.Record2;
 import org.jooq.Record3;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
-import org.jooq.SelectHavingConditionStep;
 import org.jooq.SelectHavingStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
@@ -137,22 +136,26 @@ public class BQEventRepositoryImpl
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep;
 
-		String commonTableName = null;
+		String filteredEventsTableName = null;
 
-		if (eventAnalysisFilters.size() < 2) {
+		if ((eventAnalysisFilters == null) ||
+			!_hasNonglobalAttributes(eventAnalysisFilters)) {
+
 			selectJoinStep = _getEventSelectJoinStep(_dslContext.selectCount());
 		}
 		else {
+			filteredEventsTableName = "_filteredEvents";
+
 			selectJoinStep = _getFiltersCommonTableSelectJoinStep(
-				channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
-			commonTableName = _getFiltersCommonTable();
+				channelId, eventDefinitionId, filteredEventsTableName,
+				rangeEndDate, rangeStartDate);
 		}
 
 		return _queryExecutor.queryForLong(
 			selectJoinStep.where(
 				_getConditions(
-					channelId, commonTableName, eventAnalysisFilters,
-					eventDefinitionId, rangeEndDate, rangeStartDate,
+					channelId, eventAnalysisFilters, eventDefinitionId,
+					filteredEventsTableName, rangeEndDate, rangeStartDate,
 					timeZoneId)));
 	}
 
@@ -770,8 +773,30 @@ public class BQEventRepositoryImpl
 		String timeZoneId) {
 
 		return _getConditions(
-			channelId, null, eventAnalysisFilters, eventDefinitionId,
+			channelId, eventAnalysisFilters, eventDefinitionId, null,
 			rangeEndDate, rangeStartDate, timeZoneId);
+	}
+
+	private List<Condition> _getConditions(
+		Long channelId, List<EventAnalysisFilter> eventAnalysisFilters,
+		Long eventDefinitionId, String filteredEventsTableName,
+		Date rangeEndDate, Date rangeStartDate, String timeZoneId) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (filteredEventsTableName == null) {
+			conditions = _getConditions(
+				channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
+		}
+
+		if (eventAnalysisFilters != null) {
+			conditions.addAll(
+				_getEventAnalysisFilterConditions(
+					eventAnalysisFilters, filteredEventsTableName, rangeEndDate,
+					rangeStartDate, timeZoneId));
+		}
+
+		return conditions;
 	}
 
 	private List<Condition> _getConditions(
@@ -811,119 +836,84 @@ public class BQEventRepositoryImpl
 		return conditions;
 	}
 
-	private List<Condition> _getConditions(
-		Long channelId, String commonTableName,
-		List<EventAnalysisFilter> eventAnalysisFilters, Long eventDefinitionId,
-		Date rangeEndDate, Date rangeStartDate, String timeZoneId) {
-
-		List<Condition> conditions = new ArrayList<>();
-
-		if (commonTableName == null) {
-			conditions = _getConditions(
-				channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
-		}
-
-		if (eventAnalysisFilters != null) {
-			conditions.addAll(
-				_getEventAnalysisFilterConditions(
-					commonTableName, eventAnalysisFilters, rangeEndDate,
-					rangeStartDate, timeZoneId));
-		}
-
-		return conditions;
-	}
-
 	private Condition _getEventAnalysisFilterCondition(
-		AttributeType attributeType,
-		String commonTableName,
-		List<EventAnalysisFilter> eventAnalysisFilters,
-		Date rangeEndDate, Date rangeStartDate, String timeZoneId) {
+		AttributeType attributeType, EventAnalysisFilter eventAnalysisFilter,
+		String filteredEventsTableName, Date rangeEndDate, Date rangeStartDate,
+		String timeZoneId) {
 
 		Condition conditions = DSL.noCondition();
 
-		Map<Long, EventAttributeDefinition> eventAttributeDefinitionMap =
-			_getEventAttributeDefinitionMap(eventAnalysisFilters);
+		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
+			_getEventAttributeDefinition(eventAnalysisFilter);
 
-		Stream<EventAnalysisFilter> stream = eventAnalysisFilters.stream();
-
-		Map<String, List<EventAnalysisFilter>> eventAnalysisFiltersByField =
-			stream.collect(
-				Collectors.groupingBy(EventAnalysisFilter::getAttributeId));
-
-		for (Map.Entry<String, List<EventAnalysisFilter>> entry :
-				eventAnalysisFiltersByField.entrySet()) {
-
-			EventAttributeDefinition eventAttributeDefinition =
-				eventAttributeDefinitionMap.get(Long.valueOf(entry.getKey()));
-
-			Condition condition = _getValueCondition(
-				attributeType, commonTableName, eventAttributeDefinition,
-				rangeEndDate, rangeStartDate);
-
-			for (EventAnalysisFilter eventAnalysisFilter : entry.getValue()) {
-				FilterOperator filterOperator = FilterOperators.of(
-					eventAnalysisFilter.getDataType(), _dslHelper,
-					eventAnalysisFilter.getOperator(),
-					eventAnalysisFilter.getValues());
-
-				String fieldTableName = "BQEventProperty";
-
-				if (commonTableName != null) {
-					fieldTableName = commonTableName;
-				}
-
-				Field field = DSL.field(fieldTableName + ".value");
-
-				if (Objects.equals(
-						eventAttributeDefinition.getType(),
-						EventAttributeDefinition.Type.GLOBAL)) {
-
-					if (commonTableName == null) {
-						field = _getGlobalAttributeField(
-							eventAttributeDefinition.getName());
-					}
-					else {
-						String attributeDefinitionName = _globalAttributes.get(
-							eventAttributeDefinition.getName());
-
-						field = DSL.field(
-							commonTableName + "." + attributeDefinitionName);
-					}
-				}
-
-				condition = condition.and(
-					filterOperator.getCondition(
-						_getField(eventAnalysisFilter, field, timeZoneId)));
-			}
-
-			conditions = conditions.and(condition);
+		if (!eventAttributeDefinitionOptional.isPresent()) {
+			return conditions;
 		}
+
+		EventAttributeDefinition eventAttributeDefinition =
+			eventAttributeDefinitionOptional.get();
+
+		Condition condition = _getValueCondition(
+			attributeType, eventAttributeDefinition, filteredEventsTableName,
+			rangeEndDate, rangeStartDate);
+
+		FilterOperator filterOperator = FilterOperators.of(
+			eventAnalysisFilter.getDataType(), _dslHelper,
+			eventAnalysisFilter.getOperator(), eventAnalysisFilter.getValues());
+
+		String fieldTableName = "BQEventProperty";
+
+		if (filteredEventsTableName != null) {
+			fieldTableName = filteredEventsTableName;
+		}
+
+		Field field = DSL.field(fieldTableName + ".value");
+
+		if (_isGlobalAttribute(eventAttributeDefinition)) {
+			if (filteredEventsTableName == null) {
+				field = _getGlobalAttributeField(
+					eventAttributeDefinition.getName());
+			}
+			else {
+				String attributeDefinitionName = _globalAttributes.get(
+					eventAttributeDefinition.getName());
+
+				field = DSL.field(
+					filteredEventsTableName + "." + attributeDefinitionName);
+			}
+		}
+
+		conditions = conditions.and(
+			condition.and(
+				filterOperator.getCondition(
+					_getField(eventAnalysisFilter, field, timeZoneId))));
 
 		Field<Object> joinFieldTableField = DSL.field(
 			_getJoinFieldTableName(attributeType));
 
-		if (commonTableName == null) {
+		if (filteredEventsTableName == null) {
 			return joinFieldTableField.in(
 				_getFilterCondition(
-					attributeType, conditions, eventAnalysisFiltersByField,
-					eventAttributeDefinitionMap, rangeEndDate, rangeStartDate));
+					attributeType, conditions, eventAttributeDefinition,
+					rangeEndDate, rangeStartDate));
 		}
 
 		return joinFieldTableField.in(
-			_getFilterConditionForCommonTable(commonTableName, conditions));
+			_getFilterConditionForCommonTable(
+				conditions, filteredEventsTableName));
 	}
 
 	private List<Condition> _getEventAnalysisFilterConditions(
-		String commonTableName, List<EventAnalysisFilter> eventAnalysisFilters,
-		Date rangeEndDate, Date rangeStartDate, String timeZoneId) {
+		List<EventAnalysisFilter> eventAnalysisFilters,
+		String filteredEventsTableName, Date rangeEndDate, Date rangeStartDate,
+		String timeZoneId) {
 
 		List<Condition> conditions = new ArrayList<>();
 
 		for (EventAnalysisFilter filter : eventAnalysisFilters) {
 			conditions.add(
 				_getEventAnalysisFilterCondition(
-					filter.getAttributeType(), commonTableName,
-					Collections.singletonList(filter),
+					filter.getAttributeType(), filter, filteredEventsTableName,
 					rangeEndDate, rangeStartDate, timeZoneId));
 		}
 
@@ -942,6 +932,13 @@ public class BQEventRepositoryImpl
 			eventAnalysisBreakdown.getAttributeId());
 	}
 
+	private Optional<EventAttributeDefinition> _getEventAttributeDefinition(
+		EventAnalysisFilter eventAnalysisFilter) {
+
+		return _eventAttributeDefinitionRepository.findById(
+			Long.valueOf(eventAnalysisFilter.getAttributeId()));
+	}
+
 	private EventAttributeDefinition _getEventAttributeDefinition(
 		String attributeId) {
 
@@ -950,31 +947,6 @@ public class BQEventRepositoryImpl
 				Long.valueOf(attributeId));
 
 		return eventAttributeDefinitionOptional.orElse(null);
-	}
-
-	private Map<Long, EventAttributeDefinition> _getEventAttributeDefinitionMap(
-		List<EventAnalysisFilter> eventAnalysisFilters) {
-
-		Stream<EventAnalysisFilter> eventAnalysisFiltersStream =
-			eventAnalysisFilters.stream();
-
-		List<EventAttributeDefinition> eventAttributeDefinitions =
-			IterableUtils.toList(
-				_eventAttributeDefinitionRepository.findAllById(
-					eventAnalysisFiltersStream.map(
-						EventAnalysisFilter::getAttributeId
-					).map(
-						Long::valueOf
-					).collect(
-						Collectors.toList()
-					)));
-
-		Stream<EventAttributeDefinition> eventAttributeDefinitionsStream =
-			eventAttributeDefinitions.stream();
-
-		return eventAttributeDefinitionsStream.collect(
-			Collectors.toMap(
-				EventAttributeDefinition::getId, Function.identity()));
 	}
 
 	private String _getEventAttributeDefinitionName(
@@ -997,6 +969,23 @@ public class BQEventRepositoryImpl
 				eventAttributeDefinition -> String.valueOf(
 					eventAttributeDefinition.getId()),
 				Function.identity()));
+	}
+
+	private List<EventAttributeDefinition> _getEventAttributesDefinitions(
+		List<EventAnalysisFilter> eventAnalysisFilters) {
+
+		Stream<EventAnalysisFilter> eventAnalysisFiltersStream =
+			eventAnalysisFilters.stream();
+
+		return IterableUtils.toList(
+			_eventAttributeDefinitionRepository.findAllById(
+				eventAnalysisFiltersStream.map(
+					EventAnalysisFilter::getAttributeId
+				).map(
+					Long::valueOf
+				).collect(
+					Collectors.toList()
+				)));
 	}
 
 	private Condition _getEventDateRangeFilter(
@@ -1064,11 +1053,10 @@ public class BQEventRepositoryImpl
 		return field;
 	}
 
-	private SelectHavingConditionStep<Record1<Object>> _getFilterCondition(
+	private SelectHavingStep<Record1<Object>> _getFilterCondition(
 		AttributeType attributeType, Condition conditions,
-		Map<String, List<EventAnalysisFilter>> eventAnalysisFiltersByField,
-		Map<Long, EventAttributeDefinition> eventAttributeDefinitionMap,
-		Date rangeEndDate, Date rangeStartDate) {
+		EventAttributeDefinition eventAttributeDefinition, Date rangeEndDate,
+		Date rangeStartDate) {
 
 		if ((rangeEndDate != null) && (rangeStartDate != null)) {
 			Field<Object> eventDateField = DSL.field("BQEvent.eventDate");
@@ -1087,7 +1075,7 @@ public class BQEventRepositoryImpl
 			"BQEvent"
 		);
 
-		if (_hasNonglobalAttributes(eventAttributeDefinitionMap)) {
+		if (!_isGlobalAttribute(eventAttributeDefinition)) {
 			selectJoinStep = selectJoinStep.join(
 				attributeType.getTableName()
 			).on(
@@ -1096,56 +1084,32 @@ public class BQEventRepositoryImpl
 			);
 		}
 
-		Set<String> keySet = eventAnalysisFiltersByField.keySet();
-
-		Stream<String> keyStream = keySet.stream();
-
-		Long localAttributesCount = Long.valueOf(
-			keyStream.filter(
-				key -> {
-					EventAttributeDefinition eventAttributeDefinition =
-						eventAttributeDefinitionMap.get(Long.valueOf(key));
-
-					return eventAttributeDefinition.getType() ==
-						EventAttributeDefinition.Type.LOCAL;
-				}
-			).count());
-
 		return selectJoinStep.where(
 			conditions
 		).groupBy(
 			field
-		).having(
-			DSL.count(
-				field
-			).ge(
-				localAttributesCount.intValue()
-			)
 		);
 	}
 
 	private SelectConditionStep<Record1<Object>>
 		_getFilterConditionForCommonTable(
-			String commonTableName, Condition conditions) {
+			Condition conditions, String filteredEventsTableName) {
 
 		Field<Object> field = DSL.field("id");
 
 		SelectJoinStep<Record1<Object>> selectJoinStep = _dslContext.select(
 			field
 		).from(
-			commonTableName
+			filteredEventsTableName
 		);
 
 		return selectJoinStep.where(conditions);
 	}
 
-	private String _getFiltersCommonTable() {
-		return "_events";
-	}
-
 	private SelectJoinStep<Record1<Integer>>
 		_getFiltersCommonTableSelectJoinStep(
-			Long channelId, Long eventDefinitionId, Date rangeEndDate,
+			Long channelId, Long eventDefinitionId,
+			String filteredEventsTableName, Date rangeEndDate,
 			Date rangeStartDate) {
 
 		List<Condition> conditions = _getConditions(
@@ -1169,7 +1133,7 @@ public class BQEventRepositoryImpl
 
 		return _getEventSelectJoinStep(
 			_dslContext.with(
-				_getFiltersCommonTable()
+				filteredEventsTableName
 			).as(
 				filtersCommonTable
 			).select(
@@ -1279,9 +1243,9 @@ public class BQEventRepositoryImpl
 
 	private Condition _getValueCondition(
 		AttributeType attributeFilterType,
-		String commonTableName,
 		EventAttributeDefinition eventAttributeDefinition,
-		Date rangeEndDate, Date rangeStartDate) {
+		String filteredEventsTableName, Date rangeEndDate,
+		Date rangeStartDate) {
 
 		Condition condition = DSL.noCondition();
 
@@ -1290,12 +1254,12 @@ public class BQEventRepositoryImpl
 				eventAttributeDefinition.getType(),
 				EventAttributeDefinition.Type.GLOBAL)) {
 
-			if (commonTableName == null) {
-				commonTableName = "BQEventProperty";
+			if (filteredEventsTableName == null) {
+				filteredEventsTableName = "BQEventProperty";
 			}
 
 			Field eventAttributeDefinitionIdField = DSL.field(
-				commonTableName + ".name");
+				filteredEventsTableName + ".name");
 
 			condition = condition.and(
 				eventAttributeDefinitionIdField.eq(
@@ -1303,7 +1267,7 @@ public class BQEventRepositoryImpl
 
 			if ((rangeEndDate != null) && (rangeStartDate != null)) {
 				Field<Object> eventDateField = DSL.field(
-					commonTableName + ".eventDate");
+					filteredEventsTableName + ".eventDate");
 
 				condition = condition.and(
 					eventDateField.between(
@@ -1413,20 +1377,25 @@ public class BQEventRepositoryImpl
 	}
 
 	private boolean _hasNonglobalAttributes(
-		Map<Long, EventAttributeDefinition> eventAttributeDefinitionMap) {
+		List<EventAnalysisFilter> eventAnalysisFilters) {
 
-		for (EventAttributeDefinition eventAttributeDefinition :
-				eventAttributeDefinitionMap.values()) {
+		for (EventAttributeDefinition filter :
+				_getEventAttributesDefinitions(eventAnalysisFilters)) {
 
-			if (!Objects.equals(
-					eventAttributeDefinition.getType(),
-					EventAttributeDefinition.Type.GLOBAL)) {
-
+			if (!_isGlobalAttribute(filter)) {
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	private boolean _isGlobalAttribute(
+		EventAttributeDefinition eventAttributeDefinition) {
+
+		return Objects.equals(
+			eventAttributeDefinition.getType(),
+			EventAttributeDefinition.Type.GLOBAL);
 	}
 
 	private static final Map<String, String> _globalAttributes =
