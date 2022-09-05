@@ -151,6 +151,11 @@ public class BQSessionRepositoryImpl
 					).as(
 						"averagesessionduration"
 					),
+					DSL.sum(
+						DSL.field("bounce", Long.class)
+					).as(
+						"bounces"
+					),
 					DSL.count(
 					).as(
 						"sessions"
