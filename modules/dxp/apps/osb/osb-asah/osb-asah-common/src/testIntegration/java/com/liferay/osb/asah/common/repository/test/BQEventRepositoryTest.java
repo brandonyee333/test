@@ -142,7 +142,7 @@ public class BQEventRepositoryTest
 			eventAttributeDefinitionOptional.get();
 
 		Assertions.assertEquals(
-			9L,
+			1L,
 			_bqEventRepository.countTotalBQEvents(
 				1L,
 				Arrays.asList(
@@ -155,7 +155,7 @@ public class BQEventRepositoryTest
 						"56789", AttributeType.EVENT,
 						EventAttributeDefinition.DataType.DATE, null,
 						"testDate", "between",
-						Arrays.asList("2021-05-10", "2021-06-01"))),
+						Arrays.asList("2021-01-01", "2021-06-01"))),
 				246810L,
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 6, 1, 23, 59)),
 				DateUtil.toUTCDate(LocalDateTime.of(2021, 5, 10, 0, 0)),
