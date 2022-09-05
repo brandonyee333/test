@@ -107,7 +107,7 @@ public class BQSessionRepositoryImpl
 						"averagesessionduration"
 					),
 					DSL.sum(
-						DSL.field("bounce", Integer.class)
+						DSL.field("bounce", Long.class)
 					).as(
 						"bounces"
 					),
