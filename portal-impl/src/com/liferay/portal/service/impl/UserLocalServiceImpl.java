@@ -5949,8 +5949,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			return Authenticator.FAILURE;
 		}
 
-		user = _checkPasswordPolicy(user);
-
 		if (!user.isPasswordEncrypted()) {
 			user.setPassword(PasswordEncryptorUtil.encrypt(user.getPassword()));
 			user.setPasswordEncrypted(true);
@@ -6002,6 +6000,15 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 
 		if (authResult == Authenticator.SUCCESS) {
+			try {
+				user = _checkPasswordPolicy(user);
+			}
+			catch (PortalException portalException) {
+				handleAuthenticationFailure(
+					login, authType, user, headerMap, parameterMap);
+
+				throw portalException;
+			}
 
 			// Update digest
 
