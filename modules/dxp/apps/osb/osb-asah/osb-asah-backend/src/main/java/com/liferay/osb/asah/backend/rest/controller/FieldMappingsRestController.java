@@ -16,13 +16,11 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.common.dog.BQFieldMappingDog;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 
-import java.util.Collections;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,11 +50,9 @@ public class FieldMappingsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		// TODO Implement getFieldMappingDTOPageDTO
-
 		return _toPageDTO(
-			PageableExecutionUtils.getPage(
-				Collections.emptyList(), PageRequest.of(0, 1), () -> 0));
+			_bqFieldMappingDog.searchBQFieldMappingPage(
+				filterString, page, size, sorts));
 	}
 
 	private PageDTO<FieldMappingDTO> _toPageDTO(
@@ -68,5 +64,8 @@ public class FieldMappingsRestController extends BaseRestController {
 			bqFieldMappingPage.getTotalElements(),
 			bqFieldMappingPage.getTotalPages());
 	}
+
+	@Autowired
+	private BQFieldMappingDog _bqFieldMappingDog;
 
 }
