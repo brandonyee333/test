@@ -130,6 +130,10 @@ public class SiteHistogramDog {
 					siteVisitorBehaviorMetric.getAnonymousVisitors()));
 		}
 
+		if (siteMetricType == SiteMetricType.BOUNCE_RATE) {
+			return siteVisitorBehaviorMetric.getBounceRate();
+		}
+
 		if (siteMetricType == SiteMetricType.KNOWN_VISITORS) {
 			return Double.parseDouble(
 				String.valueOf(siteVisitorBehaviorMetric.getKnownVisitors()));
