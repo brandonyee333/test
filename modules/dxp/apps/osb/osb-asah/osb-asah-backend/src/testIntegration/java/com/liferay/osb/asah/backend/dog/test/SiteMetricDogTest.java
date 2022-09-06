@@ -168,6 +168,18 @@ public class SiteMetricDogTest
 		Assertions.assertEquals(8.64E7, sessionDurationMetric.getValue());
 	}
 
+	@SQLResource(resourcePath = "test_bq_events.sql")
+	@Test
+	public void testGetSiteMetric8() {
+		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
+			_getSearchQueryContext());
+
+		Metric sessionsPerVisitorMetric =
+			siteMetric.getSessionsPerVisitorMetric();
+
+		Assertions.assertEquals(1, sessionsPerVisitorMetric.getValue());
+	}
+
 	private SearchQueryContext _getSearchQueryContext() {
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
