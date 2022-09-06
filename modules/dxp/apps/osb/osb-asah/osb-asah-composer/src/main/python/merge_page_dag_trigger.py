@@ -28,8 +28,11 @@ def create_dag(ac_project_id, dag_id, dag_description):
 			schedule_interval='0 1 * * *',
 			start_date=datetime.datetime.now()
 	) as dag:
-		BigQueryInsertJobFromTemplateOperator(task_id='page_daily_merge')
-		
+		[
+			BigQueryInsertJobFromTemplateOperator(task_id='customasset_daily_merge')
+			BigQueryInsertJobFromTemplateOperator(task_id='page_daily_merge')
+		]
+
 		return dag
 
 bigquery_hook = BigQueryHook(gcp_conn_id='google_cloud_default')
