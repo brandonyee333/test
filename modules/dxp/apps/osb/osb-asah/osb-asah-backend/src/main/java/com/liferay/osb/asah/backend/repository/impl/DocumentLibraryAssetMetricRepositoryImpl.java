@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.model.DocumentLibraryMetric;
 import com.liferay.osb.asah.backend.model.DocumentLibraryMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
 
@@ -104,7 +105,7 @@ public class DocumentLibraryAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected String getTableName() {
+	protected String getTableName(TimeRange timeRange) {
 		return "BQDocumentLibrary";
 	}
 

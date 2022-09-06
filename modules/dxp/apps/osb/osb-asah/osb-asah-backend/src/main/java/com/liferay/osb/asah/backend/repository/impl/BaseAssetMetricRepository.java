@@ -53,6 +53,7 @@ import org.jooq.WindowOverStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -71,7 +72,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslContext.select(
 				_getMetricFields(selectedMetrics)
 			).from(
-				getTableName()
+				getTableName(timeRange)
 			).where(
 				_createWhereClause(assetId, channelId, timeRange)
 			));
@@ -104,7 +105,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslContext.select(
 				fields
 			).from(
-				getTableName()
+				getTableName(timeRange)
 			).where(
 				DSL.and(
 					DSL.field(
@@ -155,7 +156,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return dslContext.select(
 			browserNameField, metricField
 		).from(
-			getTableName()
+			getTableName(timeRange)
 		).where(
 			_createWhereClause(assetId, channelId, timeRange)
 		).groupBy(
@@ -194,7 +195,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslContext.select(
 				fields
 			).from(
-				getTableName()
+				getTableName(timeRange)
 			).where(
 				_createWhereClause(assetId, channelId, timeRange)
 			).groupBy(
@@ -229,7 +230,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		dslContext.select(
 			deviceTypeField, metricField, platformNameField
 		).from(
-			getTableName()
+			getTableName(timeRange)
 		).where(
 			_createWhereClause(assetId, channelId, timeRange)
 		).groupBy(
@@ -279,7 +280,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return dslContext.select(
 			countryField, metricField
 		).from(
-			getTableName()
+			getTableName(timeRange)
 		).where(
 			_createWhereClause(assetId, channelId, timeRange)
 		).groupBy(
@@ -323,7 +324,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslContext.select(
 				field, getMetricField(metricType)
 			).from(
-				getTableName()
+				getTableName(timeRange)
 			).where(
 				_createWhereClause(assetId, channelId, timeRange)
 			).groupBy(
@@ -348,7 +349,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				));
 		}
 
-		return _getIndividualsCount(metricType, whereClauseCondition);
+		return _getIndividualsCount(
+			metricType, timeRange, whereClauseCondition);
 	}
 
 	@Override
@@ -371,7 +373,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				),
 				segmentNamesField.isNull()));
 
-		return _getIndividualsCount(metricType, whereClauseCondition);
+		return _getIndividualsCount(
+			metricType, timeRange, whereClauseCondition);
 	}
 
 	@Override
@@ -392,7 +395,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				0
 			));
 
-		return _getIndividualsCount(metricType, whereClauseCondition);
+		return _getIndividualsCount(
+			metricType, timeRange, whereClauseCondition);
 	}
 
 	@Override
@@ -410,7 +414,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslContext.select(
 				segmentNameField
 			).from(
-				getTableName()
+				getTableName(timeRange)
 			).crossJoin(
 				DSL.unnest(
 					segmentNamesField
@@ -454,7 +458,18 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	protected abstract MetricType[] getMetricTypes();
 
-	protected abstract String getTableName();
+	protected abstract String getTableName(TimeRange timeRange);
+
+	protected boolean isBigQueryDialect() {
+		String googleApplicationCredentials = _environment.getProperty(
+			"GOOGLE_APPLICATION_CREDENTIALS");
+
+		if (googleApplicationCredentials != null) {
+			return true;
+		}
+
+		return false;
+	}
 
 	@Autowired
 	protected DSLContext dslContext;
@@ -486,12 +501,13 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	private long _getIndividualsCount(
-		MetricType metricType, Condition whereClauseCondition) {
+		MetricType metricType, TimeRange timeRange,
+		Condition whereClauseCondition) {
 
 		return dslContext.select(
 			DSL.countDistinct(DSL.field("individualId"))
 		).from(
-			getTableName()
+			getTableName(timeRange)
 		).where(
 			whereClauseCondition.and(
 				DSL.field(
@@ -590,6 +606,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Autowired
 	private DSLHelper _dslHelper;
+
+	@Autowired
+	private Environment _environment;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;

@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
 
@@ -112,7 +113,7 @@ public class FormAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected String getTableName() {
+	protected String getTableName(TimeRange timeRange) {
 		return "BQForm";
 	}
 

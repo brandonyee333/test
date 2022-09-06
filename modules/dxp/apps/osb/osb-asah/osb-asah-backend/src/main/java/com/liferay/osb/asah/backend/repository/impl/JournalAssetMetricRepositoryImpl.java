@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.model.JournalMetric;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
 
@@ -80,7 +81,7 @@ public class JournalAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected String getTableName() {
+	protected String getTableName(TimeRange timeRange) {
 		return "BQJournal";
 	}
 

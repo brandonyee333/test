@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.model.BlogMetric;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
 
@@ -105,7 +106,7 @@ public class BlogAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected String getTableName() {
+	protected String getTableName(TimeRange timeRange) {
 		return "BQBlog";
 	}
 
