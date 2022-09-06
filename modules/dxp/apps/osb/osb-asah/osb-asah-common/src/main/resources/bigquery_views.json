@@ -1,4 +1,4 @@
-[
-	"customassethourly",
-	"pagehourly"
-]
+{
+	"customassethourly": "customasset_hourly.sql",
+	"pagehourly": "page_hourly.sql"
+}

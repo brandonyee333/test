@@ -79,12 +79,11 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 					_tablesJSONObject.getJSONObject(tableName), tableName);
 			}
 
-			for (int i = 0; i < _viewsJSONArray.length(); i++) {
-				String viewName = _viewsJSONArray.getString(i);
-
+			for (String viewName : _viewsJSONObject.keySet()) {
 				_createView(
 					dataset.getDatasetId(),
-					_readFile(String.format("/bigquery/%s.sql" + viewName)),
+					_readFile(
+						"/bigquery/" + _viewsJSONObject.getString(viewName)),
 					viewName);
 			}
 		}
@@ -283,7 +282,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		_googleProjectId = bigQueryOptions.getProjectId();
 
 		_tablesJSONObject = new JSONObject(_readFile("/bigquery_tables.json"));
-		_viewsJSONArray = new JSONArray(_readFile("/bigquery_views.json"));
+		_viewsJSONObject = new JSONObject(_readFile("/bigquery_views.json"));
 	}
 
 	private String _readFile(String filePath) {
@@ -309,6 +308,6 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	private String _location;
 
 	private JSONObject _tablesJSONObject;
-	private JSONArray _viewsJSONArray;
+	private JSONObject _viewsJSONObject;
 
 }
