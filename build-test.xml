@@ -37,6 +37,26 @@
 
 	<propertycopy from="operating.system.${operating.system.type}.version" name="operating.system.version" />
 
+	<macrodef name="add-module-hotfix-qualifier">
+		<sequential>
+			<replaceregexp
+				file="${project.dir}/${hotfix.qualifier.module.dir}/bnd.bnd"
+				match="Bundle-Version: (.*)"
+				replace="Bundle-Version: \1.hotfix-0-8000"
+			/>
+
+			<replaceregexp
+				file="${project.dir}/${hotfix.qualifier.module.dir}/package.json"
+				match="&quot;version&quot;: &quot;(.*)&quot;"
+				replace="&quot;version&quot;: &quot;\1.hotfix-0-8000&quot;"
+			/>
+
+			<gradle-execute dir="${project.dir}/${hotfix.qualifier.module.dir}" task="deploy">
+				<arg value="clean" />
+			</gradle-execute>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="apply-portal-ext-properties">
 		<sequential>
 			<if>
@@ -10752,6 +10772,15 @@ ${update.properties}</echo>
 	</target>
 
 	<target name="prepare-osgi-module-configurations">
+		<get-testcase-property property.name="hotfix.qualifier.module.dir" />
+
+		<if>
+			<isset property="hotfix.qualifier.module.dir" />
+			<then>
+				<add-module-hotfix-qualifier />
+			</then>
+		</if>
+
 		<get-testcase-property property.name="osgi.module.configurations" />
 
 		<if>

@@ -27,6 +27,19 @@ definition {
 		}
 	}
 
+	@description = "Verify a module can be deployed after adding a hotfix qualifier to its build version"
+	@priority = "3"
+	test HotfixQualifierSmoke {
+		property hotfix.qualifier.module.dir = "modules/apps/account/account-admin-web";
+		property test.name.skip.portal.instance = "Smoke#HotfixQualifierSmoke";
+
+		SignIn.signInTestSetup();
+
+		Smoke.viewWelcomeContentPage();
+
+		Smoke.runSmoke();
+	}
+
 	@description = "Ensure that the super admin can add pages, add portlets, navigate to the product menu, use the WYSIWYG editor, and view alert messages."
 	@priority = "5"
 	test Smoke {

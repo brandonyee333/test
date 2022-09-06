@@ -522,33 +522,24 @@ mariadb.executable=${mariadb.executable}]]></echo>
 	<macrodef name="get-release-dependency-modules">
 		<attribute default="false" name="post.startup.modules.only" />
 		<attribute default="false" name="pre.startup.modules.only" />
-
 		<sequential>
 			<beanshell>
 				<![CDATA[
 					import java.nio.file.Files;
 
 					import org.apache.commons.lang.StringUtils;
-
 					String projectDir = project.getProperty("project.dir");
-
 					boolean postStartupModulesOnly = Boolean.parseBoolean("@{post.startup.modules.only}");
 					boolean preStartupModulesOnly = Boolean.parseBoolean("@{pre.startup.modules.only}");
-
 					List postStartupTestUtilModules = new ArrayList();
-
 					String testReleasePostStartupDependencyModules = project.getProperty("test.release.post.startup.dependency.modules");
-
 					if (testReleasePostStartupDependencyModules != null) {
 						postStartupTestUtilModules = Arrays.asList(testReleasePostStartupDependencyModules.split(","));
 					}
-
 					public List findFiles(File baseDir, String regex) {
 						List files = new ArrayList();
-
 						for (File file : baseDir.listFiles()) {
 							String filePath = file.toString();
-
 							if (file.isDirectory()) {
 								files.addAll(findFiles(file, regex));
 							}
@@ -556,126 +547,85 @@ mariadb.executable=${mariadb.executable}]]></echo>
 								files.add(file);
 							}
 						}
-
 						return files;
 					}
-
 					public List getModulesFromModuleGroups(String[] moduleGroups) {
 						List modules = new ArrayList();
-
 						for (String moduleGroup : moduleGroups) {
 							String moduleGroupPath = projectDir + "/" + moduleGroup;
-
 							File appBndFile = new File(moduleGroupPath, "app.bnd");
-
 							if (!appBndFile.exists()) {
 								modules.add(moduleGroup);
-
 								continue;
 							}
-
 							List moduleBuildGradleFiles = findFiles(new File(moduleGroupPath), moduleGroupPath + "/.+/build.gradle");
-
 							for (File moduleBuildGradleFile : moduleBuildGradleFiles) {
 								String module = moduleBuildGradleFile.getParent();
-
 								module = module.replace(projectDir + "/", "");
-
 								if (module.endsWith("-test")) {
 									System.out.println("Ignoring " + module);
-
 									continue;
 								}
-
 								modules.add(module);
 							}
 						}
-
 						return modules;
 					}
-
 					public List getTestUtilModules() {
 						List appBndFiles = findFiles(new File(projectDir, "modules/apps"), ".+/app.bnd");
-
 						File dxpAppsDir = new File(projectDir, "modules/dxp/apps");
-
 						if (dxpAppsDir.exists()) {
 							appBndFiles.addAll(findFiles(dxpAppsDir, ".+/app.bnd"));
 						}
-
 						File privateAppsDir = new File(projectDir, "modules/private/apps");
-
 						if (privateAppsDir.exists()) {
 							appBndFiles.addAll(findFiles(privateAppsDir, ".+/app.bnd"));
 						}
-
 						List releasedAppDirs = new ArrayList();
-
 						for (File appBndFile : appBndFiles) {
 							String fileContent = new String(Files.readAllBytes(appBndFile.toPath()));
-
 							if (fileContent.contains("Liferay-Releng-Bundle: true")) {
 								releasedAppDirs.add(appBndFile.getParentFile());
 							}
 						}
-
 						List testUtilModules = new ArrayList();
-
 						for (File releasedAppDir : releasedAppDirs) {
 							List testUtilModuleBuildGradleFiles = findFiles(releasedAppDir, ".+test-util/build.gradle");
-
 							for (File testUtilModuleBuildGradleFile : testUtilModuleBuildGradleFiles) {
 								String testUtilModule = testUtilModuleBuildGradleFile.getParent();
-
 								File skipTestIntegrationCheckFile = new File(testUtilModule, ".lfrbuild-ci-skip-test-integration-check");
-
 								if (skipTestIntegrationCheckFile.exists()) {
 									System.out.println("Ignoring " + testUtilModule.replace(projectDir + "/", ""));
-
 									continue;
 								}
-
 								if (postStartupModulesOnly && !isPostStartupTestUtilModule(testUtilModule)) {
 									System.out.println("Ignoring " + testUtilModule.replace(projectDir + "/", ""));
-
 									continue;
 								}
-
 								if (preStartupModulesOnly && isPostStartupTestUtilModule(testUtilModule)) {
 									System.out.println("Ignoring " + testUtilModule.replace(projectDir + "/", ""));
-
 									continue;
 								}
-
 								testUtilModule = testUtilModule.replace(projectDir + "/", "");
-
 								testUtilModules.add(testUtilModule);
 							}
 						}
-
 						return testUtilModules;
 					}
-
 					public boolean isPostStartupTestUtilModule(String testUtilModule) {
 						for (String postStartupTestUtilModule: postStartupTestUtilModules) {
 							if (testUtilModule.contains(postStartupTestUtilModule)) {
 								return true;
 							}
 						}
-
 						return false;
 					}
-
 					Set releaseDependentModules = new TreeSet();
-
 					releaseDependentModules.addAll(getTestUtilModules());
-
 					String deprecatedModuleGroups = project.getProperty("test.batch.deprecated.module.groups");
-
 					if (deprecatedModuleGroups != null) {
 						releaseDependentModules.addAll(getModulesFromModuleGroups(deprecatedModuleGroups.split(",")));
 					}
-
 					project.setProperty("release.dependency.modules", StringUtils.join(releaseDependentModules, ','));
 				]]>
 			</beanshell>
