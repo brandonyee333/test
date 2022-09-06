@@ -72,8 +72,16 @@ public abstract class VisitorBehaviorMetric {
 		return _visitors.longValue();
 	}
 
+	public Boolean isPrevious() {
+		return _previous;
+	}
+
 	public void setKnownVisitors(BigDecimal knownVisitors) {
 		_knownVisitors = knownVisitors;
+	}
+
+	public void setPrevious(Boolean previous) {
+		_previous = previous;
 	}
 
 	public void setSessions(BigDecimal sessions) {
@@ -85,6 +93,7 @@ public abstract class VisitorBehaviorMetric {
 	}
 
 	private BigDecimal _knownVisitors;
+	private Boolean _previous;
 	private BigDecimal _sessions;
 	private BigDecimal _visitors;
 

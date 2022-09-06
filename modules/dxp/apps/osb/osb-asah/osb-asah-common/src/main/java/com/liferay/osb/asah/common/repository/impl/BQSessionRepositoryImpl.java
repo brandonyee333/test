@@ -81,25 +81,25 @@ public class BQSessionRepositoryImpl
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId) {
 
-		Field<Integer> rowNumberField = DSL.when(
+		Field<Boolean> previousField = DSL.when(
 			DSL.field(
 				_getFieldName("sessionStart", "BQSession")
 			).gt(
 				_dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(), zoneId.toString())
 			),
-			1
+			false
 		).otherwise(
-			0
+			true
 		).as(
-			"rowNumber"
+			"previous"
 		);
 
 		return _queryExecutor.queryForList(
 			SiteVisitorBehaviorMetric::new,
 			(SelectFinalStep)_joinWithIdentityTable(
 				_dslContext.select(
-					rowNumberField, _getKnownVisitorsField(true),
+					previousField, _getKnownVisitorsField(true),
 					_getUniqueVisitorsField("BQSession"),
 					DSL.avg(
 						DSL.field("duration", Long.class)
@@ -123,9 +123,7 @@ public class BQSessionRepositoryImpl
 				_createWhereClause(
 					channelId, includePrevious, timeRange, zoneId)
 			).groupBy(
-				rowNumberField
-			).orderBy(
-				rowNumberField.desc()
+				previousField
 			));
 	}
 
