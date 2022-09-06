@@ -114,6 +114,25 @@ public class SiteHistogramDogTest
 			1);
 	}
 
+	@SQLResource(resourcePath = "test_bq_events_site_histogram.sql")
+	@Test
+	public void testGetHistogramMetricBag3() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		Assertions.assertArrayEquals(
+			new double[] {0, 1, 0, 1, 1, 0, 1},
+			_getActualValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.SESSIONS_PER_VISITOR)),
+			1);
+		Assertions.assertArrayEquals(
+			new double[] {0, 0, 1, 1, 1, 0, 0},
+			_getPreviousValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.SESSIONS_PER_VISITOR)),
+			1);
+	}
+
 	private double[] _getActualValues(HistogramMetricBag histogramMetricBag) {
 		return _getValue(HistogramMetric::getValue, histogramMetricBag);
 	}
