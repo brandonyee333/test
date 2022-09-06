@@ -144,6 +144,12 @@ public class SiteHistogramDog {
 				String.valueOf(siteVisitorBehaviorMetric.getVisitors()));
 		}
 
+		if (siteMetricType == SiteMetricType.SESSIONS_PER_VISITOR) {
+			return Double.parseDouble(
+				String.valueOf(
+					siteVisitorBehaviorMetric.getSessionsPerVisitor()));
+		}
+
 		return 0.0;
 	}
 
