@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.model.CustomAssetMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
 
@@ -137,8 +138,18 @@ public class CustomAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected String getTableName() {
-		return "BQCustomAsset";
+	protected String getTableName(TimeRange timeRange) {
+		if (!isBigQueryDialect()) {
+			return "BQCustomAsset";
+		}
+
+		if ((timeRange == TimeRange.LAST_24_HOURS) ||
+			(timeRange == TimeRange.YESTERDAY)) {
+
+			return "CustomAssetHourly";
+		}
+
+		return "CustomAssetDaily";
 	}
 
 }
