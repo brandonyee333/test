@@ -69,17 +69,17 @@ public class SiteMetricDogTest
 		Metric anonymousVisitorsMetric =
 			siteMetric.getAnonymousVisitorsMetric();
 
-		Assertions.assertNull(anonymousVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(0, anonymousVisitorsMetric.getPreviousValue());
 		Assertions.assertEquals(1, anonymousVisitorsMetric.getValue());
 
 		Metric knownVisitorsMetric = siteMetric.getKnownVisitorsMetric();
 
-		Assertions.assertNull(knownVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(1, knownVisitorsMetric.getPreviousValue());
 		Assertions.assertEquals(1, knownVisitorsMetric.getValue());
 
 		Metric visitorsMetric = siteMetric.getVisitorsMetric();
 
-		Assertions.assertNull(visitorsMetric.getPreviousValue());
+		Assertions.assertEquals(1, visitorsMetric.getPreviousValue());
 		Assertions.assertEquals(2, visitorsMetric.getValue());
 	}
 
@@ -184,7 +184,7 @@ public class SiteMetricDogTest
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
 		searchQueryContext.setChannelId("1");
-		searchQueryContext.setIncludePrevious(false);
+		searchQueryContext.setIncludePrevious(true);
 		searchQueryContext.setTimeRange(TimeRange.LAST_30_DAYS);
 
 		return searchQueryContext;
