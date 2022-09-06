@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.model.CustomAssetMetricType;
+import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
 
@@ -55,6 +56,7 @@ public class MetricTypeDog {
 					put(AssetType.CUSTOM, CustomAssetMetricType::of);
 					put(AssetType.DOCUMENT, DocumentLibraryMetricType::of);
 					put(AssetType.FORM, FormMetricType::of);
+					put(AssetType.INDIVIDUAL_METRIC, IndividualMetricType::of);
 					put(AssetType.JOURNAL, JournalMetricType::of);
 					put(AssetType.PAGE, PageMetricType::of);
 					put(AssetType.SITE, SiteMetricType::of);
