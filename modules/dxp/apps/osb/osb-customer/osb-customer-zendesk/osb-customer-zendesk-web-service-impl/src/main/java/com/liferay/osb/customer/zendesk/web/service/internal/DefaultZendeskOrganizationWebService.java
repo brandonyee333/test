@@ -25,9 +25,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,7 +53,7 @@ public class DefaultZendeskOrganizationWebService
 			String partnerFirstLineSupport, String partnerJiraProject,
 			String partnerCode, String sla, String status,
 			String supportLanguage, String supportRegion, String tier,
-			Set<String> tags)
+			List<String> externalLinks, Set<String> tags)
 		throws Exception {
 
 		String endpoint =
@@ -61,7 +64,8 @@ public class DefaultZendeskOrganizationWebService
 			getZendeskOrganizationJSONObject(
 				accountCode, accountKey, country, details, externalId, name,
 				notes, partnerFirstLineSupport, partnerJiraProject, partnerCode,
-				sla, status, supportLanguage, supportRegion, tier, tags);
+				sla, status, supportLanguage, supportRegion, tier,
+				externalLinks, tags);
 
 		JSONObject responseJSONObject = zendeskBaseWebService.post(
 			endpoint, zendeskOrganizationJSONObject.toString());
@@ -110,7 +114,7 @@ public class DefaultZendeskOrganizationWebService
 		String partnerFirstLineSupport, String partnerJiraProject,
 		String partnerOrganization, String sla, String status,
 		String supportLanguage, String supportRegion, String tier,
-		Set<String> tags) {
+		List<String> externalLinks, Set<String> tags) {
 
 		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -169,6 +173,10 @@ public class DefaultZendeskOrganizationWebService
 		if (Validator.isNotNull(tier)) {
 			organizationFieldsJSONObject.put("tier", tier);
 		}
+
+		organizationFieldsJSONObject.put(
+			"external_links",
+			StringUtil.merge(externalLinks, StringPool.NEW_LINE));
 
 		organizationJSONObject.put(
 			"organization_fields", organizationFieldsJSONObject);

@@ -66,6 +66,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -653,7 +654,7 @@ public class AccountSynchronizer {
 			partnerJiraProject, partnerName, getSupportLevel(productPurchases),
 			getStatus(productPurchases), getSupportLanguage(accountEntry),
 			getSupportRegion(account), account.getTierAsString(),
-			getTags(accountEntry, productPurchases));
+			getExternalLinks(account), getTags(accountEntry, productPurchases));
 
 		if (!externalIdMappers) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
@@ -694,6 +695,20 @@ public class AccountSynchronizer {
 
 	protected String getDefaultUserEmail(long accountEntryId) {
 		return "no-reply@" + String.valueOf(accountEntryId) + ".com.broken";
+	}
+
+	protected List<String> getExternalLinks(Account account) {
+		List<String> externalLinks = new ArrayList<>();
+
+		for (ExternalLink externalLink : account.getExternalLinks()) {
+			String domain = externalLink.getDomain();
+
+			if (!domain.equals(ExternalLinkDomain.ZENDESK)) {
+				externalLinks.add(externalLink.getUrl());
+			}
+		}
+
+		return externalLinks;
 	}
 
 	protected String getStatus(List<ProductPurchase> productPurchases) {

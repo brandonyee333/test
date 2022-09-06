@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.portal.kernel.exception.PortalException;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,7 +34,7 @@ public interface ZendeskOrganizationWebService {
 			String partnerFirstLineSupport, String partnerJiraProject,
 			String partnerCode, String sla, String status,
 			String supportLanguage, String supportRegion, String tier,
-			Set<String> tags)
+			List<String> externalLinks, Set<String> tags)
 		throws Exception;
 
 	public void deleteZendeskOrganization(long zendeskOrganizationId)
