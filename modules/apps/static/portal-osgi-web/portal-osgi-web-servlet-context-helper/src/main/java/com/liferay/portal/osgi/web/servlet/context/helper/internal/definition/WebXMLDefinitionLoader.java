@@ -579,7 +579,7 @@ public class WebXMLDefinitionLoader extends DefaultHandler {
 	private void _addURLPatterns(
 		FilterDefinition filterDefinition, List<String> value) {
 
-		if (!ListUtil.isEmpty(value)) {
+		if (ListUtil.isNotEmpty(value)) {
 			_addURLPatterns(
 				filterDefinition, value.toArray(new String[0]), null);
 		}
@@ -610,7 +610,7 @@ public class WebXMLDefinitionLoader extends DefaultHandler {
 	private void _addURLPatterns(
 		ServletDefinition servletDefinition, List<String> value) {
 
-		if (!ListUtil.isEmpty(value)) {
+		if (ListUtil.isNotEmpty(value)) {
 			_addURLPatterns(
 				servletDefinition, value.toArray(new String[0]), null);
 		}
