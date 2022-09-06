@@ -19,13 +19,14 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
-import com.liferay.osb.asah.common.repository.BQPageRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,11 +48,24 @@ public class SiteMetricDog {
 				includePrevious, searchQueryContext.getTimeRange(),
 				_timeZoneDog.getZoneId());
 
-		if (!sessionSiteVisitorBehaviorMetrics.isEmpty()) {
-			_setMetricValues(
-				includePrevious, _sessionMetricsFunctionMap,
-				sessionSiteVisitorBehaviorMetrics, siteMetric);
-		}
+		Stream<SiteVisitorBehaviorMetric> stream =
+			sessionSiteVisitorBehaviorMetrics.stream();
+
+		Map<String, SiteVisitorBehaviorMetric>
+			sessionSiteVisitorBehaviorMetricsMap = stream.collect(
+				Collectors.toMap(
+					sessionSiteVisitorBehaviorMetric -> {
+						if (sessionSiteVisitorBehaviorMetric.isPrevious()) {
+							return "previous";
+						}
+
+						return "current";
+					},
+					Function.identity()));
+
+		_setMetricValues(
+			sessionSiteVisitorBehaviorMetricsMap.get("current"),
+			sessionSiteVisitorBehaviorMetricsMap.get("previous"), siteMetric);
 
 		return siteMetric;
 	}
@@ -65,36 +79,35 @@ public class SiteMetricDog {
 	}
 
 	private void _setMetricValues(
-		boolean includePrevious,
-		Map
-			<Function<SiteMetric, Metric>,
-			 Function<SiteVisitorBehaviorMetric, Object>> metricsFunctionMap,
-		List<SiteVisitorBehaviorMetric> siteVisitorBehaviorMetrics,
+		SiteVisitorBehaviorMetric currentSiteVisitorBehaviorMetric,
+		SiteVisitorBehaviorMetric previousSiteVisitorBehaviorMetric,
 		SiteMetric siteMetric) {
 
 		for (Map.Entry
 				<Function<SiteMetric, Metric>,
 				 Function<SiteVisitorBehaviorMetric, Object>> entry :
-					metricsFunctionMap.entrySet()) {
+					_sessionMetricsFunctionMap.entrySet()) {
 
 			Function<SiteMetric, Metric> metricFunction = entry.getKey();
 			Function<SiteVisitorBehaviorMetric, Object> metricValueFunction =
 				entry.getValue();
 
-			_setMetricValue(
-				metricFunction.apply(siteMetric),
-				Double.parseDouble(
-					String.valueOf(
-						metricValueFunction.apply(
-							siteVisitorBehaviorMetrics.get(0)))));
+			if (currentSiteVisitorBehaviorMetric != null) {
+				_setMetricValue(
+					metricFunction.apply(siteMetric),
+					Double.parseDouble(
+						String.valueOf(
+							metricValueFunction.apply(
+								currentSiteVisitorBehaviorMetric))));
+			}
 
-			if (includePrevious && (siteVisitorBehaviorMetrics.size() > 1)) {
+			if (previousSiteVisitorBehaviorMetric != null) {
 				_setMetricPreviousValue(
 					metricFunction.apply(siteMetric),
 					Double.parseDouble(
 						String.valueOf(
 							metricValueFunction.apply(
-								siteVisitorBehaviorMetrics.get(1)))));
+								previousSiteVisitorBehaviorMetric))));
 			}
 		}
 	}
@@ -132,9 +145,6 @@ public class SiteMetricDog {
 							SiteVisitorBehaviorMetric::getVisitors);
 					}
 				};
-
-	@Autowired
-	private BQPageRepository _bqPageRepository;
 
 	@Autowired
 	private BQSessionRepository _bqSessionRepository;
