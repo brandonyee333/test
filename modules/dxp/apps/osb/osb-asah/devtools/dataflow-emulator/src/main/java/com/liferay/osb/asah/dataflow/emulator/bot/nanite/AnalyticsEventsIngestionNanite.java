@@ -553,8 +553,8 @@ public class AnalyticsEventsIngestionNanite {
 			));
 
 		bqSession.setRegion("Local Network");
-		bqSession.setSessionEnd(sessionContext.sessionEnd);
-		bqSession.setSessionStart(sessionContext.sessionStart);
+		bqSession.setSessionEnd(lastAnalyticsEvent.getEventDate());
+		bqSession.setSessionStart(firstAnalyticsEvent.getEventDate());
 		bqSession.setUserId(sessionContext.userId);
 
 		_bqSessionRepository.save(bqSession);
