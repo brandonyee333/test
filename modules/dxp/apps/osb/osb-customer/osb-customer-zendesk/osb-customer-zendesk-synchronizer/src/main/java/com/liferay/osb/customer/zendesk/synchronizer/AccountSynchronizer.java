@@ -544,7 +544,7 @@ public class AccountSynchronizer {
 			criteria.add("requester:" + zendeskUserId);
 		}
 
-		criteria.add("status<" + ZendeskTicketConstants.STATUS_SOLVED);
+		criteria.add("status<" + ZendeskTicketConstants.STATUS_CLOSED);
 
 		List<ZendeskTicket> zendeskTickets =
 			_zendeskTicketWebService.getZendeskTickets(criteria);
@@ -568,6 +568,7 @@ public class AccountSynchronizer {
 				"n_a_customer_inactivity");
 
 			zendeskTicket.setCustomFields(customFields);
+
 			zendeskTicket.setRequesterId(zendeskUser.getZendeskUserId());
 			zendeskTicket.setStatus("solved");
 		}
