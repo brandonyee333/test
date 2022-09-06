@@ -1,0 +1,1 @@
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '1', timestamp '${now-10d}', timestamp '${now-9d}', '1');
