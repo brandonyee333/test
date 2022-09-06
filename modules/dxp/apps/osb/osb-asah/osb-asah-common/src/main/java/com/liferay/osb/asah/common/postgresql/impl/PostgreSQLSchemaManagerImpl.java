@@ -115,8 +115,7 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
-					true, true, null,
-					new ClassPathResource("constraints.sql")),
+					true, true, null, new ClassPathResource("constraints.sql")),
 				_dataSource);
 
 			DatabasePopulatorUtils.execute(
