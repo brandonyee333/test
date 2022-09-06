@@ -52,6 +52,18 @@ public abstract class VisitorBehaviorMetric {
 		return _sessions.longValue();
 	}
 
+	public long getSessionsPerVisitor() {
+		if ((_sessions != null) && (_visitors != null) &&
+			!_visitors.equals(BigDecimal.ZERO)) {
+
+			BigDecimal sessionsPerVisitor = _sessions.divide(_visitors);
+
+			return sessionsPerVisitor.longValue();
+		}
+
+		return 0;
+	}
+
 	public long getVisitors() {
 		if (_visitors == null) {
 			return 0;
