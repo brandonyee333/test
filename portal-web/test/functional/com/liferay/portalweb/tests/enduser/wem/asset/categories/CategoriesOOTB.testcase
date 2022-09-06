@@ -781,6 +781,7 @@ definition {
 	@priority = "4"
 	test CheckDMVocabularyAssetSubtypeBasicDocument {
 		property osgi.app.includes = "document-library-google-docs";
+		property portal.upstream = "vini";
 
 		task ("Create a vocabulary with Associated Asset Type of Document > Basic Document") {
 			Category.openCategoriesAdmin(siteURLKey = "test-site-name");
