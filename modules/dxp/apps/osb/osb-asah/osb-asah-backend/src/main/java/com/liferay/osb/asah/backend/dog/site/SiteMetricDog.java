@@ -125,6 +125,9 @@ public class SiteMetricDog {
 							SiteMetric::getSessionsMetric,
 							SiteVisitorBehaviorMetric::getSessions);
 						put(
+							SiteMetric::getSessionsPerVisitorMetric,
+							SiteVisitorBehaviorMetric::getSessionsPerVisitor);
+						put(
 							SiteMetric::getVisitorsMetric,
 							SiteVisitorBehaviorMetric::getVisitors);
 					}
