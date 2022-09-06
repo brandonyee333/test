@@ -154,6 +154,10 @@ public class BQSessionRepositoryImpl
 						1000
 					).as(
 						"averagesessionduration"
+					),
+					DSL.count(
+					).as(
+						"sessions"
 					)
 				).from(
 					"BQSession"
