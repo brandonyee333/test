@@ -205,6 +205,72 @@
 			}
 		]
 	},
+	"customassetdaily": {
+		"clusteringFields": [
+			"channelId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "abandonments",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "assetPrimaryKey",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "clicks",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "downloads",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "eventDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "readTime",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "sessions",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "submissions",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "submissionsTime",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "views",
+				"type": "INT64"
+			}
+		],
+		"timePartitioning": {
+			"field": "eventDate",
+			"type": "DAY"
+		}
+	},
 	"datasourceuser": {
 		"clusteringFields": [
 			"dataSourceId"
