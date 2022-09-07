@@ -38,7 +38,6 @@ import com.liferay.osb.customer.legacy.message.subscriber.ZendeskUserCreateMessa
 import com.liferay.osb.customer.legacy.message.subscriber.ZendeskUserDeleteMessageSubscriber;
 import com.liferay.osb.customer.legacy.message.subscriber.ZendeskUserIdentityCreateMessageSubscriber;
 import com.liferay.osb.customer.zendesk.message.subscriber.AccountDeleteMessageSubscriber;
-import com.liferay.osb.customer.zendesk.message.subscriber.DossieraMessageSubscriber;
 import com.liferay.osb.customer.zendesk.message.subscriber.ZendeskWebServiceMessageSubscriber;
 import com.liferay.osb.distributed.messaging.subscribing.router.BaseMessageRouter;
 import com.liferay.osb.distributed.messaging.subscribing.router.MessageRouter;
@@ -94,14 +93,6 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(accountUpdateMessageSubscriber, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setDossieraMessageSubscriber(
-		DossieraMessageSubscriber dossieraMessageSubscriber,
-		Map<String, Object> properties) {
-
-		addRoute(dossieraMessageSubscriber, properties);
 	}
 
 	@Reference(unbind = "-")
