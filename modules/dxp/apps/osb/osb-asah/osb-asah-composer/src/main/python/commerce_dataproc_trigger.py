@@ -15,14 +15,15 @@ from liferay.dataproc import DataprocClusterGetOrCreateOperator, \
 
 import airflow
 import datetime
+import os
 
 with airflow.DAG(
 	dag_id='commerce_dataproc_trigger',
 	description='Commerce Dataproc Trigger',
 	default_args={
-		'lcp_project_id': 'riccardo',
+		'lcp_project_id': os.environ['LCP_PROJECT_ID'],
 		'owner': 'Liferay',
-		'project_id': 'liferaycloud-ac-uat',
+		'project_id': os.environ['GOOGLE_PROJECT_ID'],
 		'region': 'us-west1',
 		'retries': 0,
 		'start_date': datetime.datetime.now() - datetime.timedelta(minutes=1)

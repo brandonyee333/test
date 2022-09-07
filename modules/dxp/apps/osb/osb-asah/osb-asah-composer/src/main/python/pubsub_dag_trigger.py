@@ -11,6 +11,7 @@
 
 import airflow
 import datetime
+import os
 
 from liferay.pubsub import PubSubDagTriggerOperator
 
@@ -18,9 +19,9 @@ with airflow.DAG(
 	dag_id='pubsub_dag_trigger',
 	description='Pubsub DAG Trigger',
 	default_args={
-		'lcp_project_id': 'riccardo',
+		'lcp_project_id': os.environ['LCP_PROJECT_ID'],
 		'owner': 'Liferay',
-		'project_id': 'liferaycloud-ac-uat',
+		'project_id': os.environ['GOOGLE_PROJECT_ID'],
 		'retries': 0,
 		'start_date': datetime.datetime.now() - datetime.timedelta(minutes=1)
 	},
