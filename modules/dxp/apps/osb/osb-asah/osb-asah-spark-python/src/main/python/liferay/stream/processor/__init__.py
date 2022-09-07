@@ -14,5 +14,4 @@ from liferay.stream.processor.document_library import DocumentLibraryDataFramePr
 from liferay.stream.processor.form import FormDataFrameProcessor, \
 	FormFieldDataFrameProcessor, \
 	FormPageDataFrameProcessor
-from liferay.stream.processor.journal import JournalDataFrameProcessor
 from liferay.stream.processor.page import PageDataFrameProcessor
