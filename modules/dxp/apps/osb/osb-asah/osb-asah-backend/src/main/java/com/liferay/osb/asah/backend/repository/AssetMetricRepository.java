@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Alejo Ceballos
@@ -38,8 +39,11 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		TimeRange timeRange);
 
 	public List<T> getAssetMetrics(
-		Long channelId, Pageable pageable, Set<String> selectedMetrics,
-		TimeRange timeRange);
+		Long channelId, @Nullable String keywords, Pageable pageable,
+		Set<String> selectedMetrics, TimeRange timeRange);
+
+	public Long getAssetMetricsCount(
+		Long channelId, @Nullable String keywords, TimeRange timeRange);
 
 	public AssetType getAssetType();
 

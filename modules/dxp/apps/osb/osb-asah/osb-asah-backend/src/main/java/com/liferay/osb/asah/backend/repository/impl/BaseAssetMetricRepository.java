@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.math.BigDecimal;
 
@@ -33,6 +32,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,19 +42,23 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
-import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
+import org.jooq.SortField;
 import org.jooq.WindowOverStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Alejo Ceballos
@@ -82,67 +86,50 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<T> getAssetMetrics(
-		Long channelId, Pageable pageable, Set<String> selectedMetrics,
-		TimeRange timeRange) {
+		Long channelId, @Nullable String keywords, Pageable pageable,
+		Set<String> selectedMetrics, TimeRange timeRange) {
 
 		List<Field<? extends Object>> fields = new ArrayList<>(
 			_getMetricFields(selectedMetrics));
 
 		Field<String> assetIdField = DSL.field("assetId", String.class);
+		Field<String> assetTitleField = DSL.field("assetTitle", String.class);
 
 		fields.add(assetIdField);
 
-		WindowOverStep<Integer> rowNumber = DSL.rowNumber();
+		fields.add(assetTitleField);
 
-		Field<Integer> rowNumberField = rowNumber.over();
-
-		fields.add(rowNumberField.as("rowNumber"));
-
-		Long offset = pageable.getOffset();
-
-		return dslContext.select(
-		).from(
+		return _queryExecutor.queryForList(
+			rowMap -> _toMetric(rowMap, selectedMetrics),
 			dslContext.select(
 				fields
 			).from(
 				getTableName(timeRange)
 			).where(
-				DSL.and(
-					DSL.field(
-						"channelId"
-					).eq(
-						channelId
-					),
-					DSL.field(
-						"projectId"
-					).eq(
-						ProjectIdThreadLocal.getProjectId()
-					),
-					DSL.field(
-						"eventDate"
-					).between(
-						DateUtil.toUTCLocalDateTime(
-							timeRange.getStartLocalDateTime(),
-							_timeZoneDog.getZoneId()),
-						DateUtil.toUTCLocalDateTime(
-							timeRange.getEndLocalDateTime(),
-							_timeZoneDog.getZoneId())
-					))
+				_createWhereClause(null, channelId, keywords, timeRange)
 			).groupBy(
-				assetIdField
-			)
-		).where(
-			DSL.field(
-				"rowNumber"
-			).ge(
-				offset.intValue()
-			)
-		).limit(
-			pageable.getPageSize()
-		).fetch(
-		).map(
-			record -> _toMetric(record, selectedMetrics)
-		);
+				assetIdField, assetTitleField
+			).orderBy(
+				_getSortFields(pageable.getSort())
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
+	@Override
+	public Long getAssetMetricsCount(
+		Long channelId, @Nullable String keywords, TimeRange timeRange) {
+
+		return _queryExecutor.queryForLong(
+			dslContext.select(
+				DSL.countDistinct(DSL.field("assetId"), DSL.field("assetTitle"))
+			).from(
+				getTableName(timeRange)
+			).where(
+				_createWhereClause(null, channelId, keywords, timeRange)
+			));
 	}
 
 	@Override
@@ -475,21 +462,30 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	protected DSLContext dslContext;
 
 	private Condition _createWhereClause(
-		String assetId, Long channelId, TimeRange timeRange) {
+		@Nullable String assetId, Long channelId, @Nullable String keywords,
+		TimeRange timeRange) {
 
 		ZoneId zoneId = _timeZoneDog.getZoneId();
 
-		return DSL.and(
-			DSL.field(
-				getAssetIdFieldName()
-			).eq(
-				assetId
-			),
+		List<Condition> conditions = new ArrayList<>();
+
+		if (assetId != null) {
+			conditions.add(
+				DSL.field(
+					getAssetIdFieldName()
+				).eq(
+					assetId
+				));
+		}
+
+		conditions.add(
 			DSL.field(
 				"channelId"
 			).eq(
 				channelId
-			),
+			));
+
+		conditions.add(
 			DSL.field(
 				"eventDate"
 			).between(
@@ -498,6 +494,23 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				_dslHelper.getDateParam(
 					timeRange.getEndLocalDateTime(), zoneId.toString())
 			));
+
+		if (StringUtils.isNotBlank(keywords)) {
+			conditions.add(
+				DSL.field(
+					"assetTitle", String.class
+				).containsIgnoreCase(
+					keywords
+				));
+		}
+
+		return DSL.and(conditions);
+	}
+
+	private Condition _createWhereClause(
+		@Nullable String assetId, Long channelId, TimeRange timeRange) {
+
+		return _createWhereClause(assetId, channelId, null, timeRange);
 	}
 
 	private long _getIndividualsCount(
@@ -548,6 +561,29 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		);
 	}
 
+	private Collection<SortField<?>> _getSortFields(Sort sort) {
+		Collection<SortField<?>> sortFields = new ArrayList<>();
+
+		for (Sort.Order order : sort.toList()) {
+			String fieldName = order.getProperty();
+
+			Field<?> field = DSL.field(fieldName);
+
+			if (order.getDirection() == Sort.Direction.ASC) {
+				SortField<?> sortField = field.asc();
+
+				sortFields.add(sortField.nullsFirst());
+			}
+			else {
+				SortField<?> sortField = field.desc();
+
+				sortFields.add(sortField.nullsLast());
+			}
+		}
+
+		return sortFields;
+	}
+
 	private T _toMetric(
 		Map<String, Object> recordMap, Set<String> selectedMetrics) {
 
@@ -556,39 +592,15 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
 			getAssetMetricSetters();
 
+		assetMetric.setAssetId((String)recordMap.get("assetId"));
+		assetMetric.setAssetTitle((String)recordMap.get("assetTitle"));
+
 		for (String selectedMetric : selectedMetrics) {
 			MetricType metricType = getMetricType(selectedMetric);
 
 			Metric metric = new Metric(metricType);
 
 			BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
-				metricType.getFieldName());
-
-			if (metricValueBigDecimal != null) {
-				metric.setValue(metricValueBigDecimal.doubleValue());
-			}
-
-			BiConsumer<T, Metric> metricSetterBiConsumer =
-				assetMetricSetters.get(selectedMetric);
-
-			metricSetterBiConsumer.accept(assetMetric, metric);
-		}
-
-		return assetMetric;
-	}
-
-	private T _toMetric(Record record, Set<String> selectedMetrics) {
-		T assetMetric = createAssetMetric();
-
-		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
-			getAssetMetricSetters();
-
-		for (String selectedMetric : selectedMetrics) {
-			MetricType metricType = getMetricType(selectedMetric);
-
-			Metric metric = new Metric(metricType);
-
-			BigDecimal metricValueBigDecimal = (BigDecimal)record.get(
 				metricType.getFieldName());
 
 			if (metricValueBigDecimal != null) {
