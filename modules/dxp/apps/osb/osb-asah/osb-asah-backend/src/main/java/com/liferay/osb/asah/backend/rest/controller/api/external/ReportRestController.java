@@ -163,17 +163,12 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		int assetMetricsCount = _metricDog.getAssetMetricsCount(
-			searchQueryContext);
-
-		List<BlogMetric> blogMetrics = _metricDog.getAssetMetrics(
-			assetMetricsCount, searchQueryContext, _getBlogMetricTypeNames(),
-			_PAGE_SIZE, _createSort(AssetType.BLOG, sortMetric, sortOrder),
-			page * _PAGE_SIZE);
-
-		blogMetricResultBag.setResults(blogMetrics);
-
-		blogMetricResultBag.setTotal(assetMetricsCount);
+		blogMetricResultBag.setResults(
+			_metricDog.getAssetMetrics(
+				page, searchQueryContext, _getBlogMetricTypeNames(), _PAGE_SIZE,
+				_createSort(AssetType.BLOG, sortMetric, sortOrder)));
+		blogMetricResultBag.setTotal(
+			_metricDog.getAssetMetricsCount(searchQueryContext));
 
 		return _toResultBagEntityModel(
 			_getBlogAssetReportResultBagEntityModel(
@@ -317,19 +312,13 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		int assetMetricsCount = _metricDog.getAssetMetricsCount(
-			searchQueryContext);
-
-		List<DocumentLibraryMetric> documentLibraryMetrics =
+		documentLibraryMetricResultBag.setResults(
 			_metricDog.getAssetMetrics(
-				assetMetricsCount, searchQueryContext,
-				_getDocumentLibraryMetricTypeNames(), _PAGE_SIZE,
-				_createSort(AssetType.DOCUMENT, sortMetric, sortOrder),
-				page * _PAGE_SIZE);
-
-		documentLibraryMetricResultBag.setResults(documentLibraryMetrics);
-
-		documentLibraryMetricResultBag.setTotal(assetMetricsCount);
+				page, searchQueryContext, _getDocumentLibraryMetricTypeNames(),
+				_PAGE_SIZE,
+				_createSort(AssetType.DOCUMENT, sortMetric, sortOrder)));
+		documentLibraryMetricResultBag.setTotal(
+			_metricDog.getAssetMetricsCount(searchQueryContext));
 
 		return _toResultBagEntityModel(
 			_getDocumentLibraryAssetReportResultBagEntityModel(
@@ -388,17 +377,12 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		int assetMetricsCount = _metricDog.getAssetMetricsCount(
-			searchQueryContext);
-
-		List<FormMetric> formMetrics = _metricDog.getAssetMetrics(
-			assetMetricsCount, searchQueryContext, _getFormMetricTypeNames(),
-			_PAGE_SIZE, _createSort(AssetType.FORM, sortMetric, sortOrder),
-			page * _PAGE_SIZE);
-
-		formMetricResultBag.setResults(formMetrics);
-
-		formMetricResultBag.setTotal(assetMetricsCount);
+		formMetricResultBag.setResults(
+			_metricDog.getAssetMetrics(
+				page, searchQueryContext, _getFormMetricTypeNames(), _PAGE_SIZE,
+				_createSort(AssetType.FORM, sortMetric, sortOrder)));
+		formMetricResultBag.setTotal(
+			_metricDog.getAssetMetricsCount(searchQueryContext));
 
 		return _toResultBagEntityModel(
 			_getFormAssetReportResultBagEntityModel(
@@ -532,17 +516,13 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		int assetMetricsCount = _metricDog.getAssetMetricsCount(
-			searchQueryContext);
-
-		List<JournalMetric> journalMetrics = _metricDog.getAssetMetrics(
-			assetMetricsCount, searchQueryContext, _getJournalMetricTypeNames(),
-			_PAGE_SIZE, _createSort(AssetType.JOURNAL, sortMetric, sortOrder),
-			page * _PAGE_SIZE);
-
-		journalMetricResultBag.setResults(journalMetrics);
-
-		journalMetricResultBag.setTotal(assetMetricsCount);
+		journalMetricResultBag.setResults(
+			_metricDog.getAssetMetrics(
+				page, searchQueryContext, _getJournalMetricTypeNames(),
+				_PAGE_SIZE,
+				_createSort(AssetType.JOURNAL, sortMetric, sortOrder)));
+		journalMetricResultBag.setTotal(
+			_metricDog.getAssetMetricsCount(searchQueryContext));
 
 		return _toResultBagEntityModel(
 			_getJournalAssetReportResultBagEntityModel(
@@ -653,17 +633,12 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		int assetMetricsCount = _metricDog.getAssetMetricsCount(
-			searchQueryContext);
-
-		List<PageMetric> pageMetrics = _metricDog.getAssetMetrics(
-			assetMetricsCount, searchQueryContext, _getPageMetricTypeNames(),
-			_PAGE_SIZE, _createSort(AssetType.PAGE, sortMetric, sortOrder),
-			page * _PAGE_SIZE);
-
-		pageMetricResultBag.setResults(pageMetrics);
-
-		pageMetricResultBag.setTotal(assetMetricsCount);
+		pageMetricResultBag.setResults(
+			_metricDog.getAssetMetrics(
+				page, searchQueryContext, _getPageMetricTypeNames(), _PAGE_SIZE,
+				_createSort(AssetType.PAGE, sortMetric, sortOrder)));
+		pageMetricResultBag.setTotal(
+			_metricDog.getAssetMetricsCount(searchQueryContext));
 
 		return _toResultBagEntityModel(
 			_getPageAssetReportResultBagEntityModel(

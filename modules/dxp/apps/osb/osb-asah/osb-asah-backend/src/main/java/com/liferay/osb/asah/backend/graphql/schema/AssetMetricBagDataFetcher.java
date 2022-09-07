@@ -52,7 +52,7 @@ public class AssetMetricBagDataFetcher extends BaseDataFetcher<ResultBag> {
 
 		ResultBag<AssetMetric> resultBag = new ResultBag<>();
 
-		int assetMetricsCount = _metricDog.getAssetMetricsCount(
+		long assetMetricsCount = _metricDog.getAssetMetricsCount(
 			searchQueryContext);
 
 		if (assetMetricsCount == 0) {
@@ -66,9 +66,9 @@ public class AssetMetricBagDataFetcher extends BaseDataFetcher<ResultBag> {
 
 		resultBag.setResults(
 			_metricDog.getAssetMetrics(
-				assetMetricsCount, searchQueryContext,
+				start / size, searchQueryContext,
 				(Set<String>)context.get("selectedMetrics"), size,
-				_createSort(searchQueryContext.getAssetType(), sort), start));
+				_createSort(searchQueryContext.getAssetType(), sort)));
 
 		resultBag.setTotal(assetMetricsCount);
 

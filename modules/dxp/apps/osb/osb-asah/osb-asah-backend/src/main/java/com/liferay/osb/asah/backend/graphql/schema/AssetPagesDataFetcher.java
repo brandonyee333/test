@@ -14,21 +14,15 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetMetric;
-import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -43,24 +37,7 @@ public class AssetPagesDataFetcher extends BaseDataFetcher<List<AssetMetric>> {
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		AssetMetric assetMetric = _metricDog.getAssetMetric(searchQueryContext);
-
-		List<String> canonicalUrls = assetMetric.getCanonicalUrls();
-
-		if (canonicalUrls.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		searchQueryContext.setAssetType(AssetType.PAGE);
-
-		Map<String, Object> context = dataFetchingEnvironment.getContext();
-
-		return _metricDog.getAssetMetrics(
-			new HashSet<>(canonicalUrls), searchQueryContext,
-			(Set<String>)context.get("selectedMetrics"), 1000, null, 0);
+		return Collections.emptyList();
 	}
-
-	@Autowired
-	private MetricDog _metricDog;
 
 }

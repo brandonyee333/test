@@ -14,24 +14,16 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -47,30 +39,7 @@ public class AssetMetricsDataFetcher
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		List<AssetMetric> assetMetrics = new ArrayList<>();
-
-		Map<String, Object> context = dataFetchingEnvironment.getContext();
-
-		for (AssetType assetType : AssetType.values()) {
-			if (Objects.equals(assetType, AssetType.PAGE)) {
-				continue;
-			}
-
-			searchQueryContext.setAssetType(assetType);
-
-			assetMetrics.addAll(
-				_metricDog.getAssetMetrics(
-					searchQueryContext,
-					(Set<String>)context.get("selectedMetrics"), 10000, null,
-					0));
-		}
-
-		assetMetrics.sort(
-			Comparator.comparing(
-				this::_getDefaultAssetMetricValue,
-				Comparator.nullsLast(Comparator.reverseOrder())));
-
-		return assetMetrics;
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -79,18 +48,5 @@ public class AssetMetricsDataFetcher
 
 		return null;
 	}
-
-	private Double _getDefaultAssetMetricValue(AssetMetric assetMetric) {
-		Metric defaultMetric = assetMetric.getDefaultMetric();
-
-		return Optional.ofNullable(
-			defaultMetric.getValue()
-		).orElse(
-			0D
-		);
-	}
-
-	@Autowired
-	private MetricDog _metricDog;
 
 }
