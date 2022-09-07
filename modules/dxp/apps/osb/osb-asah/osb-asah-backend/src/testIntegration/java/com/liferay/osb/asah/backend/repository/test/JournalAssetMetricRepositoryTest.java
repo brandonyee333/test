@@ -139,7 +139,7 @@ public class JournalAssetMetricRepositoryTest
 		assertAssetMetrics(
 			new Double[] {7D, 6D},
 			_assetMetricRepository.getAssetMetrics(
-				1L, PageRequest.of(0, 10),
+				1L, null, PageRequest.of(0, 10),
 				SetUtil.of(JournalMetricType.VIEWS.getName()),
 				TimeRange.LAST_24_HOURS),
 			JournalMetric::getViewsMetric);
