@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS BQAccountGroup (
 CREATE TABLE IF NOT EXISTS BQBlog (
 	assetId TEXT,
 	assetPrimaryKey TEXT,
+	assetTitle TEXT,
 	browserName TEXT,
 	canonicalUrl TEXT,
 	channelId BIGINT,
@@ -97,6 +98,7 @@ CREATE TABLE IF NOT EXISTS BQDataSourceUser (
 CREATE TABLE IF NOT EXISTS BQDocumentLibrary (
 	assetId TEXT,
 	assetPrimaryKey TEXT,
+	assetTitle TEXT,
 	browserName TEXT,
 	canonicalUrl TEXT,
 	channelId BIGINT,
@@ -188,6 +190,7 @@ CREATE TABLE IF NOT EXISTS BQForm (
 	abandonments BIGINT,
 	assetId TEXT,
 	assetPrimaryKey TEXT,
+	assetTitle TEXT,
 	browserName TEXT,
 	canonicalUrl TEXT,
 	channelId BIGINT,
