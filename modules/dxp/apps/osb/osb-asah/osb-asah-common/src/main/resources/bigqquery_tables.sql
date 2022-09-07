@@ -264,31 +264,6 @@ CREATE TABLE IF NOT EXISTS Interest (
 	views BIGINT
 );
 
-CREATE TABLE IF NOT EXISTS BQJournal (
-	assetId TEXT,
-	assetPrimaryKey TEXT,
-	browserName TEXT,
-	canonicalUrl TEXT,
-	channelId BIGINT,
-	city TEXT,
-	clicks BIGINT,
-	country TEXT,
-	dataSourceId BIGINT,
-	deviceType TEXT,
-	eventDate TIMESTAMPTZ,
-	individualId BIGINT,
-	knownIndividual BOOLEAN,
-	platformName TEXT,
-	projectId TEXT,
-	region TEXT,
-	segmentNames TEXT[],
-	sessionId TEXT,
-	title TEXT,
-	userId TEXT,
-	variantId TEXT,
-	views BIGINT
-);
-
 CREATE TABLE IF NOT EXISTS BQMembership (
 	createDate TIMESTAMPTZ,
 	id BIGSERIAL PRIMARY KEY,

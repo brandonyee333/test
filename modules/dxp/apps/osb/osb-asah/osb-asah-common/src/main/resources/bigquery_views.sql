@@ -320,6 +320,51 @@ CREATE OR REPLACE VIEW BQFieldMapping AS (
 
 COMMIT;
 
+CREATE OR REPLACE VIEW BQJournal AS (
+	WITH
+		WebContentEvent AS (
+			SELECT
+				BQEvent.*,
+				articleId.value AS assetId,
+				articleTitle.value as assetTitle
+			FROM
+				BQEvent
+			LEFT JOIN BQEventProperty AS articleId ON (
+				BQEvent.id = articleId.id AND articleId.name = 'articleId'
+			)
+			LEFT JOIN BQEventProperty AS articleTitle ON (
+				BQEvent.id = articleTitle.id AND articleTitle.name = 'title'
+			)
+			WHERE
+				BQEvent.applicationId = 'WebContent' AND
+				BQEvent.eventId = 'webContentViewed' AND
+				articleId.value IS NOT NULL
+		)
+	SELECT
+		assetId,
+		assetTitle,
+		browserName,
+		canonicalUrl,
+		channelId,
+		city,
+		country,
+		DATE_TRUNC('HOUR', eventDate) as eventDate,
+		deviceType,
+		platformName,
+		region,
+		title as pageTitle,
+		userId,
+		SUM(1) as views
+	FROM
+		WebContentEvent
+	GROUP BY
+		assetId, assetTitle, browserName, canonicalUrl, channelId, city,
+		country, DATE_TRUNC('HOUR', eventDate), deviceType, platformName,
+		region, title, userId
+);
+
+COMMIT;
+
 CREATE OR REPLACE VIEW BQPageReferrers AS (
 	SELECT
 		dataSourceId,
