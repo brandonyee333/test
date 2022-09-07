@@ -42,13 +42,13 @@ public class BQFieldMappingRepositoryTest
 	@Test
 	public void testCountBQFieldMappings() {
 		Assertions.assertEquals(
-			9,
-			_bqFieldMappingRepository.countBQFieldMappings(
-				new FilterHelper("(context eq 'demographics')")));
-		Assertions.assertEquals(
 			0,
 			_bqFieldMappingRepository.countBQFieldMappings(
 				new FilterHelper("(context eq 'custom')")));
+		Assertions.assertEquals(
+			9,
+			_bqFieldMappingRepository.countBQFieldMappings(
+				new FilterHelper("(context eq 'demographics')")));
 	}
 
 	@Autowired
