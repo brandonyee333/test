@@ -36,6 +36,8 @@ public interface ResourceActions {
 
 	public void check(String portletName);
 
+	public void checkResourceActions();
+
 	public String getAction(
 		HttpServletRequest httpServletRequest, String action);
 

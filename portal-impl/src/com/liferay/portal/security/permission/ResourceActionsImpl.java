@@ -90,6 +90,11 @@ public class ResourceActionsImpl implements ResourceActions {
 	}
 
 	@Override
+	public void checkResourceActions() {
+		resourceActionLocalService.checkResourceActions();
+	}
+
+	@Override
 	public String getAction(
 		HttpServletRequest httpServletRequest, String action) {
 

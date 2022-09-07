@@ -154,6 +154,8 @@ public class PortletConfigurationExtender
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_resourceActions.checkResourceActions();
+
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE | Bundle.STARTING, this);
 
