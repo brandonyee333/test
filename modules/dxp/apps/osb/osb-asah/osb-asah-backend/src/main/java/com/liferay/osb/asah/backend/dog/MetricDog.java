@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -70,41 +71,48 @@ public class MetricDog {
 	}
 
 	public <T extends AssetMetric> List<T> getAssetMetrics(
-		int count, SearchQueryContext searchQueryContext,
-		Set<String> selectedMetrics, int size, Sort sort, int start) {
+		int page, SearchQueryContext searchQueryContext,
+		Set<String> selectedMetrics, int size, Sort sort) {
 
 		return _getAssetMetrics(
-			Collections.emptySet(), count, searchQueryContext, selectedMetrics,
-			size, sort, start);
+			page, searchQueryContext, selectedMetrics, size, sort);
 	}
 
-	public <T extends AssetMetric> List<T> getAssetMetrics(
-		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
-		int size, Sort sort, int start) {
+	public long getAssetMetricsCount(SearchQueryContext searchQueryContext) {
+		AssetMetricRepository<?> assetMetricRepository =
+			(AssetMetricRepository<?>)_assetMetricRepositoryMap.get(
+				searchQueryContext.getAssetType());
 
-		return _getAssetMetrics(
-			Collections.emptySet(), getAssetMetricsCount(searchQueryContext),
-			searchQueryContext, selectedMetrics, size, sort, start);
-	}
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					searchQueryContext.getAssetType());
+		}
 
-	public <T extends AssetMetric> List<T> getAssetMetrics(
-		Set<String> assetIds, SearchQueryContext searchQueryContext,
-		Set<String> selectedMetrics, int size, Sort sort, int start) {
-
-		return _getAssetMetrics(
-			assetIds, assetIds.size(), searchQueryContext, selectedMetrics,
-			size, sort, start);
-	}
-
-	public int getAssetMetricsCount(SearchQueryContext searchQueryContext) {
-		return 0;
+		return assetMetricRepository.getAssetMetricsCount(
+			Long.valueOf(searchQueryContext.getChannelId()),
+			searchQueryContext.getKeywords(),
+			searchQueryContext.getTimeRange());
 	}
 
 	private <T extends AssetMetric> List<T> _getAssetMetrics(
-		Set<String> assetIds, int count, SearchQueryContext searchQueryContext,
-		Set<String> selectedMetrics, int size, Sort sort, int start) {
+		int page, SearchQueryContext searchQueryContext,
+		Set<String> selectedMetrics, int size, Sort sort) {
 
-		return Collections.emptyList();
+		AssetMetricRepository<T> assetMetricRepository =
+			(AssetMetricRepository<T>)_assetMetricRepositoryMap.get(
+				searchQueryContext.getAssetType());
+
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					searchQueryContext.getAssetType());
+		}
+
+		return assetMetricRepository.getAssetMetrics(
+			Long.valueOf(searchQueryContext.getChannelId()),
+			searchQueryContext.getKeywords(), PageRequest.of(page, size, sort),
+			selectedMetrics, searchQueryContext.getTimeRange());
 	}
 
 	private final Map<AssetType, AssetMetricRepository>
