@@ -10,7 +10,7 @@ definition {
 
 		User.firstLoginPG();
 
-		JSONGroup.addGroup(groupName = "Test Site Name");
+		/JSONGroup.addGroup(groupName = "Test Site Name");
 
 		JSONDepot.addDepot(
 			depotDescription = "This is the description of a depot",
@@ -611,17 +611,28 @@ definition {
 			siteName = "Test Site Name",
 			tableEntryText = "Yes");
 
-		DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
-
-		DisplayPageTemplatesAdmin.addDisplayPage(
+		JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
 			contentType = "Document",
-			displayPageName = "Display Page Template Name",
+			depotDocumentType = "true",
+			depotName = "Test Depot Name",
+			displayPageTemplateEntryName = "Display Page Template Name",
+			groupName = "Test Site Name",
 			subType = "DM Document Type Name");
 
-		DisplayPageTemplate.addFragment(
+		DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
+
+		DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Template Name");
+
+		PageEditor.addFragment(
 			collectionName = "Content Display",
-			displayPageName = "Display Page Template Name",
-			fragmentName = "Display Page Content",
+			fragmentName = "Display Page Content");
+
+		Button.clickPublish();
+
+		DisplayPageTemplatesAdmin.openToDisplayPageTemplateConfiguration(
+			displayPageTemplateEntryName = "Display Page Template Name",
+			groupName = "Test Site Name",
+			navItem = "Open Graph",
 			siteURLKey = "test-site-name");
 
 		DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
