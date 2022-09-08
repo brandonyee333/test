@@ -29,11 +29,13 @@ import com.liferay.osb.asah.backend.model.PageMetric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
 import com.liferay.osb.asah.test.util.repository.CrudBQDocumentLibraryRepository;
-import com.liferay.osb.asah.test.util.repository.CrudBQJournalRepository;
 import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -487,69 +489,65 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = CrudBQJournalRepository.class,
-		resourcePath = "osbasahcereroinfo/asset_metric_journal_info.json"
+	@SQLResource(
+		resourcePath = "journal_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test
 	public void testJournalDefaultMetric() {
 		AssetMetric assetMetric = _metricDog.getAssetMetric(
 			_createSearchQuery(
-				"1", AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS, null));
+				"e131fabc", "1", AssetType.JOURNAL, TimeRange.LAST_7_DAYS),
+			SetUtil.of(JournalMetricType.VIEWS.getName()));
 
 		Assertions.assertNotNull(assetMetric);
 
-		Assertions.assertEquals("1", assetMetric.getAssetId());
+		Assertions.assertEquals("e131fabc", assetMetric.getAssetId());
 
 		Metric metric = assetMetric.getDefaultMetric();
 
-		Assertions.assertEquals(2, metric.getValue(), 0);
+		Assertions.assertEquals(4, metric.getPreviousValue(), 0);
+		Assertions.assertEquals(3, metric.getValue(), 0);
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = CrudBQJournalRepository.class,
-		resourcePath = "osbasahcereroinfo/asset_metric_journal_info.json"
+	@SQLResource(
+		resourcePath = "journal_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test
 	public void testJournalMetrics() {
-		Set<String> set = new HashSet<>();
-
-		Collections.addAll(set, "1", "2", "3");
-
 		List<AssetMetric> assetMetrics = _metricDog.getAssetMetrics(
 			0,
 			_createSearchQuery(
-				null, AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS, null),
+				null, "1", AssetType.JOURNAL, TimeRange.LAST_7_DAYS),
 			new HashSet<String>() {
 				{
 					add(JournalMetricType.VIEWS.getName());
 				}
 			},
-			10, null);
+			10, Sort.desc(JournalMetricType.VIEWS.getFieldName()));
 
 		Assertions.assertEquals(
-			3, assetMetrics.size(), assetMetrics.toString());
+			1, assetMetrics.size(), assetMetrics.toString());
 
-		for (AssetMetric assetMetric : assetMetrics) {
-			Assertions.assertTrue(set.contains(assetMetric.getAssetId()));
-		}
+		AssetMetric assetMetric = assetMetrics.get(0);
+
+		Assertions.assertEquals("e131fabc", assetMetric.getAssetId());
+
+		Metric metric = assetMetric.getDefaultMetric();
+
+		Assertions.assertEquals(3, metric.getValue(), 0);
+		Assertions.assertNull(metric.getPreviousValue());
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = CrudBQJournalRepository.class,
-		resourcePath = "osbasahcereroinfo/asset_metric_journal_info.json"
+	@SQLResource(
+		resourcePath = "journal_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test
 	public void testJournalMetricsCount() {
 		Assertions.assertEquals(
-			4,
+			1,
 			_metricDog.getAssetMetricsCount(
 				_createSearchQuery(
-					null, AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS,
-					null)));
+					null, "1", AssetType.JOURNAL, TimeRange.LAST_7_DAYS)));
 	}
 
 	@Disabled
@@ -778,6 +776,18 @@ public class MetricDogTest
 				setExperimentId(experimentId);
 				setTimeRange(timeRange);
 				setVariantId(variantId);
+			}
+		};
+	}
+
+	private SearchQueryContext _createSearchQuery(
+		String assetId, String channelId, AssetType assetType,
+		TimeRange timeRange) {
+
+		return new SearchQueryContext(assetId, assetType) {
+			{
+				setChannelId(channelId);
+				setTimeRange(timeRange);
 			}
 		};
 	}
