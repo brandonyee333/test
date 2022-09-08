@@ -34,11 +34,13 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -72,16 +74,38 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		String assetId, @Nullable String assetTitle, Long channelId,
 		Set<String> selectedMetrics, TimeRange timeRange) {
 
-		Map<String, Object> recordMap = _queryExecutor.queryForMap(
+		Field<Boolean> previousField = DSL.when(
+			DSL.field(
+				"eventDate"
+			).gt(
+				_dslHelper.getDateParam(
+					timeRange.getStartLocalDateTime(),
+					String.valueOf(_timeZoneDog.getZoneId()))
+			),
+			false
+		).otherwise(
+			true
+		).as(
+			"previous"
+		);
+
+		List<Map<String, Object>> recordMaps = _queryExecutor.queryForList(
+			Function.identity(),
 			dslContext.select(
 				_getMetricFields(selectedMetrics)
+			).select(
+				previousField
 			).from(
 				getTableName(timeRange)
 			).where(
-				_createWhereClause(assetId, assetTitle, channelId, timeRange)
+				_createWhereClause(
+					assetId, assetTitle, channelId,
+					timeRange.getIncludePreviousTimeRange())
+			).groupBy(
+				previousField
 			));
 
-		return _toMetric(recordMap, selectedMetrics);
+		return _toMetric(assetId, assetTitle, recordMaps, selectedMetrics);
 	}
 
 	@Override
@@ -600,11 +624,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		T assetMetric = createAssetMetric();
 
-		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
-			getAssetMetricSetters();
-
 		assetMetric.setAssetId((String)recordMap.get("assetId"));
 		assetMetric.setAssetTitle((String)recordMap.get("assetTitle"));
+
+		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
+			getAssetMetricSetters();
 
 		for (String selectedMetric : selectedMetrics) {
 			MetricType metricType = getMetricType(selectedMetric);
@@ -622,6 +646,59 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				assetMetricSetters.get(selectedMetric);
 
 			metricSetterBiConsumer.accept(assetMetric, metric);
+		}
+
+		return assetMetric;
+	}
+
+	private T _toMetric(
+		String assetId, String assetTitle, List<Map<String, Object>> recordMaps,
+		Set<String> selectedMetrics) {
+
+		T assetMetric = createAssetMetric();
+
+		assetMetric.setAssetId(assetId);
+		assetMetric.setAssetTitle(assetTitle);
+
+		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
+			getAssetMetricSetters();
+
+		Map<String, Metric> metrics = new HashMap<>();
+
+		for (String selectedMetric : selectedMetrics) {
+			for (Map<String, Object> recordMap : recordMaps) {
+				Metric metric = metrics.computeIfAbsent(
+					selectedMetric,
+					metricTypeName -> {
+						MetricType metricType = getMetricType(metricTypeName);
+
+						return new Metric(metricType);
+					});
+
+				MetricType metricType = metric.getMetricType();
+
+				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
+					metricType.getFieldName());
+
+				if (metricValueBigDecimal != null) {
+					boolean previous = (boolean)recordMap.get("previous");
+
+					if (previous) {
+						metric.setPreviousValue(
+							metricValueBigDecimal.doubleValue());
+					}
+					else {
+						metric.setValue(metricValueBigDecimal.doubleValue());
+					}
+				}
+			}
+		}
+
+		for (Map.Entry<String, Metric> entry : metrics.entrySet()) {
+			BiConsumer<T, Metric> metricSetterBiConsumer =
+				assetMetricSetters.get(entry.getKey());
+
+			metricSetterBiConsumer.accept(assetMetric, entry.getValue());
 		}
 
 		return assetMetric;
