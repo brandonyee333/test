@@ -105,7 +105,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	public void testGetPreviewsAssetMetric() {
 		DocumentLibraryMetric documentLibraryMetric =
 			_assetMetricRepository.getAssetMetric(
-				"e131fabc", 1L,
+				"e131fabc", null, 1L,
 				SetUtil.of(DocumentLibraryMetricType.PREVIEWS.getName()),
 				TimeRange.LAST_24_HOURS);
 
@@ -138,7 +138,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of((double)3),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.DAY,
+				"e131fabc", null, 1L, Interval.DAY,
 				DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_7_DAYS));
 	}
 
@@ -150,7 +150,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of((double)1, (double)2, (double)4),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.HOUR,
+				"e131fabc", null, 1L, Interval.HOUR,
 				DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_24_HOURS));
 	}
 
@@ -171,7 +171,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	public void testGetRatingsAssetMetric() {
 		DocumentLibraryMetric documentLibraryMetric =
 			_assetMetricRepository.getAssetMetric(
-				"e131fabc", 1L,
+				"e131fabc", null, 1L,
 				SetUtil.of(DocumentLibraryMetricType.RATINGS.getName()),
 				TimeRange.LAST_24_HOURS);
 

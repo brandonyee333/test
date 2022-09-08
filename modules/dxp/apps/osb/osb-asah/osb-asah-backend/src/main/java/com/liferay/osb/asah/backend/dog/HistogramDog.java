@@ -64,11 +64,17 @@ public class HistogramDog {
 					searchQueryContext.getAssetType());
 		}
 
+		String assetTitle = null;
+
+		if (searchQueryContext.getAssetType() != AssetType.CUSTOM) {
+			assetTitle = searchQueryContext.getTitle();
+		}
+
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 
 		List<HistogramMetric> histogramMetrics =
 			assetMetricRepository.getHistogramMetrics(
-				searchQueryContext.getAssetId(),
+				searchQueryContext.getAssetId(), assetTitle,
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getInterval(), metricType,
 				timeRange.getIncludePreviousTimeRange());

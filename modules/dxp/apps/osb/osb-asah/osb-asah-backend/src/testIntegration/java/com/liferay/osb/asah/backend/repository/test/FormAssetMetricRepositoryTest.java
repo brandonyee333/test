@@ -117,7 +117,7 @@ public class FormAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsAssetMetric() {
 		FormMetric formMetric = _assetMetricRepository.getAssetMetric(
-			"e131fabc", 1L, SetUtil.of(FormMetricType.VIEWS.getName()),
+			"e131fabc", null, 1L, SetUtil.of(FormMetricType.VIEWS.getName()),
 			TimeRange.LAST_24_HOURS);
 
 		Assertions.assertNotNull(formMetric);
@@ -149,7 +149,7 @@ public class FormAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of((double)3),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.DAY, FormMetricType.VIEWS,
+				"e131fabc", null, 1L, Interval.DAY, FormMetricType.VIEWS,
 				TimeRange.LAST_7_DAYS));
 	}
 
@@ -161,7 +161,7 @@ public class FormAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of((double)1, (double)2, (double)4),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.HOUR, FormMetricType.VIEWS,
+				"e131fabc", null, 1L, Interval.HOUR, FormMetricType.VIEWS,
 				TimeRange.LAST_24_HOURS));
 	}
 

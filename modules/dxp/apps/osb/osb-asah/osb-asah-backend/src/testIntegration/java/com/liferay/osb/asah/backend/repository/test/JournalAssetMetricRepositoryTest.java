@@ -129,7 +129,7 @@ public class JournalAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsAssetMetric() {
 		JournalMetric journalMetric = _assetMetricRepository.getAssetMetric(
-			"e131fabc", 1L, SetUtil.of(JournalMetricType.VIEWS.getName()),
+			"e131fabc", null, 1L, SetUtil.of(JournalMetricType.VIEWS.getName()),
 			TimeRange.LAST_24_HOURS);
 
 		Assertions.assertNotNull(journalMetric);
@@ -161,7 +161,7 @@ public class JournalAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of(3.0),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.DAY, JournalMetricType.VIEWS,
+				"e131fabc", null, 1L, Interval.DAY, JournalMetricType.VIEWS,
 				TimeRange.LAST_7_DAYS));
 	}
 
@@ -173,7 +173,7 @@ public class JournalAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of((double)1, (double)2, (double)4),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.HOUR, JournalMetricType.VIEWS,
+				"e131fabc", null, 1L, Interval.HOUR, JournalMetricType.VIEWS,
 				TimeRange.LAST_24_HOURS));
 	}
 

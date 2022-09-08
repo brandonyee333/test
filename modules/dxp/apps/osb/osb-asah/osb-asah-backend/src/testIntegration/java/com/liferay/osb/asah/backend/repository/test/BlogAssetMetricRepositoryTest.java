@@ -117,7 +117,7 @@ public class BlogAssetMetricRepositoryTest
 	@Test
 	public void testGetViewsAssetMetric() {
 		BlogMetric blogMetric = _assetMetricRepository.getAssetMetric(
-			"e131fabc", 1L, SetUtil.of(BlogMetricType.VIEWS.getName()),
+			"e131fabc", null, 1L, SetUtil.of(BlogMetricType.VIEWS.getName()),
 			TimeRange.LAST_24_HOURS);
 
 		Assertions.assertNotNull(blogMetric);
@@ -149,7 +149,7 @@ public class BlogAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of((double)3),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.DAY, BlogMetricType.VIEWS,
+				"e131fabc", null, 1L, Interval.DAY, BlogMetricType.VIEWS,
 				TimeRange.LAST_7_DAYS));
 	}
 
@@ -161,7 +161,7 @@ public class BlogAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of((double)1, (double)2, (double)4),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", 1L, Interval.HOUR, BlogMetricType.VIEWS,
+				"e131fabc", null, 1L, Interval.HOUR, BlogMetricType.VIEWS,
 				TimeRange.LAST_24_HOURS));
 	}
 

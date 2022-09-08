@@ -64,8 +64,14 @@ public class MetricDog {
 					searchQueryContext.getAssetType());
 		}
 
+		String assetTitle = null;
+
+		if (searchQueryContext.getAssetType() != AssetType.CUSTOM) {
+			assetTitle = searchQueryContext.getTitle();
+		}
+
 		return assetMetricRepository.getAssetMetric(
-			searchQueryContext.getAssetId(),
+			searchQueryContext.getAssetId(), assetTitle,
 			Long.valueOf(searchQueryContext.getChannelId()), selectedMetrics,
 			searchQueryContext.getTimeRange());
 	}
