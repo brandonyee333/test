@@ -1,4 +1,5 @@
 {
 	"customassethourly": "customasset_hourly.sql",
+	"fieldmapping": "fieldmapping.sql",
 	"pagehourly": "page_hourly.sql"
 }
