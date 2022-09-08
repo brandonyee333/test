@@ -139,7 +139,7 @@ public class BQEventRepositoryImpl
 		String filteredEventsTableName = null;
 
 		if ((eventAnalysisFilters == null) ||
-			!_hasNonglobalAttributes(eventAnalysisFilters)) {
+			!_hasOnlyLocalAttributes(eventAnalysisFilters)) {
 
 			selectJoinStep = _getEventSelectJoinStep(_dslContext.selectCount());
 		}
@@ -1112,9 +1112,6 @@ public class BQEventRepositoryImpl
 			String filteredEventsTableName, Date rangeEndDate,
 			Date rangeStartDate) {
 
-		List<Condition> conditions = _getConditions(
-			channelId, eventDefinitionId, rangeEndDate, rangeStartDate);
-
 		SelectSelectStep<Record3<Object, Object, Object>> selectConditionStep =
 			_dslContext.select(
 				DSL.field("BQEvent.*"), DSL.field("BQEventProperty.name"),
@@ -1128,7 +1125,8 @@ public class BQEventRepositoryImpl
 			).on(
 				"BQEvent.id = BQEventProperty.id"
 			).where(
-				conditions
+				_getConditions(
+					channelId, eventDefinitionId, rangeEndDate, rangeStartDate)
 			);
 
 		return _getEventSelectJoinStep(
@@ -1376,7 +1374,7 @@ public class BQEventRepositoryImpl
 		return field;
 	}
 
-	private boolean _hasNonglobalAttributes(
+	private boolean _hasOnlyLocalAttributes(
 		List<EventAnalysisFilter> eventAnalysisFilters) {
 
 		for (EventAttributeDefinition filter :
