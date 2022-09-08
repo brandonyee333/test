@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
 import java.time.Clock;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,8 @@ public class SiteHistogramDog {
 				Collectors.toMap(
 					siteVisitorBehaviorMetric -> String.valueOf(
 						DateUtil.toLocalDateTime(
-							siteVisitorBehaviorMetric.getEventDate(), zoneId)),
+							siteVisitorBehaviorMetric.getEventDate(),
+							ZoneOffset.UTC)),
 					Function.identity()));
 
 		HistogramMetricBag histogramMetricBag =
