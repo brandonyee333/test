@@ -70,7 +70,6 @@ public class OSBAsahSpringExtension extends SpringExtension {
 				",", JooqAutoConfiguration.class.getName(),
 				ManagementWebSecurityAutoConfiguration.class.getName(),
 				SecurityAutoConfiguration.class.getName()));
-		System.setProperty("spring.main.allow-circular-references", "true");
 		System.setProperty(
 			"spring.main.allow-bean-definition-overriding", "true");
 		System.setProperty("spring.profiles.active", "test");
