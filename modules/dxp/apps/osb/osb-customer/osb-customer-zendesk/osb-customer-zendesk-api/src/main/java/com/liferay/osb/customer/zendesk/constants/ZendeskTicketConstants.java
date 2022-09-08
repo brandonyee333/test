@@ -21,12 +21,6 @@ public interface ZendeskTicketConstants {
 
 	public static final String STATUS_CLOSED = "closed";
 
-	public static final String STATUS_HOLD = "hold";
-
-	public static final String STATUS_NEW = "new";
-
-	public static final String STATUS_OPEN = "open";
-
 	public static final String STATUS_PENDING = "pending";
 
 	public static final String STATUS_SOLVED = "solved";

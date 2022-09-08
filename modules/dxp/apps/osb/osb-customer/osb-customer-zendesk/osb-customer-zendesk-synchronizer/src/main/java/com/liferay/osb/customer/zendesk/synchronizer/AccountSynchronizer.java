@@ -18,11 +18,9 @@ import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.ProductEntry;
-import com.liferay.osb.customer.admin.model.ProjectSolution;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
-import com.liferay.osb.customer.admin.service.ProjectSolutionLocalService;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants;
@@ -49,7 +47,6 @@ import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
-import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
@@ -59,6 +56,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -654,7 +652,8 @@ public class AccountSynchronizer {
 			partnerJiraProject, partnerName, getSupportLevel(productPurchases),
 			getStatus(productPurchases), getSupportLanguage(accountEntry),
 			getSupportRegion(account), account.getTierAsString(),
-			getExternalLinks(account), getTags(accountEntry, productPurchases));
+			getExternalLinks(account),
+			getTags(account, accountEntry, productPurchases));
 
 		if (!externalIdMappers) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
@@ -759,7 +758,8 @@ public class AccountSynchronizer {
 	}
 
 	protected Set<String> getTags(
-			AccountEntry accountEntry, List<ProductPurchase> productPurchases)
+			Account account, AccountEntry accountEntry,
+			List<ProductPurchase> productPurchases)
 		throws Exception {
 
 		if (!accountEntry.isActiveTicketSupport()) {
@@ -786,27 +786,14 @@ public class AccountSynchronizer {
 			}
 		}
 
-		List<ExternalLink> externalLinks =
-			_externalLinkWebService.getExternalLinks(
-				accountEntry.getKoroneikiAccountKey(), 1, 1000);
+		Map<String, String> properties = account.getProperties();
 
-		for (ExternalLink externalLink : externalLinks) {
-			String domain = externalLink.getDomain();
-			String entityName = externalLink.getEntityName();
+		if (properties.containsKey("extendedPatchPolicy")) {
+			tags.add("180_day_hotfix");
+		}
 
-			if (domain.equals(ExternalLinkDomain.SALESFORCE) &&
-				entityName.equals(ExternalLinkEntityName.SALESFORCE_PROJECT)) {
-
-				ProjectSolution projectSolution =
-					_projectSolutionLocalService.fetchProjectSolution(
-						externalLink.getEntityId());
-
-				if (projectSolution != null) {
-					tags.add(projectSolution.getZendeskTag());
-				}
-
-				break;
-			}
+		if (properties.containsKey("projectSolution")) {
+			tags.add(_toZendeskTag(properties.get("projectSolution")));
 		}
 
 		return tags;
@@ -902,6 +889,11 @@ public class AccountSynchronizer {
 				zendeskUserId, zendeskOrganizationIds);
 	}
 
+	private String _toZendeskTag(String tag) {
+		return StringUtil.replace(
+			StringUtil.toLowerCase(tag), CharPool.SPACE, CharPool.UNDERLINE);
+	}
+
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
 
@@ -944,9 +936,6 @@ public class AccountSynchronizer {
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
-
-	@Reference
-	private ProjectSolutionLocalService _projectSolutionLocalService;
 
 	@Reference
 	private QueryFactory _queryFactory;
