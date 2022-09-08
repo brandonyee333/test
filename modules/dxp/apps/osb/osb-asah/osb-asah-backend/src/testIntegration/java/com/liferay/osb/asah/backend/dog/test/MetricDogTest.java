@@ -56,11 +56,11 @@ import org.springframework.test.context.BootstrapWith;
  * @author Lino Alves
  */
 @BootstrapWith(SpringBootTestContextBootstrapper.class)
-@Disabled
 public class MetricDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQBlogRepository.class,
 		resourcePath = "osbasahcerebroinfo/asset_metric_blog_info_1.json"
@@ -79,6 +79,7 @@ public class MetricDogTest
 		Assertions.assertEquals(1, urls.size(), urls.toString());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQBlogRepository.class,
 		resourcePath = "osbasahcerebroinfo/asset_metric_blog_info_1.json"
@@ -97,6 +98,7 @@ public class MetricDogTest
 		Assertions.assertTrue(urls.isEmpty());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQBlogRepository.class,
 		resourcePath = "osbasahcerebroinfo/asset_metric_blog_average_info.json"
@@ -119,6 +121,7 @@ public class MetricDogTest
 		Assertions.assertEquals(0.8, ratingsMetric.getValue(), 0.01);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQBlogRepository.class,
 		resourcePath = "osbasahcerebroinfo/asset_metric_blog_info_2.json"
@@ -141,6 +144,7 @@ public class MetricDogTest
 		Assertions.assertEquals(0.6, ratingsMetric.getValue(), 0.1);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQBlogRepository.class,
 		resourcePath = "osbasahcerebroinfo/asset_metric_blog_info_1.json"
@@ -163,6 +167,7 @@ public class MetricDogTest
 		Assertions.assertEquals(0, ratingsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -190,6 +195,7 @@ public class MetricDogTest
 		Assertions.assertEquals(3, ctrMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQDocumentLibraryRepository.class,
 		resourcePath = "osbasahcerebroinfo/document_library_info.json"
@@ -212,6 +218,7 @@ public class MetricDogTest
 		Assertions.assertEquals(0.5, ratingsMetric.getValue(), 0.1);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -234,6 +241,7 @@ public class MetricDogTest
 		Assertions.assertEquals(9, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -256,6 +264,7 @@ public class MetricDogTest
 		Assertions.assertEquals(0, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -278,6 +287,7 @@ public class MetricDogTest
 		Assertions.assertEquals(11, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -300,6 +310,7 @@ public class MetricDogTest
 		Assertions.assertEquals(11, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -322,6 +333,7 @@ public class MetricDogTest
 		Assertions.assertEquals(14, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -344,6 +356,7 @@ public class MetricDogTest
 		Assertions.assertEquals(15, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -374,6 +387,7 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -396,6 +410,7 @@ public class MetricDogTest
 		Assertions.assertEquals(17, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_3.json"
@@ -418,6 +433,7 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_4.json"
@@ -448,6 +464,7 @@ public class MetricDogTest
 			1, _metricDog.getAssetMetricsCount(searchQueryContext));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -470,6 +487,7 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQJournalRepository.class,
 		resourcePath = "osbasahcereroinfo/asset_metric_journal_info.json"
@@ -489,6 +507,7 @@ public class MetricDogTest
 		Assertions.assertEquals(2, metric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQJournalRepository.class,
 		resourcePath = "osbasahcereroinfo/asset_metric_journal_info.json"
@@ -518,6 +537,7 @@ public class MetricDogTest
 		}
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQJournalRepository.class,
 		resourcePath = "osbasahcereroinfo/asset_metric_journal_info.json"
@@ -532,6 +552,7 @@ public class MetricDogTest
 					null)));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -563,6 +584,7 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -585,6 +607,7 @@ public class MetricDogTest
 		Assertions.assertEquals(3, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -607,6 +630,7 @@ public class MetricDogTest
 		Assertions.assertEquals(100, maxScrollDepthMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -629,6 +653,7 @@ public class MetricDogTest
 		Assertions.assertEquals(2, viewsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -651,6 +676,7 @@ public class MetricDogTest
 		Assertions.assertEquals(4, visitorsMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -685,6 +711,7 @@ public class MetricDogTest
 			1.6666666666666667, sessionsPerVisitorMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
@@ -708,6 +735,7 @@ public class MetricDogTest
 			0.16666666666666666, bounceRateMetric.getValue(), 0);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
