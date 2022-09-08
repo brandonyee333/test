@@ -35,8 +35,8 @@ import org.springframework.lang.Nullable;
 public interface AssetMetricRepository<T extends AssetMetric> {
 
 	public T getAssetMetric(
-		String assetId, Long channelId, Set<String> selectedMetrics,
-		TimeRange timeRange);
+		String assetId, @Nullable String assetTitle, Long channelId,
+		Set<String> selectedMetrics, TimeRange timeRange);
 
 	public List<T> getAssetMetrics(
 		Long channelId, @Nullable String keywords, Pageable pageable,
@@ -63,8 +63,8 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		TimeRange timeRange);
 
 	public List<HistogramMetric> getHistogramMetrics(
-		String assetId, Long channelId, Interval interval,
-		MetricType metricType, TimeRange timeRange);
+		String assetId, @Nullable String assetTitle, Long channelId,
+		Interval interval, MetricType metricType, TimeRange timeRange);
 
 	public Long getIndividualsCount(
 		String assetId, Long channelId, Boolean knownIndividual,

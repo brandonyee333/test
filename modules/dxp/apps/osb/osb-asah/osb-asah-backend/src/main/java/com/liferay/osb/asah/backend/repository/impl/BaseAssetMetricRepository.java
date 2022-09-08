@@ -69,8 +69,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public T getAssetMetric(
-		String assetId, Long channelId, Set<String> selectedMetrics,
-		TimeRange timeRange) {
+		String assetId, @Nullable String assetTitle, Long channelId,
+		Set<String> selectedMetrics, TimeRange timeRange) {
 
 		Map<String, Object> recordMap = _queryExecutor.queryForMap(
 			dslContext.select(
@@ -78,7 +78,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).from(
 				getTableName(timeRange)
 			).where(
-				_createWhereClause(assetId, channelId, timeRange)
+				_createWhereClause(assetId, assetTitle, channelId, timeRange)
 			));
 
 		return _toMetric(recordMap, selectedMetrics);
@@ -106,7 +106,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).from(
 				getTableName(timeRange)
 			).where(
-				_createWhereClause(null, channelId, keywords, timeRange)
+				_createWhereClause(null, null, channelId, keywords, timeRange)
 			).groupBy(
 				assetIdField, assetTitleField
 			).orderBy(
@@ -128,7 +128,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).from(
 				getTableName(timeRange)
 			).where(
-				_createWhereClause(null, channelId, keywords, timeRange)
+				_createWhereClause(null, null, channelId, keywords, timeRange)
 			));
 	}
 
@@ -145,7 +145,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName(timeRange)
 		).where(
-			_createWhereClause(assetId, channelId, timeRange)
+			_createWhereClause(assetId, null, channelId, timeRange)
 		).groupBy(
 			browserNameField
 		).orderBy(
@@ -184,7 +184,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).from(
 				getTableName(timeRange)
 			).where(
-				_createWhereClause(assetId, channelId, timeRange)
+				_createWhereClause(assetId, null, channelId, timeRange)
 			).groupBy(
 				canonicalUrlField
 			)
@@ -219,7 +219,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName(timeRange)
 		).where(
-			_createWhereClause(assetId, channelId, timeRange)
+			_createWhereClause(assetId, null, channelId, timeRange)
 		).groupBy(
 			deviceTypeField, platformNameField
 		).orderBy(
@@ -269,7 +269,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).from(
 			getTableName(timeRange)
 		).where(
-			_createWhereClause(assetId, channelId, timeRange)
+			_createWhereClause(assetId, null, channelId, timeRange)
 		).groupBy(
 			countryField
 		).orderBy(
@@ -282,8 +282,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<HistogramMetric> getHistogramMetrics(
-		String assetId, Long channelId, Interval interval,
-		MetricType metricType, TimeRange timeRange) {
+		String assetId, @Nullable String assetTitle, Long channelId,
+		Interval interval, MetricType metricType, TimeRange timeRange) {
 
 		Field field = DSL.timestamp(
 			_dslHelper.dateTrunc(
@@ -313,7 +313,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).from(
 				getTableName(timeRange)
 			).where(
-				_createWhereClause(assetId, channelId, timeRange)
+				_createWhereClause(assetId, assetTitle, channelId, timeRange)
 			).groupBy(
 				field
 			));
@@ -325,7 +325,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		MetricType metricType, TimeRange timeRange) {
 
 		Condition whereClauseCondition = _createWhereClause(
-			assetId, channelId, timeRange);
+			assetId, null, channelId, timeRange);
 
 		if (knownIndividual != null) {
 			whereClauseCondition = whereClauseCondition.and(
@@ -346,7 +346,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		TimeRange timeRange) {
 
 		Condition whereClauseCondition = _createWhereClause(
-			assetId, channelId, timeRange);
+			assetId, null, channelId, timeRange);
 
 		Field<String[]> segmentNamesField = DSL.field(
 			"segmentNames", String[].class);
@@ -370,7 +370,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		TimeRange timeRange) {
 
 		Condition whereClauseCondition = _createWhereClause(
-			assetId, channelId, timeRange);
+			assetId, null, channelId, timeRange);
 
 		Field<String[]> segmentNamesField = DSL.field(
 			"segmentNames", String[].class);
@@ -409,7 +409,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					"t", "segmentName"
 				)
 			).where(
-				_createWhereClause(assetId, channelId, timeRange)
+				_createWhereClause(assetId, null, channelId, timeRange)
 			)
 		).groupBy(
 			segmentNameField
@@ -462,8 +462,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	protected DSLContext dslContext;
 
 	private Condition _createWhereClause(
-		@Nullable String assetId, Long channelId, @Nullable String keywords,
-		TimeRange timeRange) {
+		@Nullable String assetId, @Nullable String assetTitle, Long channelId,
+		@Nullable String keywords, TimeRange timeRange) {
 
 		ZoneId zoneId = _timeZoneDog.getZoneId();
 
@@ -475,6 +475,15 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					getAssetIdFieldName()
 				).eq(
 					assetId
+				));
+		}
+
+		if (assetTitle != null) {
+			conditions.add(
+				DSL.field(
+					"assetTitle"
+				).eq(
+					assetTitle
 				));
 		}
 
@@ -508,9 +517,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	private Condition _createWhereClause(
-		@Nullable String assetId, Long channelId, TimeRange timeRange) {
+		@Nullable String assetId, @Nullable String assetTitle, Long channelId,
+		TimeRange timeRange) {
 
-		return _createWhereClause(assetId, channelId, null, timeRange);
+		return _createWhereClause(
+			assetId, assetTitle, channelId, null, timeRange);
 	}
 
 	private long _getIndividualsCount(
