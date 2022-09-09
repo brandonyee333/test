@@ -52,7 +52,7 @@ public abstract class VisitorBehaviorMetric {
 		return _sessions.longValue();
 	}
 
-	public long getSessionsPerVisitor() {
+	public double getSessionsPerVisitor() {
 		if ((_sessions != null) && (_visitors != null) &&
 			!_visitors.equals(BigDecimal.ZERO)) {
 
