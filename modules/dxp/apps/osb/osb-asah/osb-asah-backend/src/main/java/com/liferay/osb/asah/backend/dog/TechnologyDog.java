@@ -15,11 +15,14 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.model.MetricType;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,19 +34,53 @@ import org.springframework.stereotype.Component;
 public class TechnologyDog {
 
 	@Autowired
-	public TechnologyDog() {
+	public TechnologyDog(List<AssetMetricRepository> assetMetricRepositories) {
+		assetMetricRepositories.forEach(
+			assetMetricAssetMetricRepository -> _assetMetricRepositoryMap.put(
+				assetMetricAssetMetricRepository.getAssetType(),
+				assetMetricAssetMetricRepository));
 	}
 
 	public List<Metric> getBrowserMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		return Collections.emptyList();
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getBrowserMetrics(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
 	}
 
 	public List<Metric> getDeviceMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		return Collections.emptyList();
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getDeviceMetrics(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
 	}
+
+	private AssetMetricRepository _getAssetMetricRepository(
+		AssetType assetType) {
+
+		AssetMetricRepository assetMetricRepository =
+			_assetMetricRepositoryMap.get(assetType);
+
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					assetType);
+		}
+
+		return assetMetricRepository;
+	}
+
+	private final Map<AssetType, AssetMetricRepository>
+		_assetMetricRepositoryMap = new HashMap<>();
 
 }
