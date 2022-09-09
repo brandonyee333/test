@@ -928,8 +928,9 @@ type QueryType {
 		deviceType: String,
 		rangeEnd: String,
 		rangeKey: Int,
-		rangeStart: String
-	): [PageMetric]
+		rangeStart: String,
+		title: String
+	): [AssetMetric]
 
 	assets(
 		canonicalUrl: String,

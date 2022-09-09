@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
+import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.Collections;
@@ -45,6 +46,19 @@ public class MetricDog {
 				assetMetricAssetMetricRepository));
 	}
 
+	public <T extends AssetMetric> List<T> getAppearsOnMetrics(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		AssetMetricRepository assetMetricRepository =
+			(AssetMetricRepository<T>)_assetMetricRepositoryMap.get(
+				searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getAppearsOnMetrics(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
+	}
+
 	public <T extends AssetMetric> T getAssetMetric(
 		SearchQueryContext searchQueryContext) {
 
@@ -55,14 +69,8 @@ public class MetricDog {
 		SearchQueryContext searchQueryContext, Set<String> selectedMetrics) {
 
 		AssetMetricRepository<T> assetMetricRepository =
-			(AssetMetricRepository<T>)_assetMetricRepositoryMap.get(
+			(AssetMetricRepository<T>)_getAssetMetricRepository(
 				searchQueryContext.getAssetType());
-
-		if (assetMetricRepository == null) {
-			throw new IllegalArgumentException(
-				"There is no asset metric repository for asset type " +
-					searchQueryContext.getAssetType());
-		}
 
 		String assetTitle = null;
 
@@ -85,15 +93,8 @@ public class MetricDog {
 	}
 
 	public long getAssetMetricsCount(SearchQueryContext searchQueryContext) {
-		AssetMetricRepository<?> assetMetricRepository =
-			(AssetMetricRepository<?>)_assetMetricRepositoryMap.get(
-				searchQueryContext.getAssetType());
-
-		if (assetMetricRepository == null) {
-			throw new IllegalArgumentException(
-				"There is no asset metric repository for asset type " +
-					searchQueryContext.getAssetType());
-		}
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
 
 		return assetMetricRepository.getAssetMetricsCount(
 			Long.valueOf(searchQueryContext.getChannelId()),
@@ -101,19 +102,28 @@ public class MetricDog {
 			searchQueryContext.getTimeRange());
 	}
 
+	private AssetMetricRepository _getAssetMetricRepository(
+		AssetType assetType) {
+
+		AssetMetricRepository assetMetricRepository =
+			_assetMetricRepositoryMap.get(assetType);
+
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					assetType);
+		}
+
+		return assetMetricRepository;
+	}
+
 	private <T extends AssetMetric> List<T> _getAssetMetrics(
 		int page, SearchQueryContext searchQueryContext,
 		Set<String> selectedMetrics, int size, Sort sort) {
 
 		AssetMetricRepository<T> assetMetricRepository =
-			(AssetMetricRepository<T>)_assetMetricRepositoryMap.get(
+			(AssetMetricRepository<T>)_getAssetMetricRepository(
 				searchQueryContext.getAssetType());
-
-		if (assetMetricRepository == null) {
-			throw new IllegalArgumentException(
-				"There is no asset metric repository for asset type " +
-					searchQueryContext.getAssetType());
-		}
 
 		return assetMetricRepository.getAssetMetrics(
 			Long.valueOf(searchQueryContext.getChannelId()),
