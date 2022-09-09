@@ -15,11 +15,14 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.model.MetricType;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,13 +34,32 @@ import org.springframework.stereotype.Component;
 public class GeolocationDog {
 
 	@Autowired
-	public GeolocationDog() {
+	public GeolocationDog(List<AssetMetricRepository> assetMetricRepositories) {
+		assetMetricRepositories.forEach(
+			assetMetricAssetMetricRepository -> _assetMetricRepositoryMap.put(
+				assetMetricAssetMetricRepository.getAssetType(),
+				assetMetricAssetMetricRepository));
 	}
 
 	public List<Metric> getGeolocationMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		return Collections.emptyList();
+		AssetMetricRepository assetMetricRepository =
+			_assetMetricRepositoryMap.get(searchQueryContext.getAssetType());
+
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					searchQueryContext.getAssetType());
+		}
+
+		return assetMetricRepository.getGeolocationMetrics(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
 	}
+
+	private final Map<AssetType, AssetMetricRepository>
+		_assetMetricRepositoryMap = new HashMap<>();
 
 }
