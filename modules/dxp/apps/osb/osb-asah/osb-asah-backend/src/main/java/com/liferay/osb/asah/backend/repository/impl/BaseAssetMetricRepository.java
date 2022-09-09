@@ -53,7 +53,6 @@ import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record2;
 import org.jooq.SortField;
 import org.jooq.WindowOverStep;
 import org.jooq.impl.DSL;
@@ -299,26 +298,36 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<Metric> getGeolocationMetrics(
-		String assetId, Long channelId, MetricType metricType,
-		TimeRange timeRange) {
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> countryField = DSL.field("country", String.class);
 		Field<BigDecimal> metricField = getMetricField(metricType);
 
-		return dslContext.select(
-			countryField, metricField
-		).from(
-			getTableName(timeRange)
-		).where(
-			_createWhereClause(assetId, null, channelId, timeRange)
-		).groupBy(
-			countryField
-		).orderBy(
-			metricField.desc()
-		).fetch(
-		).map(
-			record -> _getMetric(metricType, record)
-		);
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				Metric metric = new Metric(metricType);
+
+				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
+					metricType.getFieldName());
+
+				metric.setValue(metricValueBigDecimal.doubleValue());
+
+				metric.setValueKey((String)recordMap.get("country"));
+
+				return metric;
+			},
+			dslContext.select(
+				countryField, metricField
+			).from(
+				getTableName(timeRange)
+			).where(
+				_createWhereClause(assetId, assetTitle, channelId, timeRange)
+			).groupBy(
+				countryField
+			).orderBy(
+				metricField.desc()
+			));
 	}
 
 	@Override
@@ -585,20 +594,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			0
 		).value1(
 		).longValue();
-	}
-
-	private Metric _getMetric(
-		MetricType metricType, Record2<String, BigDecimal> record) {
-
-		Metric metric = new Metric(metricType);
-
-		BigDecimal bigDecimal = record.value2();
-
-		metric.setValue(bigDecimal.doubleValue());
-
-		metric.setValueKey(record.value1());
-
-		return metric;
 	}
 
 	private List<Field<BigDecimal>> _getMetricFields(Set<String> metricNames) {

@@ -59,8 +59,8 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		MetricType metricType, TimeRange timeRange);
 
 	public List<Metric> getGeolocationMetrics(
-		String assetId, Long channelId, MetricType metricType,
-		TimeRange timeRange);
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange);
 
 	public List<HistogramMetric> getHistogramMetrics(
 		String assetId, @Nullable String assetTitle, Long channelId,
