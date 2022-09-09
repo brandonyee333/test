@@ -56,4 +56,9 @@ public interface AccountWebService {
 			String contactEmailAddress, String[] contactRoleKeys)
 		throws Exception;
 
+	public Account updateAccount(
+			String agentName, String agentUID, String accountKey,
+			Account account)
+		throws Exception;
+
 }

@@ -151,6 +151,15 @@ public class AccountWebServiceImpl implements AccountWebService {
 				contactRoleKeys);
 	}
 
+	public Account updateAccount(
+			String agentName, String agentUID, String accountKey,
+			Account account)
+		throws Exception {
+
+		return _accountResource.putAccount(
+			agentName, agentUID, accountKey, account);
+	}
+
 	@Activate
 	protected void activate(Map<String, Object> properties) throws Exception {
 		KoroneikiConfiguration koroneikiConfiguration =
