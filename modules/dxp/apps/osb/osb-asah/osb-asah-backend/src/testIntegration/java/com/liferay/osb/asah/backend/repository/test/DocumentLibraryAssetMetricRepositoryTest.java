@@ -85,7 +85,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				new Tuple2("France", 9D), new Tuple2("Japan", 7D),
 				new Tuple2("United States", 5D)),
 			_assetMetricRepository.getGeolocationMetrics(
-				"e131fabc", 1L, DocumentLibraryMetricType.PREVIEWS,
+				"e131fabc", null, 1L, DocumentLibraryMetricType.PREVIEWS,
 				TimeRange.LAST_30_DAYS));
 	}
 

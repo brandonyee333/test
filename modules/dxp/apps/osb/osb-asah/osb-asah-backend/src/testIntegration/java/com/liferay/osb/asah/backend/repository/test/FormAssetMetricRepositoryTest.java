@@ -85,7 +85,8 @@ public class FormAssetMetricRepositoryTest
 				new Tuple2("France", 9D), new Tuple2("Japan", 7D),
 				new Tuple2("United States", 5D)),
 			_assetMetricRepository.getGeolocationMetrics(
-				"e131fabc", 1L, FormMetricType.VIEWS, TimeRange.LAST_30_DAYS));
+				"e131fabc", null, 1L, FormMetricType.VIEWS,
+				TimeRange.LAST_30_DAYS));
 	}
 
 	@SQLResource(

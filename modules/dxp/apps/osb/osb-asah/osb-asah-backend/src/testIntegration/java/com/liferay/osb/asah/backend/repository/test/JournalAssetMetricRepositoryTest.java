@@ -90,7 +90,7 @@ public class JournalAssetMetricRepositoryTest
 				new Tuple2("France", 9D), new Tuple2("Japan", 7D),
 				new Tuple2("United States", 5D)),
 			_assetMetricRepository.getGeolocationMetrics(
-				"e131fabc", 1L, JournalMetricType.VIEWS,
+				"e131fabc", null, 1L, JournalMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
 	}
 
