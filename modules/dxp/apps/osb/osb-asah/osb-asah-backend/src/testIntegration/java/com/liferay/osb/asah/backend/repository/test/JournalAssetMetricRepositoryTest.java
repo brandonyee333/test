@@ -52,7 +52,7 @@ public class JournalAssetMetricRepositoryTest
 				new Tuple2("Firefox", 14D), new Tuple2("Chrome", 9D),
 				new Tuple2("Opera Desktop", 3D)),
 			_assetMetricRepository.getBrowserMetrics(
-				"e131fabc", 1L, JournalMetricType.VIEWS,
+				"e131fabc", null, 1L, JournalMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
 	}
 
@@ -75,7 +75,7 @@ public class JournalAssetMetricRepositoryTest
 			Arrays.asList(
 				new Tuple2("Desktop", 22D), new Tuple2("Mobile", 12D)),
 			_assetMetricRepository.getDeviceMetrics(
-				"e131fabc", 1L, JournalMetricType.VIEWS,
+				"e131fabc", null, 1L, JournalMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
 	}
 
