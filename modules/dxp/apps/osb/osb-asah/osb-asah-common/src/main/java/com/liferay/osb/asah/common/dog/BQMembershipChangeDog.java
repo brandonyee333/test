@@ -20,13 +20,16 @@ import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -35,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -50,7 +54,13 @@ public class BQMembershipChangeDog {
 	public void addBQMembershipChange(List<BQMembership> bqMemberships) {
 		BQMembership bqMembership = bqMemberships.get(0);
 
-		Segment segment = _segmentDog.getSegment(bqMembership.getSegmentId());
+		Optional<Segment> segmentOptional = _segmentRepository.findById(
+			bqMembership.getSegmentId());
+
+		Segment segment = segmentOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no Segment with ID " + bqMembership.getSegmentId()));
 
 		long knownIdentitiesCount = bqMemberships.size();
 
@@ -142,6 +152,6 @@ public class BQMembershipChangeDog {
 	private BQMembershipChangeRepository _bqMembershipChangeRepository;
 
 	@Autowired
-	private SegmentDog _segmentDog;
+	private SegmentRepository _segmentRepository;
 
 }

@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.EventDefinition;
@@ -31,6 +30,7 @@ import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
 import com.liferay.osb.asah.common.repository.CustomBQEventRepository;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
+import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.util.GetterUtil;
@@ -191,8 +191,10 @@ public class BQEventRepositoryImpl
 		Condition condition = DSL.noCondition();
 
 		if (eventDefinitionId != null) {
-			EventDefinition eventDefinition =
-				_eventDefinitionDog.getEventDefinition(eventDefinitionId);
+			Optional<EventDefinition> eventDefinitionOptional =
+				_eventDefinitionRepository.findById(eventDefinitionId);
+
+			EventDefinition eventDefinition = eventDefinitionOptional.get();
 
 			condition = DSL.field(
 				"BQEvent.eventId"
@@ -623,7 +625,8 @@ public class BQEventRepositoryImpl
 			DSL.field(
 				"BQEvent.applicationId"
 			).in(
-				_eventDefinitionDog.getEventDefinitionApplicationIds(false)
+				_eventDefinitionRepository.getEventDefinitionApplicationIds(
+					false)
 			),
 			DSL.field(
 				"BQEvent.channelId"
@@ -639,7 +642,7 @@ public class BQEventRepositoryImpl
 			DSL.field(
 				"BQEvent.eventId"
 			).in(
-				_eventDefinitionDog.getEventDefinitionNames(false)
+				_eventDefinitionRepository.getEventDefinitionNames(false)
 			));
 
 		if ((userIds != null) && !userIds.isEmpty()) {
@@ -805,8 +808,14 @@ public class BQEventRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
-		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinition(eventDefinitionId);
+		EventDefinition eventDefinition = null;
+
+		if (eventDefinitionId != null) {
+			Optional<EventDefinition> eventDefinitionOptional =
+				_eventDefinitionRepository.findById(eventDefinitionId);
+
+			eventDefinition = eventDefinitionOptional.orElse(null);
+		}
 
 		if (eventDefinition != null) {
 			Field<Object> field = DSL.field("BQEvent.applicationId");
@@ -1418,7 +1427,7 @@ public class BQEventRepositoryImpl
 		_eventAttributeDefinitionRepository;
 
 	@Autowired
-	private EventDefinitionDog _eventDefinitionDog;
+	private EventDefinitionRepository _eventDefinitionRepository;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;

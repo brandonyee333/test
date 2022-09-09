@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.postgresql.converter.helper.SegmentFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -409,7 +410,8 @@ public class SegmentDog {
 		String[] sorts) {
 
 		List<Long> channelIds = ListUtil.map(
-			_channelDog.getChannels(dataSourceId), Channel::getId);
+			_channelRepository.findByDataSourceId(dataSourceId),
+			Channel::getId);
 
 		FilterHelper filterHelper = new FilterHelper(
 			null, filterString,
@@ -861,7 +863,7 @@ public class SegmentDog {
 	private BQOrganizationDog _bqOrganizationDog;
 
 	@Autowired
-	private ChannelDog _channelDog;
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;

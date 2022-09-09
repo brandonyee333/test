@@ -162,15 +162,6 @@ public class EventDefinitionDog {
 				"There is no event definition with ID " + eventDefinitionId));
 	}
 
-	public List<String> getEventDefinitionApplicationIds(boolean hidden) {
-		return _eventDefinitionRepository.getEventDefinitionApplicationIds(
-			hidden);
-	}
-
-	public List<String> getEventDefinitionNames(boolean hidden) {
-		return _eventDefinitionRepository.getEventDefinitionNames(hidden);
-	}
-
 	public Page<EventDefinition> getEventDefinitionPage(
 		@Nullable Boolean blocked, @Nullable Boolean hidden,
 		@Nullable String keyword, int page, int size, Sort sort,

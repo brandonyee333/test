@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.Asset;
@@ -447,9 +445,6 @@ public class ChannelDog {
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

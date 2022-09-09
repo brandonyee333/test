@@ -21,7 +21,9 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.DXPOrganization;
 import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -155,7 +158,10 @@ public class DXPEntityDog {
 		List<Long> dataSourceIds = new ArrayList<>();
 
 		if (channelId != null) {
-			Channel channel = _channelDog.fetchChannel(channelId);
+			Optional<Channel> channelOptional = _channelRepository.findById(
+				channelId);
+
+			Channel channel = channelOptional.orElse(null);
 
 			if (channel != null) {
 				dataSourceIds = ListUtil.map(
@@ -205,8 +211,10 @@ public class DXPEntityDog {
 				dxpEntity.getDataSourceId(),
 				dataSourceId -> {
 					if (dataSourceId != null) {
-						DataSource dataSource = _dataSourceDog.fetchDataSource(
-							dataSourceId);
+						Optional<DataSource> dataSourceOptional =
+							_dataSourceRepository.findById(dataSourceId);
+
+						DataSource dataSource = dataSourceOptional.orElse(null);
 
 						if (dataSource != null) {
 							return dataSource.getName();
@@ -232,8 +240,10 @@ public class DXPEntityDog {
 			dataSourceNames.computeIfAbsent(
 				dxpEntity.getDataSourceId(),
 				dataSourceId -> {
-					DataSource dataSource = _dataSourceDog.fetchDataSource(
-						dataSourceId);
+					Optional<DataSource> dataSourceOptional =
+						_dataSourceRepository.findById(dataSourceId);
+
+					DataSource dataSource = dataSourceOptional.orElse(null);
 
 					if (dataSource != null) {
 						return dataSource.getName();
@@ -263,8 +273,10 @@ public class DXPEntityDog {
 			dataSourceNames.computeIfAbsent(
 				dxpEntity.getDataSourceId(),
 				dataSourceId -> {
-					DataSource dataSource = _dataSourceDog.fetchDataSource(
-						dataSourceId);
+					Optional<DataSource> dataSourceOptional =
+						_dataSourceRepository.findById(dataSourceId);
+
+					DataSource dataSource = dataSourceOptional.orElse(null);
 
 					if (dataSource != null) {
 						return dataSource.getName();
@@ -304,10 +316,10 @@ public class DXPEntityDog {
 	}
 
 	@Autowired
-	private ChannelDog _channelDog;
+	private ChannelRepository _channelRepository;
 
 	@Autowired
-	private DataSourceDog _dataSourceDog;
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private DXPEntityRepository _dxpEntityRepository;

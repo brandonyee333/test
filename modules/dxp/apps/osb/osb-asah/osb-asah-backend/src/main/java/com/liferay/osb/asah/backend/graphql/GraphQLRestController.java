@@ -90,7 +90,7 @@ public class GraphQLRestController {
 		try {
 			operationName = graphQLRequest.getOperationName();
 
-			return _graphQLRestController.getGraphQLExecutionResult(
+			return getGraphQLExecutionResult(
 				operationName, graphQLRequest.getQuery(),
 				graphQLRequest.getVariables());
 		}
@@ -122,9 +122,6 @@ public class GraphQLRestController {
 
 	@Autowired
 	private GraphQL _graphQL;
-
-	@Autowired
-	private GraphQLRestController _graphQLRestController;
 
 	@Autowired
 	private GraphQLSerializer _graphQLSerializer;
