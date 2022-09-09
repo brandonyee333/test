@@ -34,6 +34,10 @@ import org.springframework.lang.Nullable;
  */
 public interface AssetMetricRepository<T extends AssetMetric> {
 
+	public List<T> getAppearsOnMetrics(
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange);
+
 	public T getAssetMetric(
 		String assetId, @Nullable String assetTitle, Long channelId,
 		Set<String> selectedMetrics, TimeRange timeRange);
@@ -50,9 +54,6 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 	public List<Metric> getBrowserMetrics(
 		String assetId, @Nullable String assetTitle, Long channelId,
 		MetricType metricType, TimeRange timeRange);
-
-	public List<String> getCanonicalUrls(
-		String assetId, Long channelId, Pageable pageable, TimeRange timeRange);
 
 	public List<Metric> getDeviceMetrics(
 		String assetId, @Nullable String assetTitle, Long channelId,

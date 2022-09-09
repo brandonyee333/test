@@ -52,9 +52,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
-import org.jooq.Record1;
 import org.jooq.SortField;
-import org.jooq.WindowOverStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +67,55 @@ import org.springframework.lang.Nullable;
  */
 public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	implements AssetMetricRepository<T> {
+
+	@Override
+	public List<T> getAppearsOnMetrics(
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange) {
+
+		Field<String> canonicalUrlField = DSL.field(
+			"canonicalUrl", String.class);
+		Field<BigDecimal> metricField = getMetricField(metricType);
+		Field<String> pageTitleField = DSL.field("pageTitle", String.class);
+
+		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
+			getAssetMetricSetters();
+
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				T assetMetric = createAssetMetric();
+
+				assetMetric.setAssetId((String)recordMap.get("canonicalUrl"));
+				assetMetric.setAssetTitle((String)recordMap.get("pageTitle"));
+
+				Metric metric = new Metric(metricType);
+
+				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
+					metricType.getFieldName());
+
+				if (metricValueBigDecimal != null) {
+					metric.setValue(metricValueBigDecimal.doubleValue());
+				}
+
+				BiConsumer<T, Metric> metricSetterBiConsumer =
+					assetMetricSetters.get(metricType.getName());
+
+				metricSetterBiConsumer.accept(assetMetric, metric);
+
+				return assetMetric;
+			},
+			dslContext.select(
+				canonicalUrlField, metricField, pageTitleField
+			).from(
+				getTableName(timeRange)
+			).where(
+				_createWhereClause(assetId, assetTitle, channelId, timeRange)
+			).groupBy(
+				canonicalUrlField, pageTitleField
+			).orderBy(
+				metricField.desc()
+			));
+	}
 
 	@Override
 	public T getAssetMetric(
@@ -189,52 +236,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).orderBy(
 				metricField.desc()
 			));
-	}
-
-	@Override
-	public List<String> getCanonicalUrls(
-		String assetId, Long channelId, Pageable pageable,
-		TimeRange timeRange) {
-
-		List<Field<? extends Object>> fields = new ArrayList<>();
-
-		Field<String> canonicalUrlField = DSL.field(
-			"canonicalUrl", String.class);
-
-		fields.add(canonicalUrlField);
-
-		WindowOverStep<Integer> rowNumber = DSL.rowNumber();
-
-		Field<Integer> rowNumberField = rowNumber.over();
-
-		fields.add(rowNumberField.as("rowNumber"));
-
-		Long offset = pageable.getOffset();
-
-		return dslContext.select(
-			canonicalUrlField
-		).from(
-			dslContext.select(
-				fields
-			).from(
-				getTableName(timeRange)
-			).where(
-				_createWhereClause(assetId, null, channelId, timeRange)
-			).groupBy(
-				canonicalUrlField
-			)
-		).where(
-			DSL.field(
-				"rowNumber"
-			).ge(
-				offset.intValue()
-			)
-		).limit(
-			pageable.getPageSize()
-		).fetch(
-		).map(
-			Record1::value1
-		);
 	}
 
 	@Override
