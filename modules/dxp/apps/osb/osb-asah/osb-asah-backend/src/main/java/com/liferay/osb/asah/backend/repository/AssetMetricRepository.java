@@ -48,15 +48,15 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 	public AssetType getAssetType();
 
 	public List<Metric> getBrowserMetrics(
-		String assetId, Long channelId, MetricType metricType,
-		TimeRange timeRange);
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange);
 
 	public List<String> getCanonicalUrls(
 		String assetId, Long channelId, Pageable pageable, TimeRange timeRange);
 
 	public List<Metric> getDeviceMetrics(
-		String assetId, Long channelId, MetricType metricType,
-		TimeRange timeRange);
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange);
 
 	public List<Metric> getGeolocationMetrics(
 		String assetId, Long channelId, MetricType metricType,

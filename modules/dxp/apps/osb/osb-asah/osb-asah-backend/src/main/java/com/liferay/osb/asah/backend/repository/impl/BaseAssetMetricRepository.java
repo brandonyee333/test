@@ -44,6 +44,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.validation.constraints.Null;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
@@ -158,26 +160,36 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<Metric> getBrowserMetrics(
-		String assetId, Long channelId, MetricType metricType,
-		TimeRange timeRange) {
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> browserNameField = DSL.field("browserName", String.class);
 		Field<BigDecimal> metricField = getMetricField(metricType);
 
-		return dslContext.select(
-			browserNameField, metricField
-		).from(
-			getTableName(timeRange)
-		).where(
-			_createWhereClause(assetId, null, channelId, timeRange)
-		).groupBy(
-			browserNameField
-		).orderBy(
-			metricField.desc()
-		).fetch(
-		).map(
-			record -> _getMetric(metricType, record)
-		);
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				Metric metric = new Metric(metricType);
+
+				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
+					metricType.getFieldName());
+
+				metric.setValue(metricValueBigDecimal.doubleValue());
+
+				metric.setValueKey((String)recordMap.get("browserName"));
+
+				return metric;
+			},
+			dslContext.select(
+				browserNameField, metricField
+			).from(
+				getTableName(timeRange)
+			).where(
+				_createWhereClause(assetId, assetTitle, channelId, timeRange)
+			).groupBy(
+				browserNameField
+			).orderBy(
+				metricField.desc()
+			));
 	}
 
 	@Override
@@ -228,8 +240,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<Metric> getDeviceMetrics(
-		String assetId, Long channelId, MetricType metricType,
-		TimeRange timeRange) {
+		String assetId, @Null String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> deviceTypeField = DSL.field("deviceType", String.class);
 		Field<BigDecimal> metricField = getMetricField(metricType);
@@ -238,22 +250,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		Map<String, Metric> metrics = new LinkedHashMap<>();
 
-		dslContext.select(
-			deviceTypeField, metricField, platformNameField
-		).from(
-			getTableName(timeRange)
-		).where(
-			_createWhereClause(assetId, null, channelId, timeRange)
-		).groupBy(
-			deviceTypeField, platformNameField
-		).orderBy(
-			deviceTypeField, metricField.desc()
-		).fetch(
-		).forEach(
-			record -> {
+		_queryExecutor.queryForList(
+			recordMap -> {
 				Metric deviceTypeMetric = new Metric(metricType);
 
-				String deviceType = record.value1();
+				String deviceType = (String)recordMap.get("deviceType");
 
 				deviceTypeMetric.setValueKey(deviceType);
 
@@ -263,19 +264,35 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 				Metric platformNameMetric = new Metric(metricType);
 
-				platformNameMetric.setValueKey(record.value3());
+				String platformName = (String)recordMap.get("platformName");
 
-				BigDecimal valueBigDecimal = record.value2();
+				platformNameMetric.setValueKey(platformName);
 
-				platformNameMetric.setValue(valueBigDecimal.doubleValue());
+				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
+					metricType.getFieldName());
+
+				platformNameMetric.setValue(
+					metricValueBigDecimal.doubleValue());
 
 				deviceTypeMetric.addMetric(platformNameMetric);
 
 				deviceTypeMetric.setValue(
 					deviceTypeMetric.getValue() +
-						valueBigDecimal.doubleValue());
-			}
-		);
+						metricValueBigDecimal.doubleValue());
+
+				return null;
+			},
+			dslContext.select(
+				deviceTypeField, metricField, platformNameField
+			).from(
+				getTableName(timeRange)
+			).where(
+				_createWhereClause(assetId, assetTitle, channelId, timeRange)
+			).groupBy(
+				deviceTypeField, platformNameField
+			).orderBy(
+				deviceTypeField, metricField.desc()
+			));
 
 		return new ArrayList<>(metrics.values());
 	}
