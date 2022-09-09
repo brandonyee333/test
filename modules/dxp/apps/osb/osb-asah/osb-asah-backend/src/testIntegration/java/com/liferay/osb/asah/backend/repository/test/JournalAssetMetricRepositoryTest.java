@@ -41,6 +41,15 @@ import org.springframework.data.domain.PageRequest;
 public class JournalAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<JournalMetric> {
 
+	@SQLResource(
+		resourcePath = "journal_asset_metric_canonical_urls_last_7_days.sql"
+	)
+	@Test
+	public void testGetAppearsOnMetricLast7Days() {
+		super.assertAppearsOnMetric(
+			JournalMetricType.VIEWS, TimeRange.LAST_7_DAYS);
+	}
+
 	@Disabled
 	@SQLResource(
 		resourcePath = "journal_asset_metric_views_browser_last_30_days.sql"
@@ -54,15 +63,6 @@ public class JournalAssetMetricRepositoryTest
 			_assetMetricRepository.getBrowserMetrics(
 				"e131fabc", null, 1L, JournalMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
-	}
-
-	@Disabled
-	@SQLResource(
-		resourcePath = "journal_asset_metric_canonical_urls_last_7_days.sql"
-	)
-	@Test
-	public void testGetCanonicalUrls7Days() {
-		super.assertGetCanonicalUrls(TimeRange.LAST_7_DAYS);
 	}
 
 	@Disabled

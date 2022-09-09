@@ -27,6 +27,7 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,16 @@ import org.springframework.data.domain.PageRequest;
 public class BlogAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<BlogMetric> {
 
+	@Disabled
+	@SQLResource(
+		resourcePath = "blog_asset_metric_canonical_urls_last_7_days.sql"
+	)
+	@Test
+	public void testGetAppearsOnMetricLast7Days() {
+		super.assertAppearsOnMetric(
+			BlogMetricType.VIEWS, TimeRange.LAST_7_DAYS);
+	}
+
 	@SQLResource(
 		resourcePath = "blog_asset_metric_views_browser_last_30_days.sql"
 	)
@@ -52,14 +63,6 @@ public class BlogAssetMetricRepositoryTest
 			_assetMetricRepository.getBrowserMetrics(
 				"e131fabc", null, 1L, BlogMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
-	}
-
-	@SQLResource(
-		resourcePath = "blog_asset_metric_canonical_urls_last_7_days.sql"
-	)
-	@Test
-	public void testGetCanonicalUrls7Days() {
-		super.assertGetCanonicalUrls(TimeRange.LAST_7_DAYS);
 	}
 
 	@SQLResource(

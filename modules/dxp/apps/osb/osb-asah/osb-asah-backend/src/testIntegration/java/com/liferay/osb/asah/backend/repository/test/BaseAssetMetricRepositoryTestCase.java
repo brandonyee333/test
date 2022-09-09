@@ -51,7 +51,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestExecutionListeners;
 
 /**
@@ -89,6 +88,29 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 		TimeZoneDogUtil.setTimeZoneDog(null);
 	}
 
+	protected void assertAppearsOnMetric(
+		MetricType metricType, TimeRange timeRange) {
+
+		AssetMetricRepository<T> assetMetricRepository =
+			getAssetMetricRepository();
+
+		List<T> appearsOnMetrics = assetMetricRepository.getAppearsOnMetrics(
+			"e131fabc", null, 1L, metricType, timeRange);
+
+		Stream<T> stream = appearsOnMetrics.stream();
+
+		MatcherAssert.assertThat(
+			new String[] {
+				"https://www.beryl.com/products/commercial/irrigation",
+				"https://www.beryl.com/delivery",
+				"https://www.beryl.com/products/commercial/irrigation/FF-2100"
+			},
+			Matchers.arrayContainingInAnyOrder(
+				stream.map(
+					AssetMetric::getAssetId
+				).toArray()));
+	}
+
 	protected void assertAssetMetrics(
 		Double[] expectedMetricValues, List<T> metrics,
 		Function<T, Metric> mapperFunction) {
@@ -106,24 +128,6 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 				).map(
 					Metric::getValue
 				).toArray()));
-	}
-
-	protected void assertGetCanonicalUrls(TimeRange timeRange) {
-		AssetMetricRepository<T> assetMetricRepository =
-			getAssetMetricRepository();
-
-		List<String> canonicalUrls = assetMetricRepository.getCanonicalUrls(
-			"e131fabc", 1L, PageRequest.of(0, 10), timeRange);
-
-		Stream<String> stream = canonicalUrls.stream();
-
-		MatcherAssert.assertThat(
-			new String[] {
-				"https://www.beryl.com/products/commercial/irrigation",
-				"https://www.beryl.com/delivery",
-				"https://www.beryl.com/products/commercial/irrigation/FF-2100"
-			},
-			Matchers.arrayContainingInAnyOrder(stream.toArray()));
 	}
 
 	protected void assertGetIndividualsCount(
