@@ -306,6 +306,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ENABLE_EXPERIMENTAL_INTERFACE</td>
+	<td>//label[contains(@for,'enableExperimentalInterface')]/span</td>
+	<td></td>
+</tr>
+<tr>
 	<td>UPPER_CASE_LETTERS</td>
 	<td>//label[contains(.,'Upper Case Letters')]/input[@type='checkbox']</td>
 	<td></td>

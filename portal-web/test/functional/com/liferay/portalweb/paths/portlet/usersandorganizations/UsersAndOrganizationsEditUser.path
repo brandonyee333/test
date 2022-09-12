@@ -151,6 +151,21 @@
 	<td></td>
 </tr>
 <tr>
+	<td>USER_GROUPS_TABLE_REMOVE</td>
+	<td>//tr[contains(.,'${key_userGroupName}')]//span[contains(@class,' lfr-portal-tooltip')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_GROUPS_CHOOSE_BUTTON</td>
+	<td>//*[*[normalize-space(text())='${key_userGroupName}']]/..//following-sibling::td/*[contains(.,'Choose')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_GROUPS_SELECT_LINK</td>
+	<td>//a[contains(@id,'openUserGroupsLink')]/span</td>
+	<td></td>
+</tr>
+<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -302,12 +317,22 @@
 	<td>//div[contains(.,'${customFieldName}')]/select</td>
 	<td></td>
 </tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
 
 <!--UPLOAD_IMAGE-->
 
 <tr>
 	<td>UPLOAD_IMAGE_SELECT</td>
 	<td>//label[contains(@id,'uploadImage')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
 	<td></td>
 </tr>
 </tbody>

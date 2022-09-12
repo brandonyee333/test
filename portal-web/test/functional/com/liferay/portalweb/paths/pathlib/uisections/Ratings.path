@@ -11,13 +11,43 @@
 
 <tbody>
 <tr>
+	<td>DISPLAY_VOTES</td>
+	<td>//div[contains(@class,'ratings')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>THUMB</td>
+	<td>//div[contains(@class,'ratings')]//a[contains(@class,'${key_ratingResult}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>THUMBS_UP</td>
 	<td>//div[contains(@class,'ratings')]//a[contains(@class,'thumbs-up')]</td>
 	<td></td>
 </tr>
 <tr>
+	<td>THUMB_UP_OFF</td>
+	<td>//span[contains(@class,'thumb-up') and contains(@class,'rating-off')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>THUMBS_DOWN</td>
 	<td>//div[contains(@class,'ratings')]//a[contains(@class,'thumbs-down')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>THUMB_DOWN_OFF</td>
+	<td>//span[contains(@class,'thumb-down') and contains(@class,'rating-off')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMMENT_RATING_THUMB</td>
+	<td>//div[(@class='lfr-discussion-body')]//div[contains(@class,'ratings')]//a[contains(@class,'${key_ratingResult}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REPLY_RATING_THUMB</td>
+	<td>//h4[contains(@title,'RE: ${key_threadSubject}')]//following-sibling::div//button[contains(@title,'${key_ratingResult}') or contains(@data-title,'${key_ratingResult}')]</td>
 	<td></td>
 </tr>
 
@@ -54,6 +84,21 @@
 	<td></td>
 </tr>
 <tr>
+	<td>YOUR_RATING_STAR_COUNT</td>
+	<td>//div[contains(@class,'ratings-stars-dropdown')]//button[contains(.,'Rate this ${key_ratingStarCount} stars out of 5')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>YOUR_RATING_STAR_DELETE</td>
+	<td>//div[contains(@class,'ratings-stars')]//button[@class='dropdown-item' and contains(.,'Delete')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>YOUR_RATING_STAR_DELETE_DISABLE</td>
+	<td>//div[contains(@class,'ratings-stars')]//button[contains(@class,'dropdown-item disabled') and contains(.,'Delete')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>YOUR_RATING_STAR_EMPTY_1</td>
 	<td>xPath=(//div[contains(@id,'_ratingStar')]//a[@class='rating-element icon-star-empty'])[1]</td>
 	<td></td>
@@ -86,6 +131,16 @@
 <tr>
 	<td>YOUR_RATING_STAR_EMPTY</td>
 	<td>xPath=(//div[contains(@id,'_ratingStar')]//a[@class='rating-element icon-star-empty'])[${key_emptyStarPosition}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>YOUR_RATING_STAR_RESULT</td>
+	<td>//div[contains(@class,'ratings-stars')]//button[contains(@title,'You have rated this ${key_ratingStarCount} stars out of 5') or contains(@data-title,'You have rated this ${key_ratingStarCount} stars out of 5')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>YOUR_RATING_STACKED_STAR_RESULT</td>
+	<td>//div[contains(@class,'stacked-stars')]//label[contains(@class,'ratings-stars-star-full') and contains(@for,'star${key_ratingStarCount}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -154,6 +209,11 @@
 <tr>
 	<td>AVERAGE_STAR</td>
 	<td>xPath=(//div[contains(@id,'_ratingScore')]//span[@class='rating-element icon-star'])[${key_averageRatingStar}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>AVERAGE_STAR_DISABLE</td>
+	<td>xPath=(//div[contains(@id,'_ratingScore')]//span[(@class='rating-element icon-star-empty') and (@title='Ratings are disabled in Staging')])[${key_averageDisableStar}]</td>
 	<td></td>
 </tr>
 <tr>

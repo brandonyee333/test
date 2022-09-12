@@ -11,6 +11,11 @@
 
 <tbody>
 <tr>
+	<td>ALERT_DISMISSIBLE</td>
+	<td>//div[contains(@class,'alert-dismissible')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CHECKOUT_SUCCESS</td>
 	<td>//div[contains(@class,'sidenav-content')]/div[contains(@class,'alert-success')]</td>
 	<td></td>
@@ -121,6 +126,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>INFO_2</td>
+	<td>xpath=(//div[contains(@class,'alert') and contains(@class,'alert-info')])[2]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>INFO_4</td>
 	<td>xpath=(//div[contains(@class,'alert-info')]/a)[1]</td>
 	<td></td>
@@ -208,6 +218,11 @@
 <tr>
 	<td>VALIDATION_ERROR_MESSAGE_HEADER</td>
 	<td>//h4[@class='upload-error-message']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WARNING_SPECIFIC</td>
+	<td>//div[contains(@class,'alert') and (contains(@class,'alert-warning'))][contains(.,'${key_warningMessage}')]</td>
 	<td></td>
 </tr>
 <tr>

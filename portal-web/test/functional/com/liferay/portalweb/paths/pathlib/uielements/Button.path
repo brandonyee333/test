@@ -186,6 +186,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>COMMENT</td>
+	<td>//button/span[contains(.,'Comment')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>COMPARE_VERSIONS</td>
 	<td>//button[contains(@id,'compare')]</td>
 	<td></td>
@@ -251,6 +256,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DOWNLOAD_SIDEBAR</td>
+	<td>//div[contains(@class,'sidebar-section')]//a[contains(@class,'btn') and contains(.,'Download')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>EDIT</td>
 	<td>//a[contains(@class,'btn') and contains(.,'Edit')] | //a[contains(@id,'edit') and contains(@class,'btn')] | //button[contains(.,'Edit')]</td>
 	<td></td>
@@ -313,6 +323,11 @@
 <tr>
 	<td>I_AGREE</td>
 	<td>//button[contains(.,'I Agree')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>I_AGREE_LOCALIZED</td>
+	<td>//button[contains(.,"${key_localizedAgree}")]</td>
 	<td></td>
 </tr>
 <tr>
@@ -471,6 +486,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>REPLY_LAST</td>
+	<td>xpath=(//button[contains(.,'Reply')])[last()]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REPORT</td>
+	<td>//button[contains(.,'Report')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>RESET_CHANGES</td>
 	<td>//button[contains(.,'Reset Changes')]</td>
 	<td></td>
@@ -583,6 +608,11 @@
 <tr>
 	<td>SUBMIT</td>
 	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MAIN_CONTENT_SUBMIT</td>
+	<td>//div[@id='main-content']//button[@type='submit']</td>
 	<td></td>
 </tr>
 <tr>

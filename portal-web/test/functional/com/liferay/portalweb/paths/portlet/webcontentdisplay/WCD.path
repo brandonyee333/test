@@ -85,6 +85,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>WEB_CONTENT_CONTENT_ANY</td>
+	<td>//div[contains(@class,'journal-content-article')]${key_content}</td>
+	<td></td>
+</tr>
+<tr>
 	<td>WEB_CONTENT_CONTENT_CARD_TITLE</td>
 	<td>//div[contains(@class,'card-col-content')]/h2</td>
 	<td></td>

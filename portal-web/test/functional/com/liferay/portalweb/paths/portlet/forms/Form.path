@@ -108,6 +108,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>PUBLISH_ICON</td>
+	<td>//button[contains(@id,'publishIcon')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PUBLISH_UNPUBLISH_ICON_CLOSE</td>
+	<td>//div[contains(@class,'alert-success')]//div[contains(.,'${key_alertMessage}')]/preceding-sibling::button[@class='close']</td>
+	<td></td>
+</tr>
+<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -118,6 +128,19 @@
 <tr>
 	<td>SETTINGS_TAB_EMAIL_NOTIFICATIONS</td>
 	<td>//a[contains(@class,'tab-content') and contains(.,'Email Notifications')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+
+<!--SIDEBAR -->
+
+<tr>
+	<td>SIDEBAR_CLOSE</td>
+	<td>//div[contains(@class,'open') and contains(@class,'form-builder-sidebar')]//a[contains(@class,'close')]</td>
 	<td></td>
 </tr>
 <tr>

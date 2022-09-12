@@ -11,8 +11,18 @@
 
 <tbody>
 <tr>
+	<td>ALERT</td>
+	<td>//div[contains(@class,'has-error')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ANSWER</td>
 	<td>//div[label[contains(.,'Answer')]]/input[@type='password'] | //div[label[contains(.,'Answer')]]/input[@type='text']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ANSWER_LOCALIZED</td>
+	<td>//div[label[contains(.,'${key_localizedAnswer}')]]/input[@type='password'] | //div[label[contains(.,'${key_localizedAnswer}')]]/input[@type='text']</td>
 	<td></td>
 </tr>
 <tr>
@@ -196,6 +206,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>INPUT_ID</td>
+	<td>//input[contains(@id,'${inputFieldId}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>GRACE_LIMIT</td>
 	<td>//div[label[contains(.,'Grace Limit')]]//input[@type='text']</td>
 	<td></td>
@@ -321,8 +336,28 @@
 	<td></td>
 </tr>
 <tr>
+	<td>NO_PROPERTIES_AVAILABLE_TEXT</td>
+	<td>//span[contains(@class,'text-truncate') and text()='No Properties Available']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>PASSWORD</td>
 	<td>//div[label[contains(.,'Password')]]/input | //div[label[contains(.,'Contraseña')]]/input | //div[label[contains(.,'パスワード')]]/input | //div[label[contains(.,'密码')]]/input | //div[contains(.,'Kennwort')]//input[@type='password']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PASSWORD_1</td>
+	<td>//input[contains(@id,'password1')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PASSWORD_2</td>
+	<td>//input[contains(@id,'password2')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PASSWORD_CONFIRM</td>
+	<td>//div[label[contains(.,'Your Password')]]/input[not(contains(@type,'hidden')) and not(contains(@class,'hide'))]</td>
 	<td></td>
 </tr>
 <tr>
