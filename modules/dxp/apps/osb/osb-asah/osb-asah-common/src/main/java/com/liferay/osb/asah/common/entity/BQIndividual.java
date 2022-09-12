@@ -54,7 +54,7 @@ public class BQIndividual implements Persistable<String> {
 
 		BQIndividual bqIndividual = (BQIndividual)obj;
 
-		if (Objects.equals(_id, bqIndividual._id)) {
+		if (Objects.equals(_emailAddress, bqIndividual._emailAddress)) {
 			return true;
 		}
 
@@ -87,10 +87,24 @@ public class BQIndividual implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getFirstName() {
+		return _firstName;
+	}
+
 	@Id
 	@Override
 	public String getId() {
-		return _id;
+		return _emailAddress;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getLastName() {
+		return _lastName;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getMiddleName() {
+		return _middleName;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -102,14 +116,19 @@ public class BQIndividual implements Persistable<String> {
 		return new Date(_modifiedDate.getTime());
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getScreenName() {
+		return _screenName;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(_id);
+		return Objects.hash(_emailAddress);
 	}
 
 	@Override
 	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
+		if ((_isNew != null) && _isNew) {
 			return true;
 		}
 
@@ -134,18 +153,30 @@ public class BQIndividual implements Persistable<String> {
 		_fieldsJSONArray = fieldsJSONArray;
 	}
 
-	public void setId(String id) {
-		_id = id;
+	public void setFirstName(String firstName) {
+		_firstName = firstName;
 	}
 
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
 	}
 
+	public void setLastName(String lastName) {
+		_lastName = lastName;
+	}
+
+	public void setMiddleName(String middleName) {
+		_middleName = middleName;
+	}
+
 	public void setModifiedDate(Date modifiedDate) {
 		if (modifiedDate != null) {
 			_modifiedDate = new Date(modifiedDate.getTime());
 		}
+	}
+
+	public void setScreenName(String screenName) {
+		_screenName = screenName;
 	}
 
 	@Transient
@@ -161,12 +192,21 @@ public class BQIndividual implements Persistable<String> {
 	private JSONArray _fieldsJSONArray;
 
 	@Transient
-	private String _id;
+	private String _firstName;
 
 	@Transient
 	private Boolean _isNew;
 
 	@Transient
+	private String _lastName;
+
+	@Transient
+	private String _middleName;
+
+	@Transient
 	private Date _modifiedDate;
+
+	@Transient
+	private String _screenName;
 
 }

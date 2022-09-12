@@ -285,6 +285,7 @@ public class IndividualNaniteTest
 				).put(
 					"value", "Brazil"
 				)));
+		bqUser1.setFirstName("Joe");
 		bqUser1.setId(RandomTestUtil.randomString());
 		bqUser1.setIsNew(Boolean.TRUE);
 		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
@@ -295,6 +296,7 @@ public class IndividualNaniteTest
 
 		bqUser2.setDataSourceId(RandomTestUtil.randomNumber());
 		bqUser2.setEmailAddress("joe@liferay.com");
+		bqUser2.setFirstName("Joseph");
 		bqUser2.setFieldsJSONArray(
 			JSONUtil.putAll(
 				JSONUtil.put(
@@ -322,6 +324,7 @@ public class IndividualNaniteTest
 
 		Assertions.assertEquals(
 			"joe@liferay.com", bqIndividual.getEmailAddress());
+		Assertions.assertEquals("Joe", bqIndividual.getFirstName());
 		Assertions.assertEquals(
 			bqUser1.getModifiedDate(), bqIndividual.getModifiedDate());
 

@@ -43,7 +43,7 @@ import java.util.stream.Stream;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.util.StringUtils;
 
 import org.json.JSONArray;
 
@@ -76,6 +76,8 @@ public class IndividualNanite {
 
 		return stream.map(
 			this::_toBQIndividual
+		).sorted(
+			Comparator.comparing(BQIndividual::getModifiedDate)
 		).collect(
 			Collectors.toList()
 		);
@@ -105,34 +107,14 @@ public class IndividualNanite {
 		);
 	}
 
-	private Date _getFieldsLastModifiedDate(Collection<Field> fields) {
-		Stream<Field> stream = fields.stream();
-
-		Comparator<Field> fieldModifiedDateComparator = Comparator.comparing(
-			Field::getModifiedDate);
-
-		Optional<Field> lastModifiedFieldOptional = stream.sorted(
-			fieldModifiedDateComparator.reversed()
-		).findFirst();
-
-		return lastModifiedFieldOptional.map(
-			Field::getModifiedDate
-		).orElse(
-			null
-		);
-	}
-
 	private BQIndividual _mergeBQIndividual(
 		BQIndividual bqIndividual1, BQIndividual bqIndividual2) {
 
 		BQIndividual mergedBQIndividual = new BQIndividual();
 
-		mergedBQIndividual.setEmailAddress(bqIndividual1.getEmailAddress());
-
-		String emailAddressHashed = DigestUtils.sha256Hex(
-			StringUtils.lowerCase(bqIndividual1.getEmailAddress()));
-
-		mergedBQIndividual.setEmailAddressHashed(emailAddressHashed);
+		mergedBQIndividual.setEmailAddress(bqIndividual2.getEmailAddress());
+		mergedBQIndividual.setEmailAddressHashed(
+			bqIndividual2.getEmailAddressHashed());
 
 		Collection<Field> mergedBQIndividualFields = _mergeBQIndividualFields(
 			bqIndividual1, bqIndividual2);
@@ -141,10 +123,12 @@ public class IndividualNanite {
 			_objectMapper.convertValue(
 				mergedBQIndividualFields, JSONArray.class));
 
-		mergedBQIndividual.setId(emailAddressHashed);
+		mergedBQIndividual.setFirstName(bqIndividual2.getFirstName());
 		mergedBQIndividual.setIsNew(Boolean.TRUE);
-		mergedBQIndividual.setModifiedDate(
-			_getFieldsLastModifiedDate(mergedBQIndividualFields));
+		mergedBQIndividual.setLastName(bqIndividual2.getLastName());
+		mergedBQIndividual.setMiddleName(bqIndividual2.getMiddleName());
+		mergedBQIndividual.setModifiedDate(bqIndividual2.getModifiedDate());
+		mergedBQIndividual.setScreenName(bqIndividual2.getScreenName());
 
 		return mergedBQIndividual;
 	}
@@ -231,6 +215,9 @@ public class IndividualNanite {
 		BQIndividual bqIndividual = new BQIndividual();
 
 		bqIndividual.setEmailAddress(bqUser.getEmailAddress());
+		bqIndividual.setEmailAddressHashed(
+			DigestUtils.sha256Hex(
+				StringUtils.toLowerCase(bqUser.getEmailAddress())));
 
 		List<Field> defaultFields = _toFields(
 			bqUser.getDataSourceId(), bqUser.getFieldsJSONArray(),
@@ -243,6 +230,11 @@ public class IndividualNanite {
 				CollectionUtils.union(defaultFields, customFields),
 				JSONArray.class));
 
+		bqIndividual.setFirstName(bqUser.getFirstName());
+		bqIndividual.setLastName(bqUser.getLastName());
+		bqIndividual.setMiddleName(bqUser.getMiddleName());
+		bqIndividual.setScreenName(bqUser.getScreenName());
+		bqIndividual.setIsNew(Boolean.TRUE);
 		bqIndividual.setModifiedDate(bqUser.getModifiedDate());
 
 		return bqIndividual;
