@@ -32,6 +32,14 @@ definition {
 		FormPortlet.clickSubmit();
 	}
 
+	macro submitLocalizedSuccessfully {
+		AssertClick(
+			locator1 = "Button#MAIN_CONTENT_SUBMIT",
+			value1 = "${buttonName}");
+
+		Alert.viewSuccessMessage();
+	}
+
 	macro submitSuccessfully {
 		FormPortlet.submit();
 
@@ -52,6 +60,14 @@ definition {
 		AssertTextEquals(
 			locator1 = "Message#ERROR_FORM_FIELD_REQUIRED",
 			value1 = "${validationErrorMessage}");
+	}
+
+	macro waitFormRenderer {
+		var key_text = "${text}";
+
+		WaitForElementPresent(locator1 = "Button#ANY_ENABLED");
+
+		Pause(locator1 = "2500");
 	}
 
 }

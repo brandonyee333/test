@@ -72,6 +72,12 @@ definition {
 			value1 = "${successMessage}");
 	}
 
+	macro viewWarningSpecific {
+		AssertElementPresent(
+			key_warningMessage = "${warningMessage}",
+			locator1 = "Message#WARNING_SPECIFIC");
+	}
+
 	macro waitForSuccessMessageHide {
 		AssertNotVisible(locator1 = "Message#SUCCESS");
 	}

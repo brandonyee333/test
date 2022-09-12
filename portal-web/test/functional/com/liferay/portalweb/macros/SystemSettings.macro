@@ -78,6 +78,10 @@ definition {
 			locator1 = "Header#H2_TITLE");
 	}
 
+	macro openSystemSettingsAdmin {
+		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage?p_p_id=com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet");
+	}
+
 	macro resetConfiguration {
 		SystemSettings.gotoCategory(category = "${category}");
 

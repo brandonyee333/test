@@ -15,7 +15,7 @@ definition {
 			locator1 = "Select#GENERIC_SELECT_FIELD",
 			value1 = "${metric}");
 
-		WaitForVisible.WaitForVisible(
+		WaitForVisible(
 			key_text = "Save",
 			locator1 = "Button#ANY_ENABLED");
 

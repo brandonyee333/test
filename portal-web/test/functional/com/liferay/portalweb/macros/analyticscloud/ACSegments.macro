@@ -491,7 +491,7 @@ definition {
 	}
 
 	macro previewSegmentMembership {
-		WaitForElementNotPresent.WaitForElementNotPresent(locator1 = "ACSegments#FORM_HEADER_LOADING_ANIMATION");
+		WaitForElementNotPresent(locator1 = "ACSegments#FORM_HEADER_LOADING_ANIMATION");
 
 		Click(locator1 = "Icon#EYE_PREVIEW");
 	}

@@ -575,7 +575,7 @@ definition {
 		var key_actionButton = "Delete";
 		var key_nameList = "${itemName}";
 
-		WaitForPageLoad.WaitForPageLoad();
+		WaitForPageLoad();
 
 		ACUtils.searchBar(searchItem = "${itemName}");
 
@@ -831,7 +831,7 @@ definition {
 	}
 
 	macro setItemName {
-		WaitForPageLoad.WaitForPageLoad();
+		WaitForPageLoad();
 
 		if ((IsElementNotPresent(locator1 = "ACSegments#SEGMENT_LABEL")) || (IsTextNotEqual(locator1 = "ACSegments#SEGMENT_LABEL", value1 = "STATIC SEGMENT"))) {
 			Click(locator1 = "ACUtils#EDIT_NAME_BUTTON");
@@ -872,7 +872,7 @@ definition {
 		for (var textValue : list "${textValueList}") {
 			var key_textValue = "${textValue}";
 
-			WaitForPageLoad.WaitForPageLoad();
+			WaitForPageLoad();
 
 			while ((IsElementNotPresent(locator1 = "ACUtils#GENERIC_TEXT")) && (maxIterations = "50")) {
 				TestUtils.hardRefresh();
@@ -888,7 +888,7 @@ definition {
 		for (var name : list "${nameList}") {
 			var key_nameList = "${name}";
 
-			WaitForPageLoad.WaitForPageLoad();
+			WaitForPageLoad();
 
 			while ((IsElementNotPresent(locator1 = "ACUtils#NAME_LIST")) && (maxIterations = "50")) {
 				ACSegments.searchSegment(findSegment = "${name}");
@@ -906,7 +906,7 @@ definition {
 		var key_userName = "${name}";
 		var index = "${index}";
 
-		WaitForPageLoad.WaitForPageLoad();
+		WaitForPageLoad();
 
 		while ((IsElementNotPresent(locator1 = "ACSegments#ADD_MEMBERS_INDEX_TABLE")) && (maxIterations = "50")) {
 			Refresh();
@@ -921,7 +921,7 @@ definition {
 		for (var name : list "${nameList}") {
 			var key_nameList = "${name}";
 
-			WaitForPageLoad.WaitForPageLoad();
+			WaitForPageLoad();
 
 			while ((IsElementPresent(locator1 = "ACUtils#NAME_LIST")) && (maxIterations = "50")) {
 				ACSegments.searchSegment(findSegment = "${name}");
@@ -936,7 +936,7 @@ definition {
 	macro viewNoResultsMessage {
 		var key_noResultMessage = "${noResultMessage}";
 
-		WaitForPageLoad.WaitForPageLoad();
+		WaitForPageLoad();
 
 		while ((IsElementNotPresent(locator1 = "ACAssets#NO_RESULTS_CONTENT_MESSAGE")) && (maxIterations = "50")) {
 			TestUtils.hardRefresh();
@@ -963,7 +963,7 @@ definition {
 		for (var name : list "${nameList}") {
 			var key_nameList = "${name}";
 
-			WaitForPageLoad.WaitForPageLoad();
+			WaitForPageLoad();
 
 			while ((IsElementNotPresent(locator1 = "ACUtils#NAME_LIST")) && (maxIterations = "50")) {
 				ACSegments.searchSegment(findSegment = "${name}");
@@ -1007,7 +1007,7 @@ definition {
 			var key_nameList = ListUtil.get("${list1}", "${i}");
 			var key_numberValue = ListUtil.get("${list2}", "${i}");
 
-			WaitForPageLoad.WaitForPageLoad();
+			WaitForPageLoad();
 
 			while ((IsElementNotPresent(locator1 = "ACUtils#TABLE_CELL_INFORMATION")) && (maxIterations = "50")) {
 				TestUtils.hardRefresh();
@@ -1022,7 +1022,7 @@ definition {
 	}
 
 	macro waitForLoading {
-		WaitForElementNotPresent.WaitForElementNotPresent(locator1 = "ACUtils#LOADING_ANIMATION");
+		WaitForElementNotPresent(locator1 = "ACUtils#LOADING_ANIMATION");
 	}
 
 }

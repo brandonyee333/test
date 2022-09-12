@@ -741,6 +741,12 @@ definition {
 			value1 = "${childPageName}");
 	}
 
+	macro viewCurrentPage {
+		AssertVisible(
+			key_pageName = "${pageName}",
+			locator1 = "Home#PAGE_ACTIVE");
+	}
+
 	macro viewCurrentTheme {
 		var key_page = "${page}";
 		var key_themeName = "${themeName}";

@@ -8,6 +8,10 @@ definition {
 		Click(locator1 = "FormsAdmin#DATA_PROVIDER_PLUS_BUTTON");
 	}
 
+	macro gotoAddForm {
+		LexiconEntry.gotoAdd();
+	}
+
 	macro gotoDeleteField {
 		var key_fieldName = "${fieldName}";
 
@@ -53,6 +57,10 @@ definition {
 		AssertElementPresent(locator1 = "Form#NAME_FIELD");
 
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Publish");
+	}
+
+	macro gotoPublishCopyURLLink {
+		Click(locator1 = "Form#PUBLISH_ICON");
 	}
 
 	macro gotoSettings {

@@ -27,13 +27,13 @@ definition {
 		}
 
 		if ("${axis}" == "xAxis") {
-			WaitForVisible.WaitForVisible(
+			WaitForVisible(
 				index = "${index}",
 				key_cardTitle = "${cardName}",
 				locator1 = "ACCards#RECHARTS_CARTESIAN_X_AXIS_TICK");
 		}
 		else if ("${axis}" == "yAxis") {
-			WaitForVisible.WaitForVisible(
+			WaitForVisible(
 				index = "${index}",
 				key_cardTitle = "${cardName}",
 				locator1 = "ACCards#RECHARTS_CARTESIAN_Y_AXIS_TICK");
@@ -121,7 +121,7 @@ definition {
 		var key_metricName = "${metricName}";
 		var key_metricValue = "${metricValue}";
 
-		WaitForPageLoad.WaitForPageLoad();
+		WaitForPageLoad();
 
 		while ((IsElementNotPresent(locator1 = "ACCards#METRIC_VALUE")) && (maxIterations = "50")) {
 			TestUtils.hardRefresh();

@@ -165,7 +165,7 @@ definition {
 		var key_actionButton = "Show";
 		var key_nameList = "${customEventName}";
 
-		WaitForPageLoad.WaitForPageLoad();
+		WaitForPageLoad();
 
 		while ((IsElementNotPresent(locator1 = "ACUtils#NAME_LIST")) && (maxIterations = "50")) {
 			ACUtils.searchBar(searchItem = "${customEventName}");

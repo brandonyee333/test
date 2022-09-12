@@ -38,14 +38,14 @@ definition {
 			locator1 = "ACUtils#LABEL");
 
 		if (isSet(cancel)) {
-			WaitForElementNotPresent.WaitForElementNotPresent(
+			WaitForElementNotPresent(
 				key_text = "Cancel",
 				locator1 = "Button#ANY_DISABLED");
 
 			Button.click(button = "Cancel");
 		}
 		else {
-			WaitForElementPresent.WaitForElementPresent(locator1 = "Button#SAVE");
+			WaitForElementPresent(locator1 = "Button#SAVE");
 
 			Button.clickSave();
 		}

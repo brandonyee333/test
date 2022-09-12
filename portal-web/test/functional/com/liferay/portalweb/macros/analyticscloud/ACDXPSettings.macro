@@ -44,7 +44,7 @@ definition {
 		if (!(isSet(siteName))) {
 			LexiconEntry.gotoAdd();
 
-			WaitForElementPresent.WaitForElementPresent(locator1 = "ACDXPSettings#SITE_NAME");
+			WaitForElementPresent(locator1 = "ACDXPSettings#SITE_NAME");
 
 			var siteName = selenium.getText("ACDXPSettings#SITE_NAME");
 
@@ -123,7 +123,7 @@ definition {
 
 		LexiconEntry.gotoAdd();
 
-		WaitForVisible.WaitForVisible(
+		WaitForVisible(
 			key_tableEntry = "${siteName}",
 			locator1 = "LexiconTable#TABLE_ENTRY_CHECKBOX");
 

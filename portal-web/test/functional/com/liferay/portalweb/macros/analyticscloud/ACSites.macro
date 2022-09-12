@@ -42,7 +42,7 @@ definition {
 	}
 
 	macro viewSiteOverviewDashboardCards {
-		WaitForElementPresent.WaitForElementPresent(locator1 = "ACSites#ACTIVITIES_CARD");
+		WaitForElementPresent(locator1 = "ACSites#ACTIVITIES_CARD");
 
 		AssertElementPresent(locator1 = "ACSites#TOP_PAGES_CARD");
 

@@ -14,6 +14,10 @@ definition {
 		Button.click(button = "Cancel");
 	}
 
+	macro clickComment {
+		Click(locator1 = "Button#COMMENT");
+	}
+
 	macro clickConfirm {
 		Button.click(button = "Confirm");
 	}
@@ -52,6 +56,10 @@ definition {
 		Button.click(button = "Save as Draft");
 	}
 
+	macro clickSubmitButton {
+		Click(locator1 = "Button#SUBMIT");
+	}
+
 	macro clickSubmitForPublication {
 		Button.click(button = "Submit for Publication");
 	}
@@ -62,6 +70,12 @@ definition {
 
 	macro viewNotPresent {
 		AssertElementNotPresent(
+			key_text = "${button}",
+			locator1 = "Button#ANY");
+	}
+
+	macro viewPresent {
+		AssertElementPresent(
 			key_text = "${button}",
 			locator1 = "Button#ANY");
 	}

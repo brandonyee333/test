@@ -76,6 +76,16 @@ definition {
 		AssertElementPresent(locator1 = "NavBar#ACTIVE_NAV_ITEM_LINK");
 	}
 
+	macro gotoNavNested {
+		var key_navNested = "${navNested}";
+
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "NavNested#NAV_NESTED_LINK",
+			value1 = "${navNested}");
+
+		AssertElementPresent(locator1 = "NavNested#ACTIVE_NAV_NESTED_LINK");
+	}
+
 	macro gotoNavTab {
 		var key_tab = "${navTab}";
 
@@ -84,6 +94,16 @@ definition {
 			value1 = "${navTab}");
 
 		AssertElementPresent(locator1 = "NavTab#ACTIVE_TAB_LINK");
+	}
+
+	macro gotoNavUnderline {
+		var key_navUnderline = "${navUnderline}";
+
+		AssertClick(
+			locator1 = "NavUnderline#NAV_UNDERLINE_LINK",
+			value1 = "${navUnderline}");
+
+		AssertElementPresent(locator1 = "NavUnderline#ACTIVE_NAV_UNDERLINE_LINK");
 	}
 
 	@summary = "Navigate to the page named '${pageName}'"

@@ -1,7 +1,7 @@
 definition {
 
 	macro loginAs {
-		WaitForPageLoad.WaitForPageLoad();
+		WaitForPageLoad();
 
 		if (!(isSet(password))) {
 			var password = "test";

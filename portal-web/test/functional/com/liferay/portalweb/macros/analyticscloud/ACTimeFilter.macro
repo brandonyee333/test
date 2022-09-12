@@ -53,7 +53,7 @@ definition {
 
 		Click(locator1 = "ACTimeFilter#TIME_FILTER_DROPDOWN_OPTION");
 
-		WaitForElementPresent.WaitForElementPresent(locator1 = "ACTimeFilter#DATE_PICKER");
+		WaitForElementPresent(locator1 = "ACTimeFilter#DATE_PICKER");
 
 		var key_day = "${startDay}";
 
@@ -80,7 +80,7 @@ definition {
 		Click(locator1 = "ACTimeFilter#DATE_PICKER_DAY");
 
 		if (!(isSet(invalid))) {
-			WaitForElementNotPresent.WaitForElementNotPresent(locator1 = "ACTimeFilter#DATE_PICKER");
+			WaitForElementNotPresent(locator1 = "ACTimeFilter#DATE_PICKER");
 
 			ACLoading.waitForLoadingComplete();
 		}

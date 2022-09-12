@@ -17,7 +17,7 @@ definition {
 
 		UploadDependencyFile.uploadFile(fileName = "${sourceFileName}");
 
-		WaitForVisible.WaitForVisible(locator1 = "ACSettings#FILE_UPLOAD_SUCCESS_ICON");
+		WaitForVisible(locator1 = "ACSettings#FILE_UPLOAD_SUCCESS_ICON");
 
 		Type(
 			key_text = "Name Data Source",
@@ -33,7 +33,7 @@ definition {
 			var n = ${n} + 1;
 		}
 
-		WaitForElementPresent.WaitForElementPresent(
+		WaitForElementPresent(
 			key_text = "Next",
 			locator1 = "Button#ANY_ENABLED");
 
@@ -55,7 +55,7 @@ definition {
 
 					MenuItem.click(menuItem = "${fieldType}");
 
-					WaitForElementNotPresent.WaitForElementNotPresent(
+					WaitForElementNotPresent(
 						key_text = "Create",
 						locator1 = "Button#ANY_DISABLED");
 
@@ -80,19 +80,19 @@ definition {
 			}
 		}
 
-		WaitForElementNotPresent.WaitForElementNotPresent(locator1 = "ACSettings#LOADING_ANIMATION");
+		WaitForElementNotPresent(locator1 = "ACSettings#LOADING_ANIMATION");
 
-		WaitForElementNotPresent.WaitForElementNotPresent(
+		WaitForElementNotPresent(
 			key_text = "Done",
 			locator1 = "Button#ANY_DISABLED");
 
 		Button.click(button = "Done");
 
-		WaitForElementNotPresent.WaitForElementNotPresent(
+		WaitForElementNotPresent(
 			key_text = "Done",
 			locator1 = "Button#ANY_DISABLED");
 
-		WaitForElementNotPresent.WaitForElementNotPresent(locator1 = "ACSettings#LOADING_ANIMATION");
+		WaitForElementNotPresent(locator1 = "ACSettings#LOADING_ANIMATION");
 
 		AssertVisible(
 			key_title = "${dataSourceName}",
@@ -569,7 +569,7 @@ definition {
 			Click(locator1 = "ACSettings#ITEM_TABLE");
 		}
 
-		WaitForVisible.WaitForVisible(locator1 = "ACSettings#DELETE_BUTTON_DATA_SOURCE");
+		WaitForVisible(locator1 = "ACSettings#DELETE_BUTTON_DATA_SOURCE");
 
 		if (IsElementPresent(key_text = "Edit CSV", locator1 = "Button#ANY")) {
 			var dataSourceName = selenium.getText("//div[contains(@class,'sheet-header')]//h3");
@@ -719,7 +719,7 @@ definition {
 	}
 
 	macro getCurrentNumber {
-		WaitForVisible.WaitForVisible(
+		WaitForVisible(
 			key_metricName = "${metricName}",
 			locator1 = "ACUsage#USAGE_CURRENT_NUMBER");
 
@@ -752,7 +752,7 @@ definition {
 
 		ACNavigation.openItem(itemName = "${propertyName}");
 
-		WaitForVisible.WaitForVisible(
+		WaitForVisible(
 			locator1 = "ACSettings#HEADER_TITLE",
 			title = "${propertyName}");
 

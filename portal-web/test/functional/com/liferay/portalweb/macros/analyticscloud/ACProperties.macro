@@ -60,7 +60,7 @@ definition {
 
 	@summary = "Asserts the property saved in settings"
 	macro assertNewCreatedProperty {
-		WaitForElementPresent.WaitForElementPresent(locator1 = "ACSettings#PROPERTY_NAME");
+		WaitForElementPresent(locator1 = "ACSettings#PROPERTY_NAME");
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "ACSettings#PROPERTY_NAME",

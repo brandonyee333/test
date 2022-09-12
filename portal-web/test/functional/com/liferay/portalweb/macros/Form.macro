@@ -25,8 +25,32 @@ definition {
 			value1 = "Add New Page");
 	}
 
+	macro addTextField {
+		if (isSet(formPageNumber)) {
+			Form.gotoAddField(
+				fieldType = "Text Field",
+				formPageNumber = "${formPageNumber}",
+				key_fieldPositionNumber = "${fieldPositionNumber}");
+		}
+		else {
+			Form.gotoAddField(
+				fieldType = "Text Field",
+				key_fieldPositionNumber = "${fieldPositionNumber}");
+		}
+	}
+
 	macro clickPublishSwitcher {
 		Click(locator1 = "Form#PUBLISH_FORM_SWITCHER");
+	}
+
+	macro closeSidebar {
+		Pause(locator1 = "1000");
+
+		Click(locator1 = "Form#SIDEBAR_CLOSE");
+
+		Pause(locator1 = "1000");
+
+		AssertElementNotPresent(locator1 = "Form#SIDEBAR_CLOSE");
 	}
 
 	macro configureEmailNotifications {
@@ -139,6 +163,12 @@ definition {
 			value1 = "${formName}");
 	}
 
+	macro getPublishedFormPublicURL {
+		var publicURL = selenium.getElementValue("Form#PUBLISH_FORM_PUBLIC_URL");
+
+		return "${publicURL}";
+	}
+
 	macro gotoAddField {
 		var key_columnSize = "${columnSize}";
 
@@ -173,6 +203,14 @@ definition {
 			fieldValue = "${fieldValue}");
 
 		AssertElementNotPresent(locator1 = "FormPortlet#SUBMIT_BUTTON");
+	}
+
+	macro publishForm {
+		AssertElementPresent(locator1 = "Form#NAME_FIELD");
+
+		Click(locator1 = "Button#PUBLISH");
+
+		Form.viewPublishFormSuccessMessage();
 	}
 
 	macro save {
@@ -226,6 +264,12 @@ definition {
 		FormFields.viewTextLabel(
 			fieldLabel = "${fieldLabel}",
 			fieldName = "${fieldName}");
+	}
+
+	macro viewPublishFormSuccessMessage {
+		var key_alertMessage = "The form was published successfully! Access it with this URL";
+
+		AssertNotVisible(locator1 = "Form#PUBLISH_UNPUBLISH_ICON_CLOSE");
 	}
 
 }
