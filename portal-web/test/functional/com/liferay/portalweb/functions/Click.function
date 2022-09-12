@@ -30,6 +30,20 @@ definition {
 		selenium.assertLiferayErrors();
 	}
 
+	function clickAtNotVisible {
+		WaitForSPARefresh();
+
+		selenium.waitForElementPresent();
+
+		selenium.mouseOver();
+
+		selenium.clickAt();
+
+		selenium.assertJavaScriptErrors();
+
+		selenium.assertLiferayErrors();
+	}
+
 	function clickAtSidebarClickAtWaitForScript {
 		WaitForSPARefresh();
 
@@ -94,6 +108,16 @@ definition {
 		selenium.waitForVisible();
 
 		selenium.click();
+	}
+
+	function javaScriptClick {
+		WaitForSPARefresh();
+
+		selenium.javaScriptClick();
+
+		selenium.assertJavaScriptErrors();
+
+		selenium.assertLiferayErrors();
 	}
 
 	function makeVisibleClickAt {
