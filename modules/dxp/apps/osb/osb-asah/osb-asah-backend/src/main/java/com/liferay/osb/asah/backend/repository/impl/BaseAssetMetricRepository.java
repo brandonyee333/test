@@ -662,7 +662,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
 			getAssetMetricSetters();
-
 		Map<String, Metric> metrics = new HashMap<>();
 
 		for (String selectedMetric : selectedMetrics) {
