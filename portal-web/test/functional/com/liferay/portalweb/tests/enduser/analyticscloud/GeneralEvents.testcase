@@ -107,7 +107,9 @@ definition {
 		}
 
 		task ("Get formId of form") {
-			var formId = JSONDDMForm.getFormInstanceId(formName = "Created Form Name", groupName = "Site Name");
+			var formId = JSONDDMForm.getFormInstanceId(
+				formName = "Created Form Name",
+				groupName = "Site Name");
 		}
 
 		task ("Get published form URL") {

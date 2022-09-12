@@ -104,7 +104,7 @@ definition {
 		}
 
 		task ("View the information banner still disappear") {
-			WaitForVisible.WaitForVisible(
+			WaitForVisible(
 				key_title = "Workspace Settings",
 				locator1 = "Header#H3_TITLE");
 
