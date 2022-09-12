@@ -1,0 +1,10 @@
+Bundle-Name: Liferay Twilio Implementation
+Bundle-SymbolicName: com.liferay.twilio.impl
+Bundle-Version: 1.0.3
+Import-Package:\
+	!android.util*,\
+	\
+	!org.apache.avalon*,\
+	!org.apache.log*,\
+	\
+	*

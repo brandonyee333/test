@@ -1,0 +1,8 @@
+Bundle-Name: Liferay Twilio API
+Bundle-SymbolicName: com.liferay.twilio.api
+Bundle-Version: 1.0.1
+Export-Package:\
+	com.liferay.twilio,\
+	com.liferay.twilio.constants,\
+	com.liferay.twilio.model,\
+	com.liferay.twilio.util

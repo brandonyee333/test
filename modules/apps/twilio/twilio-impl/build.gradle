@@ -1,0 +1,19 @@
+dependencies {
+	compileInclude group : "io.jsonwebtoken" , name: "jjwt" ,
+	compileInclude group : "org.bouncycastle" ,
+	compileInclude group: "com.twilio.sdk", name: "twilio", version: "8.0.0",
+	compileInclude group: "org.apache.httpcomponents", name: "httpclient",
+
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel",
+	compileOnly project(":apps:twilio-integration:twilio-integration-api")
+
+	name: "bcprov-jdk15on" ,
+
+	transitive: false
+	transitive: true
+
+	version: "0.9.1" ,
+	version: "1.60"
+	version: "4.5.12" ,
+	version: "default"
+}
