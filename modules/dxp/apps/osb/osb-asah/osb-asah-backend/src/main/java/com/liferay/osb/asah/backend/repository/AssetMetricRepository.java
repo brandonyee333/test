@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.repository;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -70,6 +71,15 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 	public Long getIndividualsCount(
 		String assetId, Long channelId, Boolean knownIndividual,
 		MetricType metricType, TimeRange timeRange);
+
+	public List<Individual> getKnownIndividuals(
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, Pageable pageable, @Nullable String keywords,
+		TimeRange timeRange);
+
+	public Long getKnownIndividualsCount(
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, @Nullable String keywords, TimeRange timeRange);
 
 	public Long getNonsegmentedIndividualsCount(
 		String assetId, Long channelId, MetricType metricType,

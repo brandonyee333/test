@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.repository.impl;
 
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.date.DateUtil;
@@ -52,7 +53,9 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
+import org.jooq.Record;
 import org.jooq.SortField;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -392,6 +395,159 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	@Override
+	public List<Individual> getKnownIndividuals(
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, Pageable pageable, @Nullable String keywords,
+		TimeRange timeRange) {
+
+		Table<Record> individualTable = DSL.table(
+			"BQIndividual"
+		).as(
+			"individual"
+		);
+
+		Condition whereClauseCondition = _createWhereClause(
+			assetId, assetTitle, channelId, timeRange);
+
+		if (StringUtils.isNotBlank(keywords)) {
+			whereClauseCondition = whereClauseCondition.and(
+				DSL.or(
+					DSL.field(
+						"individual.firstname"
+					).containsIgnoreCase(
+						keywords
+					),
+					DSL.field(
+						"individual.lastname"
+					).containsIgnoreCase(
+						keywords
+					),
+					DSL.field(
+						"individual.emailaddress"
+					).containsIgnoreCase(
+						keywords
+					)));
+		}
+
+		return _queryExecutor.queryForList(
+			recordMap -> new Individual(
+				(String)recordMap.get("individual.emailAddress"),
+				(String)recordMap.get("individual.emailAddressHashed"),
+				recordMap.get("individual.firstName") + " " +
+					recordMap.get("individual.lastName")),
+			dslContext.selectDistinct(
+				DSL.field("individual.emailAddress"),
+				DSL.field("individual.emailAddressHashed"),
+				DSL.field("individual.firstName"),
+				DSL.field("individual.lastName")
+			).from(
+				DSL.table(
+					getTableName(timeRange)
+				).as(
+					"metric"
+				)
+			).join(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"identity"
+				)
+			).on(
+				DSL.field(
+					"identity.userid"
+				).eq(
+					DSL.field("metric.userId")
+				)
+			).join(
+				individualTable
+			).on(
+				DSL.field(
+					"individual.emailaddresshashed"
+				).eq(
+					DSL.field("identity.emailaddresshashed")
+				)
+			).where(
+				whereClauseCondition.and(
+					DSL.field(
+						metricType.getFieldName()
+					).gt(
+						0
+					))
+			));
+	}
+
+	@Override
+	public Long getKnownIndividualsCount(
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, @Nullable String keywords, TimeRange timeRange) {
+
+		Condition whereClauseCondition = _createWhereClause(
+			assetId, assetTitle, channelId, timeRange);
+
+		if (StringUtils.isNotBlank(keywords)) {
+			whereClauseCondition = whereClauseCondition.and(
+				DSL.or(
+					DSL.field(
+						"individual.firstname"
+					).containsIgnoreCase(
+						keywords
+					),
+					DSL.field(
+						"individual.lastname"
+					).containsIgnoreCase(
+						keywords
+					),
+					DSL.field(
+						"individual.emailaddress"
+					).containsIgnoreCase(
+						keywords
+					)));
+		}
+
+		return _queryExecutor.queryForLong(
+			dslContext.select(
+				DSL.countDistinct(DSL.field("individual.emailAddressHashed"))
+			).from(
+				DSL.table(
+					getTableName(timeRange)
+				).as(
+					"metric"
+				)
+			).join(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"identity"
+				)
+			).on(
+				DSL.field(
+					"identity.userid"
+				).eq(
+					DSL.field("metric.userId")
+				)
+			).join(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"individual"
+				)
+			).on(
+				DSL.field(
+					"individual.emailaddresshashed"
+				).eq(
+					DSL.field("identity.emailaddresshashed")
+				)
+			).where(
+				whereClauseCondition.and(
+					DSL.field(
+						metricType.getFieldName()
+					).gt(
+						0
+					))
+			));
+	}
+
+	@Override
 	public Long getNonsegmentedIndividualsCount(
 		String assetId, Long channelId, MetricType metricType,
 		TimeRange timeRange) {
@@ -675,6 +831,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
 			getAssetMetricSetters();
+
 		Map<String, Metric> metrics = new HashMap<>();
 
 		for (String selectedMetric : selectedMetrics) {
