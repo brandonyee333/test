@@ -70,6 +70,7 @@ import org.jooq.Record2;
 import org.jooq.Record3;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
+import org.jooq.SelectForUpdateStep;
 import org.jooq.SelectHavingStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
@@ -304,9 +305,69 @@ public class BQEventRepositoryImpl
 			timeRange = timeRange.getIncludePreviousTimeRange();
 		}
 
+		EventAnalysisBreakdown firstEventAnalysisBreakdown =
+			eventAnalysisBreakdowns.get(0);
+
+		List<EventAnalysisFilter> filteredEventAnalysisFilters = null;
+
+		if (eventAnalysisFilters != null) {
+			Stream<EventAnalysisFilter> filterStream =
+				eventAnalysisFilters.stream();
+
+			filteredEventAnalysisFilters = filterStream.filter(
+				eventAnalysisFilter -> eventAttributeDefinitions.containsKey(
+					firstEventAnalysisBreakdown.getAttributeId())
+			).collect(
+				Collectors.toList()
+			);
+		}
+
+		Field selectField = _getSelectField(
+			AnalysisType.TOTAL,
+			_getEventAttributeDefinition(
+				lastEventAnalysisBreakdown.getAttributeId()),
+			timeRange);
+
+		Field valueField = _getValueField(
+			false, firstEventAnalysisBreakdown,
+			_getEventAttributeDefinition(
+				firstEventAnalysisBreakdown, eventAttributeDefinitions),
+			timeZoneId);
+
+		SelectJoinStep buildSelectJoinStep = _dslContext.selectDistinct(
+			valueField.as("firstValueField"), selectField
+		).from(
+			"BQEvent"
+		);
+
+		SelectForUpdateStep selectForUpdateStep = _buildSelectJoinStep(
+			channelId, eventAnalysisBreakdowns, eventAttributeDefinitions,
+			buildSelectJoinStep, timeRange
+		).where(
+			_getConditions(
+				channelId, filteredEventAnalysisFilters, eventDefinitionId,
+				timeRange.getEndDate(), timeRange.getStartDate(), timeZoneId)
+		).groupBy(
+			DSL.field("firstValueField")
+		).orderBy(
+			DSL.field(
+				_getSortField(
+					lastEventAnalysisBreakdown, selectField.getName())),
+			DSL.field(
+				_getSortField(firstEventAnalysisBreakdown, "firstValueField"))
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		);
+
 		SelectJoinStep<Record> selectJoinStep = _buildSelectJoinStep(
 			channelId, eventAnalysisBreakdowns, eventAttributeDefinitions,
-			_dslContext.select(
+			_dslContext.with(
+				"filteredEvents"
+			).as(
+				selectForUpdateStep
+			).select(
 				ListUtils.union(valueFields, selectFields)
 			).from(
 				"BQEvent"
@@ -316,7 +377,7 @@ public class BQEventRepositoryImpl
 		SelectConditionStep<Record> selectConditionStep = selectJoinStep.where(
 			_getConditions(
 				channelId, eventAnalysisBreakdowns, eventAnalysisFilters,
-				eventAttributeDefinitions, eventDefinitionId, pageable,
+				eventAttributeDefinitions, eventDefinitionId, "filteredEvents",
 				timeRange, timeZoneId));
 
 		if (!valueFields.isEmpty()) {
@@ -712,7 +773,7 @@ public class BQEventRepositoryImpl
 		Long channelId, List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters,
 		Map<String, EventAttributeDefinition> eventAttributeDefinitions,
-		Long eventDefinitionId, Pageable pageable, TimeRange timeRange,
+		Long eventDefinitionId, String tabelinhaName, TimeRange timeRange,
 		String timeZoneId) {
 
 		List<Condition> conditions = _getConditions(
@@ -732,39 +793,12 @@ public class BQEventRepositoryImpl
 				firstEventAnalysisBreakdown, eventAttributeDefinitions),
 			timeZoneId);
 
-		List<EventAnalysisFilter> filteredEventAnalysisFilters = null;
-
-		if (eventAnalysisFilters != null) {
-			Stream<EventAnalysisFilter> stream = eventAnalysisFilters.stream();
-
-			filteredEventAnalysisFilters = stream.filter(
-				eventAnalysisFilter -> eventAttributeDefinitions.containsKey(
-					firstEventAnalysisBreakdown.getAttributeId())
-			).collect(
-				Collectors.toList()
-			);
-		}
-
 		conditions.add(
 			firstValueField.in(
-				_buildSelectJoinStep(
-					channelId, Arrays.asList(firstEventAnalysisBreakdown),
-					eventAttributeDefinitions,
-					DSL.selectDistinct(
-						firstValueField
-					).from(
-						"BQEvent"
-					),
-					timeRange
-				).where(
-					_getConditions(
-						channelId, filteredEventAnalysisFilters,
-						eventDefinitionId, timeRange.getEndDate(),
-						timeRange.getStartDate(), timeZoneId)
-				).limit(
-					pageable.getPageSize()
-				).offset(
-					pageable.getOffset()
+				_dslContext.select(
+					DSL.field("_firstValueField")
+				).from(
+					tabelinhaName
 				)));
 
 		return conditions;
@@ -1233,6 +1267,16 @@ public class BQEventRepositoryImpl
 		}
 
 		return _getUniqueIndividualsField(timeRange);
+	}
+
+	private Field _getSortField(
+		EventAnalysisBreakdown eventAnalysisBreakdown, String name) {
+
+		if (eventAnalysisBreakdown.getSortType() == null) {
+			eventAnalysisBreakdown.setSortType("ASC");
+		}
+
+		return DSL.field(name + " " + eventAnalysisBreakdown.getSortType());
 	}
 
 	private Field<Integer> _getUniqueIndividualsField(TimeRange timeRange) {
