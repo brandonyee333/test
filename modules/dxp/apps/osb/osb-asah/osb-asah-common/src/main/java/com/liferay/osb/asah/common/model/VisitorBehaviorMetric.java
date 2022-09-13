@@ -58,7 +58,7 @@ public abstract class VisitorBehaviorMetric {
 
 			BigDecimal sessionsPerVisitor = _sessions.divide(_visitors);
 
-			return sessionsPerVisitor.longValue();
+			return sessionsPerVisitor.doubleValue();
 		}
 
 		return 0;
