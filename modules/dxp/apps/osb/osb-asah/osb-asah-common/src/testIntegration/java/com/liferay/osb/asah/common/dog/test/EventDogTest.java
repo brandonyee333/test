@@ -183,6 +183,42 @@ public class EventDogTest
 	}
 
 	@Test
+	public void testSearchEventOrderByDesc() throws Exception {
+		Date date = DateUtil.newDayDate();
+
+		Channel channel = _channelDog.addChannel("Test Channel");
+
+		for (int i = 2; i <= 7; i++) {
+			_eventDog.addBQEvent(
+				"Page",
+				new HashSet<BQEventProperty>() {
+					{
+						add(
+							new BQEventProperty(
+								null, "viewDuration", "testValue1"));
+						add(
+							new BQEventProperty(
+								null, "viewDuration", "testValue2"));
+					}
+				},
+				channel.getId(), DateUtil.addDays(date, -i), 1L,
+				DateUtil.addDays(date, -i), "pageViewed",
+				"analyticsEventId" + i, "sessionId", "userId");
+		}
+
+		List<BQEvent> bqEvents = _eventDog.searchBQEvents(
+			channel.getId(), null, null, 0, 50, TimeRange.LAST_7_DAYS);
+
+		BQEvent bqEvent = bqEvents.get(bqEvents.size() - 1);
+
+		Date eventDate = bqEvent.getEventDate();
+
+		Date lastEventDate = DateUtil.addDays(date, -7);
+
+		Assertions.assertEquals(lastEventDate, eventDate);
+	}
+
+	@Test
 	public void testSearchEvents() throws Exception {
 		Date date = DateUtil.newDayDate();
 
