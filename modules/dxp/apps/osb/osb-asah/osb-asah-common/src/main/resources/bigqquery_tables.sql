@@ -249,6 +249,7 @@ CREATE TABLE IF NOT EXISTS BQIdentityChannel (
 );
 
 CREATE TABLE IF NOT EXISTS BQIndividual (
+	createDate TIMESTAMP,
 	emailAddress TEXT,
 	emailAddressHashed TEXT PRIMARY KEY,
 	fields JSON,
@@ -256,8 +257,7 @@ CREATE TABLE IF NOT EXISTS BQIndividual (
 	lastName TEXT,
 	middleName TEXT,
 	modifiedDate TIMESTAMPTZ,
-	screenName TEXT,
-    createDate TIMESTAMP
+	screenName TEXT
 );
 
 CREATE TABLE IF NOT EXISTS Interest (

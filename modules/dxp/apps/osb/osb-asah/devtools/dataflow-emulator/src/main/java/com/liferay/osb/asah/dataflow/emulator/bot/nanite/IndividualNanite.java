@@ -231,11 +231,11 @@ public class IndividualNanite {
 				JSONArray.class));
 
 		bqIndividual.setFirstName(bqUser.getFirstName());
+		bqIndividual.setIsNew(Boolean.TRUE);
 		bqIndividual.setLastName(bqUser.getLastName());
 		bqIndividual.setMiddleName(bqUser.getMiddleName());
-		bqIndividual.setScreenName(bqUser.getScreenName());
-		bqIndividual.setIsNew(Boolean.TRUE);
 		bqIndividual.setModifiedDate(bqUser.getModifiedDate());
+		bqIndividual.setScreenName(bqUser.getScreenName());
 
 		return bqIndividual;
 	}
