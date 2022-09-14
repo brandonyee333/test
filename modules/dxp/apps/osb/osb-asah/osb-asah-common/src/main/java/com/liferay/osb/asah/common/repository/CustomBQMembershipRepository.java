@@ -33,32 +33,23 @@ public interface CustomBQMembershipRepository {
 	public void deleteBySegmentIdIn(List<Long> segmentIds);
 
 	@Cacheable
-	public List<String> findIdentityIdByIdentityIdInAndSegmentIdAndStatus(
-		List<String> identityIds, Long segmentId, String status);
+	public List<Long> findSegmentIdByStatusAndUserId(
+		String status, String userId);
 
 	@Cacheable
-	public List<String> findIdentityIdBySegmentIdAndStatus(
+	public List<Long> findSegmentIdByStatusAndUserIdIn(
+		String status, List<String> userIds);
+
+	@Cacheable
+	public List<Long> findTop20SegmentIdByUserId(String userId);
+
+	@Cacheable
+	public List<String> findUserIdBySegmentIdAndStatus(
 		Long segmentId, String status);
 
 	@Cacheable
-	public List<String> findIdentityIdBySegmentIdIn(
+	public List<String> findUserIdBySegmentIdIn(
 		List<Long> segmentIds, int max, int min, boolean ascending);
-
-	@Cacheable
-	public List<String> findIdentityIdBySegmentIdIn(
-		String identityId, List<Long> segmentIds, int max, int min,
-		boolean ascending);
-
-	@Cacheable
-	public List<Long> findSegmentIdByIdentityIdAndStatus(
-		String identityId, String status);
-
-	@Cacheable
-	public List<Long> findSegmentIdByIdentityIdInAndStatus(
-		List<String> identityIds, String status);
-
-	@Cacheable
-	public List<Long> findTop20SegmentIdByIdentityId(String identityId);
 
 	@Cacheable
 	public List<BQMembership> searchBQMemberships(

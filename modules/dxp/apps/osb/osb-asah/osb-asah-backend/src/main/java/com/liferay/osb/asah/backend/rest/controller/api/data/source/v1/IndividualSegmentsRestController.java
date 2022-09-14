@@ -152,7 +152,7 @@ public class IndividualSegmentsRestController {
 
 			return _toMembershipDTOPageDTO(
 				bqMembershipDog.getBQMembershipPage(
-					Collections.emptyList(), id, "ACTIVE", page, size, sorts));
+					id, "ACTIVE", Collections.emptyList(), page, size, sorts));
 		}
 
 		return _toMembershipDTOPageDTO(
@@ -255,8 +255,7 @@ public class IndividualSegmentsRestController {
 			bqMembership.setSegmentId(id);
 
 			if (_isMember(
-					bqMembership.getIdentityId(),
-					bqMembership.getSegmentId())) {
+					bqMembership.getSegmentId(), bqMembership.getUserId())) {
 
 				return null;
 			}
@@ -289,7 +288,7 @@ public class IndividualSegmentsRestController {
 			}
 		).filter(
 			membership -> !_isMember(
-				membership.getIdentityId(), membership.getSegmentId())
+				membership.getSegmentId(), membership.getUserId())
 		).collect(
 			Collectors.toList()
 		);
@@ -375,11 +374,11 @@ public class IndividualSegmentsRestController {
 		return jsonObject;
 	}
 
-	private boolean _isMember(String identityId, Long segmentId) {
-		if (bqMembershipDog.isMember(identityId, segmentId)) {
+	private boolean _isMember(Long segmentId, String userId) {
+		if (bqMembershipDog.isMember(segmentId, userId)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Not adding membership because individual " + identityId +
+					"Not adding membership because user " + userId +
 						" is already a member of individual segment " +
 							segmentId);
 			}

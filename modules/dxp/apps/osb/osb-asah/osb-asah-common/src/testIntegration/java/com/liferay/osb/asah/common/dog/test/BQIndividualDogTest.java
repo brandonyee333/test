@@ -673,7 +673,7 @@ public class BQIndividualDogTest
 
 		bqMembership.setCreateDate(
 			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"));
-		bqMembership.setIdentityId("338486037253283140");
+		bqMembership.setUserId("338486037253283140");
 		bqMembership.setSegmentId(338511451975440187L);
 		bqMembership.setStatus("ACTIVE");
 
@@ -695,8 +695,8 @@ public class BQIndividualDogTest
 
 		Assertions.assertEquals(
 			0,
-			_bqMembershipRepository.countByIdentityIdAndSegmentId(
-				"338486037253283140", 338511398116723458L));
+			_bqMembershipRepository.countBySegmentIdAndUserId(
+				338511398116723458L, "338486037253283140"));
 
 		// TODO Update Dynamic Memberships
 

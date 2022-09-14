@@ -63,7 +63,7 @@ public class BQMembershipDog {
 			BQMembership bqMembership = new BQMembership();
 
 			bqMembership.setCreateDate(createDate);
-			bqMembership.setIdentityId(String.valueOf(individual.getId()));
+			bqMembership.setUserId(String.valueOf(individual.getId()));
 			bqMembership.setModifiedDate(createDate);
 			bqMembership.setSegmentId(segmentId);
 			bqMembership.setStatus("ACTIVE");
@@ -103,12 +103,12 @@ public class BQMembershipDog {
 	}
 
 	public void deactivateBQMembership(
-		Date deletionDate, String identityId, Long segmentId) {
+		Date deletionDate, Long segmentId, String userId) {
 
 		deactivateBQMembership(
 			deletionDate,
-			_bqMembershipRepository.findByIdentityIdAndSegmentIdAndStatus(
-				identityId, segmentId, "ACTIVE"));
+			_bqMembershipRepository.findBySegmentIdAndStatusAndUserId(
+				segmentId, "ACTIVE", userId));
 	}
 
 	public void deleteBQMemberships(List<Long> segmentIds) {
@@ -116,36 +116,20 @@ public class BQMembershipDog {
 	}
 
 	public List<BQMembership> getActiveBQMemberships(
-		String identityId, List<Long> segmentIds) {
+		List<Long> segmentIds, String userId) {
 
-		return _bqMembershipRepository.findByIdentityIdAndSegmentIdInAndStatus(
-			identityId, segmentIds, "ACTIVE");
+		return _bqMembershipRepository.findBySegmentIdInAndStatusAndUserId(
+			segmentIds, "ACTIVE", userId);
 	}
 
 	public List<String> getActiveIdentityIds(Long segmentId) {
-		return _bqMembershipRepository.findIdentityIdBySegmentIdAndStatus(
+		return _bqMembershipRepository.findUserIdBySegmentIdAndStatus(
 			segmentId, "ACTIVE");
 	}
 
-	public List<Long> getActiveSegmentIds(String identityId) {
-		return _bqMembershipRepository.findSegmentIdByIdentityIdAndStatus(
-			identityId, "ACTIVE");
-	}
-
-	public Page<BQMembership> getBQMembershipPage(
-		List<String> identityIds, Long segmentId, String status, int page,
-		int size, String[] sorts) {
-
-		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
-
-		return PageableExecutionUtils.getPage(
-			_bqMembershipRepository.findByIdentityIdInAndSegmentIdAndStatus(
-				identityIds, segmentId, status, pageRequest),
-			pageRequest,
-			() ->
-				_bqMembershipRepository.
-					countByIdentityIdInAndSegmentIdAndStatus(
-						identityIds, segmentId, status));
+	public List<Long> getActiveSegmentIds(String userId) {
+		return _bqMembershipRepository.findSegmentIdByStatusAndUserId(
+			"ACTIVE", userId);
 	}
 
 	public Page<BQMembership> getBQMembershipPage(
@@ -161,23 +145,25 @@ public class BQMembershipDog {
 				segmentId, status));
 	}
 
-	public long getIdentitiesCount(Long segmentId) {
-		return _bqMembershipRepository.countBySegmentIdAndStatus(
-			segmentId, "ACTIVE");
-	}
+	public Page<BQMembership> getBQMembershipPage(
+		Long segmentId, String status, List<String> userIds, int page, int size,
+		String[] sorts) {
 
-	public List<String> getIdentityIds(
-		List<Long> segmentIds, int max, int min, boolean ascending) {
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
-		return _bqMembershipRepository.findIdentityIdBySegmentIdIn(
-			segmentIds, max, min, ascending);
+		return PageableExecutionUtils.getPage(
+			_bqMembershipRepository.findBySegmentIdAndStatusAndUserIdIn(
+				segmentId, status, userIds, pageRequest),
+			pageRequest,
+			() -> _bqMembershipRepository.countBySegmentIdAndStatusAndUserIdIn(
+				segmentId, status, userIds));
 	}
 
 	public Map<Long, JSONObject> getMembershipsJSONObjects(
-		String identityId, List<Segment> segments) {
+		List<Segment> segments, String userId) {
 
 		List<BQMembership> bqMemberships = getActiveBQMemberships(
-			identityId, ListUtil.map(segments, Segment::getId));
+			ListUtil.map(segments, Segment::getId), userId);
 
 		Map<Long, JSONObject> segmentJSONObjects = new HashMap<>();
 
@@ -195,8 +181,8 @@ public class BQMembershipDog {
 			if (!segmentJSONObjects.containsKey(segmentId)) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
-						"Unable to get active membership for individual " +
-							identityId + "and individual segment " + segmentId);
+						"Unable to get active membership for user " + userId +
+							"and individual segment " + segmentId);
 				}
 
 				continue;
@@ -217,19 +203,12 @@ public class BQMembershipDog {
 	}
 
 	public List<Long> getSegmentIds(String identityId) {
-		return _bqMembershipRepository.findTop20SegmentIdByIdentityId(
-			identityId);
+		return _bqMembershipRepository.findTop20SegmentIdByUserId(identityId);
 	}
 
-	public List<String> isMember(List<String> identityIds, Long segmentId) {
-		return _bqMembershipRepository.
-			findIdentityIdByIdentityIdInAndSegmentIdAndStatus(
-				identityIds, segmentId, "ACTIVE");
-	}
-
-	public boolean isMember(String identityId, Long segmentId) {
-		return _bqMembershipRepository.existsByIdentityIdAndSegmentIdAndStatus(
-			identityId, segmentId, "ACTIVE");
+	public boolean isMember(Long segmentId, String userId) {
+		return _bqMembershipRepository.existsBySegmentIdAndStatusAndUserId(
+			segmentId, "ACTIVE", userId);
 	}
 
 	public List<BQMembership> searchBQMemberships(

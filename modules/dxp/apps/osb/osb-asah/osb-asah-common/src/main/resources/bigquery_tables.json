@@ -956,18 +956,13 @@
 				"type": "TIMESTAMP"
 			},
 			{
+				"mode": "NULLABLE",
+				"name": "emailAddressHashed",
+				"type": "STRING"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "id",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "individualId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "individualSegmentId",
 				"type": "INT64"
 			},
 			{
@@ -982,7 +977,17 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "segmentId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "status",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userId",
 				"type": "STRING"
 			}
 		]

@@ -55,38 +55,85 @@ public class BQMembershipRepositoryImpl
 	}
 
 	@Override
-	public List<String> findIdentityIdByIdentityIdInAndSegmentIdAndStatus(
-		List<String> identityIds, Long segmentId, String status) {
-
-		Field<Object> identityIdField = DSL.field("identityId");
-
-		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
-			identityIdField);
+	public List<Long> findSegmentIdByStatusAndUserId(
+		String status, String userId) {
 
 		Field<Object> segmentIdField = DSL.field("segmentId");
+
+		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
+			segmentIdField);
+
+		Field<Object> statusField = DSL.field("status");
+		Field<Object> userIdField = DSL.field("userId");
+
+		return selectSelectStep.from(
+			"BQMembership"
+		).where(
+			statusField.eq(status)
+		).and(
+			userIdField.eq(userId)
+		).fetch(
+			0, Long.class
+		);
+	}
+
+	@Override
+	public List<Long> findSegmentIdByStatusAndUserIdIn(
+		String status, List<String> userIds) {
+
+		Field<Object> segmentIdField = DSL.field("segmentId");
+
+		SelectSelectStep<Record1<Object>> selectSelectStep =
+			_dslContext.selectDistinct(segmentIdField);
+
+		Field<Object> userIdField = DSL.field("userId");
 		Field<Object> statusField = DSL.field("status");
 
 		return selectSelectStep.from(
 			"BQMembership"
 		).where(
-			identityIdField.in(identityIds)
-		).and(
-			segmentIdField.eq(segmentId)
-		).and(
 			statusField.eq(status)
+		).and(
+			userIdField.in(userIds)
 		).fetch(
-			0, String.class
+			0, Long.class
 		);
 	}
 
 	@Override
-	public List<String> findIdentityIdBySegmentIdAndStatus(
+	public List<Long> findTop20SegmentIdByUserId(String userId) {
+		Field<Object> segmentIdField = DSL.field("segmentId");
+
+		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
+			segmentIdField);
+
+		Field<Object> userIdIdField = DSL.field("userId");
+
+		return selectSelectStep.from(
+			"BQMembership"
+		).where(
+			userIdIdField.eq(userId)
+		).groupBy(
+			segmentIdField
+		).orderBy(
+			DSL.count(
+				userIdIdField
+			).desc()
+		).limit(
+			20
+		).fetch(
+			0, Long.class
+		);
+	}
+
+	@Override
+	public List<String> findUserIdBySegmentIdAndStatus(
 		Long segmentId, String status) {
 
-		Field<Object> identityIdField = DSL.field("identityId");
+		Field<Object> userIdField = DSL.field("userId");
 
 		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
-			identityIdField);
+			userIdField);
 
 		Field<Object> segmentIdField = DSL.field("segmentId");
 		Field<Object> statusField = DSL.field("status");
@@ -103,13 +150,13 @@ public class BQMembershipRepositoryImpl
 	}
 
 	@Override
-	public List<String> findIdentityIdBySegmentIdIn(
+	public List<String> findUserIdBySegmentIdIn(
 		List<Long> segmentIds, int max, int min, boolean ascending) {
 
-		Field<Object> identityIdField = DSL.field("identityId");
+		Field<Object> userIdField = DSL.field("userId");
 
 		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
-			identityIdField);
+			userIdField);
 
 		Field<Object> segmentIdField = DSL.field("segmentId");
 
@@ -121,111 +168,13 @@ public class BQMembershipRepositoryImpl
 		).where(
 			segmentIdField.in(segmentIds)
 		).groupBy(
-			identityIdField
+			userIdField
 		).having(
 			_getConditions(max, min, ascending)
 		).orderBy(
 			ascending ? aggregateFunction.asc() : aggregateFunction.desc()
 		).fetch(
 			0, String.class
-		);
-	}
-
-	@Override
-	public List<String> findIdentityIdBySegmentIdIn(
-		String identityId, List<Long> segmentIds, int max, int min,
-		boolean ascending) {
-
-		Field<Object> identityIdField = DSL.field("identityId");
-
-		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
-			identityIdField);
-
-		Field<Object> segmentIdField = DSL.field("segmentId");
-
-		return selectSelectStep.from(
-			"BQMembership"
-		).where(
-			DSL.and(
-				segmentIdField.in(segmentIds), identityIdField.eq(identityId))
-		).groupBy(
-			identityIdField
-		).having(
-			_getConditions(max, min, ascending)
-		).fetch(
-			0, String.class
-		);
-	}
-
-	@Override
-	public List<Long> findSegmentIdByIdentityIdAndStatus(
-		String identityId, String status) {
-
-		Field<Object> segmentIdField = DSL.field("segmentId");
-
-		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
-			segmentIdField);
-
-		Field<Object> identityIdField = DSL.field("identityId");
-		Field<Object> statusField = DSL.field("status");
-
-		return selectSelectStep.from(
-			"BQMembership"
-		).where(
-			identityIdField.eq(identityId)
-		).and(
-			statusField.eq(status)
-		).fetch(
-			0, Long.class
-		);
-	}
-
-	@Override
-	public List<Long> findSegmentIdByIdentityIdInAndStatus(
-		List<String> identityIds, String status) {
-
-		Field<Object> segmentIdField = DSL.field("segmentId");
-
-		SelectSelectStep<Record1<Object>> selectSelectStep =
-			_dslContext.selectDistinct(segmentIdField);
-
-		Field<Object> identityIdField = DSL.field("identityId");
-		Field<Object> statusField = DSL.field("status");
-
-		return selectSelectStep.from(
-			"BQMembership"
-		).where(
-			identityIdField.in(identityIds)
-		).and(
-			statusField.eq(status)
-		).fetch(
-			0, Long.class
-		);
-	}
-
-	@Override
-	public List<Long> findTop20SegmentIdByIdentityId(String identityId) {
-		Field<Object> segmentIdField = DSL.field("segmentId");
-
-		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
-			segmentIdField);
-
-		Field<Object> identityIdField = DSL.field("identityId");
-
-		return selectSelectStep.from(
-			"BQMembership"
-		).where(
-			identityIdField.eq(identityId)
-		).groupBy(
-			segmentIdField
-		).orderBy(
-			DSL.count(
-				identityIdField
-			).desc()
-		).limit(
-			20
-		).fetch(
-			0, Long.class
 		);
 	}
 

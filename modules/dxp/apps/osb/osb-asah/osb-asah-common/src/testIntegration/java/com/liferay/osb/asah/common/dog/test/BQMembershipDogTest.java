@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
@@ -27,7 +26,6 @@ import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -90,11 +88,11 @@ public class BQMembershipDogTest
 
 		bqMembership.setCreateDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
-		bqMembership.setIdentityId("123");
 		bqMembership.setModifiedDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
 		bqMembership.setSegmentId(234L);
 		bqMembership.setStatus("ACTIVE");
+		bqMembership.setUserId("123");
 
 		bqMembership = _bqMembershipDog.addBQMembership(bqMembership);
 
@@ -157,11 +155,11 @@ public class BQMembershipDogTest
 		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.215Z");
 
 		_bqMembershipDog.deactivateBQMembership(
-			deletionDate, "338486037253283140", 338511398116723458L);
+			deletionDate, 338511398116723458L, "338486037253283140");
 
 		BQMembership bqMembership =
-			_bqMembershipRepository.findByIdentityIdAndSegmentIdAndStatus(
-				"338486037253283140", 338511398116723458L, "INACTIVE");
+			_bqMembershipRepository.findBySegmentIdAndStatusAndUserId(
+				338511398116723458L, "INACTIVE", "338486037253283140");
 
 		Assertions.assertEquals(
 			DateUtil.toUTCDate("2019-02-11T20:26:53.215Z"),
@@ -174,10 +172,9 @@ public class BQMembershipDogTest
 			bqMembership.getRemovedDate());
 		Assertions.assertEquals(338511398389279307L, bqMembership.getId());
 		Assertions.assertEquals(
-			"338486037253283140", bqMembership.getIdentityId());
-		Assertions.assertEquals(
 			338511398116723458L, bqMembership.getSegmentId());
 		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
+		Assertions.assertEquals("338486037253283140", bqMembership.getUserId());
 	}
 
 	@Disabled
@@ -213,10 +210,10 @@ public class BQMembershipDogTest
 	)
 	@Test
 	public void testIsMember() {
-		Assertions.assertFalse(_bqMembershipDog.isMember("0", 0L));
+		Assertions.assertFalse(_bqMembershipDog.isMember(0L, "0"));
 		Assertions.assertTrue(
 			_bqMembershipDog.isMember(
-				"338486041327913341", 338511398116723458L));
+				338511398116723458L, "338486041327913341"));
 	}
 
 	@Autowired
@@ -226,13 +223,7 @@ public class BQMembershipDogTest
 	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
-	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
 	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;

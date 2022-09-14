@@ -28,46 +28,40 @@ public interface BQMembershipRepository
 	extends CustomBQMembershipRepository, Repository<BQMembership, Long> {
 
 	@Cacheable
-	public long countByIdentityIdAndSegmentId(
-		String identityId, Long segmentId);
-
-	@Cacheable
-	public long countByIdentityIdInAndSegmentIdAndStatus(
-		List<String> identityIds, Long segmentId, String status);
-
-	@Cacheable
 	public long countBySegmentId(Long segmentId);
 
 	@Cacheable
 	public long countBySegmentIdAndStatus(Long segmentId, String status);
 
 	@Cacheable
-	public boolean existsByIdentityIdAndSegmentIdAndStatus(
-		String identityId, Long segmentId, String status);
+	public long countBySegmentIdAndStatusAndUserIdIn(
+		Long segmentId, String status, List<String> userIds);
 
 	@Cacheable
-	public BQMembership findByIdentityIdAndSegmentIdAndStatus(
-		String identityId, Long segmentId, String status);
+	public long countBySegmentIdAndUserId(Long segmentId, String userId);
 
 	@Cacheable
-	public List<BQMembership> findByIdentityIdAndSegmentIdInAndStatus(
-		String identityId, List<Long> segmentIds, String status);
-
-	@Cacheable
-	public List<BQMembership> findByIdentityIdAndStatus(
-		String identityId, String status);
-
-	@Cacheable
-	public List<BQMembership> findByIdentityIdInAndSegmentIdAndStatus(
-		List<String> identityIds, Long segmentId, String status,
-		Pageable pageable);
-
-	@Cacheable
-	public List<BQMembership> findByIdentityIdInAndStatus(
-		List<String> identityIds, String status);
+	public boolean existsBySegmentIdAndStatusAndUserId(
+		Long segmentId, String status, String userId);
 
 	@Cacheable
 	public List<BQMembership> findBySegmentIdAndStatus(
 		Long segmentId, String status, Pageable pageable);
+
+	@Cacheable
+	public BQMembership findBySegmentIdAndStatusAndUserId(
+		Long segmentId, String status, String userId);
+
+	@Cacheable
+	public List<BQMembership> findBySegmentIdAndStatusAndUserIdIn(
+		Long segmentId, String status, List<String> userIds, Pageable pageable);
+
+	@Cacheable
+	public List<BQMembership> findBySegmentIdInAndStatusAndUserId(
+		List<Long> segmentIds, String status, String userId);
+
+	@Cacheable
+	public List<BQMembership> findByStatusAndUserId(
+		String status, String userId);
 
 }

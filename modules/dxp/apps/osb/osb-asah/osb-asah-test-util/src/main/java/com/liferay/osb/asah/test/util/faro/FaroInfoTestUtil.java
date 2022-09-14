@@ -179,10 +179,10 @@ public class FaroInfoTestUtil {
 		BQMembership bqMembership = new BQMembership();
 
 		bqMembership.setCreateDate(date);
-		bqMembership.setIdentityId(identityId);
 		bqMembership.setModifiedDate(date);
 		bqMembership.setSegmentId(segmentId);
 		bqMembership.setStatus("ACTIVE");
+		bqMembership.setUserId(identityId);
 
 		return bqMembership;
 	}

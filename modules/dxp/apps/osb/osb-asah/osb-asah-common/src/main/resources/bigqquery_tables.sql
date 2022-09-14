@@ -242,12 +242,13 @@ CREATE TABLE IF NOT EXISTS Interest (
 
 CREATE TABLE IF NOT EXISTS BQMembership (
 	createDate TIMESTAMPTZ,
+	emailAddressHashed TEXT,
 	id BIGSERIAL PRIMARY KEY,
-	identityId TEXT,
 	modifiedDate TIMESTAMPTZ,
 	removedDate TIMESTAMPTZ,
 	segmentId BIGINT,
-	status TEXT
+	status TEXT,
+	userId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQMembershipChange (
