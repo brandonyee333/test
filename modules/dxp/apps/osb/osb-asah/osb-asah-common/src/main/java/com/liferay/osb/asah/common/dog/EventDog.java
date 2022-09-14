@@ -175,7 +175,7 @@ public class EventDog {
 
 		return _bqEventRepository.searchBQEvents(
 			channelId, keywords,
-			PageRequest.of(page, size, Sort.asc("eventDate")),
+			PageRequest.of(page, size, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
 			_timeZoneDog.getTimeZoneId(), Collections.emptySet());
 	}
