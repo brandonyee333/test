@@ -37,6 +37,7 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,13 @@ public class BQIdentityRepositoryTest
 		_bqIdentityActivityRepository.deleteAll();
 		_bqIdentityChannelRepository.deleteAll();
 		_bqIndividualRepository.deleteAll();
+	}
+
+	@Disabled
+	@Override
+	@Test
+	public void testFindAll1() {
+		super.testFindAll1();
 	}
 
 	@Test
@@ -131,7 +139,7 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -3));
 		bqIdentity.setEmailAddressHashed("test1@liferay.com");
-		bqIdentity.setId("1");
+		bqIdentity.setUserId("1");
 		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
@@ -140,7 +148,7 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -5));
 		bqIdentity.setEmailAddressHashed("test2@liferay.com");
-		bqIdentity.setId("2");
+		bqIdentity.setUserId("2");
 		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
@@ -149,7 +157,7 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqIdentity.setEmailAddressHashed("test3@liferay.com");
-		bqIdentity.setId("3");
+		bqIdentity.setUserId("3");
 		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
@@ -158,7 +166,7 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -36));
 		bqIdentity.setEmailAddressHashed("test4@liferay.com");
-		bqIdentity.setId("4");
+		bqIdentity.setUserId("4");
 		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
@@ -166,7 +174,7 @@ public class BQIdentityRepositoryTest
 		bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -11));
-		bqIdentity.setId("5");
+		bqIdentity.setUserId("5");
 		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
@@ -305,9 +313,8 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(new Date());
 		bqIdentity.setEmailAddressHashed(RandomTestUtil.randomEmailAddress());
-		bqIdentity.setId(RandomTestUtil.randomUUID());
+		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 		bqIdentity.setIsNew(Boolean.TRUE);
-		bqIdentity.setUserId(RandomTestUtil.randomString());
 
 		return bqIdentity;
 	}

@@ -45,7 +45,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -207,33 +206,21 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 	private JSONObject _toJSONObject(Message<JSONObject> message) {
 		JSONObject messageJSONObject = message.getObject();
 
-		String channelId = messageJSONObject.getString("channelId");
-		String dataSourceId = messageJSONObject.getString("dataSourceId");
 		String emailAddressHashed = messageJSONObject.getString(
 			"emailAddressHashed");
-		String projectId = messageJSONObject.getString("projectId");
-		String userId = messageJSONObject.getString("userId");
 
 		if (Objects.equals(emailAddressHashed, _EMPTY_EMAIL_ADDRESS_HASHED)) {
 			emailAddressHashed = null;
 		}
 
 		return JSONUtil.put(
-			"channelId", Long.parseLong(channelId)
-		).put(
 			"createDate", DateUtil.toString(new Date())
-		).put(
-			"dataSourceId", Long.parseLong(dataSourceId)
 		).put(
 			"emailAddressHashed", emailAddressHashed
 		).put(
-			"id",
-			DigestUtils.sha256Hex(
-				String.join("#", projectId, dataSourceId, channelId, userId))
+			"projectId", messageJSONObject.getString("projectId")
 		).put(
-			"projectId", projectId
-		).put(
-			"userId", userId
+			"userId", messageJSONObject.getString("userId")
 		);
 	}
 

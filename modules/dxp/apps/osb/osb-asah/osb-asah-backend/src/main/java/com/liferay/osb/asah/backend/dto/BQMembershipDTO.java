@@ -42,11 +42,11 @@ public class BQMembershipDTO {
 	public BQMembershipDTO(BQMembership bqMembership) {
 		_createDate = bqMembership.getCreateDate();
 		_id = StringUtil.get(bqMembership.getId(), null);
-		_identityId = StringUtil.get(bqMembership.getIdentityId(), null);
 		_modifiedDate = bqMembership.getModifiedDate();
 		_removedDate = bqMembership.getRemovedDate();
 		_segmentId = StringUtil.get(bqMembership.getSegmentId(), null);
 		_status = bqMembership.getStatus();
+		_userId = StringUtil.get(bqMembership.getUserId(), null);
 	}
 
 	public BQMembershipDTO(List<BQMembership> bqMemberships) {
@@ -75,12 +75,6 @@ public class BQMembershipDTO {
 	@JsonProperty("id")
 	public String getId() {
 		return _id;
-	}
-
-	@JsonAlias("identityId")
-	@JsonProperty("individualId")
-	public String getIdentityId() {
-		return _identityId;
 	}
 
 	@JsonAlias("modifiedDate")
@@ -122,6 +116,12 @@ public class BQMembershipDTO {
 		return _status;
 	}
 
+	@JsonAlias("userId")
+	@JsonProperty("individualId")
+	public String getUserId() {
+		return _userId;
+	}
+
 	public void setCreateDate(Date createDate) {
 		if (createDate != null) {
 			_createDate = new Date(createDate.getTime());
@@ -130,10 +130,6 @@ public class BQMembershipDTO {
 
 	public void setId(String id) {
 		_id = id;
-	}
-
-	public void setIdentityId(String individualId) {
-		_identityId = individualId;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
@@ -156,13 +152,17 @@ public class BQMembershipDTO {
 		_status = status;
 	}
 
+	public void setUserId(String userId) {
+		_userId = userId;
+	}
+
 	private Set<BQMembershipDTO> _bqMembershipDTOs;
 	private Date _createDate;
 	private String _id;
-	private String _identityId;
 	private Date _modifiedDate;
 	private Date _removedDate;
 	private String _segmentId;
 	private String _status;
+	private String _userId;
 
 }

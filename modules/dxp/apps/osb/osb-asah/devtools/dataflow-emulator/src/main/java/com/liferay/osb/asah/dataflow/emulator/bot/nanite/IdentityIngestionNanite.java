@@ -31,8 +31,6 @@ import java.util.stream.Stream;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,8 +78,9 @@ public class IdentityIngestionNanite {
 		return !optional.isPresent();
 	}
 
-	private boolean _isBQIdentityNew(String id) {
-		Optional<BQIdentity> optional = _bqIdentityRepository.findById(id);
+	private boolean _isBQIdentityNew(String userId) {
+		Optional<BQIdentity> optional = _bqIdentityRepository.findByUserId(
+			userId);
 
 		return !optional.isPresent();
 	}
@@ -102,10 +101,7 @@ public class IdentityIngestionNanite {
 
 		String userId = jsonObject.getString("userId");
 
-		String id = DigestUtils.sha256Hex(String.join("#", projectId, userId));
-
-		bqIdentity.setId(id);
-		bqIdentity.setIsNew(_isBQIdentityNew(id));
+		bqIdentity.setIsNew(_isBQIdentityNew(userId));
 
 		bqIdentity.setUserId(userId);
 
@@ -123,7 +119,7 @@ public class IdentityIngestionNanite {
 
 		bqIdentityActivity.setDataSourceId(Long.valueOf(dataSourceId));
 
-		id = String.join(
+		String id = String.join(
 			"#", projectId, bqIdentity.getId(), dataSourceId, channelId);
 
 		bqIdentityActivity.setId(id);

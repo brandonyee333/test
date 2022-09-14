@@ -41,7 +41,7 @@ public class BQIdentity implements Persistable<String> {
 
 		BQIdentity bqIdentity = (BQIdentity)obj;
 
-		if (Objects.equals(_id, bqIdentity._id)) {
+		if (Objects.equals(_userId, bqIdentity._userId)) {
 			return true;
 		}
 
@@ -62,26 +62,25 @@ public class BQIdentity implements Persistable<String> {
 		return _emailAddressHashed;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	@Override
 	public String getId() {
-		return _id;
+		return _userId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@Id
 	public String getUserId() {
 		return _userId;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_id);
+		return Objects.hash(_userId);
 	}
 
 	@Override
 	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
+		if ((_userId == null) || ((_isNew != null) && _isNew)) {
 			return true;
 		}
 
@@ -98,10 +97,6 @@ public class BQIdentity implements Persistable<String> {
 		_emailAddressHashed = emailAddressHashed;
 	}
 
-	public void setId(String id) {
-		_id = id;
-	}
-
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
 	}
@@ -115,9 +110,6 @@ public class BQIdentity implements Persistable<String> {
 
 	@Transient
 	private String _emailAddressHashed;
-
-	@Transient
-	private String _id;
 
 	@Transient
 	private Boolean _isNew;
