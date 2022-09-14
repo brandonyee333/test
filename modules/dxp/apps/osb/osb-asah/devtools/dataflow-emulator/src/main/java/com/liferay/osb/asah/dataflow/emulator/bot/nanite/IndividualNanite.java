@@ -19,12 +19,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 
@@ -37,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -69,12 +72,27 @@ public class IndividualNanite {
 	}
 
 	private List<BQIndividual> _fetchBQUsersBQIndividuals() {
+		List<BQIdentity> bqIdentities = IterableUtils.toList(
+			_bqIdentityRepository.findAll());
 		List<BQUser> bqUsers = IterableUtils.toList(
 			_bqUserRepository.findAll());
 
+		Stream<BQIdentity> bqIdentityStream = bqIdentities.stream();
+
+		Set<String> emailAddressHashedSet = bqIdentityStream.map(
+			BQIdentity::getEmailAddressHashed
+		).filter(
+			Objects::nonNull
+		).collect(
+			Collectors.toSet()
+		);
+
 		Stream<BQUser> stream = bqUsers.stream();
 
-		return stream.map(
+		return stream.filter(
+			bqUser -> emailAddressHashedSet.contains(
+				DigestUtils.sha256Hex(bqUser.getEmailAddress()))
+		).map(
 			this::_toBQIndividual
 		).sorted(
 			Comparator.comparing(BQIndividual::getModifiedDate)
@@ -265,6 +283,9 @@ public class IndividualNanite {
 
 	@Autowired
 	private BQExpandoValueRepository _bqExpandoValueRepository;
+
+	@Autowired
+	private BQIdentityRepository _bqIdentityRepository;
 
 	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;
