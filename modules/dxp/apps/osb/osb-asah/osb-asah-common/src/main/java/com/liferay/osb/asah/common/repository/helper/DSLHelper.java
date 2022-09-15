@@ -186,6 +186,30 @@ public class DSLHelper {
 		return DSL.field(sb.toString(), OffsetDateTime.class);
 	}
 
+	public Field<String> getNestedField(
+		String keyAttribute, String nestedField, String valueAttribute,
+		String wrapperColumn) {
+
+		if (_isBigQueryDialect()) {
+			return DSL.field(
+				String.format(
+					"(SELECT %s FROM UNNEST(%s) WHERE %s = {0})",
+					valueAttribute, wrapperColumn, keyAttribute),
+				String.class, nestedField);
+		}
+
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("(SELECT %s FROM JSON_TO_RECORDSET(%s) ");
+		sb.append("(%s  TEXT, %s TEXT) WHERE %s = {0})");
+
+		return DSL.field(
+			String.format(
+				sb.toString(), valueAttribute, wrapperColumn, keyAttribute,
+				valueAttribute, keyAttribute),
+			String.class, nestedField);
+	}
+
 	public Table<Record> getTimeSeriesTable(
 		DatePart datePart, Timestamp timestamp1, Timestamp timestamp2) {
 
