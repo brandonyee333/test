@@ -104,6 +104,45 @@ definition {
 		AssertElementPresent(locator1 = "AppManager#APP_PURCHASE_INFO");
 	}
 
+	macro installAppFromURL {
+		var key_appName = "${appName}";
+
+		Click(locator1 = "Portlet#OPTIONS_ICON");
+
+		MenuItem.click(menuItem = "Install from URL");
+
+		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+
+		AssertElementPresent(
+			key_fieldLabel = "URL",
+			locator1 = "TextInput#GENERIC_TEXT_INPUT");
+
+		Type(
+			key_fieldLabel = "URL",
+			locator1 = "TextInput#GENERIC_TEXT_INPUT",
+			value1 = "${appURL}");
+
+		Button.clickInstall();
+
+		WaitForPageLoad();
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#SUCCESS",
+			value1 = "The plugin was uploaded successfully and is now being installed.");
+
+		SelectFrame.selectFrameTop();
+
+		Click(locator1 = "Icon#CLOSE");
+
+		WaitForConsoleTextPresent(value1 = "STARTED ${appName}");
+
+		AssertConsoleTextNotPresent(value1 = "HotDeployException: Error initializing Spring for ${appName}");
+
+		AssertConsoleTextNotPresent(value1 = "HotDeployException: Error registering hook for ${appName}");
+
+		AssertConsoleTextNotPresent(value1 = "HotDeployException: Error registering portlets for ${appName}");
+	}
+
 	macro searchApp {
 		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MARKETPLACE_STORE_PORTLET_IFRAME");
 
