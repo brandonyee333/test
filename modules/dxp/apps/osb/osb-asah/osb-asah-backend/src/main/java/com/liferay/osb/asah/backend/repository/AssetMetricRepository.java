@@ -35,6 +35,10 @@ import org.springframework.lang.Nullable;
  */
 public interface AssetMetricRepository<T extends AssetMetric> {
 
+	public Long getAnonymousIndividualsCount(
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange);
+
 	public List<T> getAppearsOnMetrics(
 		String assetId, @Nullable String assetTitle, Long channelId,
 		MetricType metricType, TimeRange timeRange);
@@ -68,10 +72,6 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		String assetId, @Nullable String assetTitle, Long channelId,
 		Interval interval, MetricType metricType, TimeRange timeRange);
 
-	public Long getIndividualsCount(
-		String assetId, Long channelId, Boolean knownIndividual,
-		MetricType metricType, TimeRange timeRange);
-
 	public List<Individual> getKnownIndividuals(
 		String assetId, @Nullable String assetTitle, Long channelId,
 		MetricType metricType, Pageable pageable, @Nullable String keywords,
@@ -81,16 +81,12 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		String assetId, @Nullable String assetTitle, Long channelId,
 		MetricType metricType, @Nullable String keywords, TimeRange timeRange);
 
-	public Long getNonsegmentedIndividualsCount(
-		String assetId, Long channelId, MetricType metricType,
-		TimeRange timeRange);
-
 	public Long getSegmentedIndividualsCount(
-		String assetId, Long channelId, MetricType metricType,
-		TimeRange timeRange);
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange);
 
 	public List<Metric> getSegmentMetrics(
-		String assetId, Long channelId, MetricType metricType,
-		TimeRange timeRange);
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange);
 
 }
