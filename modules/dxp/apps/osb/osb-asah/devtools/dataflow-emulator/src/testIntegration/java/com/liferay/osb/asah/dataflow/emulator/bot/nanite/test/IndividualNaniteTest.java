@@ -17,12 +17,14 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IndividualNanite;
@@ -30,7 +32,10 @@ import com.liferay.osb.asah.dataflow.emulator.bot.nanite.OSBAsahDataflowEmulator
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Date;
 import java.util.Optional;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -48,6 +53,16 @@ public class IndividualNaniteTest
 
 	@Test
 	public void testMergeCustomFieldNameDifferentType() {
+		BQIdentity bqIdentity = new BQIdentity();
+
+		bqIdentity.setCreateDate(new Date());
+		bqIdentity.setEmailAddressHashed(
+			DigestUtils.sha256Hex("joe@liferay.com"));
+		bqIdentity.setUserId(RandomTestUtil.randomUUID());
+		bqIdentity.setIsNew(true);
+		bqIdentity.setId(RandomTestUtil.randomUUID());
+
+		_bqIdentityRepository.save(bqIdentity);
 
 		// BQUser 1
 
@@ -166,6 +181,16 @@ public class IndividualNaniteTest
 
 	@Test
 	public void testMergeCustomFieldNameSameType() {
+		BQIdentity bqIdentity = new BQIdentity();
+
+		bqIdentity.setCreateDate(new Date());
+		bqIdentity.setEmailAddressHashed(
+			DigestUtils.sha256Hex("joe@liferay.com"));
+		bqIdentity.setUserId(RandomTestUtil.randomUUID());
+		bqIdentity.setIsNew(true);
+		bqIdentity.setId(RandomTestUtil.randomUUID());
+
+		_bqIdentityRepository.save(bqIdentity);
 
 		// BQUser 1
 
@@ -274,6 +299,17 @@ public class IndividualNaniteTest
 
 	@Test
 	public void testMergeDefaultField() {
+		BQIdentity bqIdentity = new BQIdentity();
+
+		bqIdentity.setCreateDate(new Date());
+		bqIdentity.setEmailAddressHashed(
+			DigestUtils.sha256Hex("joe@liferay.com"));
+		bqIdentity.setUserId(RandomTestUtil.randomUUID());
+		bqIdentity.setIsNew(true);
+		bqIdentity.setId(RandomTestUtil.randomUUID());
+
+		_bqIdentityRepository.save(bqIdentity);
+
 		BQUser bqUser1 = new BQUser();
 
 		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
@@ -358,6 +394,9 @@ public class IndividualNaniteTest
 
 	@Autowired
 	private BQExpandoValueRepository _bqExpandoValueRepository;
+
+	@Autowired
+	private BQIdentityRepository _bqIdentityRepository;
 
 	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;
