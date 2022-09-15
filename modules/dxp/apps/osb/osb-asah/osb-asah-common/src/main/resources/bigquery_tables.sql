@@ -144,6 +144,7 @@ CREATE TABLE IF NOT EXISTS BQIdentityActivity (
 	channelId BIGINT,
 	createDate TIMESTAMP,
 	dataSourceId BIGINT,
+	emailAddressHashed TEXT,
 	id TEXT PRIMARY KEY,
 	identityId TEXT
 );
