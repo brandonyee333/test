@@ -688,6 +688,33 @@ definition {
 		}
 	}
 
+	@description = "This assert that the app be installed via URL successfully."
+	@priority = "3"
+	test InstallViaInstallFromURLIsSuccessful {
+		property portal.acceptance = "melody";
+		property test.name.skip.portal.instance = "AppManagement#InstallViaInstallFromURLIsSuccessful";
+
+		task ("When go to app manager") {
+			ApplicationsMenu.gotoPortlet(
+				category = "System",
+				panel = "Control Panel",
+				portlet = "App Manager");
+		}
+
+		task ("Then assert that the app be installed via URL successfully") {
+
+			var appName = "Liferay Connector to Elasticsearch 7";
+
+			var appURL = "https://web.liferay.com/web/guest/marketplace/-/mp/application/170390307/7210/3.2.1/LHQN452lQEn0A2y525TA922C5yl0o01P";
+
+			AppManager.installAppFromURL(appURL = "${appURL}");
+
+			AppManager.viewApp(
+				appName = "${appName}",
+				appStatus = "Active");
+		}
+	}
+
 	@priority = "5"
 	test InstallViaUploadIsSuccessful {
 		property test.name.skip.portal.instance = "AppManagement#InstallViaUploadIsSuccessful";
