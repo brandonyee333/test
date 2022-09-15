@@ -14,16 +14,20 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.BQIndividual;
+import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
-import java.util.Optional;
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 
 /**
- * @author Marcellus Tavares
+ * @author Robson Pastor
  */
-public interface BQIndividualRepository
-	extends CustomBQIndividualRepository, Repository<BQIndividual, String> {
+public interface CustomBQIndividualRepository {
 
-	public Optional<BQIndividual> findByEmailAddress(String emailAddresses);
+	public List<Distribution> getIndividualDistributions(
+		String fieldName, String fieldType, FilterHelper filterHelper,
+		Pageable pageable);
 
 }
