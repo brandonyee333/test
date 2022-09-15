@@ -15,7 +15,13 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.model.MetricType;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,37 +33,65 @@ import org.springframework.stereotype.Component;
 public class UserDog {
 
 	@Autowired
-	public UserDog() {
+	public UserDog(List<AssetMetricRepository> assetMetricRepositories) {
+		assetMetricRepositories.forEach(
+			assetMetricAssetMetricRepository -> _assetMetricRepositoryMap.put(
+				assetMetricAssetMetricRepository.getAssetType(),
+				assetMetricAssetMetricRepository));
 	}
 
 	public Long getAnonymousUsersCount(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		return 0L;
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getAnonymousIndividualsCount(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
 	}
 
 	public Long getKnownUsersCount(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		return 0L;
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getKnownIndividualsCount(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType, null,
+			searchQueryContext.getTimeRange());
 	}
 
-	public Long getNonsegmentedKnownUsersCount(
+	public Long getSegmentedIndividualsCount(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		return 0L;
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getSegmentedIndividualsCount(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
 	}
 
-	public Long getSegmentedAnonymousUsersCount(
-		MetricType metricType, SearchQueryContext searchQueryContext) {
+	private AssetMetricRepository _getAssetMetricRepository(
+		AssetType assetType) {
 
-		return 0L;
+		AssetMetricRepository assetMetricRepository =
+			_assetMetricRepositoryMap.get(assetType);
+
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					assetType);
+		}
+
+		return assetMetricRepository;
 	}
 
-	public Long getSegmentedKnownUsersCount(
-		MetricType metricType, SearchQueryContext searchQueryContext) {
-
-		return 0L;
-	}
+	private final Map<AssetType, AssetMetricRepository>
+		_assetMetricRepositoryMap = new HashMap<>();
 
 }

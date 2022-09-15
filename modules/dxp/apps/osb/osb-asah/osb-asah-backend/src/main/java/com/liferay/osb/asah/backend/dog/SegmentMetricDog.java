@@ -15,11 +15,17 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
+import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.ResultBag;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,13 +37,48 @@ import org.springframework.stereotype.Component;
 public class SegmentMetricDog {
 
 	@Autowired
-	public SegmentMetricDog() {
+	public SegmentMetricDog(
+		List<AssetMetricRepository> assetMetricRepositories) {
+
+		assetMetricRepositories.forEach(
+			assetMetricAssetMetricRepository -> _assetMetricRepositoryMap.put(
+				assetMetricAssetMetricRepository.getAssetType(),
+				assetMetricAssetMetricRepository));
 	}
 
 	public ResultBag<Metric> getSegmentMetricResultBag(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		return new ResultBag<>(Collections.emptyList(), 0);
+		AssetMetricRepository assetMetricRepository =
+			_assetMetricRepositoryMap.get(searchQueryContext.getAssetType());
+
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					searchQueryContext.getAssetType());
+		}
+
+		List<Metric> segmentMetrics = assetMetricRepository.getSegmentMetrics(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
+
+		for (Metric metric : segmentMetrics) {
+			Segment segment = _segmentDog.fetchSegment(
+				Long.valueOf(metric.getValueKey()));
+
+			if (segment != null) {
+				metric.setValueKey(segment.getName());
+			}
+		}
+
+		return new ResultBag<>(segmentMetrics, segmentMetrics.size());
 	}
+
+	private final Map<AssetType, AssetMetricRepository>
+		_assetMetricRepositoryMap = new HashMap<>();
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
