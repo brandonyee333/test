@@ -65,21 +65,27 @@ WITH CustomFieldMapping AS (
 	) TMP2
 ),
 DemographicsFieldMapping AS (
-	SELECT
-		*
-	FROM UNNEST(
-		[
-			('demographics', ARRAY[], 'address', 'input-field', 'addresses', 'text', CURRENT_TIMESTAMP(), 'individual', false),
-			('demographics', ARRAY[], 'birthDate', 'input-field', 'birthday', 'date', CURRENT_TIMESTAMP(), 'individual', false),
-			('demographics', ARRAY[], 'email', 'input-field', 'emailAddress', 'text', CURRENT_TIMESTAMP(), 'individual', false),
-			('demographics', ARRAY[], 'givenName', 'input-field', 'firstName', 'text', CURRENT_TIMESTAMP(), 'individual', false),
-			('demographics', ARRAY[], 'gender', 'input-field', 'gender', 'text', CURRENT_TIMESTAMP(), 'individual', false),
-			('demographics', ARRAY[], 'jobTitle', 'input-field',  'jobTitle', 'text', CURRENT_TIMESTAMP(), 'individual', false),
-			('demographics', ARRAY[], 'familyName', 'input-field', 'lastName', 'text', CURRENT_TIMESTAMP(), 'individual', false),
-			('demographics', ARRAY[], 'additionalName', 'input-field', 'middleName', 'text', CURRENT_TIMESTAMP(), 'individual', false),
-			('demographics', ARRAY[], 'telephone', 'input-field', 'phones', 'text', CURRENT_TIMESTAMP(), 'individual', false)
-		]
-	)
+	SELECT 'demographics' context,
+	    ARRAY<INT64>[] dataSourceIds,
+	    displayName,
+	    'input-field' displayType,
+	    fieldName,
+	    fieldType,
+	    CURRENT_TIMESTAMP() modifiedDate,
+	    'individual' ownerType,
+	    false repeatable_
+    FROM UNNEST(ARRAY<STRUCT<displayName STRING, fieldName STRING,fieldType STRING>>
+        [
+            ('additionalName', 'middleName', 'text'),
+            ('address', 'addresses', 'text'),
+            ('birthDate', 'birthday', 'date'),
+            ('email', 'emailAddress', 'text'),
+            ('familyName', 'lastName', 'text'),
+            ('gender', 'gender', 'text'),
+            ('givenName', 'firstName', 'text'),
+            ('jobTitle', 'jobTitle', 'text'),
+            ('telephone', 'phones', 'text')
+        ])
 )
 
 SELECT

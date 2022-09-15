@@ -693,28 +693,30 @@ CREATE OR REPLACE VIEW BQFieldMapping AS (
 		),
 		DemographicsFieldMapping AS (
 			SELECT
-				*
-			FROM (
-				VALUES
-				('demographics', ARRAY[NULL::BIGINT], 'address', 'input-field', 'addresses', 'text', NOW(), 'individual', false),
-				('demographics', ARRAY[NULL::BIGINT], 'birthDate', 'input-field', 'birthday', 'date', NOW(), 'individual', false),
-				('demographics', ARRAY[NULL::BIGINT], 'email', 'input-field', 'emailAddress', 'text', NOW(), 'individual', false),
-				('demographics', ARRAY[NULL::BIGINT], 'givenName', 'input-field', 'firstName', 'text', NOW(), 'individual', false),
-				('demographics', ARRAY[NULL::BIGINT], 'gender', 'input-field', 'gender', 'text', NOW(), 'individual', false),
-				('demographics', ARRAY[NULL::BIGINT], 'jobTitle', 'input-field',  'jobTitle', 'text', NOW(), 'individual', false),
-				('demographics', ARRAY[NULL::BIGINT], 'familyName', 'input-field', 'lastName', 'text', NOW(), 'individual', false),
-				('demographics', ARRAY[NULL::BIGINT], 'additionalName', 'input-field', 'middleName', 'text', NOW(), 'individual', false),
-				('demographics', ARRAY[NULL::BIGINT], 'telephone', 'input-field', 'phones', 'text', NOW(), 'individual', false)
-			) AS TMP (
-				context,
-				dataSourceIds,
+				'demographics'context,
+				ARRAY[]::BIGINT[] dataSourceIds,
 				displayName,
-				displayType,
+				'input-field' displayType,
 				fieldName,
 				fieldType,
-				modifiedDate,
-				ownerType,
-				repeatable_
+				now() modifiedDate,
+				'individual' ownerType,
+				false repeatable_
+			FROM (
+				VALUES
+				('address', 'addresses', 'text'),
+				('birthDate', 'birthday', 'date'),
+				('email', 'emailAddress', 'text'),
+				('givenName', 'firstName', 'text'),
+				('gender', 'gender', 'text'),
+				('jobTitle', 'jobTitle', 'text'),
+				('familyName', 'lastName', 'text'),
+				('additionalName', 'middleName', 'text'),
+				('telephone', 'phones', 'text')
+			) AS TMP (
+				displayName,
+				fieldName,
+				fieldType
 			)
 		)
 
