@@ -833,19 +833,24 @@ public class ReportRestController extends BaseRestController {
 
 		AudienceReport audienceReport = new AudienceReport();
 
-		audienceReport._anonymousUsersCount = _userDog.getAnonymousUsersCount(
+		Long anonymousUsersCount = _userDog.getAnonymousUsersCount(
 			metricType, searchQueryContext);
-		audienceReport._knownUsersCount = _userDog.getKnownUsersCount(
+
+		audienceReport._anonymousUsersCount = anonymousUsersCount;
+
+		Long knownUsersCount = _userDog.getKnownUsersCount(
 			metricType, searchQueryContext);
-		audienceReport._nonsegmentedKnownUsersCount =
-			_userDog.getNonsegmentedKnownUsersCount(
-				metricType, searchQueryContext);
-		audienceReport._segmentedAnonymousUsersCount =
-			_userDog.getSegmentedAnonymousUsersCount(
-				metricType, searchQueryContext);
-		audienceReport._segmentedKnownUsersCount =
-			_userDog.getSegmentedKnownUsersCount(
-				metricType, searchQueryContext);
+
+		audienceReport._knownUsersCount = knownUsersCount;
+
+		Long individualsCount = anonymousUsersCount + knownUsersCount;
+
+		Long segmentedIndividualsCount = _userDog.getSegmentedIndividualsCount(
+			metricType, searchQueryContext);
+
+		audienceReport._nonsegmentedIndividualsCount =
+			individualsCount - segmentedIndividualsCount;
+		audienceReport._segmentedIndividualsCount = segmentedIndividualsCount;
 
 		ResultBag<Metric> segmentMetricResultBag =
 			_segmentMetricDog.getSegmentMetricResultBag(
@@ -1423,16 +1428,12 @@ public class ReportRestController extends BaseRestController {
 			return _knownUsersCount;
 		}
 
-		public Long getNonsegmentedKnownUsersCount() {
-			return _nonsegmentedKnownUsersCount;
+		public Long getNonsegmentedIndividualsCount() {
+			return _nonsegmentedIndividualsCount;
 		}
 
-		public Long getSegmentedAnonymousUsersCount() {
-			return _segmentedAnonymousUsersCount;
-		}
-
-		public Long getSegmentedKnownUsersCount() {
-			return _segmentedKnownUsersCount;
+		public Long getSegmentedAnonymousIndividualsCount() {
+			return _segmentedIndividualsCount;
 		}
 
 		@JsonProperty("segments")
@@ -1442,9 +1443,8 @@ public class ReportRestController extends BaseRestController {
 
 		private Long _anonymousUsersCount;
 		private Long _knownUsersCount;
-		private Long _nonsegmentedKnownUsersCount;
-		private Long _segmentedAnonymousUsersCount;
-		private Long _segmentedKnownUsersCount;
+		private Long _nonsegmentedIndividualsCount;
+		private Long _segmentedIndividualsCount;
 		private ResultBag<MetricReport> _segmentMetricReportResultBag;
 
 	}
