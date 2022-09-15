@@ -147,7 +147,7 @@ public class BQMembership implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonAlias("userIdId")
+	@JsonAlias("userId")
 	@JsonProperty("individualId")
 	public String getUserId() {
 		return _userId;

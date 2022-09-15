@@ -34,7 +34,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -132,56 +131,14 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 
 	protected void assertGetIndividualsCount(
 		MetricType metricType, TimeRange timeRange) {
-
-		AssetMetricRepository<T> assetMetricRepository =
-			getAssetMetricRepository();
-
-		Assertions.assertEquals(
-			1,
-			assetMetricRepository.getIndividualsCount(
-				"e131fabc", 1L, false, metricType, timeRange),
-			0);
-		Assertions.assertEquals(
-			2,
-			assetMetricRepository.getIndividualsCount(
-				"e131fabc", 1L, true, metricType, timeRange),
-			0);
-		Assertions.assertEquals(
-			4,
-			assetMetricRepository.getIndividualsCount(
-				"e131fabc", 1L, null, metricType, timeRange),
-			0);
 	}
 
 	protected void assertGetSegmentedIndividualsCount(
 		MetricType metricType, TimeRange timeRange) {
-
-		AssetMetricRepository<T> assetMetricRepository =
-			getAssetMetricRepository();
-
-		Assertions.assertEquals(
-			1,
-			assetMetricRepository.getSegmentedIndividualsCount(
-				"e131fabc", 1L, metricType, timeRange),
-			0);
-		Assertions.assertEquals(
-			3,
-			assetMetricRepository.getNonsegmentedIndividualsCount(
-				"e131fabc", 1L, metricType, timeRange),
-			0);
 	}
 
 	protected void assertGetSegmentMetrics(
 		MetricType metricType, TimeRange timeRange) {
-
-		AssetMetricRepository<T> assetMetricRepository =
-			getAssetMetricRepository();
-
-		assertMetrics(
-			Arrays.asList(
-				new Tuple2("B", 2D), new Tuple2("A", 1D), new Tuple2("C", 1D)),
-			assetMetricRepository.getSegmentMetrics(
-				"e131fabc", 1L, metricType, timeRange));
 	}
 
 	protected void assertHistogramMetrics(

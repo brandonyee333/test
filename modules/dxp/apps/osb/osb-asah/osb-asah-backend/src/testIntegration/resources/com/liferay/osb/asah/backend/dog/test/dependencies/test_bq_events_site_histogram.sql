@@ -16,7 +16,7 @@ INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId,
 INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (16, 'http://liferay.com', 1, timestamp '${today-12d}', 'assetClicked', '14', 'Liferay', '6');
 INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (17, 'http://liferay.com', 1, timestamp '${today-12d}', 'assetClicked', '15', 'Liferay', '1');
 
-INSERT INTO BQIdentity (emailAddressHashed, id, userId) VALUES (1, 1, '1');
+INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES ('1', '1');
 
 INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '1', timestamp '${today-1d}', timestamp '${today-1d}', '1');
 INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '2', timestamp '${today-1d}', timestamp '${today-1d}', '2');

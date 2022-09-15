@@ -1,17 +1,17 @@
 [
 	{
-		"identityId": "123",
 		"segmentId": "910",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "123"
 	},
 	{
-		"identityId": "123",
 		"segmentId": "101",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "123"
 	},
 	{
-		"identityId": "456",
 		"segmentId": "910",
-		"status": "INACTIVE"
+		"status": "INACTIVE",
+		"userId": "456"
 	}
 ]

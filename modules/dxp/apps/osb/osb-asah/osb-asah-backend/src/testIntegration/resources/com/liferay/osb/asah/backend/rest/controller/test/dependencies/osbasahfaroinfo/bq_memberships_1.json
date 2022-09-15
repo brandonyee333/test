@@ -4,26 +4,26 @@
 		"dateModified": "2019-02-11T20:26:53.215Z",
 		"dateRemoved": null,
 		"id": "338511398389279307",
-		"identityId": "337984612356654154",
 		"segmentId": "366637689379787789",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984612356654154"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.215Z",
 		"dateModified": "2019-02-11T20:26:53.215Z",
 		"dateRemoved": null,
 		"id": "338511398389279308",
-		"identityId": "337984612356412845",
 		"segmentId": "366637689379787789",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984612356412845"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.215Z",
 		"dateModified": "2019-02-11T20:26:53.215Z",
 		"dateRemoved": null,
 		"id": "338511398389279309",
-		"identityId": "337984612356412846",
 		"segmentId": "366637689379787789",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984612356412846"
 	}
 ]

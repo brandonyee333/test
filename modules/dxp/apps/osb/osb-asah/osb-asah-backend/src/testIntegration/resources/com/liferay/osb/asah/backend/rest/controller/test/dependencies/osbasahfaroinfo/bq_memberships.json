@@ -4,71 +4,71 @@
 		"dateModified": "2019-02-11T20:26:53.215Z",
 		"dateRemoved": null,
 		"id": "338511398389279307",
-		"identityId": "337984659206412898",
 		"segmentId": "327968823603500666",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984659206412898"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.218Z",
 		"dateModified": "2019-02-11T20:26:53.218Z",
 		"dateRemoved": null,
 		"id": "338511398389279308",
-		"identityId": "337984612356412845",
 		"segmentId": "327968823603500666",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984612356412845"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.215Z",
 		"dateModified": "2019-02-11T20:26:53.215Z",
 		"dateRemoved": null,
 		"id": "338511398389279309",
-		"identityId": "337984659206412343",
 		"segmentId": "327968823603500677",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984659206412343"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.218Z",
 		"dateModified": "2019-02-11T20:26:53.218Z",
 		"dateRemoved": null,
 		"id": "338511398389279310",
-		"identityId": "337984612356412876",
 		"segmentId": "327968823603500677",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984612356412876"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.218Z",
 		"dateModified": "2019-02-11T20:26:53.218Z",
 		"dateRemoved": null,
 		"id": "338511398389279311",
-		"identityId": "337984659206412898",
 		"segmentId": "327968823603500655",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984659206412898"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.218Z",
 		"dateModified": "2019-02-11T20:26:53.218Z",
 		"dateRemoved": null,
 		"id": "338511398389279312",
-		"identityId": "337984659206412898",
 		"segmentId": "327968823603500657",
-		"status": "INACTIVE"
+		"status": "INACTIVE",
+		"userId": "337984659206412898"
 	},
 	{
 		"dateCreated": "2020-04-14T20:26:53.218Z",
 		"dateModified": "2020-04-14T20:26:53.218Z",
 		"dateRemoved": null,
 		"id": "338511398389279313",
-		"identityId": "337984612356412876",
 		"segmentId": "338511451975440187",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984612356412876"
 	},
 	{
 		"dateCreated": "2020-04-14T20:26:54.218Z",
 		"dateModified": "2020-04-14T20:26:54.218Z",
 		"dateRemoved": null,
 		"id": "338511398389279314",
-		"identityId": "337984612356654154",
 		"segmentId": "338511451975440187",
-		"status": "ACTIVE"
+		"status": "ACTIVE",
+		"userId": "337984612356654154"
 	}
 ]

@@ -76,42 +76,10 @@ public class UserDogTest
 		resourcePath = "osbasahfaroinfo/user_journal_individuals_info.json"
 	)
 	@Test
-	public void testGetNonsegmentedKnownUsersCount() {
-		Assertions.assertEquals(
-			2,
-			_userDog.getNonsegmentedKnownUsersCount(
-				JournalMetricType.VIEWS, _searchQueryContext));
-	}
-
-	@RepositoryResource(
-		repositoryClass = CrudBQJournalRepository.class,
-		resourcePath = "osbasahcereroinfo/user_journal_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/user_journal_individuals_info.json"
-	)
-	@Test
-	public void testGetSegmentedAnonymousUsersCount() {
+	public void testGetSegmentedIndividualsCount() {
 		Assertions.assertEquals(
 			1,
-			_userDog.getSegmentedAnonymousUsersCount(
-				JournalMetricType.VIEWS, _searchQueryContext));
-	}
-
-	@RepositoryResource(
-		repositoryClass = CrudBQJournalRepository.class,
-		resourcePath = "osbasahcereroinfo/user_journal_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/user_journal_individuals_info.json"
-	)
-	@Test
-	public void testGetSegmentedKnownUsersCount() {
-		Assertions.assertEquals(
-			2,
-			_userDog.getSegmentedKnownUsersCount(
+			_userDog.getSegmentedIndividualsCount(
 				JournalMetricType.VIEWS, _searchQueryContext));
 	}
 

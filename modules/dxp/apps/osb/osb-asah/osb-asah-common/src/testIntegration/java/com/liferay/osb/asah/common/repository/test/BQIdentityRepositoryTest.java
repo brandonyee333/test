@@ -42,6 +42,9 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -76,6 +79,22 @@ public class BQIdentityRepositoryTest
 	@Test
 	public void testFindAll1() {
 		super.testFindAll1();
+	}
+
+	@Override
+	@Test
+	public void testFindAll2() {
+		Page<BQIdentity> page = _bqIdentityRepository.findAll(
+			PageRequest.of(0, entityModels.size(), Sort.by("userId")));
+
+		Assertions.assertEquals(entityModels, page.getContent());
+	}
+
+	@Override
+	@Test
+	public void testFindAll3() {
+		Assertions.assertEquals(
+			entityModels, _bqIdentityRepository.findAll(Sort.by("userId")));
 	}
 
 	@Test
