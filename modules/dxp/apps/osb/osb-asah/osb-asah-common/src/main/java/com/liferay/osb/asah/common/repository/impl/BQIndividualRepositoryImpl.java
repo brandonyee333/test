@@ -45,8 +45,7 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public List<Distribution> getIndividualDistributions(
-		String fieldName, String fieldType, FilterHelper filterHelper,
-		Pageable pageable) {
+		String fieldName, FilterHelper filterHelper, Pageable pageable) {
 
 		Field<String> nestedField = _dslHelper.getNestedField(
 			"name", fieldName, "value", "fields");

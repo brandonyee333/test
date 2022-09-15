@@ -27,7 +27,6 @@ import org.springframework.data.domain.Pageable;
 public interface CustomBQIndividualRepository {
 
 	public List<Distribution> getIndividualDistributions(
-		String fieldName, String fieldType, FilterHelper filterHelper,
-		Pageable pageable);
+		String fieldName, FilterHelper filterHelper, Pageable pageable);
 
 }

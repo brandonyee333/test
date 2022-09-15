@@ -36,8 +36,7 @@ import org.springframework.stereotype.Component;
 public class BQIndividualDog {
 
 	public Page<Distribution> getDistributionPage(
-		String fieldName, String fieldType, String filterString,
-		int numberOfBins, int size, String[] sorts) {
+		String fieldName, String filterString, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(
 			0, size,
@@ -45,7 +44,7 @@ public class BQIndividualDog {
 
 		List<Distribution> distributions =
 			_bqIndividualRepository.getIndividualDistributions(
-				fieldName, fieldType,
+				fieldName,
 				new FilterHelper(
 					null, filterString,
 					_individualsFilterStringConverterHelper),

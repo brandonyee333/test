@@ -16,9 +16,11 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.DistributionDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.model.Distribution;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +42,7 @@ public class IndividualsRestController
 
 	@GetMapping("/distribution")
 	public PageDTO<DistributionDTO> getDistributionDTOPageDTO(
-			@RequestParam Long fieldMappingId,
+			@RequestParam String fieldMappingId,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
 			@RequestParam(defaultValue = "10") int numberOfBins,
@@ -48,9 +50,9 @@ public class IndividualsRestController
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		// TODO Implement operation
-
-		return _toDistributionDTOPageDTO(Page.empty());
+		return _toDistributionDTOPageDTO(
+			_bqIndividualDog.getDistributionPage(
+				fieldMappingId, filterString, size, sorts));
 	}
 
 	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(
@@ -71,5 +73,8 @@ public class IndividualsRestController
 				"individuals-distribution-transformations"),
 			distributionsPage);
 	}
+
+	@Autowired
+	private BQIndividualDog _bqIndividualDog;
 
 }
