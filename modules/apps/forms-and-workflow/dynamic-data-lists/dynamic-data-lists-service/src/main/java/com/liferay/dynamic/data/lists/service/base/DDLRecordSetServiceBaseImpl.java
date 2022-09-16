@@ -597,6 +597,6 @@ public abstract class DDLRecordSetServiceBaseImpl
 		workflowDefinitionLinkPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DDLRecordSetLocalServiceBaseImpl.class);
+		DDLRecordSetServiceBaseImpl.class);
 
 }

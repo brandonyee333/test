@@ -1685,6 +1685,6 @@ public abstract class MBMessageServiceBaseImpl
 	protected MBThreadFinder mbThreadFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		MBMessageLocalServiceBaseImpl.class);
+		MBMessageServiceBaseImpl.class);
 
 }

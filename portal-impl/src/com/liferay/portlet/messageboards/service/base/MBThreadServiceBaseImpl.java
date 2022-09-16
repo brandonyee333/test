@@ -1220,6 +1220,6 @@ public abstract class MBThreadServiceBaseImpl
 	protected MBThreadFlagPersistence mbThreadFlagPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		MBThreadLocalServiceBaseImpl.class);
+		MBThreadServiceBaseImpl.class);
 
 }

@@ -918,6 +918,6 @@ public abstract class FlagsEntryServiceBaseImpl
 	protected AssetEntryPersistence assetEntryPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		FlagsEntryLocalServiceBaseImpl.class);
+		FlagsEntryServiceBaseImpl.class);
 
 }

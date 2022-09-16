@@ -413,6 +413,6 @@ public abstract class TicketAttachmentServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		TicketAttachmentLocalServiceBaseImpl.class);
+		TicketAttachmentServiceBaseImpl.class);
 
 }

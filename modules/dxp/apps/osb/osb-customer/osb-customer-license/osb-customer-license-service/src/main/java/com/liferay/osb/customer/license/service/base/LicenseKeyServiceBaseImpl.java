@@ -592,6 +592,6 @@ public abstract class LicenseKeyServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LicenseKeyLocalServiceBaseImpl.class);
+		LicenseKeyServiceBaseImpl.class);
 
 }

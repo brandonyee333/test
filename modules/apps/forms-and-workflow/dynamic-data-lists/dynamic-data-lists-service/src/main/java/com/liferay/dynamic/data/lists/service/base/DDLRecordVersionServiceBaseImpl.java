@@ -228,6 +228,6 @@ public abstract class DDLRecordVersionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DDLRecordVersionLocalServiceBaseImpl.class);
+		DDLRecordVersionServiceBaseImpl.class);
 
 }

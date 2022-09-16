@@ -1427,6 +1427,6 @@ public abstract class RepositoryServiceBaseImpl
 	protected UserFinder userFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RepositoryLocalServiceBaseImpl.class);
+		RepositoryServiceBaseImpl.class);
 
 }

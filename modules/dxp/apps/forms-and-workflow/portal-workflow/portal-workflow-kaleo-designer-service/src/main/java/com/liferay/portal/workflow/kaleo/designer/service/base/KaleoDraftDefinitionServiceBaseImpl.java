@@ -417,6 +417,6 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		KaleoDraftDefinitionLocalServiceBaseImpl.class);
+		KaleoDraftDefinitionServiceBaseImpl.class);
 
 }

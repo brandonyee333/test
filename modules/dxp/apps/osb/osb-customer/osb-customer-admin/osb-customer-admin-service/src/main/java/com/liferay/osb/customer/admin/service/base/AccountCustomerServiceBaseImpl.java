@@ -1202,6 +1202,6 @@ public abstract class AccountCustomerServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AccountCustomerLocalServiceBaseImpl.class);
+		AccountCustomerServiceBaseImpl.class);
 
 }

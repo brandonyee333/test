@@ -640,6 +640,6 @@ public abstract class ShoppingItemServiceBaseImpl
 	protected ShoppingItemPricePersistence shoppingItemPricePersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ShoppingItemLocalServiceBaseImpl.class);
+		ShoppingItemServiceBaseImpl.class);
 
 }

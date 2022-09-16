@@ -678,6 +678,6 @@ public abstract class TeamServiceBaseImpl
 	protected UserGroupFinder userGroupFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		TeamLocalServiceBaseImpl.class);
+		TeamServiceBaseImpl.class);
 
 }

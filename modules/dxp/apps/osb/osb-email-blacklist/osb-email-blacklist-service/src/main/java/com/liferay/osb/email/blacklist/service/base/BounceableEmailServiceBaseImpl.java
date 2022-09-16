@@ -457,6 +457,6 @@ public abstract class BounceableEmailServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BounceableEmailLocalServiceBaseImpl.class);
+		BounceableEmailServiceBaseImpl.class);
 
 }

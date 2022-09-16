@@ -833,6 +833,6 @@ public abstract class RatingsEntryServiceBaseImpl
 	protected BlogsStatsUserFinder blogsStatsUserFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RatingsEntryLocalServiceBaseImpl.class);
+		RatingsEntryServiceBaseImpl.class);
 
 }

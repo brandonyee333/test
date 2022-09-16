@@ -422,6 +422,6 @@ public abstract class EntryServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EntryLocalServiceBaseImpl.class);
+		EntryServiceBaseImpl.class);
 
 }

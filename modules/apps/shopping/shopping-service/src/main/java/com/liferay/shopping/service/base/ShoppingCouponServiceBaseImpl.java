@@ -535,6 +535,6 @@ public abstract class ShoppingCouponServiceBaseImpl
 	protected ShoppingItemFinder shoppingItemFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ShoppingCouponLocalServiceBaseImpl.class);
+		ShoppingCouponServiceBaseImpl.class);
 
 }

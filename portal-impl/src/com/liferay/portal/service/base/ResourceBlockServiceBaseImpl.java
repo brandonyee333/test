@@ -619,6 +619,6 @@ public abstract class ResourceBlockServiceBaseImpl
 	protected RoleFinder roleFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ResourceBlockLocalServiceBaseImpl.class);
+		ResourceBlockServiceBaseImpl.class);
 
 }

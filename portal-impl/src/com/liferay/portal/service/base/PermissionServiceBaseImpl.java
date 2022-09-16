@@ -680,6 +680,6 @@ public abstract class PermissionServiceBaseImpl
 	protected UserFinder userFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PermissionLocalServiceBaseImpl.class);
+		PermissionServiceBaseImpl.class);
 
 }

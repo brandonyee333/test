@@ -412,6 +412,6 @@ public abstract class TokenAuthEntryServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		TokenAuthEntryLocalServiceBaseImpl.class);
+		TokenAuthEntryServiceBaseImpl.class);
 
 }

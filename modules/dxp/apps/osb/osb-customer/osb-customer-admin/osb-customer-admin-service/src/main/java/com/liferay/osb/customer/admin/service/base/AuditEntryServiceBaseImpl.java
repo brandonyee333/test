@@ -1131,6 +1131,6 @@ public abstract class AuditEntryServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AuditEntryLocalServiceBaseImpl.class);
+		AuditEntryServiceBaseImpl.class);
 
 }

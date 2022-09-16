@@ -373,6 +373,6 @@ public abstract class AssetCategoryPropertyServiceBaseImpl
 	protected UserFinder userFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetCategoryPropertyLocalServiceBaseImpl.class);
+		AssetCategoryPropertyServiceBaseImpl.class);
 
 }

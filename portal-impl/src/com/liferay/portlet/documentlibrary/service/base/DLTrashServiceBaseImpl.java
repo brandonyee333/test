@@ -240,6 +240,6 @@ public abstract class DLTrashServiceBaseImpl
 			dlAppHelperLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DLTrashLocalServiceBaseImpl.class);
+		DLTrashServiceBaseImpl.class);
 
 }

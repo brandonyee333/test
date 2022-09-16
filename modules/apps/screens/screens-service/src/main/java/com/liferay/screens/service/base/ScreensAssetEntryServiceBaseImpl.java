@@ -1315,6 +1315,6 @@ public abstract class ScreensAssetEntryServiceBaseImpl
 	protected DLFileEntryPersistence dlFileEntryPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ScreensAssetEntryLocalServiceBaseImpl.class);
+		ScreensAssetEntryServiceBaseImpl.class);
 
 }

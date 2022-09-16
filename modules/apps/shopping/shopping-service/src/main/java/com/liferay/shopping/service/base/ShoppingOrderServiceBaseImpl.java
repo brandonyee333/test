@@ -718,6 +718,6 @@ public abstract class ShoppingOrderServiceBaseImpl
 	protected ShoppingOrderItemPersistence shoppingOrderItemPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ShoppingOrderLocalServiceBaseImpl.class);
+		ShoppingOrderServiceBaseImpl.class);
 
 }

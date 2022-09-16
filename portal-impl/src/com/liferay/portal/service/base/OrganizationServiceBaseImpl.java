@@ -1776,6 +1776,6 @@ public abstract class OrganizationServiceBaseImpl
 	protected WebsitePersistence websitePersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OrganizationLocalServiceBaseImpl.class);
+		OrganizationServiceBaseImpl.class);
 
 }

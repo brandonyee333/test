@@ -813,6 +813,6 @@ public abstract class AssetEntrySetServiceBaseImpl
 	protected DLFileEntryPersistence dlFileEntryPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetEntrySetLocalServiceBaseImpl.class);
+		AssetEntrySetServiceBaseImpl.class);
 
 }

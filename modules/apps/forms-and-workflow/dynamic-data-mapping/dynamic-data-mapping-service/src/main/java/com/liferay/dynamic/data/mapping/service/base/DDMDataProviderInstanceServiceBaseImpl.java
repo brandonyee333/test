@@ -504,6 +504,6 @@ public abstract class DDMDataProviderInstanceServiceBaseImpl
 		ddmDataProviderInstanceLinkPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DDMDataProviderInstanceLocalServiceBaseImpl.class);
+		DDMDataProviderInstanceServiceBaseImpl.class);
 
 }

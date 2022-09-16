@@ -650,6 +650,6 @@ public abstract class TrashEntryServiceBaseImpl
 	protected UserFinder userFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		TrashEntryLocalServiceBaseImpl.class);
+		TrashEntryServiceBaseImpl.class);
 
 }

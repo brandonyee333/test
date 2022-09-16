@@ -1505,6 +1505,6 @@ public abstract class CalendarBookingServiceBaseImpl
 	protected TrashEntryPersistence trashEntryPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CalendarBookingLocalServiceBaseImpl.class);
+		CalendarBookingServiceBaseImpl.class);
 
 }

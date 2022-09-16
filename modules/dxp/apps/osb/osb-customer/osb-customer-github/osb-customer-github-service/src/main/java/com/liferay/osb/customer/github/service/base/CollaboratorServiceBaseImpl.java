@@ -412,6 +412,6 @@ public abstract class CollaboratorServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CollaboratorLocalServiceBaseImpl.class);
+		CollaboratorServiceBaseImpl.class);
 
 }

@@ -722,6 +722,6 @@ public abstract class AssetTagServiceBaseImpl
 	protected AssetTagStatsPersistence assetTagStatsPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetTagLocalServiceBaseImpl.class);
+		AssetTagServiceBaseImpl.class);
 
 }

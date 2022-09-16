@@ -800,6 +800,6 @@ public abstract class UserThreadServiceBaseImpl
 	protected MBMessagePersistence mbMessagePersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		UserThreadLocalServiceBaseImpl.class);
+		UserThreadServiceBaseImpl.class);
 
 }

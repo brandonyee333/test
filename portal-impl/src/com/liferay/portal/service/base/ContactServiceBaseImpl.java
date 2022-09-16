@@ -750,6 +750,6 @@ public abstract class ContactServiceBaseImpl
 	protected WebsitePersistence websitePersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ContactLocalServiceBaseImpl.class);
+		ContactServiceBaseImpl.class);
 
 }

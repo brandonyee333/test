@@ -942,6 +942,6 @@ public abstract class KBCommentServiceBaseImpl
 	protected SocialActivityPersistence socialActivityPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		KBCommentLocalServiceBaseImpl.class);
+		KBCommentServiceBaseImpl.class);
 
 }

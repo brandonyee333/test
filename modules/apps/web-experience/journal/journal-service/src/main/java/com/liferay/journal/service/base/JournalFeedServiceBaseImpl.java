@@ -565,6 +565,6 @@ public abstract class JournalFeedServiceBaseImpl
 	protected ExpandoValuePersistence expandoValuePersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		JournalFeedLocalServiceBaseImpl.class);
+		JournalFeedServiceBaseImpl.class);
 
 }

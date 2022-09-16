@@ -388,6 +388,6 @@ public abstract class MBBanServiceBaseImpl
 	protected UserFinder userFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		MBBanLocalServiceBaseImpl.class);
+		MBBanServiceBaseImpl.class);
 
 }

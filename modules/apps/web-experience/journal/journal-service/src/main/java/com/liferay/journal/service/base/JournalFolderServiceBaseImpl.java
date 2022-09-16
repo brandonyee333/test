@@ -1188,6 +1188,6 @@ public abstract class JournalFolderServiceBaseImpl
 	protected TrashVersionPersistence trashVersionPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		JournalFolderLocalServiceBaseImpl.class);
+		JournalFolderServiceBaseImpl.class);
 
 }

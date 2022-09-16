@@ -1126,6 +1126,6 @@ public abstract class BookmarksFolderServiceBaseImpl
 	protected TrashVersionPersistence trashVersionPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BookmarksFolderLocalServiceBaseImpl.class);
+		BookmarksFolderServiceBaseImpl.class);
 
 }

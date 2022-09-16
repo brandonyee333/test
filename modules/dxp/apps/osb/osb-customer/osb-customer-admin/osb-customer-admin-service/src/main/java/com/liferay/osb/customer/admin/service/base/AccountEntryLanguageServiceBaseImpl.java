@@ -1137,6 +1137,6 @@ public abstract class AccountEntryLanguageServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AccountEntryLanguageLocalServiceBaseImpl.class);
+		AccountEntryLanguageServiceBaseImpl.class);
 
 }

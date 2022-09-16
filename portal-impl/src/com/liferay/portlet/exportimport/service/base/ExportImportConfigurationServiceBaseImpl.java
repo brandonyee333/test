@@ -689,6 +689,6 @@ public abstract class ExportImportConfigurationServiceBaseImpl
 	protected TrashEntryPersistence trashEntryPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ExportImportConfigurationLocalServiceBaseImpl.class);
+		ExportImportConfigurationServiceBaseImpl.class);
 
 }

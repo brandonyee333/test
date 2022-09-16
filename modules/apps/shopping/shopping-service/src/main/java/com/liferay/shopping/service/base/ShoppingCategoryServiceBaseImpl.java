@@ -458,6 +458,6 @@ public abstract class ShoppingCategoryServiceBaseImpl
 	protected ShoppingItemFinder shoppingItemFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ShoppingCategoryLocalServiceBaseImpl.class);
+		ShoppingCategoryServiceBaseImpl.class);
 
 }

@@ -1135,6 +1135,6 @@ public abstract class ProductEntryServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ProductEntryLocalServiceBaseImpl.class);
+		ProductEntryServiceBaseImpl.class);
 
 }

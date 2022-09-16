@@ -1855,6 +1855,6 @@ public abstract class JournalArticleServiceBaseImpl
 	protected JournalFolderFinder journalFolderFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		JournalArticleLocalServiceBaseImpl.class);
+		JournalArticleServiceBaseImpl.class);
 
 }

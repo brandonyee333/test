@@ -1136,6 +1136,6 @@ public abstract class AccountAttachmentServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AccountAttachmentLocalServiceBaseImpl.class);
+		AccountAttachmentServiceBaseImpl.class);
 
 }

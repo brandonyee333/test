@@ -1456,6 +1456,6 @@ public abstract class DLFolderServiceBaseImpl
 	protected TrashEntryPersistence trashEntryPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DLFolderLocalServiceBaseImpl.class);
+		DLFolderServiceBaseImpl.class);
 
 }
