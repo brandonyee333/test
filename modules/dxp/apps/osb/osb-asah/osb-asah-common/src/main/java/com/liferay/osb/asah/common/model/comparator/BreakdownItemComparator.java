@@ -56,12 +56,19 @@ public class BreakdownItemComparator
 		if (NumberUtils.isCreatable(internalName1) &&
 			NumberUtils.isCreatable(internalName2)) {
 
-			return Double.compare(
+			compare = Double.compare(
 				NumberUtils.toDouble(internalName1),
 				NumberUtils.toDouble(internalName2));
 		}
+		else {
+			compare = internalName1.compareTo(internalName2);
+		}
 
-		return internalName1.compareTo(internalName2);
+		if (_ascending) {
+			return compare;
+		}
+
+		return compare * -1;
 	}
 
 	private final boolean _ascending;
