@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS BQEventProperty (
 
 CREATE TABLE IF NOT EXISTS BQExpandoColumn (
 	className TEXT,
-    columnId TEXT,
+	columnId TEXT,
 	dataSourceId BIGINT,
 	dataType TEXT,
 	displayType TEXT,
@@ -238,12 +238,12 @@ CREATE TABLE IF NOT EXISTS BQIdentityActivity (
 );
 
 CREATE TABLE IF NOT EXISTS BQIdentityChannel (
-    createDate TIMESTAMP,
+	createDate TIMESTAMP,
 	activitiesCount INTEGER,
 	channelId BIGINT,
-    id TEXT PRIMARY KEY,
+	id TEXT PRIMARY KEY,
 	identityId TEXT,
-    modifiedDate TIMESTAMPTZ,
+	modifiedDate TIMESTAMPTZ,
 	lastActivityDate TIMESTAMPTZ,
 	previousActivityDate TIMESTAMPTZ
 );
@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS BQOrder(
 );
 
 CREATE TABLE IF NOT EXISTS BQOrganization (
-    createDate TIMESTAMPTZ,
+	createDate TIMESTAMPTZ,
 	dataSourceId BIGINT,
 	id TEXT PRIMARY KEY,
 	modifiedDate TIMESTAMP,
@@ -334,23 +334,23 @@ CREATE TABLE IF NOT EXISTS BQRole (
 );
 
 CREATE TABLE IF NOT EXISTS BQSession (
-    acquisitionCampaign TEXT,
-    acquisitionChannel TEXT,
-    acquisitionContent TEXT,
-    acquisitionMedium TEXT,
-    acquisitionSource TEXT,
-    acquisitionTerm TEXT,
-    bounce INTEGER,
-    browserName TEXT,
+	acquisitionCampaign TEXT,
+	acquisitionChannel TEXT,
+	acquisitionContent TEXT,
+	acquisitionMedium TEXT,
+	acquisitionSource TEXT,
+	acquisitionTerm TEXT,
+	bounce INTEGER,
+	browserName TEXT,
 	channelId BIGINT,
-    city TEXT,
-    country TEXT,
-    deviceType TEXT,
-    duration BIGINT,
+	city TEXT,
+	country TEXT,
+	deviceType TEXT,
+	duration BIGINT,
 	id TEXT UNIQUE,
-    platformName TEXT,
-    referrers TEXT[],
-    region TEXT,
+	platformName TEXT,
+	referrers TEXT[],
+	region TEXT,
 	sessionEnd TIMESTAMPTZ,
 	sessionStart TIMESTAMPTZ,
 	userId TEXT
