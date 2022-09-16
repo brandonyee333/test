@@ -95,35 +95,6 @@ CREATE TABLE IF NOT EXISTS BQDataSourceUser (
 	PRIMARY KEY (dataSourceId, userId)
 );
 
-CREATE TABLE IF NOT EXISTS BQDocumentLibrary (
-	assetId TEXT,
-	assetPrimaryKey TEXT,
-	assetTitle TEXT,
-	browserName TEXT,
-	canonicalUrl TEXT,
-	channelId BIGINT,
-	city TEXT,
-	comments BIGINT,
-	country TEXT,
-	dataSourceId BIGINT,
-	deviceType TEXT,
-	downloads BIGINT,
-	eventDate TIMESTAMPTZ,
-	individualId BIGINT,
-	knownIndividual BOOLEAN,
-	platformName TEXT,
-	previews BIGINT,
-	projectId TEXT,
-	ratings BIGINT,
-	ratingsScore REAL,
-	region TEXT,
-	segmentNames TEXT[],
-	sessionId TEXT,
-	title TEXT,
-	userId TEXT,
-	variantId TEXT
-);
-
 CREATE TABLE IF NOT EXISTS BQEvent (
 	applicationId TEXT,
 	browserName TEXT,

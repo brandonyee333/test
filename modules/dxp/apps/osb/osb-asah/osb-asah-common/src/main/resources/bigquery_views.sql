@@ -212,6 +212,184 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 		)
 );
 
+COMMIT;
+
+CREATE OR REPLACE VIEW BQDocumentLibrary AS (
+	WITH
+		CommentEvent AS (
+			SELECT
+				BQEvent.*,
+				classPK.value as assetId
+			FROM
+				BQEvent
+				LEFT JOIN BQEventProperty AS className ON (
+						BQEvent.id = className.id AND className.name = 'className'
+				)
+				LEFT JOIN BQEventProperty AS classPK ON (
+						BQEvent.id = classPK.id AND classPK.name = 'classPK'
+				)
+			WHERE
+				BQEvent.applicationId = 'Comment' AND
+				BQEvent.eventId = 'posted' AND
+				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
+				classPK.value IS NOT NULL
+		),
+		DocumentEvent AS (
+			SELECT
+				BQEvent.*,
+				fileEntryId.value AS assetId,
+				documentTitle.value as assetTitle
+			FROM
+				BQEvent
+			LEFT JOIN BQEventProperty AS fileEntryId ON (
+				BQEvent.id = fileEntryId.id AND fileEntryId.name = 'fileEntryId'
+			)
+			LEFT JOIN BQEventProperty AS documentTitle ON (
+				BQEvent.id = documentTitle.id AND documentTitle.name = 'title'
+			)
+			WHERE
+				BQEvent.applicationId = 'Document' AND
+				BQEvent.eventId IN ('documentDownloaded', 'documentPreviewed') AND
+				fileEntryId.value IS NOT NULL
+		),
+		RatingEvent AS (
+			SELECT
+				BQEvent.*,
+				classPK.value as assetId,
+				CAST(score.value as FLOAT) as score
+			FROM
+				BQEvent
+				LEFT JOIN BQEventProperty AS className ON (
+					BQEvent.id = className.id AND className.name = 'className'
+				)
+				LEFT JOIN BQEventProperty AS classPK ON (
+					BQEvent.id = classPK.id AND classPK.name = 'classPK'
+				)
+				LEFT JOIN BQEventProperty AS ratingType ON (
+					BQEvent.id = ratingType.id AND ratingType.name = 'ratingType'
+				)
+				LEFT JOIN BQEventProperty AS score ON (
+					BQEvent.id = score.id AND score.name = 'score'
+				)
+			WHERE
+				BQEvent.applicationId = 'Ratings' AND
+				BQEvent.eventId = 'VOTE' AND
+				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
+				classPK.value IS NOT NULL AND
+				ratingtype.value = 'stars'
+		),
+		DocumentComments AS (
+			SELECT
+				assetId,
+				canonicalUrl,
+				channelId,
+				SUM(1) as comments,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
+				title as pageTitle,
+				userId
+			FROM
+				CommentEvent
+			GROUP BY
+				assetId, browserName, canonicalUrl, channelId, city,
+				country, normalizedEventDate, deviceType, platformName,
+				region, title, userId
+		),
+		DocumentDownloadAndPreviews AS (
+			SELECT
+				assetId,
+				assetTitle,
+				browserName,
+				canonicalUrl,
+				channelId,
+				city,
+				SUM(
+				    CASE
+				        WHEN
+				            eventId = 'documentDownloaded'
+						THEN
+				            1
+					END
+				) AS downloads,
+				country,
+				deviceType,
+				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				platformName,
+				SUM(
+					CASE
+						WHEN
+							eventId = 'documentPreviewed'
+						THEN
+							1
+					END
+				) AS previews,
+				region,
+				title as pageTitle,
+				userId
+			FROM
+				DocumentEvent
+			GROUP BY
+				assetId, assetTitle, browserName, canonicalUrl, channelId, city,
+				country, deviceType, normalizedEventDate, platformName,
+				region, title, userId
+		),
+		DocumentRatings AS (
+			SELECT
+				assetId,
+				canonicalUrl,
+				channelId,
+				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				sum(1) AS ratings,
+				SUM(score) AS ratingsScore,
+				title AS pageTitle,
+				userId
+			FROM
+				RatingEvent
+			GROUP BY
+				assetId, browserName, canonicalUrl, channelId, city,
+				country, normalizedEventDate, deviceType, platformName,
+				region, title, userId
+		)
+	SELECT
+		DocumentDownloadAndPreviews.assetId,
+		DocumentDownloadAndPreviews.assetTitle,
+		DocumentDownloadAndPreviews.browserName,
+		DocumentDownloadAndPreviews.canonicalUrl,
+		DocumentDownloadAndPreviews.channelId,
+		DocumentDownloadAndPreviews.city,
+		DocumentComments.comments,
+		DocumentDownloadAndPreviews.country,
+		DocumentDownloadAndPreviews.deviceType,
+		DocumentDownloadAndPreviews.downloads,
+		DocumentDownloadAndPreviews.normalizedEventDate AS eventDate,
+		DocumentDownloadAndPreviews.pageTitle,
+		DocumentDownloadAndPreviews.platformName,
+		DocumentDownloadAndPreviews.previews,
+		DocumentRatings.ratings,
+		DocumentRatings.ratingsScore,
+		DocumentDownloadAndPreviews.region,
+		DocumentDownloadAndPreviews.userId
+	FROM
+		DocumentDownloadAndPreviews
+	LEFT JOIN DocumentRatings ON (
+		DocumentDownloadAndPreviews.assetId = DocumentRatings.assetId AND
+		DocumentDownloadAndPreviews.canonicalUrl = DocumentRatings.canonicalUrl AND
+		DocumentDownloadAndPreviews.channelId = DocumentRatings.channelId AND
+		DocumentDownloadAndPreviews.normalizedEventDate = DocumentRatings.normalizedEventDate AND
+		DocumentDownloadAndPreviews.pageTitle = DocumentRatings.pageTitle AND
+		DocumentDownloadAndPreviews.userId = DocumentRatings.userId
+	)
+	LEFT JOIN DocumentComments ON (
+		DocumentDownloadAndPreviews.assetId = DocumentComments.assetId AND
+		DocumentDownloadAndPreviews.canonicalUrl = DocumentComments.canonicalUrl AND
+		DocumentDownloadAndPreviews.channelId = DocumentComments.channelId AND
+		DocumentDownloadAndPreviews.normalizedEventDate = DocumentComments.normalizedEventDate AND
+		DocumentDownloadAndPreviews.pageTitle = DocumentComments.pageTitle AND
+		DocumentDownloadAndPreviews.userId = DocumentComments.userId
+	)
+);
+
+COMMIT;
+
 CREATE OR REPLACE VIEW BQFieldMapping AS (
 	WITH
 		CustomFieldMapping AS (
