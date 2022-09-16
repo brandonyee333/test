@@ -701,6 +701,51 @@ public class EventAnalysisDogTest
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
+	public void testGetEventAnalysisBreakdownWithFilterAndDifferentSortingType()
+		throws Exception {
+
+		EventAnalysisBreakdown eventAnalysisBreakdown1 =
+			new EventAnalysisBreakdown(
+				"12345", AttributeType.EVENT, 0,
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"ASC");
+		EventAnalysisBreakdown eventAnalysisBreakdown2 =
+			new EventAnalysisBreakdown(
+				"23456", AttributeType.EVENT, 0,
+				EventAttributeDefinition.DataType.STRING, null, null,
+				"testTitle", "ASC");
+		EventAnalysisBreakdown eventAnalysisBreakdown3 =
+			new EventAnalysisBreakdown(
+				"34567", AttributeType.EVENT, 0,
+				EventAttributeDefinition.DataType.STRING, null, null,
+				"testCode", "DESC");
+
+		EventAnalysisResult eventAnalysisResult =
+			_eventAnalysisDog.getEventAnalysisResult(
+				AnalysisType.TOTAL, 1L, true,
+				new ArrayList<EventAnalysisBreakdown>() {
+					{
+						add(eventAnalysisBreakdown1);
+						add(eventAnalysisBreakdown2);
+						add(eventAnalysisBreakdown3);
+					}
+				},
+				Collections.emptyList(), 246810L, 0, 10,
+				TimeRange.of(
+					LocalDate.parse("2021-06-01"),
+					LocalDate.parse("2021-05-15")));
+
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies" +
+					"/expected_event_analysis_breakdown_with_filter_and_different_sorting_type.json",
+				this),
+			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			true);
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
 	public void testGetEventAnalysisBreakdownYearGrouping() throws Exception {
 		EventAnalysisBreakdown eventAnalysisBreakdown1 =
 			new EventAnalysisBreakdown(
