@@ -10,7 +10,6 @@
 #
 
 from liferay.stream.processor.blog import BlogDataFrameProcessor
-from liferay.stream.processor.document_library import DocumentLibraryDataFrameProcessor
 from liferay.stream.processor.form import FormDataFrameProcessor, \
 	FormFieldDataFrameProcessor, \
 	FormPageDataFrameProcessor
