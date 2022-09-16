@@ -65,7 +65,30 @@
 				}
 			],
 			"leafNode": false,
-			"name": "(-4) - (-3)",
+			"name": "10 - 11",
+			"previousValue": 0,
+			"value": 1
+		},
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": null,
+							"leafNode": false,
+							"name": "All Individuals",
+							"previousValue": 0,
+							"value": 1
+						}
+					],
+					"leafNode": true,
+					"name": "Test Display Name 1",
+					"previousValue": 0,
+					"value": 1
+				}
+			],
+			"leafNode": false,
+			"name": "8 - 9",
 			"previousValue": 0,
 			"value": 1
 		},
@@ -111,30 +134,7 @@
 				}
 			],
 			"leafNode": false,
-			"name": "8 - 9",
-			"previousValue": 0,
-			"value": 1
-		},
-		{
-			"breakdownItems": [
-				{
-					"breakdownItems": [
-						{
-							"breakdownItems": null,
-							"leafNode": false,
-							"name": "All Individuals",
-							"previousValue": 0,
-							"value": 1
-						}
-					],
-					"leafNode": true,
-					"name": "Test Display Name 1",
-					"previousValue": 0,
-					"value": 1
-				}
-			],
-			"leafNode": false,
-			"name": "10 - 11",
+			"name": "(-4) - (-3)",
 			"previousValue": 0,
 			"value": 1
 		}

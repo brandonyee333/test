@@ -12,91 +12,6 @@
 											"breakdownItems": null,
 											"leafNode": false,
 											"name": "All Individuals",
-											"previousValue": 3,
-											"value": 2
-										}
-									],
-									"leafNode": true,
-									"name": "Test Display Name 1",
-									"previousValue": 3,
-									"value": 2
-								}
-							],
-							"leafNode": false,
-							"name": "4000",
-							"previousValue": 3,
-							"value": 2
-						},
-						{
-							"breakdownItems": [
-								{
-									"breakdownItems": [
-										{
-											"breakdownItems": null,
-											"leafNode": false,
-											"name": "All Individuals",
-											"previousValue": 0,
-											"value": 1
-										}
-									],
-									"leafNode": true,
-									"name": "Test Display Name 1",
-									"previousValue": 0,
-									"value": 1
-								}
-							],
-							"leafNode": false,
-							"name": "2000",
-							"previousValue": 0,
-							"value": 1
-						},
-						{
-							"breakdownItems": [
-								{
-									"breakdownItems": [
-										{
-											"breakdownItems": null,
-											"leafNode": false,
-											"name": "All Individuals",
-											"previousValue": 0,
-											"value": 1
-										}
-									],
-									"leafNode": true,
-									"name": "Test Display Name 1",
-									"previousValue": 0,
-									"value": 1
-								}
-							],
-							"leafNode": false,
-							"name": "4040",
-							"previousValue": 0,
-							"value": 1
-						}
-					],
-					"leafNode": false,
-					"name": "beryl design",
-					"previousValue": 4,
-					"value": 4
-				}
-			],
-			"leafNode": false,
-			"name": "https://www.beryl.com/design",
-			"previousValue": 4,
-			"value": 4
-		},
-		{
-			"breakdownItems": [
-				{
-					"breakdownItems": [
-						{
-							"breakdownItems": [
-								{
-									"breakdownItems": [
-										{
-											"breakdownItems": null,
-											"leafNode": false,
-											"name": "All Individuals",
 											"previousValue": 0,
 											"value": 4
 										}
@@ -136,6 +51,29 @@
 											"breakdownItems": null,
 											"leafNode": false,
 											"name": "All Individuals",
+											"previousValue": 3,
+											"value": 2
+										}
+									],
+									"leafNode": true,
+									"name": "Test Display Name 1",
+									"previousValue": 3,
+									"value": 2
+								}
+							],
+							"leafNode": false,
+							"name": "4000",
+							"previousValue": 3,
+							"value": 2
+						},
+						{
+							"breakdownItems": [
+								{
+									"breakdownItems": [
+										{
+											"breakdownItems": null,
+											"leafNode": false,
+											"name": "All Individuals",
 											"previousValue": 0,
 											"value": 1
 										}
@@ -147,7 +85,69 @@
 								}
 							],
 							"leafNode": false,
-							"name": "3000",
+							"name": "4040",
+							"previousValue": 0,
+							"value": 1
+						},
+						{
+							"breakdownItems": [
+								{
+									"breakdownItems": [
+										{
+											"breakdownItems": null,
+											"leafNode": false,
+											"name": "All Individuals",
+											"previousValue": 0,
+											"value": 1
+										}
+									],
+									"leafNode": true,
+									"name": "Test Display Name 1",
+									"previousValue": 0,
+									"value": 1
+								}
+							],
+							"leafNode": false,
+							"name": "2000",
+							"previousValue": 0,
+							"value": 1
+						}
+					],
+					"leafNode": false,
+					"name": "beryl design",
+					"previousValue": 4,
+					"value": 4
+				}
+			],
+			"leafNode": false,
+			"name": "https://www.beryl.com/design",
+			"previousValue": 4,
+			"value": 4
+		},
+		{
+			"breakdownItems": [
+				{
+					"breakdownItems": [
+						{
+							"breakdownItems": [
+								{
+									"breakdownItems": [
+										{
+											"breakdownItems": null,
+											"leafNode": false,
+											"name": "All Individuals",
+											"previousValue": 0,
+											"value": 1
+										}
+									],
+									"leafNode": true,
+									"name": "Test Display Name 1",
+									"previousValue": 0,
+									"value": 1
+								}
+							],
+							"leafNode": false,
+							"name": "5000",
 							"previousValue": 0,
 							"value": 1
 						},
@@ -193,7 +193,7 @@
 								}
 							],
 							"leafNode": false,
-							"name": "5000",
+							"name": "3000",
 							"previousValue": 0,
 							"value": 1
 						}

@@ -21,7 +21,7 @@
 						}
 					],
 					"leafNode": false,
-					"name": "https://www.beryl.com/blogs",
+					"name": "https://www.beryl.com/products",
 					"previousValue": 0,
 					"value": 2
 				},
@@ -67,7 +67,7 @@
 						}
 					],
 					"leafNode": false,
-					"name": "https://www.beryl.com/products",
+					"name": "https://www.beryl.com/blogs",
 					"previousValue": 0,
 					"value": 2
 				}
@@ -121,7 +121,7 @@
 						}
 					],
 					"leafNode": false,
-					"name": "https://www.beryl.com/blogs",
+					"name": "https://www.beryl.com/products",
 					"previousValue": 0,
 					"value": 1
 				},
@@ -144,7 +144,7 @@
 						}
 					],
 					"leafNode": false,
-					"name": "https://www.beryl.com/products",
+					"name": "https://www.beryl.com/blogs",
 					"previousValue": 0,
 					"value": 1
 				}
