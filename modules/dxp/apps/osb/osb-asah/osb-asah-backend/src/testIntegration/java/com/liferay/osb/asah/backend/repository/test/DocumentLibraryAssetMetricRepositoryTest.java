@@ -41,7 +41,6 @@ import org.springframework.data.domain.PageRequest;
 public class DocumentLibraryAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<DocumentLibraryMetric> {
 
-	@Disabled
 	@SQLResource(
 		resourcePath = "document_library_asset_metric_canonical_urls_last_7_days.sql"
 	)
@@ -51,6 +50,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 			DocumentLibraryMetricType.DOWNLOADS, TimeRange.LAST_7_DAYS);
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "document_library_asset_metric_previews_browser_last_30_days.sql"
 	)
@@ -65,6 +65,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "document_library_asset_metric_previews_device_last_30_days.sql"
 	)
@@ -78,6 +79,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "document_library_asset_metric_previews_geolocation_last_30_days.sql"
 	)
@@ -92,6 +94,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "document_library_asset_metric_views_individuals_last_30_days.sql"
 	)
@@ -167,6 +170,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 			"America/Fortaleza");
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "document_library_asset_metric_ratings_histogram_last_24_hours.sql"
 	)
@@ -185,6 +189,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 		Assertions.assertEquals(2.33, ratingsMetric.getValue(), 0.01);
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "document_library_asset_metric_views_segments_last_30_days.sql"
 	)
@@ -194,6 +199,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_30_DAYS);
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "document_library_asset_metric_views_segments_last_7_days.sql"
 	)
