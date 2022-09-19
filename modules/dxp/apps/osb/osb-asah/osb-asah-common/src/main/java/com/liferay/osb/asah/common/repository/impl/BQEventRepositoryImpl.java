@@ -308,10 +308,10 @@ public class BQEventRepositoryImpl
 
 		if (!eventAnalysisBreakdowns.isEmpty()) {
 			selectJoinStep = _getBQEventPropertyValuesSelectJoinStep(
-				channelId, eventAnalysisBreakdowns, eventAnalysisFilters,
-				eventAttributeDefinitions, eventDefinitionId,
-				ListUtils.union(valueFields, selectFields), pageable, timeRange,
-				timeZoneId);
+				analysisType, channelId, eventAnalysisBreakdowns,
+				eventAnalysisFilters, eventAttributeDefinitions,
+				eventDefinitionId, ListUtils.union(valueFields, selectFields),
+				pageable, timeRange, timeZoneId);
 		}
 		else {
 			selectJoinStep = _buildSelectJoinStep(
@@ -710,7 +710,8 @@ public class BQEventRepositoryImpl
 	}
 
 	private SelectJoinStep<Record> _getBQEventPropertyValuesSelectJoinStep(
-		Long channelId, List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
+		AnalysisType analysisType, Long channelId,
+		List<EventAnalysisBreakdown> eventAnalysisBreakdowns,
 		List<EventAnalysisFilter> eventAnalysisFilters,
 		Map<String, EventAttributeDefinition> eventAttributeDefinitions,
 		Long eventDefinitionId, List<Field> fields, Pageable pageable,
@@ -732,13 +733,10 @@ public class BQEventRepositoryImpl
 			);
 		}
 
-		EventAnalysisBreakdown lastEventAnalysisBreakdown =
-			eventAnalysisBreakdowns.get(eventAnalysisBreakdowns.size() - 1);
-
 		Field selectField = _getSelectField(
-			AnalysisType.TOTAL,
+			analysisType,
 			_getEventAttributeDefinition(
-				lastEventAnalysisBreakdown.getAttributeId()),
+				firstEventAnalysisBreakdown.getAttributeId()),
 			timeRange);
 
 		Field valueField = _getValueField(
@@ -769,12 +767,8 @@ public class BQEventRepositoryImpl
 				).groupBy(
 					DSL.field("_firstValueField")
 				).orderBy(
-					DSL.field(
-						_getSortField(
-							lastEventAnalysisBreakdown, selectField.getName())),
-					DSL.field(
-						_getSortField(
-							firstEventAnalysisBreakdown, "_firstValueField"))
+					_getSortField(
+						firstEventAnalysisBreakdown, selectField.getName())
 				).limit(
 					pageable.getPageSize()
 				).offset(
