@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.Field;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
@@ -73,7 +74,7 @@ public class IndividualNanite {
 
 	private List<BQIndividual> _fetchBQUsersBQIndividuals() {
 		List<BQIdentity> bqIdentities = IterableUtils.toList(
-			_bqIdentityRepository.findAll());
+			_bqIdentityRepository.findAll(Sort.asc("userId")));
 		List<BQUser> bqUsers = IterableUtils.toList(
 			_bqUserRepository.findAll());
 
