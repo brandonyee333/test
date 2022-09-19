@@ -158,8 +158,8 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -3));
 		bqIdentity.setEmailAddressHashed("test1@liferay.com");
+		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId("1");
-		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
 
@@ -167,8 +167,8 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -5));
 		bqIdentity.setEmailAddressHashed("test2@liferay.com");
+		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId("2");
-		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
 
@@ -176,8 +176,8 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqIdentity.setEmailAddressHashed("test3@liferay.com");
+		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId("3");
-		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
 
@@ -185,16 +185,16 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -36));
 		bqIdentity.setEmailAddressHashed("test4@liferay.com");
+		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId("4");
-		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
 
 		bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -11));
+		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId("5");
-		bqIdentity.setIsNew(true);
 
 		bqIdentities.add(bqIdentity);
 
@@ -208,7 +208,7 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -3));
 		bqIdentityActivity.setId("1");
 		bqIdentityActivity.setIdentityId("1");
-		bqIdentityActivity.setIsNew(true);
+		bqIdentityActivity.setIsNew(Boolean.TRUE);
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
@@ -218,7 +218,7 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -5));
 		bqIdentityActivity.setId("2");
 		bqIdentityActivity.setIdentityId("2");
-		bqIdentityActivity.setIsNew(true);
+		bqIdentityActivity.setIsNew(Boolean.TRUE);
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
@@ -228,7 +228,7 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqIdentityActivity.setId("3");
 		bqIdentityActivity.setIdentityId("3");
-		bqIdentityActivity.setIsNew(true);
+		bqIdentityActivity.setIsNew(Boolean.TRUE);
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
@@ -238,7 +238,7 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -36));
 		bqIdentityActivity.setId("4");
 		bqIdentityActivity.setIdentityId("4");
-		bqIdentityActivity.setIsNew(true);
+		bqIdentityActivity.setIsNew(Boolean.TRUE);
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
@@ -248,7 +248,7 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqIdentityActivity.setId("5");
 		bqIdentityActivity.setIdentityId("5");
-		bqIdentityActivity.setIsNew(true);
+		bqIdentityActivity.setIsNew(Boolean.TRUE);
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 	}
@@ -260,7 +260,7 @@ public class BQIdentityRepositoryTest
 		bqIdentityChannel.setCreateDate(DateUtil.addDays(new Date(), -2));
 		bqIdentityChannel.setId("1");
 		bqIdentityChannel.setIdentityId("1");
-		bqIdentityChannel.setIsNew(true);
+		bqIdentityChannel.setIsNew(Boolean.TRUE);
 		bqIdentityChannel.setLastActivityDate(DateUtil.addDays(new Date(), -2));
 
 		_bqIdentityChannelRepository.save(bqIdentityChannel);
@@ -271,7 +271,7 @@ public class BQIdentityRepositoryTest
 		bqIdentityChannel.setCreateDate(DateUtil.addDays(new Date(), -4));
 		bqIdentityChannel.setId("2");
 		bqIdentityChannel.setIdentityId("2");
-		bqIdentityChannel.setIsNew(true);
+		bqIdentityChannel.setIsNew(Boolean.TRUE);
 		bqIdentityChannel.setLastActivityDate(DateUtil.addDays(new Date(), -4));
 
 		_bqIdentityChannelRepository.save(bqIdentityChannel);
@@ -282,7 +282,7 @@ public class BQIdentityRepositoryTest
 		bqIdentityChannel.setCreateDate(DateUtil.addDays(new Date(), -35));
 		bqIdentityChannel.setId("4");
 		bqIdentityChannel.setIdentityId("4");
-		bqIdentityChannel.setIsNew(true);
+		bqIdentityChannel.setIsNew(Boolean.TRUE);
 		bqIdentityChannel.setLastActivityDate(
 			DateUtil.addDays(new Date(), -35));
 
@@ -295,7 +295,7 @@ public class BQIdentityRepositoryTest
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -2));
 		bqIndividual.setEmailAddress("test1@liferay.com");
 		bqIndividual.setEmailAddressHashed("test1@liferay.com");
-		bqIndividual.setIsNew(true);
+		bqIndividual.setIsNew(Boolean.TRUE);
 
 		_bqIndividualRepository.save(bqIndividual);
 
@@ -304,7 +304,7 @@ public class BQIdentityRepositoryTest
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -4));
 		bqIndividual.setEmailAddress("test2@liferay.com");
 		bqIndividual.setEmailAddressHashed("test2@liferay.com");
-		bqIndividual.setIsNew(true);
+		bqIndividual.setIsNew(Boolean.TRUE);
 
 		_bqIndividualRepository.save(bqIndividual);
 
@@ -313,7 +313,7 @@ public class BQIdentityRepositoryTest
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -10));
 		bqIndividual.setEmailAddress("test3@liferay.com");
 		bqIndividual.setEmailAddressHashed("test3@liferay.com");
-		bqIndividual.setIsNew(true);
+		bqIndividual.setIsNew(Boolean.TRUE);
 
 		_bqIndividualRepository.save(bqIndividual);
 
@@ -322,7 +322,7 @@ public class BQIdentityRepositoryTest
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -35));
 		bqIndividual.setEmailAddress("test4@liferay.com");
 		bqIndividual.setEmailAddressHashed("test4@liferay.com");
-		bqIndividual.setIsNew(true);
+		bqIndividual.setIsNew(Boolean.TRUE);
 
 		_bqIndividualRepository.save(bqIndividual);
 	}
@@ -332,8 +332,8 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(new Date());
 		bqIdentity.setEmailAddressHashed(RandomTestUtil.randomEmailAddress());
-		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 		bqIdentity.setIsNew(Boolean.TRUE);
+		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 
 		return bqIdentity;
 	}

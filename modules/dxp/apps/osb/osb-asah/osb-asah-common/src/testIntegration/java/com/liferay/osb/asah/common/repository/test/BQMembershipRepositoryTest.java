@@ -78,11 +78,11 @@ public class BQMembershipRepositoryTest
 		BQMembership bqMembership3 = new BQMembership();
 
 		bqMembership3.setCreateDate(new Date());
-		bqMembership3.setUserId("78");
 		bqMembership3.setModifiedDate(new Date());
 		bqMembership3.setRemovedDate(new Date());
 		bqMembership3.setSegmentId(segment1.getId());
 		bqMembership3.setStatus("ACTIVE");
+		bqMembership3.setUserId("78");
 
 		setUpRepository(bqMembership1, bqMembership2, bqMembership3);
 	}

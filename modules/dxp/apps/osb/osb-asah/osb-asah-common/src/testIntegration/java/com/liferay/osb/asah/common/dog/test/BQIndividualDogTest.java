@@ -673,9 +673,9 @@ public class BQIndividualDogTest
 
 		bqMembership.setCreateDate(
 			DateUtil.toUTCDate("2019-02-11T20:26:53.218Z"));
-		bqMembership.setUserId("338486037253283140");
 		bqMembership.setSegmentId(338511451975440187L);
 		bqMembership.setStatus("ACTIVE");
+		bqMembership.setUserId("338486037253283140");
 
 		_bqMembershipDog.addBQMembership(bqMembership);
 

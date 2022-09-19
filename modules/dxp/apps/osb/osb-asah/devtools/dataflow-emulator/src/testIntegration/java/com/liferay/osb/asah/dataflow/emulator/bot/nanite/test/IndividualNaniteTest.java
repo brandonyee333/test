@@ -58,7 +58,6 @@ public class IndividualNaniteTest
 		bqIdentity.setCreateDate(new Date());
 		bqIdentity.setEmailAddressHashed(
 			DigestUtils.sha256Hex("joe@liferay.com"));
-		bqIdentity.setId(RandomTestUtil.randomUUID());
 		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 
@@ -186,7 +185,6 @@ public class IndividualNaniteTest
 		bqIdentity.setCreateDate(new Date());
 		bqIdentity.setEmailAddressHashed(
 			DigestUtils.sha256Hex("joe@liferay.com"));
-		bqIdentity.setId(RandomTestUtil.randomUUID());
 		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 
@@ -304,7 +302,6 @@ public class IndividualNaniteTest
 		bqIdentity.setCreateDate(new Date());
 		bqIdentity.setEmailAddressHashed(
 			DigestUtils.sha256Hex("joe@liferay.com"));
-		bqIdentity.setId(RandomTestUtil.randomUUID());
 		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 

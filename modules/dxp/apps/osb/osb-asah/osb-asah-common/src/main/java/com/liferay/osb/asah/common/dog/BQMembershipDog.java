@@ -63,10 +63,10 @@ public class BQMembershipDog {
 			BQMembership bqMembership = new BQMembership();
 
 			bqMembership.setCreateDate(createDate);
-			bqMembership.setUserId(String.valueOf(individual.getId()));
 			bqMembership.setModifiedDate(createDate);
 			bqMembership.setSegmentId(segmentId);
 			bqMembership.setStatus("ACTIVE");
+			bqMembership.setUserId(String.valueOf(individual.getId()));
 
 			bqMemberships.add(bqMembership);
 		}
