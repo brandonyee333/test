@@ -107,6 +107,12 @@ JSONArray rangesJSONArray = modifiedFacetPortletPreferences.getRangesJSONArray()
 					<aui:input cssClass="ranges-input" name="<%= PortletPreferencesJspUtil.getInputName(ModifiedFacetPortletPreferences.PREFERENCE_KEY_RANGES) %>" type="hidden" value="<%= modifiedFacetPortletPreferences.getRangesString() %>" />
 
 					<aui:input name="rangesIndexes" type="hidden" value="<%= StringUtil.merge(rangesIndexes) %>" />
+
+					<aui:select label="order-terms-by" name="<%= PortletPreferencesJspUtil.getInputName(ModifiedFacetPortletPreferences.PREFERENCE_KEY_ORDER) %>" value="<%= modifiedFacetPortletPreferences.getOrder() %>">
+						<aui:option label="" value="" />
+						<aui:option label="term-frequency-descending" value="count:desc" />
+						<aui:option label="term-frequency-ascending" value="count:asc" />
+					</aui:select>
 				</aui:fieldset>
 			</liferay-frontend:fieldset>
 		</liferay-frontend:fieldset-group>
