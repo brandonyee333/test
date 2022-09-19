@@ -722,10 +722,9 @@ public class BQEventRepositoryImpl
 			eventAnalysisBreakdowns.get(0);
 
 		if (eventAnalysisFilters != null) {
-			Stream<EventAnalysisFilter> filterStream =
-				eventAnalysisFilters.stream();
+			Stream<EventAnalysisFilter> stream = eventAnalysisFilters.stream();
 
-			filteredEventAnalysisFilters = filterStream.filter(
+			filteredEventAnalysisFilters = stream.filter(
 				eventAnalysisFilter -> eventAttributeDefinitions.containsKey(
 					firstEventAnalysisBreakdown.getAttributeId())
 			).collect(
