@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.EventAnalysis;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalysisType;
 import com.liferay.osb.asah.common.model.AttributeType;
+import com.liferay.osb.asah.common.model.BreakdownItem;
 import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
@@ -560,6 +561,56 @@ public class EventAnalysisDogTest
 						LocalDate.parse("2021-05-15"))),
 				JSONObject.class),
 			true);
+	}
+
+	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
+	@Test
+	public void testGetEventAnalysisBreakdownWhenDataExceedOnePage() {
+		EventAnalysisBreakdown eventAnalysisBreakdown =
+			new EventAnalysisBreakdown(
+				"12345", AttributeType.EVENT, 0,
+				EventAttributeDefinition.DataType.STRING, null, null, "testUrl",
+				"ASC");
+
+		EventAnalysisResult eventAnalysisResult =
+			_eventAnalysisDog.getEventAnalysisResult(
+				AnalysisType.TOTAL, 1L, true,
+				Collections.singletonList(eventAnalysisBreakdown),
+				Collections.emptyList(), 246810L, 0, 2,
+				TimeRange.of(
+					LocalDate.parse("2021-06-01"),
+					LocalDate.parse("2020-05-15")));
+
+		List<BreakdownItem> breakdownItems =
+			eventAnalysisResult.getBreakdownItems();
+
+		Assertions.assertEquals(3, eventAnalysisResult.getCount());
+		Assertions.assertEquals(0, eventAnalysisResult.getPage());
+		Assertions.assertEquals(24L, eventAnalysisResult.getValue());
+
+		BreakdownItem firstBreakdownItem = breakdownItems.get(0);
+		BreakdownItem lastBreakdownItem = breakdownItems.get(1);
+
+		Assertions.assertEquals(
+			new BigDecimal(3), firstBreakdownItem.getValue());
+		Assertions.assertEquals(
+			new BigDecimal(4), lastBreakdownItem.getValue());
+
+		eventAnalysisResult = _eventAnalysisDog.getEventAnalysisResult(
+			AnalysisType.TOTAL, 1L, true,
+			Collections.singletonList(eventAnalysisBreakdown),
+			Collections.emptyList(), 246810L, 1, 2,
+			TimeRange.of(
+				LocalDate.parse("2021-06-01"), LocalDate.parse("2020-05-15")));
+
+		breakdownItems = eventAnalysisResult.getBreakdownItems();
+
+		Assertions.assertEquals(1, eventAnalysisResult.getPage());
+
+		firstBreakdownItem = breakdownItems.get(0);
+
+		Assertions.assertEquals(
+			new BigDecimal(8), firstBreakdownItem.getValue());
 	}
 
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
