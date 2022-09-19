@@ -720,27 +720,26 @@ public class EventAnalysisDogTest
 				EventAttributeDefinition.DataType.STRING, null, null,
 				"testCode", "DESC");
 
-		EventAnalysisResult eventAnalysisResult =
-			_eventAnalysisDog.getEventAnalysisResult(
-				AnalysisType.TOTAL, 1L, true,
-				new ArrayList<EventAnalysisBreakdown>() {
-					{
-						add(eventAnalysisBreakdown1);
-						add(eventAnalysisBreakdown2);
-						add(eventAnalysisBreakdown3);
-					}
-				},
-				Collections.emptyList(), 246810L, 0, 10,
-				TimeRange.of(
-					LocalDate.parse("2021-06-01"),
-					LocalDate.parse("2021-05-15")));
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies" +
 					"/expected_event_analysis_breakdown_with_filter_and_different_sorting_type.json",
 				this),
-			_objectMapper.convertValue(eventAnalysisResult, JSONObject.class),
+			_objectMapper.convertValue(
+				_eventAnalysisDog.getEventAnalysisResult(
+					AnalysisType.TOTAL, 1L, true,
+					new ArrayList<EventAnalysisBreakdown>() {
+						{
+							add(eventAnalysisBreakdown1);
+							add(eventAnalysisBreakdown2);
+							add(eventAnalysisBreakdown3);
+						}
+					},
+					Collections.emptyList(), 246810L, 0, 10,
+					TimeRange.of(
+						LocalDate.parse("2021-06-01"),
+						LocalDate.parse("2021-05-15"))),
+				JSONObject.class),
 			true);
 	}
 
