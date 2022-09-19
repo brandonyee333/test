@@ -723,7 +723,8 @@ public class EventAnalysisDogTest
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies" +
-					"/expected_event_analysis_breakdown_with_filter_and_different_sorting_type.json",
+					"/expected_event_analysis_breakdown_with_filter_and_" +
+						"different_sorting_type.json",
 				this),
 			_objectMapper.convertValue(
 				_eventAnalysisDog.getEventAnalysisResult(
