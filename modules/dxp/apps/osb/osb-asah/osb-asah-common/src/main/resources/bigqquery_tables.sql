@@ -47,37 +47,6 @@ CREATE TABLE IF NOT EXISTS BQAccountGroup (
 	type TEXT
 );
 
-CREATE TABLE IF NOT EXISTS BQBlog (
-	assetId TEXT,
-	assetPrimaryKey TEXT,
-	assetTitle TEXT,
-	browserName TEXT,
-	canonicalUrl TEXT,
-	channelId BIGINT,
-	city TEXT,
-	clicks BIGINT,
-	comments BIGINT,
-	country TEXT,
-	dataSourceId BIGINT,
-	deviceType TEXT,
-	eventDate TIMESTAMPTZ,
-	individualId BIGINT,
-	knownIndividual BOOLEAN,
-	platformName TEXT,
-	projectId TEXT,
-	ratings BIGINT,
-	ratingsScore REAL,
-	readPercentile BIGINT,
-	readTime BIGINT,
-	region TEXT,
-	segmentNames TEXT[],
-	sessionId TEXT,
-	title TEXT,
-	userId TEXT,
-	variantId TEXT,
-	views BIGINT
-);
-
 CREATE TABLE IF NOT EXISTS BQCSVUser (
 	id BIGSERIAL PRIMARY KEY,
 	dataSourceId BIGINT,

@@ -1,3 +1,236 @@
+CREATE OR REPLACE VIEW BQBlog AS (
+	WITH
+		BlogEvent AS (
+			SELECT
+				BQEvent.*,
+				entryId.value AS assetId,
+				blogTitle.value as assetTitle
+			FROM
+				BQEvent
+			LEFT JOIN BQEventProperty AS entryId ON (
+				BQEvent.id = entryId.id AND entryId.name = 'entryId'
+			)
+			LEFT JOIN BQEventProperty AS blogTitle ON (
+				BQEvent.id = blogTitle.id AND blogTitle.name = 'title'
+			)
+			WHERE
+				BQEvent.applicationId = 'Blog' AND
+				BQEvent.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed') AND
+				entryId.value IS NOT NULL
+		),
+		BlogFinalizedEvent AS (
+			SELECT
+				BlogEvent.*
+			FROM
+				BlogEvent
+			INNER JOIN BQSession ON
+				BlogEvent.sessionId = BQSession.id
+		),
+		CommentEvent AS (
+			SELECT
+				BQEvent.*,
+				classPK.value as assetId
+			FROM
+				BQEvent
+			LEFT JOIN BQEventProperty AS className ON (
+				BQEvent.id = className.id AND className.name = 'className'
+			)
+			LEFT JOIN BQEventProperty AS classPK ON (
+				BQEvent.id = classPK.id AND classPK.name = 'classPK'
+			)
+			WHERE
+				BQEvent.applicationId = 'Comment' AND
+				BQEvent.eventId = 'posted' AND
+				className.value = 'com.liferay.blogs.model.BlogsEntry' AND
+				classPK.value IS NOT NULL
+		),
+		RatingsEvent AS (
+			SELECT
+				BQEvent.*,
+				classPK.value as assetId,
+				CAST(score.value AS FLOAT) as score
+			FROM
+				BQEvent
+			LEFT JOIN BQEventProperty AS className ON (
+				BQEvent.id = className.id AND className.name = 'className'
+			)
+			LEFT JOIN BQEventProperty AS classPK ON (
+				BQEvent.id = classPK.id AND classPK.name = 'classPK'
+			)
+			LEFT JOIN BQEventProperty AS ratingType ON (
+				BQEvent.id = ratingType.id AND ratingType.name = 'ratingType'
+			)
+			LEFT JOIN BQEventProperty AS score ON (
+				BQEvent.id = score.id AND score.name = 'score'
+			)
+			WHERE
+				BQEvent.applicationId = 'Ratings' AND
+				BQEvent.eventId = 'VOTE' AND
+				className.value = 'com.liferay.blogs.model.BlogsEntry' AND
+				classPK.value IS NOT NULL AND
+				ratingtype.value = 'stars'
+		),
+		BlogComments AS (
+			SELECT
+				assetId,
+				canonicalUrl,
+				SUM(1) as comments,
+				channelId,
+				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				title as pageTitle,
+				userId
+			FROM
+				CommentEvent
+			GROUP BY
+				assetId, browserName, canonicalUrl, channelId, city,
+				country, normalizedEventDate, deviceType, platformName,
+				region, title, userId
+		),
+		BlogRatings as (
+			SELECT
+				assetId,
+				canonicalUrl,
+				channelId,
+				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				title as pageTitle,
+				SUM(1) as ratings,
+				SUM(score) as ratingsScore,
+				userId
+			FROM
+				RatingsEvent
+			GROUP BY
+				assetId, browserName, canonicalUrl, channelId, city,
+				country, normalizedEventDate, deviceType, platformName,
+				region, title, userId
+		),
+		BlogReadTimes as (
+			SELECT
+				assetId,
+				assetTitle,
+				canonicalUrl,
+				channelId,
+				DATE_TRUNC('HOUR', maxEventDate) AS normalizedEventDate,
+				title as pageTitle,
+				SUM(readtime) AS readTime,
+				userId
+			FROM
+				(
+					SELECT
+						assetId,
+						assetTitle,
+						canonicalUrl,
+						channelId,
+						MAX(eventDate) FILTER (WHERE eventId != 'blogViewed') maxEventDate,
+						(
+							EXTRACT( EPOCH FROM MAX(eventDate) FILTER (WHERE eventId != 'blogViewed')) -
+							EXTRACT(EPOCH FROM MIN(eventDate))
+						) AS readTime,
+						sessionId,
+						title,
+						userId
+					FROM
+						BlogFinalizedEvent
+					GROUP BY
+						assetId, assetTitle, canonicalUrl, channelId, sessionId,
+						title, userId
+				) TMP
+			WHERE
+				maxEventDate IS NOT NULL
+			GROUP BY
+				assetId, assetTitle, canonicalUrl, channelId, normalizedEventDate,
+				title, userId
+		),
+		BlogViewsAndClicks as (
+			SELECT
+				assetId,
+				assetTitle,
+				browserName,
+				canonicalUrl,
+				channelId,
+				SUM(
+					CASE
+						WHEN
+							eventId = 'blogClicked'
+						THEN
+							1
+						END
+				) AS clicks,
+				city,
+				country,
+				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				deviceType,
+				platformName,
+				region,
+				COUNT(DISTINCT(sessionId)) AS sessions,
+				title as pageTitle,
+				userId,
+				SUM(
+					CASE
+						WHEN
+							eventId = 'blogViewed'
+						THEN
+							1
+						END
+				) AS views
+			FROM
+				BlogEvent
+			GROUP BY
+				assetId, assetTitle, browserName, canonicalUrl, channelId, city,
+				country, normalizedEventDate, deviceType, platformName,
+				region, title, userId
+		)
+	SELECT
+		BlogViewsAndClicks.assetId,
+		BlogViewsAndClicks.assetTitle,
+		BlogViewsAndClicks.browserName,
+		BlogViewsAndClicks.canonicalUrl,
+		BlogViewsAndClicks.channelId,
+		BlogViewsAndClicks.city,
+		COALESCE(BlogViewsAndClicks.clicks, 0) AS clicks,
+		COALESCE(BlogComments.comments, 0) AS comments,
+		BlogViewsAndClicks.country,
+		BlogViewsAndClicks.deviceType,
+		BlogViewsAndClicks.normalizedEventDate as eventDate,
+		BlogViewsAndClicks.pageTitle,
+		BlogViewsAndClicks.platformName,
+		BlogRatings.ratings,
+		BlogRatings.ratingsScore,
+		BlogReadTimes.readTime * 1000 as readTime,
+		BlogViewsAndClicks.region,
+		BlogViewsAndClicks.sessions,
+		BlogViewsAndClicks.userId,
+		COALESCE(BlogViewsAndClicks.views, 0) as views
+	FROM
+	     BlogViewsAndClicks
+	LEFT JOIN BlogComments ON (
+		 BlogViewsAndClicks.assetId = BlogComments.assetId and
+		 BlogViewsAndClicks.canonicalUrl = BlogComments.canonicalUrl and
+		 BlogViewsAndClicks.channelId = BlogComments.channelId and
+		 BlogViewsAndClicks.normalizedEventDate = BlogComments.normalizedEventDate and
+		 BlogViewsAndClicks.pageTitle = BlogComments.pageTitle and
+		 BlogViewsAndClicks.userId = BlogComments.userId
+	)
+	LEFT JOIN BlogRatings ON (
+		BlogViewsAndClicks.assetId = BlogRatings.assetId and
+		BlogViewsAndClicks.canonicalUrl = BlogRatings.canonicalUrl and
+		BlogViewsAndClicks.channelId = BlogRatings.channelId and
+		BlogViewsAndClicks.normalizedEventDate = BlogRatings.normalizedEventDate and
+		BlogViewsAndClicks.pageTitle = BlogRatings.pageTitle and
+		BlogViewsAndClicks.userId = BlogRatings.userId
+	)
+	LEFT JOIN BlogReadTimes ON (
+		BlogViewsAndClicks.assetId = BlogReadTimes.assetId and
+		BlogViewsAndClicks.assetTitle = BlogReadTimes.assetTitle and
+		BlogViewsAndClicks.canonicalUrl = BlogReadTimes.canonicalUrl and
+		BlogViewsAndClicks.channelId = BlogReadTimes.channelId and
+		BlogViewsAndClicks.normalizedEventDate = BlogReadTimes.normalizedEventDate and
+		BlogViewsAndClicks.pageTitle = BlogReadTimes.pageTitle and
+		BlogViewsAndClicks.userId = BlogReadTimes.userId
+	)
+);
+
+COMMIT;
+
 CREATE OR REPLACE VIEW BQCustomAsset AS (
 	WITH
 		CustomAssetEvent AS (
@@ -173,7 +406,7 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 						)
 					) AS submissionTime
 				FROM
-				CustomAssetFinalizedEvent
+					CustomAssetFinalizedEvent
 				GROUP BY
 					assetPrimaryKey,
 					sessionId

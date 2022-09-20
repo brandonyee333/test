@@ -75,18 +75,34 @@ public class BlogAssetMetricRepositoryImpl
 
 	@Override
 	protected Field<BigDecimal> getMetricField(MetricType metricType) {
-		Field<Long> longField = DSL.field(
-			metricType.getFieldName(), Long.class);
-
-		if ((metricType == BlogMetricType.RATINGS) ||
-			(metricType == BlogMetricType.READING_TIME)) {
-
-			return DSL.avg(
-				longField
+		if (metricType == BlogMetricType.RATINGS) {
+			return DSL.coalesce(
+				DSL.sum(
+					DSL.field("ratingsScore", Float.class)
+				).div(
+					DSL.sum(DSL.field("ratings", Long.class))
+				),
+				BigDecimal.ZERO
 			).as(
-				longField.getName()
+				metricType.getFieldName()
 			);
 		}
+
+		if (metricType == BlogMetricType.READING_TIME) {
+			return DSL.coalesce(
+				DSL.sum(
+					DSL.field(metricType.getFieldName(), Long.class)
+				).div(
+					DSL.sum(DSL.field("sessions", Long.class))
+				),
+				BigDecimal.ZERO
+			).as(
+				metricType.getFieldName()
+			);
+		}
+
+		Field<Long> longField = DSL.field(
+			metricType.getFieldName(), Long.class);
 
 		return DSL.sum(
 			longField
