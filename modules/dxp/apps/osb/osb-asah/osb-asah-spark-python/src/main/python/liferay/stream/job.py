@@ -10,7 +10,6 @@
 #
 
 from liferay.common.spark import BaseSparkJob
-from liferay.stream.processor.blog import BlogDataFrameProcessor
 from liferay.stream.processor.form import FormDataFrameProcessor, \
 	FormFieldDataFrameProcessor, \
 	FormPageDataFrameProcessor
@@ -24,7 +23,6 @@ class CuratorSparkJob(BaseSparkJob):
 		analytics_events_data_frame.persist()
 
 		processors = [
-			BlogDataFrameProcessor(batch_id, 'blogs', self),
 			FormDataFrameProcessor(batch_id, 'forms', self),
 			FormFieldDataFrameProcessor(batch_id, 'form-fields', self),
 			FormPageDataFrameProcessor(batch_id, 'form-pages', self),
