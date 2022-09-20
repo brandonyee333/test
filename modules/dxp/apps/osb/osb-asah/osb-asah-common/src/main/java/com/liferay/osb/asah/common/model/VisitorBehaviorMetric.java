@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.model;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import java.util.Map;
 
@@ -56,7 +57,8 @@ public abstract class VisitorBehaviorMetric {
 		if ((_sessions != null) && (_visitors != null) &&
 			!_visitors.equals(BigDecimal.ZERO)) {
 
-			BigDecimal sessionsPerVisitor = _sessions.divide(_visitors);
+			BigDecimal sessionsPerVisitor = _sessions.divide(
+				_visitors, 2, RoundingMode.HALF_UP);
 
 			return sessionsPerVisitor.doubleValue();
 		}
