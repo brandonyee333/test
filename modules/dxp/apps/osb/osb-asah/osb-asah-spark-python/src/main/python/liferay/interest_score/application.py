@@ -9,13 +9,19 @@
 # distribution rights of the Software.
 #
 
-from liferay.common.spark import BaseSparkApplication, \
+from liferay.common.spark import (
+	BaseSparkApplication,
 	SparkJobPipeline
-from liferay.interest_score.job import IndividualInterestScoreSparkJob, \
-	KeywordsExtractionSparkJob, \
-	ReadAnalyticsEventsSparkJob, \
+
+)
+
+from liferay.interest_score.job import (
+	IndividualInterestScoreSparkJob,
+	KeywordsExtractionSparkJob,
+	ReadAnalyticsEventsSparkJob,
 	SegmentInterestScoreSparkJob
-from liferay.interest_score.udf import NormalizeURLFunction
+
+)
 
 from pyspark import SparkConf
 
@@ -27,18 +33,11 @@ class InterestScoreApplication(BaseSparkApplication):
 	def __init__(self):
 		super(InterestScoreApplication, self).__init__()
 
-		NormalizeURLFunction(
-			self.spark_session,
-			self.configuration.get(
-				'interest.score.url-ignored-parameters'
-			)
-		)
-
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
 			usage='{} liferay.interest_score.InterestScoreApplication '
 			'-configuration <Configuration Path> '
-		  	'--job-parameters <Job Parameters> '
+		  	'-job-parameters <Job Parameters> '
 			'-lcp-project-id <LCP Project ID>'.format(sys.argv[0])
 		)
 
@@ -55,6 +54,14 @@ class InterestScoreApplication(BaseSparkApplication):
 
 		spark_conf.setAppName('Interest Score')
 
+		spark_conf.set('viewsEnabled', 'true')
+
+		spark_conf.set('temporaryGcsBucket', self.configuration.get('google.storage.path.temporaryGcsBucket'))
+
+		spark_conf.set('materializationDataset', self.args.lcp_project_id)
+
+		spark_conf.set('spark.jars.packages', self.configuration.get('interest.models.spark-nlp-version'))
+
 		return spark_conf
 
 	def _create_spark_job_pipeline(self):
@@ -66,7 +73,7 @@ class InterestScoreApplication(BaseSparkApplication):
 
 		jobs.append(IndividualInterestScoreSparkJob(self))
 
-		jobs.append(SegmentInterestScoreSparkJob(self))
+		#jobs.append(SegmentInterestScoreSparkJob(self))
 
 		return SparkJobPipeline(jobs)
 

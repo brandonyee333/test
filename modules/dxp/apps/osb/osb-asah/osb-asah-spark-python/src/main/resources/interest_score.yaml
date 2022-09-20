@@ -6,33 +6,12 @@ google:
             analytics-events: gs://analytics-cloud-analytics-events-uat
             individual-segments: gs://analytics-cloud-individual-segments-uat
             individuals: gs://analytics-cloud-individuals-uat
+            temporaryGcsBucket: ac-interest-scores/temp_write_bucket_for_bq_writes
 interest:
-    score:
-        url-ignored-parameters:
-            - __hsfp
-            - __hssc
-            - __hstc
-            - _ga
-            - _gac
-            - _hsenc
-            - _hsmi
-            - gclid
-            - hsCtaTracking
-            - hsa_acc
-            - hsa_ad
-            - hsa_cam
-            - hsa_grp
-            - hsa_kw
-            - hsa_la
-            - hsa_mt
-            - hsa_net
-            - hsa_ol
-            - hsa_src
-            - hsa_tgt
-            - hsa_ver
-            - hsa_ver
-            - utm_campaign
-            - utm_content
-            - utm_medium
-            - utm_source
-            - utm_term
+    models:
+        language-detector:
+            path: "gs://ac-interest-scores/resources/ld_tatoeba_cnn_99"
+            threshold: .90
+        pos-tagger:
+            path: "gs://ac-interest-scores/resources/pos_anc_en"
+        spark-nlp-version: "com.johnsnowlabs.nlp:spark-nlp_2.12:4.1.0"

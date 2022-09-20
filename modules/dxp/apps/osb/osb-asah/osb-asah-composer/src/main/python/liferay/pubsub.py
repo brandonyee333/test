@@ -32,7 +32,7 @@ class PubSubDagTriggerOperator(BaseOperator):
 		pubsub_subscription = dag_configuration['pubsub.subscription']
 
 		self.log.info(
-			'Pulling messges from subscription {}'.format(pubsub_subscription)
+			'Pulling messages from subscription {}'.format(pubsub_subscription)
 		)
 
 		messages = self._pub_sub_hook.pull(
