@@ -90,8 +90,8 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		HistogramMetric lastHistogramMetric = histogramMetrics.get(
 			histogramMetrics.size() - 1);
 
-		Assertions.assertEquals(7, lastHistogramMetric.getPreviousValue());
-		Assertions.assertEquals(4, lastHistogramMetric.getValue());
+		Assertions.assertEquals(2, lastHistogramMetric.getPreviousValue());
+		Assertions.assertEquals(1, lastHistogramMetric.getValue());
 	}
 
 	@SQLResource(
