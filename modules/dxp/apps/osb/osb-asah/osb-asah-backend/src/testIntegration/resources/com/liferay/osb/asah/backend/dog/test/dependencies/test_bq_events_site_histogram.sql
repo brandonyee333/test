@@ -18,6 +18,8 @@ INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId,
 
 INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES ('1', '1');
 
+INSERT INTO BQIndividual (emailAddressHashed) VALUES ('1');
+
 INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '1', timestamp '${today-1d}', timestamp '${today-1d}', '1');
 INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '2', timestamp '${today-1d}', timestamp '${today-1d}', '2');
 INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '3', timestamp '${today-1d}', timestamp '${today-1d}', '3');

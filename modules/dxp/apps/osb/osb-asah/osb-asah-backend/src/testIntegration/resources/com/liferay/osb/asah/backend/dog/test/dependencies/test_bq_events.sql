@@ -7,6 +7,8 @@ INSERT INTO BQEvent (applicationId, id, canonicalUrl, channelId, eventDate, even
 
 INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES ('1', '1');
 
+INSERT INTO BQIndividual (emailAddressHashed) VALUES ('1');
+
 INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '1', timestamp '${now-3d}', timestamp '${now-3d}', '1');
 INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '2', timestamp '${now-34d}', timestamp '${now-34d}', '1');
 INSERT INTO BQSession (channelId, id, sessionEnd, sessionStart, userId) VALUES (1, '3', timestamp '${now-10d}', timestamp '${now-10d}', '2');
