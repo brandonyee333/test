@@ -1460,6 +1460,7 @@ this task.
 				<or>
 					<equals arg1="${app.server.jboss.version}" arg2="7.0.0" />
 					<equals arg1="${app.server.jboss.version}" arg2="7.1.0" />
+					<equals arg1="${app.server.jboss.version}" arg2="7.4.0" />
 				</or>
 				<then>
 					<replace
@@ -1518,7 +1519,10 @@ this task.
 				</replace>
 			</then>
 			<elseif>
-				<equals arg1="${app.server.jboss.version}" arg2="7.1.0" />
+				<or>
+					<equals arg1="${app.server.jboss.version}" arg2="7.1.0" />
+					<equals arg1="${app.server.jboss.version}" arg2="7.4.0" />
+				</or>
 				<then>
 					<replace
 						file="${app.server.jboss.instance.dir}/configuration/standalone.xml"
