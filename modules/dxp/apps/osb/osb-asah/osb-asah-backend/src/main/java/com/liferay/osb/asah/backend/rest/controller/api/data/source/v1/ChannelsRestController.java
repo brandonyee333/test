@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.util.ListUtil;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -96,9 +97,17 @@ public class ChannelsRestController {
 
 	@PostMapping
 	public List<ChannelDTO> postChannels(@RequestBody String json) {
-		Map<Long, String> channelNamesByGroupIds = new HashedMap<>();
-
 		JSONObject jsonObject = new JSONObject(json);
+
+		if (jsonObject.has("name")) {
+			Channel channel = _channelDog.addChannel(
+				Collections.emptyMap(), false, jsonObject.getString("name"),
+				true);
+
+			return _toChannelDTOs(Collections.singletonList(channel));
+		}
+
+		Map<Long, String> channelNamesByGroupIds = new HashedMap<>();
 
 		JSONArray groupsJSONArray = jsonObject.getJSONArray("groups");
 
