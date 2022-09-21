@@ -145,7 +145,7 @@
 			"templated": true
 		},
 		"individuals-distribution": {
-			"href": "{url}/individuals/distribution{?fieldMappingId,filter,numberOfBins,size,sort*}",
+			"href": "{url}/individuals/distribution{?channelId,fieldMappingId,individualSegmentId,numberOfBins,size,sort*}",
 			"templated": true
 		},
 		"interest": {

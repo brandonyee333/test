@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.model.Distribution;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
@@ -27,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 public interface CustomBQIndividualRepository {
 
 	public List<Distribution> getIndividualDistributions(
-		String fieldName, FilterHelper filterHelper, Pageable pageable);
+		Long channelId, String fieldName, Long individualSegmentId,
+		Pageable pageable);
 
 }

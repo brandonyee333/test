@@ -18,12 +18,13 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -45,10 +46,24 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public List<Distribution> getIndividualDistributions(
-		String fieldName, FilterHelper filterHelper, Pageable pageable) {
+		Long channelId, String fieldName, Long individualSegmentId,
+		Pageable pageable) {
 
 		Field<String> nestedField = _dslHelper.getNestedField(
 			"name", fieldName, "value", "fields");
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (channelId != null) {
+			conditions.add(_getChannelIdCondition(channelId));
+		}
+
+		if (individualSegmentId != null) {
+			conditions.add(
+				_getIndividualSegmentIdCondition(individualSegmentId));
+		}
+
+		conditions.add(nestedField.isNotNull());
 
 		SelectSelectStep<Record> modifiedDateSelectSelectStep =
 			_dslContext.select();
@@ -60,14 +75,13 @@ public class BQIndividualRepositoryImpl
 			modifiedDateSelectSelectStep.select(
 				nestedField.as("nestedField"),
 				DSL.count(
-					DSL.field("BQIndividual.id")
 				).as(
 					"count"
 				)
 			).from(
 				"BQIndividual"
 			).where(
-				DSL.and(filterHelper.getCondition(), nestedField.isNotNull())
+				conditions
 			).groupBy(
 				nestedField.as("nestedField")
 			).orderBy(
@@ -77,6 +91,48 @@ public class BQIndividualRepositoryImpl
 				pageable.getPageSize()
 			).offset(
 				pageable.getOffset()
+			));
+	}
+
+	private Condition _getChannelIdCondition(Long channelId) {
+		return DSL.exists(
+			DSL.selectOne(
+			).from(
+				"BQIdentityActivity as BQIdentityActivity"
+			).where(
+				DSL.and(
+					DSL.field(
+						"BQIdentityActivity.channelId"
+					).eq(
+						channelId
+					),
+					DSL.field(
+						"BQIdentityActivity.emailAddressHashed"
+					).eq(
+						DSL.field("BQIndividual.emailAddressHashed")
+					))
+			));
+	}
+
+	private Condition _getIndividualSegmentIdCondition(
+		Long individualSegmentId) {
+
+		return DSL.exists(
+			DSL.selectOne(
+			).from(
+				"BQMembership as BQMembership"
+			).where(
+				DSL.and(
+					DSL.field(
+						"BQMembership.individualSegmentId"
+					).eq(
+						individualSegmentId
+					),
+					DSL.field(
+						"BQMembership.individualId"
+					).eq(
+						DSL.field("BQIndividual.id")
+					))
 			));
 	}
 

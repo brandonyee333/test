@@ -202,8 +202,7 @@ public class IndividualsRestControllerTest
 				this),
 			_objectMapper.convertValue(
 				_individualsRestController.getDistributionDTOPageDTO(
-					"366588394714972833",
-					"(individualSegmentIds eq '327968823603500655')", 10, 100,
+					null, "366588394714972833", 327968823603500655L, 10, 100,
 					null),
 				JSONObject.class),
 			false);
@@ -213,7 +212,7 @@ public class IndividualsRestControllerTest
 				this),
 			_objectMapper.convertValue(
 				_individualsRestController.getDistributionDTOPageDTO(
-					"331238757947565158", null, 10, 100,
+					null, "331238757947565158", null, 10, 100,
 					new String[] {"name", "desc"}),
 				JSONObject.class),
 			false);
@@ -223,7 +222,7 @@ public class IndividualsRestControllerTest
 				this),
 			_objectMapper.convertValue(
 				_individualsRestController.getDistributionDTOPageDTO(
-					"366588394714972833", null, 5, 100, null),
+					null, "366588394714972833", null, 5, 100, null),
 				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
@@ -232,7 +231,7 @@ public class IndividualsRestControllerTest
 				this),
 			_objectMapper.convertValue(
 				_individualsRestController.getDistributionDTOPageDTO(
-					"331238757947565158", null, 10, 100, null),
+					null, "331238757947565158", null, 0, 100, null),
 				JSONObject.class),
 			false);
 	}
@@ -251,7 +250,7 @@ public class IndividualsRestControllerTest
 		Exception exception = Assertions.assertThrows(
 			Exception.class,
 			() -> _individualsRestController.getDistributionDTOPageDTO(
-				"331238757947565234", null, 10, 100, null));
+				null, "331238757947565234", null, 10, 100, null));
 
 		MatcherAssert.assertThat(
 			exception.getMessage(),

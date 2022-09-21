@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
@@ -36,7 +35,8 @@ import org.springframework.stereotype.Component;
 public class BQIndividualDog {
 
 	public Page<Distribution> getDistributionPage(
-		String fieldName, String filterString, int size, String[] sorts) {
+		Long channelId, String fieldName, Long individualSegmentId, int size,
+		String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(
 			0, size,
@@ -44,11 +44,7 @@ public class BQIndividualDog {
 
 		List<Distribution> distributions =
 			_bqIndividualRepository.getIndividualDistributions(
-				fieldName,
-				new FilterHelper(
-					null, filterString,
-					_individualsFilterStringConverterHelper),
-				pageRequest);
+				channelId, fieldName, individualSegmentId, pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			distributions, pageRequest, distributions::size);
