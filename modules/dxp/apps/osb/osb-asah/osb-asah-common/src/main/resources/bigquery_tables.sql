@@ -126,34 +126,6 @@ CREATE TABLE IF NOT EXISTS BQExpandoValue (
 	value TEXT
 );
 
-CREATE TABLE IF NOT EXISTS BQForm (
-	abandonments BIGINT,
-	assetId TEXT,
-	assetPrimaryKey TEXT,
-	assetTitle TEXT,
-	browserName TEXT,
-	canonicalUrl TEXT,
-	channelId BIGINT,
-	city TEXT,
-	country TEXT,
-	dataSourceId BIGINT,
-	deviceType TEXT,
-	eventDate TIMESTAMPTZ,
-	individualId BIGINT,
-	knownIndividual BOOLEAN,
-	platformName TEXT,
-	projectId TEXT,
-	region TEXT,
-	segmentNames TEXT[],
-	sessionId TEXT,
-	submissions BIGINT,
-	submissionsTime BIGINT,
-	title TEXT,
-	userId TEXT,
-	variantId TEXT,
-	views BIGINT
-);
-
 CREATE TABLE IF NOT EXISTS BQGroup (
 	dataSourceId BIGINT,
 	groupId BIGINT,
