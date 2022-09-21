@@ -205,7 +205,7 @@ public class BQSessionRepositoryImpl
 
 	private Field<Integer> _getKnownVisitorsField(boolean alias) {
 		Field<Integer> field = DSL.countDistinct(
-			DSL.field("BQIdentity.emailaddresshashed"));
+			DSL.field("IndividualIdentity.emailaddresshashed"));
 
 		if (alias) {
 			return field.as("knownvisitors");
@@ -221,7 +221,7 @@ public class BQSessionRepositoryImpl
 			DSL.countDistinct(
 				DSL.when(
 					DSL.field(
-						"BQIdentity.emailaddresshashed"
+						"IndividualIdentity.emailaddresshashed"
 					).isNull(),
 					DSL.field("BQSession.userid")))
 		).as(
@@ -229,14 +229,33 @@ public class BQSessionRepositoryImpl
 		);
 	}
 
-	private SelectOnConditionStep _joinWithIdentityTable(
-		SelectJoinStep selectJoinStep) {
+	private SelectOnConditionStep<? extends Record> _joinWithIdentityTable(
+		SelectJoinStep<? extends Record> selectJoinStep) {
 
 		return selectJoinStep.leftJoin(
-			"BQIdentity"
+			_dslContext.select(
+				DSL.field(
+					"BQIdentity.emailAddressHashed"
+				).as(
+					"emailAddressHashed"
+				),
+				DSL.field("userid")
+			).from(
+				"BQIdentity"
+			).innerJoin(
+				"BQIndividual"
+			).on(
+				DSL.field(
+					"BQIdentity.emailAddressHashed"
+				).eq(
+					DSL.field("BQIndividual.emailAddressHashed")
+				)
+			).asTable(
+				"IndividualIdentity"
+			)
 		).on(
 			DSL.field(
-				"BQIdentity.userid"
+				"IndividualIdentity.userid"
 			).eq(
 				DSL.field("BQSession.userid")
 			)
