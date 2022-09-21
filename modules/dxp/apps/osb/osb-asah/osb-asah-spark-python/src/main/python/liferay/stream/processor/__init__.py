@@ -9,7 +9,4 @@
 # distribution rights of the Software.
 #
 
-from liferay.stream.processor.form import FormDataFrameProcessor, \
-	FormFieldDataFrameProcessor, \
-	FormPageDataFrameProcessor
 from liferay.stream.processor.page import PageDataFrameProcessor
