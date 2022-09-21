@@ -135,7 +135,7 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 
 				DatabasePopulatorUtils.execute(
 					new ResourceDatabasePopulator(
-						new ClassPathResource("bigqquery_tables.sql"),
+						new ClassPathResource("bigquery_tables.sql"),
 						new ClassPathResource("bigquery_views.sql")),
 					_dataSource);
 			}

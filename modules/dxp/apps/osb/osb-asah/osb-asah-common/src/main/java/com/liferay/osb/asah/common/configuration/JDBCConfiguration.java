@@ -159,7 +159,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
-				new ClassPathResource("bigqquery_tables.sql"),
+				new ClassPathResource("bigquery_tables.sql"),
 				new ClassPathResource("tables.sql"),
 				new ClassPathResource("tables_global.sql")),
 			pgSimpleDataSource);
