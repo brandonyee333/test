@@ -166,6 +166,7 @@ CREATE TABLE IF NOT EXISTS BQIndividual (
 	emailAddressHashed TEXT PRIMARY KEY,
 	fields JSON,
 	firstName TEXT,
+	id TEXT UNIQUE,
 	lastName TEXT,
 	middleName TEXT,
 	modifiedDate TIMESTAMPTZ,
