@@ -118,13 +118,16 @@ public class EventIngestionPipeline {
 			"Add Session Key", _buildWithKeysPTransform()
 		);
 
-		Window<KV<String, AnalyticsEvent>> sessionWindow = _buildSessionWindow(
+		Window<KV<String, AnalyticsEvent>> window = _buildWindow(
 			eventIngestionPipelineOptions);
+
+		Window<KV<String, AnalyticsEvent>> analyticsEventsWindow =
+			window.discardingFiredPanes();
 
 		PCollection<KV<String, Iterable<AnalyticsEvent>>> eventsPCollection =
 			pCollection.apply(
 				"Create Events Windowing",
-				sessionWindow.triggering(
+				analyticsEventsWindow.triggering(
 					Repeatedly.forever(
 						AfterWatermark.pastEndOfWindow(
 						).withEarlyFirings(
@@ -141,7 +144,7 @@ public class EventIngestionPipeline {
 
 		PCollection<KV<String, Iterable<AnalyticsEvent>>> sessionsPCollection =
 			pCollection.apply(
-				"Create Sessions Windowing", sessionWindow
+				"Create Sessions Windowing", window.accumulatingFiredPanes()
 			).apply(
 				GroupByKey.create()
 			);
@@ -476,7 +479,7 @@ public class EventIngestionPipeline {
 
 	}
 
-	private static Window<KV<String, AnalyticsEvent>> _buildSessionWindow(
+	private static Window<KV<String, AnalyticsEvent>> _buildWindow(
 		EventIngestionPipelineOptions eventIngestionPipelineOptions) {
 
 		return Window.<KV<String, AnalyticsEvent>>into(
@@ -489,7 +492,6 @@ public class EventIngestionPipeline {
 				eventIngestionPipelineOptions.
 					getSessionWindowAllowedLateness()),
 			Window.ClosingBehavior.FIRE_ALWAYS
-		).discardingFiredPanes(
 		).withTimestampCombiner(
 			TimestampCombiner.END_OF_WINDOW
 		);
