@@ -41,7 +41,6 @@ import org.springframework.data.domain.PageRequest;
 public class FormAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<FormMetric> {
 
-	@Disabled
 	@SQLResource(
 		resourcePath = "form_asset_metric_canonical_urls_last_7_days.sql"
 	)
@@ -51,6 +50,7 @@ public class FormAssetMetricRepositoryTest
 			FormMetricType.SUBMISSIONS, TimeRange.LAST_7_DAYS);
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "form_asset_metric_views_browser_last_30_days.sql"
 	)
@@ -65,6 +65,7 @@ public class FormAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "form_asset_metric_views_device_last_30_days.sql"
 	)
@@ -78,6 +79,7 @@ public class FormAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "form_asset_metric_views_geolocation_last_30_days.sql"
 	)
@@ -92,6 +94,7 @@ public class FormAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "form_asset_metric_views_individuals_last_30_days.sql"
 	)
@@ -100,6 +103,7 @@ public class FormAssetMetricRepositoryTest
 		assertGetIndividualsCount(FormMetricType.VIEWS, TimeRange.LAST_30_DAYS);
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "form_asset_metric_views_segments_last_30_days.sql"
 	)
@@ -109,6 +113,7 @@ public class FormAssetMetricRepositoryTest
 			FormMetricType.VIEWS, TimeRange.LAST_30_DAYS);
 	}
 
+	@Disabled
 	@SQLResource(
 		resourcePath = "form_asset_metric_views_segments_last_7_days.sql"
 	)
