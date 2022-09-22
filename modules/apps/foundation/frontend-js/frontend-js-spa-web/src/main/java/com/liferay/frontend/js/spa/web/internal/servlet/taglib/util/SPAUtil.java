@@ -16,7 +16,6 @@ package com.liferay.frontend.js.spa.web.internal.servlet.taglib.util;
 
 import com.liferay.frontend.js.spa.web.configuration.SPAConfiguration;
 import com.liferay.frontend.js.spa.web.configuration.SPAConfigurationActivator;
-import com.liferay.frontend.js.spa.web.configuration.SPAConfigurationUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -24,8 +23,10 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -33,7 +34,6 @@ import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -79,7 +79,26 @@ public class SPAUtil {
 	}
 
 	public String getExcludedPaths() {
-		return _SPA_EXCLUDED_PATHS;
+		SPAConfiguration spaConfiguration =
+			_spaConfigurationActivator.getSPAConfiguration();
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (String excludedPath : _SPA_DEFAULT_EXCLUDED_PATHS) {
+			jsonArray.put(_portal.getPathContext() + excludedPath);
+		}
+
+		String[] customExcludedPaths = spaConfiguration.customExcludedPaths();
+
+		if (ArrayUtil.isEmpty(customExcludedPaths)) {
+			return jsonArray.toString();
+		}
+
+		for (String customExcludedPath : customExcludedPaths) {
+			jsonArray.put(_portal.getPathContext() + customExcludedPath);
+		}
+
+		return jsonArray.toString();
 	}
 
 	/**
@@ -235,7 +254,9 @@ public class SPAUtil {
 
 	private static final String _REDIRECT_PARAM_NAME;
 
-	private static final String _SPA_EXCLUDED_PATHS;
+	private static final String[] _SPA_DEFAULT_EXCLUDED_PATHS = {
+		"/c/document_library", "/documents", "/image"
+	};
 
 	private static final String _VALID_STATUS_CODES;
 
@@ -258,18 +279,10 @@ public class SPAUtil {
 			PropsUtil.get(PropsKeys.AUTH_LOGIN_PORTLET_NAME));
 
 		_REDIRECT_PARAM_NAME = portletNamespace.concat("redirect");
-
-		jsonArray = JSONFactoryUtil.createJSONArray();
-
-		String[] excludedPaths = StringUtil.split(
-			SPAConfigurationUtil.get("spa.excluded.paths"));
-
-		for (String excludedPath : excludedPaths) {
-			jsonArray.put(PortalUtil.getPathContext() + excludedPath);
-		}
-
-		_SPA_EXCLUDED_PATHS = jsonArray.toString();
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private PortletLocalService _portletLocalService;
 	private SPAConfigurationActivator _spaConfigurationActivator;
