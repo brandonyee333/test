@@ -122,7 +122,7 @@ public class SiteHistogramDogTest
 	@Test
 	public void testGetHistogramMetricBagVisitors() {
 		Assertions.assertArrayEquals(
-			new double[] {0, 1, 0, 0, 1, 0, 3},
+			new double[] {0, 0, 0, 0, 0, 0, 1},
 			_getActualValues(
 				_siteHistogramDog.getHistogramMetricBag(
 					_getSearchQueryContext(),
@@ -136,7 +136,7 @@ public class SiteHistogramDogTest
 					SiteMetricType.ANONYMOUS_VISITORS)),
 			0);
 		Assertions.assertArrayEquals(
-			new double[] {0, 1, 0, 1, 1, 0, 1},
+			new double[] {0, 2, 0, 1, 2, 0, 3},
 			_getActualValues(
 				_siteHistogramDog.getHistogramMetricBag(
 					_getSearchQueryContext(), SiteMetricType.KNOWN_VISITORS)),

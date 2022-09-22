@@ -1,0 +1,21 @@
+INSERT INTO BQIdentity(emailAddressHashed, userId) VALUES ('1', '1');
+INSERT INTO BQIdentity(emailAddressHashed, userId) VALUES ('2', '2');
+
+INSERT INTO BQIndividual(emailAddressHashed) VALUES ('1');
+INSERT INTO BQIndividual(emailAddressHashed) VALUES ('2');
+INSERT INTO BQIndividual(emailAddressHashed) VALUES ('3');
+INSERT INTO BQIndividual(emailAddressHashed) VALUES ('4');
+
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '1', timestamp '${now-1d}', timestamp '${now-3d}', '1');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '2', timestamp '${now-2d}', timestamp '${now-3d}', '2');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '3', timestamp '${now-3d}', timestamp '${now-3d}', '3');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '4', timestamp '${now-4d}', timestamp '${now-3d}', '4');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '5', timestamp '${now-8d}', timestamp '${now-8d}', '1');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '6', timestamp '${now-8d}', timestamp '${now-8d}', '2');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '7', timestamp '${now-8d}', timestamp '${now-8d}', '3');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '8', timestamp '${now-10d}', timestamp '${now-10d}', '4');
+
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (2, '9', timestamp '${now-12d}', timestamp '${now-12d}', '1');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (2, '10', timestamp '${now-3d}', timestamp '${now-3d}', '2');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (2, '11', timestamp '${now-3d}', timestamp '${now-3d}', '3');
+INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (2, '12', timestamp '${now-3d}', timestamp '${now-3d}', '4');
