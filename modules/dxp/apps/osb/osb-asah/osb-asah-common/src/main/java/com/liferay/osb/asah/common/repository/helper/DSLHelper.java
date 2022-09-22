@@ -132,6 +132,10 @@ public class DSLHelper {
 				OffsetDateTime.class);
 		}
 
+		if (timeZoneId.equals("UTC")) {
+			return DSL.field(fieldName, OffsetDateTime.class);
+		}
+
 		return DSL.field(
 			String.format("%s AT TIME ZONE '%s'", fieldName, timeZoneId),
 			OffsetDateTime.class);
