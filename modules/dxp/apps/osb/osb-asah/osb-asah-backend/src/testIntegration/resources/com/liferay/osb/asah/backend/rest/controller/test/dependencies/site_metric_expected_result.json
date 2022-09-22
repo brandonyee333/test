@@ -2,22 +2,22 @@
 	"data": {
 		"site": {
 			"anonymousVisitorsMetric": {
-				"value": 0.0
+				"value": 1.0
 			},
 			"bounceRateMetric": {
-				"value": 0.0
+				"value": 0.5
 			},
 			"knownVisitorsMetric": {
-				"value": 1.0
+				"value": 3.0
 			},
 			"sessionDurationMetric": {
-				"value": 5.94E+7
+				"value": 138750
 			},
 			"sessionsMetric": {
-				"value": 1.0
+				"value": 8.0
 			},
 			"sessionsPerVisitorMetric": {
-				"value": 1.0
+				"value": 2.0
 			},
 			"visitorsMetric": {
 				"histogram": {
@@ -48,7 +48,7 @@
 							"value": 0
 						},
 						{
-							"value": 0
+							"value": 1
 						},
 						{
 							"value": 0
@@ -60,40 +60,7 @@
 							"value": 0
 						},
 						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
-						},
-						{
-							"value": 0
+							"value": 1
 						},
 						{
 							"value": 0
@@ -112,10 +79,43 @@
 						},
 						{
 							"value": 0
+						},
+						{
+							"value": 0
+						},
+						{
+							"value": 0
+						},
+						{
+							"value": 1
+						},
+						{
+							"value": 1
+						},
+						{
+							"value": 0
+						},
+						{
+							"value": 0
+						},
+						{
+							"value": 2
+						},
+						{
+							"value": 0
+						},
+						{
+							"value": 0
+						},
+						{
+							"value": 0
+						},
+						{
+							"value": 1
 						}
 					]
 				},
-				"value": 1.0
+				"value": 4.0
 			}
 		}
 	}
