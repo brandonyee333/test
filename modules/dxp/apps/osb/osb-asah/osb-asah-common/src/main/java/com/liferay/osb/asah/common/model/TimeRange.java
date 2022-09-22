@@ -272,14 +272,11 @@ public class TimeRange {
 			return of(endLocalDateTime, startLocalDateTime);
 		}
 
-		LocalDate endLocalDate = getEndLocalDate();
 		LocalDate startLocalDate = getStartLocalDate();
 
-		endLocalDate = endLocalDate.plusDays(1);
+		startLocalDate = startLocalDate.minusDays(getDeltaDays() - 1);
 
-		startLocalDate = startLocalDate.minusDays(getDeltaDays());
-
-		return of(endLocalDate, startLocalDate);
+		return of(getEndLocalDate(), startLocalDate);
 	}
 
 	public boolean getIncludeToday() {
