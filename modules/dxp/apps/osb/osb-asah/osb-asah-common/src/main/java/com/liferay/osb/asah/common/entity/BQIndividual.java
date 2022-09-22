@@ -76,11 +76,6 @@ public class BQIndividual implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getEmailAddressHashed() {
-		return _emailAddressHashed;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	@Column("fields")
 	public JSONArray getFieldsJSONArray() {
 		return _fieldsJSONArray;
@@ -91,10 +86,11 @@ public class BQIndividual implements Persistable<String> {
 		return _firstName;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
 	public String getId() {
-		return _emailAddress;
+		return _id;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -145,16 +141,16 @@ public class BQIndividual implements Persistable<String> {
 		_emailAddress = emailAddress;
 	}
 
-	public void setEmailAddressHashed(String emailAddressHashed) {
-		_emailAddressHashed = emailAddressHashed;
-	}
-
 	public void setFieldsJSONArray(JSONArray fieldsJSONArray) {
 		_fieldsJSONArray = fieldsJSONArray;
 	}
 
 	public void setFirstName(String firstName) {
 		_firstName = firstName;
+	}
+
+	public void setId(String id) {
+		_id = id;
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -186,13 +182,13 @@ public class BQIndividual implements Persistable<String> {
 	private String _emailAddress;
 
 	@Transient
-	private String _emailAddressHashed;
-
-	@Transient
 	private JSONArray _fieldsJSONArray;
 
 	@Transient
 	private String _firstName;
+
+	@Transient
+	private String _id;
 
 	@Transient
 	private Boolean _isNew;

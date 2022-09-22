@@ -109,7 +109,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 						0
 					),
 					DSL.field(
-						"identity.emailaddresshashed"
+						"identity.individualId"
 					).isNull())
 			));
 	}
@@ -454,13 +454,12 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return _queryExecutor.queryForList(
 			recordMap -> new Individual(
 				(String)recordMap.get("individual.emailAddress"),
-				(String)recordMap.get("individual.emailAddressHashed"),
+				(String)recordMap.get("individual.id"),
 				recordMap.get("individual.firstName") + " " +
 					recordMap.get("individual.lastName")),
 			dslContext.selectDistinct(
 				DSL.field("individual.emailAddress"),
-				DSL.field("individual.emailAddressHashed"),
-				DSL.field("individual.firstName"),
+				DSL.field("individual.firstName"), DSL.field("individual.id"),
 				DSL.field("individual.lastName")
 			).from(
 				DSL.table(
@@ -484,9 +483,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				individualTable
 			).on(
 				DSL.field(
-					"individual.emailaddresshashed"
+					"individual.id"
 				).eq(
-					DSL.field("identity.emailaddresshashed")
+					DSL.field("identity.individualId")
 				)
 			).where(
 				whereClauseCondition.and(
@@ -528,7 +527,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		return _queryExecutor.queryForLong(
 			dslContext.select(
-				DSL.countDistinct(DSL.field("individual.emailAddressHashed"))
+				DSL.countDistinct(DSL.field("individual.id"))
 			).from(
 				DSL.table(
 					getTableName(timeRange)
@@ -555,9 +554,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				)
 			).on(
 				DSL.field(
-					"individual.emailaddresshashed"
+					"individual.id"
 				).eq(
-					DSL.field("identity.emailaddresshashed")
+					DSL.field("identity.individualId")
 				)
 			).where(
 				whereClauseCondition.and(
@@ -588,9 +587,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 						"userId"
 					),
 					DSL.field(
-						"membership.emailAddressHashed"
+						"membership.individualId"
 					).as(
-						"emailAddressHashed"
+						"individualId"
 					)
 				).from(
 					DSL.table(
@@ -631,7 +630,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					"segmentedIndividuals"
 				).where(
 					DSL.field(
-						"segmentedIndividuals.emailaddresshashed"
+						"segmentedIndividuals.individualId"
 					).isNull()
 				)
 			).with(
@@ -639,7 +638,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).as(
 				dslContext.select(
 					DSL.countDistinct(
-						DSL.field("segmentedIndividuals.emailaddresshashed")
+						DSL.field("segmentedIndividuals.individualId")
 					).as(
 						"value"
 					)
@@ -647,7 +646,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					"segmentedIndividuals"
 				).where(
 					DSL.field(
-						"segmentedIndividuals.emailaddresshashed"
+						"segmentedIndividuals.individualId"
 					).isNotNull()
 				)
 			).select(
@@ -690,7 +689,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				"segmentedIndividuals"
 			).as(
 				dslContext.select(
-					DSL.field("membership.emailAddressHashed"),
+					DSL.field("membership.individualId"),
 					DSL.field("membership.segmentId"),
 					DSL.field("membership.userId")
 				).from(
@@ -737,7 +736,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					"segmentedIndividuals"
 				).where(
 					DSL.field(
-						"segmentedIndividuals.emailaddresshashed"
+						"segmentedIndividuals.individualId"
 					).isNull()
 				).groupBy(
 					DSL.field("segmentedIndividuals.segmentId")
@@ -752,7 +751,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 						"segmentId"
 					),
 					DSL.countDistinct(
-						DSL.field("segmentedIndividuals.emailaddresshashed")
+						DSL.field("segmentedIndividuals.individualId")
 					).as(
 						"value"
 					)
@@ -760,7 +759,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					"segmentedIndividuals"
 				).where(
 					DSL.field(
-						"segmentedIndividuals.emailaddresshashed"
+						"segmentedIndividuals.individualId"
 					).isNotNull()
 				).groupBy(
 					DSL.field("segmentedIndividuals.segmentId")

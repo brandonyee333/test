@@ -101,7 +101,7 @@ public class IdentityRestControllerTest
 			"345085929068798696", messageJSONObject.getString("dataSourceId"));
 		Assertions.assertEquals(
 			DigestUtils.sha256Hex(emailAddress),
-			messageJSONObject.getString("emailAddressHashed"));
+			messageJSONObject.getString("individualId"));
 	}
 
 	@RepositoryResource(
@@ -109,8 +109,8 @@ public class IdentityRestControllerTest
 		resourcePath = "osbasahfaroinfo/data_sources.json"
 	)
 	@Test
-	public void testEmailAddressHashed() {
-		String emailAddressHashed =
+	public void testIndividualId() {
+		String individualId =
 			"47ff64395860b1d498241d907069f649b98c198a95b3ba5303b87094058590c1";
 
 		_exchange(
@@ -119,7 +119,7 @@ public class IdentityRestControllerTest
 			).put(
 				"dataSourceId", "345085929068798696"
 			).put(
-				"emailAddressHashed", emailAddressHashed
+				"individualId", individualId
 			).put(
 				"userId", RandomTestUtil.randomUUID()
 			).toString());
@@ -139,8 +139,7 @@ public class IdentityRestControllerTest
 		Assertions.assertEquals(
 			"345085929068798696", messageJSONObject.getString("dataSourceId"));
 		Assertions.assertEquals(
-			emailAddressHashed,
-			messageJSONObject.getString("emailAddressHashed"));
+			individualId, messageJSONObject.getString("individualId"));
 	}
 
 	@Disabled
@@ -221,7 +220,7 @@ public class IdentityRestControllerTest
 			dataSourceId, messageJSONObject.getString("dataSourceId"));
 		Assertions.assertEquals(
 			DigestUtils.sha256Hex("nina.simone@liferay.com"),
-			messageJSONObject.getString("emailAddressHashed"));
+			messageJSONObject.getString("individualId"));
 	}
 
 	@MockBean

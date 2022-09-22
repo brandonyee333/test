@@ -325,7 +325,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 
 	private Field<Integer> _getKnownVisitorsField(boolean alias) {
 		Field<Integer> field = DSL.countDistinct(
-			DSL.field("BQIdentity.emailaddresshashed"));
+			DSL.field("BQIdentity.individualId"));
 
 		if (alias) {
 			return field.as("knownvisitors");
@@ -434,7 +434,7 @@ public class BQPageRepositoryImpl implements BQPageRepository {
 			DSL.countDistinct(
 				DSL.when(
 					DSL.field(
-						"BQIdentity.emailaddresshashed"
+						"BQIdentity.individualId"
 					).isNull(),
 					DSL.field(_getFieldName("userid", tableName))))
 		).as(

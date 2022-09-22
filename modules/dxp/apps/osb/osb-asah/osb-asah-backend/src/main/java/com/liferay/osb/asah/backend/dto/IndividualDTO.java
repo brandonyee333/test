@@ -79,7 +79,6 @@ public class IndividualDTO {
 			_dataSourceIndividualPKDTOs = dataSourceIndividualPKDTOs;
 		}
 
-		_emailAddressHashed = individual.getEmailAddressHashed();
 		_firstEnrichmentDate = individual.getFirstEnrichmentDate();
 		_groupIds = SetUtil.map(individual.getGroupIds(), String::valueOf);
 		_id = StringUtil.get(individual.getId(), null);
@@ -143,11 +142,6 @@ public class IndividualDTO {
 	@JsonProperty("dataSourceIndividualPKs")
 	public Set<DataSourceIndividualPKDTO> getDataSourceIndividualPKDTOs() {
 		return _dataSourceIndividualPKDTOs;
-	}
-
-	@JsonProperty("emailAddressHashed")
-	public String getEmailAddressHashed() {
-		return _emailAddressHashed;
 	}
 
 	@JsonProperty("_embedded")
@@ -574,7 +568,6 @@ public class IndividualDTO {
 	private Set<String> _channelIds;
 	private Date _createDate;
 	private Set<DataSourceIndividualPKDTO> _dataSourceIndividualPKDTOs;
-	private String _emailAddressHashed;
 	private Map<String, Object> _embedded;
 	private Date _firstEnrichmentDate;
 	private Set<String> _groupIds;

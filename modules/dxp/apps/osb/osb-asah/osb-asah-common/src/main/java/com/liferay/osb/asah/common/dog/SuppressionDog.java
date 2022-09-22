@@ -47,7 +47,7 @@ public class SuppressionDog {
 		suppression.setDataControlTaskCreateDate(dataControlTaskCreateDate);
 		suppression.setDataControlTaskStatus(dataControlTaskStatus);
 		suppression.setEmailAddress(emailAddress);
-		suppression.setEmailAddressHashed(DigestUtils.sha256Hex(emailAddress));
+		suppression.setIndividualId(DigestUtils.sha256Hex(emailAddress));
 
 		return _suppressionRepository.save(suppression);
 	}
@@ -81,16 +81,13 @@ public class SuppressionDog {
 					emailAddress));
 	}
 
-	public boolean isSuppressed(
-		String emailAddress, String emailAddressHashed) {
-
+	public boolean isSuppressed(String emailAddress, String individualId) {
 		if (StringUtils.isNotEmpty(emailAddress)) {
 			return _suppressionRepository.existsByEmailAddress(emailAddress);
 		}
 
-		if (StringUtils.isNotEmpty(emailAddressHashed)) {
-			return _suppressionRepository.existsByEmailAddressHashed(
-				emailAddressHashed);
+		if (StringUtils.isNotEmpty(individualId)) {
+			return _suppressionRepository.existsByIndividualId(individualId);
 		}
 
 		return false;

@@ -60,9 +60,8 @@ public class BQMembership implements Persistable<Long> {
 		BQMembership bqMembership = (BQMembership)obj;
 
 		if (Objects.equals(_createDate, bqMembership._createDate) &&
-			Objects.equals(
-				_emailAddressHashed, bqMembership._emailAddressHashed) &&
 			Objects.equals(_id, bqMembership._id) &&
+			Objects.equals(_individualId, bqMembership._individualId) &&
 			Objects.equals(_modifiedDate, bqMembership._modifiedDate) &&
 			Objects.equals(_removedDate, bqMembership._removedDate) &&
 			Objects.equals(_segmentId, bqMembership._segmentId) &&
@@ -91,16 +90,16 @@ public class BQMembership implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getEmailAddressHashed() {
-		return _emailAddressHashed;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
 	public Long getId() {
 		return _id;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getIndividualId() {
+		return _individualId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -148,7 +147,6 @@ public class BQMembership implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("userId")
-	@JsonProperty("individualId")
 	public String getUserId() {
 		return _userId;
 	}
@@ -156,7 +154,7 @@ public class BQMembership implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_createDate, _emailAddressHashed, _id, _modifiedDate, _removedDate,
+			_createDate, _id, _individualId, _modifiedDate, _removedDate,
 			_segmentId, _status, _userId);
 	}
 
@@ -176,12 +174,12 @@ public class BQMembership implements Persistable<Long> {
 		}
 	}
 
-	public void setEmailAddressHashed(String emailAddressHashed) {
-		_emailAddressHashed = emailAddressHashed;
-	}
-
 	public void setId(Long id) {
 		_id = id;
+	}
+
+	public void setIndividualId(String individualId) {
+		_individualId = individualId;
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -216,10 +214,10 @@ public class BQMembership implements Persistable<Long> {
 	private Date _createDate;
 
 	@Transient
-	private String _emailAddressHashed;
+	private Long _id;
 
 	@Transient
-	private Long _id;
+	private String _individualId;
 
 	@Transient
 	private Boolean _isNew;

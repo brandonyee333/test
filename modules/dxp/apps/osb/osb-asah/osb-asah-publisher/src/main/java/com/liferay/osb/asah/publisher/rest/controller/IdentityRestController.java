@@ -52,7 +52,7 @@ public class IdentityRestController {
 			).put(
 				"dataSourceId", jsonObject.getString("dataSourceId")
 			).put(
-				"emailAddressHashed", _getEmailAddressHashed(jsonObject)
+				"individualId", _getIndividualId(jsonObject)
 			).put(
 				"projectId", ProjectIdThreadLocal.getProjectId()
 			).put(
@@ -73,9 +73,9 @@ public class IdentityRestController {
 		return analyticsDataJSONObject;
 	}
 
-	private String _getEmailAddressHashed(JSONObject jsonObject) {
-		if (jsonObject.has("emailAddressHashed")) {
-			return jsonObject.getString("emailAddressHashed");
+	private String _getIndividualId(JSONObject jsonObject) {
+		if (jsonObject.has("individualId")) {
+			return jsonObject.getString("individualId");
 		}
 
 		JSONObject identityJSONObject = jsonObject.getJSONObject("identity");

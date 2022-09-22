@@ -41,7 +41,7 @@ public class SuppressionRepositoryTest
 		Suppression suppression = new Suppression();
 
 		suppression.setEmailAddress("test@liferay.com");
-		suppression.setEmailAddressHashed("1232324234");
+		suppression.setIndividualId("1232324234");
 		suppression.setIsNew(true);
 
 		_suppressionRepository.save(suppression);
@@ -70,9 +70,9 @@ public class SuppressionRepositoryTest
 	}
 
 	@Test
-	public void testExistsByEmailAddressHashed() {
+	public void testExistsByIndividualId() {
 		Assertions.assertTrue(
-			_suppressionRepository.existsByEmailAddressHashed("1232324234"));
+			_suppressionRepository.existsByIndividualId("1232324234"));
 	}
 
 	@Test

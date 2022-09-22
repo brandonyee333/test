@@ -1,22 +1,22 @@
 [
 	{
 		"createDate": "${now-3d}",
-		"emailAddressHashed": "test1@liferay.com",
+		"individualId": "test1@liferay.com",
 		"userId": "1"
 	},
 	{
 		"createDate": "${now-5d}",
-		"emailAddressHashed": "test2@liferay.com",
+		"individualId": "test2@liferay.com",
 		"userId": "2"
 	},
 	{
 		"createDate": "${now-11d}",
-		"emailAddressHashed": "test3@liferay.com",
+		"individualId": "test3@liferay.com",
 		"userId": "3"
 	},
 	{
 		"createDate": "${now-36d}",
-		"emailAddressHashed": "test4@liferay.com",
+		"individualId": "test4@liferay.com",
 		"userId": "4"
 	},
 	{

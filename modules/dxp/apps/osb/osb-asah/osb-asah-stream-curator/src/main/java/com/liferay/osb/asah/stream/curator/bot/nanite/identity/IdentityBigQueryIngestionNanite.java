@@ -206,17 +206,16 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 	private JSONObject _toJSONObject(Message<JSONObject> message) {
 		JSONObject messageJSONObject = message.getObject();
 
-		String emailAddressHashed = messageJSONObject.getString(
-			"emailAddressHashed");
+		String individualId = messageJSONObject.getString("individualId");
 
-		if (Objects.equals(emailAddressHashed, _EMPTY_EMAIL_ADDRESS_HASHED)) {
-			emailAddressHashed = null;
+		if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
+			individualId = null;
 		}
 
 		return JSONUtil.put(
 			"createDate", DateUtil.toString(new Date())
 		).put(
-			"emailAddressHashed", emailAddressHashed
+			"individualId", individualId
 		).put(
 			"projectId", messageJSONObject.getString("projectId")
 		).put(

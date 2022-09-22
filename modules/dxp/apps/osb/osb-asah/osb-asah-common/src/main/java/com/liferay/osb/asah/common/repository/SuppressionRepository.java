@@ -42,7 +42,7 @@ public interface SuppressionRepository extends Repository<Suppression, Long> {
 	public boolean existsByEmailAddress(String emailAddress);
 
 	@Cacheable
-	public boolean existsByEmailAddressHashed(String emailAddressHashed);
+	public boolean existsByIndividualId(String individualId);
 
 	@Cacheable
 	public Optional<Suppression> findByEmailAddress(String emailAddress);

@@ -111,16 +111,16 @@ public class Suppression implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getEmailAddressHashed() {
-		return _emailAddressHashed;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
 	public Long getId() {
 		return _id;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getIndividualId() {
+		return _individualId;
 	}
 
 	@Override
@@ -163,12 +163,12 @@ public class Suppression implements Persistable<Long> {
 		_emailAddress = emailAddress;
 	}
 
-	public void setEmailAddressHashed(String emailAddressHashed) {
-		_emailAddressHashed = emailAddressHashed;
-	}
-
 	public void setId(Long id) {
 		_id = id;
+	}
+
+	public void setIndividualId(String individualId) {
+		_individualId = individualId;
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -191,10 +191,10 @@ public class Suppression implements Persistable<Long> {
 	private String _emailAddress;
 
 	@Transient
-	private String _emailAddressHashed;
+	private Long _id;
 
 	@Transient
-	private Long _id;
+	private String _individualId;
 
 	@Transient
 	private Boolean _isNew;

@@ -108,9 +108,9 @@ public class BQIndividualRepositoryImpl
 						channelId
 					),
 					DSL.field(
-						"BQIdentityActivity.emailAddressHashed"
+						"BQIdentityActivity.individualId"
 					).eq(
-						DSL.field("BQIndividual.emailAddressHashed")
+						DSL.field("BQIndividual.id")
 					))
 			));
 	}

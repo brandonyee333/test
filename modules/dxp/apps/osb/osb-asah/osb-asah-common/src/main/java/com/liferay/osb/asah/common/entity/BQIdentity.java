@@ -57,14 +57,14 @@ public class BQIdentity implements Persistable<String> {
 		return new Date(_createDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getEmailAddressHashed() {
-		return _emailAddressHashed;
-	}
-
 	@Override
 	public String getId() {
 		return _userId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getIndividualId() {
+		return _individualId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -93,8 +93,8 @@ public class BQIdentity implements Persistable<String> {
 		}
 	}
 
-	public void setEmailAddressHashed(String emailAddressHashed) {
-		_emailAddressHashed = emailAddressHashed;
+	public void setIndividualId(String individualId) {
+		_individualId = individualId;
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -109,7 +109,7 @@ public class BQIdentity implements Persistable<String> {
 	private Date _createDate;
 
 	@Transient
-	private String _emailAddressHashed;
+	private String _individualId;
 
 	@Transient
 	private Boolean _isNew;

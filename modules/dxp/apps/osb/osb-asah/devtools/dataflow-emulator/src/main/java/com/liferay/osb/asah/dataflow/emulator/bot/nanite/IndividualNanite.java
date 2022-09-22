@@ -80,8 +80,8 @@ public class IndividualNanite {
 
 		Stream<BQIdentity> bqIdentityStream = bqIdentities.stream();
 
-		Set<String> emailAddressHashedSet = bqIdentityStream.map(
-			BQIdentity::getEmailAddressHashed
+		Set<String> individualIdSet = bqIdentityStream.map(
+			BQIdentity::getIndividualId
 		).filter(
 			Objects::nonNull
 		).collect(
@@ -91,7 +91,7 @@ public class IndividualNanite {
 		Stream<BQUser> stream = bqUsers.stream();
 
 		return stream.filter(
-			bqUser -> emailAddressHashedSet.contains(
+			bqUser -> individualIdSet.contains(
 				DigestUtils.sha256Hex(bqUser.getEmailAddress()))
 		).map(
 			this::_toBQIndividual
@@ -132,8 +132,6 @@ public class IndividualNanite {
 		BQIndividual mergedBQIndividual = new BQIndividual();
 
 		mergedBQIndividual.setEmailAddress(bqIndividual2.getEmailAddress());
-		mergedBQIndividual.setEmailAddressHashed(
-			bqIndividual2.getEmailAddressHashed());
 
 		Collection<Field> mergedBQIndividualFields = _mergeBQIndividualFields(
 			bqIndividual1, bqIndividual2);
@@ -143,6 +141,7 @@ public class IndividualNanite {
 				mergedBQIndividualFields, JSONArray.class));
 
 		mergedBQIndividual.setFirstName(bqIndividual2.getFirstName());
+		mergedBQIndividual.setId(bqIndividual2.getId());
 		mergedBQIndividual.setIsNew(Boolean.TRUE);
 		mergedBQIndividual.setLastName(bqIndividual2.getLastName());
 		mergedBQIndividual.setMiddleName(bqIndividual2.getMiddleName());
@@ -234,9 +233,6 @@ public class IndividualNanite {
 		BQIndividual bqIndividual = new BQIndividual();
 
 		bqIndividual.setEmailAddress(bqUser.getEmailAddress());
-		bqIndividual.setEmailAddressHashed(
-			DigestUtils.sha256Hex(
-				StringUtils.toLowerCase(bqUser.getEmailAddress())));
 
 		List<Field> defaultFields = _toFields(
 			bqUser.getDataSourceId(), bqUser.getFieldsJSONArray(),
@@ -250,6 +246,9 @@ public class IndividualNanite {
 				JSONArray.class));
 
 		bqIndividual.setFirstName(bqUser.getFirstName());
+		bqIndividual.setId(
+			DigestUtils.sha256Hex(
+				StringUtils.toLowerCase(bqUser.getEmailAddress())));
 		bqIndividual.setIsNew(Boolean.TRUE);
 		bqIndividual.setLastName(bqUser.getLastName());
 		bqIndividual.setMiddleName(bqUser.getMiddleName());

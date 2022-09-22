@@ -157,7 +157,7 @@ public class BQIdentityRepositoryTest
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -3));
-		bqIdentity.setEmailAddressHashed("test1@liferay.com");
+		bqIdentity.setIndividualId("test1@liferay.com");
 		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId("1");
 
@@ -166,7 +166,7 @@ public class BQIdentityRepositoryTest
 		bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -5));
-		bqIdentity.setEmailAddressHashed("test2@liferay.com");
+		bqIdentity.setIndividualId("test2@liferay.com");
 		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId("2");
 
@@ -175,7 +175,7 @@ public class BQIdentityRepositoryTest
 		bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -11));
-		bqIdentity.setEmailAddressHashed("test3@liferay.com");
+		bqIdentity.setIndividualId("test3@liferay.com");
 		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId("3");
 
@@ -184,7 +184,7 @@ public class BQIdentityRepositoryTest
 		bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -36));
-		bqIdentity.setEmailAddressHashed("test4@liferay.com");
+		bqIdentity.setIndividualId("test4@liferay.com");
 		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId("4");
 
@@ -294,7 +294,7 @@ public class BQIdentityRepositoryTest
 
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -2));
 		bqIndividual.setEmailAddress("test1@liferay.com");
-		bqIndividual.setEmailAddressHashed("test1@liferay.com");
+		bqIndividual.setId("test1@liferay.com");
 		bqIndividual.setIsNew(Boolean.TRUE);
 
 		_bqIndividualRepository.save(bqIndividual);
@@ -303,7 +303,7 @@ public class BQIdentityRepositoryTest
 
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -4));
 		bqIndividual.setEmailAddress("test2@liferay.com");
-		bqIndividual.setEmailAddressHashed("test2@liferay.com");
+		bqIndividual.setId("test2@liferay.com");
 		bqIndividual.setIsNew(Boolean.TRUE);
 
 		_bqIndividualRepository.save(bqIndividual);
@@ -312,7 +312,7 @@ public class BQIdentityRepositoryTest
 
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -10));
 		bqIndividual.setEmailAddress("test3@liferay.com");
-		bqIndividual.setEmailAddressHashed("test3@liferay.com");
+		bqIndividual.setId("test3@liferay.com");
 		bqIndividual.setIsNew(Boolean.TRUE);
 
 		_bqIndividualRepository.save(bqIndividual);
@@ -321,7 +321,7 @@ public class BQIdentityRepositoryTest
 
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -35));
 		bqIndividual.setEmailAddress("test4@liferay.com");
-		bqIndividual.setEmailAddressHashed("test4@liferay.com");
+		bqIndividual.setId("test4@liferay.com");
 		bqIndividual.setIsNew(Boolean.TRUE);
 
 		_bqIndividualRepository.save(bqIndividual);
@@ -331,7 +331,7 @@ public class BQIdentityRepositoryTest
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
-		bqIdentity.setEmailAddressHashed(RandomTestUtil.randomEmailAddress());
+		bqIdentity.setIndividualId(RandomTestUtil.randomEmailAddress());
 		bqIdentity.setIsNew(Boolean.TRUE);
 		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 

@@ -122,7 +122,7 @@ public class BQIdentityRepositoryImpl
 		if (metricType == IndividualMetricType.ANONYMOUS_INDIVIDUALS) {
 			conditions.add(
 				DSL.field(
-					"identity.emailAddressHashed"
+					"identity.individualId"
 				).isNull());
 		}
 
@@ -195,9 +195,9 @@ public class BQIdentityRepositoryImpl
 				)
 			).on(
 				DSL.field(
-					"identity.emailAddressHashed"
+					"identity.individualId"
 				).eq(
-					DSL.field("individual.emailAddressHashed")
+					DSL.field("individual.id")
 				)
 			);
 		}
