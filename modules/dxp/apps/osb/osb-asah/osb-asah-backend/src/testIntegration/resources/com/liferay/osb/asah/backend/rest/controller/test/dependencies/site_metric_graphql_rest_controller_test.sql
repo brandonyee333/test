@@ -1,15 +1,15 @@
-INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES ('A', '1');
-INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES ('B', '2');
-INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES ('C', '3');
-INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES (null, '4');
-INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES (null, '5');
-INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES (null, '6');
-INSERT INTO BQIdentity (emailAddressHashed, userId) VALUES (null, '7');
+INSERT INTO BQIdentity (individualId, userId) VALUES ('A', '1');
+INSERT INTO BQIdentity (individualId, userId) VALUES ('B', '2');
+INSERT INTO BQIdentity (individualId, userId) VALUES ('C', '3');
+INSERT INTO BQIdentity (individualId, userId) VALUES (null, '4');
+INSERT INTO BQIdentity (individualId, userId) VALUES (null, '5');
+INSERT INTO BQIdentity (individualId, userId) VALUES (null, '6');
+INSERT INTO BQIdentity (individualId, userId) VALUES (null, '7');
 
-INSERT INTO BQIndividual (emailAddressHashed) VALUES ('A');
-INSERT INTO BQIndividual (emailAddressHashed) VALUES ('B');
-INSERT INTO BQIndividual (emailAddressHashed) VALUES ('C');
-INSERT INTO BQIndividual (emailAddressHashed) VALUES ('D');
+INSERT INTO BQIndividual (id) VALUES ('A');
+INSERT INTO BQIndividual (id) VALUES ('B');
+INSERT INTO BQIndividual (id) VALUES ('C');
+INSERT INTO BQIndividual (id) VALUES ('D');
 
 INSERT INTO BQSession (bounce, channelId, duration, id, sessionEnd, sessionStart, userId) VALUES (0, 1, 150000, '1', timestamp '${today-1d}', timestamp '${today-1d}', '1');
 INSERT INTO BQSession (bounce, channelId, duration, id, sessionEnd, sessionStart, userId) VALUES (1, 1, 300000, '2', timestamp '${today-5d}', timestamp '${today-5d}', '1');

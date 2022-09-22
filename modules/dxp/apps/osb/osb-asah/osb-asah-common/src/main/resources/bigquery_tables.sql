@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS BQGroup (
 
 CREATE TABLE IF NOT EXISTS BQIdentity (
 	createDate TIMESTAMP,
-	emailAddressHashed TEXT,
+	individualId TEXT,
 	userId TEXT PRIMARY KEY
 );
 
@@ -144,9 +144,9 @@ CREATE TABLE IF NOT EXISTS BQIdentityActivity (
 	channelId BIGINT,
 	createDate TIMESTAMP,
 	dataSourceId BIGINT,
-	emailAddressHashed TEXT,
 	id TEXT PRIMARY KEY,
-	identityId TEXT
+	identityId TEXT,
+	individualId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQIdentityChannel (
@@ -163,10 +163,9 @@ CREATE TABLE IF NOT EXISTS BQIdentityChannel (
 CREATE TABLE IF NOT EXISTS BQIndividual (
 	createDate TIMESTAMP,
 	emailAddress TEXT,
-	emailAddressHashed TEXT PRIMARY KEY,
 	fields JSON,
 	firstName TEXT,
-	id TEXT UNIQUE,
+	id TEXT PRIMARY KEY,
 	lastName TEXT,
 	middleName TEXT,
 	modifiedDate TIMESTAMPTZ,
@@ -185,8 +184,8 @@ CREATE TABLE IF NOT EXISTS Interest (
 
 CREATE TABLE IF NOT EXISTS BQMembership (
 	createDate TIMESTAMPTZ,
-	emailAddressHashed TEXT,
 	id BIGSERIAL PRIMARY KEY,
+	individualId TEXT,
 	modifiedDate TIMESTAMPTZ,
 	removedDate TIMESTAMPTZ,
 	segmentId BIGINT,
@@ -283,10 +282,10 @@ CREATE TABLE IF NOT EXISTS BQUser (
 	dataSourceId BIGINT,
 	dxpUserId BIGINT,
 	emailAddress TEXT,
-	emailAddressHashed TEXT,
 	fields json,
 	firstName TEXT,
 	id TEXT PRIMARY KEY,
+	individualId TEXT,
 	lastName TEXT,
 	middleName TEXT,
 	modifiedDate TIMESTAMP,

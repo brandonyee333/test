@@ -195,5 +195,5 @@ CREATE TABLE IF NOT EXISTS Suppression (
 	dataControlTaskCreateDate TIMESTAMPTZ,
 	dataControlTaskStatus TEXT,
 	emailAddress TEXT,
-	emailAddressHashed TEXT
+	individualId TEXT
 );

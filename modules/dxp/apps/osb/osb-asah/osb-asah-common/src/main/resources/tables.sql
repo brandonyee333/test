@@ -247,10 +247,10 @@ CREATE TABLE IF NOT EXISTS Individual (
 	id BIGSERIAL PRIMARY KEY,
 	channelIds BIGINT[],
 	createDate TIMESTAMPTZ,
-	emailAddressHashed TEXT,
 	firstEnrichmentDate TIMESTAMPTZ,
 	groupIds BIGINT[],
 	lastEnrichmentDate TIMESTAMPTZ,
+	individualId TEXT,
 	modifiedDate TIMESTAMPTZ,
 	organizationIds BIGINT[],
 	roleIds BIGINT[],
@@ -360,5 +360,5 @@ CREATE TABLE IF NOT EXISTS Suppression (
 	dataControlTaskCreateDate TIMESTAMPTZ,
 	dataControlTaskStatus TEXT,
 	emailAddress TEXT,
-	emailAddressHashed TEXT
+	individualId TEXT
 );

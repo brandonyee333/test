@@ -1,10 +1,10 @@
-INSERT INTO BQIdentity(emailAddressHashed, userId) VALUES ('1', '1');
-INSERT INTO BQIdentity(emailAddressHashed, userId) VALUES ('2', '2');
+INSERT INTO BQIdentity(individualId, userId) VALUES ('1', '1');
+INSERT INTO BQIdentity(individualId, userId) VALUES ('2', '2');
 
-INSERT INTO BQIndividual(emailAddressHashed) VALUES ('1');
-INSERT INTO BQIndividual(emailAddressHashed) VALUES ('2');
-INSERT INTO BQIndividual(emailAddressHashed) VALUES ('3');
-INSERT INTO BQIndividual(emailAddressHashed) VALUES ('4');
+INSERT INTO BQIndividual(id) VALUES ('1');
+INSERT INTO BQIndividual(id) VALUES ('2');
+INSERT INTO BQIndividual(id) VALUES ('3');
+INSERT INTO BQIndividual(id) VALUES ('4');
 
 INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '1', timestamp '${now-1d}', timestamp '${now-3d}', '1');
 INSERT INTO BQSession (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '2', timestamp '${now-2d}', timestamp '${now-3d}', '2');
