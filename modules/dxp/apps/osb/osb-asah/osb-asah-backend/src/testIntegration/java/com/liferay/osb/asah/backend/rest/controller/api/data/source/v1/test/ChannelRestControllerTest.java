@@ -28,12 +28,7 @@ import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.hamcrest.Matchers;
-
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,25 +80,24 @@ public class ChannelRestControllerTest
 		requestSpecification.header(HeaderConstants.PROJECT_ID, "test");
 		requestSpecification.port(_serverPort);
 
-		List<JSONObject> groups = Arrays.asList(
-			JSONUtil.put(
-				"id", String.valueOf(RandomTestUtil.randomNumber())
-			).put(
-				"name", RandomTestUtil.randomString()
-			),
-			JSONUtil.put(
-				"id", String.valueOf(RandomTestUtil.randomNumber())
-			).put(
-				"name", RandomTestUtil.randomString()
-			));
-
 		Response response = requestSpecification.body(
 			JSONUtil.put(
 				"channelType", "multiple"
 			).put(
 				"dataSourceId", String.valueOf(RandomTestUtil.randomNumber())
 			).put(
-				"groups", JSONUtil.toJSONArray(groups, t -> t)
+				"groups",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"id", String.valueOf(RandomTestUtil.randomNumber())
+					).put(
+						"name", RandomTestUtil.randomString()
+					),
+					JSONUtil.put(
+						"id", String.valueOf(RandomTestUtil.randomNumber())
+					).put(
+						"name", RandomTestUtil.randomString()
+					))
 			).toString()
 		).request(
 			Method.POST, "/api/1.0/channels"
