@@ -40,9 +40,6 @@ USING
 		SELECT
 			emailAddress,
 			modifiedDate,
-			TO_HEX(
-				SHA256(emailAddress)
-			) AS sha256HexId,
 			ARRAY(
 				SELECT AS STRUCT
 					dataSourceId,
@@ -99,7 +96,7 @@ USING
 		)
 	) AS staging
 ON
-	LOWER(replica.emailAddress) = LOWER(staging.emailAddress)
+	LOWER(replica.emailAddress) = staging.emailAddress
 WHEN MATCHED THEN
 	UPDATE SET
 		replica.fields = staging.stagingFields,
@@ -107,16 +104,14 @@ WHEN MATCHED THEN
 WHEN NOT MATCHED BY TARGET THEN
 	INSERT(
 		`emailAddress`,
-		`emailAddressHashed`,
 		`fields`,
 		`id`,
 		`modifiedDate`
 	)
 	VALUES (
 		LOWER(staging.emailAddress),
-		TO_HEX(SHA256(LOWER(staging.emailAddress))),
 		staging.stagingFields,
-		staging.sha256HexId,
+		TO_HEX(SHA256(LOWER(staging.emailAddress))),
 		staging.modifiedDate
 	)
 WHEN NOT MATCHED BY SOURCE THEN
