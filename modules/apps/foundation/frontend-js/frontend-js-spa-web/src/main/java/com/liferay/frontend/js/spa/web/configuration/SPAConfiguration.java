@@ -36,6 +36,12 @@ public interface SPAConfiguration {
 	public String cacheExpirationTime();
 
 	@Meta.AD(
+		description = "custom-excluded-paths-description",
+		name = "custom-excluded-paths-name", required = false
+	)
+	public String[] customExcludedPaths();
+
+	@Meta.AD(
 		deflt = "false",
 		description = "disable-in-internet-explorer-description",
 		name = "disable-in-internet-explorer", required = false
