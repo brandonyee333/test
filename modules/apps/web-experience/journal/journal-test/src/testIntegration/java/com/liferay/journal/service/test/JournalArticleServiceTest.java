@@ -601,7 +601,8 @@ public class JournalArticleServiceTest {
 			JournalArticle article, DDMStructure ddmStructure)
 		throws PortalException {
 
-		new JournalArticleLocalServiceImpl() {
+		new JournalArticleLocalServiceImpl(
+		) {
 
 			@Override
 			public void checkStructure(
@@ -611,7 +612,9 @@ public class JournalArticleServiceTest {
 				super.checkStructure(article, structure);
 			}
 
-		}.checkStructure(article, ddmStructure);
+		}.checkStructure(
+			article, ddmStructure
+		);
 	}
 
 	protected int countArticlesByKeyword(String keyword, int status)
