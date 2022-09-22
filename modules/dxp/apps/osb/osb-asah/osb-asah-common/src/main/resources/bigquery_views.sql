@@ -693,7 +693,7 @@ CREATE OR REPLACE VIEW BQFieldMapping AS (
 		),
 		DemographicsFieldMapping AS (
 			SELECT
-				'demographics'context,
+				'demographics' context,
 				ARRAY[]::BIGINT[] dataSourceIds,
 				displayName,
 				'input-field' displayType,

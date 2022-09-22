@@ -42,7 +42,7 @@ public class IndividualsRestController
 
 	@GetMapping("/distribution")
 	public PageDTO<DistributionDTO> getDistributionDTOPageDTO(
-			@RequestParam String channelId, @RequestParam String fieldMappingId,
+			@RequestParam Long channelId, @RequestParam String fieldMappingId,
 			@RequestParam(required = false) Long individualSegmentId,
 			@RequestParam(defaultValue = "10") int numberOfBins,
 			@RequestParam(defaultValue = "100") int size,
@@ -51,8 +51,7 @@ public class IndividualsRestController
 
 		return _toDistributionDTOPageDTO(
 			_bqIndividualDog.getDistributionPage(
-				Long.valueOf(channelId), fieldMappingId, individualSegmentId,
-				size, sorts));
+				channelId, fieldMappingId, individualSegmentId, size, sorts));
 	}
 
 	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(
