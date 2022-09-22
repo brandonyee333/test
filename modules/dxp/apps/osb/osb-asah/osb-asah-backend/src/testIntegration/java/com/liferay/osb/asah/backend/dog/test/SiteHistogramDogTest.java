@@ -43,9 +43,84 @@ public class SiteHistogramDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@SQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
+	@Test
+	public void testGetHistogramMetricBagBounceRate() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		searchQueryContext.setInterval(Interval.HOUR.getKey());
+		searchQueryContext.setTimeRange(TimeRange.LAST_24_HOURS);
+
+		Assertions.assertArrayEquals(
+			new double[] {
+				1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				0, 0, 0
+			},
+			_getActualValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.BOUNCE_RATE)),
+			1);
+		Assertions.assertArrayEquals(
+			new double[] {
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0
+			},
+			_getPreviousValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.BOUNCE_RATE)),
+			1);
+	}
+
+	@SQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
+	@Test
+	public void testGetHistogramMetricBagSessionDuration() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		searchQueryContext.setInterval(Interval.HOUR.getKey());
+		searchQueryContext.setTimeRange(TimeRange.LAST_24_HOURS);
+
+		Assertions.assertArrayEquals(
+			new double[] {
+				3600000.0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 3600000.0, 0, 0, 180000.0
+			},
+			_getActualValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.SESSION_DURATION)),
+			1);
+		Assertions.assertArrayEquals(
+			new double[] {
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 3600000.0, 0, 0,
+				0, 0, 0, 0, 0, 3600000.0, 0, 0
+			},
+			_getPreviousValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.SESSION_DURATION)),
+			1);
+	}
+
 	@SQLResource(resourcePath = "test_bq_events_site_histogram.sql")
 	@Test
-	public void testGetHistogramMetricBag1() {
+	public void testGetHistogramMetricBagSessionsPerVisitor() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		Assertions.assertArrayEquals(
+			new double[] {0, 1, 0, 1, 1, 0, 1},
+			_getActualValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.SESSIONS_PER_VISITOR)),
+			1);
+		Assertions.assertArrayEquals(
+			new double[] {0, 0, 1, 1, 1, 0, 0},
+			_getPreviousValues(
+				_siteHistogramDog.getHistogramMetricBag(
+					searchQueryContext, SiteMetricType.SESSIONS_PER_VISITOR)),
+			1);
+	}
+
+	@SQLResource(resourcePath = "test_bq_events_site_histogram.sql")
+	@Test
+	public void testGetHistogramMetricBagVisitors() {
 		Assertions.assertArrayEquals(
 			new double[] {0, 1, 0, 0, 1, 0, 3},
 			_getActualValues(
@@ -84,81 +159,6 @@ public class SiteHistogramDogTest
 				_siteHistogramDog.getHistogramMetricBag(
 					_getSearchQueryContext(), SiteMetricType.VISITORS)),
 			0);
-	}
-
-	@SQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
-	@Test
-	public void testGetHistogramMetricBag2() {
-		SearchQueryContext searchQueryContext = _getSearchQueryContext();
-
-		searchQueryContext.setInterval(Interval.HOUR.getKey());
-		searchQueryContext.setTimeRange(TimeRange.LAST_24_HOURS);
-
-		Assertions.assertArrayEquals(
-			new double[] {
-				3600000.0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 3600000.0, 0, 0, 180000.0
-			},
-			_getActualValues(
-				_siteHistogramDog.getHistogramMetricBag(
-					searchQueryContext, SiteMetricType.SESSION_DURATION)),
-			1);
-		Assertions.assertArrayEquals(
-			new double[] {
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 3600000.0, 0, 0,
-				0, 0, 0, 0, 0, 3600000.0, 0, 0
-			},
-			_getPreviousValues(
-				_siteHistogramDog.getHistogramMetricBag(
-					searchQueryContext, SiteMetricType.SESSION_DURATION)),
-			1);
-	}
-
-	@SQLResource(resourcePath = "test_bq_events_site_histogram.sql")
-	@Test
-	public void testGetHistogramMetricBag3() {
-		SearchQueryContext searchQueryContext = _getSearchQueryContext();
-
-		Assertions.assertArrayEquals(
-			new double[] {0, 1, 0, 1, 1, 0, 1},
-			_getActualValues(
-				_siteHistogramDog.getHistogramMetricBag(
-					searchQueryContext, SiteMetricType.SESSIONS_PER_VISITOR)),
-			1);
-		Assertions.assertArrayEquals(
-			new double[] {0, 0, 1, 1, 1, 0, 0},
-			_getPreviousValues(
-				_siteHistogramDog.getHistogramMetricBag(
-					searchQueryContext, SiteMetricType.SESSIONS_PER_VISITOR)),
-			1);
-	}
-
-	@SQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
-	@Test
-	public void testGetHistogramMetricBag4() {
-		SearchQueryContext searchQueryContext = _getSearchQueryContext();
-
-		searchQueryContext.setInterval(Interval.HOUR.getKey());
-		searchQueryContext.setTimeRange(TimeRange.LAST_24_HOURS);
-
-		Assertions.assertArrayEquals(
-			new double[] {
-				1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				0, 0, 0
-			},
-			_getActualValues(
-				_siteHistogramDog.getHistogramMetricBag(
-					searchQueryContext, SiteMetricType.BOUNCE_RATE)),
-			1);
-		Assertions.assertArrayEquals(
-			new double[] {
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0
-			},
-			_getPreviousValues(
-				_siteHistogramDog.getHistogramMetricBag(
-					searchQueryContext, SiteMetricType.BOUNCE_RATE)),
-			1);
 	}
 
 	private double[] _getActualValues(HistogramMetricBag histogramMetricBag) {

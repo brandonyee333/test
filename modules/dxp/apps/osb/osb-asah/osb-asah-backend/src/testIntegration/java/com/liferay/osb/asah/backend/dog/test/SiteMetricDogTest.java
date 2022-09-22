@@ -38,8 +38,65 @@ public class SiteMetricDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@SQLResource(resourcePath = "test_bq_events.sql")
 	@Test
-	public void testGetSiteMetric1() {
+	public void testGetSiteMetric() {
+		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
+			_getSearchQueryContext());
+
+		Metric anonymousVisitorsMetric =
+			siteMetric.getAnonymousVisitorsMetric();
+
+		Assertions.assertEquals(0, anonymousVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(1, anonymousVisitorsMetric.getValue());
+
+		Metric knownVisitorsMetric = siteMetric.getKnownVisitorsMetric();
+
+		Assertions.assertEquals(1, knownVisitorsMetric.getPreviousValue());
+		Assertions.assertEquals(1, knownVisitorsMetric.getValue());
+
+		Metric visitorsMetric = siteMetric.getVisitorsMetric();
+
+		Assertions.assertEquals(1, visitorsMetric.getPreviousValue());
+		Assertions.assertEquals(2, visitorsMetric.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_bq_events_1.sql")
+	@Test
+	public void testGetSiteMetricBounceRateLast7Days() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		searchQueryContext.setIncludePrevious(false);
+		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
+
+		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
+			searchQueryContext);
+
+		Metric bounceRateMetric = siteMetric.getBounceRateMetric();
+
+		Assertions.assertEquals(0, bounceRateMetric.getPreviousValue());
+		Assertions.assertEquals(0.5, bounceRateMetric.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_bq_events_1.sql")
+	@Test
+	public void testGetSiteMetricBounceRateLast7DaysIncludePrevious() {
+		SearchQueryContext searchQueryContext = _getSearchQueryContext();
+
+		searchQueryContext.setIncludePrevious(true);
+		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
+
+		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
+			searchQueryContext);
+
+		Metric bounceRateMetric = siteMetric.getBounceRateMetric();
+
+		Assertions.assertEquals(1, bounceRateMetric.getPreviousValue());
+		Assertions.assertEquals(0.5, bounceRateMetric.getValue());
+	}
+
+	@Test
+	public void testGetSiteMetricEmptyState() {
 		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
 			_getSearchQueryContext());
 
@@ -60,91 +117,9 @@ public class SiteMetricDogTest
 		Assertions.assertEquals(0, visitorsMetric.getValue());
 	}
 
-	@SQLResource(resourcePath = "test_bq_events.sql")
-	@Test
-	public void testGetSiteMetric2() {
-		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
-			_getSearchQueryContext());
-
-		Metric anonymousVisitorsMetric =
-			siteMetric.getAnonymousVisitorsMetric();
-
-		Assertions.assertEquals(0, anonymousVisitorsMetric.getPreviousValue());
-		Assertions.assertEquals(1, anonymousVisitorsMetric.getValue());
-
-		Metric knownVisitorsMetric = siteMetric.getKnownVisitorsMetric();
-
-		Assertions.assertEquals(1, knownVisitorsMetric.getPreviousValue());
-		Assertions.assertEquals(1, knownVisitorsMetric.getValue());
-
-		Metric visitorsMetric = siteMetric.getVisitorsMetric();
-
-		Assertions.assertEquals(1, visitorsMetric.getPreviousValue());
-		Assertions.assertEquals(2, visitorsMetric.getValue());
-	}
-
-	@SQLResource(resourcePath = "test_bq_events.sql")
-	@Test
-	public void testGetSiteMetric3() {
-		SearchQueryContext searchQueryContext = _getSearchQueryContext();
-
-		searchQueryContext.setIncludePrevious(true);
-
-		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
-			searchQueryContext);
-
-		Metric anonymousVisitorsMetric =
-			siteMetric.getAnonymousVisitorsMetric();
-
-		Assertions.assertEquals(0, anonymousVisitorsMetric.getPreviousValue());
-		Assertions.assertEquals(1, anonymousVisitorsMetric.getValue());
-
-		Metric knownVisitorsMetric = siteMetric.getKnownVisitorsMetric();
-
-		Assertions.assertEquals(1, knownVisitorsMetric.getPreviousValue());
-		Assertions.assertEquals(1, knownVisitorsMetric.getValue());
-
-		Metric visitorsMetric = siteMetric.getVisitorsMetric();
-
-		Assertions.assertEquals(1, visitorsMetric.getPreviousValue());
-		Assertions.assertEquals(2, visitorsMetric.getValue());
-	}
-
-	@SQLResource(resourcePath = "test_bq_events_1.sql")
-	@Test
-	public void testGetSiteMetric4() {
-		SearchQueryContext searchQueryContext = _getSearchQueryContext();
-
-		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
-
-		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
-			searchQueryContext);
-
-		Metric bounceRateMetric = siteMetric.getBounceRateMetric();
-
-		Assertions.assertEquals(0.5, bounceRateMetric.getValue());
-	}
-
-	@SQLResource(resourcePath = "test_bq_events_1.sql")
-	@Test
-	public void testGetSiteMetric5() {
-		SearchQueryContext searchQueryContext = _getSearchQueryContext();
-
-		searchQueryContext.setIncludePrevious(true);
-		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
-
-		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
-			searchQueryContext);
-
-		Metric bounceRateMetric = siteMetric.getBounceRateMetric();
-
-		Assertions.assertEquals(1, bounceRateMetric.getPreviousValue());
-		Assertions.assertEquals(0.5, bounceRateMetric.getValue());
-	}
-
 	@SQLResource(resourcePath = "test_bq_events_2.sql")
 	@Test
-	public void testGetSiteMetric6() {
+	public void testGetSiteMetricSessionDuration() {
 		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
 			_getSearchQueryContext());
 
@@ -155,7 +130,7 @@ public class SiteMetricDogTest
 
 	@SQLResource(resourcePath = "test_bq_events_2.sql")
 	@Test
-	public void testGetSiteMetric7() {
+	public void testGetSiteMetricSessionDurationLast24Hours() {
 		SearchQueryContext searchQueryContext = _getSearchQueryContext();
 
 		searchQueryContext.setTimeRange(TimeRange.LAST_24_HOURS);
@@ -170,7 +145,7 @@ public class SiteMetricDogTest
 
 	@SQLResource(resourcePath = "test_bq_events.sql")
 	@Test
-	public void testGetSiteMetric8() {
+	public void testGetSiteMetricSessionPerVisitor() {
 		SiteMetric siteMetric = _siteMetricDog.getSiteMetric(
 			_getSearchQueryContext());
 
@@ -182,7 +157,7 @@ public class SiteMetricDogTest
 
 	@SQLResource(resourcePath = "test_bq_events_3.sql")
 	@Test
-	public void testGetSiteMetric9() {
+	public void testGetSiteMetricVisitorPreviousValueOnly() {
 		SearchQueryContext searchQueryContext = _getSearchQueryContext();
 
 		searchQueryContext.setTimeRange(TimeRange.LAST_7_DAYS);
