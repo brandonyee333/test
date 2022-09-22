@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.Distribution;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Robson Pastor
@@ -26,7 +27,7 @@ import org.springframework.data.domain.Pageable;
 public interface CustomBQIndividualRepository {
 
 	public List<Distribution> getIndividualDistributions(
-		Long channelId, String fieldName, Long individualSegmentId,
-		Pageable pageable);
+		@Nullable Long channelId, String fieldName,
+		@Nullable Long individualSegmentId, Pageable pageable);
 
 }

@@ -198,14 +198,13 @@ public class DSLHelper {
 				String.class, nestedField);
 		}
 
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("(SELECT %s FROM JSON_TO_RECORDSET(%s) AS ");
-		sb.append("(%s  TEXT, %s TEXT) WHERE %s = {0})");
+		String sql =
+			"(SELECT %s FROM JSON_TO_RECORDSET(%s) AS (%s TEXT, %s TEXT) " +
+				"WHERE %s = {0})";
 
 		return DSL.field(
 			String.format(
-				sb.toString(), valueAttribute, wrapperColumn, keyAttribute,
+				sql, valueAttribute, wrapperColumn, keyAttribute,
 				valueAttribute, keyAttribute),
 			String.class, nestedField);
 	}

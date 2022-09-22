@@ -33,6 +33,7 @@ import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Robson Pastor
@@ -46,8 +47,8 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public List<Distribution> getIndividualDistributions(
-		Long channelId, String fieldName, Long individualSegmentId,
-		Pageable pageable) {
+		@Nullable Long channelId, String fieldName,
+		@Nullable Long individualSegmentId, Pageable pageable) {
 
 		Field<String> nestedField = _dslHelper.getNestedField(
 			"name", fieldName, "value", "fields");
@@ -98,7 +99,7 @@ public class BQIndividualRepositoryImpl
 		return DSL.exists(
 			DSL.selectOne(
 			).from(
-				"BQIdentityActivity as BQIdentityActivity"
+				"BQIdentityActivity"
 			).where(
 				DSL.and(
 					DSL.field(
@@ -120,7 +121,7 @@ public class BQIndividualRepositoryImpl
 		return DSL.exists(
 			DSL.selectOne(
 			).from(
-				"BQMembership as BQMembership"
+				"BQMembership"
 			).where(
 				DSL.and(
 					DSL.field(
