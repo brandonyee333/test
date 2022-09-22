@@ -328,6 +328,44 @@ public class TimeRangeTest {
 	}
 
 	@Test
+	public void testGetPreviousTimeRange9() {
+		TimeRange timeRange = TimeRange.of(
+			LocalDateTime.of(2022, 9, 21, 23, 59),
+			LocalDateTime.of(2022, 9, 20, 0, 0));
+
+		Duration duration = Duration.between(
+			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
+
+		Assertions.assertEquals(1, Math.abs(duration.toDays()));
+
+		TimeRange includePreviousTimeRange =
+			timeRange.getIncludePreviousTimeRange();
+
+		duration = Duration.between(
+			includePreviousTimeRange.getStartLocalDateTime(),
+			includePreviousTimeRange.getEndLocalDateTime());
+
+		Assertions.assertEquals(2, Math.abs(duration.toDays()));
+
+		timeRange = TimeRange.of(
+			LocalDateTime.of(2022, 9, 21, 23, 59),
+			LocalDateTime.of(2022, 8, 20, 0, 0));
+
+		duration = Duration.between(
+			timeRange.getStartLocalDateTime(), timeRange.getEndLocalDateTime());
+
+		Assertions.assertEquals(32, Math.abs(duration.toDays()));
+
+		includePreviousTimeRange = timeRange.getIncludePreviousTimeRange();
+
+		duration = Duration.between(
+			includePreviousTimeRange.getStartLocalDateTime(),
+			includePreviousTimeRange.getEndLocalDateTime());
+
+		Assertions.assertEquals(64, Math.abs(duration.toDays()));
+	}
+
+	@Test
 	public void testGetRangeKey1() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
