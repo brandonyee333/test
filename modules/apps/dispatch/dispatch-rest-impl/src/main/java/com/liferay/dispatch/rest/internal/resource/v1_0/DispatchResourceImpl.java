@@ -27,4 +27,17 @@ import org.osgi.service.component.annotations.ServiceScope;
 	scope = ServiceScope.PROTOTYPE, service = DispatchResource.class
 )
 public class DispatchResourceImpl extends BaseDispatchResourceImpl {
+
+	public String getCompanyDispatches(Long companyId, Pagination pagination)
+		throws Exception {
+
+		return null;
+	}
+
+	public Response postExecuteDispatch(Long dispatchTriggerId, String string)
+		throws Exception {
+
+		return null;
+	}
+
 }
