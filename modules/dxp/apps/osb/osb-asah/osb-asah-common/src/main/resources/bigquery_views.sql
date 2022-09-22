@@ -571,7 +571,7 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 				canonicalUrl,
 				channelId,
 				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
-				sum(1) AS ratings,
+				SUM(1) AS ratings,
 				SUM(score) AS ratingsScore,
 				title AS pageTitle,
 				userId
@@ -1144,8 +1144,28 @@ CREATE OR REPLACE VIEW BQPage AS (
 				channelId,
 				country,
 				deviceType,
+				SUM(
+				    CASE
+				        WHEN
+				    		referrer = ''
+				    	THEN
+				    		1
+				    	ELSE
+				    		0
+					END
+				) AS directAccess,
+				SUM(
+					CASE
+						WHEN
+							referrer != ''
+						THEN
+							1
+						ELSE
+							0
+					END
+				) AS indirectAccess,
 				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-				COUNT(1) as pageViews,
+				SUM(1) AS views,
 				platformName,
 				region,
 				sessionId,
@@ -1182,16 +1202,18 @@ CREATE OR REPLACE VIEW BQPage AS (
 			PageTimeOnPages.channelId AS channelId,
 			PageTimeOnPages.country,
 			PageTimeOnPages.deviceType,
+			PageViews.directAccess,
 			PageEntrances.entrance,
 			PageTimeOnPages.normalizedEventDate AS eventDate,
 			PageExits.exit,
+			PageViews.indirectAccess,
 			PageTimeOnPages.platformName,
 			PageTimeOnPages.region,
 			PageTimeOnPages.sessionId AS sessionId,
 			PageTimeOnPages.timeOnPage AS timeOnPage,
 			PageTimeOnPages.title AS title,
 			PageTimeOnPages.userId AS userId,
-			PageViews.pageViews AS views
+			PageViews.views
 		FROM
 		     PageTimeOnPages
 		LEFT JOIN PageBounces ON (
