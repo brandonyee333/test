@@ -231,11 +231,11 @@ public class DataSourceDog {
 		return dataSources.getContent();
 	}
 
-	public Map<Long, JSONObject> getDataSourcesJSONObjects(
+	public Map<String, JSONObject> getDataSourcesJSONObjects(
 			List<BQIndividual> bqIndividuals)
 		throws Exception {
 
-		Map<Long, JSONObject> dataSourcesJSONObjects = new HashMap<>();
+		Map<String, JSONObject> dataSourcesJSONObjects = new HashMap<>();
 
 		for (BQIndividual bqIndividual : bqIndividuals) {
 			List<BQDataSourceUser> bqDataSourceUsers =
@@ -250,7 +250,7 @@ public class DataSourceDog {
 			}
 
 			dataSourcesJSONObjects.put(
-				Long.valueOf(bqIndividual.getId()),
+				bqIndividual.getId(),
 				JSONUtil.put(
 					"data-sources",
 					JSONUtil.toJSONArray(

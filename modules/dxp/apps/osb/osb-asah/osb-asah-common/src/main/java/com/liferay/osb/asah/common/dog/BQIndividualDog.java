@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,15 +89,11 @@ public class BQIndividualDog {
 		Long channelId, String filterString, int page, int size,
 		String[] sorts) {
 
-		return ListUtil.map(
-			_bqIndividualRepository.searchBQIndividuals(
-				channelId,
-				new FilterHelper(
-					null, filterString,
-					_individualsFilterStringConverterHelper),
-				null, null, PageRequest.of(page, size, _getSort(sorts))),
-			bqIndividual -> _populateBQIndividual(
-				channelId, _populateBQIndividual(bqIndividual)));
+		return _bqIndividualRepository.searchBQIndividuals(
+			channelId,
+			new FilterHelper(
+				null, filterString, _individualsFilterStringConverterHelper),
+			null, null, PageRequest.of(page, size, _getSort(sorts)));
 	}
 
 	private org.springframework.data.domain.Sort _getSort(String[] sorts) {
@@ -132,24 +127,6 @@ public class BQIndividualDog {
 		}
 
 		return Sort.by(orders);
-	}
-
-	private BQIndividual _populateBQIndividual(BQIndividual bqIndividual) {
-		if (bqIndividual == null) {
-			return null;
-		}
-
-		return bqIndividual;
-	}
-
-	private BQIndividual _populateBQIndividual(
-		Long channelId, BQIndividual bqIndividual) {
-
-		if (bqIndividual == null) {
-			return null;
-		}
-
-		return bqIndividual;
 	}
 
 	private final BQIndividualRepository _bqIndividualRepository;

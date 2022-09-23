@@ -19,8 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -107,13 +107,14 @@ public class DataSourceDogTest
 
 		// TODO Add individual related to channel, dataSource and ID
 
-		Individual individual = new Individual();
+		BQIndividual bqIndividual = new BQIndividual();
 
-		Map<Long, JSONObject> dataSourcesJSONObjects =
+		Map<String, JSONObject> dataSourcesJSONObjects =
 			_dataSourceDog.getDataSourcesJSONObjects(
-				Collections.singletonList(individual));
+				Collections.singletonList(bqIndividual));
 
-		JSONObject jsonObject = dataSourcesJSONObjects.get(individual.getId());
+		JSONObject jsonObject = dataSourcesJSONObjects.get(
+			bqIndividual.getId());
 
 		JSONArray jsonArray = jsonObject.getJSONArray("data-sources");
 

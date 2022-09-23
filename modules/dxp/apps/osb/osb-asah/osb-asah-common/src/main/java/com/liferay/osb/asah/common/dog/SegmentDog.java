@@ -319,15 +319,15 @@ public class SegmentDog {
 			filter, state, status, PageRequest.of(page, size));
 	}
 
-	public Map<Long, JSONObject> getSegmentsJSONObjects(
+	public Map<String, JSONObject> getSegmentsJSONObjects(
 			List<BQIndividual> bqIndividuals)
 		throws Exception {
 
-		Map<Long, JSONObject> segmentsJSONObjects = new HashMap<>();
+		Map<String, JSONObject> segmentsJSONObjects = new HashMap<>();
 
 		for (BQIndividual bqIndividual : bqIndividuals) {
 			segmentsJSONObjects.put(
-				Long.valueOf(bqIndividual.getId()),
+				bqIndividual.getId(),
 				JSONUtil.put(
 					"individual-segments",
 					JSONUtil.toJSONArray(

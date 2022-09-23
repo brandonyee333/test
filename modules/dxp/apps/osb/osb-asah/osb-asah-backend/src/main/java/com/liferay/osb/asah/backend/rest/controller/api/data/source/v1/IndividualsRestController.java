@@ -83,7 +83,7 @@ public class IndividualsRestController extends BaseRestController {
 
 		for (String expandPart : expandParts) {
 			if (expandPart.equals("data-sources")) {
-				Map<Long, JSONObject> dataSourcesJSONObjects =
+				Map<String, JSONObject> dataSourcesJSONObjects =
 					_dataSourceDog.getDataSourcesJSONObjects(
 						Collections.singletonList(bqIndividual));
 
@@ -93,7 +93,7 @@ public class IndividualsRestController extends BaseRestController {
 				expandMap.put(expandPart, jsonObject.get(expandPart));
 			}
 			else if (expandPart.equals("individual-segments")) {
-				Map<Long, JSONObject> segmentsJSONObjects =
+				Map<String, JSONObject> segmentsJSONObjects =
 					_segmentDog.getSegmentsJSONObjects(
 						Collections.singletonList(bqIndividual));
 
@@ -142,8 +142,8 @@ public class IndividualsRestController extends BaseRestController {
 		stream.forEachOrdered(
 			individual -> individualDTOs.add(new IndividualDTO(individual)));
 
-		Map<Long, JSONObject> dataSourcesJSONObjects = new HashMap<>();
-		Map<Long, JSONObject> segmentsJSONObjects = new HashMap<>();
+		Map<String, JSONObject> dataSourcesJSONObjects = new HashMap<>();
+		Map<String, JSONObject> segmentsJSONObjects = new HashMap<>();
 
 		String[] expandParts = expand.split(",");
 

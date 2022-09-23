@@ -105,7 +105,11 @@ public class BQIndividual implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Date getLastActivityDate() {
-		return _lastActivityDate;
+		if (_lastActivityDate == null) {
+			return null;
+		}
+
+		return new Date(_lastActivityDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -173,7 +177,9 @@ public class BQIndividual implements Persistable<String> {
 	}
 
 	public void setLastActivityDate(Date lastActivityDate) {
-		_lastActivityDate = lastActivityDate;
+		if (lastActivityDate != null) {
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
 	}
 
 	public void setLastName(String lastName) {
