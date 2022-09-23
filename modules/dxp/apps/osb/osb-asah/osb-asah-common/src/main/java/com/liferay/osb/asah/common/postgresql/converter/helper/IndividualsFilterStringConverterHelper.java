@@ -28,10 +28,17 @@ import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.text.ParseException;
+
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -86,6 +93,16 @@ public class IndividualsFilterStringConverterHelper
 	}
 
 	@Override
+	public Map<String, String> getFieldNameConversionMap() {
+		Map<String, String> map = new HashMap<>();
+
+		map.put("channelIds", "identityActivity.channelId");
+		map.put("lastEnrichmentDate", "individual.modifieddate");
+
+		return map;
+	}
+
+	@Override
 	public Condition getInferredCondition(String fieldName) {
 		if (!fieldName.startsWith("demographics") ||
 			!fieldName.endsWith("value")) {
@@ -127,6 +144,22 @@ public class IndividualsFilterStringConverterHelper
 			return _getUserIdCondition(
 				operator.equalsIgnoreCase("ne"),
 				Long.parseLong((String)StringUtil.toObject(valueString)));
+		}
+
+		return null;
+	}
+
+	@Override
+	public Object processValue(String fieldName, String valueString) {
+		if (fieldName.equalsIgnoreCase("individual.modifieddate") &&
+			!StringUtils.isBlank(valueString)) {
+
+			try {
+				return DateUtils.parseDate(valueString, "yyyy-MM-dd");
+			}
+			catch (ParseException parseException) {
+				throw new IllegalArgumentException(parseException);
+			}
 		}
 
 		return null;
