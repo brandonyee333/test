@@ -24,12 +24,14 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
+import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +52,26 @@ import org.springframework.util.CollectionUtils;
 public class IndividualDTO {
 
 	public IndividualDTO() {
+	}
+
+	public IndividualDTO(BQIndividual bqIndividual) {
+		_activitiesCount = bqIndividual.getActivitiesCount();
+		_createDate = bqIndividual.getCreateDate();
+		_emailAddressHashed = bqIndividual.getEmailAddressHashed();
+		_firstEnrichmentDate = bqIndividual.getCreateDate();
+		_id = StringUtil.get(bqIndividual.getId(), null);
+		_individualFieldDTO = new IndividualFieldDTO(
+			new HashSet<>(
+				Arrays.asList(
+					_createField(
+						"additionalName", bqIndividual.getMiddleName()),
+					_createField("email", bqIndividual.getEmailAddress()),
+					_createField("familyName", bqIndividual.getLastName()),
+					_createField("givenName", bqIndividual.getFirstName()),
+					_createField("jobTitle", bqIndividual.getJobTitle()))));
+		_lastActivityDate = bqIndividual.getLastActivityDate();
+		_lastEnrichmentDate = bqIndividual.getModifiedDate();
+		_modifiedDate = bqIndividual.getModifiedDate();
 	}
 
 	public IndividualDTO(Individual individual) {
@@ -97,8 +119,8 @@ public class IndividualDTO {
 			individual.getUserGroupIds(), String::valueOf);
 	}
 
-	public IndividualDTO(List<Individual> individuals) {
-		_individualDTOs = SetUtil.map(individuals, IndividualDTO::new);
+	public IndividualDTO(List<BQIndividual> bqIndividuals) {
+		_individualDTOs = SetUtil.map(bqIndividuals, IndividualDTO::new);
 	}
 
 	public IndividualDTO(Set<IndividualDTO> individualDTOs) {
@@ -560,6 +582,15 @@ public class IndividualDTO {
 
 		private Map<String, Object> _fieldMap = new HashMap<>();
 
+	}
+
+	private Field _createField(String name, Object value) {
+		Field field = new Field();
+
+		field.setName(name);
+		field.setValue(value);
+
+		return field;
 	}
 
 	private Long _activitiesCount;

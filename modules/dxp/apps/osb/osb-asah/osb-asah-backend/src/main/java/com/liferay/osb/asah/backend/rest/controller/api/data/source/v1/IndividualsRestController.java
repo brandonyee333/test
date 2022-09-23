@@ -19,12 +19,13 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.Collections;
@@ -68,9 +69,9 @@ public class IndividualsRestController extends BaseRestController {
 
 		// TOFO Fetch Individual by id and channelId
 
-		Individual individual = new Individual();
+		BQIndividual bqIndividual = new BQIndividual();
 
-		IndividualDTO individualDTO = new IndividualDTO(individual);
+		IndividualDTO individualDTO = new IndividualDTO(bqIndividual);
 
 		if (StringUtils.isEmpty(expand)) {
 			return individualDTO;
@@ -84,20 +85,20 @@ public class IndividualsRestController extends BaseRestController {
 			if (expandPart.equals("data-sources")) {
 				Map<Long, JSONObject> dataSourcesJSONObjects =
 					_dataSourceDog.getDataSourcesJSONObjects(
-						Collections.singletonList(individual));
+						Collections.singletonList(bqIndividual));
 
 				JSONObject jsonObject = dataSourcesJSONObjects.get(
-					individual.getId());
+					bqIndividual.getId());
 
 				expandMap.put(expandPart, jsonObject.get(expandPart));
 			}
 			else if (expandPart.equals("individual-segments")) {
 				Map<Long, JSONObject> segmentsJSONObjects =
 					_segmentDog.getSegmentsJSONObjects(
-						Collections.singletonList(individual));
+						Collections.singletonList(bqIndividual));
 
 				JSONObject jsonObject = segmentsJSONObjects.get(
-					individual.getId());
+					bqIndividual.getId());
 
 				expandMap.put(expandPart, jsonObject.get(expandPart));
 			}
@@ -119,27 +120,24 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(required = false) String expand,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
-			@RequestParam(defaultValue = "false", required = false) boolean
-				includeAnonymousUsers,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		// TODO Fetch individuals by channelId, filterString and
-		// includeAnonymousUsers
-
-		Page<Individual> individualPage = Page.empty();
+		Page<BQIndividual> bqIndividualPage =
+			_bqIndividualDog.searchBQIndividualPage(
+				channelId, filterString, page, Math.max(1, size), sorts);
 
 		if (StringUtils.isEmpty(expand)) {
-			return _toIndividualDTOPageDTO(individualPage);
+			return _toIndividualDTOPageDTO(bqIndividualPage);
 		}
 
-		List<Individual> individuals = individualPage.getContent();
+		List<BQIndividual> bqIndividuals = bqIndividualPage.getContent();
 
 		Set<IndividualDTO> individualDTOs = new LinkedHashSet<>();
 
-		Stream<Individual> stream = individuals.stream();
+		Stream<BQIndividual> stream = bqIndividuals.stream();
 
 		stream.forEachOrdered(
 			individual -> individualDTOs.add(new IndividualDTO(individual)));
@@ -152,11 +150,11 @@ public class IndividualsRestController extends BaseRestController {
 		for (String expandPart : expandParts) {
 			if (expandPart.equals("data-sources")) {
 				dataSourcesJSONObjects =
-					_dataSourceDog.getDataSourcesJSONObjects(individuals);
+					_dataSourceDog.getDataSourcesJSONObjects(bqIndividuals);
 			}
 			else if (expandPart.equals("individual-segments")) {
 				segmentsJSONObjects = _segmentDog.getSegmentsJSONObjects(
-					individuals);
+					bqIndividuals);
 			}
 			else if (_log.isWarnEnabled()) {
 				_log.warn("Invalid expand: " + expandPart);
@@ -167,7 +165,7 @@ public class IndividualsRestController extends BaseRestController {
 			Map<String, Object> expandMap = new HashMap<>();
 
 			JSONObject dataSourceJSONObject = dataSourcesJSONObjects.get(
-				Long.valueOf(individualDTO.getId()));
+				individualDTO.getId());
 
 			if (dataSourceJSONObject != null) {
 				expandMap.put(
@@ -175,7 +173,7 @@ public class IndividualsRestController extends BaseRestController {
 			}
 
 			JSONObject segmentJSONObject = segmentsJSONObjects.get(
-				Long.valueOf(individualDTO.getId()));
+				individualDTO.getId());
 
 			if (segmentJSONObject != null) {
 				expandMap.put(
@@ -188,7 +186,7 @@ public class IndividualsRestController extends BaseRestController {
 			}
 		}
 
-		return _toPageDTO(new IndividualDTO(individualDTOs), individualPage);
+		return _toPageDTO(new IndividualDTO(individualDTOs), bqIndividualPage);
 	}
 
 	@GetMapping("/count")
@@ -275,22 +273,22 @@ public class IndividualsRestController extends BaseRestController {
 	}
 
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
-		Page<Individual> individualsPage) {
+		Page<BQIndividual> bqIndividualsPage) {
 
 		return new PageDTO<>(
-			"_embedded", new IndividualDTO(individualsPage.getContent()),
-			individualsPage.getNumber(), individualsPage.getSize(),
-			individualsPage.getTotalElements(),
-			individualsPage.getTotalPages());
+			"_embedded", new IndividualDTO(bqIndividualsPage.getContent()),
+			bqIndividualsPage.getNumber(), bqIndividualsPage.getSize(),
+			bqIndividualsPage.getTotalElements(),
+			bqIndividualsPage.getTotalPages());
 	}
 
 	private PageDTO<IndividualDTO> _toPageDTO(
-		IndividualDTO individualDTO, Page<Individual> individualsPage) {
+		IndividualDTO individualDTO, Page<BQIndividual> bqIndividualsPage) {
 
 		return new PageDTO<>(
-			"_embedded", individualDTO, individualsPage.getNumber(),
-			individualsPage.getSize(), individualsPage.getTotalElements(),
-			individualsPage.getTotalPages());
+			"_embedded", individualDTO, bqIndividualsPage.getNumber(),
+			bqIndividualsPage.getSize(), bqIndividualsPage.getTotalElements(),
+			bqIndividualsPage.getTotalPages());
 	}
 
 	private PageDTO<SegmentDTO> _toSegmentDTOPageDTO(
@@ -345,6 +343,9 @@ public class IndividualsRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		IndividualsRestController.class);
+
+	@Autowired
+	private BQIndividualDog _bqIndividualDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
