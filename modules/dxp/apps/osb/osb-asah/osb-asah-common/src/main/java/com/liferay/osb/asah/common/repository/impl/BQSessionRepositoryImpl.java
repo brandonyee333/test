@@ -21,12 +21,14 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.CustomBQSessionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
+import com.liferay.osb.asah.common.util.GetterUtil;
 
 import java.time.ZoneId;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -74,6 +76,26 @@ public class BQSessionRepositoryImpl
 					sessionIds
 				)
 			));
+	}
+
+	@Override
+	public Map<String, Integer> getSessionsGroupedByBrowserName(
+		Long channelId, TimeRange timeRange, ZoneId zoneId) {
+
+		Field field = DSL.field("browserName");
+
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			_dslContext.select(
+				field, DSL.count()
+			).from(
+				"BQSession"
+			).where(
+				_createWhereClause(channelId, timeRange, zoneId)
+			).groupBy(
+				field
+			),
+			GetterUtil::getInteger);
 	}
 
 	@Override

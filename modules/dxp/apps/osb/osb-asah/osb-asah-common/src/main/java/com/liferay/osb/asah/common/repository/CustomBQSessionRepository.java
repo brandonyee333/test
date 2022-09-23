@@ -23,6 +23,7 @@ import java.time.ZoneId;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marcos Martins
@@ -30,6 +31,9 @@ import java.util.List;
 public interface CustomBQSessionRepository {
 
 	public List<BQSession> findAllById(Collection<String> sessionIds);
+
+	public Map<String, Integer> getSessionsGroupedByBrowserName(
+		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
 	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(
 		Long channelId, boolean includePrevious, TimeRange timeRange,

@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dog.AssetTechnologyDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
-import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
@@ -25,6 +25,7 @@ import graphql.execution.ExecutionTypeInfo;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLFieldDefinition;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,17 +52,13 @@ public class DeviceDataFetcher extends BaseDataFetcher<List<Metric>> {
 		GraphQLFieldDefinition graphQLFieldDefinition =
 			parentExecutionTypeInfo.getFieldDefinition();
 
-		return _technologyDog.getDeviceMetrics(
-			_metricTypeDog.getMetricType(
-				searchQueryContext.getAssetType(),
-				graphQLFieldDefinition.getName()),
-			searchQueryContext);
+		return Collections.emptyList();
 	}
 
 	@Autowired
-	private MetricTypeDog _metricTypeDog;
+	private AssetTechnologyDog _assetTechnologyDog;
 
 	@Autowired
-	private TechnologyDog _technologyDog;
+	private MetricTypeDog _metricTypeDog;
 
 }
