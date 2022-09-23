@@ -14,18 +14,20 @@
 
 package com.liferay.dispatch.rest.internal.resource.v1_0;
 
-import com.liferay.dispatch.rest.resource.v1_0.DispatchResource;
-
-import com.liferay.portal.vulcan.pagination.Pagination;
-import com.liferay.dispatch.executor.DispatchTaskExecutor;
 import com.liferay.dispatch.executor.DispatchTaskExecutorRegistry;
-import com.liferay.dispatch.service.DispatchTriggerLocalService;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.dispatch.model.DispatchTrigger;
-import java.util.List;
+import com.liferay.dispatch.rest.resource.v1_0.DispatchResource;
+import com.liferay.dispatch.service.DispatchTriggerLocalService;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.vulcan.pagination.Pagination;
+
+import java.util.List;
+
 import javax.ws.rs.core.Response;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -44,15 +46,17 @@ public class DispatchResourceImpl extends BaseDispatchResourceImpl {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		List<DispatchTrigger> dispatchTriggers = _dispatchTriggerLocalService.getDispatchTriggers(companyId, -1,-1);
+		List<DispatchTrigger> dispatchTriggers =
+			_dispatchTriggerLocalService.getDispatchTriggers(
+				companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		for (DispatchTrigger dispatchTrigger:dispatchTriggers){
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("name", dispatchTrigger.getName());
-			jsonObject.put("dispatchTriggerId", dispatchTrigger.getDispatchTriggerId());
-
-			jsonArray.put(jsonObject);
+		for (DispatchTrigger dispatchTrigger : dispatchTriggers) {
+			jsonArray.put(
+				JSONUtil.put(
+					"dispatchTriggerId", dispatchTrigger.getDispatchTriggerId()
+				).put(
+					"name", dispatchTrigger.getName()
+				));
 		}
 
 		return jsonArray.toString();
@@ -63,7 +67,6 @@ public class DispatchResourceImpl extends BaseDispatchResourceImpl {
 
 		return null;
 	}
-
 
 	@Reference
 	private DispatchTaskExecutorRegistry _dispatchTaskExecutorRegistry;
