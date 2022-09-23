@@ -351,6 +351,11 @@ public class DXPEntitiesIngestionNanite {
 						dataSourceId, expandoFieldsJSONArray, projectId));
 			}
 
+			String emailAddressHashed = DigestUtils.sha256Hex(
+				StringUtils.lowerCase(bqUser.getEmailAddress()));
+
+			bqUser.setEmailAddressHashed(emailAddressHashed);
+
 			bqUser.setFieldsJSONArray(jsonObject.optJSONArray("fields"));
 
 			bqUser.setId(
