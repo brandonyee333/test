@@ -1,6 +1,7 @@
 [
 	{
 		"emailAddress": "test@liferay.com",
+		"emailAddressHashed": "b023dedacce511ebf6237ba50c8721f1b2d64af9b349ee75a3e33a1907cf36d0",
 		"id": "102"
 	}
 ]

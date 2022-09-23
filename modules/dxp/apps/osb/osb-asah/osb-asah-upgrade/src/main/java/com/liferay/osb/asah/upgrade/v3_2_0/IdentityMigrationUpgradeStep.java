@@ -187,7 +187,7 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 			JSONArray dataSourceIndividualPKs =
 				individualJSONObject.getJSONArray("dataSourceIndividualPKs");
 
-			String emailAddressHashed = individualJSONObject.getString(
+			String individualId = individualJSONObject.getString(
 				"emailAddressHashed");
 			Date firstEnrichmentDate = DateUtil.toUTCDate(
 				individualJSONObject.getString("firstEnrichmentDate"));
@@ -205,7 +205,7 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 						JSONUtil.put(
 							"createDate", firstEnrichmentDate
 						).put(
-							"emailAddressHashed", emailAddressHashed
+							"individualId", individualId
 						));
 				}
 			}
@@ -298,7 +298,7 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 									String.join(
 										"#", projectId, dataSourceId, channelId,
 										identityJSONObject.getString(
-											"emailAddressHashed")))
+											"individualId")))
 							).put(
 								"projectId", projectId
 							).put(

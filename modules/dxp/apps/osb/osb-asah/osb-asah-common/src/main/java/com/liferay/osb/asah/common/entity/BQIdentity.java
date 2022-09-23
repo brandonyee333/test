@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -63,6 +65,7 @@ public class BQIdentity implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("emailAddressHashed")
 	public String getIndividualId() {
 		return _individualId;
 	}

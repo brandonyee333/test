@@ -93,10 +93,10 @@ public class IdentityMigrationUpgradeStepTest
 		).put(
 			"dataSourceId", 355524992631037473L
 		).put(
-			"emailAddressHashed", "797c78f4-d30b-420f-9058-13ce5a8ac532"
-		).put(
 			"id",
 			"8b02dfcfc8504dea9553760638c1f756c0feb35aab575befba5e7476b9e2ee23"
+		).put(
+			"individualId", "797c78f4-d30b-420f-9058-13ce5a8ac532"
 		).put(
 			"projectId", "test"
 		).put(

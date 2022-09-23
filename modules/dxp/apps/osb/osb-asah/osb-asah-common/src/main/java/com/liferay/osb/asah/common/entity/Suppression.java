@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -119,6 +120,7 @@ public class Suppression implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("emailAddressHashed")
 	public String getIndividualId() {
 		return _individualId;
 	}
