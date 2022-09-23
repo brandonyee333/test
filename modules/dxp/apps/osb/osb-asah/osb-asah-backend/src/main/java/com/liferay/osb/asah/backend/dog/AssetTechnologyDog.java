@@ -31,10 +31,12 @@ import org.springframework.stereotype.Component;
  * @author Inácio Nery
  */
 @Component
-public class TechnologyDog {
+public class AssetTechnologyDog {
 
 	@Autowired
-	public TechnologyDog(List<AssetMetricRepository> assetMetricRepositories) {
+	public AssetTechnologyDog(
+		List<AssetMetricRepository> assetMetricRepositories) {
+
 		assetMetricRepositories.forEach(
 			assetMetricAssetMetricRepository -> _assetMetricRepositoryMap.put(
 				assetMetricAssetMetricRepository.getAssetType(),

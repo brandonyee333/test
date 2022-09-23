@@ -17,12 +17,12 @@ package com.liferay.osb.asah.backend.rest.controller.api.external;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.backend.dog.AssetTechnologyDog;
 import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
-import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.UserDog;
 import com.liferay.osb.asah.backend.dog.form.FormPageDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
@@ -1044,14 +1044,14 @@ public class ReportRestController extends BaseRestController {
 
 			if (expands.contains("browser")) {
 				_expandMetricReport(
-					_technologyDog.getBrowserMetrics(
+					_assetTechnologyDog.getBrowserMetrics(
 						metric.getMetricType(), searchQueryContext),
 					metricReport::_addBrowserMetricReport);
 			}
 
 			if (expands.contains("device")) {
 				_expandMetricReport(
-					_technologyDog.getDeviceMetrics(
+					_assetTechnologyDog.getDeviceMetrics(
 						metric.getMetricType(), searchQueryContext),
 					metricReport::_addDeviceMetricReport);
 			}
@@ -1340,6 +1340,9 @@ public class ReportRestController extends BaseRestController {
 		ReportRestController.class);
 
 	@Autowired
+	private AssetTechnologyDog _assetTechnologyDog;
+
+	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
@@ -1371,9 +1374,6 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private SegmentMetricDog _segmentMetricDog;
-
-	@Autowired
-	private TechnologyDog _technologyDog;
 
 	@Autowired
 	private UserDog _userDog;

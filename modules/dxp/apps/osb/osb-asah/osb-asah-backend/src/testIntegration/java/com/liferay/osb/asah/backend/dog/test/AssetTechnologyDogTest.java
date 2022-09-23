@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
-import com.liferay.osb.asah.backend.dog.TechnologyDog;
+import com.liferay.osb.asah.backend.dog.AssetTechnologyDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Lino Alves
  */
 @Disabled
-public class TechnologyDogTest
+public class AssetTechnologyDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -47,7 +47,7 @@ public class TechnologyDogTest
 	)
 	@Test
 	public void testBrowserMetrics() {
-		List<Metric> browserMetrics = _technologyDog.getBrowserMetrics(
+		List<Metric> browserMetrics = _assetTechnologyDog.getBrowserMetrics(
 			JournalMetricType.VIEWS,
 			new SearchQueryContext("1", AssetType.JOURNAL) {
 				{
@@ -65,7 +65,7 @@ public class TechnologyDogTest
 	)
 	@Test
 	public void testDeviceMetrics() {
-		List<Metric> deviceMetrics = _technologyDog.getDeviceMetrics(
+		List<Metric> deviceMetrics = _assetTechnologyDog.getDeviceMetrics(
 			JournalMetricType.VIEWS,
 			new SearchQueryContext("1", AssetType.JOURNAL) {
 				{
@@ -86,6 +86,6 @@ public class TechnologyDogTest
 	}
 
 	@Autowired
-	private TechnologyDog _technologyDog;
+	private AssetTechnologyDog _assetTechnologyDog;
 
 }
