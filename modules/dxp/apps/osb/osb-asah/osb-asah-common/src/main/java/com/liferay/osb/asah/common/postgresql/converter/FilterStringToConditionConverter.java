@@ -209,7 +209,10 @@ public class FilterStringToConditionConverter {
 		if (value instanceof String) {
 			String newValueString = StringUtil.unquote(valueString);
 
-			if (NumberUtils.isCreatable(newValueString) &&
+			value = filterStringConverterHelper.processValue(
+				fieldName, newValueString);
+
+			if ((value == null) && NumberUtils.isCreatable(newValueString) &&
 				!newValueString.contains(".")) {
 
 				value = Long.valueOf(newValueString);

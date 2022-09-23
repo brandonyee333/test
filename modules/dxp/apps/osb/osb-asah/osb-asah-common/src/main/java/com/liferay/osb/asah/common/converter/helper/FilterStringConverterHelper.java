@@ -36,4 +36,8 @@ public interface FilterStringConverterHelper {
 			String fieldName, String operator, String valueString)
 		throws Exception;
 
+	public default Object processValue(String fieldName, String valueString) {
+		return null;
+	}
+
 }
