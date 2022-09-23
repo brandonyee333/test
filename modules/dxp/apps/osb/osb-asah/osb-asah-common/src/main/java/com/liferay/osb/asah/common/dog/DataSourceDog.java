@@ -19,13 +19,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
+import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.BQDataSourceUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.security.Encryptor;
@@ -231,14 +232,16 @@ public class DataSourceDog {
 	}
 
 	public Map<Long, JSONObject> getDataSourcesJSONObjects(
-			List<Individual> individuals)
+			List<BQIndividual> bqIndividuals)
 		throws Exception {
 
 		Map<Long, JSONObject> dataSourcesJSONObjects = new HashMap<>();
 
-		for (Individual individual : individuals) {
-			Set<BQDataSourceUser> bqDataSourceUsers =
-				individual.getBQDataSourceUsers();
+		for (BQIndividual bqIndividual : bqIndividuals) {
+			List<BQDataSourceUser> bqDataSourceUsers =
+				_bqDataSourceUserRepository.
+					findBQDataSourceUsersByUserEmailAddressHashed(
+						bqIndividual.getEmailAddressHashed());
 
 			List<Long> dataSourceIds = new ArrayList<>();
 
@@ -247,7 +250,7 @@ public class DataSourceDog {
 			}
 
 			dataSourcesJSONObjects.put(
-				individual.getId(),
+				Long.valueOf(bqIndividual.getId()),
 				JSONUtil.put(
 					"data-sources",
 					JSONUtil.toJSONArray(
@@ -592,6 +595,9 @@ public class DataSourceDog {
 
 	@Autowired
 	private BQCSVUserDog _bqCSVUserDog;
+
+	@Autowired
+	private BQDataSourceUserRepository _bqDataSourceUserRepository;
 
 	@Autowired
 	private ChannelDog _channelDog;
