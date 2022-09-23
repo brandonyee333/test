@@ -443,7 +443,7 @@ public class BQIndividualDogTest
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@Test
-	public void testSearchIndividuals1() {
+	public void testSearchBQIndividuals1() {
 
 		// TODO Add BQFieldMapping "givenName", "Text"
 
@@ -484,7 +484,7 @@ public class BQIndividualDogTest
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@Test
-	public void testSearchIndividuals2() {
+	public void testSearchBQIndividuals2() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("(channelIds eq '100' and (activities.filterByCount(");
@@ -529,7 +529,7 @@ public class BQIndividualDogTest
 		resourcePath = "osbasahcerebroinfo/user_sessions.json"
 	)
 	@Test
-	public void testSearchIndividuals3() {
+	public void testSearchBQIndividuals3() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("(channelIds eq '100' and (sessions.filter(filter=");
