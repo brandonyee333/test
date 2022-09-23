@@ -14,7 +14,9 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 
@@ -23,11 +25,21 @@ import org.springframework.lang.Nullable;
 
 /**
  * @author Robson Pastor
+ * @author Ivica Cardic
  */
 public interface CustomBQIndividualRepository {
+
+	public long countBQIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper,
+		@Nullable Long segmentChannelId, @Nullable Long segmentId);
 
 	public List<Distribution> getIndividualDistributions(
 		@Nullable Long channelId, String fieldName,
 		@Nullable Long individualSegmentId, Pageable pageable);
+
+	public List<BQIndividual> searchBQIndividuals(
+		@Nullable Long channelId, FilterHelper filterHelper,
+		@Nullable Long segmentChannelId, @Nullable Long segmentId,
+		Pageable pageable);
 
 }
