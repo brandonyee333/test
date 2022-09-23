@@ -1,0 +1,7 @@
+INSERT INTO BQSession (bounce, browserName, channelId, duration, id, sessionStart, sessionEnd) VALUES (0,'Chrome', 1, 180000, '1', timestamp '${now-4h}', timestamp '${now}');
+INSERT INTO BQSession (bounce, browserName, channelId, duration, id, sessionStart, sessionEnd) VALUES (1, 'Chrome', 1, 3600000.0, '2', timestamp '${now-3h}', timestamp '${now-2h}');
+INSERT INTO BQSession (bounce, browserName, channelId, duration, id, sessionStart, sessionEnd) VALUES (1, 'Firefox', 1, 3600000.0, '3', timestamp '${now-4h}', timestamp '${now-2h}');
+INSERT INTO BQSession (bounce, browserName, channelId, duration, id, sessionStart, sessionEnd) VALUES (1, 'Firefox', 1, 3600000.0, '4', timestamp '${now-3d}', timestamp '${now-4d}');
+INSERT INTO BQSession (bounce, browserName, channelId, duration, id, sessionStart, sessionEnd) VALUES (1, 'Chrome', 1, 3600000.0, '5', timestamp '${now-3d}', timestamp '${now-4d}');
+INSERT INTO BQSession (bounce, browserName, channelId, duration, id, sessionStart, sessionEnd) VALUES (1, 'Firefox', 1, 3600000.0, '6', timestamp '${now-15d}', timestamp '${now-16d}');
+INSERT INTO BQSession (bounce, browserName, channelId, duration, id, sessionStart, sessionEnd) VALUES (1, 'Chrome', 1, 3600000.0, '7', timestamp '${now-16d}', timestamp '${now-17d}');
