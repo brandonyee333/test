@@ -31,6 +31,14 @@ public class DispatchResourceImpl extends BaseDispatchResourceImpl {
 	public String getCompanyDispatches(Long companyId, Pagination pagination)
 		throws Exception {
 
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		List<DispatchTrigger> dispatchTriggers = _dispatchTriggerLocalService.getDispatchTriggers(companyId, -1,-1);
+
+		for (DispatchTrigger dispatchTrigger:dispatchTriggers){
+			jsonArray.put(dispatchTrigger)
+		}
+
 		return null;
 	}
 
@@ -39,5 +47,14 @@ public class DispatchResourceImpl extends BaseDispatchResourceImpl {
 
 		return null;
 	}
+
+	@Reference
+	private DispatchLogLocalService _dispatchLogLocalService;
+
+	@Reference
+	private DispatchTaskExecutorRegistry _dispatchTaskExecutorRegistry;
+
+	@Reference
+	private DispatchTriggerLocalService _dispatchTriggerLocalService;
 
 }
