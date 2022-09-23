@@ -16,7 +16,18 @@ package com.liferay.dispatch.rest.internal.resource.v1_0;
 
 import com.liferay.dispatch.rest.resource.v1_0.DispatchResource;
 
+import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.dispatch.executor.DispatchTaskExecutor;
+import com.liferay.dispatch.executor.DispatchTaskExecutorRegistry;
+import com.liferay.dispatch.service.DispatchTriggerLocalService;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.dispatch.model.DispatchTrigger;
+import java.util.List;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import javax.ws.rs.core.Response;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
 /**
@@ -36,10 +47,15 @@ public class DispatchResourceImpl extends BaseDispatchResourceImpl {
 		List<DispatchTrigger> dispatchTriggers = _dispatchTriggerLocalService.getDispatchTriggers(companyId, -1,-1);
 
 		for (DispatchTrigger dispatchTrigger:dispatchTriggers){
-			jsonArray.put(dispatchTrigger)
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("name", dispatchTrigger.getName());
+			jsonObject.put("dispatchTriggerId", dispatchTrigger.getDispatchTriggerId());
+
+			jsonArray.put(jsonObject);
 		}
 
-		return null;
+		return jsonArray.toString();
 	}
 
 	public Response postExecuteDispatch(Long dispatchTriggerId, String string)
@@ -48,8 +64,6 @@ public class DispatchResourceImpl extends BaseDispatchResourceImpl {
 		return null;
 	}
 
-	@Reference
-	private DispatchLogLocalService _dispatchLogLocalService;
 
 	@Reference
 	private DispatchTaskExecutorRegistry _dispatchTaskExecutorRegistry;
