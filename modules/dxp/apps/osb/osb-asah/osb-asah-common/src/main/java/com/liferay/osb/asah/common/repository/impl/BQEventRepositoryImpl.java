@@ -1288,7 +1288,10 @@ public class BQEventRepositoryImpl
 			);
 		}
 
-		return _getUniqueIndividualsField(timeRange);
+		Field<Integer> uniqueIndividualsField = _getUniqueIndividualsField(
+			timeRange);
+
+		return uniqueIndividualsField.as("count");
 	}
 
 	private Field _getSortField(
