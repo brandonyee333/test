@@ -14,11 +14,22 @@
 
 package com.liferay.osb.customer.distributed.messaging.subscriber.google.pubsub;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
+import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
@@ -27,6 +38,7 @@ import com.liferay.portal.kernel.service.ListTypeLocalService;
 import com.liferay.portal.kernel.service.PhoneLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -52,7 +64,10 @@ public class OktaUsersMessageSubscriber
 	protected void doReceive(JSONObject jsonObject) throws Exception {
 		String eventType = jsonObject.getString("eventType");
 
-		if (eventType.equals(_EVENT_TYPE_DEACTIVATE)) {
+		if (eventType.equals(_EVENT_TYPE_CREATE)) {
+			_createUser(jsonObject.getJSONObject("user"));
+		}
+		else if (eventType.equals(_EVENT_TYPE_DEACTIVATE)) {
 			_downgradeZendeskAgent(jsonObject.getJSONObject("user"));
 		}
 		else if (eventType.equals(_EVENT_TYPE_DELETE)) {
@@ -65,6 +80,53 @@ public class OktaUsersMessageSubscriber
 		}
 		else if (eventType.equals(_EVENT_TYPE_UPDATE)) {
 			_updateUser(jsonObject.getJSONObject("user"));
+		}
+	}
+
+	private void _createUser(JSONObject jsonObject) throws Exception {
+		JSONObject profileJSONObject = jsonObject.getJSONObject("profile");
+
+		Contact contact = _contactWebService.fetchContactByUuid(
+			profileJSONObject.getString("uuid"));
+
+		if (contact == null) {
+			return;
+		}
+
+		User user = _userIdentityProvider.fetchUserByEmailAddress(
+			contact.getEmailAddress());
+
+		List<Account> accounts = _accountWebService.getContactAccountsByUuid(
+			contact.getUuid(), 1, 1000);
+
+		for (Account account : accounts) {
+			if (!_accountReader.isActiveTicketSupport(
+					account.getEntitlements())) {
+
+				continue;
+			}
+
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getAccountContactRoles(
+					account.getKey(), contact.getUuid(), 1, 1000);
+
+			for (ContactRole contactRole : contactRoles) {
+				if (ArrayUtil.contains(
+						ContactRoleConstants.PARTNER_CONTACT_ROLES,
+						contactRole.getName()) ||
+					ArrayUtil.contains(
+						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+						contactRole.getName())) {
+
+					AccountEntry accountEntry =
+						_accountEntryLocalService.getKoroneikiAccountEntry(
+							account.getKey());
+
+					_customerSynchronizer.add(user, account, accountEntry);
+
+					break;
+				}
+			}
 		}
 	}
 
@@ -162,7 +224,8 @@ public class OktaUsersMessageSubscriber
 			else {
 				ServiceContext serviceContext = new ServiceContext();
 
-				Contact contact = user.getContact();
+				com.liferay.portal.kernel.model.Contact contact =
+					user.getContact();
 
 				serviceContext.setUuid(contact.getUserUuid());
 
@@ -190,7 +253,7 @@ public class OktaUsersMessageSubscriber
 			return;
 		}
 
-		Contact contact = user.getContact();
+		com.liferay.portal.kernel.model.Contact contact = user.getContact();
 
 		Calendar calendar = Calendar.getInstance();
 
@@ -258,6 +321,8 @@ public class OktaUsersMessageSubscriber
 		}
 	}
 
+	private static final String _EVENT_TYPE_CREATE = "user.lifecycle.create";
+
 	private static final String _EVENT_TYPE_DEACTIVATE =
 		"user.lifecycle.deactivate";
 
@@ -273,13 +338,34 @@ public class OktaUsersMessageSubscriber
 	private static final String _GROUP_NAME_EMPLOYEES = "Employees";
 
 	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
+	private AccountReader _accountReader;
+
+	@Reference
+	private AccountWebService _accountWebService;
+
+	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private ContactRoleWebService _contactRoleWebService;
+
+	@Reference
+	private ContactWebService _contactWebService;
+
+	@Reference
+	private CustomerSynchronizer _customerSynchronizer;
 
 	@Reference
 	private ListTypeLocalService _listTypeLocalService;
 
 	@Reference
 	private PhoneLocalService _phoneLocalService;
+
+	@Reference(target = "(provider=okta)")
+	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private UserLocalService _userLocalService;

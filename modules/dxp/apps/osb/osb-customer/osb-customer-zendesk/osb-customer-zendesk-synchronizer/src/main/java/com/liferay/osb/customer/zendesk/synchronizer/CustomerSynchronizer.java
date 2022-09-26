@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.zendesk.synchronizer;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
@@ -107,9 +106,6 @@ public class CustomerSynchronizer {
 
 	@Reference
 	private AccountReader _accountReader;
-
-	@Reference(target = "(provider=okta)")
-	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;
