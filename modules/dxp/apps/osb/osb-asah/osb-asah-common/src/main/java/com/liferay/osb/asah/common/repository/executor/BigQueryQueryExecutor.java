@@ -314,7 +314,8 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 	private static final String[] _TABLE_NAMES = {
 		"BQCustomAsset", "BQEvent", "BQEventProperty", "BQFieldMapping",
-		"BQIdentity", "BQOrder", "BQSession", "PageDaily", "PageHourly"
+		"BQIdentity", "BQIndividual", "BQOrder", "BQSession", "PageDaily",
+		"PageHourly"
 	};
 
 	private static final Log _log = LogFactory.getLog(
