@@ -20,7 +20,8 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -67,12 +68,39 @@ public class SiteTechnologyDog {
 	public List<Metric> getDeviceMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		Map<String, Integer> getSessions =
-			_bqSessionRepository.getSessionsGroupedByBrowserName(
+		List<Map<String, Object>> sessions =
+			_bqSessionRepository.getSessionsGroupedByDeviceName(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
-		return Collections.emptyList();
+		Map<String, Metric> metrics = new LinkedHashMap<>();
+
+		Stream<Map<String, Object>> stream = sessions.stream();
+
+		stream.forEach(
+			recordMap -> {
+				Metric deviceTypeMetric = new Metric(metricType);
+
+				String deviceType = (String)recordMap.get("deviceType");
+
+				deviceTypeMetric.setValueKey(deviceType);
+
+				metrics.putIfAbsent(deviceType, deviceTypeMetric);
+
+				deviceTypeMetric = metrics.get(deviceType);
+
+				Metric metric = new Metric(metricType);
+
+				metric.setValue(
+					Double.valueOf(String.valueOf(recordMap.get("count"))));
+				metric.setValueKey((String)recordMap.get("platformName"));
+
+				deviceTypeMetric.addMetric(metric);
+				deviceTypeMetric.setValue(
+					deviceTypeMetric.getValue() + metric.getValue());
+			});
+
+		return new ArrayList<>(metrics.values());
 	}
 
 	@Autowired

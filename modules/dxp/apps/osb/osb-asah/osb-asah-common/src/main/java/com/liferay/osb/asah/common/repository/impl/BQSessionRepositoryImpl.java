@@ -99,6 +99,27 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
+	public List<Map<String, Object>> getSessionsGroupedByDeviceName(
+		Long channelId, TimeRange timeRange, ZoneId zoneId) {
+
+		Field<String> deviceTypeField = DSL.field("deviceType", String.class);
+		Field<String> platformNameField = DSL.field(
+			"platformName", String.class);
+
+		return _queryExecutor.queryForList(
+			item -> item,
+			_dslContext.select(
+				deviceTypeField, platformNameField, DSL.count()
+			).from(
+				"BQSession"
+			).where(
+				_createWhereClause(channelId, timeRange, zoneId)
+			).groupBy(
+				deviceTypeField, platformNameField
+			));
+	}
+
+	@Override
 	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId) {

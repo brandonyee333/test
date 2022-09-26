@@ -35,6 +35,9 @@ public interface CustomBQSessionRepository {
 	public Map<String, Integer> getSessionsGroupedByBrowserName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
+	public List<Map<String, Object>> getSessionsGroupedByDeviceName(
+		Long channelId, TimeRange timeRange, ZoneId zoneId);
+
 	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId);
