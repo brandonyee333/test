@@ -192,6 +192,8 @@ definition {
 
 		Click(locator1 = "ACDXPSettings#AC_GENERIC_ADD_OR_CONFIRMATION_BUTTON");
 
+		WaitForElementPresent(loactor1 = "Message#SUCCESS_DISMISSIBLE");
+
 		Alert.viewSuccessMessage();
 	}
 
@@ -203,6 +205,8 @@ definition {
 		Click(locator1 = "ACDXPSettings#AC_GENERIC_ADD_OR_CONFIRMATION_BUTTON");
 
 		Click(locator1 = "ACDXPSettings#AC_GENERIC_ADD_OR_CONFIRMATION_BUTTON");
+
+		WaitForElementPresent(loactor1 = "Message#SUCCESS_DISMISSIBLE");
 
 		Alert.viewSuccessMessage();
 	}
@@ -223,6 +227,8 @@ definition {
 			locator1 = "Button#ANY");
 
 		Button.clickSave();
+
+		WaitForElementPresent(loactor1 = "Message#SUCCESS_DISMISSIBLE");
 
 		Alert.viewSuccessMessage();
 	}
@@ -255,6 +261,8 @@ definition {
 		}
 
 		Click(locator1 = "ACDXPSettings#AC_GENERIC_ADD_OR_CONFIRMATION_BUTTON");
+
+		WaitForElementPresent(loactor1 = "Message#SUCCESS_DISMISSIBLE");
 
 		Alert.viewSuccessMessage();
 	}
