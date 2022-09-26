@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
  * @author Thiago Buarque
  */
 @Component
-public class SiteTechnologyDog {
+public class SiteDog {
 
 	public List<Metric> getBrowserMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
@@ -89,15 +89,17 @@ public class SiteTechnologyDog {
 
 				deviceTypeMetric = metrics.get(deviceType);
 
-				Metric metric = new Metric(metricType);
+				Metric platformTypeMetric = new Metric(metricType);
 
-				metric.setValue(
+				platformTypeMetric.setValue(
 					Double.valueOf(String.valueOf(recordMap.get("count"))));
-				metric.setValueKey((String)recordMap.get("platformName"));
+				platformTypeMetric.setValueKey(
+					(String)recordMap.get("platformName"));
 
-				deviceTypeMetric.addMetric(metric);
+				deviceTypeMetric.addMetric(platformTypeMetric);
 				deviceTypeMetric.setValue(
-					deviceTypeMetric.getValue() + metric.getValue());
+					deviceTypeMetric.getValue() +
+						platformTypeMetric.getValue());
 			});
 
 		return new ArrayList<>(metrics.values());

@@ -14,11 +14,14 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dog.AssetTechnologyDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
-import com.liferay.osb.asah.backend.dog.SiteTechnologyDog;
+import com.liferay.osb.asah.backend.dog.SiteDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.MetricType;
 
 import graphql.execution.ExecutionTypeInfo;
 
@@ -51,17 +54,25 @@ public class DeviceDataFetcher extends BaseDataFetcher<List<Metric>> {
 		GraphQLFieldDefinition graphQLFieldDefinition =
 			parentExecutionTypeInfo.getFieldDefinition();
 
-		return _siteTechnologyDog.getDeviceMetrics(
-			_metricTypeDog.getMetricType(
-				searchQueryContext.getAssetType(),
-				graphQLFieldDefinition.getName()),
-			searchQueryContext);
+		MetricType metricType = _metricTypeDog.getMetricType(
+			searchQueryContext.getAssetType(),
+			graphQLFieldDefinition.getName());
+
+		if (searchQueryContext.getAssetType() == AssetType.SITE) {
+			return _siteDog.getBrowserMetrics(metricType, searchQueryContext);
+		}
+
+		return _assetTechnologyDog.getBrowserMetrics(
+			metricType, searchQueryContext);
 	}
+
+	@Autowired
+	private AssetTechnologyDog _assetTechnologyDog;
 
 	@Autowired
 	private MetricTypeDog _metricTypeDog;
 
 	@Autowired
-	private SiteTechnologyDog _siteTechnologyDog;
+	private SiteDog _siteDog;
 
 }

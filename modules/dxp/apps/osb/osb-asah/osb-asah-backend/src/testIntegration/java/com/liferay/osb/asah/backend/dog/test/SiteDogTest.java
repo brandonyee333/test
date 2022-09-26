@@ -17,8 +17,9 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
-import com.liferay.osb.asah.backend.dog.SiteTechnologyDog;
+import com.liferay.osb.asah.backend.dog.SiteDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -34,14 +35,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Regisson Cesar
  */
-public class SiteTechnologyDogTest
+public class SiteDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
 	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
 	@Test
 	public void testBrowserMetricsLast7Days() {
-		List<Metric> browserMetrics = _siteTechnologyDog.getBrowserMetrics(
+		List<Metric> browserMetrics = _siteDog.getBrowserMetrics(
 			SiteMetricType.SESSIONS,
 			_getSearchQueryContext(TimeRange.LAST_7_DAYS));
 
@@ -52,7 +53,7 @@ public class SiteTechnologyDogTest
 	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
 	@Test
 	public void testBrowserMetricsLast24Hours() {
-		List<Metric> browserMetrics = _siteTechnologyDog.getBrowserMetrics(
+		List<Metric> browserMetrics = _siteDog.getBrowserMetrics(
 			SiteMetricType.SESSIONS,
 			_getSearchQueryContext(TimeRange.LAST_24_HOURS));
 
@@ -63,7 +64,7 @@ public class SiteTechnologyDogTest
 	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
 	@Test
 	public void testBrowserMetricsLast30Days() {
-		List<Metric> browserMetrics = _siteTechnologyDog.getBrowserMetrics(
+		List<Metric> browserMetrics = _siteDog.getBrowserMetrics(
 			SiteMetricType.SESSIONS,
 			_getSearchQueryContext(TimeRange.LAST_30_DAYS));
 
@@ -74,7 +75,7 @@ public class SiteTechnologyDogTest
 	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
 	@Test
 	public void testDeviceMetricsLast24Hours() {
-		List<Metric> browserMetrics = _siteTechnologyDog.getDeviceMetrics(
+		List<Metric> browserMetrics = _siteDog.getDeviceMetrics(
 			SiteMetricType.SESSIONS,
 			_getSearchQueryContext(TimeRange.LAST_24_HOURS));
 
@@ -86,7 +87,7 @@ public class SiteTechnologyDogTest
 	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
 	@Test
 	public void testDeviceMetricsLast30Days() {
-		List<Metric> browserMetrics = _siteTechnologyDog.getDeviceMetrics(
+		List<Metric> browserMetrics = _siteDog.getDeviceMetrics(
 			SiteMetricType.SESSIONS,
 			_getSearchQueryContext(TimeRange.LAST_30_DAYS));
 
@@ -100,6 +101,7 @@ public class SiteTechnologyDogTest
 	private SearchQueryContext _getSearchQueryContext(TimeRange timeRange) {
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
+		searchQueryContext.setAssetType(AssetType.SITE);
 		searchQueryContext.setChannelId("1");
 		searchQueryContext.setIncludePrevious(true);
 		searchQueryContext.setTimeRange(timeRange);
@@ -111,6 +113,6 @@ public class SiteTechnologyDogTest
 	private ObjectMapper _objectMapper;
 
 	@Autowired
-	private SiteTechnologyDog _siteTechnologyDog;
+	private SiteDog _siteDog;
 
 }
