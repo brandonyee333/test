@@ -96,7 +96,7 @@ public class IdentityIngestionNanite {
 
 		bqIdentity.setCreateDate(new Date());
 
-		bqIdentity.setIndividualId(jsonObject.getString("individualId"));
+		bqIdentity.setIndividualId(jsonObject.getString("emailAddressHashed"));
 
 		String userId = jsonObject.getString("userId");
 
