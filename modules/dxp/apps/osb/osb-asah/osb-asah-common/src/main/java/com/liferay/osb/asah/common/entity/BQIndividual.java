@@ -61,7 +61,6 @@ public class BQIndividual implements Persistable<String> {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getActivitiesCount() {
 		return _activitiesCount;
 	}
@@ -103,7 +102,6 @@ public class BQIndividual implements Persistable<String> {
 		return _jobTitle;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getLastActivityDate() {
 		if (_lastActivityDate == null) {
 			return null;

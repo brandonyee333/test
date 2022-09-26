@@ -71,6 +71,7 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		return _emailAddress;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddressHashed() {
 		return _emailAddressHashed;
 	}

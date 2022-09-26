@@ -69,6 +69,8 @@ public class IndividualNaniteTest
 		bqUser1.setDXPUserId(RandomTestUtil.randomNumber());
 		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
 		bqUser1.setEmailAddress("joe@liferay.com");
+		bqUser1.setEmailAddressHashed(
+			DigestUtils.sha256Hex(bqUser1.getEmailAddress()));
 		bqUser1.setId(RandomTestUtil.randomString());
 		bqUser1.setIsNew(Boolean.TRUE);
 		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
@@ -108,6 +110,8 @@ public class IndividualNaniteTest
 		bqUser2.setDXPUserId(RandomTestUtil.randomNumber());
 		bqUser2.setDataSourceId(RandomTestUtil.randomNumber());
 		bqUser2.setEmailAddress("joe@liferay.com");
+		bqUser2.setEmailAddressHashed(
+			DigestUtils.sha256Hex(bqUser2.getEmailAddress()));
 		bqUser2.setId(RandomTestUtil.randomString());
 		bqUser2.setIsNew(Boolean.TRUE);
 		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-05T12:00:00.000Z"));
@@ -195,6 +199,8 @@ public class IndividualNaniteTest
 		bqUser1.setDXPUserId(RandomTestUtil.randomNumber());
 		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
 		bqUser1.setEmailAddress("joe@liferay.com");
+		bqUser1.setEmailAddressHashed(
+			DigestUtils.sha256Hex(bqUser1.getEmailAddress()));
 		bqUser1.setId(RandomTestUtil.randomString());
 		bqUser1.setIsNew(Boolean.TRUE);
 		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
@@ -234,6 +240,8 @@ public class IndividualNaniteTest
 		bqUser2.setDXPUserId(RandomTestUtil.randomNumber());
 		bqUser2.setDataSourceId(RandomTestUtil.randomNumber());
 		bqUser2.setEmailAddress("joe@liferay.com");
+		bqUser2.setEmailAddressHashed(
+			DigestUtils.sha256Hex(bqUser2.getEmailAddress()));
 		bqUser2.setId(RandomTestUtil.randomString());
 		bqUser2.setIsNew(Boolean.TRUE);
 		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-05T12:00:00.000Z"));
@@ -308,6 +316,8 @@ public class IndividualNaniteTest
 
 		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
 		bqUser1.setEmailAddress("joe@liferay.com");
+		bqUser1.setEmailAddressHashed(
+			DigestUtils.sha256Hex(bqUser1.getEmailAddress()));
 		bqUser1.setFieldsJSONArray(
 			JSONUtil.putAll(
 				JSONUtil.put(
@@ -326,6 +336,8 @@ public class IndividualNaniteTest
 
 		bqUser2.setDataSourceId(RandomTestUtil.randomNumber());
 		bqUser2.setEmailAddress("joe@liferay.com");
+		bqUser2.setEmailAddressHashed(
+			DigestUtils.sha256Hex(bqUser2.getEmailAddress()));
 		bqUser2.setFirstName("Joseph");
 		bqUser2.setFieldsJSONArray(
 			JSONUtil.putAll(
