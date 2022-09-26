@@ -44,10 +44,11 @@ public interface DispatchResource {
 			Long companyId, Pagination pagination)
 		throws Exception;
 
-	public void postExecuteDispatch(Long dispatchTriggerId, String string)
+	public void postExecuteDispatchTrigger(
+			Long dispatchTriggerId, String string)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse postExecuteDispatchHttpResponse(
+	public HttpInvoker.HttpResponse postExecuteDispatchTriggerHttpResponse(
 			Long dispatchTriggerId, String string)
 		throws Exception;
 
@@ -218,11 +219,13 @@ public interface DispatchResource {
 			return httpInvoker.invoke();
 		}
 
-		public void postExecuteDispatch(Long dispatchTriggerId, String string)
+		public void postExecuteDispatchTrigger(
+				Long dispatchTriggerId, String string)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				postExecuteDispatchHttpResponse(dispatchTriggerId, string);
+				postExecuteDispatchTriggerHttpResponse(
+					dispatchTriggerId, string);
 
 			String content = httpResponse.getContent();
 
@@ -250,7 +253,7 @@ public interface DispatchResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse postExecuteDispatchHttpResponse(
+		public HttpInvoker.HttpResponse postExecuteDispatchTriggerHttpResponse(
 				Long dispatchTriggerId, String string)
 			throws Exception {
 
@@ -280,7 +283,7 @@ public interface DispatchResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port + _builder._contextPath +
-						"/o/dispatch-rest/v1.0/execute/{dispatchId}");
+						"/o/dispatch-rest/v1.0/execute/{dispatchTriggerId}");
 
 			httpInvoker.path("dispatchTriggerId", dispatchTriggerId);
 

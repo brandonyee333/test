@@ -42,7 +42,7 @@ paths:
                             schema:
                                 type: string
             tags: ["Dispatch"]
-    "/execute/{dispatchId}":
+    "/execute/{dispatchTriggerId}":
         post:
             parameters:
                 - in: path

@@ -69,7 +69,7 @@ public class DispatchResourceImpl extends BaseDispatchResourceImpl {
 		return jsonArray.toString();
 	}
 
-	public Response postExecuteDispatch(Long dispatchTriggerId, String string)
+	public Response postExecuteDispatchTrigger(Long dispatchTriggerId, String string)
 		throws Exception {
 
 		DispatchTrigger dispatchTrigger =

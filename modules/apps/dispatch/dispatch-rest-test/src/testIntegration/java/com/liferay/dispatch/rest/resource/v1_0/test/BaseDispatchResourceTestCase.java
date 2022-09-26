@@ -114,7 +114,7 @@ public abstract class BaseDispatchResourceTestCase {
 	}
 
 	@Test
-	public void testPostExecuteDispatch() throws Exception {
+	public void testPostExecuteDispatchTrigger() throws Exception {
 		Assert.assertTrue(false);
 	}
 

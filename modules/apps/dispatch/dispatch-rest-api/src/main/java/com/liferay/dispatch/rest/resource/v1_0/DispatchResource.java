@@ -58,7 +58,8 @@ public interface DispatchResource {
 	public String getCompanyDispatches(Long companyId, Pagination pagination)
 		throws Exception;
 
-	public Response postExecuteDispatch(Long dispatchTriggerId, String string)
+	public Response postExecuteDispatchTrigger(
+			Long dispatchTriggerId, String string)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

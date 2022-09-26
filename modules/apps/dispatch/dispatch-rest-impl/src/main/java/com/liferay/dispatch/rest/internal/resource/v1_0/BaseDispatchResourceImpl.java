@@ -93,7 +93,7 @@ public abstract class BaseDispatchResourceImpl implements DispatchResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/dispatch-rest/v1.0/execute/{dispatchId}'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/dispatch-rest/v1.0/execute/{dispatchTriggerId}'  -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
@@ -107,11 +107,11 @@ public abstract class BaseDispatchResourceImpl implements DispatchResource {
 		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Dispatch")}
 	)
 	@javax.ws.rs.Consumes({"application/json", "application/xml"})
-	@javax.ws.rs.Path("/execute/{dispatchId}")
+	@javax.ws.rs.Path("/execute/{dispatchTriggerId}")
 	@javax.ws.rs.POST
 	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	public Response postExecuteDispatch(
+	public Response postExecuteDispatchTrigger(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.validation.constraints.NotNull
 			@javax.ws.rs.PathParam("dispatchTriggerId")
