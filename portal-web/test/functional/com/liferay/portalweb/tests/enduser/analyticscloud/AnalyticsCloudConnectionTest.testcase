@@ -125,6 +125,7 @@ definition {
 	@description = "Automation ID: LRAC-8835 | Test Summary: Assert Liferay Data Source Contact Count Preview"
 	@priority = "4"
 	test AssertLiferayDataSourceContactCountPreview {
+		property portal.upstream = "josh";
 		property portal.release = "true";
 
 		task ("Connect DXP to AC") {
@@ -543,6 +544,7 @@ definition {
 	@description = "Automation ID: LRAC-8839 | Test Summary: Preview the number of Organization contacts to sync"
 	@priority = "3"
 	test OrganizationContactSyncPreview {
+		property portal.upstream = "josh";
 		property portal.release = "true";
 
 		task ("Create a new user, a new organization and assign the organization for the created user") {
@@ -794,6 +796,7 @@ definition {
 	@description = "Automation ID: LRAC-8824 | Test Summary: Preview the number of User Group contacts to sync"
 	@priority = "4"
 	test UserGroupContactSyncPreview {
+		property portal.upstream = "josh";
 		property portal.release = "true";
 
 		var user = "ac";
