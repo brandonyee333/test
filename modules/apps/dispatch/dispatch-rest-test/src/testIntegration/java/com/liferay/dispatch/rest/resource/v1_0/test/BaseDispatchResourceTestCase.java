@@ -118,6 +118,11 @@ public abstract class BaseDispatchResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	@Test
+	public void testPostCreateDispatchTaskExecutorType() throws Exception {
+		Assert.assertTrue(false);
+	}
+
 	protected void assertContains(Object dispatch, List<Object> dispatches) {
 		boolean contains = false;
 

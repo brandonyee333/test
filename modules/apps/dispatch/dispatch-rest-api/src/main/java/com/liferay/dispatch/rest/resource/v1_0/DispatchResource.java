@@ -62,6 +62,10 @@ public interface DispatchResource {
 			Long dispatchTriggerId, String string)
 		throws Exception;
 
+	public Response postCreateDispatchTaskExecutorType(
+			String dispatchTaskExecutorType, String string)
+		throws Exception;
+
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}
