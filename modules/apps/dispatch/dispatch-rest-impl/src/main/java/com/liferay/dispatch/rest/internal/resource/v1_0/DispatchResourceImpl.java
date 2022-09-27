@@ -69,7 +69,22 @@ public class DispatchResourceImpl extends BaseDispatchResourceImpl {
 		return jsonArray.toString();
 	}
 
-	public Response postExecuteDispatchTrigger(Long dispatchTriggerId, String string)
+	public Response postCreateDispatchTaskExecutorType(
+			String dispatchTaskExecutorType, String string)
+		throws Exception {
+
+
+
+		dispatchTrigger = _dispatchTriggerService.addDispatchTrigger(
+			null, _portal.getUserId(actionRequest),
+			dispatchTaskExecutorType, dispatchTaskSettingsUnicodeProperties,
+			name);
+
+		return
+	}
+
+	public Response postExecuteDispatchTrigger(
+			Long dispatchTriggerId, String string)
 		throws Exception {
 
 		DispatchTrigger dispatchTrigger =
