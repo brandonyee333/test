@@ -5,12 +5,14 @@ definition {
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property release.feature.flags.disable.DISABLE_PRIVATE_LAYOUTS = "true";
-	property testray.main.component.name = "Product Info Management";
+	property testray.main.component.name = "Order Management";
 
 	setUp {
-		CommerceConfiguration.commerceSetUp(minium = "true");
+		task ("Setup: Initial login and create Minium site") {
+			CommerceConfiguration.commerceSetUp(minium = "true");
+		}
 
-		task ("Given a buyer user connected to the Commerce Account") {
+		task ("Setup: Create the Commerce business account and buyer user") {
 			CommerceEntry.addAccountEntryUser(
 				accountName = "Commerce Account",
 				accountType = "Business",
@@ -28,6 +30,146 @@ definition {
 
 	tearDown {
 		CommerceConfiguration.commerceTearDown();
+	}
+
+	@description = "COMMERCE-9723. The default Delivery Term should be displayed at Checkout."
+	@priority = "4"
+	test CanAddDefaultDeliveryTermWithCheckout {
+		task ("Given two Delivery Terms and Conditions entries with different priorities.") {
+			for (var entryNumber : list "1,2") {
+				CommerceNavigator.gotoPortlet(
+					category = "Order Management",
+					portlet = "Terms and Conditions");
+
+				CommercePaymentTerms.addTermsAndCondition(
+					active = "true",
+					termsAndConditionName = "Terms and Conditions Entry ${entryNumber}",
+					termsAndConditionType = "Delivery Terms",
+					valuePosition = "${entryNumber}");
+			}
+		}
+
+		task ("and the T&C with the lowest prioirty is set to the Account Order Default") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Commerce Account");
+
+			Accounts.gotoAssigneeTab(assigneeTab = "Order Defaults");
+
+			Accounts.setDefaultCommerceTermsEntry(
+				override = "true",
+				termEntry = "Terms and Conditions Entry 1",
+				termType = "Delivery");
+		}
+
+		task ("When a buyer checks out an order and view order details") {
+			User.logoutPG();
+
+			CommerceLogin.miniumLogin(
+				password = "test",
+				urlAppend = "web/minium",
+				userEmailAddress = "buyer@liferay.com");
+
+			FrontStore.addInitializerProductToCart(
+				productName = "U-Joint",
+				productQuantity = "1");
+
+			CommerceCheckout.gotoCheckoutViaMiniCart();
+		}
+
+		task ("Then the default Terms and Conditions Entry should be displayed at Checkout.") {
+			CommerceCheckout.initializersCheckout(
+				deliveryTerm = "Terms and Conditions Entry 1",
+				newAddressAddress = "Test Address",
+				newAddressCity = "Test City",
+				newAddressCountry = "United States",
+				newAddressName = "Address Name",
+				newAddressZipCode = "Test Zip Code",
+				productName = "U-Joint",
+				productQuantity = "1",
+				productUnitPrice = "24",
+				shippingMethod = "Standard");
+
+			Button.click(button = "Go to Order Details");
+	
+			CommerceOrders.viewOrdersEntry(
+				deliveryTerm = "Terms and Conditions Entry 1",
+				productListPrice = "24.00",
+				productName = "U-Joint",
+				productQuantity = "1",
+				productSku = "MIN55861",
+				productTotalPrice = "24.00");
+		}
+	}
+
+	@description = "COMMERCE-9724. The default Payment Term should be displayed at Checkout."
+	@priority = "4"
+	test CanAddDefaultPaymentTermWithCheckout {
+		task ("Given two Payment Terms and Conditions entries with different priorities.") {
+			for (var entryNumber : list "1,2") {
+				CommerceNavigator.gotoPortlet(
+					category = "Order Management",
+					portlet = "Terms and Conditions");
+
+				CommercePaymentTerms.addTermsAndCondition(
+					active = "true",
+					termsAndConditionName = "Terms and Conditions Entry ${entryNumber}",
+					termsAndConditionType = "Payment Terms",
+					valuePosition = "${entryNumber}");
+			}
+		}
+
+		task ("and the T&C with the lowest prioirty is set to the Account Order Default") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Commerce Account");
+
+			Accounts.gotoAssigneeTab(assigneeTab = "Order Defaults");
+
+			Accounts.setDefaultCommerceTermsEntry(
+				override = "true",
+				termEntry = "Terms and Conditions Entry 1",
+				termType = "Payment");
+		}
+
+		task ("When a buyer checks out an order and view order details") {
+			User.logoutPG();
+
+			CommerceLogin.miniumLogin(
+				password = "test",
+				urlAppend = "web/minium",
+				userEmailAddress = "buyer@liferay.com");
+
+			FrontStore.addInitializerProductToCart(
+				productName = "U-Joint",
+				productQuantity = "1");
+
+			CommerceCheckout.gotoCheckoutViaMiniCart();
+		}
+
+		task ("Then the default Terms and Conditions Entry should be displayed at Checkout.") {
+			CommerceCheckout.initializersCheckout(
+				newAddressAddress = "Test Address",
+				newAddressCity = "Test City",
+				newAddressCountry = "United States",
+				newAddressName = "Address Name",
+				newAddressZipCode = "Test Zip Code",
+				paymentTerm = "Terms and Conditions Entry 1",
+				productName = "U-Joint",
+				productQuantity = "1",
+				productUnitPrice = "24",
+				shippingMethod = "Standard");
+
+			Button.click(button = "Go to Order Details");
+	
+			CommerceOrders.viewOrdersEntry(
+				paymentTerm = "Terms and Conditions Entry 1",
+				productListPrice = "24.00",
+				productName = "U-Joint",
+				productQuantity = "1",
+				productSku = "MIN55861",
+				productTotalPrice = "24.00");
+		}
 	}
 
 	@description = "COMMERCE-9876. As a Sales Manager, I want to remove default billing and shipping addresses from the account"
