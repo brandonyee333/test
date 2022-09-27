@@ -58,6 +58,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -315,6 +316,21 @@ public class ObjectRelationshipLocalServiceImpl
 			objectRelationshipLocalService.deleteObjectRelationship(
 				objectRelationship);
 		}
+	}
+
+	@Override
+	public ObjectRelationship fetchObjectRelationship(
+		long objectDefinitionId1, String name) {
+
+		List<ObjectRelationship> objectRelationships =
+			objectRelationshipPersistence.findByODI1_N(
+				objectDefinitionId1, name);
+
+		if (ListUtil.isEmpty(objectRelationships)) {
+			return null;
+		}
+
+		return objectRelationships.get(0);
 	}
 
 	@Override
