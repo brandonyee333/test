@@ -243,22 +243,6 @@ CREATE TABLE IF NOT EXISTS ExperimentVariantMetric (
 	probabilityToWin REAL
 );
 
-CREATE TABLE IF NOT EXISTS Individual (
-	id BIGSERIAL PRIMARY KEY,
-	channelIds BIGINT[],
-	createDate TIMESTAMPTZ,
-	firstEnrichmentDate TIMESTAMPTZ,
-	groupIds BIGINT[],
-	lastEnrichmentDate TIMESTAMPTZ,
-	individualId TEXT,
-	modifiedDate TIMESTAMPTZ,
-	organizationIds BIGINT[],
-	roleIds BIGINT[],
-	segmentIds BIGINT[],
-	teamIds BIGINT[],
-	userGroupIds BIGINT[]
-);
-
 CREATE TABLE IF NOT EXISTS InterestTopic (
 	id BIGSERIAL PRIMARY KEY,
 	term TEXT,
