@@ -2,20 +2,20 @@ CREATE OR REPLACE VIEW BQBlog AS (
 	WITH
 		BlogEvent AS (
 			SELECT
-				BQEvent.*,
+				Event.*,
 				entryId.value AS assetId,
 				blogTitle.value as assetTitle
 			FROM
-				BQEvent
+				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS entryId ON (
-				BQEvent.id = entryId.id AND entryId.name = 'entryId'
+				Event.id = entryId.id AND entryId.name = 'entryId'
 			)
 			LEFT JOIN BQEventProperty AS blogTitle ON (
-				BQEvent.id = blogTitle.id AND blogTitle.name = 'title'
+				Event.id = blogTitle.id AND blogTitle.name = 'title'
 			)
 			WHERE
-				BQEvent.applicationId = 'Blog' AND
-				BQEvent.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed') AND
+				Event.applicationId = 'Blog' AND
+				Event.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed') AND
 				entryId.value IS NOT NULL
 		),
 		BlogFinalizedEvent AS (
@@ -23,49 +23,49 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				BlogEvent.*
 			FROM
 				BlogEvent
-			INNER JOIN BQSession ON
-				BlogEvent.sessionId = BQSession.id
+			INNER JOIN BQSession AS Session ON
+				BlogEvent.sessionId = Session.id
 		),
 		CommentEvent AS (
 			SELECT
-				BQEvent.*,
+				Event.*,
 				classPK.value as assetId
 			FROM
-				BQEvent
+				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
-				BQEvent.id = className.id AND className.name = 'className'
+				Event.id = className.id AND className.name = 'className'
 			)
 			LEFT JOIN BQEventProperty AS classPK ON (
-				BQEvent.id = classPK.id AND classPK.name = 'classPK'
+				Event.id = classPK.id AND classPK.name = 'classPK'
 			)
 			WHERE
-				BQEvent.applicationId = 'Comment' AND
-				BQEvent.eventId = 'posted' AND
+				Event.applicationId = 'Comment' AND
+				Event.eventId = 'posted' AND
 				className.value = 'com.liferay.blogs.model.BlogsEntry' AND
 				classPK.value IS NOT NULL
 		),
 		RatingsEvent AS (
 			SELECT
-				BQEvent.*,
+				Event.*,
 				classPK.value as assetId,
 				CAST(score.value AS FLOAT) as score
 			FROM
-				BQEvent
+				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
-				BQEvent.id = className.id AND className.name = 'className'
+				Event.id = className.id AND className.name = 'className'
 			)
 			LEFT JOIN BQEventProperty AS classPK ON (
-				BQEvent.id = classPK.id AND classPK.name = 'classPK'
+				Event.id = classPK.id AND classPK.name = 'classPK'
 			)
 			LEFT JOIN BQEventProperty AS ratingType ON (
-				BQEvent.id = ratingType.id AND ratingType.name = 'ratingType'
+				Event.id = ratingType.id AND ratingType.name = 'ratingType'
 			)
 			LEFT JOIN BQEventProperty AS score ON (
-				BQEvent.id = score.id AND score.name = 'score'
+				Event.id = score.id AND score.name = 'score'
 			)
 			WHERE
-				BQEvent.applicationId = 'Ratings' AND
-				BQEvent.eventId = 'VOTE' AND
+				Event.applicationId = 'Ratings' AND
+				Event.eventId = 'VOTE' AND
 				className.value = 'com.liferay.blogs.model.BlogsEntry' AND
 				classPK.value IS NOT NULL AND
 				ratingtype.value = 'stars'
@@ -122,7 +122,7 @@ CREATE OR REPLACE VIEW BQBlog AS (
 						channelId,
 						MAX(eventDate) FILTER (WHERE eventId != 'blogViewed') maxEventDate,
 						(
-							EXTRACT( EPOCH FROM MAX(eventDate) FILTER (WHERE eventId != 'blogViewed')) -
+							EXTRACT(EPOCH FROM MAX(eventDate) FILTER (WHERE eventId != 'blogViewed')) -
 							EXTRACT(EPOCH FROM MIN(eventDate))
 						) AS readTime,
 						sessionId,
@@ -451,62 +451,62 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 	WITH
 		CommentEvent AS (
 			SELECT
-				BQEvent.*,
+				Event.*,
 				classPK.value as assetId
 			FROM
-				BQEvent
+				BQEvent AS Event
 				LEFT JOIN BQEventProperty AS className ON (
-						BQEvent.id = className.id AND className.name = 'className'
+					Event.id = className.id AND className.name = 'className'
 				)
 				LEFT JOIN BQEventProperty AS classPK ON (
-						BQEvent.id = classPK.id AND classPK.name = 'classPK'
+					Event.id = classPK.id AND classPK.name = 'classPK'
 				)
 			WHERE
-				BQEvent.applicationId = 'Comment' AND
-				BQEvent.eventId = 'posted' AND
+				Event.applicationId = 'Comment' AND
+				Event.eventId = 'posted' AND
 				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
 				classPK.value IS NOT NULL
 		),
 		DocumentEvent AS (
 			SELECT
-				BQEvent.*,
+				Event.*,
 				fileEntryId.value AS assetId,
 				documentTitle.value as assetTitle
 			FROM
-				BQEvent
+				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS fileEntryId ON (
-				BQEvent.id = fileEntryId.id AND fileEntryId.name = 'fileEntryId'
+				Event.id = fileEntryId.id AND fileEntryId.name = 'fileEntryId'
 			)
 			LEFT JOIN BQEventProperty AS documentTitle ON (
-				BQEvent.id = documentTitle.id AND documentTitle.name = 'title'
+				Event.id = documentTitle.id AND documentTitle.name = 'title'
 			)
 			WHERE
-				BQEvent.applicationId = 'Document' AND
-				BQEvent.eventId IN ('documentDownloaded', 'documentPreviewed') AND
+				Event.applicationId = 'Document' AND
+				Event.eventId IN ('documentDownloaded', 'documentPreviewed') AND
 				fileEntryId.value IS NOT NULL
 		),
 		RatingEvent AS (
 			SELECT
-				BQEvent.*,
+				Event.*,
 				classPK.value as assetId,
 				CAST(score.value as FLOAT) as score
 			FROM
-				BQEvent
+				BQEvent AS Event
 				LEFT JOIN BQEventProperty AS className ON (
-					BQEvent.id = className.id AND className.name = 'className'
+					Event.id = className.id AND className.name = 'className'
 				)
 				LEFT JOIN BQEventProperty AS classPK ON (
-					BQEvent.id = classPK.id AND classPK.name = 'classPK'
+					Event.id = classPK.id AND classPK.name = 'classPK'
 				)
 				LEFT JOIN BQEventProperty AS ratingType ON (
-					BQEvent.id = ratingType.id AND ratingType.name = 'ratingType'
+					Event.id = ratingType.id AND ratingType.name = 'ratingType'
 				)
 				LEFT JOIN BQEventProperty AS score ON (
-					BQEvent.id = score.id AND score.name = 'score'
+					Event.id = score.id AND score.name = 'score'
 				)
 			WHERE
-				BQEvent.applicationId = 'Ratings' AND
-				BQEvent.eventId = 'VOTE' AND
+				Event.applicationId = 'Ratings' AND
+				Event.eventId = 'VOTE' AND
 				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
 				classPK.value IS NOT NULL AND
 				ratingtype.value = 'stars'
@@ -737,27 +737,27 @@ CREATE OR REPLACE VIEW BQForm AS (
 	WITH
 		FormEvent AS (
 			SELECT
-				BQEvent.*,
+				Event.*,
 				formId.value AS assetId,
 				formTitle.value as assetTitle
 			FROM
-				BQEvent
+				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS formId ON (
-				BQEvent.id = formId.id AND formId.name = 'formId'
+				Event.id = formId.id AND formId.name = 'formId'
 			)
 			LEFT JOIN BQEventProperty AS formTitle ON (
-				BQEvent.id = formTitle.id AND formTitle.name = 'title'
+				Event.id = formTitle.id AND formTitle.name = 'title'
 			)
 			WHERE
-				BQEvent.applicationId = 'Form' and
-				BQEvent.eventId in ('formSubmitted', 'formViewed')
+				Event.applicationId = 'Form' AND
+				Event.eventId IN ('formSubmitted', 'formViewed')
 		),
 		FormFinalizedEvent AS (
 			SELECT
 				FormEvent.*
 			FROM
-				FormEvent INNER JOIN BQSession ON
-					FormEvent.sessionId = BQSession.id
+				FormEvent INNER JOIN BQSession AS Session ON
+					FormEvent.sessionId = Session.id
 		),
 		FormAbandonments AS (
 			SELECT
@@ -940,20 +940,20 @@ CREATE OR REPLACE VIEW BQJournal AS (
 	WITH
 		WebContentEvent AS (
 			SELECT
-				BQEvent.*,
+				Event.*,
 				articleId.value AS assetId,
 				articleTitle.value as assetTitle
 			FROM
-				BQEvent
+				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS articleId ON (
-				BQEvent.id = articleId.id AND articleId.name = 'articleId'
+				Event.id = articleId.id AND articleId.name = 'articleId'
 			)
 			LEFT JOIN BQEventProperty AS articleTitle ON (
-				BQEvent.id = articleTitle.id AND articleTitle.name = 'title'
+				Event.id = articleTitle.id AND articleTitle.name = 'title'
 			)
 			WHERE
-				BQEvent.applicationId = 'WebContent' AND
-				BQEvent.eventId = 'webContentViewed' AND
+				Event.applicationId = 'WebContent' AND
+				Event.eventId = 'webContentViewed' AND
 				articleId.value IS NOT NULL
 		)
 	SELECT
