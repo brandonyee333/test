@@ -70,7 +70,8 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 
 	public List<HistogramMetric> getHistogramMetrics(
 		String assetId, @Nullable String assetTitle, Long channelId,
-		Interval interval, MetricType metricType, TimeRange timeRange);
+		boolean includePrevious, Interval interval, MetricType metricType,
+		TimeRange timeRange);
 
 	public List<Individual> getKnownIndividuals(
 		String assetId, @Nullable String assetTitle, Long channelId,

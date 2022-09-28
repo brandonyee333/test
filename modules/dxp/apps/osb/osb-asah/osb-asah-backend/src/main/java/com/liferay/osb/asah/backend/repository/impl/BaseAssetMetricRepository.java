@@ -386,7 +386,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	@Override
 	public List<HistogramMetric> getHistogramMetrics(
 		String assetId, @Nullable String assetTitle, Long channelId,
-		Interval interval, MetricType metricType, TimeRange timeRange) {
+		boolean includePrevious, Interval interval, MetricType metricType,
+		TimeRange timeRange) {
 
 		Field field = DSL.timestamp(
 			_dslHelper.dateTrunc(
@@ -421,8 +422,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				getTableName(timeRange)
 			).where(
 				_createWhereClause(
-					assetId, assetTitle, channelId,
-					timeRange.getIncludePreviousTimeRange())
+					assetId, assetTitle, channelId, includePrevious, timeRange)
 			).groupBy(
 				field
 			));
@@ -834,6 +834,18 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Autowired
 	protected DSLContext dslContext;
+
+	private Condition _createWhereClause(
+		@Nullable String assetId, @Nullable String assetTitle, Long channelId,
+		boolean includePrevious, TimeRange timeRange) {
+
+		if (includePrevious) {
+			timeRange = timeRange.getIncludePreviousTimeRange();
+		}
+
+		return _createWhereClause(
+			assetId, assetTitle, channelId, null, timeRange);
+	}
 
 	private Condition _createWhereClause(
 		@Nullable String assetId, @Nullable String assetTitle, Long channelId,
