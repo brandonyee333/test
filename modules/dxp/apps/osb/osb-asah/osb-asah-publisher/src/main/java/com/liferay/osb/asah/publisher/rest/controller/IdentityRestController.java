@@ -74,8 +74,8 @@ public class IdentityRestController {
 	}
 
 	private String _getIndividualId(JSONObject jsonObject) {
-		if (jsonObject.has("individualId")) {
-			return jsonObject.getString("individualId");
+		if (jsonObject.has("emailAddressHashed")) {
+			return jsonObject.getString("emailAddressHashed");
 		}
 
 		JSONObject identityJSONObject = jsonObject.getJSONObject("identity");

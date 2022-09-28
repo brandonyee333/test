@@ -119,7 +119,7 @@ public class IdentityRestControllerTest
 			).put(
 				"dataSourceId", "345085929068798696"
 			).put(
-				"individualId", individualId
+				"emailAddressHashed", individualId
 			).put(
 				"userId", RandomTestUtil.randomUUID()
 			).toString());
