@@ -18,12 +18,16 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,9 +37,78 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author Marcos Martins
+ * @author Leilany Ulisses
+ * @author Regisson Cesar
+ * @author Thiago Buarque
  */
 @Component
 public class SiteMetricDog {
+
+	public List<Metric> getBrowserMetrics(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		Map<String, Integer> sessions =
+			_bqSessionRepository.getSessionsGroupedByBrowserName(
+				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
+
+		Set<Map.Entry<String, Integer>> entrySet = sessions.entrySet();
+
+		Stream<Map.Entry<String, Integer>> stream = entrySet.stream();
+
+		return stream.map(
+			entry -> {
+				Metric metric = new Metric(metricType);
+
+				metric.setValue(Double.valueOf(entry.getValue()));
+				metric.setValueKey(entry.getKey());
+
+				return metric;
+			}
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	public List<Metric> getDeviceMetrics(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		List<Map<String, Object>> sessions =
+			_bqSessionRepository.getSessionsGroupedByDeviceName(
+				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
+
+		Map<String, Metric> metrics = new LinkedHashMap<>();
+
+		Stream<Map<String, Object>> stream = sessions.stream();
+
+		stream.forEach(
+			recordMap -> {
+				Metric deviceTypeMetric = new Metric(metricType);
+
+				String deviceType = (String)recordMap.get("deviceType");
+
+				deviceTypeMetric.setValueKey(deviceType);
+
+				metrics.putIfAbsent(deviceType, deviceTypeMetric);
+
+				deviceTypeMetric = metrics.get(deviceType);
+
+				Metric platformTypeMetric = new Metric(metricType);
+
+				platformTypeMetric.setValue(
+					Double.valueOf(String.valueOf(recordMap.get("count"))));
+				platformTypeMetric.setValueKey(
+					(String)recordMap.get("platformName"));
+
+				deviceTypeMetric.addMetric(platformTypeMetric);
+				deviceTypeMetric.setValue(
+					deviceTypeMetric.getValue() +
+						platformTypeMetric.getValue());
+			});
+
+		return new ArrayList<>(metrics.values());
+	}
 
 	public SiteMetric getSiteMetric(SearchQueryContext searchQueryContext) {
 		SiteMetric siteMetric = new SiteMetric();

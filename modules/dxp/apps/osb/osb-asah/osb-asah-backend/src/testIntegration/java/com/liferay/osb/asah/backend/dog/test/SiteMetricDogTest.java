@@ -17,11 +17,15 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.site.SiteMetricDog;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
+import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,11 +36,71 @@ import org.springframework.test.context.BootstrapWith;
 
 /**
  * @author Marcos Martins
+ * @author Regisson Cesar
  */
 @BootstrapWith(SpringBootTestContextBootstrapper.class)
 public class SiteMetricDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
+
+	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
+	@Test
+	public void testBrowserMetricsLast7Days() {
+		List<Metric> browserMetrics = _siteMetricDog.getBrowserMetrics(
+			SiteMetricType.SESSIONS,
+			_getSearchQueryContext(TimeRange.LAST_7_DAYS));
+
+		DogTestUtil.assertMetric(1, browserMetrics, "Chrome");
+		DogTestUtil.assertMetric(1, browserMetrics, "Firefox");
+	}
+
+	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
+	@Test
+	public void testBrowserMetricsLast24Hours() {
+		List<Metric> browserMetrics = _siteMetricDog.getBrowserMetrics(
+			SiteMetricType.SESSIONS,
+			_getSearchQueryContext(TimeRange.LAST_24_HOURS));
+
+		DogTestUtil.assertMetric(2, browserMetrics, "Chrome");
+		DogTestUtil.assertMetric(1, browserMetrics, "Firefox");
+	}
+
+	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
+	@Test
+	public void testBrowserMetricsLast30Days() {
+		List<Metric> browserMetrics = _siteMetricDog.getBrowserMetrics(
+			SiteMetricType.SESSIONS,
+			_getSearchQueryContext(TimeRange.LAST_30_DAYS));
+
+		DogTestUtil.assertMetric(2, browserMetrics, "Chrome");
+		DogTestUtil.assertMetric(2, browserMetrics, "Firefox");
+	}
+
+	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
+	@Test
+	public void testDeviceMetricsLast24Hours() {
+		List<Metric> browserMetrics = _siteMetricDog.getDeviceMetrics(
+			SiteMetricType.SESSIONS,
+			_getSearchQueryContext(TimeRange.LAST_24_HOURS));
+
+		DogTestUtil.assertMetric(3, browserMetrics, "Desktop");
+		DogTestUtil.assertMetric(2, browserMetrics, "Desktop", "Linux");
+		DogTestUtil.assertMetric(1, browserMetrics, "Desktop", "Win10");
+	}
+
+	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
+	@Test
+	public void testDeviceMetricsLast30Days() {
+		List<Metric> browserMetrics = _siteMetricDog.getDeviceMetrics(
+			SiteMetricType.SESSIONS,
+			_getSearchQueryContext(TimeRange.LAST_30_DAYS));
+
+		DogTestUtil.assertMetric(1, browserMetrics, "Desktop");
+		DogTestUtil.assertMetric(1, browserMetrics, "Desktop", "Linux");
+		DogTestUtil.assertMetric(3, browserMetrics, "Phone");
+		DogTestUtil.assertMetric(1, browserMetrics, "Phone", "Android");
+		DogTestUtil.assertMetric(2, browserMetrics, "Phone", "IOS");
+	}
 
 	@SQLResource(resourcePath = "test_bq_events.sql")
 	@Test
@@ -204,6 +268,17 @@ public class SiteMetricDogTest
 		searchQueryContext.setChannelId("1");
 		searchQueryContext.setIncludePrevious(true);
 		searchQueryContext.setTimeRange(TimeRange.LAST_30_DAYS);
+
+		return searchQueryContext;
+	}
+
+	private SearchQueryContext _getSearchQueryContext(TimeRange timeRange) {
+		SearchQueryContext searchQueryContext = new SearchQueryContext();
+
+		searchQueryContext.setAssetType(AssetType.SITE);
+		searchQueryContext.setChannelId("1");
+		searchQueryContext.setIncludePrevious(true);
+		searchQueryContext.setTimeRange(timeRange);
 
 		return searchQueryContext;
 	}

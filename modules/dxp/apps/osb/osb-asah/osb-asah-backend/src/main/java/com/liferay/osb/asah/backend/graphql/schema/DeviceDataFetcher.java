@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.AssetTechnologyDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
-import com.liferay.osb.asah.backend.dog.SiteDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.dog.site.SiteMetricDog;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
@@ -59,7 +59,8 @@ public class DeviceDataFetcher extends BaseDataFetcher<List<Metric>> {
 			graphQLFieldDefinition.getName());
 
 		if (searchQueryContext.getAssetType() == AssetType.SITE) {
-			return _siteDog.getBrowserMetrics(metricType, searchQueryContext);
+			return _siteMetricDog.getBrowserMetrics(
+				metricType, searchQueryContext);
 		}
 
 		return _assetTechnologyDog.getBrowserMetrics(
@@ -73,6 +74,6 @@ public class DeviceDataFetcher extends BaseDataFetcher<List<Metric>> {
 	private MetricTypeDog _metricTypeDog;
 
 	@Autowired
-	private SiteDog _siteDog;
+	private SiteMetricDog _siteMetricDog;
 
 }
