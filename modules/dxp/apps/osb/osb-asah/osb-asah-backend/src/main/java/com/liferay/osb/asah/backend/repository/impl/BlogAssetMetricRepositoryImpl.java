@@ -123,7 +123,17 @@ public class BlogAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName(TimeRange timeRange) {
-		return "BQBlog";
+		if (!isBigQueryDialect()) {
+			return "BQBlog";
+		}
+
+		if ((timeRange == TimeRange.LAST_24_HOURS) ||
+			(timeRange == TimeRange.YESTERDAY)) {
+
+			return "BlogHourly";
+		}
+
+		return "BlogDaily";
 	}
 
 }
