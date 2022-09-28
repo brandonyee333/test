@@ -63,7 +63,7 @@ Metrics AS (
 					0
 				END
 		) AS downloads,
-		DATE_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 		SUM(
 			CASE
 				WHEN
@@ -118,7 +118,7 @@ Abandoments AS (
 			)
 		) AS abandonments,
 		assetPrimaryKey,
-		DATE_TRUNC(eventDate, HOUR) AS normalizedEventDate
+		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate
 	FROM
 		CustomAssetFinalizedEvent
 	WHERE
@@ -130,7 +130,7 @@ Abandoments AS (
 ReadTime AS (
 	SELECT
 		assetPrimaryKey,
-		DATE_TRUNC(maxEventDate, HOUR) AS normalizedEventDate,
+		TIMESTAMP_TRUNC(maxEventDate, HOUR) AS normalizedEventDate,
 		SUM(readtime) AS readTime
 	FROM
 		(
@@ -154,7 +154,7 @@ ReadTime AS (
 SubmissionTime AS (
 	SELECT
 		assetPrimaryKey,
-		DATE_TRUNC(minSubmissionDate, HOUR) AS normalizedEventDate,
+		TIMESTAMP_TRUNC(minSubmissionDate, HOUR) AS normalizedEventDate,
 		SUM(submissionTime) AS submissionsTime
 	FROM (
 			 SELECT
