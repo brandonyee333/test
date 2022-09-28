@@ -156,6 +156,118 @@
 			"type": "DAY"
 		}
 	},
+	"blogdaily": {
+		"clusteringFields": [
+			"channelId",
+			"assetId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "assetId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "assetTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "browserName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "canonicalUrl",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "city",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "clicks",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "comments",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "country",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "deviceType",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "eventDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "pageTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "platformName",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "ratings",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "ratingsScore",
+				"type": "FLOAT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "readTime",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "region",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "sessions",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userId",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "views",
+				"type": "INT64"
+			}
+		],
+		"timePartitioning": {
+			"field": "eventDate",
+			"type": "DAY"
+		}
+	},
 	"csvuser": {
 		"clusteringFields": [
 			"dataSourceId"
@@ -297,6 +409,103 @@
 				"type": "STRING"
 			}
 		]
+	},
+	"documentlibrarydaily": {
+		"clusteringFields": [
+			"channelId",
+			"assetId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "assetId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "assetTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "browserName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "canonicalUrl",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "city",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "comments",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "country",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "deviceType",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "eventDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "pageTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "platformName",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "previews",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "ratings",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "ratingsScore",
+				"type": "FLOAT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "region",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userId",
+				"type": "STRING"
+			}
+		],
+		"timePartitioning": {
+			"field": "eventDate",
+			"type": "DAY"
+		}
 	},
 	"dxpentity": {
 		"clusteringFields": [
@@ -687,6 +896,103 @@
 			}
 		]
 	},
+	"formdaily": {
+		"clusteringFields": [
+			"channelId",
+			"assetId"
+		],
+		"fields": [
+			{
+				"mode": "NULLABLE",
+				"name": "abandonments",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "assetId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "assetTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "browserName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "canonicalUrl",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "city",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "country",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "deviceType",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "eventDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "pageTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "platformName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "region",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "submissions",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "submissionsTime",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userId",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "views",
+				"type": "INT64"
+			}
+		],
+		"timePartitioning": {
+			"field": "eventDate",
+			"type": "DAY"
+		}
+	},
 	"group": {
 		"clusteringFields": [
 			"dataSourceId"
@@ -877,7 +1183,17 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "firstName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "lastName",
 				"type": "STRING"
 			},
 			{
@@ -937,6 +1253,88 @@
 				"type": "INT64"
 			}
 		]
+	},
+	"journaldaily": {
+		"clusteringFields": [
+			"channelId",
+			"assetId"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "assetId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "assetTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "browserName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "canonicalUrl",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "city",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "country",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "deviceType",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "eventDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "pageTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "platformName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "region",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "userId",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "views",
+				"type": "INT64"
+			}
+		],
+		"timePartitioning": {
+			"field": "eventDate",
+			"type": "DAY"
+		}
 	},
 	"membership": {
 		"clusteringFields": [
