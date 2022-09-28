@@ -241,12 +241,18 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		Long channelId, @Nullable String keywords, TimeRange timeRange) {
 
 		return _queryExecutor.queryForLong(
-			dslContext.select(
-				DSL.countDistinct(DSL.field("assetId"), DSL.field("assetTitle"))
+			dslContext.selectCount(
 			).from(
-				getTableName(timeRange)
-			).where(
-				_createWhereClause(null, null, channelId, keywords, timeRange)
+				DSL.select(
+					DSL.field("assetId"), DSL.field("assetTitle")
+				).from(
+					getTableName(timeRange)
+				).where(
+					_createWhereClause(
+						null, null, channelId, keywords, timeRange)
+				).groupBy(
+					DSL.field("assetId"), DSL.field("assetTitle")
+				)
 			));
 	}
 
