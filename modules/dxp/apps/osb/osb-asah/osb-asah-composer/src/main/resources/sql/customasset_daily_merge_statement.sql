@@ -21,10 +21,12 @@ USING
 		GROUP BY
 			assetPrimaryKey, channelId, eventDate
 	) AS staging
-ON
+ON (
 	staging.assetPrimaryKey = replica.assetPrimaryKey AND
 	staging.channelId = replica.channelId AND
 	staging.eventDate = replica.eventDate
+)
+
 WHEN NOT MATCHED THEN
 	INSERT (
 		`abandonments`,
