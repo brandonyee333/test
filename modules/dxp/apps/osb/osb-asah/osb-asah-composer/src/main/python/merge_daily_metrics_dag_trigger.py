@@ -29,7 +29,11 @@ def create_dag(ac_project_id, dag_id, dag_description):
 			start_date=datetime.datetime.now()
 	) as dag:
 		[
-			BigQueryInsertJobFromTemplateOperator(task_id='customasset_daily_merge')
+			BigQueryInsertJobFromTemplateOperator(task_id='blog_daily_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='customasset_daily_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='document_library_daily_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='form_daily_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='journal_daily_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='page_daily_merge')
 		]
 
@@ -40,9 +44,9 @@ bigquery_hook = BigQueryHook(gcp_conn_id='google_cloud_default')
 client = bigquery_hook.get_client()
 
 for dataset in client.list_datasets():
-	dag_id = 'merge_page_{}'.format(dataset.dataset_id)
+	dag_id = 'merge_daily_metrics_{}'.format(dataset.dataset_id)
 
 	globals()[dag_id] = create_dag(
 		dataset.dataset_id, dag_id,
-		'Page Merge DAG For {}'.format(dataset.dataset_id)
+		'Daily Merge DAG For {}'.format(dataset.dataset_id)
 	)

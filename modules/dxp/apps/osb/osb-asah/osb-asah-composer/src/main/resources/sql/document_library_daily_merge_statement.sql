@@ -1,0 +1,88 @@
+MERGE INTO
+	`{{ dag.default_args['ac_project_id'] }}.documentlibrarydaily` AS replica
+USING
+	(
+		SELECT
+			assetId,
+			assetTitle,
+			browserName,
+			canonicalUrl,
+			channelId,
+			city,
+			SUM(comments) AS comments,
+			country,
+			deviceType,
+			SUM(downloads) AS downloads,
+			DATE_TRUNC(eventDate, DAY) AS eventDate,
+			pageTitle,
+			platformName,
+			SUM(previews) AS previews,
+			SUM(ratings) AS ratings,
+			SUM(ratingsScore) AS ratingsScore,
+			region,
+			userId
+		FROM
+			`{{ dag.default_args['ac_project_id'] }}.documentlibraryhourly`
+		WHERE
+			eventDate BETWEEN '{{ data_interval_start.at(0, 0, 0) }}' AND '{{ data_interval_start.at(23, 59, 59) }}'
+		GROUP BY
+			assetId, assetTitle, browserName, canonicalUrl, channelId, city,
+			country, eventDate, deviceType, pageTitle, platformName,
+			region, userId
+	) AS staging
+ON (
+	staging.assetId = replica.assetId AND
+	staging.assetTitle = replica.assetTitle AND
+	staging.browserName = replica.browserName AND
+	staging.channelId = replica.channelId AND
+	staging.city = replica.city AND
+	staging.country = replica.country AND
+	staging.deviceType = replica.deviceType AND
+	staging.eventDate = replica.eventDate AND
+	staging.pageTitle = replica.pageTitle AND
+	staging.platformName = replica.platformName AND
+	staging.region = replica.region AND
+	staging.userId = replica.userId
+)
+
+WHEN NOT MATCHED THEN
+	INSERT (
+		`assetId`,
+		`assetTitle`,
+		`browserName`,
+		`canonicalUrl`,
+		`channelId`,
+		`city`,
+		`comments`,
+		`country`,
+		`deviceType`,
+		`downloads`,
+		`eventDate`,
+		`pageTitle`,
+		`platformName`,
+		`previews`,
+		`ratings`,
+		`ratingsScore`,
+		`region`,
+		`userId`
+	)
+	VALUES (
+		staging.assetId,
+		staging.assetTitle,
+		staging.browserName,
+		staging.canonicalUrl,
+		staging.channelId,
+		staging.city,
+		staging.comments,
+		staging.country,
+		staging.deviceType,
+		staging.downloads,
+		staging.eventDate,
+		staging.pageTitle,
+		staging.platformName,
+		staging.previews,
+		staging.ratings,
+		staging.ratingsScore,
+		staging.region,
+		staging.userId
+	)
