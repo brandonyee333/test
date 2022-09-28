@@ -52,10 +52,10 @@ public class SiteMetricDog {
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
-		Set<Map.Entry<String, Integer>> entrySet =
+		Set<Map.Entry<String, Integer>> set =
 			sessionsCountGroupedByBrowserName.entrySet();
 
-		Stream<Map.Entry<String, Integer>> stream = entrySet.stream();
+		Stream<Map.Entry<String, Integer>> stream = set.stream();
 
 		return stream.map(
 			entry -> {
@@ -74,12 +74,12 @@ public class SiteMetricDog {
 	public List<Metric> getDeviceMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
+		Map<String, Metric> metrics = new LinkedHashMap<>();
+
 		List<Map<String, Object>> sessionsCountGroupedByDeviceName =
 			_bqSessionRepository.getSessionsCountGroupedByDeviceName(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
-
-		Map<String, Metric> metrics = new LinkedHashMap<>();
 
 		Stream<Map<String, Object>> stream =
 			sessionsCountGroupedByDeviceName.stream();
