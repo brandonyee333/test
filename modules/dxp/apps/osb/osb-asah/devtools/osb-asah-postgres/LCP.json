@@ -1,0 +1,20 @@
+{
+	"cpu": 2,
+	"env": {
+		"POSTGRES_DB": "osbasah",
+		"POSTGRES_PASSWORD": "password",
+		"POSTGRES_USER": "postgres"
+	},
+	"id": "osbasahpostgres",
+	"image": "postgres:13.1",
+	"kind": "Deployment",
+	"memory": 2024,
+	"ports": [
+		{
+			"external": false,
+			"port": 5432,
+			"protocol": "TCP",
+			"targetPort": 5432
+		}
+	]
+}
