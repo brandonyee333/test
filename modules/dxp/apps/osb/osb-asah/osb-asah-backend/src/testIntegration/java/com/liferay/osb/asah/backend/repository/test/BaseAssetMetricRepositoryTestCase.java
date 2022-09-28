@@ -162,7 +162,7 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 
 		List<LocalDateTime> localDateTimes = _getLocalDateTimes(
 			assetMetricRepository.getHistogramMetrics(
-				assetId, null, channelId, Interval.HOUR, metricType,
+				assetId, null, channelId, false, Interval.HOUR, metricType,
 				TimeRange.LAST_24_HOURS));
 
 		Mockito.when(
@@ -179,7 +179,7 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 
 		List<LocalDateTime> shiftedLocalDateTimes = _getLocalDateTimes(
 			assetMetricRepository.getHistogramMetrics(
-				assetId, null, channelId, Interval.HOUR, metricType,
+				assetId, null, channelId, false, Interval.HOUR, metricType,
 				TimeRange.LAST_24_HOURS));
 
 		Assertions.assertEquals(

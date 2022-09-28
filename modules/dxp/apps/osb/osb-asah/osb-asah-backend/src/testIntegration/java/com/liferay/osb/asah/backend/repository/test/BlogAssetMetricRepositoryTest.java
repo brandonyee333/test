@@ -160,7 +160,7 @@ public class BlogAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of((double)3),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", null, 1L, Interval.DAY, BlogMetricType.VIEWS,
+				"e131fabc", null, 1L, false, Interval.DAY, BlogMetricType.VIEWS,
 				TimeRange.LAST_7_DAYS));
 	}
 
@@ -172,8 +172,8 @@ public class BlogAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of((double)1, (double)2, (double)4),
 			_assetMetricRepository.getHistogramMetrics(
-				"e131fabc", null, 1L, Interval.HOUR, BlogMetricType.VIEWS,
-				TimeRange.LAST_24_HOURS));
+				"e131fabc", null, 1L, false, Interval.HOUR,
+				BlogMetricType.VIEWS, TimeRange.LAST_24_HOURS));
 	}
 
 	@SQLResource(

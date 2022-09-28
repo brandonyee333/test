@@ -43,8 +43,9 @@ public class CustomAssetMetricRepositoryTest
 		assertHistogramMetrics(
 			SetUtil.of(1D, 2D, 4D, 7D),
 			_assetMetricRepository.getHistogramMetrics(
-				DigestUtils.sha256Hex("Adefault1"), null, 1L, Interval.HOUR,
-				CustomAssetMetricType.VIEWS, TimeRange.LAST_24_HOURS));
+				DigestUtils.sha256Hex("Adefault1"), null, 1L, false,
+				Interval.HOUR, CustomAssetMetricType.VIEWS,
+				TimeRange.LAST_24_HOURS));
 	}
 
 	@SQLResource(
