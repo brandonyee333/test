@@ -16,6 +16,8 @@ USING
 			sum(views) as views
 		FROM
 			`{{ dag.default_args['ac_project_id'] }}.customassethourly`
+		WHERE
+			eventDate BETWEEN '{{ data_interval_start.at(0, 0, 0) }}' AND '{{ data_interval_start.at(23, 59, 59) }}'
 		GROUP BY
 			assetPrimaryKey, channelId, eventDate
 	) AS staging
