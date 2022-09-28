@@ -76,8 +76,7 @@ public class HistogramDog {
 			assetMetricRepository.getHistogramMetrics(
 				searchQueryContext.getAssetId(), assetTitle,
 				Long.valueOf(searchQueryContext.getChannelId()),
-				searchQueryContext.getInterval(), metricType,
-				timeRange.getIncludePreviousTimeRange());
+				searchQueryContext.getInterval(), metricType, timeRange);
 
 		if (histogramMetrics.isEmpty()) {
 			return new HistogramMetricBag();

@@ -420,7 +420,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).from(
 				getTableName(timeRange)
 			).where(
-				_createWhereClause(assetId, assetTitle, channelId, timeRange)
+				_createWhereClause(
+					assetId, assetTitle, channelId,
+					timeRange.getIncludePreviousTimeRange())
 			).groupBy(
 				field
 			));
