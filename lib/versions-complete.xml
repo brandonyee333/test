@@ -1319,20 +1319,6 @@
 				<latest-version-publish-date>2021-02-21 12:15:32</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.portal.cluster.multiple.jar!org.jgroups.jar</file-name>
-				<version>3.6.16.LIFERAY-PATCHED-1</version>
-				<project-name>JGroups</project-name>
-				<project-url>http://www.jboss.org</project-url>
-				<licenses>
-					<license>
-						<license-name>LGPL 2.1</license-name>
-						<license-url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2021-03-16 16:29:32</current-version-publish-date>
-				<latest-version-publish-date>2021-03-16 16:29:32</latest-version-publish-date>
-			</library>
-			<library>
 				<file-name>com.liferay.portal.mobile.device.detection.fiftyonedegrees.jar!commons-io.jar</file-name>
 				<version>1.4</version>
 				<project-name>Apache Commons IO Bundle</project-name>
@@ -2780,7 +2766,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2019-10-05 03:20:56</current-version-publish-date>
-				<latest-version-publish-date>2022-09-23 22:49:01</latest-version-publish-date>
+				<latest-version-publish-date>2022-09-27 10:04:32</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.openid.connect.impl.jar!oauth2-oidc-sdk.jar</file-name>
@@ -3127,7 +3113,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 13:54:32</current-version-publish-date>
-				<latest-version-publish-date>2022-09-23 13:20:58</latest-version-publish-date>
+				<latest-version-publish-date>2022-09-26 13:30:49</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-kms.jar</file-name>
@@ -3141,7 +3127,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 13:54:29</current-version-publish-date>
-				<latest-version-publish-date>2022-09-23 13:20:37</latest-version-publish-date>
+				<latest-version-publish-date>2022-09-26 13:31:38</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-s3.jar</file-name>
@@ -3155,7 +3141,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 13:53:45</current-version-publish-date>
-				<latest-version-publish-date>2022-09-23 13:20:55</latest-version-publish-date>
+				<latest-version-publish-date>2022-09-26 13:30:11</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!commons-codec.jar</file-name>
@@ -3680,19 +3666,6 @@
 				<latest-version-publish-date>2017-02-14 06:35:39</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.push.notifications.sender.firebase.jar!gson.jar</file-name>
-				<version>2.8.0</version>
-				<project-name>Gson</project-name>
-				<licenses>
-					<license>
-						<license-name>Apache 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2016-10-26 23:02:42</current-version-publish-date>
-				<latest-version-publish-date>2022-07-31 14:26:22</latest-version-publish-date>
-			</library>
-			<library>
 				<file-name>com.liferay.push.notifications.sender.firebase.jar!okhttp.jar</file-name>
 				<version>3.5.0</version>
 				<project-name>OkHttp</project-name>
@@ -3914,6 +3887,20 @@
 				<latest-version-publish-date>2021-02-21 12:15:32</latest-version-publish-date>
 			</library>
 			<library>
+				<file-name>com.liferay.shared.dependencies.gson.jar!gson.jar</file-name>
+				<version>2.9.0</version>
+				<project-name>Gson</project-name>
+				<project-url>https://github.com/google/gson/gson</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache-2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+					</license>
+				</licenses>
+				<current-version-publish-date>2022-02-11 11:14:41</current-version-publish-date>
+				<latest-version-publish-date>2022-07-31 14:26:22</latest-version-publish-date>
+			</library>
+			<library>
 				<file-name>com.liferay.sync.security.jar!commons-codec.jar</file-name>
 				<version>1.4</version>
 				<project-name>Commons Codec</project-name>
@@ -3940,20 +3927,6 @@
 				</licenses>
 				<current-version-publish-date>2009-12-30 15:28:04</current-version-publish-date>
 				<latest-version-publish-date>2009-12-30 15:28:04</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.sync.security.jar!gson.jar</file-name>
-				<version>1.4</version>
-				<project-name>Gson</project-name>
-				<project-url>http://code.google.com/p/google-gson/</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2010-03-24 12:29:50</current-version-publish-date>
-				<latest-version-publish-date>2022-07-31 14:26:22</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.sync.security.jar!httpcore.jar</file-name>
@@ -4515,7 +4488,7 @@
 			</library>
 			<library>
 				<file-name>lib/development/gson.jar</file-name>
-				<version>2.2.4</version>
+				<version>2.9.0</version>
 				<project-name>Gson</project-name>
 				<project-url>http://code.google.com/p/google-gson</project-url>
 				<licenses>
