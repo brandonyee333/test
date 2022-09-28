@@ -32,10 +32,10 @@ public interface CustomBQSessionRepository {
 
 	public List<BQSession> findAllById(Collection<String> sessionIds);
 
-	public Map<String, Integer> getSessionsGroupedByBrowserName(
+	public Map<String, Integer> getSessionsCountGroupedByBrowserName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
-	public List<Map<String, Object>> getSessionsGroupedByDeviceName(
+	public List<Map<String, Object>> getSessionsCountGroupedByDeviceName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
 	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(

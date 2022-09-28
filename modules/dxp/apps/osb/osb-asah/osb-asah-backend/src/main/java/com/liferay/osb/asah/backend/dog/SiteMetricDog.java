@@ -47,12 +47,13 @@ public class SiteMetricDog {
 	public List<Metric> getBrowserMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		Map<String, Integer> sessions =
-			_bqSessionRepository.getSessionsGroupedByBrowserName(
+		Map<String, Integer> sessionsCountGroupedByBrowserName =
+			_bqSessionRepository.getSessionsCountGroupedByBrowserName(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
-		Set<Map.Entry<String, Integer>> entrySet = sessions.entrySet();
+		Set<Map.Entry<String, Integer>> entrySet =
+			sessionsCountGroupedByBrowserName.entrySet();
 
 		Stream<Map.Entry<String, Integer>> stream = entrySet.stream();
 
@@ -73,14 +74,15 @@ public class SiteMetricDog {
 	public List<Metric> getDeviceMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		List<Map<String, Object>> sessions =
-			_bqSessionRepository.getSessionsGroupedByDeviceName(
+		List<Map<String, Object>> sessionsCountGroupedByDeviceName =
+			_bqSessionRepository.getSessionsCountGroupedByDeviceName(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
 		Map<String, Metric> metrics = new LinkedHashMap<>();
 
-		Stream<Map<String, Object>> stream = sessions.stream();
+		Stream<Map<String, Object>> stream =
+			sessionsCountGroupedByDeviceName.stream();
 
 		stream.forEach(
 			recordMap -> {

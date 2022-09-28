@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -79,7 +80,7 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
-	public Map<String, Integer> getSessionsGroupedByBrowserName(
+	public Map<String, Integer> getSessionsCountGroupedByBrowserName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
 		Field field = DSL.field("browserName");
@@ -99,7 +100,7 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
-	public List<Map<String, Object>> getSessionsGroupedByDeviceName(
+	public List<Map<String, Object>> getSessionsCountGroupedByDeviceName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
 		Field<String> deviceTypeField = DSL.field("deviceType", String.class);
@@ -107,7 +108,7 @@ public class BQSessionRepositoryImpl
 			"platformName", String.class);
 
 		return _queryExecutor.queryForList(
-			item -> item,
+			Function.identity(),
 			_dslContext.select(
 				deviceTypeField, platformNameField, DSL.count()
 			).from(
