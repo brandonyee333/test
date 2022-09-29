@@ -187,10 +187,10 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 			JSONArray dataSourceIndividualPKs =
 				individualJSONObject.getJSONArray("dataSourceIndividualPKs");
 
-			String individualId = individualJSONObject.getString(
-				"emailAddressHashed");
 			Date firstEnrichmentDate = DateUtil.toUTCDate(
 				individualJSONObject.getString("firstEnrichmentDate"));
+			String individualId = individualJSONObject.getString(
+				"emailAddressHashed");
 
 			for (int i = 0; i < dataSourceIndividualPKs.length(); i++) {
 				JSONObject dataSourceIndividualPK =
