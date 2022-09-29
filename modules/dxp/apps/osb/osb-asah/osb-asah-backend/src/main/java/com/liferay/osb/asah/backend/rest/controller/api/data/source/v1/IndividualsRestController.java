@@ -24,8 +24,8 @@ import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
 
 import java.util.Collections;
@@ -69,9 +69,9 @@ public class IndividualsRestController extends BaseRestController {
 
 		// TOFO Fetch Individual by id and channelId
 
-		BQIndividual bqIndividual = new BQIndividual();
+		Individual individual = new Individual();
 
-		IndividualDTO individualDTO = new IndividualDTO(bqIndividual);
+		IndividualDTO individualDTO = new IndividualDTO(individual);
 
 		if (StringUtils.isEmpty(expand)) {
 			return individualDTO;
@@ -85,20 +85,20 @@ public class IndividualsRestController extends BaseRestController {
 			if (expandPart.equals("data-sources")) {
 				Map<String, JSONObject> dataSourcesJSONObjects =
 					_dataSourceDog.getDataSourcesJSONObjects(
-						Collections.singletonList(bqIndividual));
+						Collections.singletonList(individual));
 
 				JSONObject jsonObject = dataSourcesJSONObjects.get(
-					bqIndividual.getId());
+					individual.getId());
 
 				expandMap.put(expandPart, jsonObject.get(expandPart));
 			}
 			else if (expandPart.equals("individual-segments")) {
 				Map<String, JSONObject> segmentsJSONObjects =
 					_segmentDog.getSegmentsJSONObjects(
-						Collections.singletonList(bqIndividual));
+						Collections.singletonList(individual));
 
 				JSONObject jsonObject = segmentsJSONObjects.get(
-					bqIndividual.getId());
+					individual.getId());
 
 				expandMap.put(expandPart, jsonObject.get(expandPart));
 			}
@@ -125,19 +125,19 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		Page<BQIndividual> bqIndividualPage =
+		Page<Individual> individualPage =
 			_bqIndividualDog.searchBQIndividualPage(
 				channelId, filterString, page, Math.max(1, size), sorts);
 
 		if (StringUtils.isEmpty(expand)) {
-			return _toIndividualDTOPageDTO(bqIndividualPage);
+			return _toIndividualDTOPageDTO(individualPage);
 		}
 
-		List<BQIndividual> bqIndividuals = bqIndividualPage.getContent();
+		List<Individual> individuals = individualPage.getContent();
 
 		Set<IndividualDTO> individualDTOs = new LinkedHashSet<>();
 
-		Stream<BQIndividual> stream = bqIndividuals.stream();
+		Stream<Individual> stream = individuals.stream();
 
 		stream.forEachOrdered(
 			individual -> individualDTOs.add(new IndividualDTO(individual)));
@@ -150,11 +150,11 @@ public class IndividualsRestController extends BaseRestController {
 		for (String expandPart : expandParts) {
 			if (expandPart.equals("data-sources")) {
 				dataSourcesJSONObjects =
-					_dataSourceDog.getDataSourcesJSONObjects(bqIndividuals);
+					_dataSourceDog.getDataSourcesJSONObjects(individuals);
 			}
 			else if (expandPart.equals("individual-segments")) {
 				segmentsJSONObjects = _segmentDog.getSegmentsJSONObjects(
-					bqIndividuals);
+					individuals);
 			}
 			else if (_log.isWarnEnabled()) {
 				_log.warn("Invalid expand: " + expandPart);
@@ -186,7 +186,7 @@ public class IndividualsRestController extends BaseRestController {
 			}
 		}
 
-		return _toPageDTO(new IndividualDTO(individualDTOs), bqIndividualPage);
+		return _toPageDTO(new IndividualDTO(individualDTOs), individualPage);
 	}
 
 	@GetMapping("/count")
@@ -273,22 +273,22 @@ public class IndividualsRestController extends BaseRestController {
 	}
 
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
-		Page<BQIndividual> bqIndividualsPage) {
+		Page<Individual> individualsPage) {
 
 		return new PageDTO<>(
-			"_embedded", new IndividualDTO(bqIndividualsPage.getContent()),
-			bqIndividualsPage.getNumber(), bqIndividualsPage.getSize(),
-			bqIndividualsPage.getTotalElements(),
-			bqIndividualsPage.getTotalPages());
+			"_embedded", new IndividualDTO(individualsPage.getContent()),
+			individualsPage.getNumber(), individualsPage.getSize(),
+			individualsPage.getTotalElements(),
+			individualsPage.getTotalPages());
 	}
 
 	private PageDTO<IndividualDTO> _toPageDTO(
-		IndividualDTO individualDTO, Page<BQIndividual> bqIndividualsPage) {
+		IndividualDTO individualDTO, Page<Individual> individualsPage) {
 
 		return new PageDTO<>(
-			"_embedded", individualDTO, bqIndividualsPage.getNumber(),
-			bqIndividualsPage.getSize(), bqIndividualsPage.getTotalElements(),
-			bqIndividualsPage.getTotalPages());
+			"_embedded", individualDTO, individualsPage.getNumber(),
+			individualsPage.getSize(), individualsPage.getTotalElements(),
+			individualsPage.getTotalPages());
 	}
 
 	private PageDTO<SegmentDTO> _toSegmentDTOPageDTO(

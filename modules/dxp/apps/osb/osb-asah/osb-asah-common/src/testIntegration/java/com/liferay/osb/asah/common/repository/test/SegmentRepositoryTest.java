@@ -137,7 +137,7 @@ public class SegmentRepositoryTest
 			Collections.singleton(
 				new BQDataSourceUser(
 					Collections.singleton("testAccount"), dataSource.getId(),
-					_individualId,
+					Long.valueOf(_individualId),
 					Collections.singleton("23432-cd-3242-asf23"))));
 
 		// TODO Add Individual
@@ -314,7 +314,7 @@ public class SegmentRepositoryTest
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
-	private Long _individualId;
+	private String _individualId;
 	private Long _segment1Id;
 	private Long _segment2Id;
 

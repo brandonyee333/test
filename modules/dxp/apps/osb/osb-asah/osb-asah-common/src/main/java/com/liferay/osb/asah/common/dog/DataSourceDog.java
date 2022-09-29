@@ -19,12 +19,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
-import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQDataSourceUserRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -232,16 +232,16 @@ public class DataSourceDog {
 	}
 
 	public Map<String, JSONObject> getDataSourcesJSONObjects(
-			List<BQIndividual> bqIndividuals)
+			List<Individual> individuals)
 		throws Exception {
 
 		Map<String, JSONObject> dataSourcesJSONObjects = new HashMap<>();
 
-		for (BQIndividual bqIndividual : bqIndividuals) {
+		for (Individual individual : individuals) {
 			List<BQDataSourceUser> bqDataSourceUsers =
 				_bqDataSourceUserRepository.
 					findBQDataSourceUsersByUserEmailAddressHashed(
-						bqIndividual.getEmailAddressHashed());
+						individual.getEmailAddressHashed());
 
 			List<Long> dataSourceIds = new ArrayList<>();
 
@@ -250,7 +250,7 @@ public class DataSourceDog {
 			}
 
 			dataSourcesJSONObjects.put(
-				bqIndividual.getId(),
+				individual.getId(),
 				JSONUtil.put(
 					"data-sources",
 					JSONUtil.toJSONArray(

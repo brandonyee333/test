@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
@@ -23,12 +24,9 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -151,7 +149,7 @@ public class BQIndividualRepositoryImpl
 	}
 
 	@Override
-	public List<BQIndividual> searchBQIndividuals(
+	public List<Individual> searchBQIndividuals(
 		Long channelId, FilterHelper filterHelper, Long segmentChannelId,
 		Long segmentId, Pageable pageable) {
 
@@ -225,22 +223,24 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
-		return _populateBQIndividuals(
-			selectJoinStep.where(
-				condition
-			).groupBy(
-				DSL.field("individual.emailAddressHashed")
-			).orderBy(
-				DSL.field(
-					"individual.emailAddressHashed"
-				).asc()
-			).limit(
-				pageable.getPageSize()
-			).offset(
-				pageable.getOffset()
-			).fetch(
-				record -> new BQIndividual(record.intoMap())
-			));
+		return selectJoinStep.where(
+			condition
+		).groupBy(
+			DSL.field("individual.emailAddressHashed")
+		).orderBy(
+			DSL.field(
+				"individual.emailAddressHashed"
+			).asc()
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+			record -> new Individual(
+				(Long)record.get("activitiescount"),
+				new BQIndividual(record.intoMap()),
+				(Date)record.get("lastactivitydate"))
+		);
 	}
 
 	private Condition _getChannelIdCondition(Long channelId) {
@@ -346,23 +346,6 @@ public class BQIndividualRepositoryImpl
 
 	private Map<String, String> _getSortFieldNameConversionMap() {
 		return Collections.singletonMap("name", "values");
-	}
-
-	private List<BQIndividual> _populateBQIndividuals(
-		List<BQIndividual> bqIndividuals) {
-
-		if (bqIndividuals.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		Stream<BQIndividual> stream = bqIndividuals.stream();
-
-		Map<String, BQIndividual> bqIndividualsById = stream.collect(
-			Collectors.toMap(
-				BQIndividual::getId, Function.identity(),
-				(id, individual) -> id, LinkedHashMap::new));
-
-		return new ArrayList<>(bqIndividualsById.values());
 	}
 
 	private final DSLContext _dslContext;

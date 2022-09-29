@@ -884,6 +884,8 @@ public class IndividualsFilterStringConverterHelperTest
 
 		List<Long> ids = stream.map(
 			Individual::getId
+		).map(
+			Long::valueOf
 		).collect(
 			Collectors.toList()
 		);

@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long channelId, String fieldName,
 		@Nullable Long individualSegmentId, Pageable pageable);
 
-	public List<BQIndividual> searchBQIndividuals(
+	public List<Individual> searchBQIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		@Nullable Long segmentChannelId, @Nullable Long segmentId,
 		Pageable pageable);

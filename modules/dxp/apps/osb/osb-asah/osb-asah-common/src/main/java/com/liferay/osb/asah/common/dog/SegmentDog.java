@@ -20,12 +20,12 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.postgresql.converter.helper.SegmentFilterStringConverterHelper;
@@ -320,20 +320,20 @@ public class SegmentDog {
 	}
 
 	public Map<String, JSONObject> getSegmentsJSONObjects(
-			List<BQIndividual> bqIndividuals)
+			List<Individual> individuals)
 		throws Exception {
 
 		Map<String, JSONObject> segmentsJSONObjects = new HashMap<>();
 
-		for (BQIndividual bqIndividual : bqIndividuals) {
+		for (Individual individual : individuals) {
 			segmentsJSONObjects.put(
-				bqIndividual.getId(),
+				individual.getId(),
 				JSONUtil.put(
 					"individual-segments",
 					JSONUtil.toJSONArray(
 						getSegments(
 							_bqMembershipDog.getSegmentIds(
-								String.valueOf(bqIndividual.getId()))),
+								String.valueOf(individual.getId()))),
 						segment -> _objectMapper.convertValue(
 							segment, JSONObject.class))));
 		}

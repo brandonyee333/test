@@ -16,9 +16,12 @@ package com.liferay.osb.asah.common.model;
 
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
+import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -39,6 +42,33 @@ import org.springframework.util.CollectionUtils;
 public class Individual {
 
 	public Individual() {
+	}
+
+	public Individual(
+		Long activitiesCount, BQIndividual bqIndividual,
+		Date lastActivityDate) {
+
+		_activitiesCount = activitiesCount;
+
+		if (lastActivityDate != null) {
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
+
+		_createDate = bqIndividual.getCreateDate();
+		_demographics = new Demographics(
+			new HashSet<>(
+				Arrays.asList(
+					_createField(
+						"additionalName", bqIndividual.getMiddleName()),
+					_createField("email", bqIndividual.getEmailAddress()),
+					_createField("familyName", bqIndividual.getLastName()),
+					_createField("givenName", bqIndividual.getFirstName()),
+					_createField("jobTitle", bqIndividual.getJobTitle()))));
+		_emailAddressHashed = bqIndividual.getEmailAddressHashed();
+		_firstEnrichmentDate = bqIndividual.getCreateDate();
+		_id = StringUtil.get(bqIndividual.getId(), null);
+		_lastEnrichmentDate = bqIndividual.getModifiedDate();
+		_modifiedDate = bqIndividual.getModifiedDate();
 	}
 
 	public Individual(Map<String, Object> source) {
@@ -182,7 +212,7 @@ public class Individual {
 		return _groupIds;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return _id;
 	}
 
@@ -360,7 +390,7 @@ public class Individual {
 		_groupIds = groupIds;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		_id = id;
 	}
 
@@ -675,6 +705,15 @@ public class Individual {
 
 	}
 
+	private Field _createField(String name, Object value) {
+		Field field = new Field();
+
+		field.setName(name);
+		field.setValue(value);
+
+		return field;
+	}
+
 	private Long _activitiesCount;
 	private Set<ActivitiesCount> _activitiesCounts = new HashSet<>();
 	private Set<BQDataSourceUser> _bqDataSourceUsers = new HashSet<>();
@@ -689,7 +728,7 @@ public class Individual {
 	private Set<Field> _fields = new HashSet<>();
 	private Date _firstEnrichmentDate;
 	private Set<Long> _groupIds = new HashSet<>();
-	private Long _id;
+	private String _id;
 	private Boolean _isNew;
 	private Date _lastActivityDate;
 	private Set<ActivityDate> _lastActivityDates = new HashSet<>();

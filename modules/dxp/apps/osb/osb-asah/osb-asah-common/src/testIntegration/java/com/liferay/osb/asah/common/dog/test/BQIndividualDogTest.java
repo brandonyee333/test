@@ -364,11 +364,11 @@ public class BQIndividualDogTest
 
 		Individual individual = individuals.get(0);
 
-		Assertions.assertEquals(4L, individual.getId());
+		Assertions.assertEquals(4L, Long.valueOf(individual.getId()));
 
 		individual = individuals.get(1);
 
-		Assertions.assertEquals(6L, individual.getId());
+		Assertions.assertEquals(6L, Long.valueOf(individual.getId()));
 	}
 
 	@Test
@@ -423,7 +423,7 @@ public class BQIndividualDogTest
 	)
 	@Test
 	public void testRemoveIndividualSegmentId() {
-		Individual individual = _fetchIndividual(338486041327913341L);
+		Individual individual = _fetchIndividual("338486041327913341");
 
 		Set<Long> segmentIds = individual.getSegmentIds();
 
@@ -431,7 +431,7 @@ public class BQIndividualDogTest
 
 		// TODO Remove Individual from segment
 
-		individual = _fetchIndividual(338486041327913341L);
+		individual = _fetchIndividual("338486041327913341");
 
 		segmentIds = individual.getSegmentIds();
 
@@ -566,7 +566,7 @@ public class BQIndividualDogTest
 	public void testUpdateDynamicAddMemberships() {
 		Individual individual = new Individual();
 
-		individual.setId(123L);
+		individual.setId("123");
 		individual.setSegmentIds(Collections.emptySet());
 
 		// TODO Add Individual
@@ -647,7 +647,7 @@ public class BQIndividualDogTest
 
 		Individual individual = new Individual();
 
-		individual.setId(338486037253283140L);
+		individual.setId("338486037253283140");
 		individual.setSegmentIds(Collections.singleton(338511398116723458L));
 
 		// TODO Add Individual
@@ -681,7 +681,7 @@ public class BQIndividualDogTest
 
 		// TODO Update Dynamic Memberships
 
-		individual = _fetchIndividual(338486037253283140L);
+		individual = _fetchIndividual("338486037253283140");
 
 		Set<Long> segmentIds = individual.getSegmentIds();
 
@@ -769,7 +769,7 @@ public class BQIndividualDogTest
 					402139280465582637L,
 					Collections.singleton(
 						"86ada3db-d8f9-c59f-7985-5c8fbdebb169"))));
-		individual.setId(402139280465582637L);
+		individual.setId("402139280465582637");
 		individual.setOrganizationIds(
 			Collections.singleton(402139267512234420L));
 
@@ -838,7 +838,7 @@ public class BQIndividualDogTest
 			).put(
 				"modifiedDate", System.currentTimeMillis()
 			),
-			_liferayDataSource, _fetchIndividual(523130384134494521L));
+			_liferayDataSource, _fetchIndividual("523130384134494521"));
 
 		Assertions.assertNotNull(individual.getFirstEnrichmentDate());
 	}
@@ -1022,7 +1022,7 @@ public class BQIndividualDogTest
 		return new Individual();
 	}
 
-	private Individual _fetchIndividual(long individualId) {
+	private Individual _fetchIndividual(String individualId) {
 		return new Individual();
 	}
 

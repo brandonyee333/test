@@ -363,7 +363,7 @@ public class FaroInfoTestUtil {
 
 		individual.setChannelIds(Collections.singleton(channelId));
 		individual.setCreateDate(date);
-		individual.setId(individualId);
+		individual.setId(individualId.toString());
 		individual.setModifiedDate(date);
 		individual.setSegmentIds(Collections.emptySet());
 
@@ -398,7 +398,7 @@ public class FaroInfoTestUtil {
 		field.setId(Long.parseLong(RandomStringUtils.randomNumeric(4)));
 		field.setModifiedDate(new Date());
 		field.setName(fieldName);
-		field.setOwnerId(individual.getId());
+		field.setOwnerId(Long.valueOf(individual.getId()));
 		field.setOwnerType("individual");
 		field.setSourceName(sourceName);
 		field.setValue(fieldValue);

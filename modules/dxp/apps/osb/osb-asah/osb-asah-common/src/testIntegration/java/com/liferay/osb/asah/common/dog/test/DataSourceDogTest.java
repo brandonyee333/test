@@ -188,7 +188,7 @@ public class DataSourceDogTest
 
 		individual.setFields(Collections.singleton(emailField));
 
-		individual.setId(123L);
+		individual.setId("123");
 
 		// TODO Add individual
 

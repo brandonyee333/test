@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIdentityActivity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
@@ -149,13 +150,12 @@ public class BQIndividualRepositoryTest
 
 	@Test
 	public void testSearchBQIndividuals() {
-		List<BQIndividual> bqIndividuals =
+		List<Individual> individuals =
 			_bqIndividualRepository.searchBQIndividuals(
 				11L, FilterHelper.EMPTY, null, null,
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assertions.assertEquals(
-			1, bqIndividuals.size(), bqIndividuals.toString());
+		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 	}
 
 	@Override

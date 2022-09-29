@@ -27,11 +27,11 @@ import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
@@ -390,13 +390,13 @@ public class IndividualSegmentsRestController {
 	}
 
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
-		Page<BQIndividual> bqIndividualsPage) {
+		Page<Individual> individualsPage) {
 
 		return new PageDTO<>(
-			"_embedded", new IndividualDTO(bqIndividualsPage.getContent()),
-			bqIndividualsPage.getNumber(), bqIndividualsPage.getSize(),
-			bqIndividualsPage.getTotalElements(),
-			bqIndividualsPage.getTotalPages());
+			"_embedded", new IndividualDTO(individualsPage.getContent()),
+			individualsPage.getNumber(), individualsPage.getSize(),
+			individualsPage.getTotalElements(),
+			individualsPage.getTotalPages());
 	}
 
 	private PageDTO<BQMembershipChangeDTO> _toMembershipChangeDTOPageDTO(

@@ -79,7 +79,7 @@ public class BQMembershipDogTest
 
 		Individual individual = new Individual();
 
-		individual.setId(123L);
+		individual.setId("123");
 		individual.setSegmentIds(Collections.singleton(456L));
 
 		// TODO Add individual

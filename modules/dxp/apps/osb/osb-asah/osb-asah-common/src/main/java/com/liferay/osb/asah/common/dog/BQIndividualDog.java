@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
@@ -75,7 +75,7 @@ public class BQIndividualDog {
 			distributions, pageRequest, distributions::size);
 	}
 
-	public Page<BQIndividual> searchBQIndividualPage(
+	public Page<Individual> searchBQIndividualPage(
 		Long channelId, String filterString, int page, int size,
 		String[] sorts) {
 
@@ -85,7 +85,7 @@ public class BQIndividualDog {
 			() -> countBQIndividuals(channelId, filterString));
 	}
 
-	public List<BQIndividual> searchBQIndividuals(
+	public List<Individual> searchBQIndividuals(
 		Long channelId, String filterString, int page, int size,
 		String[] sorts) {
 
