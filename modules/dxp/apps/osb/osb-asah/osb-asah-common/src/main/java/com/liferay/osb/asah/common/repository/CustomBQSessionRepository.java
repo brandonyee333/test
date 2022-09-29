@@ -38,7 +38,7 @@ public interface CustomBQSessionRepository {
 	public List<Map<String, Object>> getSessionsCountGroupedByDeviceName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
-	public Map<String, Integer> getSessionsGroupedByGeolocation(
+	public Map<String, Integer> getSessionsCountGroupedByGeolocation(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
 	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(

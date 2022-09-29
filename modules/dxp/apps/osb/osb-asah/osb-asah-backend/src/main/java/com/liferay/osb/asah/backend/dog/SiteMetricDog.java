@@ -115,14 +115,15 @@ public class SiteMetricDog {
 	public List<Metric> getGeolocationMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		Map<String, Integer> sessions =
-			_bqSessionRepository.getSessionsGroupedByGeolocation(
+		Map<String, Integer> sessionsCountGroupedByGeolocation =
+			_bqSessionRepository.getSessionsCountGroupedByGeolocation(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
-		Set<Map.Entry<String, Integer>> entrySet = sessions.entrySet();
+		Set<Map.Entry<String, Integer>> set =
+			sessionsCountGroupedByGeolocation.entrySet();
 
-		Stream<Map.Entry<String, Integer>> stream = entrySet.stream();
+		Stream<Map.Entry<String, Integer>> stream = set.stream();
 
 		return stream.map(
 			entry -> {

@@ -121,7 +121,7 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
-	public Map<String, Integer> getSessionsGroupedByGeolocation(
+	public Map<String, Integer> getSessionsCountGroupedByGeolocation(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
 		Field field = DSL.field("country");
