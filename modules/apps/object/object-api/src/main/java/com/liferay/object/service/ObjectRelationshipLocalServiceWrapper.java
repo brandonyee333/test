@@ -298,6 +298,14 @@ public class ObjectRelationshipLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.object.model.ObjectRelationship fetchObjectRelationship(
+		long objectDefinitionId1, String name) {
+
+		return _objectRelationshipLocalService.fetchObjectRelationship(
+			objectDefinitionId1, name);
+	}
+
+	@Override
 	public com.liferay.object.model.ObjectRelationship
 		fetchObjectRelationshipByObjectFieldId2(long objectFieldId2) {
 

@@ -264,6 +264,12 @@ public class ObjectRelationshipLocalServiceUtil {
 		return getService().fetchObjectRelationship(objectRelationshipId);
 	}
 
+	public static ObjectRelationship fetchObjectRelationship(
+		long objectDefinitionId1, String name) {
+
+		return getService().fetchObjectRelationship(objectDefinitionId1, name);
+	}
+
 	public static ObjectRelationship fetchObjectRelationshipByObjectFieldId2(
 		long objectFieldId2) {
 
