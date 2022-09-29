@@ -1182,7 +1182,7 @@
 				"type": "RECORD"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "firstName",
 				"type": "STRING"
 			},
@@ -1192,14 +1192,29 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
+				"name": "jobTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
 				"name": "lastName",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "middleName",
 				"type": "STRING"
 			},
 			{
 				"mode": "REQUIRED",
 				"name": "modifiedDate",
 				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "screenName",
+				"type": "STRING"
 			}
 		],
 		"timePartitioning": {
@@ -2694,6 +2709,11 @@
 			{
 				"mode": "REQUIRED",
 				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "jobTitle",
 				"type": "STRING"
 			},
 			{

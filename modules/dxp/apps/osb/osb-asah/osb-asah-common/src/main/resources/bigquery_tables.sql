@@ -167,6 +167,7 @@ CREATE TABLE IF NOT EXISTS BQIndividual (
 	firstName TEXT,
 	id TEXT PRIMARY KEY,
 	lastName TEXT,
+	jobTitle TEXT,
 	middleName TEXT,
 	modifiedDate TIMESTAMPTZ,
 	screenName TEXT
