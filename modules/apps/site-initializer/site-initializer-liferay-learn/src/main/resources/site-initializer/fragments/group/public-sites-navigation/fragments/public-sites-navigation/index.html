@@ -1,4 +1,5 @@
 [#assign navClass = "light-nav" /]
+[#assign buttonType = configuration.buttonType /]
 
 [#if configuration.darkNav]
 	[#assign navClass = "dark-nav" /]
@@ -18,7 +19,13 @@
 		[/#if]
 	</a>
 
-	<a class="align-items-center align-self-center btn btn-primary d-flex ml-auto" data-lfr-editable-id="sign-in-link" data-lfr-editable-type="link">
-		Sign In
-	</a>
+	[#if buttonType = "signin"]
+		<a class="align-items-center align-self-center btn btn-primary d-flex ml-auto" data-lfr-editable-id="sign-in-link" data-lfr-editable-type="link">
+			Sign In
+		</a>
+	[#elseif buttonType = "cta"]
+		<a class="align-items-center align-self-center btn btn-primary d-flex ml-auto" data-lfr-editable-id="call-to-action-link" data-lfr-editable-type="link">
+			Call to Action
+		</a>
+	[/#if]
 </header>
