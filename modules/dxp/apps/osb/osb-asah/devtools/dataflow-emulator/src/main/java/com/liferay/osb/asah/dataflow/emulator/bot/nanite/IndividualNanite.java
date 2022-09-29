@@ -80,7 +80,7 @@ public class IndividualNanite {
 
 		Stream<BQIdentity> bqIdentityStream = bqIdentities.stream();
 
-		Set<String> individualIdSet = bqIdentityStream.map(
+		Set<String> individualIdsSet = bqIdentityStream.map(
 			BQIdentity::getIndividualId
 		).filter(
 			Objects::nonNull
@@ -91,7 +91,7 @@ public class IndividualNanite {
 		Stream<BQUser> stream = bqUsers.stream();
 
 		return stream.filter(
-			bqUser -> individualIdSet.contains(
+			bqUser -> individualIdsSet.contains(
 				DigestUtils.sha256Hex(bqUser.getEmailAddress()))
 		).map(
 			this::_toBQIndividual
