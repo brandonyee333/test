@@ -295,18 +295,6 @@ public class BQIndividualRepositoryImpl
 			).as(
 				"individual"
 			)
-		).join(
-			DSL.table(
-				"BQIdentity"
-			).as(
-				"identity"
-			)
-		).on(
-			DSL.field(
-				"individual.emailAddressHashed"
-			).eq(
-				DSL.field("identity.emailAddressHashed")
-			)
 		).leftJoin(
 			DSL.table(
 				"BQIdentityChannel"
@@ -330,9 +318,9 @@ public class BQIndividualRepositoryImpl
 				)
 			).on(
 				DSL.field(
-					"identity.userId"
+					"individual.emailAddressHashed"
 				).eq(
-					DSL.field("identityActivity.identityId")
+					DSL.field("identityActivity.emailAddressHashed")
 				)
 			);
 		}
@@ -346,7 +334,7 @@ public class BQIndividualRepositoryImpl
 				)
 			).on(
 				DSL.field(
-					"identity.emailAddressHashed"
+					"individual.emailAddressHashed"
 				).eq(
 					DSL.field("membership.emailAddressHashed")
 				)

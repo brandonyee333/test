@@ -68,6 +68,11 @@ public class BQIdentityActivity implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getEmailAddressHashed() {
+		return _emailAddressHashed;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
 	public String getId() {
@@ -75,8 +80,8 @@ public class BQIdentityActivity implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getIdentityId() {
-		return _identityId;
+	public String getUserId() {
+		return _userId;
 	}
 
 	@Override
@@ -107,16 +112,20 @@ public class BQIdentityActivity implements Persistable<String> {
 		_dataSourceId = dataSourceId;
 	}
 
+	public void setEmailAddressHashed(String emailAddressHashed) {
+		_emailAddressHashed = emailAddressHashed;
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
 
-	public void setIdentityId(String identityId) {
-		_identityId = identityId;
-	}
-
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
+	}
+
+	public void setUserId(String userId) {
+		_userId = userId;
 	}
 
 	@Transient
@@ -129,12 +138,15 @@ public class BQIdentityActivity implements Persistable<String> {
 	private Long _dataSourceId;
 
 	@Transient
+	private String _emailAddressHashed;
+
+	@Transient
 	private String _id;
 
 	@Transient
-	private String _identityId;
+	private Boolean _isNew;
 
 	@Transient
-	private Boolean _isNew;
+	private String _userId;
 
 }

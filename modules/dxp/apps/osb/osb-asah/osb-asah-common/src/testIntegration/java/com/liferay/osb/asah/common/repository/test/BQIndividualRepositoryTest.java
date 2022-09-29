@@ -88,10 +88,12 @@ public class BQIndividualRepositoryTest
 
 		bqIdentityActivity.setChannelId(11L);
 		bqIdentityActivity.setCreateDate(new Date());
-		bqIdentityActivity.setId(RandomTestUtil.randomUUID());
-		bqIdentityActivity.setIdentityId(bqIdentity.getId());
-		bqIdentityActivity.setIsNew(true);
 		bqIdentityActivity.setDataSourceId(1L);
+		bqIdentityActivity.setId(RandomTestUtil.randomUUID());
+		bqIdentityActivity.setEmailAddressHashed(
+			bqIdentity.getEmailAddressHashed());
+		bqIdentityActivity.setIsNew(true);
+		bqIdentityActivity.setUserId(bqIdentity.getId());
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 

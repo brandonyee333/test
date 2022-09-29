@@ -118,13 +118,17 @@ public class IdentityIngestionNanite {
 
 		bqIdentityActivity.setDataSourceId(Long.valueOf(dataSourceId));
 
+		bqIdentityActivity.setEmailAddressHashed(
+			bqIdentity.getEmailAddressHashed());
+
 		String id = String.join(
 			"#", projectId, bqIdentity.getId(), dataSourceId, channelId);
 
 		bqIdentityActivity.setId(id);
 
-		bqIdentityActivity.setIdentityId(bqIdentity.getId());
 		bqIdentityActivity.setIsNew(_isBQIdentityActivityNew(id));
+
+		bqIdentityActivity.setUserId(bqIdentity.getUserId());
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 	}

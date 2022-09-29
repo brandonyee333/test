@@ -209,8 +209,10 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setChannelId(1L);
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -3));
 		bqIdentityActivity.setId("1");
-		bqIdentityActivity.setIdentityId("1");
+		bqIdentityActivity.setEmailAddressHashed(
+			DigestUtils.sha256Hex("test1@liferay.com"));
 		bqIdentityActivity.setIsNew(Boolean.TRUE);
+		bqIdentityActivity.setUserId("1");
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
@@ -219,8 +221,10 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setChannelId(1L);
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -5));
 		bqIdentityActivity.setId("2");
-		bqIdentityActivity.setIdentityId("2");
+		bqIdentityActivity.setEmailAddressHashed(
+			DigestUtils.sha256Hex("test2@liferay.com"));
 		bqIdentityActivity.setIsNew(Boolean.TRUE);
+		bqIdentityActivity.setUserId("2");
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
@@ -229,8 +233,10 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setChannelId(1L);
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqIdentityActivity.setId("3");
-		bqIdentityActivity.setIdentityId("3");
+		bqIdentityActivity.setEmailAddressHashed(
+			DigestUtils.sha256Hex("test3@liferay.com"));
 		bqIdentityActivity.setIsNew(Boolean.TRUE);
+		bqIdentityActivity.setUserId("3");
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
@@ -239,8 +245,10 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setChannelId(1L);
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -36));
 		bqIdentityActivity.setId("4");
-		bqIdentityActivity.setIdentityId("4");
+		bqIdentityActivity.setEmailAddressHashed(
+			DigestUtils.sha256Hex("test4@liferay.com"));
 		bqIdentityActivity.setIsNew(Boolean.TRUE);
+		bqIdentityActivity.setUserId("4");
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
@@ -249,8 +257,8 @@ public class BQIdentityRepositoryTest
 		bqIdentityActivity.setChannelId(1L);
 		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqIdentityActivity.setId("5");
-		bqIdentityActivity.setIdentityId("5");
 		bqIdentityActivity.setIsNew(Boolean.TRUE);
+		bqIdentityActivity.setUserId("5");
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 	}

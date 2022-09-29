@@ -168,8 +168,8 @@ CREATE TABLE IF NOT EXISTS BQIndividual (
 	fields JSON,
 	firstName TEXT,
 	id TEXT PRIMARY KEY,
-	lastName TEXT,
 	jobTitle TEXT,
+	lastName TEXT,
 	middleName TEXT,
 	modifiedDate TIMESTAMPTZ,
 	screenName TEXT
@@ -289,6 +289,7 @@ CREATE TABLE IF NOT EXISTS BQUser (
 	firstName TEXT,
 	id TEXT PRIMARY KEY,
 	individualId TEXT,
+    jobTitle TEXT,
 	lastName TEXT,
 	middleName TEXT,
 	modifiedDate TIMESTAMP,

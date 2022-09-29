@@ -1086,7 +1086,7 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "id",
+				"name": "userId",
 				"type": "STRING"
 			},
 			{
