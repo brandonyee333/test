@@ -59,11 +59,11 @@ public class DeviceDataFetcher extends BaseDataFetcher<List<Metric>> {
 			graphQLFieldDefinition.getName());
 
 		if (searchQueryContext.getAssetType() == AssetType.SITE) {
-			return _siteMetricDog.getBrowserMetrics(
+			return _siteMetricDog.getDeviceMetrics(
 				metricType, searchQueryContext);
 		}
 
-		return _assetTechnologyDog.getBrowserMetrics(
+		return _assetTechnologyDog.getDeviceMetrics(
 			metricType, searchQueryContext);
 	}
 
