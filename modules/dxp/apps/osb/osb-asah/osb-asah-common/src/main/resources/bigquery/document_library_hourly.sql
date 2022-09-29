@@ -73,9 +73,7 @@ WITH
 		FROM
 			CommentEvent
 		GROUP BY
-			assetId, browserName, canonicalUrl, channelId, city,
-			country, normalizedEventDate, deviceType, platformName,
-			region, title, userId
+			assetId, canonicalUrl, channelId, normalizedEventDate, title, userId
 	),
 	DocumentDownloadAndPreviews AS (
 		SELECT
@@ -128,9 +126,7 @@ WITH
 		FROM
 			RatingEvent
 		GROUP BY
-			assetId, browserName, canonicalUrl, channelId, city,
-			country, normalizedEventDate, deviceType, platformName,
-			region, title, userId
+			assetId, canonicalUrl, channelId, normalizedEventDate, title, userId
 	)
 SELECT
 	DocumentDownloadAndPreviews.assetId,

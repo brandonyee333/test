@@ -82,9 +82,8 @@ CREATE OR REPLACE VIEW BQBlog AS (
 			FROM
 				CommentEvent
 			GROUP BY
-				assetId, browserName, canonicalUrl, channelId, city,
-				country, normalizedEventDate, deviceType, platformName,
-				region, title, userId
+				assetId, canonicalUrl, channelId, normalizedEventDate, title,
+				userId
 		),
 		BlogRatings as (
 			SELECT
@@ -99,9 +98,8 @@ CREATE OR REPLACE VIEW BQBlog AS (
 			FROM
 				RatingsEvent
 			GROUP BY
-				assetId, browserName, canonicalUrl, channelId, city,
-				country, normalizedEventDate, deviceType, platformName,
-				region, title, userId
+				assetId, canonicalUrl, channelId, normalizedEventDate, title,
+				userId
 		),
 		BlogReadTimes as (
 			SELECT
@@ -523,9 +521,8 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 			FROM
 				CommentEvent
 			GROUP BY
-				assetId, browserName, canonicalUrl, channelId, city,
-				country, normalizedEventDate, deviceType, platformName,
-				region, title, userId
+				assetId, canonicalUrl, channelId, normalizedEventDate, title,
+				userId
 		),
 		DocumentDownloadAndPreviews AS (
 			SELECT
@@ -578,9 +575,8 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 			FROM
 				RatingEvent
 			GROUP BY
-				assetId, browserName, canonicalUrl, channelId, city,
-				country, normalizedEventDate, deviceType, platformName,
-				region, title, userId
+				assetId, canonicalUrl, channelId, normalizedEventDate, title,
+				userId
 		)
 	SELECT
 		DocumentDownloadAndPreviews.assetId,

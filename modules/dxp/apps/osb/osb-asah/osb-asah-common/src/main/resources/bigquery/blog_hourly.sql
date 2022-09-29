@@ -81,9 +81,7 @@ WITH
 		FROM
 			CommentEvent
 		GROUP BY
-			assetId, browserName, canonicalUrl, channelId, city,
-			country, normalizedEventDate, deviceType, platformName,
-			region, title, userId
+			assetId, canonicalUrl, channelId, normalizedEventDate, title, userId
 	),
 	BlogRatings as (
 		SELECT
@@ -91,16 +89,14 @@ WITH
 			canonicalUrl,
 			channelId,
 			TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
-			title as pageTitle,
-			SUM(1) as ratings,
-			SUM(score) as ratingsScore,
+			title AS pageTitle,
+			SUM(1) AS ratings,
+			SUM(score) AS ratingsScore,
 			userId
 		FROM
 			RatingsEvent
 		GROUP BY
-			assetId, browserName, canonicalUrl, channelId, city,
-			country, normalizedEventDate, deviceType, platformName,
-			region, title, userId
+			assetId, canonicalUrl, channelId, normalizedEventDate, title, userId
 	),
 	BlogReadTimes as (
 		SELECT
