@@ -3,7 +3,7 @@ WITH
 		SELECT
 			Event.*,
 			formId.value AS assetId,
-			formTitle.value as assetTitle
+			formTitle.value AS assetTitle
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS formId ON (
@@ -55,10 +55,10 @@ WITH
 			city,
 			country,
 			deviceType,
-			TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
+			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 			platformName,
 			region,
-			title as pageTitle,
+			title AS pageTitle,
 			userId
 		FROM
 			FormFinalizedEvent
@@ -76,11 +76,11 @@ WITH
 			city,
 			country,
 			deviceType,
-			TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
+			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 			platformName,
 			region,
 			SUM(1) AS submissions,
-			title as pageTitle,
+			title AS pageTitle,
 			userId
 		FROM
 			FormEvent
@@ -100,10 +100,10 @@ WITH
 			city,
 			country,
 			deviceType,
-			TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
+			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 			platformName,
 			region,
-			title as pageTitle,
+			title AS pageTitle,
 			userId ,
 			SUM(UNIX_SECONDS(eventDate) - UNIX_SECONDS(previousFormViewedEventDate)) submissionsTime
 		FROM (
@@ -137,10 +137,10 @@ WITH
 			city,
 			country,
 			deviceType,
-			TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
+			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 			platformName,
 			region,
-			title as pageTitle,
+			title AS pageTitle,
 			userId,
 			SUM(1) AS views
 		FROM
@@ -167,7 +167,7 @@ SELECT
 	FormViews.platformName,
 	FormViews.region,
 	FormSubmissions.submissions,
-	FormSubmissionTimes.submissionsTime * 1000 as submissionsTime,
+	FormSubmissionTimes.submissionsTime * 1000 AS submissionsTime,
 	FormViews.userId,
 	FormViews.views
 FROM

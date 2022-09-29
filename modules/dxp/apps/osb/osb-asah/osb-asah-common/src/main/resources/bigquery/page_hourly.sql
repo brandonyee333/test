@@ -98,28 +98,33 @@ SELECT
     TimeOnPages.title AS title, TimeOnPages.userId AS userId, Views.pageViews AS views
 FROM
      TimeOnPages
-LEFT JOIN Bounces ON
+LEFT JOIN Bounces ON (
 	TimeOnPages.channelId = Bounces.channelId AND
 	TimeOnPages.sessionId = Bounces.sessionId AND
 	TimeOnPages.userId = Bounces.userId
-LEFT JOIN Entrances ON
+)
+LEFT JOIN Entrances ON (
 	TimeOnPages.canonicalUrl = Entrances.canonicalUrl AND
 	TimeOnPages.channelId = Entrances.channelId AND
-	TimeOnPages.normalizedEventDate = Entrances.normalizedEventDate AND
+	TimeOnPages.normalizedEventDate =
+	Entrances.normalizedEventDate AND
 	TimeOnPages.sessionId = Entrances.sessionId AND
 	TimeOnPages.title = Entrances.title AND
 	TimeOnPages.userId = Entrances.userId
-LEFT JOIN Exits ON
-    TimeOnPages.canonicalUrl = Exits.canonicalUrl AND
-    TimeOnPages.channelId = Exits.channelId AND
-    TimeOnPages.normalizedEventDate = Exits.normalizedEventDate AND
-    TimeOnPages.sessionId = Exits.sessionId AND
-    TimeOnPages.title = Exits.title AND
-    TimeOnPages.userId = Exits.userId
-LEFT JOIN Views ON
+)
+LEFT JOIN Exits ON (
+	TimeOnPages.canonicalUrl = Exits.canonicalUrl AND
+	TimeOnPages.channelId = Exits.channelId AND
+	TimeOnPages.normalizedEventDate = Exits.normalizedEventDate AND
+	TimeOnPages.sessionId = Exits.sessionId AND
+	TimeOnPages.title = Exits.title AND
+	TimeOnPages.userId = Exits.userId
+)
+LEFT JOIN Views ON (
 	TimeOnPages.canonicalUrl = Views.canonicalUrl AND
 	TimeOnPages.channelId = Views.channelId AND
 	TimeOnPages.normalizedEventDate = Views.normalizedEventDate AND
 	TimeOnPages.sessionId = Views.sessionId AND
 	TimeOnPages.title = Views.title AND
 	TimeOnPages.userId = Views.userId
+)

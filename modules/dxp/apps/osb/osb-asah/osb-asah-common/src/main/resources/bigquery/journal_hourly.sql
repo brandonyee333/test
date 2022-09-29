@@ -3,7 +3,7 @@ WITH
 		SELECT
 			Event.*,
 			articleId.value AS assetId,
-			articleTitle.value as assetTitle
+			articleTitle.value AS assetTitle
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 			LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS articleId ON (
@@ -26,13 +26,13 @@ SELECT
 	channelId,
 	city,
 	country,
-	TIMESTAMP_TRUNC(eventDate, HOUR) as eventDate,
+	TIMESTAMP_TRUNC(eventDate, HOUR) AS eventDate,
 	deviceType,
 	platformName,
 	region,
-	title as pageTitle,
+	title AS pageTitle,
 	userId,
-	SUM(1) as views
+	SUM(1) AS views
 FROM
 	WebContentEvent
 GROUP BY

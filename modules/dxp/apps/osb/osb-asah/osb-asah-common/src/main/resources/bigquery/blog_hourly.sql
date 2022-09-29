@@ -185,40 +185,40 @@ SELECT
 	COALESCE(BlogComments.comments, 0) AS comments,
 	BlogViewsAndClicks.country,
 	BlogViewsAndClicks.deviceType,
-	BlogViewsAndClicks.normalizedEventDate as eventDate,
+	BlogViewsAndClicks.normalizedEventDate AS eventDate,
 	BlogViewsAndClicks.pageTitle,
 	BlogViewsAndClicks.platformName,
 	BlogRatings.ratings,
 	BlogRatings.ratingsScore,
-	BlogReadTimes.readTime * 1000 as readTime,
+	BlogReadTimes.readTime * 1000 AS readTime,
 	BlogViewsAndClicks.region,
 	BlogViewsAndClicks.sessions,
 	BlogViewsAndClicks.userId,
-	COALESCE(BlogViewsAndClicks.views, 0) as views
+	COALESCE(BlogViewsAndClicks.views, 0) AS views
 FROM
 	 BlogViewsAndClicks
 LEFT JOIN BlogComments ON (
-	 BlogViewsAndClicks.assetId = BlogComments.assetId and
-	 BlogViewsAndClicks.canonicalUrl = BlogComments.canonicalUrl and
-	 BlogViewsAndClicks.channelId = BlogComments.channelId and
-	 BlogViewsAndClicks.normalizedEventDate = BlogComments.normalizedEventDate and
-	 BlogViewsAndClicks.pageTitle = BlogComments.pageTitle and
+	 BlogViewsAndClicks.assetId = BlogComments.assetId AND
+	 BlogViewsAndClicks.canonicalUrl = BlogComments.canonicalUrl AND
+	 BlogViewsAndClicks.channelId = BlogComments.channelId AND
+	 BlogViewsAndClicks.normalizedEventDate = BlogComments.normalizedEventDate AND
+	 BlogViewsAndClicks.pageTitle = BlogComments.pageTitle AND
 	 BlogViewsAndClicks.userId = BlogComments.userId
 )
 LEFT JOIN BlogRatings ON (
-	BlogViewsAndClicks.assetId = BlogRatings.assetId and
-	BlogViewsAndClicks.canonicalUrl = BlogRatings.canonicalUrl and
-	BlogViewsAndClicks.channelId = BlogRatings.channelId and
-	BlogViewsAndClicks.normalizedEventDate = BlogRatings.normalizedEventDate and
-	BlogViewsAndClicks.pageTitle = BlogRatings.pageTitle and
+	BlogViewsAndClicks.assetId = BlogRatings.assetId AND
+	BlogViewsAndClicks.canonicalUrl = BlogRatings.canonicalUrl AND
+	BlogViewsAndClicks.channelId = BlogRatings.channelId AND
+	BlogViewsAndClicks.normalizedEventDate = BlogRatings.normalizedEventDate AND
+	BlogViewsAndClicks.pageTitle = BlogRatings.pageTitle AND
 	BlogViewsAndClicks.userId = BlogRatings.userId
 )
 LEFT JOIN BlogReadTimes ON (
-	BlogViewsAndClicks.assetId = BlogReadTimes.assetId and
-	BlogViewsAndClicks.assetTitle = BlogReadTimes.assetTitle and
-	BlogViewsAndClicks.canonicalUrl = BlogReadTimes.canonicalUrl and
-	BlogViewsAndClicks.channelId = BlogReadTimes.channelId and
-	BlogViewsAndClicks.normalizedEventDate = BlogReadTimes.normalizedEventDate and
-	BlogViewsAndClicks.pageTitle = BlogReadTimes.pageTitle and
+	BlogViewsAndClicks.assetId = BlogReadTimes.assetId AND
+	BlogViewsAndClicks.assetTitle = BlogReadTimes.assetTitle AND
+	BlogViewsAndClicks.canonicalUrl = BlogReadTimes.canonicalUrl AND
+	BlogViewsAndClicks.channelId = BlogReadTimes.channelId AND
+	BlogViewsAndClicks.normalizedEventDate = BlogReadTimes.normalizedEventDate AND
+	BlogViewsAndClicks.pageTitle = BlogReadTimes.pageTitle AND
 	BlogViewsAndClicks.userId = BlogReadTimes.userId
 )

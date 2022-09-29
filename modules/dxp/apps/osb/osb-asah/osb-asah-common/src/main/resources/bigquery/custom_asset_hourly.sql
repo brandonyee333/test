@@ -188,15 +188,15 @@ SELECT
 	COALESCE (submissionTime.submissionstime, 0) * 1000 AS submissionsTime
 FROM
 	Metrics metrics
-	LEFT JOIN Abandoments abandonments ON (
-		metrics.assetPrimaryKey = abandonments.assetprimarykey AND
-		metrics.normalizedEventDate = abandonments.normalizedEventDate
-	)
-	LEFT JOIN ReadTime readTime ON (
-		metrics.assetPrimaryKey = readTime.assetPrimaryKey AND
-		metrics.normalizedEventDate = readTime.normalizedEventDate
-	)
-	LEFT JOIN SubmissionTime submissionTime ON (
-		metrics.assetPrimaryKey = submissionTime.assetPrimaryKey AND
-		metrics.normalizedEventDate = submissionTime.normalizedEventDate
-	)
+LEFT JOIN Abandoments abandonments ON (
+	metrics.assetPrimaryKey = abandonments.assetprimarykey AND
+	metrics.normalizedEventDate = abandonments.normalizedEventDate
+)
+LEFT JOIN ReadTime readTime ON (
+	metrics.assetPrimaryKey = readTime.assetPrimaryKey AND
+	metrics.normalizedEventDate = readTime.normalizedEventDate
+)
+LEFT JOIN SubmissionTime submissionTime ON (
+	metrics.assetPrimaryKey = submissionTime.assetPrimaryKey AND
+	metrics.normalizedEventDate = submissionTime.normalizedEventDate
+)

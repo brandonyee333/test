@@ -4,7 +4,7 @@ CREATE OR REPLACE VIEW BQBlog AS (
 			SELECT
 				Event.*,
 				entryId.value AS assetId,
-				blogTitle.value as assetTitle
+				blogTitle.value AS assetTitle
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS entryId ON (
@@ -29,7 +29,7 @@ CREATE OR REPLACE VIEW BQBlog AS (
 		CommentEvent AS (
 			SELECT
 				Event.*,
-				classPK.value as assetId
+				classPK.value AS assetId
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
@@ -47,8 +47,8 @@ CREATE OR REPLACE VIEW BQBlog AS (
 		RatingsEvent AS (
 			SELECT
 				Event.*,
-				classPK.value as assetId,
-				CAST(score.value AS FLOAT) as score
+				classPK.value AS assetId,
+				CAST(score.value AS FLOAT) AS score
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
@@ -74,10 +74,10 @@ CREATE OR REPLACE VIEW BQBlog AS (
 			SELECT
 				assetId,
 				canonicalUrl,
-				SUM(1) as comments,
+				SUM(1) AS comments,
 				channelId,
-				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
-				title as pageTitle,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
+				title AS pageTitle,
 				userId
 			FROM
 				CommentEvent
@@ -85,15 +85,15 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				assetId, canonicalUrl, channelId, normalizedEventDate, title,
 				userId
 		),
-		BlogRatings as (
+		BlogRatings AS (
 			SELECT
 				assetId,
 				canonicalUrl,
 				channelId,
-				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
-				title as pageTitle,
-				SUM(1) as ratings,
-				SUM(score) as ratingsScore,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
+				title AS pageTitle,
+				SUM(1) AS ratings,
+				SUM(score) AS ratingsScore,
 				userId
 			FROM
 				RatingsEvent
@@ -101,14 +101,14 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				assetId, canonicalUrl, channelId, normalizedEventDate, title,
 				userId
 		),
-		BlogReadTimes as (
+		BlogReadTimes AS (
 			SELECT
 				assetId,
 				assetTitle,
 				canonicalUrl,
 				channelId,
 				DATE_TRUNC('HOUR', maxEventDate) AS normalizedEventDate,
-				title as pageTitle,
+				title AS pageTitle,
 				SUM(readtime) AS readTime,
 				userId
 			FROM
@@ -138,7 +138,7 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				assetId, assetTitle, canonicalUrl, channelId, normalizedEventDate,
 				title, userId
 		),
-		BlogViewsAndClicks as (
+		BlogViewsAndClicks AS (
 			SELECT
 				assetId,
 				assetTitle,
@@ -155,12 +155,12 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				) AS clicks,
 				city,
 				country,
-				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
 				deviceType,
 				platformName,
 				region,
 				COUNT(DISTINCT(sessionId)) AS sessions,
-				title as pageTitle,
+				title AS pageTitle,
 				userId,
 				SUM(
 					CASE
@@ -188,41 +188,41 @@ CREATE OR REPLACE VIEW BQBlog AS (
 		COALESCE(BlogComments.comments, 0) AS comments,
 		BlogViewsAndClicks.country,
 		BlogViewsAndClicks.deviceType,
-		BlogViewsAndClicks.normalizedEventDate as eventDate,
+		BlogViewsAndClicks.normalizedEventDate AS eventDate,
 		BlogViewsAndClicks.pageTitle,
 		BlogViewsAndClicks.platformName,
 		BlogRatings.ratings,
 		BlogRatings.ratingsScore,
-		BlogReadTimes.readTime * 1000 as readTime,
+		BlogReadTimes.readTime * 1000 AS readTime,
 		BlogViewsAndClicks.region,
 		BlogViewsAndClicks.sessions,
 		BlogViewsAndClicks.userId,
-		COALESCE(BlogViewsAndClicks.views, 0) as views
+		COALESCE(BlogViewsAndClicks.views, 0) AS views
 	FROM
 	     BlogViewsAndClicks
 	LEFT JOIN BlogComments ON (
-		 BlogViewsAndClicks.assetId = BlogComments.assetId and
-		 BlogViewsAndClicks.canonicalUrl = BlogComments.canonicalUrl and
-		 BlogViewsAndClicks.channelId = BlogComments.channelId and
-		 BlogViewsAndClicks.normalizedEventDate = BlogComments.normalizedEventDate and
-		 BlogViewsAndClicks.pageTitle = BlogComments.pageTitle and
+		 BlogViewsAndClicks.assetId = BlogComments.assetId AND
+		 BlogViewsAndClicks.canonicalUrl = BlogComments.canonicalUrl AND
+		 BlogViewsAndClicks.channelId = BlogComments.channelId AND
+		 BlogViewsAndClicks.normalizedEventDate = BlogComments.normalizedEventDate AND
+		 BlogViewsAndClicks.pageTitle = BlogComments.pageTitle AND
 		 BlogViewsAndClicks.userId = BlogComments.userId
 	)
 	LEFT JOIN BlogRatings ON (
-		BlogViewsAndClicks.assetId = BlogRatings.assetId and
-		BlogViewsAndClicks.canonicalUrl = BlogRatings.canonicalUrl and
-		BlogViewsAndClicks.channelId = BlogRatings.channelId and
-		BlogViewsAndClicks.normalizedEventDate = BlogRatings.normalizedEventDate and
-		BlogViewsAndClicks.pageTitle = BlogRatings.pageTitle and
+		BlogViewsAndClicks.assetId = BlogRatings.assetId AND
+		BlogViewsAndClicks.canonicalUrl = BlogRatings.canonicalUrl AND
+		BlogViewsAndClicks.channelId = BlogRatings.channelId AND
+		BlogViewsAndClicks.normalizedEventDate = BlogRatings.normalizedEventDate AND
+		BlogViewsAndClicks.pageTitle = BlogRatings.pageTitle AND
 		BlogViewsAndClicks.userId = BlogRatings.userId
 	)
 	LEFT JOIN BlogReadTimes ON (
-		BlogViewsAndClicks.assetId = BlogReadTimes.assetId and
-		BlogViewsAndClicks.assetTitle = BlogReadTimes.assetTitle and
-		BlogViewsAndClicks.canonicalUrl = BlogReadTimes.canonicalUrl and
-		BlogViewsAndClicks.channelId = BlogReadTimes.channelId and
-		BlogViewsAndClicks.normalizedEventDate = BlogReadTimes.normalizedEventDate and
-		BlogViewsAndClicks.pageTitle = BlogReadTimes.pageTitle and
+		BlogViewsAndClicks.assetId = BlogReadTimes.assetId AND
+		BlogViewsAndClicks.assetTitle = BlogReadTimes.assetTitle AND
+		BlogViewsAndClicks.canonicalUrl = BlogReadTimes.canonicalUrl AND
+		BlogViewsAndClicks.channelId = BlogReadTimes.channelId AND
+		BlogViewsAndClicks.normalizedEventDate = BlogReadTimes.normalizedEventDate AND
+		BlogViewsAndClicks.pageTitle = BlogReadTimes.pageTitle AND
 		BlogViewsAndClicks.userId = BlogReadTimes.userId
 	)
 );
@@ -429,18 +429,18 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 		COALESCE(submissionTime.submissionstime, 0) * 1000 AS submissionsTime
 	FROM
 		Metrics metrics
-		LEFT JOIN Abandoments abandonments ON (
-			metrics.assetPrimaryKey = abandonments.assetprimarykey AND
-			metrics.normalizedEventDate = abandonments.normalizedEventDate
-		)
-		LEFT JOIN ReadTime readTime ON (
-			metrics.assetPrimaryKey = readTime.assetPrimaryKey AND
-			metrics.normalizedEventDate = readTime.normalizedEventDate
-		)
-		LEFT JOIN SubmissionTime submissionTime ON (
-			metrics.assetPrimaryKey = submissionTime.assetPrimaryKey AND
-			metrics.normalizedEventDate = submissionTime.normalizedEventDate
-		)
+	LEFT JOIN Abandoments abandonments ON (
+		metrics.assetPrimaryKey = abandonments.assetprimarykey AND
+		metrics.normalizedEventDate = abandonments.normalizedEventDate
+	)
+	LEFT JOIN ReadTime readTime ON (
+		metrics.assetPrimaryKey = readTime.assetPrimaryKey AND
+		metrics.normalizedEventDate = readTime.normalizedEventDate
+	)
+	LEFT JOIN SubmissionTime submissionTime ON (
+		metrics.assetPrimaryKey = submissionTime.assetPrimaryKey AND
+		metrics.normalizedEventDate = submissionTime.normalizedEventDate
+	)
 );
 
 COMMIT;
@@ -450,15 +450,15 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 		CommentEvent AS (
 			SELECT
 				Event.*,
-				classPK.value as assetId
+				classPK.value AS assetId
 			FROM
 				BQEvent AS Event
-				LEFT JOIN BQEventProperty AS className ON (
-					Event.id = className.id AND className.name = 'className'
-				)
-				LEFT JOIN BQEventProperty AS classPK ON (
-					Event.id = classPK.id AND classPK.name = 'classPK'
-				)
+			LEFT JOIN BQEventProperty AS className ON (
+				Event.id = className.id AND className.name = 'className'
+			)
+			LEFT JOIN BQEventProperty AS classPK ON (
+				Event.id = classPK.id AND classPK.name = 'classPK'
+			)
 			WHERE
 				Event.applicationId = 'Comment' AND
 				Event.eventId = 'posted' AND
@@ -469,7 +469,7 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 			SELECT
 				Event.*,
 				fileEntryId.value AS assetId,
-				documentTitle.value as assetTitle
+				documentTitle.value AS assetTitle
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS fileEntryId ON (
@@ -486,22 +486,22 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 		RatingEvent AS (
 			SELECT
 				Event.*,
-				classPK.value as assetId,
-				CAST(score.value as FLOAT) as score
+				classPK.value AS assetId,
+				CAST(score.value AS FLOAT) AS score
 			FROM
 				BQEvent AS Event
-				LEFT JOIN BQEventProperty AS className ON (
-					Event.id = className.id AND className.name = 'className'
-				)
-				LEFT JOIN BQEventProperty AS classPK ON (
-					Event.id = classPK.id AND classPK.name = 'classPK'
-				)
-				LEFT JOIN BQEventProperty AS ratingType ON (
-					Event.id = ratingType.id AND ratingType.name = 'ratingType'
-				)
-				LEFT JOIN BQEventProperty AS score ON (
-					Event.id = score.id AND score.name = 'score'
-				)
+			LEFT JOIN BQEventProperty AS className ON (
+				Event.id = className.id AND className.name = 'className'
+			)
+			LEFT JOIN BQEventProperty AS classPK ON (
+				Event.id = classPK.id AND classPK.name = 'classPK'
+			)
+			LEFT JOIN BQEventProperty AS ratingType ON (
+				Event.id = ratingType.id AND ratingType.name = 'ratingType'
+			)
+			LEFT JOIN BQEventProperty AS score ON (
+				Event.id = score.id AND score.name = 'score'
+			)
 			WHERE
 				Event.applicationId = 'Ratings' AND
 				Event.eventId = 'VOTE' AND
@@ -514,9 +514,9 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 				assetId,
 				canonicalUrl,
 				channelId,
-				SUM(1) as comments,
+				SUM(1) AS comments,
 				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-				title as pageTitle,
+				title AS pageTitle,
 				userId
 			FROM
 				CommentEvent
@@ -542,7 +542,7 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 				) AS downloads,
 				country,
 				deviceType,
-				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
 				platformName,
 				SUM(
 					CASE
@@ -553,7 +553,7 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 					END
 				) AS previews,
 				region,
-				title as pageTitle,
+				title AS pageTitle,
 				userId
 			FROM
 				DocumentEvent
@@ -567,7 +567,7 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 				assetId,
 				canonicalUrl,
 				channelId,
-				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
 				SUM(1) AS ratings,
 				SUM(score) AS ratingsScore,
 				title AS pageTitle,
@@ -642,7 +642,7 @@ CREATE OR REPLACE VIEW BQFieldMapping AS (
 					ELSE
 						CONCAT(name, '_', datatype)
 				END fieldName,
-				datatype as fieldType,
+				datatype AS fieldType,
 				modifiedDate,
 				ownerType,
 				CASE
@@ -735,7 +735,7 @@ CREATE OR REPLACE VIEW BQForm AS (
 			SELECT
 				Event.*,
 				formId.value AS assetId,
-				formTitle.value as assetTitle
+				formTitle.value AS assetTitle
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS formId ON (
@@ -787,10 +787,10 @@ CREATE OR REPLACE VIEW BQForm AS (
 				city,
 				country,
 				deviceType,
-				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
 				platformName,
 				region,
-				title as pageTitle,
+				title AS pageTitle,
 				userId
 			FROM
 				FormFinalizedEvent
@@ -808,11 +808,11 @@ CREATE OR REPLACE VIEW BQForm AS (
 				city,
 				country,
 				deviceType,
-				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
 				platformName,
 				region,
 				SUM(1) AS submissions,
-				title as pageTitle,
+				title AS pageTitle,
 				userId
 			FROM
 				FormEvent
@@ -823,7 +823,7 @@ CREATE OR REPLACE VIEW BQForm AS (
 				country, deviceType, normalizedEventDate, platformName,
 				region, title, userId
 		),
-		FormSubmissionTimes as (
+		FormSubmissionTimes AS (
 			SELECT
 				assetId,
 				browserName,
@@ -832,10 +832,10 @@ CREATE OR REPLACE VIEW BQForm AS (
 				city,
 				country,
 				deviceType,
-				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
 				platformName,
 				region,
-				title as pageTitle,
+				title AS pageTitle,
 				userId ,
 				SUM(EXTRACT(EPOCH from eventDate) - EXTRACT(EPOCH from previousFormViewedEventDate)) submissionsTime
 			FROM (
@@ -869,10 +869,10 @@ CREATE OR REPLACE VIEW BQForm AS (
 				city,
 				country,
 				deviceType,
-				DATE_TRUNC('HOUR', eventDate) as normalizedEventDate,
+				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
 				platformName,
 				region,
-				title as pageTitle,
+				title AS pageTitle,
 				userId,
 				SUM(1) AS views
 			FROM
@@ -899,7 +899,7 @@ CREATE OR REPLACE VIEW BQForm AS (
 		FormViews.platformName,
 		FormViews.region,
 		FormSubmissions.submissions,
-		FormSubmissionTimes.submissionsTime * 1000 as submissionsTime,
+		FormSubmissionTimes.submissionsTime * 1000 AS submissionsTime,
 		FormViews.userId,
 		FormViews.views
 	FROM
@@ -938,7 +938,7 @@ CREATE OR REPLACE VIEW BQJournal AS (
 			SELECT
 				Event.*,
 				articleId.value AS assetId,
-				articleTitle.value as assetTitle
+				articleTitle.value AS assetTitle
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS articleId ON (
@@ -960,13 +960,13 @@ CREATE OR REPLACE VIEW BQJournal AS (
 		channelId,
 		city,
 		country,
-		DATE_TRUNC('HOUR', eventDate) as eventDate,
+		DATE_TRUNC('HOUR', eventDate) AS eventDate,
 		deviceType,
 		platformName,
 		region,
-		title as pageTitle,
+		title AS pageTitle,
 		userId,
-		SUM(1) as views
+		SUM(1) AS views
 	FROM
 		WebContentEvent
 	GROUP BY
@@ -1016,7 +1016,7 @@ CREATE OR REPLACE VIEW BQPage AS (
 			SELECT
 				channelId,
 				COUNT(*) AS count,
-				SUM(CASE WHEN applicationId = 'Page' AND eventId = 'pageViewed' THEN 1 ELSE 0 END) as pageViews,
+				SUM(CASE WHEN applicationId = 'Page' AND eventId = 'pageViewed' THEN 1 ELSE 0 END) AS pageViews,
 				sessionId,
 				userId
 			FROM
@@ -1221,12 +1221,12 @@ CREATE OR REPLACE VIEW BQPage AS (
 			PageTimeOnPages.browserName = PageEntrances.browserName AND
 			PageTimeOnPages.canonicalUrl =
 			PageEntrances.canonicalUrl AND
-			PageTimeOnPages.channelId = PageEntrances.channelId and
+			PageTimeOnPages.channelId = PageEntrances.channelId AND
 			PageTimeOnPages.deviceType = PageEntrances.deviceType AND
 			PageTimeOnPages.normalizedEventDate =
-			PageEntrances.normalizedEventDate and
+			PageEntrances.normalizedEventDate AND
 			PageTimeOnPages.platformName =
-			PageEntrances.platformName and
+			PageEntrances.platformName AND
 			PageTimeOnPages.region = PageEntrances.region AND
 			PageTimeOnPages.sessionId = PageEntrances.sessionId AND
 			PageTimeOnPages.title = PageEntrances.title AND
@@ -1235,11 +1235,11 @@ CREATE OR REPLACE VIEW BQPage AS (
 		LEFT JOIN PageExits ON (
 			PageTimeOnPages.browserName = PageExits.browserName AND
 			PageTimeOnPages.canonicalUrl = PageExits.canonicalUrl AND
-			PageTimeOnPages.channelId = PageExits.channelId and
+			PageTimeOnPages.channelId = PageExits.channelId AND
 			PageTimeOnPages.deviceType = PageExits.deviceType AND
 			PageTimeOnPages.normalizedEventDate =
-			PageExits.normalizedEventDate and
-			PageTimeOnPages.platformName = PageExits.platformName and
+			PageExits.normalizedEventDate AND
+			PageTimeOnPages.platformName = PageExits.platformName AND
 			PageTimeOnPages.region = PageExits.region AND
 			PageTimeOnPages.sessionId = PageExits.sessionId AND
 			PageTimeOnPages.title = PageExits.title AND
@@ -1248,10 +1248,10 @@ CREATE OR REPLACE VIEW BQPage AS (
 		LEFT JOIN PageViews ON (
 			PageTimeOnPages.browserName = PageViews.browserName AND
 			PageTimeOnPages.canonicalUrl = PageViews.canonicalUrl AND
-			PageTimeOnPages.channelId = PageViews.channelId and
+			PageTimeOnPages.channelId = PageViews.channelId AND
 			PageTimeOnPages.deviceType = PageViews.deviceType AND
-			PageTimeOnPages.normalizedEventDate = PageViews.normalizedEventDate and
-			PageTimeOnPages.platformName = PageViews.platformName and
+			PageTimeOnPages.normalizedEventDate = PageViews.normalizedEventDate AND
+			PageTimeOnPages.platformName = PageViews.platformName AND
 			PageTimeOnPages.region = PageViews.region AND
 			PageTimeOnPages.sessionId = PageViews.sessionId AND
 			PageTimeOnPages.title = PageViews.title AND

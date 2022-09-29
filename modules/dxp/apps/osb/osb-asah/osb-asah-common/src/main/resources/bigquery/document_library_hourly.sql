@@ -2,7 +2,7 @@ WITH
 	CommentEvent AS (
 		SELECT
 			Event.*,
-			classPK.value as assetId
+			classPK.value AS assetId
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 			LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
@@ -21,7 +21,7 @@ WITH
 		SELECT
 			Event.*,
 			fileEntryId.value AS assetId,
-			documentTitle.value as assetTitle
+			documentTitle.value AS assetTitle
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 			LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS fileEntryId ON (
@@ -38,8 +38,8 @@ WITH
 	RatingEvent AS (
 		SELECT
 			Event.*,
-			classPK.value as assetId,
-			CAST(score.value as FLOAT64) as score
+			classPK.value AS assetId,
+			CAST(score.value AS FLOAT64) AS score
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 			LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
@@ -66,9 +66,9 @@ WITH
 			assetId,
 			canonicalUrl,
 			channelId,
-			SUM(1) as comments,
+			SUM(1) AS comments,
 			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
-			title as pageTitle,
+			title AS pageTitle,
 			userId
 		FROM
 			CommentEvent
@@ -93,7 +93,7 @@ WITH
 			) AS downloads,
 			country,
 			deviceType,
-			TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
+			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 			platformName,
 			SUM(
 				CASE
@@ -104,7 +104,7 @@ WITH
 				END
 			) AS previews,
 			region,
-			title as pageTitle,
+			title AS pageTitle,
 			userId
 		FROM
 			DocumentEvent
@@ -118,7 +118,7 @@ WITH
 			assetId,
 			canonicalUrl,
 			channelId,
-			TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
+			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 			SUM(1) AS ratings,
 			SUM(score) AS ratingsScore,
 			title AS pageTitle,
@@ -149,19 +149,19 @@ SELECT
 	DocumentDownloadAndPreviews.userId
 FROM
 	DocumentDownloadAndPreviews
-	LEFT JOIN DocumentRatings ON (
-		DocumentDownloadAndPreviews.assetId = DocumentRatings.assetId AND
-		DocumentDownloadAndPreviews.canonicalUrl = DocumentRatings.canonicalUrl AND
-		DocumentDownloadAndPreviews.channelId = DocumentRatings.channelId AND
-		DocumentDownloadAndPreviews.normalizedEventDate = DocumentRatings.normalizedEventDate AND
-		DocumentDownloadAndPreviews.pageTitle = DocumentRatings.pageTitle AND
-		DocumentDownloadAndPreviews.userId = DocumentRatings.userId
-	)
-	LEFT JOIN DocumentComments ON (
-		DocumentDownloadAndPreviews.assetId = DocumentComments.assetId AND
-		DocumentDownloadAndPreviews.canonicalUrl = DocumentComments.canonicalUrl AND
-		DocumentDownloadAndPreviews.channelId = DocumentComments.channelId AND
-		DocumentDownloadAndPreviews.normalizedEventDate = DocumentComments.normalizedEventDate AND
-		DocumentDownloadAndPreviews.pageTitle = DocumentComments.pageTitle AND
-		DocumentDownloadAndPreviews.userId = DocumentComments.userId
-	)
+LEFT JOIN DocumentRatings ON (
+	DocumentDownloadAndPreviews.assetId = DocumentRatings.assetId AND
+	DocumentDownloadAndPreviews.canonicalUrl = DocumentRatings.canonicalUrl AND
+	DocumentDownloadAndPreviews.channelId = DocumentRatings.channelId AND
+	DocumentDownloadAndPreviews.normalizedEventDate = DocumentRatings.normalizedEventDate AND
+	DocumentDownloadAndPreviews.pageTitle = DocumentRatings.pageTitle AND
+	DocumentDownloadAndPreviews.userId = DocumentRatings.userId
+)
+LEFT JOIN DocumentComments ON (
+	DocumentDownloadAndPreviews.assetId = DocumentComments.assetId AND
+	DocumentDownloadAndPreviews.canonicalUrl = DocumentComments.canonicalUrl AND
+	DocumentDownloadAndPreviews.channelId = DocumentComments.channelId AND
+	DocumentDownloadAndPreviews.normalizedEventDate = DocumentComments.normalizedEventDate AND
+	DocumentDownloadAndPreviews.pageTitle = DocumentComments.pageTitle AND
+	DocumentDownloadAndPreviews.userId = DocumentComments.userId
+)
