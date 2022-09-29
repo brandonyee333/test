@@ -102,6 +102,48 @@ public class SiteMetricDogTest
 		DogTestUtil.assertMetric(2, browserMetrics, "Phone", "IOS");
 	}
 
+	@SQLResource(resourcePath = "test_bq_sessions_site_geolocation.sql")
+	@Test
+	public void testGeolocationMetrics1() {
+		List<Metric> geolocationMetrics = _siteMetricDog.getGeolocationMetrics(
+			SiteMetricType.SESSIONS,
+			_getSearchQueryContext(TimeRange.LAST_24_HOURS));
+
+		Assertions.assertEquals(
+			2, geolocationMetrics.size(), geolocationMetrics.toString());
+
+		DogTestUtil.assertMetric(2, geolocationMetrics, "Brazil");
+		DogTestUtil.assertMetric(1, geolocationMetrics, "Spain");
+	}
+
+	@SQLResource(resourcePath = "test_bq_sessions_site_geolocation.sql")
+	@Test
+	public void testGeolocationMetrics2() {
+		List<Metric> geolocationMetrics = _siteMetricDog.getGeolocationMetrics(
+			SiteMetricType.SESSIONS,
+			_getSearchQueryContext(TimeRange.LAST_7_DAYS));
+
+		Assertions.assertEquals(
+			2, geolocationMetrics.size(), geolocationMetrics.toString());
+
+		DogTestUtil.assertMetric(1, geolocationMetrics, "Brazil");
+		DogTestUtil.assertMetric(1, geolocationMetrics, "Spain");
+	}
+
+	@SQLResource(resourcePath = "test_bq_sessions_site_geolocation.sql")
+	@Test
+	public void testGeolocationMetrics3() {
+		List<Metric> geolocationMetrics = _siteMetricDog.getGeolocationMetrics(
+			SiteMetricType.SESSIONS,
+			_getSearchQueryContext(TimeRange.LAST_30_DAYS));
+
+		Assertions.assertEquals(
+			2, geolocationMetrics.size(), geolocationMetrics.toString());
+
+		DogTestUtil.assertMetric(2, geolocationMetrics, "Brazil");
+		DogTestUtil.assertMetric(2, geolocationMetrics, "Spain");
+	}
+
 	@SQLResource(resourcePath = "test_bq_events.sql")
 	@Test
 	public void testGetSiteMetric() {
