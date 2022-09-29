@@ -41,12 +41,13 @@ public class BQIdentityChannel implements Persistable<String> {
 	}
 
 	public BQIdentityChannel(
-		Long activitiesCount, Long channelId, String identityId,
-		Date lastActivityDate, Date previousActivityDate) {
+		Long activitiesCount, Long channelId, String emailAddressHashed,
+		Date lastActivityDate, Date previousActivityDate, String userId) {
 
 		_activitiesCount = activitiesCount;
 		_channelId = channelId;
-		_identityId = identityId;
+		_emailAddressHashed = emailAddressHashed;
+		_userId = userId;
 
 		if (lastActivityDate != null) {
 			_lastActivityDate = new Date(lastActivityDate.getTime());
@@ -101,16 +102,15 @@ public class BQIdentityChannel implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getEmailAddressHashed() {
+		return _emailAddressHashed;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
 	public String getId() {
 		return _id;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
-	public String getIdentityId() {
-		return _identityId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -148,6 +148,11 @@ public class BQIdentityChannel implements Persistable<String> {
 		return new Date(_previousActivityDate.getTime());
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getUserId() {
+		return _userId;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(_id);
@@ -176,12 +181,12 @@ public class BQIdentityChannel implements Persistable<String> {
 		}
 	}
 
-	public void setId(String id) {
-		_id = id;
+	public void setEmailAddressHashed(String emailAddressHashed) {
+		_emailAddressHashed = emailAddressHashed;
 	}
 
-	public void setIdentityId(String identityId) {
-		_identityId = identityId;
+	public void setId(String id) {
+		_id = id;
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -206,6 +211,10 @@ public class BQIdentityChannel implements Persistable<String> {
 		}
 	}
 
+	public void setUserId(String userId) {
+		_userId = userId;
+	}
+
 	@Transient
 	private Long _activitiesCount;
 
@@ -216,10 +225,10 @@ public class BQIdentityChannel implements Persistable<String> {
 	private Date _createDate;
 
 	@Transient
-	private String _id;
+	private String _emailAddressHashed;
 
 	@Transient
-	private String _identityId;
+	private String _id;
 
 	@Transient
 	private Boolean _isNew;
@@ -232,5 +241,8 @@ public class BQIdentityChannel implements Persistable<String> {
 
 	@Transient
 	private Date _previousActivityDate;
+
+	@Transient
+	private String _userId;
 
 }

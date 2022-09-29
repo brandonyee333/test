@@ -315,9 +315,9 @@ public class BQIndividualRepositoryImpl
 			)
 		).on(
 			DSL.field(
-				"identity.userId"
+				"individual.emailAddressHashed"
 			).eq(
-				DSL.field("identityChannel.identityId")
+				DSL.field("identityChannel.emailAddressHashed")
 			)
 		);
 

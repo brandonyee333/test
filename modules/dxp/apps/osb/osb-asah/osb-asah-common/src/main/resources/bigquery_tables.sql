@@ -152,12 +152,14 @@ CREATE TABLE IF NOT EXISTS BQIdentityActivity (
 CREATE TABLE IF NOT EXISTS BQIdentityChannel (
 	createDate TIMESTAMP,
 	activitiesCount INTEGER,
+    emailAddressHashed TEXT,
 	channelId BIGINT,
 	id TEXT PRIMARY KEY,
 	identityId TEXT,
 	modifiedDate TIMESTAMPTZ,
 	lastActivityDate TIMESTAMPTZ,
-	previousActivityDate TIMESTAMPTZ
+	previousActivityDate TIMESTAMPTZ,
+    userId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQIndividual (
