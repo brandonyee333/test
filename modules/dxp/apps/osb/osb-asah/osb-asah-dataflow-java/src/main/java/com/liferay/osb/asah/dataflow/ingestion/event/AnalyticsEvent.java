@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.dataflow.ingestion.event;
 
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -26,6 +27,47 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
  */
 @DefaultSchema(JavaFieldSchema.class)
 public class AnalyticsEvent {
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if ((obj == null) || !(obj instanceof AnalyticsEvent)) {
+			return false;
+		}
+
+		AnalyticsEvent analyticsEvent = (AnalyticsEvent)obj;
+
+		if (Objects.equals(applicationId, analyticsEvent.applicationId) &&
+			Objects.equals(channelId, analyticsEvent.channelId) &&
+			Objects.equals(clientIP, analyticsEvent.clientIP) &&
+			Objects.equals(context, analyticsEvent.context) &&
+			Objects.equals(createDate, analyticsEvent.createDate) &&
+			Objects.equals(dataSourceId, analyticsEvent.dataSourceId) &&
+			Objects.equals(eventDate, analyticsEvent.eventDate) &&
+			Objects.equals(eventId, analyticsEvent.eventId) &&
+			Objects.equals(eventProperties, analyticsEvent.eventProperties) &&
+			Objects.equals(id, analyticsEvent.id) &&
+			Objects.equals(projectId, analyticsEvent.projectId) &&
+			Objects.equals(
+				projectTimeZoneId, analyticsEvent.projectTimeZoneId) &&
+			Objects.equals(userId, analyticsEvent.userId)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+			applicationId, channelId, clientIP, context, createDate,
+			dataSourceId, eventDate, eventId, eventProperties, id, projectId,
+			projectTimeZoneId, userId);
+	}
 
 	public String applicationId;
 	public String channelId;

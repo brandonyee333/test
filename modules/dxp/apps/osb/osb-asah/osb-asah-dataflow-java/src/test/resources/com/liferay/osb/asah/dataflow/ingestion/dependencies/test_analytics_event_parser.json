@@ -1,0 +1,24 @@
+{
+	"applicationId": "Page",
+	"channelId": "123",
+	"context": {
+		"description": "This is the Liferay Analytics JS client test page.",
+		"keywords": "Liferay, Analytics, Test, Javascript",
+		"languageId": "en-US",
+		"title": "Liferay Analytics JS Client Test Page",
+		"url": "http://www.liferay.com",
+		"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:45.0) Gecko/20100101 Firefox/45.0"
+	},
+	"createDate": "2017-11-10T09:36:00.365Z",
+	"dataSourceId": "350121114030678021",
+	"eventDate": "2017-11-10T09:34:45.345Z",
+	"eventId": "pageViewed",
+	"eventProperties": {
+		"referrer": "http://www.google.com"
+	},
+	"id": "1",
+	"projectId": "test",
+	"projectTimeZoneId": "UTC",
+	"protocolVersion": "1.0",
+	"userId": "aedfa915-c7a1-4309-abcf-024e247d414c"
+}
