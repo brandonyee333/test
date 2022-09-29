@@ -121,6 +121,26 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
+	public Map<String, Integer> getSessionsGroupedByGeolocation(
+		Long channelId, TimeRange timeRange, ZoneId zoneId) {
+
+		Field field = DSL.field("country");
+
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			_dslContext.select(
+				field, DSL.count()
+			).from(
+				"BQSession"
+			).where(
+				_createWhereClause(channelId, timeRange, zoneId)
+			).groupBy(
+				field
+			),
+			GetterUtil::getInteger);
+	}
+
+	@Override
 	public List<SiteVisitorBehaviorMetric> getSiteVisitorBehaviorMetrics(
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId) {
