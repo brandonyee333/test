@@ -112,6 +112,32 @@ public class SiteMetricDog {
 		return new ArrayList<>(metrics.values());
 	}
 
+	public List<Metric> getGeolocationMetrics(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		Map<String, Integer> sessions =
+			_bqSessionRepository.getSessionsGroupedByGeolocation(
+				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
+
+		Set<Map.Entry<String, Integer>> entrySet = sessions.entrySet();
+
+		Stream<Map.Entry<String, Integer>> stream = entrySet.stream();
+
+		return stream.map(
+			entry -> {
+				Metric metric = new Metric(metricType);
+
+				metric.setValue(Double.valueOf(entry.getValue()));
+				metric.setValueKey(entry.getKey());
+
+				return metric;
+			}
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	public SiteMetric getSiteMetric(SearchQueryContext searchQueryContext) {
 		SiteMetric siteMetric = new SiteMetric();
 

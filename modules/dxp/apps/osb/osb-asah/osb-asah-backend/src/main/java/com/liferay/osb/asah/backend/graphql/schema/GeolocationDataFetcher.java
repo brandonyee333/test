@@ -14,11 +14,14 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.GeolocationDog;
+import com.liferay.osb.asah.backend.dog.AssetGeolocationDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
+import com.liferay.osb.asah.backend.dog.SiteMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.MetricType;
 
 import graphql.execution.ExecutionTypeInfo;
 
@@ -51,17 +54,26 @@ public class GeolocationDataFetcher extends BaseDataFetcher<List<Metric>> {
 		GraphQLFieldDefinition graphQLFieldDefinition =
 			parentExecutionTypeInfo.getFieldDefinition();
 
-		return _geolocationDog.getGeolocationMetrics(
-			_metricTypeDog.getMetricType(
-				searchQueryContext.getAssetType(),
-				graphQLFieldDefinition.getName()),
-			searchQueryContext);
+		MetricType metricType = _metricTypeDog.getMetricType(
+			searchQueryContext.getAssetType(),
+			graphQLFieldDefinition.getName());
+
+		if (searchQueryContext.getAssetType() == AssetType.SITE) {
+			return _siteMetricDog.getGeolocationMetrics(
+				metricType, searchQueryContext);
+		}
+
+		return _assetGeolocationDog.getGeolocationMetrics(
+			metricType, searchQueryContext);
 	}
 
 	@Autowired
-	private GeolocationDog _geolocationDog;
+	private AssetGeolocationDog _assetGeolocationDog;
 
 	@Autowired
 	private MetricTypeDog _metricTypeDog;
+
+	@Autowired
+	private SiteMetricDog _siteMetricDog;
 
 }
