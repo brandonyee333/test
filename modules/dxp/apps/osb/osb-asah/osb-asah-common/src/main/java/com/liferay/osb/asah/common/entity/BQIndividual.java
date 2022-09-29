@@ -62,6 +62,11 @@ public class BQIndividual implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Long getActivitiesCount() {
+		return _activitiesCount;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -91,6 +96,16 @@ public class BQIndividual implements Persistable<String> {
 	@Override
 	public String getId() {
 		return _id;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getJobTitle() {
+		return _jobTitle;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Date getLastActivityDate() {
+		return _lastActivityDate;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -131,6 +146,10 @@ public class BQIndividual implements Persistable<String> {
 		return false;
 	}
 
+	public void setActivitiesCount(Long activitiesCount) {
+		_activitiesCount = activitiesCount;
+	}
+
 	public void setCreateDate(Date createDate) {
 		if (createDate != null) {
 			_createDate = new Date(createDate.getTime());
@@ -153,8 +172,8 @@ public class BQIndividual implements Persistable<String> {
 		_id = id;
 	}
 
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
+	public void setLastActivityDate(Date lastActivityDate) {
+		_lastActivityDate = lastActivityDate;
 	}
 
 	public void setLastName(String lastName) {
@@ -176,6 +195,9 @@ public class BQIndividual implements Persistable<String> {
 	}
 
 	@Transient
+	private Long _activitiesCount;
+
+	@Transient
 	private Date _createDate;
 
 	@Transient
@@ -191,7 +213,10 @@ public class BQIndividual implements Persistable<String> {
 	private String _id;
 
 	@Transient
-	private Boolean _isNew;
+	private String _jobTitle;
+
+	@Transient
+	private Date _lastActivityDate;
 
 	@Transient
 	private String _lastName;

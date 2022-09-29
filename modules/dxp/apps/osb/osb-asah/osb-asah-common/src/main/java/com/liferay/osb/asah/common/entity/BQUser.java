@@ -71,6 +71,10 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		return _emailAddress;
 	}
 
+	public String getEmailAddressHashed() {
+		return _emailAddressHashed;
+	}
+
 	public List<ExpandoField> getExpandoFields() {
 		return _expandoFields;
 	}
@@ -100,6 +104,11 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 
 	public Long getIdFieldValue() {
 		return _dxpUserId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getJobTitle() {
+		return _jobTitle;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -166,6 +175,10 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		_emailAddress = emailAddress;
 	}
 
+	public void setEmailAddressHashed(String emailAddressHashed) {
+		_emailAddressHashed = emailAddressHashed;
+	}
+
 	public void setExpandoFields(List<ExpandoField> expandoFields) {
 		_expandoFields = expandoFields;
 	}
@@ -184,6 +197,10 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
+	}
+
+	public void setJobTitle(String jobTitle) {
+		_jobTitle = jobTitle;
 	}
 
 	public void setLastName(String lastName) {
@@ -225,6 +242,9 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 	private String _emailAddress;
 
 	@Transient
+	private String _emailAddressHashed;
+
+	@Transient
 	private List<ExpandoField> _expandoFields;
 
 	@Transient
@@ -238,6 +258,9 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private String _jobTitle;
 
 	@Transient
 	private String _lastName;
