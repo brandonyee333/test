@@ -44,7 +44,7 @@
 				},
 				{
 					"dataType": "string",
-					"defaultValue": "",
+					"defaultValue": "cta",
 					"description": "Button Type",
 					"label": "Button Type",
 					"name": "buttonType",
