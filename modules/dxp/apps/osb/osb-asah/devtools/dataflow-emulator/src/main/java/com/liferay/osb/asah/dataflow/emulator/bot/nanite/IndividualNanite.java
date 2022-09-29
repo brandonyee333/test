@@ -47,7 +47,6 @@ import java.util.stream.Stream;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
-import org.apache.hadoop.util.StringUtils;
 
 import org.json.JSONArray;
 
@@ -232,6 +231,7 @@ public class IndividualNanite {
 	private BQIndividual _toBQIndividual(BQUser bqUser) {
 		BQIndividual bqIndividual = new BQIndividual();
 
+		bqIndividual.setCreateDate(new Date());
 		bqIndividual.setEmailAddress(bqUser.getEmailAddress());
 
 		List<Field> defaultFields = _toFields(
@@ -250,6 +250,7 @@ public class IndividualNanite {
 			DigestUtils.sha256Hex(
 				StringUtils.toLowerCase(bqUser.getEmailAddress())));
 		bqIndividual.setIsNew(Boolean.TRUE);
+		bqIndividual.setJobTitle(bqUser.getJobTitle());
 		bqIndividual.setLastName(bqUser.getLastName());
 		bqIndividual.setMiddleName(bqUser.getMiddleName());
 		bqIndividual.setModifiedDate(bqUser.getModifiedDate());
