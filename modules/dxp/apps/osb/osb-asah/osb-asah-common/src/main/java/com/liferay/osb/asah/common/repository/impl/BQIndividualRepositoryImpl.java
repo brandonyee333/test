@@ -56,8 +56,7 @@ public class BQIndividualRepositoryImpl
 
 		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
 			channelId, segmentChannelId, segmentId,
-			_dslContext.select(
-				DSL.countDistinct(DSL.field("individual.emailAddressHashed"))));
+			_dslContext.select(DSL.countDistinct(DSL.field("individual.id"))));
 
 		Condition condition = filterHelper.getCondition();
 
@@ -90,7 +89,7 @@ public class BQIndividualRepositoryImpl
 		return selectJoinStep.where(
 			condition
 		).groupBy(
-			DSL.field("individual.emailAddressHashed")
+			DSL.field("individual.id")
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -176,9 +175,9 @@ public class BQIndividualRepositoryImpl
 					"emailaddress"
 				),
 				DSL.field(
-					"individual.emailaddresshashed"
+					"individual.id"
 				).as(
-					"emailaddresshashed"
+					"id"
 				),
 				DSL.field("fields"), DSL.field("firstname"),
 				DSL.max(
@@ -226,10 +225,10 @@ public class BQIndividualRepositoryImpl
 		return selectJoinStep.where(
 			condition
 		).groupBy(
-			DSL.field("individual.emailAddressHashed")
+			DSL.field("individual.id")
 		).orderBy(
 			DSL.field(
-				"individual.emailAddressHashed"
+				"individual.id"
 			).asc()
 		).limit(
 			pageable.getPageSize()
@@ -303,9 +302,9 @@ public class BQIndividualRepositoryImpl
 			)
 		).on(
 			DSL.field(
-				"individual.emailAddressHashed"
+				"individual.id"
 			).eq(
-				DSL.field("identityChannel.emailAddressHashed")
+				DSL.field("identityChannel.individualId")
 			)
 		);
 
@@ -318,9 +317,9 @@ public class BQIndividualRepositoryImpl
 				)
 			).on(
 				DSL.field(
-					"individual.emailAddressHashed"
+					"individual.id"
 				).eq(
-					DSL.field("identityActivity.emailAddressHashed")
+					DSL.field("identityActivity.individualId")
 				)
 			);
 		}
@@ -334,9 +333,9 @@ public class BQIndividualRepositoryImpl
 				)
 			).on(
 				DSL.field(
-					"individual.emailAddressHashed"
+					"individual.id"
 				).eq(
-					DSL.field("membership.emailAddressHashed")
+					DSL.field("membership.individualId")
 				)
 			);
 		}

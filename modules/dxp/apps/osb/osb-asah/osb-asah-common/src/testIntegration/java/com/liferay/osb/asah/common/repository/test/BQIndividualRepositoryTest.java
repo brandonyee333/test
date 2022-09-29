@@ -63,7 +63,7 @@ public class BQIndividualRepositoryTest
 		String emailAddress = "test@liferay.com";
 
 		bqIndividual.setEmailAddress(emailAddress);
-		bqIndividual.setEmailAddressHashed(DigestUtils.sha256Hex(emailAddress));
+		bqIndividual.setId(DigestUtils.sha256Hex(emailAddress));
 
 		bqIndividual.setModifiedDate(date);
 		bqIndividual.setIsNew(true);
@@ -79,7 +79,7 @@ public class BQIndividualRepositoryTest
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
-		bqIdentity.setEmailAddressHashed(DigestUtils.sha256Hex(emailAddress));
+		bqIdentity.setIndividualId(DigestUtils.sha256Hex(emailAddress));
 		bqIdentity.setIsNew(true);
 		bqIdentity.setUserId(RandomTestUtil.randomString());
 
@@ -91,18 +91,17 @@ public class BQIndividualRepositoryTest
 		bqIdentityActivity.setCreateDate(new Date());
 		bqIdentityActivity.setDataSourceId(1L);
 		bqIdentityActivity.setId(RandomTestUtil.randomUUID());
-		bqIdentityActivity.setEmailAddressHashed(
-			bqIdentity.getEmailAddressHashed());
+		bqIdentityActivity.setIdentityId(bqIdentity.getId());
+		bqIdentityActivity.setIndividualId(bqIdentity.getIndividualId());
 		bqIdentityActivity.setIsNew(true);
-		bqIdentityActivity.setUserId(bqIdentity.getId());
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
 		BQMembership bqMembership = new BQMembership();
 
 		bqMembership.setCreateDate(new Date());
-		bqMembership.setEmailAddressHashed(bqIdentity.getEmailAddressHashed());
 		bqMembership.setId(RandomTestUtil.randomNumber());
+		bqMembership.setIndividualId(bqIdentity.getIndividualId());
 		bqMembership.setIsNew(true);
 		bqMembership.setSegmentId(_SEGMENT_ID);
 
@@ -134,8 +133,7 @@ public class BQIndividualRepositoryTest
 	@Test
 	public void testFindAll2() {
 		Page<BQIndividual> page = _bqIndividualRepository.findAll(
-			PageRequest.of(
-				0, entityModels.size(), Sort.by("emailAddressHashed")));
+			PageRequest.of(0, entityModels.size(), Sort.by("id")));
 
 		Assertions.assertEquals(entityModels, page.getContent());
 	}
@@ -144,8 +142,7 @@ public class BQIndividualRepositoryTest
 	@Test
 	public void testFindAll3() {
 		Assertions.assertEquals(
-			entityModels,
-			_bqIndividualRepository.findAll(Sort.by("emailAddressHashed")));
+			entityModels, _bqIndividualRepository.findAll(Sort.by("id")));
 	}
 
 	@Test

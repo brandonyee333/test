@@ -156,10 +156,10 @@ CREATE TABLE IF NOT EXISTS BQIdentityChannel (
 	channelId BIGINT,
 	id TEXT PRIMARY KEY,
 	identityId TEXT,
+	individualId TEXT,
 	modifiedDate TIMESTAMPTZ,
 	lastActivityDate TIMESTAMPTZ,
-	previousActivityDate TIMESTAMPTZ,
-    userId TEXT
+	previousActivityDate TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS BQIndividual (
@@ -285,10 +285,10 @@ CREATE TABLE IF NOT EXISTS BQUser (
 	dataSourceId BIGINT,
 	dxpUserId BIGINT,
 	emailAddress TEXT,
+    emailAddressHashed TEXT,
 	fields json,
 	firstName TEXT,
 	id TEXT PRIMARY KEY,
-	individualId TEXT,
     jobTitle TEXT,
 	lastName TEXT,
 	middleName TEXT,

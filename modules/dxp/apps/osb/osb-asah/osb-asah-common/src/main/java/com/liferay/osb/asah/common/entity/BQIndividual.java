@@ -158,6 +158,14 @@ public class BQIndividual implements Persistable<String> {
 		_id = id;
 	}
 
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
+	}
+
+	public void setJobTitle(String jobTitle) {
+		_jobTitle = jobTitle;
+	}
+
 	public void setLastName(String lastName) {
 		_lastName = lastName;
 	}
@@ -190,6 +198,9 @@ public class BQIndividual implements Persistable<String> {
 
 	@Transient
 	private String _id;
+
+	@Transient
+	private Boolean _isNew;
 
 	@Transient
 	private String _jobTitle;

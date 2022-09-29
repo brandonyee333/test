@@ -123,13 +123,13 @@ public class BQIdentityRepositoryImpl
 			conditions.add(
 				DSL.or(
 					DSL.field(
-						"identity.emailAddressHashed"
+						"identity.individualId"
 					).isNull(),
 					DSL.field(
-						"identity.emailAddressHashed"
+						"identity.individualId"
 					).notIn(
 						DSL.select(
-							DSL.field("emailAddressHashed")
+							DSL.field("id")
 						).from(
 							DSL.table("BQIndividual")
 						)
@@ -175,7 +175,7 @@ public class BQIdentityRepositoryImpl
 				DSL.field(
 					"identity.userId"
 				).eq(
-					DSL.field("identityChannel.userId")
+					DSL.field("identityChannel.identityId")
 				)
 			);
 		}
@@ -191,7 +191,7 @@ public class BQIdentityRepositoryImpl
 				DSL.field(
 					"identity.userId"
 				).eq(
-					DSL.field("identityActivity.userId")
+					DSL.field("identityActivity.identityId")
 				)
 			);
 		}

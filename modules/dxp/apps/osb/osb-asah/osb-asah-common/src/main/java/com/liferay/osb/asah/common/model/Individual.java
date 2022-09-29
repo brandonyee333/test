@@ -64,7 +64,7 @@ public class Individual {
 					_createField("familyName", bqIndividual.getLastName()),
 					_createField("givenName", bqIndividual.getFirstName()),
 					_createField("jobTitle", bqIndividual.getJobTitle()))));
-		_emailAddressHashed = bqIndividual.getEmailAddressHashed();
+		_emailAddressHashed = bqIndividual.getId();
 		_firstEnrichmentDate = bqIndividual.getCreateDate();
 		_id = StringUtil.get(bqIndividual.getId(), null);
 		_lastEnrichmentDate = bqIndividual.getModifiedDate();

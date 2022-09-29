@@ -246,9 +246,7 @@ public class IndividualNanite {
 				JSONArray.class));
 
 		bqIndividual.setFirstName(bqUser.getFirstName());
-		bqIndividual.setId(
-			DigestUtils.sha256Hex(
-				StringUtils.toLowerCase(bqUser.getEmailAddress())));
+		bqIndividual.setId(bqUser.getEmailAddressHashed());
 		bqIndividual.setIsNew(Boolean.TRUE);
 		bqIndividual.setJobTitle(bqUser.getJobTitle());
 		bqIndividual.setLastName(bqUser.getLastName());
