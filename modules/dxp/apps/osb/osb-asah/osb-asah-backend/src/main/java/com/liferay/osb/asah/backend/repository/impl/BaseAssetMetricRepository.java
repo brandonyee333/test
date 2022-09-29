@@ -397,6 +397,10 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				BigDecimal bigDecimal = (BigDecimal)rowMap.get(
 					metricType.getFieldName());
 
+				if (bigDecimal == null) {
+					bigDecimal = BigDecimal.ZERO;
+				}
+
 				metric.setValue(bigDecimal.doubleValue());
 
 				return new HistogramMetric(
