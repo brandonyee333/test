@@ -215,7 +215,7 @@ if (portletTitleBasedNavigation) {
 						<span class="download-document">
 							<a href="<%= DLUtil.getDownloadURL(fileEntry, fileVersion, themeDisplay, StringPool.BLANK) %>">
 								<i class="icon-download"></i>
-								<%= LanguageUtil.get(resourceBundle, "download") + " (" + TextFormatter.formatStorageSize(fileVersion.getSize(), locale) + ")" %>
+								<%= LanguageUtil.get(resourceBundle, "download") %> (<%= TextFormatter.formatStorageSize(fileVersion.getSize(), locale) %>)
 							</a>
 						</span>
 						<span class="conversions">

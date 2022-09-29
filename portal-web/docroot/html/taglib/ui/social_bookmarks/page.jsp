@@ -69,7 +69,7 @@ String randomNamespace = PortalUtil.generateRandomKey(request, "taglib_ui_social
 				for (int i = 0; i < types.length; i++) {
 				%>
 
-					<li class="taglib-social-bookmark <%= "taglib-social-bookmark-" + types[i] %>">
+					<li class="taglib-social-bookmark taglib-social-bookmark-<%= types[i] %>">
 						<liferay-ui:social-bookmark
 							contentId="<%= contentId %>"
 							displayStyle="<%= displayStyle %>"

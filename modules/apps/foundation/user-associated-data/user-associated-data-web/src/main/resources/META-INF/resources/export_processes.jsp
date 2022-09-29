@@ -67,7 +67,7 @@ UADExportProcessDisplayContext uadExportProcessDisplayContext = new UADExportPro
 					</liferay-util:include>
 				</c:when>
 				<c:otherwise>
-					<%= LanguageUtil.get(request, "completion-date") + ": " + dateFormat.format(backgroundTask.getCompletionDate()) %>
+					<%= LanguageUtil.get(request, "completion-date") %>: <%= dateFormat.format(backgroundTask.getCompletionDate()) %>
 				</c:otherwise>
 			</c:choose>
 		</liferay-ui:search-container-column-text>
