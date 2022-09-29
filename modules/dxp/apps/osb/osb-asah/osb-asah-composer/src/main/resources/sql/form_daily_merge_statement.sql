@@ -26,8 +26,8 @@ USING
 			eventDate BETWEEN '{{ data_interval_start.at(0, 0, 0) }}' AND '{{ data_interval_start.at(23, 59, 59) }}'
 		GROUP BY
 			assetId, assetTitle, browserName, canonicalUrl, channelId, city,
-			country, eventDate, deviceType, pageTitle, platformName,
-			region, userId
+			country, deviceType, eventDate, pageTitle, platformName, region,
+			userId
 	) AS staging
 ON (
 	staging.assetId = replica.assetId AND
