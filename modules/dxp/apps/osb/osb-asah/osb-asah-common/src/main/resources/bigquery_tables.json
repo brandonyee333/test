@@ -1098,11 +1098,6 @@
 		"fields": [
 			{
 				"mode": "REQUIRED",
-				"name": "createDate",
-				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "REQUIRED",
 				"name": "activitiesCount",
 				"type": "INT64"
 			},
@@ -1110,6 +1105,11 @@
 				"mode": "REQUIRED",
 				"name": "channelId",
 				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "createDate",
+				"type": "TIMESTAMP"
 			},
 			{
 				"mode": "REQUIRED",
