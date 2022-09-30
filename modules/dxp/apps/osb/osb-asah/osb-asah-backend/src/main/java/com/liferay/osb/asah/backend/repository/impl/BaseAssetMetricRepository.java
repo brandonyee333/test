@@ -210,8 +210,10 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		List<Field<? extends Object>> fields = new ArrayList<>(
 			_getMetricFields(selectedMetrics));
 
-		Field<String> assetIdField = DSL.field("assetId", String.class);
-		Field<String> assetTitleField = DSL.field("assetTitle", String.class);
+		Field<String> assetIdField = DSL.field(
+			getAssetIdFieldName(), String.class);
+		Field<String> assetTitleField = DSL.field(
+			getAssetTitleFieldName(), String.class);
 
 		fields.add(assetIdField);
 
@@ -816,6 +818,10 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	protected abstract Map<String, BiConsumer<T, Metric>>
 		getAssetMetricSetters();
 
+	protected String getAssetTitleFieldName() {
+		return "assetTitle";
+	}
+
 	protected abstract Field<BigDecimal> getMetricField(MetricType metricType);
 
 	protected abstract MetricType getMetricType(String metricTypeName);
@@ -870,7 +876,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		if (assetTitle != null) {
 			conditions.add(
 				DSL.field(
-					"assetTitle"
+					getAssetTitleFieldName()
 				).eq(
 					assetTitle
 				));
@@ -975,8 +981,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		T assetMetric = createAssetMetric();
 
-		assetMetric.setAssetId((String)recordMap.get("assetId"));
-		assetMetric.setAssetTitle((String)recordMap.get("assetTitle"));
+		assetMetric.setAssetId((String)recordMap.get(getAssetIdFieldName()));
+		assetMetric.setAssetTitle(
+			(String)recordMap.get(getAssetTitleFieldName()));
 
 		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
 			getAssetMetricSetters();
