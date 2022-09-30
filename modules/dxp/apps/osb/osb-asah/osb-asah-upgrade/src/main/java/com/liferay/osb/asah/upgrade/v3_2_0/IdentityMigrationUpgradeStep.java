@@ -35,11 +35,14 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 import com.liferay.osb.asah.upgrade.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -70,66 +73,91 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 		try (BigQueryWriteClient bigQueryWriteClient =
 				BigQueryWriteClient.create()) {
 
-			WriteStream clientWriteStream =
+			WriteStream identityWriteStream =
 				bigQueryWriteClient.createWriteStream(
-					_buildCreateWriteStreamRequest(datasetName));
+					_buildCreateWriteStreamRequest(
+						datasetName, _IDENTITY_TABLE_NAME));
 
-			try (JsonStreamWriter jsonStreamWriter =
+			WriteStream identityActivityWriteStream =
+				bigQueryWriteClient.createWriteStream(
+					_buildCreateWriteStreamRequest(
+						datasetName, _IDENTITY_ACTIVITY_TABLE_NAME));
+
+			try (JsonStreamWriter identityJsonStreamWriter =
 					JsonStreamWriter.newBuilder(
-						clientWriteStream.getName(),
-						clientWriteStream.getTableSchema()
+						identityWriteStream.getName(),
+						identityWriteStream.getTableSchema()
+					).build();
+				JsonStreamWriter identityActivityJsonStreamWriter =
+					JsonStreamWriter.newBuilder(
+						identityActivityWriteStream.getName(),
+						identityActivityWriteStream.getTableSchema()
 					).build()) {
 
 				while (true) {
-					JSONArray jsonArray = _getNextBatch(datasetName);
+					Collection<JSONObject> identityCollection = _getNextBatch(
+						datasetName);
 
-					if (jsonArray.isEmpty()) {
+					if (identityCollection.isEmpty()) {
 						break;
 					}
 
-					ApiFuture<AppendRowsResponse> apiFuture =
-						jsonStreamWriter.append(jsonArray);
+					JSONArray identityJSONArray = _getIdentityActivities(
+						identityCollection);
 
-					ApiFutures.addCallback(
-						apiFuture,
-						new ApiFutureCallback<AppendRowsResponse>() {
+					_addCallBack(
+						identityJsonStreamWriter.append(
+							new JSONArray(identityCollection)),
+						datasetName, identityCollection.size(),
+						_IDENTITY_TABLE_NAME);
 
-							@Override
-							public void onFailure(Throwable throwable) {
-								_log.error(throwable, throwable);
-							}
-
-							@Override
-							public void onSuccess(
-								AppendRowsResponse appendRowsResponse) {
-
-								if (_log.isInfoEnabled()) {
-									_log.info(
-										String.format(
-											"%s: %d rows inserted into " +
-												"identity table",
-											datasetName, jsonArray.length()));
-								}
-							}
-
-						},
-						MoreExecutors.directExecutor());
+					if (!identityJSONArray.isEmpty()) {
+						_addCallBack(
+							identityActivityJsonStreamWriter.append(
+								identityJSONArray),
+							datasetName, identityJSONArray.length(),
+							_IDENTITY_ACTIVITY_TABLE_NAME);
+					}
 				}
 
-				FinalizeWriteStreamRequest finalizeWriteStreamRequest =
-					FinalizeWriteStreamRequest.newBuilder(
-					).setName(
-						clientWriteStream.getName()
-					).build();
+				_finalizeWriteStreamRequest(
+					bigQueryWriteClient, identityWriteStream);
 
-				bigQueryWriteClient.finalizeWriteStream(
-					finalizeWriteStreamRequest);
+				_finalizeWriteStreamRequest(
+					bigQueryWriteClient, identityActivityWriteStream);
 			}
 		}
 	}
 
+	private void _addCallBack(
+		ApiFuture<AppendRowsResponse> apiFuture, String datasetName,
+		long rowCount, String tableName) {
+
+		ApiFutures.addCallback(
+			apiFuture,
+			new ApiFutureCallback<AppendRowsResponse>() {
+
+				@Override
+				public void onFailure(Throwable throwable) {
+					_log.error(throwable, throwable);
+				}
+
+				@Override
+				public void onSuccess(AppendRowsResponse appendRowsResponse) {
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							String.format(
+								"%s: %d rows inserted into %s table",
+								datasetName, rowCount, tableName));
+					}
+				}
+
+			},
+			MoreExecutors.directExecutor());
+	}
+
 	private CreateWriteStreamRequest _buildCreateWriteStreamRequest(
-		String datasetName) {
+		String datasetName, String tableName) {
 
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
 		CreateWriteStreamRequest.Builder builder =
@@ -138,7 +166,7 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 		return builder.setParent(
 			String.valueOf(
 				TableName.of(
-					bigQueryOptions.getProjectId(), datasetName, _TABLE_NAME))
+					bigQueryOptions.getProjectId(), datasetName, tableName))
 		).setWriteStream(
 			WriteStream.newBuilder(
 			).setType(
@@ -147,22 +175,46 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 		).build();
 	}
 
-	private JSONArray _getNextBatch(String projectId) {
+	private void _finalizeWriteStreamRequest(
+		BigQueryWriteClient bigQueryWriteClient, WriteStream writeStream) {
+
+		FinalizeWriteStreamRequest finalizeWriteStreamRequest =
+			FinalizeWriteStreamRequest.newBuilder(
+			).setName(
+				writeStream.getName()
+			).build();
+
+		bigQueryWriteClient.finalizeWriteStream(finalizeWriteStreamRequest);
+	}
+
+	private JSONArray _getIdentityActivities(
+		Collection<JSONObject> identities) {
+
+		JSONArray jsonArray = new JSONArray();
+
+		for (JSONObject identityJSONObject : identities) {
+			if (identityJSONObject.has("identityActivities")) {
+				JSONArray identityActivityJSONArray =
+					(JSONArray)identityJSONObject.remove("identityActivities");
+
+				identityActivityJSONArray.forEach(jsonArray::put);
+			}
+		}
+
+		return jsonArray;
+	}
+
+	private Collection<JSONObject> _getNextBatch(String projectId) {
 		SearchSourceBuilder individualsSearchSourceBuilder =
 			new SearchSourceBuilder();
 
 		individualsSearchSourceBuilder.query(
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery("emailAddressHashed")
-			).filter(
-				QueryBuilders.existsQuery("firstEnrichmentDate")
-			).filter(
 				QueryBuilders.rangeQuery(
 					"id"
 				).gt(
 					_lastIndividualId
-				)
-			));
+				)));
 		individualsSearchSourceBuilder.size(500);
 		individualsSearchSourceBuilder.sort("id");
 
@@ -175,7 +227,7 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 		SearchHit[] searchHitsArray = searchHits.getHits();
 
 		if (searchHitsArray.length == 0) {
-			return new JSONArray();
+			return Collections.emptyList();
 		}
 
 		Map<String, JSONObject> identityMap = new HashMap<>();
@@ -187,10 +239,13 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 			JSONArray dataSourceIndividualPKs =
 				individualJSONObject.getJSONArray("dataSourceIndividualPKs");
 
-			Date firstEnrichmentDate = DateUtil.toUTCDate(
-				individualJSONObject.getString("firstEnrichmentDate"));
-			String individualId = individualJSONObject.getString(
-				"emailAddressHashed");
+			Date createDate = DateUtil.toUTCDate(
+				individualJSONObject.optString(
+					"firstEnrichmentDate",
+					individualJSONObject.getString("dateCreated")));
+
+			String individualId = individualJSONObject.optString(
+				"emailAddressHashed", null);
 
 			for (int i = 0; i < dataSourceIndividualPKs.length(); i++) {
 				JSONObject dataSourceIndividualPK =
@@ -200,12 +255,18 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 					dataSourceIndividualPK.getJSONArray("individualPKs");
 
 				for (int j = 0; j < individualPKJSONArray.length(); j++) {
+					String userId = individualPKJSONArray.getString(j);
+
 					identityMap.put(
-						individualPKJSONArray.getString(j),
+						userId,
 						JSONUtil.put(
-							"createDate", firstEnrichmentDate
+							"createDate", createDate
 						).put(
 							"individualId", individualId
+						).put(
+							"projectId", projectId
+						).put(
+							"userId", userId
 						));
 				}
 			}
@@ -239,6 +300,14 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 						"channelId"
 					).size(
 						Integer.MAX_VALUE
+					).subAggregation(
+						AggregationBuilders.terms(
+							"firstEventDates"
+						).field(
+							"firstEventDate"
+						).size(
+							Integer.MAX_VALUE
+						)
 					)
 				)
 			));
@@ -257,16 +326,24 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 
 		Terms userIdTerms = userIdAggregations.get("userIds");
 
-		JSONArray jsonArray = new JSONArray();
-
 		for (Terms.Bucket userIdBucket : userIdTerms.getBuckets()) {
+			String userId = userIdBucket.getKeyAsString();
+
+			JSONObject identityJSONObject = identityMap.get(userId);
+
+			if (!identityJSONObject.has("individualId")) {
+				continue;
+			}
+
+			String individualId = identityJSONObject.getString("individualId");
+
 			Aggregations dataSourceIdAggregations =
 				userIdBucket.getAggregations();
 
 			Terms dataSourceIdTerms = dataSourceIdAggregations.get(
 				"dataSourceIds");
 
-			String userId = userIdBucket.getKeyAsString();
+			List<JSONObject> identityActivities = new ArrayList<>();
 
 			for (Terms.Bucket dataSourceIdBucket :
 					dataSourceIdTerms.getBuckets()) {
@@ -283,39 +360,48 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 
 					String channelId = channelIdBucket.getKeyAsString();
 
-					JSONObject identityJSONObject = identityMap.get(userId);
+					Aggregations firstEventDateAggregations =
+						channelIdBucket.getAggregations();
 
-					jsonArray.put(
-						JSONUtil.merge(
-							identityJSONObject,
+					Terms firstEventDateTerms = firstEventDateAggregations.get(
+						"firstEventDates");
+
+					for (Terms.Bucket firstEventDateBucket :
+							firstEventDateTerms.getBuckets()) {
+
+						identityActivities.add(
 							JSONUtil.put(
 								"channelId", Long.parseLong(channelId)
+							).put(
+								"createDate",
+								DateUtil.toUTCDate(
+									firstEventDateBucket.getKeyAsString())
 							).put(
 								"dataSourceId", Long.parseLong(dataSourceId)
 							).put(
 								"id",
-								DigestUtils.sha256Hex(
-									String.join(
-										"#", projectId, dataSourceId, channelId,
-										identityJSONObject.getString(
-											"individualId")))
+								String.join(
+									"#", projectId, userId, dataSourceId,
+									channelId)
 							).put(
-								"projectId", projectId
+								"identityId", userId
 							).put(
-								"userId", userId
-							)));
+								"individualId", individualId
+							));
+					}
 				}
 			}
+
+			identityJSONObject.put("identityActivities", identityActivities);
 		}
 
-		if (jsonArray.isEmpty()) {
-			return _getNextBatch(projectId);
-		}
-
-		return jsonArray;
+		return identityMap.values();
 	}
 
-	private static final String _TABLE_NAME = "identity";
+	private static final String _IDENTITY_ACTIVITY_TABLE_NAME =
+		"identityactivity";
+
+	private static final String _IDENTITY_TABLE_NAME = "identity";
 
 	private static final Log _log = LogFactory.getLog(
 		IdentityMigrationUpgradeStep.class);
