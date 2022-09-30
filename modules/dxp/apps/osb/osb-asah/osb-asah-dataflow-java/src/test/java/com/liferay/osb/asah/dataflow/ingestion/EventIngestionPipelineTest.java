@@ -49,26 +49,23 @@ public class EventIngestionPipelineTest {
 
 		testAnalyticsEvents.add(
 			_createTestAnalyticsEvent(
-				"", "", "", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
+				"", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
 				"https://liferay.com/web/guest/home/"));
 		testAnalyticsEvents.add(
 			_createTestAnalyticsEvent(
-				"https://liferay.com", "", "",
-				_USER_AGENT_MAC_OS_CHROME_DESKTOP,
+				"https://liferay.com", _USER_AGENT_MAC_OS_CHROME_DESKTOP,
 				"https://liferay.com/web/guest/home/"));
 		testAnalyticsEvents.add(
 			_createTestAnalyticsEvent(
-				"https://liferay.com", "", "",
-				_USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
+				"https://liferay.com", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
 				"https://liferay.com/test-page-1/"));
 		testAnalyticsEvents.add(
 			_createTestAnalyticsEvent(
-				"", "", "", _USER_AGENT_ANDROID_CHROME_MOBILE,
+				"", _USER_AGENT_ANDROID_CHROME_MOBILE,
 				"https://liferay.com/test-page-2/"));
 		testAnalyticsEvents.add(
 			_createTestAnalyticsEvent(
-				"https://liferay.com", "", "",
-				_USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
+				"https://liferay.com", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
 				"https://liferay.com/test-page-3/"));
 
 		PCollection<AnalyticsEvent> pCollection = testPipeline.apply(
@@ -88,27 +85,27 @@ public class EventIngestionPipelineTest {
 		expectedAnalyticsEvents.add(
 			_createExpectedAnalyticsEvent(
 				"Firefox", "https://liferay.com/web/guest/home/", "Desktop",
-				"macOS", "", "", "", "", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
+				"macOS", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
 				"https://liferay.com/web/guest/home/"));
 		expectedAnalyticsEvents.add(
 			_createExpectedAnalyticsEvent(
-				"Chrome", "https://liferay.com", "Desktop", "macOS", "", "", "",
-				"", _USER_AGENT_MAC_OS_CHROME_DESKTOP,
+				"Chrome", "https://liferay.com", "Desktop", "macOS",
+				_USER_AGENT_MAC_OS_CHROME_DESKTOP,
 				"https://liferay.com/web/guest/home/"));
 		expectedAnalyticsEvents.add(
 			_createExpectedAnalyticsEvent(
-				"Firefox", "https://liferay.com", "Desktop", "macOS", "", "",
-				"", "", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
+				"Firefox", "https://liferay.com", "Desktop", "macOS",
+				_USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
 				"https://liferay.com/test-page-1/"));
 		expectedAnalyticsEvents.add(
 			_createExpectedAnalyticsEvent(
 				"Chrome", "https://liferay.com/test-page-2/", "SmartPhone",
-				"Android", "", "", "", "", _USER_AGENT_ANDROID_CHROME_MOBILE,
+				"Android", _USER_AGENT_ANDROID_CHROME_MOBILE,
 				"https://liferay.com/test-page-2/"));
 		expectedAnalyticsEvents.add(
 			_createExpectedAnalyticsEvent(
-				"Firefox", "https://liferay.com", "Desktop", "macOS", "", "",
-				"", "", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
+				"Firefox", "https://liferay.com", "Desktop", "macOS",
+				_USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
 				"https://liferay.com/test-page-3/"));
 
 		PAssert.that(
@@ -132,42 +129,29 @@ public class EventIngestionPipelineTest {
 			ParDo.of(new EventIngestionPipeline.AnalyticsEventParser())
 		);
 
-		AnalyticsEvent expectedAnalyticsEvent = new AnalyticsEvent();
-
-		expectedAnalyticsEvent.applicationId = "Page";
-		expectedAnalyticsEvent.channelId = "123";
-		expectedAnalyticsEvent.clientIP = null;
-
-		Map<String, String> context = new HashMap<>();
-
-		context.put(
-			"description",
-			"This is the Liferay Analytics JS client test page.");
-		context.put("keywords", "Liferay, Analytics, Test, Javascript");
-		context.put("languageId", "en-US");
-		context.put("title", "Liferay Analytics JS Client Test Page");
-		context.put("url", "http://www.liferay.com");
-		context.put("userAgent", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP);
-
-		expectedAnalyticsEvent.context = context;
-
-		expectedAnalyticsEvent.createDate = "2017-11-10T09:36:00.365Z";
-		expectedAnalyticsEvent.dataSourceId = "350121114030678021";
-		expectedAnalyticsEvent.eventDate = "2017-11-10T09:34:45.345Z";
-		expectedAnalyticsEvent.eventId = "pageViewed";
-
-		expectedAnalyticsEvent.eventProperties = Collections.singletonMap(
-			"referrer", "http://www.google.com");
-
-		expectedAnalyticsEvent.id = "1";
-		expectedAnalyticsEvent.projectId = "test";
-		expectedAnalyticsEvent.projectTimeZoneId = "UTC";
-		expectedAnalyticsEvent.userId = "aedfa915-c7a1-4309-abcf-024e247d414c";
+		AnalyticsEvent analyticsEvent = _createAnalyticsEvent(
+			"Page", "123", null,
+			new HashMap<String, String>() {
+				{
+					put(
+						"description",
+						"This is the Liferay Analytics JS client test page.");
+					put("keywords", "Liferay, Analytics, Test, Javascript");
+					put("languageId", "en-US");
+					put("title", "Liferay Analytics JS Client Test Page");
+					put("url", "http://www.liferay.com");
+					put("userAgent", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP);
+				}
+			},
+			"2017-11-10T09:36:00.365Z", "350121114030678021",
+			"2017-11-10T09:34:45.345Z", "pageViewed",
+			Collections.singletonMap("referrer", "http://www.google.com"), "1",
+			"test", "UTC", "aedfa915-c7a1-4309-abcf-024e247d414c");
 
 		PAssert.that(
 			pCollection
 		).containsInAnyOrder(
-			Collections.singletonList(expectedAnalyticsEvent)
+			Collections.singletonList(analyticsEvent)
 		);
 
 		testPipeline.run();
@@ -203,9 +187,7 @@ public class EventIngestionPipelineTest {
 
 	private AnalyticsEvent _createExpectedAnalyticsEvent(
 		String browserName, String canonicalUrl, String deviceType,
-		String platformName, String screenHeight, String screenHeightSize,
-		String screenWidth, String screenWidthSize, String userAgent,
-		String url) {
+		String platformName, String userAgent, String url) {
 
 		Map<String, String> context = new HashMap<>();
 
@@ -214,10 +196,6 @@ public class EventIngestionPipelineTest {
 		context.put("crawler", "false");
 		context.put("deviceType", deviceType);
 		context.put("platformName", platformName);
-		context.put("screenHeight", screenHeight);
-		context.put("screenHeightSize", screenHeightSize);
-		context.put("screenWidth", screenWidth);
-		context.put("screenWidthSize", screenWidthSize);
 		context.put("url", url);
 		context.put("userAgent", userAgent);
 
@@ -227,14 +205,11 @@ public class EventIngestionPipelineTest {
 	}
 
 	private AnalyticsEvent _createTestAnalyticsEvent(
-		String canonicalUrl, String screenHeight, String screenWidth,
-		String userAgent, String url) {
+		String canonicalUrl, String userAgent, String url) {
 
 		Map<String, String> context = new HashMap<>();
 
 		context.put("canonicalUrl", canonicalUrl);
-		context.put("screenHeight", screenHeight);
-		context.put("screenWidth", screenWidth);
 		context.put("url", url);
 		context.put("userAgent", userAgent);
 
