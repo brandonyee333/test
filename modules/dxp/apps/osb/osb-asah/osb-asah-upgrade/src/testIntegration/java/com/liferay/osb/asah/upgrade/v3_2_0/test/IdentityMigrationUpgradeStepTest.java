@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v3_2_0.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -24,7 +25,9 @@ import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.upgrade.v3_2_0.IdentityMigrationUpgradeStep;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -80,41 +83,67 @@ public class IdentityMigrationUpgradeStepTest
 					ResourceUtil.readResourceToString(
 						"dependencies/user_sessions.json", this))));
 
-		JSONArray identityJSONArray = ReflectionTestUtils.invokeMethod(
+		Collection<JSONObject> identityCollection =
+			ReflectionTestUtils.invokeMethod(
+				_identityMigrationUpgradeStep, "_getNextBatch", "test");
+
+		Assertions.assertNotNull(identityCollection);
+		Assertions.assertEquals(500, identityCollection.size());
+
+		List<JSONObject> identityList = new ArrayList(identityCollection);
+
+		JSONObject identityJSONObject = identityList.get(0);
+
+		Assertions.assertEquals(5, identityJSONObject.length());
+
+		JSONArray identityActivityJSONArray = ReflectionTestUtils.invokeMethod(
+			_identityMigrationUpgradeStep, "_getIdentityActivities",
+			identityCollection);
+
+		Assertions.assertEquals(4, identityJSONObject.length());
+
+		Assertions.assertEquals(
+			JSONUtil.put(
+				"createDate", DateUtil.toUTCDate("2019-02-11T17:05:20.000Z")
+			).put(
+				"individualId", "7e66ee66-c09b-4a19-b9a9-c0483e34803d"
+			).put(
+				"projectId", "test"
+			).put(
+				"userId", "004e0bb7-555b-48f3-8106-89ee13399afa"
+			).toString(),
+			identityJSONObject.toString());
+
+		JSONObject identityActivityJSONObject =
+			identityActivityJSONArray.getJSONObject(0);
+
+		Assertions.assertEquals(
+			JSONUtil.put(
+				"channelId", 1L
+			).put(
+				"createDate", DateUtil.toUTCDate("2022-04-04T20:12:12.000Z")
+			).put(
+				"dataSourceId", 355524992631037473L
+			).put(
+				"id",
+				"test#004e0bb7-555b-48f3-8106-89ee13399afa#355524992631037473#1"
+			).put(
+				"identityId", "004e0bb7-555b-48f3-8106-89ee13399afa"
+			).put(
+				"individualId", "7e66ee66-c09b-4a19-b9a9-c0483e34803d"
+			).toString(),
+			identityActivityJSONObject.toString());
+
+		identityCollection = ReflectionTestUtils.invokeMethod(
 			_identityMigrationUpgradeStep, "_getNextBatch", "test");
 
-		Assertions.assertNotNull(identityJSONArray);
-		Assertions.assertEquals(6, identityJSONArray.length());
-
-		JSONObject expectedJSONObject = JSONUtil.put(
-			"channelId", 1L
-		).put(
-			"createDate", "Mon Feb 11 17:05:20 UTC 2019"
-		).put(
-			"dataSourceId", 355524992631037473L
-		).put(
-			"id",
-			"8b02dfcfc8504dea9553760638c1f756c0feb35aab575befba5e7476b9e2ee23"
-		).put(
-			"individualId", "797c78f4-d30b-420f-9058-13ce5a8ac532"
-		).put(
-			"projectId", "test"
-		).put(
-			"userId", "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
-		);
-
-		JSONObject actualIdentityJSONObject = identityJSONArray.getJSONObject(
-			0);
-
-		Assertions.assertTrue(
-			Objects.equals(
-				expectedJSONObject.toMap(), actualIdentityJSONObject.toMap()));
-
-		identityJSONArray = ReflectionTestUtils.invokeMethod(
+		Assertions.assertNotNull(identityCollection);
+		Assertions.assertEquals(4, identityCollection.size());
+		identityCollection = ReflectionTestUtils.invokeMethod(
 			_identityMigrationUpgradeStep, "_getNextBatch", "test");
 
-		Assertions.assertNotNull(identityJSONArray);
-		Assertions.assertTrue(identityJSONArray.isEmpty());
+		Assertions.assertNotNull(identityCollection);
+		Assertions.assertTrue(identityCollection.isEmpty());
 	}
 
 	private void _setupIndex(String collectionName, String namespace)
