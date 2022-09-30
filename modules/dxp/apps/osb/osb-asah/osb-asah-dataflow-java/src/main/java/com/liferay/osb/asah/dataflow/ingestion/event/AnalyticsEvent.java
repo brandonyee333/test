@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.event;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,6 +28,25 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
  */
 @DefaultSchema(JavaFieldSchema.class)
 public class AnalyticsEvent {
+
+	public AnalyticsEvent() {
+	}
+
+	public AnalyticsEvent(AnalyticsEvent analyticsEvent) {
+		applicationId = analyticsEvent.applicationId;
+		channelId = analyticsEvent.channelId;
+		clientIP = analyticsEvent.clientIP;
+		context = new HashMap(analyticsEvent.context);
+		createDate = analyticsEvent.createDate;
+		dataSourceId = analyticsEvent.dataSourceId;
+		eventDate = analyticsEvent.eventDate;
+		eventId = analyticsEvent.eventId;
+		eventProperties = new HashMap(analyticsEvent.eventProperties);
+		id = analyticsEvent.id;
+		projectId = analyticsEvent.projectId;
+		projectTimeZoneId = analyticsEvent.projectTimeZoneId;
+		userId = analyticsEvent.userId;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

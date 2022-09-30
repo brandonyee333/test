@@ -165,11 +165,15 @@ public class EventIngestionPipeline {
 		public void processElement(ProcessContext processContext) {
 			AnalyticsEvent analyticsEvent = processContext.element();
 
-			analyticsEvent.context = _getExtractedContext(analyticsEvent);
-			analyticsEvent.eventProperties = _getSafeMap(
+			AnalyticsEvent extractedAnalyticsEvent = new AnalyticsEvent(
+				analyticsEvent);
+
+			extractedAnalyticsEvent.context = _getExtractedContext(
+				analyticsEvent);
+			extractedAnalyticsEvent.eventProperties = _getSafeMap(
 				analyticsEvent.eventProperties);
 
-			processContext.output(analyticsEvent);
+			processContext.output(extractedAnalyticsEvent);
 		}
 
 		private Map<String, String> _getExtractedContext(
