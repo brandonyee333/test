@@ -113,7 +113,7 @@ else {
 						}
 						%>
 
-						<a href="javascript:Liferay.fire('<%= liferayPortletResponse.getNamespace() %>submit', {incomplete: <%= layoutRevision.isIncomplete() %>, publishURL: '<%= publishURL %>', currentURL: '<%= currentURL %>'}); void(0);" id="submitLink">
+						<a href="javascript:Liferay.fire('<portlet:namespace />submit', {incomplete: <%= layoutRevision.isIncomplete() %>, publishURL: '<%= publishURL %>', currentURL: '<%= currentURL %>'}); void(0);" id="submitLink">
 							<liferay-ui:message key="<%= label %>" />
 						</a>
 					</c:otherwise>
@@ -219,7 +219,7 @@ else {
 
 				<c:if test="<%= !layoutRevision.isIncomplete() %>">
 					<li>
-						<a href="javascript:Liferay.fire('<%= liferayPortletResponse.getNamespace() %>viewHistory', {layoutRevisionId: '<%= layoutRevision.getLayoutRevisionId() %>', layoutSetBranchId: '<%= layoutRevision.getLayoutSetBranchId() %>'}); void(0);" id="viewHistoryLink">
+						<a href="javascript:Liferay.fire('<portlet:namespace />viewHistory', {layoutRevisionId: '<%= layoutRevision.getLayoutRevisionId() %>', layoutSetBranchId: '<%= layoutRevision.getLayoutSetBranchId() %>'}); void(0);" id="viewHistoryLink">
 							<liferay-ui:message key="history" />
 						</a>
 					</li>
@@ -228,7 +228,7 @@ else {
 				<c:if test="<%= !hasWorkflowTask %>">
 					<c:if test="<%= !layoutRevision.isMajor() && (layoutRevision.getParentLayoutRevisionId() != LayoutRevisionConstants.DEFAULT_PARENT_LAYOUT_REVISION_ID) %>">
 						<li>
-							<a href="javascript:Liferay.fire('<%= liferayPortletResponse.getNamespace() %>undo', {layoutRevisionId: '<%= layoutRevision.getLayoutRevisionId() %>', layoutSetBranchId: '<%= layoutRevision.getLayoutSetBranchId() %>'}); void(0);" id="undoLink">
+							<a href="javascript:Liferay.fire('<portlet:namespace />undo', {layoutRevisionId: '<%= layoutRevision.getLayoutRevisionId() %>', layoutSetBranchId: '<%= layoutRevision.getLayoutSetBranchId() %>'}); void(0);" id="undoLink">
 								<liferay-ui:message key="undo" />
 							</a>
 						</li>
@@ -245,7 +245,7 @@ else {
 						<c:if test="<%= firstChildLayoutRevision.isInactive() %>">
 
 						<li>
-							<a href="javascript:Liferay.fire('<%= liferayPortletResponse.getNamespace() %>redo', {layoutRevisionId: '<%= firstChildLayoutRevision.getLayoutRevisionId() %>', layoutSetBranchId: '<%= firstChildLayoutRevision.getLayoutSetBranchId() %>'}); void(0);" id="redoLink">
+							<a href="javascript:Liferay.fire('<portlet:namespace />redo', {layoutRevisionId: '<%= firstChildLayoutRevision.getLayoutRevisionId() %>', layoutSetBranchId: '<%= firstChildLayoutRevision.getLayoutSetBranchId() %>'}); void(0);" id="redoLink">
 								<liferay-ui:message key="redo" />
 							</a>
 						</li>
