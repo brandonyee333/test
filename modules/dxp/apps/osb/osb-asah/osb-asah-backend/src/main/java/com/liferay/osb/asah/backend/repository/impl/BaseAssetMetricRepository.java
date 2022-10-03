@@ -879,8 +879,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	private Condition _createWhereClause(
-		@Nullable String assetId, @Nullable String assetTitle, Long channelId,
-		@Nullable String keywords, TimeRange timeRange) {
+		@Nullable String assetId, @Nullable String assetTitle,
+		@Nullable Long channelId, @Nullable String keywords,
+		TimeRange timeRange) {
 
 		ZoneId zoneId = _timeZoneDog.getZoneId();
 
@@ -904,12 +905,14 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				));
 		}
 
-		conditions.add(
-			DSL.field(
-				"channelId"
-			).eq(
-				channelId
-			));
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"channelId"
+				).eq(
+					channelId
+				));
+		}
 
 		conditions.add(
 			DSL.field(

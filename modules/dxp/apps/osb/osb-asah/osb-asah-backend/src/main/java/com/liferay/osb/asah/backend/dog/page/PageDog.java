@@ -15,21 +15,20 @@
 package com.liferay.osb.asah.backend.dog.page;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.backend.model.PageMetric;
+import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.PageMetricType;
-import com.liferay.osb.asah.common.model.PageVisitorBehaviorMetric;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.BQPageRepository;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
-import java.util.Optional;
+import java.time.LocalDate;
+
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -41,56 +40,62 @@ public class PageDog {
 	public long getIndirectAccessMetricValue(
 		SearchQueryContext searchQueryContext) {
 
-		return 0;
+		PageMetric pageMetric = _pageMetricAssetMetricRepository.getAssetMetric(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()),
+			Collections.singleton(PageMetricType.INDIRECT_ACCESS.getName()),
+			searchQueryContext.getTimeRange());
+
+		return _getLongValue(pageMetric.getIndirectAccessMetric());
 	}
 
-	public long getMetricValue(
-		Optional<String> canonicalUrlOptional,
-		Optional<String> fromDateStringOptional, PageMetricType pageMetricType,
-		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
+	public long getReadsMetricValue(
+		@Nullable String canonicalUrl, @Nullable LocalDate fromLocalDate,
+		@Nullable LocalDate toLocalDate) {
 
-		return 0;
-	}
+		PageMetric pageMetric = _getPageMetric(
+			canonicalUrl, fromLocalDate, PageMetricType.READS, toLocalDate);
 
-	public PageVisitorBehaviorMetric getPageVisitorBehaviorMetric(
-		String canonicalUrl, Long channelId, TimeRange timeRange,
-		String title) {
-
-		Optional<PageVisitorBehaviorMetric> pageVisitorBehaviorMetricOptional =
-			_bqPageRepository.getPageVisitorBehaviorMetric(
-				canonicalUrl, channelId, timeRange, title,
-				_timeZoneDog.getZoneId());
-
-		return pageVisitorBehaviorMetricOptional.orElseThrow(
-			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"There is no page with canonical url " + canonicalUrl));
-	}
-
-	public Page<PageVisitorBehaviorMetric> getPageVisitorBehaviorMetricPage(
-		Long channelId, int page, int size, Sort sort, TimeRange timeRange) {
-
-		PageRequest pageRequest = PageRequest.of(page, size, sort);
-
-		return PageableExecutionUtils.getPage(
-			_bqPageRepository.searchPageVisitorBehaviorMetrics(
-				channelId, pageRequest, timeRange, _timeZoneDog.getZoneId()),
-			pageRequest,
-			() -> _bqPageRepository.countPageVisitorBehaviorMetric(
-				channelId, timeRange, _timeZoneDog.getZoneId()));
+		return _getLongValue(pageMetric.getReadsMetric());
 	}
 
 	public long getViewsMetricValue(
-		Optional<String> fromDateStringOptional,
-		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
+		@Nullable String canonicalUrl, @Nullable LocalDate fromLocalDate,
+		@Nullable LocalDate toLocalDate) {
 
-		return getMetricValue(
-			Optional.empty(), fromDateStringOptional, PageMetricType.VIEWS,
-			toDateStringOptional, urlOptional);
+		PageMetric pageMetric = _getPageMetric(
+			canonicalUrl, fromLocalDate, PageMetricType.VIEWS, toLocalDate);
+
+		return _getLongValue(pageMetric.getViewsMetric());
+	}
+
+	private long _getLongValue(Metric metric) {
+		Double value = metric.getValue();
+
+		return value.longValue();
+	}
+
+	private PageMetric _getPageMetric(
+		@Nullable String canonicalUrl, @Nullable LocalDate fromLocalDate,
+		PageMetricType pageMetricType, @Nullable LocalDate toLocalDate) {
+
+		if (toLocalDate == null) {
+			toLocalDate = LocalDate.now(_timeZoneDog.getZoneId());
+		}
+
+		if (fromLocalDate == null) {
+			fromLocalDate = toLocalDate.minusMonths(13);
+		}
+
+		return _pageMetricAssetMetricRepository.getAssetMetric(
+			canonicalUrl, null, null,
+			Collections.singleton(pageMetricType.getName()),
+			TimeRange.of(toLocalDate, fromLocalDate));
 	}
 
 	@Autowired
-	private BQPageRepository _bqPageRepository;
+	@Qualifier("PageAssetMetricRepository")
+	private AssetMetricRepository<PageMetric> _pageMetricAssetMetricRepository;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
