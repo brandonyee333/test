@@ -778,7 +778,7 @@ public class ReportRestController extends BaseRestController {
 		MetricType metricType = _metricTypeDog.getMetricType(
 			assetType, metricTypeString);
 
-		return new Sort(metricType.getAggregationName(), sortOrderString);
+		return new Sort(metricType.getName(), sortOrderString);
 	}
 
 	private String _decodeURL(String url) {

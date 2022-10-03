@@ -95,7 +95,7 @@ public class AssetMetricBagDataFetcher extends BaseDataFetcher<ResultBag> {
 		MetricType metricType = _metricTypeDog.getMetricType(
 			assetType, sort.get("column"));
 
-		return new Sort(metricType.getAggregationName(), sort.get("type"));
+		return new Sort(metricType.getName(), sort.get("type"));
 	}
 
 	@Autowired
