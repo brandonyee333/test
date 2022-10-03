@@ -97,7 +97,7 @@ public class CustomAssetMetricRepositoryImpl
 					DSL.field(
 						CustomAssetMetricType.VIEWS.getFieldName(), Long.class))
 			).as(
-				CustomAssetMetricType.ABANDONMENTS.getFieldName()
+				CustomAssetMetricType.ABANDONMENTS.getName()
 			);
 		}
 
@@ -112,7 +112,7 @@ public class CustomAssetMetricRepositoryImpl
 			return DSL.sum(
 				longField
 			).as(
-				longField.getName()
+				metricType.getName()
 			);
 		}
 
@@ -123,7 +123,7 @@ public class CustomAssetMetricRepositoryImpl
 				DSL.field(
 					CustomAssetMetricType.SESSIONS.getFieldName(), Long.class))
 		).as(
-			metricType.getFieldName()
+			metricType.getName()
 		);
 	}
 

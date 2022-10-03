@@ -83,14 +83,14 @@ public class DocumentLibraryAssetMetricRepositoryImpl
 			return DSL.avg(
 				longField
 			).as(
-				longField.getName()
+				metricType.getName()
 			);
 		}
 
 		return DSL.sum(
 			longField
 		).as(
-			longField.getName()
+			metricType.getName()
 		);
 	}
 

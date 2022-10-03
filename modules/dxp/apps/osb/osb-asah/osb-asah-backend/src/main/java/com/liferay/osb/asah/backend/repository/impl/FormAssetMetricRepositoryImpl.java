@@ -80,7 +80,7 @@ public class FormAssetMetricRepositoryImpl
 				DSL.sum(
 					DSL.field(FormMetricType.VIEWS.getFieldName(), Long.class))
 			).as(
-				FormMetricType.ABANDONMENTS.getFieldName()
+				FormMetricType.ABANDONMENTS.getName()
 			);
 		}
 
@@ -91,14 +91,14 @@ public class FormAssetMetricRepositoryImpl
 			return DSL.avg(
 				longField
 			).as(
-				longField.getName()
+				metricType.getName()
 			);
 		}
 
 		return DSL.sum(
 			longField
 		).as(
-			longField.getName()
+			metricType.getName()
 		);
 	}
 

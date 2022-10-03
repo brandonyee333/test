@@ -66,7 +66,7 @@ public class JournalAssetMetricRepositoryImpl
 		return DSL.sum(
 			longField
 		).as(
-			longField.getName()
+			metricType.getName()
 		);
 	}
 

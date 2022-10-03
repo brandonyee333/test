@@ -84,7 +84,7 @@ public class BlogAssetMetricRepositoryImpl
 				),
 				BigDecimal.ZERO
 			).as(
-				metricType.getFieldName()
+				metricType.getName()
 			);
 		}
 
@@ -97,7 +97,7 @@ public class BlogAssetMetricRepositoryImpl
 				),
 				BigDecimal.ZERO
 			).as(
-				metricType.getFieldName()
+				metricType.getName()
 			);
 		}
 
@@ -107,7 +107,7 @@ public class BlogAssetMetricRepositoryImpl
 		return DSL.sum(
 			longField
 		).as(
-			longField.getName()
+			metricType.getName()
 		);
 	}
 
