@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
-import com.liferay.osb.asah.backend.dog.AssetTechnologyDog;
+import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
@@ -47,7 +47,7 @@ public class AssetTechnologyDogTest
 	)
 	@Test
 	public void testBrowserMetrics() {
-		List<Metric> browserMetrics = _assetTechnologyDog.getBrowserMetrics(
+		List<Metric> browserMetrics = _metricDog.getBrowserMetrics(
 			JournalMetricType.VIEWS,
 			new SearchQueryContext("1", AssetType.JOURNAL) {
 				{
@@ -65,7 +65,7 @@ public class AssetTechnologyDogTest
 	)
 	@Test
 	public void testDeviceMetrics() {
-		List<Metric> deviceMetrics = _assetTechnologyDog.getDeviceMetrics(
+		List<Metric> deviceMetrics = _metricDog.getDeviceMetrics(
 			JournalMetricType.VIEWS,
 			new SearchQueryContext("1", AssetType.JOURNAL) {
 				{
@@ -86,6 +86,6 @@ public class AssetTechnologyDogTest
 	}
 
 	@Autowired
-	private AssetTechnologyDog _assetTechnologyDog;
+	private MetricDog _metricDog;
 
 }

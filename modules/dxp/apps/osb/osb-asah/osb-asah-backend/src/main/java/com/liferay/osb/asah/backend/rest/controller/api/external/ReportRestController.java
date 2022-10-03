@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.rest.controller.api.external;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.backend.dog.AssetTechnologyDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
@@ -1043,14 +1042,14 @@ public class ReportRestController extends BaseRestController {
 
 			if (expands.contains("browser")) {
 				_expandMetricReport(
-					_assetTechnologyDog.getBrowserMetrics(
+					_metricDog.getBrowserMetrics(
 						metric.getMetricType(), searchQueryContext),
 					metricReport::_addBrowserMetricReport);
 			}
 
 			if (expands.contains("device")) {
 				_expandMetricReport(
-					_assetTechnologyDog.getDeviceMetrics(
+					_metricDog.getDeviceMetrics(
 						metric.getMetricType(), searchQueryContext),
 					metricReport::_addDeviceMetricReport);
 			}
@@ -1337,9 +1336,6 @@ public class ReportRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		ReportRestController.class);
-
-	@Autowired
-	private AssetTechnologyDog _assetTechnologyDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;

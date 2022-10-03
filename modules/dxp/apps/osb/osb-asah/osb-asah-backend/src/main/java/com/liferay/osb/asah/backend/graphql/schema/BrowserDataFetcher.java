@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.AssetTechnologyDog;
+import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.SiteMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
@@ -63,12 +63,11 @@ public class BrowserDataFetcher extends BaseDataFetcher<List<Metric>> {
 				metricType, searchQueryContext);
 		}
 
-		return _assetTechnologyDog.getBrowserMetrics(
-			metricType, searchQueryContext);
+		return _metricDog.getBrowserMetrics(metricType, searchQueryContext);
 	}
 
 	@Autowired
-	private AssetTechnologyDog _assetTechnologyDog;
+	private MetricDog _metricDog;
 
 	@Autowired
 	private MetricTypeDog _metricTypeDog;

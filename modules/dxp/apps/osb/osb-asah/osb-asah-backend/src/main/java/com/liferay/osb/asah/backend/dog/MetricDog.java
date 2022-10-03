@@ -103,11 +103,35 @@ public class MetricDog {
 			searchQueryContext.getTimeRange());
 	}
 
+	public List<Metric> getBrowserMetrics(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getBrowserMetrics(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
+	}
+
+	public List<Metric> getDeviceMetrics(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getDeviceMetrics(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
+	}
+
 	public List<Metric> getGeolocationMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		AssetMetricRepository assetMetricRepository =
-			_getAssetMetricRepository(searchQueryContext.getAssetType());
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
 
 		return assetMetricRepository.getGeolocationMetrics(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
