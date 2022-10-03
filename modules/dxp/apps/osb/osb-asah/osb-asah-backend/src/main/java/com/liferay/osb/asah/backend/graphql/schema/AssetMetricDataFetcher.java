@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
  * @author Inácio Nery
  */
 @Component
+@GraphQLTypeWiring(fieldName = "page", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "blog", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "custom", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "document", typeName = "QueryType")

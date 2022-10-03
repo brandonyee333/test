@@ -43,6 +43,7 @@ import org.springframework.stereotype.Component;
 @GraphQLTypeWiring(fieldName = "documents", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "forms", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "journals", typeName = "QueryType")
+@GraphQLTypeWiring(fieldName = "pages", typeName = "QueryType")
 public class AssetMetricBagDataFetcher extends BaseDataFetcher<ResultBag> {
 
 	@Override
