@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
+import com.liferay.osb.asah.backend.dog.PageReferrerDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.dog.page.PageReferrerDog;
 import com.liferay.osb.asah.backend.model.PageReferrerMetric;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;

@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.page;
+package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Metric;
