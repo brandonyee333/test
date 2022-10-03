@@ -54,6 +54,8 @@ import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.SelectJoinStep;
+import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
@@ -137,7 +139,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				Metric metric = new Metric(metricType);
 
 				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
-					metricType.getFieldName());
+					metricType.getName());
 
 				if (metricValueBigDecimal != null) {
 					metric.setValue(metricValueBigDecimal.doubleValue());
@@ -183,15 +185,18 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			"previous"
 		);
 
+		SelectSelectStep<Record> selectSelectStep = dslContext.select(
+			_getMetricFields(selectedMetrics)
+		).select(
+			previousField
+		);
+
+		SelectJoinStep<Record> selectJoinStep = getAssetMetricSelectJoinStep(
+			selectSelectStep, timeRange);
+
 		List<Map<String, Object>> recordMaps = _queryExecutor.queryForList(
 			Function.identity(),
-			dslContext.select(
-				_getMetricFields(selectedMetrics)
-			).select(
-				previousField
-			).from(
-				getTableName(timeRange)
-			).where(
+			selectJoinStep.where(
 				_createWhereClause(
 					assetId, assetTitle, channelId,
 					timeRange.getIncludePreviousTimeRange())
@@ -219,13 +224,12 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		fields.add(assetTitleField);
 
+		SelectJoinStep<Record> selectJoinStep = getAssetMetricSelectJoinStep(
+			dslContext.select(fields), timeRange);
+
 		return _queryExecutor.queryForList(
 			rowMap -> _toMetric(rowMap, selectedMetrics),
-			dslContext.select(
-				fields
-			).from(
-				getTableName(timeRange)
-			).where(
+			selectJoinStep.where(
 				_createWhereClause(null, null, channelId, keywords, timeRange)
 			).groupBy(
 				assetIdField, assetTitleField
@@ -242,18 +246,23 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	public Long getAssetMetricsCount(
 		Long channelId, @Nullable String keywords, TimeRange timeRange) {
 
+		Field<String> assetIdField = DSL.field(
+			getAssetIdFieldName(), String.class);
+		Field<String> assetTitleField = DSL.field(
+			getAssetTitleFieldName(), String.class);
+
 		return _queryExecutor.queryForLong(
 			dslContext.selectCount(
 			).from(
 				DSL.select(
-					DSL.field("assetId"), DSL.field("assetTitle")
+					assetIdField, assetTitleField
 				).from(
 					getTableName(timeRange)
 				).where(
 					_createWhereClause(
 						null, null, channelId, keywords, timeRange)
 				).groupBy(
-					DSL.field("assetId"), DSL.field("assetTitle")
+					assetIdField, assetTitleField
 				)
 			));
 	}
@@ -271,7 +280,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				Metric metric = new Metric(metricType);
 
 				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
-					metricType.getFieldName());
+					metricType.getName());
+
+				if (metricValueBigDecimal == null) {
+					metricValueBigDecimal = BigDecimal.ZERO;
+				}
 
 				metric.setValue(metricValueBigDecimal.doubleValue());
 
@@ -323,7 +336,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				platformNameMetric.setValueKey(platformName);
 
 				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
-					metricType.getFieldName());
+					metricType.getName());
+
+				if (metricValueBigDecimal == null) {
+					metricValueBigDecimal = BigDecimal.ZERO;
+				}
 
 				platformNameMetric.setValue(
 					metricValueBigDecimal.doubleValue());
@@ -364,7 +381,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				Metric metric = new Metric(metricType);
 
 				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
-					metricType.getFieldName());
+					metricType.getName());
 
 				metric.setValue(metricValueBigDecimal.doubleValue());
 
@@ -399,12 +416,15 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		field = field.as("key");
 
+		SelectJoinStep<Record> selectJoinStep = getAssetMetricSelectJoinStep(
+			dslContext.select(field, getMetricField(metricType)), timeRange);
+
 		return _queryExecutor.queryForList(
 			rowMap -> {
 				Metric metric = new Metric(metricType);
 
 				BigDecimal bigDecimal = (BigDecimal)rowMap.get(
-					metricType.getFieldName());
+					metricType.getName());
 
 				if (bigDecimal == null) {
 					bigDecimal = BigDecimal.ZERO;
@@ -418,11 +438,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 							(Date)rowMap.get("key"), ZoneOffset.UTC)),
 					metric);
 			},
-			dslContext.select(
-				field, getMetricField(metricType)
-			).from(
-				getTableName(timeRange)
-			).where(
+			selectJoinStep.where(
 				_createWhereClause(
 					assetId, assetTitle, channelId, includePrevious, timeRange)
 			).groupBy(
@@ -815,6 +831,12 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return "assetId";
 	}
 
+	protected SelectJoinStep<Record> getAssetMetricSelectJoinStep(
+		SelectSelectStep<Record> selectSelectStep, TimeRange timeRange) {
+
+		return selectSelectStep.from(getTableName(timeRange));
+	}
+
 	protected abstract Map<String, BiConsumer<T, Metric>>
 		getAssetMetricSetters();
 
@@ -994,7 +1016,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			Metric metric = new Metric(metricType);
 
 			BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
-				metricType.getFieldName());
+				metricType.getName());
 
 			if (metricValueBigDecimal != null) {
 				metric.setValue(metricValueBigDecimal.doubleValue());
@@ -1036,7 +1058,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				MetricType metricType = metric.getMetricType();
 
 				BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
-					metricType.getFieldName());
+					metricType.getName());
 
 				if (metricValueBigDecimal != null) {
 					boolean previous = (boolean)recordMap.get("previous");
