@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,8 +38,8 @@ public class PagesCountDataFetcher implements DataFetcher<Long> {
 		String toDateString = dataFetchingEnvironment.getArgument("toDate");
 
 		return _pageDog.getViewsMetricValue(
-			Optional.ofNullable(fromDateString),
-			Optional.ofNullable(toDateString), Optional.empty());
+			null, LocalDate.parse(fromDateString),
+			LocalDate.parse(toDateString));
 	}
 
 	@Autowired

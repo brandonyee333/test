@@ -29,7 +29,6 @@ import java.time.LocalDate;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -173,17 +172,18 @@ public class PagesRestController extends BaseRestController {
 		@RequestParam(name = "startDate")
 		LocalDate startLocalDate) {
 
+		long readsMetricValue = _pageDog.getReadsMetricValue(
+			canonicalURL, startLocalDate, endLocalDate);
+
 		return _getHistogramMetrics(
 			canonicalURL, endLocalDate, interval, PageMetricType.READS,
-			startLocalDate);
+			startLocalDate, readsMetricValue);
 	}
 
 	@GetMapping("/read-count")
 	public String getReadsCount(@RequestParam String canonicalURL) {
 		return String.valueOf(
-			_pageDog.getMetricValue(
-				Optional.of(canonicalURL), Optional.empty(),
-				PageMetricType.READS, Optional.empty(), Optional.empty()));
+			_pageDog.getReadsMetricValue(canonicalURL, null, null));
 	}
 
 	@GetMapping("/social-page-referrers")
@@ -234,22 +234,24 @@ public class PagesRestController extends BaseRestController {
 		@RequestParam(name = "startDate")
 		LocalDate startLocalDate) {
 
+		long viewsMetricValue = _pageDog.getViewsMetricValue(
+			canonicalURL, startLocalDate, endLocalDate);
+
 		return _getHistogramMetrics(
 			canonicalURL, endLocalDate, interval, PageMetricType.VIEWS,
-			startLocalDate);
+			startLocalDate, viewsMetricValue);
 	}
 
 	@GetMapping("/view-count")
 	public String getViewsCount(@RequestParam String canonicalURL) {
 		return String.valueOf(
-			_pageDog.getMetricValue(
-				Optional.of(canonicalURL), Optional.empty(),
-				PageMetricType.VIEWS, Optional.empty(), Optional.empty()));
+			_pageDog.getViewsMetricValue(canonicalURL, null, null));
 	}
 
 	private String _getHistogramMetrics(
 		String canonicalUrl, LocalDate endLocalDate, String interval,
-		PageMetricType pageMetricType, LocalDate startLocalDate) {
+		PageMetricType pageMetricType, LocalDate startLocalDate,
+		long totalMetricValue) {
 
 		HistogramMetricBag histogramMetricBag =
 			_histogramDog.getHistogramMetricBag(
@@ -268,11 +270,7 @@ public class PagesRestController extends BaseRestController {
 		return JSONUtil.put(
 			"histogram", histogramMetricBag.getMetrics()
 		).put(
-			"value",
-			_pageDog.getMetricValue(
-				Optional.of(canonicalUrl),
-				Optional.of(startLocalDate.toString()), pageMetricType,
-				Optional.of(endLocalDate.toString()), Optional.empty())
+			"value", totalMetricValue
 		).toString();
 	}
 
