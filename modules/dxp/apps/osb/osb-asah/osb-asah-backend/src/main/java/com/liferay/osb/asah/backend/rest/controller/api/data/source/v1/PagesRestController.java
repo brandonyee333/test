@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
-import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
+import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.PageDog;
 import com.liferay.osb.asah.backend.dog.PageReferrerDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
@@ -89,7 +89,7 @@ public class PagesRestController extends BaseRestController {
 
 		return String.valueOf(
 			new JSONArray(
-				_geolocationDog.getGeolocationMetrics(
+				_metricDog.getGeolocationMetrics(
 					PageMetricType.VIEWS, searchQueryContext)));
 	}
 
@@ -275,10 +275,10 @@ public class PagesRestController extends BaseRestController {
 	}
 
 	@Autowired
-	private GeolocationDog _geolocationDog;
+	private HistogramDog _histogramDog;
 
 	@Autowired
-	private HistogramDog _histogramDog;
+	private MetricDog _metricDog;
 
 	@Autowired
 	private PageDog _pageDog;

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.GeolocationDog;
+import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.SiteMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
@@ -63,12 +63,11 @@ public class GeolocationDataFetcher extends BaseDataFetcher<List<Metric>> {
 				metricType, searchQueryContext);
 		}
 
-		return _geolocationDog.getGeolocationMetrics(
-			metricType, searchQueryContext);
+		return _metricDog.getGeolocationMetrics(metricType, searchQueryContext);
 	}
 
 	@Autowired
-	private GeolocationDog _geolocationDog;
+	private MetricDog _metricDog;
 
 	@Autowired
 	private MetricTypeDog _metricTypeDog;

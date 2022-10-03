@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.constants.DataConstants;
-import com.liferay.osb.asah.backend.dog.GeolocationDog;
+import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.FormMetricType;
@@ -49,7 +49,7 @@ public class GeolocationDogTest
 	)
 	@Test
 	public void testGeolocationMetrics() {
-		List<Metric> geolocationMetrics = _geolocationDog.getGeolocationMetrics(
+		List<Metric> geolocationMetrics = _metricDog.getGeolocationMetrics(
 			JournalMetricType.VIEWS,
 			new SearchQueryContext("1", AssetType.JOURNAL));
 
@@ -68,7 +68,7 @@ public class GeolocationDogTest
 	)
 	@Test
 	public void testUnknownGeolocationMetric() {
-		List<Metric> geolocationMetrics = _geolocationDog.getGeolocationMetrics(
+		List<Metric> geolocationMetrics = _metricDog.getGeolocationMetrics(
 			FormMetricType.VIEWS,
 			new SearchQueryContext("2", AssetType.FORM) {
 				{
@@ -83,6 +83,6 @@ public class GeolocationDogTest
 	}
 
 	@Autowired
-	private GeolocationDog _geolocationDog;
+	private MetricDog _metricDog;
 
 }

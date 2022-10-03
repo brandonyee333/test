@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.backend.dog.AssetTechnologyDog;
-import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
@@ -1067,7 +1066,7 @@ public class ReportRestController extends BaseRestController {
 
 			if (expands.contains("location")) {
 				_expandMetricReport(
-					_geolocationDog.getGeolocationMetrics(
+					_metricDog.getGeolocationMetrics(
 						metric.getMetricType(), searchQueryContext),
 					metricReport::_addGeolocationMetricReport);
 			}
@@ -1353,9 +1352,6 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private FormPageDog _formPageDog;
-
-	@Autowired
-	private GeolocationDog _geolocationDog;
 
 	@Autowired
 	private HistogramDog _histogramDog;

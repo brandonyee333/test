@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.Sort;
@@ -99,6 +100,18 @@ public class MetricDog {
 		return assetMetricRepository.getAssetMetricsCount(
 			Long.valueOf(searchQueryContext.getChannelId()),
 			searchQueryContext.getKeywords(),
+			searchQueryContext.getTimeRange());
+	}
+
+	public List<Metric> getGeolocationMetrics(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		AssetMetricRepository assetMetricRepository =
+			_getAssetMetricRepository(searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getGeolocationMetrics(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
 			searchQueryContext.getTimeRange());
 	}
 
