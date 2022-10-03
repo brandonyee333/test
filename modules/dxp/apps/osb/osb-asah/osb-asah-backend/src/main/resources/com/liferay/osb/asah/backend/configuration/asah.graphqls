@@ -680,18 +680,18 @@ type JournalMetric implements AssetMetric {
 
 type Metric {
 	anonymousUsersCount: Int
-	browser : [Metric]
+	browser: [Metric]
 	cohortHeatMap: [CohortHeatMapMetric]
-	device : [Metric]
-	geolocation : [Metric]
+	device: [Metric]
+	geolocation: [Metric]
 	histogram: HistogramMetricBag
 	individuals(keywords: String, size: Int!, start: Int!): IndividualBag
 	knownUsersCount: Int
-	metrics : [Metric]
+	metrics: [Metric]
 	nonsegmentedKnownUsersCount: Int
 	previousValue: Float
 	previousValueKey: String
-	segment : MetricBag
+	segment: MetricBag
 	segmentedAnonymousUsersCount: Int
 	segmentedKnownUsersCount: Int
 	trend: Trend
