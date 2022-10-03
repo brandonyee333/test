@@ -28,7 +28,6 @@ import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
-import com.liferay.osb.asah.common.model.PageMetricType;
 
 import graphql.execution.ExecutionTypeInfo;
 
@@ -83,12 +82,6 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 
 		if (metricType == EventMetricType.TOTAL_SESSIONS) {
 			return _eventHistogramDog.getSessionsCountHistogram(
-				searchQueryContext);
-		}
-
-		if (metricType == PageMetricType.VISITORS) {
-			return _visitorHistogramDog.getHistogramMetricBag(
-				searchQueryContext.isIncludePrevious(), metricType,
 				searchQueryContext);
 		}
 
