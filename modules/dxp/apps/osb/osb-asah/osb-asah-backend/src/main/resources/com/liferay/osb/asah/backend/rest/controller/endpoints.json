@@ -137,7 +137,7 @@
 			"templated": true
 		},
 		"individuals": {
-			"href": "{url}/individuals{?apply,channelId,expand,filter,includeAnonymousUsers,page,size,sort*}",
+			"href": "{url}/individuals{?apply,channelId,expand,includeAnonymousUsers,page,query,size,sort*}",
 			"templated": true
 		},
 		"individuals-count": {
