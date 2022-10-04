@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
@@ -25,12 +26,16 @@ import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
+import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityChannelRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
@@ -82,8 +87,8 @@ import org.yaml.snakeyaml.util.ArrayUtils;
 /**
  * @author Rachael Koestartyo
  */
-@Disabled
 public class BQIndividualDogTest
+	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
@@ -97,6 +102,7 @@ public class BQIndividualDogTest
 
 	}
 
+	@Disabled
 	@Test
 	public void testAddAndUpdateLiferayIndividual() throws Exception {
 		String userId = RandomTestUtil.randomId();
@@ -155,6 +161,7 @@ public class BQIndividualDogTest
 		_assertIndividualMiddleName("Joseph", individual);
 	}
 
+	@Disabled
 	@Test
 	public void testAddAndUpdateLiferayIndividualCustomFields()
 		throws Exception {
@@ -256,6 +263,7 @@ public class BQIndividualDogTest
 				organizationIds.toArray(new Long[0])));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
@@ -271,6 +279,7 @@ public class BQIndividualDogTest
 			3, _countActiveIndividualsFromLast30DaysBySegment(segment));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQOrganizationRepository.class,
 		resourcePath = "osbasahfaroinfo/organizations.json"
@@ -306,6 +315,39 @@ public class BQIndividualDogTest
 	}
 
 	@RepositoryResource(
+		repositoryClass = BQIdentityRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_identity.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQIdentityChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_identity_channels.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQIndividualRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_individuals.json"
+	)
+	@Test
+	public void testFetchBQIndividual() {
+		Individual individual = _bqIndividualDog.fetchBQIndividual(
+			1L,
+			"05574696b257a38dc21009122d33550c299f822dc768984c95693e6d5c4ed006");
+
+		Assertions.assertEquals(25L, individual.getActivitiesCount());
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2019-02-12T20:36:53.218Z"),
+			individual.getLastActivityDate());
+
+		Set<Field> fields = individual.getFields();
+
+		Assertions.assertEquals(8, fields.size());
+
+		Assertions.assertEquals(
+			"joe.bloggs@liferay.com",
+			FaroInfoIndividualUtil.getIndividualEmail(individual));
+	}
+
+	@Disabled
+	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
 	)
@@ -327,6 +369,7 @@ public class BQIndividualDogTest
 			Collections.emptySet());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_info.json"
@@ -345,6 +388,7 @@ public class BQIndividualDogTest
 			SetUtil.of("Charmander"), Collections.emptySet());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_4.json"
@@ -371,6 +415,7 @@ public class BQIndividualDogTest
 		Assertions.assertEquals(6L, Long.valueOf(individual.getId()));
 	}
 
+	@Disabled
 	@Test
 	public void testNoDuplicateIndividualPKs() throws Exception {
 		String userId = RandomTestUtil.randomId();
@@ -417,6 +462,7 @@ public class BQIndividualDogTest
 		_assertDataSourceUserPKs(new Object[] {uuid1, uuid2}, individual);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
@@ -438,6 +484,7 @@ public class BQIndividualDogTest
 		Assertions.assertEquals(0, segmentIds.size(), segmentIds.toString());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
@@ -475,6 +522,7 @@ public class BQIndividualDogTest
 			_getGivenNames(individuals));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQEventRepository.class,
 		resourcePath = "osbasahfaroinfo/events.json"
@@ -704,6 +752,7 @@ public class BQIndividualDogTest
 			0, _bqMembershipRepository.countBySegmentId(338511451975440190L));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
@@ -724,6 +773,7 @@ public class BQIndividualDogTest
 				338511398116723458L, "INACTIVE"));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources.json"
@@ -820,6 +870,7 @@ public class BQIndividualDogTest
 				organizationIds.toArray(new Long[0])));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_3.json"
@@ -1109,6 +1160,9 @@ public class BQIndividualDogTest
 	private static final String[] _FIELD_NAMES = {
 		"country", "email", "middleName"
 	};
+
+	@Autowired
+	private BQIndividualDog _bqIndividualDog;
 
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;

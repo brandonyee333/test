@@ -1,0 +1,30 @@
+[
+	{
+		"createDate": "2019-02-11T20:26:53.218Z",
+		"emailAddress": "joe.bloggs@liferay.com",
+		"fieldsJSONArray": [
+			{
+				"dataSourceId": "1",
+				"name": "firstName",
+				"value": "Joe"
+			},
+			{
+				"dataSourceId": "1",
+				"name": "lastName",
+				"value": "Bloggs"
+			},
+			{
+				"dataSourceId": "1",
+				"name": "screenName",
+				"value": "joe.bloggs"
+			}
+		],
+		"firstName": "Joe",
+		"id": "05574696b257a38dc21009122d33550c299f822dc768984c95693e6d5c4ed006",
+		"jobTitle": "Engineer",
+		"lastName": "Bloggs",
+		"middleName": "",
+		"modifiedDate": "2019-02-11T20:26:53.218Z",
+		"screenName": "joe.bloggs"
+	}
+]

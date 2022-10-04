@@ -113,7 +113,7 @@ public class IndividualsRestControllerTest
 	public void testExpandDataSources() throws Exception {
 		IndividualDTO individualDTO =
 			_individualsRestController.getIndividualDTO(
-				123L, null, "data-sources");
+				"123", null, "data-sources");
 
 		Map<String, Object> embedded = individualDTO.getEmbedded();
 
@@ -139,7 +139,7 @@ public class IndividualsRestControllerTest
 	public void testExpandIndividualSegments() throws Exception {
 		IndividualDTO individualDTO =
 			_individualsRestController.getIndividualDTO(
-				123L, null, "individual-segments");
+				"123", null, "individual-segments");
 
 		Map<String, Object> embedded = individualDTO.getEmbedded();
 
