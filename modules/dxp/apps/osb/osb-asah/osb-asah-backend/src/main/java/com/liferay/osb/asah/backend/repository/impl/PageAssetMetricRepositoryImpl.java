@@ -90,11 +90,17 @@ public class PageAssetMetricRepositoryImpl
 					PageMetricType.BOUNCE_RATE.getName(),
 					PageMetric::setBounceRateMetric);
 				put(
+					PageMetricType.DIRECT_ACCESS.getName(),
+					PageMetric::setDirectAccessMetric);
+				put(
 					PageMetricType.ENTRANCES.getName(),
 					PageMetric::setEntrancesMetric);
 				put(
 					PageMetricType.EXIT_RATE.getName(),
 					PageMetric::setExitRateMetric);
+				put(
+					PageMetricType.INDIRECT_ACCESS.getName(),
+					PageMetric::setIndirectAccessMetric);
 				put(PageMetricType.READS.getName(), PageMetric::setReadsMetric);
 				put(
 					PageMetricType.SESSIONS.getName(),
