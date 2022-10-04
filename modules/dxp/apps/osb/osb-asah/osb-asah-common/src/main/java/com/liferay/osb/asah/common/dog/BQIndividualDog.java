@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -57,6 +58,13 @@ public class BQIndividualDog {
 			new FilterHelper(
 				null, filterString, _individualsFilterStringConverterHelper),
 			null, null);
+	}
+
+	public Individual fetchBQIndividual(@Nullable Long channelId, String id) {
+		Optional<Individual> bqIndividualOptional =
+			_bqIndividualRepository.findByChannelIdAndId(channelId, id);
+
+		return bqIndividualOptional.orElse(null);
 	}
 
 	public Page<Distribution> getDistributionPage(

@@ -62,14 +62,13 @@ public class IndividualsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
 	public IndividualDTO getIndividualDTO(
-			@PathVariable Long id,
+			@PathVariable String id,
 			@RequestParam(required = false) Long channelId,
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
-		// TOFO Fetch Individual by id and channelId
-
-		Individual individual = new Individual();
+		Individual individual = _bqIndividualDog.fetchBQIndividual(
+			channelId, id);
 
 		IndividualDTO individualDTO = new IndividualDTO(individual);
 
