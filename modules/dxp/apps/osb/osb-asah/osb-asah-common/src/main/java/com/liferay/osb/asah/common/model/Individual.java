@@ -59,20 +59,24 @@ public class Individual {
 
 		_createDate = bqIndividual.getCreateDate();
 
-		_fields = objectMapper.convertValue(
+		Set<Field> fields = objectMapper.convertValue(
 			bqIndividual.getFieldsJSONArray(),
 			new TypeReference<Set<Field>>() {
 			});
 
-		_fields.addAll(
-			new HashSet<>(
-				Arrays.asList(
-					_createField(
-						"additionalName", bqIndividual.getMiddleName()),
-					_createField("email", bqIndividual.getEmailAddress()),
-					_createField("familyName", bqIndividual.getLastName()),
-					_createField("givenName", bqIndividual.getFirstName()),
-					_createField("jobTitle", bqIndividual.getJobTitle()))));
+		if (fields != null) {
+			_fields = fields;
+
+			_fields.addAll(
+				new HashSet<>(
+					Arrays.asList(
+						_createField(
+							"additionalName", bqIndividual.getMiddleName()),
+						_createField("email", bqIndividual.getEmailAddress()),
+						_createField("familyName", bqIndividual.getLastName()),
+						_createField("givenName", bqIndividual.getFirstName()),
+						_createField("jobTitle", bqIndividual.getJobTitle()))));
+		}
 
 		_demographics = new Demographics(_fields);
 
