@@ -244,8 +244,7 @@ public class PagesRestController extends BaseRestController {
 
 	@GetMapping("/view-count")
 	public String getViewsCount(@RequestParam String canonicalURL) {
-		return String.valueOf(
-			_pageDog.getViewsMetricValue(canonicalURL, null, null));
+		return String.valueOf(_pageDog.getViewsMetricValue(canonicalURL));
 	}
 
 	private String _getHistogramMetrics(

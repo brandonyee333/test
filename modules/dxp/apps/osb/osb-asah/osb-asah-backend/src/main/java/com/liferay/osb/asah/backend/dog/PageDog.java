@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import java.util.Collections;
 
@@ -59,12 +60,30 @@ public class PageDog {
 		return _getLongValue(pageMetric.getReadsMetric());
 	}
 
+	public long getViewsMetricValue(@Nullable String canonicalUrl) {
+		PageMetric pageMetric = _getPageMetric(
+			canonicalUrl, PageMetricType.VIEWS);
+
+		return _getLongValue(pageMetric.getViewsMetric());
+	}
+
 	public long getViewsMetricValue(
-		@Nullable String canonicalUrl, @Nullable LocalDate fromLocalDate,
-		@Nullable LocalDate toLocalDate) {
+		@Nullable String canonicalUrl, LocalDate fromLocalDate,
+		LocalDate toLocalDate) {
 
 		PageMetric pageMetric = _getPageMetric(
 			canonicalUrl, fromLocalDate, PageMetricType.VIEWS, toLocalDate);
+
+		return _getLongValue(pageMetric.getViewsMetric());
+	}
+
+	public long getViewsMetricValue(
+		@Nullable String canonicalUrl, LocalDateTime fromLocalDateTime,
+		LocalDateTime toLocalDateTime) {
+
+		PageMetric pageMetric = _getPageMetric(
+			canonicalUrl, fromLocalDateTime, PageMetricType.VIEWS,
+			toLocalDateTime);
 
 		return _getLongValue(pageMetric.getViewsMetric());
 	}
@@ -76,21 +95,42 @@ public class PageDog {
 	}
 
 	private PageMetric _getPageMetric(
-		@Nullable String canonicalUrl, @Nullable LocalDate fromLocalDate,
-		PageMetricType pageMetricType, @Nullable LocalDate toLocalDate) {
+		@Nullable String canonicalUrl, LocalDate fromLocalDate,
+		PageMetricType pageMetricType, LocalDate toLocalDate) {
 
-		if (toLocalDate == null) {
-			toLocalDate = LocalDate.now(_timeZoneDog.getZoneId());
-		}
+		return _getPageMetric(
+			canonicalUrl, pageMetricType,
+			TimeRange.of(toLocalDate, fromLocalDate));
+	}
 
-		if (fromLocalDate == null) {
-			fromLocalDate = toLocalDate.minusMonths(13);
-		}
+	private PageMetric _getPageMetric(
+		@Nullable String canonicalUrl, LocalDateTime fromLocalDateTime,
+		PageMetricType pageMetricType, LocalDateTime toLocalDateTime) {
+
+		return _getPageMetric(
+			canonicalUrl, pageMetricType,
+			TimeRange.of(toLocalDateTime, fromLocalDateTime));
+	}
+
+	private PageMetric _getPageMetric(
+		@Nullable String canonicalUrl, PageMetricType pageMetricType) {
+
+		LocalDate toLocalDate = LocalDate.now(_timeZoneDog.getZoneId());
+
+		LocalDate fromLocalDate = toLocalDate.minusMonths(13);
+
+		return _getPageMetric(
+			canonicalUrl, pageMetricType,
+			TimeRange.of(toLocalDate, fromLocalDate));
+	}
+
+	private PageMetric _getPageMetric(
+		@Nullable String canonicalUrl, PageMetricType pageMetricType,
+		TimeRange timeRange) {
 
 		return _pageMetricAssetMetricRepository.getAssetMetric(
 			canonicalUrl, null, null,
-			Collections.singleton(pageMetricType.getName()),
-			TimeRange.of(toLocalDate, fromLocalDate));
+			Collections.singleton(pageMetricType.getName()), timeRange);
 	}
 
 	@Autowired

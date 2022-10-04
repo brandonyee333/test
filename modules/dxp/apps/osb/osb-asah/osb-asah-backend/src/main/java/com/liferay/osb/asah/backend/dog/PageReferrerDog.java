@@ -227,7 +227,7 @@ public class PageReferrerDog {
 	}
 
 	private boolean _isPageExternal(String url) {
-		long views = _pageDog.getViewsMetricValue(url, null, null);
+		long views = _pageDog.getViewsMetricValue(url);
 
 		if (views == 0) {
 			return true;
