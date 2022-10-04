@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.BQIndividual;
@@ -45,8 +48,8 @@ public class Individual {
 	}
 
 	public Individual(
-		Long activitiesCount, BQIndividual bqIndividual,
-		Date lastActivityDate) {
+		Long activitiesCount, BQIndividual bqIndividual, Date lastActivityDate,
+		ObjectMapper objectMapper) {
 
 		_activitiesCount = activitiesCount;
 
@@ -55,7 +58,13 @@ public class Individual {
 		}
 
 		_createDate = bqIndividual.getCreateDate();
-		_demographics = new Demographics(
+
+		_fields = objectMapper.convertValue(
+			bqIndividual.getFieldsJSONArray(),
+			new TypeReference<Set<Field>>() {
+			});
+
+		_fields.addAll(
 			new HashSet<>(
 				Arrays.asList(
 					_createField(
@@ -64,6 +73,9 @@ public class Individual {
 					_createField("familyName", bqIndividual.getLastName()),
 					_createField("givenName", bqIndividual.getFirstName()),
 					_createField("jobTitle", bqIndividual.getJobTitle()))));
+
+		_demographics = new Demographics(_fields);
+
 		_emailAddressHashed = bqIndividual.getId();
 		_firstEnrichmentDate = bqIndividual.getCreateDate();
 		_id = StringUtil.get(bqIndividual.getId(), null);
@@ -656,7 +668,7 @@ public class Individual {
 			_fields = fields;
 		}
 
-		public void addtField(String key, List<Field> fields) {
+		public void addField(String key, List<Field> fields) {
 			Field field = fields.get(0);
 
 			field.setName(key);
