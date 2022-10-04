@@ -1897,7 +1897,7 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "entrance",
+				"name": "entrances",
 				"type": "INT64"
 			},
 			{
@@ -1907,7 +1907,7 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "exit",
+				"name": "exits",
 				"type": "INT64"
 			},
 			{

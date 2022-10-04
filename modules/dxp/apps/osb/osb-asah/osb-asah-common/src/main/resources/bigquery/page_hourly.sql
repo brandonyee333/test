@@ -1,8 +1,6 @@
-WITH FinalizedEvent AS (
+WITH PageFinalizedEvent AS (
     SELECT
-		Event.applicationId, Event.canonicalUrl, Event.channelId,
-		Event.eventDate, Event.eventId, Event.sessionId, Event.title,
-		Event.userId
+		Event.*
     FROM
     	`$[AC_PROJECT_ID].event` AS Event
     INNER JOIN
@@ -11,9 +9,10 @@ WITH FinalizedEvent AS (
     WHERE
     	Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 49 hour)
 ),
-Bounces AS (
+PageBounces AS (
     SELECT
-		channelId, COUNT(*) AS count,
+		channelId,
+		COUNT(*) AS count,
 		SUM(
 		   CASE
 			   WHEN applicationId = 'Page' AND eventId = 'pageViewed'
@@ -26,105 +25,207 @@ Bounces AS (
 		sessionId,
 		userId
     FROM
-		FinalizedEvent
+		PageFinalizedEvent
     WHERE
 		eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed')
     GROUP BY
 		channelId, sessionId, userId
 ),
-Entrances AS (
+PageEntrances AS (
 	SELECT
-		canonicalUrl, channelId, rank AS entrance,
-		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate, sessionId,
-	    title, userId
+		browserName,
+		canonicalUrl,
+		channelId,
+		city,
+		country,
+		deviceType,
+		rank AS entrances,
+		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+		platformName,
+		region,
+		sessionId,
+		title,
+		userId
 	FROM (
 		SELECT
 			canonicalUrl, channelId, eventDate,
 			ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate ASC) AS rank,
-		    sessionId, title, userId FROM FinalizedEvent
+		    sessionId, title, userId
+		FROM
+			PageFinalizedEvent
 	) AS EventEntrance
 	WHERE
 		rank = 1
 ),
-Exits AS (
+PageExits AS (
 	SELECT
-		canonicalUrl, channelId, rank AS exit,
-		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate, sessionId,
-		title, userId
+		browserName,
+		canonicalUrl,
+		channelId,
+		city,
+		country,
+		deviceType,
+		rank AS exits,
+		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+		platformName,
+		region,
+		sessionId,
+		title,
+		userId
 	FROM (
 	    SELECT
 			canonicalUrl, channelId, eventDate,
 			ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate DESC) AS rank,
 		   sessionId, title, userId
-	    FROM FinalizedEvent
+	    FROM
+			PageFinalizedEvent
 	) AS EventExit
 	WHERE
-	      rank = 1
+		rank = 1
 ),
-TimeOnPages AS (
+PageTimeOnPages AS (
 	SELECT
-		canonicalUrl, channelId,
+		browserName,
+		canonicalUrl,
+		channelId,
+		city,
+		country,
+		deviceType,
 		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+		platformName,
+		region,
 		sessionId,
 		SUM(TIMESTAMP_DIFF(nextTime, eventDate, MILLISECOND)) AS timeOnPage,
-		title, userId
+		title,
+		userId
 	FROM (
 		SELECT
 			canonicalUrl, channelId, eventDate,
 			LEAD(eventDate) OVER (PARTITION BY sessionId, userId, channelId ORDER BY eventDate) AS nextTime,
 			sessionId, title, userId
 		FROM
-			FinalizedEvent
+			PageFinalizedEvent
 	) AS EventTimeOnPage
 	GROUP BY
-		canonicalUrl, channelId, normalizedEventDate, sessionId, title, userId
+		browserName, canonicalUrl, channelId, city, country, deviceType,
+		normalizedEventDate, platformName, region, sessionId, title, userId
 ),
-Views AS (
+PageViews AS (
 	SELECT
-		canonicalUrl, channelId, TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
-	    COUNT(*) AS pageViews, sessionId, title, userId FROM FinalizedEvent
+		browserName,
+		canonicalUrl,
+		channelId,
+		city,
+		country,
+		deviceType,
+		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+		SUM(
+			CASE
+				WHEN
+					referrer = ''
+				THEN
+					1
+				ELSE
+					0
+			END
+		) AS directAccess,
+		SUM(
+			CASE
+				WHEN
+					referrer != ''
+				THEN
+					1
+				ELSE
+					0
+			END
+		) AS indirectAccess,
+		SUM(1) AS views,
+		platformName,
+		region,
+		sessionId,
+		title,
+		userId
 	WHERE
 		applicationId = 'Page' AND eventId = 'pageViewed'
 	GROUP BY
-	    canonicalUrl, channelId, normalizedEventDate, sessionId, title, userId
+		browserName, canonicalUrl, channelId, city, country, deviceType,
+		normalizedEventDate, platformName, region, sessionId, title, userId
 )
 
 SELECT
-	(CASE WHEN Bounces.count > 2 OR Bounces.pageViews > 1 THEN 0 ELSE 1 END) AS bounce,
-	TimeOnPages.canonicalUrl AS canonicalUrl,
-    TimeOnPages.channelId AS channelId, entrance,
-    TimeOnPages.normalizedEventDate AS eventDate, exit,
-    TimeOnPages.sessionId AS sessionId, TimeOnPages.timeOnPage AS timeOnPage,
-    TimeOnPages.title AS title, TimeOnPages.userId AS userId, Views.pageViews AS views
+	CASE
+		WHEN
+			PageBounces.count > 2 OR PageBounces.pageViews > 1
+		THEN
+			0
+		ELSE
+			1
+	END AS bounce,
+	COALESCE(PageTimeOnPages.browserName, '') AS browserName,
+	PageTimeOnPages.canonicalUrl AS canonicalUrl,
+	PageTimeOnPages.channelId AS channelId,
+	COALESCE(PageTimeOnPages.city, '') AS city,
+	COALESCE(PageTimeOnPages.country, '') AS country,
+	COALESCE(PageTimeOnPages.deviceType, '') AS deviceType,
+	PageViews.directAccess,
+	PageEntrances.entrances,
+	PageTimeOnPages.normalizedEventDate AS eventDate,
+	PageExits.exits,
+	PageViews.indirectAccess,
+	COALESCE(PageTimeOnPages.platformName, '') AS platformName,
+	COALESCE(PageTimeOnPages.region, '') AS region,
+	PageTimeOnPages.sessionId AS sessionId,
+	PageTimeOnPages.timeOnPage AS timeOnPage,
+	PageTimeOnPages.title AS title,
+	PageTimeOnPages.userId AS userId,
+	PageViews.views
 FROM
-     TimeOnPages
-LEFT JOIN Bounces ON (
-	TimeOnPages.channelId = Bounces.channelId AND
-	TimeOnPages.sessionId = Bounces.sessionId AND
-	TimeOnPages.userId = Bounces.userId
+	PageTimeOnPages
+LEFT JOIN PageBounces ON (
+	PageTimeOnPages.channelId = PageBounces.channelId AND
+	PageTimeOnPages.sessionId = PageBounces.sessionId AND
+	PageTimeOnPages.userId = PageBounces.userId
 )
-LEFT JOIN Entrances ON (
-	TimeOnPages.canonicalUrl = Entrances.canonicalUrl AND
-	TimeOnPages.channelId = Entrances.channelId AND
-	TimeOnPages.normalizedEventDate =
-	Entrances.normalizedEventDate AND
-	TimeOnPages.sessionId = Entrances.sessionId AND
-	TimeOnPages.title = Entrances.title AND
-	TimeOnPages.userId = Entrances.userId
+LEFT JOIN PageEntrances ON (
+	PageTimeOnPages.browserName = PageEntrances.browserName AND
+	PageTimeOnPages.canonicalUrl =
+	PageEntrances.canonicalUrl AND
+	PageTimeOnPages.channelId = PageEntrances.channelId AND
+	PageTimeOnPages.city = PageEntrances.city AND
+	PageTimeOnPages.country = PageEntrances.country AND
+	PageTimeOnPages.deviceType = PageEntrances.deviceType AND
+	PageTimeOnPages.normalizedEventDate = PageEntrances.normalizedEventDate AND
+	PageTimeOnPages.platformName = PageEntrances.platformName AND
+	PageTimeOnPages.region = PageEntrances.region AND
+	PageTimeOnPages.sessionId = PageEntrances.sessionId AND
+	PageTimeOnPages.title = PageEntrances.title AND
+	PageTimeOnPages.userId = PageEntrances.userId
 )
-LEFT JOIN Exits ON (
-	TimeOnPages.canonicalUrl = Exits.canonicalUrl AND
-	TimeOnPages.channelId = Exits.channelId AND
-	TimeOnPages.normalizedEventDate = Exits.normalizedEventDate AND
-	TimeOnPages.sessionId = Exits.sessionId AND
-	TimeOnPages.title = Exits.title AND
-	TimeOnPages.userId = Exits.userId
+LEFT JOIN PageExits ON (
+	PageTimeOnPages.browserName = PageExits.browserName AND
+	PageTimeOnPages.canonicalUrl = PageExits.canonicalUrl AND
+	PageTimeOnPages.channelId = PageExits.channelId AND
+	PageTimeOnPages.city = PageExits.city AND
+	PageTimeOnPages.country = PageExits.country AND
+	PageTimeOnPages.deviceType = PageExits.deviceType AND
+	PageTimeOnPages.normalizedEventDate = PageExits.normalizedEventDate AND
+	PageTimeOnPages.platformName = PageExits.platformName AND
+	PageTimeOnPages.region = PageExits.region AND
+	PageTimeOnPages.sessionId = PageExits.sessionId AND
+	PageTimeOnPages.title = PageExits.title AND
+	PageTimeOnPages.userId = PageExits.userId
 )
-LEFT JOIN Views ON (
-	TimeOnPages.canonicalUrl = Views.canonicalUrl AND
-	TimeOnPages.channelId = Views.channelId AND
-	TimeOnPages.normalizedEventDate = Views.normalizedEventDate AND
-	TimeOnPages.sessionId = Views.sessionId AND
-	TimeOnPages.title = Views.title AND
-	TimeOnPages.userId = Views.userId
+LEFT JOIN PageViews ON (
+	PageTimeOnPages.browserName = PageViews.browserName AND
+	PageTimeOnPages.canonicalUrl = PageViews.canonicalUrl AND
+	PageTimeOnPages.channelId = PageViews.channelId AND
+	PageTimeOnPages.city = PageViews.city AND
+	PageTimeOnPages.country = PageViews.country AND
+	PageTimeOnPages.deviceType = PageViews.deviceType AND
+	PageTimeOnPages.normalizedEventDate = PageViews.normalizedEventDate AND
+	PageTimeOnPages.platformName = PageViews.platformName AND
+	PageTimeOnPages.region = PageViews.region AND
+	PageTimeOnPages.sessionId = PageViews.sessionId AND
+	PageTimeOnPages.title = PageViews.title AND
+	PageTimeOnPages.userId = PageViews.userId
 )
