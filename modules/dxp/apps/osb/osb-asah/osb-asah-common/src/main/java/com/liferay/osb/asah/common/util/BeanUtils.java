@@ -41,6 +41,8 @@ import org.jooq.JSON;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.postgresql.util.PGobject;
+
 import org.springframework.core.ResolvableType;
 import org.springframework.data.relational.core.mapping.Column;
 
@@ -196,7 +198,9 @@ public class BeanUtils {
 						}
 					}
 				}
-				else if (targetPropertyValue instanceof JSON) {
+				else if (targetPropertyValue instanceof JSON ||
+						 targetPropertyValue instanceof PGobject) {
+
 					String json = String.valueOf(targetPropertyValue);
 
 					if (json.startsWith("{")) {
