@@ -157,7 +157,7 @@ public class IndividualsRestControllerTest
 	public void testGetIndividualDTOPageDTO() throws Exception {
 		PageDTO<IndividualDTO> individualDTOPageDTO =
 			_individualsRestController.getIndividualDTOPageDTO(
-				100L, null, null, 0, 1, null);
+				100L, null, 0, null, 1, null);
 
 		Map<String, IndividualDTO> contents = individualDTOPageDTO.getContent();
 
