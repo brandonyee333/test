@@ -111,16 +111,16 @@ export function AutoFocus({children}) {
 }
 
 function scrollComponentToTop(currentTitle) {
-	if(currentTitle)
-	{ const containerPosition = currentTitle.getBoundingClientRect();
+	if (currentTitle) {
+		const containerPosition = currentTitle.getBoundingClientRect();
 
-	const menuSize = document.querySelector('.control-menu-container')
-		?.clientHeight;
+		const menuSize = document.querySelector('.control-menu-container')
+			?.clientHeight;
 
-	window.scroll(
-		containerPosition.x - menuSize,
-		containerPosition.y - menuSize
-	);
+		window.scroll(
+			containerPosition.x - menuSize,
+			containerPosition.y - menuSize
+		);
 	}
 }
 
