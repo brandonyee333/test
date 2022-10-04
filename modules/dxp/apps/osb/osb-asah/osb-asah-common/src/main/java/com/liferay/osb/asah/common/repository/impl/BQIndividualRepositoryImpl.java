@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,14 +53,14 @@ public class BQIndividualRepositoryImpl
 	}
 
 	public long countBQIndividuals(
-		@Nullable Long channelId, FilterHelper filterHelper,
-		@Nullable Long segmentChannelId, @Nullable Long segmentId) {
+		@Nullable Long channelId, String query, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId) {
 
 		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
 			channelId, segmentChannelId, segmentId,
 			_dslContext.select(DSL.countDistinct(DSL.field("individual.id"))));
 
-		Condition condition = filterHelper.getCondition();
+		Condition condition = _getQueryCondition(query);
 
 		if (segmentChannelId != null) {
 			condition = condition.and(
@@ -105,7 +104,7 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long channelId, String id) {
 
 		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
-			null, null, null,
+			null, null,
 			_dslContext.select(
 				DSL.coalesce(
 					DSL.cast(
@@ -232,8 +231,8 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public List<Individual> searchBQIndividuals(
-		Long channelId, FilterHelper filterHelper, Long segmentChannelId,
-		Long segmentId, Pageable pageable) {
+		Long channelId, Pageable pageable, String query, Long segmentChannelId,
+		Long segmentId) {
 
 		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
 			channelId, segmentChannelId, segmentId,
@@ -277,7 +276,7 @@ public class BQIndividualRepositoryImpl
 				),
 				DSL.field("screenname")));
 
-		Condition condition = filterHelper.getCondition();
+		Condition condition = _getQueryCondition(query);
 
 		if (segmentChannelId != null) {
 			condition = condition.and(
@@ -364,6 +363,39 @@ public class BQIndividualRepositoryImpl
 					).eq(
 						DSL.field("BQIndividual.id")
 					))
+			));
+	}
+
+	private Condition _getQueryCondition(String query) {
+		if (query == null) {
+			return DSL.noCondition();
+		}
+
+		return DSL.or(
+			DSL.field(
+				"emailAddress"
+			).like(
+				"%" + query + "%"
+			),
+			DSL.field(
+				"firstName"
+			).like(
+				"%" + query + "%"
+			),
+			DSL.field(
+				"jobTitle"
+			).like(
+				"%" + query + "%"
+			),
+			DSL.field(
+				"lastName"
+			).like(
+				"%" + query + "%"
+			),
+			DSL.field(
+				"middleName"
+			).like(
+				"%" + query + "%"
 			));
 	}
 

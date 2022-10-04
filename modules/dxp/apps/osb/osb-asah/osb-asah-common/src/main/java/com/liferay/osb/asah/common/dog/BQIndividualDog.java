@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,12 +51,9 @@ public class BQIndividualDog {
 			individualsFilterStringConverterHelper;
 	}
 
-	public long countBQIndividuals(Long channelId, String filterString) {
+	public long countBQIndividuals(Long channelId, String query) {
 		return _bqIndividualRepository.countBQIndividuals(
-			channelId,
-			new FilterHelper(
-				null, filterString, _individualsFilterStringConverterHelper),
-			null, null);
+			channelId, query, null, null);
 	}
 
 	public Individual fetchBQIndividual(@Nullable Long channelId, String id) {
@@ -84,24 +80,20 @@ public class BQIndividualDog {
 	}
 
 	public Page<Individual> searchBQIndividualPage(
-		Long channelId, String filterString, int page, int size,
-		String[] sorts) {
+		Long channelId, int page, String query, int size, String[] sorts) {
 
 		return PageableExecutionUtils.getPage(
-			searchBQIndividuals(channelId, filterString, page, size, sorts),
+			searchBQIndividuals(channelId, page, query, size, sorts),
 			PageRequest.of(page, size, _getSort(sorts)),
-			() -> countBQIndividuals(channelId, filterString));
+			() -> countBQIndividuals(channelId, query));
 	}
 
 	public List<Individual> searchBQIndividuals(
-		Long channelId, String filterString, int page, int size,
-		String[] sorts) {
+		Long channelId, int page, String query, int size, String[] sorts) {
 
 		return _bqIndividualRepository.searchBQIndividuals(
-			channelId,
-			new FilterHelper(
-				null, filterString, _individualsFilterStringConverterHelper),
-			null, null, PageRequest.of(page, size, _getSort(sorts)));
+			channelId, PageRequest.of(page, size, _getSort(sorts)), query, null,
+			null);
 	}
 
 	private org.springframework.data.domain.Sort _getSort(String[] sorts) {

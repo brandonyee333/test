@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -119,7 +118,7 @@ public class BQIndividualRepositoryTest
 		Assertions.assertEquals(
 			1,
 			_bqIndividualRepository.countBQIndividuals(
-				11L, FilterHelper.EMPTY, 11L, _SEGMENT_ID));
+				11L, null, 11L, _SEGMENT_ID));
 	}
 
 	@Disabled
@@ -149,8 +148,8 @@ public class BQIndividualRepositoryTest
 	public void testSearchBQIndividuals() {
 		List<Individual> individuals =
 			_bqIndividualRepository.searchBQIndividuals(
-				11L, FilterHelper.EMPTY, null, null,
-				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+				11L, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))), null,
+				null, null);
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 	}

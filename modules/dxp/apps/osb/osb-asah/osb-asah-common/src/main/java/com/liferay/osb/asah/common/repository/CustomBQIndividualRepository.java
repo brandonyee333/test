@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +30,8 @@ import org.springframework.lang.Nullable;
 public interface CustomBQIndividualRepository {
 
 	public long countBQIndividuals(
-		@Nullable Long channelId, FilterHelper filterHelper,
-		@Nullable Long segmentChannelId, @Nullable Long segmentId);
+		@Nullable Long channelId, String query, @Nullable Long segmentChannelId,
+		@Nullable Long segmentId);
 
 	public Optional<Individual> findByChannelIdAndId(
 		@Nullable Long channelId, String id);
@@ -42,8 +41,7 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long individualSegmentId, Pageable pageable);
 
 	public List<Individual> searchBQIndividuals(
-		@Nullable Long channelId, FilterHelper filterHelper,
-		@Nullable Long segmentChannelId, @Nullable Long segmentId,
-		Pageable pageable);
+		@Nullable Long channelId, Pageable pageable, String query,
+		@Nullable Long segmentChannelId, @Nullable Long segmentId);
 
 }
