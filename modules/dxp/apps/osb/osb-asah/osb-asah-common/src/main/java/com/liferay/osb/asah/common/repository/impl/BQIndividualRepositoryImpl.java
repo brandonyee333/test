@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
@@ -27,6 +29,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -94,6 +97,86 @@ public class BQIndividualRepositoryImpl
 			0, Long.class
 		).orElse(
 			0L
+		);
+	}
+
+	@Override
+	public Optional<Individual> findByChannelIdAndId(
+		@Nullable Long channelId, String id) {
+
+		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
+			null, null, null,
+			_dslContext.select(
+				DSL.coalesce(
+					DSL.cast(
+						DSL.sum(
+							DSL.field(
+								"identityChannel.activitiescount", Long.class)),
+						Long.class)
+				).as(
+					"activitiescount"
+				),
+				DSL.field(
+					"individual.createdate"
+				).as(
+					"createdate"
+				),
+				DSL.field(
+					"individual.emailaddress"
+				).as(
+					"emailaddress"
+				),
+				DSL.field(
+					"individual.id"
+				).as(
+					"id"
+				),
+				DSL.field("fields"), DSL.field("firstname"),
+				DSL.max(
+					DSL.field("identityChannel.lastactivitydate")
+				).as(
+					"lastactivitydate"
+				),
+				DSL.field("lastname"), DSL.field("jobtitle"),
+				DSL.field("middlename"),
+				DSL.field(
+					"individual.modifieddate"
+				).as(
+					"modifieddate"
+				),
+				DSL.field("screenname")));
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"individual.id"
+			).eq(
+				id
+			));
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"identityChannel.channelid"
+				).eq(
+					channelId
+				));
+		}
+
+		return selectJoinStep.where(
+			conditions
+		).groupBy(
+			DSL.field("individual.id")
+		).orderBy(
+			DSL.field(
+				"individual.id"
+			).asc()
+		).fetchOptional(
+			record -> new Individual(
+				(Long)record.get("activitiescount"),
+				new BQIndividual(record.intoMap()),
+				(Date)record.get("lastactivitydate"), _objectMapper)
 		);
 	}
 
@@ -238,7 +321,7 @@ public class BQIndividualRepositoryImpl
 			record -> new Individual(
 				(Long)record.get("activitiescount"),
 				new BQIndividual(record.intoMap()),
-				(Date)record.get("lastactivitydate"))
+				(Date)record.get("lastactivitydate"), _objectMapper)
 		);
 	}
 
@@ -351,6 +434,9 @@ public class BQIndividualRepositoryImpl
 
 	@Autowired
 	private DSLHelper _dslHelper;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;

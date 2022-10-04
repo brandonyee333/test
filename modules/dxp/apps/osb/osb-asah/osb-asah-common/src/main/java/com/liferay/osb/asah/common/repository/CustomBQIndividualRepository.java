@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -32,6 +33,9 @@ public interface CustomBQIndividualRepository {
 	public long countBQIndividuals(
 		@Nullable Long channelId, FilterHelper filterHelper,
 		@Nullable Long segmentChannelId, @Nullable Long segmentId);
+
+	public Optional<Individual> findByChannelIdAndId(
+		@Nullable Long channelId, String id);
 
 	public List<Distribution> getIndividualDistributions(
 		@Nullable Long channelId, String fieldName,
