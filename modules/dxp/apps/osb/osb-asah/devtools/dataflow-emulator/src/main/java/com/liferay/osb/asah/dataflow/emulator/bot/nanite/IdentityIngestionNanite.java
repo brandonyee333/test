@@ -124,9 +124,7 @@ public class IdentityIngestionNanite {
 		bqIdentityActivity.setId(id);
 
 		bqIdentityActivity.setIdentityId(bqIdentity.getUserId());
-
 		bqIdentityActivity.setIndividualId(bqIdentity.getIndividualId());
-
 		bqIdentityActivity.setIsNew(_isBQIdentityActivityNew(id));
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
