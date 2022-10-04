@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -54,47 +53,13 @@ public class IndividualDTO {
 
 	public IndividualDTO(Individual individual) {
 		_activitiesCount = individual.getActivitiesCount();
-
-		List<ActivitiesCountDTO> activitiesCountDTOs = ListUtil.map(
-			individual.getActivitiesCounts(), ActivitiesCountDTO::new);
-
-		if (!activitiesCountDTOs.isEmpty()) {
-			_activitiesCountDTOs = activitiesCountDTOs;
-		}
-
-		Set<ActivityDateDTO> activityDateDTOS = SetUtil.map(
-			individual.getBQIdentityChannels(), ActivityDateDTO::new);
-
-		if (!activityDateDTOS.isEmpty()) {
-			_activityDateDTOs = activityDateDTOS;
-		}
-
-		_channelIds = SetUtil.map(individual.getChannelIds(), String::valueOf);
 		_createDate = individual.getCreateDate();
-
-		Set<DataSourceIndividualPKDTO> dataSourceIndividualPKDTOs = SetUtil.map(
-			individual.getBQDataSourceUsers(), DataSourceIndividualPKDTO::new);
-
-		if (!dataSourceIndividualPKDTOs.isEmpty()) {
-			_dataSourceIndividualPKDTOs = dataSourceIndividualPKDTOs;
-		}
-
 		_firstEnrichmentDate = individual.getFirstEnrichmentDate();
-		_groupIds = SetUtil.map(individual.getGroupIds(), String::valueOf);
 		_id = StringUtil.get(individual.getId(), null);
-		_individualCustomFieldDTO = new IndividualFieldDTO(
-			individual.getCustomFields());
 		_individualFieldDTO = new IndividualFieldDTO(individual.getFields());
 		_lastActivityDate = individual.getLastActivityDate();
 		_lastEnrichmentDate = individual.getLastEnrichmentDate();
 		_modifiedDate = individual.getModifiedDate();
-		_organizationIds = SetUtil.map(
-			individual.getOrganizationIds(), String::valueOf);
-		_roleIds = SetUtil.map(individual.getRoleIds(), String::valueOf);
-		_segmentIds = SetUtil.map(individual.getSegmentIds(), String::valueOf);
-		_teamIds = SetUtil.map(individual.getTeamIds(), String::valueOf);
-		_userGroupIds = SetUtil.map(
-			individual.getUserGroupIds(), String::valueOf);
 	}
 
 	public IndividualDTO(List<Individual> individuals) {
