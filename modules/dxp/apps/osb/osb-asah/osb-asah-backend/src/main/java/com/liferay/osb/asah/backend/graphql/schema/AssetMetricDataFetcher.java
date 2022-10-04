@@ -46,8 +46,12 @@ public class AssetMetricDataFetcher extends BaseDataFetcher<AssetMetric> {
 
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
-		return _metricDog.getAssetMetric(
-			searchQueryContext, (Set<String>)context.get("selectedMetrics"));
+		Set<String> selectedMetrics = (Set<String>)context.get(
+			"selectedMetrics");
+
+		selectedMetrics.remove("accessMetric");
+
+		return _metricDog.getAssetMetric(searchQueryContext, selectedMetrics);
 	}
 
 	@Autowired
