@@ -173,7 +173,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "browserName",
 				"type": "STRING"
 			},
@@ -188,7 +188,7 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "city",
 				"type": "STRING"
 			},
@@ -203,12 +203,12 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "country",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "deviceType",
 				"type": "STRING"
 			},
@@ -223,7 +223,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "platformName",
 				"type": "STRING"
 			},
@@ -243,7 +243,7 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "region",
 				"type": "STRING"
 			},
@@ -427,7 +427,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "browserName",
 				"type": "STRING"
 			},
@@ -442,7 +442,7 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "city",
 				"type": "STRING"
 			},
@@ -452,12 +452,12 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "country",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "deviceType",
 				"type": "STRING"
 			},
@@ -472,7 +472,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "platformName",
 				"type": "STRING"
 			},
@@ -492,7 +492,7 @@
 				"type": "FLOAT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "region",
 				"type": "STRING"
 			},
@@ -918,7 +918,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "browserName",
 				"type": "STRING"
 			},
@@ -933,17 +933,17 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "city",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "country",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "deviceType",
 				"type": "STRING"
 			},
@@ -958,12 +958,12 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "platformName",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "region",
 				"type": "STRING"
 			},
@@ -1286,7 +1286,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "browserName",
 				"type": "STRING"
 			},
@@ -1301,17 +1301,17 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "city",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "country",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "deviceType",
 				"type": "STRING"
 			},
@@ -1326,12 +1326,12 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "platformName",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "region",
 				"type": "STRING"
 			},
