@@ -17,12 +17,15 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetMetric;
+import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,6 +53,14 @@ public class AssetMetricDataFetcher extends BaseDataFetcher<AssetMetric> {
 			"selectedMetrics");
 
 		selectedMetrics.remove("accessMetric");
+
+		AssetType assetType = searchQueryContext.getAssetType();
+
+		if (assetType.equals(AssetType.PAGE) &&
+			StringUtils.isBlank(searchQueryContext.getAssetId())) {
+
+			searchQueryContext.setAssetId(searchQueryContext.getCanonicalUrl());
+		}
 
 		return _metricDog.getAssetMetric(searchQueryContext, selectedMetrics);
 	}
