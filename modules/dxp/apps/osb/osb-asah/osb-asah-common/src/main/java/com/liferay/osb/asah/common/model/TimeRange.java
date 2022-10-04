@@ -236,7 +236,11 @@ public class TimeRange {
 		}
 		else {
 			localDateTime = localDateTime.minusDays(1);
-			localDateTime = localDateTime.with(LocalTime.MAX);
+
+			localDateTime = localDateTime.withHour(23);
+			localDateTime = localDateTime.withMinute(59);
+			localDateTime = localDateTime.withSecond(59);
+			localDateTime = localDateTime.withNano(999999000);
 		}
 
 		return localDateTime;
