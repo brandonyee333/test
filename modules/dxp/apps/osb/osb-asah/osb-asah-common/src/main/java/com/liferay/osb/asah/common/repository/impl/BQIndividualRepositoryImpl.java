@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -367,36 +369,30 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private Condition _getQueryCondition(String query) {
-		if (query == null) {
+		if (StringUtils.isEmpty(query)) {
 			return DSL.noCondition();
 		}
 
-		return DSL.or(
-			DSL.field(
-				"emailAddress"
-			).like(
-				"%" + query + "%"
-			),
-			DSL.field(
-				"firstName"
-			).like(
-				"%" + query + "%"
-			),
-			DSL.field(
-				"jobTitle"
-			).like(
-				"%" + query + "%"
-			),
-			DSL.field(
-				"lastName"
-			).like(
-				"%" + query + "%"
-			),
-			DSL.field(
-				"middleName"
-			).like(
-				"%" + query + "%"
-			));
+		List<Condition> conditions = new ArrayList<>();
+
+		String[] words = StringUtils.split(query);
+
+		for (String word : words) {
+			List<Condition> wordConditions = new ArrayList<>();
+
+			for (String column : _SEARCH_COLUMNS) {
+				wordConditions.add(
+					DSL.lower(
+						DSL.field(column, String.class)
+					).like(
+						DSL.lower("%" + word + "%")
+					));
+			}
+
+			conditions.add(DSL.or(wordConditions));
+		}
+
+		return DSL.and(conditions);
 	}
 
 	private SelectJoinStep<?> _getSelectJoinStep(
@@ -461,6 +457,10 @@ public class BQIndividualRepositoryImpl
 	private Map<String, String> _getSortFieldNameConversionMap() {
 		return Collections.singletonMap("name", "values");
 	}
+
+	private static final String[] _SEARCH_COLUMNS = {
+		"emailAddress", "firstName", "jobTitle", "lastName", "middleName"
+	};
 
 	private final DSLContext _dslContext;
 
