@@ -29,15 +29,15 @@ USING
 ON (
 	staging.assetId = replica.assetId AND
 	staging.assetTitle = replica.assetTitle AND
-	staging.browserName = replica.browserName AND
+	COALESCE(staging.browserName, '') = COALESCE(replica.browserName, '') AND
 	staging.channelId = replica.channelId AND
-	staging.city = replica.city AND
-	staging.country = replica.country AND
-	staging.deviceType = replica.deviceType AND
+	COALESCE(staging.city, '') = COALESCE(replica.city, '') AND
+	COALESCE(staging.country, '') = COALESCE(replica.country, '') AND
+	COALESCE(staging.deviceType, '') = COALESCE(replica.deviceType, '') AND
 	staging.eventDate = replica.eventDate AND
 	staging.pageTitle = replica.pageTitle AND
-	staging.platformName = replica.platformName AND
-	staging.region = replica.region AND
+	COALESCE(staging.platformName, '') = COALESCE(replica.platformName, '') AND
+	COALESCE(staging.region, '') = COALESCE(replica.region, '') AND
 	staging.userId = replica.userId
 )
 
