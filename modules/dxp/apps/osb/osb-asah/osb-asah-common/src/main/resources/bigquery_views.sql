@@ -184,8 +184,8 @@ CREATE OR REPLACE VIEW BQBlog AS (
 		BlogViewsAndClicks.canonicalUrl,
 		BlogViewsAndClicks.channelId,
 		BlogViewsAndClicks.city,
-		COALESCE(BlogViewsAndClicks.clicks, 0) AS clicks,
-		COALESCE(BlogComments.comments, 0) AS comments,
+		BlogViewsAndClicks.clicks,
+		BlogComments.comments,
 		BlogViewsAndClicks.country,
 		BlogViewsAndClicks.deviceType,
 		BlogViewsAndClicks.normalizedEventDate AS eventDate,
@@ -197,7 +197,7 @@ CREATE OR REPLACE VIEW BQBlog AS (
 		BlogViewsAndClicks.region,
 		BlogViewsAndClicks.sessions,
 		BlogViewsAndClicks.userId,
-		COALESCE(BlogViewsAndClicks.views, 0) AS views
+		BlogViewsAndClicks.views
 	FROM
 	     BlogViewsAndClicks
 	LEFT JOIN BlogComments ON (
@@ -416,7 +416,7 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 				normalizedEventDate
 		)
 	SELECT
-		COALESCE(abandonments.abandonments, 0) AS abandonments,
+		abandonments.abandonments,
 		metrics.assetPrimaryKey,
 		metrics.channelId,
 		metrics.clicks,
@@ -425,8 +425,8 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 		metrics.submissions,
 		metrics.views,
 		metrics.sessions,
-		COALESCE(readTime.readtime, 0) * 1000 AS readTime,
-		COALESCE(submissionTime.submissionstime, 0) * 1000 AS submissionsTime
+		readTime.readtime * 1000 AS readTime,
+		submissionTime.submissionstime * 1000 AS submissionsTime
 	FROM
 		Metrics metrics
 	LEFT JOIN Abandoments abandonments ON (
