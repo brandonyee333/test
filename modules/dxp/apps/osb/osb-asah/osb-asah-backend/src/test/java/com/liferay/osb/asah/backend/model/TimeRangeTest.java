@@ -37,7 +37,11 @@ public class TimeRangeTest {
 		LocalDateTime localDateTime = LocalDateTime.now(ZoneOffset.UTC);
 
 		localDateTime = localDateTime.minusDays(1);
-		localDateTime = localDateTime.with(LocalTime.MAX);
+
+		localDateTime = localDateTime.withHour(23);
+		localDateTime = localDateTime.withMinute(59);
+		localDateTime = localDateTime.withSecond(59);
+		localDateTime = localDateTime.withNano(999999000);
 
 		Assertions.assertEquals(localDateTime, timeRange.getEndLocalDateTime());
 	}
