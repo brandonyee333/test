@@ -12,17 +12,18 @@
  * details.
  */
 
-package com.liferay.commerce.warehouse.web.internal.constants;
+import AJAX from '../../../utilities/AJAX/index';
 
-/**
- * @author Andrea Di Giorgi
- */
-public class CommerceInventoryWarehouseFormNavigatorConstants {
+const WAREHOUSES_PATH = '/warehouses';
 
-	public static final String CATEGORY_KEY_COMMERCE_WAREHOUSE_GENERAL =
-		"general";
+const VERSION = 'v1.0';
 
-	public static final String FORM_NAVIGATOR_ID_COMMERCE_WAREHOUSE =
-		"commerce.warehouse.form";
+function resolvePath(basePath = '', warehouseId = '') {
+	return `${basePath}${VERSION}${WAREHOUSES_PATH}/${warehouseId}`;
+}
 
+export default function Warehouse(basePath) {
+	return {
+		addWarehouse: (json) => AJAX.POST(resolvePath(basePath), json),
+	};
 }

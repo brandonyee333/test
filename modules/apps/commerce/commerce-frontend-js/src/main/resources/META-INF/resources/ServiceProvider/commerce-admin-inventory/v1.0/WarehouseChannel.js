@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,23 +11,22 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/init.jsp" %>
+import AJAX from '../../../utilities/AJAX/index';
 
-<%
-CommerceInventoryWarehousesDisplayContext commerceInventoryWarehousesDisplayContext = (CommerceInventoryWarehousesDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
-%>
+const WAREHOUSES_PATH = '/warehouses';
 
-<liferay-ui:error-marker
-	key="<%= WebKeys.ERROR_SECTION %>"
-	value="geolocation"
-/>
+const WAREHOUSE_RULES_PATH = '/warehouse-channels';
 
-<aui:model-context bean="<%= commerceInventoryWarehousesDisplayContext.getCommerceInventoryWarehouse() %>" model="<%= CommerceInventoryWarehouse.class %>" />
+const VERSION = 'v1.0';
 
-<aui:fieldset>
-	<aui:input name="latitude" />
+function resolvePath(basePath = '', warehouseId = '', warehouseChannelId = '') {
+	return `${basePath}${VERSION}${WAREHOUSES_PATH}/${warehouseId}${WAREHOUSE_RULES_PATH}/${warehouseChannelId}`;
+}
 
-	<aui:input name="longitude" />
-</aui:fieldset>
+export default function WarehouseChannel(basePath) {
+	return {
+		addWarehouseChannel: (warehouseId, json) =>
+			AJAX.POST(resolvePath(basePath, warehouseId), json),
+	};
+}
