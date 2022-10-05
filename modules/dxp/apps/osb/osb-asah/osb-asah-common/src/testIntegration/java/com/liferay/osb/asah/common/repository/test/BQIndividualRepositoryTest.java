@@ -118,7 +118,7 @@ public class BQIndividualRepositoryTest
 		Assertions.assertEquals(
 			1,
 			_bqIndividualRepository.countBQIndividuals(
-				11L, null, 11L, _SEGMENT_ID));
+				null, 11L, null, null, null, _SEGMENT_ID));
 	}
 
 	@Disabled
@@ -148,8 +148,9 @@ public class BQIndividualRepositoryTest
 	public void testSearchBQIndividuals() {
 		List<Individual> individuals =
 			_bqIndividualRepository.searchBQIndividuals(
-				11L, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))), null,
-				null, null);
+				null, 11L, null, null,
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))), null,
+				null);
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
 	}
