@@ -115,17 +115,22 @@ public class IndividualsRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply")
 	public PageDTO<IndividualDTO> getIndividualDTOPageDTO(
+			@RequestParam(required = false) Long accountId,
 			@RequestParam(required = false) Long channelId,
+			@RequestParam(required = false) Long dataSourceId,
 			@RequestParam(required = false) String expand,
+			@RequestParam(required = false) Long notSegmentId,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(name = "query", required = false) String query,
+			@RequestParam(required = false) Long segmentId,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
 		Page<Individual> individualPage =
 			_bqIndividualDog.searchBQIndividualPage(
-				channelId, page, query, Math.max(1, size), sorts);
+				accountId, channelId, dataSourceId, notSegmentId, page, query,
+				segmentId, Math.max(1, size), sorts);
 
 		if (StringUtils.isEmpty(expand)) {
 			return _toIndividualDTOPageDTO(individualPage);

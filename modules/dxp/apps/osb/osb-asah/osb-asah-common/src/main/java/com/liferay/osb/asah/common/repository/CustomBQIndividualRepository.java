@@ -30,8 +30,9 @@ import org.springframework.lang.Nullable;
 public interface CustomBQIndividualRepository {
 
 	public long countBQIndividuals(
-		@Nullable Long channelId, String query, @Nullable Long segmentChannelId,
-		@Nullable Long segmentId);
+		@Nullable Long accountId, @Nullable Long channelId,
+		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
+		@Nullable String query, @Nullable Long segmentId);
 
 	public Optional<Individual> findByChannelIdAndId(
 		@Nullable Long channelId, String id);
@@ -41,7 +42,8 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long individualSegmentId, Pageable pageable);
 
 	public List<Individual> searchBQIndividuals(
-		@Nullable Long channelId, Pageable pageable, String query,
-		@Nullable Long segmentChannelId, @Nullable Long segmentId);
+		@Nullable Long accountId, @Nullable Long channelId,
+		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
+		Pageable pageable, String query, @Nullable Long segmentId);
 
 }

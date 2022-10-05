@@ -51,9 +51,12 @@ public class BQIndividualDog {
 			individualsFilterStringConverterHelper;
 	}
 
-	public long countBQIndividuals(Long channelId, String query) {
+	public long countBQIndividuals(
+		Long accountId, Long channelId, Long dataSourceId, Long notSegmentId,
+		String query, Long segmentId) {
+
 		return _bqIndividualRepository.countBQIndividuals(
-			channelId, query, null, null);
+			accountId, channelId, dataSourceId, notSegmentId, query, segmentId);
 	}
 
 	public Individual fetchBQIndividual(@Nullable Long channelId, String id) {
@@ -80,20 +83,26 @@ public class BQIndividualDog {
 	}
 
 	public Page<Individual> searchBQIndividualPage(
-		Long channelId, int page, String query, int size, String[] sorts) {
+		Long accountId, Long channelId, Long dataSourceId, Long notSegmentId,
+		int page, String query, Long segmentId, int size, String[] sorts) {
 
 		return PageableExecutionUtils.getPage(
-			searchBQIndividuals(channelId, page, query, size, sorts),
+			searchBQIndividuals(
+				accountId, channelId, dataSourceId, notSegmentId, page, query,
+				segmentId, size, sorts),
 			PageRequest.of(page, size, _getSort(sorts)),
-			() -> countBQIndividuals(channelId, query));
+			() -> countBQIndividuals(
+				accountId, channelId, dataSourceId, notSegmentId, query,
+				segmentId));
 	}
 
 	public List<Individual> searchBQIndividuals(
-		Long channelId, int page, String query, int size, String[] sorts) {
+		Long accountId, Long channelId, Long dataSourceId, Long notSegmentId,
+		int page, String query, Long segmentId, int size, String[] sorts) {
 
 		return _bqIndividualRepository.searchBQIndividuals(
-			channelId, PageRequest.of(page, size, _getSort(sorts)), query, null,
-			null);
+			accountId, channelId, dataSourceId, notSegmentId,
+			PageRequest.of(page, size, _getSort(sorts)), query, segmentId);
 	}
 
 	private org.springframework.data.domain.Sort _getSort(String[] sorts) {

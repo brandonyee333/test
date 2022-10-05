@@ -55,24 +55,17 @@ public class BQIndividualRepositoryImpl
 	}
 
 	public long countBQIndividuals(
-		@Nullable Long channelId, String query, @Nullable Long segmentChannelId,
+		@Nullable Long accountId, @Nullable Long channelId,
+		@Nullable Long datasourceId, @Nullable Long notSegmentId, String query,
 		@Nullable Long segmentId) {
 
 		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
-			channelId, segmentChannelId, segmentId,
+			channelId, segmentId,
 			_dslContext.select(DSL.countDistinct(DSL.field("individual.id"))));
 
 		Condition condition = _getQueryCondition(query);
 
-		if (segmentChannelId != null) {
-			condition = condition.and(
-				DSL.field(
-					"identityActivity.channelId"
-				).eq(
-					segmentChannelId
-				));
-		}
-		else if (channelId != null) {
+		if (channelId != null) {
 			condition = condition.and(
 				DSL.field(
 					"identityActivity.channelId"
@@ -233,11 +226,12 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public List<Individual> searchBQIndividuals(
-		Long channelId, Pageable pageable, String query, Long segmentChannelId,
-		Long segmentId) {
+		@Nullable Long accountId, @Nullable Long channelId,
+		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
+		Pageable pageable, @Nullable String query, @Nullable Long segmentId) {
 
 		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
-			channelId, segmentChannelId, segmentId,
+			channelId, segmentId,
 			_dslContext.select(
 				DSL.coalesce(
 					DSL.cast(
@@ -280,20 +274,30 @@ public class BQIndividualRepositoryImpl
 
 		Condition condition = _getQueryCondition(query);
 
-		if (segmentChannelId != null) {
-			condition = condition.and(
-				DSL.field(
-					"identityActivity.channelId"
-				).eq(
-					segmentChannelId
-				));
-		}
-		else if (channelId != null) {
+		if (channelId != null) {
 			condition = condition.and(
 				DSL.field(
 					"identityActivity.channelId"
 				).eq(
 					channelId
+				));
+		}
+
+		if (dataSourceId != null) {
+			condition = condition.and(
+				DSL.field(
+					"identityActivity.dataSourceId"
+				).eq(
+					dataSourceId
+				));
+		}
+
+		if (notSegmentId != null) {
+			condition = condition.and(
+				DSL.field(
+					"membership.segmentId"
+				).notEqual(
+					notSegmentId
 				));
 		}
 
@@ -396,8 +400,7 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private SelectJoinStep<?> _getSelectJoinStep(
-		Long channelId, Long segmentChannelId, Long segmentId,
-		SelectSelectStep<?> selectSelectStep) {
+		Long channelId, Long segmentId, SelectSelectStep<?> selectSelectStep) {
 
 		SelectJoinStep<?> selectJoinStep = selectSelectStep.from(
 			DSL.table(
@@ -419,7 +422,7 @@ public class BQIndividualRepositoryImpl
 			)
 		);
 
-		if ((channelId != null) || (segmentChannelId != null)) {
+		if (channelId != null) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"BQIdentityActivity"
