@@ -523,7 +523,7 @@ public class MetricDogTest
 					add(JournalMetricType.VIEWS.getName());
 				}
 			},
-			10, Sort.desc(JournalMetricType.VIEWS.getFieldName()));
+			10, Sort.desc(JournalMetricType.VIEWS.getName()));
 
 		Assertions.assertEquals(
 			1, assetMetrics.size(), assetMetrics.toString());
