@@ -199,7 +199,7 @@ CREATE OR REPLACE VIEW BQBlog AS (
 		BlogViewsAndClicks.userId,
 		BlogViewsAndClicks.views
 	FROM
-	     BlogViewsAndClicks
+		 BlogViewsAndClicks
 	LEFT JOIN BlogComments ON (
 		 BlogViewsAndClicks.assetId = BlogComments.assetId AND
 		 BlogViewsAndClicks.canonicalUrl = BlogComments.canonicalUrl AND
@@ -268,52 +268,52 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 				CustomAssetEvent.*
 			FROM
 				CustomAssetEvent INNER JOIN BQSession ON
-				    CustomAssetEvent.sessionId = BQSession.id
+					CustomAssetEvent.sessionId = BQSession.id
 		),
 		Metrics AS (
 			SELECT
 				assetPrimaryKey,
 				channelId,
 				SUM(
-				    CASE
-				        WHEN
+					CASE
+						WHEN
 							eventId = 'assetClicked'
 						THEN
 							1
-				        ELSE
+						ELSE
 							0
 					END
 				) AS clicks,
 				SUM(
-				    CASE
-				        WHEN
-				            eventId = 'assetDownloaded'
+					CASE
+						WHEN
+							eventId = 'assetDownloaded'
 						THEN
 							1
 						ELSE
-						    0
+							0
 					END
 				) AS downloads,
 				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
 				SUM(
 					CASE
-					    WHEN
-					        eventId = 'assetSubmitted'
+						WHEN
+							eventId = 'assetSubmitted'
 						THEN
-					        1
-					    ELSE
-					        0
+							1
+						ELSE
+							0
 					END
 				) AS submissions,
 				SUM(
-				    CASE
-				        WHEN
-				            eventId = 'assetViewed'
+					CASE
+						WHEN
+							eventId = 'assetViewed'
 						THEN
-				            1
+							1
 						ELSE
-						    0
-				        END
+							0
+						END
 				) AS views,
 				COUNT(DISTINCT(sessionId)) AS sessions
 			FROM
@@ -326,25 +326,25 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 		Abandoments AS (
 			SELECT
 				GREATEST(
-				    0,
-				    SUM(
-				        CASE
-				            WHEN
-				                eventId = 'assetViewed'
+					0,
+					SUM(
+						CASE
+							WHEN
+								eventId = 'assetViewed'
 							THEN
-				                1
-				            ELSE
-				                0
-						END
-				    ) -
-				    SUM(
-				        CASE
-				            WHEN
-				                eventId = 'assetSubmitted'
-							THEN
-				                1
+								1
 							ELSE
-							    0
+								0
+						END
+					) -
+					SUM(
+						CASE
+							WHEN
+								eventId = 'assetSubmitted'
+							THEN
+								1
+							ELSE
+								0
 						END
 					)
 				) AS abandonments,
@@ -369,7 +369,7 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 						assetPrimaryKey,
 						MAX(eventDate) filter (where eventid != 'assetViewed') maxEventDate,
 						(
-						    EXTRACT(EPOCH FROM MAX(eventDate) FILTER (WHERE eventId != 'assetViewed')) -
+							EXTRACT(EPOCH FROM MAX(eventDate) FILTER (WHERE eventId != 'assetViewed')) -
 							EXTRACT(EPOCH FROM MIN(eventDate))
 						) AS readTime,
 						sessionId
@@ -533,13 +533,13 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 				channelId,
 				city,
 				SUM(
-				    CASE
-				        WHEN
-				            eventId = 'documentDownloaded'
+					CASE
+						WHEN
+							eventId = 'documentDownloaded'
 						THEN
-				            1
-				        ELSE
-				            0
+							1
+						ELSE
+							0
 					END
 				) AS downloads,
 				country,
@@ -737,9 +737,21 @@ CREATE OR REPLACE VIEW BQForm AS (
 	WITH
 		FormEvent AS (
 			SELECT
-				Event.*,
 				formId.value AS assetId,
-				formTitle.value AS assetTitle
+				formTitle.value AS assetTitle,
+				Event.browserName,
+				Event.canonicalUrl,
+				Event.channelId,
+				Event.city,
+				Event.country,
+				Event.deviceType,
+				Event.eventDate,
+				Event.eventId,
+				Event.platformName,
+				Event.region,
+				Event.sessionId,
+				Event.title,
+				Event.userId
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS formId ON (
@@ -751,81 +763,6 @@ CREATE OR REPLACE VIEW BQForm AS (
 			WHERE
 				Event.applicationId = 'Form' AND
 				Event.eventId IN ('formSubmitted', 'formViewed')
-		),
-		FormFinalizedEvent AS (
-			SELECT
-				FormEvent.*
-			FROM
-				FormEvent INNER JOIN BQSession AS Session ON
-					FormEvent.sessionId = Session.id
-		),
-		FormAbandonments AS (
-			SELECT
-				GREATEST(
-					0,
-					SUM(
-						CASE
-							WHEN
-								eventId = 'formViewed'
-							THEN
-								1
-							ELSE
-								0
-						END
-					) -
-					SUM(
-						CASE
-							WHEN
-								eventId = 'formSubmitted'
-							THEN
-							1
-						ELSE
-							0
-					END
-					)
-				) AS abandonments,
-				assetId,
-				browserName,
-				canonicalUrl,
-				channelId,
-				city,
-				country,
-				deviceType,
-				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-				platformName,
-				region,
-				title AS pageTitle,
-				userId
-			FROM
-				FormFinalizedEvent
-			GROUP BY
-				assetId, browserName, canonicalUrl, channelId, city,
-				country, deviceType, normalizedEventDate, platformName,
-				region, title, userId
-		),
-		FormSubmissions AS (
-			SELECT
-				assetId,
-				browserName,
-				canonicalUrl,
-				channelId,
-				city,
-				country,
-				deviceType,
-				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-				platformName,
-				region,
-				SUM(1) AS submissions,
-				title AS pageTitle,
-				userId
-			FROM
-				FormEvent
-			WHERE
-				eventId = 'formSubmitted'
-			GROUP BY
-				assetId, browserName, canonicalUrl, channelId, city,
-				country, deviceType, normalizedEventDate, platformName,
-				region, title, userId
 		),
 		FormSubmissionTimes AS (
 			SELECT
@@ -848,10 +785,10 @@ CREATE OR REPLACE VIEW BQForm AS (
 					MAX(eventDate) FILTER (WHERE eventId = 'formViewed')
 					OVER (
 						PARTITION BY
-						    assetId, channelId, canonicalUrl, sessionId, title
-					    ORDER BY
-					        eventDate ASC
-					    ROWS UNBOUNDED PRECEDING
+							assetId, channelId, canonicalUrl, sessionId, title
+						ORDER BY
+							eventDate ASC
+						ROWS UNBOUNDED PRECEDING
 					) AS previousFormViewedEventDate
 				FROM
 					FormEvent
@@ -862,76 +799,66 @@ CREATE OR REPLACE VIEW BQForm AS (
 				assetId, browserName, canonicalUrl, channelId, city,
 				country, deviceType, normalizedEventDate, platformName,
 				region, title, userId
-		),
-		FormViews AS (
-			SELECT
-				assetId,
-				assetTitle,
-				browserName,
-				canonicalUrl,
-				channelId,
-				city,
-				country,
-				deviceType,
-				DATE_TRUNC('HOUR', eventDate) AS normalizedEventDate,
-				platformName,
-				region,
-				title AS pageTitle,
-				userId,
-				SUM(1) AS views
-			FROM
-				FormEvent
-			WHERE
-				eventId = 'formViewed'
-			GROUP BY
-				assetId, assetTitle, browserName, canonicalUrl, channelId, city,
-				country, deviceType, normalizedEventDate, platformName,
-				region, title, userId
 		)
 	SELECT
-		FormAbandonments.abandonments,
-		FormViews.assetId,
-		FormViews.assetTitle,
-		FormViews.browserName,
-		FormViews.canonicalUrl,
-		FormViews.channelId,
-		FormViews.city,
-		FormViews.country,
-		FormViews.deviceType,
-		FormViews.normalizedEventDate AS eventDate,
-		FormViews.pageTitle,
-		FormViews.platformName,
-		FormViews.region,
-		FormSubmissions.submissions,
-		FormSubmissionTimes.submissionsTime * 1000 AS submissionsTime,
-		FormViews.userId,
-		FormViews.views
+		GREATEST(
+				0,
+				SUM(
+					CASE
+						WHEN
+							eventId = 'formViewed' AND
+							Session.id IS NOT NULL
+						THEN
+							1
+						ELSE
+							0
+					END
+				) -
+				SUM(
+					CASE
+						WHEN
+							eventId = 'formSubmitted' AND
+							Session.id IS NOT NULL
+						THEN
+						1
+					ELSE
+						0
+				END
+				)
+			) AS abandonments,
+		FormEvent.assetId,
+		MAX(CASE WHEN FormEvent.eventId = 'formViewed' THEN FormEvent.assetTitle END) assetTitle,
+		FormEvent.browserName,
+		FormEvent.canonicalUrl,
+		FormEvent.channelId,
+		FormEvent.city,
+		FormEvent.country,
+		FormEvent.deviceType,
+		DATE_TRUNC('HOUR', FormEvent.eventDate) AS normalizedEventDate,
+		FormEvent.platformName,
+		FormEvent.region,
+		SUM(CASE WHEN FormEvent.eventId = 'formSubmitted' THEN 1 END) AS submissions,
+		MAX(FormSubmissionTimes.submissionsTime) submissionsTime,
+		FormEvent.title AS pageTitle,
+		FormEvent.userId,
+		SUM(CASE WHEN FormEvent.eventId = 'formViewed' THEN 1 END) AS views
 	FROM
-		FormViews
-	LEFT JOIN FormAbandonments ON (
-		FormViews.assetId = FormAbandonments.assetId AND
-		FormViews.canonicalUrl = FormAbandonments.canonicalUrl AND
-		FormViews.channelId = FormAbandonments.channelId AND
-		FormViews.normalizedEventDate = FormAbandonments.normalizedEventDate AND
-		FormViews.pageTitle = FormAbandonments.pageTitle AND
-		FormViews.userId = FormAbandonments.userId
-	)
-	LEFT JOIN FormSubmissions ON (
-		FormViews.assetId = FormSubmissions.assetId AND
-		FormViews.canonicalUrl = FormSubmissions.canonicalUrl AND
-		FormViews.channelId = FormSubmissions.channelId AND
-		FormViews.normalizedEventDate = FormSubmissions.normalizedEventDate AND
-		FormViews.pageTitle = FormSubmissions.pageTitle AND
-		FormViews.userId = FormSubmissions.userId
-	)
+		FormEvent
 	LEFT JOIN FormSubmissionTimes ON (
-		FormViews.assetId = FormSubmissionTimes.assetId AND
-		FormViews.canonicalUrl = FormSubmissionTimes.canonicalUrl AND
-		FormViews.channelId = FormSubmissionTimes.channelId AND
-		FormViews.normalizedEventDate = FormSubmissionTimes.normalizedEventDate AND
-		FormViews.pageTitle = FormSubmissionTimes.pageTitle AND
-		FormViews.userId = FormSubmissionTimes.userId
+		FormEvent.assetId = FormSubmissionTimes.assetId AND
+		FormEvent.canonicalUrl = FormSubmissionTimes.canonicalUrl AND
+		FormEvent.channelId = FormSubmissionTimes.channelId AND
+		DATE_TRUNC('HOUR', FormEvent.eventDate) = FormSubmissionTimes.normalizedEventDate AND
+		FormEvent.title = FormSubmissionTimes.pageTitle AND
+		FormEvent.userId = FormSubmissionTimes.userId
 	)
+	LEFT JOIN BQSession AS Session ON
+		FormEvent.sessionId = Session.id
+	GROUP BY
+		FormEvent.assetId, FormEvent.browserName, FormEvent.canonicalUrl,
+		FormEvent.channelId, FormEvent.city, FormEvent.country,
+		FormEvent.deviceType, DATE_TRUNC('HOUR', FormEvent.eventDate),
+		FormEvent.platformName, FormEvent.region, FormEvent.title, FormEvent.userId
 );
 
 COMMIT;
@@ -1148,13 +1075,13 @@ CREATE OR REPLACE VIEW BQPage AS (
 				country,
 				deviceType,
 				SUM(
-				    CASE
-				        WHEN
-				    		referrer = ''
-				    	THEN
-				    		1
-				    	ELSE
-				    		0
+					CASE
+						WHEN
+							referrer = ''
+						THEN
+							1
+						ELSE
+							0
 					END
 				) AS directAccess,
 				SUM(
@@ -1194,12 +1121,12 @@ CREATE OR REPLACE VIEW BQPage AS (
 		)
 		SELECT
 			CASE
-			    WHEN
-			        PageBounces.count > 2 OR PageBounces.pageViews > 1
+				WHEN
+					PageBounces.count > 2 OR PageBounces.pageViews > 1
 				THEN
-			        0
+					0
 				ELSE
-				    1
+					1
 			END AS bounce,
 			PageTimeOnPages.browserName,
 			PageTimeOnPages.canonicalUrl AS canonicalUrl,
@@ -1219,7 +1146,7 @@ CREATE OR REPLACE VIEW BQPage AS (
 			PageTimeOnPages.userId AS userId,
 			PageViews.views
 		FROM
-		     PageTimeOnPages
+			 PageTimeOnPages
 		LEFT JOIN PageBounces ON (
 			PageTimeOnPages.channelId = PageBounces.channelId AND
 			PageTimeOnPages.sessionId = PageBounces.sessionId AND

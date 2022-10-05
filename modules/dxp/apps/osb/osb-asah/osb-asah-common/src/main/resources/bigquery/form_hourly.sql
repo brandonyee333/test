@@ -1,9 +1,21 @@
 WITH
 	FormEvent AS (
 		SELECT
-			Event.*,
 			formId.value AS assetId,
-			formTitle.value AS assetTitle
+			formTitle.value AS assetTitle,
+			Event.browserName,
+			Event.canonicalUrl,
+			Event.channelId,
+			Event.city,
+			Event.country,
+			Event.deviceType,
+			Event.eventDate,
+			Event.eventId,
+			Event.platformName,
+			Event.region,
+			Event.sessionId,
+			Event.title,
+			Event.userId
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS formId ON (
@@ -15,81 +27,6 @@ WITH
 		WHERE
 			Event.applicationId = 'Form' AND
 			Event.eventId IN ('formSubmitted', 'formViewed')
-	),
-	FormFinalizedEvent AS (
-		SELECT
-			FormEvent.*
-		FROM
-			FormEvent INNER JOIN `$[AC_PROJECT_ID].session` AS Session ON
-				FormEvent.sessionId = Session.id
-	),
-	FormAbandonments AS (
-		SELECT
-			GREATEST(
-				0,
-				SUM(
-					CASE
-						WHEN
-							eventId = 'formViewed'
-						THEN
-							1
-						ELSE
-							0
-					END
-				) -
-				SUM(
-					CASE
-						WHEN
-							eventId = 'formSubmitted'
-						THEN
-							1
-						ELSE
-							0
-					END
-				)
-			) AS abandonments,
-			assetId,
-			browserName,
-			canonicalUrl,
-			channelId,
-			city,
-			country,
-			deviceType,
-			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
-			platformName,
-			region,
-			title AS pageTitle,
-			userId
-		FROM
-			FormFinalizedEvent
-		GROUP BY
-			assetId, browserName, canonicalUrl, channelId, city,
-			country, deviceType, normalizedEventDate, platformName,
-			region, title, userId
-	),
-	FormSubmissions AS (
-		SELECT
-			assetId,
-			browserName,
-			canonicalUrl,
-			channelId,
-			city,
-			country,
-			deviceType,
-			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
-			platformName,
-			region,
-			SUM(1) AS submissions,
-			title AS pageTitle,
-			userId
-		FROM
-			FormEvent
-		WHERE
-				eventId = 'formSubmitted'
-		GROUP BY
-			assetId, browserName, canonicalUrl, channelId, city,
-			country, deviceType, normalizedEventDate, platformName,
-			region, title, userId
 	),
 	FormSubmissionTimes AS (
 		SELECT
@@ -105,7 +42,7 @@ WITH
 			region,
 			title AS pageTitle,
 			userId ,
-			SUM(UNIX_SECONDS(eventDate) - UNIX_SECONDS(previousFormViewedEventDate)) submissionsTime
+			SUM(UNIX_SECONDS(eventDate) - UNIX_SECONDS(previousFormViewedEventDate)) * 1000 submissionsTime
 		FROM (
 			SELECT
 				*,
@@ -126,73 +63,58 @@ WITH
 			assetId, browserName, canonicalUrl, channelId, city,
 			country, deviceType, normalizedEventDate, platformName,
 			region, title, userId
-	),
-	FormViews AS (
-		SELECT
-			assetId,
-			assetTitle,
-			browserName,
-			canonicalUrl,
-			channelId,
-			city,
-			country,
-			deviceType,
-			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
-			platformName,
-			region,
-			title AS pageTitle,
-			userId,
-			SUM(1) AS views
-		FROM
-			FormEvent
-		WHERE
-			eventId = 'formViewed'
-		GROUP BY
-			assetId, assetTitle, browserName, canonicalUrl, channelId, city,
-			country, deviceType, normalizedEventDate, platformName,
-			region, title, userId
 	)
 SELECT
-	FormAbandonments.abandonments,
-	FormViews.assetId,
-	FormViews.assetTitle,
-	FormViews.browserName,
-	FormViews.canonicalUrl,
-	FormViews.channelId,
-	FormViews.city,
-	FormViews.country,
-	FormViews.deviceType,
-	FormViews.normalizedEventDate AS eventDate,
-	FormViews.pageTitle,
-	FormViews.platformName,
-	FormViews.region,
-	FormSubmissions.submissions,
-	FormSubmissionTimes.submissionsTime * 1000 AS submissionsTime,
-	FormViews.userId,
-	FormViews.views
+	GREATEST(
+		0,
+		SUM(
+			CASE
+				WHEN
+					eventId = 'formViewed' AND Session.id IS NOT NULL
+				THEN
+					1
+				ELSE
+					0
+			END
+		) -
+		SUM(
+			CASE
+				WHEN
+					eventId = 'formSubmitted' AND Session.id IS NOT NULL
+				THEN
+					1
+				ELSE
+					0
+			END
+		)
+	) AS abandonments,
+	FormEvent.assetId,
+	MAX(CASE WHEN FormEvent.eventId = 'formViewed' THEN FormEvent.assetTitle END ) assetTitle,
+	FormEvent.browserName,
+	FormEvent.canonicalUrl,
+	FormEvent.channelId,
+	FormEvent.city,
+	FormEvent.country,
+	FormEvent.deviceType,
+	TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+	FormEvent.platformName,
+	FormEvent.region,
+	FormEvent.title AS pageTitle,
+	SUM(CASE WHEN eventId = 'formSubmitted' THEN 1 END) AS submissions,
+	MAX(FormSubmissionTimes.submissionsTime) AS submissionsTime,
+	FormEvent.userId,
+	SUM(CASE WHEN eventId = 'formViewed' THEN 1 END) AS views
 FROM
-	FormViews
-LEFT JOIN FormAbandonments ON (
-	FormViews.assetId = FormAbandonments.assetId AND
-	FormViews.canonicalUrl = FormAbandonments.canonicalUrl AND
-	FormViews.channelId = FormAbandonments.channelId AND
-	FormViews.normalizedEventDate = FormAbandonments.normalizedEventDate AND
-	FormViews.pageTitle = FormAbandonments.pageTitle AND
-	FormViews.userId = FormAbandonments.userId
-)
-LEFT JOIN FormSubmissions ON (
-	FormViews.assetId = FormSubmissions.assetId AND
-	FormViews.canonicalUrl = FormSubmissions.canonicalUrl AND
-	FormViews.channelId = FormSubmissions.channelId AND
-	FormViews.normalizedEventDate = FormSubmissions.normalizedEventDate AND
-	FormViews.pageTitle = FormSubmissions.pageTitle AND
-	FormViews.userId = FormSubmissions.userId
-)
+	FormEvent
 LEFT JOIN FormSubmissionTimes ON (
-	FormViews.assetId = FormSubmissionTimes.assetId AND
-	FormViews.canonicalUrl = FormSubmissionTimes.canonicalUrl AND
-	FormViews.channelId = FormSubmissionTimes.channelId AND
-	FormViews.normalizedEventDate = FormSubmissionTimes.normalizedEventDate AND
-	FormViews.pageTitle = FormSubmissionTimes.pageTitle AND
-	FormViews.userId = FormSubmissionTimes.userId
-)
+	FormEvent.assetId = FormSubmissionTimes.assetId AND
+	FormEvent.canonicalUrl = FormSubmissionTimes.canonicalUrl AND
+	FormEvent.channelId = FormSubmissionTimes.channelId AND
+	TIMESTAMP_TRUNC(eventDate, HOUR) = FormSubmissionTimes.normalizedEventDate AND
+	FormEvent.title = FormSubmissionTimes.pageTitle AND
+	FormEvent.userId = FormSubmissionTimes.userId)
+LEFT JOIN `$[AC_PROJECT_ID].session` AS Session ON
+	FormEvent.sessionId = Session.id
+GROUP BY
+	assetId, browserName, canonicalUrl, channelId, city, country, deviceType,
+	normalizedEventDate, platformName, region, title, userId
