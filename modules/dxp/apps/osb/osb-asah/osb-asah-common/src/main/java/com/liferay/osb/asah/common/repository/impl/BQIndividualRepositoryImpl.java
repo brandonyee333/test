@@ -379,9 +379,7 @@ public class BQIndividualRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
-		String[] words = StringUtils.split(query);
-
-		for (String word : words) {
+		for (String word : StringUtils.split(query)) {
 			List<Condition> wordConditions = new ArrayList<>();
 
 			for (String column : _SEARCH_COLUMNS) {
@@ -389,7 +387,7 @@ public class BQIndividualRepositoryImpl
 					DSL.lower(
 						DSL.field(column, String.class)
 					).like(
-						DSL.lower("%" + word + "%")
+						DSL.lower(StringUtils.wrap(word, "%"))
 					));
 			}
 
