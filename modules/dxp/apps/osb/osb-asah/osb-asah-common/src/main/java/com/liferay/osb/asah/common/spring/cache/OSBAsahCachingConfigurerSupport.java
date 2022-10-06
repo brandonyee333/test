@@ -16,12 +16,16 @@ package com.liferay.osb.asah.common.spring.cache;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 
+import io.lettuce.core.ReadFrom;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.time.Duration;
 
 import java.util.Arrays;
+
+import org.apache.hadoop.util.StringUtils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -31,18 +35,17 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.PoolConfig;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisClientConfiguration.JedisClientConfigurationBuilder;
-import org.springframework.data.redis.connection.jedis.JedisClientConfiguration.JedisPoolingClientConfigurationBuilder;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStaticMasterReplicaConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration.LettucePoolingClientConfigurationBuilder;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * @author Inácio Nery
@@ -61,50 +64,6 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 		}
 
 		return new OSBAsahCacheResolver(new NoOpCacheManager());
-	}
-
-	@Bean
-	public JedisConnectionFactory jedisConnectionFactory() {
-		try {
-			URL url = new URL(ServiceConstants.URL_REDIS);
-
-			JedisClientConfigurationBuilder jedisClientConfigurationBuilder =
-				JedisClientConfiguration.builder();
-
-			jedisClientConfigurationBuilder.connectTimeout(
-				Duration.ofSeconds(10));
-			jedisClientConfigurationBuilder.readTimeout(Duration.ofSeconds(10));
-
-			JedisPoolingClientConfigurationBuilder
-				jedisPoolingClientConfigurationBuilder =
-					jedisClientConfigurationBuilder.usePooling();
-
-			JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-
-			jedisPoolConfig.setMaxTotal(16);
-			jedisPoolConfig.setMaxIdle(16);
-
-			jedisPoolingClientConfigurationBuilder.poolConfig(jedisPoolConfig);
-
-			return new JedisConnectionFactory(
-				new RedisStandaloneConfiguration(url.getHost(), url.getPort()),
-				jedisClientConfigurationBuilder.build());
-		}
-		catch (MalformedURLException malformedURLException) {
-			throw new IllegalArgumentException(malformedURLException);
-		}
-	}
-
-	@Bean
-	public JedisPool jedisPool() {
-		JedisConnectionFactory jedisConnectionFactory =
-			jedisConnectionFactory();
-
-		return new JedisPool(
-			jedisConnectionFactory.getPoolConfig(),
-			jedisConnectionFactory.getHostName(),
-			jedisConnectionFactory.getPort(),
-			jedisConnectionFactory.getTimeout());
 	}
 
 	@Bean
@@ -129,6 +88,36 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 	}
 
 	@Bean
+	public LettuceConnectionFactory lettuceConnectionFactory() {
+		try {
+			LettucePoolingClientConfigurationBuilder
+				lettucePoolingClientConfigurationBuilder =
+					LettucePoolingClientConfiguration.builder();
+
+			lettucePoolingClientConfigurationBuilder.readFrom(
+				ReadFrom.REPLICA_PREFERRED);
+
+			lettucePoolingClientConfigurationBuilder.commandTimeout(
+				Duration.ofSeconds(10));
+			lettucePoolingClientConfigurationBuilder.shutdownTimeout(
+				Duration.ofSeconds(10));
+
+			PoolConfig poolConfig = new PoolConfig();
+
+			poolConfig.setMaxTotal(16);
+			poolConfig.setMaxIdle(16);
+
+			lettucePoolingClientConfigurationBuilder.poolConfig(poolConfig);
+
+			return _newLettuceConnectionFactory(
+				lettucePoolingClientConfigurationBuilder.build());
+		}
+		catch (MalformedURLException malformedURLException) {
+			throw new IllegalArgumentException(malformedURLException);
+		}
+	}
+
+	@Bean
 	public OSBAsahCacheManager osbAsahCacheManager() {
 		return new OSBAsahCacheManager(redisTemplate());
 	}
@@ -139,7 +128,7 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 			new RedisMessageListenerContainer();
 
 		redisMessageListenerContainer.setConnectionFactory(
-			jedisConnectionFactory());
+			lettuceConnectionFactory());
 
 		OSBAsahCacheMessageListener osbAsahCacheMessageListener =
 			new OSBAsahCacheMessageListener(
@@ -156,11 +145,43 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 	public RedisTemplate<Object, Object> redisTemplate() {
 		return new RedisTemplate<Object, Object>() {
 			{
-				setConnectionFactory(jedisConnectionFactory());
+				setConnectionFactory(lettuceConnectionFactory());
 				setEnableTransactionSupport(false);
 				setKeySerializer(StringRedisSerializer.UTF_8);
 			}
 		};
+	}
+
+	private LettuceConnectionFactory _newLettuceConnectionFactory(
+			LettuceClientConfiguration lettuceClientConfiguration)
+		throws MalformedURLException {
+
+		String[] redisNodesUrls = StringUtils.split(ServiceConstants.URL_REDIS);
+
+		if (redisNodesUrls.length == 1) {
+			URL url = new URL(redisNodesUrls[0]);
+
+			return new LettuceConnectionFactory(
+				new RedisStandaloneConfiguration(url.getHost(), url.getPort()),
+				lettuceClientConfiguration);
+		}
+
+		URL redisMasterURL = new URL(redisNodesUrls[0]);
+
+		RedisStaticMasterReplicaConfiguration
+			redisStaticMasterReplicaConfiguration =
+				new RedisStaticMasterReplicaConfiguration(
+					redisMasterURL.getHost(), redisMasterURL.getPort());
+
+		for (int i = 1; i < redisNodesUrls.length; i++) {
+			URL url = new URL(redisNodesUrls[i]);
+
+			redisStaticMasterReplicaConfiguration.addNode(
+				url.getHost(), url.getPort());
+		}
+
+		return new LettuceConnectionFactory(
+			redisStaticMasterReplicaConfiguration, lettuceClientConfiguration);
 	}
 
 	@Value("${osb.asah.cache.enabled:true}")

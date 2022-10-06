@@ -17,15 +17,15 @@ package com.liferay.osb.asah.common.upgrade.impl;
 import com.liferay.osb.asah.common.upgrade.UpgradeState;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 
+import java.nio.charset.StandardCharsets;
+
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.stereotype.Component;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPubSub;
 
 /**
  * @author André Miranda
@@ -36,43 +36,61 @@ public class UpgradeStateImpl implements UpgradeState {
 
 	@Override
 	public void awaitCompletion() {
-		Jedis jedis = _jedisPool.getResource();
+		RedisConnection redisConnection =
+			_lettuceConnectionFactory.getConnection();
 
-		jedis.psubscribe(
-			new JedisPubSub() {
+		while (true) {
+			byte[] upgradeStateByteArray = redisConnection.get(
+				"UPGRADE_STATE".getBytes(StandardCharsets.UTF_8));
 
-				@Override
-				public void onPMessage(
-					String pattern, String channel, String message) {
+			if (upgradeStateByteArray != null) {
+				return;
+			}
 
-					punsubscribe();
-				}
+			try {
+				Thread.sleep(5000);
+			}
+			catch (InterruptedException interruptedException) {
+				Thread thread = Thread.currentThread();
 
-			},
-			"__key*__:UPGRADE_STATE");
+				thread.interrupt();
+			}
+		}
 	}
 
 	@Override
 	public void complete() {
-		Jedis jedis = _jedisPool.getResource();
+		RedisConnection redisConnection =
+			_lettuceConnectionFactory.getConnection();
 
-		jedis.set("UPGRADE_STATE", ReleaseInfo.getVersion());
+		String releaseInfoVersion = ReleaseInfo.getVersion();
+
+		redisConnection.set(
+			"UPGRADE_STATE".getBytes(StandardCharsets.UTF_8),
+			releaseInfoVersion.getBytes(StandardCharsets.UTF_8));
 	}
 
 	@Override
 	public boolean isComplete() {
-		Jedis jedis = _jedisPool.getResource();
+		RedisConnection redisConnection =
+			_lettuceConnectionFactory.getConnection();
 
-		if (Objects.equals(
-				jedis.get("UPGRADE_STATE"), ReleaseInfo.getVersion())) {
+		byte[] upgradeStateByteArray = redisConnection.get(
+			"UPGRADE_STATE".getBytes(StandardCharsets.UTF_8));
 
-			return true;
+		if (upgradeStateByteArray != null) {
+			String upgradeState = new String(
+				upgradeStateByteArray, StandardCharsets.UTF_8);
+
+			if (Objects.equals(upgradeState, ReleaseInfo.getVersion())) {
+				return true;
+			}
 		}
 
 		return false;
 	}
 
 	@Autowired
-	private JedisPool _jedisPool;
+	private LettuceConnectionFactory _lettuceConnectionFactory;
 
 }
