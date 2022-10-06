@@ -37,7 +37,7 @@ public class Acquisition {
 
 	public Acquisition(String referrer, String url) {
 		try {
-			URI uri = new URI(url);
+			URI uri = new URI(_truncateURL(url));
 
 			Map<String, String> queryParams = new HashMap<>();
 
@@ -230,6 +230,16 @@ public class Acquisition {
 
 			return null;
 		}
+	}
+
+	private String _truncateURL(String url) {
+		int index = url.indexOf("#");
+
+		if (index != -1) {
+			return url.substring(0, index);
+		}
+
+		return url;
 	}
 
 	private static final Log _log = LogFactory.getLog(Acquisition.class);
