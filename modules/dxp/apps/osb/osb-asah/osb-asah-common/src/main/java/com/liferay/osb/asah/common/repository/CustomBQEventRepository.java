@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -41,17 +40,16 @@ import org.springframework.lang.Nullable;
 public interface CustomBQEventRepository {
 
 	public Integer countBQEvents(
-		Long channelId, @Nullable String keywords,
+		Long channelId, String individualId, @Nullable String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	public long countByEventDefinitionId(long eventDefinitionId);
 
 	public Integer countEventSessions(
-		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
+		Long channelId, String individualId, String keywords,
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	public long countTotalBQEvents(
 		@Nullable Long channelId,
@@ -86,24 +84,21 @@ public interface CustomBQEventRepository {
 		TimeRange timeRange, String timeZoneId);
 
 	public Map<String, Integer> getBQEventsCountGroupByEventDate(
-		Long channelId, Interval interval, String keywords,
+		Long channelId, String individualId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
-		Long channelId, Interval interval, String keywords,
+		Long channelId, String individualId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	public Map<String, Date> getLastSeenDateDateGroupedByColumnName(
 		String columnName, int size);
 
 	public List<BQEvent> searchBQEvents(
-		Long channelId, @Nullable String keywords, Pageable pageable,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds);
+		Long channelId, String individualId, @Nullable String keywords,
+		Pageable pageable, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 }

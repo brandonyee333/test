@@ -50,7 +50,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -93,15 +92,14 @@ public class BQEventRepositoryImpl
 
 	@Override
 	public Integer countBQEvents(
-		Long channelId, @Nullable String keywords,
+		Long channelId, String individualId, @Nullable String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds) {
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
 		return (int)_queryExecutor.queryForLong(
 			_getEventsCount(
-				channelId, DSL.count(), keywords, rangeEndLocalDateTime,
-				rangeStartLocalDateTime, timeZoneId, userIds));
+				channelId, DSL.count(), individualId, keywords,
+				rangeEndLocalDateTime, rangeStartLocalDateTime, timeZoneId));
 	}
 
 	@Override
@@ -116,15 +114,15 @@ public class BQEventRepositoryImpl
 
 	@Override
 	public Integer countEventSessions(
-		Long channelId, String keywords, LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds) {
+		Long channelId, String individualId, String keywords,
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
 		return (int)_queryExecutor.queryForLong(
 			_getEventsCount(
-				channelId, DSL.countDistinct(DSL.field("sessionId")), keywords,
-				rangeEndLocalDateTime, rangeStartLocalDateTime, timeZoneId,
-				userIds));
+				channelId, DSL.countDistinct(DSL.field("sessionId")),
+				individualId, keywords, rangeEndLocalDateTime,
+				rangeStartLocalDateTime, timeZoneId));
 	}
 
 	@Override
@@ -386,10 +384,9 @@ public class BQEventRepositoryImpl
 
 	@Override
 	public Map<String, Integer> getBQEventsCountGroupByEventDate(
-		Long channelId, Interval interval, String keywords,
+		Long channelId, String individualId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds) {
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
 		Field<OffsetDateTime> eventDateField =
 			_dslHelper.getDateAtTimeZoneField("BQEvent.eventDate", timeZoneId);
@@ -412,16 +409,22 @@ public class BQEventRepositoryImpl
 
 		eventDateField = eventDateField.as("eventDateTrunc");
 
-		return _queryExecutor.queryForMap(
-			GetterUtil::getDateString,
+		SelectJoinStep<Record2<OffsetDateTime, Integer>> selectJoinStep =
 			_dslContext.select(
 				eventDateField, DSL.count()
 			).from(
 				"BQEvent"
-			).where(
+			);
+
+		selectJoinStep = _getIndividualSelectJoinStep(
+			individualId, selectJoinStep);
+
+		return _queryExecutor.queryForMap(
+			GetterUtil::getDateString,
+			selectJoinStep.where(
 				_createCondition(
-					channelId, keywords, rangeEndLocalDateTime,
-					rangeStartLocalDateTime, timeZoneId, userIds)
+					channelId, individualId, keywords, rangeEndLocalDateTime,
+					rangeStartLocalDateTime, timeZoneId)
 			).groupBy(
 				eventDateField
 			),
@@ -430,10 +433,9 @@ public class BQEventRepositoryImpl
 
 	@Override
 	public Map<String, Integer> getEventSessionsCountGroupByEventDate(
-		Long channelId, Interval interval, String keywords,
+		Long channelId, String individualId, Interval interval, String keywords,
 		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds) {
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
 		Field<OffsetDateTime> eventDateField =
 			_dslHelper.getDateAtTimeZoneField("BQEvent.eventDate", timeZoneId);
@@ -451,8 +453,15 @@ public class BQEventRepositoryImpl
 		Field<OffsetDateTime> event1EventDateField = DSL.field(
 			"event1.eventDate", OffsetDateTime.class);
 
-		SelectSelectStep<Record2<OffsetDateTime, Object>> selectSelectStep =
-			_dslContext.selectDistinct(eventDateField, DSL.field("sessionId"));
+		SelectJoinStep<Record2<OffsetDateTime, Object>> selectJoinStep =
+			_dslContext.selectDistinct(
+				eventDateField, DSL.field("sessionId")
+			).from(
+				"BQEvent"
+			);
+
+		selectJoinStep = _getIndividualSelectJoinStep(
+			individualId, selectJoinStep);
 
 		return _queryExecutor.queryForMap(
 			object -> GetterUtil.getDateString(object),
@@ -460,13 +469,11 @@ public class BQEventRepositoryImpl
 				event1EventDateField, DSL.count()
 			).from(
 				DSL.table(
-					selectSelectStep.from(
-						"BQEvent"
-					).where(
+					selectJoinStep.where(
 						_createCondition(
-							channelId, keywords, rangeEndLocalDateTime,
-							rangeStartLocalDateTime, timeZoneId, userIds)
-					)
+							channelId, individualId, keywords,
+							rangeEndLocalDateTime, rangeStartLocalDateTime,
+							timeZoneId))
 				).as(
 					"event1"
 				)
@@ -522,24 +529,27 @@ public class BQEventRepositoryImpl
 
 	@Override
 	public List<BQEvent> searchBQEvents(
-		Long channelId, @Nullable String keywords, Pageable pageable,
-		LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds) {
+		Long channelId, String individualId, @Nullable String keywords,
+		Pageable pageable, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
 		Table<Record> eventTable = DSL.table("BQEvent");
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
-			eventTable.asterisk());
+		SelectJoinStep<Record> selectJoinStep = _dslContext.select(
+			eventTable.asterisk()
+		).from(
+			eventTable
+		);
+
+		selectJoinStep = _getIndividualSelectJoinStep(
+			individualId, selectJoinStep);
 
 		return _queryExecutor.queryForList(
 			BQEvent::new,
-			selectSelectStep.from(
-				eventTable
-			).where(
+			selectJoinStep.where(
 				_createCondition(
-					channelId, keywords, rangeEndLocalDateTime,
-					rangeStartLocalDateTime, timeZoneId, userIds)
+					channelId, individualId, keywords, rangeEndLocalDateTime,
+					rangeStartLocalDateTime, timeZoneId)
 			).orderBy(
 				getSortFields(pageable.getSort(), eventTable)
 			).limit(
@@ -628,9 +638,9 @@ public class BQEventRepositoryImpl
 	}
 
 	private Condition _createCondition(
-		Long channelId, String keyword, LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds) {
+		Long channelId, String individualId, String keyword,
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
 		Condition condition = DSL.and(
 			DSL.field(
@@ -656,13 +666,13 @@ public class BQEventRepositoryImpl
 				_eventDefinitionRepository.getEventDefinitionNames(false)
 			));
 
-		if ((userIds != null) && !userIds.isEmpty()) {
+		if (StringUtils.isNotBlank(individualId)) {
 			condition = DSL.and(
 				condition,
 				DSL.field(
-					"BQEvent.userId"
-				).in(
-					userIds
+					"BQIdentity.individualId"
+				).eq(
+					individualId
 				));
 		}
 
@@ -1069,20 +1079,23 @@ public class BQEventRepositoryImpl
 
 	private SelectFinalStep<Record1<Integer>> _getEventsCount(
 		Long channelId, AggregateFunction<Integer> countAggregateFunction,
-		String keywords, LocalDateTime rangeEndLocalDateTime,
-		LocalDateTime rangeStartLocalDateTime, String timeZoneId,
-		Set<String> userIds) {
+		String individualId, String keywords,
+		LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
 		SelectSelectStep<Record1<Integer>> selectCount = _dslContext.select(
 			countAggregateFunction);
 
-		return selectCount.from(
-			"BQEvent"
-		).where(
+		SelectJoinStep<Record1<Integer>> selectJoinStep = selectCount.from(
+			"BQEvent");
+
+		selectJoinStep = _getIndividualSelectJoinStep(
+			individualId, selectJoinStep);
+
+		return selectJoinStep.where(
 			_createCondition(
-				channelId, keywords, rangeEndLocalDateTime,
-				rangeStartLocalDateTime, timeZoneId, userIds)
-		);
+				channelId, individualId, keywords, rangeEndLocalDateTime,
+				rangeStartLocalDateTime, timeZoneId));
 	}
 
 	private <T> SelectJoinStep<Record1<T>> _getEventSelectJoinStep(
@@ -1215,6 +1228,24 @@ public class BQEventRepositoryImpl
 			).concat(
 				_globalAttributes.get(name)
 			));
+	}
+
+	private <T extends Record> SelectJoinStep<T> _getIndividualSelectJoinStep(
+		String individualId, SelectJoinStep<T> selectJoinStep) {
+
+		if (StringUtils.isNotBlank(individualId)) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table("BQIdentity")
+			).on(
+				DSL.field(
+					"BQEvent.userId"
+				).eq(
+					DSL.field("BQIdentity.userId")
+				)
+			);
+		}
+
+		return selectJoinStep;
 	}
 
 	private String _getJoinFieldTableName(AttributeType attributeType) {
