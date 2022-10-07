@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.SiteVisitorHeatMapDog;
+import com.liferay.osb.asah.backend.dog.SiteMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
@@ -39,12 +39,12 @@ public class SiteVisitorHeatMapDataFetcher
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		return siteVisitorHeatMapDog.getHeatMapMetrics(
-			searchQueryContext.getAssetId(), searchQueryContext.getChannelId(),
+		return siteMetricDog.getHeatMapMetrics(
+			searchQueryContext.getChannelId(),
 			searchQueryContext.getTimeRange());
 	}
 
 	@Autowired
-	protected SiteVisitorHeatMapDog siteVisitorHeatMapDog;
+	protected SiteMetricDog siteMetricDog;
 
 }

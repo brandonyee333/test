@@ -15,11 +15,14 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
+import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
 import java.util.ArrayList;
@@ -28,9 +31,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -137,6 +143,56 @@ public class SiteMetricDog {
 		).collect(
 			Collectors.toList()
 		);
+	}
+
+	public List<HeatMapMetric> getHeatMapMetrics(
+		String channelId, TimeRange timeRange) {
+
+		List<Map<String, Object>> visitorsCountGroupedByDayAndTime =
+			_bqSessionRepository.getVisitorsCountGroupedByDayAndTime(
+				Long.parseLong(channelId), timeRange, _timeZoneDog.getZoneId());
+
+		Map<Pair<Integer, Integer>, HeatMapMetric> heatMapMetrics =
+			new TreeMap<>();
+
+		for (int day = 0; day < 7; day++) {
+			for (int hour = 0; hour < 24; hour++) {
+				Metric metric = new Metric(SiteMetricType.VISITORS);
+
+				metric.setValue(0D);
+
+				heatMapMetrics.put(
+					Pair.of(day, hour),
+					new HeatMapMetric(
+						String.valueOf(day), metric, String.valueOf(hour)));
+			}
+		}
+
+		if (visitorsCountGroupedByDayAndTime.isEmpty()) {
+			return new ArrayList<>(heatMapMetrics.values());
+		}
+
+		for (Map<String, Object> visitor : visitorsCountGroupedByDayAndTime) {
+			Metric metric = new Metric(SiteMetricType.VISITORS);
+
+			Object visitors = visitor.get("visitors");
+
+			metric.setValue(Double.valueOf(visitors.toString()));
+
+			Object dayOfWeek = visitor.get("dayOfWeek");
+
+			Object hourOfDay = visitor.get("hourOfDay");
+
+			heatMapMetrics.put(
+				Pair.of(
+					Integer.valueOf(String.valueOf(dayOfWeek)),
+					Integer.valueOf(String.valueOf(hourOfDay))),
+				new HeatMapMetric(
+					String.valueOf(dayOfWeek), metric,
+					String.valueOf(hourOfDay)));
+		}
+
+		return new ArrayList<>(heatMapMetrics.values());
 	}
 
 	public SiteMetric getSiteMetric(SearchQueryContext searchQueryContext) {
