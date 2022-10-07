@@ -102,7 +102,7 @@ public class BQIndividualRepositoryImpl
 				<Long, Object, Object, Object, Object, Object, Object, Object,
 				 Object, Object, Object, Object>> selectJoinStep =
 					_getSelectJoinStep(
-						null, null,
+						channelId, null,
 						_dslContext.select(
 							DSL.coalesce(
 								DSL.cast(
@@ -156,7 +156,7 @@ public class BQIndividualRepositoryImpl
 		if (channelId != null) {
 			conditions.add(
 				DSL.field(
-					"identityChannel.channelid"
+					"identityActivity.channelid"
 				).eq(
 					channelId
 				));
