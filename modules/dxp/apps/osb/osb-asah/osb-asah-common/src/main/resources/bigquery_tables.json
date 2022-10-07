@@ -462,6 +462,11 @@
 				"type": "STRING"
 			},
 			{
+				"mode": "NULLABLE",
+				"name": "downloads",
+				"type": "INT64"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "eventDate",
 				"type": "TIMESTAMP"
