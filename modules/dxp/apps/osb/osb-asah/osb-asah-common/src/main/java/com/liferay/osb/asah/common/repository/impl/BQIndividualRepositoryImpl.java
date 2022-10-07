@@ -36,6 +36,8 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
+import org.jooq.Record12;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -59,7 +61,7 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long datasourceId, @Nullable Long notSegmentId, String query,
 		@Nullable Long segmentId) {
 
-		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
+		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
 			channelId, segmentId,
 			_dslContext.select(DSL.countDistinct(DSL.field("individual.id"))));
 
@@ -83,62 +85,64 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
-		return selectJoinStep.where(
-			condition
-		).groupBy(
-			DSL.field("individual.id")
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		return _queryExecutor.queryForLong(
+			selectJoinStep.where(
+				condition
+			).groupBy(
+				DSL.field("individual.id")
+			));
 	}
 
 	@Override
 	public Optional<Individual> findByChannelIdAndId(
 		@Nullable Long channelId, String id) {
 
-		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
-			null, null,
-			_dslContext.select(
-				DSL.coalesce(
-					DSL.cast(
-						DSL.sum(
+		SelectJoinStep
+			<Record12
+				<Long, Object, Object, Object, Object, Object, Object, Object,
+				 Object, Object, Object, Object>> selectJoinStep =
+					_getSelectJoinStep(
+						null, null,
+						_dslContext.select(
+							DSL.coalesce(
+								DSL.cast(
+									DSL.sum(
+										DSL.field(
+											"identityChannel.activitiescount",
+											Long.class)),
+									Long.class)
+							).as(
+								"activitiescount"
+							),
 							DSL.field(
-								"identityChannel.activitiescount", Long.class)),
-						Long.class)
-				).as(
-					"activitiescount"
-				),
-				DSL.field(
-					"individual.createdate"
-				).as(
-					"createdate"
-				),
-				DSL.field(
-					"individual.emailaddress"
-				).as(
-					"emailaddress"
-				),
-				DSL.field(
-					"individual.id"
-				).as(
-					"id"
-				),
-				DSL.field("fields"), DSL.field("firstname"),
-				DSL.max(
-					DSL.field("identityChannel.lastactivitydate")
-				).as(
-					"lastactivitydate"
-				),
-				DSL.field("lastname"), DSL.field("jobtitle"),
-				DSL.field("middlename"),
-				DSL.field(
-					"individual.modifieddate"
-				).as(
-					"modifieddate"
-				),
-				DSL.field("screenname")));
+								"individual.createdate"
+							).as(
+								"createdate"
+							),
+							DSL.field(
+								"individual.emailaddress"
+							).as(
+								"emailaddress"
+							),
+							DSL.field(
+								"individual.id"
+							).as(
+								"id"
+							),
+							DSL.field("fields"), DSL.field("firstname"),
+							DSL.max(
+								DSL.field("identityChannel.lastactivitydate")
+							).as(
+								"lastactivitydate"
+							),
+							DSL.field("lastname"), DSL.field("jobtitle"),
+							DSL.field("middlename"),
+							DSL.field(
+								"individual.modifieddate"
+							).as(
+								"modifieddate"
+							),
+							DSL.field("screenname")));
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -158,20 +162,19 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
-		return selectJoinStep.where(
-			conditions
-		).groupBy(
-			DSL.field("individual.id")
-		).orderBy(
-			DSL.field(
-				"individual.id"
-			).asc()
-		).fetchOptional(
+		return _queryExecutor.queryForObject(
 			record -> new Individual(
-				(Long)record.get("activitiescount"),
-				new BQIndividual(record.intoMap()),
-				(Date)record.get("lastactivitydate"), _objectMapper)
-		);
+				(Long)record.get("activitiescount"), new BQIndividual(record),
+				(Date)record.get("lastactivitydate"), _objectMapper),
+			(SelectJoinStep)selectJoinStep.where(
+				conditions
+			).groupBy(
+				DSL.field("individual.id")
+			).orderBy(
+				DSL.field(
+					"individual.id"
+				).asc()
+			));
 	}
 
 	@Override
@@ -230,47 +233,52 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
 		Pageable pageable, @Nullable String query, @Nullable Long segmentId) {
 
-		SelectJoinStep<?> selectJoinStep = _getSelectJoinStep(
-			channelId, segmentId,
-			_dslContext.select(
-				DSL.coalesce(
-					DSL.cast(
-						DSL.sum(
+		SelectJoinStep
+			<Record12
+				<Long, Object, Object, Object, Object, Object, Object, Object,
+				 Object, Object, Object, Object>> selectJoinStep =
+					_getSelectJoinStep(
+						channelId, segmentId,
+						_dslContext.select(
+							DSL.coalesce(
+								DSL.cast(
+									DSL.sum(
+										DSL.field(
+											"identityChannel.activitiescount",
+											Long.class)),
+									Long.class)
+							).as(
+								"activitiescount"
+							),
 							DSL.field(
-								"identityChannel.activitiescount", Long.class)),
-						Long.class)
-				).as(
-					"activitiescount"
-				),
-				DSL.field(
-					"individual.createdate"
-				).as(
-					"createdate"
-				),
-				DSL.field(
-					"individual.emailaddress"
-				).as(
-					"emailaddress"
-				),
-				DSL.field(
-					"individual.id"
-				).as(
-					"id"
-				),
-				DSL.field("fields"), DSL.field("firstname"),
-				DSL.max(
-					DSL.field("identityChannel.lastactivitydate")
-				).as(
-					"lastactivitydate"
-				),
-				DSL.field("lastname"), DSL.field("jobtitle"),
-				DSL.field("middlename"),
-				DSL.field(
-					"individual.modifieddate"
-				).as(
-					"modifieddate"
-				),
-				DSL.field("screenname")));
+								"individual.createdate"
+							).as(
+								"createdate"
+							),
+							DSL.field(
+								"individual.emailaddress"
+							).as(
+								"emailaddress"
+							),
+							DSL.field(
+								"individual.id"
+							).as(
+								"id"
+							),
+							DSL.field("fields"), DSL.field("firstname"),
+							DSL.max(
+								DSL.field("identityChannel.lastactivitydate")
+							).as(
+								"lastactivitydate"
+							),
+							DSL.field("lastname"), DSL.field("jobtitle"),
+							DSL.field("middlename"),
+							DSL.field(
+								"individual.modifieddate"
+							).as(
+								"modifieddate"
+							),
+							DSL.field("screenname")));
 
 		Condition condition = _getQueryCondition(query);
 
@@ -310,24 +318,23 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
-		return selectJoinStep.where(
-			condition
-		).groupBy(
-			DSL.field("individual.id")
-		).orderBy(
-			DSL.field(
-				"individual.id"
-			).asc()
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
+		return _queryExecutor.queryForList(
 			record -> new Individual(
-				(Long)record.get("activitiescount"),
-				new BQIndividual(record.intoMap()),
-				(Date)record.get("lastactivitydate"), _objectMapper)
-		);
+				(Long)record.get("activitiescount"), new BQIndividual(record),
+				(Date)record.get("lastactivitydate"), _objectMapper),
+			selectJoinStep.where(
+				condition
+			).groupBy(
+				DSL.field("individual.id")
+			).orderBy(
+				DSL.field(
+					"individual.id"
+				).asc()
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	private Condition _getChannelIdCondition(Long channelId) {
@@ -397,10 +404,10 @@ public class BQIndividualRepositoryImpl
 		return DSL.and(conditions);
 	}
 
-	private SelectJoinStep<?> _getSelectJoinStep(
-		Long channelId, Long segmentId, SelectSelectStep<?> selectSelectStep) {
+	private <T extends Record> SelectJoinStep<T> _getSelectJoinStep(
+		Long channelId, Long segmentId, SelectSelectStep<T> selectSelectStep) {
 
-		SelectJoinStep<?> selectJoinStep = selectSelectStep.from(
+		SelectJoinStep<T> selectJoinStep = selectSelectStep.from(
 			DSL.table(
 				"BQIndividual"
 			).as(
