@@ -18,12 +18,15 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.SiteMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+
+import java.time.LocalDate;
 
 import java.util.List;
 
@@ -302,6 +305,23 @@ public class SiteMetricDogTest
 
 		Assertions.assertEquals(4, visitorsMetrics.getPreviousValue());
 		Assertions.assertEquals(4, visitorsMetrics.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_bq_sessions_visitors_by_day_and_time.sql")
+	@Test
+	public void testVisitorHeatMapMetrics30Days() {
+		List<HeatMapMetric> heatMapMetrics = _siteMetricDog.getHeatMapMetrics(
+			"1",
+			TimeRange.of(
+				LocalDate.parse("2022-10-06"), LocalDate.parse("2022-09-06")));
+
+		HeatMapMetric heatMapMetric = heatMapMetrics.get(63);
+
+		Assertions.assertEquals(1.0, heatMapMetric.getValue());
+
+		heatMapMetric = heatMapMetrics.get(87);
+
+		Assertions.assertEquals(1.0, heatMapMetric.getValue());
 	}
 
 	private SearchQueryContext _getSearchQueryContext() {
