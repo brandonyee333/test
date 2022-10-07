@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.repository.BQEventRepository;
 
 import java.time.Clock;
 
-import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,18 +44,16 @@ public class EventHistogramDog {
 
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 
-		// TODO Change getBQEventsCountGroupByEventDate to use individualId as
-		//  parameter instead of userIds
-
 		return _createHistogramBag(
 			EventMetricType.TOTAL_EVENTS, searchQueryContext,
 			_bqEventRepository.getBQEventsCountGroupByEventDate(
 				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getEntityId(),
 				_getInterval(searchQueryContext),
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
-				Collections.emptySet()));
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	public HistogramMetricBag getSessionsCountHistogram(
@@ -64,18 +61,16 @@ public class EventHistogramDog {
 
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 
-		// TODO Change getEventSessionsCountGroupByEventDate to use individualId
-		//  as parameter instead of userIds
-
 		return _createHistogramBag(
 			EventMetricType.TOTAL_SESSIONS, searchQueryContext,
 			_bqEventRepository.getEventSessionsCountGroupByEventDate(
 				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getEntityId(),
 				_getInterval(searchQueryContext),
 				searchQueryContext.getKeywords(),
 				timeRange.getEndLocalDateTime(),
-				timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
-				Collections.emptySet()));
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId()));
 	}
 
 	private HistogramMetricBag _createHistogramBag(

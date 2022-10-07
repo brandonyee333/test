@@ -29,7 +29,6 @@ import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -122,15 +121,12 @@ public class EventDog {
 	}
 
 	public Integer countBQEvents(
-		Long channelId, @Nullable Long individualId, @Nullable String keywords,
-		TimeRange timeRange) {
-
-		// TODO Change countBQEvents to use individualId instead of userIds
+		Long channelId, @Nullable String individualId,
+		@Nullable String keywords, TimeRange timeRange) {
 
 		return _bqEventRepository.countBQEvents(
-			channelId, keywords, timeRange.getEndLocalDateTime(),
-			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId(),
-			Collections.emptySet());
+			channelId, individualId, keywords, timeRange.getEndLocalDateTime(),
+			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId());
 	}
 
 	public BQEvent fetchBQEvent(Long id) {
@@ -168,21 +164,19 @@ public class EventDog {
 	}
 
 	public List<BQEvent> searchBQEvents(
-		Long channelId, @Nullable Long individualId, @Nullable String keywords,
-		int page, int size, TimeRange timeRange) {
-
-		// TODO Change searchBQEvents to use individualId instead of userIds
+		Long channelId, @Nullable String individualId,
+		@Nullable String keywords, int page, int size, TimeRange timeRange) {
 
 		return _bqEventRepository.searchBQEvents(
-			channelId, keywords,
+			channelId, individualId, keywords,
 			PageRequest.of(page, size, Sort.desc("eventDate")),
 			timeRange.getEndLocalDateTime(), timeRange.getStartLocalDateTime(),
-			_timeZoneDog.getTimeZoneId(), Collections.emptySet());
+			_timeZoneDog.getTimeZoneId());
 	}
 
 	public Map<BQSession, List<BQEvent>> searchBQEventsGroupByUserSessionId(
-		Long channelId, Long individualId, String keywords, int page, int size,
-		TimeRange timeRange) {
+		Long channelId, String individualId, String keywords, int page,
+		int size, TimeRange timeRange) {
 
 		Set<String> userSessionIds = new HashSet<>();
 

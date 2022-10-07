@@ -54,7 +54,7 @@ public class EventsByUserSessionsDataFetcher
 		Map<BQSession, List<BQEvent>> bqSessions =
 			_eventDog.searchBQEventsGroupByUserSessionId(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
-				Long.valueOf(dataFetchingEnvironment.getArgument("entityId")),
+				dataFetchingEnvironment.getArgument("entityId"),
 				dataFetchingEnvironment.getArgument("keywords"),
 				dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
@@ -75,7 +75,7 @@ public class EventsByUserSessionsDataFetcher
 			),
 			_eventDog.countBQEvents(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
-				Long.valueOf(dataFetchingEnvironment.getArgument("entityId")),
+				dataFetchingEnvironment.getArgument("entityId"),
 				dataFetchingEnvironment.getArgument("keywords"),
 				searchQueryContext.getTimeRange()));
 	}
