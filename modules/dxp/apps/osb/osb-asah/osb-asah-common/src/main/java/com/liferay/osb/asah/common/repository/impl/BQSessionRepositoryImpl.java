@@ -235,6 +235,45 @@ public class BQSessionRepositoryImpl
 			));
 	}
 
+	@Override
+	public List<Map<String, Object>> getVisitorsCountGroupedByDayAndTime(
+		Long channelId, TimeRange timeRange, ZoneId zoneId) {
+
+		Field dayOfWeekField = DSL.isoDayOfWeek(
+			_dslHelper.dateTrunc(
+				DatePart.valueOf(String.valueOf(Interval.HOUR)),
+				_dslHelper.getDateAtTimeZoneField(
+					"BQSession.sessionStart", zoneId.toString())));
+
+		dayOfWeekField = dayOfWeekField.as("dayOfWeek");
+
+		Field dateField = DSL.timestamp(
+			_dslHelper.dateTrunc(
+				DatePart.valueOf(String.valueOf(Interval.HOUR)),
+				_dslHelper.getDateAtTimeZoneField(
+					"BQSession.sessionStart", zoneId.toString())));
+
+		Field hourOfDayField = DSL.extract(
+			dateField, DatePart.HOUR
+		).as(
+			"hourOfDay"
+		);
+
+		return _queryExecutor.queryForList(
+			Function.identity(),
+			_joinWithIdentityTable(
+				_dslContext.select(
+					dayOfWeekField, hourOfDayField, _getUniqueVisitorsField()
+				).from(
+					"BQSession"
+				)
+			).where(
+				_createWhereClause(channelId, timeRange, zoneId)
+			).groupBy(
+				dayOfWeekField, hourOfDayField
+			));
+	}
+
 	private Condition _createWhereClause(
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId) {

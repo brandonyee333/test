@@ -50,4 +50,7 @@ public interface CustomBQSessionRepository {
 			Long channelId, boolean includePrevious, Interval interval,
 			TimeRange timeRange, ZoneId zoneId);
 
+	public List<Map<String, Object>> getVisitorsCountGroupedByDayAndTime(
+		Long channelId, TimeRange timeRange, ZoneId zoneId);
+
 }
