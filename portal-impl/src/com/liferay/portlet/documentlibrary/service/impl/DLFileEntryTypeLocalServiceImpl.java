@@ -57,6 +57,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
+import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -91,6 +92,9 @@ import java.util.Set;
  */
 public class DLFileEntryTypeLocalServiceImpl
 	extends DLFileEntryTypeLocalServiceBaseImpl {
+
+        private static final String DDM_FILE_ENTRY_METADATA =
+                "com.liferay.document.library.kernel.model.DLFileEntryMetadata-com.liferay.dynamic.data.mapping.model.DDMStructure";
 
 	@Override
 	public void addDDMStructureLinks(
@@ -731,6 +735,21 @@ public class DLFileEntryTypeLocalServiceImpl
 			dlFileEntryType.getUserId(), DLFileEntryType.class.getName(),
 			dlFileEntryType.getFileEntryTypeId(), false, addGroupPermissions,
 			addGuestPermissions);
+
+                // Each DLFileEntryType is tied to a DDM structure, that holds
+                // the metadata definitions defined in the document type itself.
+                // The upload forms (and most probably other code) checks the
+                // permissions on the DDM structure to determine if the fields
+                // may be viewed/entered by a user. So the permissions on the
+                // structure need to be sychronized with the DLFilEntryType.
+                // This covers the creation case. Updating is handled in
+                // com.liferay.document.library.internal.security.permission.DLFileEntryTypePermissionUpdateHandler
+
+                _resourceLocalService.addResources(
+                        dlFileEntryType.getCompanyId(), dlFileEntryType.getGroupId(),
+                        dlFileEntryType.getUserId(), DDM_FILE_ENTRY_METADATA,
+                        dlFileEntryType.getDataDefinitionId(), false, addGroupPermissions,
+                        addGuestPermissions);
 	}
 
 	protected void addFileEntryTypeResources(
@@ -741,6 +760,26 @@ public class DLFileEntryTypeLocalServiceImpl
 			dlFileEntryType.getCompanyId(), dlFileEntryType.getGroupId(),
 			dlFileEntryType.getUserId(), DLFileEntryType.class.getName(),
 			dlFileEntryType.getFileEntryTypeId(), modelPermissions);
+
+                // Each DLFileEntryType is tied to a DDM structure, that holds
+                // the metadata definitions defined in the document type itself.
+                // The upload forms (and most probably other code) checks the
+                // permissions on the DDM structure to determine if the fields
+                // may be viewed/entered by a user. So the permissions on the
+                // structure need to be sychronized with the DLFilEntryType.
+                // This covers the creation case. Updating is handled in
+                // com.liferay.document.library.internal.security.permission.DLFileEntryTypePermissionUpdateHandler
+
+                ModelPermissions structurePermissions = ModelPermissionsFactory.create(DDM_FILE_ENTRY_METADATA);
+
+                for(String role: modelPermissions.getRoleNames()) {
+                    structurePermissions.addRolePermissions(role, modelPermissions.getActionIds(role));
+                }
+
+		_resourceLocalService.addModelResources(
+			dlFileEntryType.getCompanyId(), dlFileEntryType.getGroupId(),
+			dlFileEntryType.getUserId(), DDM_FILE_ENTRY_METADATA,
+			dlFileEntryType.getDataDefinitionId(), structurePermissions);
 	}
 
 	protected void cascadeFileEntryTypes(

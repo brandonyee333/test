@@ -16,14 +16,26 @@ package com.liferay.document.library.internal.security.permission;
 
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
+import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ResourceAction;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.security.permission.PermissionUpdateHandler;
+import com.liferay.portal.kernel.service.ResourceActionLocalService;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Gergely Mathe
  */
@@ -33,6 +45,9 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class DLFileEntryTypePermissionUpdateHandler
 	implements PermissionUpdateHandler {
+
+        private static final String DDM_FILE_ENTRY_METADATA =
+                "com.liferay.document.library.kernel.model.DLFileEntryMetadata-com.liferay.dynamic.data.mapping.model.DDMStructure";
 
 	@Override
 	public void updatedPermission(String primKey) {
@@ -47,9 +62,66 @@ public class DLFileEntryTypePermissionUpdateHandler
 		dlFileEntryType.setModifiedDate(new Date());
 
 		_dLFileEntryTypeLocalService.updateDLFileEntryType(dlFileEntryType);
+
+                // Each DLFileEntryType is tied to a DDM structure, that holds
+                // the metadata definitions defined in the document type itself.
+                // The upload forms (and most probably other code) checks the
+                // permissions on the DDM structure to determine if the fields
+                // may be viewed/entered by a user. So the permissions on the
+                // structure need to be sychronized with the DLFilEntryType.
+                // This covers the updating case. Adding is handled in
+                // com.liferay.portlet.documentlibrary.service.impl.DLFileEntryTypeLocalServiceImpl.addFileEntryTypeResources(DLFileEntryType, ModelPermissions)
+
+                List<ResourceAction> fileEntryTypeActions = _resourceActionLocalService
+                        .getResourceActions(DLFileEntryType.class.getName());
+
+                Set<String> fileEntryMetadataActions = _resourceActionLocalService
+                        .getResourceActions(DDM_FILE_ENTRY_METADATA)
+                        .stream()
+                        .map(ra -> ra.getActionId())
+                        .collect(Collectors.toSet());
+
+                List<ResourcePermission> permissions = _resourcePermissionLocalService.getResourcePermissions(
+                        dlFileEntryType.getCompanyId(),
+                        DLFileEntryType.class.getName(),
+                        ResourceConstants.SCOPE_INDIVIDUAL,
+                        Long.toString(dlFileEntryType.getFileEntryTypeId())
+                );
+
+                Map<Long,String[]> roleIdsToActionIds = new HashMap<>();
+
+                for(ResourcePermission permission: permissions) {
+                        long actionIds = permission.getActionIds();
+                        List<String> actionIdList = new ArrayList<>();
+                        for(ResourceAction ra: fileEntryTypeActions) {
+                            String actionId = ra.getActionId();
+                            if((actionIds & ra.getBitwiseValue()) == ra.getBitwiseValue() && fileEntryMetadataActions.contains(actionId)) {
+                                actionIdList.add(actionId);
+                            }
+                        }
+                        roleIdsToActionIds.put(permission.getRoleId(), actionIdList.toArray(new String[0]));
+                }
+
+                try {
+                    _resourcePermissionLocalService.setResourcePermissions(
+                            dlFileEntryType.getCompanyId(),
+                            DDM_FILE_ENTRY_METADATA,
+                            ResourceConstants.SCOPE_INDIVIDUAL,
+                            Long.toString(dlFileEntryType.getDataDefinitionId()),
+                            roleIdsToActionIds
+                    );
+                }
+                catch (PortalException portalException) {
+			ReflectionUtil.throwException(portalException);
+		}
 	}
 
 	@Reference
 	private DLFileEntryTypeLocalService _dLFileEntryTypeLocalService;
 
+        @Reference
+	private ResourceActionLocalService _resourceActionLocalService;
+
+        @Reference
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
 }
