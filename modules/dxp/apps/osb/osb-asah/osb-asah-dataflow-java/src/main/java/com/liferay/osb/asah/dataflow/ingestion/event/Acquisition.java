@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.event;
 
+import java.io.UnsupportedEncodingException;
+
 import java.net.URI;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import java.nio.charset.StandardCharsets;
 
@@ -37,7 +40,7 @@ public class Acquisition {
 
 	public Acquisition(String referrer, String url) {
 		try {
-			URI uri = new URI(_truncateURL(url));
+			URI uri = new URI(_formatURL(url));
 
 			Map<String, String> queryParams = new HashMap<>();
 
@@ -230,6 +233,21 @@ public class Acquisition {
 
 			return null;
 		}
+	}
+
+	private String _encodeURL(String url) throws UnsupportedEncodingException {
+		int index = url.indexOf("?");
+
+		if (index != -1) {
+			return url.substring(0, index) + "?" +
+				URLEncoder.encode(url.substring(index + 1), "UTF-8");
+		}
+
+		return url;
+	}
+
+	private String _formatURL(String url) throws UnsupportedEncodingException {
+		return _encodeURL(_truncateURL(url));
 	}
 
 	private String _truncateURL(String url) {
