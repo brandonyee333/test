@@ -119,13 +119,13 @@ public class IdentityMigrationUpgradeStep implements UpgradeStep {
 							_IDENTITY_ACTIVITY_TABLE_NAME);
 					}
 				}
-
-				_finalizeWriteStreamRequest(
-					bigQueryWriteClient, identityWriteStream);
-
-				_finalizeWriteStreamRequest(
-					bigQueryWriteClient, identityActivityWriteStream);
 			}
+
+			_finalizeWriteStreamRequest(
+				bigQueryWriteClient, identityWriteStream);
+
+			_finalizeWriteStreamRequest(
+				bigQueryWriteClient, identityActivityWriteStream);
 		}
 	}
 

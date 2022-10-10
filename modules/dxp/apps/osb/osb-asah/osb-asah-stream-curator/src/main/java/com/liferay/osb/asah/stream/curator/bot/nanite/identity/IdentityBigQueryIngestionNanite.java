@@ -48,6 +48,7 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -127,8 +128,7 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 					).build()) {
 
 				ApiFuture<AppendRowsResponse> apiFuture =
-					jsonStreamWriter.append(
-						JSONUtil.toJSONArray(messages, this::_toJSONObject));
+					jsonStreamWriter.append(_toJSONArray(messages));
 
 				ApiFutures.addCallback(
 					apiFuture,
@@ -154,16 +154,13 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 
 					},
 					MoreExecutors.directExecutor());
-
-				FinalizeWriteStreamRequest finalizeWriteStreamRequest =
-					FinalizeWriteStreamRequest.newBuilder(
-					).setName(
-						clientWriteStream.getName()
-					).build();
-
-				bigQueryWriteClient.finalizeWriteStream(
-					finalizeWriteStreamRequest);
 			}
+
+			bigQueryWriteClient.finalizeWriteStream(
+				FinalizeWriteStreamRequest.newBuilder(
+				).setName(
+					clientWriteStream.getName()
+				).build());
 		}
 	}
 
@@ -203,24 +200,31 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 		}
 	}
 
-	private JSONObject _toJSONObject(Message<JSONObject> message) {
-		JSONObject messageJSONObject = message.getObject();
+	private JSONArray _toJSONArray(List<Message<JSONObject>> messages) {
+		JSONArray jsonArray = new JSONArray();
 
-		String individualId = messageJSONObject.getString("individualId");
+		for (Message<JSONObject> message : messages) {
+			JSONObject messageJSONObject = message.getObject();
 
-		if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
-			individualId = null;
+			String individualId = messageJSONObject.getString("individualId");
+
+			if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
+				individualId = null;
+			}
+
+			jsonArray.put(
+				JSONUtil.put(
+					"createDate", DateUtil.toString(new Date())
+				).put(
+					"individualId", individualId
+				).put(
+					"projectId", messageJSONObject.getString("projectId")
+				).put(
+					"userId", messageJSONObject.getString("userId")
+				));
 		}
 
-		return JSONUtil.put(
-			"createDate", DateUtil.toString(new Date())
-		).put(
-			"individualId", individualId
-		).put(
-			"projectId", messageJSONObject.getString("projectId")
-		).put(
-			"userId", messageJSONObject.getString("userId")
-		);
+		return jsonArray;
 	}
 
 	private static final String _EMPTY_EMAIL_ADDRESS_HASHED =
