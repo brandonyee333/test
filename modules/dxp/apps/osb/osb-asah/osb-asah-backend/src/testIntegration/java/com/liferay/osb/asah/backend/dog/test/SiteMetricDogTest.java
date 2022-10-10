@@ -311,7 +311,7 @@ public class SiteMetricDogTest
 	@Test
 	public void testVisitorHeatMapMetrics30Days() {
 		List<HeatMapMetric> heatMapMetrics = _siteMetricDog.getHeatMapMetrics(
-			"1",
+			1L,
 			TimeRange.of(
 				LocalDate.parse("2022-10-06"), LocalDate.parse("2022-09-06")));
 

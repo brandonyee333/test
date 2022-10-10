@@ -146,11 +146,11 @@ public class SiteMetricDog {
 	}
 
 	public List<HeatMapMetric> getHeatMapMetrics(
-		String channelId, TimeRange timeRange) {
+		Long channelId, TimeRange timeRange) {
 
-		List<Map<String, Object>> visitorsCountGroupedByDayAndTime =
+		List<Map<String, Integer>> visitorsCountGroupedByDayAndTime =
 			_bqSessionRepository.getVisitorsCountGroupedByDayAndTime(
-				Long.parseLong(channelId), timeRange, _timeZoneDog.getZoneId());
+				channelId, timeRange, _timeZoneDog.getZoneId());
 
 		Map<Pair<Integer, Integer>, HeatMapMetric> heatMapMetrics =
 			new TreeMap<>();
@@ -172,16 +172,17 @@ public class SiteMetricDog {
 			return new ArrayList<>(heatMapMetrics.values());
 		}
 
-		for (Map<String, Object> visitor : visitorsCountGroupedByDayAndTime) {
+		for (Map<String, Integer> visitorCount :
+				visitorsCountGroupedByDayAndTime) {
+
 			Metric metric = new Metric(SiteMetricType.VISITORS);
 
-			Object visitors = visitor.get("visitors");
+			Integer visitors = visitorCount.get("visitors");
 
-			metric.setValue(Double.valueOf(visitors.toString()));
+			metric.setValue(Double.valueOf(visitors));
 
-			Object dayOfWeek = visitor.get("dayOfWeek");
-
-			Object hourOfDay = visitor.get("hourOfDay");
+			Object dayOfWeek = visitorCount.get("dayOfWeek");
+			Object hourOfDay = visitorCount.get("hourOfDay");
 
 			heatMapMetrics.put(
 				Pair.of(

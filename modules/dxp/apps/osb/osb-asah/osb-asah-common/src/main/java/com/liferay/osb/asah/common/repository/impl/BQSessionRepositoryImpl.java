@@ -236,16 +236,17 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
-	public List<Map<String, Object>> getVisitorsCountGroupedByDayAndTime(
+	public List<Map<String, Integer>> getVisitorsCountGroupedByDayAndTime(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
 		Field dayOfWeekField = DSL.isoDayOfWeek(
 			_dslHelper.dateTrunc(
 				DatePart.valueOf(String.valueOf(Interval.HOUR)),
 				_dslHelper.getDateAtTimeZoneField(
-					"BQSession.sessionStart", zoneId.toString())));
-
-		dayOfWeekField = dayOfWeekField.as("dayOfWeek");
+					"BQSession.sessionStart", zoneId.toString()))
+		).as(
+			"dayOfWeek"
+		);
 
 		Field dateField = DSL.timestamp(
 			_dslHelper.dateTrunc(

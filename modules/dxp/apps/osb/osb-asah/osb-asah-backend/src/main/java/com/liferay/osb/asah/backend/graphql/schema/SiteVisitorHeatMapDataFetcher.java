@@ -40,7 +40,7 @@ public class SiteVisitorHeatMapDataFetcher
 		SearchQueryContext searchQueryContext) {
 
 		return siteMetricDog.getHeatMapMetrics(
-			searchQueryContext.getChannelId(),
+			Long.parseLong(searchQueryContext.getChannelId()),
 			searchQueryContext.getTimeRange());
 	}
 
