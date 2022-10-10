@@ -130,6 +130,7 @@ public class IndividualNanite {
 
 		BQIndividual mergedBQIndividual = new BQIndividual();
 
+		mergedBQIndividual.setCreateDate(bqIndividual2.getCreateDate());
 		mergedBQIndividual.setEmailAddress(bqIndividual2.getEmailAddress());
 
 		Collection<Field> mergedBQIndividualFields = _mergeBQIndividualFields(
