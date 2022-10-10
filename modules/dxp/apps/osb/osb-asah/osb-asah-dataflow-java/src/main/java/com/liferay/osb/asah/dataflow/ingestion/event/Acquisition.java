@@ -14,12 +14,10 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.event;
 
-import java.io.UnsupportedEncodingException;
+import com.liferay.osb.asah.dataflow.common.URLUtil;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 import java.nio.charset.StandardCharsets;
 
@@ -41,7 +39,7 @@ public class Acquisition {
 
 	public Acquisition(String referrer, String url) {
 		try {
-			URI uri = _createURI(url);
+			URI uri = URLUtil.createURI(url);
 
 			Map<String, String> queryParams = new HashMap<>();
 
@@ -236,71 +234,7 @@ public class Acquisition {
 		}
 	}
 
-	private URI _createURI(String url) throws URISyntaxException {
-		String scheme = "";
-
-		int schemeIndex = url.indexOf(_URI_SCHEME_STRING);
-
-		if (schemeIndex != -1) {
-			scheme = url.substring(0, schemeIndex);
-
-			schemeIndex += _URI_SCHEME_STRING.length();
-		}
-
-		String authority = null;
-
-		int authorityIndex = url.indexOf("/", Math.max(schemeIndex, 0));
-
-		if (authorityIndex != -1) {
-			authority = url.substring(schemeIndex, authorityIndex);
-		}
-
-		String path;
-
-		int fragmentIndex = url.indexOf("#", authorityIndex);
-		int queryIndex = url.indexOf("?", authorityIndex);
-
-		int pathEndIndex = Math.max(fragmentIndex, queryIndex);
-
-		if (pathEndIndex != -1) {
-			path = url.substring(authorityIndex, pathEndIndex);
-		}
-		else {
-			path = url.substring(authorityIndex);
-		}
-
-		if (path.equals("")) {
-			path = null;
-		}
-
-		String query = null;
-
-		if (queryIndex != -1) {
-			if (fragmentIndex != -1) {
-				query = url.substring(queryIndex + 1, fragmentIndex);
-			}
-			else {
-				query = url.substring(queryIndex + 1);
-			}
-		}
-
-		return new URI(scheme, authority, path, query, null);
-	}
-
-	private String _encodeURL(String url) throws UnsupportedEncodingException {
-		int index = url.indexOf("?");
-
-		if (index != -1) {
-			return url.substring(0, index) + "?" +
-				URLEncoder.encode(url.substring(index + 1), "UTF-8");
-		}
-
-		return url;
-	}
-
 	private static final Log _log = LogFactory.getLog(Acquisition.class);
-
-	private static final String _URI_SCHEME_STRING = "://";
 
 	private String _campaign;
 	private String _content;
