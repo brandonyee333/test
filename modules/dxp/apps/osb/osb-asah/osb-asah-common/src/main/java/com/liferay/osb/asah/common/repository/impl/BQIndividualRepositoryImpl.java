@@ -85,12 +85,7 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
-		return _queryExecutor.queryForLong(
-			selectJoinStep.where(
-				condition
-			).groupBy(
-				DSL.field("individual.id")
-			));
+		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
 	}
 
 	@Override
