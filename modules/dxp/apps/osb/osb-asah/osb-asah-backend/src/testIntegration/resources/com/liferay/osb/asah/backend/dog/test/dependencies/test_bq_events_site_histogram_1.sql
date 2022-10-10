@@ -5,3 +5,7 @@ INSERT INTO BQSession (bounce, channelId, duration, id, sessionStart, sessionEnd
 INSERT INTO BQSession (bounce, channelId, duration, id, sessionStart, sessionEnd) VALUES (0, 1, 3600000.0, '5', timestamp '${now-26h}', timestamp '${now-25h}');
 INSERT INTO BQSession (bounce, channelId, duration, id, sessionStart, sessionEnd) VALUES (1, 1, 3600000.0, '6', timestamp '${now-34h}', timestamp '${now-33h}');
 INSERT INTO BQSession (bounce, channelId, duration, id, sessionStart, sessionEnd) VALUES (0, 1, 7200000.0, '7', timestamp '${now-38h}', timestamp '${now-36h}');
+
+INSERT INTO BQIdentity (individualId, userId) VALUES ('1', '1');
+
+INSERT INTO BQIndividual (id) VALUES ('1');
