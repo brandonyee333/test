@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityChannelRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
@@ -317,6 +318,10 @@ public class BQIndividualDogTest
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_identity.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQIdentityActivityRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_identity_activities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityChannelRepository.class,
