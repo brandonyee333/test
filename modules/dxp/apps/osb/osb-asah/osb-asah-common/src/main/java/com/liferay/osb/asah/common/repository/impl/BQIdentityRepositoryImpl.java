@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.repository.CustomBQIdentityRepository;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
 import java.sql.Timestamp;
 
@@ -25,7 +26,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,6 +39,7 @@ import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 
 /**
@@ -56,14 +57,8 @@ public class BQIdentityRepositoryImpl
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType) {
 
-		SelectConditionStep<Record1<Integer>> selectConditionStep =
-			_getSelectConditionStep(active, channelId, localDate, metricType);
-
-		return selectConditionStep.fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		return _queryExecutor.queryForLong(
+			_getSelectConditionStep(active, channelId, localDate, metricType));
 	}
 
 	@Override
@@ -92,7 +87,13 @@ public class BQIdentityRepositoryImpl
 			return Collections.emptyList();
 		}
 
-		return Arrays.asList(selectConditionStep.fetchArray(0, Long.class));
+		return _queryExecutor.queryForList(
+			record -> {
+				Integer count = (Integer)record.get("count");
+
+				return count.longValue();
+			},
+			selectConditionStep);
 	}
 
 	private List<Condition> _getConditions(
@@ -217,5 +218,8 @@ public class BQIdentityRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private QueryExecutor _queryExecutor;
 
 }
