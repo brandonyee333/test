@@ -48,10 +48,19 @@ PageEntrances AS (
 		userId
 	FROM (
 		SELECT
-			browserName, canonicalUrl, channelId, city, country, deviceType,
-			eventDate, platformName,
+			browserName,
+			canonicalUrl,
+			channelId,
+			city,
+			country,
+			deviceType,
+			eventDate,
+			platformName,
 			ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate ASC) AS rank,
-		    region, sessionId, title, userId
+			region,
+			sessionId,
+			title,
+			userId
 		FROM
 			PageFinalizedEvent
 	) AS EventEntrance
@@ -75,10 +84,19 @@ PageExits AS (
 		userId
 	FROM (
 	    SELECT
-			browserName, canonicalUrl, channelId, city, country, deviceType,
-			eventDate, platformName,
+			browserName,
+			canonicalUrl,
+			channelId,
+			city,
+			country,
+			deviceType,
+			eventDate,
+			platformName,
 			ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate DESC) AS rank,
-		   region, sessionId, title, userId
+			region,
+			sessionId,
+			title,
+			userId
 	    FROM
 			PageFinalizedEvent
 	) AS EventExit
@@ -102,10 +120,19 @@ PageTimeOnPages AS (
 		userId
 	FROM (
 		SELECT
-			browserName, canonicalUrl, channelId, city, country, deviceType,
+			browserName,
+			canonicalUrl,
+			channelId,
+			city,
+			country,
+			deviceType,
 			eventDate,
 			LEAD(eventDate) OVER (PARTITION BY sessionId, userId, channelId ORDER BY eventDate) AS nextTime,
-			platformName, region, sessionId, title, userId
+			platformName,
+			region,
+			sessionId,
+			title,
+			userId
 		FROM
 			PageFinalizedEvent
 	) AS EventTimeOnPage
