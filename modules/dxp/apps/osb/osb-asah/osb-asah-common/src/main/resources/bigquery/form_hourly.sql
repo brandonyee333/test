@@ -96,6 +96,17 @@ SELECT
 	FormEvent.city,
 	FormEvent.country,
 	FormEvent.deviceType,
+	SUM(
+        CASE
+            WHEN
+                eventId = 'formViewed' AND
+                Session.id IS NOT NULL
+            THEN
+                1
+            ELSE
+                0
+        END
+    ) AS finalizedFormViews,
 	TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 	FormEvent.platformName,
 	FormEvent.region,

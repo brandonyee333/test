@@ -834,6 +834,17 @@ CREATE OR REPLACE VIEW BQForm AS (
 		FormEvent.city,
 		FormEvent.country,
 		FormEvent.deviceType,
+		SUM(
+            CASE
+                WHEN
+                    eventId = 'formViewed' AND
+                    Session.id IS NOT NULL
+                THEN
+                1
+            ELSE
+                0
+        END
+        ) AS finalizedFormViews,
 		DATE_TRUNC('HOUR', FormEvent.eventDate) AS normalizedEventDate,
 		FormEvent.platformName,
 		FormEvent.region,

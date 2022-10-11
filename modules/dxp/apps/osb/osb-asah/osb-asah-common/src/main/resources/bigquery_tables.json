@@ -959,6 +959,11 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "finalizedFormViews",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "pageTitle",
 				"type": "STRING"
 			},
