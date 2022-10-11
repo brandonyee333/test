@@ -1,0 +1,132 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.model;
+
+import com.liferay.osb.asah.common.util.BeanUtils;
+
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * @author Rachael Koestartyo
+ */
+public class SearchKeyword {
+
+	public SearchKeyword() {
+	}
+
+	public SearchKeyword(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof SearchKeyword)) {
+			return false;
+		}
+
+		SearchKeyword searchKeyword = (SearchKeyword)obj;
+
+		if (Objects.equals(_counts, searchKeyword._counts) &&
+			Objects.equals(_createDate, searchKeyword._createDate) &&
+			Objects.equals(
+				_displayLanguageId, searchKeyword._displayLanguageId) &&
+			Objects.equals(_groupId, searchKeyword._groupId) &&
+			Objects.equals(_keywords, searchKeyword._keywords) &&
+			Objects.equals(
+				_lastModifiedDate, searchKeyword._lastModifiedDate)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public Long getCounts() {
+		return _counts;
+	}
+
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
+	}
+
+	public String getDisplayLanguageId() {
+		return _displayLanguageId;
+	}
+
+	public String getGroupId() {
+		return _groupId;
+	}
+
+	public String getKeywords() {
+		return _keywords;
+	}
+
+	public Date getLastModifiedDate() {
+		if (_lastModifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_lastModifiedDate.getTime());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+			_counts, _createDate, _displayLanguageId, _groupId, _keywords,
+			_lastModifiedDate);
+	}
+
+	public void setCounts(Long counts) {
+		_counts = counts;
+	}
+
+	public void setCreateDate(Date createDate) {
+		_createDate = createDate;
+	}
+
+	public void setDisplayLanguageId(String displayLanguageId) {
+		_displayLanguageId = displayLanguageId;
+	}
+
+	public void setGroupId(String groupId) {
+		_groupId = groupId;
+	}
+
+	public void setKeywords(String keywords) {
+		_keywords = keywords;
+	}
+
+	public void setLastModifiedDate(Date lastModifiedDate) {
+		_lastModifiedDate = lastModifiedDate;
+	}
+
+	private Long _counts;
+	private Date _createDate;
+	private String _displayLanguageId;
+	private String _groupId;
+	private String _keywords;
+	private Date _lastModifiedDate;
+
+}
