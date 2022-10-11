@@ -77,8 +77,9 @@ public class FormAssetMetricRepositoryImpl
 				DSL.field(
 					FormMetricType.ABANDONMENTS.getFieldName(), Long.class)
 			).div(
-				DSL.sum(
-					DSL.field(FormMetricType.VIEWS.getFieldName(), Long.class))
+				DSL.greatest(
+					DSL.sum(DSL.field("finalizedFormViews", Long.class)),
+					DSL.one())
 			).as(
 				FormMetricType.ABANDONMENTS.getName()
 			);
