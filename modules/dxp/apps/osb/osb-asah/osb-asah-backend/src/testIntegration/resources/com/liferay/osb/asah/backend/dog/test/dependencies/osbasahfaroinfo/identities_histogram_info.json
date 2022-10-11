@@ -1,26 +1,26 @@
 [
 	{
 		"createDate": "${now-3d}",
-		"individualId": "test1@liferay.com",
-		"userId": "1"
+		"id": "1",
+		"individualId": "test1@liferay.com"
 	},
 	{
 		"createDate": "${now-5d}",
-		"individualId": "test2@liferay.com",
-		"userId": "2"
+		"id": "2",
+		"individualId": "test2@liferay.com"
 	},
 	{
 		"createDate": "${now-11d}",
-		"individualId": "test3@liferay.com",
-		"userId": "3"
+		"id": "3",
+		"individualId": "test3@liferay.com"
 	},
 	{
 		"createDate": "${now-36d}",
-		"individualId": "test4@liferay.com",
-		"userId": "4"
+		"id": "4",
+		"individualId": "test4@liferay.com"
 	},
 	{
 		"createDate": "${now-11d}",
-		"userId": "5"
+		"id": "5"
 	}
 ]

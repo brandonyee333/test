@@ -16,10 +16,10 @@ INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId,
 INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (16, 'http://liferay.com', 1, timestamp '${today-12d}', 'assetClicked', '14', 'Liferay', '6');
 INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES (17, 'http://liferay.com', 1, timestamp '${today-12d}', 'assetClicked', '15', 'Liferay', '1');
 
-INSERT INTO BQIdentity (individualId, userId) VALUES ('1', '1');
-INSERT INTO BQIdentity (individualId, userId) VALUES ('2', '2');
-INSERT INTO BQIdentity (individualId, userId) VALUES ('3', '3');
-INSERT INTO BQIdentity (individualId, userId) VALUES ('4', '4');
+INSERT INTO BQIdentity (id, individualId) VALUES ('1', '1');
+INSERT INTO BQIdentity (id, individualId) VALUES ('2', '2');
+INSERT INTO BQIdentity (id, individualId) VALUES ('3', '3');
+INSERT INTO BQIdentity (id, individualId) VALUES ('4', '4');
 
 INSERT INTO BQIndividual (id) VALUES ('1');
 INSERT INTO BQIndividual (id) VALUES ('2');

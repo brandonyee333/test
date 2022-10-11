@@ -109,9 +109,9 @@ public class EventsByUserSessionsDataFetcherTest
 	private void _createBQIdentity() {
 		BQIdentity bqIdentity = new BQIdentity();
 
+		bqIdentity.setId("1");
 		bqIdentity.setIndividualId("1");
 		bqIdentity.setIsNew(true);
-		bqIdentity.setUserId("1");
 
 		_bqIdentityRepository.save(bqIdentity);
 	}

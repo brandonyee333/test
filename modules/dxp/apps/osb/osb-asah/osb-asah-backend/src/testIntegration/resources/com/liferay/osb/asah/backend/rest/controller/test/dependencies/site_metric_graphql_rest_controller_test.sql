@@ -1,10 +1,10 @@
-INSERT INTO BQIdentity (individualId, userId) VALUES ('A', '1');
-INSERT INTO BQIdentity (individualId, userId) VALUES ('B', '2');
-INSERT INTO BQIdentity (individualId, userId) VALUES ('C', '3');
-INSERT INTO BQIdentity (individualId, userId) VALUES (null, '4');
-INSERT INTO BQIdentity (individualId, userId) VALUES (null, '5');
-INSERT INTO BQIdentity (individualId, userId) VALUES (null, '6');
-INSERT INTO BQIdentity (individualId, userId) VALUES (null, '7');
+INSERT INTO BQIdentity (id, individualId) VALUES ('1', 'A');
+INSERT INTO BQIdentity (id, individualId) VALUES ('2', 'B');
+INSERT INTO BQIdentity (id, individualId) VALUES ('3', 'C');
+INSERT INTO BQIdentity (id, individualId) VALUES ('4', null);
+INSERT INTO BQIdentity (id, individualId) VALUES ('5', null);
+INSERT INTO BQIdentity (id, individualId) VALUES ('6', null);
+INSERT INTO BQIdentity (id, individualId) VALUES ('7', null);
 
 INSERT INTO BQIndividual (id) VALUES ('A');
 INSERT INTO BQIndividual (id) VALUES ('B');

@@ -5,7 +5,7 @@ INSERT INTO BQEvent (applicationId, id, canonicalUrl, channelId, eventDate, even
 INSERT INTO BQEvent (applicationId, id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES ('Page', 50, 'http://liferay.com', 1, timestamp '2022-09-20T15:25:51.433Z', 'pageUnloaded', '1', 'Liferay', '1');
 INSERT INTO BQEvent (applicationId, id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES ('SocialBookmarks', 60, 'http://liferay.com', 1, timestamp '2022-09-20T15:25:51.433Z', 'shared', '1', 'Liferay', '1');
 
-INSERT INTO BQIdentity (individualId, userId) VALUES ('1', '1');
+INSERT INTO BQIdentity (id, individualId) VALUES ('1', '1');
 
 INSERT INTO BQIndividual (id) VALUES ('1');
 

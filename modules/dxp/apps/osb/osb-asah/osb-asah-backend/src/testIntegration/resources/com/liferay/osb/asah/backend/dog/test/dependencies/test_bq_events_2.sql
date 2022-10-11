@@ -1,4 +1,4 @@
-INSERT INTO BQIdentity (individualId, userId) VALUES ('1', '1');
+INSERT INTO BQIdentity (id, individualId) VALUES ('1', '1');
 
 INSERT INTO BQIndividual (id) VALUES ('1');
 
