@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class IdentityIngestionNanite {
+public class IdentityNanite {
 
 	public void run() throws Exception {
 		while (true) {

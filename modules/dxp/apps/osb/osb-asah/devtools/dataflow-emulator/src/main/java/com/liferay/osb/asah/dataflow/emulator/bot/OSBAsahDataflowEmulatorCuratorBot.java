@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.AnalyticsEventsIngestionNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.DXPEntitiesIngestionNanite;
-import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IdentityIngestionNanite;
+import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IdentityNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IndividualNanite;
 
 import org.apache.commons.logging.Log;
@@ -70,9 +70,9 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 	}
 
 	@Scheduled(fixedDelay = 10 * DateUtil.SECOND)
-	public void runIdentityIngestionNanite() {
+	public void runIdentityNanite() {
 		try {
-			_identityIngestionNanite.run();
+			_identityNanite.run();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -105,7 +105,7 @@ public class OSBAsahDataflowEmulatorCuratorBot {
 	private DXPEntitiesIngestionNanite _dxpEntitiesIngestionNanite;
 
 	@Autowired
-	private IdentityIngestionNanite _identityIngestionNanite;
+	private IdentityNanite _identityNanite;
 
 	@Autowired
 	private IndividualNanite _individualNanite;
