@@ -306,7 +306,7 @@ public class IdentityNanite implements Nanite {
 				).put(
 					"id",
 					DigestUtils.sha256Hex(
-						String.join("#", userId, dataSourceId, channelId))
+						String.join("#", channelId, dataSourceId, userId))
 				).put(
 					"identityId", userId
 				).put(

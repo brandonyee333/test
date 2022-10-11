@@ -124,7 +124,7 @@ public class IdentityNanite {
 		bqIdentityActivity.setDataSourceId(Long.valueOf(dataSourceId));
 
 		String id = String.join(
-			"#", bqIdentity.getId(), dataSourceId, channelId);
+			"#", channelId, dataSourceId, bqIdentity.getId());
 
 		bqIdentityActivity.setId(DigestUtils.sha256Hex(id));
 
