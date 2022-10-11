@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS BQGroup (
 
 CREATE TABLE IF NOT EXISTS BQIdentity (
 	createDate TIMESTAMP,
-	individualId TEXT,
-	userId TEXT PRIMARY KEY
+	id TEXT PRIMARY KEY,
+	individualId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQIdentityActivity (

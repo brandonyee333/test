@@ -43,7 +43,7 @@ public class BQIdentity implements Persistable<String> {
 
 		BQIdentity bqIdentity = (BQIdentity)obj;
 
-		if (Objects.equals(_userId, bqIdentity._userId)) {
+		if (Objects.equals(_id, bqIdentity._id)) {
 			return true;
 		}
 
@@ -59,9 +59,11 @@ public class BQIdentity implements Persistable<String> {
 		return new Date(_createDate.getTime());
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
 	@Override
 	public String getId() {
-		return _userId;
+		return _id;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -70,20 +72,14 @@ public class BQIdentity implements Persistable<String> {
 		return _individualId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
-	public String getUserId() {
-		return _userId;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(_userId);
+		return Objects.hash(_id);
 	}
 
 	@Override
 	public boolean isNew() {
-		if ((_userId == null) || ((_isNew != null) && _isNew)) {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
 			return true;
 		}
 
@@ -96,6 +92,10 @@ public class BQIdentity implements Persistable<String> {
 		}
 	}
 
+	public void setId(String id) {
+		_id = id;
+	}
+
 	public void setIndividualId(String individualId) {
 		_individualId = individualId;
 	}
@@ -104,20 +104,16 @@ public class BQIdentity implements Persistable<String> {
 		_isNew = isNew;
 	}
 
-	public void setUserId(String userId) {
-		_userId = userId;
-	}
-
 	@Transient
 	private Date _createDate;
+
+	@Transient
+	private String _id;
 
 	@Transient
 	private String _individualId;
 
 	@Transient
 	private Boolean _isNew;
-
-	@Transient
-	private String _userId;
 
 }

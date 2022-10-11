@@ -1047,6 +1047,11 @@
 				"type": "TIMESTAMP"
 			},
 			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
 				"mode": "NULLABLE",
 				"name": "individualId",
 				"type": "STRING"
@@ -1054,11 +1059,6 @@
 			{
 				"mode": "REQUIRED",
 				"name": "projectId",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "userId",
 				"type": "STRING"
 			}
 		]
