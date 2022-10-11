@@ -16,14 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQIdentity;
 
-import java.util.Optional;
-
 /**
  * @author Marcellus Tavares
  */
 public interface BQIdentityRepository
 	extends CustomBQIdentityRepository, Repository<BQIdentity, String> {
-
-	public Optional<BQIdentity> findByUserId(String userId);
-
 }
