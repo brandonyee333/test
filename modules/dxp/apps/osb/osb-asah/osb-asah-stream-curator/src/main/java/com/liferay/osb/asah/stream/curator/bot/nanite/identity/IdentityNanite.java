@@ -87,35 +87,15 @@ public class IdentityNanite implements Nanite {
 		_messageSubscriber.sendAckIds(ids);
 	}
 
-	private CreateWriteStreamRequest
-		_buildIdentityActivityCreateWriteStreamRequest(String datasetName) {
+	private CreateWriteStreamRequest _buildCreateWriteStreamRequest(
+		String datasetName, String tableName) {
 
 		CreateWriteStreamRequest.Builder builder =
 			CreateWriteStreamRequest.newBuilder();
 
 		return builder.setParent(
 			String.valueOf(
-				TableName.of(
-					_googleProjectId, datasetName,
-					_IDENTITY_ACTIVITY_TABLE_NAME))
-		).setWriteStream(
-			WriteStream.newBuilder(
-			).setType(
-				WriteStream.Type.COMMITTED
-			).build()
-		).build();
-	}
-
-	private CreateWriteStreamRequest _buildIdentityCreateWriteStreamRequest(
-		String datasetName) {
-
-		CreateWriteStreamRequest.Builder builder =
-			CreateWriteStreamRequest.newBuilder();
-
-		return builder.setParent(
-			String.valueOf(
-				TableName.of(
-					_googleProjectId, datasetName, _IDENTITY_TABLE_NAME))
+				TableName.of(_googleProjectId, datasetName, tableName))
 		).setWriteStream(
 			WriteStream.newBuilder(
 			).setType(
@@ -150,7 +130,8 @@ public class IdentityNanite implements Nanite {
 
 			WriteStream clientWriteStream =
 				bigQueryWriteClient.createWriteStream(
-					_buildIdentityCreateWriteStreamRequest(datasetName));
+					_buildCreateWriteStreamRequest(
+						datasetName, _IDENTITY_TABLE_NAME));
 
 			try (JsonStreamWriter jsonStreamWriter =
 					JsonStreamWriter.newBuilder(
@@ -204,8 +185,8 @@ public class IdentityNanite implements Nanite {
 
 			WriteStream clientWriteStream =
 				bigQueryWriteClient.createWriteStream(
-					_buildIdentityActivityCreateWriteStreamRequest(
-						datasetName));
+					_buildCreateWriteStreamRequest(
+						datasetName, _IDENTITY_ACTIVITY_TABLE_NAME));
 
 			try (JsonStreamWriter jsonStreamWriter =
 					JsonStreamWriter.newBuilder(
