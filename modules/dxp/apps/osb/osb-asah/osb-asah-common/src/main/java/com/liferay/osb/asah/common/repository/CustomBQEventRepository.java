@@ -99,7 +99,7 @@ public interface CustomBQEventRepository {
 
 	public List<SearchKeyword> getSearchKeywords(
 		@Nullable String displayLanguageId, @Nullable String groupId,
-		int minCounts, Set<String> searchQueryStrings, Pageable pageable);
+		int minCounts, Pageable pageable, Set<String> searchQueryStrings);
 
 	public long getSearchKeywordsCount(
 		@Nullable String displayLanguageId, @Nullable String groupId,

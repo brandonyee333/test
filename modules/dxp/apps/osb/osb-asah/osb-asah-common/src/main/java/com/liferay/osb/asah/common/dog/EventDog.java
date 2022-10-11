@@ -181,8 +181,8 @@ public class EventDog {
 
 		return PageableExecutionUtils.getPage(
 			_bqEventRepository.getSearchKeywords(
-				displayLanguageId, groupId, minCounts, searchQueryStrings,
-				PageRequest.of(page, size, sort)),
+				displayLanguageId, groupId, minCounts,
+				PageRequest.of(page, size, sort), searchQueryStrings),
 			PageRequest.of(page, size, sort),
 			() -> _bqEventRepository.getSearchKeywordsCount(
 				displayLanguageId, groupId, minCounts, searchQueryStrings));

@@ -535,7 +535,7 @@ public class BQEventRepositoryImpl
 	@Override
 	public List<SearchKeyword> getSearchKeywords(
 		@Nullable String displayLanguageId, @Nullable String groupId,
-		int minCounts, Set<String> searchQueryStrings, Pageable pageable) {
+		int minCounts, Pageable pageable, Set<String> searchQueryStrings) {
 
 		return _queryExecutor.queryForList(
 			recordMap -> {
