@@ -103,7 +103,9 @@ public class SearchKeyword {
 	}
 
 	public void setCreateDate(Date createDate) {
-		_createDate = createDate;
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
 	}
 
 	public void setDisplayLanguageId(String displayLanguageId) {
@@ -119,7 +121,9 @@ public class SearchKeyword {
 	}
 
 	public void setLastModifiedDate(Date lastModifiedDate) {
-		_lastModifiedDate = lastModifiedDate;
+		if (lastModifiedDate != null) {
+			_lastModifiedDate = new Date(lastModifiedDate.getTime());
+		}
 	}
 
 	private Long _counts;
