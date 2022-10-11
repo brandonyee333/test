@@ -257,8 +257,8 @@ public class IdentityNanite implements Nanite {
 				_messageSubscriber.pullMessages(
 					_identityNanitePullMessagesSize, JSONObject::new);
 
-			if (_log.isInfoEnabled()) {
-				_log.info(
+			if (_log.isDebugEnabled()) {
+				_log.debug(
 					String.format(
 						"%d identity messages received", messages.size()));
 			}
