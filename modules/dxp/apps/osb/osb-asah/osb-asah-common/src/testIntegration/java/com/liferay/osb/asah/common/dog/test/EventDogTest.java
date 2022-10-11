@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
+import com.liferay.osb.asah.common.model.SearchKeyword;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -47,6 +48,8 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
 /**
  * @author Leslie Wong
@@ -180,6 +183,112 @@ public class EventDogTest
 		Assertions.assertArrayEquals(
 			new Date[] {date, DateUtil.addDays(date, -1)},
 			values.toArray(new Date[0]));
+	}
+
+	@Test
+	public void testGetSearchKeywords() throws Exception {
+		Channel channel = _channelDog.addChannel("Test Channel");
+
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
+				{
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
+				}
+			},
+			"Firefox", "http://localhost:8080/search?q=Liferay+DXP",
+			channel.getId(), "Diamond Bar", "en_US", "{\"groupId\": \"3212\"}",
+			"United States", DateUtil.newDate(), null, "", "",
+			DateUtil.newDate(), "pageViewed", "", "analyticsEventId1", "",
+			"en_US", "", "", "", "", "", "", "",
+			"http://localhost:8080/search?q=Liferay%20DXP", "userId", "");
+
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
+				{
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
+				}
+			},
+			"Firefox", "http://localhost:8080/search?q=Liferay",
+			channel.getId(), "Diamond Bar", "en_US", "{\"groupId\": \"3212\"}",
+			"United States", DateUtil.newDate(), null, "", "",
+			DateUtil.newDate(), "pageViewed", "", "analyticsEventId2", "",
+			"en_US", "", "", "", "", "", "", "",
+			"http://localhost:8080/search?q=Liferay", "userId", "");
+
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
+				{
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
+				}
+			},
+			"Firefox", "http://localhost:8080/search?q=Liferay+DXP",
+			channel.getId(), "Diamond Bar", "en_US", "{\"groupId\": \"3212\"}",
+			"United States", DateUtil.newDate(), null, "", "",
+			DateUtil.newDate(), "pageViewed", "", "analyticsEventId3", "",
+			"en_US", "", "", "", "", "", "", "",
+			"http://localhost:8080/search?q=Liferay+DXP", "userId", "");
+
+		_eventDog.addBQEvent(
+			"Page",
+			new HashSet<BQEventProperty>() {
+				{
+					add(
+						new BQEventProperty(
+							null, "viewDuration", "testValue1"));
+				}
+			},
+			"Firefox", "http://localhost:8080/search?q=Diamond+Bar",
+			channel.getId(), "Diamond Bar", "pt_BR", "{\"groupId\": \"3212\"}",
+			"United States", DateUtil.newDate(), null, "", "",
+			DateUtil.newDate(), "pageViewed", "", "analyticsEventId4", "",
+			"en_US", "", "", "", "", "", "", "",
+			"http://localhost:8080/search?q=Diamond+Bar", "userId", "");
+
+		Page<SearchKeyword> searchKeywordPage = _eventDog.getSearchKeywordPage(
+			null, null, 0, 0, 2, Sort.by(Sort.Order.desc("counts")));
+
+		Assertions.assertEquals(3, searchKeywordPage.getTotalElements());
+
+		List<SearchKeyword> searchKeywords = searchKeywordPage.getContent();
+
+		Assertions.assertEquals(2, searchKeywords.size());
+
+		SearchKeyword[] searchKeywordsArray = searchKeywords.toArray(
+			new SearchKeyword[0]);
+
+		SearchKeyword searchKeyword = searchKeywordsArray[0];
+
+		Assertions.assertEquals(2, searchKeyword.getCounts());
+		Assertions.assertEquals("en_US", searchKeyword.getDisplayLanguageId());
+		Assertions.assertEquals("3212", searchKeyword.getGroupId());
+		Assertions.assertEquals("liferay dxp", searchKeyword.getKeywords());
+
+		searchKeywordPage = _eventDog.getSearchKeywordPage(
+			null, null, 0, 0, 1, Sort.by(Sort.Order.desc("lastmodifieddate")));
+
+		Assertions.assertEquals(3, searchKeywordPage.getTotalElements());
+
+		searchKeywords = searchKeywordPage.getContent();
+
+		Assertions.assertEquals(1, searchKeywords.size());
+
+		searchKeywordsArray = searchKeywords.toArray(new SearchKeyword[0]);
+
+		searchKeyword = searchKeywordsArray[0];
+
+		Assertions.assertEquals(1, searchKeyword.getCounts());
+		Assertions.assertEquals("pt_BR", searchKeyword.getDisplayLanguageId());
+		Assertions.assertEquals("3212", searchKeyword.getGroupId());
+		Assertions.assertEquals("diamond bar", searchKeyword.getKeywords());
 	}
 
 	@Test
