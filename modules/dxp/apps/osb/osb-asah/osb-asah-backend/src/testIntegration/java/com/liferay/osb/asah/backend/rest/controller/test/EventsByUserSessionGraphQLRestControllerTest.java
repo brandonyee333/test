@@ -17,8 +17,10 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -61,6 +63,8 @@ public class EventsByUserSessionGraphQLRestControllerTest
 		_createBQEvent(new Date(), "assetDownloaded", "sessionId1");
 		_createBQEvent(new Date(), "pageViewed", "sessionId2");
 
+		_createBQIdentity();
+
 		_createUserSession(
 			"2021-10-08T01:30:15.000Z", "sessionId1",
 			"2021-10-08T01:00:00.000Z");
@@ -91,7 +95,17 @@ public class EventsByUserSessionGraphQLRestControllerTest
 			null, new Date(), 1L, "pageDescriptionValue", "Chrome", eventDate,
 			eventDefinitionName, null, RandomTestUtil.randomId(),
 			"pageKeywordsValue", "pt-BR", null, null, "referrerValue", null,
-			sessionId, "-3", "pageTitleValue", "urlValue", "userId", null);
+			sessionId, "-3", "pageTitleValue", "urlValue", "1", null);
+	}
+
+	private void _createBQIdentity() {
+		BQIdentity bqIdentity = new BQIdentity();
+
+		bqIdentity.setIndividualId("1");
+		bqIdentity.setIsNew(true);
+		bqIdentity.setUserId("1");
+
+		_bqIdentityRepository.save(bqIdentity);
 	}
 
 	private void _createUserSession(
@@ -105,6 +119,9 @@ public class EventsByUserSessionGraphQLRestControllerTest
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
+
+	@Autowired
+	private BQIdentityRepository _bqIdentityRepository;
 
 	@Autowired
 	private BQSessionRepository _bqSessionRepository;

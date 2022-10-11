@@ -19,8 +19,10 @@ import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -62,6 +64,8 @@ public class EventHistogramGraphQLRestControllerTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
+		_createBQIdentity();
+
 		List<EventAttributeDefinition> eventAttributeDefinitions =
 			Arrays.asList(
 				_eventAttributeDefinitionDog.
@@ -96,6 +100,16 @@ public class EventHistogramGraphQLRestControllerTest
 		TimeZone.setDefault(_timeZone);
 	}
 
+	private void _createBQIdentity() {
+		BQIdentity bqIdentity = new BQIdentity();
+
+		bqIdentity.setIndividualId("1");
+		bqIdentity.setIsNew(true);
+		bqIdentity.setUserId("1");
+
+		_bqIdentityRepository.save(bqIdentity);
+	}
+
 	private void _createEvent(
 			List<EventAttributeDefinition> eventAttributeDefinitions,
 			Date eventDate, String eventDefinitionName)
@@ -114,11 +128,14 @@ public class EventHistogramGraphQLRestControllerTest
 				Collectors.toSet()
 			),
 			1L, eventDate, 1L, eventDate, eventDefinitionName,
-			RandomTestUtil.randomId(), "sessionId", "userId");
+			RandomTestUtil.randomId(), "sessionId", "1");
 	}
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
+
+	@Autowired
+	private BQIdentityRepository _bqIdentityRepository;
 
 	@Autowired
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
