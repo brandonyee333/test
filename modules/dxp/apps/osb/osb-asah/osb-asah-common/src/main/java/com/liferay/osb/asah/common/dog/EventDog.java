@@ -21,15 +21,20 @@ import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.Preference;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
+import com.liferay.osb.asah.common.model.SearchKeyword;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +43,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.json.JSONArray;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -163,6 +172,22 @@ public class EventDog {
 			columnName, size);
 	}
 
+	public Page<SearchKeyword> getSearchKeywordPage(
+		@Nullable String displayLanguageId, @Nullable String groupId,
+		int minCounts, int page, int size,
+		org.springframework.data.domain.Sort sort) {
+
+		Set<String> searchQueryStrings = _getSearchQueryStrings();
+
+		return PageableExecutionUtils.getPage(
+			_bqEventRepository.getSearchKeywords(
+				displayLanguageId, groupId, minCounts, searchQueryStrings,
+				PageRequest.of(page, size, sort)),
+			PageRequest.of(page, size, sort),
+			() -> _bqEventRepository.getSearchKeywordsCount(
+				displayLanguageId, groupId, minCounts, searchQueryStrings));
+	}
+
 	public List<BQEvent> searchBQEvents(
 		Long channelId, @Nullable String individualId,
 		@Nullable String keywords, int page, int size, TimeRange timeRange) {
@@ -218,6 +243,32 @@ public class EventDog {
 		return eventAttributeDefinition.getName();
 	}
 
+	private Set<String> _getSearchQueryStrings() {
+		Preference preference = _preferenceDog.getPreference(
+			"search-query-strings");
+
+		Set<String> searchQueryStrings = new HashSet<>();
+
+		String preferenceValue = preference.getValue();
+
+		if (!StringUtil.isNull(preferenceValue)) {
+			if (_searchQueryStringsMap.containsKey(preferenceValue)) {
+				return _searchQueryStringsMap.get(preferenceValue);
+			}
+
+			searchQueryStrings = JSONUtil.toStringSet(
+				new JSONArray(preferenceValue));
+		}
+
+		searchQueryStrings.add("q");
+
+		_searchQueryStringsMap.clear();
+
+		_searchQueryStringsMap.put(preference.getValue(), searchQueryStrings);
+
+		return searchQueryStrings;
+	}
+
 	@Autowired
 	private BQEventPropertyRepository _bqEventPropertyRepository;
 
@@ -232,6 +283,12 @@ public class EventDog {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private PreferenceDog _preferenceDog;
+
+	private final Map<String, Set<String>> _searchQueryStringsMap =
+		new HashMap<>();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
