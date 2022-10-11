@@ -86,7 +86,7 @@ public class IdentityNanite implements Nanite {
 		_messageSubscriber.sendAckIds(ids);
 	}
 
-	private CreateWriteStreamRequest _buildCreateWriteStreamRequest(
+	private CreateWriteStreamRequest _buildIdentityCreateWriteStreamRequest(
 		String datasetName) {
 
 		CreateWriteStreamRequest.Builder builder =
@@ -94,7 +94,8 @@ public class IdentityNanite implements Nanite {
 
 		return builder.setParent(
 			String.valueOf(
-				TableName.of(_googleProjectId, datasetName, _TABLE_NAME))
+				TableName.of(
+					_googleProjectId, datasetName, _IDENTITY_TABLE_NAME))
 		).setWriteStream(
 			WriteStream.newBuilder(
 			).setType(
@@ -110,7 +111,7 @@ public class IdentityNanite implements Nanite {
 		_googleProjectId = bigQueryOptions.getProjectId();
 	}
 
-	private void _insertIntoBigQueryTable(
+	private void _insertIdentity(
 			String datasetName, List<Message<JSONObject>> messages)
 		throws Exception {
 
@@ -119,7 +120,7 @@ public class IdentityNanite implements Nanite {
 
 			WriteStream clientWriteStream =
 				bigQueryWriteClient.createWriteStream(
-					_buildCreateWriteStreamRequest(datasetName));
+					_buildIdentityCreateWriteStreamRequest(datasetName));
 
 			try (JsonStreamWriter jsonStreamWriter =
 					JsonStreamWriter.newBuilder(
@@ -193,7 +194,7 @@ public class IdentityNanite implements Nanite {
 			for (Map.Entry<String, List<Message<JSONObject>>> entry :
 					messagesMap.entrySet()) {
 
-				_insertIntoBigQueryTable(entry.getKey(), entry.getValue());
+				_insertIdentity(entry.getKey(), entry.getValue());
 			}
 
 			_acknowledgeMessages(messages);
@@ -230,7 +231,7 @@ public class IdentityNanite implements Nanite {
 	private static final String _EMPTY_EMAIL_ADDRESS_HASHED =
 		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
-	private static final String _TABLE_NAME = "identity";
+	private static final String _IDENTITY_TABLE_NAME = "identity";
 
 	private static final Log _log = LogFactory.getLog(IdentityNanite.class);
 
