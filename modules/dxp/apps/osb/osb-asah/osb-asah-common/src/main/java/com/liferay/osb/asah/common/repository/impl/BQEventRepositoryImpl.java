@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.model.DateGrouping;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.Interval;
+import com.liferay.osb.asah.common.model.SearchKeyword;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.filter.FilterOperator;
 import com.liferay.osb.asah.common.model.filter.FilterOperators;
@@ -528,6 +529,99 @@ public class BQEventRepositoryImpl
 	}
 
 	@Override
+	public List<SearchKeyword> getSearchKeywords(
+		@Nullable String displayLanguageId, @Nullable String groupId,
+		int minCounts, Set<String> searchQueryStrings, Pageable pageable) {
+
+		return _queryExecutor.queryForList(
+			SearchKeyword::new,
+			_dslContext.select(
+				DSL.count(
+					DSL.asterisk()
+				).as(
+					"counts"
+				),
+				DSL.min(
+					DSL.field("eventDate", Date.class)
+				).as(
+					"createdate"
+				),
+				DSL.field(
+					"contentLanguageId"
+				).as(
+					"displaylanguageid"
+				),
+				_dslHelper.jsonExtractScalar(
+					"context", "groupId"
+				).as(
+					"groupid"
+				),
+				DSL.field(
+					_getKeywordsField(searchQueryStrings)
+				).as(
+					"keywords"
+				),
+				DSL.max(
+					DSL.field("eventDate", Date.class)
+				).as(
+					"lastmodifieddate"
+				)
+			).from(
+				DSL.table("BQEvent")
+			).where(
+				_createCondition(
+					displayLanguageId, groupId, minCounts, searchQueryStrings)
+			).groupBy(
+				DSL.field("displaylanguageid"), DSL.field("groupid"),
+				DSL.field("keyword")
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
+	@Override
+	public long getSearchKeywordsCount(
+		@Nullable String displayLanguageId, @Nullable String groupId,
+		int minCounts, Set<String> searchQueryStrings) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				_dslContext.select(
+					DSL.field(
+						"contentLanguageId"
+					).as(
+						"displaylanguageid"
+					),
+					_dslHelper.jsonExtractScalar(
+						"context", "groupId"
+					).as(
+						"groupid"
+					),
+					DSL.field(
+						_getKeywordsField(searchQueryStrings)
+					).as(
+						"keywords"
+					)
+				).from(
+					"BQEvent"
+				).where(
+					_createCondition(
+						displayLanguageId, groupId, minCounts,
+						searchQueryStrings)
+				).groupBy(
+					DSL.field("displaylanguageid"), DSL.field("groupid"),
+					DSL.field("keyword")
+				)));
+	}
+
+	@Override
 	public List<BQEvent> searchBQEvents(
 		Long channelId, String individualId, @Nullable String keywords,
 		Pageable pageable, LocalDateTime rangeEndLocalDateTime,
@@ -714,6 +808,51 @@ public class BQEventRepositoryImpl
 			}
 
 			condition = condition.and(keywordCondition);
+		}
+
+		return condition;
+	}
+
+	private Condition _createCondition(
+		@Nullable String displayLanguageId, @Nullable String groupId,
+		int minCounts, Set<String> searchQueryStrings) {
+
+		Condition condition = DSL.and(
+			DSL.field(
+				"eventId"
+			).eq(
+				"pageViewed"
+			),
+			_dslHelper.likeRegex(
+				"url",
+				"[?&](?:" + String.join("|", searchQueryStrings) +
+					")=([^&]+)"));
+
+		if (Objects.nonNull(displayLanguageId)) {
+			condition = condition.and(
+				DSL.field(
+					"contentLanguageId"
+				).eq(
+					displayLanguageId
+				));
+		}
+
+		if (Objects.nonNull(groupId)) {
+			condition = condition.and(
+				_dslHelper.jsonExtractScalar(
+					"context", "groupId"
+				).eq(
+					groupId
+				));
+		}
+
+		if (minCounts > 0) {
+			condition = condition.and(
+				DSL.field(
+					DSL.count(DSL.asterisk())
+				).ge(
+					minCounts
+				));
 		}
 
 		return condition;
@@ -1254,6 +1393,14 @@ public class BQEventRepositoryImpl
 		}
 
 		return "BQEvent.individualId";
+	}
+
+	private Field<String> _getKeywordsField(Set<String> searchQueryStrings) {
+		return DSL.lower(
+			_dslHelper.regexpExtract(
+				_dslHelper.regexpReplace("url", "(?:%20|\\s)", "+"),
+				"[?&](?:" + String.join("|", searchQueryStrings) +
+					")=([^&]+)"));
 	}
 
 	private Field _getSelectField(

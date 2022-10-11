@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.BreakdownRow;
 import com.liferay.osb.asah.common.model.EventAnalysisBreakdown;
 import com.liferay.osb.asah.common.model.EventAnalysisFilter;
 import com.liferay.osb.asah.common.model.Interval;
+import com.liferay.osb.asah.common.model.SearchKeyword;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
@@ -95,6 +96,14 @@ public interface CustomBQEventRepository {
 
 	public Map<String, Date> getLastSeenDateDateGroupedByColumnName(
 		String columnName, int size);
+
+	public List<SearchKeyword> getSearchKeywords(
+		@Nullable String displayLanguageId, @Nullable String groupId,
+		int minCounts, Set<String> searchQueryStrings, Pageable pageable);
+
+	public long getSearchKeywordsCount(
+		@Nullable String displayLanguageId, @Nullable String groupId,
+		int minCounts, Set<String> searchQueryStrings);
 
 	public List<BQEvent> searchBQEvents(
 		Long channelId, String individualId, @Nullable String keywords,
