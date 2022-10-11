@@ -56,9 +56,9 @@ public class IndividualNaniteTest
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
+		bqIdentity.setId(RandomTestUtil.randomUUID());
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("joe@liferay.com"));
 		bqIdentity.setIsNew(Boolean.TRUE);
-		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 
 		_bqIdentityRepository.save(bqIdentity);
 
@@ -186,9 +186,9 @@ public class IndividualNaniteTest
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
+		bqIdentity.setId(RandomTestUtil.randomUUID());
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("joe@liferay.com"));
 		bqIdentity.setIsNew(Boolean.TRUE);
-		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 
 		_bqIdentityRepository.save(bqIdentity);
 
@@ -306,9 +306,9 @@ public class IndividualNaniteTest
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
+		bqIdentity.setId(RandomTestUtil.randomUUID());
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("joe@liferay.com"));
 		bqIdentity.setIsNew(Boolean.TRUE);
-		bqIdentity.setUserId(RandomTestUtil.randomUUID());
 
 		_bqIdentityRepository.save(bqIdentity);
 

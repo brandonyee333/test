@@ -78,9 +78,9 @@ public class BQIndividualRepositoryTest
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
+		bqIdentity.setId(RandomTestUtil.randomString());
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex(emailAddress));
 		bqIdentity.setIsNew(true);
-		bqIdentity.setUserId(RandomTestUtil.randomString());
 
 		bqIdentity = _bqIdentityRepository.save(bqIdentity);
 
