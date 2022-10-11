@@ -88,10 +88,13 @@ public class IdentityNanite {
 	private void _processMessage(Message<String> message) {
 		JSONObject jsonObject = new JSONObject(message.getObject());
 
-		String projectId = jsonObject.getString("projectId");
+		ProjectIdThreadLocal.forProject(
+			jsonObject.getString("projectId"),
+			() -> _saveBQIdentityActivity(
+				_saveBQIdentity(jsonObject), jsonObject));
+	}
 
-		ProjectIdThreadLocal.setProjectId(projectId);
-
+	private BQIdentity _saveBQIdentity(JSONObject jsonObject) {
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
@@ -104,7 +107,11 @@ public class IdentityNanite {
 
 		bqIdentity.setUserId(userId);
 
-		bqIdentity = _bqIdentityRepository.save(bqIdentity);
+		return _bqIdentityRepository.save(bqIdentity);
+	}
+
+	private BQIdentityActivity _saveBQIdentityActivity(
+		BQIdentity bqIdentity, JSONObject jsonObject) {
 
 		BQIdentityActivity bqIdentityActivity = new BQIdentityActivity();
 
@@ -112,14 +119,15 @@ public class IdentityNanite {
 
 		bqIdentityActivity.setChannelId(Long.valueOf(channelId));
 
-		bqIdentityActivity.setCreateDate(new Date());
+		bqIdentityActivity.setCreateDate(bqIdentity.getCreateDate());
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
 		bqIdentityActivity.setDataSourceId(Long.valueOf(dataSourceId));
 
 		String id = String.join(
-			"#", projectId, bqIdentity.getId(), dataSourceId, channelId);
+			"#", ProjectIdThreadLocal.getProjectId(), bqIdentity.getId(),
+			dataSourceId, channelId);
 
 		bqIdentityActivity.setId(id);
 
@@ -127,7 +135,7 @@ public class IdentityNanite {
 		bqIdentityActivity.setIndividualId(bqIdentity.getIndividualId());
 		bqIdentityActivity.setIsNew(_isBQIdentityActivityNew(id));
 
-		_bqIdentityActivityRepository.save(bqIdentityActivity);
+		return _bqIdentityActivityRepository.save(bqIdentityActivity);
 	}
 
 	@Autowired

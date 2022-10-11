@@ -59,7 +59,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConditionalOnGoogleApplicationCredentials
-public class IdentityBigQueryIngestionNanite implements Nanite {
+public class IdentityNanite implements Nanite {
 
 	@Override
 	public long getInterval() {
@@ -232,8 +232,7 @@ public class IdentityBigQueryIngestionNanite implements Nanite {
 
 	private static final String _TABLE_NAME = "identity";
 
-	private static final Log _log = LogFactory.getLog(
-		IdentityBigQueryIngestionNanite.class);
+	private static final Log _log = LogFactory.getLog(IdentityNanite.class);
 
 	private String _googleProjectId;
 
