@@ -74,8 +74,11 @@ public class Acquisition {
 			_term = decode(queryParams.get("utm_term"));
 		}
 		catch (Exception exception) {
-			_log.error(
-				"Unable to create acquisition from analytics event", exception);
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to create acquisition from analytics event",
+					exception);
+			}
 		}
 	}
 
