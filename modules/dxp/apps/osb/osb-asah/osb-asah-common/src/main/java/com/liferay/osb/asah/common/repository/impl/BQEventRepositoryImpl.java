@@ -539,6 +539,12 @@ public class BQEventRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			recordMap -> {
+				Object counts = recordMap.get("counts");
+
+				if (counts instanceof Integer) {
+					recordMap.put("counts", Long.valueOf((Integer)counts));
+				}
+
 				Object keywords = recordMap.get("keywords");
 
 				try {
