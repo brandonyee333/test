@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
+import org.jooq.Condition;
 import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -230,6 +231,57 @@ public class DSLHelper {
 				"generate_series({0}, {1}, '1 %s'::interval) AS generatedDate",
 				datePart.toSQL()),
 			timestamp1, timestamp2);
+	}
+
+	public Field<Object> jsonExtractScalar(String fieldName, String key) {
+		if (_isBigQueryDialect()) {
+			return DSL.field(
+				String.format(
+					"JSON_EXTRACT_SCALAR(%s, '$.%s')", fieldName, key));
+		}
+
+		return DSL.field(
+			String.format(
+				"JSON_EXTRACT_PATH_TEXT(%s::json, '%s')", fieldName, key));
+	}
+
+	public Condition likeRegex(String fieldName, String regexp) {
+		if (_isBigQueryDialect()) {
+			return DSL.condition(
+				String.format("REGEXP_CONTAINS(%s, r'%s')", fieldName, regexp));
+		}
+
+		return DSL.condition(
+			String.format("%s ~ '^.*%s.*$'", fieldName, regexp));
+	}
+
+	public Field<String> regexpExtract(Field<String> field, String regexp) {
+		if (_isBigQueryDialect()) {
+			return DSL.field(
+				String.format("REGEXP_EXTRACT(%s, r'%s')", field, regexp),
+				String.class);
+		}
+
+		return DSL.field(
+			String.format("(REGEXP_MATCH(%s, '%s'))[1]", field, regexp),
+			String.class);
+	}
+
+	public Field<String> regexpReplace(
+		String fieldName, String regexp, String value) {
+
+		if (_isBigQueryDialect()) {
+			return DSL.field(
+				String.format(
+					"REGEXP_REPLACE(%s, r'%s', '%s')", fieldName, regexp,
+					value),
+				String.class);
+		}
+
+		return DSL.field(
+			String.format(
+				"REGEXP_REPLACE(%s, '%s', '%s')", fieldName, regexp, value),
+			String.class);
 	}
 
 	private boolean _isBigQueryDialect() {
