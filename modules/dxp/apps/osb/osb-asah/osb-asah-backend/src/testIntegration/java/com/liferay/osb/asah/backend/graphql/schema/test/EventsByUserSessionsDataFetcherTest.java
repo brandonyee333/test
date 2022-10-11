@@ -23,8 +23,10 @@ import com.liferay.osb.asah.backend.graphql.schema.EventsByUserSessionsDataFetch
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -58,6 +60,8 @@ public class EventsByUserSessionsDataFetcherTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
+		_createBQIdentity();
+
 		_createEvent("assetClicked");
 		_createEvent("assetDownloaded");
 
@@ -102,6 +106,16 @@ public class EventsByUserSessionsDataFetcherTest
 				"canonicalUrlValue", bqEventDTO.getCanonicalUrl()));
 	}
 
+	private void _createBQIdentity() {
+		BQIdentity bqIdentity = new BQIdentity();
+
+		bqIdentity.setIndividualId("1");
+		bqIdentity.setIsNew(true);
+		bqIdentity.setUserId("1");
+
+		_bqIdentityRepository.save(bqIdentity);
+	}
+
 	private void _createEvent(String eventDefinitionName) throws Exception {
 		_eventDog.addBQEvent(
 			"Page",
@@ -115,7 +129,7 @@ public class EventsByUserSessionsDataFetcherTest
 			null, "canonicalUrlValue", 1L, null, null, "{}", null, new Date(),
 			1L, null, null, new Date(), eventDefinitionName, null,
 			RandomTestUtil.randomId(), null, "pt-BR", null, null, null, null,
-			"sessionId", null, null, null, "userId", null);
+			"sessionId", null, null, null, "1", null);
 	}
 
 	private DataFetchingEnvironment _getDataFetchingEnvironment() {
@@ -138,6 +152,9 @@ public class EventsByUserSessionsDataFetcherTest
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
+
+	@Autowired
+	private BQIdentityRepository _bqIdentityRepository;
 
 	@Autowired
 	private BQSessionRepository _bqSessionRepository;
