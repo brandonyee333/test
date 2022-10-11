@@ -89,6 +89,8 @@ WITH
 						eventId = 'documentDownloaded'
 					THEN
 						1
+					ELSE
+                    	0
 				END
 			) AS downloads,
 			country,
@@ -101,6 +103,8 @@ WITH
 						eventId = 'documentPreviewed'
 					THEN
 						1
+					ELSE
+					    0
 				END
 			) AS previews,
 			region,

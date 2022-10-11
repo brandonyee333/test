@@ -148,6 +148,8 @@ WITH
 						eventId = 'blogClicked'
 					THEN
 						1
+					ELSE
+					    0
 					END
 			) AS clicks,
 			city,
@@ -165,6 +167,8 @@ WITH
 						eventId = 'blogViewed'
 					THEN
 						1
+					ELSE
+					    0
 					END
 			) AS views
 		FROM
