@@ -67,7 +67,7 @@ public class PageAssetMetricRepositoryImpl
 			"BQIdentity"
 		).on(
 			DSL.field(
-				"BQIdentity.userId"
+				"BQIdentity.id"
 			).eq(
 				DSL.field(getTableName(timeRange) + ".userId")
 			)

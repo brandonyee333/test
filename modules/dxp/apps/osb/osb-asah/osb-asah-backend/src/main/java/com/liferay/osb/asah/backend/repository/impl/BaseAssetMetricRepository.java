@@ -98,7 +98,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				)
 			).on(
 				DSL.field(
-					"identity.userid"
+					"identity.id"
 				).eq(
 					DSL.field("metric.userId")
 				)
@@ -508,7 +508,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				)
 			).on(
 				DSL.field(
-					"identity.userid"
+					"identity.id"
 				).eq(
 					DSL.field("metric.userId")
 				)
@@ -575,7 +575,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				)
 			).on(
 				DSL.field(
-					"identity.userid"
+					"identity.id"
 				).eq(
 					DSL.field("metric.userId")
 				)

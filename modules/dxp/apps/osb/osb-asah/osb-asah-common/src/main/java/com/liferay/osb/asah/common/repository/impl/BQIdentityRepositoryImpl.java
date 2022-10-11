@@ -174,7 +174,7 @@ public class BQIdentityRepositoryImpl
 				)
 			).on(
 				DSL.field(
-					"identity.userId"
+					"identity.id"
 				).eq(
 					DSL.field("identityChannel.identityId")
 				)
@@ -190,7 +190,7 @@ public class BQIdentityRepositoryImpl
 				)
 			).on(
 				DSL.field(
-					"identity.userId"
+					"identity.id"
 				).eq(
 					DSL.field("identityActivity.identityId")
 				)

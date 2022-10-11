@@ -359,7 +359,7 @@ public class BQSessionRepositoryImpl
 			)
 		).on(
 			DSL.field(
-				"IndividualIdentity.userid"
+				"IndividualIdentity.id"
 			).eq(
 				DSL.field("BQSession.userid")
 			)
