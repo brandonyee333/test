@@ -598,7 +598,8 @@ public class BQEventRepositoryImpl
 					displayLanguageId, groupId, minCounts, searchQueryStrings)
 			).groupBy(
 				DSL.field("displaylanguageid"), DSL.field("groupid"),
-				DSL.field("keyword")
+				_dslHelper.getField(
+					DSL.field("keyword"), _getKeywordsField(searchQueryStrings))
 			).orderBy(
 				getSortFields(pageable.getSort(), null)
 			).limit(
@@ -642,7 +643,9 @@ public class BQEventRepositoryImpl
 						searchQueryStrings)
 				).groupBy(
 					DSL.field("displaylanguageid"), DSL.field("groupid"),
-					DSL.field("keyword")
+					_dslHelper.getField(
+						DSL.field("keyword"),
+						_getKeywordsField(searchQueryStrings))
 				)));
 	}
 

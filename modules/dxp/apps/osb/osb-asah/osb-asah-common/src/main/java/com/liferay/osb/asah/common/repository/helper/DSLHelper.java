@@ -191,6 +191,14 @@ public class DSLHelper {
 		return DSL.field(sb.toString(), OffsetDateTime.class);
 	}
 
+	public Field<?> getField(Field<?> bigQueryField, Field<?> postgresqlField) {
+		if (_isBigQueryDialect()) {
+			return bigQueryField;
+		}
+
+		return postgresqlField;
+	}
+
 	public Field<String> getNestedField(
 		String keyAttribute, String nestedField, String valueAttribute,
 		String wrapperColumn) {
