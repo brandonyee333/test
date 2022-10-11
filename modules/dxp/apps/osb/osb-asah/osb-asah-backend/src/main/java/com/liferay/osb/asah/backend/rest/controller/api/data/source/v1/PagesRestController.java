@@ -19,22 +19,32 @@ import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.PageDog;
 import com.liferay.osb.asah.backend.dog.PageReferrerDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.SearchKeywordDTO;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.PageMetricType;
+import com.liferay.osb.asah.common.model.SearchKeyword;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.time.LocalDate;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -186,6 +196,21 @@ public class PagesRestController extends BaseRestController {
 			_pageDog.getReadsMetricValue(canonicalURL, null, null));
 	}
 
+	@GetMapping("/search-keywords")
+	public PageDTO<SearchKeywordDTO> getSearchKeywords(
+		@RequestParam(required = false) String displayLanguageId,
+		@RequestParam(required = false) String groupId,
+		@RequestParam(defaultValue = "0") int minCounts,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
+
+		return _toSearchKeywordDTOPageDTO(
+			_eventDog.getSearchKeywordPage(
+				displayLanguageId, groupId, minCounts, page, size,
+				_getSort(sorts)));
+	}
+
 	@GetMapping("/social-page-referrers")
 	public Map<String, Double> getSocialPageReferrers(
 		@RequestParam String canonicalURL,
@@ -272,6 +297,53 @@ public class PagesRestController extends BaseRestController {
 			"value", totalMetricValue
 		).toString();
 	}
+
+	private Sort _getSort(String[] sorts) {
+		if (ArrayUtils.isEmpty(sorts)) {
+			return Sort.by(Sort.Order.desc("counts"));
+		}
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (int i = 0; i < sorts.length; i++) {
+			String sort = sorts[i];
+
+			String order = null;
+
+			String[] properties = sort.split(",");
+
+			if (properties.length == 1) {
+				order = sorts[++i];
+			}
+			else {
+				order = properties[1];
+			}
+
+			if (Objects.equals(order, "asc")) {
+				orders.add(
+					Sort.Order.asc(StringUtils.lowerCase(properties[0])));
+			}
+			else {
+				orders.add(
+					Sort.Order.desc(StringUtils.lowerCase(properties[0])));
+			}
+		}
+
+		return Sort.by(orders);
+	}
+
+	private PageDTO<SearchKeywordDTO> _toSearchKeywordDTOPageDTO(
+		Page<SearchKeyword> searchKeywordsPage) {
+
+		return new PageDTO<>(
+			"_embedded", new SearchKeywordDTO(searchKeywordsPage.getContent()),
+			searchKeywordsPage.getNumber(), searchKeywordsPage.getSize(),
+			searchKeywordsPage.getTotalElements(),
+			searchKeywordsPage.getTotalPages());
+	}
+
+	@Autowired
+	private EventDog _eventDog;
 
 	@Autowired
 	private HistogramDog _histogramDog;
