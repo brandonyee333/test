@@ -37,7 +37,11 @@ import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.util.GetterUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
+import java.io.UnsupportedEncodingException;
+
 import java.math.BigDecimal;
+
+import java.net.URLDecoder;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -534,7 +538,22 @@ public class BQEventRepositoryImpl
 		int minCounts, Set<String> searchQueryStrings, Pageable pageable) {
 
 		return _queryExecutor.queryForList(
-			SearchKeyword::new,
+			recordMap -> {
+				Object keywords = recordMap.get("keywords");
+
+				try {
+					recordMap.put(
+						"keywords",
+						URLDecoder.decode((String)keywords, "UTF-8"));
+				}
+				catch (UnsupportedEncodingException
+							unsupportedEncodingException) {
+
+					recordMap.put("keywords", keywords);
+				}
+
+				return new SearchKeyword(recordMap);
+			},
 			_dslContext.select(
 				DSL.count(
 					DSL.asterisk()
