@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -101,7 +102,13 @@ public class IdentityNanite {
 
 		bqIdentity.setId(userId);
 
-		bqIdentity.setIndividualId(jsonObject.getString("individualId"));
+		String individualId = jsonObject.getString("individualId");
+
+		if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
+			individualId = null;
+		}
+
+		bqIdentity.setIndividualId(individualId);
 
 		bqIdentity.setIsNew(_isBQIdentityNew(userId));
 
@@ -117,7 +124,7 @@ public class IdentityNanite {
 
 		bqIdentityActivity.setChannelId(Long.valueOf(channelId));
 
-		bqIdentityActivity.setCreateDate(bqIdentity.getCreateDate());
+		bqIdentityActivity.setCreateDate(new Date());
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
@@ -134,6 +141,9 @@ public class IdentityNanite {
 
 		return _bqIdentityActivityRepository.save(bqIdentityActivity);
 	}
+
+	private static final String _EMPTY_EMAIL_ADDRESS_HASHED =
+		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
 	@Autowired
 	private BQIdentityActivityRepository _bqIdentityActivityRepository;
