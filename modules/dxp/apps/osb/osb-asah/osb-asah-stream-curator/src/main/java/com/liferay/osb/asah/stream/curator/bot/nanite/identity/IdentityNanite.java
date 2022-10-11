@@ -124,6 +124,16 @@ public class IdentityNanite implements Nanite {
 		).build();
 	}
 
+	private String _getIndividualId(JSONObject jsonObject) {
+		String individualId = jsonObject.getString("individualId");
+
+		if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
+			individualId = null;
+		}
+
+		return individualId;
+	}
+
 	@PostConstruct
 	private void _init() {
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
@@ -286,12 +296,6 @@ public class IdentityNanite implements Nanite {
 		for (Message<JSONObject> message : messages) {
 			JSONObject jsonObject = message.getObject();
 
-			String individualId = jsonObject.getString("individualId");
-
-			if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
-				individualId = null;
-			}
-
 			String channelId = jsonObject.getString("channelId");
 			String dataSourceId = jsonObject.getString("dataSourceId");
 			String userId = jsonObject.getString("userId");
@@ -310,7 +314,7 @@ public class IdentityNanite implements Nanite {
 				).put(
 					"identityId", userId
 				).put(
-					"individualId", individualId
+					"individualId", _getIndividualId(jsonObject)
 				).put(
 					"projectId", jsonObject.getString("projectId")
 				));
@@ -325,19 +329,13 @@ public class IdentityNanite implements Nanite {
 		for (Message<JSONObject> message : messages) {
 			JSONObject messageJSONObject = message.getObject();
 
-			String individualId = messageJSONObject.getString("individualId");
-
-			if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
-				individualId = null;
-			}
-
 			jsonArray.put(
 				JSONUtil.put(
 					"createDate", DateUtil.toString(new Date())
 				).put(
 					"id", messageJSONObject.getString("userId")
 				).put(
-					"individualId", individualId
+					"individualId", _getIndividualId(messageJSONObject)
 				).put(
 					"projectId", messageJSONObject.getString("projectId")
 				));
