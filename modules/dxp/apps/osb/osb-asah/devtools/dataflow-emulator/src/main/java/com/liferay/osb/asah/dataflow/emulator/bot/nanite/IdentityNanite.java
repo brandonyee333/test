@@ -29,12 +29,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.sql.DataSource;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -78,9 +75,8 @@ public class IdentityNanite {
 		return !optional.isPresent();
 	}
 
-	private boolean _isBQIdentityNew(String userId) {
-		Optional<BQIdentity> optional = _bqIdentityRepository.findByUserId(
-			userId);
+	private boolean _isBQIdentityNew(String id) {
+		Optional<BQIdentity> optional = _bqIdentityRepository.findById(id);
 
 		return !optional.isPresent();
 	}
@@ -99,13 +95,13 @@ public class IdentityNanite {
 
 		bqIdentity.setCreateDate(new Date());
 
-		bqIdentity.setIndividualId(jsonObject.getString("individualId"));
-
 		String userId = jsonObject.getString("userId");
 
-		bqIdentity.setIsNew(_isBQIdentityNew(userId));
+		bqIdentity.setId(userId);
 
-		bqIdentity.setUserId(userId);
+		bqIdentity.setIndividualId(jsonObject.getString("individualId"));
+
+		bqIdentity.setIsNew(_isBQIdentityNew(userId));
 
 		return _bqIdentityRepository.save(bqIdentity);
 	}
@@ -131,7 +127,7 @@ public class IdentityNanite {
 
 		bqIdentityActivity.setId(id);
 
-		bqIdentityActivity.setIdentityId(bqIdentity.getUserId());
+		bqIdentityActivity.setIdentityId(bqIdentity.getId());
 		bqIdentityActivity.setIndividualId(bqIdentity.getIndividualId());
 		bqIdentityActivity.setIsNew(_isBQIdentityActivityNew(id));
 
@@ -143,10 +139,6 @@ public class IdentityNanite {
 
 	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;
-
-	@Autowired
-	@Qualifier("postgreSQLDataSource")
-	private DataSource _dataSource;
 
 	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
 	private MessageSubscriber _messageSubscriber;

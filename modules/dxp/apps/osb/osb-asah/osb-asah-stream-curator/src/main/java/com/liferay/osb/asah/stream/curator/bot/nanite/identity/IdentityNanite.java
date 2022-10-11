@@ -216,11 +216,11 @@ public class IdentityNanite implements Nanite {
 				JSONUtil.put(
 					"createDate", DateUtil.toString(new Date())
 				).put(
+					"id", messageJSONObject.getString("userId")
+				).put(
 					"individualId", individualId
 				).put(
 					"projectId", messageJSONObject.getString("projectId")
-				).put(
-					"userId", messageJSONObject.getString("userId")
 				));
 		}
 
