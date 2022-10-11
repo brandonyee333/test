@@ -1090,7 +1090,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "individualId",
 				"type": "STRING"
 			}

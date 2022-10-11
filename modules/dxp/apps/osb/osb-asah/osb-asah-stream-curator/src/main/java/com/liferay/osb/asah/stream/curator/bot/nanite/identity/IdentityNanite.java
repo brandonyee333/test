@@ -45,6 +45,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -84,6 +85,25 @@ public class IdentityNanite implements Nanite {
 		}
 
 		_messageSubscriber.sendAckIds(ids);
+	}
+
+	private CreateWriteStreamRequest
+		_buildIdentityActivityCreateWriteStreamRequest(String datasetName) {
+
+		CreateWriteStreamRequest.Builder builder =
+			CreateWriteStreamRequest.newBuilder();
+
+		return builder.setParent(
+			String.valueOf(
+				TableName.of(
+					_googleProjectId, datasetName,
+					_IDENTITY_ACTIVITY_TABLE_NAME))
+		).setWriteStream(
+			WriteStream.newBuilder(
+			).setType(
+				WriteStream.Type.COMMITTED
+			).build()
+		).build();
 	}
 
 	private CreateWriteStreamRequest _buildIdentityCreateWriteStreamRequest(
@@ -129,7 +149,7 @@ public class IdentityNanite implements Nanite {
 					).build()) {
 
 				ApiFuture<AppendRowsResponse> apiFuture =
-					jsonStreamWriter.append(_toJSONArray(messages));
+					jsonStreamWriter.append(_toIdentityJSONArray(messages));
 
 				ApiFutures.addCallback(
 					apiFuture,
@@ -149,6 +169,62 @@ public class IdentityNanite implements Nanite {
 									String.format(
 										"%s: %d rows inserted into identity " +
 											"table",
+										datasetName, messages.size()));
+							}
+						}
+
+					},
+					MoreExecutors.directExecutor());
+			}
+
+			bigQueryWriteClient.finalizeWriteStream(
+				FinalizeWriteStreamRequest.newBuilder(
+				).setName(
+					clientWriteStream.getName()
+				).build());
+		}
+	}
+
+	private void _insertIdentityActivity(
+			String datasetName, List<Message<JSONObject>> messages)
+		throws Exception {
+
+		try (BigQueryWriteClient bigQueryWriteClient =
+				BigQueryWriteClient.create()) {
+
+			WriteStream clientWriteStream =
+				bigQueryWriteClient.createWriteStream(
+					_buildIdentityActivityCreateWriteStreamRequest(
+						datasetName));
+
+			try (JsonStreamWriter jsonStreamWriter =
+					JsonStreamWriter.newBuilder(
+						clientWriteStream.getName(),
+						clientWriteStream.getTableSchema()
+					).build()) {
+
+				ApiFuture<AppendRowsResponse> apiFuture =
+					jsonStreamWriter.append(
+						_toIdentityActivityJSONArray(messages));
+
+				ApiFutures.addCallback(
+					apiFuture,
+					new ApiFutureCallback<AppendRowsResponse>() {
+
+						@Override
+						public void onFailure(Throwable throwable) {
+							_log.error(throwable, throwable);
+						}
+
+						@Override
+						public void onSuccess(
+							AppendRowsResponse appendRowsResponse) {
+
+							if (_log.isInfoEnabled()) {
+								_log.info(
+									String.format(
+										"%s: %d rows inserted into identity " +
+											"activity table",
 										datasetName, messages.size()));
 							}
 						}
@@ -195,13 +271,55 @@ public class IdentityNanite implements Nanite {
 					messagesMap.entrySet()) {
 
 				_insertIdentity(entry.getKey(), entry.getValue());
+				_insertIdentityActivity(entry.getKey(), entry.getValue());
 			}
 
 			_acknowledgeMessages(messages);
 		}
 	}
 
-	private JSONArray _toJSONArray(List<Message<JSONObject>> messages) {
+	private JSONArray _toIdentityActivityJSONArray(
+		List<Message<JSONObject>> messages) {
+
+		JSONArray jsonArray = new JSONArray();
+
+		for (Message<JSONObject> message : messages) {
+			JSONObject jsonObject = message.getObject();
+
+			String individualId = jsonObject.getString("individualId");
+
+			if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
+				individualId = null;
+			}
+
+			String channelId = jsonObject.getString("channelId");
+			String dataSourceId = jsonObject.getString("dataSourceId");
+			String userId = jsonObject.getString("userId");
+
+			jsonArray.put(
+				JSONUtil.put(
+					"channelId", Long.valueOf(channelId)
+				).put(
+					"createDate", DateUtil.toString(new Date())
+				).put(
+					"dataSourceId", Long.valueOf(dataSourceId)
+				).put(
+					"id",
+					DigestUtils.sha256Hex(
+						String.join("#", userId, dataSourceId, channelId))
+				).put(
+					"identityId", userId
+				).put(
+					"individualId", individualId
+				).put(
+					"projectId", jsonObject.getString("projectId")
+				));
+		}
+
+		return jsonArray;
+	}
+
+	private JSONArray _toIdentityJSONArray(List<Message<JSONObject>> messages) {
 		JSONArray jsonArray = new JSONArray();
 
 		for (Message<JSONObject> message : messages) {
@@ -230,6 +348,9 @@ public class IdentityNanite implements Nanite {
 
 	private static final String _EMPTY_EMAIL_ADDRESS_HASHED =
 		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+
+	private static final String _IDENTITY_ACTIVITY_TABLE_NAME =
+		"identityactivity";
 
 	private static final String _IDENTITY_TABLE_NAME = "identity";
 

@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,10 +124,9 @@ public class IdentityNanite {
 		bqIdentityActivity.setDataSourceId(Long.valueOf(dataSourceId));
 
 		String id = String.join(
-			"#", ProjectIdThreadLocal.getProjectId(), bqIdentity.getId(),
-			dataSourceId, channelId);
+			"#", bqIdentity.getId(), dataSourceId, channelId);
 
-		bqIdentityActivity.setId(id);
+		bqIdentityActivity.setId(DigestUtils.sha256Hex(id));
 
 		bqIdentityActivity.setIdentityId(bqIdentity.getId());
 		bqIdentityActivity.setIndividualId(bqIdentity.getIndividualId());
