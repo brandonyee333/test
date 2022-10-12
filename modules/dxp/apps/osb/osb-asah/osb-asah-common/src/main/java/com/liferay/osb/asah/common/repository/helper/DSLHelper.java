@@ -253,7 +253,7 @@ public class DSLHelper {
 				"JSON_EXTRACT_PATH_TEXT(%s::json, '%s')", fieldName, key));
 	}
 
-	public Condition likeRegex(String fieldName, String regexp) {
+	public Condition regexpContains(String fieldName, String regexp) {
 		if (_isBigQueryDialect()) {
 			return DSL.condition(
 				String.format("REGEXP_CONTAINS(%s, r'%s')", fieldName, regexp));

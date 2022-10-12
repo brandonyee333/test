@@ -852,7 +852,7 @@ public class BQEventRepositoryImpl
 			).eq(
 				"pageViewed"
 			),
-			_dslHelper.likeRegex(
+			_dslHelper.regexpContains(
 				"url",
 				"[?&](?:" + String.join("|", searchQueryStrings) +
 					")=([^&]+)"));
