@@ -158,10 +158,11 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 			LettuceClientConfiguration lettuceClientConfiguration)
 		throws MalformedURLException {
 
-		String[] redisNodesUrls = StringUtils.split(ServiceConstants.URL_REDIS);
+		String[] redisNodesUrls = StringUtils.split(
+			ServiceConstants.URL_REDIS, ',');
 
 		if (redisNodesUrls.length == 1) {
-			URL url = new URL(redisNodesUrls[0]);
+			URL url = new URL(redisNodesUrls[0].trim());
 
 			return new LettuceConnectionFactory(
 				new RedisStandaloneConfiguration(url.getHost(), url.getPort()),
@@ -176,7 +177,7 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 					redisMasterURL.getHost(), redisMasterURL.getPort());
 
 		for (int i = 1; i < redisNodesUrls.length; i++) {
-			URL url = new URL(redisNodesUrls[i]);
+			URL url = new URL(redisNodesUrls[i].trim());
 
 			redisStaticMasterReplicaConfiguration.addNode(
 				url.getHost(), url.getPort());
