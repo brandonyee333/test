@@ -343,7 +343,7 @@ public class BQSessionRepositoryImpl
 				).as(
 					"individualId"
 				),
-				DSL.field("userid")
+				DSL.field("BQIdentity.id")
 			).from(
 				"BQIdentity"
 			).innerJoin(

@@ -1408,7 +1408,7 @@ public class BQEventRepositoryImpl
 				DSL.field(
 					"BQEvent.userId"
 				).eq(
-					DSL.field("BQIdentity.userId")
+					DSL.field("BQIdentity.id")
 				)
 			);
 		}
