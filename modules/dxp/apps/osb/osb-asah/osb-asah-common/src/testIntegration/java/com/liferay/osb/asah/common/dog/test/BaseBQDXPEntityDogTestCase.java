@@ -38,7 +38,7 @@ public abstract class BaseBQDXPEntityDogTestCase
 		Channel channel = new Channel("channel");
 
 		channel.setId(11L);
-		channel.setIsNew(true);
+		channel.setIsNew(Boolean.TRUE);
 
 		dataSource = new DataSource("Liferay Brazil");
 
@@ -46,7 +46,7 @@ public abstract class BaseBQDXPEntityDogTestCase
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(123L);
-		dataSource.setIsNew(true);
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setProviderType("LIFERAY");
 		dataSource.setState("READY");
 		dataSource.setStatus("STARTED");
@@ -65,7 +65,7 @@ public abstract class BaseBQDXPEntityDogTestCase
 		bqExpandoColumn.setDataSourceId(dataSource.getId());
 		bqExpandoColumn.setDataType("STRING");
 		bqExpandoColumn.setId("1");
-		bqExpandoColumn.setIsNew(true);
+		bqExpandoColumn.setIsNew(Boolean.TRUE);
 		bqExpandoColumn.setName("column");
 
 		bqExpandoColumn = _bqExpandoColumnRepository.save(bqExpandoColumn);

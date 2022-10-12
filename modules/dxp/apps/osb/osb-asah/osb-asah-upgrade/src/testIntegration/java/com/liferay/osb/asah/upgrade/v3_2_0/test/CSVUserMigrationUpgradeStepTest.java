@@ -62,7 +62,7 @@ public class CSVUserMigrationUpgradeStepTest
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(337984445922213329L);
-		dataSource.setIsNew(true);
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setProviderType("LIFERAY");
 
 		_dataSourceRepository.save(dataSource);

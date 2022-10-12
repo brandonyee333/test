@@ -49,7 +49,7 @@ public class CommerceDashboardDogTest
 		_dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		_dataSource.setId(123L);
-		_dataSource.setIsNew(true);
+		_dataSource.setIsNew(Boolean.TRUE);
 		_dataSource.setProviderType("LIFERAY");
 		_dataSource.setState("READY");
 		_dataSource.setStatus("STARTED");
@@ -60,7 +60,7 @@ public class CommerceDashboardDogTest
 		Channel channel = new Channel("channel");
 
 		channel.setId(11L);
-		channel.setIsNew(true);
+		channel.setIsNew(Boolean.TRUE);
 
 		channel.addChannelDataSource(
 			new ChannelDataSource(_dataSource.getId(), null));

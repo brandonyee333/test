@@ -334,14 +334,14 @@ public abstract class BaseAssetRepositoryTestCase
 		Channel channel = new Channel("channel1");
 
 		channel.setId(11L);
-		channel.setIsNew(true);
+		channel.setIsNew(Boolean.TRUE);
 
 		_channelRepository.save(channel);
 
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(1L);
-		dataSource.setIsNew(true);
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setProviderType("LIFERAY");
 		dataSource.setState("READY");
 		dataSource.setStatus("STARTED");

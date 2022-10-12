@@ -365,7 +365,7 @@ public class BQMembershipRepositoryTest
 		Segment segment = new Segment();
 
 		segment.setId(segmentId);
-		segment.setIsNew(true);
+		segment.setIsNew(Boolean.TRUE);
 
 		Channel channel = _channelRepository.save(new Channel("Channel"));
 

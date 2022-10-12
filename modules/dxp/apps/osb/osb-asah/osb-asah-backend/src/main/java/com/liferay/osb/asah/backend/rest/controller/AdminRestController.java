@@ -274,7 +274,7 @@ public class AdminRestController extends BaseRestController {
 				id, jsonObject.getString("value"));
 
 			if (!_preferenceRepository.existsById(id)) {
-				preference.setIsNew(true);
+				preference.setIsNew(Boolean.TRUE);
 			}
 
 			_preferenceRepository.save(preference);

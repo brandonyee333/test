@@ -153,7 +153,7 @@ public class DataSourceDogTest
 		DataSource dataSource = new DataSource();
 
 		dataSource.setId(405201047787757795L);
-		dataSource.setIsNew(true);
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setName("Test Data Source");
 		dataSource.setProviderType("LIFERAY");
 
@@ -163,7 +163,7 @@ public class DataSourceDogTest
 
 		dxpEntity.setDataSourceId(dataSource.getId());
 		dxpEntity.setDataSourceName("Data Source Test");
-		dxpEntity.setIsNew(true);
+		dxpEntity.setIsNew(Boolean.TRUE);
 
 		_dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.USER);
 

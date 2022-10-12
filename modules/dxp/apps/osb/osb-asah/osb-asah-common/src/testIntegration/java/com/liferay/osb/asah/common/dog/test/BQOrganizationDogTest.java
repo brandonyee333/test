@@ -98,7 +98,7 @@ public class BQOrganizationDogTest
 		bqOrganization.setCreateDate(new Date());
 		bqOrganization.setDataSourceId(dataSource.getId());
 		bqOrganization.setId(RandomTestUtil.randomUUID());
-		bqOrganization.setIsNew(true);
+		bqOrganization.setIsNew(Boolean.TRUE);
 		bqOrganization.setModifiedDate(
 			new Date(dataJSONObject.getLong("modifiedDate")));
 		bqOrganization.setName(dataJSONObject.getString("name"));

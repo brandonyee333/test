@@ -54,14 +54,14 @@ public class BQOrganizationRepositoryTest
 		Channel channel1 = new Channel("channel1");
 
 		channel1.setId(11L);
-		channel1.setIsNew(true);
+		channel1.setIsNew(Boolean.TRUE);
 
 		_channelRepository.save(channel1);
 
 		dataSource1.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource1.setId(1L);
-		dataSource1.setIsNew(true);
+		dataSource1.setIsNew(Boolean.TRUE);
 		dataSource1.setProviderType("LIFERAY");
 		dataSource1.setState("READY");
 		dataSource1.setStatus("STARTED");
@@ -75,7 +75,7 @@ public class BQOrganizationRepositoryTest
 
 		bqOrganization.setDataSourceId(dataSource1.getId());
 		bqOrganization.setId(RandomTestUtil.randomUUID());
-		bqOrganization.setIsNew(true);
+		bqOrganization.setIsNew(Boolean.TRUE);
 		bqOrganization.setModifiedDate(new Date());
 		bqOrganization.setName("Organization 1");
 		bqOrganization.setOrganizationId(123L);

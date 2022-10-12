@@ -52,14 +52,14 @@ public class BQCSVUserRepositoryTest
 		Channel channel1 = new Channel("channel1");
 
 		channel1.setId(11L);
-		channel1.setIsNew(true);
+		channel1.setIsNew(Boolean.TRUE);
 
 		_channelRepository.save(channel1);
 
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(1L);
-		dataSource.setIsNew(true);
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setProviderType("LIFERAY");
 		dataSource.setState("READY");
 		dataSource.setStatus("STARTED");

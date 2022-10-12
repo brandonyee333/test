@@ -44,7 +44,7 @@ public class BQUserGroupDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqUserGroup1.setDataSourceId(dataSource.getId());
 		bqUserGroup1.setId("1");
-		bqUserGroup1.setIsNew(true);
+		bqUserGroup1.setIsNew(Boolean.TRUE);
 		bqUserGroup1.setModifiedDate(DateUtil.newDate());
 		bqUserGroup1.setName("Test");
 		bqUserGroup1.setUserGroupId(1L);
@@ -53,7 +53,7 @@ public class BQUserGroupDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqUserGroup2.setDataSourceId(dataSource.getId());
 		bqUserGroup2.setId("2");
-		bqUserGroup2.setIsNew(true);
+		bqUserGroup2.setIsNew(Boolean.TRUE);
 		bqUserGroup2.setModifiedDate(DateUtil.newDate());
 		bqUserGroup2.setName("Liferay");
 		bqUserGroup2.setUserGroupId(2L);

@@ -50,7 +50,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard1.setChannelId(1L);
 		customAssetDashboard1.setDataSourceId(1L);
 		customAssetDashboard1.setId("1");
-		customAssetDashboard1.setIsNew(true);
+		customAssetDashboard1.setIsNew(Boolean.TRUE);
 
 		CustomAssetDashboard customAssetDashboard2 = new CustomAssetDashboard();
 
@@ -61,7 +61,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard2.setChannelId(1L);
 		customAssetDashboard2.setDataSourceId(1L);
 		customAssetDashboard2.setId("2");
-		customAssetDashboard2.setIsNew(true);
+		customAssetDashboard2.setIsNew(Boolean.TRUE);
 
 		CustomAssetDashboard customAssetDashboard3 = new CustomAssetDashboard();
 
@@ -72,7 +72,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard3.setChannelId(1L);
 		customAssetDashboard3.setDataSourceId(1L);
 		customAssetDashboard3.setId("3");
-		customAssetDashboard3.setIsNew(true);
+		customAssetDashboard3.setIsNew(Boolean.TRUE);
 
 		CustomAssetDashboard customAssetDashboard4 = new CustomAssetDashboard();
 
@@ -83,7 +83,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard4.setChannelId(2L);
 		customAssetDashboard4.setDataSourceId(2L);
 		customAssetDashboard4.setId("4");
-		customAssetDashboard4.setIsNew(true);
+		customAssetDashboard4.setIsNew(Boolean.TRUE);
 
 		CustomAssetDashboard customAssetDashboard5 = new CustomAssetDashboard();
 
@@ -94,7 +94,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard5.setChannelId(3L);
 		customAssetDashboard5.setDataSourceId(3L);
 		customAssetDashboard5.setId("5");
-		customAssetDashboard5.setIsNew(true);
+		customAssetDashboard5.setIsNew(Boolean.TRUE);
 
 		CustomAssetDashboard customAssetDashboard6 = new CustomAssetDashboard();
 
@@ -105,7 +105,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard6.setChannelId(4L);
 		customAssetDashboard6.setDataSourceId(4L);
 		customAssetDashboard6.setId("6");
-		customAssetDashboard6.setIsNew(true);
+		customAssetDashboard6.setIsNew(Boolean.TRUE);
 
 		CustomAssetDashboard customAssetDashboard7 = new CustomAssetDashboard();
 
@@ -116,7 +116,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard7.setChannelId(4L);
 		customAssetDashboard7.setDataSourceId(4L);
 		customAssetDashboard7.setId("7");
-		customAssetDashboard7.setIsNew(true);
+		customAssetDashboard7.setIsNew(Boolean.TRUE);
 
 		setUpRepository(
 			customAssetDashboard1, customAssetDashboard2, customAssetDashboard3,

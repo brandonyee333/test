@@ -42,7 +42,7 @@ public class SuppressionRepositoryTest
 
 		suppression.setEmailAddress("test@liferay.com");
 		suppression.setIndividualId("1232324234");
-		suppression.setIsNew(true);
+		suppression.setIsNew(Boolean.TRUE);
 
 		_suppressionRepository.save(suppression);
 	}

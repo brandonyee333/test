@@ -95,7 +95,7 @@ public class SegmentRepositoryTest
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(100L);
-		dataSource.setIsNew(true);
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setProviderType("LIFERAY");
 		dataSource.setState("READY");
 		dataSource.setStatus("STARTED");
@@ -303,7 +303,7 @@ public class SegmentRepositoryTest
 		Channel channel = new Channel(name);
 
 		channel.setId(id);
-		channel.setIsNew(true);
+		channel.setIsNew(Boolean.TRUE);
 
 		return _channelRepository.save(channel);
 	}

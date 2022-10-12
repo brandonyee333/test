@@ -112,7 +112,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		bqUserGroup.setId(
 			DigestUtils.sha256Hex(String.join("#", "test", "1", "123")));
-		bqUserGroup.setIsNew(true);
+		bqUserGroup.setIsNew(Boolean.TRUE);
 		bqUserGroup.setName("test");
 
 		_bqUserGroupRepository.save(bqUserGroup);
@@ -148,7 +148,7 @@ public class DXPEntitiesIngestionNaniteTest
 		bqOrganization.setId(
 			DigestUtils.sha256Hex(String.join("#", "test", "1", "123")));
 
-		bqOrganization.setIsNew(true);
+		bqOrganization.setIsNew(Boolean.TRUE);
 		bqOrganization.setName("Test");
 
 		BQExpandoValue bqExpandoValue = new BQExpandoValue();
@@ -160,7 +160,7 @@ public class DXPEntitiesIngestionNaniteTest
 		bqExpandoValue.setId(
 			DigestUtils.sha256Hex(String.join("#", "test", "1", "1", "123")));
 
-		bqExpandoValue.setIsNew(true);
+		bqExpandoValue.setIsNew(Boolean.TRUE);
 		bqExpandoValue.setValue("1234");
 
 		_bqExpandoValueRepository.save(bqExpandoValue);

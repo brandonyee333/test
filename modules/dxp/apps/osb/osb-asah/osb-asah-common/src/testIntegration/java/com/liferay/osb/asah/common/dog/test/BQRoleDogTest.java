@@ -44,7 +44,7 @@ public class BQRoleDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqRole1.setDataSourceId(dataSource.getId());
 		bqRole1.setId("1");
-		bqRole1.setIsNew(true);
+		bqRole1.setIsNew(Boolean.TRUE);
 		bqRole1.setModifiedDate(DateUtil.newDate());
 		bqRole1.setName("Test");
 		bqRole1.setRoleId(1L);
@@ -53,7 +53,7 @@ public class BQRoleDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqRole2.setDataSourceId(dataSource.getId());
 		bqRole2.setId("2");
-		bqRole2.setIsNew(true);
+		bqRole2.setIsNew(Boolean.TRUE);
 		bqRole2.setModifiedDate(DateUtil.newDate());
 		bqRole2.setName("Liferay");
 		bqRole2.setRoleId(2L);

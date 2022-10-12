@@ -65,13 +65,13 @@ public class BQIndividualRepositoryTest
 		bqIndividual.setId(DigestUtils.sha256Hex(emailAddress));
 
 		bqIndividual.setModifiedDate(date);
-		bqIndividual.setIsNew(true);
+		bqIndividual.setIsNew(Boolean.TRUE);
 
 		setUpRepository(bqIndividual);
 
 		bqIndividual = entityModels.get(0);
 
-		bqIndividual.setIsNew(false);
+		bqIndividual.setIsNew(Boolean.FALSE);
 
 		bqIndividual = _bqIndividualRepository.save(bqIndividual);
 
@@ -80,7 +80,7 @@ public class BQIndividualRepositoryTest
 		bqIdentity.setCreateDate(new Date());
 		bqIdentity.setId(RandomTestUtil.randomString());
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex(emailAddress));
-		bqIdentity.setIsNew(true);
+		bqIdentity.setIsNew(Boolean.TRUE);
 
 		bqIdentity = _bqIdentityRepository.save(bqIdentity);
 
@@ -92,7 +92,7 @@ public class BQIndividualRepositoryTest
 		bqIdentityActivity.setId(RandomTestUtil.randomUUID());
 		bqIdentityActivity.setIdentityId(bqIdentity.getId());
 		bqIdentityActivity.setIndividualId(bqIdentity.getIndividualId());
-		bqIdentityActivity.setIsNew(true);
+		bqIdentityActivity.setIsNew(Boolean.TRUE);
 
 		_bqIdentityActivityRepository.save(bqIdentityActivity);
 
@@ -101,12 +101,12 @@ public class BQIndividualRepositoryTest
 		bqMembership.setCreateDate(new Date());
 		bqMembership.setId(RandomTestUtil.randomNumber());
 		bqMembership.setIndividualId(bqIdentity.getIndividualId());
-		bqMembership.setIsNew(true);
+		bqMembership.setIsNew(Boolean.TRUE);
 		bqMembership.setSegmentId(_SEGMENT_ID);
 
 		_bqMembershipRepository.save(bqMembership);
 
-		bqIndividual.setIsNew(false);
+		bqIndividual.setIsNew(Boolean.FALSE);
 
 		_bqIndividualRepository.save(bqIndividual);
 

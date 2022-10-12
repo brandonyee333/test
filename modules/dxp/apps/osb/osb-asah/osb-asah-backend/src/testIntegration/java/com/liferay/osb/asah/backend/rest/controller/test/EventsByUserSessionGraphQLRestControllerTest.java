@@ -103,7 +103,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 
 		bqIdentity.setId("1");
 		bqIdentity.setIndividualId("1");
-		bqIdentity.setIsNew(true);
+		bqIdentity.setIsNew(Boolean.TRUE);
 
 		_bqIdentityRepository.save(bqIdentity);
 	}

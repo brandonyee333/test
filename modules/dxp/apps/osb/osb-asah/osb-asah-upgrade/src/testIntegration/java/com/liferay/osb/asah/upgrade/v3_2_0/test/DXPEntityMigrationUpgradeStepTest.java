@@ -66,7 +66,7 @@ public class DXPEntityMigrationUpgradeStepTest
 		dataSource1.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource1.setId(405057430327289648L);
-		dataSource1.setIsNew(true);
+		dataSource1.setIsNew(Boolean.TRUE);
 		dataSource1.setProviderType("LIFERAY");
 
 		DataSource dataSource2 = new DataSource("Liferay Diamond Bar");
@@ -76,7 +76,7 @@ public class DXPEntityMigrationUpgradeStepTest
 		dataSource2.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource2.setId(405057430327289649L);
-		dataSource2.setIsNew(true);
+		dataSource2.setIsNew(Boolean.TRUE);
 		dataSource2.setProviderType("LIFERAY");
 
 		_dataSourceRepository.saveAll(Arrays.asList(dataSource1, dataSource2));

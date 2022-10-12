@@ -38,7 +38,7 @@ public abstract class BaseCurrencyValueGraphQLRestControllerTestCase
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(123L);
-		dataSource.setIsNew(true);
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setProviderType("LIFERAY");
 		dataSource.setState("READY");
 		dataSource.setStatus("STARTED");
@@ -49,7 +49,7 @@ public abstract class BaseCurrencyValueGraphQLRestControllerTestCase
 		Channel channel = new Channel("channel");
 
 		channel.setId(11L);
-		channel.setIsNew(true);
+		channel.setIsNew(Boolean.TRUE);
 
 		channel.addChannelDataSource(
 			new ChannelDataSource(dataSource.getId(), null));

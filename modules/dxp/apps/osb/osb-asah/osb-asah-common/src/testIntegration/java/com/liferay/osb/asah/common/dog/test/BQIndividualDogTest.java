@@ -799,7 +799,7 @@ public class BQIndividualDogTest
 
 		bqOrganization1.setDataSourceId(402139209179557944L);
 		bqOrganization1.setId("402139267512234420");
-		bqOrganization1.setIsNew(true);
+		bqOrganization1.setIsNew(Boolean.TRUE);
 		bqOrganization1.setName("engineering");
 		bqOrganization1.setOrganizationId(33120L);
 
@@ -809,7 +809,7 @@ public class BQIndividualDogTest
 
 		bqOrganization2.setDataSourceId(402139209179557944L);
 		bqOrganization2.setId("402139268847589064");
-		bqOrganization2.setIsNew(true);
+		bqOrganization2.setIsNew(Boolean.TRUE);
 		bqOrganization2.setName("marketing");
 		bqOrganization2.setOrganizationId(33134L);
 

@@ -62,14 +62,14 @@ public class DXPEntityRepositoryTest
 		Channel channel = new Channel("channel1");
 
 		channel.setId(11L);
-		channel.setIsNew(true);
+		channel.setIsNew(Boolean.TRUE);
 
 		_channelRepository.save(channel);
 
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setId(123L);
-		dataSource.setIsNew(true);
+		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setProviderType("LIFERAY");
 		dataSource.setState("READY");
 		dataSource.setStatus("STARTED");
@@ -266,7 +266,7 @@ public class DXPEntityRepositoryTest
 		dxpEntity.setDataSourceId(123L);
 		dxpEntity.setFieldsJSONObject(JSONUtil.put("name", "Test Group"));
 		dxpEntity.setId(1L);
-		dxpEntity.setIsNew(true);
+		dxpEntity.setIsNew(Boolean.TRUE);
 		dxpEntity.setType(DXPEntity.Type.GROUP);
 
 		Assertions.assertEquals(
@@ -278,7 +278,7 @@ public class DXPEntityRepositoryTest
 		dxpOrganization.setFieldsJSONObject(
 			JSONUtil.put("name", "Test Organization"));
 		dxpOrganization.setId(2L);
-		dxpOrganization.setIsNew(true);
+		dxpOrganization.setIsNew(Boolean.TRUE);
 
 		Assertions.assertEquals(
 			dxpOrganization, _dxpEntityRepository.save(dxpOrganization));
@@ -293,7 +293,7 @@ public class DXPEntityRepositoryTest
 				"lastName", "Test"
 			));
 		dxpUser.setId(3L);
-		dxpUser.setIsNew(true);
+		dxpUser.setIsNew(Boolean.TRUE);
 
 		Assertions.assertEquals(dxpUser, _dxpEntityRepository.save(dxpUser));
 	}
