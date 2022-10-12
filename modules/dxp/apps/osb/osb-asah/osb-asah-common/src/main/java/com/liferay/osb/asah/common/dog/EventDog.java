@@ -34,7 +34,6 @@ import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -252,19 +251,11 @@ public class EventDog {
 		String preferenceValue = preference.getValue();
 
 		if (!StringUtil.isNull(preferenceValue)) {
-			if (_searchQueryStringsMap.containsKey(preferenceValue)) {
-				return _searchQueryStringsMap.get(preferenceValue);
-			}
-
 			searchQueryStrings = JSONUtil.toStringSet(
 				new JSONArray(preferenceValue));
 		}
 
 		searchQueryStrings.add("q");
-
-		_searchQueryStringsMap.clear();
-
-		_searchQueryStringsMap.put(preference.getValue(), searchQueryStrings);
 
 		return searchQueryStrings;
 	}
@@ -279,16 +270,10 @@ public class EventDog {
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
-	private EventDefinitionDog _eventDefinitionDog;
-
-	@Autowired
 	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private PreferenceDog _preferenceDog;
-
-	private final Map<String, Set<String>> _searchQueryStringsMap =
-		new HashMap<>();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
