@@ -838,6 +838,7 @@ definition {
 	@priority = "3"
 	test ViewPurchasedApp {
 		property test.name.skip.portal.instance = "AppManagement#ViewPurchasedApp";
+		property portal.upstream = "LilyLi";
 
 		task ("Given login marketplace store") {
 			Navigator.openStoreURL();
@@ -852,7 +853,7 @@ definition {
 
 			AppManager.searchApp(searchName = "Control Panel Documentation");
 
-			WaitForSPARefresh();
+			WaitForPageLoad();
 
 			AppManager.purchaseApp(
 				searchName = "Control Panel Documentation",
