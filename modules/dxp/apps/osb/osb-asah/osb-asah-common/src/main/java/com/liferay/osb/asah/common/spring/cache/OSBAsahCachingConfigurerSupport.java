@@ -25,6 +25,7 @@ import java.time.Duration;
 
 import java.util.Arrays;
 
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.hadoop.util.StringUtils;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +36,6 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.PoolConfig;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.RedisStaticMasterReplicaConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
@@ -102,12 +102,14 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 			lettucePoolingClientConfigurationBuilder.shutdownTimeout(
 				Duration.ofSeconds(10));
 
-			PoolConfig poolConfig = new PoolConfig();
+			GenericObjectPoolConfig genericObjectPoolConfig =
+				new GenericObjectPoolConfig();
 
-			poolConfig.setMaxTotal(16);
-			poolConfig.setMaxIdle(16);
+			genericObjectPoolConfig.setMaxTotal(16);
+			genericObjectPoolConfig.setMaxIdle(16);
 
-			lettucePoolingClientConfigurationBuilder.poolConfig(poolConfig);
+			lettucePoolingClientConfigurationBuilder.poolConfig(
+				genericObjectPoolConfig);
 
 			return _newLettuceConnectionFactory(
 				lettucePoolingClientConfigurationBuilder.build());
