@@ -80,10 +80,12 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 			}
 
 			for (String viewName : _viewsJSONObject.keySet()) {
+				JSONObject jsonObject = _viewsJSONObject.getJSONObject(
+					viewName);
+
 				_createView(
 					dataset.getDatasetId(),
-					_readFile(
-						"/bigquery/" + _viewsJSONObject.getString(viewName)),
+					_readFile("/bigquery/" + jsonObject.getString("path")),
 					viewName);
 			}
 		}

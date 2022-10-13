@@ -1,11 +1,29 @@
 {
-	"bloghourly": "blog_hourly.sql",
-	"customassethourly": "custom_asset_hourly.sql",
-	"documentlibraryhourly": "document_library_hourly.sql",
-	"fieldmapping": "fieldmapping.sql",
-	"formhourly": "form_hourly.sql",
-	"identity": "identity.sql",
-	"identityactivity": "identityactivity.sql",
-	"journalhourly": "journal_hourly.sql",
-	"pagehourly": "page_hourly.sql"
+	"bloghourly": {
+		"path": "blog_hourly.sql"
+	},
+	"customassethourly": {
+		"path": "custom_asset_hourly.sql.sql"
+	},
+	"documentlibraryhourly": {
+		"path": "document_library_hourly.sql"
+	},
+	"fieldmapping": {
+		"path": "fieldmapping.sql"
+	},
+	"formhourly": {
+		"path": "form_hourly.sql"
+	},
+	"identity": {
+		"path": "identity.sql"
+	},
+	"identityactivity": {
+		"path": "identityactivity.sql"
+	},
+	"journalhourly": {
+		"path": "journal_hourly.sql"
+	},
+	"pagehourly": {
+		"path": "page_hourly.sql"
+	}
 }
