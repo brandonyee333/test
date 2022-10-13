@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -65,21 +64,41 @@ public class Individual {
 			});
 
 		if (fields != null) {
-			_fields = fields;
+			Stream<Field> fieldsStream = fields.stream();
 
-			_fields.addAll(
-				new HashSet<>(
-					Arrays.asList(
-						_createField(
-							"additionalName", bqIndividual.getMiddleName()),
-						_createField("email", bqIndividual.getEmailAddress()),
-						_createField("familyName", bqIndividual.getLastName()),
-						_createField("givenName", bqIndividual.getFirstName()),
-						_createField("jobTitle", bqIndividual.getJobTitle()))));
+			_customFields = fieldsStream.filter(
+				field -> StringUtils.contains(field.getName(), "-")
+			).collect(
+				Collectors.toSet()
+			);
+
+			fields.removeAll(_customFields);
+
+			fieldsStream = fields.stream();
+
+			fieldsStream.forEach(
+				field -> {
+					if (StringUtils.equals(field.getName(), "emailAddress")) {
+						field.setName("email");
+					}
+					else if (StringUtils.equals(field.getName(), "firstName")) {
+						field.setName("givenName");
+					}
+					else if (StringUtils.equals(field.getName(), "lastName")) {
+						field.setName("familyName");
+					}
+					else if (StringUtils.equals(
+								field.getName(), "middleName")) {
+
+						field.setName("additionalName");
+					}
+				});
+
+			_fields = fields;
 		}
 
+		_customDemographics = new Demographics(_customFields);
 		_demographics = new Demographics(_fields);
-
 		_emailAddressHashed = bqIndividual.getId();
 		_firstEnrichmentDate = bqIndividual.getCreateDate();
 		_id = StringUtil.get(bqIndividual.getId(), null);
@@ -185,13 +204,7 @@ public class Individual {
 	}
 
 	public Set<Field> getCustomFields() {
-		Stream<Field> stream = _customFields.stream();
-
-		return stream.filter(
-			field -> StringUtils.equals(field.getContext(), "custom")
-		).collect(
-			Collectors.toSet()
-		);
+		return _customFields;
 	}
 
 	public Set<DataSourceUserPK> getDataSourceUserPKs() {
@@ -207,13 +220,7 @@ public class Individual {
 	}
 
 	public Set<Field> getFields() {
-		Stream<Field> stream = _fields.stream();
-
-		return stream.filter(
-			field -> !StringUtils.equals(field.getContext(), "custom")
-		).collect(
-			Collectors.toSet()
-		);
+		return _fields;
 	}
 
 	public Date getFirstEnrichmentDate() {
