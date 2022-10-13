@@ -327,9 +327,9 @@ public class IdentityNanite implements Nanite {
 		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
 	private static final String _IDENTITY_ACTIVITY_TABLE_NAME =
-		"identityactivity";
+		"identityactivity_raw";
 
-	private static final String _IDENTITY_TABLE_NAME = "identity";
+	private static final String _IDENTITY_TABLE_NAME = "identity_raw";
 
 	private static final Log _log = LogFactory.getLog(IdentityNanite.class);
 
