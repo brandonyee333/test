@@ -96,6 +96,7 @@ SELECT
 	FormEvent.city,
 	FormEvent.country,
 	FormEvent.deviceType,
+	TIMESTAMP_TRUNC(eventDate, HOUR) AS eventDate,
 	SUM(
         CASE
             WHEN
@@ -107,7 +108,6 @@ SELECT
                 0
         END
     ) AS finalizedFormViews,
-	TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 	FormEvent.platformName,
 	FormEvent.region,
 	FormEvent.title AS pageTitle,

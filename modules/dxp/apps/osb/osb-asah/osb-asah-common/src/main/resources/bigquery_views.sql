@@ -834,6 +834,7 @@ CREATE OR REPLACE VIEW BQForm AS (
 		FormEvent.city,
 		FormEvent.country,
 		FormEvent.deviceType,
+		DATE_TRUNC('HOUR', FormEvent.eventDate) AS eventDate,
 		SUM(
             CASE
                 WHEN
@@ -845,7 +846,6 @@ CREATE OR REPLACE VIEW BQForm AS (
                 0
         END
         ) AS finalizedFormViews,
-		DATE_TRUNC('HOUR', FormEvent.eventDate) AS normalizedEventDate,
 		FormEvent.platformName,
 		FormEvent.region,
 		SUM(CASE WHEN FormEvent.eventId = 'formSubmitted' THEN 1 END) AS submissions,
