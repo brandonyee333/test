@@ -24,6 +24,7 @@ import com.google.cloud.bigquery.DatasetInfo;
 import com.google.cloud.bigquery.Field;
 import com.google.cloud.bigquery.FieldList;
 import com.google.cloud.bigquery.LegacySQLTypeName;
+import com.google.cloud.bigquery.MaterializedViewDefinition;
 import com.google.cloud.bigquery.Schema;
 import com.google.cloud.bigquery.StandardSQLTypeName;
 import com.google.cloud.bigquery.StandardTableDefinition;
@@ -83,10 +84,18 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 				JSONObject jsonObject = _viewsJSONObject.getJSONObject(
 					viewName);
 
+				boolean materialized = false;
+
+				if (Objects.equals(
+						jsonObject.optString("type"), "materialized")) {
+
+					materialized = true;
+				}
+
 				_createView(
 					dataset.getDatasetId(),
 					_readFile("/bigquery/" + jsonObject.getString("path")),
-					viewName);
+					materialized, viewName);
 			}
 		}
 		catch (Exception exception) {
@@ -251,17 +260,27 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	}
 
 	private Table _createView(
-		DatasetId datasetId, String query, String viewName) {
+		DatasetId datasetId, String query, boolean materialized,
+		String viewName) {
 
 		TableId tableId = TableId.of(datasetId.getDataset(), viewName);
 
-		ViewDefinition viewDefinition = ViewDefinition.newBuilder(
-			StringUtils.replace(query, "$[AC_PROJECT_ID]", _getProjectId())
-		).setUseLegacySql(
-			false
-		).build();
+		TableDefinition tableDefinition = null;
 
-		Table table = _bigQuery.create(TableInfo.of(tableId, viewDefinition));
+		if (materialized) {
+			tableDefinition = MaterializedViewDefinition.newBuilder(
+				StringUtils.replace(query, "$[AC_PROJECT_ID]", _getProjectId())
+			).build();
+		}
+		else {
+			tableDefinition = ViewDefinition.newBuilder(
+				StringUtils.replace(query, "$[AC_PROJECT_ID]", _getProjectId())
+			).setUseLegacySql(
+				false
+			).build();
+		}
+
+		Table table = _bigQuery.create(TableInfo.of(tableId, tableDefinition));
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
