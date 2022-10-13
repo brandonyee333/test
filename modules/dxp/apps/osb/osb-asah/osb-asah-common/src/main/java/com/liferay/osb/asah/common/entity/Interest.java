@@ -88,7 +88,7 @@ public class Interest implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getOwnerId() {
+	public String getOwnerId() {
 		return _ownerId;
 	}
 
@@ -150,7 +150,7 @@ public class Interest implements Persistable<Long> {
 		_name = name;
 	}
 
-	public void setOwnerId(Long ownerId) {
+	public void setOwnerId(String ownerId) {
 		_ownerId = ownerId;
 	}
 
@@ -182,7 +182,7 @@ public class Interest implements Persistable<Long> {
 	private String _name;
 
 	@Transient
-	private Long _ownerId;
+	private String _ownerId;
 
 	@Transient
 	private String _ownerType;

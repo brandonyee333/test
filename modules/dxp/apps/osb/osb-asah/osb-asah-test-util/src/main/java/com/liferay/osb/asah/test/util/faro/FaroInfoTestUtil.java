@@ -411,8 +411,9 @@ public class FaroInfoTestUtil {
 		double score, Long views) {
 
 		return buildInterests(
-			assetJSONObject.getJSONArray("keywords"), individualId,
-			"individual", recordedDate, score, views);
+			assetJSONObject.getJSONArray("keywords"),
+			String.valueOf(individualId), "individual", recordedDate, score,
+			views);
 	}
 
 	public static JSONArray buildIndividualSegmentVisitedPagesJSONArray(
@@ -434,7 +435,7 @@ public class FaroInfoTestUtil {
 	}
 
 	public static List<Interest> buildInterests(
-		JSONArray keywordsJSONArray, Long ownerId, String ownerType,
+		JSONArray keywordsJSONArray, String ownerId, String ownerType,
 		Date recordedDate, double score, Long views) {
 
 		List<Interest> interests = new ArrayList<>();

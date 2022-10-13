@@ -54,7 +54,7 @@ public class InterestCompositionDog {
 		boolean active, String channelId, String keywords, Long segmentId,
 		int size, Sort sort, int start) {
 
-		List<Long> individualIds = _getIndividualIds(
+		List<String> individualIds = _getIndividualIds(
 			active, channelId, segmentId);
 
 		if (individualIds.isEmpty()) {
@@ -77,7 +77,7 @@ public class InterestCompositionDog {
 	}
 
 	private CompositionResultBag _getCompositionResultBag(
-		List<Long> individualIds, String keyword, Date recordedDate,
+		List<String> individualIds, String keyword, Date recordedDate,
 		Double score, int size, Sort sort, int start) {
 
 		List<Composition> compositions = new ArrayList<>();
@@ -121,7 +121,7 @@ public class InterestCompositionDog {
 			compositions, count, individualIds.size());
 	}
 
-	private List<Long> _getIndividualIds(
+	private List<String> _getIndividualIds(
 		boolean active, String channelId, Long segmentId) {
 
 		// TODO fetch individualIds by channelId, date and segmentId

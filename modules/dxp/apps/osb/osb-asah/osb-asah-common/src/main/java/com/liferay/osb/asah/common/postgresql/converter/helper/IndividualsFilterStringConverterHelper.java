@@ -329,7 +329,7 @@ public class IndividualsFilterStringConverterHelper
 			return DSL.not(DSL.noCondition());
 		}
 
-		List<Long> individualIds = _interestDog.getOwnerIds(
+		List<String> individualIds = _interestDog.getOwnerIds(
 			filterString.replaceAll(matcher.group(1), "score eq " + value),
 			IndividualIdThreadLocal.getIndividualId());
 
@@ -385,7 +385,7 @@ public class IndividualsFilterStringConverterHelper
 		}
 
 		if (condition != DSL.noCondition()) {
-			Long individualId = IndividualIdThreadLocal.getIndividualId();
+			String individualId = IndividualIdThreadLocal.getIndividualId();
 
 			if (individualId != null) {
 				condition = DSL.and(

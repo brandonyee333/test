@@ -81,7 +81,7 @@ public class InterestRepositoryImpl
 
 	@Override
 	public long countInterestDistributions(
-		String keyword, List<Long> ownerIds, String ownerType,
+		String keyword, List<String> ownerIds, String ownerType,
 		Date recordedDate, Double score) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep1 =
@@ -137,11 +137,11 @@ public class InterestRepositoryImpl
 
 	@Override
 	public List<Interest> findByNameAndOwnerIdAndRecordedDate(
-		@Nullable String name, @Nullable Long ownerId, Date recordedDate) {
+		@Nullable String name, @Nullable String ownerId, Date recordedDate) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		List<Long> ownerIds = new ArrayList<>();
+		List<String> ownerIds = new ArrayList<>();
 
 		if (ownerId != null) {
 			ownerIds.add(ownerId);
@@ -180,15 +180,15 @@ public class InterestRepositoryImpl
 	}
 
 	@Override
-	public List<Long> findOwnerIdsByFilterStringAndOwnerId(
-		FilterHelper filterHelper, Long ownerId) {
+	public List<String> findOwnerIdsByFilterStringAndOwnerId(
+		FilterHelper filterHelper, String ownerId) {
 
 		Field field = DSL.field("ownerId", Long.class);
 
 		SelectSelectStep<Record1<Long>> selectSelectStep = _dslContext.select(
 			field);
 
-		List<Long> ownerIds = new ArrayList<>();
+		List<String> ownerIds = new ArrayList<>();
 
 		if (ownerId != null) {
 			ownerIds.add(ownerId);
@@ -205,7 +205,7 @@ public class InterestRepositoryImpl
 
 	@Override
 	public List<Distribution> getInterestDistributions(
-		@Nullable String keyword, @Nullable List<Long> ownerIds,
+		@Nullable String keyword, @Nullable List<String> ownerIds,
 		@Nullable String ownerType, @Nullable Date recordedDate,
 		@Nullable Double score, Pageable pageable) {
 
@@ -239,7 +239,7 @@ public class InterestRepositoryImpl
 
 	@Override
 	public List<String> getTopNamesByOwnerIdAndOwnerType(
-		Long ownerId, String ownerType, int size) {
+		String ownerId, String ownerType, int size) {
 
 		SelectSelectStep<Record1<String>> selectSelectStep = _dslContext.select(
 			DSL.field("name", String.class));
@@ -367,7 +367,7 @@ public class InterestRepositoryImpl
 
 	private List<Condition> _getConditions(
 		@Nullable FilterHelper filterHelper, @Nullable Long interestId,
-		@Nullable String keywords, @Nullable List<Long> ownerIds,
+		@Nullable String keywords, @Nullable List<String> ownerIds,
 		@Nullable String ownerType, @Nullable Date recordedDate,
 		@Nullable Double score) {
 

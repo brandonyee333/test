@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class InterestDog {
 
-	public void deleteInterests(List<Long> ownerIds, String ownerType) {
+	public void deleteInterests(List<String> ownerIds, String ownerType) {
 		_interestRepository.deleteByOwnerIdInAndOwnerType(ownerIds, ownerType);
 	}
 
@@ -53,17 +53,6 @@ public class InterestDog {
 		return interestOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "There is no interest with ID " + id));
-	}
-
-	public Page<Interest> getInterestPage(
-		Long ownerId, String ownerType, int size, int start) {
-
-		return PageableExecutionUtils.getPage(
-			_interestRepository.findByOwnerIdAndOwnerType(
-				ownerId, ownerType, PageRequest.of(start / size, size)),
-			PageRequest.of(start / size, size),
-			() -> _interestRepository.countByOwnerIdAndOwnerType(
-				ownerId, ownerType));
 	}
 
 	public Page<Interest> getInterestPage(
@@ -83,8 +72,19 @@ public class InterestDog {
 					filterHelper, score));
 	}
 
+	public Page<Interest> getInterestPage(
+		String ownerId, String ownerType, int size, int start) {
+
+		return PageableExecutionUtils.getPage(
+			_interestRepository.findByOwnerIdAndOwnerType(
+				ownerId, ownerType, PageRequest.of(start / size, size)),
+			PageRequest.of(start / size, size),
+			() -> _interestRepository.countByOwnerIdAndOwnerType(
+				ownerId, ownerType));
+	}
+
 	public List<Interest> getInterests(
-		String name, Long ownerId, String ownerType, Date fromRecordedDate,
+		String name, String ownerId, String ownerType, Date fromRecordedDate,
 		Date toRecordedDate) {
 
 		return _interestRepository.
@@ -92,14 +92,16 @@ public class InterestDog {
 				name, ownerId, ownerType, fromRecordedDate, toRecordedDate);
 	}
 
-	public List<Long> getOwnerIds(String filterString, Long ownerId) {
+	public List<String> getOwnerIds(String filterString, String ownerId) {
 		return _interestRepository.findOwnerIdsByFilterStringAndOwnerId(
 			new FilterHelper(
 				null, filterString, _interestFilterStringConverterHelper),
 			ownerId);
 	}
 
-	public List<String> getTopNames(Long ownerId, String ownerType, int size) {
+	public List<String> getTopNames(
+		String ownerId, String ownerType, int size) {
+
 		return _interestRepository.getTopNamesByOwnerIdAndOwnerType(
 			ownerId, ownerType, size);
 	}

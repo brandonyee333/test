@@ -34,7 +34,7 @@ public interface CustomInterestRepository {
 		FilterHelper filterHelper, @Nullable Double score);
 
 	public long countInterestDistributions(
-		String keyword, List<Long> ownerIds, String ownerType,
+		String keyword, List<String> ownerIds, String ownerType,
 		Date recordedDate, Double score);
 
 	public List<Interest> findByFilterStringAndScoreGreaterThanEqual(
@@ -42,22 +42,22 @@ public interface CustomInterestRepository {
 		Pageable pageable);
 
 	public List<Interest> findByNameAndOwnerIdAndRecordedDate(
-		@Nullable String name, @Nullable Long ownerId, Date recordedDate);
+		@Nullable String name, @Nullable String ownerId, Date recordedDate);
 
 	public List<Interest> findByOwnerTypeAndRecordedDate(
 		@Nullable Long interestId, @Nullable String ownerType,
 		@Nullable Date recordedDate, int size);
 
-	public List<Long> findOwnerIdsByFilterStringAndOwnerId(
-		FilterHelper filterHelper, @Nullable Long ownerId);
+	public List<String> findOwnerIdsByFilterStringAndOwnerId(
+		FilterHelper filterHelper, @Nullable String ownerId);
 
 	public List<Distribution> getInterestDistributions(
-		@Nullable String keyword, @Nullable List<Long> ownerIds,
+		@Nullable String keyword, @Nullable List<String> ownerIds,
 		@Nullable String ownerType, @Nullable Date recordedDate,
 		@Nullable Double score, Pageable pageable);
 
 	public List<String> getTopNamesByOwnerIdAndOwnerType(
-		Long ownerId, String ownerType, int size);
+		String ownerId, String ownerType, int size);
 
 	public List<Map<String, Object>> getTransformations(
 		Date fromDate, @Nullable FilterHelper filterHelper, String period,

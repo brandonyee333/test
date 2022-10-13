@@ -40,7 +40,7 @@ public class InterestDTO {
 	public InterestDTO(Interest interest) {
 		_id = StringUtil.get(interest.getId(), null);
 		_name = interest.getName();
-		_ownerId = StringUtil.get(interest.getOwnerId(), null);
+		_ownerId = interest.getOwnerId();
 		_ownerType = interest.getOwnerType();
 		_recordedDate = interest.getRecordedDate();
 		_score = interest.getScore();

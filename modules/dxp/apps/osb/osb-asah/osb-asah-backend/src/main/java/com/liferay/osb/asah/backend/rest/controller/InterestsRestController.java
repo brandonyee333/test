@@ -211,7 +211,7 @@ public class InterestsRestController
 	}
 
 	private List<Map<String, Object>> _getInterestAggregations(
-		LocalDateTime endDayLocalDateTime, String name, Long ownerId,
+		LocalDateTime endDayLocalDateTime, String name, String ownerId,
 		String ownerType, LocalDateTime startDayLocalDateTime) {
 
 		List<Map<String, Object>> interestAggregations = new ArrayList<>();

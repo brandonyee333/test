@@ -22,7 +22,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class IndividualIdThreadLocal {
 
-	public static Long getIndividualId() {
+	public static String getIndividualId() {
 		return _individualId.get();
 	}
 
@@ -30,7 +30,7 @@ public class IndividualIdThreadLocal {
 		_individualId.remove();
 	}
 
-	public static void setIndividualId(Long individualId) {
+	public static void setIndividualId(String individualId) {
 		if (_log.isDebugEnabled()) {
 			_log.debug("setIndividualId" + individualId);
 		}
@@ -41,6 +41,7 @@ public class IndividualIdThreadLocal {
 	private static final Log _log = LogFactory.getLog(
 		IndividualIdThreadLocal.class);
 
-	private static final ThreadLocal<Long> _individualId = new ThreadLocal<>();
+	private static final ThreadLocal<String> _individualId =
+		new ThreadLocal<>();
 
 }

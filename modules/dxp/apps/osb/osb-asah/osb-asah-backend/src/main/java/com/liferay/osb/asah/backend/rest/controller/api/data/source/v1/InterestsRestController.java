@@ -81,7 +81,7 @@ public class InterestsRestController extends BaseRestController {
 
 		List<Integer> topics = _getTopics(
 			interestDog.getTopNames(
-				individual.getLong("id"), "individual",
+				individual.getString("id"), "individual",
 				topicsLength * termsPerTopic * 10),
 			termWeightThreshold);
 

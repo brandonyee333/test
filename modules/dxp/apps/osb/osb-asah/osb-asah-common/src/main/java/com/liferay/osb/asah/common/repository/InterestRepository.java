@@ -31,7 +31,7 @@ public interface InterestRepository
 	extends CustomInterestRepository,
 			PagingAndSortingRepository<Interest, Long> {
 
-	public long countByOwnerIdAndOwnerType(Long ownerId, String ownerType);
+	public long countByOwnerIdAndOwnerType(String ownerId, String ownerType);
 
 	@Modifying
 	public void deleteByNameAndRecordedDateGreaterThanEqual(
@@ -39,7 +39,7 @@ public interface InterestRepository
 
 	@Modifying
 	public void deleteByOwnerIdInAndOwnerType(
-		@Param("ownerIds") List<Long> ownerIds,
+		@Param("ownerIds") List<String> ownerIds,
 		@Param("ownerType") String ownerType);
 
 	@Modifying
@@ -54,13 +54,13 @@ public interface InterestRepository
 
 	public List<Interest>
 		findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-			String name, Long ownerId, String ownerType, Date recordedDate1,
+			String name, String ownerId, String ownerType, Date recordedDate1,
 			Date recordedDate2);
 
 	public List<Interest> findByOwnerIdAndOwnerType(
-		Long ownerId, String ownerType, Pageable pageable);
+		String ownerId, String ownerType, Pageable pageable);
 
 	public Interest getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
-		String name, Long ownerId, String ownerType, Date recordedDate);
+		String name, String ownerId, String ownerType, Date recordedDate);
 
 }
