@@ -4,6 +4,8 @@
 	"documentlibraryhourly": "document_library_hourly.sql",
 	"fieldmapping": "fieldmapping.sql",
 	"formhourly": "form_hourly.sql",
+	"identity": "identity.sql",
+	"identityactivity": "identityactivity.sql",
 	"journalhourly": "journal_hourly.sql",
 	"pagehourly": "page_hourly.sql"
 }
