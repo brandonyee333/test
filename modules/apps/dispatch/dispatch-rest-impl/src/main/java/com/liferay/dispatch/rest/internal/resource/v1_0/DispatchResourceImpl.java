@@ -73,14 +73,12 @@ public class DispatchResourceImpl extends BaseDispatchResourceImpl {
 			String dispatchTaskExecutorType, String string)
 		throws Exception {
 
+		//DispatchTrigger dispatchTrigger = _dispatchTriggerService.addDispatchTrigger(
+		//	null, _portal.getUserId(actionRequest),
+		//	dispatchTaskExecutorType, dispatchTaskSettingsUnicodeProperties,
+		//	name);
 
-
-		dispatchTrigger = _dispatchTriggerService.addDispatchTrigger(
-			null, _portal.getUserId(actionRequest),
-			dispatchTaskExecutorType, dispatchTaskSettingsUnicodeProperties,
-			name);
-
-		return
+		return null;
 	}
 
 	public Response postExecuteDispatchTrigger(
