@@ -61,7 +61,8 @@ public class InterestDog {
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
-		FilterHelper filterHelper = new FilterHelper(filterString);
+		FilterHelper filterHelper = new FilterHelper(
+			null, filterString, new InterestFilterStringConverterHelper());
 
 		return PageableExecutionUtils.getPage(
 			_interestRepository.findByFilterStringAndScoreGreaterThanEqual(
@@ -134,7 +135,11 @@ public class InterestDog {
 
 		return new JSONArray(
 			_interestRepository.getTransformations(
-				fromDate, new FilterHelper(filterString), period, toDate));
+				fromDate,
+				new FilterHelper(
+					null, filterString,
+					new InterestFilterStringConverterHelper()),
+				period, toDate));
 	}
 
 	private static final InterestFilterStringConverterHelper
