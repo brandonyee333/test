@@ -17,18 +17,10 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.VisitorCohortHeatMapDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
-import com.liferay.osb.asah.backend.model.CohortHeatMapMetric;
-import com.liferay.osb.asah.backend.model.SiteMetricType;
+import com.liferay.osb.asah.backend.model.CohortMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.MetricType;
-
-import graphql.execution.ExecutionTypeInfo;
 
 import graphql.schema.DataFetchingEnvironment;
-import graphql.schema.GraphQLFieldDefinition;
-
-import java.util.Collections;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,37 +29,16 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-@GraphQLTypeWiring(fieldName = "cohortHeatMap", typeName = "Metric")
-public class CohortHeatMapDataFetcher
-	extends BaseDataFetcher<List<CohortHeatMapMetric>> {
+@GraphQLTypeWiring(fieldName = "cohortHeatMap", typeName = "QueryType")
+public class CohortHeatMapDataFetcher extends BaseDataFetcher<CohortMetric> {
 
 	@Override
-	public List<CohortHeatMapMetric> get(
+	public CohortMetric get(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		ExecutionTypeInfo fieldExecutionTypeInfo =
-			dataFetchingEnvironment.getFieldTypeInfo();
-
-		ExecutionTypeInfo parentExecutionTypeInfo =
-			fieldExecutionTypeInfo.getParentTypeInfo();
-
-		GraphQLFieldDefinition graphQLFieldDefinition =
-			parentExecutionTypeInfo.getFieldDefinition();
-
-		MetricType metricType = _metricTypeDog.getMetricType(
-			searchQueryContext.getAssetType(),
-			graphQLFieldDefinition.getName());
-
-		if ((metricType == SiteMetricType.ANONYMOUS_VISITORS) ||
-			(metricType == SiteMetricType.KNOWN_VISITORS) ||
-			(metricType == SiteMetricType.VISITORS)) {
-
-			return _visitorCohortHeatMapDog.getCohortHeatMapMetrics(
-				metricType, searchQueryContext);
-		}
-
-		return Collections.emptyList();
+		return _visitorCohortHeatMapDog.getCohortHeatMapMetrics(
+			searchQueryContext);
 	}
 
 	@Autowired

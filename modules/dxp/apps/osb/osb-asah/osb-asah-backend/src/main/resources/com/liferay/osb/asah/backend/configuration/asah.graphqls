@@ -249,6 +249,12 @@ type CohortHeatMapMetric {
 	value: Float
 }
 
+type CohortMetric {
+	anonymousVisitorsMetric: [CohortHeatMapMetric]
+	knownVisitorsMetric: [CohortHeatMapMetric]
+	visitorsMetric: [CohortHeatMapMetric]
+}
+
 type Composition {
 	name: String
 	count: Int
@@ -974,6 +980,11 @@ type QueryType {
 		sort: Sort!,
 		start: Int!
 	): AssetMetricBag
+
+	cohortHeatMap(
+		channelId: String,
+		interval: String!
+	): CohortMetric
 
 	custom(
 		assetId: String!,
