@@ -314,8 +314,9 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 	private static final String[] _TABLE_NAMES = {
 		"BlogDaily", "BlogHourly", "BQEvent", "BQEventProperty",
-		"BQFieldMapping", "BQIdentity", "BQIndividual", "BQMembership",
-		"BQOrder", "BQSession", "CustomAssetDaily", "CustomAssetHourly",
+		"BQFieldMapping", "BQIdentity", "BQIdentityActivity",
+		"BQIdentityChannel", "BQIndividual", "BQMembership", "BQOrder",
+		"BQSession", "CustomAssetDaily", "CustomAssetHourly",
 		"DocumentLibraryDaily", "DocumentLibraryHourly", "FormDaily",
 		"FormHourly", "JournalDaily", "JournalHourly", "PageDaily", "PageHourly"
 	};
