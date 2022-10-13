@@ -1039,7 +1039,7 @@
 			"type": "DAY"
 		}
 	},
-	"identity": {
+	"identity_raw": {
 		"fields": [
 			{
 				"mode": "REQUIRED",
@@ -1063,7 +1063,7 @@
 			}
 		]
 	},
-	"identityactivity": {
+	"identityactivity_raw": {
 		"clusteringFields": [
 			"dataSourceId",
 			"channelId"
