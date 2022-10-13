@@ -315,6 +315,26 @@ public class GCSStore implements Store {
 			fileName, StringPool.SLASH, versionLabel);
 	}
 
+	private GoogleCredentials _getGoogleCredentials() throws IOException {
+		String serviceAccountKey = _gcsStoreConfiguration.serviceAccountKey();
+
+		if (Validator.isBlank(serviceAccountKey)) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"No credentials set for GCS Store. Library will use " +
+						"Application Default Credentials.");
+			}
+
+			return ServiceAccountCredentials.getApplicationDefault();
+		}
+
+		try (InputStream inputStream = new ByteArrayInputStream(
+				serviceAccountKey.getBytes())) {
+
+			return ServiceAccountCredentials.fromStream(inputStream);
+		}
+	}
+
 	private String _getHeadVersionLabel(
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
@@ -386,13 +406,8 @@ public class GCSStore implements Store {
 	}
 
 	private void _initGCSStore() throws PortalException {
-		String serviceAccountKey = _gcsStoreConfiguration.serviceAccountKey();
-
-		try (InputStream inputStream = new ByteArrayInputStream(
-				serviceAccountKey.getBytes())) {
-
-			_googleCredentials = ServiceAccountCredentials.fromStream(
-				inputStream);
+		try {
+			_googleCredentials = _getGoogleCredentials();
 		}
 		catch (IOException ioException) {
 			throw new PortalException(
