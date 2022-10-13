@@ -15,10 +15,12 @@
 		"path": "form_hourly.sql"
 	},
 	"identity": {
-		"path": "identity.sql"
+		"path": "identity.sql",
+		"type": "materialized"
 	},
 	"identityactivity": {
-		"path": "identityactivity.sql"
+		"path": "identityactivity.sql",
+		"type": "materialized"
 	},
 	"journalhourly": {
 		"path": "journal_hourly.sql"
