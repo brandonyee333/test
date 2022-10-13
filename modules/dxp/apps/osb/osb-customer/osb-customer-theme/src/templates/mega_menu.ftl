@@ -58,8 +58,8 @@
 				url: addLocaleParamToURI('${current_locale}', 'categories/4410212015373')
 			},
 			{
-				name: '<@liferay.language key="dxp-cloud" />',
-				svgId: '#dxp-cloud-logo',
+				name: '<@liferay.language key="liferay-cloud" />',
+				svgId: '#liferay-cloud-logo',
 				url: addLocaleParamToURI('${current_locale}', 'categories/360000868032')
 			},
 			{
