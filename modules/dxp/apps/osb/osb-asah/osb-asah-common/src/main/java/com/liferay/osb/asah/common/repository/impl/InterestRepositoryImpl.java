@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.CustomInterestRepository;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -28,6 +29,7 @@ import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,10 +47,13 @@ import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Record4;
 import org.jooq.SelectSelectStep;
+import org.jooq.SortField;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 
 /**
@@ -59,6 +64,13 @@ public class InterestRepositoryImpl
 
 	public InterestRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+
+		InterestFilterStringConverterHelper
+			interestFilterStringConverterHelper =
+				new InterestFilterStringConverterHelper();
+
+		_fieldNames =
+			interestFilterStringConverterHelper.getFieldNameConversionMap();
 	}
 
 	@Override
@@ -124,7 +136,7 @@ public class InterestRepositoryImpl
 		).where(
 			_getConditions(filterHelper, null, null, null, null, null, score)
 		).orderBy(
-			getSortFields(pageable.getSort(), null)
+			_getSortFields(pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -225,7 +237,7 @@ public class InterestRepositoryImpl
 		).groupBy(
 			DSL.field("name")
 		).orderBy(
-			getSortFields(pageable.getSort(), null)
+			_getSortFields(pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -456,11 +468,26 @@ public class InterestRepositoryImpl
 		return field.as("intervalInitDate");
 	}
 
+	private Collection<SortField<?>> _getSortFields(Sort sort, Table<?> table) {
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (Sort.Order order : sort.toList()) {
+			orders.add(
+				new Sort.Order(
+					order.getDirection(),
+					_fieldNames.getOrDefault(
+						order.getProperty(), order.getProperty())));
+		}
+
+		return getSortFields(null, Sort.by(orders), table);
+	}
+
 	private final DSLContext _dslContext;
 
 	@Autowired
 	private DSLHelper _dslHelper;
 
+	private final Map<String, String> _fieldNames;
 	private final Map<String, DatePart> _validPeriods =
 		new HashMap<String, DatePart>() {
 			{
