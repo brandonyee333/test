@@ -1255,7 +1255,7 @@
 			{
 				"mode": "REQUIRED",
 				"name": "ownerId",
-				"type": "INT64"
+				"type": "STRING"
 			},
 			{
 				"mode": "REQUIRED",

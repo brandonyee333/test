@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS BQIndividual (
 CREATE TABLE IF NOT EXISTS Interest (
 	id BIGSERIAL PRIMARY KEY,
 	name TEXT,
-	ownerId BIGINT,
+	ownerId TEXT,
 	ownerType TEXT,
 	recordedDate TIMESTAMPTZ,
 	score DOUBLE PRECISION,
