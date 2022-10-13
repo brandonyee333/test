@@ -43,8 +43,6 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration.LettucePoolingClientConfigurationBuilder;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
@@ -122,25 +120,6 @@ public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 	@Bean
 	public OSBAsahCacheManager osbAsahCacheManager() {
 		return new OSBAsahCacheManager(redisTemplate());
-	}
-
-	@Bean
-	public RedisMessageListenerContainer redisMessageListenerContainer() {
-		RedisMessageListenerContainer redisMessageListenerContainer =
-			new RedisMessageListenerContainer();
-
-		redisMessageListenerContainer.setConnectionFactory(
-			lettuceConnectionFactory());
-
-		OSBAsahCacheMessageListener osbAsahCacheMessageListener =
-			new OSBAsahCacheMessageListener(
-				osbAsahCacheManager(), redisTemplate());
-
-		redisMessageListenerContainer.addMessageListener(
-			osbAsahCacheMessageListener,
-			new ChannelTopic("cache:redis:caffeine:topic"));
-
-		return redisMessageListenerContainer;
 	}
 
 	@Bean
