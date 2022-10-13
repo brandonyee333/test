@@ -295,8 +295,6 @@ public class IdentityNanite implements Nanite {
 				).put(
 					"identityId", userId
 				).put(
-					"individualId", _getIndividualId(jsonObject)
-				).put(
 					"projectId", jsonObject.getString("projectId")
 				));
 		}
