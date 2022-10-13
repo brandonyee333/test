@@ -420,7 +420,7 @@ public class InterestRepositoryImpl
 		if ((ownerIds != null) && !ownerIds.isEmpty()) {
 			conditions.add(
 				DSL.field(
-					"ownerId", Long.class
+					"ownerId", String.class
 				).in(
 					ownerIds
 				));

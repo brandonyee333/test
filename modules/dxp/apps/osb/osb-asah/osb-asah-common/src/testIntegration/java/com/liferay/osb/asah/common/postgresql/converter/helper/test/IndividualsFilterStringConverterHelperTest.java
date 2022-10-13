@@ -467,7 +467,7 @@ public class IndividualsFilterStringConverterHelperTest
 			"activities.filterByCount(filter='activityKey eq " +
 				"''Page#pageViewed#357731107452100994''', operator='eq', " +
 					"value=1)",
-			346468699875814972L,
+			"346468699875814972",
 			DSL.field(
 				"individual.id"
 			).in(
@@ -507,7 +507,7 @@ public class IndividualsFilterStringConverterHelperTest
 		testFilterStringWithIndividual(
 			"activities.filter(filter='between(day, ''2019-04-11'', " +
 				"''2019-04-12'')')",
-			346468603851271125L,
+			"346468603851271125",
 			DSL.field(
 				"individual.id"
 			).in(
@@ -598,7 +598,7 @@ public class IndividualsFilterStringConverterHelperTest
 		testFilterStringWithIndividual(
 			"interests.filter(filter='(name eq ''abc'') and (score eq " +
 				"''true'')')",
-			346468700681239480L,
+			"346468700681239480",
 			DSL.field(
 				"individual.id"
 			).in(
@@ -857,7 +857,7 @@ public class IndividualsFilterStringConverterHelperTest
 	public void testSessionsFilterWithIndividual1() {
 		testFilterStringWithIndividual(
 			"sessions.filter(filter='(context/country eq ''United States'')')",
-			346468614337714393L,
+			"346468614337714393",
 			DSL.field(
 				"individual.id"
 			).in(
@@ -870,7 +870,7 @@ public class IndividualsFilterStringConverterHelperTest
 	public void testSessionsFilterWithIndividual2() {
 		testFilterStringWithIndividual(
 			"sessions.filter(filter='(context/country eq ''United States'')')",
-			346468603851271125L, DSL.noCondition());
+			"346468603851271125", DSL.noCondition());
 	}
 
 	protected void testFilterString(
@@ -896,7 +896,7 @@ public class IndividualsFilterStringConverterHelperTest
 	}
 
 	protected void testFilterStringWithIndividual(
-		String filterString, Long individualId, Condition expectedCondition) {
+		String filterString, String individualId, Condition expectedCondition) {
 
 		try {
 			IndividualIdThreadLocal.setIndividualId(individualId);

@@ -68,7 +68,7 @@ public class InterestDogTest
 	@Test
 	public void testGetInterestPage() {
 		Page<Interest> interestPage = _interestDog.getInterestPage(
-			374790572703144534L, "individual", 20, 0);
+			"374790572703144534", "individual", 20, 0);
 
 		Assertions.assertEquals(1, interestPage.getTotalElements());
 

@@ -469,7 +469,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"activities.filterByCount(filter='activityKey eq " +
 				"''Page#pageViewed#357731107452100994'' and day gt " +
 					"''yesterday''', operator='eq', value=1)",
-			1L, null);
+			"1", null);
 	}
 
 	@Disabled
@@ -479,7 +479,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 			"activities.filterByCount(filter='activityKey eq " +
 				"''Page#pageViewed#357731107452100994''', operator='ge', " +
 					"value=1)",
-			346468614337714393L, null);
+			"346468614337714393", null);
 	}
 
 	@Disabled
@@ -515,7 +515,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 		testFilterStringWithIndividual(
 			"activities.filter(filter='between(day, ''2019-04-11'', " +
 				"''2019-04-12'')')",
-			1L, null);
+			"1", null);
 	}
 
 	@RepositoryResource(
@@ -620,7 +620,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 		testFilterStringWithIndividual(
 			"interests.filter(filter='(name eq ''abc'') and (score eq " +
 				"''true'')')",
-			346468700681239480L, null);
+			"346468700681239480", null);
 	}
 
 	@Disabled
@@ -752,7 +752,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	@Test
 	public void testOrganizationFilterWithFilter() {
 		try {
-			IndividualIdThreadLocal.setIndividualId(1L);
+			IndividualIdThreadLocal.setIndividualId("1");
 
 			// TODO
 
@@ -921,7 +921,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	public void testSessionsFilterWithIndividual1() {
 		testFilterStringWithIndividual(
 			"sessions.filter(filter='context/city eq ''Tokyo''')",
-			346468603851271125L, null);
+			"346468603851271125", null);
 	}
 
 	@Disabled
@@ -929,11 +929,11 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	public void testSessionsFilterWithIndividual2() {
 		testFilterStringWithIndividual(
 			"sessions.filter(filter='context/city eq ''Budapest''')",
-			346468603851271125L, null);
+			"346468603851271125", null);
 	}
 
 	protected void testFilterStringWithIndividual(
-		String filterString, Long individualId, Object expectedQueryBuilder) {
+		String filterString, String individualId, Object expectedQueryBuilder) {
 
 		try {
 			IndividualIdThreadLocal.setIndividualId(individualId);

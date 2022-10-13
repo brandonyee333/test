@@ -48,7 +48,7 @@ public class InterestRepositoryTest
 		Interest interest1 = new Interest();
 
 		interest1.setName("clicks-and-mortar e-tailers");
-		interest1.setOwnerId(374790569167317525L);
+		interest1.setOwnerId("374790569167317525");
 		interest1.setOwnerType("individual");
 		interest1.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-12T00:00:00.000Z"));
@@ -58,7 +58,7 @@ public class InterestRepositoryTest
 		Interest interest2 = new Interest();
 
 		interest2.setName("javascript");
-		interest2.setOwnerId(374790575409131096L);
+		interest2.setOwnerId("374790575409131096");
 		interest2.setOwnerType("individual");
 		interest2.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
@@ -68,7 +68,7 @@ public class InterestRepositoryTest
 		Interest interest3 = new Interest();
 
 		interest3.setName("compelling metrics");
-		interest3.setOwnerId(374790572703144534L);
+		interest3.setOwnerId("374790572703144534");
 		interest3.setOwnerType("individual");
 		interest3.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
@@ -78,7 +78,7 @@ public class InterestRepositoryTest
 		Interest interest4 = new Interest();
 
 		interest4.setName("sales");
-		interest4.setOwnerId(374790572703144534L);
+		interest4.setOwnerId("374790572703144534");
 		interest4.setOwnerType("individual");
 		interest4.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
@@ -88,7 +88,7 @@ public class InterestRepositoryTest
 		Interest interest5 = new Interest();
 
 		interest5.setName("sales");
-		interest5.setOwnerId(374790572703144535L);
+		interest5.setOwnerId("374790572703144535");
 		interest5.setOwnerType("individual");
 		interest5.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
@@ -111,13 +111,13 @@ public class InterestRepositoryTest
 		Assertions.assertEquals(
 			2,
 			_interestRepository.countByOwnerIdAndOwnerType(
-				374790572703144534L, "individual"));
+				"374790572703144534", "individual"));
 	}
 
 	@Test
 	public void testCountInterestDistributions() {
-		List<Long> ownerIds = Arrays.asList(
-			374790572703144534L, 374790572703144535L);
+		List<String> ownerIds = Arrays.asList(
+			"374790572703144534", "374790572703144535");
 
 		Assertions.assertEquals(
 			2,
@@ -139,8 +139,8 @@ public class InterestRepositoryTest
 		Assertions.assertEquals(
 			5, _interestRepository.count(), _interestRepository.toString());
 
-		List<Long> ownerIds = Arrays.asList(
-			374790572703144534L, 374790572703144535L);
+		List<String> ownerIds = Arrays.asList(
+			"374790572703144534", "374790572703144535");
 
 		List<Interest> interests = IterableUtils.toList(
 			_interestRepository.findAll());
@@ -184,7 +184,7 @@ public class InterestRepositoryTest
 		List<Interest> interests =
 			_interestRepository.
 				findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-					"sales", 374790572703144535L, "individual",
+					"sales", "374790572703144535", "individual",
 					DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"),
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
 
@@ -194,7 +194,7 @@ public class InterestRepositoryTest
 		interests =
 			_interestRepository.
 				findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-					"sales", 374790572703144535L, "individual",
+					"sales", "374790572703144535", "individual",
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"),
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
 
@@ -204,7 +204,7 @@ public class InterestRepositoryTest
 		interests =
 			_interestRepository.
 				findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-					"sales", 374790572703144535L, "individual",
+					"sales", "374790572703144535", "individual",
 					DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"),
 					DateUtil.toUTCDate("2021-09-15T00:00:00.000Z"));
 
@@ -214,7 +214,7 @@ public class InterestRepositoryTest
 		interests =
 			_interestRepository.
 				findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-					"sales", 374790572703144535L, "individual",
+					"sales", "374790572703144535", "individual",
 					DateUtil.toUTCDate("2021-09-15T00:00:00.000Z"),
 					DateUtil.toUTCDate("2021-09-16T00:00:00.000Z"));
 
@@ -225,7 +225,7 @@ public class InterestRepositoryTest
 	public void testFindByOwnerIdAndOwnerType() {
 		List<Interest> interests =
 			_interestRepository.findByOwnerIdAndOwnerType(
-				374790572703144534L, "individual", PageRequest.of(0, 10));
+				"374790572703144534", "individual", PageRequest.of(0, 10));
 
 		Assertions.assertEquals(2, interests.size(), interests.toString());
 		Assertions.assertEquals(
@@ -248,22 +248,22 @@ public class InterestRepositoryTest
 
 	@Test
 	public void testFindOwnerIdsByFilterStringAndOwnerId() {
-		List<Long> ownerIds =
+		List<String> ownerIds =
 			_interestRepository.findOwnerIdsByFilterStringAndOwnerId(
 				new FilterHelper(
 					null, "(name eq 'sales')",
 					_interestFilterStringConverterHelper),
-				374790572703144534L);
+				"374790572703144534");
 
 		Assertions.assertEquals(
-			Arrays.asList(374790572703144534L), ownerIds, ownerIds.toString());
+			Arrays.asList("374790572703144534"), ownerIds, ownerIds.toString());
 	}
 
 	@Test
 	public void testGetByNameAndOwnerIdAndOwnerTypeAndRecordedDate() {
 		Interest interest =
 			_interestRepository.getByNameAndOwnerIdAndOwnerTypeAndRecordedDate(
-				"javascript", 374790575409131096L, "individual",
+				"javascript", "374790575409131096", "individual",
 				DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
 
 		Assertions.assertEquals(entityModels.get(1), interest);
@@ -271,8 +271,8 @@ public class InterestRepositoryTest
 
 	@Test
 	public void testGetInterestDistributions() {
-		List<Long> ownerIds = Arrays.asList(
-			374790572703144534L, 374790572703144535L);
+		List<String> ownerIds = Arrays.asList(
+			"374790572703144534", "374790572703144535");
 
 		List<Distribution> distributions =
 			_interestRepository.getInterestDistributions(
@@ -337,7 +337,7 @@ public class InterestRepositoryTest
 	public void testGetTopNamesByOwnerIdAndOwnerType() {
 		List<String> names =
 			_interestRepository.getTopNamesByOwnerIdAndOwnerType(
-				374790572703144534L, "individual", 10);
+				"374790572703144534", "individual", 10);
 
 		Assertions.assertEquals(
 			Arrays.asList("sales", "compelling metrics"), names,
