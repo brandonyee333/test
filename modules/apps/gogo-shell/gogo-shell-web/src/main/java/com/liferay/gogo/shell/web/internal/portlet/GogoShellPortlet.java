@@ -275,7 +275,4 @@ public class GogoShellPortlet extends MVCPortlet {
 	@Reference
 	private Language _language;
 
-	@Reference
-	private Portal _portal;
-
 }
