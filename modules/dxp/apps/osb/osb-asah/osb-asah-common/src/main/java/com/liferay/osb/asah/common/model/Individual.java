@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.model;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.constants.FieldMappingConstants;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.BQIndividual;
@@ -78,20 +79,11 @@ public class Individual {
 
 			fieldsStream.forEach(
 				field -> {
-					if (StringUtils.equals(field.getName(), "emailAddress")) {
-						field.setName("email");
-					}
-					else if (StringUtils.equals(field.getName(), "firstName")) {
-						field.setName("givenName");
-					}
-					else if (StringUtils.equals(field.getName(), "lastName")) {
-						field.setName("familyName");
-					}
-					else if (StringUtils.equals(
-								field.getName(), "middleName")) {
+					String displayName =
+						FieldMappingConstants.demographicsDisplayNames.
+							getOrDefault(field.getName(), field.getName());
 
-						field.setName("additionalName");
-					}
+					field.setName(displayName);
 				});
 
 			_fields = fields;
