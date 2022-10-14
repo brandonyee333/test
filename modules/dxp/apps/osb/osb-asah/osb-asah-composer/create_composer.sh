@@ -11,9 +11,9 @@ gcloud composer environments create ${COMPOSER_ENVIRONMENT_NAME} \
 	--airflow-version=2.2 \
 	--async \
 	--disk-size 30GB \
+	--enable-master-authorized-networks \
 	--env-variables LCP_PROJECT_ID=${LCP_PROJECT_ID},GOOGLE_PROJECT_ID=${PROJECT_ID}\
 	--location ${REGION} \
+	--master-authorized-networks ${MASTER_AUTHORIZED_NETWORKS} \
 	--project ${PROJECT_ID} \
-	--service-account ac-composer-admin@${PROJECT_ID}.iam.gserviceaccount.com \
-	--enable-master-authorized-networks \
-	--master-authorized-networks ${AUTHORIZED_NETWORKS}
+	--service-account ac-composer-admin@${PROJECT_ID}.iam.gserviceaccount.com
