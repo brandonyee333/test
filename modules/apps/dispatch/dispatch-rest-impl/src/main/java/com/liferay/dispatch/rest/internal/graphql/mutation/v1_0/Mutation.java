@@ -14,12 +14,17 @@
 
 package com.liferay.dispatch.rest.internal.graphql.mutation.v1_0;
 
+import com.liferay.dispatch.rest.dto.v1_0.DispatchTrigger;
+import com.liferay.dispatch.rest.resource.v1_0.DispatchTriggerResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineImportTaskResource;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
 
 import java.util.function.BiFunction;
 
@@ -28,6 +33,7 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.osgi.service.component.ComponentServiceObjects;
@@ -38,6 +44,43 @@ import org.osgi.service.component.ComponentServiceObjects;
  */
 @Generated("")
 public class Mutation {
+
+	public static void setDispatchTriggerResourceComponentServiceObjects(
+		ComponentServiceObjects<DispatchTriggerResource>
+			dispatchTriggerResourceComponentServiceObjects) {
+
+		_dispatchTriggerResourceComponentServiceObjects =
+			dispatchTriggerResourceComponentServiceObjects;
+	}
+
+	@GraphQLField
+	public DispatchTrigger createCreateDispatchTaskExecutorType(
+			@GraphQLName("dispatchTaskExecutorType") String
+				dispatchTaskExecutorType,
+			@GraphQLName("string") String string)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_dispatchTriggerResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			dispatchTriggerResource ->
+				dispatchTriggerResource.postCreateDispatchTaskExecutorType(
+					dispatchTaskExecutorType, string));
+	}
+
+	@GraphQLField
+	public Response createExecuteDispatchTrigger(
+			@GraphQLName("dispatchTriggerId") Long dispatchTriggerId,
+			@GraphQLName("string") String string)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_dispatchTriggerResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			dispatchTriggerResource ->
+				dispatchTriggerResource.postExecuteDispatchTrigger(
+					dispatchTriggerId, string));
+	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R
 			_applyComponentServiceObjects(
@@ -77,6 +120,28 @@ public class Mutation {
 		}
 	}
 
+	private void _populateResourceContext(
+			DispatchTriggerResource dispatchTriggerResource)
+		throws Exception {
+
+		dispatchTriggerResource.setContextAcceptLanguage(_acceptLanguage);
+		dispatchTriggerResource.setContextCompany(_company);
+		dispatchTriggerResource.setContextHttpServletRequest(
+			_httpServletRequest);
+		dispatchTriggerResource.setContextHttpServletResponse(
+			_httpServletResponse);
+		dispatchTriggerResource.setContextUriInfo(_uriInfo);
+		dispatchTriggerResource.setContextUser(_user);
+		dispatchTriggerResource.setGroupLocalService(_groupLocalService);
+		dispatchTriggerResource.setRoleLocalService(_roleLocalService);
+
+		dispatchTriggerResource.setVulcanBatchEngineImportTaskResource(
+			_vulcanBatchEngineImportTaskResource);
+	}
+
+	private static ComponentServiceObjects<DispatchTriggerResource>
+		_dispatchTriggerResourceComponentServiceObjects;
+
 	private AcceptLanguage _acceptLanguage;
 	private com.liferay.portal.kernel.model.Company _company;
 	private GroupLocalService _groupLocalService;
@@ -86,5 +151,7 @@ public class Mutation {
 	private BiFunction<Object, String, Sort[]> _sortsBiFunction;
 	private UriInfo _uriInfo;
 	private com.liferay.portal.kernel.model.User _user;
+	private VulcanBatchEngineImportTaskResource
+		_vulcanBatchEngineImportTaskResource;
 
 }
