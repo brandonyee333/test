@@ -14,4 +14,5 @@ gcloud composer environments create ${COMPOSER_ENVIRONMENT_NAME} \
 	--env-variables LCP_PROJECT_ID=${LCP_PROJECT_ID},GOOGLE_PROJECT_ID=${PROJECT_ID}\
 	--location ${REGION} \
 	--project ${PROJECT_ID} \
-	--service-account ac-composer-admin@${PROJECT_ID}.iam.gserviceaccount.com
+	--service-account ac-composer-admin@${PROJECT_ID}.iam.gserviceaccount.com \
+	
