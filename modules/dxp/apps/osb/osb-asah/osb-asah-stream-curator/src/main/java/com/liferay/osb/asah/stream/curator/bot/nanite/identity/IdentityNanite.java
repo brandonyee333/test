@@ -15,8 +15,6 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.identity;
 
 import com.google.api.core.ApiFuture;
-import com.google.api.core.ApiFutureCallback;
-import com.google.api.core.ApiFutures;
 import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.storage.v1.AppendRowsResponse;
 import com.google.cloud.bigquery.storage.v1.BigQueryWriteClient;
@@ -25,7 +23,6 @@ import com.google.cloud.bigquery.storage.v1.FinalizeWriteStreamRequest;
 import com.google.cloud.bigquery.storage.v1.JsonStreamWriter;
 import com.google.cloud.bigquery.storage.v1.TableName;
 import com.google.cloud.bigquery.storage.v1.WriteStream;
-import com.google.common.util.concurrent.MoreExecutors;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -40,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -142,30 +140,19 @@ public class IdentityNanite implements Nanite {
 				ApiFuture<AppendRowsResponse> apiFuture =
 					jsonStreamWriter.append(_toIdentityJSONArray(messages));
 
-				ApiFutures.addCallback(
-					apiFuture,
-					new ApiFutureCallback<AppendRowsResponse>() {
+				apiFuture.get();
 
-						@Override
-						public void onFailure(Throwable throwable) {
-							_log.error(throwable, throwable);
-						}
-
-						@Override
-						public void onSuccess(
-							AppendRowsResponse appendRowsResponse) {
-
-							if (_log.isInfoEnabled()) {
-								_log.info(
-									String.format(
-										"%s: %d rows inserted into identity " +
-											"table",
-										datasetName, messages.size()));
-							}
-						}
-
-					},
-					MoreExecutors.directExecutor());
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						String.format(
+							"%s: %d rows inserted into identity table",
+							datasetName, messages.size()));
+				}
+			}
+			catch (ExecutionException executionException) {
+				_log.error(
+					"Unable to append records to identity table",
+					executionException);
 			}
 
 			bigQueryWriteClient.finalizeWriteStream(
@@ -198,30 +185,19 @@ public class IdentityNanite implements Nanite {
 					jsonStreamWriter.append(
 						_toIdentityActivityJSONArray(messages));
 
-				ApiFutures.addCallback(
-					apiFuture,
-					new ApiFutureCallback<AppendRowsResponse>() {
+				apiFuture.get();
 
-						@Override
-						public void onFailure(Throwable throwable) {
-							_log.error(throwable, throwable);
-						}
-
-						@Override
-						public void onSuccess(
-							AppendRowsResponse appendRowsResponse) {
-
-							if (_log.isInfoEnabled()) {
-								_log.info(
-									String.format(
-										"%s: %d rows inserted into identity " +
-											"activity table",
-										datasetName, messages.size()));
-							}
-						}
-
-					},
-					MoreExecutors.directExecutor());
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						String.format(
+							"%s: %d rows inserted into identity activity table",
+							datasetName, messages.size()));
+				}
+			}
+			catch (ExecutionException executionException) {
+				_log.error(
+					"Unable to append records to identity activity table",
+					executionException);
 			}
 
 			bigQueryWriteClient.finalizeWriteStream(
