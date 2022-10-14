@@ -15,4 +15,5 @@ gcloud composer environments create ${COMPOSER_ENVIRONMENT_NAME} \
 	--location ${REGION} \
 	--project ${PROJECT_ID} \
 	--service-account ac-composer-admin@${PROJECT_ID}.iam.gserviceaccount.com \
-	
+	--enable-master-authorized-networks \
+	--master-authorized-networks ${AUTHORIZED_NETWORKS}
