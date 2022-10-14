@@ -5,6 +5,16 @@
 		"fieldsJSONArray": [
 			{
 				"dataSourceId": "1",
+				"name": "custom-Text",
+				"value": "custom"
+			},
+			{
+				"dataSourceId": "1",
+				"name": "emailAddress",
+				"value": "joe.bloggs@liferay.com"
+			},
+			{
+				"dataSourceId": "1",
 				"name": "firstName",
 				"value": "Joe"
 			},

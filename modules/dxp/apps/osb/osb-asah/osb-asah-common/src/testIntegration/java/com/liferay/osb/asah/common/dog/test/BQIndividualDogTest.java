@@ -344,7 +344,11 @@ public class BQIndividualDogTest
 
 		Set<Field> fields = individual.getFields();
 
-		Assertions.assertEquals(8, fields.size());
+		Assertions.assertEquals(4, fields.size());
+
+		Set<Field> customFields = individual.getCustomFields();
+
+		Assertions.assertEquals(1, customFields.size());
 
 		Assertions.assertEquals(
 			"joe.bloggs@liferay.com",
