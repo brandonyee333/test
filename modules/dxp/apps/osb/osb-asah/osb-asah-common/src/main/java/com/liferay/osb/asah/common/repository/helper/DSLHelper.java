@@ -191,6 +191,15 @@ public class DSLHelper {
 		return DSL.field(sb.toString(), OffsetDateTime.class);
 	}
 
+	public Field<?> getDayOfWeekField(Field field) {
+		if (_isBigQueryDialect()) {
+			return DSL.field(
+				String.format("extract(dayOfWeek from %s)", field));
+		}
+
+		return DSL.dayOfWeek(field);
+	}
+
 	public Field<?> getField(Field<?> bigQueryField, Field<?> postgresqlField) {
 		if (_isBigQueryDialect()) {
 			return bigQueryField;
