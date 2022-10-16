@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.util.GetterUtil;
 
+import java.math.BigDecimal;
+
 import java.time.ZoneId;
 
 import java.util.Collection;
@@ -236,17 +238,14 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
-	public List<Map<String, Integer>> getVisitorsCountGroupedByDayAndTime(
+	public List<Map<String, BigDecimal>> getVisitorsCountGroupedByDayAndTime(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
-		Field dayOfWeekField = DSL.isoDayOfWeek(
-			_dslHelper.dateTrunc(
-				DatePart.valueOf(String.valueOf(Interval.HOUR)),
-				_dslHelper.getDateAtTimeZoneField(
-					"BQSession.sessionStart", zoneId.toString()))
-		).as(
-			"dayOfWeek"
-		);
+		Field dayOfWeekField = _dslHelper.getDayOfWeekField(
+			_dslHelper.getDateAtTimeZoneField(
+				"BQSession.sessionStart", zoneId.toString()));
+
+		dayOfWeekField = dayOfWeekField.as("dayOfWeek");
 
 		Field dateField = DSL.timestamp(
 			_dslHelper.dateTrunc(

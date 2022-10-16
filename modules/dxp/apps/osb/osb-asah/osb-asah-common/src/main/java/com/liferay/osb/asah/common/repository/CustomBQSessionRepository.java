@@ -19,6 +19,8 @@ import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 
+import java.math.BigDecimal;
+
 import java.time.ZoneId;
 
 import java.util.Collection;
@@ -50,7 +52,7 @@ public interface CustomBQSessionRepository {
 			Long channelId, boolean includePrevious, Interval interval,
 			TimeRange timeRange, ZoneId zoneId);
 
-	public List<Map<String, Integer>> getVisitorsCountGroupedByDayAndTime(
+	public List<Map<String, BigDecimal>> getVisitorsCountGroupedByDayAndTime(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
 }
