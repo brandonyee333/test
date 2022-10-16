@@ -25,6 +25,8 @@ import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
+import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -148,7 +150,7 @@ public class SiteMetricDog {
 	public List<HeatMapMetric> getHeatMapMetrics(
 		Long channelId, TimeRange timeRange) {
 
-		List<Map<String, Integer>> visitorsCountGroupedByDayAndTime =
+		List<Map<String, BigDecimal>> visitorsCountGroupedByDayAndTime =
 			_bqSessionRepository.getVisitorsCountGroupedByDayAndTime(
 				channelId, timeRange, _timeZoneDog.getZoneId());
 
@@ -172,24 +174,23 @@ public class SiteMetricDog {
 			return new ArrayList<>(heatMapMetrics.values());
 		}
 
-		for (Map<String, Integer> visitorCount :
+		for (Map<String, BigDecimal> visitorCount :
 				visitorsCountGroupedByDayAndTime) {
-
-			Metric metric = new Metric(SiteMetricType.VISITORS);
-
-			Integer visitors = visitorCount.get("visitors");
-
-			metric.setValue(Double.valueOf(visitors));
 
 			Object dayOfWeek = visitorCount.get("dayOfWeek");
 			Object hourOfDay = visitorCount.get("hourOfDay");
+			Object visitors = visitorCount.get("visitors");
+
+			Metric metric = new Metric(SiteMetricType.VISITORS);
+
+			metric.setValue(Double.valueOf(String.valueOf(visitors)));
 
 			heatMapMetrics.put(
 				Pair.of(
-					Integer.valueOf(String.valueOf(dayOfWeek)),
+					Integer.valueOf(String.valueOf(dayOfWeek)) - 1,
 					Integer.valueOf(String.valueOf(hourOfDay))),
 				new HeatMapMetric(
-					String.valueOf(dayOfWeek), metric,
+					String.valueOf((Integer)dayOfWeek - 1), metric,
 					String.valueOf(hourOfDay)));
 		}
 
