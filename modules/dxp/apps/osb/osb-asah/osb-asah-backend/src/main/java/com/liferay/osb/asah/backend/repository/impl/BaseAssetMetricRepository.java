@@ -123,7 +123,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		Field<String> canonicalUrlField = DSL.field(
 			"canonicalUrl", String.class);
-		Field<BigDecimal> metricField = getMetricField(metricType);
+		Field<BigDecimal> metricField = getMetricField(metricType, timeRange);
 		Field<String> pageTitleField = DSL.field("pageTitle", String.class);
 
 		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
@@ -186,7 +186,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		);
 
 		SelectSelectStep<Record> selectSelectStep = dslContext.select(
-			_getMetricFields(selectedMetrics)
+			_getMetricFields(selectedMetrics, timeRange)
 		).select(
 			previousField
 		);
@@ -213,7 +213,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		Set<String> selectedMetrics, TimeRange timeRange) {
 
 		List<Field<? extends Object>> fields = new ArrayList<>(
-			_getMetricFields(selectedMetrics));
+			_getMetricFields(selectedMetrics, timeRange));
 
 		Field<String> assetIdField = DSL.field(
 			getAssetIdFieldName(), String.class);
@@ -273,7 +273,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> browserNameField = DSL.field("browserName", String.class);
-		Field<BigDecimal> metricField = getMetricField(metricType);
+		Field<BigDecimal> metricField = getMetricField(metricType, timeRange);
 
 		return _queryExecutor.queryForList(
 			recordMap -> {
@@ -311,7 +311,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> deviceTypeField = DSL.field("deviceType", String.class);
-		Field<BigDecimal> metricField = getMetricField(metricType);
+		Field<BigDecimal> metricField = getMetricField(metricType, timeRange);
 		Field<String> platformNameField = DSL.field(
 			"platformName", String.class);
 
@@ -374,7 +374,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> countryField = DSL.field("country", String.class);
-		Field<BigDecimal> metricField = getMetricField(metricType);
+		Field<BigDecimal> metricField = getMetricField(metricType, timeRange);
 
 		return _queryExecutor.queryForList(
 			recordMap -> {
@@ -417,7 +417,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		field = field.as("key");
 
 		SelectJoinStep<Record> selectJoinStep = getAssetMetricSelectJoinStep(
-			dslContext.select(field, getMetricField(metricType)), timeRange);
+			dslContext.select(field, getMetricField(metricType, timeRange)),
+			timeRange);
 
 		return _queryExecutor.queryForList(
 			rowMap -> {
@@ -844,7 +845,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return "assetTitle";
 	}
 
-	protected abstract Field<BigDecimal> getMetricField(MetricType metricType);
+	protected abstract Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange);
 
 	protected abstract MetricType getMetricType(String metricTypeName);
 
@@ -966,13 +968,15 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		).longValue();
 	}
 
-	private List<Field<BigDecimal>> _getMetricFields(Set<String> metricNames) {
+	private List<Field<BigDecimal>> _getMetricFields(
+		Set<String> metricNames, TimeRange timeRange) {
+
 		return Stream.of(
 			getMetricTypes()
 		).filter(
 			assetMetricType -> metricNames.contains(assetMetricType.getName())
 		).map(
-			this::getMetricField
+			metricName -> getMetricField(metricName, timeRange)
 		).collect(
 			Collectors.toList()
 		);

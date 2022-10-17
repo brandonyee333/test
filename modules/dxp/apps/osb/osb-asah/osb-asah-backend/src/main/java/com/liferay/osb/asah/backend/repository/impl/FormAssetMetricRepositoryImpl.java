@@ -71,7 +71,9 @@ public class FormAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected Field<BigDecimal> getMetricField(MetricType metricType) {
+	protected Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange) {
+
 		if (metricType == FormMetricType.ABANDONMENTS) {
 			return DSL.sum(
 				DSL.field(

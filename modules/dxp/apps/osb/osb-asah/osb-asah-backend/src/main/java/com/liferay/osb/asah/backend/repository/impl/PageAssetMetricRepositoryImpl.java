@@ -119,7 +119,9 @@ public class PageAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected Field<BigDecimal> getMetricField(MetricType metricType) {
+	protected Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange) {
+
 		if ((metricType == PageMetricType.AVG_TIME_ON_PAGE) ||
 			(metricType == PageMetricType.BOUNCE_RATE) ||
 			(metricType == PageMetricType.EXIT_RATE)) {

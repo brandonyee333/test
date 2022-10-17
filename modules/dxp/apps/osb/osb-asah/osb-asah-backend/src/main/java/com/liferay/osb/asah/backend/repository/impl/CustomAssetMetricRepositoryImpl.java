@@ -86,7 +86,9 @@ public class CustomAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected Field<BigDecimal> getMetricField(MetricType metricType) {
+	protected Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange) {
+
 		if (metricType == CustomAssetMetricType.ABANDONMENTS) {
 			return DSL.sum(
 				DSL.field(

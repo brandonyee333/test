@@ -75,7 +75,9 @@ public class DocumentLibraryAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected Field<BigDecimal> getMetricField(MetricType metricType) {
+	protected Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange) {
+
 		Field<Long> longField = DSL.field(
 			metricType.getFieldName(), Long.class);
 

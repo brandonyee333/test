@@ -74,7 +74,9 @@ public class BlogAssetMetricRepositoryImpl
 	}
 
 	@Override
-	protected Field<BigDecimal> getMetricField(MetricType metricType) {
+	protected Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange) {
+
 		if (metricType == BlogMetricType.RATINGS) {
 			return DSL.coalesce(
 				DSL.sum(
