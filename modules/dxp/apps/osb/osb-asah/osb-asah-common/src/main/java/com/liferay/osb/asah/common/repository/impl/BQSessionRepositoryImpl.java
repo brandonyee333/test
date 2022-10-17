@@ -26,8 +26,12 @@ import com.liferay.osb.asah.common.util.GetterUtil;
 
 import java.math.BigDecimal;
 
+import java.sql.Date;
+
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -39,11 +43,13 @@ import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record3;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
+import org.jooq.WithStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -413,6 +419,42 @@ public class BQSessionRepositoryImpl
 			));
 	}
 
+	public List<Map<String, Object>> getVisitorCohortMetrics(
+		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId) {
+
+		WithStep withStep = _createVisitorCohortWithClause(
+			channelId, interval, timeRange, zoneId);
+
+		List<Field<?>> fields = _getVisitorCohortFields(interval);
+
+		Field<Object> sessionDateField = DSL.field(
+			"retentionTable.sessionDate");
+
+		return _queryExecutor.queryForList(
+			Function.identity(),
+			withStep.select(
+				fields
+			).from(
+				DSL.table("retentionTable")
+			).leftJoin(
+				DSL.table("cohortSize")
+			).on(
+				sessionDateField.eq(DSL.field("cohortSize.sessionDate"))
+			).and(
+				DSL.field(
+					"retentionTable.isKnown"
+				).eq(
+					DSL.field("cohortSize.isKnown")
+				)
+			).where(
+				sessionDateField.isNotNull()
+			).groupBy(
+				sessionDateField
+			).orderBy(
+				sessionDateField
+			));
+	}
+
 	@Override
 	public List<Map<String, BigDecimal>> getVisitorsCountGroupedByDayAndTime(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
@@ -467,6 +509,75 @@ public class BQSessionRepositoryImpl
 			).groupBy(
 				dayOfWeekField, hourOfDayField
 			));
+	}
+
+	private WithStep _createVisitorCohortWithClause(
+		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId) {
+
+		DatePart datePart = DatePart.DAY;
+
+		if (Interval.MONTH.equals(interval)) {
+			datePart = DatePart.MONTH;
+		}
+		else if (Interval.WEEK.equals(interval)) {
+			datePart = DatePart.WEEK;
+		}
+
+		return _dslContext.with(
+			"firstSession"
+		).as(
+			_getVisitorFirstSessionSelectJoinStep(
+				channelId, datePart, timeRange, zoneId)
+		).with(
+			"sessions"
+		).as(
+			_getVisitorSessionsSelectJoinStep(
+				channelId, datePart, timeRange, zoneId)
+		).with(
+			"cohortSize"
+		).as(
+			_dslContext.select(
+				DSL.field("sessionDate"), DSL.field("isKnown"),
+				DSL.count(
+				).as(
+					"numVisitors"
+				)
+			).from(
+				"firstSession"
+			).groupBy(
+				DSL.field("sessionDate"), DSL.field("isKnown")
+			).orderBy(
+				DSL.field("sessionDate")
+			)
+		).with(
+			"retentionTable"
+		).as(
+			_dslContext.select(
+				DSL.field("firstSession.sessionDate"),
+				DSL.field("sessions.intervalNumber"),
+				DSL.field("firstSession.isKnown"),
+				DSL.count(
+				).as(
+					"numVisitors"
+				)
+			).from(
+				DSL.table("sessions")
+			).leftJoin(
+				DSL.table("firstSession")
+			).on(
+				DSL.field(
+					"sessions.userId"
+				).eq(
+					DSL.field("firstSession.userId")
+				)
+			).groupBy(
+				DSL.field("firstSession.sessionDate"),
+				DSL.field("sessions.intervalNumber"),
+				DSL.field("firstSession.isKnown")
+			).orderBy(
+				DSL.field("firstSession.sessionDate")
+			)
+		);
 	}
 
 	private Condition _createWhereClause(
@@ -525,6 +636,175 @@ public class BQSessionRepositoryImpl
 		).as(
 			"visitors"
 		);
+	}
+
+	private Field<BigDecimal> _getVisitorCohortField(
+		int fieldIndex, boolean known, boolean retention) {
+
+		String cohortType = "Total";
+
+		if (retention) {
+			cohortType = "Retention";
+		}
+
+		Field<Boolean> isKnownField = _dslHelper.getCastBooleanField(
+			_dslHelper.getCastStringField(DSL.field("retentionTable.isKnown")));
+
+		Condition isKnownCondition = isKnownField.eq(false);
+
+		String visitorType = "Unknown";
+
+		if (known) {
+			isKnownCondition = isKnownField.eq(true);
+			visitorType = "Known";
+		}
+
+		Field<Double> conditionStep = DSL.when(
+			DSL.field(
+				"retentionTable.intervalNumber"
+			).eq(
+				fieldIndex
+			).and(
+				isKnownCondition
+			),
+			_dslHelper.getCastNumberField(
+				_dslHelper.getCastStringField(
+					DSL.field("retentionTable.numVisitors")))
+		).otherwise(
+			0D
+		);
+
+		if (retention) {
+			conditionStep = conditionStep.div(
+				_dslHelper.getCastNumberField(
+					_dslHelper.getCastStringField(
+						DSL.field("cohortSize.numVisitors"))));
+		}
+
+		String fieldName = String.format(
+			"interval%d%s%s", fieldIndex, cohortType, visitorType);
+
+		return DSL.sum(
+			conditionStep
+		).as(
+			fieldName
+		);
+	}
+
+	private List<Field<?>> _getVisitorCohortFields(Interval interval) {
+		List<Field<?>> fields = new ArrayList<>();
+
+		Field<String> sessionDateField = _dslHelper.getCastStringField(
+			DSL.field(
+				"retentionTable.sessionDate"
+			).cast(
+				Date.class
+			));
+
+		fields.add(sessionDateField.as("cohortDate"));
+
+		int maxIntervals = 7;
+
+		if (Interval.DAY.equals(interval)) {
+			maxIntervals = 8;
+		}
+
+		for (int i = 0; i < maxIntervals; i++) {
+			fields.add(_getVisitorCohortField(i, true, true));
+			fields.add(_getVisitorCohortField(i, false, true));
+			fields.add(_getVisitorCohortField(i, true, false));
+			fields.add(_getVisitorCohortField(i, false, false));
+		}
+
+		return fields;
+	}
+
+	private SelectJoinStep<? extends Record>
+		_getVisitorFirstSessionSelectJoinStep(
+			Long channelId, DatePart datePart, TimeRange timeRange,
+			ZoneId zoneId) {
+
+		SelectJoinStep<Record3<Object, Boolean, Date>> selectJoinStep =
+			_dslContext.select(
+				DSL.field("BQSession.userId"),
+				DSL.when(
+					DSL.field(
+						"IndividualIdentity.individualId"
+					).isNull(),
+					false
+				).otherwise(
+					true
+				).as(
+					"isKnown"
+				),
+				DSL.min(
+					_dslHelper.dateTrunc(
+						datePart,
+						_dslHelper.getDateAtTimeZoneField(
+							"BQSession.sessionStart", zoneId.toString()))
+				).as(
+					"sessionDate"
+				)
+			).from(
+				"BQSession"
+			);
+
+		SelectOnConditionStep<? extends Record> selectOnConditionStep =
+			_joinWithIdentityTable(selectJoinStep);
+
+		selectOnConditionStep.where(
+			_createWhereClause(channelId, timeRange, zoneId)
+		).groupBy(
+			DSL.field("BQSession.userId"), DSL.field("isKnown")
+		).orderBy(
+			DSL.field("BQSession.userId"), DSL.field("isKnown")
+		);
+
+		return selectOnConditionStep;
+	}
+
+	private SelectJoinStep<? extends Record> _getVisitorSessionsSelectJoinStep(
+		Long channelId, DatePart datePart, TimeRange timeRange, ZoneId zoneId) {
+
+		Field<OffsetDateTime> datesDatePart =
+			_dslHelper.getDateDifferenceDatePart(
+				datePart,
+				_dslHelper.dateTrunc(
+					datePart,
+					_dslHelper.getDateAtTimeZoneField(
+						"BQSession.sessionStart", zoneId.toString())),
+				DSL.field("firstSession.sessionDate", OffsetDateTime.class));
+
+		SelectJoinStep<Record3<Object, Object, OffsetDateTime>> selectJoinStep =
+			_dslContext.select(
+				DSL.field("BQSession.userId"),
+				DSL.field("firstSession.isKnown"),
+				datesDatePart.as("intervalNumber")
+			).from(
+				"BQSession"
+			);
+
+		SelectOnConditionStep<? extends Record> selectOnConditionStep =
+			_joinWithIdentityTable(selectJoinStep);
+
+		selectOnConditionStep.leftJoin(
+			DSL.table("firstSession")
+		).on(
+			DSL.field(
+				"BQSession.userId"
+			).eq(
+				DSL.field("firstSession.userId")
+			)
+		).where(
+			_createWhereClause(channelId, timeRange, zoneId)
+		).groupBy(
+			DSL.field("BQSession.userId"), DSL.field("firstSession.isKnown"),
+			DSL.field("intervalNumber")
+		).orderBy(
+			DSL.field("BQSession.userId"), DSL.field("firstSession.isKnown")
+		);
+
+		return selectOnConditionStep;
 	}
 
 	private SelectOnConditionStep<? extends Record> _joinWithIdentityTable(
