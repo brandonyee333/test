@@ -3,61 +3,64 @@ MERGE INTO
 USING
 	(
 		SELECT
-			sum(bounce) bounce,
+			SUM(bounce) AS bounce,
+			browserName,
 			canonicalUrl,
 			channelId,
-			sum(entrance) entrance,
-			eventDate,
-			sum(exit) exit,
+			city,
+			country,
+			deviceType,
+			SUM(directAccess) AS directAccess,
+			SUM(entrances) AS entrances,
+			DATE_TRUNC(eventDate, DAY) AS eventDate,
+			SUM(exits) exits,
+			SUM(indirectAccess) AS indirectAccess,
+			platformName,
+			region,
 			sessionId,
-			TO_HEX(
-				SHA256(
-					CONCAT(channelId, '#', eventDate, '#', userId, '#', sessionId, '#', canonicalUrl)
-				)
-			) AS sha256HexId,
-			sum(timeOnPage) timeOnPage,
+			SUM(timeOnPage) AS timeOnPage,
 			title,
 			userId,
-			sum(views) views
+			SUM(views) AS views
 		FROM
-		(
-			SELECT
-				bounce,
-				canonicalUrl,
-				channelId,
-				entrance,
-				DATE_TRUNC(eventDate, DAY) eventDate,
-				exit,
-				sessionId,
-				timeOnPage,
-				title,
-				userId,
-				views
-			FROM `{{ dag.default_args['ac_project_id'] }}.pagehourly`
-		) pagehourly
+			`{{ dag.default_args['ac_project_id'] }}.pagehourly`
+		WHERE
+			eventDate BETWEEN '{{ data_interval_start.at(0, 0, 0) }}' AND '{{ data_interval_start.at(23, 59, 59) }}'
 		GROUP BY
-			channelId,
-			canonicalUrl,
-			title,
-			userId,
-			eventDate,
-			sessionId
+			browserName, canonicalUrl, channelId, city, country, deviceType,
+			eventDate, platformName, region, sessionId, title, userId
 	) AS staging
-ON
+ON (
+	COALESCE(staging.browserName, '') = COALESCE(replica.browserName, '') AND
+	staging.canonicalUrl = replica.canonicalUrl AND
 	staging.channelId = replica.channelId AND
+	COALESCE(staging.city, '') = COALESCE(replica.city, '') AND
+	COALESCE(staging.country, '') = COALESCE(replica.country, '') AND
+	COALESCE(staging.deviceType, '') = COALESCE(replica.deviceType, '') AND
 	staging.eventDate = replica.eventDate AND
-	staging.userId = replica.userId AND
+	COALESCE(staging.platformName, '') = COALESCE(replica.platformName, '') AND
+	COALESCE(staging.region, '') = COALESCE(replica.region, '') AND
 	staging.sessionId = replica.sessionId AND
-	staging.canonicalUrl = replica.canonicalUrl
+	staging.title = replica.title AND
+	staging.userId = replica.userId
+)
+
 WHEN NOT MATCHED THEN
 	INSERT (
 		`bounce`,
-		`channelId`,
+		`browserName`,
 		`canonicalUrl`,
-		`entrance`,
+		`channelId`,
+		`city`,
+		`country`,
+		`deviceType`,
+		`directAccess`,
+		`entrances`,
 		`eventDate`,
-		`exit`,
-		`id`,
+		`exits`,
+		`indirectAccess`,
+		`platformName`,
+		`region`,
 		`sessionId`,
 		`timeOnPage`,
 		`title`,
@@ -66,12 +69,19 @@ WHEN NOT MATCHED THEN
 	)
 	VALUES (
 		staging.bounce,
-		staging.channelId,
+		staging.browserName,
 		staging.canonicalUrl,
-		staging.entrance,
+		staging.channelId,
+		staging.city,
+		staging.country,
+		staging.deviceType,
+		staging.directAccess,
+		staging.entrances,
 		staging.eventDate,
-		staging.exit,
-		staging.sha256HexId,
+		staging.exits,
+		staging.indirectAccess,
+		staging.platformName,
+		staging.region,
 		staging.sessionId,
 		staging.timeOnPage,
 		staging.title,
