@@ -3,7 +3,7 @@
 		"path": "blog_hourly.sql"
 	},
 	"customassethourly": {
-		"path": "custom_asset_hourly.sql.sql"
+		"path": "custom_asset_hourly.sql"
 	},
 	"documentlibraryhourly": {
 		"path": "document_library_hourly.sql"
