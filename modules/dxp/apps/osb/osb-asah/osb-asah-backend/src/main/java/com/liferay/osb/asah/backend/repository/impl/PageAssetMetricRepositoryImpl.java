@@ -147,7 +147,7 @@ public class PageAssetMetricRepositoryImpl
 						DSL.field(
 							"BQIdentity.individualId"
 						).isNull(),
-						DSL.field("BQPage.userId")))
+						DSL.field(getTableName(timeRange) + ".userId")))
 			);
 
 			return DSL.cast(
