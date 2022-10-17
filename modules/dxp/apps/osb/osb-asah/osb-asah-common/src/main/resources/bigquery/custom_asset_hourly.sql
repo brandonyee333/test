@@ -27,7 +27,7 @@ WITH CustomAssetEvent AS (
 	)
 	WHERE
 		Event.applicationid = 'Custom' AND
-		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 49 hour) AND
+		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour) AND
 		assetId.value IS NOT NULL
 ),
 CustomAssetFinalizedEvent AS (
@@ -37,7 +37,7 @@ CustomAssetFinalizedEvent AS (
 		CustomAssetEvent INNER JOIN `$[AC_PROJECT_ID].session` Session ON
 		CustomAssetEvent.sessionId = Session.id
     WHERE
-    	Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 49 hour)
+    	Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour)
 ),
 Metrics AS (
 	SELECT

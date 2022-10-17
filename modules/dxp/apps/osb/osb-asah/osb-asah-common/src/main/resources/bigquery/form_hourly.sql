@@ -26,6 +26,7 @@ WITH
 		)
 		WHERE
 			Event.applicationId = 'Form' AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId IN ('formSubmitted', 'formViewed')
 	),
 	FormSubmissionTimes AS (
@@ -126,6 +127,8 @@ LEFT JOIN FormSubmissionTimes ON (
 	FormEvent.userId = FormSubmissionTimes.userId)
 LEFT JOIN `$[AC_PROJECT_ID].session` AS Session ON
 	FormEvent.sessionId = Session.id
+WHERE
+	Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour)
 GROUP BY
 	assetId, browserName, canonicalUrl, channelId, city, country, deviceType,
 	eventDate, platformName, region, title, userId

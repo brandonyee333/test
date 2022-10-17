@@ -14,9 +14,9 @@ WITH
 			)
 		WHERE
 			Event.applicationId = 'WebContent' AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'webContentViewed' AND
-			articleId.value IS NOT NULL AND
-			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 49 HOUR)
+			articleId.value IS NOT NULL
 	)
 SELECT
 	assetId,

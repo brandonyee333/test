@@ -7,7 +7,8 @@ WITH PageFinalizedEvent AS (
     	`$[AC_PROJECT_ID].session` AS Session ON
     	    Event.sessionId = Session.id
     WHERE
-    	Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 49 hour)
+    	Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour) AND
+		Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour)
 ),
 PageBounces AS (
     SELECT
