@@ -74,35 +74,40 @@ public class FormAssetMetricRepositoryImpl
 	protected Field<BigDecimal> getMetricField(
 		MetricType metricType, TimeRange timeRange) {
 
+		return getMetricField(metricType, timeRange, true);
+	}
+
+	@Override
+	protected Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange, boolean alias) {
+
+		Field<BigDecimal> field;
+
+		Field<Long> longField = DSL.field(
+			metricType.getFieldName(), Long.class);
+
 		if (metricType == FormMetricType.ABANDONMENTS) {
-			return DSL.sum(
+			field = DSL.sum(
 				DSL.field(
 					FormMetricType.ABANDONMENTS.getFieldName(), Long.class)
 			).div(
 				DSL.greatest(
 					DSL.sum(DSL.field("finalizedFormViews", Long.class)),
 					DSL.one())
-			).as(
-				FormMetricType.ABANDONMENTS.getName()
 			);
 		}
-
-		Field<Long> longField = DSL.field(
-			metricType.getFieldName(), Long.class);
-
-		if (metricType == FormMetricType.COMPLETION_TIME) {
-			return DSL.avg(
-				longField
-			).as(
-				metricType.getName()
-			);
+		else if (metricType == FormMetricType.COMPLETION_TIME) {
+			field = DSL.avg(longField);
+		}
+		else {
+			field = DSL.sum(longField);
 		}
 
-		return DSL.sum(
-			longField
-		).as(
-			metricType.getName()
-		);
+		if (alias) {
+			return field.as(metricType.getName());
+		}
+
+		return field;
 	}
 
 	@Override

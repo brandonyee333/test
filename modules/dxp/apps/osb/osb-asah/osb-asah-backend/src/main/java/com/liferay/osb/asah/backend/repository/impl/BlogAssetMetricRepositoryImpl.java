@@ -77,40 +77,45 @@ public class BlogAssetMetricRepositoryImpl
 	protected Field<BigDecimal> getMetricField(
 		MetricType metricType, TimeRange timeRange) {
 
+		return getMetricField(metricType, timeRange, true);
+	}
+
+	@Override
+	protected Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange, boolean alias) {
+
+		Field<BigDecimal> field;
+
 		if (metricType == BlogMetricType.RATINGS) {
-			return DSL.coalesce(
+			field = DSL.coalesce(
 				DSL.sum(
 					DSL.field("ratingsScore", Float.class)
 				).div(
 					DSL.sum(DSL.field("ratings", Long.class))
 				),
-				BigDecimal.ZERO
-			).as(
-				metricType.getName()
-			);
+				BigDecimal.ZERO);
 		}
-
-		if (metricType == BlogMetricType.READING_TIME) {
-			return DSL.coalesce(
+		else if (metricType == BlogMetricType.READING_TIME) {
+			field = DSL.coalesce(
 				DSL.sum(
 					DSL.field(metricType.getFieldName(), Long.class)
 				).div(
 					DSL.sum(DSL.field("sessions", Long.class))
 				),
-				BigDecimal.ZERO
-			).as(
-				metricType.getName()
-			);
+				BigDecimal.ZERO);
+		}
+		else {
+			Field<Long> longField = DSL.field(
+				metricType.getFieldName(), Long.class);
+
+			field = DSL.sum(longField);
 		}
 
-		Field<Long> longField = DSL.field(
-			metricType.getFieldName(), Long.class);
+		if (alias) {
+			return field.as(metricType.getName());
+		}
 
-		return DSL.sum(
-			longField
-		).as(
-			metricType.getName()
-		);
+		return field;
 	}
 
 	@Override

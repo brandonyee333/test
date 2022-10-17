@@ -78,22 +78,30 @@ public class DocumentLibraryAssetMetricRepositoryImpl
 	protected Field<BigDecimal> getMetricField(
 		MetricType metricType, TimeRange timeRange) {
 
+		return getMetricField(metricType, timeRange, true);
+	}
+
+	@Override
+	protected Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange, boolean alias) {
+
 		Field<Long> longField = DSL.field(
 			metricType.getFieldName(), Long.class);
 
+		Field<BigDecimal> field;
+
 		if (metricType == DocumentLibraryMetricType.RATINGS) {
-			return DSL.avg(
-				longField
-			).as(
-				metricType.getName()
-			);
+			field = DSL.avg(longField);
+		}
+		else {
+			field = DSL.sum(longField);
 		}
 
-		return DSL.sum(
-			longField
-		).as(
-			metricType.getName()
-		);
+		if (alias) {
+			return field.as(metricType.getName());
+		}
+
+		return field;
 	}
 
 	@Override

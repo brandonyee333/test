@@ -273,7 +273,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> browserNameField = DSL.field("browserName", String.class);
-		Field<BigDecimal> metricField = getMetricField(metricType, timeRange);
+		Field<BigDecimal> metricField1 = getMetricField(metricType, timeRange);
+		Field<BigDecimal> metricField2 = getMetricField(
+			metricType, timeRange, false);
 
 		return _queryExecutor.queryForList(
 			recordMap -> {
@@ -293,15 +295,17 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				return metric;
 			},
 			dslContext.select(
-				browserNameField, metricField
+				browserNameField, metricField1
 			).from(
 				getTableName(timeRange)
 			).where(
 				_createWhereClause(assetId, assetTitle, channelId, timeRange)
 			).groupBy(
 				browserNameField
+			).having(
+				metricField2.greaterThan(BigDecimal.ZERO)
 			).orderBy(
-				metricField.desc()
+				metricField1.desc()
 			));
 	}
 
@@ -311,7 +315,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> deviceTypeField = DSL.field("deviceType", String.class);
-		Field<BigDecimal> metricField = getMetricField(metricType, timeRange);
+		Field<BigDecimal> metricField1 = getMetricField(metricType, timeRange);
+		Field<BigDecimal> metricField2 = getMetricField(
+			metricType, timeRange, false);
 		Field<String> platformNameField = DSL.field(
 			"platformName", String.class);
 
@@ -354,15 +360,17 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				return null;
 			},
 			dslContext.select(
-				deviceTypeField, metricField, platformNameField
+				deviceTypeField, metricField1, platformNameField
 			).from(
 				getTableName(timeRange)
 			).where(
 				_createWhereClause(assetId, assetTitle, channelId, timeRange)
 			).groupBy(
 				deviceTypeField, platformNameField
+			).having(
+				metricField2.greaterThan(BigDecimal.ZERO)
 			).orderBy(
-				deviceTypeField, metricField.desc()
+				deviceTypeField, metricField1.desc()
 			));
 
 		return new ArrayList<>(metrics.values());
@@ -374,7 +382,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> countryField = DSL.field("country", String.class);
-		Field<BigDecimal> metricField = getMetricField(metricType, timeRange);
+		Field<BigDecimal> metricField1 = getMetricField(metricType, timeRange);
+		Field<BigDecimal> metricField2 = getMetricField(
+			metricType, timeRange, false);
 
 		return _queryExecutor.queryForList(
 			recordMap -> {
@@ -390,15 +400,17 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				return metric;
 			},
 			dslContext.select(
-				countryField, metricField
+				countryField, metricField1
 			).from(
 				getTableName(timeRange)
 			).where(
 				_createWhereClause(assetId, assetTitle, channelId, timeRange)
 			).groupBy(
 				countryField
+			).having(
+				metricField2.greaterThan(BigDecimal.ZERO)
 			).orderBy(
-				metricField.desc()
+				metricField1.desc()
 			));
 	}
 
@@ -847,6 +859,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	protected abstract Field<BigDecimal> getMetricField(
 		MetricType metricType, TimeRange timeRange);
+
+	protected abstract Field<BigDecimal> getMetricField(
+		MetricType metricType, TimeRange timeRange, boolean alias);
 
 	protected abstract MetricType getMetricType(String metricTypeName);
 
