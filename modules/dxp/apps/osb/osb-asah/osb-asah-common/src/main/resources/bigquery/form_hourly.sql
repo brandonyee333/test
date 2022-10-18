@@ -128,4 +128,4 @@ LEFT JOIN `$[AC_PROJECT_ID].session` AS Session ON
 	FormEvent.sessionId = Session.id
 GROUP BY
 	assetId, browserName, canonicalUrl, channelId, city, country, deviceType,
-	normalizedEventDate, platformName, region, title, userId
+	eventDate, platformName, region, title, userId
