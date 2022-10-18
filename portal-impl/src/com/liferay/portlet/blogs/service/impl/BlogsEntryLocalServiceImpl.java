@@ -1197,6 +1197,17 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			serviceContext.setAttribute("trackbacks", null);
 		}
 
+		if (serviceContext.isAddGroupPermissions() ||
+			serviceContext.isAddGuestPermissions()) {
+
+			addEntryResources(
+				entry, serviceContext.isAddGroupPermissions(),
+				serviceContext.isAddGuestPermissions());
+		}
+		else {
+			addEntryResources(entry, serviceContext.getModelPermissions());
+		}
+
 		entry = startWorkflowInstance(userId, entry, serviceContext);
 
 		if (deletePreviousCoverImageFileEntryId != 0) {

@@ -317,6 +317,7 @@ AUI.add(
 
 								var allowPingbacks = instance.one('#allowPingbacks');
 								var allowTrackbacks = instance.one('#allowTrackbacks');
+								var inputPermissionsViewRole = instance.one('#inputPermissionsViewRole').val();
 
 								var data = instance.ns(
 									{
@@ -335,6 +336,7 @@ AUI.add(
 										'displayDateMonth': instance.one('#displayDateMonth').val(),
 										'displayDateYear': instance.one('#displayDateYear').val(),
 										'entryId': instance.one('#entryId').val(),
+										'inputPermissionsShowOptions': inputPermissionsViewRole,
 										'referringPortletResource': instance.one('#referringPortletResource').val(),
 										'subtitle': subtitle,
 										'title': title,
