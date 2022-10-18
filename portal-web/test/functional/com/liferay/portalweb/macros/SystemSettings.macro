@@ -75,6 +75,7 @@ definition {
 		Variables.assertDefined(parameterList = "${curl},${companyId}");
 
 		var output = JSONCurlUtil.post("${curl}");
+
 		var result1 = JSONUtil.getWithJSONPath("${output}", "$.agreedToTermsOfUse");
 		var result2 = JSONUtil.getWithJSONPath("${output}", "$.companyId");
 
