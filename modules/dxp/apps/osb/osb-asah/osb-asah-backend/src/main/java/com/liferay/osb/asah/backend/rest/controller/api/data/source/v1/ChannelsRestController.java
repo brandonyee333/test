@@ -67,9 +67,24 @@ public class ChannelsRestController {
 	public ChannelDTO patchChannel(
 		@PathVariable Long id, @RequestBody String json) {
 
+		Set<Long> commerceChannelIds = new HashSet<>();
+
 		Set<Long> groupIds = new HashSet<>();
 
 		JSONObject jsonObject = new JSONObject(json);
+
+		JSONArray commerceChannelsJSONArray = jsonObject.optJSONArray(
+			"commerceChannels");
+
+		if (commerceChannelsJSONArray != null) {
+			for (int i = 0; i < commerceChannelsJSONArray.length(); i++) {
+				JSONObject commerceChannelJSONObject =
+					commerceChannelsJSONArray.getJSONObject(i);
+
+				commerceChannelIds.add(
+					Long.valueOf(commerceChannelJSONObject.getString("id")));
+			}
+		}
 
 		JSONArray groupsJSONArray = jsonObject.optJSONArray("groups");
 
@@ -88,7 +103,7 @@ public class ChannelsRestController {
 
 		return new ChannelDTO(
 			_channelDog.patchChannel(
-				id,
+				id, commerceChannelIds,
 				NumberUtils.createLong(
 					jsonObject.optString("dataSourceId", null)),
 				groupIds, jsonObject.optString("name")),

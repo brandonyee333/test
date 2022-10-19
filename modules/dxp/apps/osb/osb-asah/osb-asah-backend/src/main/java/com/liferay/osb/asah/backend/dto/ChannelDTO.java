@@ -123,10 +123,17 @@ public class ChannelDTO {
 		}
 
 		public ChannelDataSourceDTO(ChannelDataSource channelDataSource) {
+			_commerceChannelIds = SetUtil.map(
+				channelDataSource.getCommerceChannelIds(), String::valueOf);
 			_dataSourceId = StringUtil.get(
 				channelDataSource.getDataSourceId(), null);
 			_groupIds = SetUtil.map(
 				channelDataSource.getGroupIds(), String::valueOf);
+		}
+
+		@JsonProperty("commerceChannelIds")
+		public Set<String> getCommerceChannelIds() {
+			return _commerceChannelIds;
 		}
 
 		@JsonProperty("id")
@@ -139,6 +146,7 @@ public class ChannelDTO {
 			return _groupIds;
 		}
 
+		private Set<String> _commerceChannelIds;
 		private String _dataSourceId;
 		private Set<String> _groupIds;
 
