@@ -90,7 +90,7 @@ public abstract class BaseChannelRepositoryTestCase
 	@Test
 	public void testFindByDataSourceId() {
 		ChannelDataSource channelDataSource = new ChannelDataSource(
-			123L, Collections.emptySet());
+			Collections.emptySet(), 123L, Collections.emptySet());
 
 		_channel.addChannelDataSource(channelDataSource);
 
@@ -113,7 +113,7 @@ public abstract class BaseChannelRepositoryTestCase
 	@Test
 	public void testFindByDataSourceIdAndGroupIds() {
 		ChannelDataSource channelDataSource = new ChannelDataSource(
-			123L, SetUtil.of(456L, 789L));
+			Collections.emptySet(), 123L, SetUtil.of(456L, 789L));
 
 		_channel.addChannelDataSource(channelDataSource);
 

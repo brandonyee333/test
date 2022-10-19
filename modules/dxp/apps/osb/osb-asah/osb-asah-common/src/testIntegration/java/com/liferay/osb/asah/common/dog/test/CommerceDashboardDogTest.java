@@ -63,7 +63,7 @@ public class CommerceDashboardDogTest
 		channel.setIsNew(Boolean.TRUE);
 
 		channel.addChannelDataSource(
-			new ChannelDataSource(_dataSource.getId(), null));
+			new ChannelDataSource(null, _dataSource.getId(), null));
 
 		_channelRepository.save(channel);
 	}

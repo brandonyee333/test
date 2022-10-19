@@ -101,7 +101,7 @@ public class DataSourceRepositoryTest
 
 		entityModels.forEach(
 			dataSource -> channel.addChannelDataSource(
-				new ChannelDataSource(dataSource.getId(), null)));
+				new ChannelDataSource(null, dataSource.getId(), null)));
 
 		_channelRepository.save(channel);
 	}
