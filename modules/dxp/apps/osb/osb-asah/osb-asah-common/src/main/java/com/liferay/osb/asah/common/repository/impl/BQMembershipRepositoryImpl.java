@@ -17,8 +17,12 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.repository.CustomBQMembershipRepository;
 
+import java.math.BigDecimal;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jooq.AggregateFunction;
 import org.jooq.Condition;
@@ -27,6 +31,7 @@ import org.jooq.DeleteUsingStep;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.Record2;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -97,6 +102,58 @@ public class BQMembershipRepositoryImpl
 			userIdField.in(userIds)
 		).fetch(
 			0, Long.class
+		);
+	}
+
+	@Override
+	public List<Map<String, Long>>
+		findSegmentIdIdentitiesCountByStatusAndUserId(
+			String status, String userId) {
+
+		Field<Long> segmentIdField = DSL.field(
+			"BQMembership.segmentId", Long.class);
+		Field<BigDecimal> identitiesCountField = DSL.field(
+			"identitiesCount", BigDecimal.class);
+
+		SelectSelectStep<Record2<Long, BigDecimal>> selectSelectStep =
+			_dslContext.select(
+				segmentIdField,
+				DSL.sum(
+					DSL.coalesce(identitiesCountField, BigDecimal.ZERO)
+				).as(
+					"identitiesCount"
+				));
+
+		Field<String> statusField = DSL.field("status", String.class);
+		Field<String> userIdField = DSL.field("userId", String.class);
+
+		return selectSelectStep.from(
+			"BQMembership"
+		).join(
+			"BQMembershipChange"
+		).on(
+			DSL.field(
+				"BQMembership.segmentId"
+			).eq(
+				DSL.field("BQMembershipChange.segmentId")
+			)
+		).where(
+			statusField.eq(status)
+		).and(
+			userIdField.eq(userId)
+		).groupBy(
+			DSL.field("BQMembership.segmentId")
+		).fetch(
+			record -> {
+				BigDecimal identitiesCount = record.get(identitiesCountField);
+
+				return new HashMap<String, Long>() {
+					{
+						put("identitiesCount", identitiesCount.longValue());
+						put("segmentId", record.get(segmentIdField));
+					}
+				};
+			}
 		);
 	}
 

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.BQMembership;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -39,6 +40,11 @@ public interface CustomBQMembershipRepository {
 	@Cacheable
 	public List<Long> findSegmentIdByStatusAndUserIdIn(
 		String status, List<String> userIds);
+
+	@Cacheable
+	public List<Map<String, Long>>
+		findSegmentIdIdentitiesCountByStatusAndUserId(
+			String status, String userId);
 
 	@Cacheable
 	public List<Long> findTop20SegmentIdByUserId(String userId);

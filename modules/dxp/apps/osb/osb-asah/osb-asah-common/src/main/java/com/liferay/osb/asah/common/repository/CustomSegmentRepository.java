@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -36,9 +37,11 @@ public interface CustomSegmentRepository {
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
 		FilterHelper filterHelper);
 
-	@Cacheable
+	// 	@Cacheable
+
 	public long countSegments(
-		FilterHelper filterHelper, @Nullable List<Long> segmentIds);
+		FilterHelper filterHelper,
+		@Nullable List<Map<String, Long>> segmentIdIdentityCounts);
 
 	@Cacheable
 	public long countSegments(List<Long> channelIds, FilterHelper filterHelper);
@@ -64,7 +67,8 @@ public interface CustomSegmentRepository {
 
 	@Cacheable
 	public List<Segment> searchSegments(
-		FilterHelper filterHelper, @Nullable List<Long> segmentIds,
+		FilterHelper filterHelper,
+		@Nullable List<Map<String, Long>> segmentIdIdentityCounts,
 		Pageable pageable);
 
 	@Cacheable
