@@ -204,14 +204,14 @@ public class IndividualsRestController extends BaseRestController {
 
 	@GetMapping("/{id}/individual-segments")
 	public PageDTO<SegmentDTO> getSegmentDTOPageDTO(
-		@PathVariable Long id, @RequestParam(required = false) String expand,
+		@PathVariable String id, @RequestParam(required = false) String expand,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		Page<Segment> segmentsPage = _segmentDog.searchSegmentPage(
-			filterString, String.valueOf(id), page, Math.max(1, size), sorts);
+			filterString, id, page, Math.max(1, size), sorts);
 
 		if (StringUtils.isEmpty(expand)) {
 			return _toSegmentDTOPageDTO(segmentsPage);
