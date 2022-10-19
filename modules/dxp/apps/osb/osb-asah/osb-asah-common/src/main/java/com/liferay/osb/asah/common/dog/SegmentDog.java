@@ -431,8 +431,8 @@ public class SegmentDog {
 		String filterString, String identityId, int page, int size,
 		String[] sorts) {
 
-		List<Long> segmentIds = _bqMembershipDog.getActiveSegmentIds(
-			identityId);
+		List<Map<String, Long>> segmentIdIdentityCounts =
+			_bqMembershipDog.getActiveSegmentIds(identityId);
 
 		FilterHelper filterHelper = new FilterHelper(filterString);
 
@@ -441,9 +441,10 @@ public class SegmentDog {
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
-				filterHelper, segmentIds, pageRequest),
+				filterHelper, segmentIdIdentityCounts, pageRequest),
 			pageRequest,
-			() -> _segmentRepository.countSegments(filterHelper, segmentIds));
+			() -> _segmentRepository.countSegments(
+				filterHelper, segmentIdIdentityCounts));
 	}
 
 	public void setReferencedFields(Segment segment) {
