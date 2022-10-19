@@ -256,7 +256,37 @@ public class ChannelDog {
 					channelDataSource.getDataSourceId(), dataSourceId));
 
 			channelChannelDataSources.add(
-				new ChannelDataSource(dataSourceId, groupIds));
+				new ChannelDataSource(null, dataSourceId, groupIds));
+
+			channel.setChannelDataSources(channelChannelDataSources);
+		}
+
+		return _channelRepository.save(channel);
+	}
+
+	public Channel patchChannel(
+		Long channelId, Set<Long> commerceChannelIds, Long dataSourceId,
+		Set<Long> groupIds, String name) {
+
+		Channel channel = getChannel(channelId);
+
+		if (StringUtils.isNotBlank(name)) {
+			channel.setName(_getChannelName(channelId, name));
+		}
+
+		if ((dataSourceId != null) &&
+			((groupIds != null) || (commerceChannelIds != null))) {
+
+			Set<ChannelDataSource> channelChannelDataSources =
+				channel.getChannelDataSources();
+
+			channelChannelDataSources.removeIf(
+				channelDataSource -> Objects.equals(
+					channelDataSource.getDataSourceId(), dataSourceId));
+
+			channelChannelDataSources.add(
+				new ChannelDataSource(
+					commerceChannelIds, dataSourceId, groupIds));
 
 			channel.setChannelDataSources(channelChannelDataSources);
 		}
@@ -330,7 +360,7 @@ public class ChannelDog {
 
 		for (Map.Entry<Long, Set<Long>> entry : dataSources.entrySet()) {
 			channelDataSources.add(
-				new ChannelDataSource(entry.getKey(), entry.getValue()));
+				new ChannelDataSource(null, entry.getKey(), entry.getValue()));
 		}
 
 		return channelDataSources;

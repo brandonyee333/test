@@ -34,7 +34,10 @@ public class ChannelDataSource {
 	public ChannelDataSource() {
 	}
 
-	public ChannelDataSource(Long dataSourceId, Set<Long> groupIds) {
+	public ChannelDataSource(
+		Set<Long> commerceChannelIds, Long dataSourceId, Set<Long> groupIds) {
+
+		_commerceChannelIds = commerceChannelIds;
 		_dataSourceId = dataSourceId;
 		_groupIds = groupIds;
 	}
@@ -52,12 +55,20 @@ public class ChannelDataSource {
 		ChannelDataSource channelDataSource = (ChannelDataSource)obj;
 
 		if (Objects.equals(_dataSourceId, channelDataSource._dataSourceId) &&
-			Objects.equals(_groupIds, channelDataSource._groupIds)) {
+			Objects.equals(_groupIds, channelDataSource._groupIds) &&
+			Objects.equals(
+				_commerceChannelIds, channelDataSource._commerceChannelIds)) {
 
 			return true;
 		}
 
 		return false;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(contentUsing = ToStringSerializer.class)
+	public Set<Long> getCommerceChannelIds() {
+		return _commerceChannelIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -78,6 +89,10 @@ public class ChannelDataSource {
 		return Objects.hash(_dataSourceId, _groupIds);
 	}
 
+	public void setCommerceChannelIds(Set<Long> commerceChannelIds) {
+		_commerceChannelIds = commerceChannelIds;
+	}
+
 	public void setDataSourceId(Long dataSourceId) {
 		_dataSourceId = dataSourceId;
 	}
@@ -85,6 +100,9 @@ public class ChannelDataSource {
 	public void setGroupIds(Set<Long> groupIds) {
 		_groupIds = groupIds;
 	}
+
+	@Transient
+	private Set<Long> _commerceChannelIds;
 
 	@Transient
 	private Long _dataSourceId;

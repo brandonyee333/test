@@ -181,6 +181,16 @@ public class DataSource implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonIgnore
+	public Boolean getCommerceChannelsSelected() {
+		if (_detail == null) {
+			return null;
+		}
+
+		return _detail.getCommerceChannelsSelected();
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public Boolean getContactsSelected() {
 		if (_detail == null) {
 			return null;
@@ -600,6 +610,18 @@ public class DataSource implements Persistable<Long> {
 		}
 
 		_author.setName(authorName);
+	}
+
+	public void setCommerceChannelsSelected(Boolean commerceChannelsSelected) {
+		if (commerceChannelsSelected == null) {
+			return;
+		}
+
+		if (_detail == null) {
+			_detail = new Detail();
+		}
+
+		_detail.setCommerceChannelsSelected(commerceChannelsSelected);
 	}
 
 	public void setContactsSelected(Boolean contactsSelected) {
@@ -1706,6 +1728,11 @@ public class DataSource implements Persistable<Long> {
 			return false;
 		}
 
+		@JsonProperty("commerceChannelsSelected")
+		public Boolean getCommerceChannelsSelected() {
+			return _commerceChannelsSelected;
+		}
+
 		@JsonProperty("contactsSelected")
 		public Boolean getContactsSelected() {
 			return _contactsSelected;
@@ -1721,6 +1748,12 @@ public class DataSource implements Persistable<Long> {
 			return Objects.hash(_contactsSelected, _sitesSelected);
 		}
 
+		public void setCommerceChannelsSelected(
+			Boolean commerceChannelsSelected) {
+
+			_commerceChannelsSelected = commerceChannelsSelected;
+		}
+
 		public void setContactsSelected(Boolean contactsSelected) {
 			_contactsSelected = contactsSelected;
 		}
@@ -1729,6 +1762,7 @@ public class DataSource implements Persistable<Long> {
 			_sitesSelected = sitesSelected;
 		}
 
+		private Boolean _commerceChannelsSelected;
 		private Boolean _contactsSelected;
 		private Boolean _sitesSelected;
 

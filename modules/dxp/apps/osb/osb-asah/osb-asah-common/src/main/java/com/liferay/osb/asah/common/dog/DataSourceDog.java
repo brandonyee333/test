@@ -325,9 +325,14 @@ public class DataSourceDog {
 	}
 
 	public DataSource updateDataSourceDetails(
-		Long dataSourceId, Boolean contactsSelected, Boolean sitesSelected) {
+		Long dataSourceId, Boolean commerceChannelsSelected,
+		Boolean contactsSelected, Boolean sitesSelected) {
 
 		DataSource dataSource = getDataSource(dataSourceId);
+
+		if (commerceChannelsSelected != null) {
+			dataSource.setCommerceChannelsSelected(commerceChannelsSelected);
+		}
 
 		if (contactsSelected != null) {
 			dataSource.setContactsSelected(contactsSelected);
