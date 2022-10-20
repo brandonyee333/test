@@ -177,21 +177,19 @@ public class SiteMetricDog {
 		for (Map<String, BigDecimal> visitorCount :
 				visitorsCountGroupedByDayAndTime) {
 
-			Object dayOfWeek = visitorCount.get("dayOfWeek");
-			Object hourOfDay = visitorCount.get("hourOfDay");
-			Object visitors = visitorCount.get("visitors");
+			BigDecimal dayOfWeek = visitorCount.get("dayOfWeek");
+			BigDecimal hourOfDay = visitorCount.get("hourOfDay");
+			BigDecimal visitors = visitorCount.get("visitors");
 
 			Metric metric = new Metric(SiteMetricType.VISITORS);
 
 			metric.setValue(Double.valueOf(String.valueOf(visitors)));
 
 			heatMapMetrics.put(
-				Pair.of(
-					Integer.valueOf(String.valueOf(dayOfWeek)) - 1,
-					Integer.valueOf(String.valueOf(hourOfDay))),
+				Pair.of(dayOfWeek.intValue() - 1, hourOfDay.intValue()),
 				new HeatMapMetric(
-					String.valueOf((Integer)dayOfWeek - 1), metric,
-					String.valueOf(hourOfDay)));
+					String.valueOf(dayOfWeek.intValue() - 1), metric,
+					String.valueOf(hourOfDay.intValue())));
 		}
 
 		return new ArrayList<>(heatMapMetrics.values());
