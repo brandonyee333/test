@@ -99,6 +99,7 @@ definition {
 	@description = "Feature ID: LRAC-12058 | Automation ID: LRAC-12144 | Test Summary: Request search keywords using groupID"
 	@priority = "3"
 	test RequestKeywordsUsingGroupID {
+		property portal.acceptance = "calvin";
 		var groupId = JSONGroupSetter.setGroupId(groupName = "Guest");
 		var keyword = "groupID";
 
@@ -144,6 +145,7 @@ definition {
 	@description = "Feature ID: LRAC-12058 | Automation ID: LRAC-12147 | Test Summary: Request search keywords using sort"
 	@priority = "3"
 	test RequestKeywordsUsingSort {
+		property portal.acceptance = "calvin";
 		var sort = "counts,desc";
 		var keyword = "sort";
 
