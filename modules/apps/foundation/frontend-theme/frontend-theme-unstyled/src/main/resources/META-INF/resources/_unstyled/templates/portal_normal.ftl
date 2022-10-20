@@ -46,7 +46,7 @@
 	</header>
 
 	<section id="content">
-		<h1 class="hide-accessible">${the_title}</h1>
+		<h1 class="hide-accessible">${htmlUtil.escape(the_title)}</h1>
 
 		<nav id="breadcrumbs">
 			<@liferay.breadcrumbs />
