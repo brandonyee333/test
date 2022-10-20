@@ -1066,7 +1066,11 @@
 				"name": "projectId",
 				"type": "STRING"
 			}
-		]
+		],
+		"timePartitioning": {
+			"field": "createDate",
+			"type": "DAY"
+		}
 	},
 	"identityactivity_raw": {
 		"clusteringFields": [
@@ -1104,7 +1108,11 @@
 				"name": "projectId",
 				"type": "STRING"
 			}
-		]
+		],
+		"timePartitioning": {
+			"field": "createDate",
+			"type": "DAY"
+		}
 	},
 	"identitychannel": {
 		"clusteringFields": [
