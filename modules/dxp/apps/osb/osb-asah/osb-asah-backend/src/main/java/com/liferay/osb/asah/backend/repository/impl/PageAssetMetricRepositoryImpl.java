@@ -113,23 +113,15 @@ public class PageAssetMetricRepositoryImpl
 		};
 	}
 
-	protected Field<BigDecimal> getMetricField(
-		MetricType metricType, TimeRange timeRange) {
-
-		return getMetricField(metricType, timeRange, true);
-	}
-
 	@Override
 	protected Field<BigDecimal> getMetricField(
-		MetricType metricType, TimeRange timeRange, boolean alias) {
-
-		Field<BigDecimal> field;
+		MetricType metricType, TimeRange timeRange) {
 
 		if ((metricType == PageMetricType.AVG_TIME_ON_PAGE) ||
 			(metricType == PageMetricType.BOUNCE_RATE) ||
 			(metricType == PageMetricType.EXIT_RATE)) {
 
-			field = DSL.coalesce(
+			return DSL.coalesce(
 				DSL.sum(
 					DSL.field(metricType.getFieldName(), Float.class)
 				).div(
@@ -137,7 +129,8 @@ public class PageAssetMetricRepositoryImpl
 				),
 				BigDecimal.ZERO);
 		}
-		else if (metricType == PageMetricType.VISITORS) {
+
+		if (metricType == PageMetricType.VISITORS) {
 			Field<Integer> visitorsField = DSL.countDistinct(
 				DSL.field("BQIdentity.individualId")
 			).plus(
@@ -149,24 +142,13 @@ public class PageAssetMetricRepositoryImpl
 						DSL.field(getTableName(timeRange) + ".userId")))
 			);
 
-			field = DSL.cast(visitorsField, BigDecimal.class);
-		}
-		else {
-			Field<Long> longField = DSL.field(
-				metricType.getFieldName(), Long.class);
-
-			field = DSL.sum(
-				longField
-			).as(
-				metricType.getName()
-			);
+			return DSL.cast(visitorsField, BigDecimal.class);
 		}
 
-		if (alias) {
-			return field.as(metricType.getName());
-		}
+		Field<Long> longField = DSL.field(
+			metricType.getFieldName(), Long.class);
 
-		return field;
+		return DSL.sum(longField);
 	}
 
 	@Override

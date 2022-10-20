@@ -89,17 +89,8 @@ public class CustomAssetMetricRepositoryImpl
 	protected Field<BigDecimal> getMetricField(
 		MetricType metricType, TimeRange timeRange) {
 
-		return getMetricField(metricType, timeRange, true);
-	}
-
-	@Override
-	protected Field<BigDecimal> getMetricField(
-		MetricType metricType, TimeRange timeRange, boolean alias) {
-
-		Field<BigDecimal> field;
-
 		if (metricType == CustomAssetMetricType.ABANDONMENTS) {
-			field = DSL.sum(
+			return DSL.sum(
 				DSL.field(
 					CustomAssetMetricType.ABANDONMENTS.getFieldName(),
 					Long.class)
@@ -109,34 +100,25 @@ public class CustomAssetMetricRepositoryImpl
 						CustomAssetMetricType.VIEWS.getFieldName(), Long.class))
 			);
 		}
-		else if ((metricType == CustomAssetMetricType.CLICKS) ||
-				 (metricType == CustomAssetMetricType.DOWNLOADS) ||
-				 (metricType == CustomAssetMetricType.SUBMISSIONS) ||
-				 (metricType == CustomAssetMetricType.VIEWS)) {
+
+		if ((metricType == CustomAssetMetricType.CLICKS) ||
+			(metricType == CustomAssetMetricType.DOWNLOADS) ||
+			(metricType == CustomAssetMetricType.SUBMISSIONS) ||
+			(metricType == CustomAssetMetricType.VIEWS)) {
 
 			Field<Long> longField = DSL.field(
 				metricType.getFieldName(), Long.class);
 
-			field = DSL.sum(longField);
-		}
-		else {
-			field = DSL.sum(
-				DSL.field(metricType.getFieldName(), Long.class)
-			).div(
-				DSL.sum(
-					DSL.field(
-						CustomAssetMetricType.SESSIONS.getFieldName(),
-						Long.class))
-			).as(
-				metricType.getName()
-			);
+			return DSL.sum(longField);
 		}
 
-		if (alias) {
-			return field.as(metricType.getName());
-		}
-
-		return field;
+		return DSL.sum(
+			DSL.field(metricType.getFieldName(), Long.class)
+		).div(
+			DSL.sum(
+				DSL.field(
+					CustomAssetMetricType.SESSIONS.getFieldName(), Long.class))
+		);
 	}
 
 	@Override

@@ -62,23 +62,8 @@ public class JournalAssetMetricRepositoryImpl
 	protected Field<BigDecimal> getMetricField(
 		MetricType metricType, TimeRange timeRange) {
 
-		return getMetricField(metricType, timeRange, true);
-	}
-
-	@Override
-	protected Field<BigDecimal> getMetricField(
-		MetricType metricType, TimeRange timeRange, boolean alias) {
-
 		Field<Long> longField = DSL.field(
 			metricType.getFieldName(), Long.class);
-
-		if (alias) {
-			return DSL.sum(
-				longField
-			).as(
-				metricType.getName()
-			);
-		}
 
 		return DSL.sum(longField);
 	}
