@@ -24,7 +24,6 @@ definition {
 
 		for (var i : list "${contentMap}") {
 			var locale = StringUtil.extractFirst("${i}", ":");
-
 			var localeList = "${localeList},${locale}";
 		}
 

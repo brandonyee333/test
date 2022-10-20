@@ -52,7 +52,6 @@ definition {
 		Button.clickSave();
 
 		var uniqueSuccess = "Your comment has already been posted. Would you like to create an account with the provided information?";
-
 		var key_uniqueSuccess = "${uniqueSuccess}";
 
 		AssertTextEquals(
@@ -114,7 +113,6 @@ definition {
 
 	macro getCommentId {
 		var currentURL = selenium.getCurrentUrl();
-
 		var commentId = StringUtil.extractLast("${currentURL}", "message_");
 
 		echo("commentId: ${commentId}");

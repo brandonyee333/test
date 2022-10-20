@@ -555,6 +555,7 @@ definition {
 		property test.name.skip.portal.instance = "CPReportsadmin#ViewEmailNotificationDelivery";
 
 		var portalURL = PropsUtil.get("portal.url");
+
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		ProductMenu.gotoPortlet(
@@ -633,7 +634,6 @@ definition {
 		property test.name.skip.portal.instance = "CPReportsadmin#ViewEmailRecipientDelivery";
 
 		var portalURL = PropsUtil.get("portal.url");
-
 		property test.assert.javascript.errors = "false";
 
 		ProductMenu.gotoPortlet(

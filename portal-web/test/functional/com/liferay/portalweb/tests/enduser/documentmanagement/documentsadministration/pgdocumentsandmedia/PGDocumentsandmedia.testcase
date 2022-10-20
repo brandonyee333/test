@@ -768,7 +768,6 @@ definition {
 		Navigator.gotoNavTab(navTab = "Miscellaneous");
 
 		var googlePropertiesSet = MathUtil.randomNumber("3");
-
 		var googleAppsAPIKey = PropsUtil.get("google.api.key.${googlePropertiesSet}");
 		var googleClientID = PropsUtil.get("google.client.id.${googlePropertiesSet}");
 
@@ -1085,7 +1084,6 @@ definition {
 		Navigator.gotoNavTab(navTab = "Miscellaneous");
 
 		var googlePropertiesSet = MathUtil.randomNumber("3");
-
 		var googleAppsAPIKey = PropsUtil.get("google.api.key.${googlePropertiesSet}");
 		var googleClientID = PropsUtil.get("google.client.id.${googlePropertiesSet}");
 

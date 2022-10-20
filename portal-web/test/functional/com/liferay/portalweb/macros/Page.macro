@@ -481,7 +481,6 @@ definition {
 
 		return authToken;
 		''';
-
 		var authToken = selenium.getEval("${javaScript}");
 
 		echo("## * Auth Token: ${authToken}");
@@ -495,7 +494,6 @@ definition {
 
 		return plid;
 		''';
-
 		var plid = selenium.getEval("${javaScript}");
 
 		echo("## * p_l_id: ${plid}");

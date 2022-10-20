@@ -5,6 +5,7 @@ definition {
 		Variables.assertDefined(parameterList = "${groupName},${name}");
 
 		var portalURL = JSONCompany.getPortalURL();
+
 		var repositoryId = JSONGroupAPI._getSiteIdByGroupKey(groupName = "${groupName}");
 
 		if (!(isSet(parentFolderId))) {
@@ -18,12 +19,10 @@ definition {
 				-d parentFolderId=${parentFolderId} \
 				-d name=${name}
 		''';
-
 		var folderId = JSONCurlUtil.post("${curl}", "$.[?(@['name'] == '${name}')]['folderId']");
+		var folderId = StringUtil.replace("${folderId}", "[\&quot;&quot;, &quot;&quot;);
 
-		var folderId = StringUtil.replace("${folderId}", "[\"", "");
-
-		var folderId = StringUtil.replace("${folderId}", "\"]", "");
+				var folderId = StringUtil.replace(&quot;${folderId}&quot;, &quot;\&quot;]", "");
 
 		if ("${folderId}" == "") {
 			fail("FAIL. Cannot find folder.");

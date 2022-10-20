@@ -69,6 +69,7 @@ definition {
 		Variables.assertDefined(parameterList = "${groupName},${urlTitle}");
 
 		var groupId = JSONCategorySetter.setGroupId(groupName = "${groupName}");
+
 		var portalURL = JSONCompany.getPortalURL();
 
 		var curl = '''
@@ -77,12 +78,10 @@ definition {
 				-d groupId=${groupId} \
 				-d urlTitle=${urlTitle}
 		''';
-
 		var articleId = JSONCurlUtil.post("${curl}", "$.[?(@['urlTitle'] == '${urlTitle}')]['articleId']");
+		var articleId = StringUtil.replace("${articleId}", "[\&quot;&quot;, &quot;&quot;);
 
-		var articleId = StringUtil.replace("${articleId}", "[\"", "");
-
-		var articleId = StringUtil.replace("${articleId}", "\"]", "");
+				var articleId = StringUtil.replace(&quot;${articleId}&quot;, &quot;\&quot;]", "");
 
 		return "${articleId}";
 	}
@@ -98,12 +97,10 @@ definition {
 				-u test@liferay.com:test \
 				-d groupId=${groupId}
 		''';
-
 		var folderId = JSONCurlUtil.post("${curl}", "$.[?(@['name'] == '${folderName}')]['folderId']");
+		var folderId = StringUtil.replace("${folderId}", "[\&quot;&quot;, &quot;&quot;);
 
-		var folderId = StringUtil.replace("${folderId}", "[\"", "");
-
-		var folderId = StringUtil.replace("${folderId}", "\"]", "");
+				var folderId = StringUtil.replace(&quot;${folderId}&quot;, &quot;\&quot;]", "");
 
 		if ("${folderId}" == "") {
 			fail("FAIL. Cannot find folder.");
@@ -117,6 +114,7 @@ definition {
 		Variables.assertDefined(parameterList = "${groupName},${urlTitle}");
 
 		var groupId = JSONCategorySetter.setGroupId(groupName = "${groupName}");
+
 		var portalURL = JSONCompany.getPortalURL();
 
 		var curl = '''
@@ -125,12 +123,10 @@ definition {
 				-d groupId=${groupId} \
 				-d urlTitle=${urlTitle}
 		''';
-
 		var resourcePrimKey = JSONCurlUtil.post("${curl}", "$.[?(@['urlTitle'] == '${urlTitle}')]['resourcePrimKey']");
+		var resourcePrimKey = StringUtil.replace("${resourcePrimKey}", "[\&quot;&quot;, &quot;&quot;);
 
-		var resourcePrimKey = StringUtil.replace("${resourcePrimKey}", "[\"", "");
-
-		var resourcePrimKey = StringUtil.replace("${resourcePrimKey}", "\"]", "");
+				var resourcePrimKey = StringUtil.replace(&quot;${resourcePrimKey}&quot;, &quot;\&quot;]", "");
 
 		return "${resourcePrimKey}";
 	}

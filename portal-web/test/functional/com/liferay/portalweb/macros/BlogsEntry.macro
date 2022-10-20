@@ -219,7 +219,6 @@ definition {
 		var displayDateDay = DateUtil.getCurrentDate();
 		var displayDateMonth = DateUtil.getCurrentMonth();
 		var displayDateYear = DateUtil.getCurrentYear();
-
 		var displayDate = "${displayDateMonth}/${displayDateDay}/${displayDateYear}";
 
 		Type(
@@ -228,7 +227,6 @@ definition {
 
 		var displayTimeHour = DateUtil.getCurrentHour();
 		var displayTimeMinute = "${displayTimeMinute}";
-
 		var displayTime = "${displayTimeHour}:${displayTimeMinute}";
 
 		Type(
@@ -240,9 +238,7 @@ definition {
 		var displayDateDay = selenium.getElementValue("TextInput#DISPLAY_DATE_DAY");
 		var displayDateMonth = selenium.getElementValue("TextInput#DISPLAY_DATE_MONTH");
 		var displayDateYear = DateUtil.getCurrentYear();
-
 		var displayDateYear = ${displayDateYear} + 1;
-
 		var displayDate = "${displayDateMonth}/${displayDateDay}/${displayDateYear}";
 
 		Type(
@@ -491,7 +487,6 @@ definition {
 	macro removeViewPermissionsPG {
 		var key_assetHeader = "${entryTitle}";
 		var key_roleName = StringUtil.replace("${roleName}", " ", "-");
-
 		var key_roleName = StringUtil.lowerCase("${key_roleName}");
 
 		Click(locator1 = "Icon#DESCRIPTIVE_HEADER_VERTICAL_ELLIPSIS");
@@ -520,10 +515,8 @@ definition {
 	macro scheduleBlogEntry {
 		var displayDateDay = selenium.getElementValue("TextInput#DISPLAY_DATE_DAY");
 		var displayDateMonth = selenium.getElementValue("TextInput#DISPLAY_DATE_MONTH");
-
 		var displayDateMonth = ${displayDateMonth} + 1;
 		var displayDateYear = selenium.getElementValue("TextInput#DISPLAY_DATE_YEAR");
-
 		var displayDate = "${displayDateMonth}/${displayDateDay}/${displayDateYear}";
 
 		Type(
@@ -531,7 +524,6 @@ definition {
 			value1 = "${displayDate}");
 
 		var displayDateHour = selenium.getElementValue("TextInput#DISPLAY_DATE_HOUR");
-
 		var displayDateHourLength = StringUtil.length("${displayDateHour}");
 
 		if ("${displayDateHourLength}" == "1") {
@@ -539,9 +531,7 @@ definition {
 		}
 
 		var displayDateMinute = selenium.getElementValue("TextInput#DISPLAY_DATE_MINUTE");
-
 		var displayDateMinuteFuture = ${displayDateMinute} + 3;
-
 		var displayDateMinuteFutureLength = StringUtil.length("${displayDateMinuteFuture}");
 
 		if ("${displayDateMinuteFutureLength}" == "1") {
@@ -549,11 +539,8 @@ definition {
 		}
 
 		var displayDateMeridian = selenium.getElementValue("TextInput#DISPLAY_DATE_MERIDIAN");
-
 		var displayDateMeridian = StringUtil.replace("${displayDateMeridian}", "0", "AM");
-
 		var displayDateMeridian = StringUtil.replace("${displayDateMeridian}", "1", "PM");
-
 		var displayTime = "${displayDateHour}:${displayDateMinuteFuture} ${displayDateMeridian}";
 
 		Type(
@@ -995,7 +982,6 @@ definition {
 		if (isSet(tagNameList)) {
 			for (var tagName : list "${tagNameList}") {
 				var tagName = StringUtil.lowerCase("${tagName}");
-
 				var key_tagName = "${tagName}";
 
 				AssertElementNotPresent(locator1 = "BlogsEntry#TAG");
@@ -1003,7 +989,6 @@ definition {
 		}
 		else {
 			var tagName = StringUtil.lowerCase("${tagName}");
-
 			var key_tagName = "${tagName}";
 
 			AssertElementNotPresent(locator1 = "BlogsEntry#TAG");
@@ -1179,7 +1164,6 @@ definition {
 		if (isSet(tagNameList)) {
 			for (var tagName : list "${tagNameList}") {
 				var tagName = StringUtil.lowerCase("${tagName}");
-
 				var key_tagName = "${tagName}";
 
 				AssertClick(
@@ -1197,7 +1181,6 @@ definition {
 		}
 		else {
 			var tagName = StringUtil.lowerCase("${tagName}");
-
 			var key_tagName = "${tagName}";
 
 			AssertClick(
@@ -1260,9 +1243,7 @@ definition {
 		Navigator.gotoPage(pageName = "${pageName}");
 
 		var entryViewCount = selenium.getText("BlogsEntry#ENTRY_VIEW_COUNT");
-
 		var entryViewCount = StringUtil.extractLast("${entryViewCount}", ",");
-
 		var entryViewCount = StringUtil.extractDigits("${entryViewCount}");
 
 		if ("${entryViewCount}" == "1") {

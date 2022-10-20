@@ -71,7 +71,6 @@ definition {
 
 		task ("Get the DXP Instance ID in AC") {
 			var dataSourceName = StringUtil.extractFirst("${assignedPropertyName}", "Combined");
-
 			var dataSourceName = StringUtil.trim("${dataSourceName}");
 
 			var expectedDataSourceId = ACSettings.getDXPInstanceId(dataSourceName = "${dataSourceName}");
@@ -165,7 +164,6 @@ definition {
 
 		task ("Get the DXP Instance ID in AC") {
 			var dataSourceName = StringUtil.extractFirst("${assignedPropertyName}", "Combined");
-
 			var dataSourceName = StringUtil.trim("${dataSourceName}");
 
 			var expectedDataSourceId = ACSettings.getDXPInstanceId(dataSourceName = "${dataSourceName}");

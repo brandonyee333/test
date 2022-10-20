@@ -4,6 +4,7 @@ definition {
 		Variables.assertDefined(parameterList = "${groupId},${name},${scope},${primKey},${roleId},${actionId}");
 
 		var portalURL = JSONCompany.getPortalURL();
+
 		var companyId = JSONCompany.getCompanyId();
 
 		var curl = '''
@@ -25,6 +26,7 @@ definition {
 		Variables.assertDefined(parameterList = "${groupId},${name},${scope},${primKey},${roleId},${actionId}");
 
 		var portalURL = JSONCompany.getPortalURL();
+
 		var companyId = JSONCompany.getCompanyId();
 
 		var curl = '''

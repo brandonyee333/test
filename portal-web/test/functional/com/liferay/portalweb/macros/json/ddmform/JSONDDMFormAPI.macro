@@ -4,7 +4,9 @@ definition {
 		Variables.assertDefined(parameterList = "${groupName},${formName}");
 
 		var portalURL = JSONCompany.getPortalURL();
+
 		var companyId = JSONCompany.getCompanyId();
+
 		var groupId = JSONDDMFormSetter.setGroupId(groupName = "${groupName}");
 
 		var curl = '''
@@ -15,7 +17,6 @@ definition {
 			  -d "start=-1" \
 			  -d "end=-1"
 		''';
-
 		var formInstanceId = JSONCurlUtil.post("${curl}", "$.[?(@['nameCurrentValue'] == '${formName}')]['formInstanceId']");
 
 		if ("${formInstanceId}" == "") {
@@ -33,7 +34,6 @@ definition {
 			  -u test@liferay.com:test \
 			  -d ddmFormInstanceId=${formInstanceId}
 		''';
-
 		var formInstanceRecordId = JSONCurlUtil.post("${curl}", "$.[?(@['formInstanceId'] == '${formInstanceId}')]['formInstanceRecordId']");
 
 		if ("${formInstanceRecordId}" == "") {

@@ -137,7 +137,6 @@ definition {
 			Click(locator1 = "ACDXPSettings#SYNC_CONTACTS_OPTION");
 
 			var currentContacts = selenium.getText("ACDXPSettings#SYNC_ALL_CONTACTS_NUMBER");
-
 			var numberContacts = StringUtil.extractDigits("${currentContacts}");
 		}
 
@@ -153,9 +152,7 @@ definition {
 
 		task ("Add 1 into the value of the variable and format the string") {
 			var numberContacts = ${numberContacts} + 1;
-
 			var newContacts = StringUtil.add("Sync All (", "${numberContacts}", "");
-
 			var newContacts = StringUtil.add("${newContacts}", " Contacts)", "");
 		}
 
@@ -229,7 +226,6 @@ definition {
 					status = "${status}");
 
 				var i = ${i} + 1;
-
 				var i = StringUtil.valueOf("${i}");
 			}
 		}
@@ -268,7 +264,6 @@ definition {
 					status = "${status}");
 
 				var i = ${i} + 1;
-
 				var i = StringUtil.valueOf("${i}");
 			}
 		}
@@ -287,7 +282,6 @@ definition {
 					status = "${status}");
 
 				var i = ${i} + 1;
-
 				var i = StringUtil.valueOf("${i}");
 			}
 		}
@@ -480,7 +474,6 @@ definition {
 			Click(locator1 = "ACDXPSettings#SYNC_CONTACTS_OPTION");
 
 			var entrieOrg = selenium.getText("ACDXPSettings#SYNC_BY_ORGANIZATIONS_PREVIEW");
-
 			var numberOrg = StringUtil.extractDigits("${entrieOrg}");
 
 			AssertTextEquals(
@@ -532,7 +525,6 @@ definition {
 			Click(locator1 = "ACDXPSettings#SYNC_CONTACTS_OPTION");
 
 			var newNumberOrg = ${numberOrg} + 1;
-
 			var newEntrieOrg = StringUtil.add("${newNumberOrg}", " Organizations Selected", "");
 
 			AssertTextEquals(
@@ -741,7 +733,6 @@ definition {
 			Click(locator1 = "ACDXPSettings#SYNC_CONTACTS_OPTION");
 
 			var entrieGrup = selenium.getText("ACDXPSettings#SYNC_BY_USER_GROUPS_PREVIEW");
-
 			var numberGrup = StringUtil.extractDigits("${entrieGrup}");
 
 			AssertTextEquals(
@@ -759,7 +750,6 @@ definition {
 			Click(locator1 = "ACDXPSettings#SYNC_CONTACTS_OPTION");
 
 			var newNumberGrup = ${numberGrup} + 1;
-
 			var newEntrieGrup = StringUtil.add("${newNumberGrup}", " User Groups Selected", "");
 
 			AssertTextEquals(

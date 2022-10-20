@@ -479,7 +479,6 @@ definition {
 
 	macro populateFieldTextBox {
 		var fieldName = StringUtil.replace("${fieldName}", " ", "_");
-
 		var key_fieldName = "${fieldName}";
 
 		Type(

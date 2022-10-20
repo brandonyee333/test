@@ -57,6 +57,7 @@ definition {
 		var groupId = JSONGroupAPI._getGroupIdByName(
 			groupName = "${groupName}",
 			site = "${site}");
+
 		var portalURL = JSONCompany.getPortalURL();
 
 		if (isSet(friendlyURL)) {

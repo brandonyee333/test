@@ -16,12 +16,10 @@ definition {
 				-d vocabularyId=${vocabularyId} \
 				-d categoryProperties=
 		''';
-
 		var categoryId = JSONCurlUtil.post("${curl}", "$.categoryId");
+		var categoryId = StringUtil.replace("${categoryId}", "[\&quot;&quot;, &quot;&quot;);
 
-		var categoryId = StringUtil.replace("${categoryId}", "[\"", "");
-
-		var categoryId = StringUtil.replace("${categoryId}", "\"]", "");
+				var categoryId = StringUtil.replace(&quot;${categoryId}&quot;, &quot;\&quot;]", "");
 
 		return "${categoryId}";
 	}
@@ -61,12 +59,10 @@ definition {
 				-d <CURL_DATA[end=-1]CURL_DATA> \
 				-d -obc=
 		''';
-
 		var categoryId = JSONCurlUtil.post("${curl}", "$.[?(@['titleCurrentValue'] == '${categoryName}')]['categoryId']");
+		var categoryId = StringUtil.replace("${categoryId}", "[\&quot;&quot;, &quot;&quot;);
 
-		var categoryId = StringUtil.replace("${categoryId}", "[\"", "");
-
-		var categoryId = StringUtil.replace("${categoryId}", "\"]", "");
+				var categoryId = StringUtil.replace(&quot;${categoryId}&quot;, &quot;\&quot;]", "");
 
 		if ("${categoryId}" == "") {
 			fail("FAIL. Cannot find category.");
@@ -86,12 +82,10 @@ definition {
 				-u test@liferay.com:test \
 				-d groupId=${groupId}
 		''';
-
 		var vocabularyId = JSONCurlUtil.post("${curl}", "$.[?(@['titleCurrentValue'] == '${vocabularyName}')]['vocabularyId']");
+		var vocabularyId = StringUtil.replace("${vocabularyId}", "[\&quot;&quot;, &quot;&quot;);
 
-		var vocabularyId = StringUtil.replace("${vocabularyId}", "[\"", "");
-
-		var vocabularyId = StringUtil.replace("${vocabularyId}", "\"]", "");
+				var vocabularyId = StringUtil.replace(&quot;${vocabularyId}&quot;, &quot;\&quot;]", "");
 
 		if ("${vocabularyId}" == "") {
 			fail("FAIL. Cannot find vocabulary.");

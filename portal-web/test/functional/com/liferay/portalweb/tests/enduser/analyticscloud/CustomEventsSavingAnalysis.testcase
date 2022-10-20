@@ -240,7 +240,6 @@ definition {
 			}
 
 			var i = ${i} + 1;
-
 			var i = StringUtil.valueOf("${i}");
 		}
 
@@ -270,7 +269,6 @@ definition {
 			while ("${i}" != "${size}") {
 				var attributeName = ListUtil.get("${list1}", "${i}");
 				var oldDataType = ListUtil.get("${list3}", "${i}");
-
 				var oldDataType = StringUtil.upperCase("${oldDataType}");
 
 				Click(
@@ -283,7 +281,6 @@ definition {
 					value1 = "${oldDataType}");
 
 				var i = ${i} + 1;
-
 				var i = StringUtil.valueOf("${i}");
 			}
 		}
@@ -699,7 +696,6 @@ definition {
 			}
 
 			var i = ${i} + 1;
-
 			var i = StringUtil.valueOf("${i}");
 		}
 	}
@@ -847,7 +843,6 @@ definition {
 					name = "${eventAnalysisName}");
 
 				var i = ${i} + 1;
-
 				var i = StringUtil.valueOf("${i}");
 			}
 		}

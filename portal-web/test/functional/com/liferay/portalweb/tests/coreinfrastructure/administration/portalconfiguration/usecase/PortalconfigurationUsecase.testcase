@@ -144,7 +144,6 @@ definition {
 		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
 
 		var documentURL = selenium.getLocation();
-
 		var otherInstanceAccessAttempt = StringUtil.replace("${documentURL}", "able", "baker");
 
 		User.firstLoginPG(

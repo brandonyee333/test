@@ -10,13 +10,17 @@ definition {
 			failMessage = "Please only set 'title' or only 'titleMap' but not both or none.");
 
 		var groupId = JSONCategorySetter.setGroupId(groupName = "${groupName}");
+
 		var parentCategoryId = JSONCategorySetter.setParentCategoryId();
+
 		var titleMap = JSONCategorySetter.setTitleMap(
 			title = "${title}",
 			titleMap = "${titleMap}");
+
 		var descriptionMap = JSONCategorySetter.setDescriptionMap(
 			description = "${description}",
 			descriptionMap = "${descriptionMap}");
+
 		var vocabularyId = JSONCategorySetter.setVocabularyId(
 			groupId = "${groupId}",
 			vocabularyName = "${vocabularyName}");
@@ -50,9 +54,11 @@ definition {
 			groupId = "${groupId}",
 			parentCategoryName = "${parentCategoryName}",
 			vocabularyId = "${vocabularyId}");
+
 		var titleMap = JSONCategorySetter.setTitleMap(
 			title = "${title}",
 			titleMap = "${titleMap}");
+
 		var descriptionMap = JSONCategorySetter.setDescriptionMap(
 			description = "${description}",
 			descriptionMap = "${descriptionMap}");
@@ -75,9 +81,11 @@ definition {
 			failMessage = "Please only set 'title' or only 'titleMap' but not both or none.");
 
 		var groupId = JSONCategorySetter.setGroupId(groupName = "${groupName}");
+
 		var titleMap = JSONCategorySetter.setTitleMap(
 			title = "${title}",
 			titleMap = "${titleMap}");
+
 		var descriptionMap = JSONCategorySetter.setDescriptionMap(
 			description = "${description}",
 			descriptionMap = "${descriptionMap}");
@@ -124,12 +132,15 @@ definition {
 			categoryName = "${categoryName}",
 			groupId = "${groupId}",
 			vocabularyId = "${vocabularyId}");
+
 		var descriptionMap = JSONCategorySetter.setDescriptionMap(
 			description = "${description}",
 			descriptionMap = "${descriptionMap}");
+
 		var parentCategoryId = JSONCategorySetter.setParentCategoryId(
 			groupId = "${groupId}",
 			vocabularyId = "${vocabularyId}");
+
 		var titleMap = JSONCategorySetter.setTitleMap(
 			title = "${title}",
 			titleMap = "${titleMap}");

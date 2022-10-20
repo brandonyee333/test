@@ -268,9 +268,7 @@ definition {
 	test AssertSitesAcquisitionCardReferrersHighestSession {
 		task ("Get the portal URL") {
 			var portalURL = PropsUtil.get("portal.url");
-
 			var portalURL = StringUtil.replace("${portalURL}", "http://", "");
-
 			var portalURL = StringUtil.replace("${portalURL}", ":8080", "");
 		}
 
@@ -348,9 +346,7 @@ definition {
 
 		task ("Get the portal URL") {
 			var portalURL = PropsUtil.get("portal.url");
-
 			var portalURL = StringUtil.replace("${portalURL}", "http://", "");
-
 			var portalURL = StringUtil.replace("${portalURL}", ":8080", "");
 		}
 
