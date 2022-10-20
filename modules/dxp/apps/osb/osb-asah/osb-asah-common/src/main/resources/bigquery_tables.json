@@ -1901,6 +1901,11 @@
 				"type": "INT64"
 			},
 			{
+				"mode": "NULLABLE",
+				"name": "browserName",
+				"type": "STRING"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "canonicalUrl",
 				"type": "STRING"
@@ -1908,6 +1913,26 @@
 			{
 				"mode": "REQUIRED",
 				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "city",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "country",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "deviceType",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "directAccess",
 				"type": "INT64"
 			},
 			{
@@ -1924,6 +1949,21 @@
 				"mode": "REQUIRED",
 				"name": "exits",
 				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "indirectAccess",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "platformName",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "region",
+				"type": "STRING"
 			},
 			{
 				"mode": "REQUIRED",
