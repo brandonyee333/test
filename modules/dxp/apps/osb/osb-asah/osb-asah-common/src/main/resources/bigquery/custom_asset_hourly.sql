@@ -27,7 +27,7 @@ WITH CustomAssetEvent AS (
 	)
 	WHERE
 		Event.applicationid = 'Custom' AND
-		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour) AND
+		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 		assetId.value IS NOT NULL
 ),
 CustomAssetFinalizedEvent AS (
@@ -36,8 +36,8 @@ CustomAssetFinalizedEvent AS (
 	FROM
 		CustomAssetEvent INNER JOIN `$[AC_PROJECT_ID].session` Session ON
 		CustomAssetEvent.sessionId = Session.id
-    WHERE
-    	Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour)
+	WHERE
+		Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 ),
 Metrics AS (
 	SELECT
@@ -144,7 +144,7 @@ ReadTime AS (
 			GROUP BY
 				assetPrimaryKey,
 				sessionId
-		) TMP
+		) AS TMP
 	WHERE
 		maxEventDate IS NOT NULL
 	GROUP BY
@@ -156,18 +156,19 @@ SubmissionTime AS (
 		assetPrimaryKey,
 		TIMESTAMP_TRUNC(minSubmissionDate, HOUR) AS normalizedEventDate,
 		SUM(submissionTime) AS submissionsTime
-	FROM (
-			 SELECT
-				 assetprimarykey,
-				 MIN(CASE WHEN eventId = 'assetSubmitted' THEN eventDate END) AS minSubmissionDate,
-				 sessionid,
-				 UNIX_SECONDS(MAX(CASE WHEN eventId = 'assetSubmitted' THEN eventDate END)) - UNIX_SECONDS(MIN(CASE WHEN eventId = 'assetViewed' THEN eventDate END)) AS submissionTime
-			 FROM
-				 CustomAssetFinalizedEvent
-			 GROUP BY
-				 assetPrimaryKey,
-				 sessionId
-		 ) TMP
+	FROM
+		(
+			SELECT
+				assetprimarykey,
+				MIN(CASE WHEN eventId = 'assetSubmitted' THEN eventDate END) AS minSubmissionDate,
+				sessionid,
+				UNIX_SECONDS(MAX(CASE WHEN eventId = 'assetSubmitted' THEN eventDate END)) - UNIX_SECONDS(MIN(CASE WHEN eventId = 'assetViewed' THEN eventDate END)) AS submissionTime
+			FROM
+				CustomAssetFinalizedEvent
+			GROUP BY
+				assetPrimaryKey,
+				sessionId
+		) AS TMP
 	WHERE
 		minSubmissionDate IS NOT NULL
 	GROUP BY

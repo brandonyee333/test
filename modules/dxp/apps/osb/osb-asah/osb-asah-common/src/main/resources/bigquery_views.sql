@@ -131,7 +131,7 @@ CREATE OR REPLACE VIEW BQBlog AS (
 					GROUP BY
 						assetId, assetTitle, canonicalUrl, channelId, sessionId,
 						title, userId
-				) TMP
+				) AS TMP
 			WHERE
 				maxEventDate IS NOT NULL
 			GROUP BY
@@ -378,7 +378,7 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 					GROUP BY
 						assetPrimaryKey,
 						sessionId
-				 ) TMP
+				 ) AS TMP
 			WHERE
 				maxEventDate IS NOT NULL
 			GROUP BY
@@ -408,7 +408,7 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 				GROUP BY
 					assetPrimaryKey,
 					sessionId
-			) TMP
+			) AS TMP
 			WHERE
 				minSubmissionDate IS NOT NULL
 			GROUP BY
@@ -553,7 +553,7 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 						THEN
 							1
 						ELSE
-						    0
+							0
 					END
 				) AS previews,
 				region,
@@ -688,8 +688,8 @@ CREATE OR REPLACE VIEW BQFieldMapping AS (
 						BQExpandoColumn
 					GROUP BY
 						name, dataType, displayType, ownerType
-				) TMP1
-			) TMP2
+				) AS TMP1
+			) AS TMP2
 		),
 		DemographicsFieldMapping AS (
 			SELECT
@@ -792,7 +792,7 @@ CREATE OR REPLACE VIEW BQForm AS (
 					) AS previousFormViewedEventDate
 				FROM
 					FormEvent
-			) TMP
+			) AS TMP
 			WHERE
 				eventId = 'formSubmitted'
 			GROUP BY
@@ -836,16 +836,16 @@ CREATE OR REPLACE VIEW BQForm AS (
 		FormEvent.deviceType,
 		DATE_TRUNC('HOUR', FormEvent.eventDate) AS eventDate,
 		SUM(
-            CASE
-                WHEN
-                    eventId = 'formViewed' AND
-                    Session.id IS NOT NULL
-                THEN
-                1
-            ELSE
-                0
-        END
-        ) AS finalizedFormViews,
+			CASE
+				WHEN
+					eventId = 'formViewed' AND
+					Session.id IS NOT NULL
+				THEN
+				1
+			ELSE
+				0
+		END
+		) AS finalizedFormViews,
 		FormEvent.platformName,
 		FormEvent.region,
 		SUM(CASE WHEN FormEvent.eventId = 'formSubmitted' THEN 1 END) AS submissions,
@@ -1116,7 +1116,7 @@ CREATE OR REPLACE VIEW BQPage AS (
 				PageFinalizedEvent
 			WHERE
 				applicationId = 'Page' AND eventId = 'pageViewed'
-			GROUP by
+			GROUP BY
 				browserName,
 				canonicalUrl,
 				channelId,

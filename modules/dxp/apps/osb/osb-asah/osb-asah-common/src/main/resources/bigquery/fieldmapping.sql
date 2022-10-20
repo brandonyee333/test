@@ -61,31 +61,31 @@ WITH CustomFieldMapping AS (
 				`$[AC_PROJECT_ID].expandocolumn` AS ExpandoColumn
 			GROUP BY
 				name, dataType, displayType, ownerType
-		) TMP1
-	) TMP2
+		) AS TMP1
+	) AS TMP2
 ),
 DemographicsFieldMapping AS (
 	SELECT 'demographics' context,
-	    ARRAY<INT64>[] dataSourceIds,
-	    displayName,
-	    'input-field' displayType,
-	    fieldName,
-	    fieldType,
-	    CURRENT_TIMESTAMP() modifiedDate,
-	    'individual' ownerType,
-	    false repeatable_
-    FROM UNNEST(ARRAY<STRUCT<displayName STRING, fieldName STRING,fieldType STRING>>
-        [
-            ('additionalName', 'middleName', 'text'),
-            ('address', 'addresses', 'text'),
-            ('birthDate', 'birthday', 'date'),
-            ('email', 'emailAddress', 'text'),
-            ('familyName', 'lastName', 'text'),
-            ('gender', 'gender', 'text'),
-            ('givenName', 'firstName', 'text'),
-            ('jobTitle', 'jobTitle', 'text'),
-            ('telephone', 'phones', 'text')
-        ])
+		ARRAY<INT64>[] dataSourceIds,
+		displayName,
+		'input-field' displayType,
+		fieldName,
+		fieldType,
+		CURRENT_TIMESTAMP() modifiedDate,
+		'individual' ownerType,
+		false repeatable_
+	FROM UNNEST(ARRAY<STRUCT<displayName STRING, fieldName STRING,fieldType STRING>>
+		[
+			('additionalName', 'middleName', 'text'),
+			('address', 'addresses', 'text'),
+			('birthDate', 'birthday', 'date'),
+			('email', 'emailAddress', 'text'),
+			('familyName', 'lastName', 'text'),
+			('gender', 'gender', 'text'),
+			('givenName', 'firstName', 'text'),
+			('jobTitle', 'jobTitle', 'text'),
+			('telephone', 'phones', 'text')
+		])
 )
 
 SELECT

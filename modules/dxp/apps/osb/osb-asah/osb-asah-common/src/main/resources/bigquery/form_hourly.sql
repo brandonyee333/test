@@ -53,11 +53,11 @@ WITH
 						assetId, channelId, canonicalUrl, sessionId, title
 					ORDER BY
 						eventDate ASC
-					 ROWS UNBOUNDED PRECEDING
+					ROWS UNBOUNDED PRECEDING
 				) AS previousFormViewedEventDate
 			FROM
 				FormEvent
-		 ) TMP
+		 ) AS TMP
 		WHERE
 			eventId = 'formSubmitted'
 		GROUP BY
@@ -90,7 +90,7 @@ SELECT
 		)
 	) AS abandonments,
 	FormEvent.assetId,
-	MAX(CASE WHEN FormEvent.eventId = 'formViewed' THEN FormEvent.assetTitle END ) assetTitle,
+	MAX(CASE WHEN FormEvent.eventId = 'formViewed' THEN FormEvent.assetTitle END) AS assetTitle,
 	FormEvent.browserName,
 	FormEvent.canonicalUrl,
 	FormEvent.channelId,
@@ -99,16 +99,16 @@ SELECT
 	FormEvent.deviceType,
 	TIMESTAMP_TRUNC(eventDate, HOUR) AS eventDate,
 	SUM(
-        CASE
-            WHEN
-                eventId = 'formViewed' AND
-                Session.id IS NOT NULL
-            THEN
-                1
-            ELSE
-                0
-        END
-    ) AS finalizedFormViews,
+		CASE
+			WHEN
+				eventId = 'formViewed' AND
+				Session.id IS NOT NULL
+			THEN
+				1
+			ELSE
+				0
+		END
+	) AS finalizedFormViews,
 	FormEvent.platformName,
 	FormEvent.region,
 	FormEvent.title AS pageTitle,
@@ -128,7 +128,7 @@ LEFT JOIN FormSubmissionTimes ON (
 LEFT JOIN `$[AC_PROJECT_ID].session` AS Session ON
 	FormEvent.sessionId = Session.id
 WHERE
-	Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour)
+	Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 GROUP BY
 	assetId, browserName, canonicalUrl, channelId, city, country, deviceType,
 	eventDate, platformName, region, title, userId

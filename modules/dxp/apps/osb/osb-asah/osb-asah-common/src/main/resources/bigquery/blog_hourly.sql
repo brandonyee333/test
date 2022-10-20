@@ -14,7 +14,7 @@ WITH
 		)
 		WHERE
 			Event.applicationId = 'Blog' AND
-			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour) AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed') AND
 			entryId.value IS NOT NULL
 	),
@@ -25,8 +25,8 @@ WITH
 			BlogEvent
 		INNER JOIN `$[AC_PROJECT_ID].session` AS Session ON
 			BlogEvent.sessionId = Session.id
-	    WHERE
-			Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour)
+		WHERE
+			Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	),
 	CommentEvent AS (
 		SELECT
@@ -86,7 +86,7 @@ WITH
 		GROUP BY
 			assetId, canonicalUrl, channelId, normalizedEventDate, title, userId
 	),
-	BlogRatings as (
+	BlogRatings AS (
 		SELECT
 			assetId,
 			canonicalUrl,
@@ -101,14 +101,14 @@ WITH
 		GROUP BY
 			assetId, canonicalUrl, channelId, normalizedEventDate, title, userId
 	),
-	BlogReadTimes as (
+	BlogReadTimes AS (
 		SELECT
 			assetId,
 			assetTitle,
 			canonicalUrl,
 			channelId,
 			TIMESTAMP_TRUNC(maxEventDate, HOUR) AS normalizedEventDate,
-			title as pageTitle,
+			title AS pageTitle,
 			SUM(readtime) AS readTime,
 			userId
 		FROM
@@ -131,14 +131,14 @@ WITH
 				GROUP BY
 					assetId, assetTitle, canonicalUrl, channelId, sessionId,
 					title, userId
-			) TMP
+			) AS TMP
 		WHERE
 			maxEventDate IS NOT NULL
 		GROUP BY
 			assetId, assetTitle, canonicalUrl, channelId, normalizedEventDate,
 			title, userId
 	),
-	BlogViewsAndClicks as (
+	BlogViewsAndClicks AS (
 		SELECT
 			assetId,
 			assetTitle,
@@ -152,17 +152,17 @@ WITH
 					THEN
 						1
 					ELSE
-					    0
+						0
 					END
 			) AS clicks,
 			city,
 			country,
-			TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
+			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 			deviceType,
 			platformName,
 			region,
 			COUNT(DISTINCT(sessionId)) AS sessions,
-			title as pageTitle,
+			title AS pageTitle,
 			userId,
 			SUM(
 				CASE
@@ -171,7 +171,7 @@ WITH
 					THEN
 						1
 					ELSE
-					    0
+						0
 					END
 			) AS views
 		FROM
@@ -203,14 +203,14 @@ SELECT
 	BlogViewsAndClicks.userId,
 	COALESCE(BlogViewsAndClicks.views, 0) AS views
 FROM
-	 BlogViewsAndClicks
+	BlogViewsAndClicks
 LEFT JOIN BlogComments ON (
-	 BlogViewsAndClicks.assetId = BlogComments.assetId AND
-	 BlogViewsAndClicks.canonicalUrl = BlogComments.canonicalUrl AND
-	 BlogViewsAndClicks.channelId = BlogComments.channelId AND
-	 BlogViewsAndClicks.normalizedEventDate = BlogComments.normalizedEventDate AND
-	 BlogViewsAndClicks.pageTitle = BlogComments.pageTitle AND
-	 BlogViewsAndClicks.userId = BlogComments.userId
+	BlogViewsAndClicks.assetId = BlogComments.assetId AND
+	BlogViewsAndClicks.canonicalUrl = BlogComments.canonicalUrl AND
+	BlogViewsAndClicks.channelId = BlogComments.channelId AND
+	BlogViewsAndClicks.normalizedEventDate = BlogComments.normalizedEventDate AND
+	BlogViewsAndClicks.pageTitle = BlogComments.pageTitle AND
+	BlogViewsAndClicks.userId = BlogComments.userId
 )
 LEFT JOIN BlogRatings ON (
 	BlogViewsAndClicks.assetId = BlogRatings.assetId AND

@@ -13,7 +13,7 @@ WITH
 			)
 		WHERE
 			Event.applicationId = 'Comment' AND
-			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour) AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'posted' AND
 			className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
 			classPK.value IS NOT NULL
@@ -33,7 +33,7 @@ WITH
 			)
 		WHERE
 			Event.applicationId = 'Document' AND
-			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour) AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId IN ('documentDownloaded', 'documentPreviewed') AND
 			fileEntryId.value IS NOT NULL
 	),
@@ -58,7 +58,7 @@ WITH
 			)
 		WHERE
 			Event.applicationId = 'Ratings' AND
-			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour) AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'VOTE' AND
 			className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
 			classPK.value IS NOT NULL AND
@@ -93,7 +93,7 @@ WITH
 					THEN
 						1
 					ELSE
-                    	0
+					0
 				END
 			) AS downloads,
 			country,
@@ -107,7 +107,7 @@ WITH
 					THEN
 						1
 					ELSE
-					    0
+						0
 				END
 			) AS previews,
 			region,

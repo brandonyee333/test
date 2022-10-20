@@ -1,35 +1,35 @@
 WITH PageFinalizedEvent AS (
-    SELECT
+	SELECT
 		Event.*
-    FROM
-    	`$[AC_PROJECT_ID].event` AS Event
-    INNER JOIN
-    	`$[AC_PROJECT_ID].session` AS Session ON
-    	    Event.sessionId = Session.id
-    WHERE
-    	Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour) AND
-		Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 hour)
+	FROM
+		`$[AC_PROJECT_ID].event` AS Event
+	INNER JOIN
+		`$[AC_PROJECT_ID].session` AS Session ON
+			Event.sessionId = Session.id
+	WHERE
+		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+		Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 ),
 PageBounces AS (
-    SELECT
+	SELECT
 		channelId,
 		COUNT(*) AS count,
 		SUM(
-		   CASE
-			   WHEN applicationId = 'Page' AND eventId = 'pageViewed'
-		   THEN
-			   1
-		   ELSE
-			   0
-		   END
+			CASE
+				WHEN applicationId = 'Page' AND eventId = 'pageViewed'
+			THEN
+				1
+			ELSE
+				0
+			END
 		) AS pageViews,
 		sessionId,
 		userId
-    FROM
+	FROM
 		PageFinalizedEvent
-    WHERE
+	WHERE
 		eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed')
-    GROUP BY
+	GROUP BY
 		channelId, sessionId, userId
 ),
 PageEntrances AS (
@@ -84,7 +84,7 @@ PageExits AS (
 		title,
 		userId
 	FROM (
-	    SELECT
+		SELECT
 			browserName,
 			canonicalUrl,
 			channelId,
@@ -98,7 +98,7 @@ PageExits AS (
 			sessionId,
 			title,
 			userId
-	    FROM
+		FROM
 			PageFinalizedEvent
 	) AS EventExit
 	WHERE
