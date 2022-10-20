@@ -50,7 +50,6 @@ public class JournalAssetMetricRepositoryTest
 			JournalMetricType.VIEWS, TimeRange.LAST_7_DAYS);
 	}
 
-	@Disabled
 	@SQLResource(
 		resourcePath = "journal_asset_metric_views_browser_last_30_days.sql"
 	)
