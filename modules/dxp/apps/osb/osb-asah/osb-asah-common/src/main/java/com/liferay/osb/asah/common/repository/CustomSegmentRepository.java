@@ -37,8 +37,7 @@ public interface CustomSegmentRepository {
 		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
 		FilterHelper filterHelper);
 
-	// 	@Cacheable
-
+	@Cacheable
 	public long countSegments(
 		FilterHelper filterHelper,
 		@Nullable List<Map<String, Long>> segmentIdIdentityCounts);
