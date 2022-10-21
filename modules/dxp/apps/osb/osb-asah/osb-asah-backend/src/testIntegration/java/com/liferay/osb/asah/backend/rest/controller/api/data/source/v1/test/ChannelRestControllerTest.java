@@ -102,9 +102,9 @@ public class ChannelRestControllerTest
 		ValidatableResponse validatableResponse = response.then();
 
 		validatableResponse.body(
-			"channel.dataSources[1].groupIds", Matchers.hasSize(2)
-		).body(
 			"channel.dataSources[1].commerceChannelIds", Matchers.hasSize(2)
+		).body(
+			"channel.dataSources[1].groupIds", Matchers.hasSize(2)
 		).contentType(
 			ContentType.JSON
 		);
