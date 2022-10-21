@@ -69,6 +69,8 @@ public class ChannelsRestController {
 
 		Set<Long> commerceChannelIds = new HashSet<>();
 
+		JSONObject jsonObject = new JSONObject(json);
+
 		JSONArray commerceChannelsJSONArray = jsonObject.optJSONArray(
 			"commerceChannels");
 
@@ -83,8 +85,6 @@ public class ChannelsRestController {
 		}
 
 		Set<Long> groupIds = new HashSet<>();
-
-		JSONObject jsonObject = new JSONObject(json);
 
 		JSONArray groupsJSONArray = jsonObject.optJSONArray("groups");
 
