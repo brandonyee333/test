@@ -55,21 +55,24 @@ public class SiteMetricDog {
 	public List<Metric> getBrowserMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		Map<String, Integer> sessionsCountGroupedByBrowserName =
+		Map<String, BigDecimal> sessionsCountGroupedByBrowserName =
 			_bqSessionRepository.getSessionsCountGroupedByBrowserName(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
-		Set<Map.Entry<String, Integer>> set =
+		Set<Map.Entry<String, BigDecimal>> set =
 			sessionsCountGroupedByBrowserName.entrySet();
 
-		Stream<Map.Entry<String, Integer>> stream = set.stream();
+		Stream<Map.Entry<String, BigDecimal>> stream = set.stream();
 
 		return stream.map(
 			entry -> {
 				Metric metric = new Metric(metricType);
 
-				metric.setValue(Double.valueOf(entry.getValue()));
+				BigDecimal value = entry.getValue();
+
+				metric.setValue(value.doubleValue());
+
 				metric.setValueKey(entry.getKey());
 
 				return metric;
@@ -123,21 +126,24 @@ public class SiteMetricDog {
 	public List<Metric> getGeolocationMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		Map<String, Integer> sessionsCountGroupedByGeolocation =
+		Map<String, BigDecimal> sessionsCountGroupedByGeolocation =
 			_bqSessionRepository.getSessionsCountGroupedByGeolocation(
 				Long.valueOf(searchQueryContext.getChannelId()),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
-		Set<Map.Entry<String, Integer>> set =
+		Set<Map.Entry<String, BigDecimal>> set =
 			sessionsCountGroupedByGeolocation.entrySet();
 
-		Stream<Map.Entry<String, Integer>> stream = set.stream();
+		Stream<Map.Entry<String, BigDecimal>> stream = set.stream();
 
 		return stream.map(
 			entry -> {
 				Metric metric = new Metric(metricType);
 
-				metric.setValue(Double.valueOf(entry.getValue()));
+				BigDecimal value = entry.getValue();
+
+				metric.setValue(value.doubleValue());
+
 				metric.setValueKey(entry.getKey());
 
 				return metric;

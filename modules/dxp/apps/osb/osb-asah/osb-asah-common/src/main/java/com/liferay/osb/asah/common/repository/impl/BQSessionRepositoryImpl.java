@@ -82,7 +82,7 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
-	public Map<String, Integer> getSessionsCountGroupedByBrowserName(
+	public Map<String, BigDecimal> getSessionsCountGroupedByBrowserName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
 		Field field = DSL.field("browserName");
@@ -98,7 +98,7 @@ public class BQSessionRepositoryImpl
 			).groupBy(
 				field
 			),
-			GetterUtil::getInteger);
+			GetterUtil::getBigDecimal);
 	}
 
 	@Override
@@ -112,7 +112,11 @@ public class BQSessionRepositoryImpl
 		return _queryExecutor.queryForList(
 			Function.identity(),
 			_dslContext.select(
-				deviceTypeField, platformNameField, DSL.count()
+				deviceTypeField, platformNameField,
+				DSL.count(
+				).as(
+					"count"
+				)
 			).from(
 				"BQSession"
 			).where(
@@ -123,7 +127,7 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
-	public Map<String, Integer> getSessionsCountGroupedByGeolocation(
+	public Map<String, BigDecimal> getSessionsCountGroupedByGeolocation(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
 		Field field = DSL.field("country");
@@ -139,7 +143,7 @@ public class BQSessionRepositoryImpl
 			).groupBy(
 				field
 			),
-			GetterUtil::getInteger);
+			GetterUtil::getBigDecimal);
 	}
 
 	@Override
