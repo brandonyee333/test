@@ -114,6 +114,11 @@ public class PageAssetMetricRepositoryImpl
 	}
 
 	@Override
+	protected String getAssetTitleFieldName() {
+		return "title";
+	}
+
+	@Override
 	protected Field<BigDecimal> getMetricField(
 		MetricType metricType, TimeRange timeRange) {
 
