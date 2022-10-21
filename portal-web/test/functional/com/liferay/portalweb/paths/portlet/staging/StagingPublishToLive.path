@@ -124,7 +124,7 @@
 </tr>
 <tr>
 	<td>CONTENT_CHOOSE_CONTENT_SUBCONTENT_CHECKBOX</td>
-	<td>//input[contains(@data-name,'Referenced Content')]</td>
+	<td>//input[contains(@data-name,'Referenced Content') and @checked]</td>
 	<td></td>
 </tr>
 <tr>
