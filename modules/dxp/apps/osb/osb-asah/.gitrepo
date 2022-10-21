@@ -4,8 +4,8 @@
 [subrepo]
 	autopull = true
 	cmdver = liferay
-	commit = 8d650fbd7fcc07c8647be03404995d02de30ec07
+	commit = 3c88504eaa2895c4d53cdb48743a34804ed780ac
 	mergebuttonmergecommits = false
 	mode = pull
-	parent = 76085c6320a6219117073e8f1554d756f269f917
+	parent = cc5d99472924711c76cfd4856bd8a4b340625b42
 	remote = git@github.com:liferay/com-liferay-osb-asah-private.git
