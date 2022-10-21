@@ -245,6 +245,8 @@ public class BQSessionRepositoryImpl
 			_dslHelper.getDateAtTimeZoneField(
 				"BQSession.sessionStart", zoneId.toString()));
 
+		dayOfWeekField = dayOfWeekField.cast(BigDecimal.class);
+
 		dayOfWeekField = dayOfWeekField.as("dayOfWeek");
 
 		Field dateField = DSL.timestamp(
@@ -255,15 +257,32 @@ public class BQSessionRepositoryImpl
 
 		Field hourOfDayField = DSL.extract(
 			dateField, DatePart.HOUR
-		).as(
-			"hourOfDay"
+		).cast(
+			BigDecimal.class
 		);
+
+		hourOfDayField = hourOfDayField.as("hourOfDay");
+
+		Field uniqueVisitorsField = _getKnownVisitorsField(
+			false
+		).plus(
+			DSL.countDistinct(
+				DSL.when(
+					DSL.field(
+						"IndividualIdentity.individualId"
+					).isNull(),
+					DSL.field("BQSession.userid")))
+		).cast(
+			BigDecimal.class
+		);
+
+		uniqueVisitorsField = uniqueVisitorsField.as("visitors");
 
 		return _queryExecutor.queryForList(
 			Function.identity(),
 			_joinWithIdentityTable(
 				_dslContext.select(
-					dayOfWeekField, hourOfDayField, _getUniqueVisitorsField()
+					dayOfWeekField, hourOfDayField, uniqueVisitorsField
 				).from(
 					"BQSession"
 				)
