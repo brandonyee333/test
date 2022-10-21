@@ -15,8 +15,10 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -26,6 +28,7 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
@@ -62,6 +65,8 @@ public class BQMembershipRepositoryTest
 
 		bqMembership1.setStatus("ACTIVE");
 
+		_addBQMembershipChange(segment1.getId(), 37L);
+
 		BQMembership bqMembership2 = new BQMembership();
 
 		bqMembership2.setCreateDate(new Date());
@@ -74,6 +79,8 @@ public class BQMembershipRepositoryTest
 		bqMembership2.setSegmentId(segment2.getId());
 
 		bqMembership2.setStatus("INACTIVE");
+
+		_addBQMembershipChange(segment2.getId(), 27L);
 
 		BQMembership bqMembership3 = new BQMembership();
 
@@ -269,6 +276,38 @@ public class BQMembershipRepositoryTest
 	}
 
 	@Test
+	public void testFindSegmentIdIdentitiesCountByStatusAndUserId() {
+		List<Map<String, Long>> segmentIdIdentitiesCounts =
+			_bqMembershipRepository.
+				findSegmentIdIdentitiesCountByStatusAndUserId("ACTIVE", "12");
+
+		Assertions.assertEquals(
+			1, segmentIdIdentitiesCounts.size(),
+			segmentIdIdentitiesCounts.toString());
+
+		Map<String, Long> segmentIdIdentitiesCount =
+			segmentIdIdentitiesCounts.get(0);
+
+		Assertions.assertEquals(34, segmentIdIdentitiesCount.get("segmentId"));
+		Assertions.assertEquals(
+			37, segmentIdIdentitiesCount.get("identitiesCount"));
+
+		segmentIdIdentitiesCounts =
+			_bqMembershipRepository.
+				findSegmentIdIdentitiesCountByStatusAndUserId("INACTIVE", "12");
+
+		Assertions.assertEquals(
+			1, segmentIdIdentitiesCounts.size(),
+			segmentIdIdentitiesCounts.toString());
+
+		segmentIdIdentitiesCount = segmentIdIdentitiesCounts.get(0);
+
+		Assertions.assertEquals(56, segmentIdIdentitiesCount.get("segmentId"));
+		Assertions.assertEquals(
+			27, segmentIdIdentitiesCount.get("identitiesCount"));
+	}
+
+	@Test
 	public void testFindTop20SegmentIdByIdentityId() {
 		List<Long> segmentIds =
 			_bqMembershipRepository.findTop20SegmentIdByUserId("12");
@@ -361,6 +400,17 @@ public class BQMembershipRepositoryTest
 		return _bqMembershipRepository;
 	}
 
+	private void _addBQMembershipChange(Long segmentId, long identitiesCount) {
+		BQMembershipChange bqMembershipChange = new BQMembershipChange();
+
+		bqMembershipChange.setCreateDate(new Date());
+		bqMembershipChange.setIdentitiesCount(identitiesCount);
+		bqMembershipChange.setKnownIdentitiesCount(19L);
+		bqMembershipChange.setSegmentId(segmentId);
+
+		_bqMembershipChangeRepository.save(bqMembershipChange);
+	}
+
 	private Segment _addSegment(long segmentId) {
 		Segment segment = new Segment();
 
@@ -382,6 +432,9 @@ public class BQMembershipRepositoryTest
 
 		return _segmentRepository.save(segment);
 	}
+
+	@Autowired
+	private BQMembershipChangeRepository _bqMembershipChangeRepository;
 
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
