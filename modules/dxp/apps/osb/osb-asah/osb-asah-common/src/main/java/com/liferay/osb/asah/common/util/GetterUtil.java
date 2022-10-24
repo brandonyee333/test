@@ -38,6 +38,12 @@ public class GetterUtil {
 		if (object instanceof String) {
 			return new BigDecimal((String)object);
 		}
+		else if (object instanceof Integer) {
+			return new BigDecimal((Integer)object);
+		}
+		else if (object instanceof Double) {
+			return BigDecimal.valueOf((Double)object);
+		}
 
 		return (BigDecimal)object;
 	}
