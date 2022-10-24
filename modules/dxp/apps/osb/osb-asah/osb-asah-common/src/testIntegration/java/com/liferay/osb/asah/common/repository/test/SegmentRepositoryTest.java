@@ -15,11 +15,9 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -34,12 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,32 +111,6 @@ public class SegmentRepositoryTest
 		segment2 = entityModels.get(1);
 
 		_segment2Id = segment2.getId();
-
-		Individual individual = new Individual();
-
-		individual.setChannelIds(Collections.singleton(channel1.getId()));
-		individual.setCreateDate(new Date());
-
-		String emailAddress = "test@liferay.com";
-
-		individual.setEmailAddressHashed(DigestUtils.sha256Hex(emailAddress));
-
-		individual.setModifiedDate(new Date());
-		individual.setSegmentIds(Collections.singleton(segment1.getId()));
-
-		// TODO Add Individual
-
-		_individualId = "1";
-
-		individual.setBQDataSourceUsers(
-			Collections.singleton(
-				new BQDataSourceUser(
-					Collections.singleton("testAccount"), dataSource.getId(),
-					Long.valueOf(_individualId),
-					Collections.singleton("23432-cd-3242-asf23"))));
-
-		// TODO Add Individual
-
 	}
 
 	@AfterEach
@@ -151,12 +120,8 @@ public class SegmentRepositoryTest
 
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
-
-		// TODO Delete all Individuals
-
 	}
 
-	@Disabled
 	@Test
 	public void testCountByCreateDateBetweenAndIdAfter() {
 		Date fromDate = DateUtil.addDays(new Date(), -4);
@@ -172,7 +137,6 @@ public class SegmentRepositoryTest
 				fromDate, toDate, _segment2Id));
 	}
 
-	@Disabled
 	@Test
 	public void testCountByIdAfter() {
 		Assertions.assertEquals(3, _segmentRepository.countByIdAfter(0L));
@@ -214,7 +178,6 @@ public class SegmentRepositoryTest
 		Assertions.assertEquals(2, segmentsCount);
 	}
 
-	@Disabled
 	@Test
 	public void testDeleteByChannelIdIn() {
 		_segmentRepository.deleteByChannelIdIn(
@@ -223,7 +186,6 @@ public class SegmentRepositoryTest
 		Assertions.assertEquals(1, _segmentRepository.count());
 	}
 
-	@Disabled
 	@Test
 	public void testFindByChannelIdIn() {
 		Segment segment1 = entityModels.get(0);
@@ -236,7 +198,6 @@ public class SegmentRepositoryTest
 		Assertions.assertEquals(2, segments.size(), segments.toString());
 	}
 
-	@Disabled
 	@Test
 	public void testFindByChannelIdIsNotNullOrNameStartingWith() {
 		Assertions.assertEquals(
@@ -245,7 +206,6 @@ public class SegmentRepositoryTest
 				"Account: ", PageRequest.of(0, 10, Sort.by("id"))));
 	}
 
-	@Disabled
 	@Test
 	public void testFindByCreateDateBetweenAndIdAfter() {
 		List<Segment> segments =
@@ -260,7 +220,6 @@ public class SegmentRepositoryTest
 		Assertions.assertEquals(_segment1Id, segment.getId());
 	}
 
-	@Disabled
 	@Test
 	public void testFindByNameAndStatus() {
 		Optional<Segment> segmentOptional =
@@ -274,7 +233,6 @@ public class SegmentRepositoryTest
 		Assertions.assertFalse(segmentOptional.isPresent());
 	}
 
-	@Disabled
 	@Test
 	public void testFindByReferencedAssetDataSourceIdsAndStateNotAndType() {
 		Assertions.assertEquals(
@@ -284,7 +242,6 @@ public class SegmentRepositoryTest
 					5L, "INACTIVE", Segment.Type.DYNAMIC));
 	}
 
-	@Disabled
 	@Test
 	public void testFindByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType() {
 		Assertions.assertEquals(
@@ -294,7 +251,6 @@ public class SegmentRepositoryTest
 					5L, Arrays.asList(7L), "INACTIVE", Segment.Type.DYNAMIC));
 	}
 
-	@Disabled
 	@Test
 	public void testFindByReferencedFieldMappingIdInAndStateNotAndType() {
 		Assertions.assertEquals(
@@ -304,7 +260,6 @@ public class SegmentRepositoryTest
 					Arrays.asList(7L), "INACTIVE", Segment.Type.DYNAMIC));
 	}
 
-	@Disabled
 	@Test
 	public void testFindIdByNameInAndStatus() {
 		List<Long> ids = _segmentRepository.findIdByNameInAndStatus(
@@ -313,7 +268,6 @@ public class SegmentRepositoryTest
 		Assertions.assertEquals(2, ids.size(), ids.toString());
 	}
 
-	@Disabled
 	@Test
 	public void testSearchSegmentsOrderByAuthorName() {
 		List<Segment> segments = _segmentRepository.searchSegments(
@@ -399,7 +353,6 @@ public class SegmentRepositoryTest
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
-	private String _individualId;
 	private Long _segment1Id;
 	private Long _segment2Id;
 
