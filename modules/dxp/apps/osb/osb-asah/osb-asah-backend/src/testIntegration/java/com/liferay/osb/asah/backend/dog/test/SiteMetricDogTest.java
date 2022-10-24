@@ -18,6 +18,8 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.SiteMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.CohortHeatMapMetric;
+import com.liferay.osb.asah.backend.model.CohortMetric;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
@@ -25,13 +27,19 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.model.AcquisitionType;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -363,6 +371,197 @@ public class SiteMetricDogTest
 		Assertions.assertEquals(4, visitorsMetrics.getValue());
 	}
 
+	@SQLResource(resourcePath = "test_visitor_cohort_heatmap_day_interval.sql")
+	@Test
+	public void testVisitorCohortHeatMapMetricsDayInterval() {
+		CohortMetric cohortHeatMapMetrics =
+			_siteMetricDog.getVisitorCohortHeatMapMetrics(
+				_getVisitorCohortSearchQueryContext(Interval.DAY));
+
+		List<CohortHeatMapMetric> anonymousVisitorsMetrics =
+			cohortHeatMapMetrics.getAnonymousVisitorsMetric();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 33.33333333333333);
+						put(Pair.of(0, 3), 100.0);
+						put(Pair.of(1, 3), 50.0);
+						put(Pair.of(0, 7), 100.0);
+					}
+				},
+				anonymousVisitorsMetrics.size(), 8),
+			_getActualCohortRetentions(anonymousVisitorsMetrics), 0);
+
+		List<CohortHeatMapMetric> knownVisitorsMetrics =
+			cohortHeatMapMetrics.getKnownVisitorsMetric();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 100.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 3), 100.0);
+						put(Pair.of(1, 3), 100.0);
+						put(Pair.of(0, 7), 0.0);
+						put(Pair.of(1, 7), 0.0);
+					}
+				},
+				knownVisitorsMetrics.size(), 8),
+			_getActualCohortRetentions(knownVisitorsMetrics), 0);
+
+		List<CohortHeatMapMetric> visitorsMetrics =
+			cohortHeatMapMetrics.getVisitorsMetric();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 3), 100.0);
+						put(Pair.of(1, 3), 75.0);
+						put(Pair.of(0, 7), 100.0);
+						put(Pair.of(1, 7), 0.0);
+					}
+				},
+				visitorsMetrics.size(), 8),
+			_getActualCohortRetentions(visitorsMetrics), 0);
+	}
+
+	@SQLResource(
+		resourcePath = "test_visitor_cohort_heatmap_month_interval.sql"
+	)
+	@Test
+	public void testVisitorCohortHeatMapMetricsMonthInterval() {
+		CohortMetric cohortHeatMapMetrics =
+			_siteMetricDog.getVisitorCohortHeatMapMetrics(
+				_getVisitorCohortSearchQueryContext(Interval.MONTH));
+
+		List<CohortHeatMapMetric> anonymousVisitorsMetrics =
+			cohortHeatMapMetrics.getAnonymousVisitorsMetric();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 33.33333333333333);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 50.0);
+						put(Pair.of(0, 6), 100.0);
+					}
+				},
+				anonymousVisitorsMetrics.size(), 7),
+			_getActualCohortRetentions(anonymousVisitorsMetrics), 0);
+
+		List<CohortHeatMapMetric> knownVisitorsMetrics =
+			cohortHeatMapMetrics.getKnownVisitorsMetric();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 100.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 100.0);
+						put(Pair.of(1, 5), 0.0);
+						put(Pair.of(0, 6), 0.0);
+					}
+				},
+				knownVisitorsMetrics.size(), 7),
+			_getActualCohortRetentions(knownVisitorsMetrics), 0);
+
+		List<CohortHeatMapMetric> visitorsMetrics =
+			cohortHeatMapMetrics.getVisitorsMetric();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 75.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(1, 6), 0.0);
+					}
+				},
+				visitorsMetrics.size(), 7),
+			_getActualCohortRetentions(visitorsMetrics), 0);
+	}
+
+	@SQLResource(resourcePath = "test_visitor_cohort_heatmap_week_interval.sql")
+	@Test
+	public void testVisitorCohortHeatMapMetricsWeekInterval() {
+		CohortMetric cohortHeatMapMetrics =
+			_siteMetricDog.getVisitorCohortHeatMapMetrics(
+				_getVisitorCohortSearchQueryContext(Interval.WEEK));
+
+		List<CohortHeatMapMetric> anonymousVisitorsMetrics =
+			cohortHeatMapMetrics.getAnonymousVisitorsMetric();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 33.33333333333333);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 50.0);
+						put(Pair.of(0, 6), 100.0);
+					}
+				},
+				anonymousVisitorsMetrics.size(), 7),
+			_getActualCohortRetentions(anonymousVisitorsMetrics), 0);
+
+		List<CohortHeatMapMetric> knownVisitorsMetrics =
+			cohortHeatMapMetrics.getKnownVisitorsMetric();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 100.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 100.0);
+						put(Pair.of(1, 5), 0.0);
+						put(Pair.of(0, 6), 0.0);
+					}
+				},
+				knownVisitorsMetrics.size(), 7),
+			_getActualCohortRetentions(knownVisitorsMetrics), 0);
+
+		List<CohortHeatMapMetric> visitorsMetrics =
+			cohortHeatMapMetrics.getVisitorsMetric();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 75.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(1, 6), 0.0);
+					}
+				},
+				visitorsMetrics.size(), 7),
+			_getActualCohortRetentions(visitorsMetrics), 0);
+	}
+
 	@SQLResource(resourcePath = "test_bq_sessions_visitors_by_day_and_time.sql")
 	@Test
 	public void testVisitorHeatMapMetrics30Days() {
@@ -378,6 +577,50 @@ public class SiteMetricDogTest
 		heatMapMetric = heatMapMetrics.get(87);
 
 		Assertions.assertEquals(1.0, heatMapMetric.getValue());
+	}
+
+	private double[] _getActualCohortRetentions(
+		List<CohortHeatMapMetric> cohortHeatMapMetrics) {
+
+		Stream<CohortHeatMapMetric> cohortHeatMapMetricsStream =
+			cohortHeatMapMetrics.stream();
+
+		return cohortHeatMapMetricsStream.mapToDouble(
+			CohortHeatMapMetric::getRetention
+		).toArray();
+	}
+
+	private double[] _getExpectedCohortRetentions(
+		Map<Pair<Integer, Integer>, Double> expectedRetentionsMap, int size,
+		int totalLines) {
+
+		double[] expectedRetentions = new double[size];
+
+		int totalLinesMissed = 0;
+
+		for (Map.Entry<Pair<Integer, Integer>, Double> entry :
+				expectedRetentionsMap.entrySet()) {
+
+			Pair<Integer, Integer> key = entry.getKey();
+
+			int col = key.getLeft();
+
+			int row = key.getRight();
+
+			int index = (col * totalLines) + row;
+
+			if ((col > 2) && (row == 0)) {
+				totalLinesMissed += col - 2;
+			}
+
+			if ((totalLinesMissed > 0) && (col > 2)) {
+				index -= totalLinesMissed;
+			}
+
+			expectedRetentions[index] = entry.getValue();
+		}
+
+		return expectedRetentions;
 	}
 
 	private SearchQueryContext _getSearchQueryContext() {
@@ -397,6 +640,17 @@ public class SiteMetricDogTest
 		searchQueryContext.setChannelId("1");
 		searchQueryContext.setIncludePrevious(true);
 		searchQueryContext.setTimeRange(timeRange);
+
+		return searchQueryContext;
+	}
+
+	private SearchQueryContext _getVisitorCohortSearchQueryContext(
+		Interval interval) {
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext();
+
+		searchQueryContext.setChannelId("1");
+		searchQueryContext.setInterval(interval.getKey());
 
 		return searchQueryContext;
 	}
