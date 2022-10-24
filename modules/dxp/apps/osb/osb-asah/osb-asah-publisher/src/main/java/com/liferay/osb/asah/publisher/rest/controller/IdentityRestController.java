@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -21,6 +22,9 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
@@ -43,12 +47,24 @@ public class IdentityRestController {
 	public void post(@RequestBody String json) {
 		JSONObject jsonObject = new JSONObject(json);
 
+		String channelId = _getChannelId(jsonObject);
+
+		if (StringUtils.isBlank(channelId)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Discarding identity message because channel ID is " +
+						"invalid: " + json);
+			}
+
+			return;
+		}
+
 		_messageBus.sendMessage(
 			Channel.IDENTITY_MESSAGE,
 			JSONUtil.put(
 				"analyticsData", _getAnalyticsDataJSONObject(jsonObject)
 			).put(
-				"channelId", jsonObject.optString("channelId")
+				"channelId", channelId
 			).put(
 				"dataSourceId", jsonObject.getString("dataSourceId")
 			).put(
@@ -64,13 +80,27 @@ public class IdentityRestController {
 		JSONObject analyticsDataJSONObject = new JSONObject();
 
 		for (String analyticsDataFieldName :
-				_ANALYTICS_DATA_IDENTITY_FIELD_NAMES) {
+			_ANALYTICS_DATA_IDENTITY_FIELD_NAMES) {
 
 			analyticsDataJSONObject.put(
 				analyticsDataFieldName, jsonObject.opt(analyticsDataFieldName));
 		}
 
 		return analyticsDataJSONObject;
+	}
+
+	private String _getChannelId(JSONObject jsonObject) {
+		String channelId = jsonObject.optString("channelId");
+
+		if (StringUtils.isBlank(channelId) ||
+			!NumberUtils.isCreatable(channelId)) {
+
+			return String.valueOf(
+				_dataSourceDog.getDefaultChannelId(
+					Long.parseLong(jsonObject.getString("dataSourceId"))));
+		}
+
+		return channelId;
 	}
 
 	private String _getIndividualId(JSONObject jsonObject) {
@@ -90,6 +120,12 @@ public class IdentityRestController {
 		"systemFonts", "timezone", "touchSupport", "userAgent",
 		"webGLFingerPrint"
 	};
+
+	private static final Log _log = LogFactory.getLog(
+		IdentityRestController.class);
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private MessageBus _messageBus;
