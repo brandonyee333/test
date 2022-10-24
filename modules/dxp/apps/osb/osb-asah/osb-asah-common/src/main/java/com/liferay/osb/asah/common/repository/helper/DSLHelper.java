@@ -142,6 +142,32 @@ public class DSLHelper {
 			OffsetDateTime.class);
 	}
 
+	public Field<OffsetDateTime> getDateDifferenceDatePart(
+		DatePart datePart, Field<OffsetDateTime> endDate,
+		Field<OffsetDateTime> startDate) {
+
+		if (_isBigQueryDialect()) {
+			return DSL.field(
+				"date_diff({0}, {1}, {2})", endDate.getDataType(), endDate,
+				startDate, datePart.toName());
+		}
+
+		if (datePart == DatePart.WEEK) {
+			int daysInAWeek = 7;
+
+			return DSL.field(
+				String.format(
+					"cast(extract('day' from (cast({0} as timestamp) - " +
+						"cast({1} as timestamp)))/%d as int)",
+					daysInAWeek),
+				endDate.getDataType(), endDate, startDate);
+		}
+
+		return DSL.field(
+			"date_part({0}, AGE({1}, {2}))", endDate.getDataType(),
+			datePart.toSQL(), endDate, startDate);
+	}
+
 	public Object getDateParam(Date date) {
 		if (_isBigQueryDialect()) {
 			return DateUtil.toUTCString(date);
