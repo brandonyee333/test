@@ -14,8 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.MetricTypeDog;
-import com.liferay.osb.asah.backend.dog.VisitorCohortHeatMapDog;
+import com.liferay.osb.asah.backend.dog.SiteMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.CohortMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
@@ -37,14 +36,11 @@ public class CohortHeatMapDataFetcher extends BaseDataFetcher<CohortMetric> {
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		return _visitorCohortHeatMapDog.getCohortHeatMapMetrics(
+		return _siteMetricDog.getVisitorCohortHeatMapMetrics(
 			searchQueryContext);
 	}
 
 	@Autowired
-	private MetricTypeDog _metricTypeDog;
-
-	@Autowired
-	private VisitorCohortHeatMapDog _visitorCohortHeatMapDog;
+	private SiteMetricDog _siteMetricDog;
 
 }

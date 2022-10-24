@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.dog.helper;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.model.VisitorCohortMetric;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -31,7 +30,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,11 +106,10 @@ public class MetricHelper {
 			histogramMetrics.size());
 	}
 
-	public Map<String, VisitorCohortMetric> createVisitorCohortMetrics(
-		Clock clock, Interval interval, MetricType metricType) {
+	public List<String> getVisitorCohortMetricsIntervals(
+		Clock clock, Interval interval) {
 
-		Map<String, VisitorCohortMetric> visitorCohortMetrics =
-			new LinkedHashMap<>();
+		List<String> intervals = new ArrayList<>();
 
 		LocalDateTime localDateTime = LocalDateTime.of(
 			LocalDate.now(clock), LocalTime.MIDNIGHT);
@@ -123,12 +121,7 @@ public class MetricHelper {
 
 				zonedDateTime = zonedDateTime.minusDays(i);
 
-				visitorCohortMetrics.put(
-					String.valueOf(zonedDateTime.toLocalDate()),
-					new VisitorCohortMetric(
-						Collections.emptySet(),
-						String.valueOf(zonedDateTime.toLocalDate()), metricType,
-						0.0));
+				intervals.add(String.valueOf(zonedDateTime.toLocalDate()));
 			}
 		}
 		else if (Interval.MONTH.equals(interval)) {
@@ -140,17 +133,11 @@ public class MetricHelper {
 
 				zonedDateTime = zonedDateTime.minusMonths(i);
 
-				visitorCohortMetrics.put(
-					String.valueOf(zonedDateTime.toLocalDate()),
-					new VisitorCohortMetric(
-						Collections.emptySet(),
-						String.valueOf(zonedDateTime.toLocalDate()), metricType,
-						0.0));
+				intervals.add(String.valueOf(zonedDateTime.toLocalDate()));
 			}
 		}
 		else if (Interval.WEEK.equals(interval)) {
 			localDateTime = localDateTime.with(DayOfWeek.MONDAY);
-
 			localDateTime = localDateTime.minusDays(1);
 
 			for (int i = 6; i >= 0; i--) {
@@ -159,16 +146,11 @@ public class MetricHelper {
 
 				zonedDateTime = zonedDateTime.minusWeeks(i);
 
-				visitorCohortMetrics.put(
-					String.valueOf(zonedDateTime.toLocalDate()),
-					new VisitorCohortMetric(
-						Collections.emptySet(),
-						String.valueOf(zonedDateTime.toLocalDate()), metricType,
-						0.0));
+				intervals.add(String.valueOf(zonedDateTime.toLocalDate()));
 			}
 		}
 
-		return visitorCohortMetrics;
+		return intervals;
 	}
 
 	private void _addMetric(

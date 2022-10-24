@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.liferay.osb.asah.backend.dog.helper.MetricHelper;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.CohortHeatMapMetric;
+import com.liferay.osb.asah.backend.model.CohortMetric;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
@@ -23,6 +26,7 @@ import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.AcquisitionType;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -30,9 +34,14 @@ import com.liferay.osb.asah.common.repository.BQSessionRepository;
 
 import java.math.BigDecimal;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +52,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
+
+import org.jetbrains.annotations.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -277,6 +288,190 @@ public class SiteMetricDog {
 		return siteMetric;
 	}
 
+	public CohortMetric getVisitorCohortHeatMapMetrics(
+		SearchQueryContext searchQueryContext) {
+
+		Interval interval = searchQueryContext.getInterval();
+
+		List<String> cohortIntervals =
+			_metricHelper.getVisitorCohortMetricsIntervals(
+				Clock.system(_timeZoneDog.getZoneId()), interval);
+
+		LocalDate startDate = LocalDate.parse(cohortIntervals.get(0));
+
+		List<Map<String, Object>> visitorCohortMetrics =
+			_bqSessionRepository.getVisitorCohortMetrics(
+				Long.valueOf(searchQueryContext.getChannelId()), interval,
+				TimeRange.of(LocalDateTime.now(), startDate.atStartOfDay()),
+				_timeZoneDog.getZoneId());
+
+		Map<String, Map<String, Object>> visitorCohortMetricsMap =
+			new HashMap<>();
+
+		for (Map<String, Object> cohortMetric : visitorCohortMetrics) {
+			visitorCohortMetricsMap.put(
+				(String)cohortMetric.get("cohortDate"), cohortMetric);
+		}
+
+		CohortMetric siteMetrics = new CohortMetric();
+
+		List<CohortHeatMapMetric> anonymousVisitorsMetrics =
+			_getVisitorsCohortMetrics(
+				cohortIntervals, SiteMetricType.ANONYMOUS_VISITORS,
+				visitorCohortMetricsMap);
+
+		siteMetrics.setAnonymousVisitorsMetric(anonymousVisitorsMetrics);
+
+		List<CohortHeatMapMetric> knownVisitorsMetrics =
+			_getVisitorsCohortMetrics(
+				cohortIntervals, SiteMetricType.KNOWN_VISITORS,
+				visitorCohortMetricsMap);
+
+		siteMetrics.setKnownVisitorsMetric(knownVisitorsMetrics);
+
+		siteMetrics.setVisitorsMetric(
+			_getVisitorsCohortMetrics(
+				anonymousVisitorsMetrics, knownVisitorsMetrics));
+
+		return siteMetrics;
+	}
+
+	private List<CohortHeatMapMetric> _getVisitorsCohortMetrics(
+		List<CohortHeatMapMetric> anonymousVisitorsMetrics,
+		List<CohortHeatMapMetric> knownVisitorsMetrics) {
+
+		List<CohortHeatMapMetric> visitorsMetrics = new ArrayList<>();
+
+		Map<String, Double> firstIntervalValues = new Hashtable<>();
+
+		for (int i = 0; i < anonymousVisitorsMetrics.size(); i++) {
+			Metric metric = new Metric(SiteMetricType.VISITORS);
+
+			CohortHeatMapMetric anonymousMetric = anonymousVisitorsMetrics.get(
+				i);
+
+			metric.setValueKey(anonymousMetric.getValueKey());
+
+			CohortHeatMapMetric knownMetric = knownVisitorsMetrics.get(i);
+
+			double metricValue =
+				anonymousMetric.getValue() + knownMetric.getValue();
+
+			metric.setValue(metricValue);
+
+			String colDimension = anonymousMetric.getColDimension();
+
+			if (colDimension.equals("0")) {
+				firstIntervalValues.put(
+					anonymousMetric.getRowDimension(), metricValue);
+			}
+
+			Double firstIntervalValue = firstIntervalValues.get(
+				anonymousMetric.getRowDimension());
+
+			double retention = 0;
+
+			if (firstIntervalValue != 0) {
+				retention = (metricValue / firstIntervalValue) * 100;
+			}
+
+			visitorsMetrics.add(
+				new CohortHeatMapMetric(
+					colDimension, metric, retention,
+					anonymousMetric.getRowDimension(),
+					anonymousMetric.getRowKey()));
+		}
+
+		return visitorsMetrics;
+	}
+
+	@NotNull
+	private List<CohortHeatMapMetric> _getVisitorsCohortMetrics(
+		List<String> cohortsIntervals, SiteMetricType siteMetricType,
+		Map<String, Map<String, Object>> visitorCohortMetricsMap) {
+
+		String columnVisitorType = "Known";
+
+		if (siteMetricType.equals(SiteMetricType.ANONYMOUS_VISITORS)) {
+			columnVisitorType = "Unknown";
+		}
+
+		List<CohortHeatMapMetric> visitorsMetrics = new ArrayList<>();
+
+		double totalVisitors = 0D;
+
+		for (int i = 0; i < cohortsIntervals.size(); i++) {
+			double columnTotalVisitors = 0D;
+			int firstIntervalIndex = 0;
+
+			for (int j = 0; j <= (cohortsIntervals.size() - 1 - i); j++) {
+				if (j == 0) {
+					firstIntervalIndex = visitorsMetrics.size();
+				}
+
+				if ((j == (cohortsIntervals.size() - 1)) && (i == 0)) {
+					break;
+				}
+
+				String cohortDate = cohortsIntervals.get(j);
+
+				Map<String, Object> cohort = visitorCohortMetricsMap.get(
+					cohortDate);
+
+				Metric metric = new Metric(siteMetricType);
+
+				double retention = 0D;
+				double visitors = 0D;
+
+				if (cohort != null) {
+					BigDecimal intervalVisitors = (BigDecimal)cohort.get(
+						String.format(
+							"interval%dTotal%s", i, columnVisitorType));
+
+					visitors = intervalVisitors.doubleValue();
+
+					metric.setValue(visitors);
+
+					metric.setValueKey(cohortDate);
+
+					BigDecimal intervalRetention = (BigDecimal)cohort.get(
+						String.format(
+							"interval%dRetention%s", i, columnVisitorType));
+
+					retention = intervalRetention.doubleValue() * 100;
+				}
+
+				visitorsMetrics.add(
+					new CohortHeatMapMetric(
+						String.valueOf(i), metric, retention,
+						String.valueOf(j + 1), cohortDate));
+
+				if (i == 0) {
+					totalVisitors += visitors;
+				}
+
+				columnTotalVisitors += visitors;
+			}
+
+			Metric metric = new Metric(siteMetricType);
+
+			metric.setValue(columnTotalVisitors);
+
+			double retention = 0;
+
+			if (totalVisitors != 0) {
+				retention = (columnTotalVisitors / totalVisitors) * 100;
+			}
+
+			visitorsMetrics.add(
+				firstIntervalIndex,
+				new CohortHeatMapMetric(
+					String.valueOf(i), metric, retention, "0", null));
+		}
+
+		return visitorsMetrics;
+	}
+
 	private void _setMetricPreviousValue(Metric metric, Double value) {
 		metric.setPreviousValue(value);
 	}
@@ -355,6 +550,9 @@ public class SiteMetricDog {
 
 	@Autowired
 	private BQSessionRepository _bqSessionRepository;
+
+	@Autowired
+	private MetricHelper _metricHelper;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
