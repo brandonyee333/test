@@ -98,9 +98,14 @@ public class IdentityRestController {
 		if (StringUtils.isBlank(channelId) ||
 			!NumberUtils.isCreatable(channelId)) {
 
-			return String.valueOf(
-				_dataSourceDog.getDefaultChannelId(
-					Long.parseLong(jsonObject.getString("dataSourceId"))));
+			Long defaultChannelId = _dataSourceDog.getDefaultChannelId(
+				Long.parseLong(jsonObject.getString("dataSourceId")));
+
+			if (defaultChannelId == null) {
+				return null;
+			}
+
+			return String.valueOf(defaultChannelId);
 		}
 
 		return channelId;
