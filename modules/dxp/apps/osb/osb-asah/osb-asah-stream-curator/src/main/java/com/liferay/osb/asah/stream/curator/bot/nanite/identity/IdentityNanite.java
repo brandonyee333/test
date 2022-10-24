@@ -103,7 +103,11 @@ public class IdentityNanite implements Nanite {
 	}
 
 	private String _getIndividualId(JSONObject jsonObject) {
-		String individualId = jsonObject.getString("individualId");
+		String individualId = jsonObject.optString("individualId", null);
+
+		if (individualId == null) {
+			individualId = jsonObject.getString("emailAddressHashed");
+		}
 
 		if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
 			individualId = null;
