@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -65,6 +66,8 @@ public class IdentityRestController {
 				"analyticsData", _getAnalyticsDataJSONObject(jsonObject)
 			).put(
 				"channelId", channelId
+			).put(
+				"createDate", DateUtil.newDateString()
 			).put(
 				"dataSourceId", jsonObject.getString("dataSourceId")
 			).put(

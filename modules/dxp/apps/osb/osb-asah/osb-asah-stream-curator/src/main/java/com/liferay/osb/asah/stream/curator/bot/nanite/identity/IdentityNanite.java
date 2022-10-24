@@ -261,7 +261,9 @@ public class IdentityNanite implements Nanite {
 				JSONUtil.put(
 					"channelId", Long.valueOf(channelId)
 				).put(
-					"createDate", DateUtil.toString(new Date())
+					"createDate",
+					jsonObject.optString(
+						"createDate", DateUtil.toString(new Date()))
 				).put(
 					"dataSourceId", Long.valueOf(dataSourceId)
 				).put(
@@ -286,7 +288,9 @@ public class IdentityNanite implements Nanite {
 
 			jsonArray.put(
 				JSONUtil.put(
-					"createDate", DateUtil.toString(new Date())
+					"createDate",
+					messageJSONObject.optString(
+						"createDate", DateUtil.toString(new Date()))
 				).put(
 					"id", messageJSONObject.getString("userId")
 				).put(
