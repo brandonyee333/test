@@ -158,6 +158,16 @@ public class DataSourceDog {
 		return dataSourceOptional.orElse(null);
 	}
 
+	public Long fetchDefaultChannelId(Long dataSourceId) {
+		Channel defaultChannel = _channelDog.fetchDefaultChannel(dataSourceId);
+
+		if (defaultChannel == null) {
+			return null;
+		}
+
+		return defaultChannel.getId();
+	}
+
 	public DataSource getDataSource(Long dataSourceId) {
 		Optional<DataSource> dataSourceOptional =
 			_dataSourceRepository.findById(dataSourceId);
@@ -260,16 +270,6 @@ public class DataSourceDog {
 		}
 
 		return dataSourcesJSONObjects;
-	}
-
-	public Long getDefaultChannelId(Long dataSourceId) {
-		Channel defaultChannel = _channelDog.fetchDefaultChannel(dataSourceId);
-
-		if (defaultChannel == null) {
-			return null;
-		}
-
-		return defaultChannel.getId();
 	}
 
 	public boolean isAnalyticsConfigured() {
