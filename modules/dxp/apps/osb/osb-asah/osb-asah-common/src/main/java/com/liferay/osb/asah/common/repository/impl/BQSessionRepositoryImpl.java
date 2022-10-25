@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQSession;
+import com.liferay.osb.asah.common.model.AcquisitionType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -84,13 +85,11 @@ public class BQSessionRepositoryImpl
 
 	@Override
 	public Map<String, BigDecimal> getAcquisitionsMetrics(
-		String acquisitionType, Long channelId, Pageable pageable,
+		AcquisitionType acquisitionType, Long channelId, Pageable pageable,
 		TimeRange timeRange, ZoneId zoneId) {
 
-		Field field;
-
-		if (acquisitionType.equals("REFERRER")) {
-			field = DSL.field("referrers");
+		if (acquisitionType == AcquisitionType.REFERRER) {
+			Field field = DSL.field("referrers");
 
 			return _queryExecutor.queryForMap(
 				GetterUtil::getString,
@@ -136,7 +135,10 @@ public class BQSessionRepositoryImpl
 				),
 				GetterUtil::getBigDecimal);
 		}
-		else if (acquisitionType.equals("CHANNEL")) {
+
+		Field field = null;
+
+		if (acquisitionType == AcquisitionType.CHANNEL) {
 			field = DSL.field("acquisitionchannel");
 		}
 		else {

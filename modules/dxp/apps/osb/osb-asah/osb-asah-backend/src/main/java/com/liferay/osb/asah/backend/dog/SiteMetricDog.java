@@ -22,6 +22,7 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.model.AcquisitionType;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -56,7 +57,7 @@ import org.springframework.stereotype.Component;
 public class SiteMetricDog {
 
 	public CompositionResultBag getAcquisitionsMetrics(
-		String acquisitionType, String channelId, int size, int start,
+		AcquisitionType acquisitionType, String channelId, int size, int start,
 		TimeRange timeRange) {
 
 		Map<String, BigDecimal> acquisitionsMetrics =

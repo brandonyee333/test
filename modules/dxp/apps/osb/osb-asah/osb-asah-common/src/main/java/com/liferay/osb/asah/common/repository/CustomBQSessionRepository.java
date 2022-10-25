@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQSession;
+import com.liferay.osb.asah.common.model.AcquisitionType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -37,7 +38,7 @@ public interface CustomBQSessionRepository {
 	public List<BQSession> findAllById(Collection<String> sessionIds);
 
 	public Map<String, BigDecimal> getAcquisitionsMetrics(
-		String acquisitionType, Long channelId, Pageable pageable,
+		AcquisitionType acquisitionType, Long channelId, Pageable pageable,
 		TimeRange timeRange, ZoneId zoneId);
 
 	public Map<String, BigDecimal> getSessionsCountGroupedByBrowserName(
