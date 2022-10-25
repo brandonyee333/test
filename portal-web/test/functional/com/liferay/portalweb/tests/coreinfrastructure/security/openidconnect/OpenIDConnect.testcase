@@ -395,6 +395,7 @@ definition {
 	test OpenIDConnectOnInstanceLevelSmoke {
 		property portal.acceptance = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "jessie";
 		property test.name.skip.portal.instance = "OpenIDConnect#OpenIDConnectOnInstanceLevelSmoke";
 
 		var userEmailAddress = PropsUtil.get("email.address.2");
