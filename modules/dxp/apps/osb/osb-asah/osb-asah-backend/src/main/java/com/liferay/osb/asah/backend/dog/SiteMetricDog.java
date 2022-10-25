@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -66,12 +67,11 @@ public class SiteMetricDog {
 				PageRequest.of(start, size), timeRange,
 				_timeZoneDog.getZoneId());
 
-		List<Composition> compositions = new ArrayList<>();
-
 		if (acquisitionsMetrics.isEmpty()) {
-			return new CompositionResultBag(compositions, 0, 0);
+			return new CompositionResultBag(Collections.emptyList(), 0, 0);
 		}
 
+		List<Composition> compositions = new ArrayList<>();
 		long totalCount = 0;
 
 		for (Map.Entry<String, BigDecimal> entrySet :
@@ -81,10 +81,10 @@ public class SiteMetricDog {
 
 			BigDecimal count = entrySet.getValue();
 
-			totalCount += count.intValue();
+			totalCount += count.longValue();
 
 			if ((key != null) && !key.isEmpty()) {
-				compositions.add(new Composition(count.intValue(), key));
+				compositions.add(new Composition(count.longValue(), key));
 			}
 		}
 
