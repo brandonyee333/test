@@ -18,6 +18,8 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.SiteMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.Composition;
+import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
@@ -45,6 +47,58 @@ import org.springframework.test.context.BootstrapWith;
 public class SiteMetricDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
+
+	@SQLResource(resourcePath = "test_bq_sessions_acquisition.sql")
+	@Test
+	public void testAcquisitionChannel() {
+		CompositionResultBag compositionResultBag =
+			_siteMetricDog.getAcquisitionsMetrics(
+				"CHANNEL", "1", 5, 0, TimeRange.LAST_7_DAYS);
+
+		List<Composition> results = compositionResultBag.getResults();
+
+		Assertions.assertEquals(1, results.size());
+
+		Composition composition = results.get(0);
+
+		Assertions.assertEquals("testChannel1", composition.getName());
+		Assertions.assertEquals(2, composition.getCount());
+	}
+
+	@SQLResource(resourcePath = "test_bq_sessions_acquisition.sql")
+	@Test
+	public void testAcquisitionReferrers() {
+		CompositionResultBag compositionResultBag =
+			_siteMetricDog.getAcquisitionsMetrics(
+				"REFERRER", "1", 5, 0, TimeRange.LAST_24_HOURS);
+
+		List<Composition> results = compositionResultBag.getResults();
+
+		Assertions.assertEquals(1, results.size());
+
+		Composition composition = results.get(0);
+
+		Assertions.assertEquals("testReferrers3", composition.getName());
+		Assertions.assertEquals(1, composition.getCount());
+	}
+
+	@SQLResource(resourcePath = "test_bq_sessions_acquisition.sql")
+	@Test
+	public void testAcquisitionSourceMedium() {
+		CompositionResultBag compositionResultBag =
+			_siteMetricDog.getAcquisitionsMetrics(
+				"SOURCE_MEDIUM", "1", 5, 0, TimeRange.LAST_24_HOURS);
+
+		List<Composition> results = compositionResultBag.getResults();
+
+		Assertions.assertEquals(1, results.size());
+
+		Composition composition = results.get(0);
+
+		Assertions.assertEquals(
+			"testSource3 / testMedium3", composition.getName());
+		Assertions.assertEquals(1, composition.getCount());
+	}
 
 	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
 	@Test
