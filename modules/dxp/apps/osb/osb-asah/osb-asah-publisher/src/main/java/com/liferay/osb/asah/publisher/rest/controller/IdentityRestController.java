@@ -83,7 +83,7 @@ public class IdentityRestController {
 		JSONObject analyticsDataJSONObject = new JSONObject();
 
 		for (String analyticsDataFieldName :
-			_ANALYTICS_DATA_IDENTITY_FIELD_NAMES) {
+				_ANALYTICS_DATA_IDENTITY_FIELD_NAMES) {
 
 			analyticsDataJSONObject.put(
 				analyticsDataFieldName, jsonObject.opt(analyticsDataFieldName));
