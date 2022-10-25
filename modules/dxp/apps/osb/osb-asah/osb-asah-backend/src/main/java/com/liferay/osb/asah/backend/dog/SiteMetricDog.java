@@ -15,6 +15,8 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.backend.model.Composition;
+import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
@@ -41,6 +43,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -51,6 +54,42 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SiteMetricDog {
+
+	public CompositionResultBag getAcquisitionsMetrics(
+		String acquisitionType, String channelId, int size, int start,
+		TimeRange timeRange) {
+
+		Map<String, BigDecimal> acquisitionsMetrics =
+			_bqSessionRepository.getAcquisitionsMetrics(
+				acquisitionType, Long.parseLong(channelId),
+				PageRequest.of(start, size), timeRange,
+				_timeZoneDog.getZoneId());
+
+		List<Composition> compositions = new ArrayList<>();
+
+		if (acquisitionsMetrics.isEmpty()) {
+			return new CompositionResultBag(compositions, 0, 0);
+		}
+
+		long totalCount = 0;
+
+		for (Map.Entry<String, BigDecimal> entrySet :
+				acquisitionsMetrics.entrySet()) {
+
+			String key = entrySet.getKey();
+
+			BigDecimal count = entrySet.getValue();
+
+			totalCount += count.intValue();
+
+			if ((key != null) && !key.isEmpty()) {
+				compositions.add(new Composition(count.intValue(), key));
+			}
+		}
+
+		return new CompositionResultBag(
+			compositions, compositions.size(), totalCount);
+	}
 
 	public List<Metric> getBrowserMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {

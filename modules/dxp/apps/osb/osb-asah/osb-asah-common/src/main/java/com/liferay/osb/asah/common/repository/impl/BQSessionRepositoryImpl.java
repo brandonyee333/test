@@ -46,6 +46,7 @@ import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Marcos Martins
@@ -79,6 +80,93 @@ public class BQSessionRepositoryImpl
 					sessionIds
 				)
 			));
+	}
+
+	@Override
+	public Map<String, BigDecimal> getAcquisitionsMetrics(
+		String acquisitionType, Long channelId, Pageable pageable,
+		TimeRange timeRange, ZoneId zoneId) {
+
+		Field field;
+
+		if (acquisitionType.equals("REFERRER")) {
+			field = DSL.field("referrers");
+
+			return _queryExecutor.queryForMap(
+				GetterUtil::getString,
+				_dslContext.with(
+					"acquisitionsReferrers"
+				).as(
+					_dslContext.select(
+						field
+					).from(
+						DSL.table("BQSession")
+					).where(
+						_createWhereClause(channelId, timeRange, zoneId)
+					)
+				).with(
+					"acquisitionsReferrersList"
+				).as(
+					_dslContext.select(
+						DSL.asterisk()
+					).from(
+						DSL.table("acquisitionsReferrers"),
+						DSL.table(
+							"UNNEST(referrers)"
+						).as(
+							"field"
+						)
+					)
+				).select(
+					DSL.field("field"),
+					DSL.count(
+					).cast(
+						BigDecimal.class
+					).as(
+						"count"
+					)
+				).from(
+					"acquisitionsReferrersList"
+				).groupBy(
+					DSL.field("field")
+				).limit(
+					pageable.getPageSize()
+				).offset(
+					pageable.getOffset()
+				),
+				GetterUtil::getBigDecimal);
+		}
+		else if (acquisitionType.equals("CHANNEL")) {
+			field = DSL.field("acquisitionchannel");
+		}
+		else {
+			field = DSL.concat(
+				DSL.field("acquisitionsource"), DSL.val(" / "),
+				DSL.field("acquisitionmedium"));
+		}
+
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			_dslContext.select(
+				field.as("field"),
+				DSL.count(
+				).cast(
+					BigDecimal.class
+				).as(
+					"count"
+				)
+			).from(
+				DSL.table("BQSession")
+			).where(
+				_createWhereClause(channelId, timeRange, zoneId)
+			).groupBy(
+				DSL.field("field")
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			),
+			GetterUtil::getBigDecimal);
 	}
 
 	@Override

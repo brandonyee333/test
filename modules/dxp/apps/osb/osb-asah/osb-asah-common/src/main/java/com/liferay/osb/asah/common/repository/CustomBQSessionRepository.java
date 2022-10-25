@@ -27,12 +27,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Pageable;
+
 /**
  * @author Marcos Martins
  */
 public interface CustomBQSessionRepository {
 
 	public List<BQSession> findAllById(Collection<String> sessionIds);
+
+	public Map<String, BigDecimal> getAcquisitionsMetrics(
+		String acquisitionType, Long channelId, Pageable pageable,
+		TimeRange timeRange, ZoneId zoneId);
 
 	public Map<String, BigDecimal> getSessionsCountGroupedByBrowserName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
