@@ -251,7 +251,8 @@ public class AnalyticsEventsRestController {
 			!NumberUtils.isCreatable(channelId)) {
 
 			channelId = String.valueOf(
-				_dataSourceDog.getDefaultChannelId(Long.valueOf(dataSourceId)));
+				_dataSourceDog.fetchDefaultChannelId(
+					Long.valueOf(dataSourceId)));
 
 			if (StringUtil.isNull(channelId) ||
 				StringUtils.isBlank(channelId)) {

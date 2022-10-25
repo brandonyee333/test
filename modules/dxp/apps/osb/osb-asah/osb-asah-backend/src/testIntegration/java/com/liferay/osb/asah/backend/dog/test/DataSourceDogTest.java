@@ -79,7 +79,7 @@ public class DataSourceDogTest
 	@Test
 	public void testGetChannelId() {
 		Assertions.assertNotNull(
-			_dataSourceDog.getDefaultChannelId(405057430327289648L));
+			_dataSourceDog.fetchDefaultChannelId(405057430327289648L));
 	}
 
 	@RepositoryResource(

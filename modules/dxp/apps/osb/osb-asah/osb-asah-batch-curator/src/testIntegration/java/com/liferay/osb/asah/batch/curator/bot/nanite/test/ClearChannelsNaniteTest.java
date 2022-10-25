@@ -55,7 +55,7 @@ public class ClearChannelsNaniteTest
 
 		Long dataSourceId = dataSource.getId();
 
-		Long channelId = _dataSourceDog.getDefaultChannelId(dataSourceId);
+		Long channelId = _dataSourceDog.fetchDefaultChannelId(dataSourceId);
 
 		// TODO Add Individual with dataSourceId and channelId
 

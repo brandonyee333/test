@@ -61,7 +61,7 @@ public class DataSourceDogTest
 			FaroInfoTestUtil.buildLiferayDataSource());
 
 		Assertions.assertNotNull(
-			_dataSourceDog.getDefaultChannelId(dataSource.getId()));
+			_dataSourceDog.fetchDefaultChannelId(dataSource.getId()));
 	}
 
 	@RepositoryResource(
