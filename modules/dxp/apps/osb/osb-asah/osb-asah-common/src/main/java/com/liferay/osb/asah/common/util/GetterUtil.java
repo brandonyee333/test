@@ -35,14 +35,14 @@ public class GetterUtil {
 			return fieldValue.getNumericValue();
 		}
 
-		if (object instanceof String) {
-			return new BigDecimal((String)object);
+		if (object instanceof Double) {
+			return BigDecimal.valueOf((Double)object);
 		}
 		else if (object instanceof Integer) {
 			return new BigDecimal((Integer)object);
 		}
-		else if (object instanceof Double) {
-			return BigDecimal.valueOf((Double)object);
+		else if (object instanceof String) {
+			return new BigDecimal((String)object);
 		}
 
 		return (BigDecimal)object;
