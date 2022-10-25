@@ -1,5 +1,6 @@
 dependencies {
 	compileInclude group: "ca.juliusdavies", name: "not-yet-commons-ssl", version: "0.3.9"
+	compileInclude group: "com.liferay", name: "org.apache.xalan", version: "2.7.2.LIFERAY-PATCHED-1"
 	compileInclude group: "commons-codec", name: "commons-codec", version: "1.7"
 	compileInclude group: "commons-collections", name: "commons-collections", version: "3.2.2"
 	compileInclude group: "commons-lang", name: "commons-lang", version: "2.6"
@@ -18,7 +19,6 @@ dependencies {
 	compileInclude group: "org.opensaml", name: "xmltooling", version: "1.4.6"
 	compileInclude group: "org.owasp.esapi", name: "esapi", version: "2.1.0.1"
 	compileInclude group: "xalan", name: "serializer", version: "2.7.2"
-	compileInclude group: "xalan", name: "xalan", version: "2.7.2"
 	compileInclude group: "xerces", name: "xercesImpl", version: "2.12.2"
 	compileInclude group: "xml-resolver", name: "xml-resolver", version: "1.2"
 
