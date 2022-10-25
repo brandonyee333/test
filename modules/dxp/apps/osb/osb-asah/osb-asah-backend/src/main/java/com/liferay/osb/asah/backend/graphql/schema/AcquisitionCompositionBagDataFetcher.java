@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.AcquisitionCompositionDog;
+import com.liferay.osb.asah.backend.dog.SiteMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
@@ -37,16 +37,15 @@ public class AcquisitionCompositionBagDataFetcher
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		return _acquisitionCompositionDog.getCompositionResultBag(
+		return _siteMetricDog.getAcquisitionsMetrics(
 			dataFetchingEnvironment.getArgument("acquisitionType"),
 			searchQueryContext.getChannelId(),
-			searchQueryContext.getDataSourceId(),
 			dataFetchingEnvironment.getArgument("size"),
 			dataFetchingEnvironment.getArgument("start"),
 			searchQueryContext.getTimeRange());
 	}
 
 	@Autowired
-	private AcquisitionCompositionDog _acquisitionCompositionDog;
+	private SiteMetricDog _siteMetricDog;
 
 }
