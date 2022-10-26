@@ -259,6 +259,40 @@ public class BQSessionRepositoryImpl
 			));
 	}
 
+	public List<Map<String, Object>> getCohortHeatMapTuples(
+		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId) {
+
+		WithStep withStep = _createVisitorCohortWithStep(
+			channelId, interval, timeRange, zoneId);
+
+		Field<Object> sessionDateField = DSL.field(
+			"retentionTable.sessionDate");
+
+		return _queryExecutor.queryForList(
+			Function.identity(),
+			withStep.select(
+				_getVisitorCohortFields(interval)
+			).from(
+				DSL.table("retentionTable")
+			).leftJoin(
+				DSL.table("cohortSize")
+			).on(
+				sessionDateField.eq(DSL.field("cohortSize.sessionDate"))
+			).and(
+				DSL.field(
+					"retentionTable.isKnown"
+				).eq(
+					DSL.field("cohortSize.isKnown")
+				)
+			).where(
+				sessionDateField.isNotNull()
+			).groupBy(
+				sessionDateField
+			).orderBy(
+				sessionDateField
+			));
+	}
+
 	@Override
 	public Map<String, BigDecimal> getSessionsCountGroupedByBrowserName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
@@ -416,40 +450,6 @@ public class BQSessionRepositoryImpl
 					channelId, includePrevious, timeRange, zoneId)
 			).groupBy(
 				sessionStartField
-			));
-	}
-
-	public List<Map<String, Object>> getVisitorCohortMetrics(
-		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId) {
-
-		WithStep withStep = _createVisitorCohortWithStep(
-			channelId, interval, timeRange, zoneId);
-
-		Field<Object> sessionDateField = DSL.field(
-			"retentionTable.sessionDate");
-
-		return _queryExecutor.queryForList(
-			Function.identity(),
-			withStep.select(
-				_getVisitorCohortFields(interval)
-			).from(
-				DSL.table("retentionTable")
-			).leftJoin(
-				DSL.table("cohortSize")
-			).on(
-				sessionDateField.eq(DSL.field("cohortSize.sessionDate"))
-			).and(
-				DSL.field(
-					"retentionTable.isKnown"
-				).eq(
-					DSL.field("cohortSize.isKnown")
-				)
-			).where(
-				sessionDateField.isNotNull()
-			).groupBy(
-				sessionDateField
-			).orderBy(
-				sessionDateField
 			));
 	}
 

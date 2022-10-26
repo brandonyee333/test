@@ -106,7 +106,7 @@ public class MetricHelper {
 			histogramMetrics.size());
 	}
 
-	public List<String> getVisitorCohortMetricsIntervals(
+	public List<String> getCohortMetricIntervals(
 		Clock clock, Interval interval) {
 
 		List<String> intervals = new ArrayList<>();

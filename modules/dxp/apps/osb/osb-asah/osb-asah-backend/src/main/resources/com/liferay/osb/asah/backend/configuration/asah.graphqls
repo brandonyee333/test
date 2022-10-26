@@ -250,9 +250,9 @@ type CohortHeatMapMetric {
 }
 
 type CohortMetric {
-	anonymousVisitorsMetric: [CohortHeatMapMetric]
-	knownVisitorsMetric: [CohortHeatMapMetric]
-	visitorsMetric: [CohortHeatMapMetric]
+	anonymousCohortHeatMapMetrics: [CohortHeatMapMetric]
+	knownCohortHeatMapMetrics: [CohortHeatMapMetric]
+	visitorsCohortHeatMapMetrics: [CohortHeatMapMetric]
 }
 
 type Composition {
@@ -981,7 +981,7 @@ type QueryType {
 		start: Int!
 	): AssetMetricBag
 
-	cohortHeatMap(
+	cohort(
 		channelId: String,
 		interval: String!
 	): CohortMetric

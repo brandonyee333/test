@@ -45,6 +45,9 @@ public interface CustomBQSessionRepository {
 		AcquisitionType acquisitionType, Long channelId, TimeRange timeRange,
 		ZoneId zoneId);
 
+	public List<Map<String, Object>> getCohortHeatMapTuples(
+		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId);
+
 	public Map<String, BigDecimal> getSessionsCountGroupedByBrowserName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
@@ -62,9 +65,6 @@ public interface CustomBQSessionRepository {
 		getSiteVisitorBehaviorMetricsGroupedBySessionStart(
 			Long channelId, boolean includePrevious, Interval interval,
 			TimeRange timeRange, ZoneId zoneId);
-
-	public List<Map<String, Object>> getVisitorCohortMetrics(
-		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId);
 
 	public List<Map<String, BigDecimal>> getVisitorsCountGroupedByDayAndTime(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);

@@ -136,6 +136,54 @@ public class SiteMetricDog {
 		);
 	}
 
+	public CohortMetric getCohortMetric(SearchQueryContext searchQueryContext) {
+		Interval interval = searchQueryContext.getInterval();
+
+		List<String> cohortMetricIntervals =
+			_metricHelper.getCohortMetricIntervals(
+				Clock.system(_timeZoneDog.getZoneId()), interval);
+
+		LocalDate startDate = LocalDate.parse(cohortMetricIntervals.get(0));
+
+		List<Map<String, Object>> cohortHeatMapTuples =
+			_bqSessionRepository.getCohortHeatMapTuples(
+				Long.valueOf(searchQueryContext.getChannelId()), interval,
+				TimeRange.of(LocalDateTime.now(), startDate.atStartOfDay()),
+				_timeZoneDog.getZoneId());
+
+		Map<String, Map<String, Object>> cohortHeatMapTupleByDate =
+			new HashMap<>();
+
+		for (Map<String, Object> cohortHeatMapTuple : cohortHeatMapTuples) {
+			cohortHeatMapTupleByDate.put(
+				(String)cohortHeatMapTuple.get("cohortDate"),
+				cohortHeatMapTuple);
+		}
+
+		CohortMetric cohortMetric = new CohortMetric();
+
+		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics =
+			_getCohortHeatMapMetrics(
+				cohortHeatMapTupleByDate, cohortMetricIntervals,
+				SiteMetricType.ANONYMOUS_VISITORS);
+
+		cohortMetric.setAnonymousCohortHeatMapMetrics(
+			anonymousCohortHeatMapMetrics);
+
+		List<CohortHeatMapMetric> knownCohortHeatMapMetrics =
+			_getCohortHeatMapMetrics(
+				cohortHeatMapTupleByDate, cohortMetricIntervals,
+				SiteMetricType.KNOWN_VISITORS);
+
+		cohortMetric.setKnownCohortHeatMapMetrics(knownCohortHeatMapMetrics);
+
+		cohortMetric.setVisitorsCohortHeatMapMetrics(
+			_getCohortHeatMapMetrics(
+				anonymousCohortHeatMapMetrics, knownCohortHeatMapMetrics));
+
+		return cohortMetric;
+	}
+
 	public List<Metric> getDeviceMetrics(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
@@ -288,72 +336,24 @@ public class SiteMetricDog {
 		return siteMetric;
 	}
 
-	public CohortMetric getVisitorCohortHeatMapMetrics(
-		SearchQueryContext searchQueryContext) {
+	private List<CohortHeatMapMetric> _getCohortHeatMapMetrics(
+		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics,
+		List<CohortHeatMapMetric> knownCohortHeatMapMetrics) {
 
-		Interval interval = searchQueryContext.getInterval();
-
-		List<String> cohortIntervals =
-			_metricHelper.getVisitorCohortMetricsIntervals(
-				Clock.system(_timeZoneDog.getZoneId()), interval);
-
-		LocalDate startDate = LocalDate.parse(cohortIntervals.get(0));
-
-		List<Map<String, Object>> visitorCohortMetrics =
-			_bqSessionRepository.getVisitorCohortMetrics(
-				Long.valueOf(searchQueryContext.getChannelId()), interval,
-				TimeRange.of(LocalDateTime.now(), startDate.atStartOfDay()),
-				_timeZoneDog.getZoneId());
-
-		Map<String, Map<String, Object>> visitorCohortMetricsMap =
-			new HashMap<>();
-
-		for (Map<String, Object> visitorCohortMetric : visitorCohortMetrics) {
-			visitorCohortMetricsMap.put(
-				(String)visitorCohortMetric.get("cohortDate"),
-				visitorCohortMetric);
-		}
-
-		CohortMetric cohortMetric = new CohortMetric();
-
-		List<CohortHeatMapMetric> anonymousVisitorsMetrics =
-			_getVisitorsCohortMetrics(
-				cohortIntervals, SiteMetricType.ANONYMOUS_VISITORS,
-				visitorCohortMetricsMap);
-
-		cohortMetric.setAnonymousVisitorsMetric(anonymousVisitorsMetrics);
-
-		List<CohortHeatMapMetric> knownVisitorsMetrics =
-			_getVisitorsCohortMetrics(
-				cohortIntervals, SiteMetricType.KNOWN_VISITORS,
-				visitorCohortMetricsMap);
-
-		cohortMetric.setKnownVisitorsMetric(knownVisitorsMetrics);
-
-		cohortMetric.setVisitorsMetric(
-			_getVisitorsCohortMetrics(
-				anonymousVisitorsMetrics, knownVisitorsMetrics));
-
-		return cohortMetric;
-	}
-
-	private List<CohortHeatMapMetric> _getVisitorsCohortMetrics(
-		List<CohortHeatMapMetric> anonymousVisitorsMetrics,
-		List<CohortHeatMapMetric> knownVisitorsMetrics) {
-
-		List<CohortHeatMapMetric> visitorsMetrics = new ArrayList<>();
+		List<CohortHeatMapMetric> visitorsCohortHeatMapMetrics =
+			new ArrayList<>();
 
 		Map<String, Double> firstIntervalValues = new Hashtable<>();
 
-		for (int i = 0; i < anonymousVisitorsMetrics.size(); i++) {
+		for (int i = 0; i < anonymousCohortHeatMapMetrics.size(); i++) {
 			Metric metric = new Metric(SiteMetricType.VISITORS);
 
-			CohortHeatMapMetric anonymousMetric = anonymousVisitorsMetrics.get(
-				i);
+			CohortHeatMapMetric anonymousMetric =
+				anonymousCohortHeatMapMetrics.get(i);
 
 			metric.setValueKey(anonymousMetric.getValueKey());
 
-			CohortHeatMapMetric knownMetric = knownVisitorsMetrics.get(i);
+			CohortHeatMapMetric knownMetric = knownCohortHeatMapMetrics.get(i);
 
 			double metricValue =
 				anonymousMetric.getValue() + knownMetric.getValue();
@@ -376,20 +376,20 @@ public class SiteMetricDog {
 				retention = (metricValue / firstIntervalValue) * 100;
 			}
 
-			visitorsMetrics.add(
+			visitorsCohortHeatMapMetrics.add(
 				new CohortHeatMapMetric(
 					colDimension, metric, retention,
 					anonymousMetric.getRowDimension(),
 					anonymousMetric.getRowKey()));
 		}
 
-		return visitorsMetrics;
+		return visitorsCohortHeatMapMetrics;
 	}
 
 	@NotNull
-	private List<CohortHeatMapMetric> _getVisitorsCohortMetrics(
-		List<String> cohortsIntervals, SiteMetricType siteMetricType,
-		Map<String, Map<String, Object>> visitorCohortMetricsMap) {
+	private List<CohortHeatMapMetric> _getCohortHeatMapMetrics(
+		Map<String, Map<String, Object>> cohortHeatMapTupleByDate,
+		List<String> cohortMetricIntervals, SiteMetricType siteMetricType) {
 
 		String columnVisitorType = "Known";
 
@@ -401,22 +401,22 @@ public class SiteMetricDog {
 
 		double totalVisitors = 0D;
 
-		for (int i = 0; i < cohortsIntervals.size(); i++) {
+		for (int i = 0; i < cohortMetricIntervals.size(); i++) {
 			double columnTotalVisitors = 0D;
 			int firstIntervalIndex = 0;
 
-			for (int j = 0; j <= (cohortsIntervals.size() - 1 - i); j++) {
+			for (int j = 0; j <= (cohortMetricIntervals.size() - 1 - i); j++) {
 				if (j == 0) {
 					firstIntervalIndex = visitorsMetrics.size();
 				}
 
-				if ((j == (cohortsIntervals.size() - 1)) && (i == 0)) {
+				if ((j == (cohortMetricIntervals.size() - 1)) && (i == 0)) {
 					break;
 				}
 
-				String cohortDate = cohortsIntervals.get(j);
+				String cohortDate = cohortMetricIntervals.get(j);
 
-				Map<String, Object> cohort = visitorCohortMetricsMap.get(
+				Map<String, Object> cohort = cohortHeatMapTupleByDate.get(
 					cohortDate);
 
 				Metric metric = new Metric(siteMetricType);

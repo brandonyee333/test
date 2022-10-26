@@ -36,8 +36,7 @@ public class CohortHeatMapDataFetcher extends BaseDataFetcher<CohortMetric> {
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		return _siteMetricDog.getVisitorCohortHeatMapMetrics(
-			searchQueryContext);
+		return _siteMetricDog.getCohortMetric(searchQueryContext);
 	}
 
 	@Autowired

@@ -143,6 +143,194 @@ public class SiteMetricDogTest
 		DogTestUtil.assertMetric(2, browserMetrics, "Firefox");
 	}
 
+	@SQLResource(resourcePath = "test_visitor_cohort_heatmap_day_interval.sql")
+	@Test
+	public void testCohortHeatMapMetricsDayInterval() {
+		CohortMetric cohortHeatMapMetrics = _siteMetricDog.getCohortMetric(
+			_getVisitorCohortSearchQueryContext(Interval.DAY));
+
+		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics =
+			cohortHeatMapMetrics.getAnonymousCohortHeatMapMetrics();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 33.33333333333333);
+						put(Pair.of(0, 3), 100.0);
+						put(Pair.of(1, 3), 50.0);
+						put(Pair.of(0, 7), 100.0);
+					}
+				},
+				anonymousCohortHeatMapMetrics.size(), 8),
+			_getActualCohortRetentions(anonymousCohortHeatMapMetrics), 0);
+
+		List<CohortHeatMapMetric> knownCohortHeatMapMetrics =
+			cohortHeatMapMetrics.getKnownCohortHeatMapMetrics();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 100.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 3), 100.0);
+						put(Pair.of(1, 3), 100.0);
+						put(Pair.of(0, 7), 0.0);
+						put(Pair.of(1, 7), 0.0);
+					}
+				},
+				knownCohortHeatMapMetrics.size(), 8),
+			_getActualCohortRetentions(knownCohortHeatMapMetrics), 0);
+
+		List<CohortHeatMapMetric> visitorsCohortHeatMapMetrics =
+			cohortHeatMapMetrics.getVisitorsCohortHeatMapMetrics();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 3), 100.0);
+						put(Pair.of(1, 3), 75.0);
+						put(Pair.of(0, 7), 100.0);
+						put(Pair.of(1, 7), 0.0);
+					}
+				},
+				visitorsCohortHeatMapMetrics.size(), 8),
+			_getActualCohortRetentions(visitorsCohortHeatMapMetrics), 0);
+	}
+
+	@SQLResource(
+		resourcePath = "test_visitor_cohort_heatmap_month_interval.sql"
+	)
+	@Test
+	public void testCohortHeatMapMetricsMonthInterval() {
+		CohortMetric cohortHeatMapMetrics = _siteMetricDog.getCohortMetric(
+			_getVisitorCohortSearchQueryContext(Interval.MONTH));
+
+		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics =
+			cohortHeatMapMetrics.getAnonymousCohortHeatMapMetrics();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 33.33333333333333);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 50.0);
+						put(Pair.of(0, 6), 100.0);
+					}
+				},
+				anonymousCohortHeatMapMetrics.size(), 7),
+			_getActualCohortRetentions(anonymousCohortHeatMapMetrics), 0);
+
+		List<CohortHeatMapMetric> knownCohortHeatMapMetrics =
+			cohortHeatMapMetrics.getKnownCohortHeatMapMetrics();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 100.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 100.0);
+						put(Pair.of(1, 5), 0.0);
+						put(Pair.of(0, 6), 0.0);
+					}
+				},
+				knownCohortHeatMapMetrics.size(), 7),
+			_getActualCohortRetentions(knownCohortHeatMapMetrics), 0);
+
+		List<CohortHeatMapMetric> visitorsCohortHeatMapMetrics =
+			cohortHeatMapMetrics.getVisitorsCohortHeatMapMetrics();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 75.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(1, 6), 0.0);
+					}
+				},
+				visitorsCohortHeatMapMetrics.size(), 7),
+			_getActualCohortRetentions(visitorsCohortHeatMapMetrics), 0);
+	}
+
+	@SQLResource(resourcePath = "test_visitor_cohort_heatmap_week_interval.sql")
+	@Test
+	public void testCohortHeatMapMetricsWeekInterval() {
+		CohortMetric cohortMetric = _siteMetricDog.getCohortMetric(
+			_getVisitorCohortSearchQueryContext(Interval.WEEK));
+
+		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics =
+			cohortMetric.getAnonymousCohortHeatMapMetrics();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 33.33333333333333);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 50.0);
+						put(Pair.of(0, 6), 100.0);
+					}
+				},
+				anonymousCohortHeatMapMetrics.size(), 7),
+			_getActualCohortRetentions(anonymousCohortHeatMapMetrics), 0);
+
+		List<CohortHeatMapMetric> knownCohortHeatMapMetrics =
+			cohortMetric.getKnownCohortHeatMapMetrics();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 100.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 100.0);
+						put(Pair.of(1, 5), 0.0);
+						put(Pair.of(0, 6), 0.0);
+					}
+				},
+				knownCohortHeatMapMetrics.size(), 7),
+			_getActualCohortRetentions(knownCohortHeatMapMetrics), 0);
+
+		List<CohortHeatMapMetric> visitorsCohortHeatMapMetrics =
+			cohortMetric.getVisitorsCohortHeatMapMetrics();
+
+		Assertions.assertArrayEquals(
+			_getExpectedCohortRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(2, 0), 0.0);
+						put(Pair.of(0, 2), 100.0);
+						put(Pair.of(1, 2), 75.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(1, 6), 0.0);
+					}
+				},
+				visitorsCohortHeatMapMetrics.size(), 7),
+			_getActualCohortRetentions(visitorsCohortHeatMapMetrics), 0);
+	}
+
 	@SQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
 	@Test
 	public void testDeviceMetricsLast24Hours() {
@@ -369,197 +557,6 @@ public class SiteMetricDogTest
 
 		Assertions.assertEquals(4, visitorsMetrics.getPreviousValue());
 		Assertions.assertEquals(4, visitorsMetrics.getValue());
-	}
-
-	@SQLResource(resourcePath = "test_visitor_cohort_heatmap_day_interval.sql")
-	@Test
-	public void testVisitorCohortHeatMapMetricsDayInterval() {
-		CohortMetric cohortHeatMapMetrics =
-			_siteMetricDog.getVisitorCohortHeatMapMetrics(
-				_getVisitorCohortSearchQueryContext(Interval.DAY));
-
-		List<CohortHeatMapMetric> anonymousVisitorsMetrics =
-			cohortHeatMapMetrics.getAnonymousVisitorsMetric();
-
-		Assertions.assertArrayEquals(
-			_getExpectedCohortRetentions(
-				new HashMap<Pair<Integer, Integer>, Double>() {
-					{
-						put(Pair.of(0, 0), 100.0);
-						put(Pair.of(1, 0), 33.33333333333333);
-						put(Pair.of(0, 3), 100.0);
-						put(Pair.of(1, 3), 50.0);
-						put(Pair.of(0, 7), 100.0);
-					}
-				},
-				anonymousVisitorsMetrics.size(), 8),
-			_getActualCohortRetentions(anonymousVisitorsMetrics), 0);
-
-		List<CohortHeatMapMetric> knownVisitorsMetrics =
-			cohortHeatMapMetrics.getKnownVisitorsMetric();
-
-		Assertions.assertArrayEquals(
-			_getExpectedCohortRetentions(
-				new HashMap<Pair<Integer, Integer>, Double>() {
-					{
-						put(Pair.of(0, 0), 100.0);
-						put(Pair.of(1, 0), 100.0);
-						put(Pair.of(2, 0), 0.0);
-						put(Pair.of(0, 3), 100.0);
-						put(Pair.of(1, 3), 100.0);
-						put(Pair.of(0, 7), 0.0);
-						put(Pair.of(1, 7), 0.0);
-					}
-				},
-				knownVisitorsMetrics.size(), 8),
-			_getActualCohortRetentions(knownVisitorsMetrics), 0);
-
-		List<CohortHeatMapMetric> visitorsMetrics =
-			cohortHeatMapMetrics.getVisitorsMetric();
-
-		Assertions.assertArrayEquals(
-			_getExpectedCohortRetentions(
-				new HashMap<Pair<Integer, Integer>, Double>() {
-					{
-						put(Pair.of(0, 0), 100.0);
-						put(Pair.of(1, 0), 60.0);
-						put(Pair.of(2, 0), 0.0);
-						put(Pair.of(0, 3), 100.0);
-						put(Pair.of(1, 3), 75.0);
-						put(Pair.of(0, 7), 100.0);
-						put(Pair.of(1, 7), 0.0);
-					}
-				},
-				visitorsMetrics.size(), 8),
-			_getActualCohortRetentions(visitorsMetrics), 0);
-	}
-
-	@SQLResource(
-		resourcePath = "test_visitor_cohort_heatmap_month_interval.sql"
-	)
-	@Test
-	public void testVisitorCohortHeatMapMetricsMonthInterval() {
-		CohortMetric cohortHeatMapMetrics =
-			_siteMetricDog.getVisitorCohortHeatMapMetrics(
-				_getVisitorCohortSearchQueryContext(Interval.MONTH));
-
-		List<CohortHeatMapMetric> anonymousVisitorsMetrics =
-			cohortHeatMapMetrics.getAnonymousVisitorsMetric();
-
-		Assertions.assertArrayEquals(
-			_getExpectedCohortRetentions(
-				new HashMap<Pair<Integer, Integer>, Double>() {
-					{
-						put(Pair.of(0, 0), 100.0);
-						put(Pair.of(1, 0), 33.33333333333333);
-						put(Pair.of(0, 2), 100.0);
-						put(Pair.of(1, 2), 50.0);
-						put(Pair.of(0, 6), 100.0);
-					}
-				},
-				anonymousVisitorsMetrics.size(), 7),
-			_getActualCohortRetentions(anonymousVisitorsMetrics), 0);
-
-		List<CohortHeatMapMetric> knownVisitorsMetrics =
-			cohortHeatMapMetrics.getKnownVisitorsMetric();
-
-		Assertions.assertArrayEquals(
-			_getExpectedCohortRetentions(
-				new HashMap<Pair<Integer, Integer>, Double>() {
-					{
-						put(Pair.of(0, 0), 100.0);
-						put(Pair.of(1, 0), 100.0);
-						put(Pair.of(2, 0), 0.0);
-						put(Pair.of(0, 2), 100.0);
-						put(Pair.of(1, 2), 100.0);
-						put(Pair.of(1, 5), 0.0);
-						put(Pair.of(0, 6), 0.0);
-					}
-				},
-				knownVisitorsMetrics.size(), 7),
-			_getActualCohortRetentions(knownVisitorsMetrics), 0);
-
-		List<CohortHeatMapMetric> visitorsMetrics =
-			cohortHeatMapMetrics.getVisitorsMetric();
-
-		Assertions.assertArrayEquals(
-			_getExpectedCohortRetentions(
-				new HashMap<Pair<Integer, Integer>, Double>() {
-					{
-						put(Pair.of(0, 0), 100.0);
-						put(Pair.of(1, 0), 60.0);
-						put(Pair.of(2, 0), 0.0);
-						put(Pair.of(0, 2), 100.0);
-						put(Pair.of(1, 2), 75.0);
-						put(Pair.of(0, 6), 100.0);
-						put(Pair.of(1, 6), 0.0);
-					}
-				},
-				visitorsMetrics.size(), 7),
-			_getActualCohortRetentions(visitorsMetrics), 0);
-	}
-
-	@SQLResource(resourcePath = "test_visitor_cohort_heatmap_week_interval.sql")
-	@Test
-	public void testVisitorCohortHeatMapMetricsWeekInterval() {
-		CohortMetric cohortHeatMapMetrics =
-			_siteMetricDog.getVisitorCohortHeatMapMetrics(
-				_getVisitorCohortSearchQueryContext(Interval.WEEK));
-
-		List<CohortHeatMapMetric> anonymousVisitorsMetrics =
-			cohortHeatMapMetrics.getAnonymousVisitorsMetric();
-
-		Assertions.assertArrayEquals(
-			_getExpectedCohortRetentions(
-				new HashMap<Pair<Integer, Integer>, Double>() {
-					{
-						put(Pair.of(0, 0), 100.0);
-						put(Pair.of(1, 0), 33.33333333333333);
-						put(Pair.of(0, 2), 100.0);
-						put(Pair.of(1, 2), 50.0);
-						put(Pair.of(0, 6), 100.0);
-					}
-				},
-				anonymousVisitorsMetrics.size(), 7),
-			_getActualCohortRetentions(anonymousVisitorsMetrics), 0);
-
-		List<CohortHeatMapMetric> knownVisitorsMetrics =
-			cohortHeatMapMetrics.getKnownVisitorsMetric();
-
-		Assertions.assertArrayEquals(
-			_getExpectedCohortRetentions(
-				new HashMap<Pair<Integer, Integer>, Double>() {
-					{
-						put(Pair.of(0, 0), 100.0);
-						put(Pair.of(1, 0), 100.0);
-						put(Pair.of(2, 0), 0.0);
-						put(Pair.of(0, 2), 100.0);
-						put(Pair.of(1, 2), 100.0);
-						put(Pair.of(1, 5), 0.0);
-						put(Pair.of(0, 6), 0.0);
-					}
-				},
-				knownVisitorsMetrics.size(), 7),
-			_getActualCohortRetentions(knownVisitorsMetrics), 0);
-
-		List<CohortHeatMapMetric> visitorsMetrics =
-			cohortHeatMapMetrics.getVisitorsMetric();
-
-		Assertions.assertArrayEquals(
-			_getExpectedCohortRetentions(
-				new HashMap<Pair<Integer, Integer>, Double>() {
-					{
-						put(Pair.of(0, 0), 100.0);
-						put(Pair.of(1, 0), 60.0);
-						put(Pair.of(2, 0), 0.0);
-						put(Pair.of(0, 2), 100.0);
-						put(Pair.of(1, 2), 75.0);
-						put(Pair.of(0, 6), 100.0);
-						put(Pair.of(1, 6), 0.0);
-					}
-				},
-				visitorsMetrics.size(), 7),
-			_getActualCohortRetentions(visitorsMetrics), 0);
 	}
 
 	@SQLResource(resourcePath = "test_bq_sessions_visitors_by_day_and_time.sql")

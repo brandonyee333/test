@@ -36,11 +36,14 @@ public class CohortMetric {
 		CohortMetric cohortMetric = (CohortMetric)obj;
 
 		if (Objects.equals(
-				_anonymousVisitorsMetric,
-				cohortMetric._anonymousVisitorsMetric) &&
+				_anonymousCohortHeatMapMetrics,
+				cohortMetric._anonymousCohortHeatMapMetrics) &&
 			Objects.equals(
-				_knownVisitorsMetric, cohortMetric._knownVisitorsMetric) &&
-			Objects.equals(_visitorsMetric, cohortMetric._visitorsMetric)) {
+				_knownCohortHeatMapMetrics,
+				cohortMetric._knownCohortHeatMapMetrics) &&
+			Objects.equals(
+				_visitorsCohortHeatMapMetrics,
+				cohortMetric._visitorsCohortHeatMapMetrics)) {
 
 			return true;
 		}
@@ -48,43 +51,48 @@ public class CohortMetric {
 		return false;
 	}
 
-	public List<CohortHeatMapMetric> getAnonymousVisitorsMetric() {
-		return _anonymousVisitorsMetric;
+	public List<CohortHeatMapMetric> getAnonymousCohortHeatMapMetrics() {
+		return _anonymousCohortHeatMapMetrics;
 	}
 
-	public List<CohortHeatMapMetric> getKnownVisitorsMetric() {
-		return _knownVisitorsMetric;
+	public List<CohortHeatMapMetric> getKnownCohortHeatMapMetrics() {
+		return _knownCohortHeatMapMetrics;
 	}
 
-	public List<CohortHeatMapMetric> getVisitorsMetric() {
-		return _visitorsMetric;
+	public List<CohortHeatMapMetric> getVisitorsCohortHeatMapMetrics() {
+		return _visitorsCohortHeatMapMetrics;
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_anonymousVisitorsMetric, _knownVisitorsMetric, _visitorsMetric);
+			_anonymousCohortHeatMapMetrics, _knownCohortHeatMapMetrics,
+			_visitorsCohortHeatMapMetrics);
 	}
 
-	public void setAnonymousVisitorsMetric(
+	public void setAnonymousCohortHeatMapMetrics(
 		List<CohortHeatMapMetric> anonymousVisitorsMetric) {
 
-		_anonymousVisitorsMetric = anonymousVisitorsMetric;
+		_anonymousCohortHeatMapMetrics = anonymousVisitorsMetric;
 	}
 
-	public void setKnownVisitorsMetric(
+	public void setKnownCohortHeatMapMetrics(
 		List<CohortHeatMapMetric> knownVisitorsMetric) {
 
-		_knownVisitorsMetric = knownVisitorsMetric;
+		_knownCohortHeatMapMetrics = knownVisitorsMetric;
 	}
 
-	public void setVisitorsMetric(List<CohortHeatMapMetric> visitorsMetric) {
-		_visitorsMetric = visitorsMetric;
+	public void setVisitorsCohortHeatMapMetrics(
+		List<CohortHeatMapMetric> visitorsMetric) {
+
+		_visitorsCohortHeatMapMetrics = visitorsMetric;
 	}
 
-	private List<CohortHeatMapMetric> _anonymousVisitorsMetric =
+	private List<CohortHeatMapMetric> _anonymousCohortHeatMapMetrics =
 		new ArrayList<>();
-	private List<CohortHeatMapMetric> _knownVisitorsMetric = new ArrayList<>();
-	private List<CohortHeatMapMetric> _visitorsMetric = new ArrayList<>();
+	private List<CohortHeatMapMetric> _knownCohortHeatMapMetrics =
+		new ArrayList<>();
+	private List<CohortHeatMapMetric> _visitorsCohortHeatMapMetrics =
+		new ArrayList<>();
 
 }
