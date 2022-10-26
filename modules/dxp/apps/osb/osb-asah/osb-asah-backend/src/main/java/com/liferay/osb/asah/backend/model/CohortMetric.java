@@ -33,14 +33,14 @@ public class CohortMetric {
 			return false;
 		}
 
-		CohortMetric siteMetric = (CohortMetric)obj;
+		CohortMetric cohortMetric = (CohortMetric)obj;
 
 		if (Objects.equals(
 				_anonymousVisitorsMetric,
-				siteMetric._anonymousVisitorsMetric) &&
+				cohortMetric._anonymousVisitorsMetric) &&
 			Objects.equals(
-				_knownVisitorsMetric, siteMetric._knownVisitorsMetric) &&
-			Objects.equals(_visitorsMetric, siteMetric._visitorsMetric)) {
+				_knownVisitorsMetric, cohortMetric._knownVisitorsMetric) &&
+			Objects.equals(_visitorsMetric, cohortMetric._visitorsMetric)) {
 
 			return true;
 		}
