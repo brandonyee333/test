@@ -161,6 +161,16 @@ public class DataSource implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonIgnore
+	public Boolean getAccountsSelected() {
+		if (_detail == null) {
+			return null;
+		}
+
+		return _detail.getAccountsSelected();
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public Long getAuthorId() {
 		if (_author == null) {
 			return null;
@@ -586,6 +596,18 @@ public class DataSource implements Persistable<Long> {
 		}
 
 		return false;
+	}
+
+	public void setAccountsSelected(Boolean accountsSelected) {
+		if (accountsSelected == null) {
+			return;
+		}
+
+		if (_detail == null) {
+			_detail = new Detail();
+		}
+
+		_detail.setAccountsSelected(accountsSelected);
 	}
 
 	public void setAuthorId(Long authorId) {
@@ -1719,13 +1741,22 @@ public class DataSource implements Persistable<Long> {
 
 			Detail detail = (Detail)obj;
 
-			if (Objects.equals(_contactsSelected, detail._contactsSelected) &&
+			if (Objects.equals(_accountsSelected, detail._accountsSelected) &&
+				Objects.equals(
+					_commerceChannelsSelected,
+					detail._commerceChannelsSelected) &&
+				Objects.equals(_contactsSelected, detail._contactsSelected) &&
 				Objects.equals(_sitesSelected, detail._sitesSelected)) {
 
 				return true;
 			}
 
 			return false;
+		}
+
+		@JsonProperty("accountsSelected")
+		public Boolean getAccountsSelected() {
+			return _accountsSelected;
 		}
 
 		@JsonProperty("commerceChannelsSelected")
@@ -1745,7 +1776,13 @@ public class DataSource implements Persistable<Long> {
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(_contactsSelected, _sitesSelected);
+			return Objects.hash(
+				_accountsSelected, _commerceChannelsSelected, _contactsSelected,
+				_sitesSelected);
+		}
+
+		public void setAccountsSelected(Boolean accountsSelected) {
+			_accountsSelected = accountsSelected;
 		}
 
 		public void setCommerceChannelsSelected(
@@ -1762,6 +1799,7 @@ public class DataSource implements Persistable<Long> {
 			_sitesSelected = sitesSelected;
 		}
 
+		private Boolean _accountsSelected;
 		private Boolean _commerceChannelsSelected;
 		private Boolean _contactsSelected;
 		private Boolean _sitesSelected;
