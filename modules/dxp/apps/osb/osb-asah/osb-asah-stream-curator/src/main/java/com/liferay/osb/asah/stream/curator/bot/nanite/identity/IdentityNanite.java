@@ -52,6 +52,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 /**
@@ -59,6 +60,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConditionalOnGoogleApplicationCredentials
+@ConditionalOnProperty(
+	havingValue = "empty", matchIfMissing = true, value = "OSB_ASAH_PROJECT_ID"
+)
 public class IdentityNanite implements Nanite {
 
 	@Override
