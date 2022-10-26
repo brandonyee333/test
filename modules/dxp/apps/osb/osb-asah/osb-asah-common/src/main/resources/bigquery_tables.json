@@ -1944,7 +1944,7 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "entrances",
 				"type": "INT64"
 			},
