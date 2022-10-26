@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS DataExportTask (
 
 CREATE TABLE IF NOT EXISTS DataSource (
 	id BIGSERIAL PRIMARY KEY,
+	accountsSelected BOOLEAN,
 	authorId BIGINT,
 	authorName TEXT,
     commerceChannelsSelected BOOLEAN,
