@@ -24,6 +24,7 @@ import com.liferay.osb.asah.backend.model.HeatMapMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
+import com.liferay.osb.asah.common.model.AcquisitionType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -53,7 +54,7 @@ public class SiteMetricDogTest
 	public void testAcquisitionChannel() {
 		CompositionResultBag compositionResultBag =
 			_siteMetricDog.getAcquisitionsMetrics(
-				"CHANNEL", "1", 5, 0, TimeRange.LAST_7_DAYS);
+				AcquisitionType.CHANNEL, "1", 5, 0, TimeRange.LAST_7_DAYS);
 
 		List<Composition> results = compositionResultBag.getResults();
 
@@ -70,7 +71,7 @@ public class SiteMetricDogTest
 	public void testAcquisitionReferrers() {
 		CompositionResultBag compositionResultBag =
 			_siteMetricDog.getAcquisitionsMetrics(
-				"REFERRER", "1", 5, 0, TimeRange.LAST_24_HOURS);
+				AcquisitionType.REFERRER, "1", 5, 0, TimeRange.LAST_24_HOURS);
 
 		List<Composition> results = compositionResultBag.getResults();
 
@@ -87,7 +88,8 @@ public class SiteMetricDogTest
 	public void testAcquisitionSourceMedium() {
 		CompositionResultBag compositionResultBag =
 			_siteMetricDog.getAcquisitionsMetrics(
-				"SOURCE_MEDIUM", "1", 5, 0, TimeRange.LAST_24_HOURS);
+				AcquisitionType.SOURCE_MEDIUM, "1", 5, 0,
+				TimeRange.LAST_24_HOURS);
 
 		List<Composition> results = compositionResultBag.getResults();
 
