@@ -142,9 +142,8 @@ public class BQSessionRepositoryImpl
 			field = DSL.field("acquisitionchannel");
 		}
 		else {
-			field = DSL.concat(
-				DSL.field("acquisitionsource"), DSL.val(" / "),
-				DSL.field("acquisitionmedium"));
+			field = DSL.field(
+				"acquisitionsource || ' / ' || acquisitionmedium");
 		}
 
 		return _queryExecutor.queryForMap(
