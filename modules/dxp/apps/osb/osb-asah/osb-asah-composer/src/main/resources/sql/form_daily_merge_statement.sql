@@ -78,7 +78,6 @@ WHEN NOT MATCHED THEN
 		staging.deviceType,
 		staging.eventDate,
 		staging.finalizedFormViews,
-		staging.views,
 		staging.pageTitle,
 		staging.platformName,
 		staging.region,
