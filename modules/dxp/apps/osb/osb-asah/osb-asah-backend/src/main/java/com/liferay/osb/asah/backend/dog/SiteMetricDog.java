@@ -308,32 +308,33 @@ public class SiteMetricDog {
 		Map<String, Map<String, Object>> visitorCohortMetricsMap =
 			new HashMap<>();
 
-		for (Map<String, Object> cohortMetric : visitorCohortMetrics) {
+		for (Map<String, Object> visitorCohortMetric : visitorCohortMetrics) {
 			visitorCohortMetricsMap.put(
-				(String)cohortMetric.get("cohortDate"), cohortMetric);
+				(String)visitorCohortMetric.get("cohortDate"),
+				visitorCohortMetric);
 		}
 
-		CohortMetric siteMetrics = new CohortMetric();
+		CohortMetric cohortMetric = new CohortMetric();
 
 		List<CohortHeatMapMetric> anonymousVisitorsMetrics =
 			_getVisitorsCohortMetrics(
 				cohortIntervals, SiteMetricType.ANONYMOUS_VISITORS,
 				visitorCohortMetricsMap);
 
-		siteMetrics.setAnonymousVisitorsMetric(anonymousVisitorsMetrics);
+		cohortMetric.setAnonymousVisitorsMetric(anonymousVisitorsMetrics);
 
 		List<CohortHeatMapMetric> knownVisitorsMetrics =
 			_getVisitorsCohortMetrics(
 				cohortIntervals, SiteMetricType.KNOWN_VISITORS,
 				visitorCohortMetricsMap);
 
-		siteMetrics.setKnownVisitorsMetric(knownVisitorsMetrics);
+		cohortMetric.setKnownVisitorsMetric(knownVisitorsMetrics);
 
-		siteMetrics.setVisitorsMetric(
+		cohortMetric.setVisitorsMetric(
 			_getVisitorsCohortMetrics(
 				anonymousVisitorsMetrics, knownVisitorsMetrics));
 
-		return siteMetrics;
+		return cohortMetric;
 	}
 
 	private List<CohortHeatMapMetric> _getVisitorsCohortMetrics(

@@ -422,10 +422,8 @@ public class BQSessionRepositoryImpl
 	public List<Map<String, Object>> getVisitorCohortMetrics(
 		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId) {
 
-		WithStep withStep = _createVisitorCohortWithClause(
+		WithStep withStep = _createVisitorCohortWithStep(
 			channelId, interval, timeRange, zoneId);
-
-		List<Field<?>> fields = _getVisitorCohortFields(interval);
 
 		Field<Object> sessionDateField = DSL.field(
 			"retentionTable.sessionDate");
@@ -433,7 +431,7 @@ public class BQSessionRepositoryImpl
 		return _queryExecutor.queryForList(
 			Function.identity(),
 			withStep.select(
-				fields
+				_getVisitorCohortFields(interval)
 			).from(
 				DSL.table("retentionTable")
 			).leftJoin(
@@ -511,7 +509,7 @@ public class BQSessionRepositoryImpl
 			));
 	}
 
-	private WithStep _createVisitorCohortWithClause(
+	private WithStep _createVisitorCohortWithStep(
 		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId) {
 
 		DatePart datePart = DatePart.DAY;
