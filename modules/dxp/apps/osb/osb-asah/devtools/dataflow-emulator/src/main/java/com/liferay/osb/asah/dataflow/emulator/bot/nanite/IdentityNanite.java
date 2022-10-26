@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONObject;
 
@@ -104,7 +105,9 @@ public class IdentityNanite {
 
 		String individualId = jsonObject.getString("individualId");
 
-		if (Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
+		if (StringUtils.isBlank(individualId) ||
+			Objects.equals(individualId, _EMPTY_EMAIL_ADDRESS_HASHED)) {
+
 			individualId = null;
 		}
 
