@@ -126,8 +126,7 @@ LEFT JOIN FormSubmissionTimes ON (
 	FormEvent.title = FormSubmissionTimes.pageTitle AND
 	FormEvent.userId = FormSubmissionTimes.userId)
 LEFT JOIN `$[AC_PROJECT_ID].session` AS Session ON
-	FormEvent.sessionId = Session.id
-WHERE
+	FormEvent.sessionId = Session.id AND
 	Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 GROUP BY
 	assetId, browserName, canonicalUrl, channelId, city, country, deviceType,
