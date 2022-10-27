@@ -17,8 +17,11 @@ package com.liferay.portal.file.install.deploy.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.persistence.ReloadablePersistenceManager;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
+import com.liferay.portal.file.install.constants.FileInstallConstants;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
@@ -26,6 +29,8 @@ import com.liferay.portal.util.PropsValues;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+
+import java.net.URI;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -65,6 +70,7 @@ import org.osgi.service.cm.ConfigurationAdmin;
 /**
  * @author Matthew Tambara
  */
+@DataGuard(scope = DataGuard.Scope.METHOD)
 @RunWith(Arquillian.class)
 public class FileInstallDeployTest {
 
@@ -80,7 +86,7 @@ public class FileInstallDeployTest {
 		_bundleContext = bundle.getBundleContext();
 	}
 
-	@Test
+	//@Test
 	public void testConfiguration() throws Exception {
 		Path path = Paths.get(
 			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
@@ -97,6 +103,8 @@ public class FileInstallDeployTest {
 
 						Files.write(path, content1.getBytes());
 					});
+
+			Assert.assertNotNull(_getExistingConfiguration(path));
 
 			Dictionary<String, Object> properties =
 				configuration.getProperties();
@@ -125,6 +133,8 @@ public class FileInstallDeployTest {
 				_CONFIGURATION_PID, () -> Files.delete(path));
 
 			Assert.assertNull(configuration);
+
+			Assert.assertNull(_getExistingConfiguration(path));
 		}
 		finally {
 			Files.deleteIfExists(path);
@@ -132,6 +142,49 @@ public class FileInstallDeployTest {
 	}
 
 	@Test
+	public void testConfigurationSymbolicLink() throws Exception {
+		Path path = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			_CONFIGURATION_PID.concat(".config"));
+
+		Path targetConfigPath = Files.createTempFile(
+			"testSymbolicLinkConfiguration", ".config");
+
+		try {
+			Configuration configuration =
+				ConfigurationTestUtil.updateConfiguration(
+					_CONFIGURATION_PID,
+					() -> {
+						String content1 = StringBundler.concat(
+							_TEST_KEY, StringPool.EQUAL, StringPool.QUOTE,
+							_TEST_VALUE_1, StringPool.QUOTE);
+
+						Files.write(targetConfigPath, content1.getBytes());
+
+						Files.createSymbolicLink(path, targetConfigPath);
+					});
+
+			Dictionary<String, Object> properties =
+				configuration.getProperties();
+
+			Assert.assertEquals(_TEST_VALUE_1, properties.get(_TEST_KEY));
+
+			Assert.assertNotNull(_getExistingConfiguration(path));
+
+			configuration = ConfigurationTestUtil.updateConfiguration(
+				_CONFIGURATION_PID, () -> Files.delete(path));
+
+			Assert.assertNull(configuration);
+
+			Assert.assertNull(_getExistingConfiguration(path));
+		}
+		finally {
+			Files.deleteIfExists(path);
+			Files.deleteIfExists(targetConfigPath);
+		}
+	}
+
+	//@Test
 	public void testConfigurationSystem() throws Exception {
 		Path path = Paths.get(
 			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
@@ -165,7 +218,7 @@ public class FileInstallDeployTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testDeployAndDelete() throws Exception {
 		Path path = Paths.get(
 			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
@@ -253,7 +306,7 @@ public class FileInstallDeployTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testDeployAndDeleteFragmentHost() throws Exception {
 		String testFragmentSymbolicName = _TEST_JAR_SYMBOLIC_NAME.concat(
 			".fragment");
@@ -355,7 +408,7 @@ public class FileInstallDeployTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void testDeployOptionalDependency() throws Exception {
 		String testOptionalProviderSymbolicName =
 			_TEST_JAR_SYMBOLIC_NAME.concat(".optional.provider");
@@ -481,6 +534,27 @@ public class FileInstallDeployTest {
 		return null;
 	}
 
+	private Configuration _getExistingConfiguration(Path path)
+		throws Exception {
+
+		File file = path.toFile();
+
+		URI uri = file.toURI();
+
+		Configuration[] configurations = _configurationAdmin.listConfigurations(
+			StringBundler.concat(
+				StringPool.OPEN_PARENTHESIS,
+				FileInstallConstants.FELIX_FILE_INSTALL_FILENAME,
+				StringPool.EQUAL, uri.toString(),
+				StringPool.CLOSE_PARENTHESIS));
+
+		if ((configurations != null) && (configurations.length > 0)) {
+			return configurations[0];
+		}
+
+		return null;
+	}
+
 	private void _uninstall(String symbolicName, Path path) throws Exception {
 		if (!Files.exists(path)) {
 			return;
@@ -534,6 +608,9 @@ public class FileInstallDeployTest {
 
 	@Inject
 	private static ConfigurationAdmin _configurationAdmin;
+
+	@Inject
+	private static ReloadablePersistenceManager _reloadablePersistenceManager;
 
 	static {
 		Package pkg = FileInstallDeployTest.class.getPackage();
