@@ -15,8 +15,13 @@
 import {ClayToggle} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
+import {useModal} from '@clayui/modal';
 import ClayPanel from '@clayui/panel';
 import React, {useState} from 'react';
+
+import ModalAccountGroups from './ModalAccountGroups';
+import ModalOrganizations from './ModalOrganizations';
+import ModalUserGroups from './ModalUserGroups';
 
 interface IPanelProps {
 	accountsCount: number;
@@ -31,16 +36,33 @@ const SelectPanels: React.FC<IPanelProps> = ({
 }) => {
 	const [syncAllContacts, setSyncAllContacts] = useState(false);
 	const [syncAllAccounts, setSyncAllAccounts] = useState(false);
+	const {
+		observer: observerAccountGroups,
+		onOpenChange: onOpenChangeAccount,
+		open: openAccount,
+	} = useModal();
+	const {
+		observer: observerUserGroups,
+		onOpenChange: onOpenChangeUser,
+		open: openUser,
+	} = useModal();
+	const {
+		observer: observerOrganizations,
+		onOpenChange: onOpenChangeOrganizations,
+		open: openOrganizations,
+	} = useModal();
 
 	const userOrganizationList = [
 		{
 			count: usersCount,
 			icon: 'users',
+			onOpenChange: () => onOpenChangeUser(true),
 			title: Liferay.Language.get('user-groups'),
 		},
 		{
 			count: organizationsCount,
 			icon: 'organizations',
+			onOpenChange: () => onOpenChangeOrganizations(true),
 			title: Liferay.Language.get('organizations'),
 		},
 	];
@@ -77,7 +99,12 @@ const SelectPanels: React.FC<IPanelProps> = ({
 							key={item.title}
 							showQuickActionsOnHover
 						>
-							<ClayList.Item className="align-items-center" flex>
+							<ClayList.Item
+								action
+								className="align-items-center btn"
+								flex
+								onClick={item.onOpenChange}
+							>
 								<ClayList.ItemField>
 									<ClayIcon symbol={item.icon} />
 								</ClayList.ItemField>
@@ -124,7 +151,12 @@ const SelectPanels: React.FC<IPanelProps> = ({
 					</p>
 
 					<ClayList showQuickActionsOnHover>
-						<ClayList.Item className="align-items-center" flex>
+						<ClayList.Item
+							action
+							className="align-items-center btn"
+							flex
+							onClick={() => onOpenChangeAccount(true)}
+						>
 							<ClayList.ItemField>
 								<ClayIcon symbol="users" />
 							</ClayList.ItemField>
@@ -146,6 +178,24 @@ const SelectPanels: React.FC<IPanelProps> = ({
 					</ClayList>
 				</ClayPanel.Body>
 			</ClayPanel>
+			{openAccount && (
+				<ModalAccountGroups
+					observer={observerAccountGroups}
+					onCloseModal={() => onOpenChangeAccount(false)}
+				/>
+			)}
+			{openUser && (
+				<ModalUserGroups
+					observer={observerUserGroups}
+					onCloseModal={() => onOpenChangeUser(false)}
+				/>
+			)}
+			{openOrganizations && (
+				<ModalOrganizations
+					observer={observerOrganizations}
+					onCloseModal={() => onOpenChangeOrganizations(false)}
+				/>
+			)}
 		</>
 	);
 };
