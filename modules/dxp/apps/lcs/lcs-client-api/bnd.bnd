@@ -14,8 +14,8 @@ Export-Package:\
 	com.liferay.lcs.client.platform.portal,\
 	com.liferay.lcs.client.task
 Import-Package:\
-	com.liferay.portal.kernel.exception;version="[7.0.0,99.0.0)",\
-	com.liferay.portal.kernel.license.messaging;version="[1.0.0,99.0.0)",\
+	com.liferay.portal.kernel.exception;version="[7.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.license.messaging;version="[1.0.0,9999.0.0)",\
 	\
 	*
 Liferay-Releng-Module-Group-Title: LCS

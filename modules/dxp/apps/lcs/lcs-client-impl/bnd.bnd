@@ -2,23 +2,23 @@ Bundle-Name: Liferay LCS Client Implementation
 Bundle-SymbolicName: com.liferay.lcs.client.impl
 Bundle-Version: 1.0.57
 Import-Package:\
-	com.liferay.petra.encryptor;version="[1.0.0,99.0.0)",\
-	com.liferay.portal.kernel.bean;version="[7.1.0,99.0.0)",\
-	com.liferay.portal.kernel.cluster;version="[7.0.0,99.0.0)",\
-	com.liferay.portal.kernel.dao.orm;version="[7.0.0,99.0.0)",\
-	com.liferay.portal.kernel.exception;version="[7.0.0,99.0.0)",\
-	com.liferay.portal.kernel.io.unsync;version="[6.2.0,99.0.0)",\
-	com.liferay.portal.kernel.json;version="[7.0.0,99.0.0)",\
-	com.liferay.portal.kernel.license.messaging;version="[1.0.0,99.0.0)",\
-	com.liferay.portal.kernel.messaging;version="[7.0.0,99.0.0)",\
-	com.liferay.portal.kernel.model;version="[1.0.0,99.0.0)",\
-	com.liferay.portal.kernel.monitoring;version="[7.0.0,99.0.0)",\
-	com.liferay.portal.kernel.portlet;version="[7.0.0,99.0.0)",\
-	com.liferay.portal.kernel.scripting;version="[7.0.0,99.0.0)",\
-	com.liferay.portal.kernel.service;version="[1.24.0,99.0.0)",\
-	com.liferay.portal.kernel.service.persistence;version="[1.15.0,99.0.0)",\
-	com.liferay.portal.kernel.servlet;version="[7.10.0,99.0.0)",\
-	com.liferay.portal.kernel.util;version="[7.0.0,99.0.0)",\
+	com.liferay.petra.encryptor;version="[1.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.bean;version="[7.1.0,9999.0.0)",\
+	com.liferay.portal.kernel.cluster;version="[7.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.dao.orm;version="[7.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.exception;version="[7.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.io.unsync;version="[6.2.0,9999.0.0)",\
+	com.liferay.portal.kernel.json;version="[7.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.license.messaging;version="[1.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.messaging;version="[7.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.model;version="[1.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.monitoring;version="[7.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.portlet;version="[7.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.scripting;version="[7.0.0,9999.0.0)",\
+	com.liferay.portal.kernel.service;version="[1.24.0,9999.0.0)",\
+	com.liferay.portal.kernel.service.persistence;version="[1.15.0,9999.0.0)",\
+	com.liferay.portal.kernel.servlet;version="[7.10.0,9999.0.0)",\
+	com.liferay.portal.kernel.util;version="[7.0.0,9999.0.0)",\
 	\
 	*
 Liferay-Releng-Module-Group-Title: LCS
