@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
+import com.liferay.portal.file.install.constants.FileInstallConstants;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.test.rule.Inject;
@@ -100,6 +101,8 @@ public class FileInstallDeployTest {
 						Files.write(path, content1.getBytes());
 					});
 
+			Assert.assertNotNull(_getExistingConfiguration(path.toString()));
+
 			Dictionary<String, Object> properties =
 				configuration.getProperties();
 
@@ -127,9 +130,54 @@ public class FileInstallDeployTest {
 				_CONFIGURATION_PID, () -> Files.delete(path));
 
 			Assert.assertNull(configuration);
+
+			Assert.assertNull(_getExistingConfiguration(path.toString()));
 		}
 		finally {
 			Files.deleteIfExists(path);
+		}
+	}
+
+	// @Test
+	public void testConfigurationSymbolicLink() throws Exception {
+		Path path = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			_CONFIGURATION_PID.concat(".config"));
+
+		Path targetConfigPath = Files.createTempFile(
+			"testSymbolicLinkConfiguration", ".config");
+
+		try {
+			Configuration configuration =
+				ConfigurationTestUtil.updateConfiguration(
+					_CONFIGURATION_PID,
+					() -> {
+						String content1 = StringBundler.concat(
+							_TEST_KEY, StringPool.EQUAL, StringPool.QUOTE,
+							_TEST_VALUE_1, StringPool.QUOTE);
+
+						Files.write(targetConfigPath, content1.getBytes());
+
+						Files.createSymbolicLink(path, targetConfigPath);
+					});
+
+			Dictionary<String, Object> properties =
+				configuration.getProperties();
+
+			Assert.assertEquals(_TEST_VALUE_1, properties.get(_TEST_KEY));
+
+			Assert.assertNotNull(_getExistingConfiguration(path.toString()));
+
+			configuration = ConfigurationTestUtil.updateConfiguration(
+				_CONFIGURATION_PID, () -> Files.delete(path));
+
+			Assert.assertNull(configuration);
+
+			Assert.assertNull(_getExistingConfiguration(path.toString()));
+		}
+		finally {
+			Files.deleteIfExists(path);
+			Files.deleteIfExists(targetConfigPath);
 		}
 	}
 
@@ -478,6 +526,22 @@ public class FileInstallDeployTest {
 			if (Objects.equals(currentBundle.getSymbolicName(), symbolicName)) {
 				return currentBundle;
 			}
+		}
+
+		return null;
+	}
+
+	private Configuration _getExistingConfiguration(String fileName)
+		throws Exception {
+
+		Configuration[] configurations = _configurationAdmin.listConfigurations(
+			StringBundler.concat(
+				StringPool.OPEN_PARENTHESIS,
+				FileInstallConstants.FELIX_FILE_INSTALL_FILENAME,
+				StringPool.EQUAL, fileName, StringPool.CLOSE_PARENTHESIS));
+
+		if ((configurations != null) && (configurations.length > 0)) {
+			return configurations[0];
 		}
 
 		return null;
