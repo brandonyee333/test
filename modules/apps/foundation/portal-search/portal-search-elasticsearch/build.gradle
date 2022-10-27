@@ -47,7 +47,7 @@ dependencies {
 	compileInclude group: "org.noggit", name: "noggit", version: "0.6"
 	compileInclude group: "org.ow2.asm", name: "asm", version: "5.0.4"
 	compileInclude group: "org.ow2.asm", name: "asm-commons", version: "5.0.4"
-	compileInclude group: "org.yaml", name: "snakeyaml", version: "1.29"
+	compileInclude group: "org.yaml", name: "snakeyaml", version: "1.31"
 
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.ibm.icu", name: "icu4j", version: "54.1.1"

@@ -69,7 +69,7 @@ dependencies {
 	compileInclude group: "org.elasticsearch.plugin", name: "x-pack-core", version: elasticsearchVersion
 	compileInclude group: "org.hdrhistogram", name: "HdrHistogram", version: "2.1.9"
 	compileInclude group: "org.locationtech.spatial4j", name: "spatial4j", version: "0.6"
-	compileInclude group: "org.yaml", name: "snakeyaml", version: "1.27"
+	compileInclude group: "org.yaml", name: "snakeyaml", version: "1.31"
 
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.ibm.icu", name: "icu4j", version: "61.1"
