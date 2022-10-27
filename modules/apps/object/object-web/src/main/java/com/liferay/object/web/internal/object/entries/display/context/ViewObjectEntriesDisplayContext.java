@@ -199,7 +199,14 @@ public class ViewObjectEntriesDisplayContext {
 				FDSSortItemBuilder.setDirection(
 					objectViewSortColumn.getSortOrder()
 				).setKey(
-					objectViewSortColumn.getObjectFieldName()
+					() -> {
+						String objectFieldName = StringUtil.replace(
+							objectViewSortColumn.getObjectFieldName(),
+							"createDate", "dateCreated");
+
+						return StringUtil.replace(
+							objectFieldName, "modifiedDate", "dateModified");
+					}
 				).build());
 		}
 

@@ -2362,6 +2362,25 @@ definition {
 					text = "${assetTitle}");
 			}
 
+			if (isSet(knowledgeBase)) {
+				Click(
+					key_kbArticleTitle = "${entryTitle}",
+					locator1 = "KnowledgeBaseSelectParent#SELECTOR_FIELD");
+
+				SelectFrameTop();
+
+				PageEditor.viewItemSelectorText(
+					fieldLabel = "Item",
+					text = "${entryTitle}");
+
+				if (isSet(entryContent)) {
+					ContentPages.viewFragmentText(
+						assetType = "widget-content",
+						fragmentName = "Content Display",
+						text = "${entryContent}");
+				}
+			}
+
 			if (isSet(webcontent)) {
 				NavItem.click(navItem = "Web Content");
 
@@ -2927,9 +2946,9 @@ definition {
 	}
 
 	macro editKBArticleNavigationMaxNestingLevel {
-		var key_fragmentName = "Knowledge Base Article Navigation";
+		var key_fragmentName = "Knowledge Base Navigation";
 
-		PageEditor.clickConfigurableField(fragmentName = "Knowledge Base Article Navigation");
+		PageEditor.clickConfigurableField(fragmentName = "Knowledge Base Navigation");
 
 		AssertVisible(
 			key_sidebarButton = "Browser",
