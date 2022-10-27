@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import java.net.URI;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -101,7 +103,7 @@ public class FileInstallDeployTest {
 						Files.write(path, content1.getBytes());
 					});
 
-			Assert.assertNotNull(_getExistingConfiguration(path.toString()));
+			Assert.assertNotNull(_getExistingConfiguration(path));
 
 			Dictionary<String, Object> properties =
 				configuration.getProperties();
@@ -131,14 +133,14 @@ public class FileInstallDeployTest {
 
 			Assert.assertNull(configuration);
 
-			Assert.assertNull(_getExistingConfiguration(path.toString()));
+			Assert.assertNull(_getExistingConfiguration(path));
 		}
 		finally {
 			Files.deleteIfExists(path);
 		}
 	}
 
-	// @Test
+	@Test
 	public void testConfigurationSymbolicLink() throws Exception {
 		Path path = Paths.get(
 			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
@@ -166,14 +168,14 @@ public class FileInstallDeployTest {
 
 			Assert.assertEquals(_TEST_VALUE_1, properties.get(_TEST_KEY));
 
-			Assert.assertNotNull(_getExistingConfiguration(path.toString()));
+			Assert.assertNotNull(_getExistingConfiguration(path));
 
 			configuration = ConfigurationTestUtil.updateConfiguration(
 				_CONFIGURATION_PID, () -> Files.delete(path));
 
 			Assert.assertNull(configuration);
 
-			Assert.assertNull(_getExistingConfiguration(path.toString()));
+			Assert.assertNull(_getExistingConfiguration(path));
 		}
 		finally {
 			Files.deleteIfExists(path);
@@ -531,14 +533,19 @@ public class FileInstallDeployTest {
 		return null;
 	}
 
-	private Configuration _getExistingConfiguration(String fileName)
+	private Configuration _getExistingConfiguration(Path path)
 		throws Exception {
+
+		File file = path.toFile();
+
+		URI uri = file.toURI();
 
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			StringBundler.concat(
 				StringPool.OPEN_PARENTHESIS,
 				FileInstallConstants.FELIX_FILE_INSTALL_FILENAME,
-				StringPool.EQUAL, fileName, StringPool.CLOSE_PARENTHESIS));
+				StringPool.EQUAL, uri.toString(),
+				StringPool.CLOSE_PARENTHESIS));
 
 		if ((configurations != null) && (configurations.length > 0)) {
 			return configurations[0];
