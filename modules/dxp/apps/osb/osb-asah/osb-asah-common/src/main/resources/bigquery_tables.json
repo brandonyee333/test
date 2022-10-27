@@ -1904,7 +1904,7 @@
 		],
 		"fields": [
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "bounce",
 				"type": "INT64"
 			},
@@ -1954,7 +1954,7 @@
 				"type": "TIMESTAMP"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "exits",
 				"type": "INT64"
 			},
@@ -1979,7 +1979,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "timeOnPage",
 				"type": "INT64"
 			},
@@ -1994,7 +1994,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "views",
 				"type": "INT64"
 			}
