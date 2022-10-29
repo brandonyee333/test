@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 
 import java.math.BigDecimal;
 
+import java.sql.Array;
 import java.sql.Timestamp;
 
 import java.time.LocalDate;
@@ -41,6 +42,7 @@ import org.jooq.JSON;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.postgresql.jdbc.PgArray;
 import org.postgresql.util.PGobject;
 
 import org.springframework.core.ResolvableType;
@@ -168,7 +170,9 @@ public class BeanUtils {
 						targetPropertyValue = localDateTime;
 					}
 				}
-				else if (targetPropertyValueClass.isArray()) {
+				else if (targetPropertyValueClass.isArray() ||
+						 (targetPropertyValue instanceof Array)) {
+
 					Class<?> rawClass =
 						targetPropertyResolvableType.getRawClass();
 
@@ -186,6 +190,12 @@ public class BeanUtils {
 
 						if (clazz == null) {
 							return;
+						}
+
+						if (targetPropertyValue instanceof PgArray) {
+							PgArray pgArray = (PgArray)targetPropertyValue;
+
+							targetPropertyValue = pgArray.getArray();
 						}
 
 						if (StringUtils.equals(
