@@ -69,21 +69,24 @@ public class GetterUtil {
 	}
 
 	public static int getInteger(Object object) {
-		if (object instanceof FieldValue) {
+		if (object instanceof BigDecimal) {
+			BigDecimal bigDecimal = (BigDecimal)object;
+
+			return bigDecimal.intValue();
+		}
+		else if (object instanceof FieldValue) {
 			FieldValue fieldValue = (FieldValue)object;
 
 			Long longFieldValue = fieldValue.getLongValue();
 
 			return longFieldValue.intValue();
 		}
-
-		if (object instanceof Long) {
+		else if (object instanceof Long) {
 			Long longFieldValue = (Long)object;
 
 			return longFieldValue.intValue();
 		}
-
-		if (object instanceof String) {
+		else if (object instanceof String) {
 			return Integer.parseInt((String)object);
 		}
 
