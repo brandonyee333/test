@@ -64,6 +64,10 @@ public class BeanUtils {
 			String targetPropertyName = _getPropertyName(
 				targetPropertyDescriptor);
 
+			if (!source.containsKey(targetPropertyName)) {
+				targetPropertyName = targetPropertyName.toLowerCase();
+			}
+
 			Object value = source.get(targetPropertyName);
 
 			if ((value == null) || StringUtil.isNull(value.toString())) {
@@ -87,7 +91,7 @@ public class BeanUtils {
 		Method propertyReadMethod = propertyDescriptor.getReadMethod();
 
 		if (propertyReadMethod == null) {
-			return propertyName.toLowerCase();
+			return propertyName;
 		}
 
 		Column column = propertyReadMethod.getAnnotation(Column.class);
@@ -96,7 +100,7 @@ public class BeanUtils {
 			propertyName = column.value();
 		}
 
-		return propertyName.toLowerCase();
+		return propertyName;
 	}
 
 	private static void _setTargetPropertyValue(
@@ -247,6 +251,8 @@ public class BeanUtils {
 
 			String sourcePropertyName = _getPropertyName(
 				sourcePropertyDescriptor);
+
+			sourcePropertyName = sourcePropertyName.toLowerCase();
 
 			try {
 				Object value = sourcePropertyReadMethod.invoke(source);
