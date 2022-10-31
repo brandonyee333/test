@@ -193,6 +193,24 @@ public class ChannelDogTest
 		resourcePath = "osbasahfaroinfo/channels.json"
 	)
 	@Test
+	public void testGetChannelPageSort() {
+		Page<Channel> channelPage = _channelDog.getChannelPage(
+			"", 0, 20, new String[] {"name", "desc"});
+
+		Assertions.assertEquals(3, channelPage.getTotalElements());
+
+		List<Channel> channels = channelPage.getContent();
+
+		Channel channel = channels.get(0);
+
+		Assertions.assertEquals("channel3", channel.getName());
+	}
+
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@Test
 	public void testPatchChannelAddGroups() {
 		Long dataSourceId = RandomTestUtil.randomNumber();
 
