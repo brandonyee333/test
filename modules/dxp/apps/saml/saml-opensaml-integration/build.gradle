@@ -1,5 +1,6 @@
 dependencies {
 	compileInclude group: "ca.juliusdavies", name: "not-yet-commons-ssl", version: "0.3.9"
+	compileInclude group: "com.liferay", name: "org.apache.velocity", version: "1.6.4.LIFERAY-PATCHED-2"
 	compileInclude group: "com.liferay", name: "org.apache.xalan", version: "2.7.2.LIFERAY-PATCHED-1"
 	compileInclude group: "commons-codec", name: "commons-codec", version: "1.7"
 	compileInclude group: "commons-collections", name: "commons-collections", version: "3.2.2"
@@ -9,7 +10,6 @@ dependencies {
 	compileInclude group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.14"
 	compileInclude group: "org.apache.httpcomponents", name: "httpmime", version: "4.5.13"
 	compileInclude group: "org.apache.santuario", name: "xmlsec", version: "1.5.7"
-	compileInclude group: "org.apache.velocity", name: "velocity", version: "1.7"
 	compileInclude group: "org.bouncycastle", name: "bcpkix-jdk15on", version: "1.69"
 	compileInclude group: "org.bouncycastle", name: "bcprov-jdk15on", version: "1.69"
 	compileInclude group: "org.bouncycastle", name: "bcutil-jdk15on", version: "1.69"
