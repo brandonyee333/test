@@ -25,12 +25,17 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.SiteMetric;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
+import com.liferay.osb.asah.common.entity.Preference;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AcquisitionType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.math.BigDecimal;
 
@@ -42,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +58,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
+
+import org.json.JSONArray;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -303,6 +311,34 @@ public class SiteMetricDog {
 		return new ArrayList<>(heatMapMetrics.values());
 	}
 
+	public CompositionResultBag getSearchTerms(
+		Long channelId, int size, int start, TimeRange timeRange) {
+
+		Map<String, BigDecimal> searchTerms = _bqEventRepository.getSearchTerms(
+			channelId, _getSearchQueryStrings(), size, start, timeRange,
+			_timeZoneDog.getTimeZoneId());
+
+		if (searchTerms.isEmpty()) {
+			return new CompositionResultBag(Collections.emptyList(), 0, 0);
+		}
+
+		List<Composition> compositions = new ArrayList<>();
+
+		for (Map.Entry<String, BigDecimal> entrySet : searchTerms.entrySet()) {
+			String key = entrySet.getKey();
+
+			BigDecimal count = entrySet.getValue();
+
+			compositions.add(new Composition(count.longValue(), key));
+		}
+
+		return new CompositionResultBag(
+			compositions, compositions.size(),
+			_bqEventRepository.getSearchTermsCount(
+				channelId, _getSearchQueryStrings(), timeRange,
+				_timeZoneDog.getTimeZoneId()));
+	}
+
 	public SiteMetric getSiteMetric(SearchQueryContext searchQueryContext) {
 		SiteMetric siteMetric = new SiteMetric();
 
@@ -477,6 +513,24 @@ public class SiteMetricDog {
 		return cohortHeatMapMetrics;
 	}
 
+	private String[] _getSearchQueryStrings() {
+		Preference preference = _preferenceDog.getPreference(
+			"search-query-strings");
+
+		Set<String> searchQueryStrings = new HashSet<>();
+
+		String preferenceValue = preference.getValue();
+
+		if (!StringUtil.isNull(preferenceValue)) {
+			searchQueryStrings = JSONUtil.toStringSet(
+				new JSONArray(preferenceValue));
+		}
+
+		searchQueryStrings.add("q");
+
+		return searchQueryStrings.toArray(new String[0]);
+	}
+
 	private void _setMetricPreviousValue(Metric metric, Double value) {
 		metric.setPreviousValue(value);
 	}
@@ -554,10 +608,16 @@ public class SiteMetricDog {
 				};
 
 	@Autowired
+	private BQEventRepository _bqEventRepository;
+
+	@Autowired
 	private BQSessionRepository _bqSessionRepository;
 
 	@Autowired
 	private MetricHelper _metricHelper;
+
+	@Autowired
+	private PreferenceDog _preferenceDog;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
