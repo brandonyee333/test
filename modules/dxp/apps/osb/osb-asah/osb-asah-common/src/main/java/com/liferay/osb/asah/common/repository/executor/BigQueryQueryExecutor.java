@@ -303,22 +303,23 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	private String _translate(String query) {
-		for (String tableName : _TABLE_NAMES) {
+		for (String name : _FUNCTION_AND_TABLE_NAMES) {
 			query = query.replaceAll(
-				"(?<![\\w\\d])" + tableName + "(?![\\w\\d])",
-				_getBigQueryTableName(tableName));
+				"(?<![\\w\\d])" + name + "(?![\\w\\d])",
+				_getBigQueryTableName(name));
 		}
 
 		return query;
 	}
 
-	private static final String[] _TABLE_NAMES = {
+	private static final String[] _FUNCTION_AND_TABLE_NAMES = {
 		"BlogDaily", "BlogHourly", "BQEvent", "BQEventProperty",
 		"BQFieldMapping", "BQIdentity", "BQIdentityActivity",
 		"BQIdentityChannel", "BQIndividual", "BQMembership", "BQOrder",
 		"BQSession", "CustomAssetDaily", "CustomAssetHourly",
 		"DocumentLibraryDaily", "DocumentLibraryHourly", "FormDaily",
-		"FormHourly", "JournalDaily", "JournalHourly", "PageDaily", "PageHourly"
+		"FormHourly", "getSearchTerm", "JournalDaily", "JournalHourly",
+		"PageDaily", "PageHourly"
 	};
 
 	private static final Log _log = LogFactory.getLog(

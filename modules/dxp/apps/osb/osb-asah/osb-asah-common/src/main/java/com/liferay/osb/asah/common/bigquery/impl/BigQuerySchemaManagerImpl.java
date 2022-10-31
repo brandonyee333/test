@@ -23,8 +23,10 @@ import com.google.cloud.bigquery.DatasetId;
 import com.google.cloud.bigquery.DatasetInfo;
 import com.google.cloud.bigquery.Field;
 import com.google.cloud.bigquery.FieldList;
+import com.google.cloud.bigquery.JobException;
 import com.google.cloud.bigquery.LegacySQLTypeName;
 import com.google.cloud.bigquery.MaterializedViewDefinition;
+import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.Schema;
 import com.google.cloud.bigquery.StandardSQLTypeName;
 import com.google.cloud.bigquery.StandardTableDefinition;
@@ -73,6 +75,23 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	public void createSchema(Project project) {
 		try {
 			Dataset dataset = _createDataset(project);
+
+			for (String functionName : _functionsJSONObject.keySet()) {
+				JSONObject jsonObject = _functionsJSONObject.getJSONObject(
+					functionName);
+
+				_executeQuery(
+					StringUtils.replace(
+						_readFile("/bigquery/" + jsonObject.getString("path")),
+						"$[AC_PROJECT_ID]", _getProjectId()));
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						String.format(
+							"Function %s.%s created successfully",
+							_getProjectId(), functionName));
+				}
+			}
 
 			for (String tableName : _tablesJSONObject.keySet()) {
 				_createTable(
@@ -291,6 +310,22 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		return table;
 	}
 
+	private void _executeQuery(String query) {
+		QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(
+			query
+		).build();
+
+		try {
+			_bigQuery.query(queryConfig);
+		}
+		catch (JobException jobException) {
+			throw new RuntimeException(jobException);
+		}
+		catch (InterruptedException interruptedException) {
+			throw new RuntimeException(interruptedException);
+		}
+	}
+
 	private String _getProjectId() {
 		return _googleProjectId + "." + ProjectIdThreadLocal.getProjectId();
 	}
@@ -302,6 +337,8 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		_bigQuery = bigQueryOptions.getService();
 		_googleProjectId = bigQueryOptions.getProjectId();
 
+		_functionsJSONObject = new JSONObject(
+			_readFile("/bigquery_functions.json"));
 		_tablesJSONObject = new JSONObject(_readFile("/bigquery_tables.json"));
 		_viewsJSONObject = new JSONObject(_readFile("/bigquery_views.json"));
 	}
@@ -323,6 +360,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		BigQuerySchemaManagerImpl.class);
 
 	private BigQuery _bigQuery;
+	private JSONObject _functionsJSONObject;
 	private String _googleProjectId;
 
 	@Value("${gcloud.compute.region}")
