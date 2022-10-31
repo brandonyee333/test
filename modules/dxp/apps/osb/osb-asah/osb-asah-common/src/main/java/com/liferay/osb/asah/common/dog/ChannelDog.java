@@ -399,20 +399,27 @@ public class ChannelDog {
 
 		List<Sort.Order> orders = new ArrayList<>();
 
-		for (String sort : sorts) {
+		for (int i = 0; i < sorts.length; i++) {
+			String sort = sorts[i];
+
+			String order = null;
+
 			String[] properties = sort.split(",");
 
-			String property = properties[0];
-
-			if (property.startsWith("name")) {
-				property = property.split("\\.")[0];
-			}
-
-			if (Objects.equals(properties[1], "asc")) {
-				orders.add(Sort.Order.asc(property));
+			if (properties.length == 1) {
+				order = sorts[++i];
 			}
 			else {
-				orders.add(Sort.Order.desc(property));
+				order = properties[1];
+			}
+
+			if (Objects.equals(order, "asc")) {
+				orders.add(
+					Sort.Order.asc(StringUtils.lowerCase(properties[0])));
+			}
+			else {
+				orders.add(
+					Sort.Order.desc(StringUtils.lowerCase(properties[0])));
 			}
 		}
 
