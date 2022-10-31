@@ -652,6 +652,79 @@ public class BQEventRepositoryImpl
 	}
 
 	@Override
+	public Map<String, BigDecimal> getSearchTerms(
+		Long channelId, String[] searchQueryStrings, int size, int start,
+		TimeRange timeRange, String timeZoneId) {
+
+		Field<String> searchTermField = DSL.function(
+			"getSearchTerm", String.class, DSL.field("url"),
+			DSL.array(searchQueryStrings));
+
+		Field<BigDecimal> countField = DSL.count(
+			DSL.asterisk()
+		).cast(
+			BigDecimal.class
+		);
+
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			_dslContext.select(
+				searchTermField, countField
+			).from(
+				"BQEvent"
+			).where(
+				DSL.and(
+					_createCondition(
+						channelId, null, null, timeRange.getEndLocalDateTime(),
+						timeRange.getStartLocalDateTime(), timeZoneId),
+					searchTermField.isNotNull())
+			).groupBy(
+				searchTermField
+			).orderBy(
+				countField.desc()
+			).limit(
+				size
+			).offset(
+				start
+			),
+			GetterUtil::getBigDecimal);
+	}
+
+	@Override
+	public long getSearchTermsCount(
+		Long channelId, String[] searchQueryStrings, TimeRange timeRange,
+		String timeZoneId) {
+
+		Field<String> searchTermField = DSL.function(
+			"getSearchTerm", String.class, DSL.field("url"),
+			DSL.array(searchQueryStrings));
+
+		return _queryExecutor.queryForLong(
+			_dslContext.with(
+				"searchTermsTable"
+			).as(
+				_dslContext.select(
+					searchTermField.as("searchTermField")
+				).from(
+					"BQEvent"
+				).where(
+					DSL.and(
+						_createCondition(
+							channelId, null, null,
+							timeRange.getEndLocalDateTime(),
+							timeRange.getStartLocalDateTime(), timeZoneId),
+						searchTermField.isNotNull())
+				).groupBy(
+					searchTermField
+				)
+			).select(
+				DSL.count(DSL.asterisk())
+			).from(
+				"searchTermsTable"
+			));
+	}
+
+	@Override
 	public List<BQEvent> searchBQEvents(
 		Long channelId, String individualId, @Nullable String keywords,
 		Pageable pageable, LocalDateTime rangeEndLocalDateTime,

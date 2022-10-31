@@ -106,6 +106,14 @@ public interface CustomBQEventRepository {
 		@Nullable String displayLanguageId, @Nullable String groupId,
 		int minCounts, Set<String> searchQueryStrings);
 
+	public Map<String, BigDecimal> getSearchTerms(
+		Long channelId, String[] searchQueryStrings, int size, int start,
+		TimeRange timeRange, String timeZoneId);
+
+	public long getSearchTermsCount(
+		Long channelId, String[] searchQueryStrings, TimeRange timeRange,
+		String timeZoneId);
+
 	public List<BQEvent> searchBQEvents(
 		Long channelId, String individualId, @Nullable String keywords,
 		Pageable pageable, LocalDateTime rangeEndLocalDateTime,
