@@ -389,6 +389,8 @@ public interface LiferaySelenium {
 
 	public void rightClick(String locator);
 
+	public void robotKeyPress(String keySequence) throws Exception;
+
 	public void robotType(String script);
 
 	public void robotTypeShortcut(String script);
