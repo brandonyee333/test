@@ -41,6 +41,10 @@ public interface CustomBQSessionRepository {
 		AcquisitionType acquisitionType, Long channelId, Pageable pageable,
 		TimeRange timeRange, ZoneId zoneId);
 
+	public long getAcquisitionsMetricsCount(
+		AcquisitionType acquisitionType, Long channelId, TimeRange timeRange,
+		ZoneId zoneId);
+
 	public Map<String, BigDecimal> getSessionsCountGroupedByBrowserName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 

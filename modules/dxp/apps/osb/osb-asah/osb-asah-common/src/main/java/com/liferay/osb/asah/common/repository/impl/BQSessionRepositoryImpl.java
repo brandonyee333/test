@@ -101,7 +101,9 @@ public class BQSessionRepositoryImpl
 					).from(
 						DSL.table("BQSession")
 					).where(
-						_createWhereClause(channelId, timeRange, zoneId)
+						DSL.and(
+							_createWhereClause(channelId, timeRange, zoneId),
+							field.isNotNull())
 					)
 				).with(
 					"acquisitionsReferrersList"
@@ -121,8 +123,6 @@ public class BQSessionRepositoryImpl
 					DSL.count(
 					).cast(
 						BigDecimal.class
-					).as(
-						"count"
 					)
 				).from(
 					"acquisitionsReferrersList"
@@ -153,13 +153,13 @@ public class BQSessionRepositoryImpl
 				DSL.count(
 				).cast(
 					BigDecimal.class
-				).as(
-					"count"
 				)
 			).from(
 				DSL.table("BQSession")
 			).where(
-				_createWhereClause(channelId, timeRange, zoneId)
+				DSL.and(
+					_createWhereClause(channelId, timeRange, zoneId),
+					field.isNotNull())
 			).groupBy(
 				DSL.field("field")
 			).limit(
@@ -168,6 +168,89 @@ public class BQSessionRepositoryImpl
 				pageable.getOffset()
 			),
 			GetterUtil::getBigDecimal);
+	}
+
+	@Override
+	public long getAcquisitionsMetricsCount(
+		AcquisitionType acquisitionType, Long channelId, TimeRange timeRange,
+		ZoneId zoneId) {
+
+		if (acquisitionType == AcquisitionType.REFERRER) {
+			Field field = DSL.field("referrers");
+
+			return _queryExecutor.queryForLong(
+				_dslContext.with(
+					"acquisitionsReferrers"
+				).as(
+					_dslContext.select(
+						field
+					).from(
+						DSL.table("BQSession")
+					).where(
+						DSL.and(
+							_createWhereClause(channelId, timeRange, zoneId),
+							field.isNotNull())
+					)
+				).with(
+					"acquisitionsReferrersList"
+				).as(
+					_dslContext.select(
+						DSL.asterisk()
+					).from(
+						DSL.table("acquisitionsReferrers"),
+						DSL.table(
+							"UNNEST(referrers)"
+						).as(
+							"field"
+						)
+					)
+				).with(
+					"acquisitions"
+				).as(
+					_dslContext.select(
+						DSL.field("field")
+					).from(
+						"acquisitionsReferrersList"
+					).groupBy(
+						DSL.field("field")
+					)
+				).select(
+					DSL.count(DSL.asterisk())
+				).from(
+					"acquisitions"
+				));
+		}
+
+		Field field = null;
+
+		if (acquisitionType == AcquisitionType.CHANNEL) {
+			field = DSL.field("acquisitionchannel");
+		}
+		else {
+			field = DSL.field(
+				"acquisitionsource || ' / ' || acquisitionmedium");
+		}
+
+		return _queryExecutor.queryForLong(
+			_dslContext.with(
+				"acquisitions"
+			).as(
+				_dslContext.select(
+					field.as("field")
+				).from(
+					DSL.table("BQSession")
+				).where(
+					DSL.and(
+						_createWhereClause(channelId, timeRange, zoneId),
+						field.isNotNull())
+				).groupBy(
+					DSL.field("field")
+				)
+			).select(
+				DSL.count(DSL.asterisk())
+			).from(
+				"acquisitions"
+			));
 	}
 
 	@Override
