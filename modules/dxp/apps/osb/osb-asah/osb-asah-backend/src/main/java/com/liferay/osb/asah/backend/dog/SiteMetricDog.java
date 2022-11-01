@@ -61,6 +61,15 @@ public class SiteMetricDog {
 		AcquisitionType acquisitionType, String channelId, int size, int start,
 		TimeRange timeRange) {
 
+		long acquisitionsMetricsCount =
+			_bqSessionRepository.getAcquisitionsMetricsCount(
+				acquisitionType, Long.parseLong(channelId), timeRange,
+				_timeZoneDog.getZoneId());
+
+		if (acquisitionsMetricsCount == 0) {
+			return new CompositionResultBag(Collections.emptyList(), 0, 0);
+		}
+
 		Map<String, BigDecimal> acquisitionsMetrics =
 			_bqSessionRepository.getAcquisitionsMetrics(
 				acquisitionType, Long.parseLong(channelId),
@@ -83,10 +92,7 @@ public class SiteMetricDog {
 		}
 
 		return new CompositionResultBag(
-			compositions, compositions.size(),
-			_bqSessionRepository.getAcquisitionsMetricsCount(
-				acquisitionType, Long.parseLong(channelId), timeRange,
-				_timeZoneDog.getZoneId()));
+			compositions, compositions.size(), acquisitionsMetricsCount);
 	}
 
 	public List<Metric> getBrowserMetrics(
