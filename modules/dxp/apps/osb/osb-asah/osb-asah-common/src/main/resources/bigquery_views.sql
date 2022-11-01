@@ -762,7 +762,8 @@ CREATE OR REPLACE VIEW BQForm AS (
 			)
 			WHERE
 				Event.applicationId = 'Form' AND
-				Event.eventId IN ('formSubmitted', 'formViewed')
+				Event.eventId IN ('formSubmitted', 'formViewed') AND
+			    formId.value IS NOT NULL
 		),
 		FormSubmissionTimes AS (
 			SELECT
