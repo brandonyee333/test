@@ -28,8 +28,8 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-@GraphQLTypeWiring(fieldName = "cohortHeatMap", typeName = "QueryType")
-public class CohortHeatMapDataFetcher extends BaseDataFetcher<CohortMetric> {
+@GraphQLTypeWiring(fieldName = "cohort", typeName = "QueryType")
+public class CohortDataFetcher extends BaseDataFetcher<CohortMetric> {
 
 	@Override
 	public CohortMetric get(

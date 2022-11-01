@@ -262,7 +262,7 @@ public class BQSessionRepositoryImpl
 	public List<Map<String, Object>> getCohortHeatMapTuples(
 		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId) {
 
-		WithStep withStep = _createVisitorCohortWithStep(
+		WithStep withStep = _createCohortWithStep(
 			channelId, interval, timeRange, zoneId);
 
 		Field<Object> sessionDateField = DSL.field(
@@ -271,7 +271,7 @@ public class BQSessionRepositoryImpl
 		return _queryExecutor.queryForList(
 			Function.identity(),
 			withStep.select(
-				_getVisitorCohortFields(interval)
+				_getCohortFields(interval)
 			).from(
 				DSL.table("retentionTable")
 			).leftJoin(
@@ -509,7 +509,7 @@ public class BQSessionRepositoryImpl
 			));
 	}
 
-	private WithStep _createVisitorCohortWithStep(
+	private WithStep _createCohortWithStep(
 		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId) {
 
 		DatePart datePart = DatePart.DAY;
@@ -524,13 +524,12 @@ public class BQSessionRepositoryImpl
 		return _dslContext.with(
 			"firstSession"
 		).as(
-			_getVisitorFirstSessionSelectJoinStep(
+			_getFirstSessionSelectJoinStep(
 				channelId, datePart, timeRange, zoneId)
 		).with(
 			"sessions"
 		).as(
-			_getVisitorSessionsSelectJoinStep(
-				channelId, datePart, timeRange, zoneId)
+			_getSessionsSelectJoinStep(channelId, datePart, timeRange, zoneId)
 		).with(
 			"cohortSize"
 		).as(
@@ -538,7 +537,7 @@ public class BQSessionRepositoryImpl
 				DSL.field("sessionDate"), DSL.field("isKnown"),
 				DSL.count(
 				).as(
-					"numVisitors"
+					"visitorsCount"
 				)
 			).from(
 				"firstSession"
@@ -556,7 +555,7 @@ public class BQSessionRepositoryImpl
 				DSL.field("firstSession.isKnown"),
 				DSL.count(
 				).as(
-					"numVisitors"
+					"visitorsCount"
 				)
 			).from(
 				DSL.table("sessions")
@@ -610,33 +609,7 @@ public class BQSessionRepositoryImpl
 			));
 	}
 
-	private Field<Integer> _getKnownVisitorsField(boolean alias) {
-		Field<Integer> field = DSL.countDistinct(
-			DSL.field("IndividualIdentity.individualId"));
-
-		if (alias) {
-			return field.as("knownvisitors");
-		}
-
-		return field;
-	}
-
-	private Field<Integer> _getUniqueVisitorsField() {
-		return _getKnownVisitorsField(
-			false
-		).plus(
-			DSL.countDistinct(
-				DSL.when(
-					DSL.field(
-						"IndividualIdentity.individualId"
-					).isNull(),
-					DSL.field("BQSession.userid")))
-		).as(
-			"visitors"
-		);
-	}
-
-	private Field<BigDecimal> _getVisitorCohortField(
+	private Field<BigDecimal> _getCohortField(
 		int fieldIndex, boolean known, boolean retention) {
 
 		String cohortType = "Total";
@@ -667,7 +640,7 @@ public class BQSessionRepositoryImpl
 			),
 			_dslHelper.getCastNumberField(
 				_dslHelper.getCastStringField(
-					DSL.field("retentionTable.numVisitors")))
+					DSL.field("retentionTable.visitorsCount")))
 		).otherwise(
 			0D
 		);
@@ -676,7 +649,7 @@ public class BQSessionRepositoryImpl
 			conditionStep = conditionStep.div(
 				_dslHelper.getCastNumberField(
 					_dslHelper.getCastStringField(
-						DSL.field("cohortSize.numVisitors"))));
+						DSL.field("cohortSize.visitorsCount"))));
 		}
 
 		String fieldName = String.format(
@@ -689,7 +662,7 @@ public class BQSessionRepositoryImpl
 		);
 	}
 
-	private List<Field<?>> _getVisitorCohortFields(Interval interval) {
+	private List<Field<?>> _getCohortFields(Interval interval) {
 		List<Field<?>> fields = new ArrayList<>();
 
 		Field<String> sessionDateField = _dslHelper.getCastStringField(
@@ -708,19 +681,17 @@ public class BQSessionRepositoryImpl
 		}
 
 		for (int i = 0; i < maxIntervals; i++) {
-			fields.add(_getVisitorCohortField(i, true, true));
-			fields.add(_getVisitorCohortField(i, false, true));
-			fields.add(_getVisitorCohortField(i, true, false));
-			fields.add(_getVisitorCohortField(i, false, false));
+			fields.add(_getCohortField(i, true, true));
+			fields.add(_getCohortField(i, false, true));
+			fields.add(_getCohortField(i, true, false));
+			fields.add(_getCohortField(i, false, false));
 		}
 
 		return fields;
 	}
 
-	private SelectJoinStep<? extends Record>
-		_getVisitorFirstSessionSelectJoinStep(
-			Long channelId, DatePart datePart, TimeRange timeRange,
-			ZoneId zoneId) {
+	private SelectJoinStep<? extends Record> _getFirstSessionSelectJoinStep(
+		Long channelId, DatePart datePart, TimeRange timeRange, ZoneId zoneId) {
 
 		SelectJoinStep<Record3<Object, Boolean, Date>> selectJoinStep =
 			_dslContext.select(
@@ -761,23 +732,33 @@ public class BQSessionRepositoryImpl
 		return selectOnConditionStep;
 	}
 
-	private SelectJoinStep<? extends Record> _getVisitorSessionsSelectJoinStep(
+	private Field<Integer> _getKnownVisitorsField(boolean alias) {
+		Field<Integer> field = DSL.countDistinct(
+			DSL.field("IndividualIdentity.individualId"));
+
+		if (alias) {
+			return field.as("knownvisitors");
+		}
+
+		return field;
+	}
+
+	private SelectJoinStep<? extends Record> _getSessionsSelectJoinStep(
 		Long channelId, DatePart datePart, TimeRange timeRange, ZoneId zoneId) {
 
-		Field<OffsetDateTime> datesDatePart =
-			_dslHelper.getDateDifferenceDatePart(
+		Field<OffsetDateTime> dateDiffField = _dslHelper.dateDiff(
+			datePart,
+			_dslHelper.dateTrunc(
 				datePart,
-				_dslHelper.dateTrunc(
-					datePart,
-					_dslHelper.getDateAtTimeZoneField(
-						"BQSession.sessionStart", zoneId.toString())),
-				DSL.field("firstSession.sessionDate", OffsetDateTime.class));
+				_dslHelper.getDateAtTimeZoneField(
+					"BQSession.sessionStart", zoneId.toString())),
+			DSL.field("firstSession.sessionDate", OffsetDateTime.class));
 
 		SelectJoinStep<Record3<Object, Object, OffsetDateTime>> selectJoinStep =
 			_dslContext.select(
 				DSL.field("BQSession.userId"),
 				DSL.field("firstSession.isKnown"),
-				datesDatePart.as("intervalNumber")
+				dateDiffField.as("intervalNumber")
 			).from(
 				"BQSession"
 			);
@@ -803,6 +784,21 @@ public class BQSessionRepositoryImpl
 		);
 
 		return selectOnConditionStep;
+	}
+
+	private Field<Integer> _getUniqueVisitorsField() {
+		return _getKnownVisitorsField(
+			false
+		).plus(
+			DSL.countDistinct(
+				DSL.when(
+					DSL.field(
+						"IndividualIdentity.individualId"
+					).isNull(),
+					DSL.field("BQSession.userid")))
+		).as(
+			"visitors"
+		);
 	}
 
 	private SelectOnConditionStep<? extends Record> _joinWithIdentityTable(

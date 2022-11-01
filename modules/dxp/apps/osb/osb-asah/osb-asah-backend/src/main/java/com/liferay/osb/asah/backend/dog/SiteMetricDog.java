@@ -340,50 +340,53 @@ public class SiteMetricDog {
 		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics,
 		List<CohortHeatMapMetric> knownCohortHeatMapMetrics) {
 
-		List<CohortHeatMapMetric> visitorsCohortHeatMapMetrics =
-			new ArrayList<>();
+		List<CohortHeatMapMetric> cohortHeatMapMetrics = new ArrayList<>();
 
-		Map<String, Double> firstIntervalValues = new Hashtable<>();
+		Map<String, Double> intervalValues = new Hashtable<>();
 
 		for (int i = 0; i < anonymousCohortHeatMapMetrics.size(); i++) {
 			Metric metric = new Metric(SiteMetricType.VISITORS);
 
-			CohortHeatMapMetric anonymousMetric =
+			CohortHeatMapMetric anonymousCohortHeatMapMetric =
 				anonymousCohortHeatMapMetrics.get(i);
 
-			metric.setValueKey(anonymousMetric.getValueKey());
+			metric.setValueKey(anonymousCohortHeatMapMetric.getValueKey());
 
-			CohortHeatMapMetric knownMetric = knownCohortHeatMapMetrics.get(i);
+			CohortHeatMapMetric knownCohortHeatMapMetric =
+				knownCohortHeatMapMetrics.get(i);
 
 			double metricValue =
-				anonymousMetric.getValue() + knownMetric.getValue();
+				anonymousCohortHeatMapMetric.getValue() +
+					knownCohortHeatMapMetric.getValue();
 
 			metric.setValue(metricValue);
 
-			String colDimension = anonymousMetric.getColDimension();
+			String colDimension =
+				anonymousCohortHeatMapMetric.getColDimension();
 
 			if (colDimension.equals("0")) {
-				firstIntervalValues.put(
-					anonymousMetric.getRowDimension(), metricValue);
+				intervalValues.put(
+					anonymousCohortHeatMapMetric.getRowDimension(),
+					metricValue);
 			}
 
-			Double firstIntervalValue = firstIntervalValues.get(
-				anonymousMetric.getRowDimension());
+			Double intervalValue = intervalValues.get(
+				anonymousCohortHeatMapMetric.getRowDimension());
 
 			double retention = 0;
 
-			if (firstIntervalValue != 0) {
-				retention = (metricValue / firstIntervalValue) * 100;
+			if (intervalValue != 0) {
+				retention = (metricValue / intervalValue) * 100;
 			}
 
-			visitorsCohortHeatMapMetrics.add(
+			cohortHeatMapMetrics.add(
 				new CohortHeatMapMetric(
 					colDimension, metric, retention,
-					anonymousMetric.getRowDimension(),
-					anonymousMetric.getRowKey()));
+					anonymousCohortHeatMapMetric.getRowDimension(),
+					anonymousCohortHeatMapMetric.getRowKey()));
 		}
 
-		return visitorsCohortHeatMapMetrics;
+		return cohortHeatMapMetrics;
 	}
 
 	@NotNull
@@ -391,86 +394,87 @@ public class SiteMetricDog {
 		Map<String, Map<String, Object>> cohortHeatMapTupleByDate,
 		List<String> cohortMetricIntervals, SiteMetricType siteMetricType) {
 
-		String columnVisitorType = "Known";
+		String visitorType = "Known";
 
 		if (siteMetricType.equals(SiteMetricType.ANONYMOUS_VISITORS)) {
-			columnVisitorType = "Unknown";
+			visitorType = "Unknown";
 		}
 
-		List<CohortHeatMapMetric> visitorsMetrics = new ArrayList<>();
+		List<CohortHeatMapMetric> cohortHeatMapMetrics = new ArrayList<>();
 
-		double totalVisitors = 0D;
+		double totalVisitors = 0;
 
 		for (int i = 0; i < cohortMetricIntervals.size(); i++) {
-			double columnTotalVisitors = 0D;
-			int firstIntervalIndex = 0;
+			double curTotalVisitors = 0;
+			int intervalIndex = 0;
 
 			for (int j = 0; j <= (cohortMetricIntervals.size() - 1 - i); j++) {
 				if (j == 0) {
-					firstIntervalIndex = visitorsMetrics.size();
+					intervalIndex = cohortHeatMapMetrics.size();
 				}
 
 				if ((j == (cohortMetricIntervals.size() - 1)) && (i == 0)) {
 					break;
 				}
 
-				String cohortDate = cohortMetricIntervals.get(j);
+				String rowKey = cohortMetricIntervals.get(j);
 
-				Map<String, Object> cohort = cohortHeatMapTupleByDate.get(
-					cohortDate);
+				Map<String, Object> cohortHeatMapTuple =
+					cohortHeatMapTupleByDate.get(rowKey);
 
 				Metric metric = new Metric(siteMetricType);
 
-				double retention = 0D;
-				double visitors = 0D;
+				double retention = 0;
+				double visitors = 0;
 
-				if (cohort != null) {
-					BigDecimal intervalVisitors = (BigDecimal)cohort.get(
-						String.format(
-							"interval%dTotal%s", i, columnVisitorType));
+				if (cohortHeatMapTuple != null) {
+					metric.setValueKey(rowKey);
 
-					visitors = intervalVisitors.doubleValue();
+					BigDecimal intervalTotal =
+						(BigDecimal)cohortHeatMapTuple.get(
+							String.format("interval%dTotal%s", i, visitorType));
+
+					visitors = intervalTotal.doubleValue();
 
 					metric.setValue(visitors);
 
-					metric.setValueKey(cohortDate);
-
-					BigDecimal intervalRetention = (BigDecimal)cohort.get(
-						String.format(
-							"interval%dRetention%s", i, columnVisitorType));
+					BigDecimal intervalRetention =
+						(BigDecimal)cohortHeatMapTuple.get(
+							String.format(
+								"interval%dRetention%s", i, visitorType));
 
 					retention = intervalRetention.doubleValue() * 100;
 				}
 
-				visitorsMetrics.add(
+				cohortHeatMapMetrics.add(
 					new CohortHeatMapMetric(
 						String.valueOf(i), metric, retention,
-						String.valueOf(j + 1), cohortDate));
+						String.valueOf(j + 1), rowKey));
 
 				if (i == 0) {
 					totalVisitors += visitors;
 				}
 
-				columnTotalVisitors += visitors;
+				curTotalVisitors += visitors;
 			}
 
 			Metric metric = new Metric(siteMetricType);
 
-			metric.setValue(columnTotalVisitors);
+			metric.setValue(curTotalVisitors);
 
 			double retention = 0;
 
 			if (totalVisitors != 0) {
-				retention = (columnTotalVisitors / totalVisitors) * 100;
+				retention = (curTotalVisitors / totalVisitors) * 100;
 			}
 
-			visitorsMetrics.add(
-				firstIntervalIndex,
+			cohortHeatMapMetrics.add(
+				intervalIndex,
 				new CohortHeatMapMetric(
 					String.valueOf(i), metric, retention, "0", null));
 		}
 
-		return visitorsMetrics;
+		return cohortHeatMapMetrics;
 	}
 
 	private void _setMetricPreviousValue(Metric metric, Double value) {

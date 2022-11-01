@@ -71,21 +71,21 @@ public class CohortMetric {
 	}
 
 	public void setAnonymousCohortHeatMapMetrics(
-		List<CohortHeatMapMetric> anonymousVisitorsMetric) {
+		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics) {
 
-		_anonymousCohortHeatMapMetrics = anonymousVisitorsMetric;
+		_anonymousCohortHeatMapMetrics = anonymousCohortHeatMapMetrics;
 	}
 
 	public void setKnownCohortHeatMapMetrics(
-		List<CohortHeatMapMetric> knownVisitorsMetric) {
+		List<CohortHeatMapMetric> knownCohortHeatMapMetrics) {
 
-		_knownCohortHeatMapMetrics = knownVisitorsMetric;
+		_knownCohortHeatMapMetrics = knownCohortHeatMapMetrics;
 	}
 
 	public void setVisitorsCohortHeatMapMetrics(
-		List<CohortHeatMapMetric> visitorsMetric) {
+		List<CohortHeatMapMetric> visitorsCohortHeatMapMetrics) {
 
-		_visitorsCohortHeatMapMetrics = visitorsMetric;
+		_visitorsCohortHeatMapMetrics = visitorsCohortHeatMapMetrics;
 	}
 
 	private List<CohortHeatMapMetric> _anonymousCohortHeatMapMetrics =
