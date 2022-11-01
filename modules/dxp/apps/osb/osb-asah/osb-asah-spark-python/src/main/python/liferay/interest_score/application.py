@@ -9,19 +9,13 @@
 # distribution rights of the Software.
 #
 
-from liferay.common.spark import (
-	BaseSparkApplication,
+from liferay.common.spark import BaseSparkApplication, \
 	SparkJobPipeline
-
-)
-
-from liferay.interest_score.job import (
-	IndividualInterestScoreSparkJob,
-	KeywordsExtractionSparkJob,
-	ReadAnalyticsEventsSparkJob,
+from liferay.interest_score.job import IndividualInterestScoreSparkJob, \
+	IndividualInterestScoreSparkJob, \
+	KeywordsExtractionSparkJob, \
+	ReadAnalyticsEventsSparkJob, \
 	SegmentInterestScoreSparkJob
-
-)
 
 from pyspark import SparkConf
 
@@ -54,26 +48,25 @@ class InterestScoreApplication(BaseSparkApplication):
 
 		spark_conf.setAppName('Interest Score')
 
-		spark_conf.set('viewsEnabled', 'true')
-
-		spark_conf.set('temporaryGcsBucket', self.configuration.get('google.storage.path.temporaryGcsBucket'))
-
 		spark_conf.set('materializationDataset', self.args.lcp_project_id)
-
-		spark_conf.set('spark.jars.packages', self.configuration.get('interest.models.spark-nlp-version'))
+		spark_conf.set(
+			'spark.jars.packages',
+			self.configuration.get('spark.jars.packages'))
+		spark_conf.set(
+			'temporaryGcsBucket',
+			self.configuration.get('google.storage.path.temporaryGcsBucket'))
+		spark_conf.set('viewsEnabled', 'true')
 
 		return spark_conf
 
 	def _create_spark_job_pipeline(self):
-		jobs = []
+		jobs = list()
 
 		jobs.append(ReadAnalyticsEventsSparkJob(self))
 
 		jobs.append(KeywordsExtractionSparkJob(self))
 
 		jobs.append(IndividualInterestScoreSparkJob(self))
-
-		#jobs.append(SegmentInterestScoreSparkJob(self))
 
 		return SparkJobPipeline(jobs)
 

@@ -19,16 +19,12 @@ from pyspark.ml import Pipeline
 from pyspark.sql import Window, \
 	functions as F
 
-from sparknlp.annotator import (
-	Chunker,
-	LanguageDetectorDL,
-	Normalizer,
-	PerceptronModel,
-	SentenceDetector,
+from sparknlp.annotator import Chunker, \
+	LanguageDetectorDL, \
+	Normalizer, \
+	PerceptronModel, \
+	SentenceDetector, \
 	Tokenizer
-
-)
-
 from sparknlp.base import DocumentAssembler, \
 	Finisher
 
@@ -63,15 +59,16 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 			).groupby(
 				'event_date', 'keyword'
 			).count(
-			).withColumnRenamed('count', 'keyword_count')
-
-		total_keywords_count_data_frame = \
-			keyword_count_data_frame.groupby(
-				'event_date'
-			).sum(
 			).withColumnRenamed(
-				'sum(keyword_count)', 'total_keywords_count'
+				'count', 'keyword_count'
 			)
+
+		total_keywords_count_data_frame = keyword_count_data_frame.groupby(
+			'event_date'
+		).sum(
+		).withColumnRenamed(
+			'sum(keyword_count)', 'total_keywords_count'
+		)
 
 		return keyword_count_data_frame.join(
 			total_keywords_count_data_frame,
@@ -128,9 +125,8 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 		analytics_events_with_keywords_data_frame = \
 			analytics_events_data_frame.join(
 				extracted_keywords_data_frame,
-				F.col('analytics_events.canonicalUrl') ==
-				F.col('extracted_keywords.canonicalUrl'),
-				how='inner'
+				how='inner',
+				on=['canonicalUrl']
 			)
 
 		keyword_count_with_totals_data_frame = \
@@ -209,56 +205,78 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 			)
 		)
 
-		interest_score_data_frame.createOrReplaceTempView('individual_interest_score')
+		interest_score_data_frame.createOrReplaceTempView(
+			'individual_interest_score')
 
 		final_interest_score_data_frame = self.spark_session.sql("""
-		SELECT event_date as recordedDate,
-			userId as identityId,
-			keyword,
-			interest_score as interestScore
-			FROM individual_interest_score
+			SELECT 
+				event_date as recordedDate,
+				userId as identityId,
+				keyword,
+				interest_score as score
+			FROM 
+				individual_interest_score
 		""")
 
-		final_interest_score_data_frame.write.format('bigquery') \
-			.mode("overwrite") \
-			.save(f'{self.spark_application_args.lcp_project_id}.individualinterestscore')
+		data_frame_writer = final_interest_score_data_frame.write
+
+		data_frame_writer.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.individualinterestscore'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
 
 class KeywordsExtractionSparkJob(BaseSparkJob):
 
 	def __init__(self, spark_application):
 		self._log = logging.getLogger(self.__class__.__name__)
-		try:
-			self._language_detector = \
-				LanguageDetectorDL.load(spark_application.configuration.get('interest.models.language-detector.path'))
-		except Exception as e:
-			self._log.warning('[WARNING] - Unable to load Language Detector from file')
-			self._log.warning(str(e))
-			self._language_detector = \
-				LanguageDetectorDL.pretrained('ld_tatoeba_cnn_99', 'xx')
 
 		try:
-			self._part_of_speech_tagger = \
-				PerceptronModel.load(spark_application.configuration.get('interest.models.pos-tagger.path'))
-		except Exception as e:
-			self._log.warning('[WARNING] - Unable to load Part of Speech Tagger from file')
-			self._log.warning(str(e))
-			self._part_of_speech_tagger = \
-				PerceptronModel.pretrained("pos_anc", "en")
+			language_detector_path = spark_application.configuration.get(
+				'interest.models.language-detector.path')
+
+			self._language_detector = LanguageDetectorDL.load(
+				language_detector_path)
+
+		except Exception as exception:
+			self._log.warning(
+				'Unable to load Language Detector {}'.format(exception))
+
+			self._language_detector = LanguageDetectorDL.pretrained(
+				'ld_tatoeba_cnn_99', 'xx')
+
+		try:
+			pos_tagger_path = spark_application.configuration.get(
+				'interest.models.pos-tagger.path')
+
+			self._part_of_speech_tagger = PerceptronModel.load(pos_tagger_path)
+		except Exception as exception:
+			self._log.warning(
+				'Unable to load Part of Speech Tagger {}'.format(exception))
+
+			self._part_of_speech_tagger = PerceptronModel.pretrained(
+				"pos_anc", "en")
 
 		super(KeywordsExtractionSparkJob, self).__init__(spark_application)
 
 	def _create_chunker_stage(self, column_names, output_column_name):
 		chunker = Chunker()
+
 		chunker.setInputCols(column_names)
+		chunker.setOutputCol(output_column_name)
 		chunker.setRegexParsers([
 			'<JJ>*<NN>+',
 		])
-		chunker.setOutputCol(output_column_name)
 
 		return chunker
 
 	def _create_document_assembler_stage(self, column_name):
 		document_assembler = DocumentAssembler()
+
 		document_assembler.setInputCol(column_name)
 		document_assembler.setOutputCol(f'{column_name}_document')
 
@@ -266,31 +284,35 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 
 	def _create_finisher_stage(self, column_names, output_column_name):
 		finisher = Finisher()
+
+		finisher.setCleanAnnotations(False)
 		finisher.setInputCols(column_names)
 		finisher.setOutputCols(output_column_name)
-		finisher.setCleanAnnotations(False)
 
 		return finisher
 
-	def _create_language_detector_stage(
-			self, column_names):
+	def _create_language_detector_stage(self, column_names):
+		language_detector = self._language_detector
 
-		languageDetector = self._language_detector
-		languageDetector.setInputCols(column_names)
-		languageDetector.setThreshold(self.spark_application.configuration.get('interest.models.language-detector.threshold'))
+		language_detector.setInputCols(column_names)
+		language_detector.setThreshold(
+			self.spark_application.configuration.get(
+				'interest.models.language-detector.threshold'))
 
-		return languageDetector
+		return language_detector
 
 	def _create_normalizer_stage(self, column_names, output_column_name):
 		normalizer = Normalizer()
-		normalizer.setInputCols(column_names)
+
 		normalizer.setCleanupPatterns(['(?U)[^\w\d\s]'])
+		normalizer.setInputCols(column_names)
 		normalizer.setOutputCol(output_column_name)
 
 		return normalizer
 
 	def _create_pos_tagger_stage(self, column_names, output_column_name):
 		pos_tagger = self._part_of_speech_tagger
+
 		pos_tagger.setInputCols(column_names)
 		pos_tagger.setOutputCol(output_column_name)
 
@@ -298,6 +320,7 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 
 	def _create_sentence_detector_stage(self, column_names, output_column_name):
 		sentence_detector = SentenceDetector()
+
 		sentence_detector.setInputCols(column_names)
 		sentence_detector.setOutputCol(output_column_name)
 
@@ -305,46 +328,62 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 
 	def _create_tokenizer_stage(self, column_names, output_column_name):
 		tokenizer = Tokenizer()
+
 		tokenizer.setInputCols(column_names)
-		tokenizer.setSplitChars(['|'])
 		tokenizer.setOutputCol(output_column_name)
+		tokenizer.setSplitChars(['|'])
 
 		return tokenizer
 
 	def _generate_language_detector_pipeline(self):
-		titleDocumentAssembler = self._create_document_assembler_stage('title')
-		descriptionDocumentAssembler = self._create_document_assembler_stage('description')
-		languageDetector = self._create_language_detector_stage([
-			titleDocumentAssembler.getOutputCol(),
-			descriptionDocumentAssembler.getOutputCol()])
-		finisher = self._create_finisher_stage(languageDetector.getOutputCol(), 'detected_language')
+		pipeline = Pipeline()
 
-		pipeline_stages = [
-			titleDocumentAssembler,
-			descriptionDocumentAssembler,
-			languageDetector,
-			finisher
-		]
+		title_document_assembler = self._create_document_assembler_stage(
+			'title')
 
-		return Pipeline().setStages(pipeline_stages)
+		description_document_assembler = self._create_document_assembler_stage(
+			'description')
+
+		language_detector = self._create_language_detector_stage([
+			title_document_assembler.getOutputCol(),
+			description_document_assembler.getOutputCol()
+		])
+
+		finisher_stage = self._create_finisher_stage(
+			language_detector.getOutputCol(), 'detected_language')
+
+		pipeline.setStages([
+			title_document_assembler,
+			description_document_assembler,
+			language_detector,
+			finisher_stage
+		])
+
+		return pipeline
 
 	def _generate_nlp_pipeline(self):
-		descriptionDocumentAssembler = self._create_document_assembler_stage('description')
+		pipeline = Pipeline()
 
-		sentenceDetector = self._create_sentence_detector_stage([
-			descriptionDocumentAssembler.getOutputCol()], 'description_sentences')
+		description_document_assembler = self._create_document_assembler_stage(
+			'description')
 
-		tokenizer = self._create_tokenizer_stage(sentenceDetector.getOutputCol(), 'description_tokens')
+		sentence_detector = self._create_sentence_detector_stage(
+			[description_document_assembler.getOutputCol()],
+			'description_sentences')
 
-		normalizer = self._create_normalizer_stage(tokenizer.getOutputCol(), 'description_normalized')
+		tokenizer = self._create_tokenizer_stage(
+			sentence_detector.getOutputCol(), 'description_tokens')
+
+		normalizer = self._create_normalizer_stage(
+			tokenizer.getOutputCol(), 'description_normalized')
 
 		part_of_speech_tagger = self._create_pos_tagger_stage([
-			sentenceDetector.getOutputCol(),
+			sentence_detector.getOutputCol(),
 			tokenizer.getOutputCol()],
 			'description_pos')
 
-		chunker =  self._create_chunker_stage([
-			sentenceDetector.getOutputCol(),
+		chunker = self._create_chunker_stage([
+			sentence_detector.getOutputCol(),
 			part_of_speech_tagger.getOutputCol()],
 			'description_chunks')
 
@@ -352,23 +391,21 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 			chunker.getOutputCol(),
 			'extracted_keywords')
 
-		recursive_pipeline_stages = [
-			descriptionDocumentAssembler,
-			sentenceDetector,
+		pipeline.setStages([
+			description_document_assembler,
+			sentence_detector,
 			tokenizer,
 			normalizer,
 			part_of_speech_tagger,
 			chunker,
 			finisher
-		]
-
-		pipeline = Pipeline().setStages(recursive_pipeline_stages)
+		])
 
 		return pipeline
 
 	def _get_sample_analytics_event_by_canonical_url(
-		self, analytics_events_data_frame
-	):
+		self, analytics_events_data_frame):
+
 		window = Window.partitionBy('canonicalUrl')
 
 		sample_data_frame = analytics_events_data_frame.withColumn(
@@ -399,7 +436,8 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 			'description', F.col('description')
 		).fillna('')
 
-		language_detection_pipeline = self._generate_language_detector_pipeline()
+		language_detection_pipeline = \
+			self._generate_language_detector_pipeline()
 
 		nlp_data_frame = language_detection_pipeline.fit(
 			nlp_data_frame
@@ -419,32 +457,23 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 			nlp_data_frame
 		)
 
-		extracted_keywords_data_frame = \
-			nlp_data_frame.withColumn(
-				'extracted_keywords',
-				F.array(
-					F.col('extracted_keywords'),
-					F.array(F.col('keywords'))))
-
-		extracted_keywords_data_frame = \
-			extracted_keywords_data_frame.withColumn(
-				'extracted_keywords', F.flatten(F.col('extracted_keywords')))
-
-		extracted_keywords_data_frame = \
-			extracted_keywords_data_frame.withColumn(
-				'extracted_keywords', F.array_distinct('extracted_keywords'))
-
-		extracted_keywords_data_frame = \
-			extracted_keywords_data_frame.withColumn(
-				'extracted_keywords', F.array_remove('extracted_keywords', ''))
-
-		extracted_keywords_data_frame = extracted_keywords_data_frame.select(
+		extracted_keywords_data_frame = nlp_data_frame.withColumn(
+			'extracted_keywords',
+			F.array(
+				F.col('extracted_keywords'),
+				F.array(F.col('keywords')))
+		).withColumn(
+			'extracted_keywords', F.flatten(F.col('extracted_keywords'))
+		).withColumn(
+			'extracted_keywords', F.array_distinct('extracted_keywords')
+		).withColumn(
+			'extracted_keywords', F.array_remove('extracted_keywords', '')
+		).select(
 			'canonicalUrl', 'extracted_keywords'
 		)
 
 		extracted_keywords_data_frame.createOrReplaceTempView(
-			'extracted_keywords'
-		)
+			'extracted_keywords')
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
@@ -457,64 +486,68 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 	def run(self):
 		sql_command = f"""
-			WITH Filtered_event_eventproperty AS 
-				(SELECT 
-				  event.id,
-				  event.userId, 
-				  event.projectId,
-				  event.channelId, 
-				  event.eventDate,
-				  event.url,
-				  event.canonicalUrl, 
-				  event.contentLanguageId, 
-				  event.languageId, 
-				  event.title, 
-				  event.description, 
-				  event.keywords,  
-				  event.eventId,
-				  eventproperty.name, 
-				  eventproperty.value,
-				  DATE(timestamp_trunc(event.eventDate, DAY)) as event_date,
-				  COUNT(event.userId) OVER (PARTITION BY event.userId) AS interactions,
-				  DATE_DIFF(CURRENT_DATE(), DATE(event.eventDate), DAY) as days_delta
-				  FROM `{self.spark_application_args.lcp_project_id}`.event LEFT JOIN `{self.spark_application_args.lcp_project_id}`.eventproperty ON event.id = eventproperty.id
-				  WHERE 
-					(DATE(event.eventDate) >= DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta} DAY))
-					AND
-					name = "viewDuration"
-					AND
-					(STARTS_WITH(event.contentLanguageId, 'en') OR CHAR_LENGTH(event.contentLanguageId) = 0)
-					AND
-					CAST(eventproperty.value AS INTEGER) >= {self._minimum_view_duration_threshold})
+			WITH FilteredEvent AS ( 
+				SELECT 
+					event.canonicalUrl, 
+					event.channelId, 
+					event.contentLanguageId,
+					DATE_DIFF(CURRENT_DATE(), DATE(event.eventDate), DAY) as days_delta     
+					event.description, 
+					event.eventDate,
+					DATE(timestamp_trunc(event.eventDate, DAY)) as event_date,
+					event.eventId,
+					event.id,
+					COUNT(event.userId) OVER (PARTITION BY event.userId) AS interactions,  
+					event.keywords,  
+					event.languageId, 
+					event.projectId,
+					event.title, 
+					event.url,
+					event.userId, 
+					eventproperty.name, 
+					eventproperty.value
+				FROM 
+					`{self.spark_application_args.lcp_project_id}`.event 
+				LEFT JOIN `{self.spark_application_args.lcp_project_id}`.eventproperty ON 
+					event.id = eventproperty.id
+				WHERE 
+					DATE(event.eventDate) >= DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta} DAY) AND
+					DATE(eventproperty.eventDate) >= DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta} DAY) AND
+					eventproperty.name = "viewDuration" AND
+					STARTS_WITH(event.contentLanguageId, 'en' AND
+					CAST(eventproperty.value AS INTEGER) >= {self._minimum_view_duration_threshold}
+				)
 				SELECT
-				id,
-				userId, 
-				projectId,
-				channelId, 
-				eventDate, 
-				url,
-				canonicalUrl,
-				contentLanguageId, 
-				languageId, 
-				title, 
-				description, 
-				keywords,  
-				eventId, 
-				name, 
-				value,
-				event_date,
-				interactions,
-				days_delta
-				FROM Filtered_event_eventproperty
-				WHERE Interactions >= {self._minimum_interactions_threshold}"""
+					canonicalUrl,
+					channelId, 
+					contentLanguageId, 
+					days_delta,
+					description, 
+					eventDate, 
+					eventId, 
+					event_date,
+					id,
+					interactions,
+					keywords,  
+					languageId, 
+					name, 
+					projectId,
+					title, 
+					url,
+					userId, 
+					value
+				FROM 
+					FilteredEvent
+				WHERE 
+					interactions >= {self._minimum_interactions_threshold}
+			"""
 
-		event_with_eventproperty_df = self.spark_session.read.format(
+		event_data_frame = self.spark_session.read.format(
 			"bigquery"
 		).load(sql_command)
 
-		event_with_eventproperty_df.createOrReplaceTempView(
-			'analytics_events'
-		)
+		event_data_frame.createOrReplaceTempView(
+			'analytics_events')
 
 class SegmentInterestScoreSparkJob(BaseSparkJob):
 

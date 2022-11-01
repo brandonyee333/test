@@ -14,4 +14,6 @@ interest:
             threshold: .90
         pos-tagger:
             path: "gs://ac-interest-scores/resources/pos_anc_en"
-        spark-nlp-version: "com.johnsnowlabs.nlp:spark-nlp_2.12:4.1.0"
+spark:
+    jars:
+        packages: "com.johnsnowlabs.nlp:spark-nlp_2.12:4.1.0"
