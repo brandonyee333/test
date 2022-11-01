@@ -22,6 +22,7 @@ import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 
@@ -70,13 +71,20 @@ public class HistogramDog {
 			assetTitle = searchQueryContext.getTitle();
 		}
 
+		Interval interval = searchQueryContext.getInterval();
 		TimeRange timeRange = searchQueryContext.getTimeRange();
+
+		if ((timeRange == TimeRange.LAST_24_HOURS) ||
+			(timeRange == TimeRange.YESTERDAY)) {
+
+			interval = Interval.HOUR;
+		}
 
 		List<HistogramMetric> histogramMetrics =
 			assetMetricRepository.getHistogramMetrics(
 				searchQueryContext.getAssetId(), assetTitle,
-				Long.valueOf(searchQueryContext.getChannelId()), true,
-				searchQueryContext.getInterval(), metricType, timeRange);
+				Long.valueOf(searchQueryContext.getChannelId()), true, interval,
+				metricType, timeRange);
 
 		if (histogramMetrics.isEmpty()) {
 			return new HistogramMetricBag();
@@ -85,8 +93,8 @@ public class HistogramDog {
 		HistogramMetricBag histogramMetricBag =
 			_metricHelper.createHistogramMetricBag(
 				Clock.system(_timeZoneDog.getZoneId()),
-				searchQueryContext.isIncludePrevious(),
-				searchQueryContext.getInterval(), metricType, timeRange);
+				searchQueryContext.isIncludePrevious(), interval, metricType,
+				timeRange);
 
 		Map<String, Metric> metrics = _getMetrics(histogramMetricBag);
 
