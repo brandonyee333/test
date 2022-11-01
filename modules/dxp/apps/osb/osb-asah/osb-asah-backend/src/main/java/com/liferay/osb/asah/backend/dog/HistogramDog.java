@@ -72,6 +72,7 @@ public class HistogramDog {
 		}
 
 		Interval interval = searchQueryContext.getInterval();
+
 		TimeRange timeRange = searchQueryContext.getTimeRange();
 
 		if ((timeRange == TimeRange.LAST_24_HOURS) ||
