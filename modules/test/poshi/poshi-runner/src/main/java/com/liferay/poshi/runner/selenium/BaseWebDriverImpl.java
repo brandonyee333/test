@@ -2194,6 +2194,16 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
+	public void robotKeyPress(String keySequence) throws Exception {
+		String keycode = keySequence.substring(1);
+
+		Robot robot = new Robot();
+
+		robot.keyPress(_keyCodeMap.get(keycode));
+		robot.keyRelease(_keyCodeMap.get(keycode));
+	}
+
+	@Override
 	public void robotType(String value) {
 		Keyboard keyboard = new DesktopKeyboard();
 
@@ -4623,6 +4633,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				put("CONTROL", Integer.valueOf(KeyEvent.VK_CONTROL));
 				put("CTRL", Integer.valueOf(KeyEvent.VK_CONTROL));
 				put("SHIFT", Integer.valueOf(KeyEvent.VK_SHIFT));
+				put("F1", Integer.valueOf(KeyEvent.VK_F1));
+				put("F2", Integer.valueOf(KeyEvent.VK_F2));
+				put("F3", Integer.valueOf(KeyEvent.VK_F3));
+				put("F4", Integer.valueOf(KeyEvent.VK_F4));
+				put("F5", Integer.valueOf(KeyEvent.VK_F5));
+				put("F6", Integer.valueOf(KeyEvent.VK_F6));
+				put("F7", Integer.valueOf(KeyEvent.VK_F7));
+				put("F8", Integer.valueOf(KeyEvent.VK_F8));
+				put("F9", Integer.valueOf(KeyEvent.VK_F9));
+				put("F10", Integer.valueOf(KeyEvent.VK_F10));
+				put("F11", Integer.valueOf(KeyEvent.VK_F11));
+				put("F12", Integer.valueOf(KeyEvent.VK_F12));
 			}
 		};
 	private static final Map<String, Keys> _keysMap =
