@@ -72,24 +72,21 @@ public class SiteMetricDog {
 		}
 
 		List<Composition> compositions = new ArrayList<>();
-		long totalCount = 0;
 
 		for (Map.Entry<String, BigDecimal> entrySet :
 				acquisitionsMetrics.entrySet()) {
 
-			String key = entrySet.getKey();
-
 			BigDecimal count = entrySet.getValue();
 
-			totalCount += count.longValue();
-
-			if ((key != null) && !key.isEmpty()) {
-				compositions.add(new Composition(count.longValue(), key));
-			}
+			compositions.add(
+				new Composition(count.longValue(), entrySet.getKey()));
 		}
 
 		return new CompositionResultBag(
-			compositions, compositions.size(), totalCount);
+			compositions, compositions.size(),
+			_bqSessionRepository.getAcquisitionsMetricsCount(
+				acquisitionType, Long.parseLong(channelId), timeRange,
+				_timeZoneDog.getZoneId()));
 	}
 
 	public List<Metric> getBrowserMetrics(
