@@ -14,22 +14,16 @@
 
 package com.liferay.content.dashboard.item.action;
 
-import com.liferay.content.dashboard.item.action.provider.ContentDashboardItemActionProvider;
+import com.liferay.content.dashboard.item.action.provider.ContentDashboardItemVersionActionProvider;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
- * @author Cristina González
+ * @author Stefan Tanasie
  */
-public interface ContentDashboardItemActionProviderTracker {
+public interface ContentDashboardItemVersionActionProviderRegistry {
 
-	public Optional<ContentDashboardItemActionProvider>
-		getContentDashboardItemActionProviderOptional(
-			String className, ContentDashboardItemAction.Type type);
-
-	public List<ContentDashboardItemActionProvider>
-		getContentDashboardItemActionProviders(
-			String className, ContentDashboardItemAction.Type... types);
+	public List<ContentDashboardItemVersionActionProvider>
+		getContentDashboardItemVersionActionProviders(String className);
 
 }

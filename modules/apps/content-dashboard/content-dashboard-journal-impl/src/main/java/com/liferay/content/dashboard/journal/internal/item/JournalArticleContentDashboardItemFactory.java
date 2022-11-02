@@ -18,10 +18,10 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.content.dashboard.item.ContentDashboardItem;
 import com.liferay.content.dashboard.item.ContentDashboardItemFactory;
-import com.liferay.content.dashboard.item.action.ContentDashboardItemActionProviderTracker;
-import com.liferay.content.dashboard.item.action.ContentDashboardItemVersionActionProviderTracker;
+import com.liferay.content.dashboard.item.action.ContentDashboardItemActionProviderRegistry;
+import com.liferay.content.dashboard.item.action.ContentDashboardItemVersionActionProviderRegistry;
 import com.liferay.content.dashboard.item.type.ContentDashboardItemSubtypeFactory;
-import com.liferay.content.dashboard.item.type.ContentDashboardItemSubtypeFactoryTracker;
+import com.liferay.content.dashboard.item.type.ContentDashboardItemSubtypeFactoryRegistry;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
@@ -99,8 +99,8 @@ public class JournalArticleContentDashboardItemFactory
 
 		return new JournalArticleContentDashboardItem(
 			assetEntry.getCategories(), assetEntry.getTags(),
-			_contentDashboardItemActionProviderTracker,
-			_contentDashboardItemVersionActionProviderTracker,
+			_contentDashboardItemActionProviderRegistry,
+			_contentDashboardItemVersionActionProviderRegistry,
 			contentDashboardItemSubtypeFactory.create(
 				ddmStructure.getStructureId(),
 				journalArticle.getResourcePrimKey()),
@@ -113,7 +113,7 @@ public class JournalArticleContentDashboardItemFactory
 	public Optional<ContentDashboardItemSubtypeFactory>
 		getContentDashboardItemSubtypeFactoryOptional() {
 
-		return _contentDashboardItemSubtypeFactoryTracker.
+		return _contentDashboardItemSubtypeFactoryRegistry.
 			getContentDashboardItemSubtypeFactoryOptional(
 				DDMStructure.class.getName());
 	}
@@ -125,16 +125,16 @@ public class JournalArticleContentDashboardItemFactory
 	private AssetEntryLocalService _assetEntryLocalService;
 
 	@Reference
-	private ContentDashboardItemActionProviderTracker
-		_contentDashboardItemActionProviderTracker;
+	private ContentDashboardItemActionProviderRegistry
+		_contentDashboardItemActionProviderRegistry;
 
 	@Reference
-	private ContentDashboardItemSubtypeFactoryTracker
-		_contentDashboardItemSubtypeFactoryTracker;
+	private ContentDashboardItemSubtypeFactoryRegistry
+		_contentDashboardItemSubtypeFactoryRegistry;
 
 	@Reference
-	private ContentDashboardItemVersionActionProviderTracker
-		_contentDashboardItemVersionActionProviderTracker;
+	private ContentDashboardItemVersionActionProviderRegistry
+		_contentDashboardItemVersionActionProviderRegistry;
 
 	@Reference
 	private GroupLocalService _groupLocalService;
