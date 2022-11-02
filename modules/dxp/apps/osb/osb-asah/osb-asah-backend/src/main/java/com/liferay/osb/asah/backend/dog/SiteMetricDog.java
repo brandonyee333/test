@@ -151,11 +151,11 @@ public class SiteMetricDog {
 				TimeRange.of(LocalDateTime.now(), startDate.atStartOfDay()),
 				_timeZoneDog.getZoneId());
 
-		Map<String, Map<String, Object>> cohortHeatMapTupleByDate =
+		Map<String, Map<String, Object>> cohortHeatMapTuplesByDate =
 			new HashMap<>();
 
 		for (Map<String, Object> cohortHeatMapTuple : cohortHeatMapTuples) {
-			cohortHeatMapTupleByDate.put(
+			cohortHeatMapTuplesByDate.put(
 				(String)cohortHeatMapTuple.get("cohortDate"),
 				cohortHeatMapTuple);
 		}
@@ -164,7 +164,7 @@ public class SiteMetricDog {
 
 		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(
-				cohortHeatMapTupleByDate, cohortMetricIntervals,
+				cohortHeatMapTuplesByDate, cohortMetricIntervals,
 				SiteMetricType.ANONYMOUS_VISITORS);
 
 		cohortMetric.setAnonymousCohortHeatMapMetrics(
@@ -172,7 +172,7 @@ public class SiteMetricDog {
 
 		List<CohortHeatMapMetric> knownCohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(
-				cohortHeatMapTupleByDate, cohortMetricIntervals,
+				cohortHeatMapTuplesByDate, cohortMetricIntervals,
 				SiteMetricType.KNOWN_VISITORS);
 
 		cohortMetric.setKnownCohortHeatMapMetrics(knownCohortHeatMapMetrics);
@@ -391,7 +391,7 @@ public class SiteMetricDog {
 
 	@NotNull
 	private List<CohortHeatMapMetric> _getCohortHeatMapMetrics(
-		Map<String, Map<String, Object>> cohortHeatMapTupleByDate,
+		Map<String, Map<String, Object>> cohortHeatMapTuplesByDate,
 		List<String> cohortMetricIntervals, SiteMetricType siteMetricType) {
 
 		String visitorType = "Known";
@@ -420,7 +420,7 @@ public class SiteMetricDog {
 				String rowKey = cohortMetricIntervals.get(j);
 
 				Map<String, Object> cohortHeatMapTuple =
-					cohortHeatMapTupleByDate.get(rowKey);
+					cohortHeatMapTuplesByDate.get(rowKey);
 
 				Metric metric = new Metric(siteMetricType);
 
