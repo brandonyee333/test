@@ -80,21 +80,21 @@ definition {
 		Variables.assertDefined(parameterList = "${groupKey},${site}");
 
 		var companyId = JSONCompany.getCompanyId();
-
 		var parentGroupId = JSONGroupSetter.setParentGroupId(
 			grandParentGroupName = "${grandParentGroupName}",
 			parentGroupName = "${parentGroupName}");
-
 		var portalURL = JSONCompany.getPortalURL();
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/get-groups/company-id/${companyId}/parent-group-id/${parentGroupId}/site/${site} \
 				-u test@liferay.com:test
 		''';
-		var groupId = JSONCurlUtil.get("${curl}", "$.[?(@['groupKey'] == '${groupKey}')]['groupId']");
-		var groupId = StringUtil.replace("${groupId}", "[\&quot;&quot;, &quot;&quot;);
 
-				var groupId = StringUtil.replace(&quot;${groupId}&quot;, &quot;\&quot;]", "");
+		var groupId = JSONCurlUtil.get("${curl}", "$.[?(@['groupKey'] == '${groupKey}')]['groupId']");
+
+		var groupId = StringUtil.replace("${groupId}", "[\"", "");
+
+		var groupId = StringUtil.replace("${groupId}", "\"]", "");
 
 		if ("${groupId}" == "") {
 			fail("FAIL. Cannot find group.");
@@ -117,10 +117,12 @@ definition {
 			${portalURL}/api/jsonws/group/get-groups/company-id/${companyId}/parent-group-id/0/site/${site} \
 				-u test@liferay.com:test
 		''';
-		var groupId = JSONCurlUtil.get("${curl}", "$.[?(@['nameCurrentValue'] == '${groupName}')]['groupId']");
-		var groupId = StringUtil.replace("${groupId}", "[\&quot;&quot;, &quot;&quot;);
 
-				var groupId = StringUtil.replace(&quot;${groupId}&quot;, &quot;\&quot;]", "");
+		var groupId = JSONCurlUtil.get("${curl}", "$.[?(@['nameCurrentValue'] == '${groupName}')]['groupId']");
+
+		var groupId = StringUtil.replace("${groupId}", "[\"", "");
+
+		var groupId = StringUtil.replace("${groupId}", "\"]", "");
 
 		if ("${groupId}" == "") {
 			fail("FAIL. Cannot find group.");
@@ -134,13 +136,13 @@ definition {
 		Variables.assertDefined(parameterList = "${groupId}");
 
 		var companyId = JSONCompany.getCompanyId();
-
 		var portalURL = JSONCompany.getPortalURL();
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/get-group/group-id/${groupId} \
 				-u test@liferay.com:test
 		''';
+
 		var groupName = JSONCurlUtil.get("${curl}", "$['nameCurrentValue']");
 
 		return "${groupNam}";
@@ -151,19 +153,19 @@ definition {
 		Variables.assertDefined(parameterList = "${groupName}");
 
 		var companyId = JSONCompany.getCompanyId();
-
 		var grandParentGroupId = JSONGroupSetter.setGrandParentGroupId(grandParentGroupName = "${grandParentGroupName}");
-
 		var portalURL = JSONCompany.getPortalURL();
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/get-groups/company-id/${companyId}/parent-group-id/${grandParentGroupId}/site/true \
 				-u test@liferay.com:test
 		''';
-		var groupId = JSONCurlUtil.get("${curl}", "$.[?(@['nameCurrentValue'] == '${groupName}')]['groupId']");
-		var groupId = StringUtil.replace("${groupId}", "[\&quot;&quot;, &quot;&quot;);
 
-				var groupId = StringUtil.replace(&quot;${groupId}&quot;, &quot;\&quot;]", "");
+		var groupId = JSONCurlUtil.get("${curl}", "$.[?(@['nameCurrentValue'] == '${groupName}')]['groupId']");
+
+		var groupId = StringUtil.replace("${groupId}", "[\"", "");
+
+		var groupId = StringUtil.replace("${groupId}", "\"]", "");
 
 		if ("${groupId}" == "") {
 			fail("FAIL. Cannot find group.");
@@ -177,7 +179,6 @@ definition {
 		Variables.assertDefined(parameterList = "${groupName}");
 
 		var companyId = JSONCompany.getCompanyId();
-
 		var portalURL = JSONCompany.getPortalURL();
 
 		var curl = '''
@@ -186,10 +187,12 @@ definition {
 				-d companyId=${companyId} \
 				-d groupKey=${groupName}
 		''';
-		var groupId = JSONCurlUtil.post("${curl}", "$.[?(@['groupKey'] == '${groupName}')]['groupId']");
-		var groupId = StringUtil.replace("${groupId}", "[\&quot;&quot;, &quot;&quot;);
 
-				var groupId = StringUtil.replace(&quot;${groupId}&quot;, &quot;\&quot;]", "");
+		var groupId = JSONCurlUtil.post("${curl}", "$.[?(@['groupKey'] == '${groupName}')]['groupId']");
+
+		var groupId = StringUtil.replace("${groupId}", "[\"", "");
+
+		var groupId = StringUtil.replace("${groupId}", "\"]", "");
 
 		if ("${groupId}" == "") {
 			fail("FAIL. Cannot find group.");

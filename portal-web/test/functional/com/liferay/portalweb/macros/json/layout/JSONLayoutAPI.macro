@@ -54,7 +54,9 @@ definition {
 				-d groupId=${groupId} \
 				-d privateLayout=${privateLayout}
 		''';
+
 		var defaultPlid = JSONCurlUtil.post("${curl}");
+
 		var defaultPlid = StringUtil.extractDigits("${defaultPlid}");
 
 		if ("${defaultPlid}" == "") {
@@ -76,10 +78,12 @@ definition {
 				-d groupId=${groupId} \
 				-d privateLayout=${privateLayout}
 		''';
-		var layoutId = JSONCurlUtil.post("${curl}", "$.[?(@['nameCurrentValue'] == '${layoutName}')]['layoutId']");
-		var layoutId = StringUtil.replace("${layoutId}", "[\&quot;&quot;, &quot;&quot;);
 
-				var layoutId = StringUtil.replace(&quot;${layoutId}&quot;, &quot;\&quot;]", "");
+		var layoutId = JSONCurlUtil.post("${curl}", "$.[?(@['nameCurrentValue'] == '${layoutName}')]['layoutId']");
+
+		var layoutId = StringUtil.replace("${layoutId}", "[\"", "");
+
+		var layoutId = StringUtil.replace("${layoutId}", "\"]", "");
 
 		if ("${layoutId}" == "") {
 			fail("FAIL. Cannot find layout.");
@@ -100,10 +104,12 @@ definition {
 				-d groupId=${groupId} \
 				-d privateLayout=${privateLayout}
 		''';
-		var typeSettings = JSONCurlUtil.post("${curl}", "$.[?(@['nameCurrentValue'] == '${layoutName}')]['typeSettings']");
-		var typeSettings = StringUtil.replace("${typeSettings}", "[\&quot;&quot;, &quot;&quot;);
 
-				var typeSettings = StringUtil.replace(&quot;${typeSettings}&quot;, &quot;\&quot;]", "");
+		var typeSettings = JSONCurlUtil.post("${curl}", "$.[?(@['nameCurrentValue'] == '${layoutName}')]['typeSettings']");
+
+		var typeSettings = StringUtil.replace("${typeSettings}", "[\"", "");
+
+		var typeSettings = StringUtil.replace("${typeSettings}", "\"]", "");
 
 		if ("${typeSettings}" == "") {
 			fail("FAIL. Cannot find layout.");
