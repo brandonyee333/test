@@ -27,11 +27,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -186,7 +188,8 @@ public class BeanUtils {
 					}
 				}
 				else if (targetPropertyValueClass.isArray() ||
-						 (targetPropertyValue instanceof Array)) {
+						 (targetPropertyValue instanceof Array) ||
+						 (targetPropertyValue instanceof ArrayList<?>)) {
 
 					Class<?> rawClass =
 						targetPropertyResolvableType.getRawClass();
@@ -207,23 +210,46 @@ public class BeanUtils {
 							return;
 						}
 
-						if (targetPropertyValue instanceof PgArray) {
-							PgArray pgArray = (PgArray)targetPropertyValue;
+						if ((targetPropertyValue instanceof ArrayList<?>) &&
+							targetPropertyClass.isAssignableFrom(Set.class)) {
 
-							targetPropertyValue = pgArray.getArray();
+							if (StringUtils.equals(
+									clazz.getName(), String.class.getName())) {
+
+								targetPropertyValue = new LinkedHashSet<>(
+									(ArrayList<String>)targetPropertyValue);
+							}
+							else if (StringUtils.equals(
+										clazz.getName(),
+										Long.class.getName())) {
+
+								targetPropertyValue = new LinkedHashSet<>(
+									(ArrayList<Long>)targetPropertyValue);
+							}
 						}
+						else if (targetPropertyValueClass.isArray() ||
+								 (targetPropertyValue instanceof Array)) {
 
-						if (StringUtils.equals(
-								clazz.getName(), String.class.getName())) {
+							if (targetPropertyValue instanceof PgArray) {
+								PgArray pgArray = (PgArray)targetPropertyValue;
 
-							targetPropertyValue = new LinkedHashSet<>(
-								Arrays.asList((String[])targetPropertyValue));
-						}
-						else if (StringUtils.equals(
-									clazz.getName(), Long.class.getName())) {
+								targetPropertyValue = pgArray.getArray();
+							}
 
-							targetPropertyValue = new LinkedHashSet<>(
-								Arrays.asList((Long[])targetPropertyValue));
+							if (StringUtils.equals(
+									clazz.getName(), String.class.getName())) {
+
+								targetPropertyValue = new LinkedHashSet<>(
+									Arrays.asList(
+										(String[])targetPropertyValue));
+							}
+							else if (StringUtils.equals(
+										clazz.getName(),
+										Long.class.getName())) {
+
+								targetPropertyValue = new LinkedHashSet<>(
+									Arrays.asList((Long[])targetPropertyValue));
+							}
 						}
 					}
 				}
