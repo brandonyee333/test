@@ -170,6 +170,21 @@ public class BeanUtils {
 						targetPropertyValue = localDateTime;
 					}
 				}
+				else if (targetPropertyValue instanceof BigDecimal) {
+					BigDecimal bigDecimal = (BigDecimal)targetPropertyValue;
+
+					if (targetPropertyClass.isAssignableFrom(Double.class)) {
+						targetPropertyValue = bigDecimal.doubleValue();
+					}
+					else if (targetPropertyClass.isAssignableFrom(
+								Integer.class)) {
+
+						targetPropertyValue = bigDecimal.intValue();
+					}
+					else if (targetPropertyClass.isAssignableFrom(Long.class)) {
+						targetPropertyValue = bigDecimal.longValue();
+					}
+				}
 				else if (targetPropertyValueClass.isArray() ||
 						 (targetPropertyValue instanceof Array)) {
 
