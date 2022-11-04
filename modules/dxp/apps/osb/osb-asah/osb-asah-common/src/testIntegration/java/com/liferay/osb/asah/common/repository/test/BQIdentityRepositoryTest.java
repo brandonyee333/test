@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIdentityActivity;
 import com.liferay.osb.asah.common.entity.BQIdentityChannel;
@@ -79,23 +80,27 @@ public class BQIdentityRepositoryTest
 		long anonymousIndividualsCount =
 			_bqIdentityRepository.getIndividualsCount(
 				false, 1L, localDate,
-				IndividualMetricType.ANONYMOUS_INDIVIDUALS);
+				IndividualMetricType.ANONYMOUS_INDIVIDUALS,
+				_timeZoneDog.getZoneId());
 
 		Assertions.assertEquals(1, anonymousIndividualsCount, 0);
 
 		long knownIndividualsCount = _bqIdentityRepository.getIndividualsCount(
-			false, 1L, localDate, IndividualMetricType.KNOWN_INDIVIDUALS);
+			false, 1L, localDate, IndividualMetricType.KNOWN_INDIVIDUALS,
+			_timeZoneDog.getZoneId());
 
 		Assertions.assertEquals(4, knownIndividualsCount, 0);
 
 		long totalIndividualsCount = _bqIdentityRepository.getIndividualsCount(
-			false, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS);
+			false, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS,
+			_timeZoneDog.getZoneId());
 
 		Assertions.assertEquals(5, totalIndividualsCount, 0);
 
 		long totalActiveIndividualsCount =
 			_bqIdentityRepository.getIndividualsCount(
-				true, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS);
+				true, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS,
+				_timeZoneDog.getZoneId());
 
 		Assertions.assertEquals(2, totalActiveIndividualsCount, 0);
 	}
@@ -338,5 +343,8 @@ public class BQIdentityRepositoryTest
 
 	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
