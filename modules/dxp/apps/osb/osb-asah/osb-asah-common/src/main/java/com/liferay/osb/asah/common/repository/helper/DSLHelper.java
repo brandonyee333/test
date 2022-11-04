@@ -72,25 +72,25 @@ public class DSLHelper {
 	}
 
 	public Field<OffsetDateTime> dateDiff(
-		DatePart datePart, Field<OffsetDateTime> endDate,
-		Field<OffsetDateTime> startDate) {
+		DatePart datePart, Field<OffsetDateTime> endDateField,
+		Field<OffsetDateTime> startDateField) {
 
 		if (_isBigQueryDialect()) {
 			return DSL.field(
-				"date_diff({0}, {1}, {2})", endDate.getDataType(), endDate,
-				startDate, datePart.toName());
+				"date_diff({0}, {1}, {2})", endDateField.getDataType(),
+				endDateField, startDateField, datePart.toName());
 		}
 
 		if (datePart == DatePart.WEEK) {
 			return DSL.field(
 				"cast(extract('day' from (cast({0} as timestamp) - cast({1} " +
 					"as timestamp))) / 7 as int)",
-				endDate.getDataType(), endDate, startDate);
+				endDateField.getDataType(), endDateField, startDateField);
 		}
 
 		return DSL.field(
-			"date_part({0}, AGE({1}, {2}))", endDate.getDataType(),
-			datePart.toSQL(), endDate, startDate);
+			"date_part({0}, AGE({1}, {2}))", endDateField.getDataType(),
+			datePart.toSQL(), endDateField, startDateField);
 	}
 
 	public Field<OffsetDateTime> dateTrunc(

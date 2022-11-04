@@ -143,12 +143,14 @@ public class SiteMetricDog {
 			_metricHelper.getCohortMetricIntervals(
 				Clock.system(_timeZoneDog.getZoneId()), interval);
 
-		LocalDate startDate = LocalDate.parse(cohortMetricIntervals.get(0));
+		LocalDate startLocalDate = LocalDate.parse(
+			cohortMetricIntervals.get(0));
 
 		List<Map<String, Object>> cohortHeatMapTuples =
 			_bqSessionRepository.getCohortHeatMapTuples(
 				Long.valueOf(searchQueryContext.getChannelId()), interval,
-				TimeRange.of(LocalDateTime.now(), startDate.atStartOfDay()),
+				TimeRange.of(
+					LocalDateTime.now(), startLocalDate.atStartOfDay()),
 				_timeZoneDog.getZoneId());
 
 		Map<String, Map<String, Object>> cohortHeatMapTuplesByDate =

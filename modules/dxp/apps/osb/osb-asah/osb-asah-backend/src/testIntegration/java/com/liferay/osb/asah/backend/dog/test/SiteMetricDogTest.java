@@ -146,11 +146,11 @@ public class SiteMetricDogTest
 	@SQLResource(resourcePath = "test_visitor_cohort_heatmap_day_interval.sql")
 	@Test
 	public void testCohortHeatMapMetricsDayInterval() {
-		CohortMetric cohortHeatMapMetrics = _siteMetricDog.getCohortMetric(
+		CohortMetric cohortMetric = _siteMetricDog.getCohortMetric(
 			_getVisitorCohortSearchQueryContext(Interval.DAY));
 
 		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics =
-			cohortHeatMapMetrics.getAnonymousCohortHeatMapMetrics();
+			cohortMetric.getAnonymousCohortHeatMapMetrics();
 
 		Assertions.assertArrayEquals(
 			_getExpectedCohortRetentions(
@@ -167,7 +167,7 @@ public class SiteMetricDogTest
 			_getActualCohortRetentions(anonymousCohortHeatMapMetrics), 0);
 
 		List<CohortHeatMapMetric> knownCohortHeatMapMetrics =
-			cohortHeatMapMetrics.getKnownCohortHeatMapMetrics();
+			cohortMetric.getKnownCohortHeatMapMetrics();
 
 		Assertions.assertArrayEquals(
 			_getExpectedCohortRetentions(
@@ -186,7 +186,7 @@ public class SiteMetricDogTest
 			_getActualCohortRetentions(knownCohortHeatMapMetrics), 0);
 
 		List<CohortHeatMapMetric> visitorsCohortHeatMapMetrics =
-			cohortHeatMapMetrics.getVisitorsCohortHeatMapMetrics();
+			cohortMetric.getVisitorsCohortHeatMapMetrics();
 
 		Assertions.assertArrayEquals(
 			_getExpectedCohortRetentions(
@@ -210,11 +210,11 @@ public class SiteMetricDogTest
 	)
 	@Test
 	public void testCohortHeatMapMetricsMonthInterval() {
-		CohortMetric cohortHeatMapMetrics = _siteMetricDog.getCohortMetric(
+		CohortMetric cohortMetric = _siteMetricDog.getCohortMetric(
 			_getVisitorCohortSearchQueryContext(Interval.MONTH));
 
 		List<CohortHeatMapMetric> anonymousCohortHeatMapMetrics =
-			cohortHeatMapMetrics.getAnonymousCohortHeatMapMetrics();
+			cohortMetric.getAnonymousCohortHeatMapMetrics();
 
 		Assertions.assertArrayEquals(
 			_getExpectedCohortRetentions(
@@ -231,7 +231,7 @@ public class SiteMetricDogTest
 			_getActualCohortRetentions(anonymousCohortHeatMapMetrics), 0);
 
 		List<CohortHeatMapMetric> knownCohortHeatMapMetrics =
-			cohortHeatMapMetrics.getKnownCohortHeatMapMetrics();
+			cohortMetric.getKnownCohortHeatMapMetrics();
 
 		Assertions.assertArrayEquals(
 			_getExpectedCohortRetentions(
@@ -250,7 +250,7 @@ public class SiteMetricDogTest
 			_getActualCohortRetentions(knownCohortHeatMapMetrics), 0);
 
 		List<CohortHeatMapMetric> visitorsCohortHeatMapMetrics =
-			cohortHeatMapMetrics.getVisitorsCohortHeatMapMetrics();
+			cohortMetric.getVisitorsCohortHeatMapMetrics();
 
 		Assertions.assertArrayEquals(
 			_getExpectedCohortRetentions(
