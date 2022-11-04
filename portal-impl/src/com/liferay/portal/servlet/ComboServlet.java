@@ -441,6 +441,9 @@ public class ComboServlet extends HttpServlet {
 					 StringUtil.endsWith(
 						 resourcePath, _JAVASCRIPT_MINIFIED_DOT_SUFFIX)) {
 
+				stringFileContent = FrontendSourceMapUtil.stripJSSourceMapping(
+					stringFileContent);
+
 				stringFileContent = stringFileContent.concat(
 					StringPool.NEW_LINE);
 			}
