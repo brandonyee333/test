@@ -35,7 +35,7 @@ definition {
 
 		AntCommand(
 			locator1 = "build-test.xml",
-			value1 = "portal-ext-properties-update -Dupdate.properties.original=&quot;cluster.link.enabled=false&quot; -Dupdate.properties=&quot;cluster.link.enabled=true&quot;");
+			value1 = "portal-ext-properties-update -Dupdate.properties.original=\"cluster.link.enabled=false\" -Dupdate.properties=\"cluster.link.enabled=true\"");
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
@@ -49,11 +49,11 @@ definition {
 
 		AntCommand(
 			locator1 = "build-test.xml",
-			value1 = "portal-ext-properties-update -Dadd.new.properties=true -Dupdate.properties=&quot;cluster.link.channel.name.control=test-control-channel&quot;");
+			value1 = "portal-ext-properties-update -Dadd.new.properties=true -Dupdate.properties=\"cluster.link.channel.name.control=test-control-channel\"");
 
 		AntCommand(
 			locator1 = "build-test.xml",
-			value1 = "portal-ext-properties-update -Dadd.new.properties=true -Dupdate.properties=&quot;cluster.link.channel.name.transport.0=test-transport-channel&quot;");
+			value1 = "portal-ext-properties-update -Dadd.new.properties=true -Dupdate.properties=\"cluster.link.channel.name.transport.0=test-transport-channel\"");
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
@@ -67,7 +67,7 @@ definition {
 
 		AntCommand(
 			locator1 = "build-test.xml",
-			value1 = "portal-ext-properties-update -Dadd.new.properties=true -Dupdate.properties=&quot;cluster.link.channel.properties.control=tcp.xml&quot;");
+			value1 = "portal-ext-properties-update -Dadd.new.properties=true -Dupdate.properties=\"cluster.link.channel.properties.control=tcp.xml\"");
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
@@ -81,7 +81,7 @@ definition {
 
 		AntCommand(
 			locator1 = "build-test.xml",
-			value1 = "portal-ext-properties-update -Dupdate.properties.original=&quot;cluster.link.channel.properties.control=tcp.xml&quot; -Dupdate.properties=&quot;cluster.link.channel.properties.transport.0=tcp.xml&quot;");
+			value1 = "portal-ext-properties-update -Dupdate.properties.original=\"cluster.link.channel.properties.control=tcp.xml\" -Dupdate.properties=\"cluster.link.channel.properties.transport.0=tcp.xml\"");
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
@@ -99,7 +99,7 @@ definition {
 
 		AntCommand(
 			locator1 = "build-test.xml",
-			value1 = "portal-ext-properties-update -Dupdate.properties.original=&quot;cluster.link.channel.properties.transport.0=tcp.xml&quot; -Dupdate.properties=&quot;cluster.link.autodetect.address=&quot;");
+			value1 = "portal-ext-properties-update -Dupdate.properties.original=\"cluster.link.channel.properties.transport.0=tcp.xml\" -Dupdate.properties=\"cluster.link.autodetect.address=\"");
 
 		Portlet.startServer(deleteLiferayHome = "true");
 

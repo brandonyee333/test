@@ -1917,7 +1917,7 @@ definition {
 
 		FormFields.editValidation(
 			validationArgument = "Contains",
-			validationErrorMessage = "Text must contain &quot;Test&quot;",
+			validationErrorMessage = "Text must contain \"Test\"",
 			validationInput = "Test",
 			validationType = "Text");
 
@@ -1949,7 +1949,7 @@ definition {
 			fieldName = "Text",
 			fieldValue = "Text Field Value");
 
-		FormPortlet.submitWithValidationError(validationErrorMessage = "Text must contain &quot;Test&quot;");
+		FormPortlet.submitWithValidationError(validationErrorMessage = "Text must contain \"Test\"");
 
 		FormFields.editText(
 			fieldName = "Text",
@@ -3119,7 +3119,7 @@ definition {
 
 		FormFields.editText(
 			fieldName = "visibility",
-			fieldValue = "equals(VisibleField, &quot;test&quot;)");
+			fieldValue = "equals(VisibleField, \"test\")");
 
 		FormFields.save();
 

@@ -40,6 +40,7 @@ definition {
 
 	macro getConsumerKey {
 		var strippedResult = StringUtil.stripBetween("${applicationCredentials}", "Application", "Key: ");
+
 		var consumerKey = StringUtil.stripBetween("${strippedResult}", " Consumer", "${consumerSecret}");
 
 		return "${consumerKey}";
@@ -90,11 +91,11 @@ definition {
 
 		AssertTextPresent(
 			locator1 = "TestOAuth#TEST_PORTLET_JSON",
-			value1 = "&quot;mx&quot;:&quot;${domainName}&quot;");
+			value1 = "\"mx\":\"${domainName}\"");
 
 		AssertTextPresent(
 			locator1 = "TestOAuth#TEST_PORTLET_JSON",
-			value1 = "&quot;webId&quot;:&quot;${domainName}&quot;");
+			value1 = "\"webId\":\"${domainName}\"");
 	}
 
 }

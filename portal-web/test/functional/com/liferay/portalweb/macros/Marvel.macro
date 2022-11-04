@@ -7,7 +7,7 @@ definition {
 
 		AssertTextPresent(
 			locator1 = "Home#DIRECT_URL",
-			value1 = "{&quot;statusCode&quot;:404,&quot;error&quot;:&quot;Not Found&quot;}");
+			value1 = "{\"statusCode\":404,\"error\":\"Not Found\"}");
 	}
 
 	macro viewPG {

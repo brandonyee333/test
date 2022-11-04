@@ -133,6 +133,7 @@ definition {
 
 	macro viewFormTableEntry {
 		var key_fieldLabel = StringUtil.lowerCase("${fieldLabel}");
+
 		var key_fieldLabel = StringUtil.replace("${key_fieldLabel}", " ", "-");
 		var key_fieldValue = "${fieldValue}";
 
@@ -143,6 +144,7 @@ definition {
 
 	macro viewFormTableEntryNotPresent {
 		var key_fieldLabel = StringUtil.lowerCase("${fieldLabel}");
+
 		var key_fieldLabel = StringUtil.replace("${key_fieldLabel}", " ", "-");
 		var key_fieldValue = "${fieldValue}";
 
@@ -199,6 +201,7 @@ definition {
 
 	macro viewTableEntryNotPresent {
 		var key_fieldLabel = StringUtil.lowerCase("${fieldLabel}");
+
 		var key_fieldLabel = StringUtil.replace("${key_fieldLabel}", " ", "-");
 		var key_fieldValue = "${fieldValue}";
 

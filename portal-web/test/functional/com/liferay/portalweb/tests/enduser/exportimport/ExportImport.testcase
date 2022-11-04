@@ -50,6 +50,7 @@ definition {
 		DMDocument.expandInfo();
 
 		var dmDocumentURL = selenium.getAttribute("//input[contains(@class,'lfr-input-resource')]@value");
+
 		var editDocumentURL = StringUtil.extractFirst("${dmDocumentURL}", "jpg");
 
 		ProductMenu.gotoPortlet(
@@ -850,7 +851,6 @@ definition {
 		LAR.exportSiteCP();
 
 		var key_larFileName = "${larFileName}";
-
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1129,7 +1129,6 @@ definition {
 		LAR.exportSiteCP();
 
 		var key_larFileName = "${larFileName}";
-
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1224,7 +1223,6 @@ definition {
 		LAR.exportSiteCP();
 
 		var key_larFileName = "${larFileName}";
-
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1553,7 +1551,6 @@ definition {
 		LAR.exportSiteCP();
 
 		var key_larFileName = "${larFileName}";
-
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1752,7 +1749,6 @@ definition {
 		LAR.exportSiteCP();
 
 		var key_larFileName = "${larFileName}";
-
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1790,7 +1786,6 @@ definition {
 		LAR.exportSiteCP();
 
 		var key_larFileName = "${larFileName}";
-
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();

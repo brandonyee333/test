@@ -500,13 +500,13 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
 		WebContentDisplayPortlet.searchWebContent(
-			webContentSearchValue = "&quot;WC WebContent Title&quot;",
+			webContentSearchValue = "\"WC WebContent Title\"",
 			webContentTitle = "WC WebContent Title");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
 		WebContentDisplayPortlet.searchWebContentNo(
-			webContentSearchValue = "&quot;WC2 WebContent2 Title2&quot;",
+			webContentSearchValue = "\"WC2 WebContent2 Title2\"",
 			webContentTitle = "WC2 WebContent2 Title2");
 	}
 

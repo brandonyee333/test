@@ -341,7 +341,7 @@ definition {
 
 		FormFields.editText(
 			fieldName = "visibility",
-			fieldValue = "equals(Select, &quot;Select1&quot;)");
+			fieldValue = "equals(Select, \"Select1\")");
 
 		FormFields.save();
 
@@ -363,7 +363,7 @@ definition {
 
 		FormFields.editText(
 			fieldName = "visibility",
-			fieldValue = "equals(Radio, &quot;Option1&quot;)");
+			fieldValue = "equals(Radio, \"Option1\")");
 
 		FormFields.save();
 

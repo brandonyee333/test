@@ -3,6 +3,7 @@ definition {
 	@description = "Get cluster node outgoing ip address in console"
 	macro getClusterNodeOutgoingIPAddress {
 		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+
 		var bundleIndex = ${leadingPortNumber} - 8;
 
 		AntCommand(
@@ -10,9 +11,13 @@ definition {
 			value1 = "copy-cluster-log -Dapp.server.bundle.index=${bundleIndex}");
 
 		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
 		var fileContent = FileUtil.read("${liferayHome}/cluster${bundleIndex}.log");
+
 		var ipAddress = StringUtil.extractLast("${fileContent}", "Setting JGroups outgoing IP address to");
+
 		var ipAddress = StringUtil.extractFirst("${ipAddress}", "and interface to");
+
 		var ipAddress = StringUtil.trim("${ipAddress}");
 
 		return "${ipAddress}";
@@ -23,6 +28,7 @@ definition {
 	@description = "This will get the log content for a specific clustered server bundle"
 	macro getLogFileSpecificServer {
 		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+
 		var bundleIndex = ${leadingPortNumber} - 8;
 
 		AntCommand(
@@ -30,6 +36,7 @@ definition {
 			value1 = "copy-cluster-log -Dapp.server.bundle.index=${bundleIndex}");
 
 		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
 		var fileContent = FileUtil.read("${liferayHome}/cluster${bundleIndex}.log");
 
 		return "${fileContent}";
@@ -38,6 +45,7 @@ definition {
 	@description = "This will shutdown the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
 	macro shutdownSpecificServer {
 		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+
 		var bundleIndex = ${leadingPortNumber} - 8;
 
 		AntCommand(
@@ -48,6 +56,7 @@ definition {
 	@description = "This will start the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
 	macro startSpecificServer {
 		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+
 		var bundleIndex = ${leadingPortNumber} - 8;
 
 		if ("${deleteLiferayHome}" == "false") {
@@ -70,6 +79,7 @@ definition {
 
 		if ("${licenseFile}" != "") {
 			var appServerDir = PropsUtil.get("liferay.home.dir.name");
+
 			var bundleHome = "${appServerDir}-${bundleIndex}";
 
 			AntCommand(

@@ -93,7 +93,7 @@ definition {
 
 		AdaptiveMedia.editImageResolution(
 			imageName = "1234567890!@#$%^&*()~`",
-			imageNameEdit = "[]\{}|:&quot;;',./><?");
+			imageNameEdit = "[]\{}|:\";',./><?");
 
 		AdaptiveMedia.gotoImageVariantEntry(imageName = "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 

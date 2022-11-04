@@ -125,6 +125,7 @@ definition {
 			AssertElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE");
 
 			var portalURL = PropsUtil.get("portal.url");
+
 			var spURL = StringUtil.replace("${idpInitiatedSSOURL}", "${portalURL}/c/portal/saml/sso?entityId=samlsp&RelayState=", "");
 
 			AssertLocation.assertPartialLocation(value1 = "${spURL}");

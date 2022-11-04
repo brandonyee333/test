@@ -306,6 +306,7 @@ definition {
 	@description = "This will shutdown the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
 	macro shutdownSpecificServer {
 		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+
 		var bundleIndex = ${leadingPortNumber} - 8;
 
 		AntCommand(
@@ -335,6 +336,7 @@ definition {
 	@description = "This will start the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
 	macro startSpecificServer {
 		var leadingPortNumber = StringUtil.replace("${nodePort}", "080", "");
+
 		var bundleIndex = ${leadingPortNumber} - 8;
 
 		if ("${deleteLiferayHome}" == "false") {
@@ -388,7 +390,7 @@ definition {
 			locator1 = "NavBar#APPLICATION_SEARCH_FIELD",
 			value1 = "${portletName}");
 
-		var portletLocator = "//span[@data-title=&quot;${portletName}&quot; and contains(@class,'add-content-item')]";
+		var portletLocator = "//span[@data-title=\"${portletName}\" and contains(@class,'add-content-item')]";
 
 		AssertElementNotPresent(locator1 = "${portletLocator}");
 	}
