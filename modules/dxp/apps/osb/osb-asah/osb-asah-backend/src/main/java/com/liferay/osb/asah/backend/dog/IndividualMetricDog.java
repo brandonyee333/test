@@ -105,7 +105,8 @@ public class IndividualMetricDog {
 		}
 
 		return _bqIdentityRepository.getIndividualsCount(
-			searchQueryContext.isActive(), channelId, localDate, metricType);
+			searchQueryContext.isActive(), channelId, localDate, metricType,
+			_timeZoneDog.getZoneId());
 	}
 
 	private List<Metric> _getIndividualCountMetrics(
@@ -127,7 +128,8 @@ public class IndividualMetricDog {
 		List<Long> individualsCounts =
 			_bqIdentityRepository.getIndividualsCounts(
 				searchQueryContext.isActive(), channelId,
-				Arrays.asList(localDate, previousLocalDate), metricTypes);
+				Arrays.asList(localDate, previousLocalDate), metricTypes,
+				_timeZoneDog.getZoneId());
 
 		for (int i = 0; i < metricTypes.size(); i++) {
 			Metric metric = new Metric(metricTypes.get(i));

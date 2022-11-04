@@ -18,12 +18,12 @@ import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.repository.CustomBQIdentityRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
-
-import java.sql.Timestamp;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,16 +55,18 @@ public class BQIdentityRepositoryImpl
 	@Override
 	public long getIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
-		MetricType metricType) {
+		MetricType metricType, ZoneId zoneId) {
 
 		return _queryExecutor.queryForLong(
-			_getSelectConditionStep(active, channelId, localDate, metricType));
+			_getSelectConditionStep(
+				active, channelId, localDate, metricType, zoneId));
 	}
 
 	@Override
 	public List<Long> getIndividualsCounts(
 		@Nullable Boolean active, @Nullable Long channelId,
-		List<LocalDate> localDates, List<MetricType> metricTypes) {
+		List<LocalDate> localDates, List<MetricType> metricTypes,
+		ZoneId zoneId) {
 
 		SelectConditionStep<Record1<Integer>> selectConditionStep = null;
 
@@ -72,7 +74,7 @@ public class BQIdentityRepositoryImpl
 			for (MetricType metricType : metricTypes) {
 				SelectConditionStep<Record1<Integer>> curSelectConditionStep =
 					_getSelectConditionStep(
-						active, channelId, localDate, metricType);
+						active, channelId, localDate, metricType, zoneId);
 
 				if (selectConditionStep == null) {
 					selectConditionStep = curSelectConditionStep;
@@ -98,7 +100,7 @@ public class BQIdentityRepositoryImpl
 
 	private List<Condition> _getConditions(
 		Boolean active, Long channelId, LocalDate localDate,
-		MetricType metricType) {
+		MetricType metricType, ZoneId zoneId) {
 
 		LocalDateTime localDateTime = localDate.atTime(LocalTime.MAX);
 
@@ -108,7 +110,7 @@ public class BQIdentityRepositoryImpl
 			DSL.field(
 				metricType.getFieldName()
 			).lessOrEqual(
-				Timestamp.valueOf(localDateTime)
+				_dslHelper.getDateParam(localDateTime, zoneId.toString())
 			));
 
 		if (channelId != null) {
@@ -144,7 +146,8 @@ public class BQIdentityRepositoryImpl
 				DSL.field(
 					"identityChannel.lastActivityDate"
 				).greaterThan(
-					nowLocalDateTime.minusDays(30)
+					_dslHelper.getDateParam(
+						nowLocalDateTime.minusDays(30), zoneId.toString())
 				));
 		}
 
@@ -153,7 +156,7 @@ public class BQIdentityRepositoryImpl
 
 	private SelectConditionStep<Record1<Integer>> _getSelectConditionStep(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
-		MetricType metricType) {
+		MetricType metricType, ZoneId zoneId) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -214,10 +217,13 @@ public class BQIdentityRepositoryImpl
 		}
 
 		return selectJoinStep.where(
-			_getConditions(active, channelId, localDate, metricType));
+			_getConditions(active, channelId, localDate, metricType, zoneId));
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private DSLHelper _dslHelper;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;

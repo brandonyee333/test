@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.model.MetricType;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import java.util.List;
 
@@ -29,10 +30,11 @@ public interface CustomBQIdentityRepository {
 
 	public long getIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
-		MetricType metricType);
+		MetricType metricType, ZoneId zoneId);
 
 	public List<Long> getIndividualsCounts(
 		@Nullable Boolean active, @Nullable Long channelId,
-		List<LocalDate> localDates, List<MetricType> metricTypes);
+		List<LocalDate> localDates, List<MetricType> metricTypes,
+		ZoneId zoneId);
 
 }
