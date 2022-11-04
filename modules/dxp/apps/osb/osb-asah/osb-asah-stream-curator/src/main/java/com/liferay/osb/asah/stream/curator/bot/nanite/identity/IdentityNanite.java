@@ -250,9 +250,9 @@ public class IdentityNanite implements Nanite {
 
 				_insertIdentity(entry.getKey(), entry.getValue());
 				_insertIdentityActivity(entry.getKey(), entry.getValue());
-			}
 
-			_acknowledgeMessages(messages);
+				_acknowledgeMessages(entry.getValue());
+			}
 		}
 	}
 
