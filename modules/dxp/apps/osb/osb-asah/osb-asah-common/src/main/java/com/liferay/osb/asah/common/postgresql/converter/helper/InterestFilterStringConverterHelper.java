@@ -37,6 +37,7 @@ public class InterestFilterStringConverterHelper
 		return new HashMap<String, String>() {
 			{
 				put("dateRecorded", "recordedDate");
+				put("name", "keyword");
 			}
 		};
 	}

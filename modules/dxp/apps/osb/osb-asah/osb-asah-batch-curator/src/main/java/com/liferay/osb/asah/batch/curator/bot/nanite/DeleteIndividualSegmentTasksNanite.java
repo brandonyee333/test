@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.BQIndividualInterestScoreDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.List;
@@ -45,9 +45,8 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 			jsonArray.toList(),
 			individualSegmentId -> (Long)individualSegmentId);
 
-		_interestDog.deleteInterests(
-			ListUtil.map(individualSegmentIds, String::valueOf),
-			"individual-segment");
+		_bqIndividualInterestScoreDog.deleteBQIndividualInterestScores(
+			ListUtil.map(individualSegmentIds, String::valueOf));
 
 		bqMembershipChangeDog.deleteBQMembershipChanges(individualSegmentIds);
 
@@ -67,6 +66,6 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 	protected BQMembershipDog bqMembershipDog;
 
 	@Autowired
-	private InterestDog _interestDog;
+	private BQIndividualInterestScoreDog _bqIndividualInterestScoreDog;
 
 }

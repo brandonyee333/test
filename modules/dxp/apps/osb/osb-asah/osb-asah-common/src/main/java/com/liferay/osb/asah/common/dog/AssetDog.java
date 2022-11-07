@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AssetRepository;
-import com.liferay.osb.asah.common.repository.InterestRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -87,9 +87,10 @@ public class AssetDog {
 
 		if (assetKeywords != null) {
 			for (AssetKeyword assetKeyword : assetKeywords) {
-				_interestRepository.deleteByNameAndRecordedDateGreaterThanEqual(
-					assetKeyword.getKeyword(),
-					DateUtil.toUTCDate(deletionDayDateString));
+				_bqIndividualInterestScoreRepository.
+					deleteByKeywordAndRecordedDateGreaterThanEqual(
+						assetKeyword.getKeyword(),
+						DateUtil.toUTCDate(deletionDayDateString));
 			}
 		}
 	}
@@ -282,15 +283,16 @@ public class AssetDog {
 	@Autowired
 	private AssetRepository _assetRepository;
 
+	@Autowired
+	private BQIndividualInterestScoreRepository
+		_bqIndividualInterestScoreRepository;
+
 	private final DefaultFilterStringConverterHelper
 		_defaultFilterStringConverterHelper =
 			new DefaultFilterStringConverterHelper();
 	private final FaroInfoAssetFilterStringConverterHelper
 		_faroInfoAssetFilterStringConverterHelper =
 			new FaroInfoAssetFilterStringConverterHelper();
-
-	@Autowired
-	private InterestRepository _interestRepository;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

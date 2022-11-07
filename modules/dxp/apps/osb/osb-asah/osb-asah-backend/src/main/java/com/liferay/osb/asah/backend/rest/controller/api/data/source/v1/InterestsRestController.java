@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 import com.liferay.osb.asah.backend.dto.InterestTopicDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
-import com.liferay.osb.asah.common.dog.InterestDog;
+import com.liferay.osb.asah.common.dog.BQIndividualInterestScoreDog;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.entity.InterestTopic;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -80,9 +80,8 @@ public class InterestsRestController extends BaseRestController {
 		}
 
 		List<Integer> topics = _getTopics(
-			interestDog.getTopNames(
-				individual.getString("id"), "individual",
-				topicsLength * termsPerTopic * 10),
+			bqIndividualInterestScoreDog.getTopKeywords(
+				individual.getString("id"), topicsLength * termsPerTopic * 10),
 			termWeightThreshold);
 
 		if (topics.isEmpty()) {
@@ -146,7 +145,7 @@ public class InterestsRestController extends BaseRestController {
 	}
 
 	@Autowired
-	protected InterestDog interestDog;
+	protected BQIndividualInterestScoreDog bqIndividualInterestScoreDog;
 
 	private void _addTermPerTopic(
 		InterestTopic interestTopic, Map<Integer, Topic> topics) {

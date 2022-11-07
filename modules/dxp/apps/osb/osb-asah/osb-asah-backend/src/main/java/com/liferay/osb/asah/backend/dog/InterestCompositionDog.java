@@ -17,11 +17,15 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.InterestRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
+
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import org.json.JSONObject;
 
@@ -83,8 +88,8 @@ public class InterestCompositionDog {
 		List<Composition> compositions = new ArrayList<>();
 
 		List<Distribution> distributions =
-			_interestRepository.getInterestDistributions(
-				keyword, individualIds, "individual", recordedDate, score,
+			_bqIndividualInterestScoreRepository.getInterestDistributions(
+				individualIds, keyword, recordedDate, score,
 				PageRequest.of(start / size, size, sort));
 
 		if (distributions.isEmpty()) {
@@ -101,13 +106,14 @@ public class InterestCompositionDog {
 			}
 		}
 
-		long count = _interestRepository.countInterestDistributions(
-			keyword, individualIds, "individual", recordedDate, score);
+		long count =
+			_bqIndividualInterestScoreRepository.countInterestDistributions(
+				individualIds, keyword, recordedDate, score);
 
 		if (_calculateMaxCount(sort, start)) {
 			List<Distribution> distributionsList =
-				_interestRepository.getInterestDistributions(
-					keyword, individualIds, "individual", recordedDate, score,
+				_bqIndividualInterestScoreRepository.getInterestDistributions(
+					individualIds, keyword, recordedDate, score,
 					PageRequest.of(0, 1, Sort.desc("count")));
 
 			Distribution distribution = distributionsList.get(0);
@@ -124,9 +130,17 @@ public class InterestCompositionDog {
 	private List<String> _getIndividualIds(
 		boolean active, String channelId, Long segmentId) {
 
-		// TODO fetch individualIds by channelId, date and segmentId
+		Date date = null;
 
-		return Collections.emptyList();
+		if (active) {
+			LocalDateTime newDayLocalDateTime = DateUtil.newDayLocalDateTime(
+				TimeZoneDogUtil.getZoneId());
+
+			date = DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30));
+		}
+
+		return _bqIndividualDog.getBQIndividualIds(
+			NumberUtils.createLong(channelId), date, segmentId);
 	}
 
 	private Date _getLastSuccessfulDate() {
@@ -168,6 +182,10 @@ public class InterestCompositionDog {
 	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
-	private InterestRepository _interestRepository;
+	private BQIndividualDog _bqIndividualDog;
+
+	@Autowired
+	private BQIndividualInterestScoreRepository
+		_bqIndividualInterestScoreRepository;
 
 }

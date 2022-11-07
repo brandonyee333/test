@@ -47,13 +47,13 @@ import com.liferay.osb.asah.backend.model.PageMetric;
 import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQIndividualInterestScoreDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
-import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataExportTask;
-import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -437,20 +437,22 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/individuals/{individualId}/interests")
-	public ResultBagEntityModel<Interest>
+	public ResultBagEntityModel<BQIndividualInterestScore>
 		getIndividualInterestResultBagEntityModel(
 			@PathVariable String individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
-		Page<Interest> interestPage = _interestDog.getInterestPage(
-			individualId, "individual", _PAGE_SIZE, page * _PAGE_SIZE);
+		Page<BQIndividualInterestScore> bqIndividualInterestScorePage =
+			_bqIndividualInterestScoreDog.getBQIndividualInterestScorePage(
+				individualId, _PAGE_SIZE, page * _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
 			_getIndividualInterestResultBagEntityModel(individualId, page + 1),
 			page,
 			_getIndividualInterestResultBagEntityModel(individualId, page - 1),
 			new ResultBag<>(
-				interestPage.getContent(), interestPage.getTotalElements()),
+				bqIndividualInterestScorePage.getContent(),
+				bqIndividualInterestScorePage.getTotalElements()),
 			interest -> _toChildEntityModel(individualId, interest));
 	}
 
@@ -939,7 +941,7 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBagEntityModel<Interest>
+	private ResultBagEntityModel<BQIndividualInterestScore>
 		_getIndividualInterestResultBagEntityModel(
 			String individualId, Integer page) {
 
@@ -1338,6 +1340,9 @@ public class ReportRestController extends BaseRestController {
 		ReportRestController.class);
 
 	@Autowired
+	private BQIndividualInterestScoreDog _bqIndividualInterestScoreDog;
+
+	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
@@ -1351,9 +1356,6 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private HistogramDog _histogramDog;
-
-	@Autowired
-	private InterestDog _interestDog;
 
 	@Autowired
 	private MetricDog _metricDog;

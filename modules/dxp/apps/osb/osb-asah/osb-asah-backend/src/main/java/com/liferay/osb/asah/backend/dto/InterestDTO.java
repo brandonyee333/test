@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.Interest;
+import com.liferay.osb.asah.common.model.IndividualInterestScore;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Date;
@@ -37,14 +37,14 @@ public class InterestDTO {
 	public InterestDTO() {
 	}
 
-	public InterestDTO(Interest interest) {
-		_id = StringUtil.get(interest.getId(), null);
-		_name = interest.getName();
-		_ownerId = interest.getOwnerId();
-		_ownerType = interest.getOwnerType();
-		_recordedDate = interest.getRecordedDate();
-		_score = interest.getScore();
-		_views = interest.getViews();
+	public InterestDTO(IndividualInterestScore individualInterestScore) {
+		_id = StringUtil.get(individualInterestScore.getId(), null);
+		_name = individualInterestScore.getKeyword();
+		_ownerId = individualInterestScore.getIndividualId();
+		_ownerType = "individual";
+		_recordedDate = individualInterestScore.getRecordedDate();
+		_score = individualInterestScore.getInterestScore();
+		_views = null;
 	}
 
 	public InterestDTO(Set<InterestDTO> interestDTOS) {

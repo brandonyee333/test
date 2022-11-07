@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.postgresql.converter.helper;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.BQIndividualInterestScoreDog;
 import com.liferay.osb.asah.common.dog.BQOrganizationDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
-import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.entity.AsahMarker;
@@ -329,9 +329,10 @@ public class IndividualsFilterStringConverterHelper
 			return DSL.not(DSL.noCondition());
 		}
 
-		List<String> individualIds = _interestDog.getOwnerIds(
-			filterString.replaceAll(matcher.group(1), "score eq " + value),
-			IndividualIdThreadLocal.getIndividualId());
+		List<String> individualIds =
+			_bqIndividualInterestScoreDog.getIndividualIds(
+				filterString.replaceAll(matcher.group(1), "score eq " + value),
+				IndividualIdThreadLocal.getIndividualId());
 
 		if (individualIds.isEmpty()) {
 			return DSL.noCondition();
@@ -474,13 +475,13 @@ public class IndividualsFilterStringConverterHelper
 	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
+	private BQIndividualInterestScoreDog _bqIndividualInterestScoreDog;
+
+	@Autowired
 	private BQOrganizationDog _bqOrganizationDog;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private InterestDog _interestDog;
 
 	@Autowired
 	private OrganizationsFilterStringConverterHelper

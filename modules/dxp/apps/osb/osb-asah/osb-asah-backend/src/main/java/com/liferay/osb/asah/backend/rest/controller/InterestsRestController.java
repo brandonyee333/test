@@ -20,9 +20,10 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
-import com.liferay.osb.asah.common.entity.Interest;
+import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.IndividualInterestScore;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
@@ -71,7 +72,7 @@ public class InterestsRestController
 
 		return _createInterestDTO(
 			_containsPageVisited(expand), _getDaysRange(expand),
-			interestDog.getInterest(id));
+			bqIndividualInterestScoreDog.getIndividualInterestScore(id));
 	}
 
 	@Cacheable
@@ -85,7 +86,7 @@ public class InterestsRestController
 
 		return _toPageDTO(
 			expand,
-			interestDog.getInterestPage(
+			bqIndividualInterestScoreDog.getIndividualInterestScorePage(
 				filterString, _getScore(), page, size, sorts));
 	}
 
@@ -121,7 +122,8 @@ public class InterestsRestController
 			"_embedded",
 			JSONUtil.put(
 				"interest-transformations",
-				interestDog.getTransformations(apply, filterString, page, size))
+				bqIndividualInterestScoreDog.getTransformations(
+					apply, filterString, page, size))
 		).put(
 			"page", getPageJSONObject(page, size, size)
 		).toString();
@@ -140,9 +142,10 @@ public class InterestsRestController
 
 	@NotNull
 	private InterestDTO _createInterestDTO(
-		boolean addPageVisited, int days, Interest interest) {
+		boolean addPageVisited, int days,
+		IndividualInterestScore individualInterestScore) {
 
-		InterestDTO interestDTO = new InterestDTO(interest);
+		InterestDTO interestDTO = new InterestDTO(individualInterestScore);
 
 		Map<String, Object> embedded = new HashMap<>();
 
@@ -153,8 +156,9 @@ public class InterestsRestController
 			embedded.put(
 				"interest-aggregation-last-" + days + "-days",
 				_getInterestAggregations(
-					endDayLocalDateTime, interest.getName(),
-					interest.getOwnerId(), interest.getOwnerType(),
+					endDayLocalDateTime,
+					individualInterestScore.getIndividualId(),
+					individualInterestScore.getKeyword(),
 					endDayLocalDateTime.plusDays(1 - days)));
 		}
 
@@ -171,7 +175,7 @@ public class InterestsRestController
 	}
 
 	private Set<InterestDTO> _createInterestDTOs(
-		String expand, List<Interest> interests) {
+		String expand, List<IndividualInterestScore> individualInterestScores) {
 
 		int days = _getDaysRange(expand);
 
@@ -179,9 +183,12 @@ public class InterestsRestController
 
 		Set<InterestDTO> interestDTOs = new LinkedHashSet<>();
 
-		for (Interest interest : interests) {
+		for (IndividualInterestScore individualInterestScore :
+				individualInterestScores) {
+
 			interestDTOs.add(
-				_createInterestDTO(addPageVisited, days, interest));
+				_createInterestDTO(
+					addPageVisited, days, individualInterestScore));
 		}
 
 		return interestDTOs;
@@ -211,37 +218,45 @@ public class InterestsRestController
 	}
 
 	private List<Map<String, Object>> _getInterestAggregations(
-		LocalDateTime endDayLocalDateTime, String name, String ownerId,
-		String ownerType, LocalDateTime startDayLocalDateTime) {
+		LocalDateTime endDayLocalDateTime, String individualId, String keyword,
+		LocalDateTime startDayLocalDateTime) {
 
 		List<Map<String, Object>> interestAggregations = new ArrayList<>();
 
-		List<Interest> interests = interestDog.getInterests(
-			name, ownerId, ownerType, DateUtil.toUTCDate(startDayLocalDateTime),
-			DateUtil.toUTCDate(endDayLocalDateTime));
+		List<BQIndividualInterestScore> bqIndividualInterestScores =
+			bqIndividualInterestScoreDog.getBQIndividualInterestScores(
+				individualId, keyword,
+				DateUtil.toUTCDate(startDayLocalDateTime),
+				DateUtil.toUTCDate(endDayLocalDateTime));
 
-		Map<LocalDateTime, Interest> interestMap = new HashMap<>();
+		Map<LocalDateTime, BQIndividualInterestScore>
+			bqIndividualInterestScoreMap = new HashMap<>();
 
-		for (Interest interest : interests) {
-			interestMap.put(
+		for (BQIndividualInterestScore bqIndividualInterestScore :
+				bqIndividualInterestScores) {
+
+			bqIndividualInterestScoreMap.put(
 				DateUtil.toLocalDateTime(
-					interest.getRecordedDate(), TimeZoneDogUtil.getZoneId()),
-				interest);
+					bqIndividualInterestScore.getRecordedDate(),
+					TimeZoneDogUtil.getZoneId()),
+				bqIndividualInterestScore);
 		}
 
 		LocalDateTime currentDayLocalDateTime = startDayLocalDateTime;
 
 		while (currentDayLocalDateTime.compareTo(endDayLocalDateTime) <= 0) {
-			Interest interest = interestMap.get(currentDayLocalDateTime);
+			BQIndividualInterestScore bqIndividualInterestScore =
+				bqIndividualInterestScoreMap.get(currentDayLocalDateTime);
 
 			Map<String, Object> item = new HashMap<>();
 
 			item.put("intervalInitDate", currentDayLocalDateTime.toString());
 
-			if (interest != null) {
-				item.put("scoreAvg", interest.getScore());
+			if (bqIndividualInterestScore != null) {
+				item.put(
+					"scoreAvg", bqIndividualInterestScore.getInterestScore());
 				item.put("totalElements", 1);
-				item.put("viewsSum", interest.getViews());
+				item.put("viewsSum", 0);
 			}
 			else {
 				item.put("scoreAvg", 0.0);
@@ -276,21 +291,24 @@ public class InterestsRestController
 	}
 
 	private PageDTO<InterestDTO> _toPageDTO(
-		InterestDTO interestDTO, Page<Interest> interestPage) {
+		InterestDTO interestDTO,
+		Page<IndividualInterestScore> individualInterestScores) {
 
 		return new PageDTO<>(
-			"_embedded", interestDTO, interestPage.getNumber(),
-			interestPage.getSize(), interestPage.getTotalElements(),
-			interestPage.getTotalPages());
+			"_embedded", interestDTO, individualInterestScores.getNumber(),
+			individualInterestScores.getSize(),
+			individualInterestScores.getTotalElements(),
+			individualInterestScores.getTotalPages());
 	}
 
 	private PageDTO<InterestDTO> _toPageDTO(
-		String expand, Page<Interest> interestPage) {
+		String expand, Page<IndividualInterestScore> individualInterestScores) {
 
 		return _toPageDTO(
 			new InterestDTO(
-				_createInterestDTOs(expand, interestPage.getContent())),
-			interestPage);
+				_createInterestDTOs(
+					expand, individualInterestScores.getContent())),
+			individualInterestScores);
 	}
 
 	@Autowired

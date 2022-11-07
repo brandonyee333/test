@@ -16,8 +16,8 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
+import com.liferay.osb.asah.common.dog.BQIndividualInterestScoreDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
-import com.liferay.osb.asah.common.dog.InterestDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
 
 import java.util.regex.Pattern;
@@ -40,10 +40,10 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
-	private DXPEntityDog _dxpEntityDog;
+	private BQIndividualInterestScoreDog _bqIndividualInterestScoreDog;
 
 	@Autowired
-	private InterestDog _interestDog;
+	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private UserSessionDog _userSessionDog;
