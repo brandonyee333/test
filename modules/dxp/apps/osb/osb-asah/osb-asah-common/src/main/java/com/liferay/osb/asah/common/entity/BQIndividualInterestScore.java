@@ -38,12 +38,12 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcellus Tavares
  */
 @Table
-public class Interest implements Persistable<Long> {
+public class BQIndividualInterestScore implements Persistable<Long> {
 
-	public Interest() {
+	public BQIndividualInterestScore() {
 	}
 
-	public Interest(Map<String, Object> source) {
+	public BQIndividualInterestScore(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
 	}
 
@@ -53,20 +53,14 @@ public class Interest implements Persistable<Long> {
 			return true;
 		}
 
-		if ((obj == null) || !(obj instanceof Interest)) {
+		if (!(obj instanceof BQIndividualInterestScore)) {
 			return false;
 		}
 
-		Interest interest = (Interest)obj;
+		BQIndividualInterestScore bqIndividualInterestScore =
+			(BQIndividualInterestScore)obj;
 
-		if (Objects.equals(_id, interest._id) &&
-			Objects.equals(_name, interest._name) &&
-			Objects.equals(_ownerId, interest._ownerId) &&
-			Objects.equals(_ownerType, interest._ownerType) &&
-			Objects.equals(_recordedDate, interest._recordedDate) &&
-			Objects.equals(_score, interest._score) &&
-			Objects.equals(_views, interest._views)) {
-
+		if (Objects.equals(_id, bqIndividualInterestScore._id)) {
 			return true;
 		}
 
@@ -82,19 +76,18 @@ public class Interest implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getName() {
-		return _name;
+	public String getIdentityId() {
+		return _identityId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
-	public String getOwnerId() {
-		return _ownerId;
+	public Double getInterestScore() {
+		return _interestScore;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getOwnerType() {
-		return _ownerType;
+	public String getKeyword() {
+		return _keyword;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -112,20 +105,10 @@ public class Interest implements Persistable<Long> {
 		return new Date(_recordedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	public Double getScore() {
-		return _score;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Long getViews() {
-		return _views;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _name, _ownerId, _ownerType, _recordedDate, _score, _views);
+			_id, _identityId, _interestScore, _keyword, _recordedDate);
 	}
 
 	@JsonIgnore
@@ -142,20 +125,20 @@ public class Interest implements Persistable<Long> {
 		_id = id;
 	}
 
+	public void setIdentityId(String identityId) {
+		_identityId = identityId;
+	}
+
+	public void setInterestScore(Double interestScore) {
+		_interestScore = interestScore;
+	}
+
 	public void setIsNew(boolean isNew) {
 		_isNew = isNew;
 	}
 
-	public void setName(String name) {
-		_name = name;
-	}
-
-	public void setOwnerId(String ownerId) {
-		_ownerId = ownerId;
-	}
-
-	public void setOwnerType(String ownerType) {
-		_ownerType = ownerType;
+	public void setKeyword(String keyword) {
+		_keyword = keyword;
 	}
 
 	public void setRecordedDate(Date recordedDate) {
@@ -164,36 +147,22 @@ public class Interest implements Persistable<Long> {
 		}
 	}
 
-	public void setScore(Double score) {
-		_score = score;
-	}
-
-	public void setViews(Long views) {
-		_views = views;
-	}
-
 	@Transient
 	private Long _id;
+
+	@Transient
+	private String _identityId;
+
+	@Transient
+	private Double _interestScore;
 
 	@Transient
 	private Boolean _isNew;
 
 	@Transient
-	private String _name;
-
-	@Transient
-	private String _ownerId;
-
-	@Transient
-	private String _ownerType;
+	private String _keyword;
 
 	@Transient
 	private Date _recordedDate;
-
-	@Transient
-	private Double _score;
-
-	@Transient
-	private Long _views;
 
 }
