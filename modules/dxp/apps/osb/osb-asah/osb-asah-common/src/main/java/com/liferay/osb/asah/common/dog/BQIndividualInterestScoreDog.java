@@ -16,9 +16,10 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.entity.Interest;
+import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.model.IndividualInterestScore;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.InterestRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -41,21 +42,54 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class InterestDog {
+public class BQIndividualInterestScoreDog {
 
-	public void deleteInterests(List<String> ownerIds, String ownerType) {
-		_interestRepository.deleteByOwnerIdInAndOwnerType(ownerIds, ownerType);
+	public void deleteBQIndividualInterestScores(List<String> individualIds) {
+		_bqIndividualInterestScoreRepository.deleteByIndividualIdIn(
+			individualIds);
 	}
 
-	public Interest getInterest(Long id) {
-		Optional<Interest> interestOptional = _interestRepository.findById(id);
+	public Page<BQIndividualInterestScore> getBQIndividualInterestScorePage(
+		String individualId, int size, int start) {
+
+		return PageableExecutionUtils.getPage(
+			_bqIndividualInterestScoreRepository.findByIndividualId(
+				individualId, PageRequest.of(start / size, size)),
+			PageRequest.of(start / size, size),
+			() -> _bqIndividualInterestScoreRepository.countByIndividualId(
+				individualId));
+	}
+
+	public List<BQIndividualInterestScore> getBQIndividualInterestScores(
+		String individualId, String keyword, Date fromRecordedDate,
+		Date toRecordedDate) {
+
+		return _bqIndividualInterestScoreRepository.
+			findByIndividualIdAndKeywordAndRecordedDateBetween(
+				individualId, keyword, fromRecordedDate, toRecordedDate);
+	}
+
+	public List<String> getIndividualIds(
+		String filterString, String individualId) {
+
+		return _bqIndividualInterestScoreRepository.
+			findIndividualIdsByFilterStringAndIndividualId(
+				new FilterHelper(
+					null, filterString, _interestFilterStringConverterHelper),
+				individualId);
+	}
+
+	public IndividualInterestScore getIndividualInterestScore(Long id) {
+		Optional<IndividualInterestScore> interestOptional =
+			_bqIndividualInterestScoreRepository.
+				findIndividualInterestScoreById(id);
 
 		return interestOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "There is no interest with ID " + id));
 	}
 
-	public Page<Interest> getInterestPage(
+	public Page<IndividualInterestScore> getIndividualInterestScorePage(
 		String filterString, Double score, int page, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(
@@ -65,46 +99,19 @@ public class InterestDog {
 			null, filterString, new InterestFilterStringConverterHelper());
 
 		return PageableExecutionUtils.getPage(
-			_interestRepository.findByFilterStringAndScoreGreaterThanEqual(
-				filterHelper, score, pageRequest),
+			_bqIndividualInterestScoreRepository.
+				findByFilterStringAndScoreGreaterThanEqual(
+					filterHelper, score, pageRequest),
 			pageRequest,
 			() ->
-				_interestRepository.countByFilterStringAndScoreGreaterThanEqual(
-					filterHelper, score));
+				_bqIndividualInterestScoreRepository.
+					countByFilterStringAndScoreGreaterThanEqual(
+						filterHelper, score));
 	}
 
-	public Page<Interest> getInterestPage(
-		String ownerId, String ownerType, int size, int start) {
-
-		return PageableExecutionUtils.getPage(
-			_interestRepository.findByOwnerIdAndOwnerType(
-				ownerId, ownerType, PageRequest.of(start / size, size)),
-			PageRequest.of(start / size, size),
-			() -> _interestRepository.countByOwnerIdAndOwnerType(
-				ownerId, ownerType));
-	}
-
-	public List<Interest> getInterests(
-		String name, String ownerId, String ownerType, Date fromRecordedDate,
-		Date toRecordedDate) {
-
-		return _interestRepository.
-			findByNameAndOwnerIdAndOwnerTypeAndRecordedDateBetween(
-				name, ownerId, ownerType, fromRecordedDate, toRecordedDate);
-	}
-
-	public List<String> getOwnerIds(String filterString, String ownerId) {
-		return _interestRepository.findOwnerIdsByFilterStringAndOwnerId(
-			new FilterHelper(
-				null, filterString, _interestFilterStringConverterHelper),
-			ownerId);
-	}
-
-	public List<String> getTopNames(
-		String ownerId, String ownerType, int size) {
-
-		return _interestRepository.getTopNamesByOwnerIdAndOwnerType(
-			ownerId, ownerType, size);
+	public List<String> getTopKeywords(String individualId, int size) {
+		return _bqIndividualInterestScoreRepository.
+			getTopKeywordsByIndividualId(individualId, size);
 	}
 
 	public JSONArray getTransformations(
@@ -134,7 +141,7 @@ public class InterestDog {
 		Date fromDate = DateUtil.addDays(toDate, 1 - size);
 
 		return new JSONArray(
-			_interestRepository.getTransformations(
+			_bqIndividualInterestScoreRepository.getTransformations(
 				fromDate,
 				new FilterHelper(
 					null, filterString,
@@ -149,6 +156,7 @@ public class InterestDog {
 		"compute\\((?<period>\\w+)\\((?<fieldName>\\w+)\\)\\)");
 
 	@Autowired
-	private InterestRepository _interestRepository;
+	private BQIndividualInterestScoreRepository
+		_bqIndividualInterestScoreRepository;
 
 }
