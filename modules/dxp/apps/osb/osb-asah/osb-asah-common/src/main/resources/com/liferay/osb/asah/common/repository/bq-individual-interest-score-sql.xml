@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="BQIndividualInterestScore.deleteByKeywordAndRecordedDateGreaterThanEqual">
+		<![CDATA[
+			DELETE FROM
+				BQIndividualInterestScore
+			WHERE
+				keyword = :keyword AND
+				recordedDate >= :recordedDate
+		]]>
+	</entry>
+	<entry key="BQIndividualInterestScore.deleteByRecordedDate">
+		<![CDATA[
+			DELETE FROM
+				BQIndividualInterestScore
+			WHERE
+				recordedDate = :recordedDate
+		]]>
+	</entry>
+	<entry key="BQIndividualInterestScore.deleteByRecordedDateLessThanEqual">
+		<![CDATA[
+			DELETE FROM
+				BQIndividualInterestScore
+			WHERE
+				recordedDate <= :recordedDate
+		]]>
+	</entry>
+</properties>
