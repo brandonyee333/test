@@ -536,7 +536,7 @@ public class BQEventRepositoryImpl
 	@Override
 	public List<SearchKeyword> getSearchKeywords(
 		@Nullable String displayLanguageId, @Nullable String groupId,
-		int minCounts, Pageable pageable, Set<String> searchQueryStrings) {
+		int minCounts, Pageable pageable, Set<String> searchQueryParams) {
 
 		return _queryExecutor.queryForList(
 			recordMap -> {
@@ -583,7 +583,7 @@ public class BQEventRepositoryImpl
 					"groupid"
 				),
 				DSL.field(
-					_getKeywordsField(searchQueryStrings)
+					_getKeywordsField(searchQueryParams)
 				).as(
 					"keywords"
 				),
@@ -596,12 +596,11 @@ public class BQEventRepositoryImpl
 				DSL.table("BQEvent")
 			).where(
 				_createCondition(
-					displayLanguageId, groupId, minCounts, searchQueryStrings)
+					displayLanguageId, groupId, minCounts, searchQueryParams)
 			).groupBy(
 				DSL.field("displaylanguageid"), DSL.field("groupid"),
 				_dslHelper.getField(
-					DSL.field("keywords"),
-					_getKeywordsField(searchQueryStrings))
+					DSL.field("keywords"), _getKeywordsField(searchQueryParams))
 			).orderBy(
 				getSortFields(pageable.getSort(), null)
 			).limit(
@@ -614,7 +613,7 @@ public class BQEventRepositoryImpl
 	@Override
 	public long getSearchKeywordsCount(
 		@Nullable String displayLanguageId, @Nullable String groupId,
-		int minCounts, Set<String> searchQueryStrings) {
+		int minCounts, Set<String> searchQueryParams) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -633,7 +632,7 @@ public class BQEventRepositoryImpl
 						"groupid"
 					),
 					DSL.field(
-						_getKeywordsField(searchQueryStrings)
+						_getKeywordsField(searchQueryParams)
 					).as(
 						"keywords"
 					)
@@ -642,18 +641,18 @@ public class BQEventRepositoryImpl
 				).where(
 					_createCondition(
 						displayLanguageId, groupId, minCounts,
-						searchQueryStrings)
+						searchQueryParams)
 				).groupBy(
 					DSL.field("displaylanguageid"), DSL.field("groupid"),
 					_dslHelper.getField(
 						DSL.field("keywords"),
-						_getKeywordsField(searchQueryStrings))
+						_getKeywordsField(searchQueryParams))
 				)));
 	}
 
 	@Override
 	public Map<String, BigDecimal> getSearchTerms(
-		Long channelId, String[] searchQueryStrings, int size, int start,
+		Long channelId, String[] searchQueryParams, int size, int start,
 		TimeRange timeRange, String timeZoneId) {
 
 		Field<String> searchTermField = DSL.function(
@@ -692,7 +691,7 @@ public class BQEventRepositoryImpl
 
 	@Override
 	public long getSearchTermsCount(
-		Long channelId, String[] searchQueryStrings, TimeRange timeRange,
+		Long channelId, String[] searchQueryParams, TimeRange timeRange,
 		String timeZoneId) {
 
 		Field<String> searchTermField = DSL.function(
@@ -918,7 +917,7 @@ public class BQEventRepositoryImpl
 
 	private Condition _createCondition(
 		@Nullable String displayLanguageId, @Nullable String groupId,
-		int minCounts, Set<String> searchQueryStrings) {
+		int minCounts, Set<String> searchQueryParams) {
 
 		Condition condition = DSL.and(
 			DSL.field(
@@ -928,8 +927,7 @@ public class BQEventRepositoryImpl
 			),
 			_dslHelper.regexpContains(
 				"url",
-				"[?&](?:" + String.join("|", searchQueryStrings) +
-					")=([^&]+)"));
+				"[?&](?:" + String.join("|", searchQueryParams) + ")=([^&]+)"));
 
 		if (Objects.nonNull(displayLanguageId)) {
 			condition = condition.and(
@@ -1498,12 +1496,11 @@ public class BQEventRepositoryImpl
 		return "BQEvent.individualId";
 	}
 
-	private Field<String> _getKeywordsField(Set<String> searchQueryStrings) {
+	private Field<String> _getKeywordsField(Set<String> searchQueryParams) {
 		return DSL.lower(
 			_dslHelper.regexpExtract(
 				_dslHelper.regexpReplace("url", "(?:%20|\\s)", "+"),
-				"[?&](?:" + String.join("|", searchQueryStrings) +
-					")=([^&]+)"));
+				"[?&](?:" + String.join("|", searchQueryParams) + ")=([^&]+)"));
 	}
 
 	private Field _getSelectField(
