@@ -17,12 +17,12 @@ package com.liferay.osb.asah.test.util.faro;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
+import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Experiment;
-import com.liferay.osb.asah.common.entity.Interest;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
@@ -169,6 +169,42 @@ public class FaroInfoTestUtil {
 		bqCSVUser.setIsNew(Boolean.TRUE);
 
 		return bqCSVUser;
+	}
+
+	public static List<BQIndividualInterestScore>
+		buildBQIndividualInterestScores(
+			String identityId, JSONArray keywordsJSONArray, Date recordedDate,
+			double score) {
+
+		List<BQIndividualInterestScore> bqIndividualInterestScores =
+			new ArrayList<>();
+
+		for (int i = 0; i < keywordsJSONArray.length(); i++) {
+			JSONObject keywordJSONObject = keywordsJSONArray.getJSONObject(i);
+			BQIndividualInterestScore bqIndividualInterestScore =
+				new BQIndividualInterestScore();
+
+			bqIndividualInterestScore.setIdentityId(identityId);
+			bqIndividualInterestScore.setIsNew(Boolean.TRUE);
+			bqIndividualInterestScore.setKeyword(
+				keywordJSONObject.getString("keyword"));
+			bqIndividualInterestScore.setRecordedDate(recordedDate);
+			bqIndividualInterestScore.setInterestScore(score);
+
+			bqIndividualInterestScores.add(bqIndividualInterestScore);
+		}
+
+		return bqIndividualInterestScores;
+	}
+
+	public static List<BQIndividualInterestScore>
+		buildBQIndividualInterestScores(
+			String identityId, JSONObject assetJSONObject, Date recordedDate,
+			double score) {
+
+		return buildBQIndividualInterestScores(
+			identityId, assetJSONObject.getJSONArray("keywords"), recordedDate,
+			score);
 	}
 
 	public static BQMembership buildBQMembership(
@@ -406,16 +442,6 @@ public class FaroInfoTestUtil {
 		return field;
 	}
 
-	public static List<Interest> buildIndividualInterests(
-		JSONObject assetJSONObject, Long individualId, Date recordedDate,
-		double score, Long views) {
-
-		return buildInterests(
-			assetJSONObject.getJSONArray("keywords"),
-			String.valueOf(individualId), "individual", recordedDate, score,
-			views);
-	}
-
 	public static JSONArray buildIndividualSegmentVisitedPagesJSONArray(
 		JSONObject assetJSONObject, String dayDateString,
 		Long individualSegmentId, int uniqueVisitsCount) {
@@ -432,30 +458,6 @@ public class FaroInfoTestUtil {
 		return buildVisitedPagesJSONArray(
 			assetJSONObject, dayDateString, individualId, "individual",
 			uniqueVisitsCount);
-	}
-
-	public static List<Interest> buildInterests(
-		JSONArray keywordsJSONArray, String ownerId, String ownerType,
-		Date recordedDate, double score, Long views) {
-
-		List<Interest> interests = new ArrayList<>();
-
-		for (int i = 0; i < keywordsJSONArray.length(); i++) {
-			JSONObject keywordJSONObject = keywordsJSONArray.getJSONObject(i);
-			Interest interest = new Interest();
-
-			interest.setIsNew(Boolean.TRUE);
-			interest.setName(keywordJSONObject.getString("keyword"));
-			interest.setOwnerId(ownerId);
-			interest.setOwnerType(ownerType);
-			interest.setRecordedDate(recordedDate);
-			interest.setScore(score);
-			interest.setViews(views);
-
-			interests.add(interest);
-		}
-
-		return interests;
 	}
 
 	public static DataSource buildLiferayDataSource() {

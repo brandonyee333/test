@@ -31,11 +31,11 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
@@ -528,7 +528,7 @@ public class IndividualsFilterStringConverterHelperTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = InterestRepository.class,
+		repositoryClass = BQIndividualInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
@@ -575,7 +575,7 @@ public class IndividualsFilterStringConverterHelperTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = InterestRepository.class,
+		repositoryClass = BQIndividualInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test

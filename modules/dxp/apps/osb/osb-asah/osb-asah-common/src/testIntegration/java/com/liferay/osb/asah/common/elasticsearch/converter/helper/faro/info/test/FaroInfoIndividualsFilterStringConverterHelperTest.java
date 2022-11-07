@@ -22,12 +22,12 @@ import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.common.repository.InterestRepository;
 import com.liferay.osb.asah.common.util.IndividualIdThreadLocal;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
@@ -546,7 +546,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = InterestRepository.class,
+		repositoryClass = BQIndividualInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
@@ -597,7 +597,7 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = InterestRepository.class,
+		repositoryClass = BQIndividualInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
