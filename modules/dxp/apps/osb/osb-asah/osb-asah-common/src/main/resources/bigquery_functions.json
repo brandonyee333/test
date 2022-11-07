@@ -1,5 +1,5 @@
 {
-	"getQueryParam": {
-		"path": "function_get_query_param.sql"
+	"searchTerm": {
+		"path": "function_search_term.sql"
 	}
 }

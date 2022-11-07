@@ -657,8 +657,8 @@ public class BQEventRepositoryImpl
 		TimeRange timeRange, String timeZoneId) {
 
 		Field<String> searchTermField = DSL.function(
-			"getSearchTerm", String.class, DSL.field("url"),
-			DSL.array(searchQueryStrings));
+			"SEARCH_TERM", String.class, DSL.array(searchQueryParams),
+			DSL.field("url"));
 
 		Field<BigDecimal> countField = DSL.count(
 			DSL.asterisk()
@@ -696,8 +696,8 @@ public class BQEventRepositoryImpl
 		String timeZoneId) {
 
 		Field<String> searchTermField = DSL.function(
-			"getSearchTerm", String.class, DSL.field("url"),
-			DSL.array(searchQueryStrings));
+			"SEARCH_TERM", String.class, DSL.array(searchQueryParams),
+			DSL.field("url"));
 
 		return _queryExecutor.queryForLong(
 			_dslContext.with(
