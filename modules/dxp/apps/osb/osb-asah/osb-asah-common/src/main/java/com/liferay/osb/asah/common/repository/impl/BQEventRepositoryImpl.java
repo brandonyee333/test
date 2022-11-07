@@ -672,11 +672,10 @@ public class BQEventRepositoryImpl
 			).from(
 				"BQEvent"
 			).where(
-				DSL.and(
-					_createCondition(
-						channelId, null, null, timeRange.getEndLocalDateTime(),
-						timeRange.getStartLocalDateTime(), timeZoneId),
-					searchTermField.isNotNull())
+				_createSearchTermsCondition(
+					channelId, timeRange.getEndLocalDateTime(),
+					timeRange.getStartLocalDateTime(), searchTermField,
+					timeZoneId)
 			).groupBy(
 				searchTermField
 			).orderBy(
@@ -707,12 +706,10 @@ public class BQEventRepositoryImpl
 				).from(
 					"BQEvent"
 				).where(
-					DSL.and(
-						_createCondition(
-							channelId, null, null,
-							timeRange.getEndLocalDateTime(),
-							timeRange.getStartLocalDateTime(), timeZoneId),
-						searchTermField.isNotNull())
+					_createSearchTermsCondition(
+						channelId, timeRange.getEndLocalDateTime(),
+						timeRange.getStartLocalDateTime(), searchTermField,
+						timeZoneId)
 				).groupBy(
 					searchTermField
 				)
@@ -831,6 +828,39 @@ public class BQEventRepositoryImpl
 		}
 
 		return selectJoinStep;
+	}
+
+
+	private Condition _createSearchTermsCondition(
+		Long channelId, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime, Field<String> searchTermField,
+		String timeZoneId) {
+
+		return DSL.and(
+			DSL.field(
+				"BQEvent.applicationId"
+			).eq(
+				"Page"
+			),
+			DSL.field(
+				"BQEvent.channelId"
+			).eq(
+				channelId
+			),
+			DSL.field(
+				"BQEvent.eventDate"
+			).between(
+				_dslHelper.getDateParam(
+					rangeStartLocalDateTime, timeZoneId),
+				_dslHelper.getDateParam(
+					rangeEndLocalDateTime, timeZoneId)
+			),
+			DSL.field(
+				"BQEvent.eventId"
+			).eq(
+				"pageViewed"
+			),
+			searchTermField.isNotNull());
 	}
 
 	private Condition _createCondition(
