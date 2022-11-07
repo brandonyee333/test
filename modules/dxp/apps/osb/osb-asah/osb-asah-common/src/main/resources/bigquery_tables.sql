@@ -175,14 +175,12 @@ CREATE TABLE IF NOT EXISTS BQIndividual (
 	screenName TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Interest (
-	id BIGSERIAL PRIMARY KEY,
-	name TEXT,
-	ownerId TEXT,
-	ownerType TEXT,
-	recordedDate TIMESTAMPTZ,
-	score DOUBLE PRECISION,
-	views BIGINT
+CREATE TABLE IF NOT EXISTS BQIndividualInterestScore (
+    id BIGSERIAL PRIMARY KEY,
+    identityId TEXT,
+    interestScore DOUBLE PRECISION,
+    keyword TEXT,
+    recordedDate TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS BQMembership (

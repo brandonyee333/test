@@ -1250,16 +1250,11 @@
 			"type": "DAY"
 		}
 	},
-	"interest": {
+	"individualinterestscore": {
 		"clusteringFields": [
 			"channelId"
 		],
 		"fields": [
-			{
-				"mode": "REQUIRED",
-				"name": "channelId",
-				"type": "INT64"
-			},
 			{
 				"mode": "REQUIRED",
 				"name": "id",
@@ -1267,33 +1262,23 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "name",
+				"name": "identityId",
 				"type": "STRING"
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "ownerId",
-				"type": "STRING"
+				"name": "interestScore",
+				"type": "FLOAT64"
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "ownerType",
+				"name": "keyword",
 				"type": "STRING"
 			},
 			{
 				"mode": "REQUIRED",
 				"name": "recordedDate",
 				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "score",
-				"type": "FLOAT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "views",
-				"type": "INT64"
 			}
 		]
 	},
