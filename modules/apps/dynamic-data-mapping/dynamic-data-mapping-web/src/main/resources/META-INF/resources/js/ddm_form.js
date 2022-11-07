@@ -128,6 +128,8 @@ AUI.add(
 
 			p_l_id: {},
 
+			portletId: {},
+
 			portletNamespace: {},
 		};
 
@@ -238,6 +240,7 @@ AUI.add(
 					p_p_resource_id:
 						'/dynamic_data_mapping/render_structure_field',
 					p_p_state: 'pop_up',
+					portletId: instance.get('portletId'),
 					portletNamespace: instance.get('portletNamespace'),
 					readOnly: instance.get('readOnly'),
 				};
