@@ -121,12 +121,12 @@ public class JIRAHttpUtil {
 	}
 
 	private static String _getCredentials() {
-		String jiraUserNameAndJiraPassword =
+		String jiraUserNameAndJiraApiToken =
 			JIRARESTConnectorConfigurationValues.JIRA_USER_NAME +
 				StringPool.COLON +
-					JIRARESTConnectorConfigurationValues.JIRA_USER_PASSWORD;
+					JIRARESTConnectorConfigurationValues.JIRA_API_TOKEN;
 
-		return "Basic " + Base64.encode(jiraUserNameAndJiraPassword.getBytes());
+		return "Basic " + Base64.encode(jiraUserNameAndJiraApiToken.getBytes());
 	}
 
 	private static String _send(String body, Http.Options options)

@@ -21,13 +21,13 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class JIRARESTConnectorConfigurationValues {
 
+	public static final String JIRA_API_TOKEN = GetterUtil.getString(
+		JIRARESTConnectorConfigurationUtil.get("jira.api.token"));
+
 	public static final String JIRA_DOMAIN_NAME = GetterUtil.getString(
 		JIRARESTConnectorConfigurationUtil.get("jira.domain.name"));
 
 	public static final String JIRA_USER_NAME = GetterUtil.getString(
 		JIRARESTConnectorConfigurationUtil.get("jira.user.name"));
-
-	public static final String JIRA_USER_PASSWORD = GetterUtil.getString(
-		JIRARESTConnectorConfigurationUtil.get("jira.user.password"));
 
 }
