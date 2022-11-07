@@ -38,6 +38,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record11;
+import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectForStep;
 import org.jooq.SelectForUpdateStep;
@@ -90,6 +91,85 @@ public class BQIndividualRepositoryImpl
 		}
 
 		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
+	}
+
+	@Override
+	public List<String>
+		findBQIndividualIdsByChannelIdAndLastActivityDateAndSegmentId(
+			Long channelId, Date lastActivityDate, Long segmentId) {
+
+		SelectSelectStep<Record1<String>> selectSelectStep = _dslContext.select(
+			DSL.field(
+				"BQIndividual.id", String.class
+			).as(
+				"id"
+			));
+
+		SelectJoinStep<Record1<String>> selectJoinStep = selectSelectStep.from(
+			DSL.table("BQIndividual"));
+
+		selectJoinStep = selectJoinStep.join(
+			DSL.table("BQIdentityActivity")
+		).on(
+			DSL.field(
+				"BQIndividual.id"
+			).eq(
+				DSL.field("BQIdentityActivity.individualId")
+			)
+		);
+
+		if (lastActivityDate != null) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table("BQIdentityChannel")
+			).on(
+				DSL.field(
+					"BQIndividual.id"
+				).eq(
+					DSL.field("BQIdentityChannel.individualId")
+				)
+			);
+		}
+
+		if (segmentId != null) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table("BQMembership")
+			).on(
+				DSL.field(
+					"BQIndividual.id"
+				).eq(
+					DSL.field("BQMembership.individualId")
+				)
+			);
+		}
+
+		SelectConditionStep<Record1<String>> selectConditionStep =
+			selectJoinStep.where(
+				DSL.field(
+					"BQIdentityActivity.channelId"
+				).eq(
+					channelId
+				));
+
+		if (lastActivityDate != null) {
+			selectConditionStep = selectConditionStep.and(
+				DSL.field(
+					"BQIdentityChannel.lastActivityDate"
+				).gt(
+					_dslHelper.getDateValue(lastActivityDate)
+				));
+		}
+
+		if (segmentId != null) {
+			selectConditionStep = selectConditionStep.and(
+				DSL.field(
+					"BQMembership.segmentId"
+				).eq(
+					segmentId
+				));
+		}
+
+		return _queryExecutor.queryForList(
+			record -> (String)record.get("id"), selectConditionStep);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,10 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
 		@Nullable String query, @Nullable Long segmentId);
+
+	public List<String>
+		findBQIndividualIdsByChannelIdAndLastActivityDateAndSegmentId(
+			Long channelId, Date lastActivityDate, Long segmentId);
 
 	public Optional<Individual> findByChannelIdAndId(
 		@Nullable Long channelId, String id);
