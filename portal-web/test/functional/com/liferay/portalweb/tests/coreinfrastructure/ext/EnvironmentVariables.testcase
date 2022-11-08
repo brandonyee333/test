@@ -20,6 +20,15 @@ definition {
 	}
 
 	@priority = "4"
+	test ConfigurePortalExtPropertyViaJVM {
+		property test.environment.variables = "LIFERAY_PROPS_BY_COMPANY_20097=feature.flag.COMMERCE-8087=true${line.separator}CATALINA_OPTS=\"$CATALINA_OPTS -Dcompany-id-properties=true\"";
+
+		ImportExport.openImportExportAdmin();
+
+		ImportExport.gotoImport();
+	}
+
+	@priority = "4"
 	test ConfigurePortalExtPropertyViaSystemExt {
 		property custom.system.properties = "company-id-properties=true";
 		property test.environment.variables = "LIFERAY_PROPS_BY_COMPANY_20097=feature.flag.COMMERCE-8087=true";
