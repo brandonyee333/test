@@ -39,6 +39,7 @@ public class AnalyticsEvent {
 		context = new HashMap(analyticsEvent.context);
 		createDate = analyticsEvent.createDate;
 		dataSourceId = analyticsEvent.dataSourceId;
+		emailAddressHashed = analyticsEvent.emailAddressHashed;
 		eventDate = analyticsEvent.eventDate;
 		eventId = analyticsEvent.eventId;
 		eventProperties = new HashMap(analyticsEvent.eventProperties);
