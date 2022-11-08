@@ -81,6 +81,8 @@ public class AnalyticsEvent implements Serializable {
 			Objects.equals(_context, analyticsEvent._context) &&
 			Objects.equals(_createDate, analyticsEvent._createDate) &&
 			Objects.equals(_dataSourceId, analyticsEvent._dataSourceId) &&
+			Objects.equals(
+				_emailAddressHashed, analyticsEvent._emailAddressHashed) &&
 			Objects.equals(_eventDate, analyticsEvent._eventDate) &&
 			Objects.equals(_eventId, analyticsEvent._eventId) &&
 			Objects.equals(_eventProperties, analyticsEvent._eventProperties) &&
@@ -126,6 +128,10 @@ public class AnalyticsEvent implements Serializable {
 
 	public String getDataSourceId() {
 		return _dataSourceId;
+	}
+
+	public String getEmailAddressHashed() {
+		return _emailAddressHashed;
 	}
 
 	@JsonFormat(
@@ -188,8 +194,8 @@ public class AnalyticsEvent implements Serializable {
 	public int hashCode() {
 		return Objects.hash(
 			_applicationId, _channelId, _clientIP, _id, _context, _createDate,
-			_dataSourceId, _eventDate, _eventId, _eventProperties, _projectId,
-			_projectTimeZoneId, _userId);
+			_dataSourceId, _emailAddressHashed, _eventDate, _eventId,
+			_eventProperties, _projectId, _projectTimeZoneId, _userId);
 	}
 
 	public boolean isKnownIndividual() {
@@ -222,6 +228,10 @@ public class AnalyticsEvent implements Serializable {
 
 	public void setDataSourceId(String dataSourceId) {
 		_dataSourceId = dataSourceId;
+	}
+
+	public void setEmailAddressHashed(String emailAddressHashed) {
+		_emailAddressHashed = emailAddressHashed;
 	}
 
 	public void setEventDate(Date eventDate) {
@@ -294,6 +304,7 @@ public class AnalyticsEvent implements Serializable {
 	private Map<String, String> _context;
 	private Date _createDate = new Date();
 	private String _dataSourceId;
+	private String _emailAddressHashed;
 	private Date _eventDate = new Date();
 	private String _eventId;
 	private Map<String, String> _eventProperties = new HashMap<>();

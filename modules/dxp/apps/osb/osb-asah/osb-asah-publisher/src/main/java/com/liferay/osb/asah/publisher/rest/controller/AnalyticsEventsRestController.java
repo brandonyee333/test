@@ -287,6 +287,8 @@ public class AnalyticsEventsRestController {
 				analyticsEvent.setCreateDate(
 					analyticsEventsMessage.getCreateDate());
 				analyticsEvent.setDataSourceId(dataSourceId);
+				analyticsEvent.setEmailAddressHashed(
+					analyticsEventsMessage.getEmailAddressHashed());
 				analyticsEvent.setEventDate(event.getEventDate());
 				analyticsEvent.setEventId(event.getEventId());
 				analyticsEvent.setEventProperties(event.getProperties());

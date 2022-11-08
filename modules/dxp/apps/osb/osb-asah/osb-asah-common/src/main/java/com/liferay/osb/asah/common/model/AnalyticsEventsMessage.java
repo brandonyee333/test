@@ -108,6 +108,10 @@ public class AnalyticsEventsMessage implements Serializable {
 		return _userId;
 	}
 
+	public String getEmailAddressHashed() {
+		return _emailAddressHashed;
+	}
+
 	public void setChannelId(String channelId) {
 		_channelId = channelId;
 	}
@@ -150,6 +154,10 @@ public class AnalyticsEventsMessage implements Serializable {
 
 	public void setUserId(String userId) {
 		_userId = userId;
+	}
+
+	public void setEmailAddressHashed(String emailAddressHashed) {
+		_emailAddressHashed = emailAddressHashed;
 	}
 
 	public String toJSON() {
@@ -255,5 +263,6 @@ public class AnalyticsEventsMessage implements Serializable {
 	private String _projectId;
 	private String _protocolVersion;
 	private String _userId;
+	private String _emailAddressHashed;
 
 }
