@@ -143,7 +143,7 @@ public class EventIngestionPipelineTest {
 					put("userAgent", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP);
 				}
 			},
-			"2017-11-10T09:36:00.365Z", "350121114030678021",
+			"2017-11-10T09:36:00.365Z", "350121114030678021", null,
 			"2017-11-10T09:34:45.345Z", "pageViewed",
 			Collections.singletonMap("referrer", "http://www.google.com"), "1",
 			"test", "UTC", "aedfa915-c7a1-4309-abcf-024e247d414c");
@@ -163,8 +163,9 @@ public class EventIngestionPipelineTest {
 	private AnalyticsEvent _createAnalyticsEvent(
 		String applicationId, String channelId, String clientIP,
 		Map<String, String> context, String createDate, String dataSourceId,
-		String eventDate, String eventId, Map<String, String> eventProperties,
-		String id, String projectId, String projectTimeZoneId, String userId) {
+		String emailAddressHashed, String eventDate, String eventId,
+		Map<String, String> eventProperties, String id, String projectId,
+		String projectTimeZoneId, String userId) {
 
 		AnalyticsEvent analyticsEvent = new AnalyticsEvent();
 
@@ -174,6 +175,7 @@ public class EventIngestionPipelineTest {
 		analyticsEvent.context = context;
 		analyticsEvent.createDate = createDate;
 		analyticsEvent.dataSourceId = dataSourceId;
+		analyticsEvent.emailAddressHashed = emailAddressHashed;
 		analyticsEvent.eventDate = eventDate;
 		analyticsEvent.eventId = eventId;
 		analyticsEvent.eventProperties = eventProperties;
@@ -200,8 +202,8 @@ public class EventIngestionPipelineTest {
 		context.put("userAgent", userAgent);
 
 		return _createAnalyticsEvent(
-			"", "", "", context, "", "", "", "", Collections.emptyMap(), "", "",
-			"", "");
+			"", "", "", context, "", "", "", "", "", Collections.emptyMap(),
+			"", "", "", "");
 	}
 
 	private AnalyticsEvent _createTestAnalyticsEvent(
@@ -214,8 +216,8 @@ public class EventIngestionPipelineTest {
 		context.put("userAgent", userAgent);
 
 		return _createAnalyticsEvent(
-			"", "", "", context, "", "", "", "", Collections.emptyMap(), "", "",
-			"", "");
+			"", "", "", context, "", "", "", "", "", Collections.emptyMap(),
+			"", "", "", "");
 	}
 
 	private String _readResourceAsString(String resourcePath)
