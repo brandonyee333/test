@@ -31,6 +31,7 @@ definition {
 	@priority = "4"
 	test ConfigurePortalExtPropertyViaSystemExt {
 		property custom.system.properties = "company-id-properties=true";
+		property portal.acceptance = "kvale17";
 		property test.environment.variables = "LIFERAY_PROPS_BY_COMPANY_20097=feature.flag.COMMERCE-8087=true";
 
 		ImportExport.openImportExportAdmin();
