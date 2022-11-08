@@ -36,6 +36,10 @@ public class AnalyticsEvent {
 	public Map<String, String> context;
 	public String createDate;
 	public String dataSourceId;
+
+	@Nullable
+	public String emailAddressHashed;
+
 	public String eventDate;
 	public String eventId;
 	public Map<String, String> eventProperties;

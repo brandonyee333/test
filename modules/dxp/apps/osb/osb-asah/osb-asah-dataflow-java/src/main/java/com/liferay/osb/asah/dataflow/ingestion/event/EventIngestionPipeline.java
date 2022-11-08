@@ -564,6 +564,12 @@ public class EventIngestionPipeline {
 			"dataSourceId", Long.parseLong(analyticsEvent.dataSourceId));
 		tableRow.set("description", context.get("description"));
 		tableRow.set("deviceType", context.get("deviceType"));
+
+		if (StringUtils.isNotBlank(analyticsEvent.emailAddressHashed)) {
+			tableRow.set(
+				"emailAddressHashed", analyticsEvent.emailAddressHashed);
+		}
+
 		tableRow.set("eventDate", analyticsEvent.eventDate);
 		tableRow.set("eventId", analyticsEvent.eventId);
 		tableRow.set(
