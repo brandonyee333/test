@@ -38,6 +38,7 @@ public class InterestFilterStringConverterHelper
 			{
 				put("dateRecorded", "recordedDate");
 				put("name", "keyword");
+				put("ownerId", "individualId");
 			}
 		};
 	}
