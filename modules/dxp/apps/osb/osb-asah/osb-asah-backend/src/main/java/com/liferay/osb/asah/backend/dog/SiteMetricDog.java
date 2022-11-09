@@ -46,8 +46,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,9 +59,9 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import org.json.JSONArray;
-
 import org.jetbrains.annotations.NotNull;
+
+import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -76,7 +76,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SiteMetricDog {
 
-	public CompositionResultBag getAcquisitionsMetrics(
+	public CompositionResultBag getAcquisitionsMetricsCompositionResultBag(
 		AcquisitionType acquisitionType, String channelId, int size, int start,
 		TimeRange timeRange) {
 
@@ -311,7 +311,7 @@ public class SiteMetricDog {
 		return new ArrayList<>(heatMapMetrics.values());
 	}
 
-	public CompositionResultBag getSearchTerms(
+	public CompositionResultBag getSearchTermsCompositionResultBag(
 		Long channelId, int size, int start, TimeRange timeRange) {
 
 		Map<String, BigDecimal> searchTerms = _bqEventRepository.getSearchTerms(

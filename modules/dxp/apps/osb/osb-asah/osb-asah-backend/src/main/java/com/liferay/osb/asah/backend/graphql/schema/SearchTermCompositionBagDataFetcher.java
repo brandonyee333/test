@@ -37,7 +37,7 @@ public class SearchTermCompositionBagDataFetcher
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		return _siteMetricDog.getSearchTerms(
+		return _siteMetricDog.getSearchTermsCompositionResultBag(
 			Long.valueOf(searchQueryContext.getChannelId()),
 			dataFetchingEnvironment.getArgument("size"),
 			dataFetchingEnvironment.getArgument("start"),

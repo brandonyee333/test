@@ -38,7 +38,7 @@ public class AcquisitionCompositionBagDataFetcher
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		return _siteMetricDog.getAcquisitionsMetrics(
+		return _siteMetricDog.getAcquisitionsMetricsCompositionResultBag(
 			AcquisitionType.valueOf(
 				dataFetchingEnvironment.getArgument("acquisitionType")),
 			searchQueryContext.getChannelId(),

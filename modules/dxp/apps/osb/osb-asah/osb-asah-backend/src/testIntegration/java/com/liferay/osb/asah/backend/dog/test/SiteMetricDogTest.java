@@ -61,7 +61,7 @@ public class SiteMetricDogTest
 	@Test
 	public void testAcquisitionChannel() {
 		CompositionResultBag compositionResultBag =
-			_siteMetricDog.getAcquisitionsMetrics(
+			_siteMetricDog.getAcquisitionsMetricsCompositionResultBag(
 				AcquisitionType.CHANNEL, "1", 5, 0, TimeRange.LAST_7_DAYS);
 
 		List<Composition> results = compositionResultBag.getResults();
@@ -78,7 +78,7 @@ public class SiteMetricDogTest
 	@Test
 	public void testAcquisitionReferrers() {
 		CompositionResultBag compositionResultBag =
-			_siteMetricDog.getAcquisitionsMetrics(
+			_siteMetricDog.getAcquisitionsMetricsCompositionResultBag(
 				AcquisitionType.REFERRER, "1", 5, 0, TimeRange.LAST_24_HOURS);
 
 		List<Composition> results = compositionResultBag.getResults();
@@ -95,7 +95,7 @@ public class SiteMetricDogTest
 	@Test
 	public void testAcquisitionSourceMedium() {
 		CompositionResultBag compositionResultBag =
-			_siteMetricDog.getAcquisitionsMetrics(
+			_siteMetricDog.getAcquisitionsMetricsCompositionResultBag(
 				AcquisitionType.SOURCE_MEDIUM, "1", 5, 0,
 				TimeRange.LAST_24_HOURS);
 
