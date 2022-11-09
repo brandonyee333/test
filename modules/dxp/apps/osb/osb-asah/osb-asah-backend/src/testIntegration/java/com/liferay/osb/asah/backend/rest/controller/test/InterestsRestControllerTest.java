@@ -233,6 +233,7 @@ public class InterestsRestControllerTest
 		Assertions.assertEquals(0, keywordsJSONArray.length());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests_2.json"
@@ -250,6 +251,7 @@ public class InterestsRestControllerTest
 			false);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests_2.json"
