@@ -28,7 +28,10 @@ WITH CustomAssetEvent AS (
 	WHERE
 		Event.applicationid = 'Custom' AND
 		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-		assetId.value IS NOT NULL
+		assetId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+		assetId.value IS NOT NULL AND
+		category.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+		formEnabled.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 ),
 CustomAssetFinalizedEvent AS (
 	SELECT
