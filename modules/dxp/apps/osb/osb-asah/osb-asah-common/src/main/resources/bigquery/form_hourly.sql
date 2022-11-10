@@ -28,7 +28,9 @@ WITH
 			Event.applicationId = 'Form' AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId IN ('formSubmitted', 'formViewed') AND
-			formId.value IS NOT NULL
+			formId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			formId.value IS NOT NULL AND
+			formTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	),
 	FormSubmissionTimes AS (
 		SELECT
