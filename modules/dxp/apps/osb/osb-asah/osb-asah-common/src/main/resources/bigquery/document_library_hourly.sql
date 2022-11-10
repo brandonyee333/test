@@ -15,7 +15,9 @@ WITH
 			Event.applicationId = 'Comment' AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'posted' AND
+			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
+			classPK.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			classPK.value IS NOT NULL
 	),
 	DocumentEvent AS (
@@ -35,6 +37,8 @@ WITH
 			Event.applicationId = 'Document' AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId IN ('documentDownloaded', 'documentPreviewed') AND
+			documentTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			fileEntryId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			fileEntryId.value IS NOT NULL
 	),
 	RatingEvent AS (
@@ -60,9 +64,13 @@ WITH
 			Event.applicationId = 'Ratings' AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'VOTE' AND
+			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
+			classPK.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			classPK.value IS NOT NULL AND
-			ratingtype.value = 'stars'
+			ratingType.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			ratingtype.value = 'stars' AND
+			score.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	),
 	DocumentComments AS (
 		SELECT
