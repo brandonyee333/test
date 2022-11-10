@@ -16,6 +16,8 @@ WITH
 			Event.applicationId = 'Blog' AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed') AND
+			blogTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			entryId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			entryId.value IS NOT NULL
 	),
 	BlogFinalizedEvent AS (
@@ -42,8 +44,11 @@ WITH
 		)
 		WHERE
 			Event.applicationId = 'Comment' AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'posted' AND
+			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			className.value = 'com.liferay.blogs.model.BlogsEntry' AND
+			classPK.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			classPK.value IS NOT NULL
 	),
 	RatingsEvent AS (
@@ -67,10 +72,15 @@ WITH
 		)
 		WHERE
 			Event.applicationId = 'Ratings' AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'VOTE' AND
+			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			className.value = 'com.liferay.blogs.model.BlogsEntry' AND
+			classPK.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			classPK.value IS NOT NULL AND
-			ratingtype.value = 'stars'
+			ratingType.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			ratingType.value = 'stars' AND
+			score.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	),
 	BlogComments AS (
 		SELECT
