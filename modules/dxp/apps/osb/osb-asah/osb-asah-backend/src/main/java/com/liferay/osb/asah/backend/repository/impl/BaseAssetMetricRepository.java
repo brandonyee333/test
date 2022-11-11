@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.repository.impl;
 
+import com.liferay.osb.asah.backend.constants.DataConstants;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Individual;
@@ -396,7 +397,13 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 				metric.setValue(metricValueBigDecimal.doubleValue());
 
-				metric.setValueKey((String)recordMap.get("country"));
+				String country = (String)recordMap.get("country");
+
+				if (StringUtils.isBlank(country)) {
+					country = DataConstants.UNKNOWN;
+				}
+
+				metric.setValueKey(country);
 
 				return metric;
 			},
