@@ -3,6 +3,7 @@ package com.liferay.pizza.conneciton.helper.internal.model.listener;
 import com.liferay.commerce.account.model.CommerceAccount;
 import com.liferay.commerce.constants.CommerceOrderConstants;
 import com.liferay.commerce.model.CommerceOrder;
+import com.liferay.commerce.model.CommerceOrderItem;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
@@ -33,8 +34,8 @@ public class CommerceOrderModelListener extends
 		CommerceOrder originalModel, CommerceOrder commerceOrder)
 		throws ModelListenerException {
 
-		if (commerceOrder.getStatus() ==
-			CommerceOrderConstants.ORDER_STATUS_SHIPPED) {
+		if (commerceOrder.getPaymentStatus() ==
+			CommerceOrderConstants.PAYMENT_STATUS_PAID) {
 			try {
 				CommerceAccount commerceAccount =
 					commerceOrder.getCommerceAccount();
@@ -61,7 +62,13 @@ public class CommerceOrderModelListener extends
 				Integer loyaltyPoints =
 					(Integer) values.getOrDefault("loyaltyPoints", 0);
 
-				long pizzaCount = commerceOrder.getCommerceOrderItems().size();
+				long pizzaCount = commerceOrder.getCommerceOrderItems(
+				).stream(
+				).map(
+					CommerceOrderItem::getQuantity
+				).mapToInt(
+					Integer::intValue
+				).sum();
 
 				// TODO: Check those are pizzas
 
