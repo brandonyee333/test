@@ -9,6 +9,37 @@ definition {
 			locator1 = "FormFields#FIELD_ADD_SPECIFIC");
 	}
 
+	macro addRichTextContent {
+		SelectFrame.selectFrameNoLoading(
+			key_fieldLabel = "${fieldLabel}",
+			locator1 = "FormFields#RICH_TEXT_CONTENT");
+
+		Type(
+			locator1 = "FormFields#PREDEFINED_VALUE_BODY",
+			value1 = "${content}");
+
+		SelectFrame(value1 = "relative=top");
+	}
+
+	macro changeFieldType {
+		Click(locator1 = "FormFields#CHANGE_FIELD_TYPE_BUTTON");
+
+		MenuItem.click(menuItem = "${selectOption}");
+	}
+
+	macro deleteGridOptionsRow {
+		Click(
+			key_gridField = "${gridField}",
+			key_rowNumber = "${rowNumber}",
+			locator1 = "FormFields#GRID_OPTIONS_OPTION_DELETE_ROW_BUTTON");
+	}
+
+	macro deleteOptionsRow {
+		var key_rowNumber = "${rowNumber}";
+
+		Click(locator1 = "FormFields#OPTIONS_DELETE_ROW_BUTTON");
+	}
+
 	macro disableCheckbox {
 		Uncheck(
 			key_fieldName = "${fieldName}",
