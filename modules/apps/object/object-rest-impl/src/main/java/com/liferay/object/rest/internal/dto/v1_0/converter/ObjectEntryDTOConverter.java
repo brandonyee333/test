@@ -53,6 +53,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -66,10 +67,14 @@ import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
 import java.io.Serializable;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -147,6 +152,24 @@ public class ObjectEntryDTOConverter
 				map.put(nestedField, value);
 			}
 		}
+	}
+
+	private DecimalFormat _getDecimalFormat(Locale locale) {
+		DecimalFormat decimalFormat = (DecimalFormat)DecimalFormat.getInstance(
+			locale);
+
+		DecimalFormatSymbols decimalFormatSymbols =
+			decimalFormat.getDecimalFormatSymbols();
+
+		decimalFormatSymbols.setZeroDigit('0');
+
+		decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
+
+		decimalFormat.setGroupingUsed(false);
+		decimalFormat.setMaximumFractionDigits(Integer.MAX_VALUE);
+		decimalFormat.setParseBigDecimal(true);
+
+		return decimalFormat;
 	}
 
 	private DTOConverterContext _getDTOConverterContext(
@@ -524,6 +547,17 @@ public class ObjectEntryDTOConverter
 					objectRelationshipERCFieldName,
 					GetterUtil.getString(
 						values.get(objectRelationshipERCFieldName)));
+			}
+			else if (Objects.equals(
+						objectField.getBusinessType(),
+						ObjectFieldConstants.BUSINESS_TYPE_PRECISION_DECIMAL)) {
+
+				DecimalFormat defaultDecimalFormat = _getDecimalFormat(
+					LocaleUtil.getDefault());
+
+				serializable = defaultDecimalFormat.format(serializable);
+
+				map.put(objectFieldName, serializable);
 			}
 			else {
 				map.put(objectFieldName, serializable);
