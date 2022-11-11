@@ -36,11 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class FieldMappingsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
-	public FieldMappingDTO getFieldMappingDTO(@PathVariable Long id) {
-
-		// TODO Implement getFieldMappingDTO
-
-		return new FieldMappingDTO();
+	public FieldMappingDTO getFieldMappingDTO(@PathVariable String id) {
+		return new FieldMappingDTO(_bqFieldMappingDog.getFieldMapping(id));
 	}
 
 	@GetMapping(params = "!apply")

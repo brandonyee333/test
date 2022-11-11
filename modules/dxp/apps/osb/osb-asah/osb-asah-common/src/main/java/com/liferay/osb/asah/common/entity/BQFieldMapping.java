@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -88,6 +89,7 @@ public class BQFieldMapping {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@Id
 	public String getFieldName() {
 		return _fieldName;
 	}

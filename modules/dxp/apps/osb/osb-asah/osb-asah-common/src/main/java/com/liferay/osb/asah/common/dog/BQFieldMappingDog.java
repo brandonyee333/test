@@ -20,6 +20,8 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +34,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BQFieldMappingDog {
+
+	public BQFieldMapping getFieldMapping(String id) {
+		Optional<BQFieldMapping> fieldMappingOptional =
+			_bqFieldMappingRepository.findById(id);
+
+		return fieldMappingOptional.orElse(null);
+	}
 
 	public Page<BQFieldMapping> searchBQFieldMappingPage(
 		@Nullable String filterString, int page, int size,
