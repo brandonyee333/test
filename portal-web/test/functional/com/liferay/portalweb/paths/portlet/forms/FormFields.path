@@ -61,6 +61,19 @@
 	<td></td>
 </tr>
 
+<!--CHANGE FIELD TYPE-->
+
+<tr>
+	<td>CHANGE_FIELD_TYPE_BUTTON</td>
+	<td>//button[contains(@id,'field-type-menu-content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+
 <!--CHECKBOX-->
 
 <tr>
@@ -86,6 +99,21 @@
 
 <!--DATE-->
 
+<tr>
+	<td>DATE_CALENDAR</td>
+	<td>//button[contains(@class,'date-picker-dropdown-toggle')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DATE_CALENDAR_DAY</td>
+	<td>//div[@class='date-picker-calendar-body']//div[@class='date-picker-col']/button[text()='${key_valueDay}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DATE_CALENDAR_FIELD</td>
+	<td>//select[@name='${key_valueName}']</td>
+	<td></td>
+</tr>
 <tr>
 	<td>DATE_FIELD</td>
 	<td>//div[contains(@data-fieldname,'${key_fieldName}')]//input[@type='text']</td>
@@ -118,6 +146,11 @@
 <!--OPTIONS-->
 
 <tr>
+	<td>OPTIONS_DELETE_ROW_BUTTON</td>
+	<td>//div[@class='options']//div[contains(@class,'form-field-container')][${key_rowNumber}]//button[contains(@class,'close-modal')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>OPTIONS_OPTION_VALUE_FIELD</td>
 	<td>//div[@class='options']//div[contains(@class,'form-field-container')][${key_rowNumber}]//input</td>
 	<td></td>
@@ -148,6 +181,19 @@
 	<td></td>
 </tr>
 
+<!--GRID-->
+
+<tr>
+	<td>GRID_OPTIONS_OPTION_DELETE_ROW_BUTTON</td>
+	<td>//div[contains(@data-fieldname,'${key_gridField}sOption')]/../../div[${key_rowNumber}]//button[contains(@class,'close-modal')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+
 <!--RADIO-->
 
 <tr>
@@ -166,6 +212,24 @@
 	<td></td>
 </tr>
 
+<!--RICH TEXT-->
+
+<tr>
+	<td>RICH_TEXT_CONTENT</td>
+	<td>//label[contains(.,'${key_fieldLabel}')]//following-sibling::div//div[contains(@id,'cke')]/iframe</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PREDEFINED_VALUE_IFRAME</td>
+	<td>//label[contains(.,'Predefined Value')]//following-sibling::div//div[contains(@id,'cke')]/iframe</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PREDEFINED_VALUE_BODY</td>
+	<td>//body[contains(@class,'cke_editable')]</td>
+	<td></td>
+</tr>
+
 <!--TEXT-->
 
 <tr>
@@ -176,6 +240,11 @@
 <tr>
 	<td>REPEATABLE_TEXT_MULTILINE_LABEL</td>
 	<td>//div[contains(@class,'form-field-container')][${key_repeatableFieldNumber}]//div[contains(@data-fieldname,'${key_fieldName}')]//label[contains(.,'${key_fieldLabel}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GENERIC_INPUT_FIELD</td>
+	<td>//div[contains(@data-field-name,'${key_fieldName}')]//div[contains(@class,'form-group')]//input[contains(@class,'form-control')]</td>
 	<td></td>
 </tr>
 <tr>
