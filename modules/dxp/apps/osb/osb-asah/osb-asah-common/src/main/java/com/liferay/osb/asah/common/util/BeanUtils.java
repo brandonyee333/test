@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -268,6 +269,30 @@ public class BeanUtils {
 							}
 						}
 					}
+					else {
+						if (targetPropertyClass.isAssignableFrom(
+								BigDecimal[].class) &&
+							(targetPropertyValue instanceof Float[])) {
+
+							Stream<Float> stream = Arrays.stream(
+								(Float[])targetPropertyValue);
+
+							targetPropertyValue = stream.map(
+								f -> {
+									try {
+										return new BigDecimal(f);
+									}
+									catch (NumberFormatException
+												numberFormatException) {
+
+										return BigDecimal.ZERO;
+									}
+								}
+							).toArray(
+								BigDecimal[]::new
+							);
+						}
+					}
 				}
 
 				Class<?>[] classes =
@@ -275,6 +300,10 @@ public class BeanUtils {
 
 				if (classes[0] == BigDecimal.class) {
 					targetPropertyValue = new BigDecimal(
+						String.valueOf(targetPropertyValue));
+				}
+				else if (classes[0] == Double.class) {
+					targetPropertyValue = Double.valueOf(
 						String.valueOf(targetPropertyValue));
 				}
 				else if (classes[0] == Long.class) {
