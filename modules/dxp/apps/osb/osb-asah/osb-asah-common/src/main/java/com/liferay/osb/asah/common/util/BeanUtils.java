@@ -136,7 +136,24 @@ public class BeanUtils {
 			}
 			else {
 				if ((targetPropertyClass != null) &&
-					(targetPropertyValue instanceof OffsetDateTime)) {
+					(targetPropertyValue instanceof BigDecimal)) {
+
+					BigDecimal bigDecimal = (BigDecimal)targetPropertyValue;
+
+					if (targetPropertyClass.isAssignableFrom(Double.class)) {
+						targetPropertyValue = bigDecimal.doubleValue();
+					}
+					else if (targetPropertyClass.isAssignableFrom(
+								Integer.class)) {
+
+						targetPropertyValue = bigDecimal.intValue();
+					}
+					else if (targetPropertyClass.isAssignableFrom(Long.class)) {
+						targetPropertyValue = bigDecimal.longValue();
+					}
+				}
+				else if ((targetPropertyClass != null) &&
+						 (targetPropertyValue instanceof OffsetDateTime)) {
 
 					OffsetDateTime offsetDateTime =
 						(OffsetDateTime)targetPropertyValue;
@@ -172,24 +189,22 @@ public class BeanUtils {
 						targetPropertyValue = localDateTime;
 					}
 				}
-				else if (targetPropertyValue instanceof BigDecimal) {
-					BigDecimal bigDecimal = (BigDecimal)targetPropertyValue;
+				else if (targetPropertyValue instanceof JSON ||
+						 targetPropertyValue instanceof PGobject) {
 
-					if (targetPropertyClass.isAssignableFrom(Double.class)) {
-						targetPropertyValue = bigDecimal.doubleValue();
-					}
-					else if (targetPropertyClass.isAssignableFrom(
-								Integer.class)) {
+					String json = String.valueOf(targetPropertyValue);
 
-						targetPropertyValue = bigDecimal.intValue();
+					if (json.startsWith("{")) {
+						targetPropertyValue = new JSONObject(json);
 					}
-					else if (targetPropertyClass.isAssignableFrom(Long.class)) {
-						targetPropertyValue = bigDecimal.longValue();
+					else if (json.startsWith("[")) {
+						targetPropertyValue = new JSONArray(json);
 					}
 				}
-				else if (targetPropertyValueClass.isArray() ||
-						 (targetPropertyValue instanceof Array) ||
-						 (targetPropertyValue instanceof ArrayList<?>)) {
+
+				if (targetPropertyValueClass.isArray() ||
+					(targetPropertyValue instanceof Array) ||
+					(targetPropertyValue instanceof ArrayList<?>)) {
 
 					Class<?> rawClass =
 						targetPropertyResolvableType.getRawClass();
@@ -227,14 +242,15 @@ public class BeanUtils {
 									(ArrayList<Long>)targetPropertyValue);
 							}
 						}
-						else if (targetPropertyValueClass.isArray() ||
-								 (targetPropertyValue instanceof Array)) {
 
-							if (targetPropertyValue instanceof PgArray) {
-								PgArray pgArray = (PgArray)targetPropertyValue;
+						if (targetPropertyValue instanceof PgArray) {
+							PgArray pgArray = (PgArray)targetPropertyValue;
 
-								targetPropertyValue = pgArray.getArray();
-							}
+							targetPropertyValue = pgArray.getArray();
+						}
+
+						if (targetPropertyValueClass.isArray() ||
+							(targetPropertyValue instanceof Array)) {
 
 							if (StringUtils.equals(
 									clazz.getName(), String.class.getName())) {
@@ -253,18 +269,6 @@ public class BeanUtils {
 						}
 					}
 				}
-				else if (targetPropertyValue instanceof JSON ||
-						 targetPropertyValue instanceof PGobject) {
-
-					String json = String.valueOf(targetPropertyValue);
-
-					if (json.startsWith("{")) {
-						targetPropertyValue = new JSONObject(json);
-					}
-					else if (json.startsWith("[")) {
-						targetPropertyValue = new JSONArray(json);
-					}
-				}
 
 				Class<?>[] classes =
 					targetPropertyWriteMethod.getParameterTypes();
@@ -273,9 +277,16 @@ public class BeanUtils {
 					targetPropertyValue = new BigDecimal(
 						String.valueOf(targetPropertyValue));
 				}
+				else if (classes[0] == Long.class) {
+					targetPropertyValue = Long.valueOf(
+						String.valueOf(targetPropertyValue));
+				}
 
 				targetPropertyWriteMethod.invoke(target, targetPropertyValue);
 			}
+		}
+		catch (RuntimeException runtimeException) {
+			throw runtimeException;
 		}
 		catch (Exception exception) {
 			_log.error(
