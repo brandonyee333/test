@@ -315,7 +315,7 @@ public class SiteMetricDog {
 		Long channelId, int size, int start, TimeRange timeRange) {
 
 		Map<String, BigDecimal> searchTerms = _bqEventRepository.getSearchTerms(
-			channelId, _getSearchQueryStrings(), size, start, timeRange,
+			channelId, _getSearchQueryParams(), size, start, timeRange,
 			_timeZoneDog.getTimeZoneId());
 
 		if (searchTerms.isEmpty()) {
@@ -335,7 +335,7 @@ public class SiteMetricDog {
 		return new CompositionResultBag(
 			compositions, compositions.size(),
 			_bqEventRepository.getSearchTermsCount(
-				channelId, _getSearchQueryStrings(), timeRange,
+				channelId, _getSearchQueryParams(), timeRange,
 				_timeZoneDog.getTimeZoneId()));
 	}
 
@@ -513,22 +513,22 @@ public class SiteMetricDog {
 		return cohortHeatMapMetrics;
 	}
 
-	private String[] _getSearchQueryStrings() {
+	private String[] _getSearchQueryParams() {
 		Preference preference = _preferenceDog.getPreference(
 			"search-query-strings");
 
-		Set<String> searchQueryStrings = new HashSet<>();
+		Set<String> searchQueryParams = new HashSet<>();
 
 		String preferenceValue = preference.getValue();
 
 		if (!StringUtil.isNull(preferenceValue)) {
-			searchQueryStrings = JSONUtil.toStringSet(
+			searchQueryParams = JSONUtil.toStringSet(
 				new JSONArray(preferenceValue));
 		}
 
-		searchQueryStrings.add("q");
+		searchQueryParams.add("q");
 
-		return searchQueryStrings.toArray(new String[0]);
+		return searchQueryParams.toArray(new String[0]);
 	}
 
 	private void _setMetricPreviousValue(Metric metric, Double value) {
