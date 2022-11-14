@@ -16,10 +16,13 @@ package com.liferay.osb.asah.publisher.rest.controller;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+
+import java.util.Objects;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +51,18 @@ public class IdentityRestController {
 	public void post(@RequestBody String json) {
 		JSONObject jsonObject = new JSONObject(json);
 
+		String dataSourceId = jsonObject.getString("dataSourceId");
+
+		if (!_isDataSourceActive(dataSourceId)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Discarding identity message because data source is not " +
+						"active: " + json);
+			}
+
+			return;
+		}
+
 		String channelId = _getChannelId(jsonObject);
 
 		if (StringUtils.isBlank(channelId)) {
@@ -69,7 +84,7 @@ public class IdentityRestController {
 			).put(
 				"createDate", DateUtil.newDateString()
 			).put(
-				"dataSourceId", jsonObject.getString("dataSourceId")
+				"dataSourceId", dataSourceId
 			).put(
 				"individualId", _getIndividualId(jsonObject)
 			).put(
@@ -120,6 +135,19 @@ public class IdentityRestController {
 
 		return DigestUtils.sha256Hex(
 			StringUtils.lowerCase(identityJSONObject.getString("email")));
+	}
+
+	private boolean _isDataSourceActive(String dataSourceId) {
+		DataSource dataSource = _dataSourceDog.fetchDataSource(
+			Long.valueOf(dataSourceId));
+
+		if ((dataSource != null) &&
+			Objects.equals(dataSource.getStatus(), "ACTIVE")) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final String[] _ANALYTICS_DATA_IDENTITY_FIELD_NAMES = {
