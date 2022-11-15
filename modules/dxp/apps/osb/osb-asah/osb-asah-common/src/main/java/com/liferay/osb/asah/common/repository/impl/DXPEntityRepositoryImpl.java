@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.repository.CustomDXPEntityRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -372,7 +373,19 @@ public class DXPEntityRepositoryImpl
 		}
 
 		if (fieldValue instanceof Collection) {
-			return field.in((Collection)fieldValue);
+			Collection<?> collection = (Collection<?>)fieldValue;
+
+			Iterator<?> iterator = collection.iterator();
+
+			Object element = iterator.next();
+
+			if (element instanceof Integer || element instanceof Long) {
+				Field<Long> longField = field.cast(Long.class);
+
+				return longField.in(collection);
+			}
+
+			return field.in(collection);
 		}
 
 		Field<String> castField = field.cast(String.class);
