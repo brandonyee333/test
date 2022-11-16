@@ -42,3 +42,27 @@ EXCEPTION
         RETURN default_value;
 END;
 ' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION search_term(searchQueryParams VARCHAR ARRAY, uriString VARCHAR) RETURNS VARCHAR AS '
+DECLARE
+ decodeUrl VARCHAR := REPLACE(uriString, ''+'', '' '');
+ queryParamSeparator INTEGER := POSITION(''?'' in decodeUrl);
+ queryParams VARCHAR ARRAY;
+ term VARCHAR;
+ param VARCHAR;
+BEGIN
+	IF queryParamSeparator <= 0 THEN RETURN NULL;
+	END IF;
+
+	FOREACH term IN ARRAY searchQueryParams
+		LOOP
+	   		FOREACH param IN ARRAY STRING_TO_ARRAY(SUBSTRING(decodeUrl, queryParamSeparator + 1),''&'')
+				LOOP
+					queryParams := STRING_TO_ARRAY(param, ''='');
+					IF queryParams[1] = term THEN RETURN queryParams[2];
+					END IF;
+				END LOOP;
+		END LOOP;
+	RETURN NULL;
+END;
+' LANGUAGE plpgsql;

@@ -677,7 +677,7 @@ public class BQEventRepositoryImpl
 					timeRange.getStartLocalDateTime(), searchTermField,
 					timeZoneId)
 			).groupBy(
-				searchTermField
+				searchTermField, DSL.field("BQEvent.url")
 			).orderBy(
 				countField.desc()
 			).limit(
@@ -711,7 +711,7 @@ public class BQEventRepositoryImpl
 						timeRange.getStartLocalDateTime(), searchTermField,
 						timeZoneId)
 				).groupBy(
-					searchTermField
+					searchTermField, DSL.field("BQEvent.url")
 				)
 			).select(
 				DSL.count(DSL.asterisk())

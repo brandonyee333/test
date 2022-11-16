@@ -35,8 +35,10 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import java.time.LocalDate;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -557,6 +559,100 @@ public class SiteMetricDogTest
 
 		Assertions.assertEquals(4, visitorsMetrics.getPreviousValue());
 		Assertions.assertEquals(4, visitorsMetrics.getValue());
+	}
+
+	@SQLResource(resourcePath = "test_bq_events_search_terms.sql")
+	@Test
+	public void testSearchTerms7Days() {
+		CompositionResultBag compositionResultBag =
+			_siteMetricDog.getSearchTermsCompositionResultBag(
+				1L, 5, 0, TimeRange.LAST_7_DAYS);
+
+		LinkedHashMap<String, Long> expectedResults =
+			new LinkedHashMap<String, Long>() {
+				{
+					put("liferay", 1L);
+					put("test", 1L);
+				}
+			};
+
+		List<Composition> results = compositionResultBag.getResults();
+
+		Stream<Composition> stream = results.stream();
+
+		Assertions.assertEquals(
+			expectedResults,
+			stream.collect(
+				Collectors.toMap(
+					Composition::getName, Composition::getCount,
+					(name, count) -> name, LinkedHashMap::new)));
+
+		Assertions.assertEquals(1, compositionResultBag.getMaxCount());
+		Assertions.assertEquals(2, compositionResultBag.getTotal());
+		Assertions.assertEquals(2, compositionResultBag.getTotalCount());
+	}
+
+	@SQLResource(resourcePath = "test_bq_events_search_terms.sql")
+	@Test
+	public void testSearchTerms24Hours() {
+		CompositionResultBag compositionResultBag =
+			_siteMetricDog.getSearchTermsCompositionResultBag(
+				1L, 5, 0, TimeRange.LAST_24_HOURS);
+
+		LinkedHashMap<String, Long> expectedResults =
+			new LinkedHashMap<String, Long>() {
+				{
+					put("test", 1L);
+				}
+			};
+
+		List<Composition> results = compositionResultBag.getResults();
+
+		Stream<Composition> stream = results.stream();
+
+		Assertions.assertEquals(
+			expectedResults,
+			stream.collect(
+				Collectors.toMap(
+					Composition::getName, Composition::getCount,
+					(name, count) -> name, LinkedHashMap::new)));
+
+		Assertions.assertEquals(1, compositionResultBag.getMaxCount());
+		Assertions.assertEquals(1, compositionResultBag.getTotal());
+		Assertions.assertEquals(1, compositionResultBag.getTotalCount());
+	}
+
+	@SQLResource(resourcePath = "test_bq_events_search_terms.sql")
+	@Test
+	public void testSearchTerms30Days() {
+		CompositionResultBag compositionResultBag =
+			_siteMetricDog.getSearchTermsCompositionResultBag(
+				1L, 5, 0, TimeRange.LAST_30_DAYS);
+
+		LinkedHashMap<String, Long> expectedResults =
+			new LinkedHashMap<String, Long>() {
+				{
+					put("liferay", 2L);
+					put("documents and media", 1L);
+					put("forms", 1L);
+					put("test", 1L);
+				}
+			};
+
+		List<Composition> results = compositionResultBag.getResults();
+
+		Stream<Composition> stream = results.stream();
+
+		Assertions.assertEquals(
+			expectedResults,
+			stream.collect(
+				Collectors.toMap(
+					Composition::getName, Composition::getCount,
+					(name, count) -> name, LinkedHashMap::new)));
+
+		Assertions.assertEquals(2, compositionResultBag.getMaxCount());
+		Assertions.assertEquals(4, compositionResultBag.getTotal());
+		Assertions.assertEquals(4, compositionResultBag.getTotalCount());
 	}
 
 	@SQLResource(resourcePath = "test_bq_sessions_visitors_by_day_and_time.sql")
