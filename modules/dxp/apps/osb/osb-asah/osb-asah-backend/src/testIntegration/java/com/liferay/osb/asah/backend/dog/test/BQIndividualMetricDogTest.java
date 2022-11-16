@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
-import com.liferay.osb.asah.backend.dog.IndividualMetricDog;
+import com.liferay.osb.asah.backend.dog.BQIndividualMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.IndividualMetric;
@@ -38,7 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Matthew Kong
  */
-public class IndividualMetricDogTest
+public class BQIndividualMetricDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -85,7 +85,7 @@ public class IndividualMetricDogTest
 	}
 
 	private IndividualMetric _getIndividualMetric() {
-		return _individualMetricDog.getIndividualMetric(
+		return _bqIndividualMetricDog.getIndividualMetric(
 			new SearchQueryContext(AssetType.INDIVIDUAL_METRIC) {
 				{
 					setInterval("D");
@@ -102,6 +102,6 @@ public class IndividualMetricDogTest
 	}
 
 	@Autowired
-	private IndividualMetricDog _individualMetricDog;
+	private BQIndividualMetricDog _bqIndividualMetricDog;
 
 }

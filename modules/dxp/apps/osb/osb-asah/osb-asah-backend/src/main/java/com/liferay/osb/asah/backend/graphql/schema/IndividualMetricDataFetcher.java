@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.IndividualMetricDog;
+import com.liferay.osb.asah.backend.dog.BQIndividualMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.IndividualMetric;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
@@ -42,11 +42,11 @@ public class IndividualMetricDataFetcher
 
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
-		return _individualMetricDog.getIndividualMetric(
+		return _bqIndividualMetricDog.getIndividualMetric(
 			searchQueryContext, (Set<String>)context.get("selectedMetrics"));
 	}
 
 	@Autowired
-	private IndividualMetricDog _individualMetricDog;
+	private BQIndividualMetricDog _bqIndividualMetricDog;
 
 }

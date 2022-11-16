@@ -37,9 +37,9 @@ import org.springframework.stereotype.Component;
  * @author Matthew Kong
  */
 @Component
-public class IndividualMetricDog {
+public class BQIndividualMetricDog {
 
-	public IndividualMetricDog(
+	public BQIndividualMetricDog(
 		BQIdentityRepository bqIdentityRepository, TimeZoneDog timeZoneDog) {
 
 		_bqIdentityRepository = bqIdentityRepository;
