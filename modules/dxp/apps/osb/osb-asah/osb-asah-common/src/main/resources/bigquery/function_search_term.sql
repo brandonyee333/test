@@ -10,11 +10,11 @@ AS """
 		return null;
 	}
 
+	var queryParams = {};
+
 	var queryParamsString = decodedUrl.substr(queryParamSeparatorIndexOf + 1);
 
 	var queryParamsStringParts = queryParamsString.split("&");
-
-	var queryParams = {};
 
 	for ( var i = 0; i < queryParamsStringParts.length; i++) {
 		var queryParam = queryParamsStringParts[i].split("=");
