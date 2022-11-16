@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
@@ -65,18 +64,20 @@ public class DXPEntityDogTest
 	)
 	@Test
 	public void testFindByAfterAndFieldsAndType() {
-		List<? extends DXPEntity> dxpEntities =
-			_dxpEntityDog.findByAfterAndFieldsAndType(
-				null,
-				Collections.singletonMap("fields.screenName", "bruno.admin"),
-				10, DXPEntity.Type.USER);
+		List<DXPEntity> dxpEntities = _dxpEntityDog.findByAfterAndFieldsAndType(
+			null, Collections.singletonMap("fields.screenName", "bruno.admin"),
+			10, DXPEntity.Type.USER);
 
-		Stream<? extends DXPEntity> stream = dxpEntities.stream();
+		Stream<DXPEntity> stream = dxpEntities.stream();
 
 		stream.map(
-			dxpEntity -> (DXPUser)dxpEntity
+			DXPEntity::getFieldsJSONObject
+		).map(
+			fieldsJSONObject ->
+				fieldsJSONObject.optString("firstName") + " " +
+					fieldsJSONObject.optString("lastName")
 		).forEach(
-			dxpUser -> Assertions.assertNotNull(dxpUser.getName())
+			Assertions::assertNotNull
 		);
 	}
 
@@ -90,10 +91,9 @@ public class DXPEntityDogTest
 	)
 	@Test
 	public void testFindByFieldsAndType() {
-		List<? extends DXPEntity> dxpEntities =
-			_dxpEntityDog.findByFieldsAndType(
-				Collections.singletonMap("fields.screenName", "bruno.admin"),
-				DXPEntity.Type.USER);
+		List<DXPEntity> dxpEntities = _dxpEntityDog.findByFieldsAndType(
+			Collections.singletonMap("fields.screenName", "bruno.admin"),
+			DXPEntity.Type.USER);
 
 		DXPEntity dxpEntity = dxpEntities.get(0);
 
@@ -300,10 +300,9 @@ public class DXPEntityDogTest
 		Long channelId, String collectionName, List<String> expectedNames,
 		int expectedTotal, String keywords, Sort sort) {
 
-		Page<? extends DXPEntity> dxpEntityPage =
-			_dxpEntityDog.getDXPEntityPage(
-				channelId, keywords, 10, sort, 0,
-				DXPEntity.Type.ofCollectionName(collectionName));
+		Page<DXPEntity> dxpEntityPage = _dxpEntityDog.getDXPEntityPage(
+			channelId, keywords, 10, sort, 0,
+			DXPEntity.Type.ofCollectionName(collectionName));
 
 		Assertions.assertEquals(
 			expectedTotal, dxpEntityPage.getTotalElements(),

@@ -18,8 +18,6 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.DXPOrganization;
-import com.liferay.osb.asah.common.model.DXPUser;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -272,30 +270,34 @@ public class DXPEntityRepositoryTest
 		Assertions.assertEquals(
 			dxpEntity, _dxpEntityRepository.save(dxpEntity));
 
-		DXPOrganization dxpOrganization = new DXPOrganization();
+		DXPEntity organizationDXPEntity = new DXPEntity();
 
-		dxpOrganization.setDataSourceId(123L);
-		dxpOrganization.setFieldsJSONObject(
+		organizationDXPEntity.setDataSourceId(123L);
+		organizationDXPEntity.setFieldsJSONObject(
 			JSONUtil.put("name", "Test Organization"));
-		dxpOrganization.setId(2L);
-		dxpOrganization.setIsNew(Boolean.TRUE);
+		organizationDXPEntity.setId(2L);
+		organizationDXPEntity.setIsNew(Boolean.TRUE);
+		organizationDXPEntity.setType(DXPEntity.Type.ORGANIZATION);
 
 		Assertions.assertEquals(
-			dxpOrganization, _dxpEntityRepository.save(dxpOrganization));
+			organizationDXPEntity,
+			_dxpEntityRepository.save(organizationDXPEntity));
 
-		DXPUser dxpUser = new DXPUser();
+		DXPEntity userDXPEntity = new DXPEntity();
 
-		dxpUser.setDataSourceId(123L);
-		dxpUser.setFieldsJSONObject(
+		userDXPEntity.setDataSourceId(123L);
+		userDXPEntity.setFieldsJSONObject(
 			JSONUtil.put(
 				"firstName", "Test"
 			).put(
 				"lastName", "Test"
 			));
-		dxpUser.setId(3L);
-		dxpUser.setIsNew(Boolean.TRUE);
+		userDXPEntity.setId(3L);
+		userDXPEntity.setIsNew(Boolean.TRUE);
+		userDXPEntity.setType(DXPEntity.Type.USER);
 
-		Assertions.assertEquals(dxpUser, _dxpEntityRepository.save(dxpUser));
+		Assertions.assertEquals(
+			userDXPEntity, _dxpEntityRepository.save(userDXPEntity));
 	}
 
 	@Test

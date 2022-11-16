@@ -218,7 +218,7 @@ public class DXPEntityNanite extends BaseNanite {
 				int page = 0;
 
 				while (true) {
-					Page<? extends DXPEntity> dxpEntitiesPage =
+					Page<DXPEntity> dxpEntitiesPage =
 						_dxpEntityDog.getDXPEntityPage(
 							lastSuccessfulDate, currentDate, type,
 							PageRequest.of(
