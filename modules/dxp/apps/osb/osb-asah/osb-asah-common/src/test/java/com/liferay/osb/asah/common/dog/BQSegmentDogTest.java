@@ -22,40 +22,40 @@ import org.springframework.test.util.ReflectionTestUtils;
 /**
  * @author Marcos Martins
  */
-public class SegmentDogTest {
+public class BQSegmentDogTest {
 
 	@Test
 	public void testParserFilter() {
 		Assertions.assertEquals(
 			"demographics/additionalName/value eq 'Miles'",
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_bqSegmentDog, "_parserFilter",
 				"demographics/additionalName/value eq 'Miles'"));
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_bqSegmentDog, "_parserFilter",
 				"demographics/age/value ge " +
 					"12345678901234567262899398937898378787878"));
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_bqSegmentDog, "_parserFilter",
 				"demographics/age/value ge 1.2345678901234568e+21"));
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_bqSegmentDog, "_parserFilter",
 				"demographics/age/value ge " + Integer.MAX_VALUE));
 		Assertions.assertEquals(
 			"organizations.filter(filter='(dateModified gt " +
 				Integer.MAX_VALUE + ")')",
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_bqSegmentDog, "_parserFilter",
 				"organizations.filter(filter='(dateModified gt " +
 					"1580256740750)')"));
 	}
 
-	private final SegmentDog _segmentDog = new SegmentDog();
+	private final BQSegmentDog _bqSegmentDog = new BQSegmentDog();
 
 }

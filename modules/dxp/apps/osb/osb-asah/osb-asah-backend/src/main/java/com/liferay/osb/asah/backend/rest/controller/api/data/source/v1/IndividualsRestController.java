@@ -22,8 +22,8 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
+import com.liferay.osb.asah.common.dog.BQSegmentDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -93,7 +93,7 @@ public class IndividualsRestController extends BaseRestController {
 			}
 			else if (expandPart.equals("individual-segments")) {
 				Map<String, JSONObject> segmentsJSONObjects =
-					_segmentDog.getSegmentsJSONObjects(
+					_bqSegmentDog.getSegmentsJSONObjects(
 						Collections.singletonList(individual));
 
 				JSONObject jsonObject = segmentsJSONObjects.get(
@@ -156,7 +156,7 @@ public class IndividualsRestController extends BaseRestController {
 					_dataSourceDog.getDataSourcesJSONObjects(individuals);
 			}
 			else if (expandPart.equals("individual-segments")) {
-				segmentsJSONObjects = _segmentDog.getSegmentsJSONObjects(
+				segmentsJSONObjects = _bqSegmentDog.getSegmentsJSONObjects(
 					individuals);
 			}
 			else if (_log.isWarnEnabled()) {
@@ -208,7 +208,7 @@ public class IndividualsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		Page<Segment> segmentsPage = _segmentDog.searchSegmentPage(
+		Page<Segment> segmentsPage = _bqSegmentDog.searchSegmentPage(
 			filterString, id, page, Math.max(1, size), sorts);
 
 		if (StringUtils.isEmpty(expand)) {
@@ -234,7 +234,7 @@ public class IndividualsRestController extends BaseRestController {
 
 		SegmentDTO segmentDTO1 = new SegmentDTO(
 			_bqMembershipChangeDog.getBQMembershipChanges(segments),
-			_segmentDog.getLastActivityDates(segments), segments);
+			_bqSegmentDog.getLastActivityDates(segments), segments);
 
 		Set<SegmentDTO> segmentDTOs = segmentDTO1.getSegmentDTOs();
 
@@ -301,7 +301,7 @@ public class IndividualsRestController extends BaseRestController {
 			"_embedded",
 			new SegmentDTO(
 				_bqMembershipChangeDog.getBQMembershipChanges(segments),
-				_segmentDog.getLastActivityDates(segments), segments),
+				_bqSegmentDog.getLastActivityDates(segments), segments),
 			segmentsPage.getNumber(), segmentsPage.getSize(),
 			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
 	}
@@ -355,9 +355,9 @@ public class IndividualsRestController extends BaseRestController {
 	private BQMembershipDog _bqMembershipDog;
 
 	@Autowired
-	private DataSourceDog _dataSourceDog;
+	private BQSegmentDog _bqSegmentDog;
 
 	@Autowired
-	private SegmentDog _segmentDog;
+	private DataSourceDog _dataSourceDog;
 
 }

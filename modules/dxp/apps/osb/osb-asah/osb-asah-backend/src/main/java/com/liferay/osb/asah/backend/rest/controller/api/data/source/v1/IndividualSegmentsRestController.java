@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.dog.BQSegmentDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -145,7 +145,7 @@ public class IndividualSegmentsRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		if (!segmentDog.isIncludeAnonymousUsers(id)) {
+		if (!bqSegmentDog.isIncludeAnonymousUsers(id)) {
 
 			// TODO Change getBQMembershipPage to use filterString instead of
 			//  individualIds
@@ -166,11 +166,11 @@ public class IndividualSegmentsRestController {
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
-		Segment segment = segmentDog.getSegment(id);
+		Segment segment = bqSegmentDog.getSegment(id);
 
 		SegmentDTO segmentDTO = new SegmentDTO(
 			_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(id),
-			segmentDog.getLastActivityDate(segment), segment);
+			bqSegmentDog.getLastActivityDate(segment), segment);
 
 		if (StringUtils.isNotEmpty(expand)) {
 			String[] expandParts = expand.split(",");
@@ -199,7 +199,7 @@ public class IndividualSegmentsRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		Page<Segment> segmentsPage = segmentDog.searchSegmentPage(
+		Page<Segment> segmentsPage = bqSegmentDog.searchSegmentPage(
 			dataSourceId, filterString, page, Math.max(1, size), sorts);
 
 		return toSegmentDTOPageDTO(segmentsPage);
@@ -228,7 +228,8 @@ public class IndividualSegmentsRestController {
 
 		return _toTransformationDTOPageDTO(
 			"individual-segment-transformations",
-			segmentDog.getTransformationPage(apply, filterString, page, size));
+			bqSegmentDog.getTransformationPage(
+				apply, filterString, page, size));
 	}
 
 	@PostMapping("/{id}/memberships")
@@ -322,7 +323,7 @@ public class IndividualSegmentsRestController {
 		segmentDTO.setModifiedDate(date);
 
 		return objectMapper.convertValue(
-			segmentDog.addSegment(
+			bqSegmentDog.addSegment(
 				objectMapper.convertValue(segmentDTO, Segment.class)),
 			SegmentDTO.class);
 	}
@@ -336,7 +337,7 @@ public class IndividualSegmentsRestController {
 			"_embedded",
 			new SegmentDTO(
 				_bqMembershipChangeDog.getBQMembershipChanges(segments),
-				segmentDog.getLastActivityDates(segments), segments),
+				bqSegmentDog.getLastActivityDates(segments), segments),
 			segmentsPage.getNumber(), segmentsPage.getSize(),
 			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
 	}
@@ -345,10 +346,10 @@ public class IndividualSegmentsRestController {
 	protected BQMembershipDog bqMembershipDog;
 
 	@Autowired
-	protected ObjectMapper objectMapper;
+	protected BQSegmentDog bqSegmentDog;
 
 	@Autowired
-	protected SegmentDog segmentDog;
+	protected ObjectMapper objectMapper;
 
 	private JSONObject _getReferencedObjectsJSONObject(Segment segment)
 		throws Exception {

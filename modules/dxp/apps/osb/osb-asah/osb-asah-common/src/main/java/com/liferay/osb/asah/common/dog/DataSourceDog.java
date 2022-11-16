@@ -435,7 +435,7 @@ public class DataSourceDog {
 
 		List<Long> disabledFieldMappingIds = new ArrayList<>();
 
-		_segmentDog.disableDynamicSegments(
+		_bqSegmentDog.disableDynamicSegments(
 			dataSourceId, disabledFieldMappingIds);
 	}
 
@@ -610,6 +610,9 @@ public class DataSourceDog {
 	private BQDataSourceUserRepository _bqDataSourceUserRepository;
 
 	@Autowired
+	private BQSegmentDog _bqSegmentDog;
+
+	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
@@ -634,9 +637,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private RunLogDog _runLogDog;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
