@@ -30,6 +30,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.json.JSONObject;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -95,9 +99,8 @@ public class DXPEntityDogTest
 			Collections.singletonMap("fields.screenName", "bruno.admin"),
 			DXPEntity.Type.USER);
 
-		DXPEntity dxpEntity = dxpEntities.get(0);
-
-		Assertions.assertEquals("Bruno Admin", dxpEntity.getName());
+		Assertions.assertEquals(
+			"Bruno Admin", _getUserName(dxpEntities.get(0)));
 	}
 
 	@RepositoryResource(
@@ -296,6 +299,14 @@ public class DXPEntityDogTest
 			"Bruno", Sort.desc("name"));
 	}
 
+	private String _getUserName(DXPEntity dxpEntity) {
+		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
+
+		return String.format(
+			"%s %s", fieldsJSONObject.optString("firstName", ""),
+			fieldsJSONObject.optString("lastName", ""));
+	}
+
 	private void _testGetDXPEntityPage(
 		Long channelId, String collectionName, List<String> expectedNames,
 		int expectedTotal, String keywords, Sort sort) {
@@ -303,6 +314,13 @@ public class DXPEntityDogTest
 		Page<DXPEntity> dxpEntityPage = _dxpEntityDog.getDXPEntityPage(
 			channelId, keywords, 10, sort, 0,
 			DXPEntity.Type.ofCollectionName(collectionName));
+
+		List<DXPEntity> dxpEntities = dxpEntityPage.getContent();
+
+		if (StringUtils.equals(collectionName, "users")) {
+			dxpEntities.forEach(
+				dxpEntity -> dxpEntity.setName(_getUserName(dxpEntity)));
+		}
 
 		Assertions.assertEquals(
 			expectedTotal, dxpEntityPage.getTotalElements(),
