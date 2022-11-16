@@ -514,10 +514,10 @@ public class SiteMetricDog {
 	}
 
 	private String[] _getSearchQueryParams() {
+		Set<String> searchQueryParams = new HashSet<>();
+
 		Preference preference = _preferenceDog.getPreference(
 			"search-query-strings");
-
-		Set<String> searchQueryParams = new HashSet<>();
 
 		String preferenceValue = preference.getValue();
 
