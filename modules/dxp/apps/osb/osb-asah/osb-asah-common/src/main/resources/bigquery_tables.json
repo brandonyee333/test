@@ -1251,9 +1251,6 @@
 		}
 	},
 	"individualinterestscore": {
-		"clusteringFields": [
-			"channelId"
-		],
 		"fields": [
 			{
 				"mode": "REQUIRED",
