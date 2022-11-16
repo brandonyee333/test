@@ -197,9 +197,7 @@ public class IndividualsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "false", required = false) boolean
 			includeAnonymousUsers) {
 
-		// TODO Implement operation
-
-		return 0;
+		return _bqIndividualDog.countIndividuals(includeAnonymousUsers);
 	}
 
 	@GetMapping("/{id}/individual-segments")

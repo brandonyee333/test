@@ -28,6 +28,8 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomBQIdentityRepository {
 
+	public long countIndividuals(boolean includeAnonymousUsers);
+
 	public long getIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, ZoneId zoneId);

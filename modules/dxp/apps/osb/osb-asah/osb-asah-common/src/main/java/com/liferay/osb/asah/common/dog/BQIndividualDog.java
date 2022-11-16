@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 
 import java.util.ArrayList;
@@ -43,10 +44,12 @@ import org.springframework.stereotype.Component;
 public class BQIndividualDog {
 
 	public BQIndividualDog(
+		BQIdentityRepository bqIdentityRepository,
 		BQIndividualRepository bqIndividualRepository,
 		IndividualsFilterStringConverterHelper
 			individualsFilterStringConverterHelper) {
 
+		_bqIdentityRepository = bqIdentityRepository;
 		_bqIndividualRepository = bqIndividualRepository;
 		_individualsFilterStringConverterHelper =
 			individualsFilterStringConverterHelper;
@@ -58,6 +61,10 @@ public class BQIndividualDog {
 
 		return _bqIndividualRepository.countBQIndividuals(
 			accountId, channelId, dataSourceId, notSegmentId, query, segmentId);
+	}
+
+	public long countIndividuals(boolean includeAnonymousUsers) {
+		return _bqIdentityRepository.countIndividuals(includeAnonymousUsers);
 	}
 
 	public Individual fetchBQIndividual(@Nullable Long channelId, String id) {
@@ -147,6 +154,7 @@ public class BQIndividualDog {
 		return Sort.by(orders);
 	}
 
+	private final BQIdentityRepository _bqIdentityRepository;
 	private final BQIndividualRepository _bqIndividualRepository;
 	private final IndividualsFilterStringConverterHelper
 		_individualsFilterStringConverterHelper;

@@ -53,6 +53,37 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
+	public long countIndividuals(boolean includeAnonymousUsers) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
+			DSL.table(
+				"BQIdentity"
+			).as(
+				"identity"
+			));
+
+		if (!includeAnonymousUsers) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"individual"
+				)
+			).on(
+				DSL.field(
+					"identity.individualId"
+				).eq(
+					DSL.field("individual.id")
+				)
+			);
+		}
+
+		return _queryExecutor.queryForLong(selectJoinStep);
+	}
+
+	@Override
 	public long getIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, ZoneId zoneId) {
