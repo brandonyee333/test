@@ -46,7 +46,7 @@ END;
 CREATE OR REPLACE FUNCTION search_term(searchQueryParams VARCHAR ARRAY, uriString VARCHAR) RETURNS VARCHAR AS '
 DECLARE
  decodeUrl VARCHAR := REPLACE(uriString, ''+'', '' '');
- queryParamSeparator INTEGER := POSITION(''?'' in decodeUrl);
+ queryParamSeparator INTEGER := POSITION(''?'' IN decodeUrl);
  queryParams VARCHAR ARRAY;
  term VARCHAR;
  param VARCHAR;
