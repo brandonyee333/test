@@ -20,6 +20,7 @@ definition {
 	@description = "This is a use case for LRQA-61632."
 	@priority = "3"
 	test AddWCWithFirstComplexStructure {
+		property portal.acceptance = "fiona";
 		property data.archive.type = "data-archive-web-content-first-complex-fields";
 		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
 		property portal.version = "7.3.10.1";
@@ -423,6 +424,7 @@ definition {
 	@description = "This is a use case for LRQA-61632."
 	@priority = "3"
 	test AddWCWithSecondComplexStructure {
+		property portal.acceptance = "fiona";
 		property data.archive.type = "data-archive-web-content-second-complex-fields";
 		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
 		property portal.version = "7.3.10.1";
