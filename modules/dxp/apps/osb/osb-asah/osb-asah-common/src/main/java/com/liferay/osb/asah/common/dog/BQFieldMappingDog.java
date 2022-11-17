@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +41,10 @@ public class BQFieldMappingDog {
 		Optional<BQFieldMapping> fieldMappingOptional =
 			_bqFieldMappingRepository.findById(id);
 
-		return fieldMappingOptional.orElse(null);
+		return fieldMappingOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no Field Mapping with ID " + id));
 	}
 
 	public Page<BQFieldMapping> searchBQFieldMappingPage(
