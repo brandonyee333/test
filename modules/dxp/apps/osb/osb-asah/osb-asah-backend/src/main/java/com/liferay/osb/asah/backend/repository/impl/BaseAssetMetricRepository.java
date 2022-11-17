@@ -958,7 +958,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		if (StringUtils.isNotBlank(keywords)) {
 			conditions.add(
 				DSL.lower(
-					DSL.field("assetTitle", String.class)
+					DSL.field(getAssetTitleFieldName(), String.class)
 				).like(
 					StringUtils.wrap(StringUtils.lowerCase(keywords), "%")
 				));
