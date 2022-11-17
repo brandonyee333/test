@@ -2758,6 +2758,11 @@
 			},
 			{
 				"mode": "NULLABLE",
+				"name": "individualId",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
 				"name": "jobTitle",
 				"type": "STRING"
 			},
