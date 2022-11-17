@@ -27,25 +27,25 @@ WITH
 			documentTitle.value AS assetTitle
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
-        LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS fileEntryId ON (
-            Event.id = fileEntryId.id AND fileEntryId.name IN ('classPK', 'fileEntryId')
-        )
-        LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS documentTitle ON (
-            Event.id = documentTitle.id AND documentTitle.name = 'title'
-        )
-        LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
-            Event.id = className.id AND
-            className.name = 'className' AND
-            className.value = 'com.liferay.document.library.kernel.model.DLFileEntry'
-        )
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS fileEntryId ON (
+			Event.id = fileEntryId.id AND fileEntryId.name IN ('classPK', 'fileEntryId')
+		)
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS documentTitle ON (
+			Event.id = documentTitle.id AND documentTitle.name = 'title'
+		)
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
+			Event.id = className.id AND
+			className.name = 'className' AND
+			className.value = 'com.liferay.document.library.kernel.model.DLFileEntry'
+		)
 		WHERE
 			(
-                Event.applicationId = 'Document' AND
-                Event.eventId IN ('documentDownloaded', 'documentPreviewed')
-            ) OR (
-                Event.applicationId = 'Ratings' AND
-                className.value IS NOT NULL
-            ) AND 
+				Event.applicationId = 'Document' AND
+				Event.eventId IN ('documentDownloaded', 'documentPreviewed')
+			) OR (
+				Event.applicationId = 'Ratings' AND
+				className.value IS NOT NULL
+			) AND 
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			documentTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			fileEntryId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
@@ -108,26 +108,26 @@ WITH
 			region, title, userId
 	),
 	RatingsEvent AS (
-        SELECT
-            Event.*,
-            classPK.value AS assetId,
-            CAST(score.value AS FLOAT64) AS score
-        FROM
-            `$[AC_PROJECT_ID].event` AS Event
-            LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
-                Event.id = className.id AND className.name = 'className'
-            )
-            LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS classPK ON (
-                Event.id = classPK.id AND classPK.name = 'classPK'
-            )
-            LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS ratingType ON (
-                Event.id = ratingType.id AND ratingType.name = 'ratingType'
-            )
-            LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS score ON (
-                Event.id = score.id AND score.name = 'score'
-            )
-        WHERE
-            Event.applicationId = 'Ratings' AND
+		SELECT
+			Event.*,
+			classPK.value AS assetId,
+			CAST(score.value AS FLOAT64) AS score
+		FROM
+			`$[AC_PROJECT_ID].event` AS Event
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
+			Event.id = className.id AND className.name = 'className'
+		)
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS classPK ON (
+			Event.id = classPK.id AND classPK.name = 'classPK'
+		)
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS ratingType ON (
+			Event.id = ratingType.id AND ratingType.name = 'ratingType'
+		)
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS score ON (
+			Event.id = score.id AND score.name = 'score'
+		)
+		WHERE
+			Event.applicationId = 'Ratings' AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'VOTE' AND
 			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
@@ -137,7 +137,7 @@ WITH
 			ratingType.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			ratingtype.value = 'stars' AND
 			score.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
-    ),
+	),
 	DocumentRatings AS (
 		SELECT
 			assetId,
@@ -150,12 +150,12 @@ WITH
 			userId
 		FROM
 			RatingsEvent AS RatingsEvent1
-        WHERE RatingsEvent1.eventDate = (
-            SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
-            WHERE
-                RatingsEvent1.assetId = RatingsEvent2.assetId AND
-                RatingsEvent1.userid = RatingsEvent2.userid
-        ) AND score >= 0
+		WHERE RatingsEvent1.eventDate = (
+			SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
+			WHERE
+				RatingsEvent1.assetId = RatingsEvent2.assetId AND
+				RatingsEvent1.userid = RatingsEvent2.userid
+		) AND score >= 0
 		GROUP BY
 			assetId, canonicalUrl, channelId, normalizedEventDate, score,
 			title, userId

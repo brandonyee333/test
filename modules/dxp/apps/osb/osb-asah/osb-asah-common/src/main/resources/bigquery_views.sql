@@ -19,14 +19,16 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				className.value = 'com.liferay.blogs.model.BlogsEntry'
 			)
 			WHERE
-				((
-                    Event.applicationId = 'Blog' AND
-                    Event.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed')
-				 ) OR
-                 (
-                    Event.applicationId = 'Ratings' AND
-                    className.value IS NOT NULL
-                )) AND
+				(
+					(
+						Event.applicationId = 'Blog' AND
+						Event.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed')
+					) OR
+					(
+						Event.applicationId = 'Ratings' AND
+						className.value IS NOT NULL
+					)
+				) AND
 				entryId.value IS NOT NULL
 		),
 		BlogFinalizedEvent AS (
@@ -70,32 +72,32 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				assetId, canonicalUrl, channelId, normalizedEventDate, title,
 				userId
 		),
-        RatingsEvent AS (
-            SELECT
-                Event.*,
-                classPK.value AS assetId,
-                CAST(score.value AS FLOAT) AS score
-            FROM
-                BQEvent AS Event
-            LEFT JOIN BQEventProperty AS className ON (
-                Event.id = className.id AND className.name = 'className'
-            )
-            LEFT JOIN BQEventProperty AS classPK ON (
-                Event.id = classPK.id AND classPK.name = 'classPK'
-            )
-            LEFT JOIN BQEventProperty AS ratingType ON (
-                Event.id = ratingType.id AND ratingType.name = 'ratingType'
-            )
-            LEFT JOIN BQEventProperty AS score ON (
-                Event.id = score.id AND score.name = 'score'
-            )
-            WHERE
-                Event.applicationId = 'Ratings' AND
-                Event.eventId = 'VOTE' AND
-                className.value = 'com.liferay.blogs.model.BlogsEntry' AND
-                classPK.value IS NOT NULL AND
-                ratingtype.value = 'stars'
-        ),
+		RatingsEvent AS (
+			SELECT
+				Event.*,
+				classPK.value AS assetId,
+				CAST(score.value AS FLOAT) AS score
+			FROM
+				BQEvent AS Event
+			LEFT JOIN BQEventProperty AS className ON (
+				Event.id = className.id AND className.name = 'className'
+			)
+			LEFT JOIN BQEventProperty AS classPK ON (
+				Event.id = classPK.id AND classPK.name = 'classPK'
+			)
+			LEFT JOIN BQEventProperty AS ratingType ON (
+				Event.id = ratingType.id AND ratingType.name = 'ratingType'
+			)
+			LEFT JOIN BQEventProperty AS score ON (
+				Event.id = score.id AND score.name = 'score'
+			)
+			WHERE
+				Event.applicationId = 'Ratings' AND
+				Event.eventId = 'VOTE' AND
+				className.value = 'com.liferay.blogs.model.BlogsEntry' AND
+				classPK.value IS NOT NULL AND
+				ratingtype.value = 'stars'
+		),
 		BlogRatings AS (
 			SELECT
 				assetId,
@@ -108,12 +110,12 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				userId
 			FROM
 				RatingsEvent AS RatingsEvent1
-            WHERE RatingsEvent1.eventDate = (
-                SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
-                WHERE
-                    RatingsEvent1.assetId = RatingsEvent2.assetId AND
-                    RatingsEvent1.userid = RatingsEvent2.userid
-            ) AND score >= 0
+			WHERE RatingsEvent1.eventDate = (
+				SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
+				WHERE
+					RatingsEvent1.assetId = RatingsEvent2.assetId AND
+					RatingsEvent1.userid = RatingsEvent2.userid
+			) AND score >= 0
 			GROUP BY
 				assetId, canonicalUrl, channelId, normalizedEventDate, score,
 				title, userId
@@ -502,12 +504,12 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 			)
 			WHERE
 				(
-                    Event.applicationId = 'Document' AND
-                    Event.eventId IN ('documentDownloaded', 'documentPreviewed')
-                ) OR (
-                    Event.applicationId = 'Ratings' AND
-                    className.value IS NOT NULL
-                ) AND fileEntryId.value IS NOT NULL
+					Event.applicationId = 'Document' AND
+					Event.eventId IN ('documentDownloaded', 'documentPreviewed')
+				) OR (
+					Event.applicationId = 'Ratings' AND
+					className.value IS NOT NULL
+				) AND fileEntryId.value IS NOT NULL
 		),
 		DocumentComments AS (
 			SELECT
@@ -603,13 +605,13 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 				score AS ratingsScore,
 				userId
 			FROM
-                RatingsEvent AS RatingsEvent1
-            WHERE RatingsEvent1.eventDate = (
-                SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
-                WHERE
-                    RatingsEvent1.assetId = RatingsEvent2.assetId AND
-                    RatingsEvent1.userid = RatingsEvent2.userid
-            ) AND score >= 0
+				RatingsEvent AS RatingsEvent1
+			WHERE RatingsEvent1.eventDate = (
+				SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
+				WHERE
+					RatingsEvent1.assetId = RatingsEvent2.assetId AND
+					RatingsEvent1.userid = RatingsEvent2.userid
+			) AND score >= 0
 			GROUP BY
 				assetId, canonicalUrl, channelId, normalizedEventDate, score,
 				title, userId

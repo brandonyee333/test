@@ -13,22 +13,22 @@ WITH
 			Event.id = blogTitle.id AND blogTitle.name = 'title'
 		)
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
-            Event.id = className.id AND
-            className.name = 'className' AND
-            className.value = 'com.liferay.blogs.model.BlogsEntry'
-        )
+			Event.id = className.id AND
+			className.name = 'className' AND
+			className.value = 'com.liferay.blogs.model.BlogsEntry'
+		)
 		WHERE
 			((
-                Event.applicationId = 'Blog' AND
-                Event.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed')
+				Event.applicationId = 'Blog' AND
+				Event.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed')
 			) OR (
-                Event.applicationId = 'Ratings' AND
-                className.value IS NOT NULL
-            )) AND
+				Event.applicationId = 'Ratings' AND
+				className.value IS NOT NULL
+			)) AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			blogTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			entryId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-            entryId.value IS NOT NULL
+			entryId.value IS NOT NULL
 	),
 	BlogFinalizedEvent AS (
 		SELECT
@@ -76,26 +76,26 @@ WITH
 			assetId, canonicalUrl, channelId, normalizedEventDate, title, userId
 	),
 	RatingsEvent AS (
-        SELECT
-            Event.*,
-            classPK.value as assetId,
-            CAST(score.value AS FLOAT64) as score
-        FROM
-            `$[AC_PROJECT_ID].event` AS Event
-        LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
-            Event.id = className.id AND className.name = 'className'
-        )
-        LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS classPK ON (
-            Event.id = classPK.id AND classPK.name = 'classPK'
-        )
-        LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS ratingType ON (
-            Event.id = ratingType.id AND ratingType.name = 'ratingType'
-        )
-        LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS score ON (
-            Event.id = score.id AND score.name = 'score'
-        )
-        WHERE
-            Event.applicationId = 'Ratings' AND
+		SELECT
+			Event.*,
+			classPK.value as assetId,
+			CAST(score.value AS FLOAT64) as score
+		FROM
+			`$[AC_PROJECT_ID].event` AS Event
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
+			Event.id = className.id AND className.name = 'className'
+		)
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS classPK ON (
+			Event.id = classPK.id AND classPK.name = 'classPK'
+		)
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS ratingType ON (
+			Event.id = ratingType.id AND ratingType.name = 'ratingType'
+		)
+		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS score ON (
+			Event.id = score.id AND score.name = 'score'
+		)
+		WHERE
+			Event.applicationId = 'Ratings' AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'VOTE' AND
 			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
@@ -105,7 +105,7 @@ WITH
 			ratingType.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			ratingType.value = 'stars' AND
 			score.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
-    ),
+	),
 	BlogRatings AS (
 		SELECT
 			assetId,
@@ -117,13 +117,13 @@ WITH
 			score AS ratingsScore,
 			userId
 		FROM
-            RatingsEvent AS RatingsEvent1
-        WHERE RatingsEvent1.eventDate = (
-            SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
-            WHERE
-                RatingsEvent1.assetId = RatingsEvent2.assetId AND
-                RatingsEvent1.userid = RatingsEvent2.userid
-        ) AND score >= 0
+			RatingsEvent AS RatingsEvent1
+		WHERE RatingsEvent1.eventDate = (
+			SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
+			WHERE
+				RatingsEvent1.assetId = RatingsEvent2.assetId AND
+				RatingsEvent1.userid = RatingsEvent2.userid
+		) AND score >= 0
 		GROUP BY
 			assetId, canonicalUrl, channelId, normalizedEventDate, score,
 			title, userId
