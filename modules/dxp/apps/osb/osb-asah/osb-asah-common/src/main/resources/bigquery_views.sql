@@ -1,5 +1,5 @@
 CREATE OR REPLACE VIEW BQBlog AS (
-	with
+	WITH
 		BlogEvent AS (
 			SELECT
 				Event.*,
@@ -14,7 +14,7 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				Event.id = blogTitle.id AND blogTitle.name = 'title'
 			)
 			LEFT JOIN BQEventProperty AS className ON (
-				Event.id = className.id AND
+				className.id = Event.id AND
 				className.name = 'className' AND
 				className.value = 'com.liferay.blogs.model.BlogsEntry'
 			)
@@ -498,7 +498,7 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 				Event.id = documentTitle.id AND documentTitle.name = 'title'
 			)
 			LEFT JOIN BQEventProperty AS className ON (
-				Event.id = className.id AND
+				className.id = Event.id AND
 				className.name = 'className' AND
 				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry'
 			)

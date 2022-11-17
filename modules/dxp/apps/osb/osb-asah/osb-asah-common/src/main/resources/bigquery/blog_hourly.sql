@@ -13,7 +13,7 @@ WITH
 			Event.id = blogTitle.id AND blogTitle.name = 'title'
 		)
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
-			Event.id = className.id AND
+			className.id = Event.id AND
 			className.name = 'className' AND
 			className.value = 'com.liferay.blogs.model.BlogsEntry'
 		)
