@@ -101,12 +101,12 @@ public class SiteMetricDog {
 
 		List<Composition> compositions = new ArrayList<>();
 
-		for (Map.Entry<String, BigDecimal> set :
+		for (Map.Entry<String, BigDecimal> entry :
 				acquisitionsMetrics.entrySet()) {
 
-			BigDecimal count = set.getValue();
+			BigDecimal count = entry.getValue();
 
-			compositions.add(new Composition(count.longValue(), set.getKey()));
+			compositions.add(new Composition(count.longValue(), entry.getKey()));
 		}
 
 		return new CompositionResultBag(
@@ -323,10 +323,10 @@ public class SiteMetricDog {
 
 		List<Composition> compositions = new ArrayList<>();
 
-		for (Map.Entry<String, BigDecimal> set : searchTerms.entrySet()) {
-			String key = set.getKey();
+		for (Map.Entry<String, BigDecimal> entry : searchTerms.entrySet()) {
+			String key = entry.getKey();
 
-			BigDecimal count = set.getValue();
+			BigDecimal count = entry.getValue();
 
 			compositions.add(new Composition(count.longValue(), key));
 		}
