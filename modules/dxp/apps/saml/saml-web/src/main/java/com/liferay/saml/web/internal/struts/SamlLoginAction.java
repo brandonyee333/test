@@ -113,13 +113,6 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 				return null;
 			}
 		}
-		else if (samlSpIdpConnections.size() == 1) {
-			httpServletRequest.setAttribute(
-				SamlWebKeys.SAML_SP_IDP_CONNECTION,
-				samlSpIdpConnections.get(0));
-
-			return null;
-		}
 
 		httpServletRequest.setAttribute(
 			SamlWebKeys.SAML_SSO_LOGIN_CONTEXT,
@@ -127,7 +120,7 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 
 		JspUtil.dispatch(
 			httpServletRequest, httpServletResponse,
-			"/portal/saml/select_idp.jsp",
+			"/portal/saml/saml_login.jsp",
 			"please-select-your-identity-provider", false);
 
 		return null;
