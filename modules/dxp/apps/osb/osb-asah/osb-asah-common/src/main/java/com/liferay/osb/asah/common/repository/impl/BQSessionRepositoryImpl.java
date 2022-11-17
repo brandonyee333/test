@@ -210,20 +210,10 @@ public class BQSessionRepositoryImpl
 							"field"
 						)
 					)
-				).with(
-					"acquisitions"
-				).as(
-					_dslContext.select(
-						DSL.field("field")
-					).from(
-						"acquisitionsReferrersList"
-					).groupBy(
-						DSL.field("field")
-					)
 				).select(
 					DSL.count(DSL.asterisk())
 				).from(
-					"acquisitions"
+					"acquisitionsReferrersList"
 				));
 		}
 
@@ -238,24 +228,14 @@ public class BQSessionRepositoryImpl
 		}
 
 		return _queryExecutor.queryForLong(
-			_dslContext.with(
-				"acquisitions"
-			).as(
-				_dslContext.select(
-					field.as("field")
-				).from(
-					DSL.table("BQSession")
-				).where(
-					DSL.and(
-						_createWhereClause(channelId, timeRange, zoneId),
-						field.isNotNull())
-				).groupBy(
-					DSL.field("field")
-				)
-			).select(
-				DSL.count(DSL.asterisk())
+			_dslContext.select(
+				DSL.count(DSL.field(field))
 			).from(
-				"acquisitions"
+				DSL.table("BQSession")
+			).where(
+				DSL.and(
+					_createWhereClause(channelId, timeRange, zoneId),
+					field.isNotNull())
 			));
 	}
 
