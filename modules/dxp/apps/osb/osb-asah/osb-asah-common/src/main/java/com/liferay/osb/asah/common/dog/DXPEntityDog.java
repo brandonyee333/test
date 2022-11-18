@@ -165,7 +165,7 @@ public class DXPEntityDog {
 
 		dxpEntities.forEach(dxpEntity -> dxpEntity.setType(type));
 
-		return _processDXPEntities(this::_mapDXPEntity, dxpEntities);
+		return _processDXPEntities(dxpEntities, this::_mapDXPEntity);
 	}
 
 	private DXPEntity _mapDXPEntity(DXPEntity dxpEntity, DXPEntity.Type type) {
@@ -203,9 +203,9 @@ public class DXPEntityDog {
 	}
 
 	private List<DXPEntity> _processDXPEntities(
+		List<DXPEntity> dxpEntities,
 		BiFunction<Map<Long, String>, DXPEntity, DXPEntity>
-			dxpEntityModelMapperFunction,
-		List<DXPEntity> dxpEntities) {
+			dxpEntityModelMapperFunction) {
 
 		Map<Long, String> dataSourceNames = new HashMap<>();
 
