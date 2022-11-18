@@ -75,32 +75,27 @@ $$ LANGUAGE plpgsql;
 
 COMMIT;
 
-CREATE OR REPLACE FUNCTION search_term(searchQueryParams VARCHAR ARRAY, uriString VARCHAR) RETURNS VARCHAR AS '
-	DECLARE
-		decodeUrl VARCHAR := REPLACE(uriString, ''+'', '' '');
-		queryParamSeparator INTEGER := POSITION(''?'' IN decodeUrl);
-		queryParams VARCHAR ARRAY;
-		term VARCHAR;
-		param VARCHAR;
-	BEGIN
-		IF (queryParamSeparator <= 0) THEN
-			RETURN NULL;
-		END IF;
-
-		FOREACH term IN ARRAY searchQueryParams
-			LOOP
-				FOREACH param IN ARRAY STRING_TO_ARRAY(SUBSTRING(decodeUrl, queryParamSeparator + 1), ''&'')
-					LOOP
-						queryParams := STRING_TO_ARRAY(param, ''='');
-
-						IF (queryParams[1] = term) THEN
-							RETURN queryParams[2];
-						END IF;
-					END LOOP;
-			END LOOP;
+CREATE OR REPLACE FUNCTION search_term(search_query_params VARCHAR ARRAY, url VARCHAR) RETURNS VARCHAR AS $$
+DECLARE
+	query_param_separator INTEGER := POSITION('?' IN url);
+	search_query_param VARCHAR;
+	search_query_param_value VARCHAR;
+BEGIN
+	IF (query_param_separator <= 0) THEN
 		RETURN NULL;
-	END;
-' LANGUAGE plpgsql;
+	END IF;
+
+	FOREACH search_query_param IN ARRAY search_query_params
+		LOOP
+			search_query_param_value = url_decode(extract_query_param(search_query_param, url));
+
+			IF (search_query_param_value != '') THEN
+				RETURN search_query_param_value;
+			END IF;
+		END LOOP;
+	RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
 
 COMMIT;
 
