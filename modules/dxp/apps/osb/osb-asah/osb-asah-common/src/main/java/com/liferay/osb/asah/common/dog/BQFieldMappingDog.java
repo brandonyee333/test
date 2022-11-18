@@ -44,7 +44,7 @@ public class BQFieldMappingDog {
 		return fieldMappingOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
-				"There is no Field Mapping with ID " + id));
+				"There is no field mapping with ID " + id));
 	}
 
 	public Page<BQFieldMapping> searchBQFieldMappingPage(
