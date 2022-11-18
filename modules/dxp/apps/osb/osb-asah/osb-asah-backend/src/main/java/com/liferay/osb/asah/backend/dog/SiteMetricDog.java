@@ -106,7 +106,8 @@ public class SiteMetricDog {
 
 			BigDecimal count = entry.getValue();
 
-			compositions.add(new Composition(count.longValue(), entry.getKey()));
+			compositions.add(
+				new Composition(count.longValue(), entry.getKey()));
 		}
 
 		return new CompositionResultBag(
