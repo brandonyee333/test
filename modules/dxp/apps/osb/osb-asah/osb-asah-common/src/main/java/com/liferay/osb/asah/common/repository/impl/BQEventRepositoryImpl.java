@@ -698,25 +698,15 @@ public class BQEventRepositoryImpl
 			DSL.field("url"));
 
 		return _queryExecutor.queryForLong(
-			_dslContext.with(
-				"searchTermsTable"
-			).as(
-				_dslContext.select(
-					searchTermField.as("searchTermField")
-				).from(
-					"BQEvent"
-				).where(
-					_createSearchTermsCondition(
-						channelId, timeRange.getEndLocalDateTime(),
-						timeRange.getStartLocalDateTime(), searchTermField,
-						timeZoneId)
-				).groupBy(
-					searchTermField, DSL.field("BQEvent.url")
-				)
-			).select(
-				DSL.count(DSL.asterisk())
+			_dslContext.select(
+				DSL.count(searchTermField)
 			).from(
-				"searchTermsTable"
+				"BQEvent"
+			).where(
+				_createSearchTermsCondition(
+					channelId, timeRange.getEndLocalDateTime(),
+					timeRange.getStartLocalDateTime(), searchTermField,
+					timeZoneId)
 			));
 	}
 
