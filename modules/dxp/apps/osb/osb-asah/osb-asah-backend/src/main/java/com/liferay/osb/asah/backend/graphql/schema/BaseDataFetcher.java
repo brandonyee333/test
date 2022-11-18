@@ -145,7 +145,9 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 			TimeRange timeRange = TimeRange.of(
 				(int)dataFetchingEnvironment.getArgument("rangeKey"));
 
-			if (timeRange == TimeRange.LAST_24_HOURS) {
+			if ((timeRange == TimeRange.LAST_24_HOURS) ||
+				(timeRange == TimeRange.YESTERDAY)) {
+
 				searchQueryContext.setInterval("H");
 			}
 
