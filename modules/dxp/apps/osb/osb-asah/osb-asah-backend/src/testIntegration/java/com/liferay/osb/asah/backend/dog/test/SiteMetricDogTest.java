@@ -652,7 +652,7 @@ public class SiteMetricDogTest
 
 		Assertions.assertEquals(2, compositionResultBag.getMaxCount());
 		Assertions.assertEquals(4, compositionResultBag.getTotal());
-		Assertions.assertEquals(4, compositionResultBag.getTotalCount());
+		Assertions.assertEquals(5, compositionResultBag.getTotalCount());
 	}
 
 	@SQLResource(resourcePath = "test_bq_sessions_visitors_by_day_and_time.sql")
