@@ -2725,11 +2725,6 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
-				"name": "emailAddressHashed",
-				"type": "STRING"
-			},
-			{
 				"fields": [
 					{
 						"mode": "REQUIRED",
