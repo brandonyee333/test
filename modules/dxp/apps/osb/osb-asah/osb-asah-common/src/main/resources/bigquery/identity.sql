@@ -1,4 +1,5 @@
 SELECT
+	MIN(createDate) AS createDate,
 	id,
 	MAX(individualId) AS individualId
 FROM

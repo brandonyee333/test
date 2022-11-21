@@ -20,6 +20,8 @@ import com.liferay.osb.asah.common.repository.CustomBQIdentityRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
+import java.math.BigDecimal;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -99,12 +101,12 @@ public class BQIdentityRepositoryImpl
 		List<LocalDate> localDates, List<MetricType> metricTypes,
 		ZoneId zoneId) {
 
-		SelectConditionStep<Record1<Integer>> selectConditionStep = null;
+		SelectConditionStep<Record1<BigDecimal>> selectConditionStep = null;
 
 		for (LocalDate localDate : localDates) {
 			for (MetricType metricType : metricTypes) {
-				SelectConditionStep<Record1<Integer>> curSelectConditionStep =
-					_getSelectConditionStep(
+				SelectConditionStep<Record1<BigDecimal>>
+					curSelectConditionStep = _getSelectConditionStep(
 						active, channelId, localDate, metricType, zoneId);
 
 				if (selectConditionStep == null) {
@@ -122,7 +124,7 @@ public class BQIdentityRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			record -> {
-				Integer count = (Integer)record.get("count");
+				BigDecimal count = (BigDecimal)record.get("count");
 
 				return count.longValue();
 			},
@@ -185,19 +187,25 @@ public class BQIdentityRepositoryImpl
 		return conditions;
 	}
 
-	private SelectConditionStep<Record1<Integer>> _getSelectConditionStep(
+	private SelectConditionStep _getSelectConditionStep(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, ZoneId zoneId) {
 
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
+		SelectSelectStep<Record1<BigDecimal>> selectSelectStep =
+			_dslContext.select(
+				DSL.cast(
+					DSL.count(), BigDecimal.class
+				).as(
+					"count"
+				));
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
-			DSL.table(
-				"BQIdentity"
-			).as(
-				"identity"
-			));
+		SelectJoinStep<Record1<BigDecimal>> selectJoinStep =
+			selectSelectStep.from(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"identity"
+				));
 
 		if (BooleanUtils.isTrue(active)) {
 			selectJoinStep = selectJoinStep.join(
