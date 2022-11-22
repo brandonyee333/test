@@ -38,8 +38,48 @@ USING
 		)
 
 		SELECT
+			(
+				SELECT
+					SAFE_CAST(value AS STRING)
+				FROM
+					UNNEST(stagingFields)
+				WHERE
+					name = 'firstName'
+			) AS firstName,
 			emailAddress,
+			(
+				SELECT
+					SAFE_CAST(value AS STRING)
+				FROM
+					UNNEST(stagingFields)
+				WHERE
+					name = 'jobTitle'
+			) AS jobTitle,
+			(
+                SELECT
+                    SAFE_CAST(value AS STRING)
+                FROM
+                    UNNEST(stagingFields)
+                WHERE
+                    name = 'lastName'
+            ) AS lastName,
+            (
+                SELECT
+                    SAFE_CAST(value AS STRING)
+                FROM
+                    UNNEST(stagingFields)
+                WHERE
+                    name = 'middleName'
+            ) AS middleName,
 			modifiedDate,
+			(
+                SELECT
+                    SAFE_CAST(value AS STRING)
+                FROM
+                    UNNEST(stagingFields)
+                WHERE
+                    name = 'screenName'
+            ) AS screenName,
 			ARRAY(
 				SELECT AS STRUCT
 					dataSourceId,
@@ -99,20 +139,37 @@ ON
 	LOWER(replica.emailAddress) = staging.emailAddress
 WHEN MATCHED THEN
 	UPDATE SET
+		replica.firstName = staging.firstName,
 		replica.fields = staging.stagingFields,
-		replica.modifiedDate = staging.modifiedDate
+		replica.jobTitle = staging.jobTitle,
+		replica.lastName = staging.lastName,
+		replica.middleName = staging.middleName,
+		replica.modifiedDate = staging.modifiedDate,
+		replica.screenName = staging.screenName
 WHEN NOT MATCHED BY TARGET THEN
 	INSERT(
+		`createDate`,
 		`emailAddress`,
+		`firstName`,
 		`fields`,
 		`id`,
-		`modifiedDate`
+		`jobTitle`,
+		`lastName`,
+		`middleName`,
+		`modifiedDate`,
+		`screenName`
 	)
 	VALUES (
+		staging.modifiedDate,
 		LOWER(staging.emailAddress),
+		staging.firstName,
 		staging.stagingFields,
 		TO_HEX(SHA256(LOWER(staging.emailAddress))),
-		staging.modifiedDate
+		staging.jobTitle,
+		staging.lastName,
+		staging.middleName,
+		staging.modifiedDate,
+		staging.screenName
 	)
 WHEN NOT MATCHED BY SOURCE THEN
 	DELETE
