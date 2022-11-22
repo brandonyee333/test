@@ -38,6 +38,7 @@ USING
 		)
 
 		SELECT
+			emailAddress,
 			(
 				SELECT
 					SAFE_CAST(value AS STRING)
@@ -46,7 +47,6 @@ USING
 				WHERE
 					name = 'firstName'
 			) AS firstName,
-			emailAddress,
 			(
 				SELECT
 					SAFE_CAST(value AS STRING)
@@ -56,30 +56,30 @@ USING
 					name = 'jobTitle'
 			) AS jobTitle,
 			(
-                SELECT
-                    SAFE_CAST(value AS STRING)
-                FROM
-                    UNNEST(stagingFields)
-                WHERE
-                    name = 'lastName'
-            ) AS lastName,
-            (
-                SELECT
-                    SAFE_CAST(value AS STRING)
-                FROM
-                    UNNEST(stagingFields)
-                WHERE
-                    name = 'middleName'
-            ) AS middleName,
+				SELECT
+					SAFE_CAST(value AS STRING)
+				FROM
+					UNNEST(stagingFields)
+				WHERE
+					name = 'lastName'
+			) AS lastName,
+			(
+				SELECT
+					SAFE_CAST(value AS STRING)
+				FROM
+					UNNEST(stagingFields)
+				WHERE
+					name = 'middleName'
+			) AS middleName,
 			modifiedDate,
 			(
-                SELECT
-                    SAFE_CAST(value AS STRING)
-                FROM
-                    UNNEST(stagingFields)
-                WHERE
-                    name = 'screenName'
-            ) AS screenName,
+				SELECT
+					SAFE_CAST(value AS STRING)
+				FROM
+					UNNEST(stagingFields)
+				WHERE
+					name = 'screenName'
+			) AS screenName,
 			ARRAY(
 				SELECT AS STRUCT
 					dataSourceId,
