@@ -22,6 +22,7 @@ definition {
 	@description = "Verify portal-ext properties can be set with environment variables after setting company-id-properties=true via jvm argument."
 	@priority = "3"
 	test ConfigurePortalExtPropertyViaJVM {
+        property portal.acceptance = "kvale17"; 
 		property test.name.skip.portal.instance = "EnvironmentVariables#ConfigurePortalExtPropertyViaJVM";
 
 		task ("Given a feature flag is disabled") {
@@ -70,6 +71,7 @@ CATALINA_OPTS="$CATALINA_OPTS -Dcompany-id-properties=true"
 	@description = "Verify portal-ext properties can be set with environment variables after setting company-id-properties=true via system-ext.properties"
 	@priority = "3"
 	test ConfigurePortalExtPropertyViaSystemExt {
+        property portal.acceptance = "kvale17"; 
 		property custom.system.properties = "company-id-properties=true";
 		property test.name.skip.portal.instance = "EnvironmentVariables#ConfigurePortalExtPropertyViaSystemExt";
 
