@@ -72,7 +72,7 @@ public class SiteMetricDogTest
 
 		Composition composition = results.get(0);
 
-		Assertions.assertEquals("testChannel1", composition.getName());
+		Assertions.assertEquals("testchannel1", composition.getName());
 		Assertions.assertEquals(2, composition.getCount());
 	}
 
@@ -108,7 +108,7 @@ public class SiteMetricDogTest
 		Composition composition = results.get(0);
 
 		Assertions.assertEquals(
-			"testSource3 / testMedium3", composition.getName());
+			"testsource3 / testmedium3", composition.getName());
 		Assertions.assertEquals(1, composition.getCount());
 	}
 
