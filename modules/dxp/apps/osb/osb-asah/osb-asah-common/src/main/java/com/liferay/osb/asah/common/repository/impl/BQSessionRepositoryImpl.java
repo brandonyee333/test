@@ -152,6 +152,8 @@ public class BQSessionRepositoryImpl
 				"acquisitionsource || ' / ' || acquisitionmedium");
 		}
 
+		field = DSL.lower(field);
+
 		return _queryExecutor.queryForMap(
 			GetterUtil::getString,
 			_dslContext.select(
