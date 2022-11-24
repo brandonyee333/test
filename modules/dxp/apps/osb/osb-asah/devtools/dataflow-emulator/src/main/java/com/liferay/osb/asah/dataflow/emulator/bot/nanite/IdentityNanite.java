@@ -72,15 +72,15 @@ public class IdentityNanite {
 			));
 	}
 
+	private BQIdentity _getBQIdentity(String id) {
+		Optional<BQIdentity> optional = _bqIdentityRepository.findById(id);
+
+		return optional.orElse(new BQIdentity());
+	}
+
 	private boolean _isBQIdentityActivityNew(String id) {
 		Optional<BQIdentityActivity> optional =
 			_bqIdentityActivityRepository.findById(id);
-
-		return !optional.isPresent();
-	}
-
-	private boolean _isBQIdentityNew(String id) {
-		Optional<BQIdentity> optional = _bqIdentityRepository.findById(id);
 
 		return !optional.isPresent();
 	}
@@ -95,13 +95,19 @@ public class IdentityNanite {
 	}
 
 	private BQIdentity _saveBQIdentity(JSONObject jsonObject) {
-		BQIdentity bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(new Date());
-
 		String userId = jsonObject.getString("userId");
 
-		bqIdentity.setId(userId);
+		BQIdentity bqIdentity = _getBQIdentity(userId);
+
+		if (bqIdentity.getIndividualId() != null) {
+			return bqIdentity;
+		}
+
+		if (bqIdentity.getId() == null) {
+			bqIdentity.setCreateDate(new Date());
+			bqIdentity.setId(userId);
+			bqIdentity.setIsNew(Boolean.TRUE);
+		}
 
 		String individualId = jsonObject.getString("individualId");
 
@@ -112,8 +118,6 @@ public class IdentityNanite {
 		}
 
 		bqIdentity.setIndividualId(individualId);
-
-		bqIdentity.setIsNew(_isBQIdentityNew(userId));
 
 		return _bqIdentityRepository.save(bqIdentity);
 	}
