@@ -602,7 +602,7 @@ public class SiteMetricDogTest
 		LinkedHashMap<String, Long> expectedResults =
 			new LinkedHashMap<String, Long>() {
 				{
-					put("test", 1L);
+					put("test", 2L);
 				}
 			};
 
@@ -617,9 +617,9 @@ public class SiteMetricDogTest
 					Composition::getName, Composition::getCount,
 					(name, count) -> name, LinkedHashMap::new)));
 
-		Assertions.assertEquals(1, compositionResultBag.getMaxCount());
+		Assertions.assertEquals(2, compositionResultBag.getMaxCount());
 		Assertions.assertEquals(1, compositionResultBag.getTotal());
-		Assertions.assertEquals(1, compositionResultBag.getTotalCount());
+		Assertions.assertEquals(2, compositionResultBag.getTotalCount());
 	}
 
 	@SQLResource(resourcePath = "test_bq_events_search_terms.sql")
