@@ -665,10 +665,12 @@ public class BQEventRepositoryImpl
 			BigDecimal.class
 		);
 
+		searchTermField = DSL.lower(searchTermField);
+
 		return _queryExecutor.queryForMap(
 			GetterUtil::getString,
 			_dslContext.select(
-				searchTermField, countField
+				searchTermField.as("searchTermField"), countField
 			).from(
 				"BQEvent"
 			).where(
@@ -677,7 +679,7 @@ public class BQEventRepositoryImpl
 					timeRange.getStartLocalDateTime(), searchTermField,
 					timeZoneId)
 			).groupBy(
-				searchTermField, DSL.field("BQEvent.url")
+				DSL.field("searchTermField")
 			).orderBy(
 				countField.desc()
 			).limit(
@@ -696,6 +698,8 @@ public class BQEventRepositoryImpl
 		Field<String> searchTermField = DSL.function(
 			"SEARCH_TERM", String.class, DSL.array(searchQueryParams),
 			DSL.field("url"));
+
+		searchTermField = DSL.lower(searchTermField);
 
 		return _queryExecutor.queryForLong(
 			_dslContext.select(
