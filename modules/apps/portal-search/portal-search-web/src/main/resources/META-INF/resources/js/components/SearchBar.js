@@ -14,15 +14,14 @@
 
 import ClayAutocomplete from '@clayui/autocomplete';
 import ClayButton from '@clayui/button';
+import {useResource} from '@clayui/data-provider';
 import ClayDropDown from '@clayui/drop-down';
 import {ClayInput, ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import getCN from 'classnames';
-import {addParams, fetch, navigate} from 'frontend-js-web';
+import {navigate} from 'frontend-js-web';
 import React, {useRef, useState} from 'react';
-
-import useDebounceCallback from '../hooks/useDebounceCallback';
 
 export default function SearchBar({
 	destinationFriendlyURL,
@@ -36,15 +35,23 @@ export default function SearchBar({
 	scopeParameterStringEverything,
 	searchURL,
 	selectedEverythingSearchScope = false,
-	suggestionsContributorConfiguration = '[]',
+	suggestionsContributorConfiguration = '{}',
 	suggestionsDisplayThreshold = '2',
 	suggestionsURL = '/o/portal-search-rest/v1.0/suggestions',
 }) {
+	const fetchURL = new URL(
+		`${Liferay.ThemeDisplay.getPathContext()}${suggestionsURL}`,
+		Liferay.ThemeDisplay.getPortalURL()
+	);
+
 	const [active, setActive] = useState(false);
 	const [autocompleteSearchValue, setAutocompleteSearchValue] = useState('');
 	const [inputValue, setInputValue] = useState(keywords);
-	const [loading, setLoading] = useState(false);
-	const [resourceItems, setResourceItems] = useState([]);
+	const [networkState, setNetworkState] = useState(() => ({
+		error: false,
+		loading: false,
+		networkStatus: 4,
+	}));
 	const [scope, setScope] = useState(
 		selectedEverythingSearchScope
 			? scopeParameterStringEverything
@@ -54,48 +61,38 @@ export default function SearchBar({
 	const alignElementRef = useRef();
 	const dropdownRef = useRef();
 
-	const _handleFetchSuggestions = (value) => {
-		fetch(
-			addParams(
-				{
-					currentURL: window.location.href,
-					destinationFriendlyURL: destinationFriendlyURL.trim().length
-						? destinationFriendlyURL
-						: '/search',
-					groupId: Liferay.ThemeDisplay.getScopeGroupId(),
-					plid: Liferay.ThemeDisplay.getPlid(),
-					scope,
-					search: value,
-				},
-				suggestionsURL
-			),
-			{
-				body: suggestionsContributorConfiguration,
-				headers: new Headers({
-					'Accept': 'application/json',
-					'Accept-Language': Liferay.ThemeDisplay.getBCP47LanguageId(),
-					'Content-Type': 'application/json',
-				}),
-				method: 'POST',
-			}
-		)
-			.then((response) => response.json())
-			.then((data) => {
-				setLoading(false);
-
-				setResourceItems(data?.items || []);
-			})
-			.catch(() => {
-				setLoading(false);
-
-				setResourceItems([]);
+	const {resource} = useResource({
+		fetchOptions: {
+			body: suggestionsContributorConfiguration,
+			credentials: 'include',
+			headers: new Headers({
+				'Accept': 'application/json',
+				'Accept-Language': Liferay.ThemeDisplay.getBCP47LanguageId(),
+				'Content-Type': 'application/json',
+				'x-csrf-token': Liferay.authToken,
+			}),
+			method: 'POST',
+		},
+		fetchPolicy: 'cache-first',
+		link: fetchURL.href,
+		onNetworkStatusChange: (status) => {
+			setNetworkState({
+				error: status === 5,
+				loading: status > 1 && status < 4,
+				networkStatus: status,
 			});
-	};
-
-	const [handleFetchSuggestionsDebounced] = useDebounceCallback(
-		_handleFetchSuggestions,
-		500
-	);
+		},
+		variables: {
+			currentURL: window.location.href,
+			destinationFriendlyURL: destinationFriendlyURL.trim().length
+				? destinationFriendlyURL
+				: '/search',
+			groupId: Liferay.ThemeDisplay.getScopeGroupId(),
+			plid: Liferay.ThemeDisplay.getPlid(),
+			scope,
+			search: autocompleteSearchValue,
+		},
+	});
 
 	const _handleKeyDown = (event) => {
 		if (event.key === 'Enter') {
@@ -130,9 +127,7 @@ export default function SearchBar({
 			// loading spinner will never be hidden.
 
 			if (value.trim() !== autocompleteSearchValue) {
-				setLoading(true);
-
-				handleFetchSuggestionsDebounced(value.trim());
+				_setLoading(true);
 			}
 
 			setActive(true);
@@ -164,7 +159,7 @@ export default function SearchBar({
 					value={inputValue}
 				/>
 
-				{loading ? (
+				{networkState.loading ? (
 					<ClayAutocomplete.LoadingIndicator />
 				) : (
 					<ClayInput.GroupInsetItem after>
@@ -203,7 +198,7 @@ export default function SearchBar({
 						<ClayInput.GroupInsetItem after>
 							<ClayLoadingIndicator
 								className={getCN({
-									invisible: !loading,
+									invisible: !networkState.loading,
 								})}
 								small
 							/>
@@ -247,6 +242,14 @@ export default function SearchBar({
 		);
 	};
 
+	const _setLoading = (loading) => {
+		setNetworkState({
+			error: false,
+			loading,
+			networkStatus: 4,
+		});
+	};
+
 	const _updateQueryString = (queryString) => {
 		const searchParams = new URLSearchParams(queryString);
 
@@ -281,7 +284,7 @@ export default function SearchBar({
 			</ClayInput.Group>
 
 			<ClayDropDown.Menu
-				active={active && !!resourceItems.length}
+				active={active && !!resource?.items?.length}
 				alignElementRef={alignElementRef}
 				autoBestAlign={false}
 				className="search-bar-suggestions-dropdown-menu"
@@ -294,7 +297,7 @@ export default function SearchBar({
 						alignElementRef.current.clientWidth + 'px',
 				}}
 			>
-				{resourceItems.map((group, groupIndex) => (
+				{resource?.items?.map((group, groupIndex) => (
 					<ClayDropDown.ItemList
 						className="search-bar-suggestions-results-list"
 						key={groupIndex}
