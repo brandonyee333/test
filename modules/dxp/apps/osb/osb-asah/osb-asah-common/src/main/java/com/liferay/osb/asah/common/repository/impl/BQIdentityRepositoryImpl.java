@@ -30,13 +30,17 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.BooleanUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record1;
+import org.jooq.Record2;
 import org.jooq.SelectConditionStep;
+import org.jooq.SelectFinalStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -90,9 +94,18 @@ public class BQIdentityRepositoryImpl
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, ZoneId zoneId) {
 
-		return _queryExecutor.queryForLong(
-			_getSelectConditionStep(
-				active, channelId, localDate, metricType, zoneId));
+		Optional<BigDecimal> optional = _queryExecutor.queryForObject(
+			record -> record.get("count"),
+			(SelectFinalStep)_getSelectConditionStep(
+				active, channelId, localDate, metricType, 0, zoneId));
+
+		if (optional.isPresent()) {
+			BigDecimal value = optional.get();
+
+			return value.longValue();
+		}
+
+		return 0;
 	}
 
 	@Override
@@ -103,11 +116,14 @@ public class BQIdentityRepositoryImpl
 
 		SelectConditionStep<Record1<BigDecimal>> selectConditionStep = null;
 
+		int unionOrder = 0;
+
 		for (LocalDate localDate : localDates) {
 			for (MetricType metricType : metricTypes) {
 				SelectConditionStep<Record1<BigDecimal>>
 					curSelectConditionStep = _getSelectConditionStep(
-						active, channelId, localDate, metricType, zoneId);
+						active, channelId, localDate, metricType, unionOrder++,
+						zoneId);
 
 				if (selectConditionStep == null) {
 					selectConditionStep = curSelectConditionStep;
@@ -128,7 +144,7 @@ public class BQIdentityRepositoryImpl
 
 				return count.longValue();
 			},
-			selectConditionStep);
+			selectConditionStep.orderBy(DSL.field("unionOrder")));
 	}
 
 	private List<Condition> _getConditions(
@@ -189,17 +205,36 @@ public class BQIdentityRepositoryImpl
 
 	private SelectConditionStep _getSelectConditionStep(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
-		MetricType metricType, ZoneId zoneId) {
+		MetricType metricType, int unionOrder, ZoneId zoneId) {
 
-		SelectSelectStep<Record1<BigDecimal>> selectSelectStep =
+		Field<Integer> field;
+
+		Field<Object> individualIdField = DSL.field("individual.id");
+
+		if (metricType == IndividualMetricType.ANONYMOUS_INDIVIDUALS) {
+			field = _dslHelper.countIf(individualIdField.isNull());
+		}
+		else if (metricType == IndividualMetricType.KNOWN_INDIVIDUALS) {
+			field = DSL.countDistinct(individualIdField);
+		}
+		else {
+			field = _dslHelper.countIf(
+				individualIdField.isNull()
+			).plus(
+				DSL.countDistinct(individualIdField)
+			);
+		}
+
+		SelectSelectStep<Record2<Integer, Integer>> selectSelectStep =
 			_dslContext.select(
-				DSL.cast(
-					DSL.count(), BigDecimal.class
+				field.as("count"),
+				DSL.val(
+					unionOrder, Integer.class
 				).as(
-					"count"
+					"unionOrder"
 				));
 
-		SelectJoinStep<Record1<BigDecimal>> selectJoinStep =
+		SelectJoinStep<Record2<Integer, Integer>> selectJoinStep =
 			selectSelectStep.from(
 				DSL.table(
 					"BQIdentity"
@@ -239,21 +274,19 @@ public class BQIdentityRepositoryImpl
 			);
 		}
 
-		if (metricType == IndividualMetricType.KNOWN_INDIVIDUALS) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"BQIndividual"
-				).as(
-					"individual"
-				)
-			).on(
-				DSL.field(
-					"identity.individualId"
-				).eq(
-					DSL.field("individual.id")
-				)
-			);
-		}
+		selectJoinStep = selectJoinStep.leftJoin(
+			DSL.table(
+				"BQIndividual"
+			).as(
+				"individual"
+			)
+		).on(
+			DSL.field(
+				"identity.individualId"
+			).eq(
+				individualIdField
+			)
+		);
 
 		return selectJoinStep.where(
 			_getConditions(active, channelId, localDate, metricType, zoneId));

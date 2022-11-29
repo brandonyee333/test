@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
+import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -356,9 +358,14 @@ public class BQIndividualRepositoryImpl
 					);
 
 		return _queryExecutor.queryForList(
-			record -> new Individual(
-				(Long)record.get("activitiescount"), new BQIndividual(record),
-				(Date)record.get("lastactivitydate"), _objectMapper),
+			record -> {
+				BigDecimal activitiescount = (BigDecimal)record.get(
+					"activitiescount");
+
+				return new Individual(
+					activitiescount.longValue(), new BQIndividual(record),
+					(Date)record.get("lastactivitydate"), _objectMapper);
+			},
 			_getIndividualSelectOnConditionStep(selectFinalStep));
 	}
 
