@@ -450,7 +450,8 @@ public class BQIndividualRepositoryImpl
 					DSL.sum(
 						DSL.field(
 							"identityChannel.activitiescount", Long.class)),
-					Long.class)
+					Long.class),
+				0L
 			).as(
 				"activitiescount"
 			),
