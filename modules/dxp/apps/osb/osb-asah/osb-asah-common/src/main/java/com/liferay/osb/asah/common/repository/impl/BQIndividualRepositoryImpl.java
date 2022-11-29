@@ -16,12 +16,15 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.google.cloud.bigquery.FieldValueList;
+
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
+import com.liferay.osb.asah.common.util.FieldValueListUtil;
 
 import java.math.BigDecimal;
 
@@ -32,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
@@ -50,6 +54,7 @@ import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -225,12 +230,21 @@ public class BQIndividualRepositoryImpl
 
 		return _queryExecutor.queryForObject(
 			record -> {
+				Map<String, Object> map = new HashedMap<>(record);
+
+				if (_isBigQueryDialect()) {
+					map.put(
+						"fields",
+						FieldValueListUtil.toJSONArray(
+							(List<FieldValueList>)map.get("fields")));
+				}
+
 				BigDecimal activitiescount = new BigDecimal(
-					String.valueOf(record.get("activitiescount")));
+					String.valueOf(map.get("activitiescount")));
 
 				return new Individual(
-					activitiescount.longValue(), new BQIndividual(record),
-					(Date)record.get("lastactivitydate"), _objectMapper);
+					activitiescount.longValue(), new BQIndividual(map),
+					(Date)map.get("lastactivitydate"), _objectMapper);
 			},
 			(SelectJoinStep)_getIndividualSelectOnConditionStep(
 				selectSeekStep1));
@@ -364,12 +378,21 @@ public class BQIndividualRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			record -> {
+				Map<String, Object> map = new HashedMap<>(record);
+
+				if (_isBigQueryDialect()) {
+					map.put(
+						"fields",
+						FieldValueListUtil.toJSONArray(
+							(List<FieldValueList>)map.get("fields")));
+				}
+
 				BigDecimal activitiescount = new BigDecimal(
-					String.valueOf(record.get("activitiescount")));
+					String.valueOf(map.get("activitiescount")));
 
 				return new Individual(
-					activitiescount.longValue(), new BQIndividual(record),
-					(Date)record.get("lastactivitydate"), _objectMapper);
+					activitiescount.longValue(), new BQIndividual(map),
+					(Date)map.get("lastactivitydate"), _objectMapper);
 			},
 			_getIndividualSelectOnConditionStep(selectFinalStep));
 	}
@@ -626,6 +649,17 @@ public class BQIndividualRepositoryImpl
 		return Collections.singletonMap("name", "values");
 	}
 
+	private boolean _isBigQueryDialect() {
+		String googleApplicationCredentials = _environment.getProperty(
+			"GOOGLE_APPLICATION_CREDENTIALS");
+
+		if (googleApplicationCredentials != null) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private static final String[] _SEARCH_COLUMNS = {
 		"emailAddress", "firstName", "jobTitle", "lastName", "middleName"
 	};
@@ -634,6 +668,9 @@ public class BQIndividualRepositoryImpl
 
 	@Autowired
 	private DSLHelper _dslHelper;
+
+	@Autowired
+	private Environment _environment;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
