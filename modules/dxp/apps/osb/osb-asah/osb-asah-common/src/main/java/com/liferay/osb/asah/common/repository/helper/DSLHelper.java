@@ -71,6 +71,14 @@ public class DSLHelper {
 		return DSL.concat(fields);
 	}
 
+	public Field<Integer> countIf(Condition condition) {
+		if (_isBigQueryDialect()) {
+			return DSL.field("countif({0})", Integer.class, condition);
+		}
+
+		return DSL.field("count(({0}) or null)", Integer.class, condition);
+	}
+
 	public Field<OffsetDateTime> dateDiff(
 		DatePart datePart, Field<OffsetDateTime> endDateField,
 		Field<OffsetDateTime> startDateField) {
