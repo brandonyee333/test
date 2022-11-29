@@ -224,9 +224,14 @@ public class BQIndividualRepositoryImpl
 			);
 
 		return _queryExecutor.queryForObject(
-			record -> new Individual(
-				(Long)record.get("activitiescount"), new BQIndividual(record),
-				(Date)record.get("lastactivitydate"), _objectMapper),
+			record -> {
+				BigDecimal activitiescount = new BigDecimal(
+					String.valueOf(record.get("activitiescount")));
+
+				return new Individual(
+					activitiescount.longValue(), new BQIndividual(record),
+					(Date)record.get("lastactivitydate"), _objectMapper);
+			},
 			(SelectJoinStep)_getIndividualSelectOnConditionStep(
 				selectSeekStep1));
 	}
@@ -359,8 +364,8 @@ public class BQIndividualRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			record -> {
-				BigDecimal activitiescount = (BigDecimal)record.get(
-					"activitiescount");
+				BigDecimal activitiescount = new BigDecimal(
+					String.valueOf(record.get("activitiescount")));
 
 				return new Individual(
 					activitiescount.longValue(), new BQIndividual(record),
