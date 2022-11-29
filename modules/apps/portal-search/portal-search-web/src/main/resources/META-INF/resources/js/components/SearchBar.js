@@ -44,19 +44,17 @@ export default function SearchBar({
 	const [autocompleteSearchValue, setAutocompleteSearchValue] = useState('');
 	const [inputValue, setInputValue] = useState(keywords);
 	const [loading, setLoading] = useState(false);
+	const [resourceItems, setResourceItems] = useState([]);
 	const [scope, setScope] = useState(
 		selectedEverythingSearchScope
 			? scopeParameterStringEverything
 			: scopeParameterStringCurrentSite
 	);
-	const [suggestionsResponseItems, setSuggestionsResponseItems] = useState(
-		[]
-	);
 
 	const alignElementRef = useRef();
 	const dropdownRef = useRef();
 
-	const _fetchSuggestions = (value) => {
+	const _handleFetchSuggestions = (value) => {
 		fetch(
 			addParams(
 				{
@@ -83,18 +81,19 @@ export default function SearchBar({
 		)
 			.then((response) => response.json())
 			.then((data) => {
-				setSuggestionsResponseItems(data?.items || []);
+				setLoading(false);
+
+				setResourceItems(data?.items || []);
 			})
 			.catch(() => {
-				setSuggestionsResponseItems([]);
-			})
-			.finally(() => {
 				setLoading(false);
+
+				setResourceItems([]);
 			});
 	};
 
-	const [fetchSuggestionsDebounced] = useDebounceCallback(
-		_fetchSuggestions,
+	const [handleFetchSuggestionsDebounced] = useDebounceCallback(
+		_handleFetchSuggestions,
 		500
 	);
 
@@ -133,7 +132,7 @@ export default function SearchBar({
 			if (value.trim() !== autocompleteSearchValue) {
 				setLoading(true);
 
-				fetchSuggestionsDebounced(value.trim());
+				handleFetchSuggestionsDebounced(value.trim());
 			}
 
 			setActive(true);
@@ -282,7 +281,7 @@ export default function SearchBar({
 			</ClayInput.Group>
 
 			<ClayDropDown.Menu
-				active={active && !!suggestionsResponseItems.length}
+				active={active && !!resourceItems.length}
 				alignElementRef={alignElementRef}
 				autoBestAlign={false}
 				className="search-bar-suggestions-dropdown-menu"
@@ -295,7 +294,7 @@ export default function SearchBar({
 						alignElementRef.current.clientWidth + 'px',
 				}}
 			>
-				{suggestionsResponseItems.map((group, groupIndex) => (
+				{resourceItems.map((group, groupIndex) => (
 					<ClayDropDown.ItemList
 						className="search-bar-suggestions-results-list"
 						key={groupIndex}
