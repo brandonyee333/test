@@ -1025,6 +1025,7 @@ definition {
 	@description = "This is a use case for LPS-84809."
 	@priority = "3"
 	test ViewChildPageNameViaLocalizedPage {
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "StagingUsecaseWithVersioning#ViewChildPageNameViaLocalizedPage";
 
 		PagesAdmin.openPagesAdmin(siteURLKey = "site-name-staging");
