@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.SiteHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
@@ -26,8 +28,14 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -79,24 +87,38 @@ public class SiteHistogramDogTest
 		searchQueryContext.setInterval(Interval.HOUR.getKey());
 		searchQueryContext.setTimeRange(TimeRange.LAST_24_HOURS);
 
+		HistogramMetricBag histogramMetricBag =
+			_siteHistogramDog.getHistogramMetricBag(
+				searchQueryContext, SiteMetricType.SESSION_DURATION);
+
+		double[] actualValuesHistogramMetricBag = _getActualValues(
+			histogramMetricBag);
+
+		double[] expectedValuesHistogramMetricBag = {
+			3600000.0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 3600000.0, 0, 0, 180000.0
+		};
+
+		if (!Arrays.equals(
+				expectedValuesHistogramMetricBag,
+				actualValuesHistogramMetricBag)) {
+
+			JSONObject histogramMetricBagJSONObject =
+				_objectMapper.convertValue(
+					histogramMetricBag, JSONObject.class);
+
+			_log.error("Error, expected: " + histogramMetricBagJSONObject);
+		}
+
 		Assertions.assertArrayEquals(
-			new double[] {
-				3600000.0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 3600000.0, 0, 0, 180000.0
-			},
-			_getActualValues(
-				_siteHistogramDog.getHistogramMetricBag(
-					searchQueryContext, SiteMetricType.SESSION_DURATION)),
+			expectedValuesHistogramMetricBag, actualValuesHistogramMetricBag,
 			1);
 		Assertions.assertArrayEquals(
 			new double[] {
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 7200000.0, 0, 0, 0, 3600000.0, 0, 0,
 				0, 0, 0, 0, 0, 3600000.0, 0, 0
 			},
-			_getPreviousValues(
-				_siteHistogramDog.getHistogramMetricBag(
-					searchQueryContext, SiteMetricType.SESSION_DURATION)),
-			1);
+			_getPreviousValues(histogramMetricBag), 1);
 	}
 
 	@SQLResource(resourcePath = "test_bq_events_site_histogram.sql")
@@ -197,6 +219,12 @@ public class SiteHistogramDogTest
 
 		return actualValues;
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		SiteHistogramDogTest.class);
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SiteHistogramDog _siteHistogramDog;
