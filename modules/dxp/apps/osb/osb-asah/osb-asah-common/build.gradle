@@ -27,9 +27,9 @@ configurations.all {
 }
 
 dependencies {
-	annotationProcessor group: "org.antlr", name: "antlr4-annotations", version: "4.3"
-	antlr group: "org.antlr", name: "antlr4", version: "4.3"
-	compile group: "org.antlr", name: "antlr4-runtime", version: "4.3"
+	annotationProcessor group: "org.antlr", name: "antlr4-annotations", version: "4.5.3"
+	antlr group: "org.antlr", name: "antlr4", version: "4.5.3"
+	compile group: "org.antlr", name: "antlr4-runtime", version: "4.5.3"
 	compile group: "com.esotericsoftware", name: "kryo", version: "5.2.0"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jdk8", version: "2.9.8"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-json-org", version: "2.9.8"

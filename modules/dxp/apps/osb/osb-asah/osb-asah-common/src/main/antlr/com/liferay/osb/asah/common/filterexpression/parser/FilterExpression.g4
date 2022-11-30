@@ -57,29 +57,21 @@ booleanUnaryExpression
 
 booleanOperandExpression
 	: logicalTerm # ToLogicalTerm
-	| operandExpression # ToOperandEpression
 	| LPAREN logicalOrExpression RPAREN # BooleanParenthesis
 	;
 
 logicalTerm
-	: (TRUE | FALSE) # LogicalConstant
-	| IDENTIFIER # LogicalVariable
-	| QUALIFIED_IDENTIFIER # LogicalQualifiedVariable
-	;
-
-operandExpression
 	: literal # ToLiteral
 	| functionCallExpression # ToFunctionCallExpression
-	| filterCountExpression # ToFilterCountExpression
-	| filterExpression # ToFilterExpression
+	| IDENTIFIER # LogicalVariable
 	;
 
-filterCountExpression
-	: namespace=IDENTIFIER DOT FILTER_BY_COUNT LPAREN filterParameter COMMA operatorParameter COMMA valueParameter RPAREN
-	;
-
-filterExpression
-	: namespace=IDENTIFIER DOT FILTER LPAREN filterParameter RPAREN
+literal
+	: FLOATING_POINT_LITERAL # FloatingPointLiteral
+	| INTEGER_LITERAL # IntegerLiteral
+	| ('true' | 'false') # BooleanLiteral
+	| 'null' # NullLiteral
+	| STRING # StringLiteral
 	;
 
 functionCallExpression
@@ -94,37 +86,10 @@ functionParameter
 	: logicalOrExpression
 	;
 
-filterParameter
-	: 'filter' EQ STRING
+COMMA
+	: ','
 	;
 
-operatorParameter
-	: 'operator' EQ STRING
-	;
-
-valueParameter
-	: 'value' EQ literal
-	;
-
-literal
-	: FloatingPointLiteral # FloatingPointLiteral
-	| IntegerLiteral # IntegerLiteral
-	| STRING # StringLiteral
-	;
-
-IntegerLiteral
-    : Digits
-    ;
-
-FloatingPointLiteral
-    : DecimalFloatingPointLiteral
-    ;
-
-DecimalFloatingPointLiteral
-	: Digits '.' Digits? ExponentPart?
-	| '.' Digits ExponentPart?
-	| Digits ExponentPart
-	;
 
 AND
 	: '&&'
@@ -133,23 +98,11 @@ AND
 	| 'AND'
 	;
 
-FILTER_BY_COUNT
-	: 'filterByCount'
-	;
-
-FILTER
-	: 'filter'
-	;
-
-COMMA
-	: ','
-	;
-
-DIV	: '/'
-	;
-
-DOT
-	: '.'
+OR
+	: '||'
+	| '|'
+	| 'or'
+	| 'OR'
 	;
 
 EQ
@@ -157,9 +110,9 @@ EQ
 	| '='
 	;
 
-FALSE
-	: 'false'
-	| 'FALSE'
+
+NEQ
+	: 'ne'
 	;
 
 GE
@@ -170,10 +123,6 @@ GT
 	: 'gt'
 	;
 
-LBRACKET
-	: '['
-	;
-
 LE
 	: 'le'
 	;
@@ -182,20 +131,12 @@ LPAREN
 	: '('
 	;
 
+RPAREN
+	: ')'
+	;
+
 LT
 	: 'lt'
-	;
-
-MINUS
-	: '-'
-	;
-
-MULT
-	: '*'
-	;
-
-NEQ
-	: 'ne'
 	;
 
 NOT
@@ -203,102 +144,47 @@ NOT
 	| 'NOT'
 	;
 
-NULL
-	: 'null'
-	| 'NULL'
-	;
-
-OR
-	: '||'
-	| '|'
-	| 'or'
-	| 'OR'
-	;
-
-PLUS
-	: '+'
-	;
-
-RBRACKET
-	: ']'
-	;
-
-RPAREN
-	: ')'
-	;
-
-STRING
-	: '"' (~["])* '"'
-	| '\'' (~['])* '\''
-	;
-
-TRUE
-	: 'true'
-	| 'TRUE'
-	;
-
 IDENTIFIER
 	: NameStartChar NameChar*
 	;
-
-QUALIFIED_IDENTIFIER
-	: IDENTIFIER ( '/' IDENTIFIER )+
-	;
-WS
-	: [ \r\t\u000C\n]+ -> skip
-	;
-
-fragment
-Digits
-    : Digit+
-    ;
-
-fragment
-Digit
-	: [0-9]
-	;
-
-fragment
-ExponentIndicator
-    : [eE]
-    ;
-
-fragment
-ExponentPart
-    :   ExponentIndicator SignedInteger
-    ;
 
 fragment
 NameChar
    : NameStartChar
    | '0'..'9'
-   | '\u0300'..'\u036F'
-   | '\u203F'..'\u2040'
    ;
 
 fragment
 NameStartChar
    : '_'
    | 'A'..'Z' | 'a'..'z'
-   | '\u00C0'..'\u00D6'
-   | '\u00D8'..'\u00F6'
-   | '\u00F8'..'\u02FF'
-   | '\u0370'..'\u037D'
-   | '\u037F'..'\u1FFF'
-   | '\u200C'..'\u200D'
-   | '\u2070'..'\u218F'
-   | '\u2C00'..'\u2FEF'
-   | '\u3001'..'\uD7FF'
-   | '\uF900'..'\uFDCF'
-   | '\uFDF0'..'\uFFFD'
    ;
 
-fragment
-SignedInteger
-    :   Sign? Digits
+FLOATING_POINT_LITERAL
+    : MINUS? DIGITS '.' DIGITS?
+    | MINUS? '.' DIGITS
     ;
 
-fragment
-Sign
-    :   [+-]
+INTEGER_LITERAL
+	: MINUS? DIGITS
+	;
+
+
+DIGITS
+    : [0-9]+
     ;
+
+MINUS
+	: '-'
+	;
+
+
+
+STRING
+	: '"' ( '""' | ~["] )* '"'
+	| '\'' ( '\'\'' | ~['] )* '\''
+	;
+
+WS
+	: [ \r\t\u000C\n]+ -> skip
+	;

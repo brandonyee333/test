@@ -514,7 +514,7 @@ public class EventIngestionPipeline {
 						"%s#%s#%s#%s#%s", analyticsEvent.projectId,
 						analyticsEvent.dataSourceId, analyticsEvent.channelId,
 						analyticsEvent.userId,
-						projectZonedDateTime.toLocalDate());
+							projectZonedDateTime.toLocalDate());
 				}
 
 			});
