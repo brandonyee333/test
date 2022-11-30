@@ -275,6 +275,14 @@ public class DispatchTriggerLocalServiceImpl
 		DispatchTrigger dispatchTrigger =
 			dispatchTriggerPersistence.fetchByPrimaryKey(dispatchTriggerId);
 
+		if ((dispatchTaskClusterMode == DispatchTaskClusterMode.ALL_NODES) &&
+			_dispatchTaskExecutorRegistry.isClusterModeSingle(
+				dispatchTrigger.getDispatchTaskExecutorType())) {
+
+			dispatchTaskClusterMode =
+				DispatchTaskClusterMode.SINGLE_NODE_MEMORY_CLUSTERED;
+		}
+
 		dispatchTrigger.setActive(active);
 		dispatchTrigger.setCronExpression(cronExpression);
 
