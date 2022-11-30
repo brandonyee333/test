@@ -225,16 +225,20 @@ public class BQIdentityRepositoryImpl
 			);
 		}
 
-		SelectSelectStep<Record2<Integer, Integer>> selectSelectStep =
+		SelectSelectStep<Record2<BigDecimal, Integer>> selectSelectStep =
 			_dslContext.select(
-				field.as("count"),
+				DSL.cast(
+					field, BigDecimal.class
+				).as(
+					"count"
+				),
 				DSL.val(
 					unionOrder, Integer.class
 				).as(
 					"unionOrder"
 				));
 
-		SelectJoinStep<Record2<Integer, Integer>> selectJoinStep =
+		SelectJoinStep<Record2<BigDecimal, Integer>> selectJoinStep =
 			selectSelectStep.from(
 				DSL.table(
 					"BQIdentity"
