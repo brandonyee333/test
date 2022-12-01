@@ -43,7 +43,8 @@ public class TableRowConverterTest {
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
-		Assertions.assertEquals(testEntity.integer, tableRow.get("integer"));
+		Assertions.assertEquals(
+			String.valueOf(testEntity.integer), tableRow.get("integer"));
 	}
 
 	@Test
@@ -157,7 +158,8 @@ public class TableRowConverterTest {
 
 		Assertions.assertEquals(
 			String.valueOf(testEntity.bool), tableRow.get("bool"));
-		Assertions.assertEquals(testEntity.number, tableRow.get("number"));
+		Assertions.assertEquals(
+			String.valueOf(testEntity.number), tableRow.get("number"));
 	}
 
 	@Test
