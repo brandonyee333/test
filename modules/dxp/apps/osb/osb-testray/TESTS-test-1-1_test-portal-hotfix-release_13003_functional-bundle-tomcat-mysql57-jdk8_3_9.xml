@@ -35,7 +35,8 @@
 			<property name="testray.testcase.description" value="" />
 			<property name="testray.testcase.name" value="LocalFile.StagingUsecase#TrashEntryReferencePublishing" />
 			<property name="testray.testcase.priority" value="5" />
-			<property name="testray.testcase.warnings"><value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
+			<property name="testray.testcase.warnings">
+				<value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
@@ -50,7 +51,8 @@
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.]]></value>
-				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value></property>
+				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value>
+			</property>
 			<property name="testray.testcase.status" value="passed" />
 		</properties>
 		<failure message="" />
@@ -66,7 +68,8 @@
 			<property name="testray.testcase.description" value="" />
 			<property name="testray.testcase.name" value="LocalFile.StagingUsecaseWithOrganization#StagingOrganizations" />
 			<property name="testray.testcase.priority" value="5" />
-			<property name="testray.testcase.warnings"><value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
+			<property name="testray.testcase.warnings">
+				<value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
@@ -81,7 +84,8 @@
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.]]></value>
-				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value></property>
+				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value>
+			</property>
 			<property name="testray.testcase.status" value="passed" />
 		</properties>
 		<failure message="" />
@@ -97,7 +101,8 @@
 			<property name="testray.testcase.description" value="" />
 			<property name="testray.testcase.name" value="LocalFile.StagingUsecaseWithRoles#StagingDemoLocalLive4" />
 			<property name="testray.testcase.priority" value="5" />
-			<property name="testray.testcase.warnings"><value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
+			<property name="testray.testcase.warnings">
+				<value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
@@ -112,7 +117,8 @@
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.]]></value>
-				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value></property>
+				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value>
+			</property>
 			<property name="testray.testcase.status" value="passed" />
 		</properties>
 		<failure message="" />
@@ -128,7 +134,8 @@
 			<property name="testray.testcase.description" value="" />
 			<property name="testray.testcase.name" value="LocalFile.StagingUsecaseWithRoles#StagingPublishPage" />
 			<property name="testray.testcase.priority" value="5" />
-			<property name="testray.testcase.warnings"><value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
+			<property name="testray.testcase.warnings">
+				<value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
@@ -143,7 +150,8 @@
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.]]></value>
-				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value></property>
+				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value>
+			</property>
 			<property name="testray.testcase.status" value="passed" />
 		</properties>
 		<failure message="" />
@@ -159,7 +167,8 @@
 			<property name="testray.testcase.description" value="" />
 			<property name="testray.testcase.name" value="LocalFile.StagingUsecaseWithVersioning#StagingBlogsCP" />
 			<property name="testray.testcase.priority" value="5" />
-			<property name="testray.testcase.warnings"><value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
+			<property name="testray.testcase.warnings">
+				<value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
@@ -174,7 +183,8 @@
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.]]></value>
-				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value></property>
+				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value>
+			</property>
 			<property name="testray.testcase.status" value="passed" />
 		</properties>
 		<failure message="" />
@@ -190,7 +200,8 @@
 			<property name="testray.testcase.description" value="" />
 			<property name="testray.testcase.name" value="LocalFile.Tags#EditTagAndSave" />
 			<property name="testray.testcase.priority" value="5" />
-			<property name="testray.testcase.warnings"><value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
+			<property name="testray.testcase.warnings">
+				<value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
@@ -205,7 +216,8 @@
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.]]></value>
-				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value></property>
+				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value>
+			</property>
 			<property name="testray.testcase.status" value="passed" />
 		</properties>
 		<failure message="" />
@@ -221,7 +233,8 @@
 			<property name="testray.testcase.description" value="" />
 			<property name="testray.testcase.name" value="LocalFile.TagsUseCase#AddSelectTagViaBlogs" />
 			<property name="testray.testcase.priority" value="5" />
-			<property name="testray.testcase.warnings"><value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
+			<property name="testray.testcase.warnings">
+				<value><![CDATA[LIFERAY_ERROR: Unable to execute background task]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
@@ -236,7 +249,8 @@
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[LIFERAY_ERROR: Unable to connect to a valid mail server. Please make sure one is properly configured: Couldn't connect to host, port: localhost, 25; timeout -1]]></value>
 				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.]]></value>
-				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value></property>
+				<value><![CDATA[SHUT_DOWN_WARNING: [parallel] WARN: Please see http://www.slf4j.org/codes.html#release for an explanation.]]></value>
+			</property>
 			<property name="testray.testcase.status" value="failed" />
 		</properties>
 		<failure message="java.lang.Exception: Element is present at &quot;//*[contains(@class,&apos;btn&apos;)][normalize-space(text())=&apos;Sign In&apos;]&quot;" />
