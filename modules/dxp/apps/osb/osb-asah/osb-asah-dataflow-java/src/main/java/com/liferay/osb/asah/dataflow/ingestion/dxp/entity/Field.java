@@ -31,6 +31,6 @@ public class Field implements Serializable {
 	public String columnId;
 
 	public String name;
-	public Object value;
+	public String value;
 
 }
