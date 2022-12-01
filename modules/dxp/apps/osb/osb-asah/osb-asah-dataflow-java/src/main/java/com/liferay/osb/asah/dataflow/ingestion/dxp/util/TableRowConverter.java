@@ -72,6 +72,15 @@ public class TableRowConverter {
 			if (value instanceof Boolean) {
 				return Boolean.toString((Boolean)value);
 			}
+			else if (value instanceof Double) {
+				return String.valueOf((Double)value);
+			}
+			else if (value instanceof Integer) {
+				return String.valueOf((Integer)value);
+			}
+			else if (value instanceof Long) {
+				return String.valueOf((Long)value);
+			}
 			else if (value instanceof Object[]) {
 				return Arrays.toString((Object[])value);
 			}
