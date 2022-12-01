@@ -2318,7 +2318,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.antisamy.jar!batik-constants.jar</file-name>
-				<version>1.14</version>
+				<version>1.16</version>
 				<project-name>org.apache.xmlgraphics:batik-constants</project-name>
 				<licenses>
 					<license>
@@ -2326,12 +2326,12 @@
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2021-01-12 05:27:46</current-version-publish-date>
-				<latest-version-publish-date>2022-09-15 03:19:06</latest-version-publish-date>
+				<current-version-publish-date>2022-10-14 18:20:20</current-version-publish-date>
+				<latest-version-publish-date>2022-10-14 18:20:20</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.antisamy.jar!batik-css.jar</file-name>
-				<version>1.14</version>
+				<version>1.16</version>
 				<project-name>org.apache.xmlgraphics:batik-css</project-name>
 				<licenses>
 					<license>
@@ -2339,12 +2339,12 @@
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2021-01-12 05:28:23</current-version-publish-date>
-				<latest-version-publish-date>2022-09-15 03:19:28</latest-version-publish-date>
+				<current-version-publish-date>2022-10-14 18:20:49</current-version-publish-date>
+				<latest-version-publish-date>2022-10-14 18:20:49</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.antisamy.jar!batik-i18n.jar</file-name>
-				<version>1.14</version>
+				<version>1.16</version>
 				<project-name>org.apache.xmlgraphics:batik-i18n</project-name>
 				<licenses>
 					<license>
@@ -2352,12 +2352,12 @@
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2021-01-12 05:33:52</current-version-publish-date>
-				<latest-version-publish-date>2022-09-15 03:34:17</latest-version-publish-date>
+				<current-version-publish-date>2022-10-14 18:23:09</current-version-publish-date>
+				<latest-version-publish-date>2022-10-14 18:23:09</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.antisamy.jar!batik-util.jar</file-name>
-				<version>1.14</version>
+				<version>1.16</version>
 				<project-name>org.apache.xmlgraphics:batik-util</project-name>
 				<licenses>
 					<license>
@@ -2365,8 +2365,8 @@
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2021-01-12 05:47:49</current-version-publish-date>
-				<latest-version-publish-date>2022-09-15 03:41:17</latest-version-publish-date>
+				<current-version-publish-date>2022-10-14 18:30:24</current-version-publish-date>
+				<latest-version-publish-date>2022-10-14 18:30:24</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.antisamy.jar!commons-codec.jar</file-name>
