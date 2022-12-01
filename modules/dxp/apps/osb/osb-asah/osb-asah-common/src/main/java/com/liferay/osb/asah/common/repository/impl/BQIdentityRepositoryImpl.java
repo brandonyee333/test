@@ -207,7 +207,7 @@ public class BQIdentityRepositoryImpl
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, int unionOrder, ZoneId zoneId) {
 
-		Field<Integer> field;
+		Field<Integer> field = null;
 
 		Field<Object> individualIdField = DSL.field("individual.id");
 
