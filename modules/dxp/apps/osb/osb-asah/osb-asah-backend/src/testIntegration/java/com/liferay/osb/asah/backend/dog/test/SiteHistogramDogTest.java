@@ -107,7 +107,7 @@ public class SiteHistogramDogTest
 				_objectMapper.convertValue(
 					histogramMetricBag, JSONObject.class);
 
-			_log.error("Error, expected: " + histogramMetricBagJSONObject);
+			_log.error("Expected: " + histogramMetricBagJSONObject);
 		}
 
 		Assertions.assertArrayEquals(
