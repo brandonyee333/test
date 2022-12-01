@@ -46,17 +46,6 @@ public class DXPEntitiesIngestionPipeline {
 
 		Pipeline pipeline = defaultPipelineBuilder.withBigQueryWriter(
 			new DXPEntityParserPTransform(), "dxpentity"
-		).withFailedParsedItemsToGCS(
-			dxpEntitiesIngestionPipelineOptions.getGCSBucket() + "failed/parse",
-			dxpEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpEntitiesIngestionPipelineOptions.getTriggerElementCount(),
-			dxpEntitiesIngestionPipelineOptions.getTriggerIntervalDuration()
-		).withFailedBigQueryItemsToGCS(
-			dxpEntitiesIngestionPipelineOptions.getGCSBucket() +
-				"failed/bigquery",
-			dxpEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpEntitiesIngestionPipelineOptions.getTriggerElementCount(),
-			dxpEntitiesIngestionPipelineOptions.getTriggerIntervalDuration()
 		).withGCSWriter(
 			dxpEntitiesIngestionPipelineOptions.getGCSBucket(),
 			dxpEntitiesIngestionPipelineOptions.getShardCount(),
