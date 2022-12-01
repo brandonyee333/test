@@ -35,7 +35,7 @@ public interface DXPEntitiesIngestionPipelineOptions
 	@Validation.Required
 	public String getPubsubSubscription();
 
-	@Default.Integer(4)
+	@Default.Integer(1)
 	@Description("Return the shard count")
 	public int getShardCount();
 
