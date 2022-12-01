@@ -118,13 +118,21 @@ public class GetterUtil {
 	}
 
 	public static String getString(Object object) {
+		if (object == null) {
+			return "";
+		}
+
 		if (object instanceof FieldValue) {
 			FieldValue fieldValue = (FieldValue)object;
+
+			if (fieldValue.getValue() == null) {
+				return "";
+			}
 
 			return fieldValue.getStringValue();
 		}
 
-		return (String)object;
+		return String.valueOf(object);
 	}
 
 }

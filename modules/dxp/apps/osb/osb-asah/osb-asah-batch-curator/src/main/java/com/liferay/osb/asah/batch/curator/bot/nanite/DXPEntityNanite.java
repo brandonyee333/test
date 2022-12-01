@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.util.GetterUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Date;
@@ -120,7 +121,7 @@ public class DXPEntityNanite extends BaseNanite {
 						"name",
 						StringUtils.substringBeforeLast(entry.getKey(), "-")
 					).put(
-						"value", entry.getValue()
+						"value", GetterUtil.getString(entry.getValue())
 					));
 			}
 		}
@@ -191,7 +192,7 @@ public class DXPEntityNanite extends BaseNanite {
 				JSONUtil.put(
 					"name", entry.getKey()
 				).put(
-					"value", entry.getValue()
+					"value", GetterUtil.getString(entry.getValue())
 				));
 		}
 
