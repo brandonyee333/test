@@ -152,7 +152,7 @@ public class BQIndividualRepositoryImpl
 		SelectConditionStep<Record1<String>> selectConditionStep =
 			selectJoinStep.where(
 				DSL.field(
-					"BQIdentityActivity.channelId"
+					"BQIdentityActivity.channelId", Long.class
 				).eq(
 					channelId
 				));
@@ -335,9 +335,23 @@ public class BQIndividualRepositoryImpl
 		if (notSegmentId != null) {
 			condition = condition.and(
 				DSL.field(
-					"membership.segmentId"
-				).notEqual(
-					notSegmentId
+					"individual.id"
+				).notIn(
+					DSL.select(
+						DSL.field("notMembership.individualId")
+					).from(
+						DSL.table(
+							"BQMembership"
+						).as(
+							"notMembership"
+						)
+					).where(
+						DSL.field(
+							"notMembership.segmentId"
+						).eq(
+							notSegmentId
+						)
+					)
 				));
 		}
 
