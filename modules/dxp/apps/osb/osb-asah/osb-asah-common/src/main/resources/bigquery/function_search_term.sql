@@ -2,7 +2,7 @@ CREATE FUNCTION `$[AC_PROJECT_ID].search_term`(searchQueryParams ARRAY<STRING>, 
 RETURNS STRING
 LANGUAGE js
 AS """
-	var decodedUrl = decodeURI(url);
+	var decodedUrl = decodeURIComponent(url.replace('+', ' '));
 
 	var queryParamSeparatorIndexOf = decodedUrl.indexOf("?");
 
