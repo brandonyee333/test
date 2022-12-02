@@ -77,7 +77,8 @@ COMMIT;
 
 CREATE OR REPLACE FUNCTION search_term(search_query_params VARCHAR ARRAY, url VARCHAR) RETURNS VARCHAR AS $$
 DECLARE
-	query_param_separator INTEGER := POSITION('?' IN url);
+	decodedUrl VARCHAR := REPLACE(url, '+', ' ');
+	query_param_separator INTEGER := POSITION('?' IN decodedUrl);
 	search_query_param VARCHAR;
 	search_query_param_value VARCHAR;
 BEGIN
@@ -87,7 +88,7 @@ BEGIN
 
 	FOREACH search_query_param IN ARRAY search_query_params
 		LOOP
-			search_query_param_value = url_decode(extract_query_param(search_query_param, url));
+			search_query_param_value = url_decode(extract_query_param(search_query_param, decodedUrl));
 
 			IF (search_query_param_value != '') THEN
 				RETURN search_query_param_value;
