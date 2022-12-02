@@ -43,7 +43,7 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 		List<Long> individualSegmentIds = ListUtil.map(
 			jsonArray.toList(),
-			individualSegmentId -> (Long)individualSegmentId);
+			individualSegmentId -> Long.valueOf((int)individualSegmentId));
 
 		_bqIndividualInterestScoreDog.deleteBQIndividualInterestScores(
 			ListUtil.map(individualSegmentIds, String::valueOf));
