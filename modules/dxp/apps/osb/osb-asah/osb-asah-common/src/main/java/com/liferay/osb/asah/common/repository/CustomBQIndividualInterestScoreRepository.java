@@ -43,7 +43,7 @@ public interface CustomBQIndividualInterestScoreRepository {
 		Double score);
 
 	@Modifying
-	public void deleteByIndividualIdIn(List<String> individualIds);
+	public void deleteBySegmentIdIn(List<Long> segmentIds);
 
 	public List<IndividualInterestScore>
 		findByFilterStringAndScoreGreaterThanEqual(

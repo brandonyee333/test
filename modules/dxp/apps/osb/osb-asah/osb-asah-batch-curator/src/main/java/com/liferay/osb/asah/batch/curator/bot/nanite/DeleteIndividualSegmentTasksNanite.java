@@ -46,7 +46,7 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 			individualSegmentId -> Long.valueOf((int)individualSegmentId));
 
 		_bqIndividualInterestScoreDog.deleteBQIndividualInterestScores(
-			ListUtil.map(individualSegmentIds, String::valueOf));
+			individualSegmentIds);
 
 		bqMembershipChangeDog.deleteBQMembershipChanges(individualSegmentIds);
 

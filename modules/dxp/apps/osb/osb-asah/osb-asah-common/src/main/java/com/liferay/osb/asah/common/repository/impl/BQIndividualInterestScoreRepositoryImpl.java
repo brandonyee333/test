@@ -159,7 +159,7 @@ public class BQIndividualInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public void deleteByIndividualIdIn(List<String> individualIds) {
+	public void deleteBySegmentIdIn(List<Long> segmentIds) {
 		DeleteUsingStep<Record> deleteUsingStep = _dslContext.deleteFrom(
 			DSL.table("BQIndividualInterestScore"));
 
@@ -168,14 +168,14 @@ public class BQIndividualInterestScoreRepositoryImpl
 				"BQIndividualInterestScore.identityId"
 			).in(
 				DSL.select(
-					DSL.field("BQIdentity.id")
+					DSL.field("BQMembership.individualId")
 				).from(
-					"BQIdentity"
+					"BQMembership"
 				).where(
 					DSL.field(
-						"BQIdentity.individualId"
+						"BQMembership.segmentId"
 					).in(
-						individualIds
+						segmentIds
 					)
 				)
 			)
