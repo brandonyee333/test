@@ -85,7 +85,7 @@ with these additional bundles:
 `talend-common/target/com.liferay.talend.common-x.y.z-SNAPSHOT.jar`
 `talend-runtime/target/com.liferay.talend.runtime-x.y.z-SNAPSHOT.jar`
 
-Current unpublished version is `0.4.0-SNAPSHOT`.
+Current unpublished version is `0.7.0-SNAPSHOT`.
 
 The Maven install task succeeds only if all tests pass. JAR files are
 published to the current user's local maven repository `USER_HOME/.m2`:
