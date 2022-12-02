@@ -633,7 +633,7 @@ public class SiteMetricDogTest
 			new LinkedHashMap<String, Long>() {
 				{
 					put("liferay", 2L);
-					put("documents+and+media", 1L);
+					put("documents and media", 1L);
 					put("forms", 1L);
 					put("test", 1L);
 				}
