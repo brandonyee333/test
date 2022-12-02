@@ -48,10 +48,10 @@ public class BQIndividualInterestScoreRepositoryTest
 			new BQIndividualInterestScore();
 
 		bqIndividualInterestScore1.setIdentityId("374790569167317525");
+		bqIndividualInterestScore1.setInterestScore(1.767661917648994);
 		bqIndividualInterestScore1.setKeyword("clicks-and-mortar e-tailers");
 		bqIndividualInterestScore1.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-12T00:00:00.000Z"));
-		bqIndividualInterestScore1.setInterestScore(1.767661917648994);
 
 		BQIdentity bqIdentity1 = new BQIdentity();
 
@@ -64,11 +64,11 @@ public class BQIndividualInterestScoreRepositoryTest
 		BQIndividualInterestScore bqIndividualInterestScore2 =
 			new BQIndividualInterestScore();
 
-		bqIndividualInterestScore2.setKeyword("javascript");
 		bqIndividualInterestScore2.setIdentityId("374790575409131096");
+		bqIndividualInterestScore2.setInterestScore(2.61495977803619);
+		bqIndividualInterestScore2.setKeyword("javascript");
 		bqIndividualInterestScore2.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
-		bqIndividualInterestScore2.setInterestScore(2.61495977803619);
 
 		BQIdentity bqIdentity2 = new BQIdentity();
 
@@ -82,10 +82,10 @@ public class BQIndividualInterestScoreRepositoryTest
 			new BQIndividualInterestScore();
 
 		bqIndividualInterestScore3.setIdentityId("374790572703144534");
+		bqIndividualInterestScore3.setInterestScore(0.770222520473574);
 		bqIndividualInterestScore3.setKeyword("compelling metrics");
 		bqIndividualInterestScore3.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-		bqIndividualInterestScore3.setInterestScore(0.770222520473574);
 
 		BQIdentity bqIdentity3 = new BQIdentity();
 
@@ -99,19 +99,19 @@ public class BQIndividualInterestScoreRepositoryTest
 			new BQIndividualInterestScore();
 
 		bqIndividualInterestScore4.setIdentityId("374790572703144534");
+		bqIndividualInterestScore4.setInterestScore(1.454684984987494);
 		bqIndividualInterestScore4.setKeyword("sales");
 		bqIndividualInterestScore4.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-		bqIndividualInterestScore4.setInterestScore(1.454684984987494);
 
 		BQIndividualInterestScore bqIndividualInterestScore5 =
 			new BQIndividualInterestScore();
 
 		bqIndividualInterestScore5.setIdentityId("374790572703144535");
+		bqIndividualInterestScore5.setInterestScore(1.454684984987494);
 		bqIndividualInterestScore5.setKeyword("sales");
 		bqIndividualInterestScore5.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-		bqIndividualInterestScore5.setInterestScore(1.454684984987494);
 
 		BQIdentity bqIdentity5 = new BQIdentity();
 
