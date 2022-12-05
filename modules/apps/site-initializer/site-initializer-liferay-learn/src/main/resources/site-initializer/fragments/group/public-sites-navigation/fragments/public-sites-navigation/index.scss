@@ -1229,12 +1229,14 @@ html body:not(.has-edit-mode-menu) .content #main-content.layout-content {
 		margin-bottom: 0;
 		margin-left: auto;
 		margin-right: auto;
+		max-height: 3.5rem;
 		position: relative;
 		width: 30rem;
 
 		input.search-input {
 			background-color: transparent;
-			border: 0 none var(--black);
+			border: 1px solid transparent;
+			border-radius: var(--border-radius);
 			color: var(--white);
 			font-size: 28px;
 			font-weight: var(--font-weight-semi-bold);
@@ -1247,6 +1249,10 @@ html body:not(.has-edit-mode-menu) .content #main-content.layout-content {
 			&::placeholder {
 				color: var(--color-brand-primary-lighten-4);
 				opacity: 1;
+			}
+
+			&:active, &:focus {
+				border-color: var(--white);
 			}
 		}
 
@@ -1291,16 +1297,20 @@ html body:not(.has-edit-mode-menu) .content #main-content.layout-content {
 					border: 1px solid transparent;
 					border-radius: var(--border-radius-sm);
 					cursor: pointer;
-					padding: 10px;
 
 					&:hover {
 						background-color: var(--color-brand-primary-lighten-3);
 						border-color: var(--white);
+
+						.suggestions-popular-item-text {
+							opacity: 0.8;
+						}
 					}
 
 					.suggestions-popular-item-text {
 						color: var(--white);
-						opacity: 0.8;
+						opacity: 1;
+						padding: 10px;
 					}
 				}
 			}
