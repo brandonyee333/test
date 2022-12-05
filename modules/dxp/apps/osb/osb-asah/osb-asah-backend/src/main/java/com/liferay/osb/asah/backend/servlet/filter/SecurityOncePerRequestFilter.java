@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.servlet.filter;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.servlet.filter.BaseSecurityOncePerRequestFilter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,8 @@ public class SecurityOncePerRequestFilter
 			!StringUtils.contains(
 				httpServletRequest.getRequestURI(), "/reports")) {
 
-			if (!_dataSourceDog.existsDataSource(
+			if (!_checkDisconnectedDataSource(httpServletRequest) &&
+				!_dataSourceDog.existsDataSource(
 					faroBackendSecuritySignature)) {
 
 				logInvalidRequest(
@@ -64,6 +66,30 @@ public class SecurityOncePerRequestFilter
 		}
 
 		return super.isInvalidRequest(httpServletRequest);
+	}
+
+	private boolean _checkDisconnectedDataSource(
+		HttpServletRequest httpServletRequest) {
+
+		String dataSourceId = httpServletRequest.getHeader(
+			HeaderConstants.DATA_SOURCE_ID);
+
+		if (!StringUtils.equals(httpServletRequest.getMethod(), "GET") ||
+			!StringUtils.contains(
+				httpServletRequest.getRequestURI(),
+				"/api/1.0/data-sources/" + dataSourceId)) {
+
+			return false;
+		}
+
+		DataSource dataSource = _dataSourceDog.fetchDataSource(
+			Long.valueOf(dataSourceId));
+
+		if (dataSource == null) {
+			return false;
+		}
+
+		return StringUtils.equals(dataSource.getState(), "DISCONNECTED");
 	}
 
 	@Autowired
