@@ -31,7 +31,6 @@ import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -139,42 +138,19 @@ public class BQMembershipDogTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = BQMembershipChangeRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
 	@Test
-	public void testDeactivateMembershipWithoutKnownIndividuals() {
-		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.215Z");
+	public void testDeleteBQMembership() {
+		Assertions.assertEquals(
+			3, _bqMembershipRepository.countBySegmentId(338511398116723458L));
 
-		_bqMembershipDog.deactivateBQMembership(
-			deletionDate, 338511398116723458L, "338486037253283140");
-
-		BQMembership bqMembership =
-			_bqMembershipRepository.findBySegmentIdAndStatusAndUserId(
-				338511398116723458L, "INACTIVE", "338486037253283140");
-
+		_bqMembershipRepository.countBySegmentId(338511398116723458L);
+		_bqMembershipDog.deleteBQMembership(
+			"abc338511398389279307", 338511398116723458L);
 		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.215Z"),
-			bqMembership.getCreateDate());
-		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.215Z"),
-			bqMembership.getModifiedDate());
-		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-11T20:26:53.215Z"),
-			bqMembership.getRemovedDate());
-		Assertions.assertEquals(338511398389279307L, bqMembership.getId());
-		Assertions.assertEquals(
-			338511398116723458L, bqMembership.getSegmentId());
-		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
-		Assertions.assertEquals("338486037253283140", bqMembership.getUserId());
+			2, _bqMembershipRepository.countBySegmentId(338511398116723458L));
 	}
 
 	@Disabled

@@ -189,15 +189,6 @@ public class BQMembershipRepositoryTest
 	}
 
 	@Test
-	public void testFindBySegmentIdAndStatusAndUserId() {
-		BQMembership bqMembership =
-			_bqMembershipRepository.findBySegmentIdAndStatusAndUserId(
-				34L, "ACTIVE", "12");
-
-		Assertions.assertEquals(entityModels.get(0), bqMembership);
-	}
-
-	@Test
 	public void testFindBySegmentIdAndStatusAndUserIdIn() {
 		List<BQMembership> bqMemberships =
 			_bqMembershipRepository.findBySegmentIdAndStatusAndUserIdIn(

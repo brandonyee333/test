@@ -48,6 +48,23 @@ public class BQMembershipRepositoryImpl
 	}
 
 	@Override
+	public void deleteByIndividualIdAndSegmentId(
+		String individualId, Long segmentId) {
+
+		Field<Object> individualIdField = DSL.field("individualId");
+		Field<Object> segmentIdField = DSL.field("segmentId");
+
+		DeleteUsingStep<Record> deleteUsingStep = _dslContext.deleteFrom(
+			DSL.table("BQMembership"));
+
+		deleteUsingStep.where(
+			DSL.and(
+				individualIdField.eq(individualId),
+				segmentIdField.eq(segmentId))
+		).execute();
+	}
+
+	@Override
 	public void deleteBySegmentIdIn(List<Long> segmentIds) {
 		Field<Object> segmentIdField = DSL.field("segmentId");
 

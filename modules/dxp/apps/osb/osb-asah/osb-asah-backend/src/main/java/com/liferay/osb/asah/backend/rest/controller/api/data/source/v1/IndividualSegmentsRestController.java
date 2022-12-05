@@ -289,7 +289,7 @@ public class IndividualSegmentsRestController {
 			}
 		).filter(
 			membership -> !_isMember(
-				membership.getSegmentId(), membership.getUserId())
+				membership.getSegmentId(), membership.getIndividualId())
 		).collect(
 			Collectors.toList()
 		);

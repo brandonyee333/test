@@ -88,27 +88,9 @@ public class BQMembershipDog {
 		return bqMemberships;
 	}
 
-	public void deactivateBQMembership(
-		Date deletionDate, BQMembership bqMembership) {
-
-		if (bqMembership == null) {
-			return;
-		}
-
-		bqMembership.setModifiedDate(deletionDate);
-		bqMembership.setRemovedDate(deletionDate);
-		bqMembership.setStatus("INACTIVE");
-
-		_bqMembershipRepository.save(bqMembership);
-	}
-
-	public void deactivateBQMembership(
-		Date deletionDate, Long segmentId, String userId) {
-
-		deactivateBQMembership(
-			deletionDate,
-			_bqMembershipRepository.findBySegmentIdAndStatusAndUserId(
-				segmentId, "ACTIVE", userId));
+	public void deleteBQMembership(String individualId, Long segmentId) {
+		_bqMembershipRepository.deleteByIndividualIdAndSegmentId(
+			individualId, segmentId);
 	}
 
 	public void deleteBQMemberships(List<Long> segmentIds) {

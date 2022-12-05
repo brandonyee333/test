@@ -56,7 +56,7 @@ public class IndividualSegmentsRestController
 	public void deleteIndividual(
 		@PathVariable Long id, @PathVariable String individualId) {
 
-		bqMembershipDog.deactivateBQMembership(new Date(), id, individualId);
+		bqMembershipDog.deleteBQMembership(individualId, id);
 	}
 
 	@DeleteMapping("/{id}")

@@ -49,10 +49,6 @@ public interface BQMembershipRepository
 		Long segmentId, String status, Pageable pageable);
 
 	@Cacheable
-	public BQMembership findBySegmentIdAndStatusAndUserId(
-		Long segmentId, String status, String userId);
-
-	@Cacheable
 	public List<BQMembership> findBySegmentIdAndStatusAndUserIdIn(
 		Long segmentId, String status, List<String> userIds, Pageable pageable);
 

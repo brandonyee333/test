@@ -31,6 +31,11 @@ public interface CustomBQMembershipRepository {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
+	public void deleteByIndividualIdAndSegmentId(
+		String individualId, Long segmentId);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
 	public void deleteBySegmentIdIn(List<Long> segmentIds);
 
 	@Cacheable
