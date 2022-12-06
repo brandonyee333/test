@@ -110,12 +110,16 @@ CREATE OR REPLACE VIEW BQBlog AS (
 				userId
 			FROM
 				RatingsEvent AS RatingsEvent1
-			WHERE RatingsEvent1.eventDate = (
-				SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
-				WHERE
-					RatingsEvent1.assetId = RatingsEvent2.assetId AND
-					RatingsEvent1.userid = RatingsEvent2.userid
-			) AND score >= 0
+			WHERE
+				RatingsEvent1.eventDate = (
+					SELECT
+					   MAX(RatingsEvent2.eventDate)
+					FROM
+						RatingsEvent RatingsEvent2
+					WHERE
+						RatingsEvent1.assetId = RatingsEvent2.assetId AND
+						RatingsEvent1.userid = RatingsEvent2.userid
+				) AND score >= 0
 			GROUP BY
 				assetId, canonicalUrl, channelId, normalizedEventDate, score,
 				title, userId
@@ -215,7 +219,7 @@ CREATE OR REPLACE VIEW BQBlog AS (
 		BlogReadTimes.readTime * 1000 AS readTime,
 		BlogViewsAndClicks.region,
 		BlogViewsAndClicks.sessions,
-        BlogViewsAndClicks.userId,
+		BlogViewsAndClicks.userId,
 		BlogViewsAndClicks.views
 	FROM
 		 BlogViewsAndClicks
@@ -504,12 +508,16 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 			)
 			WHERE
 				(
-					Event.applicationId = 'Document' AND
-					Event.eventId IN ('documentDownloaded', 'documentPreviewed')
-				) OR (
-					Event.applicationId = 'Ratings' AND
-					className.value IS NOT NULL
-				) AND fileEntryId.value IS NOT NULL
+					(
+						Event.applicationId = 'Document' AND
+						Event.eventId IN ('documentDownloaded', 'documentPreviewed')
+					) OR
+					(
+						Event.applicationId = 'Ratings' AND
+						className.value IS NOT NULL
+					)
+				) AND
+				fileEntryId.value IS NOT NULL
 		),
 		DocumentComments AS (
 			SELECT
@@ -606,12 +614,16 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 				userId
 			FROM
 				RatingsEvent AS RatingsEvent1
-			WHERE RatingsEvent1.eventDate = (
-				SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
-				WHERE
-					RatingsEvent1.assetId = RatingsEvent2.assetId AND
-					RatingsEvent1.userid = RatingsEvent2.userid
-			) AND score >= 0
+			WHERE
+				RatingsEvent1.eventDate = (
+					SELECT
+						MAX(RatingsEvent2.eventDate)
+					FROM
+						RatingsEvent RatingsEvent2
+					WHERE
+						RatingsEvent1.assetId = RatingsEvent2.assetId AND
+						RatingsEvent1.userid = RatingsEvent2.userid
+				) AND score >= 0
 			GROUP BY
 				assetId, canonicalUrl, channelId, normalizedEventDate, score,
 				title, userId

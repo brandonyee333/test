@@ -40,12 +40,15 @@ WITH
 		)
 		WHERE
 			(
-				Event.applicationId = 'Document' AND
-				Event.eventId IN ('documentDownloaded', 'documentPreviewed')
-			) OR (
-				Event.applicationId = 'Ratings' AND
-				className.value IS NOT NULL
-			) AND 
+				(
+					Event.applicationId = 'Document' AND
+					Event.eventId IN ('documentDownloaded', 'documentPreviewed')
+				) OR
+		  		(
+					Event.applicationId = 'Ratings' AND
+					className.value IS NOT NULL
+				)
+			) AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			documentTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			fileEntryId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
@@ -150,12 +153,16 @@ WITH
 			userId
 		FROM
 			RatingsEvent AS RatingsEvent1
-		WHERE RatingsEvent1.eventDate = (
-			SELECT MAX(RatingsEvent2.eventDate) FROM RatingsEvent RatingsEvent2
-			WHERE
-				RatingsEvent1.assetId = RatingsEvent2.assetId AND
-				RatingsEvent1.userid = RatingsEvent2.userid
-		) AND score >= 0
+		WHERE
+			RatingsEvent1.eventDate = (
+				SELECT
+					MAX(RatingsEvent2.eventDate)
+				FROM
+					RatingsEvent RatingsEvent2
+				WHERE
+					RatingsEvent1.assetId = RatingsEvent2.assetId AND
+					RatingsEvent1.userid = RatingsEvent2.userid
+			) AND score >= 0
 		GROUP BY
 			assetId, canonicalUrl, channelId, normalizedEventDate, score,
 			title, userId
