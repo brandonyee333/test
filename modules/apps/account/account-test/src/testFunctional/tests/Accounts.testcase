@@ -183,6 +183,8 @@ definition {
 	@description = "Duplicate External Reference Codes should not be allowed for multiple accounts in the same company. If a duplicate ERC is submitted, the form will not be saved and an error message will inform the user that the ERC belongs to another account."
 	@priority = "4"
 	test AccountWithDuplicateExternalReferenceCodeIsNotSaved {
+		property portal.acceptance = "melody";
+
 		Accounts.openAccountsAdmin();
 
 		Accounts.addBusinessAccount(
