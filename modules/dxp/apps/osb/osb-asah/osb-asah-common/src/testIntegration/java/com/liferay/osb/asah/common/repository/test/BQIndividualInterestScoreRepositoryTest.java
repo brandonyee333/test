@@ -48,16 +48,6 @@ public class BQIndividualInterestScoreRepositoryTest
 
 	@BeforeEach
 	public void setUp() {
-		BQMembership bqMembership = new BQMembership();
-
-		bqMembership.setCreateDate(new Date());
-		bqMembership.setIndividualId("374790569167317525");
-		bqMembership.setModifiedDate(new Date());
-		bqMembership.setSegmentId(123L);
-		bqMembership.setStatus("ACTIVE");
-
-		_bqMembershipRepository.save(bqMembership);
-
 		BQIndividualInterestScore bqIndividualInterestScore1 =
 			new BQIndividualInterestScore();
 
@@ -139,6 +129,16 @@ public class BQIndividualInterestScoreRepositoryTest
 			bqIndividualInterestScore1, bqIndividualInterestScore2,
 			bqIndividualInterestScore3, bqIndividualInterestScore4,
 			bqIndividualInterestScore5);
+
+		BQMembership bqMembership = new BQMembership();
+
+		bqMembership.setCreateDate(new Date());
+		bqMembership.setIndividualId("374790569167317525");
+		bqMembership.setModifiedDate(new Date());
+		bqMembership.setSegmentId(123L);
+		bqMembership.setStatus("ACTIVE");
+
+		_bqMembershipRepository.save(bqMembership);
 	}
 
 	@Test
