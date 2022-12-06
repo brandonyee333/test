@@ -27,6 +27,28 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-153203."
+	@priority = "3"
+	test AssertNoWarningsAndErrorInLogsAfterStartingDynamicBundles {
+		property portal.acceptance = "true";
+
+		task ("Assert 'Starting dynamic bundles' displayed in the logs") {
+			AssertConsoleTextPresent(value1 = "Starting dynamic bundles");
+		}
+
+		task ("Assert there are not warnings and error message in the logs") {
+			AssertConsoleTextNotPresent(value1 = "log4j:WARN Continuable parsing error 3 and column 30");
+
+			AssertConsoleTextNotPresent(value1 = "log4j:WARN Document root element 'Configuration', must match DOCTYPE root 'null'.");
+
+			AssertConsoleTextNotPresent(value1 = "log4j:WARN Continuable parsing error 3 and column 30");
+
+			AssertConsoleTextNotPresent(value1 = "log4j:WARN Document is invalid: no grammar found.");
+
+			AssertConsoleTextNotPresent(value1 = "log4j:ERROR DOM element is - not a <log4j:configuration> element.");
+		}
+	}
+
 	@description = "Ensure that the super admin can add pages, add portlets, navigate to the product menu, use the WYSIWYG editor, and view alert messages."
 	@priority = "5"
 	test Smoke {
