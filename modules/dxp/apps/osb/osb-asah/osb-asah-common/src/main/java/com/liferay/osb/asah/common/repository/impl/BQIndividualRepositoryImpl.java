@@ -29,8 +29,10 @@ import com.liferay.osb.asah.common.util.FieldValueListUtil;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,6 +53,7 @@ import org.jooq.SelectForUpdateStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSeekStep1;
 import org.jooq.SelectSelectStep;
+import org.jooq.SortField;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,12 +194,9 @@ public class BQIndividualRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
-		conditions.add(
-			DSL.field(
-				"individual.id"
-			).eq(
-				id
-			));
+		Field<Object> individualIdField = DSL.field("individual.id");
+
+		conditions.add(individualIdField.eq(id));
 
 		if (channelId != null) {
 			conditions.add(
@@ -214,7 +214,7 @@ public class BQIndividualRepositoryImpl
 			 Object> selectSeekStep1 = selectJoinStep1.where(
 				conditions
 			).groupBy(
-				DSL.field("individual.id"), DSL.field("individual.createdate"),
+				individualIdField, DSL.field("individual.createdate"),
 				DSL.field("individual.emailaddress"),
 				DSL.field("individual.firstname"),
 				DSL.field("individual.lastname"),
@@ -223,9 +223,7 @@ public class BQIndividualRepositoryImpl
 				DSL.field("individual.modifieddate"),
 				DSL.field("individual.screenname")
 			).orderBy(
-				DSL.field(
-					"individual.id"
-				).asc()
+				individualIdField.asc()
 			);
 
 		return _queryExecutor.queryForObject(
@@ -247,7 +245,11 @@ public class BQIndividualRepositoryImpl
 					(Date)map.get("lastactivitydate"), _objectMapper);
 			},
 			(SelectJoinStep)_getIndividualSelectOnConditionStep(
-				selectSeekStep1));
+				selectSeekStep1,
+				Collections.singletonList(
+					DSL.field(
+						"individuals.id"
+					).asc())));
 	}
 
 	@Override
@@ -292,7 +294,8 @@ public class BQIndividualRepositoryImpl
 				nestedField.as("nestedField")
 			).orderBy(
 				getSortFields(
-					_getSortFieldNameConversionMap(), pageable.getSort(), null)
+					Collections.singletonMap("name", "values"),
+					pageable.getSort(), null)
 			).limit(
 				pageable.getPageSize()
 			).offset(
@@ -364,6 +367,9 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
+		Collection<SortField<?>> sortFields = getSortFields(
+			_sortFieldNameConversionMap, pageable.getSort(), null);
+
 		SelectForUpdateStep
 			<Record11
 				<Long, Object, Object, Object, Object, Object, Object, Object,
@@ -381,9 +387,7 @@ public class BQIndividualRepositoryImpl
 						DSL.field("individual.modifieddate"),
 						DSL.field("individual.screenname")
 					).orderBy(
-						DSL.field(
-							"individual.id"
-						).asc()
+						sortFields
 					).limit(
 						pageable.getPageSize()
 					).offset(
@@ -408,7 +412,7 @@ public class BQIndividualRepositoryImpl
 					activitiesCount.longValue(), new BQIndividual(map),
 					(Date)map.get("lastactivitydate"), _objectMapper);
 			},
-			_getIndividualSelectOnConditionStep(selectFinalStep));
+			_getIndividualSelectOnConditionStep(selectFinalStep, sortFields));
 	}
 
 	private Condition _getChannelIdCondition(Long channelId) {
@@ -501,12 +505,12 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private SelectFinalStep<?> _getIndividualSelectOnConditionStep(
-		SelectForStep<?> selectSeekStep1) {
+		SelectForStep<?> selectSeekStep, Collection<SortField<?>> sortFields) {
 
 		return _dslContext.with(
 			"individuals"
 		).as(
-			selectSeekStep1
+			selectSeekStep
 		).select(
 			DSL.field("activitiescount"),
 			DSL.field(
@@ -574,6 +578,8 @@ public class BQIndividualRepositoryImpl
 			).eq(
 				DSL.field("individuals.id")
 			)
+		).orderBy(
+			sortFields
 		);
 	}
 
@@ -660,10 +666,6 @@ public class BQIndividualRepositoryImpl
 		return selectJoinStep;
 	}
 
-	private Map<String, String> _getSortFieldNameConversionMap() {
-		return Collections.singletonMap("name", "values");
-	}
-
 	private boolean _isBigQueryDialect() {
 		String googleApplicationCredentials = _environment.getProperty(
 			"GOOGLE_APPLICATION_CREDENTIALS");
@@ -692,5 +694,13 @@ public class BQIndividualRepositoryImpl
 
 	@Autowired
 	private QueryExecutor _queryExecutor;
+
+	private final Map<String, String> _sortFieldNameConversionMap =
+		new HashMap<String, String>() {
+			{
+				put("demographics/familyName/value", "lastname");
+				put("demographics/givenName/value", "firstname");
+			}
+		};
 
 }
