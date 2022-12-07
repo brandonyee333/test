@@ -508,14 +508,30 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		return _queryExecutor.queryForList(
 			recordMap -> new Individual(
-				(String)recordMap.get("individual.emailAddress"),
-				(String)recordMap.get("individual.id"),
-				recordMap.get("individual.firstName") + " " +
-					recordMap.get("individual.lastName")),
+				(String)recordMap.get("emailAddress"),
+				(String)recordMap.get("id"),
+				recordMap.get("firstName") + " " + recordMap.get("lastName")),
 			dslContext.selectDistinct(
-				DSL.field("individual.emailAddress"),
-				DSL.field("individual.firstName"), DSL.field("individual.id"),
-				DSL.field("individual.lastName")
+				DSL.field(
+					"individual.emailAddress"
+				).as(
+					"emailAddress"
+				),
+				DSL.field(
+					"individual.firstName"
+				).as(
+					"firstName"
+				),
+				DSL.field(
+					"individual.id"
+				).as(
+					"id"
+				),
+				DSL.field(
+					"individual.lastName"
+				).as(
+					"lastName"
+				)
 			).from(
 				DSL.table(
 					getTableName(timeRange)
