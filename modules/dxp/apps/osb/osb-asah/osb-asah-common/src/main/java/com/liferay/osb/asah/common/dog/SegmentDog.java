@@ -170,7 +170,7 @@ public class SegmentDog {
 	}
 
 	public void disableDynamicSegments(
-		Long dataSourceId, List<Long> fieldMappingIds) {
+		Long dataSourceId, List<String> fieldMappingIds) {
 
 		if ((dataSourceId == null) && fieldMappingIds.isEmpty()) {
 			return;

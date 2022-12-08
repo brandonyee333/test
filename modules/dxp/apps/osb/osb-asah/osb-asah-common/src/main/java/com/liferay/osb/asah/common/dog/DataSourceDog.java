@@ -433,7 +433,7 @@ public class DataSourceDog {
 
 		// TODO Disable segments referencing fields from data source
 
-		List<Long> disabledFieldMappingIds = new ArrayList<>();
+		List<String> disabledFieldMappingIds = new ArrayList<>();
 
 		_segmentDog.disableDynamicSegments(
 			dataSourceId, disabledFieldMappingIds);
