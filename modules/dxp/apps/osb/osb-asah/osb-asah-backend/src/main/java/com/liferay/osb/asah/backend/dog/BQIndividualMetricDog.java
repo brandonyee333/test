@@ -54,32 +54,30 @@ public class BQIndividualMetricDog {
 		List<Consumer<Metric>> consumers = new ArrayList<>();
 		List<MetricType> metricTypes = new ArrayList<>();
 
-		for (String selectedMetric : selectedMetrics) {
-			if (selectedMetric.equals(
-					IndividualMetricType.ANONYMOUS_INDIVIDUALS.getName())) {
+		if (selectedMetrics.contains(
+				IndividualMetricType.ANONYMOUS_INDIVIDUALS.getName())) {
 
-				consumers.add(individualMetric::setAnonymousIndividualsMetric);
-				metricTypes.add(IndividualMetricType.ANONYMOUS_INDIVIDUALS);
-			}
+			consumers.add(individualMetric::setAnonymousIndividualsMetric);
+			metricTypes.add(IndividualMetricType.ANONYMOUS_INDIVIDUALS);
+		}
 
-			if (selectedMetric.equals(
-					IndividualMetricType.KNOWN_INDIVIDUALS.getName())) {
+		if (selectedMetrics.contains(
+				IndividualMetricType.KNOWN_INDIVIDUALS.getName()) ||
+			selectedMetrics.contains("defaultMetric")) {
 
-				consumers.add(individualMetric::setKnownIndividualsMetric);
-				metricTypes.add(IndividualMetricType.KNOWN_INDIVIDUALS);
-			}
+			consumers.add(individualMetric::setKnownIndividualsMetric);
+			metricTypes.add(IndividualMetricType.KNOWN_INDIVIDUALS);
+		}
 
-			if (selectedMetric.equals(
-					IndividualMetricType.TOTAL_INDIVIDUALS.getName())) {
+		if (selectedMetrics.contains(
+				IndividualMetricType.TOTAL_INDIVIDUALS.getName()) &&
+			(!selectedMetrics.contains(
+				IndividualMetricType.ANONYMOUS_INDIVIDUALS.getName()) ||
+			 !selectedMetrics.contains(
+				 IndividualMetricType.KNOWN_INDIVIDUALS.getName()))) {
 
-				consumers.add(individualMetric::setTotalIndividualsMetric);
-				metricTypes.add(IndividualMetricType.TOTAL_INDIVIDUALS);
-			}
-
-			if (selectedMetric.equals("defaultMetric")) {
-				consumers.add(individualMetric::setKnownIndividualsMetric);
-				metricTypes.add(IndividualMetricType.KNOWN_INDIVIDUALS);
-			}
+			consumers.add(individualMetric::setTotalIndividualsMetric);
+			metricTypes.add(IndividualMetricType.TOTAL_INDIVIDUALS);
 		}
 
 		List<Metric> metrics = _getIndividualCountMetrics(
@@ -89,6 +87,45 @@ public class BQIndividualMetricDog {
 			Consumer<Metric> metricConsumer = consumers.get(i);
 
 			metricConsumer.accept(metrics.get(i));
+		}
+
+		if (selectedMetrics.contains(
+				IndividualMetricType.ANONYMOUS_INDIVIDUALS.getName()) &&
+			selectedMetrics.contains(
+				IndividualMetricType.KNOWN_INDIVIDUALS.getName()) &&
+			selectedMetrics.contains(
+				IndividualMetricType.TOTAL_INDIVIDUALS.getName())) {
+
+			Metric totalIndividualsMetric = new Metric(
+				IndividualMetricType.TOTAL_INDIVIDUALS);
+
+			Double previousValue = 0.0;
+			Double value = 0.0;
+
+			for (Metric metric : metrics) {
+				if ((metric.getMetricType() !=
+						IndividualMetricType.ANONYMOUS_INDIVIDUALS) &&
+					(metric.getMetricType() !=
+						IndividualMetricType.KNOWN_INDIVIDUALS)) {
+
+					continue;
+				}
+
+				previousValue += metric.getPreviousValue();
+
+				totalIndividualsMetric.setPreviousValue(previousValue);
+
+				totalIndividualsMetric.setPreviousValueKey(
+					metric.getPreviousValueKey());
+
+				value += metric.getValue();
+
+				totalIndividualsMetric.setValue(value);
+
+				totalIndividualsMetric.setValueKey(metric.getValueKey());
+			}
+
+			individualMetric.setTotalIndividualsMetric(totalIndividualsMetric);
 		}
 
 		return individualMetric;
