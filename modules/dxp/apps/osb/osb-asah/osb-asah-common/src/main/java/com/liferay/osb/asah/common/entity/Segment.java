@@ -202,7 +202,7 @@ public class Segment implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<Long> getReferencedFieldMappingIds() {
+	public Set<String> getReferencedFieldMappingIds() {
 		return _referencedFieldMappingIds;
 	}
 
@@ -318,7 +318,7 @@ public class Segment implements Persistable<Long> {
 	}
 
 	public void setReferencedFieldMappingIds(
-		Set<Long> referencedFieldMappingIds) {
+		Set<String> referencedFieldMappingIds) {
 
 		_referencedFieldMappingIds = referencedFieldMappingIds;
 	}
@@ -391,7 +391,7 @@ public class Segment implements Persistable<Long> {
 	private Set<Long> _referencedAssetDataSourceIds = new HashSet<>();
 
 	@Transient
-	private Set<Long> _referencedFieldMappingIds = new HashSet<>();
+	private Set<String> _referencedFieldMappingIds = new HashSet<>();
 
 	@Transient
 	private String _scope;
