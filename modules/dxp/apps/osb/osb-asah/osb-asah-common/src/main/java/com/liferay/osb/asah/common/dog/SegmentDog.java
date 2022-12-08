@@ -75,7 +75,7 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class BQSegmentDog {
+public class SegmentDog {
 
 	public Segment addSegment(
 		Date createDate, String filter, Date modifiedDate, String name,
@@ -462,7 +462,7 @@ public class BQSegmentDog {
 		segment.setReferencedFieldMappingIds(
 			SetUtil.map(
 				referencedObjectIds.get("referencedFieldMappingIds"),
-				Long::valueOf));
+				String::valueOf));
 	}
 
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {
@@ -843,7 +843,7 @@ public class BQSegmentDog {
 		"referencedAssetDataSourceIds", "referencedFieldMappingIds"
 	};
 
-	private static final Log _log = LogFactory.getLog(BQSegmentDog.class);
+	private static final Log _log = LogFactory.getLog(SegmentDog.class);
 
 	private static final Pattern _pattern = Pattern.compile(
 		"(?<=[ ])[0-9]+[.]{0,1}[0-9]*(([e][+]){1}[0-9]+){0,1}");
