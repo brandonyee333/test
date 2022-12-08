@@ -49,7 +49,7 @@ public class IndividualSegmentsRestController
 			@PathVariable Long channelId, @PathVariable Long id)
 		throws Exception {
 
-		bqSegmentDog.assignChannel(channelId, id);
+		segmentDog.assignChannel(channelId, id);
 	}
 
 	@DeleteMapping("/{id}/memberships/{individualId}")
@@ -61,7 +61,7 @@ public class IndividualSegmentsRestController
 
 	@DeleteMapping("/{id}")
 	public void deleteIndividualSegment(@PathVariable Long id) {
-		bqSegmentDog.deleteSegment(id);
+		segmentDog.deleteSegment(id);
 	}
 
 	@GetMapping("/preview-disabled-segments")
@@ -73,7 +73,7 @@ public class IndividualSegmentsRestController
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return toSegmentDTOPageDTO(
-			bqSegmentDog.searchPreviewDisabledSegmentPage(
+			segmentDog.searchPreviewDisabledSegmentPage(
 				dataSourceId, filterString, page, Math.max(1, size), sorts));
 	}
 
@@ -90,7 +90,7 @@ public class IndividualSegmentsRestController
 		segmentDTO.setModifiedDate(new Date());
 
 		return objectMapper.convertValue(
-			bqSegmentDog.updateSegment(
+			segmentDog.updateSegment(
 				objectMapper.convertValue(segmentDTO, Segment.class), id),
 			SegmentDTO.class);
 	}

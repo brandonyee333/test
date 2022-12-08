@@ -17,10 +17,10 @@ package com.liferay.osb.asah.common.http.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
@@ -206,7 +206,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Channel channel = _channelDog.addChannel("Liferay");
 
-		Segment segment = _bqSegmentDog.addSegment(
+		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(
 				channel.getId(), "(((demographics/givenName/value ne null)))"));
 
@@ -214,7 +214,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource);
 
-		segment = _bqSegmentDog.getSegment(segment.getId());
+		segment = _segmentDog.getSegment(segment.getId());
 
 		Assertions.assertEquals(
 			"DISABLED", segment.getState(),
@@ -236,7 +236,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Channel channel = _channelDog.addChannel("Liferay");
 
-		Segment segment = _bqSegmentDog.addSegment(
+		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(
 				channel.getId(),
 				"activities/ever eq 'page#pageViewed#" + asset.getId() + "'"));
@@ -245,7 +245,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceDog.deleteDataSource(dataSource);
 
-		segment = _bqSegmentDog.getSegment(segment.getId());
+		segment = _segmentDog.getSegment(segment.getId());
 
 		Assertions.assertEquals(
 			"DISABLED", segment.getState(),
@@ -483,9 +483,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	private BQCSVUserRepository _bqCSVUserRepository;
 
 	@Autowired
-	private BQSegmentDog _bqSegmentDog;
-
-	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
@@ -499,5 +496,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

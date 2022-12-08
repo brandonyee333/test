@@ -18,7 +18,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -64,7 +64,7 @@ public class SegmentMetricDog {
 			searchQueryContext.getTimeRange());
 
 		for (Metric metric : segmentMetrics) {
-			Segment segment = _bqSegmentDog.fetchSegment(
+			Segment segment = _segmentDog.fetchSegment(
 				Long.valueOf(metric.getValueKey()));
 
 			if (segment != null) {
@@ -79,6 +79,6 @@ public class SegmentMetricDog {
 		_assetMetricRepositoryMap = new HashMap<>();
 
 	@Autowired
-	private BQSegmentDog _bqSegmentDog;
+	private SegmentDog _segmentDog;
 
 }

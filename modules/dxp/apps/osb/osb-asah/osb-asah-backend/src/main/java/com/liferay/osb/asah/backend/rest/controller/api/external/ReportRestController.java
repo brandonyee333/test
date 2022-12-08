@@ -49,8 +49,8 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQIndividualInterestScoreDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataExportTask;
@@ -1364,7 +1364,7 @@ public class ReportRestController extends BaseRestController {
 	private MetricTypeDog _metricTypeDog;
 
 	@Autowired
-	private BQSegmentDog _segmentDog;
+	private SegmentDog _segmentDog;
 
 	@Autowired
 	private SegmentMetricDog _segmentMetricDog;

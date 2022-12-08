@@ -20,7 +20,7 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
@@ -95,7 +95,7 @@ public class IndividualSegmentsRestControllerTest
 		_individualSegmentsRestController.assignChannel(
 			1L, 366637689379787789L);
 
-		Segment segment = _bqSegmentDog.getSegment(366637689379787789L);
+		Segment segment = _segmentDog.getSegment(366637689379787789L);
 
 		Assertions.assertEquals(1L, segment.getChannelId());
 	}
@@ -121,7 +121,7 @@ public class IndividualSegmentsRestControllerTest
 		_individualSegmentsRestController.assignChannel(
 			1L, 338511451975440187L);
 
-		Segment segment = _bqSegmentDog.getSegment(338511451975440187L);
+		Segment segment = _segmentDog.getSegment(338511451975440187L);
 
 		Assertions.assertEquals(1L, segment.getChannelId());
 
@@ -322,7 +322,7 @@ public class IndividualSegmentsRestControllerTest
 	public void testPostIndividualSegment1() throws Exception {
 		Segment segment = FaroInfoTestUtil.buildDynamicSegment(1L, "");
 
-		_bqSegmentDog.addSegment(segment);
+		_segmentDog.addSegment(segment);
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.postSegment(
@@ -337,7 +337,7 @@ public class IndividualSegmentsRestControllerTest
 	public void testPostIndividualSegment2() {
 		Segment segment = FaroInfoTestUtil.buildStaticSegment();
 
-		_bqSegmentDog.addSegment(segment);
+		_segmentDog.addSegment(segment);
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.postSegment(
@@ -389,7 +389,7 @@ public class IndividualSegmentsRestControllerTest
 	)
 	@Test
 	public void testPutIndividualSegment1() {
-		Segment segment = _bqSegmentDog.addSegment(
+		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildDynamicSegment(1L, ""));
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
@@ -398,7 +398,7 @@ public class IndividualSegmentsRestControllerTest
 				new SegmentDTO(
 					_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(
 						segment.getId()),
-					_bqSegmentDog.getLastActivityDate(segment), segment)),
+					_segmentDog.getLastActivityDate(segment), segment)),
 			JSONObject.class);
 
 		Assertions.assertEquals(
@@ -407,7 +407,7 @@ public class IndividualSegmentsRestControllerTest
 
 	@Test
 	public void testPutIndividualSegment2() throws Exception {
-		Segment segment = _bqSegmentDog.addSegment(
+		Segment segment = _segmentDog.addSegment(
 			FaroInfoTestUtil.buildStaticSegment());
 
 		Long segmentId = segment.getId();
@@ -418,7 +418,7 @@ public class IndividualSegmentsRestControllerTest
 				new SegmentDTO(
 					_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(
 						segmentId),
-					_bqSegmentDog.getLastActivityDate(segment), segment)),
+					_segmentDog.getLastActivityDate(segment), segment)),
 			JSONObject.class);
 
 		Assertions.assertEquals("READY", responseJSONObject.getString("state"));
@@ -431,12 +431,12 @@ public class IndividualSegmentsRestControllerTest
 	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
-	private BQSegmentDog _bqSegmentDog;
-
-	@Autowired
 	private IndividualSegmentsRestController _individualSegmentsRestController;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

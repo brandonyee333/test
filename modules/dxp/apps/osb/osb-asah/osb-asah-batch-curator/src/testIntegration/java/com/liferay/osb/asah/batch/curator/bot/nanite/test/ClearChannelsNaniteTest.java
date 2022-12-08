@@ -17,8 +17,8 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ClearChannelsNanite;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.http.ChannelHttp;
@@ -93,9 +93,6 @@ public class ClearChannelsNaniteTest
 	@Autowired
 	private AssetRepository _assetRepository;
 
-	@Autowired
-	private BQSegmentDog _bqSegmentDog;
-
 	@MockBean
 	private ChannelHttp _channelHttp;
 
@@ -113,6 +110,9 @@ public class ClearChannelsNaniteTest
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;

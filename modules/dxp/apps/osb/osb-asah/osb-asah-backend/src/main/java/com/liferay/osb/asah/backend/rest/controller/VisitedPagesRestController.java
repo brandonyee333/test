@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,6 +67,6 @@ public class VisitedPagesRestController extends BaseRestController {
 	private BQMembershipDog _bqMembershipDog;
 
 	@Autowired
-	private BQSegmentDog _bqSegmentDog;
+	private SegmentDog _segmentDog;
 
 }

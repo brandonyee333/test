@@ -21,7 +21,6 @@ import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.RunLog;
@@ -290,9 +289,6 @@ public class DataSourcesRestControllerTest {
 
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
-
-	@Autowired
-	private BQSegmentDog _bqSegmentDog;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;

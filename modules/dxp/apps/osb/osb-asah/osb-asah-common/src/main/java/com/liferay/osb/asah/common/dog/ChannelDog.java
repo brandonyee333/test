@@ -115,7 +115,7 @@ public class ChannelDog {
 		_deleteIndividualReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 
-		_bqSegmentDog.deleteSegments(new HashSet<>(channelIds));
+		_segmentDog.deleteSegments(new HashSet<>(channelIds));
 	}
 
 	public void deleteChannels(
@@ -475,9 +475,6 @@ public class ChannelDog {
 	private AssetDog _assetDog;
 
 	@Autowired
-	private BQSegmentDog _bqSegmentDog;
-
-	@Autowired
 	private ChannelHttp _channelHttp;
 
 	@Autowired
@@ -485,6 +482,9 @@ public class ChannelDog {
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();

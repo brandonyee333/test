@@ -19,7 +19,7 @@ import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Individual;
@@ -65,7 +65,7 @@ public class ReportRestController extends BaseRestController {
 		@RequestParam("toDate") String toDate) {
 
 		return _toReportSegmentDTOPageDTO(
-			_bqSegmentDog.getSegmentPage(
+			_segmentDog.getSegmentPage(
 				DateUtil.toUTCDate(fromDate), _getId(afterId), _PAGE_SIZE,
 				Sort.by(Sort.Order.asc("id")), DateUtil.toUTCDate(toDate)));
 	}
@@ -109,6 +109,6 @@ public class ReportRestController extends BaseRestController {
 	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
-	private BQSegmentDog _bqSegmentDog;
+	private SegmentDog _segmentDog;
 
 }

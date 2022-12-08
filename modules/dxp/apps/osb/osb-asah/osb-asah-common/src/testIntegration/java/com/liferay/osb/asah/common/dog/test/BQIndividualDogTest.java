@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQOrganization;
@@ -636,7 +636,7 @@ public class BQIndividualDogTest
 		segment.setIsNew(Boolean.TRUE);
 		segment.setStatus("ACTIVE");
 
-		_bqSegmentDog.addSegment(segment);
+		_segmentDog.addSegment(segment);
 
 		// TODO Update Dynamic Memberships
 
@@ -665,7 +665,7 @@ public class BQIndividualDogTest
 		segment1.setState("READY");
 		segment1.setStatus("ACTIVE");
 
-		_bqSegmentDog.addSegment(segment1);
+		_segmentDog.addSegment(segment1);
 
 		Segment segment2 = new Segment();
 
@@ -681,7 +681,7 @@ public class BQIndividualDogTest
 		segment2.setState("READY");
 		segment2.setStatus("ACTIVE");
 
-		_bqSegmentDog.addSegment(segment2);
+		_segmentDog.addSegment(segment2);
 
 		Segment segment3 = new Segment();
 
@@ -700,7 +700,7 @@ public class BQIndividualDogTest
 		segment3.setState("READY");
 		segment3.setStatus("ACTIVE");
 
-		_bqSegmentDog.addSegment(segment3);
+		_segmentDog.addSegment(segment3);
 
 		Individual individual = new Individual();
 
@@ -1183,14 +1183,14 @@ public class BQIndividualDogTest
 	private BQOrganizationRepository _bqOrganizationRepository;
 
 	@Autowired
-	private BQSegmentDog _bqSegmentDog;
-
-	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
 	private DataSource _liferayDataSource;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
