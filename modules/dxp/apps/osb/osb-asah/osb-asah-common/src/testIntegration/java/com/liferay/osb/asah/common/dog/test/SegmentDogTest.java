@@ -17,9 +17,9 @@ package com.liferay.osb.asah.common.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.BQSegmentDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -60,7 +60,7 @@ import org.springframework.data.domain.Page;
  * @author Michael Bowerman
  */
 @Disabled
-public class BQSegmentDogTest
+public class SegmentDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
@@ -583,7 +583,7 @@ public class BQSegmentDogTest
 		segment.setName("Segment 1");
 		segment.setType(Segment.Type.DYNAMIC);
 
-		segment = _bqSegmentDog.addSegment(segment);
+		segment = _segmentDog.addSegment(segment);
 
 		Assertions.assertTrue(
 			StringUtils.endsWith(
@@ -668,7 +668,7 @@ public class BQSegmentDogTest
 	)
 	@Test
 	public void testGetSegmentPage() {
-		Page<Segment> segmentPage = _bqSegmentDog.getSegmentPage(
+		Page<Segment> segmentPage = _segmentDog.getSegmentPage(
 			DateUtil.toUTCDate("2022-04-02T11:00:00.000Z"), -1L, 1,
 			Sort.by(Sort.Order.asc("id")),
 			DateUtil.toUTCDate("2022-04-03T13:00:00.000Z"));
@@ -686,7 +686,7 @@ public class BQSegmentDogTest
 	)
 	@Test
 	public void testGetSegments() {
-		List<Segment> segments = _bqSegmentDog.getSegments(
+		List<Segment> segments = _segmentDog.getSegments(
 			Arrays.asList(338511398116723457L, 338511451975440187L));
 
 		Assertions.assertEquals(2, segments.size(), segments.toString());
@@ -916,7 +916,7 @@ public class BQSegmentDogTest
 		segment.setName("Segment 1");
 		segment.setType(Segment.Type.DYNAMIC);
 
-		segment = _bqSegmentDog.addSegment(segment);
+		segment = _segmentDog.addSegment(segment);
 
 		Segment partialSegment = new Segment();
 
@@ -926,7 +926,7 @@ public class BQSegmentDogTest
 		partialSegment.setModifiedDate(new Date());
 		partialSegment.setName("Segment 2");
 
-		partialSegment = _bqSegmentDog.updateSegment(
+		partialSegment = _segmentDog.updateSegment(
 			partialSegment, segment.getId());
 
 		Assertions.assertTrue(
@@ -936,7 +936,7 @@ public class BQSegmentDogTest
 			segment.getReferencedFieldMappingIds(),
 			partialSegment.getReferencedFieldMappingIds());
 
-		segment = _bqSegmentDog.getSegment(segment.getId());
+		segment = _segmentDog.getSegment(segment.getId());
 
 		Assertions.assertEquals("Segment 2", segment.getName());
 	}
@@ -951,14 +951,14 @@ public class BQSegmentDogTest
 		segment.setName("Segment 1");
 		segment.setType(Segment.Type.DYNAMIC);
 
-		segment = _bqSegmentDog.addSegment(segment);
+		segment = _segmentDog.addSegment(segment);
 
 		Segment partialSegment = new Segment();
 
 		partialSegment.setFilter(
 			"demographics/age/value ge 1.2345678901234568e+21");
 
-		partialSegment = _bqSegmentDog.updateSegment(
+		partialSegment = _segmentDog.updateSegment(
 			partialSegment, segment.getId());
 
 		Assertions.assertTrue(
@@ -971,7 +971,7 @@ public class BQSegmentDogTest
 		String[] expectedReferencedFieldMappingIds, String filterString) {
 
 		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
-			_bqSegmentDog.addSegment(
+			_segmentDog.addSegment(
 				FaroInfoTestUtil.buildDynamicSegment(1L, filterString)),
 			JSONObject.class);
 
@@ -1023,7 +1023,7 @@ public class BQSegmentDogTest
 		segment.setFilter(updateFilter);
 
 		individualSegmentJSONObject = _objectMapper.convertValue(
-			_bqSegmentDog.updateSegment(
+			_segmentDog.updateSegment(
 				segment, individualSegmentJSONObject.getLong("id")),
 			JSONObject.class);
 
@@ -1059,9 +1059,6 @@ public class BQSegmentDogTest
 	private AssetRepository _assetRepository;
 
 	@Autowired
-	private BQSegmentDog _bqSegmentDog;
-
-	@Autowired
 	private ChannelRepository _channelRepository;
 
 	@Autowired
@@ -1079,5 +1076,8 @@ public class BQSegmentDogTest
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
