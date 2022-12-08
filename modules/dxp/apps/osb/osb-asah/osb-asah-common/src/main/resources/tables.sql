@@ -333,7 +333,7 @@ CREATE TABLE IF NOT EXISTS Segment (
 	modifiedDate TIMESTAMPTZ,
 	name TEXT,
 	referencedAssetDataSourceIds BIGINT[],
-	referencedFieldMappingIds BIGINT[],
+	referencedFieldMappingIds VARCHAR[],
 	scope TEXT,
 	state TEXT,
 	status TEXT,
