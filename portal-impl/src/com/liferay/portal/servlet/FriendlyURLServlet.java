@@ -58,6 +58,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PortalInstances;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.IOException;
 
@@ -334,6 +335,13 @@ public class FriendlyURLServlet extends HttpServlet {
 
 				if (!LayoutPermissionUtil.contains(
 						permissionChecker, layout, ActionKeys.VIEW)) {
+
+					if (PropsValues.AUTH_LOGIN_PROMPT_ENABLED) {
+						String redirect = PortalUtil.getLayoutActualURL(
+							layout, Portal.PATH_MAIN);
+
+						return new Redirect(redirect);
+					}
 
 					throw new NoSuchLayoutException();
 				}
