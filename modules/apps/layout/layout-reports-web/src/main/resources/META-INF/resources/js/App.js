@@ -30,6 +30,21 @@ export default function App(props) {
 		`${portletNamespace}layoutReportsPanelToggleId`
 	);
 
+
+
+	layoutReportsPanelToggle.setAttribute('aria-pressed', false);
+
+	const layoutReportsPanelId = document.getElementById(
+		`${portletNamespace}layoutReportsPanelId`
+	);
+
+	const handleKeydownToggle = (event) => {
+		if (event.key === 'Enter'){
+			layoutReportsPanelToggle.setAttribute('aria-pressed', true);
+		}
+	};
+
+
 	useEffect(() => {
 		const sidenavInstance = Liferay.SideNavigation.instance(
 			layoutReportsPanelToggle
@@ -40,6 +55,12 @@ export default function App(props) {
 				'com.liferay.layout.reports.web_layoutReportsPanelState',
 				'open'
 			);
+
+			if (layoutReportsPanelToggle.getAttribute('aria-pressed') === 'true'){
+				layoutReportsPanelId.setAttribute('tabindex', '0');
+				layoutReportsPanelId.focus();
+			}
+
 		});
 
 		sidenavInstance.on('closed.lexicon.sidenav', () => {
@@ -55,6 +76,10 @@ export default function App(props) {
 	}, [layoutReportsPanelToggle, portletNamespace]);
 
 	const [eventTriggered, setEventTriggered] = useState(false);
+
+	useEventListener('keydown', handleKeydownToggle, {once: false}
+		, layoutReportsPanelToggle);
+
 
 	useEventListener(
 		'mouseenter',
