@@ -4616,40 +4616,44 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			userLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setAddCriteriaMethod(
-			dynamicQuery -> {
-				Property userId = PropertyFactoryUtil.forName("userId");
+		if (userIds.length > 0) {
 
-				dynamicQuery.add(userId.in(userIds));
-			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<User>() {
+			indexableActionableDynamicQuery.setAddCriteriaMethod(
+				dynamicQuery -> {
+					Property userId = PropertyFactoryUtil.forName("userId");
 
-				@Override
-				public void performAction(User user) {
-					if (!user.isDefaultUser()) {
-						try {
-							Document document = indexer.getDocument(user);
+					dynamicQuery.add(userId.in(userIds));
+				});
+			indexableActionableDynamicQuery.setCompanyId(companyId);
+			indexableActionableDynamicQuery.setPerformActionMethod(
+				new ActionableDynamicQuery.PerformActionMethod<User>() {
 
-							indexableActionableDynamicQuery.addDocuments(
-								document);
-						}
-						catch (PortalException pe) {
-							if (_log.isWarnEnabled()) {
-								_log.warn(
-									"Unable to index user " + user.getUserId(),
-									pe);
+					@Override
+					public void performAction(User user) {
+						if (!user.isDefaultUser()) {
+							try {
+								Document document = indexer.getDocument(user);
+
+								indexableActionableDynamicQuery.addDocuments(
+									document);
+							}
+							catch (PortalException pe) {
+								if (_log.isWarnEnabled()) {
+									_log.warn(
+										"Unable to index user " +
+										user.getUserId(),
+										pe);
+								}
 							}
 						}
 					}
-				}
 
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(
-			indexer.getSearchEngineId());
+				});
+			indexableActionableDynamicQuery.setSearchEngineId(
+				indexer.getSearchEngineId());
 
-		indexableActionableDynamicQuery.performActions();
+			indexableActionableDynamicQuery.performActions();
+		}
 	}
 
 	protected void reindexUsersInOrganization(long organizationId)
