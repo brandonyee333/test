@@ -15,18 +15,25 @@
 package com.liferay.portal.verify;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -50,6 +57,8 @@ public class VerifyProperties {
 
 			System.exit(1);
 		}
+
+		verifyLayoutFriendlyURL();
 	}
 
 	protected static InputStream getPropertiesResourceAsStream(
@@ -75,6 +84,20 @@ public class VerifyProperties {
 
 			return null;
 		}
+	}
+
+	protected static String getReservedFriendlyURLS() {
+		String reservedFriendlyURLS = StringBundler.concat(
+			"\"/", PropsValues.LAYOUT_FRIENDLY_URL_KEYWORDS[0], "\"");
+
+		for (int i = 1; i < PropsValues.LAYOUT_FRIENDLY_URL_KEYWORDS.length;
+			 i++) {
+
+			reservedFriendlyURLS += StringBundler.concat(
+				",\"/", PropsValues.LAYOUT_FRIENDLY_URL_KEYWORDS[i], "\"");
+		}
+
+		return reservedFriendlyURLS;
 	}
 
 	protected static Properties loadPortalProperties() {
@@ -107,6 +130,45 @@ public class VerifyProperties {
 		}
 
 		return properties;
+	}
+
+	protected static void verifyLayoutFriendlyURL() {
+		try {
+			Connection connection = DataAccess.getConnection();
+
+			PreparedStatement preparedStatement1 = connection.prepareStatement(
+				"Select groupId from Group_");
+
+			ResultSet resultSet1 = preparedStatement1.executeQuery();
+
+			String reservedURLS = getReservedFriendlyURLS();
+
+			while (resultSet1.next()) {
+				long groupId = resultSet1.getLong("groupId");
+
+				PreparedStatement preparedStatement2 =
+					connection.prepareStatement(
+						StringBundler.concat(
+							"Select * from Layout where groupId = ? and ",
+							"friendlyURL in (", reservedURLS, ")"));
+
+				preparedStatement2.setLong(1, groupId);
+
+				ResultSet resultSet2 = preparedStatement2.executeQuery();
+
+				while (resultSet2.next()) {
+					String invalidURL = resultSet2.getString("friendlyURL");
+
+					_log.error(
+						StringBundler.concat(
+							"Reserved layout URL detected \"", invalidURL,
+							"\" Please update Layout URL after upgrade"));
+				}
+			}
+		}
+		catch (SQLException sqlException) {
+			throw new RuntimeException(sqlException);
+		}
 	}
 
 	protected static void verifyMigratedPortalProperty(
