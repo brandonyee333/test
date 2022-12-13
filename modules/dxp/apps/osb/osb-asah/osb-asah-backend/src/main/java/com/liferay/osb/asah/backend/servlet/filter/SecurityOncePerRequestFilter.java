@@ -45,8 +45,6 @@ public class SecurityOncePerRequestFilter
 			return true;
 		}
 
-		// DXP Data Source status probe request
-
 		if (StringUtils.equals(httpServletRequest.getMethod(), "GET") &&
 			StringUtils.contains(
 				httpServletRequest.getRequestURI(), "/api/1.0/data-sources")) {
