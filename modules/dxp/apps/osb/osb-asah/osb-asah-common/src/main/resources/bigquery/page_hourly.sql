@@ -1,6 +1,36 @@
 WITH PageFinalizedEvent AS (
 	SELECT
-		Event.*
+		Event.applicationId,
+		COALESCE(Event.browserName, '') AS browserName,
+		Event.canonicalUrl,
+		Event.channelId,
+		COALESCE(Event.city, '') AS city,
+		Event.contentLanguageId,
+		Event.context,
+		COALESCE(Event.country, '') AS country,
+		Event.createDate,
+		Event.dataSourceId,
+		Event.description,
+		COALESCE(Event.deviceType, '') AS deviceType,
+		Event.emailAddressHashed,
+		Event.eventDate,
+		Event.eventId,
+		Event.eventProperties,
+		Event.experienceId,
+		Event.id,
+		Event.keywords,
+		Event.languageId,
+		COALESCE(Event.platformName, '') AS platformName,
+		Event.projectId,
+		Event.projectTimeZoneId,
+		Event.referrer,
+		COALESCE(Event.region, '') AS region,
+		Event.sessionId,
+		Event.timezoneOffset,
+		Event.title,
+		Event.url,
+		Event.userId,
+		Event.variantId
 	FROM
 		`$[AC_PROJECT_ID].event` AS Event
 	INNER JOIN
