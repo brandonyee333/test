@@ -4610,50 +4610,50 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	protected void reindex(long companyId, long[] userIds)
 		throws PortalException {
 
+		if (ArrayUtil.isEmpty(userIds)) {
+			return;
+		}
+
 		final Indexer<User> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 			User.class);
 
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			userLocalService.getIndexableActionableDynamicQuery();
 
-		if (userIds.length > 0) {
+		indexableActionableDynamicQuery.setAddCriteriaMethod(
+			dynamicQuery -> {
+				Property userId = PropertyFactoryUtil.forName("userId");
 
-			indexableActionableDynamicQuery.setAddCriteriaMethod(
-				dynamicQuery -> {
-					Property userId = PropertyFactoryUtil.forName("userId");
+				dynamicQuery.add(userId.in(userIds));
+			});
+		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<User>() {
 
-					dynamicQuery.add(userId.in(userIds));
-				});
-			indexableActionableDynamicQuery.setCompanyId(companyId);
-			indexableActionableDynamicQuery.setPerformActionMethod(
-				new ActionableDynamicQuery.PerformActionMethod<User>() {
+				@Override
+				public void performAction(User user) {
+					if (!user.isDefaultUser()) {
+						try {
+							Document document = indexer.getDocument(user);
 
-					@Override
-					public void performAction(User user) {
-						if (!user.isDefaultUser()) {
-							try {
-								Document document = indexer.getDocument(user);
-
-								indexableActionableDynamicQuery.addDocuments(
-									document);
-							}
-							catch (PortalException pe) {
-								if (_log.isWarnEnabled()) {
-									_log.warn(
-										"Unable to index user " +
-										user.getUserId(),
-										pe);
-								}
+							indexableActionableDynamicQuery.addDocuments(
+								document);
+						}
+						catch (PortalException pe) {
+							if (_log.isWarnEnabled()) {
+								_log.warn(
+									"Unable to index user " + user.getUserId(),
+									pe);
 							}
 						}
 					}
+				}
 
-				});
-			indexableActionableDynamicQuery.setSearchEngineId(
-				indexer.getSearchEngineId());
+			});
+		indexableActionableDynamicQuery.setSearchEngineId(
+			indexer.getSearchEngineId());
 
-			indexableActionableDynamicQuery.performActions();
-		}
+		indexableActionableDynamicQuery.performActions();
 	}
 
 	protected void reindexUsersInOrganization(long organizationId)
