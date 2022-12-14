@@ -41,7 +41,6 @@ public interface CustomDXPEntityRepository {
 		List<Long> dataSourceIds, @Nullable String keywords,
 		DXPEntity.Type type);
 
-	@Cacheable
 	public long countByModifiedDateBetweenAndType(
 		@Nullable Date modifiedDate1, Date modifiedDate2, DXPEntity.Type type);
 
@@ -85,7 +84,6 @@ public interface CustomDXPEntityRepository {
 	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
 		String memebershipClassName, Long membershipId);
 
-	@Cacheable
 	public List<DXPEntity> findByModifiedDateBetweenAndType(
 		@Nullable Date modifiedDate1, Date modifiedDate2, DXPEntity.Type type,
 		Pageable pageable);
