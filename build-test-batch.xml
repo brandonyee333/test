@@ -2363,6 +2363,14 @@ log.sanitizer.enabled=false</echo>
 
 							<antcall inheritAll="false" target="prepare-system-ext-properties" />
 
+							<if>
+								<equals arg1="${spring.extender.enabled}" arg2="true" />
+								<then>
+									<gradle-execute dir="${project.dir}/modules/util/portal-tools-service-builder-test-service" task="deploy" />
+									<gradle-execute dir="${project.dir}/modules/util/portal-tools-service-builder-test-uad" task="deploy" />
+								</then>
+							</if>
+
 							<print-test-class-group test.class.group.index="${axis.variable}" />
 
 							<echo>Executing Gradle task in directory "modules": testIntegration.</echo>
@@ -6146,7 +6154,7 @@ log.sanitizer.enabled=false</echo>
 		</antcall>
 	</target>
 
-	<target name="modules-integration-service-builder-jdk8">
+	<target name="modules-service-builder-integration-jdk8">
 		<run-modules-integration-test
 			spring.extender.enabled="true"
 			database.type="mysql"
