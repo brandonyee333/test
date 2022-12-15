@@ -36,12 +36,10 @@ import com.liferay.portal.messaging.internal.configuration.DestinationWorkerConf
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
@@ -69,13 +67,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 	service = {ManagedServiceFactory.class, MessageBus.class}
 )
 public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
-
-	@Override
-	public boolean addMessageBusEventListener(
-		MessageBusEventListener messageBusEventListener) {
-
-		return _messageBusEventListeners.add(messageBusEventListener);
-	}
 
 	@Override
 	public void deleted(String factoryPid) {
@@ -155,13 +146,6 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		}
 
 		return false;
-	}
-
-	@Override
-	public boolean removeMessageBusEventListener(
-		MessageBusEventListener messageBusEventListener) {
-
-		return _messageBusEventListeners.remove(messageBusEventListener);
 	}
 
 	@Override
@@ -272,6 +256,10 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_messageBusEventListenerServiceTrackerList =
+			ServiceTrackerListFactory.open(
+				bundleContext, MessageBusEventListener.class);
+
 		_messageListenerServiceTracker = new ServiceTracker<>(
 			bundleContext, MessageListener.class,
 			new ServiceTrackerCustomizer
@@ -292,27 +280,7 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 					MessageListener messageListener = bundleContext.getService(
 						serviceReference);
 
-					Thread currentThread = Thread.currentThread();
-
-					ClassLoader contextClassLoader =
-						currentThread.getContextClassLoader();
-
-					try {
-						ClassLoader operatingClassLoader =
-							(ClassLoader)serviceReference.getProperty(
-								"message.listener.operating.class.loader");
-
-						if (operatingClassLoader != null) {
-							currentThread.setContextClassLoader(
-								operatingClassLoader);
-						}
-
-						registerMessageListener(
-							destinationName, messageListener);
-					}
-					finally {
-						currentThread.setContextClassLoader(contextClassLoader);
-					}
+					registerMessageListener(destinationName, messageListener);
 
 					return new ObjectValuePair<>(
 						destinationName, messageListener);
@@ -356,13 +324,13 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 		_messageListenerServiceTracker.close();
 
+		_messageBusEventListenerServiceTrackerList.close();
+
 		shutdown(true);
 
 		for (Destination destination : _destinations.values()) {
 			destination.destroy();
 		}
-
-		_messageBusEventListeners.clear();
 
 		_destinations.clear();
 	}
@@ -423,17 +391,6 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		destination.addDestinationEventListener(destinationEventListener);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void registerMessageBusEventListener(
-		MessageBusEventListener messageBusEventListener) {
-
-		addMessageBusEventListener(messageBusEventListener);
-	}
-
 	protected synchronized void unregisterDestination(
 		Destination destination, Map<String, Object> properties) {
 
@@ -460,12 +417,6 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		}
 
 		destination.removeDestinationEventListener(destinationEventListener);
-	}
-
-	protected void unregisterMessageBusEventListener(
-		MessageBusEventListener messageBusEventListener) {
-
-		removeMessageBusEventListener(messageBusEventListener);
 	}
 
 	private void _addDestination(Destination destination) {
@@ -502,14 +453,14 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 			oldDestination.destroy();
 
 			for (MessageBusEventListener messageBusEventListener :
-					_messageBusEventListeners) {
+					_messageBusEventListenerServiceTrackerList) {
 
 				messageBusEventListener.destinationRemoved(oldDestination);
 			}
 		}
 
 		for (MessageBusEventListener messageBusEventListener :
-				_messageBusEventListeners) {
+				_messageBusEventListenerServiceTrackerList) {
 
 			messageBusEventListener.destinationAdded(destination);
 		}
@@ -525,7 +476,7 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		destination.destroy();
 
 		for (MessageBusEventListener messageBusEventListener :
-				_messageBusEventListeners) {
+				_messageBusEventListenerServiceTrackerList) {
 
 			messageBusEventListener.destinationRemoved(destination);
 		}
@@ -562,8 +513,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 		_destinationWorkerConfigurations = new ConcurrentHashMap<>();
 	private final Map<String, String> _factoryPidsToDestinationName =
 		new ConcurrentHashMap<>();
-	private final Set<MessageBusEventListener> _messageBusEventListeners =
-		Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private ServiceTrackerList<MessageBusEventListener>
+		_messageBusEventListenerServiceTrackerList;
 	private ServiceTracker
 		<MessageListener, ObjectValuePair<String, MessageListener>>
 			_messageListenerServiceTracker;
