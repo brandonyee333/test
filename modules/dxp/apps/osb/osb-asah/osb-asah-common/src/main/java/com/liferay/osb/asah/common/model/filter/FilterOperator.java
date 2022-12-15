@@ -79,7 +79,9 @@ public abstract class FilterOperator {
 			return Float.valueOf(value);
 		}
 
-		return StringUtil.unquoteAndDecodeInnerQuotes(value);
+		value = StringUtil.unquoteAndDecodeInnerQuotes(value);
+
+		return value.replace("'", "\\'");
 	}
 
 	protected EventAttributeDefinition.DataType dataType;
