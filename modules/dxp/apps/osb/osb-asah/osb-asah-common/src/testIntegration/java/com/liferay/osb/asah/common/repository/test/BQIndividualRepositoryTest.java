@@ -14,12 +14,16 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIdentityActivity;
+import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityChannelRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
@@ -52,7 +56,7 @@ public class BQIndividualRepositoryTest
 	extends BaseRepositoryTestCase<BQIndividual, String> {
 
 	@BeforeEach
-	public void setUp() {
+	public void setUp() throws Exception {
 		BQIndividual bqIndividual = new BQIndividual();
 
 		Date date = new Date();
@@ -75,32 +79,74 @@ public class BQIndividualRepositoryTest
 
 		bqIndividual = _bqIndividualRepository.save(bqIndividual);
 
-		BQIdentity bqIdentity = new BQIdentity();
+		BQIdentity bqIdentity1 = new BQIdentity();
 
-		bqIdentity.setCreateDate(new Date());
-		bqIdentity.setId(RandomTestUtil.randomString());
-		bqIdentity.setIndividualId(DigestUtils.sha256Hex(emailAddress));
-		bqIdentity.setIsNew(Boolean.TRUE);
+		bqIdentity1.setCreateDate(new Date());
+		bqIdentity1.setId(RandomTestUtil.randomString());
+		bqIdentity1.setIndividualId(DigestUtils.sha256Hex(emailAddress));
+		bqIdentity1.setIsNew(Boolean.TRUE);
 
-		bqIdentity = _bqIdentityRepository.save(bqIdentity);
+		_bqIdentityRepository.save(bqIdentity1);
 
-		BQIdentityActivity bqIdentityActivity = new BQIdentityActivity();
+		BQIdentity bqIdentity2 = new BQIdentity();
 
-		bqIdentityActivity.setChannelId(11L);
-		bqIdentityActivity.setCreateDate(new Date());
-		bqIdentityActivity.setDataSourceId(1L);
-		bqIdentityActivity.setId(RandomTestUtil.randomUUID());
-		bqIdentityActivity.setIdentityId(bqIdentity.getId());
-		bqIdentityActivity.setIndividualId(bqIdentity.getIndividualId());
-		bqIdentityActivity.setIsNew(Boolean.TRUE);
+		bqIdentity2.setCreateDate(new Date());
+		bqIdentity2.setId(RandomTestUtil.randomString());
+		bqIdentity2.setIndividualId(DigestUtils.sha256Hex(emailAddress));
+		bqIdentity2.setIsNew(Boolean.TRUE);
 
-		_bqIdentityActivityRepository.save(bqIdentityActivity);
+		_bqIdentityRepository.save(bqIdentity2);
+
+		BQIdentityActivity bqIdentityActivity1 = new BQIdentityActivity();
+
+		bqIdentityActivity1.setChannelId(11L);
+		bqIdentityActivity1.setCreateDate(new Date());
+		bqIdentityActivity1.setDataSourceId(1L);
+		bqIdentityActivity1.setId(RandomTestUtil.randomUUID());
+		bqIdentityActivity1.setIdentityId(bqIdentity1.getId());
+		bqIdentityActivity1.setIndividualId(bqIdentity1.getIndividualId());
+		bqIdentityActivity1.setIsNew(Boolean.TRUE);
+
+		_bqIdentityActivityRepository.save(bqIdentityActivity1);
+
+		BQIdentityActivity bqIdentityActivity2 = new BQIdentityActivity();
+
+		bqIdentityActivity2.setChannelId(11L);
+		bqIdentityActivity2.setCreateDate(new Date());
+		bqIdentityActivity2.setDataSourceId(1L);
+		bqIdentityActivity2.setId(RandomTestUtil.randomUUID());
+		bqIdentityActivity2.setIdentityId(bqIdentity2.getId());
+		bqIdentityActivity2.setIndividualId(bqIdentity2.getIndividualId());
+		bqIdentityActivity2.setIsNew(Boolean.TRUE);
+
+		_bqIdentityActivityRepository.save(bqIdentityActivity2);
+
+		_eventDog.addBQEvent(
+			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
+			DateUtil.toUTCDate("2022-12-14T23:59:59.999Z"),
+			"webContentViewed",
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			bqIdentity1.getId());
+
+		_eventDog.addBQEvent(
+			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
+			DateUtil.toUTCDate("2022-12-15T23:59:59.999Z"),
+			"webContentViewed",
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			bqIdentity2.getId());
+
+		_eventDog.addBQEvent(
+			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
+			DateUtil.toUTCDate("2022-12-16T23:59:59.999Z"),
+			"webContentViewed",
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			bqIdentity2.getId());
 
 		BQMembership bqMembership = new BQMembership();
 
 		bqMembership.setCreateDate(new Date());
 		bqMembership.setId(RandomTestUtil.randomNumber());
-		bqMembership.setIndividualId(bqIdentity.getIndividualId());
+		bqMembership.setIndividualId(bqIdentity1.getIndividualId());
 		bqMembership.setIsNew(Boolean.TRUE);
 		bqMembership.setSegmentId(_SEGMENT_ID);
 
@@ -112,6 +158,9 @@ public class BQIndividualRepositoryTest
 
 		entityModels = Collections.singletonList(bqIndividual);
 	}
+
+	@Autowired
+	private EventDog _eventDog;
 
 	@Test
 	public void testCountBQIndividuals() {
@@ -153,6 +202,13 @@ public class BQIndividualRepositoryTest
 				null);
 
 		Assertions.assertEquals(1, individuals.size(), individuals.toString());
+
+		Individual individual = individuals.get(0);
+
+		Assertions.assertEquals(3L, individual.getActivitiesCount());
+		Assertions.assertEquals(
+			DateUtil.toUTCDate("2022-12-16T23:59:59.999Z"),
+			individual.getLastActivityDate());
 	}
 
 	@Override
@@ -166,6 +222,9 @@ public class BQIndividualRepositoryTest
 
 	@Autowired
 	private BQIdentityActivityRepository _bqIdentityActivityRepository;
+
+	@Autowired
+	private BQIdentityChannelRepository _bqIdentityChannelRepository;
 
 	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;
