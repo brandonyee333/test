@@ -155,6 +155,21 @@ public class FilterOperatorTest {
 	}
 
 	@Test
+	public void testContainsFilterOperatorWithApostrophe() {
+		FilterOperator filterOperator = FilterOperators.of(
+			EventAttributeDefinition.DataType.STRING, _dslHelper, "contains",
+			Collections.singletonList("test'Value"));
+
+		Assertions.assertEquals(
+			DSL.lower(
+				DSL.field("testField", String.class)
+			).like(
+				"%test\\'value%"
+			),
+			filterOperator.getCondition(DSL.field("testField")));
+	}
+
+	@Test
 	public void testEndsWithFilterOperator() {
 		FilterOperator filterOperator = FilterOperators.of(
 			EventAttributeDefinition.DataType.STRING, _dslHelper, "endsWith",
