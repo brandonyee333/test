@@ -809,7 +809,7 @@ CREATE OR REPLACE VIEW BQForm AS (
 			WHERE
 				Event.applicationId = 'Form' AND
 				Event.eventId IN ('formSubmitted', 'formViewed') AND
-			    formId.value IS NOT NULL
+				formId.value IS NOT NULL
 		),
 		FormSubmissionTimes AS (
 			SELECT
@@ -917,6 +917,36 @@ CREATE OR REPLACE VIEW BQForm AS (
 		FormEvent.channelId, FormEvent.city, FormEvent.country,
 		FormEvent.deviceType, DATE_TRUNC('HOUR', FormEvent.eventDate),
 		FormEvent.platformName, FormEvent.region, FormEvent.title, FormEvent.userId
+);
+
+COMMIT;
+
+CREATE OR REPLACE VIEW BQIdentityChannel AS (
+	SELECT
+		COUNT(*) AS activitiesCount,
+		Event.channelId,
+		MIN(Event.eventDate) AS createDate,
+		ENCODE(
+			SHA256(CONCAT(Event.channelId, '-', Event.userId)::BYTEA), 'hex'
+		) AS id,
+		Event.userId AS identityId,
+		MAX(Identity.individualId) AS individualId,
+		MAX(Event.eventDate) AS lastActivityDate,
+		MAX(Event.eventDate) AS modifiedDate
+	FROM
+		BQEvent AS Event
+	LEFT JOIN  BQIdentity AS Identity ON (
+		Event.userId = Identity.id
+	)
+	WHERE
+		Event.eventId IN (
+			'blogClicked', 'blogViewed', 'documentDownloaded',
+			'documentPreviewed', 'formSubmitted', 'formViewed', 'pageViewed',
+			'posted', 'VOTE', 'webContentClicked', 'webContentViewed'
+		)
+	GROUP BY
+		Event.channelId,
+		Event.userId
 );
 
 COMMIT;

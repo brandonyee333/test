@@ -1119,7 +1119,7 @@
 			"type": "DAY"
 		}
 	},
-	"identitychannel": {
+	"identitychannelsummary": {
 		"clusteringFields": [
 			"channelId"
 		],
@@ -1150,7 +1150,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "individualId",
 				"type": "STRING"
 			},
@@ -1162,11 +1162,6 @@
 			{
 				"mode": "REQUIRED",
 				"name": "modifiedDate",
-				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "previousActivityDate",
 				"type": "TIMESTAMP"
 			}
 		]

@@ -22,6 +22,9 @@
 		"path": "identityactivity.sql",
 		"type": "materialized"
 	},
+	"identitychannel": {
+		"path": "identity_channel.sql"
+	},
 	"journalhourly": {
 		"path": "journal_hourly.sql"
 	},
