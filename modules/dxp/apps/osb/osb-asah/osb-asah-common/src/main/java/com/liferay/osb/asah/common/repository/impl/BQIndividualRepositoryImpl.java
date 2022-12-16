@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.util.FieldValueListUtil;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -230,7 +231,7 @@ public class BQIndividualRepositoryImpl
 			record -> {
 				Map<String, Object> map = new HashedMap<>(record);
 
-				if (_isBigQueryDialect()) {
+				if (_dslHelper.isBigQueryDialect()) {
 					map.put(
 						"fields",
 						FieldValueListUtil.toJSONArray(
@@ -398,7 +399,7 @@ public class BQIndividualRepositoryImpl
 			record -> {
 				Map<String, Object> map = new HashedMap<>(record);
 
-				if (_isBigQueryDialect()) {
+				if (_dslHelper.isBigQueryDialect()) {
 					map.put(
 						"fields",
 						FieldValueListUtil.toJSONArray(
@@ -621,13 +622,13 @@ public class BQIndividualRepositoryImpl
 			DSL.table(
 				"BQIdentityChannel"
 			).as(
-				"identityChannel"
+				"IdentityChannel"
 			)
 		).on(
 			DSL.field(
 				"individual.id"
 			).eq(
-				DSL.field("identityChannel.individualId")
+				DSL.field("IdentityChannel.individualId")
 			)
 		);
 
@@ -666,17 +667,6 @@ public class BQIndividualRepositoryImpl
 		return selectJoinStep;
 	}
 
-	private boolean _isBigQueryDialect() {
-		String googleApplicationCredentials = _environment.getProperty(
-			"GOOGLE_APPLICATION_CREDENTIALS");
-
-		if (googleApplicationCredentials != null) {
-			return true;
-		}
-
-		return false;
-	}
-
 	private static final String[] _SEARCH_COLUMNS = {
 		"emailAddress", "firstName", "jobTitle", "lastName", "middleName"
 	};
@@ -688,6 +678,12 @@ public class BQIndividualRepositoryImpl
 
 	@Autowired
 	private Environment _environment;
+
+	private final List<Field<Object>> _identiyChannelFields = Arrays.asList(
+		DSL.field("activitiesCount"), DSL.field("channelId"),
+		DSL.field("createDate"), DSL.field("id"), DSL.field("identityId"),
+		DSL.field("individualId"), DSL.field("lastActivityDate"),
+		DSL.field("modifiedDate"));
 
 	@Autowired
 	private ObjectMapper _objectMapper;

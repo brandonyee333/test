@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.CustomBQIdentityRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
@@ -189,14 +190,14 @@ public class BQIdentityRepositoryImpl
 		}
 
 		if (BooleanUtils.isTrue(active)) {
-			LocalDateTime nowLocalDateTime = LocalDateTime.now();
+			TimeRange timeRange = TimeRange.LAST_30_DAYS;
 
 			conditions.add(
 				DSL.field(
 					"identityChannel.lastActivityDate"
 				).greaterThan(
 					_dslHelper.getDateParam(
-						nowLocalDateTime.minusDays(30), zoneId.toString())
+						timeRange.getStartLocalDateTime(), zoneId.toString())
 				));
 		}
 
@@ -251,13 +252,13 @@ public class BQIdentityRepositoryImpl
 				DSL.table(
 					"BQIdentityChannel"
 				).as(
-					"identityChannel"
+					"IdentityChannel"
 				)
 			).on(
 				DSL.field(
 					"identity.id"
 				).eq(
-					DSL.field("identityChannel.identityId")
+					DSL.field("IdentityChannel.identityId")
 				)
 			);
 		}

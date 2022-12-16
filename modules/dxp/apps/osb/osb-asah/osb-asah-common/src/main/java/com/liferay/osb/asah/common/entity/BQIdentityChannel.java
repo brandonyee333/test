@@ -52,10 +52,6 @@ public class BQIdentityChannel implements Persistable<String> {
 		if (lastActivityDate != null) {
 			_lastActivityDate = new Date(lastActivityDate.getTime());
 		}
-
-		if (previousActivityDate != null) {
-			_previousActivityDate = new Date(previousActivityDate.getTime());
-		}
 	}
 
 	public BQIdentityChannel(Map<String, Object> source) {
@@ -140,19 +136,6 @@ public class BQIdentityChannel implements Persistable<String> {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
-	public Date getPreviousActivityDate() {
-		if (_previousActivityDate == null) {
-			return null;
-		}
-
-		return new Date(_previousActivityDate.getTime());
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(_id);
@@ -209,12 +192,6 @@ public class BQIdentityChannel implements Persistable<String> {
 		}
 	}
 
-	public void setPreviousActivityDate(Date previousActivityDate) {
-		if (previousActivityDate != null) {
-			_previousActivityDate = new Date(previousActivityDate.getTime());
-		}
-	}
-
 	@Transient
 	private Long _activitiesCount;
 
@@ -241,8 +218,5 @@ public class BQIdentityChannel implements Persistable<String> {
 
 	@Transient
 	private Date _modifiedDate;
-
-	@Transient
-	private Date _previousActivityDate;
 
 }

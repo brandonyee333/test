@@ -263,10 +263,6 @@ public class Individual {
 		return _organizationIds;
 	}
 
-	public Set<ActivityDate> getPreviousActivityDates() {
-		return _previousActivityDates;
-	}
-
 	public Set<Long> getRoleIds() {
 		return _roleIds;
 	}
@@ -315,27 +311,6 @@ public class Individual {
 			_bqIdentityChannels, ActivitiesCount::new);
 		_lastActivityDates = SetUtil.map(
 			_bqIdentityChannels, ActivityDate::new);
-
-		_previousActivityDates = SetUtil.map(
-			_bqIdentityChannels,
-			bqIdentityChannel -> {
-				if (Objects.isNull(
-						bqIdentityChannel.getPreviousActivityDate())) {
-
-					return null;
-				}
-
-				ActivityDate previousActivityDate = new ActivityDate();
-
-				previousActivityDate.setChannelId(
-					bqIdentityChannel.getChannelId());
-				previousActivityDate.setActivityDate(
-					bqIdentityChannel.getPreviousActivityDate());
-
-				return previousActivityDate;
-			});
-
-		_previousActivityDates.remove(null);
 	}
 
 	public void setChannelIds(Set<Long> channelIds) {
@@ -437,12 +412,6 @@ public class Individual {
 
 	public void setOrganizationIds(Set<Long> organizationIds) {
 		_organizationIds = organizationIds;
-	}
-
-	public void setPreviousActivityDates(
-		Set<ActivityDate> previousActivityDates) {
-
-		_previousActivityDates = previousActivityDates;
 	}
 
 	public void setRoleIds(Set<Long> roleIds) {
@@ -750,7 +719,6 @@ public class Individual {
 	private Date _lastEnrichmentDate;
 	private Date _modifiedDate;
 	private Set<Long> _organizationIds = new HashSet<>();
-	private Set<ActivityDate> _previousActivityDates = new HashSet<>();
 	private Set<Long> _roleIds = new HashSet<>();
 	private Set<Long> _segmentIds = new HashSet<>();
 	private Set<Long> _teamIds = new HashSet<>();
