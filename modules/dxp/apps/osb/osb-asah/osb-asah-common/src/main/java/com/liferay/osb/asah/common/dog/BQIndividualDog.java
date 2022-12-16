@@ -15,18 +15,22 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.dog.util.SortUtil;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.Distribution;
+import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -46,11 +50,13 @@ public class BQIndividualDog {
 	public BQIndividualDog(
 		BQIdentityRepository bqIdentityRepository,
 		BQIndividualRepository bqIndividualRepository,
+		DataSourceRepository dataSourceRepository,
 		IndividualsFilterStringConverterHelper
 			individualsFilterStringConverterHelper) {
 
 		_bqIdentityRepository = bqIdentityRepository;
 		_bqIndividualRepository = bqIndividualRepository;
+		_dataSourceRepository = dataSourceRepository;
 		_individualsFilterStringConverterHelper =
 			individualsFilterStringConverterHelper;
 	}
@@ -71,7 +77,26 @@ public class BQIndividualDog {
 		Optional<Individual> bqIndividualOptional =
 			_bqIndividualRepository.findByChannelIdAndId(channelId, id);
 
-		return bqIndividualOptional.orElse(null);
+		if (!bqIndividualOptional.isPresent()) {
+			return null;
+		}
+
+		Individual individual = bqIndividualOptional.get();
+
+		Set<Field> fields = individual.getFields();
+
+		for (Field field : fields) {
+			Optional<DataSource> dataSourceOptional =
+				_dataSourceRepository.findById(field.getDataSourceId());
+
+			if (dataSourceOptional.isPresent()) {
+				DataSource dataSource = dataSourceOptional.get();
+
+				field.setDataSourceName(dataSource.getName());
+			}
+		}
+
+		return individual;
 	}
 
 	public List<String> getBQIndividualIds(
@@ -156,6 +181,7 @@ public class BQIndividualDog {
 
 	private final BQIdentityRepository _bqIdentityRepository;
 	private final BQIndividualRepository _bqIndividualRepository;
+	private final DataSourceRepository _dataSourceRepository;
 	private final IndividualsFilterStringConverterHelper
 		_individualsFilterStringConverterHelper;
 

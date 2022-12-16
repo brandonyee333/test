@@ -39,6 +39,11 @@ public class FieldValueListUtil {
 	private static JSONObject _toJSONObject(FieldValueList fieldValueList) {
 		JSONObject jsonObject = new JSONObject();
 
+		FieldValue dataSourceIdFieldValue = fieldValueList.get(
+			_FIELD_DATA_SOURCE_ID_INDEX);
+
+		jsonObject.put("dataSourceId", dataSourceIdFieldValue.getValue());
+
 		FieldValue nameFieldValue = fieldValueList.get(_FIELD_NAME_INDEX);
 
 		jsonObject.put("name", nameFieldValue.getValue());
@@ -49,6 +54,8 @@ public class FieldValueListUtil {
 
 		return jsonObject;
 	}
+
+	private static final int _FIELD_DATA_SOURCE_ID_INDEX = 0;
 
 	private static final int _FIELD_NAME_INDEX = 1;
 
