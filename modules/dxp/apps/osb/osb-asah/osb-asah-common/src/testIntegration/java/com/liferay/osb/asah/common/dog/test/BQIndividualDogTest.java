@@ -35,7 +35,6 @@ import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
-import com.liferay.osb.asah.common.repository.BQIdentityChannelRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
@@ -48,6 +47,7 @@ import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -324,13 +324,10 @@ public class BQIndividualDogTest
 		resourcePath = "osbasahfaroinfo/bq_identity_activities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIdentityChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_channels.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individuals.json"
 	)
+	@SQLResource(resourcePath = "test_bq_identity_channels.sql")
 	@Test
 	public void testFetchBQIndividual() {
 		Individual individual = _bqIndividualDog.fetchBQIndividual(
@@ -339,8 +336,8 @@ public class BQIndividualDogTest
 
 		Assertions.assertEquals(25L, individual.getActivitiesCount());
 		Assertions.assertEquals(
-			DateUtil.toUTCDate("2019-02-12T20:36:53.218Z"),
-			individual.getLastActivityDate());
+			"2019-02-12T20:36:53.218Z",
+			DateUtil.toString(individual.getLastActivityDate()));
 
 		Set<Field> fields = individual.getFields();
 

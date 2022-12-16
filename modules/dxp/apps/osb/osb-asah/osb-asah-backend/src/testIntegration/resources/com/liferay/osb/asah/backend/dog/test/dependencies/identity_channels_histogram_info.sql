@@ -1,0 +1,3 @@
+INSERT INTO BQEvent (applicationId, channelId, eventDate, eventId, id, userId) VALUES ('WebContent', 1, date_trunc('HOUR', timestamp '${now-2d}' ), 'webContentViewed', '1', '1');
+INSERT INTO BQEvent (applicationId, channelId, eventDate, eventId, id, userId) VALUES ('WebContent', 1, date_trunc('HOUR', timestamp '${now-4d}' ), 'webContentViewed', '2', '2');
+INSERT INTO BQEvent (applicationId, channelId, eventDate, eventId, id, userId) VALUES ('WebContent', 1, date_trunc('HOUR', timestamp '${now-35d}' ), 'webContentViewed', '4', '4');
