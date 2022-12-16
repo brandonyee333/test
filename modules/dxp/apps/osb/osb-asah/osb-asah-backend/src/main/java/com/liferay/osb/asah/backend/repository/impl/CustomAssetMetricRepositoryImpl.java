@@ -133,7 +133,7 @@ public class CustomAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName(TimeRange timeRange) {
-		if (!isBigQueryDialect()) {
+		if (!dslHelper.isBigQueryDialect()) {
 			return "BQCustomAsset";
 		}
 

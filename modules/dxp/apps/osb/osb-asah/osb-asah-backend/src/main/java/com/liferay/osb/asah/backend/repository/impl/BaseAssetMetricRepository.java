@@ -62,7 +62,6 @@ import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -176,7 +175,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			DSL.field(
 				"eventDate"
 			).gt(
-				_dslHelper.getDateParam(
+				dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(),
 					String.valueOf(_timeZoneDog.getZoneId()))
 			),
@@ -429,9 +428,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		TimeRange timeRange) {
 
 		Field field = DSL.timestamp(
-			_dslHelper.dateTrunc(
+			dslHelper.dateTrunc(
 				DatePart.valueOf(interval.name()),
-				_dslHelper.getDateAtTimeZoneField(
+				dslHelper.getDateAtTimeZoneField(
 					"eventdate", String.valueOf(_timeZoneDog.getZoneId()))));
 
 		field = field.as("key");
@@ -899,19 +898,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	protected abstract String getTableName(TimeRange timeRange);
 
-	protected boolean isBigQueryDialect() {
-		String googleApplicationCredentials = _environment.getProperty(
-			"GOOGLE_APPLICATION_CREDENTIALS");
-
-		if (googleApplicationCredentials != null) {
-			return true;
-		}
-
-		return false;
-	}
-
 	@Autowired
 	protected DSLContext dslContext;
+
+	@Autowired
+	protected DSLHelper dslHelper;
 
 	private Condition _createWhereClause(
 		@Nullable String assetId, @Nullable String assetTitle, Long channelId,
@@ -965,9 +956,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			DSL.field(
 				"eventDate"
 			).between(
-				_dslHelper.getDateParam(
+				dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(), zoneId.toString()),
-				_dslHelper.getDateParam(
+				dslHelper.getDateParam(
 					timeRange.getEndLocalDateTime(), zoneId.toString())
 			));
 
@@ -1135,12 +1126,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		return assetMetric;
 	}
-
-	@Autowired
-	private DSLHelper _dslHelper;
-
-	@Autowired
-	private Environment _environment;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;

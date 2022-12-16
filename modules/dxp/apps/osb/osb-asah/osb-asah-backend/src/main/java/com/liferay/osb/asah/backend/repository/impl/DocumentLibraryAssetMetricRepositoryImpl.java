@@ -100,7 +100,7 @@ public class DocumentLibraryAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName(TimeRange timeRange) {
-		if (!isBigQueryDialect()) {
+		if (!dslHelper.isBigQueryDialect()) {
 			return "BQDocumentLibrary";
 		}
 

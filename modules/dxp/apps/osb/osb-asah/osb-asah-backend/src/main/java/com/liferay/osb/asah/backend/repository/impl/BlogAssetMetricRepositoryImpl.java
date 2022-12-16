@@ -115,7 +115,7 @@ public class BlogAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName(TimeRange timeRange) {
-		if (!isBigQueryDialect()) {
+		if (!dslHelper.isBigQueryDialect()) {
 			return "BQBlog";
 		}
 

@@ -48,7 +48,7 @@ import org.springframework.stereotype.Component;
 public class DSLHelper {
 
 	public Field concat(Field... fields) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			StringBuffer stringBuffer = new StringBuffer("CONCAT(");
 
 			Stream<Field> stream = Arrays.stream(fields);
@@ -72,7 +72,7 @@ public class DSLHelper {
 	}
 
 	public Field<Integer> countIf(Condition condition) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field("countif({0})", Integer.class, condition);
 		}
 
@@ -83,7 +83,7 @@ public class DSLHelper {
 		DatePart datePart, Field<OffsetDateTime> endDateField,
 		Field<OffsetDateTime> startDateField) {
 
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field(
 				"date_diff({0}, {1}, {2})", endDateField.getDataType(),
 				endDateField, startDateField, datePart.toName());
@@ -104,7 +104,7 @@ public class DSLHelper {
 	public Field<OffsetDateTime> dateTrunc(
 		DatePart datePart, Field<OffsetDateTime> field) {
 
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field(
 				"date_trunc({0}, {1})", field.getDataType(), field,
 				datePart.toName());
@@ -122,7 +122,7 @@ public class DSLHelper {
 	}
 
 	public Field getCastBooleanField(Field field) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field("SAFE_CAST({0} as BOOL)", field);
 		}
 
@@ -130,7 +130,7 @@ public class DSLHelper {
 	}
 
 	public Field getCastDurationField(Field field) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field("SAFE_CAST({0} as INT64)", field);
 		}
 
@@ -140,7 +140,7 @@ public class DSLHelper {
 	}
 
 	public Field getCastNumberField(Field field) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field("SAFE_CAST({0} as BIGNUMERIC)", field);
 		}
 
@@ -149,7 +149,7 @@ public class DSLHelper {
 	}
 
 	public Field getCastStringField(Field field) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field("SAFE_CAST({0} as STRING)", field);
 		}
 
@@ -157,7 +157,7 @@ public class DSLHelper {
 	}
 
 	public Field getDateAtTimeZoneField(String fieldName, String timeZoneId) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field(
 				String.format("DATETIME(%s, '%s')", fieldName, timeZoneId),
 				OffsetDateTime.class);
@@ -173,7 +173,7 @@ public class DSLHelper {
 	}
 
 	public Object getDateParam(Date date) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DateUtil.toUTCString(date);
 		}
 
@@ -184,7 +184,7 @@ public class DSLHelper {
 		localDateTime = DateUtil.toUTCLocalDateTime(
 			localDateTime, ZoneId.of(timeZoneId));
 
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DateUtil.toUTCString(localDateTime);
 		}
 
@@ -192,7 +192,7 @@ public class DSLHelper {
 	}
 
 	public Object getDateValue(Date date) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.timestamp(date);
 		}
 
@@ -202,7 +202,7 @@ public class DSLHelper {
 	public Field<OffsetDateTime> getDateValueField(
 		Field field, String timeZoneId) {
 
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field(
 				"SAFE_CAST({0} as TIMESTAMP)", OffsetDateTime.class, field);
 		}
@@ -222,7 +222,7 @@ public class DSLHelper {
 	}
 
 	public Field<?> getDayOfWeekField(Field field) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field(
 				String.format("extract(dayOfWeek from %s)", field));
 		}
@@ -231,7 +231,7 @@ public class DSLHelper {
 	}
 
 	public Field<?> getField(Field<?> bigQueryField, Field<?> postgresqlField) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return bigQueryField;
 		}
 
@@ -242,7 +242,7 @@ public class DSLHelper {
 		String keyAttribute, String nestedField, String valueAttribute,
 		String wrapperColumn) {
 
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field(
 				String.format(
 					"(SELECT %s FROM UNNEST(%s) WHERE %s = {0})",
@@ -264,7 +264,7 @@ public class DSLHelper {
 	public Table<Record> getTimeSeriesTable(
 		DatePart datePart, Timestamp timestamp1, Timestamp timestamp2) {
 
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.table(
 				String.format(
 					"UNNEST(GENERATE_DATE_ARRAY({1}, {2}, INTERVAL 1 %s)) AS " +
@@ -280,8 +280,19 @@ public class DSLHelper {
 			timestamp1, timestamp2);
 	}
 
+	public boolean isBigQueryDialect() {
+		String googleApplicationCredentials = _environment.getProperty(
+			"GOOGLE_APPLICATION_CREDENTIALS");
+
+		if (googleApplicationCredentials != null) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public Field<Object> jsonExtractScalar(String fieldName, String key) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field(
 				String.format(
 					"JSON_EXTRACT_SCALAR(%s, '$.%s')", fieldName, key));
@@ -293,7 +304,7 @@ public class DSLHelper {
 	}
 
 	public Condition regexpContains(String fieldName, String regexp) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.condition(
 				String.format("REGEXP_CONTAINS(%s, r'%s')", fieldName, regexp));
 		}
@@ -303,7 +314,7 @@ public class DSLHelper {
 	}
 
 	public Field<String> regexpExtract(Field<String> field, String regexp) {
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field(
 				String.format("REGEXP_EXTRACT(%s, r'%s')", field, regexp),
 				String.class);
@@ -317,7 +328,7 @@ public class DSLHelper {
 	public Field<String> regexpReplace(
 		String fieldName, String regexp, String value) {
 
-		if (_isBigQueryDialect()) {
+		if (isBigQueryDialect()) {
 			return DSL.field(
 				String.format(
 					"REGEXP_REPLACE(%s, r'%s', '%s')", fieldName, regexp,
@@ -329,17 +340,6 @@ public class DSLHelper {
 			String.format(
 				"REGEXP_REPLACE(%s, '%s', '%s')", fieldName, regexp, value),
 			String.class);
-	}
-
-	private boolean _isBigQueryDialect() {
-		String googleApplicationCredentials = _environment.getProperty(
-			"GOOGLE_APPLICATION_CREDENTIALS");
-
-		if (googleApplicationCredentials != null) {
-			return true;
-		}
-
-		return false;
 	}
 
 	@Autowired
