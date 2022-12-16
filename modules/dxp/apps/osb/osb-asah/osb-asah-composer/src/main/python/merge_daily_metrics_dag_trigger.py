@@ -33,6 +33,7 @@ def create_dag(ac_project_id, dag_id, dag_description):
 			BigQueryInsertJobFromTemplateOperator(task_id='customasset_daily_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='document_library_daily_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='form_daily_merge'),
+			BigQueryInsertJobFromTemplateOperator(task_id='identity_channel_summary_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='journal_daily_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='page_daily_merge')
 		]
