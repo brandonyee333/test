@@ -23,7 +23,8 @@
 		"type": "materialized"
 	},
 	"identitychannel": {
-		"path": "identity_channel.sql"
+		"path": "identity_channel.sql",
+		"priority": 1
 	},
 	"journalhourly": {
 		"path": "journal_hourly.sql"

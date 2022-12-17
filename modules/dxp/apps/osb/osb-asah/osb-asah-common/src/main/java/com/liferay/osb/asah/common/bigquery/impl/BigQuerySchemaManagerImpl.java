@@ -44,12 +44,18 @@ import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicat
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 import java.nio.charset.Charset;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -99,23 +105,37 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 					_tablesJSONObject.getJSONObject(tableName), tableName);
 			}
 
-			for (String viewName : _viewsJSONObject.keySet()) {
-				JSONObject jsonObject = _viewsJSONObject.getJSONObject(
-					viewName);
+			Map<String, JSONObject> viewsJONObjectMap = new HashMap<>();
 
-				boolean materialized = false;
-
-				if (Objects.equals(
-						jsonObject.optString("type"), "materialized")) {
-
-					materialized = true;
-				}
-
-				_createView(
-					dataset.getDatasetId(),
-					_readFile("/bigquery/" + jsonObject.getString("path")),
-					materialized, viewName);
+			for (String key : _viewsJSONObject.keySet()) {
+				viewsJONObjectMap.put(key, _viewsJSONObject.getJSONObject(key));
 			}
+
+			Set<Map.Entry<String, JSONObject>> entries =
+				viewsJONObjectMap.entrySet();
+
+			Stream<Map.Entry<String, JSONObject>> stream = entries.stream();
+
+			stream.sorted(
+				Map.Entry.comparingByValue(new JSONObjectPriorityComparator())
+			).forEach(
+				entry -> {
+					JSONObject jsonObject = entry.getValue();
+
+					boolean materialized = false;
+
+					if (Objects.equals(
+							jsonObject.optString("type"), "materialized")) {
+
+						materialized = true;
+					}
+
+					_createView(
+						dataset.getDatasetId(),
+						_readFile("/bigquery/" + jsonObject.getString("path")),
+						materialized, entry.getKey());
+				}
+			);
 		}
 		catch (Exception exception) {
 			_log.error(
@@ -368,5 +388,18 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 	private JSONObject _tablesJSONObject;
 	private JSONObject _viewsJSONObject;
+
+	private static class JSONObjectPriorityComparator
+		implements Comparator<JSONObject>, Serializable {
+
+		@Override
+		public int compare(JSONObject jsonObject1, JSONObject jsonObject2) {
+			Integer priority1 = jsonObject1.optInt("priority", 0);
+			Integer priority2 = jsonObject2.optInt("priority", 0);
+
+			return priority1.compareTo(priority2);
+		}
+
+	}
 
 }
