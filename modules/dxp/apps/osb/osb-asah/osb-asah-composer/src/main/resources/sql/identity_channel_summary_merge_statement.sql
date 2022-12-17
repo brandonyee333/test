@@ -12,8 +12,8 @@ USING
 			MAX(Event.eventDate) AS lastActivityDate,
 			MAX(Event.eventDate) AS modifiedDate
 		FROM
-			`$[AC_PROJECT_ID].event` AS Event
-		LEFT JOIN `$[AC_PROJECT_ID].identity` AS Identity ON (
+			`{{ dag.default_args['ac_project_id'] }}.event` AS Event
+		LEFT JOIN `{{ dag.default_args['ac_project_id'] }}.identity` AS Identity ON (
 			Event.userId = Identity.id
 		)
 		WHERE
