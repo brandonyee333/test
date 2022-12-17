@@ -576,22 +576,25 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			assetId, assetTitle, channelId, timeRange);
 
 		if (StringUtils.isNotBlank(keywords)) {
+			String wrappedKeywords = StringUtils.wrap(
+				StringUtils.lowerCase(keywords), "%");
+
 			whereClauseCondition = whereClauseCondition.and(
 				DSL.or(
-					DSL.field(
-						"individual.firstname"
-					).containsIgnoreCase(
-						keywords
+					DSL.lower(
+						DSL.field("individual.firstname", String.class)
+					).like(
+						wrappedKeywords
 					),
-					DSL.field(
-						"individual.lastname"
-					).containsIgnoreCase(
-						keywords
+					DSL.lower(
+						DSL.field("individual.lastname", String.class)
+					).like(
+						wrappedKeywords
 					),
-					DSL.field(
-						"individual.emailaddress"
-					).containsIgnoreCase(
-						keywords
+					DSL.lower(
+						DSL.field("individual.emailaddress", String.class)
+					).like(
+						wrappedKeywords
 					)));
 		}
 
