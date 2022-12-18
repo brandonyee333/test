@@ -13791,6 +13791,10 @@ url=${short.hostname}:8080</echo>
 		/>
 	</target>
 
+	<target name="start-docker-browser">
+		<start-docker-browser />
+	</target>
+
 	<target name="start-docker-containers">
 		<get-database-property property.name="database.docker.image" />
 
@@ -13824,10 +13828,6 @@ url=${short.hostname}:8080</echo>
 				<start-docker-browser />
 			</then>
 		</if>
-	</target>
-
-	<target name="start-docker-browser">
-		<start-docker-browser />
 	</target>
 
 	<target name="start-docker-database">
@@ -13873,6 +13873,10 @@ url=${short.hostname}:8080</echo>
 		/>
 	</target>
 
+	<target name="stop-docker-browser">
+		<stop-docker-browser />
+	</target>
+
 	<target name="stop-docker-containers">
 		<get-database-property property.name="database.docker.image" />
 
@@ -13900,10 +13904,6 @@ url=${short.hostname}:8080</echo>
 				<stop-docker-browser />
 			</then>
 		</if>
-	</target>
-
-	<target name="stop-docker-browser">
-		<stop-docker-browser />
 	</target>
 
 	<target name="stop-docker-database">
