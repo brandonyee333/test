@@ -771,7 +771,7 @@ public class BQEventRepositoryImpl
 			Table<Record> table = DSL.table(
 				String.format(
 					"%s as %s", attributeType.getTableName(),
-					_getEventAttributeDefinitionName(
+					_getSanitizedEventAttributeDefinitionName(
 						eventAttributeDefinition)));
 
 			Condition condition = DSL.and(
@@ -779,7 +779,7 @@ public class BQEventRepositoryImpl
 					channelId,
 					String.format(
 						"%s.channelId",
-						_getEventAttributeDefinitionName(
+						_getSanitizedEventAttributeDefinitionName(
 							eventAttributeDefinition)))
 			).and(
 				DSL.field(
@@ -788,7 +788,7 @@ public class BQEventRepositoryImpl
 					DSL.field(
 						String.format(
 							"%s.%s",
-							_getEventAttributeDefinitionName(
+							_getSanitizedEventAttributeDefinitionName(
 								eventAttributeDefinition),
 							attributeType.getJoinFieldName()))
 				)
@@ -796,11 +796,11 @@ public class BQEventRepositoryImpl
 				DSL.field(
 					String.format(
 						"%s.%s",
-						_getEventAttributeDefinitionName(
+						_getSanitizedEventAttributeDefinitionName(
 							eventAttributeDefinition),
 						attributeType.getAttributeIdFieldName())
 				).eq(
-					eventAttributeDefinition.getName()
+					_getEventAttributeDefinitionName(eventAttributeDefinition)
 				)
 			);
 
@@ -809,7 +809,7 @@ public class BQEventRepositoryImpl
 					_getEventDateRangeFilter(
 						String.format(
 							"%s.eventDate",
-							_getEventAttributeDefinitionName(
+							_getSanitizedEventAttributeDefinitionName(
 								eventAttributeDefinition)),
 						timeRange.getEndDate(), timeRange.getStartDate()));
 			}
@@ -1288,7 +1288,9 @@ public class BQEventRepositoryImpl
 	private String _getEventAttributeDefinitionName(
 		EventAttributeDefinition eventAttributeDefinition) {
 
-		return "_" + eventAttributeDefinition.getName();
+		String name = eventAttributeDefinition.getName();
+
+		return name.replace("'", "\\'");
 	}
 
 	private Map<String, EventAttributeDefinition> _getEventAttributeDefinitions(
@@ -1524,6 +1526,16 @@ public class BQEventRepositoryImpl
 				"[?&](?:" + String.join("|", searchQueryParams) + ")=([^&]+)"));
 	}
 
+	private String _getSanitizedEventAttributeDefinitionName(
+		EventAttributeDefinition eventAttributeDefinition) {
+
+		return "_" + _getSanitizedName(eventAttributeDefinition.getName());
+	}
+
+	private String _getSanitizedName(String name) {
+		return name.replaceAll("[\\W]", "_");
+	}
+
 	private Field _getSelectField(
 		AnalysisType analysisType,
 		EventAttributeDefinition eventAttributeDefinition,
@@ -1549,14 +1561,15 @@ public class BQEventRepositoryImpl
 				_getGlobalAttributeField(eventAttributeDefinition.getName()));
 		}
 		else {
+			String eventAttributeDefinitionName =
+				_getSanitizedEventAttributeDefinitionName(
+					eventAttributeDefinition);
+
 			field = DSL.when(
 				_getEventDateRangeFilter(
-					_getEventAttributeDefinitionName(eventAttributeDefinition) +
-						".eventDate",
+					eventAttributeDefinitionName + ".eventDate",
 					timeRange.getEndDate(), timeRange.getStartDate()),
-				DSL.field(
-					_getEventAttributeDefinitionName(eventAttributeDefinition) +
-						".value"));
+				DSL.field(eventAttributeDefinitionName + ".value"));
 		}
 
 		if (analysisType.equals(AnalysisType.AVERAGE)) {
@@ -1642,7 +1655,8 @@ public class BQEventRepositoryImpl
 
 			condition = condition.and(
 				eventAttributeDefinitionIdField.eq(
-					eventAttributeDefinition.getName()));
+					_getEventAttributeDefinitionName(
+						eventAttributeDefinition)));
 
 			if ((rangeEndDate != null) && (rangeStartDate != null)) {
 				Field<Object> eventDateField = DSL.field(
@@ -1682,7 +1696,7 @@ public class BQEventRepositoryImpl
 
 			attributeField = DSL.field(
 				attributeType.getQualifiedAttributeValueFieldName(
-					_getEventAttributeDefinitionName(
+					_getSanitizedEventAttributeDefinitionName(
 						eventAttributeDefinition)));
 		}
 
@@ -1749,7 +1763,8 @@ public class BQEventRepositoryImpl
 
 		if (alias) {
 			return field.as(
-				_getEventAttributeDefinitionName(eventAttributeDefinition));
+				_getSanitizedEventAttributeDefinitionName(
+					eventAttributeDefinition));
 		}
 
 		return field;
