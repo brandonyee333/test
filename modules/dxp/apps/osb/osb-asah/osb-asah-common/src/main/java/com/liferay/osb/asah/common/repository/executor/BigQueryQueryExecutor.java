@@ -309,7 +309,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 				_getBigQueryTableName(name));
 		}
 
-		return query;
+		return query.replace("\\''", "\\'");
 	}
 
 	private static final String[] _FUNCTION_AND_TABLE_NAMES = {
