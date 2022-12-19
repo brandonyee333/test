@@ -18,9 +18,8 @@ public class VerifyLayout extends VerifyProcess {
 	}
 	protected static void verifyLayoutFriendlyURL() {
 		try {
-
-			Connection connection = DataAccess.getConnection();
-
+			
+			Connection conneciton = DataAccess.getConnection();
 			PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"Select groupId from Group_");
 
@@ -34,7 +33,7 @@ public class VerifyLayout extends VerifyProcess {
 				PreparedStatement preparedStatement2 =
 					connection.prepareStatement(
 						StringBundler.concat(
-							"Select friendlyURL, plid from Layout where groupId = ? and ",
+							"Select friendlyURL, plid from Layout where groupId = ? AND privateLayout in (0,1)",
 							"friendlyURL in (", reservedURLS, ")"));
 
 				preparedStatement2.setLong(1, groupId);
@@ -70,6 +69,7 @@ public class VerifyLayout extends VerifyProcess {
 
 		return reservedFriendlyURLS;
 	}
+
 	private static final Log _log = LogFactoryUtil.getLog(VerifyLayout.class);
 }
 
