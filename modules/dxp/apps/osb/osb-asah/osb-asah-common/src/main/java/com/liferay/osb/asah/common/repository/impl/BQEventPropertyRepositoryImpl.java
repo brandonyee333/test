@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -174,7 +175,7 @@ public class BQEventPropertyRepositoryImpl
 								eventAttributeDefinitionName)),
 						String.class)
 				).like(
-					"%" + StringUtils.lowerCase(keywords) + "%"
+					"%" + _getSanitizedKeywords(keywords) + "%"
 				));
 		}
 		else {
@@ -188,7 +189,7 @@ public class BQEventPropertyRepositoryImpl
 				DSL.lower(
 					DSL.field("BQEventProperty.value", String.class)
 				).like(
-					"%" + StringUtils.lowerCase(keywords) + "%"
+					"%" + _getSanitizedKeywords(keywords) + "%"
 				));
 		}
 
@@ -218,6 +219,12 @@ public class BQEventPropertyRepositoryImpl
 				channelId, eventAttributeDefinitionName, eventDefinitionName,
 				keywords)
 		);
+	}
+
+	private String _getSanitizedKeywords(String keywords) {
+		keywords = StringUtil.unquoteAndDecodeInnerQuotes(keywords);
+
+		return StringUtils.lowerCase(keywords.replace("'", "\\'"));
 	}
 
 	private boolean _isGlobalEventAttributeDefinition(

@@ -36,6 +36,7 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.util.GetterUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.io.UnsupportedEncodingException;
 
@@ -868,7 +869,7 @@ public class BQEventRepositoryImpl
 				DSL.lower(
 					DSL.field("BQEvent.eventId", String.class)
 				).like(
-					"%" + StringUtils.lowerCase(keyword) + "%"
+					"%" + _getSanitizedKeywords(keyword) + "%"
 				),
 				DSL.exists(
 					DSL.select(
@@ -886,7 +887,7 @@ public class BQEventRepositoryImpl
 							DSL.lower(
 								DSL.field("BQEventProperty.value", String.class)
 							).like(
-								"%" + StringUtils.lowerCase(keyword) + "%"
+								"%" + _getSanitizedKeywords(keyword) + "%"
 							)
 						)
 					)));
@@ -896,7 +897,7 @@ public class BQEventRepositoryImpl
 					DSL.lower(
 						DSL.field("BQEvent." + globalAttribute, String.class)
 					).like(
-						"%" + StringUtils.lowerCase(keyword) + "%"
+						"%" + _getSanitizedKeywords(keyword) + "%"
 					));
 			}
 
@@ -1530,6 +1531,12 @@ public class BQEventRepositoryImpl
 		EventAttributeDefinition eventAttributeDefinition) {
 
 		return "_" + _getSanitizedName(eventAttributeDefinition.getName());
+	}
+
+	private String _getSanitizedKeywords(String keywords) {
+		keywords = StringUtil.unquoteAndDecodeInnerQuotes(keywords);
+
+		return StringUtils.lowerCase(keywords.replace("'", "\\'"));
 	}
 
 	private String _getSanitizedName(String name) {
