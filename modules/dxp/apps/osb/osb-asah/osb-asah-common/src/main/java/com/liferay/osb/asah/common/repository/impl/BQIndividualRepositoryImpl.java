@@ -78,7 +78,7 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long segmentId) {
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
-			channelId, segmentId,
+			segmentId,
 			_dslContext.select(DSL.countDistinct(DSL.field("individual.id"))));
 
 		Condition condition = _getQueryCondition(query);
@@ -86,7 +86,7 @@ public class BQIndividualRepositoryImpl
 		if (channelId != null) {
 			condition = condition.and(
 				DSL.field(
-					"identityActivity.channelId"
+					"IdentityChannel.channelId"
 				).eq(
 					channelId
 				));
@@ -191,7 +191,7 @@ public class BQIndividualRepositoryImpl
 			<Record11
 				<Long, Object, Object, Object, Object, Object, Object, Object,
 				 Object, Object, Object>> selectJoinStep1 = _getSelectJoinStep(
-					channelId, null, _getIndividualSelectJoinStep());
+					null, _getIndividualSelectJoinStep());
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -314,14 +314,14 @@ public class BQIndividualRepositoryImpl
 			<Record11
 				<Long, Object, Object, Object, Object, Object, Object, Object,
 				 Object, Object, Object>> selectJoinStep = _getSelectJoinStep(
-					channelId, segmentId, _getIndividualSelectJoinStep());
+					segmentId, _getIndividualSelectJoinStep());
 
 		Condition condition = _getQueryCondition(query);
 
 		if (channelId != null) {
 			condition = condition.and(
 				DSL.field(
-					"identityActivity.channelId"
+					"IdentityChannel.channelId"
 				).eq(
 					channelId
 				));
@@ -330,9 +330,19 @@ public class BQIndividualRepositoryImpl
 		if (dataSourceId != null) {
 			condition = condition.and(
 				DSL.field(
-					"identityActivity.dataSourceId"
-				).eq(
-					dataSourceId
+					"individual.id"
+				).in(
+					_dslContext.selectDistinct(
+						DSL.field("individualId")
+					).from(
+						"BQIdentityActivity"
+					).where(
+						DSL.field(
+							"dataSourceId"
+						).eq(
+							dataSourceId
+						)
+					)
 				));
 		}
 
@@ -610,7 +620,7 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private <T extends Record> SelectJoinStep<T> _getSelectJoinStep(
-		Long channelId, Long segmentId, SelectSelectStep<T> selectSelectStep) {
+		Long segmentId, SelectSelectStep<T> selectSelectStep) {
 
 		SelectJoinStep<T> selectJoinStep = selectSelectStep.from(
 			DSL.table(
@@ -631,22 +641,6 @@ public class BQIndividualRepositoryImpl
 				DSL.field("IdentityChannel.individualId")
 			)
 		);
-
-		if (channelId != null) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"BQIdentityActivity"
-				).as(
-					"identityActivity"
-				)
-			).on(
-				DSL.field(
-					"individual.id"
-				).eq(
-					DSL.field("identityActivity.individualId")
-				)
-			);
-		}
 
 		if (segmentId != null) {
 			selectJoinStep = selectJoinStep.join(
