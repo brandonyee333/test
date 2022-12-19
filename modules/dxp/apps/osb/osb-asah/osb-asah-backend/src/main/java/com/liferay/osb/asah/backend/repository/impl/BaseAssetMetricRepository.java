@@ -483,26 +483,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			assetId, assetTitle, channelId, timeRange);
 
 		if (StringUtils.isNotBlank(keywords)) {
-			String wrappedKeywords = StringUtils.wrap(
-				StringUtils.lowerCase(keywords), "%");
-
 			whereClauseCondition = whereClauseCondition.and(
-				DSL.or(
-					DSL.lower(
-						DSL.field("individual.firstname", String.class)
-					).like(
-						wrappedKeywords
-					),
-					DSL.lower(
-						DSL.field("individual.lastname", String.class)
-					).like(
-						wrappedKeywords
-					),
-					DSL.lower(
-						DSL.field("individual.emailaddress", String.class)
-					).like(
-						wrappedKeywords
-					)));
+				_createIndividualKeywordsWhereClause(keywords));
 		}
 
 		return _queryExecutor.queryForList(
@@ -576,26 +558,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			assetId, assetTitle, channelId, timeRange);
 
 		if (StringUtils.isNotBlank(keywords)) {
-			String wrappedKeywords = StringUtils.wrap(
-				StringUtils.lowerCase(keywords), "%");
-
 			whereClauseCondition = whereClauseCondition.and(
-				DSL.or(
-					DSL.lower(
-						DSL.field("individual.firstname", String.class)
-					).like(
-						wrappedKeywords
-					),
-					DSL.lower(
-						DSL.field("individual.lastname", String.class)
-					).like(
-						wrappedKeywords
-					),
-					DSL.lower(
-						DSL.field("individual.emailaddress", String.class)
-					).like(
-						wrappedKeywords
-					)));
+				_createIndividualKeywordsWhereClause(keywords));
 		}
 
 		return _queryExecutor.queryForLong(
@@ -906,6 +870,28 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Autowired
 	protected DSLHelper dslHelper;
+
+	private Condition _createIndividualKeywordsWhereClause(String keywords) {
+		String wrappedKeywords = StringUtils.wrap(
+			StringUtils.lowerCase(keywords), "%");
+
+		return DSL.or(
+			DSL.lower(
+				DSL.field("individual.firstname", String.class)
+			).like(
+				wrappedKeywords
+			),
+			DSL.lower(
+				DSL.field("individual.lastname", String.class)
+			).like(
+				wrappedKeywords
+			),
+			DSL.lower(
+				DSL.field("individual.emailaddress", String.class)
+			).like(
+				wrappedKeywords
+			));
+	}
 
 	private Condition _createWhereClause(
 		@Nullable String assetId, @Nullable String assetTitle, Long channelId,
