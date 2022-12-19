@@ -15,18 +15,25 @@
 package com.liferay.portal.verify;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -77,6 +84,7 @@ public class VerifyProperties {
 		}
 	}
 
+
 	protected static Properties loadPortalProperties() {
 		Properties properties = new Properties();
 
@@ -108,6 +116,7 @@ public class VerifyProperties {
 
 		return properties;
 	}
+
 
 	protected static void verifyMigratedPortalProperty(
 			Properties portalProperties, String oldKey, String newKey,
