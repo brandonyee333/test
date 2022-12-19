@@ -13,6 +13,7 @@ WITH PageFinalizedEvent AS (
 		Event.referrer,
 		COALESCE(Event.region, '') AS region,
 		Event.sessionId,
+		Event.title,
 		Event.url,
 		Event.userId
 	FROM
