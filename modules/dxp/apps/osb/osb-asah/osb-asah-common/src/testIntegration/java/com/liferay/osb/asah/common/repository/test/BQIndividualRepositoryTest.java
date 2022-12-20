@@ -93,30 +93,6 @@ public class BQIndividualRepositoryTest
 
 		_bqIdentityRepository.save(bqIdentity2);
 
-		BQIdentityActivity bqIdentityActivity1 = new BQIdentityActivity();
-
-		bqIdentityActivity1.setChannelId(11L);
-		bqIdentityActivity1.setCreateDate(new Date());
-		bqIdentityActivity1.setDataSourceId(1L);
-		bqIdentityActivity1.setId(RandomTestUtil.randomUUID());
-		bqIdentityActivity1.setIdentityId(bqIdentity1.getId());
-		bqIdentityActivity1.setIndividualId(bqIdentity1.getIndividualId());
-		bqIdentityActivity1.setIsNew(Boolean.TRUE);
-
-		_bqIdentityActivityRepository.save(bqIdentityActivity1);
-
-		BQIdentityActivity bqIdentityActivity2 = new BQIdentityActivity();
-
-		bqIdentityActivity2.setChannelId(11L);
-		bqIdentityActivity2.setCreateDate(new Date());
-		bqIdentityActivity2.setDataSourceId(1L);
-		bqIdentityActivity2.setId(RandomTestUtil.randomUUID());
-		bqIdentityActivity2.setIdentityId(bqIdentity2.getId());
-		bqIdentityActivity2.setIndividualId(bqIdentity2.getIndividualId());
-		bqIdentityActivity2.setIsNew(Boolean.TRUE);
-
-		_bqIdentityActivityRepository.save(bqIdentityActivity2);
-
 		_eventDog.addBQEvent(
 			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
 			DateUtil.toUTCDate("2022-12-14T23:59:59.999Z"), "webContentViewed",

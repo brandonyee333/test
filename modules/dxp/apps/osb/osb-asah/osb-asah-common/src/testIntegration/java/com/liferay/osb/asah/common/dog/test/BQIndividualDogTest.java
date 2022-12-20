@@ -34,7 +34,6 @@ import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
-import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
@@ -320,14 +319,10 @@ public class BQIndividualDogTest
 		resourcePath = "osbasahfaroinfo/bq_identity.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIdentityActivityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_activities.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individuals.json"
 	)
-	@SQLResource(resourcePath = "test_bq_identity_channels.sql")
+	@SQLResource(resourcePath = "test_bq_identity_activities.sql")
 	@Test
 	public void testFetchBQIndividual() {
 		Individual individual = _bqIndividualDog.fetchBQIndividual(
@@ -951,7 +946,7 @@ public class BQIndividualDogTest
 
 		Individual individual = new Individual();
 
-		individual.setActivitiesCounts(Collections.emptySet());
+		//individual.setActivitiesCounts(Collections.emptySet());
 
 		BQDataSourceUser bqDataSourceUser = new BQDataSourceUser();
 

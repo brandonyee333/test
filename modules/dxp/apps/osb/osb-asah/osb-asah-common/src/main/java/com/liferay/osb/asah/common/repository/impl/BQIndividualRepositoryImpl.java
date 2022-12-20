@@ -86,7 +86,7 @@ public class BQIndividualRepositoryImpl
 		if (channelId != null) {
 			condition = condition.and(
 				DSL.field(
-					"IdentityChannel.channelId"
+					"IdentityActivity.channelId"
 				).eq(
 					channelId
 				));
@@ -95,7 +95,7 @@ public class BQIndividualRepositoryImpl
 		if (segmentId != null) {
 			condition = condition.and(
 				DSL.field(
-					"membership.segmentId"
+					"Membership.segmentId"
 				).eq(
 					segmentId
 				));
@@ -120,35 +120,31 @@ public class BQIndividualRepositoryImpl
 			DSL.table("BQIndividual"));
 
 		selectJoinStep = selectJoinStep.join(
-			DSL.table("BQIdentityActivity")
+			DSL.table(
+				"BQIdentityActivity"
+			).as(
+				"IdentityActivity"
+			)
 		).on(
 			DSL.field(
 				"BQIndividual.id"
 			).eq(
-				DSL.field("BQIdentityActivity.individualId")
+				DSL.field("IdentityActivity.individualId")
 			)
 		);
 
-		if (lastActivityDate != null) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table("BQIdentityChannel")
-			).on(
-				DSL.field(
-					"BQIndividual.id"
-				).eq(
-					DSL.field("BQIdentityChannel.individualId")
-				)
-			);
-		}
-
 		if (segmentId != null) {
 			selectJoinStep = selectJoinStep.join(
-				DSL.table("BQMembership")
+				DSL.table(
+					"BQMembership"
+				).as(
+					"Membership"
+				)
 			).on(
 				DSL.field(
 					"BQIndividual.id"
 				).eq(
-					DSL.field("BQMembership.individualId")
+					DSL.field("Membership.individualId")
 				)
 			);
 		}
@@ -156,7 +152,7 @@ public class BQIndividualRepositoryImpl
 		SelectConditionStep<Record1<String>> selectConditionStep =
 			selectJoinStep.where(
 				DSL.field(
-					"BQIdentityActivity.channelId", Long.class
+					"IdentityActivity.channelId", Long.class
 				).eq(
 					channelId
 				));
@@ -164,7 +160,7 @@ public class BQIndividualRepositoryImpl
 		if (lastActivityDate != null) {
 			selectConditionStep = selectConditionStep.and(
 				DSL.field(
-					"BQIdentityChannel.lastActivityDate"
+					"IdentityActivity.lastActivityDate"
 				).gt(
 					_dslHelper.getDateValue(lastActivityDate)
 				));
@@ -173,7 +169,7 @@ public class BQIndividualRepositoryImpl
 		if (segmentId != null) {
 			selectConditionStep = selectConditionStep.and(
 				DSL.field(
-					"BQMembership.segmentId"
+					"Membership.segmentId"
 				).eq(
 					segmentId
 				));
@@ -202,7 +198,7 @@ public class BQIndividualRepositoryImpl
 		if (channelId != null) {
 			conditions.add(
 				DSL.field(
-					"identityActivity.channelid"
+					"IdentityActivity.channelId"
 				).eq(
 					channelId
 				));
@@ -321,7 +317,7 @@ public class BQIndividualRepositoryImpl
 		if (channelId != null) {
 			condition = condition.and(
 				DSL.field(
-					"IdentityChannel.channelId"
+					"IdentityActivity.channelId"
 				).eq(
 					channelId
 				));
@@ -330,26 +326,16 @@ public class BQIndividualRepositoryImpl
 		if (dataSourceId != null) {
 			condition = condition.and(
 				DSL.field(
-					"individual.id"
-				).in(
-					_dslContext.selectDistinct(
-						DSL.field("individualId")
-					).from(
-						"BQIdentityActivity"
-					).where(
-						DSL.field(
-							"dataSourceId"
-						).eq(
-							dataSourceId
-						)
-					)
+					"IdentityActivity.dataSourceId"
+				).eq(
+					dataSourceId
 				));
 		}
 
 		if (notSegmentId != null) {
 			condition = condition.and(
 				DSL.field(
-					"individual.id"
+					"Individual.id"
 				).notIn(
 					DSL.select(
 						DSL.field("notMembership.individualId")
@@ -372,7 +358,7 @@ public class BQIndividualRepositoryImpl
 		if (segmentId != null) {
 			condition = condition.and(
 				DSL.field(
-					"membership.segmentId"
+					"Membership.segmentId"
 				).eq(
 					segmentId
 				));
@@ -388,15 +374,15 @@ public class BQIndividualRepositoryImpl
 					selectJoinStep.where(
 						condition
 					).groupBy(
-						DSL.field("individual.id"),
-						DSL.field("individual.createdate"),
-						DSL.field("individual.emailaddress"),
-						DSL.field("individual.firstname"),
-						DSL.field("individual.lastname"),
-						DSL.field("individual.jobtitle"),
-						DSL.field("individual.middlename"),
-						DSL.field("individual.modifieddate"),
-						DSL.field("individual.screenname")
+						DSL.field("Individual.id"),
+						DSL.field("Individual.createdate"),
+						DSL.field("Individual.emailaddress"),
+						DSL.field("Individual.firstname"),
+						DSL.field("Individual.lastname"),
+						DSL.field("Individual.jobtitle"),
+						DSL.field("Individual.middlename"),
+						DSL.field("Individual.modifieddate"),
+						DSL.field("Individual.screenname")
 					).orderBy(
 						sortFields
 					).limit(
@@ -478,37 +464,37 @@ public class BQIndividualRepositoryImpl
 				DSL.cast(
 					DSL.sum(
 						DSL.field(
-							"identityChannel.activitiescount", Long.class)),
+							"IdentityActivity.activitiescount", Long.class)),
 					Long.class),
 				0L
 			).as(
 				"activitiescount"
 			),
 			DSL.field(
-				"individual.createdate"
+				"Individual.createdate"
 			).as(
 				"createdate"
 			),
 			DSL.field(
-				"individual.emailaddress"
+				"Individual.emailaddress"
 			).as(
 				"emailaddress"
 			),
 			DSL.field(
-				"individual.id"
+				"Individual.id"
 			).as(
 				"id"
 			),
 			DSL.field("firstname"),
 			DSL.max(
-				DSL.field("identityChannel.lastactivitydate")
+				DSL.field("IdentityActivity.lastactivitydate")
 			).as(
 				"lastactivitydate"
 			),
 			DSL.field("lastname"), DSL.field("jobtitle"),
 			DSL.field("middlename"),
 			DSL.field(
-				"individual.modifieddate"
+				"Individual.modifieddate"
 			).as(
 				"modifieddate"
 			),
@@ -626,19 +612,19 @@ public class BQIndividualRepositoryImpl
 			DSL.table(
 				"BQIndividual"
 			).as(
-				"individual"
+				"Individual"
 			)
 		).leftJoin(
 			DSL.table(
-				"BQIdentityChannel"
+				"BQIdentityActivity"
 			).as(
-				"IdentityChannel"
+				"IdentityActivity"
 			)
 		).on(
 			DSL.field(
-				"individual.id"
+				"Individual.id"
 			).eq(
-				DSL.field("IdentityChannel.individualId")
+				DSL.field("IdentityActivity.individualId")
 			)
 		);
 
@@ -647,13 +633,13 @@ public class BQIndividualRepositoryImpl
 				DSL.table(
 					"BQMembership"
 				).as(
-					"membership"
+					"Membership"
 				)
 			).on(
 				DSL.field(
-					"individual.id"
+					"Individual.id"
 				).eq(
-					DSL.field("membership.individualId")
+					DSL.field("Membership.individualId")
 				)
 			);
 		}
