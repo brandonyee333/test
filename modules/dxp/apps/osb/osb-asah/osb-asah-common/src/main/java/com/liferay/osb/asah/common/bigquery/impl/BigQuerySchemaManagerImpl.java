@@ -105,14 +105,13 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 					_tablesJSONObject.getJSONObject(tableName), tableName);
 			}
 
-			Map<String, JSONObject> viewsJONObjectMap = new HashMap<>();
+			Map<String, JSONObject> jsonObjects = new HashMap<>();
 
 			for (String key : _viewsJSONObject.keySet()) {
-				viewsJONObjectMap.put(key, _viewsJSONObject.getJSONObject(key));
+				jsonObjects.put(key, _viewsJSONObject.getJSONObject(key));
 			}
 
-			Set<Map.Entry<String, JSONObject>> entries =
-				viewsJONObjectMap.entrySet();
+			Set<Map.Entry<String, JSONObject>> entries = jsonObjects.entrySet();
 
 			Stream<Map.Entry<String, JSONObject>> stream = entries.stream();
 
