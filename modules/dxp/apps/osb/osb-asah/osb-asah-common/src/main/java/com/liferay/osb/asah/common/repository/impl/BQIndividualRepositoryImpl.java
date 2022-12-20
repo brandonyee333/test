@@ -108,7 +108,8 @@ public class BQIndividualRepositoryImpl
 	@Override
 	public List<String>
 		findBQIndividualIdsByChannelIdAndLastActivityDateAndSegmentId(
-			Long channelId, Date lastActivityDate, Long segmentId) {
+			Long channelId, @Nullable Date lastActivityDate,
+			@Nullable Long segmentId) {
 
 		SelectSelectStep<Record1<String>> selectSelectStep = _dslContext.select(
 			DSL.field(

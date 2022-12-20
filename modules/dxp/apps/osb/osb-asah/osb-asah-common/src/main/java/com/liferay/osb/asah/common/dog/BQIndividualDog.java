@@ -62,8 +62,9 @@ public class BQIndividualDog {
 	}
 
 	public long countBQIndividuals(
-		Long accountId, Long channelId, Long dataSourceId, Long notSegmentId,
-		String query, Long segmentId) {
+		@Nullable Long accountId, @Nullable Long channelId,
+		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
+		@Nullable String query, @Nullable Long segmentId) {
 
 		return _bqIndividualRepository.countBQIndividuals(
 			accountId, channelId, dataSourceId, notSegmentId, query, segmentId);
@@ -100,7 +101,8 @@ public class BQIndividualDog {
 	}
 
 	public List<String> getBQIndividualIds(
-		Long channelId, Date lastActivityDate, Long segmentId) {
+		Long channelId, @Nullable Date lastActivityDate,
+		@Nullable Long segmentId) {
 
 		return _bqIndividualRepository.
 			findBQIndividualIdsByChannelIdAndLastActivityDateAndSegmentId(
@@ -124,8 +126,10 @@ public class BQIndividualDog {
 	}
 
 	public Page<Individual> searchBQIndividualPage(
-		Long accountId, Long channelId, Long dataSourceId, Long notSegmentId,
-		int page, String query, Long segmentId, int size, String[] sorts) {
+		@Nullable Long accountId, @Nullable Long channelId,
+		@Nullable Long dataSourceId, @Nullable Long notSegmentId, int page,
+		@Nullable String query, @Nullable Long segmentId, int size,
+		String[] sorts) {
 
 		return PageableExecutionUtils.getPage(
 			searchBQIndividuals(
@@ -138,8 +142,10 @@ public class BQIndividualDog {
 	}
 
 	public List<Individual> searchBQIndividuals(
-		Long accountId, Long channelId, Long dataSourceId, Long notSegmentId,
-		int page, String query, Long segmentId, int size, String[] sorts) {
+		@Nullable Long accountId, @Nullable Long channelId,
+		@Nullable Long dataSourceId, @Nullable Long notSegmentId, int page,
+		@Nullable String query, @Nullable Long segmentId, int size,
+		String[] sorts) {
 
 		return _bqIndividualRepository.searchBQIndividuals(
 			accountId, channelId, dataSourceId, notSegmentId,

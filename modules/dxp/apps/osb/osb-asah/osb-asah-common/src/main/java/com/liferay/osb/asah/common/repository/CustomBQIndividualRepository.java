@@ -37,7 +37,8 @@ public interface CustomBQIndividualRepository {
 
 	public List<String>
 		findBQIndividualIdsByChannelIdAndLastActivityDateAndSegmentId(
-			Long channelId, Date lastActivityDate, Long segmentId);
+			Long channelId, @Nullable Date lastActivityDate,
+			@Nullable Long segmentId);
 
 	public Optional<Individual> findByChannelIdAndId(
 		@Nullable Long channelId, String id);
@@ -49,6 +50,6 @@ public interface CustomBQIndividualRepository {
 	public List<Individual> searchBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
-		Pageable pageable, String query, @Nullable Long segmentId);
+		Pageable pageable, @Nullable String query, @Nullable Long segmentId);
 
 }
