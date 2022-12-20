@@ -1,5 +1,5 @@
 MERGE INTO
-	`{{ dag.default_args['ac_project_id'] }}.identitychannelsummary` AS replica
+	`{{ dag.default_args['ac_project_id'] }}.identityactivitysummary` AS replica
 USING
 	(
 		SELECT

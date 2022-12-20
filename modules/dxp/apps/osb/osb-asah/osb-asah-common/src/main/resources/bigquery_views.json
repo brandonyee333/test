@@ -18,8 +18,8 @@
 		"path": "identity.sql",
 		"type": "materialized"
 	},
-	"identitychannel": {
-		"path": "identity_channel.sql",
+	"identityactivity": {
+		"path": "identity_activity.sql",
 		"priority": 1
 	},
 	"journalhourly": {

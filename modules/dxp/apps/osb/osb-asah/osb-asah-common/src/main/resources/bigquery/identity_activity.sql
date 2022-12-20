@@ -1,8 +1,8 @@
-WITH IdentityChannel AS (
+WITH IdentityActivity AS (
 	SELECT
 		*
 	FROM
-		`$[AC_PROJECT_ID].identitychannelsummary`
+		`$[AC_PROJECT_ID].identityactivitysummary`
 	UNION ALL
 	SELECT
 		COUNT(*) AS activitiesCount,
@@ -40,6 +40,6 @@ SELECT
 	MAX(lastActivityDate) AS lastActivityDate,
 	MAX(modifiedDate) AS modifiedDate
 FROM
-	IdentityChannel
+	IdentityActivity
 GROUP BY
 	channelId, id, identityId

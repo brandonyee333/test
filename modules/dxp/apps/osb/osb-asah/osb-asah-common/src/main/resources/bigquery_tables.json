@@ -1077,7 +1077,7 @@
 			"type": "DAY"
 		}
 	},
-	"identitychannelsummary": {
+	"identityactivitysummary": {
 		"clusteringFields": [
 			"channelId"
 		],

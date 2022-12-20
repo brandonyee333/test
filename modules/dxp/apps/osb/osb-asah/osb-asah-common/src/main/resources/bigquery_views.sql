@@ -921,7 +921,7 @@ CREATE OR REPLACE VIEW BQForm AS (
 
 COMMIT;
 
-CREATE OR REPLACE VIEW BQIdentityChannel AS (
+CREATE OR REPLACE VIEW BQIdentityActivity AS (
 	SELECT
 		COUNT(*) AS activitiesCount,
 		Event.channelId,
