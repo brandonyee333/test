@@ -17,11 +17,9 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQIdentity;
-import com.liferay.osb.asah.common.entity.BQIdentityActivity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.model.Individual;
-import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
@@ -211,9 +209,6 @@ public class BQIndividualRepositoryTest
 	}
 
 	private static final Long _SEGMENT_ID = 11L;
-
-	@Autowired
-	private BQIdentityActivityRepository _bqIdentityActivityRepository;
 
 	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;

@@ -18,11 +18,9 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQIdentity;
-import com.liferay.osb.asah.common.entity.BQIdentityActivity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
-import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
@@ -69,7 +67,6 @@ public class BQIdentityRepositoryTest
 		super.tearDown();
 
 		_bqEventRepository.deleteAll();
-		_bqIdentityActivityRepository.deleteAll();
 		_bqIndividualRepository.deleteAll();
 	}
 
@@ -327,9 +324,6 @@ public class BQIdentityRepositoryTest
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
-
-	@Autowired
-	private BQIdentityActivityRepository _bqIdentityActivityRepository;
 
 	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;
