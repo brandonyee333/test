@@ -1,4 +1,4 @@
-WITH PageFinalizedEvent AS (
+WITH PageEvent AS (
 	SELECT
 		Event.applicationId,
 		COALESCE(Event.browserName, '') AS browserName,
@@ -18,12 +18,8 @@ WITH PageFinalizedEvent AS (
 		Event.userId
 	FROM
 		`$[AC_PROJECT_ID].event` AS Event
-	INNER JOIN
-		`$[AC_PROJECT_ID].session` AS Session ON
-			Event.sessionId = Session.id
 	WHERE
-		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-		Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+		eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 ),
 PageBounces AS (
 	SELECT
@@ -41,7 +37,10 @@ PageBounces AS (
 		sessionId,
 		userId
 	FROM
-		PageFinalizedEvent
+		PageEvent
+	INNER JOIN
+		`$[AC_PROJECT_ID].session` AS Session ON
+			PageEvent.sessionId = Session.id
 	WHERE
 		eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed')
 	GROUP BY
@@ -78,7 +77,10 @@ PageEntrances AS (
 			title,
 			userId
 		FROM
-			PageFinalizedEvent
+			PageEvent
+        INNER JOIN
+            `$[AC_PROJECT_ID].session` AS Session ON
+                PageEvent.sessionId = Session.id
 	) AS EventEntrance
 	WHERE
 		rank = 1
@@ -114,7 +116,10 @@ PageExits AS (
 			title,
 			userId
 		FROM
-			PageFinalizedEvent
+			PageEvent
+        INNER JOIN
+            `$[AC_PROJECT_ID].session` AS Session ON
+                PageEvent.sessionId = Session.id
 	) AS EventExit
 	WHERE
 		rank = 1
@@ -150,7 +155,10 @@ PageTimeOnPages AS (
 			title,
 			userId
 		FROM
-			PageFinalizedEvent
+			PageEvent
+        INNER JOIN
+            `$[AC_PROJECT_ID].session` AS Session ON
+                PageEvent.sessionId = Session.id
 	) AS EventTimeOnPage
 	GROUP BY
 		browserName, canonicalUrl, channelId, city, country, deviceType,
@@ -191,7 +199,8 @@ PageViews AS (
 		sessionId,
 		title,
 		userId
-		FROM PageFinalizedEvent
+	FROM
+	    PageEvent
 	WHERE
 		applicationId = 'Page' AND eventId = 'pageViewed'
 	GROUP BY
