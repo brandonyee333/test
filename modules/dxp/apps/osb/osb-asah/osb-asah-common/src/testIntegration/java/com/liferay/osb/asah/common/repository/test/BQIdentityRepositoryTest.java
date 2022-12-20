@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
-import com.liferay.osb.asah.common.repository.BQIdentityChannelRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
@@ -331,9 +330,6 @@ public class BQIdentityRepositoryTest
 
 	@Autowired
 	private BQIdentityActivityRepository _bqIdentityActivityRepository;
-
-	@Autowired
-	private BQIdentityChannelRepository _bqIdentityChannelRepository;
 
 	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;

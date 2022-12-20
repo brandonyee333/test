@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
-import com.liferay.osb.asah.common.repository.BQIdentityChannelRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
@@ -215,9 +214,6 @@ public class BQIndividualRepositoryTest
 
 	@Autowired
 	private BQIdentityActivityRepository _bqIdentityActivityRepository;
-
-	@Autowired
-	private BQIdentityChannelRepository _bqIdentityChannelRepository;
 
 	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;
