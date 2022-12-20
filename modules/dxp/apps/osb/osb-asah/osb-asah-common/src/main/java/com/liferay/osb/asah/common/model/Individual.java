@@ -79,7 +79,7 @@ public class Individual {
 
 			fieldsStream.forEach(
 				field -> {
-					field.setSourceName(field.getName());
+					field.setModifiedDate(bqIndividual.getModifiedDate());
 
 					String displayName =
 						FieldMappingConstants.demographicsDisplayNames.
@@ -87,7 +87,7 @@ public class Individual {
 
 					field.setName(displayName);
 
-					field.setModifiedDate(bqIndividual.getModifiedDate());
+					field.setSourceName(field.getName());
 				});
 
 			_fields = fields;
