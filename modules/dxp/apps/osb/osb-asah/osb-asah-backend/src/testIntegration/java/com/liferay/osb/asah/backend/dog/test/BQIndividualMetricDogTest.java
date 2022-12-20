@@ -21,7 +21,6 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.IndividualMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
-import com.liferay.osb.asah.common.repository.BQIdentityActivityRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -47,14 +46,10 @@ public class BQIndividualMetricDogTest
 		resourcePath = "osbasahfaroinfo/identities_histogram_info.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIdentityActivityRepository.class,
-		resourcePath = "osbasahfaroinfo/identity_activities_histogram_info.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_histogram_info.json"
 	)
-	@SQLResource(resourcePath = "identity_channels_histogram_info.sql")
+	@SQLResource(resourcePath = "identity_activities_histogram_info.sql")
 	@Test
 	public void testIndividualMetric() {
 		IndividualMetric individualMetric = _getIndividualMetric();

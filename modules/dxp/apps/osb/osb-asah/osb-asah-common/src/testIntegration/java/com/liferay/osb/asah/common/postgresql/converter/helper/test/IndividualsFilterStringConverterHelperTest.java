@@ -1025,7 +1025,6 @@ public class IndividualsFilterStringConverterHelperTest
 
 			individual.setBQDataSourceUsers(
 				new HashSet<>(bqDataSourceUsers.values()));
-			individual.setIsNew(Boolean.TRUE);
 
 			// TODO Add individual
 
