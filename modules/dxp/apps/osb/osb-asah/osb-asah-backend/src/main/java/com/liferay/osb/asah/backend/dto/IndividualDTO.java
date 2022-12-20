@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
-import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -226,12 +225,6 @@ public class IndividualDTO {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class ActivitiesCountDTO {
 
-		public ActivitiesCountDTO(Individual.ActivitiesCount activitiesCount) {
-			_activitiesCount = activitiesCount.getActivitiesCount();
-
-			_channelId = String.valueOf(activitiesCount.getChannelId());
-		}
-
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj) {
@@ -284,14 +277,6 @@ public class IndividualDTO {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class ActivityDateDTO {
-
-		public ActivityDateDTO() {
-		}
-
-		public ActivityDateDTO(BQIdentityChannel bqIdentityChannel) {
-			_activityDate = bqIdentityChannel.getLastActivityDate();
-			_channelId = String.valueOf(bqIdentityChannel.getChannelId());
-		}
 
 		@Override
 		public boolean equals(Object obj) {

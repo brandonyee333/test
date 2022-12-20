@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.constants.FieldMappingConstants;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
-import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -171,16 +170,8 @@ public class Individual {
 		return _activitiesCount;
 	}
 
-	public Set<ActivitiesCount> getActivitiesCounts() {
-		return _activitiesCounts;
-	}
-
 	public Set<BQDataSourceUser> getBQDataSourceUsers() {
 		return _bqDataSourceUsers;
-	}
-
-	public Set<BQIdentityChannel> getBQIdentityChannels() {
-		return _bqIdentityChannels;
 	}
 
 	public Set<Long> getChannelIds() {
@@ -243,10 +234,6 @@ public class Individual {
 		return new Date(_lastActivityDate.getTime());
 	}
 
-	public Set<ActivityDate> getLastActivityDates() {
-		return _lastActivityDates;
-	}
-
 	public Date getLastEnrichmentDate() {
 		if (_lastEnrichmentDate == null) {
 			return null;
@@ -295,26 +282,11 @@ public class Individual {
 		_activitiesCount = activitiesCount;
 	}
 
-	public void setActivitiesCounts(Set<ActivitiesCount> activitiesCounts) {
-		_activitiesCounts = activitiesCounts;
-	}
-
 	public void setBQDataSourceUsers(Set<BQDataSourceUser> bqDataSourceUsers) {
 		_bqDataSourceUsers = bqDataSourceUsers;
 
 		_dataSourceUserPKs = SetUtil.map(
 			_bqDataSourceUsers, DataSourceUserPK::new);
-	}
-
-	public void setBQIdentityChannels(
-		Set<BQIdentityChannel> bqIdentityChannels) {
-
-		_bqIdentityChannels = bqIdentityChannels;
-
-		_activitiesCounts = SetUtil.map(
-			_bqIdentityChannels, ActivitiesCount::new);
-		_lastActivityDates = SetUtil.map(
-			_bqIdentityChannels, ActivityDate::new);
 	}
 
 	public void setChannelIds(Set<Long> channelIds) {
@@ -388,18 +360,10 @@ public class Individual {
 		_id = id;
 	}
 
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
-	}
-
 	public void setLastActivityDate(Date lastActivityDate) {
 		if (lastActivityDate != null) {
 			_lastActivityDate = new Date(lastActivityDate.getTime());
 		}
-	}
-
-	public void setLastActivityDates(Set<ActivityDate> lastActivityDates) {
-		_lastActivityDates = lastActivityDates;
 	}
 
 	public void setLastEnrichmentDate(Date lastEnrichmentDate) {
@@ -432,148 +396,6 @@ public class Individual {
 
 	public void setUserGroupIds(Set<Long> userGroupIds) {
 		_userGroupIds = userGroupIds;
-	}
-
-	public static class ActivitiesCount {
-
-		public ActivitiesCount() {
-		}
-
-		public ActivitiesCount(BQIdentityChannel bqIdentityChannel) {
-			_activitiesCount = bqIdentityChannel.getActivitiesCount();
-			_channelId = bqIdentityChannel.getChannelId();
-		}
-
-		public ActivitiesCount(Long activitiesCount, Long channelId) {
-			_activitiesCount = activitiesCount;
-			_channelId = channelId;
-		}
-
-		public ActivitiesCount(Map<String, Object> source) {
-			BeanUtils.copyProperties(source, this);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof ActivitiesCount)) {
-				return false;
-			}
-
-			ActivitiesCount activitiesCount = (ActivitiesCount)obj;
-
-			if (Objects.equals(
-					_activitiesCount, activitiesCount._activitiesCount) &&
-				Objects.equals(_channelId, activitiesCount._channelId)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		public Long getActivitiesCount() {
-			return _activitiesCount;
-		}
-
-		public Long getChannelId() {
-			return _channelId;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_activitiesCount, _channelId);
-		}
-
-		public void setActivitiesCount(Long activitiesCount) {
-			_activitiesCount = activitiesCount;
-		}
-
-		public void setChannelId(Long channelId) {
-			_channelId = channelId;
-		}
-
-		private Long _activitiesCount;
-		private Long _channelId;
-
-	}
-
-	public static class ActivityDate {
-
-		public ActivityDate() {
-		}
-
-		public ActivityDate(ActivityDate activityDate) {
-			_activityDate = activityDate.getActivityDate();
-
-			_channelId = activityDate.getChannelId();
-		}
-
-		public ActivityDate(BQIdentityChannel bqIdentityChannel) {
-			_activityDate = bqIdentityChannel.getLastActivityDate();
-			_channelId = bqIdentityChannel.getChannelId();
-		}
-
-		public ActivityDate(Date activityDate, Long channelId) {
-			_channelId = channelId;
-
-			_activityDate = new Date(activityDate.getTime());
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof ActivityDate)) {
-				return false;
-			}
-
-			ActivityDate activityDate = (ActivityDate)obj;
-
-			if (Objects.equals(_activityDate, activityDate._activityDate) &&
-				Objects.equals(_channelId, activityDate._channelId)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		public Date getActivityDate() {
-			if (_activityDate == null) {
-				return null;
-			}
-
-			return new Date(_activityDate.getTime());
-		}
-
-		public Long getChannelId() {
-			return _channelId;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_activityDate, _channelId);
-		}
-
-		public void setActivityDate(Date activityDate) {
-			if (activityDate != null) {
-				_activityDate = new Date(activityDate.getTime());
-			}
-		}
-
-		public void setChannelId(Long channelId) {
-			_channelId = channelId;
-		}
-
-		private Date _activityDate;
-		private Long _channelId;
-
 	}
 
 	public static class DataSourceUserPK {
@@ -703,9 +525,7 @@ public class Individual {
 	}
 
 	private Long _activitiesCount;
-	private Set<ActivitiesCount> _activitiesCounts = new HashSet<>();
 	private Set<BQDataSourceUser> _bqDataSourceUsers = new HashSet<>();
-	private Set<BQIdentityChannel> _bqIdentityChannels = new HashSet<>();
 	private Set<Long> _channelIds = new HashSet<>();
 	private Date _createDate;
 	private Demographics _customDemographics;
@@ -717,9 +537,7 @@ public class Individual {
 	private Date _firstEnrichmentDate;
 	private Set<Long> _groupIds = new HashSet<>();
 	private String _id;
-	private Boolean _isNew;
 	private Date _lastActivityDate;
-	private Set<ActivityDate> _lastActivityDates = new HashSet<>();
 	private Date _lastEnrichmentDate;
 	private Date _modifiedDate;
 	private Set<Long> _organizationIds = new HashSet<>();
