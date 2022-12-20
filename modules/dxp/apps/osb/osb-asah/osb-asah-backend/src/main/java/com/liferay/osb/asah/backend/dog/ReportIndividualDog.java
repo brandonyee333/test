@@ -27,6 +27,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 /**
@@ -59,11 +60,14 @@ public class ReportIndividualDog {
 					searchQueryContext.getAssetType());
 		}
 
+		Sort sort = Sort.by(
+			Sort.Order.asc("firstName"), Sort.Order.asc("lastName"));
+
 		return new ResultBag<>(
 			assetMetricRepository.getKnownIndividuals(
 				searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
 				Long.valueOf(searchQueryContext.getChannelId()), metricType,
-				PageRequest.of(start / size, size), keywords,
+				PageRequest.of(start / size, size, sort), keywords,
 				searchQueryContext.getTimeRange()),
 			assetMetricRepository.getKnownIndividualsCount(
 				searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
