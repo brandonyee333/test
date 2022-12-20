@@ -1077,48 +1077,6 @@
 			"type": "DAY"
 		}
 	},
-	"identityactivity_raw": {
-		"clusteringFields": [
-			"dataSourceId",
-			"channelId"
-		],
-		"fields": [
-			{
-				"mode": "REQUIRED",
-				"name": "channelId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "createDate",
-				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "dataSourceId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "id",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "identityId",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "projectId",
-				"type": "STRING"
-			}
-		],
-		"timePartitioning": {
-			"field": "createDate",
-			"type": "DAY"
-		}
-	},
 	"identitychannelsummary": {
 		"clusteringFields": [
 			"channelId"

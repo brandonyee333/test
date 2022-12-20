@@ -18,10 +18,6 @@
 		"path": "identity.sql",
 		"type": "materialized"
 	},
-	"identityactivity": {
-		"path": "identityactivity.sql",
-		"type": "materialized"
-	},
 	"identitychannel": {
 		"path": "identity_channel.sql",
 		"priority": 1
