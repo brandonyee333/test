@@ -159,6 +159,13 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ToFilterExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code LogicalVariable}
 	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
 	 * @param ctx the parse tree
@@ -218,4 +225,10 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FilterExpressionParser#filterExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
 }

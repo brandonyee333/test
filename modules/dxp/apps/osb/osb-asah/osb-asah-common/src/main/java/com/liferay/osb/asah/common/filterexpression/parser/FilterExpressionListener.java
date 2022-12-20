@@ -250,6 +250,18 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 */
 	void exitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ToFilterExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void enterToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ToFilterExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code LogicalVariable}
 	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
 	 * @param ctx the parse tree
@@ -351,4 +363,14 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FilterExpressionParser#filterExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FilterExpressionParser#filterExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
 }

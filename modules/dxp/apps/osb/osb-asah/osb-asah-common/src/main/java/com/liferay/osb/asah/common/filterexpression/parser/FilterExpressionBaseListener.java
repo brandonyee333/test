@@ -260,6 +260,18 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -363,6 +375,18 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFilterExpression(FilterExpressionParser.FilterExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

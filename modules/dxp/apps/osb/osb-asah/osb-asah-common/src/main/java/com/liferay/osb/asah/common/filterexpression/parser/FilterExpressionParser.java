@@ -33,30 +33,30 @@ public class FilterExpressionParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, COMMA=4, AND=5, OR=6, EQ=7, NEQ=8, GE=9, GT=10, 
-		LE=11, LPAREN=12, RPAREN=13, LT=14, NOT=15, IDENTIFIER=16, FLOATING_POINT_LITERAL=17, 
-		INTEGER_LITERAL=18, DIGITS=19, MINUS=20, STRING=21, WS=22;
+		T__0=1, T__1=2, T__2=3, T__3=4, AND=5, COMMA=6, EQ=7, FLOATING_POINT_LITERAL=8, 
+		NEQ=9, GE=10, GT=11, INTEGER_LITERAL=12, LE=13, LPAREN=14, RPAREN=15, 
+		LT=16, NOT=17, OR=18, STRING_LITERAL=19, IDENTIFIER=20, WS=21;
 	public static final int
 		RULE_expression = 0, RULE_logicalOrExpression = 1, RULE_logicalAndExpression = 2, 
 		RULE_equalityExpression = 3, RULE_comparisonExpression = 4, RULE_booleanUnaryExpression = 5, 
 		RULE_booleanOperandExpression = 6, RULE_logicalTerm = 7, RULE_literal = 8, 
-		RULE_functionCallExpression = 9, RULE_functionParameters = 10, RULE_functionParameter = 11;
+		RULE_functionCallExpression = 9, RULE_functionParameters = 10, RULE_functionParameter = 11, 
+		RULE_filterExpression = 12;
 	public static final String[] ruleNames = {
 		"expression", "logicalOrExpression", "logicalAndExpression", "equalityExpression", 
 		"comparisonExpression", "booleanUnaryExpression", "booleanOperandExpression", 
 		"logicalTerm", "literal", "functionCallExpression", "functionParameters", 
-		"functionParameter"
+		"functionParameter", "filterExpression"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'true'", "'false'", "'null'", "','", null, null, null, "'ne'", 
-		"'ge'", "'gt'", "'le'", "'('", "')'", "'lt'", null, null, null, null, 
-		null, "'-'"
+		null, "'true'", "'false'", "'null'", "'.filter(filter='", null, "','", 
+		null, null, "'ne'", "'ge'", "'gt'", null, "'le'", "'('", "')'", "'lt'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, null, "COMMA", "AND", "OR", "EQ", "NEQ", "GE", "GT", 
-		"LE", "LPAREN", "RPAREN", "LT", "NOT", "IDENTIFIER", "FLOATING_POINT_LITERAL", 
-		"INTEGER_LITERAL", "DIGITS", "MINUS", "STRING", "WS"
+		null, null, null, null, null, "AND", "COMMA", "EQ", "FLOATING_POINT_LITERAL", 
+		"NEQ", "GE", "GT", "INTEGER_LITERAL", "LE", "LPAREN", "RPAREN", "LT", 
+		"NOT", "OR", "STRING_LITERAL", "IDENTIFIER", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -137,9 +137,9 @@ public class FilterExpressionParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(24);
+			setState(26);
 			logicalOrExpression(0);
-			setState(25);
+			setState(27);
 			match(EOF);
 			}
 		}
@@ -228,11 +228,11 @@ public class FilterExpressionParser extends Parser {
 			_ctx = _localctx;
 			_prevctx = _localctx;
 
-			setState(28);
+			setState(30);
 			logicalAndExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(35);
+			setState(37);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -243,16 +243,16 @@ public class FilterExpressionParser extends Parser {
 					{
 					_localctx = new OrExpressionContext(new LogicalOrExpressionContext(_parentctx, _parentState));
 					pushNewRecursionContext(_localctx, _startState, RULE_logicalOrExpression);
-					setState(30);
-					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-					setState(31);
-					match(OR);
 					setState(32);
+					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
+					setState(33);
+					match(OR);
+					setState(34);
 					logicalAndExpression(0);
 					}
 					} 
 				}
-				setState(37);
+				setState(39);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 			}
@@ -343,11 +343,11 @@ public class FilterExpressionParser extends Parser {
 			_ctx = _localctx;
 			_prevctx = _localctx;
 
-			setState(39);
+			setState(41);
 			equalityExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(46);
+			setState(48);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -358,16 +358,16 @@ public class FilterExpressionParser extends Parser {
 					{
 					_localctx = new AndExpressionContext(new LogicalAndExpressionContext(_parentctx, _parentState));
 					pushNewRecursionContext(_localctx, _startState, RULE_logicalAndExpression);
-					setState(41);
-					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-					setState(42);
-					match(AND);
 					setState(43);
+					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
+					setState(44);
+					match(AND);
+					setState(45);
 					equalityExpression(0);
 					}
 					} 
 				}
-				setState(48);
+				setState(50);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
 			}
@@ -481,11 +481,11 @@ public class FilterExpressionParser extends Parser {
 			_ctx = _localctx;
 			_prevctx = _localctx;
 
-			setState(50);
+			setState(52);
 			comparisonExpression(0);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(60);
+			setState(62);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -493,18 +493,18 @@ public class FilterExpressionParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(58);
+					setState(60);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 					case 1:
 						{
 						_localctx = new EqualsExpressionContext(new EqualityExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_equalityExpression);
-						setState(52);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(53);
-						match(EQ);
 						setState(54);
+						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
+						setState(55);
+						match(EQ);
+						setState(56);
 						comparisonExpression(0);
 						}
 						break;
@@ -512,18 +512,18 @@ public class FilterExpressionParser extends Parser {
 						{
 						_localctx = new NotEqualsExpressionContext(new EqualityExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_equalityExpression);
-						setState(55);
-						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(56);
-						match(NEQ);
 						setState(57);
+						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
+						setState(58);
+						match(NEQ);
+						setState(59);
 						comparisonExpression(0);
 						}
 						break;
 					}
 					} 
 				}
-				setState(62);
+				setState(64);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
 			}
@@ -683,11 +683,11 @@ public class FilterExpressionParser extends Parser {
 			_ctx = _localctx;
 			_prevctx = _localctx;
 
-			setState(64);
+			setState(66);
 			booleanUnaryExpression();
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(80);
+			setState(82);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -695,18 +695,18 @@ public class FilterExpressionParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(78);
+					setState(80);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 					case 1:
 						{
 						_localctx = new GreaterThanExpressionContext(new ComparisonExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_comparisonExpression);
-						setState(66);
-						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(67);
-						match(GT);
 						setState(68);
+						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						setState(69);
+						match(GT);
+						setState(70);
 						booleanOperandExpression();
 						}
 						break;
@@ -714,11 +714,11 @@ public class FilterExpressionParser extends Parser {
 						{
 						_localctx = new GreaterThanOrEqualsExpressionContext(new ComparisonExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_comparisonExpression);
-						setState(69);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(70);
-						match(GE);
 						setState(71);
+						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
+						setState(72);
+						match(GE);
+						setState(73);
 						booleanOperandExpression();
 						}
 						break;
@@ -726,11 +726,11 @@ public class FilterExpressionParser extends Parser {
 						{
 						_localctx = new LessThanExpressionContext(new ComparisonExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_comparisonExpression);
-						setState(72);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(73);
-						match(LT);
 						setState(74);
+						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
+						setState(75);
+						match(LT);
+						setState(76);
 						booleanOperandExpression();
 						}
 						break;
@@ -738,18 +738,18 @@ public class FilterExpressionParser extends Parser {
 						{
 						_localctx = new LessThanOrEqualsExpressionContext(new ComparisonExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_comparisonExpression);
-						setState(75);
-						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(76);
-						match(LE);
 						setState(77);
+						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
+						setState(78);
+						match(LE);
+						setState(79);
 						booleanOperandExpression();
 						}
 						break;
 					}
 					} 
 				}
-				setState(82);
+				setState(84);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
@@ -821,30 +821,30 @@ public class FilterExpressionParser extends Parser {
 		BooleanUnaryExpressionContext _localctx = new BooleanUnaryExpressionContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_booleanUnaryExpression);
 		try {
-			setState(86);
+			setState(88);
 			switch (_input.LA(1)) {
 			case NOT:
 				_localctx = new NotExpressionContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(83);
+				setState(85);
 				match(NOT);
-				setState(84);
+				setState(86);
 				booleanUnaryExpression();
 				}
 				break;
 			case T__0:
 			case T__1:
 			case T__2:
-			case LPAREN:
-			case IDENTIFIER:
 			case FLOATING_POINT_LITERAL:
 			case INTEGER_LITERAL:
-			case STRING:
+			case LPAREN:
+			case STRING_LITERAL:
+			case IDENTIFIER:
 				_localctx = new ToBooleanOperandExpressionContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(85);
+				setState(87);
 				booleanOperandExpression();
 				}
 				break;
@@ -919,19 +919,19 @@ public class FilterExpressionParser extends Parser {
 		BooleanOperandExpressionContext _localctx = new BooleanOperandExpressionContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_booleanOperandExpression);
 		try {
-			setState(93);
+			setState(95);
 			switch (_input.LA(1)) {
 			case T__0:
 			case T__1:
 			case T__2:
-			case IDENTIFIER:
 			case FLOATING_POINT_LITERAL:
 			case INTEGER_LITERAL:
-			case STRING:
+			case STRING_LITERAL:
+			case IDENTIFIER:
 				_localctx = new ToLogicalTermContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(88);
+				setState(90);
 				logicalTerm();
 				}
 				break;
@@ -939,11 +939,11 @@ public class FilterExpressionParser extends Parser {
 				_localctx = new BooleanParenthesisContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(89);
-				match(LPAREN);
-				setState(90);
-				logicalOrExpression(0);
 				setState(91);
+				match(LPAREN);
+				setState(92);
+				logicalOrExpression(0);
+				setState(93);
 				match(RPAREN);
 				}
 				break;
@@ -990,6 +990,25 @@ public class FilterExpressionParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class ToFilterExpressionContext extends LogicalTermContext {
+		public FilterExpressionContext filterExpression() {
+			return getRuleContext(FilterExpressionContext.class,0);
+		}
+		public ToFilterExpressionContext(LogicalTermContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FilterExpressionListener ) ((FilterExpressionListener)listener).enterToFilterExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FilterExpressionListener ) ((FilterExpressionListener)listener).exitToFilterExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FilterExpressionVisitor ) return ((FilterExpressionVisitor<? extends T>)visitor).visitToFilterExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class ToLiteralContext extends LogicalTermContext {
 		public LiteralContext literal() {
 			return getRuleContext(LiteralContext.class,0);
@@ -1033,14 +1052,14 @@ public class FilterExpressionParser extends Parser {
 		LogicalTermContext _localctx = new LogicalTermContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_logicalTerm);
 		try {
-			setState(98);
+			setState(101);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				_localctx = new ToLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(95);
+				setState(97);
 				literal();
 				}
 				break;
@@ -1048,15 +1067,23 @@ public class FilterExpressionParser extends Parser {
 				_localctx = new ToFunctionCallExpressionContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(96);
+				setState(98);
 				functionCallExpression();
 				}
 				break;
 			case 3:
-				_localctx = new LogicalVariableContext(_localctx);
+				_localctx = new ToFilterExpressionContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(97);
+				setState(99);
+				filterExpression();
+				}
+				break;
+			case 4:
+				_localctx = new LogicalVariableContext(_localctx);
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(100);
 				match(IDENTIFIER);
 				}
 				break;
@@ -1085,7 +1112,7 @@ public class FilterExpressionParser extends Parser {
 		}
 	}
 	public static class StringLiteralContext extends LiteralContext {
-		public TerminalNode STRING() { return getToken(FilterExpressionParser.STRING, 0); }
+		public TerminalNode STRING_LITERAL() { return getToken(FilterExpressionParser.STRING_LITERAL, 0); }
 		public StringLiteralContext(LiteralContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1173,13 +1200,13 @@ public class FilterExpressionParser extends Parser {
 		enterRule(_localctx, 16, RULE_literal);
 		int _la;
 		try {
-			setState(105);
+			setState(108);
 			switch (_input.LA(1)) {
 			case FLOATING_POINT_LITERAL:
 				_localctx = new FloatingPointLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(100);
+				setState(103);
 				match(FLOATING_POINT_LITERAL);
 				}
 				break;
@@ -1187,7 +1214,7 @@ public class FilterExpressionParser extends Parser {
 				_localctx = new IntegerLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(101);
+				setState(104);
 				match(INTEGER_LITERAL);
 				}
 				break;
@@ -1196,7 +1223,7 @@ public class FilterExpressionParser extends Parser {
 				_localctx = new BooleanLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(102);
+				setState(105);
 				_la = _input.LA(1);
 				if ( !(_la==T__0 || _la==T__1) ) {
 				_errHandler.recoverInline(this);
@@ -1209,16 +1236,16 @@ public class FilterExpressionParser extends Parser {
 				_localctx = new NullLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(103);
+				setState(106);
 				match(T__2);
 				}
 				break;
-			case STRING:
+			case STRING_LITERAL:
 				_localctx = new StringLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(104);
-				match(STRING);
+				setState(107);
+				match(STRING_LITERAL);
 				}
 				break;
 			default:
@@ -1270,20 +1297,20 @@ public class FilterExpressionParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(107);
-			((FunctionCallExpressionContext)_localctx).functionName = match(IDENTIFIER);
-			setState(108);
-			match(LPAREN);
 			setState(110);
+			((FunctionCallExpressionContext)_localctx).functionName = match(IDENTIFIER);
+			setState(111);
+			match(LPAREN);
+			setState(113);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << LPAREN) | (1L << NOT) | (1L << IDENTIFIER) | (1L << FLOATING_POINT_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << FLOATING_POINT_LITERAL) | (1L << INTEGER_LITERAL) | (1L << LPAREN) | (1L << NOT) | (1L << STRING_LITERAL) | (1L << IDENTIFIER))) != 0)) {
 				{
-				setState(109);
+				setState(112);
 				functionParameters();
 				}
 			}
 
-			setState(112);
+			setState(115);
 			match(RPAREN);
 			}
 		}
@@ -1335,21 +1362,21 @@ public class FilterExpressionParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(114);
+			setState(117);
 			functionParameter();
-			setState(119);
+			setState(122);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(115);
+				setState(118);
 				match(COMMA);
-				setState(116);
+				setState(119);
 				functionParameter();
 				}
 				}
-				setState(121);
+				setState(124);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1395,8 +1422,59 @@ public class FilterExpressionParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(122);
+			setState(125);
 			logicalOrExpression(0);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class FilterExpressionContext extends ParserRuleContext {
+		public Token domainName;
+		public Token filter;
+		public TerminalNode IDENTIFIER() { return getToken(FilterExpressionParser.IDENTIFIER, 0); }
+		public TerminalNode STRING_LITERAL() { return getToken(FilterExpressionParser.STRING_LITERAL, 0); }
+		public FilterExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_filterExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof FilterExpressionListener ) ((FilterExpressionListener)listener).enterFilterExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof FilterExpressionListener ) ((FilterExpressionListener)listener).exitFilterExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FilterExpressionVisitor ) return ((FilterExpressionVisitor<? extends T>)visitor).visitFilterExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final FilterExpressionContext filterExpression() throws RecognitionException {
+		FilterExpressionContext _localctx = new FilterExpressionContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_filterExpression);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(127);
+			((FilterExpressionContext)_localctx).domainName = match(IDENTIFIER);
+			setState(128);
+			match(T__3);
+			setState(129);
+			((FilterExpressionContext)_localctx).filter = match(STRING_LITERAL);
+			setState(130);
+			match(RPAREN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1461,37 +1539,40 @@ public class FilterExpressionParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\30\177\4\2\t\2\4"+
-		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
-		"\13\4\f\t\f\4\r\t\r\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\7\3$\n\3\f\3\16"+
-		"\3\'\13\3\3\4\3\4\3\4\3\4\3\4\3\4\7\4/\n\4\f\4\16\4\62\13\4\3\5\3\5\3"+
-		"\5\3\5\3\5\3\5\3\5\3\5\3\5\7\5=\n\5\f\5\16\5@\13\5\3\6\3\6\3\6\3\6\3\6"+
-		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6Q\n\6\f\6\16\6T\13\6\3\7\3"+
-		"\7\3\7\5\7Y\n\7\3\b\3\b\3\b\3\b\3\b\5\b`\n\b\3\t\3\t\3\t\5\te\n\t\3\n"+
-		"\3\n\3\n\3\n\3\n\5\nl\n\n\3\13\3\13\3\13\5\13q\n\13\3\13\3\13\3\f\3\f"+
-		"\3\f\7\fx\n\f\f\f\16\f{\13\f\3\r\3\r\3\r\2\6\4\6\b\n\16\2\4\6\b\n\f\16"+
-		"\20\22\24\26\30\2\3\3\2\3\4\u0084\2\32\3\2\2\2\4\35\3\2\2\2\6(\3\2\2\2"+
-		"\b\63\3\2\2\2\nA\3\2\2\2\fX\3\2\2\2\16_\3\2\2\2\20d\3\2\2\2\22k\3\2\2"+
-		"\2\24m\3\2\2\2\26t\3\2\2\2\30|\3\2\2\2\32\33\5\4\3\2\33\34\7\2\2\3\34"+
-		"\3\3\2\2\2\35\36\b\3\1\2\36\37\5\6\4\2\37%\3\2\2\2 !\f\4\2\2!\"\7\b\2"+
-		"\2\"$\5\6\4\2# \3\2\2\2$\'\3\2\2\2%#\3\2\2\2%&\3\2\2\2&\5\3\2\2\2\'%\3"+
-		"\2\2\2()\b\4\1\2)*\5\b\5\2*\60\3\2\2\2+,\f\4\2\2,-\7\7\2\2-/\5\b\5\2."+
-		"+\3\2\2\2/\62\3\2\2\2\60.\3\2\2\2\60\61\3\2\2\2\61\7\3\2\2\2\62\60\3\2"+
-		"\2\2\63\64\b\5\1\2\64\65\5\n\6\2\65>\3\2\2\2\66\67\f\5\2\2\678\7\t\2\2"+
-		"8=\5\n\6\29:\f\4\2\2:;\7\n\2\2;=\5\n\6\2<\66\3\2\2\2<9\3\2\2\2=@\3\2\2"+
-		"\2><\3\2\2\2>?\3\2\2\2?\t\3\2\2\2@>\3\2\2\2AB\b\6\1\2BC\5\f\7\2CR\3\2"+
-		"\2\2DE\f\7\2\2EF\7\f\2\2FQ\5\16\b\2GH\f\6\2\2HI\7\13\2\2IQ\5\16\b\2JK"+
-		"\f\5\2\2KL\7\20\2\2LQ\5\16\b\2MN\f\4\2\2NO\7\r\2\2OQ\5\16\b\2PD\3\2\2"+
-		"\2PG\3\2\2\2PJ\3\2\2\2PM\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2S\13\3\2"+
-		"\2\2TR\3\2\2\2UV\7\21\2\2VY\5\f\7\2WY\5\16\b\2XU\3\2\2\2XW\3\2\2\2Y\r"+
-		"\3\2\2\2Z`\5\20\t\2[\\\7\16\2\2\\]\5\4\3\2]^\7\17\2\2^`\3\2\2\2_Z\3\2"+
-		"\2\2_[\3\2\2\2`\17\3\2\2\2ae\5\22\n\2be\5\24\13\2ce\7\22\2\2da\3\2\2\2"+
-		"db\3\2\2\2dc\3\2\2\2e\21\3\2\2\2fl\7\23\2\2gl\7\24\2\2hl\t\2\2\2il\7\5"+
-		"\2\2jl\7\27\2\2kf\3\2\2\2kg\3\2\2\2kh\3\2\2\2ki\3\2\2\2kj\3\2\2\2l\23"+
-		"\3\2\2\2mn\7\22\2\2np\7\16\2\2oq\5\26\f\2po\3\2\2\2pq\3\2\2\2qr\3\2\2"+
-		"\2rs\7\17\2\2s\25\3\2\2\2ty\5\30\r\2uv\7\6\2\2vx\5\30\r\2wu\3\2\2\2x{"+
-		"\3\2\2\2yw\3\2\2\2yz\3\2\2\2z\27\3\2\2\2{y\3\2\2\2|}\5\4\3\2}\31\3\2\2"+
-		"\2\16%\60<>PRX_dkpy";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\27\u0087\4\2\t\2"+
+		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
+		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\7"+
+		"\3&\n\3\f\3\16\3)\13\3\3\4\3\4\3\4\3\4\3\4\3\4\7\4\61\n\4\f\4\16\4\64"+
+		"\13\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\7\5?\n\5\f\5\16\5B\13\5\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6S\n\6\f\6"+
+		"\16\6V\13\6\3\7\3\7\3\7\5\7[\n\7\3\b\3\b\3\b\3\b\3\b\5\bb\n\b\3\t\3\t"+
+		"\3\t\3\t\5\th\n\t\3\n\3\n\3\n\3\n\3\n\5\no\n\n\3\13\3\13\3\13\5\13t\n"+
+		"\13\3\13\3\13\3\f\3\f\3\f\7\f{\n\f\f\f\16\f~\13\f\3\r\3\r\3\16\3\16\3"+
+		"\16\3\16\3\16\3\16\2\6\4\6\b\n\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\3"+
+		"\3\2\3\4\u008c\2\34\3\2\2\2\4\37\3\2\2\2\6*\3\2\2\2\b\65\3\2\2\2\nC\3"+
+		"\2\2\2\fZ\3\2\2\2\16a\3\2\2\2\20g\3\2\2\2\22n\3\2\2\2\24p\3\2\2\2\26w"+
+		"\3\2\2\2\30\177\3\2\2\2\32\u0081\3\2\2\2\34\35\5\4\3\2\35\36\7\2\2\3\36"+
+		"\3\3\2\2\2\37 \b\3\1\2 !\5\6\4\2!\'\3\2\2\2\"#\f\4\2\2#$\7\24\2\2$&\5"+
+		"\6\4\2%\"\3\2\2\2&)\3\2\2\2\'%\3\2\2\2\'(\3\2\2\2(\5\3\2\2\2)\'\3\2\2"+
+		"\2*+\b\4\1\2+,\5\b\5\2,\62\3\2\2\2-.\f\4\2\2./\7\7\2\2/\61\5\b\5\2\60"+
+		"-\3\2\2\2\61\64\3\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2\63\7\3\2\2\2\64\62"+
+		"\3\2\2\2\65\66\b\5\1\2\66\67\5\n\6\2\67@\3\2\2\289\f\5\2\29:\7\t\2\2:"+
+		"?\5\n\6\2;<\f\4\2\2<=\7\13\2\2=?\5\n\6\2>8\3\2\2\2>;\3\2\2\2?B\3\2\2\2"+
+		"@>\3\2\2\2@A\3\2\2\2A\t\3\2\2\2B@\3\2\2\2CD\b\6\1\2DE\5\f\7\2ET\3\2\2"+
+		"\2FG\f\7\2\2GH\7\r\2\2HS\5\16\b\2IJ\f\6\2\2JK\7\f\2\2KS\5\16\b\2LM\f\5"+
+		"\2\2MN\7\22\2\2NS\5\16\b\2OP\f\4\2\2PQ\7\17\2\2QS\5\16\b\2RF\3\2\2\2R"+
+		"I\3\2\2\2RL\3\2\2\2RO\3\2\2\2SV\3\2\2\2TR\3\2\2\2TU\3\2\2\2U\13\3\2\2"+
+		"\2VT\3\2\2\2WX\7\23\2\2X[\5\f\7\2Y[\5\16\b\2ZW\3\2\2\2ZY\3\2\2\2[\r\3"+
+		"\2\2\2\\b\5\20\t\2]^\7\20\2\2^_\5\4\3\2_`\7\21\2\2`b\3\2\2\2a\\\3\2\2"+
+		"\2a]\3\2\2\2b\17\3\2\2\2ch\5\22\n\2dh\5\24\13\2eh\5\32\16\2fh\7\26\2\2"+
+		"gc\3\2\2\2gd\3\2\2\2ge\3\2\2\2gf\3\2\2\2h\21\3\2\2\2io\7\n\2\2jo\7\16"+
+		"\2\2ko\t\2\2\2lo\7\5\2\2mo\7\25\2\2ni\3\2\2\2nj\3\2\2\2nk\3\2\2\2nl\3"+
+		"\2\2\2nm\3\2\2\2o\23\3\2\2\2pq\7\26\2\2qs\7\20\2\2rt\5\26\f\2sr\3\2\2"+
+		"\2st\3\2\2\2tu\3\2\2\2uv\7\21\2\2v\25\3\2\2\2w|\5\30\r\2xy\7\b\2\2y{\5"+
+		"\30\r\2zx\3\2\2\2{~\3\2\2\2|z\3\2\2\2|}\3\2\2\2}\27\3\2\2\2~|\3\2\2\2"+
+		"\177\u0080\5\4\3\2\u0080\31\3\2\2\2\u0081\u0082\7\26\2\2\u0082\u0083\7"+
+		"\6\2\2\u0083\u0084\7\25\2\2\u0084\u0085\7\21\2\2\u0085\33\3\2\2\2\16\'"+
+		"\62>@RTZagns|";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
