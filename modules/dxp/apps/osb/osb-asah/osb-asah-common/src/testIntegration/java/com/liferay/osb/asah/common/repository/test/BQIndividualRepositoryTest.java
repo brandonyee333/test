@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIdentityActivity;
-import com.liferay.osb.asah.common.entity.BQIdentityChannel;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.model.Individual;
@@ -123,22 +122,19 @@ public class BQIndividualRepositoryTest
 
 		_eventDog.addBQEvent(
 			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
-			DateUtil.toUTCDate("2022-12-14T23:59:59.999Z"),
-			"webContentViewed",
+			DateUtil.toUTCDate("2022-12-14T23:59:59.999Z"), "webContentViewed",
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			bqIdentity1.getId());
 
 		_eventDog.addBQEvent(
 			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
-			DateUtil.toUTCDate("2022-12-15T23:59:59.999Z"),
-			"webContentViewed",
+			DateUtil.toUTCDate("2022-12-15T23:59:59.999Z"), "webContentViewed",
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			bqIdentity2.getId());
 
 		_eventDog.addBQEvent(
 			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
-			DateUtil.toUTCDate("2022-12-16T23:59:59.999Z"),
-			"webContentViewed",
+			DateUtil.toUTCDate("2022-12-16T23:59:59.999Z"), "webContentViewed",
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			bqIdentity2.getId());
 
@@ -158,9 +154,6 @@ public class BQIndividualRepositoryTest
 
 		entityModels = Collections.singletonList(bqIndividual);
 	}
-
-	@Autowired
-	private EventDog _eventDog;
 
 	@Test
 	public void testCountBQIndividuals() {
@@ -234,5 +227,8 @@ public class BQIndividualRepositoryTest
 
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
+
+	@Autowired
+	private EventDog _eventDog;
 
 }
