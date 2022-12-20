@@ -551,6 +551,12 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					).gt(
 						0
 					))
+			).orderBy(
+				_getSortFields(pageable.getSort())
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
 			));
 	}
 
