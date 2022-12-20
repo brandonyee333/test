@@ -145,10 +145,6 @@ NOT
 	| 'NOT'
 	;
 
-IDENTIFIER
-	: NameStartChar NameChar*
-	;
-
 fragment
 NameChar
    : NameStartChar
@@ -184,6 +180,12 @@ MINUS
 STRING
 	: '"' ( '""' | ~["] )* '"'
 	| '\'' ( '\'\'' | ~['] )* '\''
+	;
+
+IDENTIFIER
+	: NameStartChar NameChar*
+    | NameStartChar NameChar* '/' NameStartChar NameChar*
+	| NameStartChar NameChar* '/' NameStartChar NameChar* '/value'
 	;
 
 WS
