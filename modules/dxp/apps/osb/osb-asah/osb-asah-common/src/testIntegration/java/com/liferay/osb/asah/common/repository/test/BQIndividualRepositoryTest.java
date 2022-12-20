@@ -111,6 +111,12 @@ public class BQIndividualRepositoryTest
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			bqIdentity2.getId());
 
+		_eventDog.addBQEvent(
+			"Page", Collections.emptySet(), 11L, new Date(), 1L,
+			DateUtil.toUTCDate("2022-12-17T23:59:59.999Z"), "pageLoaded",
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			bqIdentity2.getId());
+
 		BQMembership bqMembership = new BQMembership();
 
 		bqMembership.setCreateDate(new Date());

@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
+import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.util.FieldValueListUtil;
@@ -331,6 +332,13 @@ public class BQIndividualRepositoryImpl
 					dataSourceId
 				));
 		}
+
+		condition = condition.and(
+			DSL.field(
+				"IdentityActivity.eventId"
+			).in(
+				_eventDefinitionRepository.getEventDefinitionNames(false)
+			));
 
 		if (notSegmentId != null) {
 			condition = condition.and(
@@ -658,6 +666,9 @@ public class BQIndividualRepositoryImpl
 
 	@Autowired
 	private Environment _environment;
+
+	@Autowired
+	private EventDefinitionRepository _eventDefinitionRepository;
 
 	private final List<Field<Object>> _identiyChannelFields = Arrays.asList(
 		DSL.field("activitiesCount"), DSL.field("channelId"),
