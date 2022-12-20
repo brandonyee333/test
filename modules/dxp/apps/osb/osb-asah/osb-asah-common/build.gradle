@@ -1,15 +1,16 @@
 import com.liferay.gradle.util.FileUtil
+
 import org.apache.tools.ant.filters.FixCrLfFilter
 
-apply plugin: 'antlr'
 apply plugin: "com.liferay.spring.boot.defaults"
 apply plugin: "io.spring.dependency-management"
-
-String parserDirName = "com/liferay/osb/asah/common/filterexpression/parser"
-List<String> startParameterTaskNames = gradle.startParameter.taskNames
+apply plugin: 'antlr'
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
+
+String parserDirName = "com/liferay/osb/asah/common/filterexpression/parser"
+List<String> startParameterTaskNames = gradle.startParameter.taskNames
 
 ext["junit-jupiter.version"] = "5.8.2"
 ext["log4j2.version"] = "2.17.0"
