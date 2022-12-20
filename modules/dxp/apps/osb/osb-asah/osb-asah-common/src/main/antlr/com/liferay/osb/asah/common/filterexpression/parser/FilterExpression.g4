@@ -145,17 +145,6 @@ NOT
 	| 'NOT'
 	;
 
-fragment
-NameChar
-   : NameStartChar
-   | '0'..'9'
-   ;
-
-fragment
-NameStartChar
-   : '_'
-   | 'A'..'Z' | 'a'..'z'
-   ;
 
 FLOATING_POINT_LITERAL
     : MINUS? DIGITS '.' DIGITS?
@@ -181,11 +170,25 @@ STRING_LITERAL
 	| '\'' ( '\'\'' | ~['] )* '\''
 	;
 
+
 IDENTIFIER
 	: NameStartChar NameChar*
     | NameStartChar NameChar* '/' NameStartChar NameChar*
 	| NameStartChar NameChar* '/' NameStartChar NameChar* '/value'
 	;
+
+fragment
+NameChar
+   : NameStartChar
+   | '0'..'9'
+   ;
+
+fragment
+NameStartChar
+   : '_'
+   | 'A'..'Z' | 'a'..'z'
+   ;
+
 
 WS
 	: [ \r\t\u000C\n]+ -> skip
