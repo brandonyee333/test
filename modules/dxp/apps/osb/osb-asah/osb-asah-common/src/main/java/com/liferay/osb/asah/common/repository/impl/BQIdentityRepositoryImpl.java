@@ -68,7 +68,7 @@ public class BQIdentityRepositoryImpl
 			DSL.table(
 				"BQIdentity"
 			).as(
-				"identity"
+				"Identity"
 			));
 
 		if (!includeAnonymousUsers) {
@@ -76,13 +76,13 @@ public class BQIdentityRepositoryImpl
 				DSL.table(
 					"BQIndividual"
 				).as(
-					"individual"
+					"Individual"
 				)
 			).on(
 				DSL.field(
-					"identity.individualId"
+					"Identity.individualId"
 				).eq(
-					DSL.field("individual.id")
+					DSL.field("Individual.id")
 				)
 			);
 		}
@@ -166,7 +166,7 @@ public class BQIdentityRepositoryImpl
 		if (channelId != null) {
 			conditions.add(
 				DSL.field(
-					"identityActivity.channelId"
+					"IdentityActivity.channelId"
 				).eq(
 					channelId
 				));
@@ -176,10 +176,10 @@ public class BQIdentityRepositoryImpl
 			conditions.add(
 				DSL.or(
 					DSL.field(
-						"identity.individualId"
+						"Identity.individualId"
 					).isNull(),
 					DSL.field(
-						"identity.individualId"
+						"Identity.individualId"
 					).notIn(
 						DSL.select(
 							DSL.field("id")
@@ -194,7 +194,7 @@ public class BQIdentityRepositoryImpl
 
 			conditions.add(
 				DSL.field(
-					"identityChannel.lastActivityDate"
+					"IdentityActivity.lastActivityDate"
 				).greaterThan(
 					_dslHelper.getDateParam(
 						timeRange.getStartLocalDateTime(), zoneId.toString())
@@ -210,7 +210,7 @@ public class BQIdentityRepositoryImpl
 
 		Field<Integer> field = null;
 
-		Field<Object> individualIdField = DSL.field("individual.id");
+		Field<Object> individualIdField = DSL.field("Individual.id");
 
 		if (metricType == IndividualMetricType.ANONYMOUS_INDIVIDUALS) {
 			field = _dslHelper.countIf(individualIdField.isNull());
@@ -244,37 +244,21 @@ public class BQIdentityRepositoryImpl
 				DSL.table(
 					"BQIdentity"
 				).as(
-					"identity"
+					"Identity"
 				));
 
-		if (BooleanUtils.isTrue(active)) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"BQIdentityChannel"
-				).as(
-					"IdentityChannel"
-				)
-			).on(
-				DSL.field(
-					"identity.id"
-				).eq(
-					DSL.field("IdentityChannel.identityId")
-				)
-			);
-		}
-
-		if (channelId != null) {
+		if (BooleanUtils.isTrue(active) || (channelId != null)) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"BQIdentityActivity"
 				).as(
-					"identityActivity"
+					"IdentityActivity"
 				)
 			).on(
 				DSL.field(
-					"identity.id"
+					"Identity.id"
 				).eq(
-					DSL.field("identityActivity.identityId")
+					DSL.field("IdentityActivity.identityId")
 				)
 			);
 		}
@@ -283,11 +267,11 @@ public class BQIdentityRepositoryImpl
 			DSL.table(
 				"BQIndividual"
 			).as(
-				"individual"
+				"Individual"
 			)
 		).on(
 			DSL.field(
-				"identity.individualId"
+				"Identity.individualId"
 			).eq(
 				individualIdField
 			)

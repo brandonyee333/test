@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
@@ -57,7 +58,6 @@ public class BQIdentityRepositoryTest
 
 		setUpRepository(bqIdentities.toArray(new BQIdentity[0]));
 
-		_addBQIdentityActivities();
 		_addBQEvents();
 		_addBQIndividuals();
 	}
@@ -99,7 +99,7 @@ public class BQIdentityRepositoryTest
 				true, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS,
 				_timeZoneDog.getZoneId());
 
-		Assertions.assertEquals(2, totalActiveIndividualsCount, 0);
+		Assertions.assertEquals(4, totalActiveIndividualsCount, 0);
 	}
 
 	@Override
@@ -154,11 +154,33 @@ public class BQIdentityRepositoryTest
 		bqEvent = new BQEvent();
 
 		bqEvent.setChannelId(1L);
+		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -11));
+		bqEvent.setEventDate(DateUtil.addDays(new Date(), -11));
+		bqEvent.setEventId("blogClicked");
+		bqEvent.setId("3");
+		bqEvent.setUserId("3");
+
+		_bqEventRepository.save(bqEvent);
+
+		bqEvent = new BQEvent();
+
+		bqEvent.setChannelId(1L);
 		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -35));
 		bqEvent.setEventDate(DateUtil.addDays(new Date(), -35));
 		bqEvent.setEventId("blogClicked");
 		bqEvent.setId("4");
 		bqEvent.setUserId("4");
+
+		_bqEventRepository.save(bqEvent);
+
+		bqEvent = new BQEvent();
+
+		bqEvent.setChannelId(1L);
+		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -11));
+		bqEvent.setEventDate(DateUtil.addDays(new Date(), -11));
+		bqEvent.setEventId("blogClicked");
+		bqEvent.setId("5");
+		bqEvent.setUserId("5");
 
 		_bqEventRepository.save(bqEvent);
 	}
@@ -211,66 +233,6 @@ public class BQIdentityRepositoryTest
 		bqIdentities.add(bqIdentity);
 
 		return bqIdentities;
-	}
-
-	private void _addBQIdentityActivities() {
-		BQIdentityActivity bqIdentityActivity = new BQIdentityActivity();
-
-		bqIdentityActivity.setChannelId(1L);
-		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -3));
-		bqIdentityActivity.setId("1");
-		bqIdentityActivity.setIndividualId(
-			DigestUtils.sha256Hex("test1@liferay.com"));
-		bqIdentityActivity.setIsNew(Boolean.TRUE);
-		bqIdentityActivity.setIdentityId("1");
-
-		_bqIdentityActivityRepository.save(bqIdentityActivity);
-
-		bqIdentityActivity = new BQIdentityActivity();
-
-		bqIdentityActivity.setChannelId(1L);
-		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -5));
-		bqIdentityActivity.setId("2");
-		bqIdentityActivity.setIndividualId(
-			DigestUtils.sha256Hex("test2@liferay.com"));
-		bqIdentityActivity.setIsNew(Boolean.TRUE);
-		bqIdentityActivity.setIdentityId("2");
-
-		_bqIdentityActivityRepository.save(bqIdentityActivity);
-
-		bqIdentityActivity = new BQIdentityActivity();
-
-		bqIdentityActivity.setChannelId(1L);
-		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -11));
-		bqIdentityActivity.setId("3");
-		bqIdentityActivity.setIndividualId(
-			DigestUtils.sha256Hex("test3@liferay.com"));
-		bqIdentityActivity.setIsNew(Boolean.TRUE);
-		bqIdentityActivity.setIdentityId("3");
-
-		_bqIdentityActivityRepository.save(bqIdentityActivity);
-
-		bqIdentityActivity = new BQIdentityActivity();
-
-		bqIdentityActivity.setChannelId(1L);
-		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -36));
-		bqIdentityActivity.setId("4");
-		bqIdentityActivity.setIndividualId(
-			DigestUtils.sha256Hex("test4@liferay.com"));
-		bqIdentityActivity.setIsNew(Boolean.TRUE);
-		bqIdentityActivity.setIdentityId("4");
-
-		_bqIdentityActivityRepository.save(bqIdentityActivity);
-
-		bqIdentityActivity = new BQIdentityActivity();
-
-		bqIdentityActivity.setChannelId(1L);
-		bqIdentityActivity.setCreateDate(DateUtil.addDays(new Date(), -11));
-		bqIdentityActivity.setId("5");
-		bqIdentityActivity.setIsNew(Boolean.TRUE);
-		bqIdentityActivity.setIdentityId("5");
-
-		_bqIdentityActivityRepository.save(bqIdentityActivity);
 	}
 
 	private void _addBQIndividuals() {
@@ -330,6 +292,9 @@ public class BQIdentityRepositoryTest
 
 	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;
+
+	@Autowired
+	private EventDog _eventDog;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
