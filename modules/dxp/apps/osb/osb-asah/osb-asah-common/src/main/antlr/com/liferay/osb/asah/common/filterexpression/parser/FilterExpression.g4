@@ -72,6 +72,7 @@ literal
 	| ('true' | 'false') # BooleanLiteral
 	| 'null' # NullLiteral
 	| STRING # StringLiteral
+	| domainName=IDENTIFIER '.filter(filter=' filter=STRING ')' #FilterLiteral
 	;
 
 functionCallExpression
