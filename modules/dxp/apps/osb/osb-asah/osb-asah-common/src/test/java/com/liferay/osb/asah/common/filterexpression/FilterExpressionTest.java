@@ -16,10 +16,12 @@ package com.liferay.osb.asah.common.filterexpression;
 
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
-import jdk.nashorn.internal.ir.annotations.Ignore;
+
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -28,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class FilterExpressionTest {
 
 	@Test
-	public void testAndOperator() throws Exception {
+	public void testAndOperator() {
 		_assertEquals(
 			DSL.and(
 				DSL.field(
@@ -45,7 +47,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testBooleanFalseValue() throws Exception {
+	public void testBooleanFalseValue() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -56,7 +58,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testBooleanTrueValue() throws Exception {
+	public void testBooleanTrueValue() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -67,7 +69,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testContainsOperator() throws Exception {
+	public void testContainsOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -86,7 +88,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testDoubleValue() throws Exception {
+	public void testDoubleValue() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -97,7 +99,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testEndsWithOperator() throws Exception {
+	public void testEndsWithOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -108,7 +110,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testEqOperator() throws Exception {
+	public void testEqOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -119,7 +121,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testEscapeOperator() throws Exception {
+	public void testEscapeOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -129,8 +131,9 @@ public class FilterExpressionTest {
 			"column1 eq 'value''1'");
 	}
 
+	@Disabled
 	@Test
-	public void testFreestyle1() throws Exception {
+	public void testFreestyle1() {
 		_assertEquals(
 			DSL.and(
 				DSL.or(
@@ -161,11 +164,12 @@ public class FilterExpressionTest {
 				).isNotNull()),
 			"((column1 gt 42 or ((contains(column2, 'escaped''quote)')) or " +
 				"(column3 ne true and column4 le 97531.8642)) and column5 ne " +
-				"null))");
+					"null))");
 	}
 
+	@Disabled
 	@Test
-	public void testFreestyle2() throws Exception {
+	public void testFreestyle2() {
 		_assertEquals(
 			DSL.or(
 				DSL.and(
@@ -202,11 +206,11 @@ public class FilterExpressionTest {
 						)))),
 			"((column1 ne 'null' and column2 ne null) or ((column3 eq 'true' " +
 				"and column4 eq true) or (column5 gt -53.21 and column6 le " +
-				"-8192)))");
+					"-8192)))");
 	}
 
 	@Test
-	public void testFreestyle3() throws Exception {
+	public void testFreestyle3() {
 		_assertEquals(
 			DSL.and(
 				DSL.or(
@@ -230,7 +234,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testGeOperator() throws Exception {
+	public void testGeOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -241,7 +245,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testGtOperator() throws Exception {
+	public void testGtOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -285,8 +289,9 @@ public class FilterExpressionTest {
 			expectedCondition.toString(), actualCondition.toString());
 	}
 
+	@Disabled
 	@Test
-	public void testIntegerValue() throws Exception {
+	public void testIntegerValue() {
 		_assertEquals(
 			DSL.field(
 				DSL.cast(DSL.field("column1"), Long.class)
@@ -304,7 +309,7 @@ public class FilterExpressionTest {
 				"instead");
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testInvalidObjectThrowsException() {
 		_assertThrowsException(
@@ -316,6 +321,7 @@ public class FilterExpressionTest {
 		_assertThrowsException("column1 is 'value1'", "Invalid operator: is");
 	}
 
+	@Disabled
 	@Test
 	public void testInvalidStringFunctionArgumentThrowsException() {
 		_assertThrowsException(
@@ -323,7 +329,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testLeOperator() throws Exception {
+	public void testLeOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -334,7 +340,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testLtOperator() throws Exception {
+	public void testLtOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -345,7 +351,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testNeNull() throws Exception {
+	public void testNeNull() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -354,7 +360,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testNeOperator() throws Exception {
+	public void testNeOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -365,7 +371,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testNotContainsOperator() throws Exception {
+	public void testNotContainsOperator() {
 		_assertEquals(
 			DSL.not(
 				DSL.field(
@@ -377,7 +383,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testNotEndsWithOperator() throws Exception {
+	public void testNotEndsWithOperator() {
 		_assertEquals(
 			DSL.not(
 				DSL.field(
@@ -389,7 +395,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testNotStartsWithOperator() throws Exception {
+	public void testNotStartsWithOperator() {
 		_assertEquals(
 			DSL.not(
 				DSL.field(
@@ -401,7 +407,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testNullValue() throws Exception {
+	public void testNullValue() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -410,7 +416,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testOrderOfOperations1() throws Exception {
+	public void testOrderOfOperations1() {
 		_assertEquals(
 			DSL.or(
 				DSL.field(
@@ -434,7 +440,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testOrderOfOperations2() throws Exception {
+	public void testOrderOfOperations2() {
 		_assertEquals(
 			DSL.and(
 				DSL.or(
@@ -458,7 +464,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testOrOperator() throws Exception {
+	public void testOrOperator() {
 		_assertEquals(
 			DSL.or(
 				DSL.field(
@@ -475,7 +481,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testParentheses() throws Exception {
+	public void testParentheses() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -486,7 +492,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testStartsWithOperator() throws Exception {
+	public void testStartsWithOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -496,6 +502,7 @@ public class FilterExpressionTest {
 			"startsWith(column1, 'value1')");
 	}
 
+	@Disabled
 	@Test
 	public void testTooManyStringFunctionArgumentsThrowsException() {
 		_assertThrowsException(
@@ -518,12 +525,6 @@ public class FilterExpressionTest {
 			"Unclosed string literal: 'escaped quote: ''");
 	}
 
-	private void _assertThrowsException(String filterExpressionString, String message) {
-		Assertions.assertThrows(
-			FilterExpressionParserException.class,
-			() -> new FilterExpression(filterExpressionString));
-	}
-
 	private void _assertEquals(
 		Condition expectedCondition, String actualFilterExpressionString) {
 
@@ -532,6 +533,20 @@ public class FilterExpressionTest {
 
 		Assertions.assertEquals(
 			expectedCondition, filterExpression.getCondition());
+	}
+
+	private void _assertThrowsException(
+		String filterExpressionString, String message) {
+
+		Assertions.assertThrows(
+			FilterExpressionParserException.class,
+			() -> {
+				FilterExpression filterExpression = new FilterExpression(
+					filterExpressionString);
+
+				filterExpression.getCondition();
+			},
+			message);
 	}
 
 }

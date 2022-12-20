@@ -19,7 +19,9 @@ package com.liferay.osb.asah.common.filterexpression;
  */
 public class FilterExpressionParserException extends RuntimeException {
 
-	public FilterExpressionParserException(String message, Throwable throwable) {
+	public FilterExpressionParserException(
+		String message, Throwable throwable) {
+
 		super(message, throwable);
 	}
 
