@@ -255,5 +255,21 @@ public class FilterExpressionVisitor
 		return (T)parseTree.accept(this);
 	}
 
+	@Override
+	public Object visitFilterLiteral(
+			FilterExpressionParser.FilterLiteralContext ctx) {
+
+		String filter = ctx.filter.getText();
+
+		filter = filter.replaceAll("\\s''", " '");
+		filter = filter.replaceAll("''\\s", "' ");
+		filter = filter.replaceAll("''\\)", "')");
+
+		FilterExpression filterExpression = new FilterExpression(
+				filter.substring(1, filter.length() - 1));
+
+		return filterExpression.getCondition();
+	}
+
 	private Stack<Field> _fieldStack;
 }
