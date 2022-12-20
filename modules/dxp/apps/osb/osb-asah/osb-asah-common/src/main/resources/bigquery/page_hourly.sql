@@ -42,7 +42,8 @@ PageBounces AS (
 		`$[AC_PROJECT_ID].session` AS Session ON
 			PageEvent.sessionId = Session.id
 	WHERE
-		eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed')
+		PageEvent.eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed') AND
+		Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	GROUP BY
 		channelId, sessionId, userId
 ),
@@ -81,6 +82,8 @@ PageEntrances AS (
         INNER JOIN
             `$[AC_PROJECT_ID].session` AS Session ON
                 PageEvent.sessionId = Session.id
+        WHERE
+		    Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	) AS EventEntrance
 	WHERE
 		rank = 1
@@ -120,6 +123,8 @@ PageExits AS (
         INNER JOIN
             `$[AC_PROJECT_ID].session` AS Session ON
                 PageEvent.sessionId = Session.id
+        WHERE
+		    Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	) AS EventExit
 	WHERE
 		rank = 1
@@ -159,6 +164,8 @@ PageTimeOnPages AS (
         INNER JOIN
             `$[AC_PROJECT_ID].session` AS Session ON
                 PageEvent.sessionId = Session.id
+        WHERE
+		    Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	) AS EventTimeOnPage
 	GROUP BY
 		browserName, canonicalUrl, channelId, city, country, deviceType,
