@@ -217,13 +217,14 @@ public class FilterExpressionVisitor
 
 		String fieldName = context.getText();
 
-		if (fieldName.startsWith("demographics/")) {
-			fieldName = fieldName.replace("demographics/", "");
-			fieldName = fieldName.replace("/value", "");
-		}
+		if (fieldName.startsWith("context/") ||
+			fieldName.startsWith("dataSourceAccountPKs/") ||
+			fieldName.startsWith("demographics/") ||
+			fieldName.startsWith("organization/")) {
 
-		if (fieldName.startsWith("context/")) {
-			fieldName = fieldName.replace("context/", "");
+			String[] fieldNames = fieldName.split("\\/");
+
+			fieldName = fieldNames[1];
 		}
 
 		return DSL.field(fieldName);
