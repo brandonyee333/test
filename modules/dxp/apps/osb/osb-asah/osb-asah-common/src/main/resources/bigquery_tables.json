@@ -1094,13 +1094,18 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "createDate",
-				"type": "TIMESTAMP"
+				"name": "dataSourceId",
+				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "id",
+				"name": "eventId",
 				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "firstActivityDate",
+				"type": "TIMESTAMP"
 			},
 			{
 				"mode": "REQUIRED",
@@ -1115,11 +1120,6 @@
 			{
 				"mode": "NULLABLE",
 				"name": "lastActivityDate",
-				"type": "TIMESTAMP"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "modifiedDate",
 				"type": "TIMESTAMP"
 			}
 		]

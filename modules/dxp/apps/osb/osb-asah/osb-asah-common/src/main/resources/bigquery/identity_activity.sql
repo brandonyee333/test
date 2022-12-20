@@ -7,39 +7,36 @@ WITH IdentityActivity AS (
 	SELECT
 		COUNT(*) AS activitiesCount,
 		Event.channelId,
-		MIN(Event.eventDate) AS createDate,
-		TO_HEX(SHA256(Event.channelId || '-' || Event.userId)) AS id,
+		Event.dataSourceId,
+		Event.eventId,
+		MIN(Event.eventDate) AS firstActivityDate,
 		Event.userId AS identityId,
 		MAX(Identity.individualId) AS individualId,
-		MAX(Event.eventDate) AS lastActivityDate,
-		MAX(Event.eventDate) AS modifiedDate
+		MAX(Event.eventDate) AS lastActivityDate
 	FROM
 		`$[AC_PROJECT_ID].event` AS Event
 	LEFT JOIN `$[AC_PROJECT_ID].identity` AS Identity ON (
 		Event.userId = Identity.id
 	)
 	WHERE
-		Event.eventDate >  TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY) AND
-		Event.eventId IN (
-			'blogClicked', 'blogViewed', 'documentDownloaded',
-			'documentPreviewed', 'formSubmitted', 'formViewed', 'pageViewed',
-			'posted', 'VOTE', 'webContentClicked', 'webContentViewed'
-		)
+		Event.eventDate >  TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY)
 	GROUP BY
 		Event.channelId,
+		Event.dataSourceId,
+		Event.eventId,
 		Event.userId
 )
 
 SELECT
 	SUM(activitiesCount) AS activitiesCount,
 	channelId,
-	MIN(createDate) AS createDate,
-	id,
+	dataSourceId,
+	eventId,
+	MIN(firstActivityDate) AS firstActivityDate,
 	identityId,
 	MAX(individualId) AS individualId,
-	MAX(lastActivityDate) AS lastActivityDate,
-	MAX(modifiedDate) AS modifiedDate
+	MAX(lastActivityDate) AS lastActivityDate
 FROM
 	IdentityActivity
 GROUP BY
-	channelId, id, identityId
+	channelId, dataSourceId, eventId, identityId

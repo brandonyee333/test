@@ -925,27 +925,21 @@ CREATE OR REPLACE VIEW BQIdentityActivity AS (
 	SELECT
 		COUNT(*) AS activitiesCount,
 		Event.channelId,
-		MIN(Event.eventDate) AS createDate,
-		ENCODE(
-			SHA256(CONCAT(Event.channelId, '-', Event.userId)::BYTEA), 'hex'
-		) AS id,
+		Event.dataSourceId,
+		Event.eventId,
+		MIN(Event.eventDate) AS firstActivityDate,
 		Event.userId AS identityId,
 		MAX(Identity.individualId) AS individualId,
-		MAX(Event.eventDate) AS lastActivityDate,
-		MAX(Event.eventDate) AS modifiedDate
+		MAX(Event.eventDate) AS lastActivityDate
 	FROM
 		BQEvent AS Event
 	LEFT JOIN  BQIdentity AS Identity ON (
 		Event.userId = Identity.id
 	)
-	WHERE
-		Event.eventId IN (
-			'blogClicked', 'blogViewed', 'documentDownloaded',
-			'documentPreviewed', 'formSubmitted', 'formViewed', 'pageViewed',
-			'posted', 'VOTE', 'webContentClicked', 'webContentViewed'
-		)
 	GROUP BY
 		Event.channelId,
+		Event.dataSourceId,
+		Event.eventId,
 		Event.userId
 );
 

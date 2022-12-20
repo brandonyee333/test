@@ -29,6 +29,8 @@ USING
 	) AS staging
 ON (
 	staging.channelId = replica.channelId AND
+	staging.dataSourceId = replica.dataSourceId AND
+	staging.eventId = replica.eventId AND
 	staging.identityId = replica.identityId
 )
 
