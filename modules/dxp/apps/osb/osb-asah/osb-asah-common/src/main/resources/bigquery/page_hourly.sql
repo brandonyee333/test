@@ -236,52 +236,51 @@ SELECT
 	PageTimeOnPages.userId,
 	PageViews.views
 FROM
-	PageTimeOnPages
+	PageViews
 LEFT JOIN PageBounces ON (
-	PageTimeOnPages.channelId = PageBounces.channelId AND
-	PageTimeOnPages.sessionId = PageBounces.sessionId AND
-	PageTimeOnPages.userId = PageBounces.userId
+	PageViews.channelId = PageBounces.channelId AND
+	PageViews.sessionId = PageBounces.sessionId AND
+	PageViews.userId = PageBounces.userId
 )
 LEFT JOIN PageEntrances ON (
-	PageTimeOnPages.browserName = PageEntrances.browserName AND
-	PageTimeOnPages.canonicalUrl =
-	PageEntrances.canonicalUrl AND
-	PageTimeOnPages.channelId = PageEntrances.channelId AND
-	PageTimeOnPages.city = PageEntrances.city AND
-	PageTimeOnPages.country = PageEntrances.country AND
-	PageTimeOnPages.deviceType = PageEntrances.deviceType AND
-	PageTimeOnPages.normalizedEventDate = PageEntrances.normalizedEventDate AND
-	PageTimeOnPages.platformName = PageEntrances.platformName AND
-	PageTimeOnPages.region = PageEntrances.region AND
-	PageTimeOnPages.sessionId = PageEntrances.sessionId AND
-	PageTimeOnPages.title = PageEntrances.title AND
-	PageTimeOnPages.userId = PageEntrances.userId
+	PageViews.browserName = PageEntrances.browserName AND
+	PageViews.canonicalUrl = PageEntrances.canonicalUrl AND
+	PageViews.channelId = PageEntrances.channelId AND
+	PageViews.city = PageEntrances.city AND
+	PageViews.country = PageEntrances.country AND
+	PageViews.deviceType = PageEntrances.deviceType AND
+	PageViews.normalizedEventDate = PageEntrances.normalizedEventDate AND
+	PageViews.platformName = PageEntrances.platformName AND
+	PageViews.region = PageEntrances.region AND
+	PageViews.sessionId = PageEntrances.sessionId AND
+	PageViews.title = PageEntrances.title AND
+	PageViews.userId = PageEntrances.userId
 )
 LEFT JOIN PageExits ON (
-	PageTimeOnPages.browserName = PageExits.browserName AND
-	PageTimeOnPages.canonicalUrl = PageExits.canonicalUrl AND
-	PageTimeOnPages.channelId = PageExits.channelId AND
-	PageTimeOnPages.city = PageExits.city AND
-	PageTimeOnPages.country = PageExits.country AND
-	PageTimeOnPages.deviceType = PageExits.deviceType AND
-	PageTimeOnPages.normalizedEventDate = PageExits.normalizedEventDate AND
-	PageTimeOnPages.platformName = PageExits.platformName AND
-	PageTimeOnPages.region = PageExits.region AND
-	PageTimeOnPages.sessionId = PageExits.sessionId AND
-	PageTimeOnPages.title = PageExits.title AND
-	PageTimeOnPages.userId = PageExits.userId
+	PageViews.browserName = PageExits.browserName AND
+	PageViews.canonicalUrl = PageExits.canonicalUrl AND
+	PageViews.channelId = PageExits.channelId AND
+	PageViews.city = PageExits.city AND
+	PageViews.country = PageExits.country AND
+	PageViews.deviceType = PageExits.deviceType AND
+	PageViews.normalizedEventDate = PageExits.normalizedEventDate AND
+	PageViews.platformName = PageExits.platformName AND
+	PageViews.region = PageExits.region AND
+	PageViews.sessionId = PageExits.sessionId AND
+	PageViews.title = PageExits.title AND
+	PageViews.userId = PageExits.userId
 )
-LEFT JOIN PageViews ON (
-	PageTimeOnPages.browserName = PageViews.browserName AND
-	PageTimeOnPages.canonicalUrl = PageViews.canonicalUrl AND
-	PageTimeOnPages.channelId = PageViews.channelId AND
-	PageTimeOnPages.city = PageViews.city AND
-	PageTimeOnPages.country = PageViews.country AND
-	PageTimeOnPages.deviceType = PageViews.deviceType AND
-	PageTimeOnPages.normalizedEventDate = PageViews.normalizedEventDate AND
-	PageTimeOnPages.platformName = PageViews.platformName AND
-	PageTimeOnPages.region = PageViews.region AND
-	PageTimeOnPages.sessionId = PageViews.sessionId AND
-	PageTimeOnPages.title = PageViews.title AND
-	PageTimeOnPages.userId = PageViews.userId
+LEFT JOIN PageTimeOnPages ON (
+	PageViews.browserName = PageTimeOnPages.browserName AND
+	PageViews.canonicalUrl = PageTimeOnPages.canonicalUrl AND
+	PageViews.channelId = PageTimeOnPages.channelId AND
+	PageViews.city = PageTimeOnPages.city AND
+	PageViews.country = PageTimeOnPages.country AND
+	PageViews.deviceType = PageTimeOnPages.deviceType AND
+	PageViews.normalizedEventDate = PageTimeOnPages.normalizedEventDate AND
+	PageViews.platformName = PageTimeOnPages.platformName AND
+	PageViews.region = PageTimeOnPages.region AND
+	PageViews.sessionId = PageTimeOnPages.sessionId AND
+	PageViews.title = PageTimeOnPages.title AND
+	PageViews.userId = PageTimeOnPages.userId
 )
