@@ -1,21 +1,21 @@
 WITH PageEvent AS (
 	SELECT
-		Event.applicationId,
-		COALESCE(Event.browserName, '') AS browserName,
-		Event.canonicalUrl,
-		Event.channelId,
-		COALESCE(Event.city, '') AS city,
-		COALESCE(Event.country, '') AS country,
-		COALESCE(Event.deviceType, '') AS deviceType,
-		Event.eventDate,
-		Event.eventId,
-		COALESCE(Event.platformName, '') AS platformName,
-		Event.referrer,
-		COALESCE(Event.region, '') AS region,
-		Event.sessionId,
-		Event.title,
-		Event.url,
-		Event.userId
+		applicationId,
+		COALESCE(browserName, '') AS browserName,
+		canonicalUrl,
+		channelId,
+		COALESCE(city, '') AS city,
+		COALESCE(country, '') AS country,
+		COALESCE(deviceType, '') AS deviceType,
+		eventDate,
+		eventId,
+		COALESCE(platformName, '') AS platformName,
+		referrer,
+		COALESCE(region, '') AS region,
+		sessionId,
+		title,
+		url,
+		userId
 	FROM
 		`$[AC_PROJECT_ID].event` AS Event
 	WHERE
@@ -23,19 +23,19 @@ WITH PageEvent AS (
 ),
 PageBounces AS (
 	SELECT
-		channelId,
+		PageEvent.channelId,
 		COUNT(*) AS count,
 		SUM(
 			CASE
-				WHEN applicationId = 'Page' AND eventId = 'pageViewed'
+				WHEN PageEvent.applicationId = 'Page' AND PageEvent.eventId = 'pageViewed'
 			THEN
 				1
 			ELSE
 				0
 			END
 		) AS pageViews,
-		sessionId,
-		userId
+		PageEvent.sessionId,
+		PageEvent.userId
 	FROM
 		PageEvent
 	INNER JOIN
@@ -63,19 +63,19 @@ PageEntrances AS (
 		userId
 	FROM (
 		SELECT
-			browserName,
-			canonicalUrl,
-			channelId,
-			city,
-			country,
-			deviceType,
-			eventDate,
-			platformName,
-			ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate ASC) AS rank,
-			region,
-			sessionId,
-			title,
-			userId
+			PageEvent.browserName,
+			PageEvent.canonicalUrl,
+			PageEvent.channelId,
+			PageEvent.city,
+			PageEvent.country,
+			PageEvent.deviceType,
+			PageEvent.eventDate,
+			PageEvent.platformName,
+			ROW_NUMBER() OVER (PARTITION BY PageEvent.sessionId, PageEvent.channelId, PageEvent.userId ORDER BY PageEvent.eventDate ASC) AS rank,
+			PageEvent.region,
+			PageEvent.sessionId,
+			PageEvent.title,
+			PageEvent.userId
 		FROM
 			PageEvent
         INNER JOIN
@@ -102,19 +102,19 @@ PageExits AS (
 		userId
 	FROM (
 		SELECT
-			browserName,
-			canonicalUrl,
-			channelId,
-			city,
-			country,
-			deviceType,
-			eventDate,
-			platformName,
-			ROW_NUMBER() OVER (PARTITION BY sessionId, channelId, userId ORDER BY eventDate DESC) AS rank,
-			region,
-			sessionId,
-			title,
-			userId
+			PageEvent.browserName,
+			PageEvent.canonicalUrl,
+			PageEvent.channelId,
+			PageEvent.city,
+			PageEvent.country,
+			PageEvent.deviceType,
+			PageEvent.eventDate,
+			PageEvent.platformName,
+			ROW_NUMBER() OVER (PARTITION BY PageEvent.sessionId, PageEvent.channelId, PageEvent.userId ORDER BY PageEvent.eventDate DESC) AS rank,
+			PageEvent.region,
+			PageEvent.sessionId,
+			PageEvent.title,
+			PageEvent.userId
 		FROM
 			PageEvent
         INNER JOIN
@@ -141,19 +141,19 @@ PageTimeOnPages AS (
 		userId
 	FROM (
 		SELECT
-			browserName,
-			canonicalUrl,
-			channelId,
-			city,
-			country,
-			deviceType,
-			eventDate,
-			LEAD(eventDate) OVER (PARTITION BY sessionId, userId, channelId ORDER BY eventDate) AS nextTime,
-			platformName,
-			region,
-			sessionId,
-			title,
-			userId
+			PageEvent.browserName,
+			PageEvent.canonicalUrl,
+			PageEvent.channelId,
+			PageEvent.city,
+			PageEvent.country,
+			PageEvent.deviceType,
+			PageEvent.eventDate,
+			LEAD(PageEvent.eventDate) OVER (PARTITION BY PageEvent.sessionId, PageEvent.userId, PageEvent.channelId ORDER BY PageEvent.eventDate) AS nextTime,
+			PageEvent.platformName,
+			PageEvent.region,
+			PageEvent.sessionId,
+			PageEvent.title,
+			PageEvent.userId
 		FROM
 			PageEvent
         INNER JOIN
