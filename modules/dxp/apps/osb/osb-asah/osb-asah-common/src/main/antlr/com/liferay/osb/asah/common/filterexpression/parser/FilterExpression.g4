@@ -71,8 +71,8 @@ literal
 	| INTEGER_LITERAL # IntegerLiteral
 	| ('true' | 'false') # BooleanLiteral
 	| 'null' # NullLiteral
-	| STRING # StringLiteral
-	| domainName=IDENTIFIER '.filter(filter=' filter=STRING ')' #FilterLiteral
+	| STRING_LITERAL # StringLiteral
+	| domainName=IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')' #FilterLiteral
 	;
 
 functionCallExpression
@@ -176,8 +176,7 @@ MINUS
 	;
 
 
-
-STRING
+STRING_LITERAL
 	: '"' ( '""' | ~["] )* '"'
 	| '\'' ( '\'\'' | ~['] )* '\''
 	;
