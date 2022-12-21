@@ -113,7 +113,13 @@ public class BQIndividualRepositoryTest
 
 		_eventDog.addBQEvent(
 			"Page", Collections.emptySet(), 11L, new Date(), 1L,
-			DateUtil.toUTCDate("2022-12-17T23:59:59.999Z"), "pageLoaded",
+			DateUtil.toUTCDate("2022-12-17T23:59:59.999Z"), "pageViewed",
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			bqIdentity2.getId());
+
+		_eventDog.addBQEvent(
+			"Page", Collections.emptySet(), 11L, new Date(), 1L,
+			DateUtil.toUTCDate("2022-12-18T23:59:59.999Z"), "pageLoaded",
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			bqIdentity2.getId());
 
@@ -177,9 +183,9 @@ public class BQIndividualRepositoryTest
 
 		Individual individual = individuals.get(0);
 
-		Assertions.assertEquals(3L, individual.getActivitiesCount());
+		Assertions.assertEquals(4L, individual.getActivitiesCount());
 		Assertions.assertEquals(
-			DateUtil.toUTCDate("2022-12-16T23:59:59.999Z"),
+			DateUtil.toUTCDate("2022-12-17T23:59:59.999Z"),
 			individual.getLastActivityDate());
 	}
 
