@@ -237,10 +237,10 @@ SELECT
 	PageViews.indirectAccess,
 	PageViews.platformName,
 	PageViews.region,
-	PageViews.sessionId,
+	PageTimeOnPages.sessionId,
 	PageTimeOnPages.timeOnPage,
 	PageViews.title,
-	PageViews.userId,
+	PageTimeOnPages.userId,
 	PageViews.views
 FROM
 	PageViews
