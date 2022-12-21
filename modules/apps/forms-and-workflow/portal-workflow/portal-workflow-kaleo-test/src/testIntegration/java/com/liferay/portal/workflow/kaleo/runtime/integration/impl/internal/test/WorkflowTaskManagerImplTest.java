@@ -28,6 +28,9 @@ import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -36,6 +39,7 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import org.junit.Assert;
@@ -310,6 +314,33 @@ public class WorkflowTaskManagerImplTest
 
 		Assert.assertEquals(
 			WorkflowConstants.STATUS_APPROVED, blogsEntry.getStatus());
+
+		deactivateWorkflow(BlogsEntry.class.getName(), 0, 0);
+	}
+
+	@Test
+	public void testDeleteUserWithWorkflowTaskAssigned() throws Exception {
+		activateSingleApproverWorkflow(BlogsEntry.class.getName(), 0, 0);
+
+		addBlogsEntry();
+
+		checkUserNotificationEventsByUsers(siteAdminUser);
+
+		User user = createUser(RoleConstants.SITE_ADMINISTRATOR);
+
+		assignWorkflowTaskToUser(siteAdminUser, user);
+
+		Assert.assertEquals(
+			1,
+			WorkflowTaskManagerUtil.getWorkflowTaskCountByUser(
+				user.getCompanyId(), user.getUserId(), false));
+
+		UserLocalServiceUtil.deleteUser(user);
+
+		Assert.assertEquals(
+			0,
+			WorkflowTaskManagerUtil.getWorkflowTaskCountByUser(
+				user.getCompanyId(), user.getUserId(), false));
 
 		deactivateWorkflow(BlogsEntry.class.getName(), 0, 0);
 	}
