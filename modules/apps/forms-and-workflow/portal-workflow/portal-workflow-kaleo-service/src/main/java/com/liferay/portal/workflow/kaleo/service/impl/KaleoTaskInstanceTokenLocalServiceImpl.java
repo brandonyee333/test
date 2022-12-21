@@ -287,6 +287,20 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 	}
 
 	@Override
+	public KaleoTaskInstanceToken deleteKaleoTaskInstanceToken(
+			long kaleoTaskInstanceTokenId)
+		throws PortalException {
+
+		KaleoTaskInstanceToken kaleoTaskInstanceToken =
+			kaleoTaskInstanceTokenPersistence.remove(kaleoTaskInstanceTokenId);
+
+		kaleoTaskAssignmentInstanceLocalService.
+			deleteKaleoTaskAssignmentInstances(kaleoTaskInstanceToken);
+
+		return kaleoTaskInstanceToken;
+	}
+
+	@Override
 	public List<KaleoTaskInstanceToken> getCompanyKaleoTaskInstanceTokens(
 		long companyId, int start, int end) {
 
