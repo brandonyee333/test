@@ -246,7 +246,7 @@ FROM
 	PageViews
 LEFT JOIN PageBounces ON (
 	PageViews.channelId = PageBounces.channelId AND
-	PageViews.sessionId = PageBounces.sessionId AND
+	COALESCE(PageViews.sessionId, '') = COALESCE(PageBounces.sessionId, '') AND
 	PageViews.userId = PageBounces.userId
 )
 LEFT JOIN PageEntrances ON (
@@ -259,7 +259,7 @@ LEFT JOIN PageEntrances ON (
 	PageViews.normalizedEventDate = PageEntrances.normalizedEventDate AND
 	PageViews.platformName = PageEntrances.platformName AND
 	PageViews.region = PageEntrances.region AND
-	PageViews.sessionId = PageEntrances.sessionId AND
+	COALESCE(PageViews.sessionId, '') = COALESCE(PageEntrances.sessionId, '') AND
 	PageViews.title = PageEntrances.title AND
 	PageViews.userId = PageEntrances.userId
 )
@@ -273,7 +273,7 @@ LEFT JOIN PageExits ON (
 	PageViews.normalizedEventDate = PageExits.normalizedEventDate AND
 	PageViews.platformName = PageExits.platformName AND
 	PageViews.region = PageExits.region AND
-	PageViews.sessionId = PageExits.sessionId AND
+	COALESCE(PageViews.sessionId, '') = COALESCE(PageExits.sessionId, '') AND
 	PageViews.title = PageExits.title AND
 	PageViews.userId = PageExits.userId
 )
@@ -287,7 +287,7 @@ LEFT JOIN PageTimeOnPages ON (
 	PageViews.normalizedEventDate = PageTimeOnPages.normalizedEventDate AND
 	PageViews.platformName = PageTimeOnPages.platformName AND
 	PageViews.region = PageTimeOnPages.region AND
-	PageViews.sessionId = PageTimeOnPages.sessionId AND
+	COALESCE(PageViews.sessionId, '') = COALESCE(PageTimeOnPages.sessionId, '') AND
 	PageViews.title = PageTimeOnPages.title AND
 	PageViews.userId = PageTimeOnPages.userId
 )
