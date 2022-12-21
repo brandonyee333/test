@@ -1,5 +1,8 @@
 <FindBugsFilter>
 	<Match>
+		<Package name="com.liferay.osb.asah.common.filterexpression.parser" />
+	</Match>
+	<Match>
 		<Bug pattern="CIPHER_INTEGRITY" />
 		<Class name="com.liferay.osb.asah.common.security.Encryptor" />
 	</Match>
