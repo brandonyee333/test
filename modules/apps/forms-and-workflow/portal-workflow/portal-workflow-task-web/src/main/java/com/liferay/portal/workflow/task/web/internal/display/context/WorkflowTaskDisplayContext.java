@@ -923,6 +923,10 @@ public class WorkflowTaskDisplayContext {
 		else if (workflowLog.getUserId() != 0) {
 			User user = getUser(workflowLog.getUserId());
 
+			if (user == null) {
+				return String.valueOf(workflowLog.getUserId());
+			}
+
 			return user.getFullName();
 		}
 
@@ -1007,7 +1011,7 @@ public class WorkflowTaskDisplayContext {
 		User user = _users.get(userId);
 
 		if (user == null) {
-			user = UserLocalServiceUtil.getUser(userId);
+			user = UserLocalServiceUtil.fetchUser(userId);
 
 			_users.put(userId, user);
 		}
