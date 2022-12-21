@@ -130,7 +130,7 @@ public class PageAssetMetricRepositoryImpl
 				DSL.sum(
 					DSL.field(metricType.getFieldName(), Float.class)
 				).div(
-					DSL.countDistinct(DSL.field("sessionId"))
+					DSL.nullif(DSL.countDistinct(DSL.field("sessionId")), 0)
 				),
 				BigDecimal.ZERO);
 		}
