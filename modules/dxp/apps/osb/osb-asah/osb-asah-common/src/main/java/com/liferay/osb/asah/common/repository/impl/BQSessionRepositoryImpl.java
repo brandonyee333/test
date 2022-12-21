@@ -108,7 +108,8 @@ public class BQSessionRepositoryImpl
 						DSL.table("BQSession")
 					).where(
 						DSL.and(
-							_createWhereClause(channelId, timeRange, zoneId),
+							_createWhereClauseCondition(
+								channelId, timeRange, zoneId),
 							field.isNotNull())
 					)
 				).with(
@@ -166,7 +167,7 @@ public class BQSessionRepositoryImpl
 				DSL.table("BQSession")
 			).where(
 				DSL.and(
-					_createWhereClause(channelId, timeRange, zoneId),
+					_createWhereClauseCondition(channelId, timeRange, zoneId),
 					field.isNotNull())
 			).groupBy(
 				DSL.field("field")
@@ -196,7 +197,8 @@ public class BQSessionRepositoryImpl
 						DSL.table("BQSession")
 					).where(
 						DSL.and(
-							_createWhereClause(channelId, timeRange, zoneId),
+							_createWhereClauseCondition(
+								channelId, timeRange, zoneId),
 							field.isNotNull())
 					)
 				).with(
@@ -236,7 +238,7 @@ public class BQSessionRepositoryImpl
 				DSL.table("BQSession")
 			).where(
 				DSL.and(
-					_createWhereClause(channelId, timeRange, zoneId),
+					_createWhereClauseCondition(channelId, timeRange, zoneId),
 					field.isNotNull())
 			));
 	}
@@ -288,7 +290,7 @@ public class BQSessionRepositoryImpl
 			).from(
 				"BQSession"
 			).where(
-				_createWhereClause(channelId, timeRange, zoneId)
+				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
 				field
 			),
@@ -314,7 +316,7 @@ public class BQSessionRepositoryImpl
 			).from(
 				"BQSession"
 			).where(
-				_createWhereClause(channelId, timeRange, zoneId)
+				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
 				deviceTypeField, platformNameField
 			));
@@ -333,7 +335,7 @@ public class BQSessionRepositoryImpl
 			).from(
 				"BQSession"
 			).where(
-				_createWhereClause(channelId, timeRange, zoneId)
+				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
 				field
 			),
@@ -383,7 +385,7 @@ public class BQSessionRepositoryImpl
 					DSL.table("BQSession")
 				)
 			).where(
-				_createWhereClause(
+				_createWhereClauseCondition(
 					channelId, includePrevious, timeRange, zoneId)
 			).groupBy(
 				previousField
@@ -428,7 +430,7 @@ public class BQSessionRepositoryImpl
 					"BQSession"
 				)
 			).where(
-				_createWhereClause(
+				_createWhereClauseCondition(
 					channelId, includePrevious, timeRange, zoneId)
 			).groupBy(
 				sessionStartField
@@ -485,7 +487,7 @@ public class BQSessionRepositoryImpl
 					"BQSession"
 				)
 			).where(
-				_createWhereClause(channelId, timeRange, zoneId)
+				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
 				dayOfWeekField, hourOfDayField
 			));
@@ -559,7 +561,7 @@ public class BQSessionRepositoryImpl
 		);
 	}
 
-	private Condition _createWhereClause(
+	private Condition _createWhereClauseCondition(
 		Long channelId, boolean includePrevious, TimeRange timeRange,
 		ZoneId zoneId) {
 
@@ -569,10 +571,11 @@ public class BQSessionRepositoryImpl
 			whereClauseTimeRange = timeRange.getIncludePreviousTimeRange();
 		}
 
-		return _createWhereClause(channelId, whereClauseTimeRange, zoneId);
+		return _createWhereClauseCondition(
+			channelId, whereClauseTimeRange, zoneId);
 	}
 
-	private Condition _createWhereClause(
+	private Condition _createWhereClauseCondition(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
 		return DSL.and(
@@ -704,7 +707,7 @@ public class BQSessionRepositoryImpl
 			_joinWithIdentityTable(selectJoinStep);
 
 		selectOnConditionStep.where(
-			_createWhereClause(channelId, timeRange, zoneId)
+			_createWhereClauseCondition(channelId, timeRange, zoneId)
 		).groupBy(
 			DSL.field("BQSession.userId"), DSL.field("isKnown")
 		).orderBy(
@@ -757,7 +760,7 @@ public class BQSessionRepositoryImpl
 				DSL.field("firstSession.userId")
 			)
 		).where(
-			_createWhereClause(channelId, timeRange, zoneId)
+			_createWhereClauseCondition(channelId, timeRange, zoneId)
 		).groupBy(
 			DSL.field("BQSession.userId"), DSL.field("firstSession.isKnown"),
 			DSL.field("intervalNumber")

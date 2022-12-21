@@ -61,7 +61,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		).from(
 			"BQPageReferrers"
 		).where(
-			_createWhereClause(canonicalUrl, channelId, timeRange, zoneId)
+			_createWhereClauseCondition(
+				canonicalUrl, channelId, timeRange, zoneId)
 		).groupBy(
 			acquisitionChannelField
 		).orderBy(
@@ -99,7 +100,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			"BQPageReferrers"
 		).where(
 			DSL.and(
-				_createWhereClause(canonicalUrl, channelId, timeRange, zoneId),
+				_createWhereClauseCondition(
+					canonicalUrl, channelId, timeRange, zoneId),
 				DSL.field(
 					"referrer"
 				).notEqual(
@@ -146,7 +148,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			"BQPageReferrers"
 		).where(
 			DSL.and(
-				_createWhereClause(canonicalUrl, channelId, timeRange, zoneId),
+				_createWhereClauseCondition(
+					canonicalUrl, channelId, timeRange, zoneId),
 				DSL.not(
 					DSL.field(
 						"acquisitionChannel"
@@ -196,7 +199,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			"BQPageReferrers"
 		).where(
 			DSL.and(
-				_createWhereClause(canonicalUrl, channelId, timeRange, zoneId),
+				_createWhereClauseCondition(
+					canonicalUrl, channelId, timeRange, zoneId),
 				DSL.not(
 					DSL.field(
 						"acquisitionChannel"
@@ -227,7 +231,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	@Autowired
 	protected DSLContext dslContext;
 
-	private Condition _createWhereClause(
+	private Condition _createWhereClauseCondition(
 		String canonicalUrl, Long channelId, TimeRange timeRange,
 		ZoneId zoneId) {
 
