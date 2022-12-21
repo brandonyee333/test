@@ -77,7 +77,6 @@ public class Individual {
 			_customFields.forEach(
 				customField -> {
 					customField.setModifiedDate(bqIndividual.getModifiedDate());
-
 					customField.setSourceName(customField.getName());
 				});
 
