@@ -79,24 +79,24 @@ public class WorkflowInstanceEditDisplayContext
 	}
 
 	public String getAssetEntryVersionId() {
-		long classPK = getWorkflowContextEntryClassPK();
+		long classPK = _getWorkflowContextEntryClassPK();
 
 		return String.valueOf(classPK);
 	}
 
-	public String getAssetName() {
-		return HtmlUtil.escape(getWorkflowDefinitionName());
+	public String getAssetName() throws PortalException {
+		return HtmlUtil.escape(_getWorkflowDefinitionName());
 	}
 
 	public AssetRenderer<?> getAssetRenderer() throws PortalException {
-		WorkflowHandler<?> workflowHandler = getWorkflowHandler();
+		WorkflowHandler<?> workflowHandler = _getWorkflowHandler();
 
 		return workflowHandler.getAssetRenderer(
-			getWorkflowContextEntryClassPK());
+			_getWorkflowContextEntryClassPK());
 	}
 
 	public AssetRendererFactory<?> getAssetRendererFactory() {
-		WorkflowHandler<?> workflowHandler = getWorkflowHandler();
+		WorkflowHandler<?> workflowHandler = _getWorkflowHandler();
 
 		return workflowHandler.getAssetRendererFactory();
 	}
@@ -104,7 +104,7 @@ public class WorkflowInstanceEditDisplayContext
 	public String getAssignedTheTaskMessageKey(WorkflowLog workflowLog)
 		throws PortalException {
 
-		User user = getUser(workflowLog.getUserId());
+		User user = _getUser(workflowLog.getUserId());
 
 		if (user.isMale()) {
 			return "x-assigned-the-task-to-himself";
@@ -113,26 +113,27 @@ public class WorkflowInstanceEditDisplayContext
 		return "x-assigned-the-task-to-herself";
 	}
 
-	public Object getAssignedTheTaskToMessageArguments(WorkflowLog workflowLog)
-		throws PortalException {
+	public Object getAssignedTheTaskToMessageArguments(
+		WorkflowLog workflowLog) {
 
 		String userName = PortalUtil.getUserName(
 			workflowLog.getAuditUserId(), StringPool.BLANK);
-		String actorName = getActorName(workflowLog);
+
+		String actorName = _getActorName(workflowLog);
 
 		return new Object[] {
 			HtmlUtil.escape(userName), HtmlUtil.escape(actorName)
 		};
 	}
 
-	public String getHeaderTitle() {
+	public String getHeaderTitle() throws PortalException {
 		return LanguageUtil.get(
 			workflowInstanceRequestHelper.getRequest(),
-			getWorkflowDefinitionName()) + ": " + getTaskContentTitleMessage();
+			_getWorkflowDefinitionName()) + ": " + getTaskContentTitleMessage();
 	}
 
 	public String getIconCssClass() {
-		WorkflowHandler<?> workflowHandler = getWorkflowHandler();
+		WorkflowHandler<?> workflowHandler = _getWorkflowHandler();
 
 		return workflowHandler.getIconCssClass();
 	}
@@ -140,7 +141,7 @@ public class WorkflowInstanceEditDisplayContext
 	public String getPanelTitle() {
 		String modelResource = ResourceActionsUtil.getModelResource(
 			workflowInstanceRequestHelper.getLocale(),
-			getWorkflowContextEntryClassName());
+			_getWorkflowContextEntryClassName());
 
 		return LanguageUtil.format(
 			workflowInstanceRequestHelper.getRequest(), "preview-of-x",
@@ -163,10 +164,8 @@ public class WorkflowInstanceEditDisplayContext
 			workflowInstanceRequestHelper.getRequest(), "no");
 	}
 
-	public Object getTaskCompletionMessageArguments(WorkflowLog workflowLog)
-		throws PortalException {
-
-		String actorName = getActorName(workflowLog);
+	public Object getTaskCompletionMessageArguments(WorkflowLog workflowLog) {
+		String actorName = _getActorName(workflowLog);
 
 		return new Object[] {
 			HtmlUtil.escape(actorName), HtmlUtil.escape(workflowLog.getState())
@@ -174,9 +173,9 @@ public class WorkflowInstanceEditDisplayContext
 	}
 
 	public String getTaskContentTitleMessage() {
-		WorkflowHandler<?> workflowHandler = getWorkflowHandler();
+		WorkflowHandler<?> workflowHandler = _getWorkflowHandler();
 
-		long classPK = getWorkflowContextEntryClassPK();
+		long classPK = _getWorkflowContextEntryClassPK();
 
 		return HtmlUtil.escape(
 			workflowHandler.getTitle(
@@ -193,26 +192,21 @@ public class WorkflowInstanceEditDisplayContext
 	}
 
 	public Object getTaskInitiallyAssignedMessageArguments(
-			WorkflowLog workflowLog)
-		throws PortalException {
+		WorkflowLog workflowLog) {
 
-		return HtmlUtil.escape(getActorName(workflowLog));
+		return HtmlUtil.escape(_getActorName(workflowLog));
 	}
 
 	public String getTaskName(WorkflowTask workflowTask) {
 		return HtmlUtil.escape(workflowTask.getName());
 	}
 
-	public Object getTaskUpdateMessageArguments(WorkflowLog workflowLog)
-		throws PortalException {
-
-		return HtmlUtil.escape(getActorName(workflowLog));
+	public Object getTaskUpdateMessageArguments(WorkflowLog workflowLog) {
+		return HtmlUtil.escape(_getActorName(workflowLog));
 	}
 
-	public Object getTransitionMessageArguments(WorkflowLog workflowLog)
-		throws PortalException {
-
-		String actorName = getActorName(workflowLog);
+	public Object getTransitionMessageArguments(WorkflowLog workflowLog) {
+		String actorName = _getActorName(workflowLog);
 
 		return new Object[] {
 			HtmlUtil.escape(actorName),
@@ -224,13 +218,13 @@ public class WorkflowInstanceEditDisplayContext
 	public String getUserFullName(WorkflowLog workflowLog)
 		throws PortalException {
 
-		User user = getUser(workflowLog.getUserId());
+		User user = _getUser(workflowLog.getUserId());
 
 		return HtmlUtil.escape(user.getFullName());
 	}
 
 	public String getWorkflowInstanceEndDate() {
-		WorkflowInstance workflowInstance = getWorkflowInstance();
+		WorkflowInstance workflowInstance = _getWorkflowInstance();
 
 		if (workflowInstance.getEndDate() == null) {
 			return LanguageUtil.get(
@@ -241,7 +235,7 @@ public class WorkflowInstanceEditDisplayContext
 	}
 
 	public String getWorkflowInstanceState() {
-		WorkflowInstance workflowInstance = getWorkflowInstance();
+		WorkflowInstance workflowInstance = _getWorkflowInstance();
 
 		return LanguageUtil.get(
 			workflowInstanceRequestHelper.getRequest(),
@@ -304,16 +298,32 @@ public class WorkflowInstanceEditDisplayContext
 		return workflowTasks.isEmpty();
 	}
 
-	protected String getActorName(WorkflowLog workflowLog)
-		throws PortalException {
+	protected long getWorkflowInstanceId() {
+		WorkflowInstance workflowInstance = _getWorkflowInstance();
 
+		return workflowInstance.getWorkflowInstanceId();
+	}
+
+	protected List<WorkflowTask> workflowTasks;
+
+	private String _getActorName(WorkflowLog workflowLog) {
 		if (workflowLog.getRoleId() != 0) {
-			Role role = getRole(workflowLog.getRoleId());
+			Role role = _getRole(workflowLog.getRoleId());
 
-			return role.getDescriptiveName();
+			if (role == null) {
+				return String.valueOf(workflowLog.getRoleId());
+			}
+
+			return role.getTitle(
+				LanguageUtil.getLanguageId(
+					workflowInstanceRequestHelper.getRequest()));
 		}
 		else if (workflowLog.getUserId() != 0) {
-			User user = getUser(workflowLog.getUserId());
+			User user = _getUser(workflowLog.getUserId());
+
+			if (user == null) {
+				return String.valueOf(workflowLog.getUserId());
+			}
 
 			return user.getFullName();
 		}
@@ -321,11 +331,11 @@ public class WorkflowInstanceEditDisplayContext
 		return StringPool.BLANK;
 	}
 
-	protected Role getRole(long roleId) throws PortalException {
+	private Role _getRole(long roleId) {
 		Role role = _roles.get(roleId);
 
 		if (role == null) {
-			role = RoleLocalServiceUtil.getRole(roleId);
+			role = RoleLocalServiceUtil.fetchRole(roleId);
 
 			_roles.put(roleId, role);
 		}
@@ -333,11 +343,11 @@ public class WorkflowInstanceEditDisplayContext
 		return role;
 	}
 
-	protected User getUser(long userId) throws PortalException {
+	private User _getUser(long userId) {
 		User user = _users.get(userId);
 
 		if (user == null) {
-			user = UserLocalServiceUtil.getUser(userId);
+			user = UserLocalServiceUtil.fetchUser(userId);
 
 			_users.put(userId, user);
 		}
@@ -345,51 +355,43 @@ public class WorkflowInstanceEditDisplayContext
 		return user;
 	}
 
-	protected Map<String, Serializable> getWorkflowContext() {
-		WorkflowInstance workflowInstance = getWorkflowInstance();
+	private Map<String, Serializable> _getWorkflowContext() {
+		WorkflowInstance workflowInstance = _getWorkflowInstance();
 
 		return workflowInstance.getWorkflowContext();
 	}
 
-	protected String getWorkflowContextEntryClassName() {
-		Map<String, Serializable> workflowContext = getWorkflowContext();
+	private String _getWorkflowContextEntryClassName() {
+		Map<String, Serializable> workflowContext = _getWorkflowContext();
 
 		return (String)workflowContext.get(
 			WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME);
 	}
 
-	protected long getWorkflowContextEntryClassPK() {
-		Map<String, Serializable> workflowContext = getWorkflowContext();
+	private long _getWorkflowContextEntryClassPK() {
+		Map<String, Serializable> workflowContext = _getWorkflowContext();
 
 		return GetterUtil.getLong(
 			(String)workflowContext.get(
 				WorkflowConstants.CONTEXT_ENTRY_CLASS_PK));
 	}
 
-	protected String getWorkflowDefinitionName() {
-		WorkflowInstance workflowInstance = getWorkflowInstance();
+	private String _getWorkflowDefinitionName() throws PortalException {
+		WorkflowInstance workflowInstance = _getWorkflowInstance();
 
 		return workflowInstance.getWorkflowDefinitionName();
 	}
 
-	protected WorkflowHandler<?> getWorkflowHandler() {
-		String className = getWorkflowContextEntryClassName();
+	private WorkflowHandler<?> _getWorkflowHandler() {
+		String className = _getWorkflowContextEntryClassName();
 
 		return WorkflowHandlerRegistryUtil.getWorkflowHandler(className);
 	}
 
-	protected WorkflowInstance getWorkflowInstance() {
+	private WorkflowInstance _getWorkflowInstance() {
 		return (WorkflowInstance)liferayPortletRequest.getAttribute(
 			WebKeys.WORKFLOW_INSTANCE);
 	}
-
-	protected long getWorkflowInstanceId() {
-		WorkflowInstance workflowInstance = getWorkflowInstance();
-
-		return workflowInstance.getWorkflowInstanceId();
-	}
-
-	protected List<WorkflowTask> workflowTasks;
 
 	private static final List<Integer> _logTypes = Arrays.asList(
 		WorkflowLog.TASK_ASSIGN, WorkflowLog.TASK_COMPLETION,
