@@ -74,6 +74,13 @@ public class Individual {
 
 			fields.removeAll(_customFields);
 
+			_customFields.forEach(
+				customField -> {
+					customField.setModifiedDate(bqIndividual.getModifiedDate());
+
+					customField.setSourceName(customField.getName());
+				});
+
 			fieldsStream = fields.stream();
 
 			fieldsStream.forEach(
