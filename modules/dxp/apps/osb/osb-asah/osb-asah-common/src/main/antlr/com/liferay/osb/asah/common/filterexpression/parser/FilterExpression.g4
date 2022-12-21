@@ -63,6 +63,7 @@ booleanOperandExpression
 logicalTerm
 	: literal # ToLiteral
 	| functionCallExpression # ToFunctionCallExpression
+	| filterExpression # ToFilterExpression
 	| IDENTIFIER # LogicalVariable
 	;
 
@@ -72,7 +73,6 @@ literal
 	| ('true' | 'false') # BooleanLiteral
 	| 'null' # NullLiteral
 	| STRING_LITERAL # StringLiteral
-	| domainName=IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')' #FilterLiteral
 	;
 
 functionCallExpression
@@ -87,10 +87,9 @@ functionParameter
 	: logicalOrExpression
 	;
 
-COMMA
-	: ','
+filterExpression
+	: domainName=IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')'
 	;
-
 
 AND
 	: '&&'
@@ -99,11 +98,8 @@ AND
 	| 'AND'
 	;
 
-OR
-	: '||'
-	| '|'
-	| 'or'
-	| 'OR'
+COMMA
+	: ','
 	;
 
 EQ
@@ -111,6 +107,10 @@ EQ
 	| '='
 	;
 
+FLOATING_POINT_LITERAL
+    : MINUS? DIGITS '.' DIGITS?
+    | MINUS? '.' DIGITS
+    ;
 
 NEQ
 	: 'ne'
@@ -122,6 +122,10 @@ GE
 
 GT
 	: 'gt'
+	;
+
+INTEGER_LITERAL
+	: MINUS? DIGITS
 	;
 
 LE
@@ -145,50 +149,45 @@ NOT
 	| 'NOT'
 	;
 
-
-FLOATING_POINT_LITERAL
-    : MINUS? DIGITS '.' DIGITS?
-    | MINUS? '.' DIGITS
-    ;
-
-INTEGER_LITERAL
-	: MINUS? DIGITS
+OR
+	: '||'
+	| '|'
+	| 'or'
+	| 'OR'
 	;
-
-
-DIGITS
-    : [0-9]+
-    ;
-
-MINUS
-	: '-'
-	;
-
 
 STRING_LITERAL
 	: '"' ( '""' | ~["] )* '"'
 	| '\'' ( '\'\'' | ~['] )* '\''
 	;
 
-
 IDENTIFIER
-	: NameStartChar NameChar*
-    | NameStartChar NameChar* '/' NameStartChar NameChar*
-	| NameStartChar NameChar* '/' NameStartChar NameChar* '/value'
+	: NAME_START_CHAR NAME_CHAR*
+    | NAME_START_CHAR NAME_CHAR* '/' NAME_START_CHAR NAME_CHAR*
+	| NAME_START_CHAR NAME_CHAR* '/' NAME_START_CHAR NAME_CHAR* '/value'
 	;
 
 fragment
-NameChar
-   : NameStartChar
+DIGITS
+    : [0-9]+
+    ;
+
+fragment
+MINUS
+	: '-'
+	;
+
+fragment
+NAME_CHAR
+   : NAME_START_CHAR
    | '0'..'9'
    ;
 
 fragment
-NameStartChar
+NAME_START_CHAR
    : '_'
    | 'A'..'Z' | 'a'..'z'
    ;
-
 
 WS
 	: [ \r\t\u000C\n]+ -> skip

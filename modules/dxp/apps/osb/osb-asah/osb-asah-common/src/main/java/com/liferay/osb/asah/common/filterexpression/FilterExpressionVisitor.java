@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -36,39 +37,42 @@ import org.jooq.impl.DSL;
  * @author Marcelllus Tavares
  * @author Ivica Cardic
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class FilterExpressionVisitor
 	extends FilterExpressionBaseVisitor<Object> {
 
 	@Override
 	public Object visitAndExpression(
-		FilterExpressionParser.AndExpressionContext context) {
+		FilterExpressionParser.AndExpressionContext andExpressionContext) {
 
-		Condition left = _visitChild(context, 0);
+		Condition left = _visitChild(andExpressionContext, 0);
+		Condition right = _visitChild(andExpressionContext, 2);
 
-		return left.and((Condition)_visitChild(context, 2));
+		return left.and(right);
 	}
 
 	@Override
 	public Object visitBooleanLiteral(
-		FilterExpressionParser.BooleanLiteralContext context) {
+		FilterExpressionParser.BooleanLiteralContext booleanLiteralContext) {
 
-		return DSL.val(Boolean.parseBoolean(context.getText()));
+		return DSL.val(Boolean.parseBoolean(booleanLiteralContext.getText()));
 	}
 
 	@Override
 	public Object visitBooleanParenthesis(
-		FilterExpressionParser.BooleanParenthesisContext context) {
+		FilterExpressionParser.BooleanParenthesisContext
+			booleanParenthesisContext) {
 
-		return _visitChild(context, 1);
+		return _visitChild(booleanParenthesisContext, 1);
 	}
 
 	@Override
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public Object visitEqualsExpression(
-		FilterExpressionParser.EqualsExpressionContext context) {
+		FilterExpressionParser.EqualsExpressionContext
+			equalsExpressionContext) {
 
-		Field left = _visitChild(context, 0);
-		Field right = _visitChild(context, 2);
+		Field left = _visitChild(equalsExpressionContext, 0);
+		Field right = _visitChild(equalsExpressionContext, 2);
 
 		if (right == null) {
 			return left.isNull();
@@ -79,19 +83,21 @@ public class FilterExpressionVisitor
 
 	@Override
 	public Object visitExpression(
-		FilterExpressionParser.ExpressionContext context) {
+		FilterExpressionParser.ExpressionContext expressionContext) {
 
 		FilterExpressionParser.LogicalOrExpressionContext
-			logicalOrExpressionContext = context.logicalOrExpression();
+			logicalOrExpressionContext =
+				expressionContext.logicalOrExpression();
 
 		return logicalOrExpressionContext.accept(this);
 	}
 
 	@Override
-	public Object visitFilterLiteral(
-		FilterExpressionParser.FilterLiteralContext ctx) {
+	public Object visitFilterExpression(
+		FilterExpressionParser.FilterExpressionContext
+			filterExpressionContext) {
 
-		String filter = ctx.filter.getText();
+		String filter = filterExpressionContext.filter.getText();
 
 		filter = filter.replaceAll("\\s''", " '");
 		filter = filter.replaceAll("''\\s", "' ");
@@ -105,19 +111,24 @@ public class FilterExpressionVisitor
 
 	@Override
 	public Object visitFloatingPointLiteral(
-		FilterExpressionParser.FloatingPointLiteralContext context) {
+		FilterExpressionParser.FloatingPointLiteralContext
+			floatingPointLiteralContext) {
 
-		return DSL.val(Double.parseDouble(context.getText()));
+		String doubleString = floatingPointLiteralContext.getText();
+
+		return DSL.val(Double.parseDouble(doubleString));
 	}
 
 	@Override
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public Object visitFunctionCallExpression(
-		FilterExpressionParser.FunctionCallExpressionContext context) {
+		FilterExpressionParser.FunctionCallExpressionContext
+			functionCallExpressionContext) {
 
-		String functionName = context.functionName.getText();
+		Token functionNameToken = functionCallExpressionContext.functionName;
 
-		List<Object> parameters = _visitChild(context, 2);
+		String functionName = functionNameToken.getText();
+
+		List<Object> parameters = _visitChild(functionCallExpressionContext, 2);
 
 		Field field = (Field)parameters.get(0);
 
@@ -147,12 +158,13 @@ public class FilterExpressionVisitor
 
 	@Override
 	public Object visitFunctionParameters(
-		FilterExpressionParser.FunctionParametersContext context) {
+		FilterExpressionParser.FunctionParametersContext
+			functionParametersContext) {
 
 		List<Object> parameters = new ArrayList<>();
 
-		for (int i = 0; i < context.getChildCount(); i++) {
-			ParseTree child = context.getChild(i);
+		for (int i = 0; i < functionParametersContext.getChildCount(); i++) {
+			ParseTree child = functionParametersContext.getChild(i);
 
 			if (child instanceof TerminalNode) {
 				continue;
@@ -165,64 +177,70 @@ public class FilterExpressionVisitor
 	}
 
 	@Override
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public Object visitGreaterThanExpression(
-		FilterExpressionParser.GreaterThanExpressionContext context) {
+		FilterExpressionParser.GreaterThanExpressionContext
+			greaterThanExpressionContext) {
 
-		Field left = _visitChild(context, 0);
+		Field left = _visitChild(greaterThanExpressionContext, 0);
+		Field right = _visitChild(greaterThanExpressionContext, 2);
 
-		return left.gt((Field)_visitChild(context, 2));
+		return left.gt(right);
 	}
 
 	@Override
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public Object visitGreaterThanOrEqualsExpression(
-		FilterExpressionParser.GreaterThanOrEqualsExpressionContext context) {
+		FilterExpressionParser.GreaterThanOrEqualsExpressionContext
+			greaterThanOrEqualsExpressionContext) {
 
-		Field left = _visitChild(context, 0);
+		Field left = _visitChild(greaterThanOrEqualsExpressionContext, 0);
+		Field right = _visitChild(greaterThanOrEqualsExpressionContext, 2);
 
-		return left.ge((Field)_visitChild(context, 2));
+		return left.ge(right);
 	}
 
 	@Override
 	public Object visitIntegerLiteral(
-		FilterExpressionParser.IntegerLiteralContext context) {
+		FilterExpressionParser.IntegerLiteralContext integerLiteralContext) {
 
-		return DSL.val(Long.parseLong(context.getText()));
+		String longString = integerLiteralContext.getText();
+
+		return DSL.val(Long.parseLong(longString));
 	}
 
 	@Override
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public Object visitLessThanExpression(
-		FilterExpressionParser.LessThanExpressionContext context) {
+		FilterExpressionParser.LessThanExpressionContext
+			lessThanExpressionContext) {
 
-		Field left = _visitChild(context, 0);
+		Field left = _visitChild(lessThanExpressionContext, 0);
+		Field right = _visitChild(lessThanExpressionContext, 2);
 
-		return left.lt((Field)_visitChild(context, 2));
+		return left.lt(right);
 	}
 
 	@Override
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public Object visitLessThanOrEqualsExpression(
-		FilterExpressionParser.LessThanOrEqualsExpressionContext context) {
+		FilterExpressionParser.LessThanOrEqualsExpressionContext
+			lessThanOrEqualsExpressionContext) {
 
-		Field left = _visitChild(context, 0);
+		Field left = _visitChild(lessThanOrEqualsExpressionContext, 0);
+		Field right = _visitChild(lessThanOrEqualsExpressionContext, 2);
 
-		return left.le((Field)_visitChild(context, 2));
+		return left.le(right);
 	}
 
 	@Override
 	public Object visitLogicalVariable(
-		FilterExpressionParser.LogicalVariableContext context) {
+		FilterExpressionParser.LogicalVariableContext logicalVariableContext) {
 
-		String fieldName = context.getText();
+		String fieldName = logicalVariableContext.getText();
 
 		if (fieldName.startsWith("context/") ||
 			fieldName.startsWith("dataSourceAccountPKs/") ||
 			fieldName.startsWith("demographics/") ||
 			fieldName.startsWith("organization/")) {
 
-			String[] fieldNames = fieldName.split("\\/");
+			String[] fieldNames = fieldName.split("/");
 
 			fieldName = fieldNames[1];
 		}
@@ -231,12 +249,12 @@ public class FilterExpressionVisitor
 	}
 
 	@Override
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public Object visitNotEqualsExpression(
-		FilterExpressionParser.NotEqualsExpressionContext context) {
+		FilterExpressionParser.NotEqualsExpressionContext
+			notEqualsExpressionContext) {
 
-		Field left = _visitChild(context, 0);
-		Field right = _visitChild(context, 2);
+		Field left = _visitChild(notEqualsExpressionContext, 0);
+		Field right = _visitChild(notEqualsExpressionContext, 2);
 
 		if (right == null) {
 			return left.isNotNull();
@@ -247,36 +265,39 @@ public class FilterExpressionVisitor
 
 	@Override
 	public Object visitNotExpression(
-		FilterExpressionParser.NotExpressionContext context) {
+		FilterExpressionParser.NotExpressionContext notExpressionContext) {
 
-		return DSL.not((Condition)_visitChild(context, 1));
+		Condition condition = _visitChild(notExpressionContext, 1);
+
+		return DSL.not(condition);
 	}
 
 	@Override
 	public Object visitNullLiteral(
-		FilterExpressionParser.NullLiteralContext context) {
+		FilterExpressionParser.NullLiteralContext nullLiteralContext) {
 
 		return null;
 	}
 
 	@Override
 	public Object visitOrExpression(
-		FilterExpressionParser.OrExpressionContext context) {
+		FilterExpressionParser.OrExpressionContext orExpressionContext) {
 
-		Condition left = _visitChild(context, 0);
+		Condition left = _visitChild(orExpressionContext, 0);
+		Condition right = _visitChild(orExpressionContext, 2);
 
-		return left.or((Condition)_visitChild(context, 2));
+		return left.or(right);
 	}
 
 	@Override
 	public Object visitStringLiteral(
-		FilterExpressionParser.StringLiteralContext context) {
+		FilterExpressionParser.StringLiteralContext stringLiteralContext) {
 
-		return DSL.val(
-			StringUtil.unquoteAndDecodeInnerQuotes(context.getText()));
+		String string = stringLiteralContext.getText();
+
+		return DSL.val(StringUtil.unquoteAndDecodeInnerQuotes(string));
 	}
 
-	@SuppressWarnings("unchecked")
 	private <T> T _visitChild(
 		ParserRuleContext parserRuleContext, int childIndex) {
 

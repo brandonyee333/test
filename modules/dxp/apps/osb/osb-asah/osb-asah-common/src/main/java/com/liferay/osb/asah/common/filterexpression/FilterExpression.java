@@ -56,9 +56,6 @@ public class FilterExpression {
 			_expressionContext = filterExpressionParser.expression();
 		}
 		catch (ParseCancellationException parseCancellationException) {
-
-			// TODO Wrap into a proper parser exception
-
 			throw new FilterExpressionParserException(
 				"Unable to parse " + filterExpressionString,
 				parseCancellationException);
