@@ -84,18 +84,8 @@ public class BQIndividualDog {
 
 		Individual individual = bqIndividualOptional.get();
 
-		Set<Field> fields = individual.getFields();
-
-		for (Field field : fields) {
-			Optional<DataSource> dataSourceOptional =
-				_dataSourceRepository.findById(field.getDataSourceId());
-
-			if (dataSourceOptional.isPresent()) {
-				DataSource dataSource = dataSourceOptional.get();
-
-				field.setDataSourceName(dataSource.getName());
-			}
-		}
+		_setDataSourceName(individual.getCustomFields());
+		_setDataSourceName(individual.getFields());
 
 		return individual;
 	}
@@ -183,6 +173,19 @@ public class BQIndividualDog {
 		}
 
 		return Sort.by(orders);
+	}
+
+	private void _setDataSourceName(Set<Field> fields) {
+		for (Field field : fields) {
+			Optional<DataSource> dataSourceOptional =
+				_dataSourceRepository.findById(field.getDataSourceId());
+
+			if (dataSourceOptional.isPresent()) {
+				DataSource dataSource = dataSourceOptional.get();
+
+				field.setDataSourceName(dataSource.getName());
+			}
+		}
 	}
 
 	private final BQIdentityRepository _bqIdentityRepository;
