@@ -43,7 +43,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -174,51 +173,6 @@ public class IdentityNanite implements Nanite {
 		}
 	}
 
-	private void _insertIdentityActivity(
-			String datasetName, List<Message<JSONObject>> messages)
-		throws Exception {
-
-		try (BigQueryWriteClient bigQueryWriteClient =
-				BigQueryWriteClient.create()) {
-
-			WriteStream clientWriteStream =
-				bigQueryWriteClient.createWriteStream(
-					_buildCreateWriteStreamRequest(
-						datasetName, _IDENTITY_ACTIVITY_TABLE_NAME));
-
-			try (JsonStreamWriter jsonStreamWriter =
-					JsonStreamWriter.newBuilder(
-						clientWriteStream.getName(),
-						clientWriteStream.getTableSchema()
-					).build()) {
-
-				ApiFuture<AppendRowsResponse> apiFuture =
-					jsonStreamWriter.append(
-						_toIdentityActivityJSONArray(messages));
-
-				apiFuture.get();
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						String.format(
-							"%s: %d rows inserted into identity activity table",
-							datasetName, messages.size()));
-				}
-			}
-			catch (ExecutionException executionException) {
-				_log.error(
-					"Unable to append records to identity activity table",
-					executionException);
-			}
-
-			bigQueryWriteClient.finalizeWriteStream(
-				FinalizeWriteStreamRequest.newBuilder(
-				).setName(
-					clientWriteStream.getName()
-				).build());
-		}
-	}
-
 	private void _run() throws Exception {
 		while (true) {
 			List<Message<JSONObject>> messages =
@@ -249,46 +203,10 @@ public class IdentityNanite implements Nanite {
 					messagesMap.entrySet()) {
 
 				_insertIdentity(entry.getKey(), entry.getValue());
-				_insertIdentityActivity(entry.getKey(), entry.getValue());
 
 				_acknowledgeMessages(entry.getValue());
 			}
 		}
-	}
-
-	private JSONArray _toIdentityActivityJSONArray(
-		List<Message<JSONObject>> messages) {
-
-		JSONArray jsonArray = new JSONArray();
-
-		for (Message<JSONObject> message : messages) {
-			JSONObject jsonObject = message.getObject();
-
-			String channelId = jsonObject.getString("channelId");
-			String dataSourceId = jsonObject.getString("dataSourceId");
-			String userId = jsonObject.getString("userId");
-
-			jsonArray.put(
-				JSONUtil.put(
-					"channelId", Long.valueOf(channelId)
-				).put(
-					"createDate",
-					jsonObject.optString(
-						"createDate", DateUtil.toString(new Date()))
-				).put(
-					"dataSourceId", Long.valueOf(dataSourceId)
-				).put(
-					"id",
-					DigestUtils.sha256Hex(
-						String.join("#", channelId, dataSourceId, userId))
-				).put(
-					"identityId", userId
-				).put(
-					"projectId", jsonObject.getString("projectId")
-				));
-		}
-
-		return jsonArray;
 	}
 
 	private JSONArray _toIdentityJSONArray(List<Message<JSONObject>> messages) {
@@ -316,9 +234,6 @@ public class IdentityNanite implements Nanite {
 
 	private static final String _EMPTY_EMAIL_ADDRESS_HASHED =
 		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-
-	private static final String _IDENTITY_ACTIVITY_TABLE_NAME =
-		"identityactivity_raw";
 
 	private static final String _IDENTITY_TABLE_NAME = "identity_raw";
 
