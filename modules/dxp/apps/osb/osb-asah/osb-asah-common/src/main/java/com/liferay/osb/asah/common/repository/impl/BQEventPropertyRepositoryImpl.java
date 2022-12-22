@@ -92,7 +92,7 @@ public class BQEventPropertyRepositoryImpl
 					DSL.field(
 						"BQEventProperty.name"
 					).eq(
-						eventAttributeDefinitionName
+						eventAttributeDefinitionName.replace("'", "\\'")
 					))
 			).groupBy(
 				DSL.field("BQEventProperty.value")
@@ -184,7 +184,7 @@ public class BQEventPropertyRepositoryImpl
 				DSL.field(
 					"BQEventProperty.name"
 				).eq(
-					eventAttributeDefinitionName
+					eventAttributeDefinitionName.replace("'", "\\'")
 				),
 				DSL.lower(
 					DSL.field("BQEventProperty.value", String.class)
