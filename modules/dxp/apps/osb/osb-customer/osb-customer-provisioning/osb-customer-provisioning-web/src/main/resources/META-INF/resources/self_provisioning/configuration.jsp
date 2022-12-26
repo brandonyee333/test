@@ -78,7 +78,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 
 			<aui:button type="submit" value="save" />
 
-			<aui:button onClick="location.href = '<%= HtmlUtil.escape(PortalUtil.escapeRedirect(redirect)) %>';" value="cancel" />
+			<aui:button onClick='<%= "location.href = '" + HtmlUtil.escape(PortalUtil.escapeRedirect(redirect)) + "';" %>' value="cancel" />
 		</div>
 	</aui:form>
 </c:if>
