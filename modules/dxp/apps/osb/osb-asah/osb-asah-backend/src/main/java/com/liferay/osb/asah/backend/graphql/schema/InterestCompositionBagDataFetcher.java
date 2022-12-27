@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.InterestCompositionDog;
-import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 
 import graphql.execution.ExecutionTypeInfo;

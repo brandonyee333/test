@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.liferay.osb.asah.backend.model.CompositionResultBag;
+import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import org.springframework.stereotype.Component;

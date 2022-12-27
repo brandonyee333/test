@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
-import com.liferay.osb.asah.backend.model.Composition;
-import com.liferay.osb.asah.backend.model.CompositionResultBag;
+import com.liferay.osb.asah.common.model.Composition;
+import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.LinkedHashMap;
