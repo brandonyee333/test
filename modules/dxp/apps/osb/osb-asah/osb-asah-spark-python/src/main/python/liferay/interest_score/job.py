@@ -491,7 +491,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 					event.canonicalUrl, 
 					event.channelId, 
 					event.contentLanguageId,
-					DATE_DIFF(CURRENT_DATE(), DATE(event.eventDate), DAY) as days_delta     
+					DATE_DIFF(CURRENT_DATE(), DATE(event.eventDate), DAY) as days_delta,
 					event.description, 
 					event.eventDate,
 					DATE(timestamp_trunc(event.eventDate, DAY)) as event_date,
@@ -508,13 +508,13 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 					eventproperty.value
 				FROM 
 					`{self.spark_application_args.lcp_project_id}`.event 
-				LEFT JOIN `{self.spark_application_args.lcp_project_id}`.eventproperty ON 
+				JOIN `{self.spark_application_args.lcp_project_id}`.eventproperty ON 
 					event.id = eventproperty.id
 				WHERE 
-					DATE(event.eventDate) >= DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta} DAY) AND
-					DATE(eventproperty.eventDate) >= DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta} DAY) AND
+					event.eventDate >= TIMESTAMP(DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta} DAY)) AND
+					eventproperty.eventDate >= TIMESTAMP(DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta} DAY)) AND
 					eventproperty.name = "viewDuration" AND
-					STARTS_WITH(event.contentLanguageId, 'en' AND
+					STARTS_WITH(event.contentLanguageId, 'en') AND
 					CAST(eventproperty.value AS INTEGER) >= {self._minimum_view_duration_threshold}
 				)
 				SELECT
