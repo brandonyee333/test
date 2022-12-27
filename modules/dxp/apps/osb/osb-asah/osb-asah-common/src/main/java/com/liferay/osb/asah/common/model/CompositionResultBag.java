@@ -12,9 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model;
-
-import com.liferay.osb.asah.common.model.ResultBag;
+package com.liferay.osb.asah.common.model;
 
 import java.util.List;
 import java.util.Objects;
