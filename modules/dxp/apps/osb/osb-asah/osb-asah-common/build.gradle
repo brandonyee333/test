@@ -1,16 +1,8 @@
-import com.liferay.gradle.util.FileUtil
-
-import org.apache.tools.ant.filters.FixCrLfFilter
-
 apply plugin: "com.liferay.spring.boot.defaults"
 apply plugin: "io.spring.dependency-management"
-apply plugin: 'antlr'
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
-
-String parserDirName = "com/liferay/osb/asah/common/filterexpression/parser"
-List<String> startParameterTaskNames = gradle.startParameter.taskNames
 
 ext["junit-jupiter.version"] = "5.8.2"
 ext["log4j2.version"] = "2.17.0"
@@ -18,8 +10,7 @@ ext["log4j2.version"] = "2.17.0"
 group = "com.liferay"
 
 bootJar {
-	enabled = false
-}
+	enabled = false}
 
 configurations.all {
 	exclude group: "com.vaadin.external.google", module: "android-json"
@@ -28,17 +19,13 @@ configurations.all {
 }
 
 dependencies {
-	annotationProcessor group: "org.antlr", name: "antlr4-annotations", version: "4.3"
-	antlr group: "org.antlr", name: "antlr4", version: "4.5.3"
-	compile group: "org.antlr", name: "antlr4-runtime", version: "4.5.3"
 	compile group: "com.esotericsoftware", name: "kryo", version: "5.2.0"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jdk8", version: "2.9.8"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-json-org", version: "2.9.8"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jsr310", version: "2.9.8"
 	compile group: "com.github.ben-manes.caffeine", name: "caffeine", version: "2.9.2"
 	compile group: "com.github.loki4j", name: "loki-logback-appender-jdk8", version: "1.2.0"
-	compile group: "com.google.cloud", name: "google-cloud-bigquery", version: "2.6.0"
-	compile group: "com.google.cloud", name: "google-cloud-bigquerystorage", version: "2.12.1"
+	compile group: "com.google.cloud", name: "google-cloud-bigquery", version: "2.6.0"	compile group: "com.google.cloud", name: "google-cloud-bigquerystorage", version: "2.12.1"
 	compile group: "com.google.cloud", name: "google-cloud-pubsub", version: "1.116.3"
 	compile group: "com.google.cloud", name: "google-cloud-storage", version: "2.6.0"
 	compile group: "com.graphql-java", name: "graphql-java", version: "6.0"
@@ -82,59 +69,6 @@ dependencies {
 	testCompile group: "org.skyscreamer", name: "jsonassert", transitive: false
 	testCompile group: "org.springframework.boot", name: "spring-boot-starter-test"
 	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
-}
-
-generateGrammarSource {
-	setActions([])
-
-	File grammarFile = file("src/main/antlr/${parserDirName}/FilterExpression.g4")
-
-	dependsOn cleanGenerateGrammarSource
-
-	doFirst {
-		delete fileTree("src/main/java/" + parserDirName) {
-			exclude "**/source_formatter.ignore"
-		}
-
-		delete fileTree("src/main/resources/" + parserDirName) {
-			exclude "**/source_formatter.ignore"
-		}
-
-		javaexec {
-			args "-o", FileUtil.relativize(generateGrammarSource.outputDirectory, grammarFile.parentFile)
-			args grammarFile.name
-			args "-visitor"
-
-			classpath = generateGrammarSource.antlrClasspath
-			main = "org.antlr.v4.Tool"
-			maxHeapSize = generateGrammarSource.maxHeapSize
-			workingDir = grammarFile.parentFile
-		}
-	}
-
-	doLast {
-		copy {
-			filter(FixCrLfFilter, javafiles: true, tab: FixCrLfFilter.AddAsisRemove.newInstance("add"))
-
-			from outputDirectory
-			include "**/*.java"
-			into "src/main/java/" + parserDirName
-		}
-
-		copy {
-			from outputDirectory
-			exclude "**/*.java"
-			into "src/main/resources/" + parserDirName
-		}
-	}
-
-	ext {
-		autoClean = false
-	}
-
-	enabled = startParameterTaskNames.contains("generateGrammarSource")
-	maxHeapSize = "1512m"
-	outputDirectory = new File(temporaryDir, "generated")
 }
 
 jar {
