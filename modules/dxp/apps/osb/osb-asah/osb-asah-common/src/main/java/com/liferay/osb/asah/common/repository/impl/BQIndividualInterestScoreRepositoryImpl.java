@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.model.Composition;
+import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.IndividualInterestScore;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
@@ -38,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,6 +53,7 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Record3;
+import org.jooq.Record4;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
@@ -533,6 +537,97 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 		return bqIndividualInterestScoreOptional.orElseThrow(
 			IllegalArgumentException::new);
+	}
+
+	@Override
+	public CompositionResultBag getInterestCompositionResultBag(
+		Long channelId, @Nullable String keywords, Pageable pageable) {
+
+		SelectSelectStep<Record4<Integer, String, Integer, Integer>>
+			selectSelectStep = _dslContext.select(
+				DSL.count(
+				).as(
+					"count"
+				),
+				DSL.field("keyword", String.class),
+				DSL.max(
+					DSL.count()
+				).over(
+				).as(
+					"maxCount"
+				),
+				DSL.count(
+				).over(
+				).as(
+					"totalCount"
+				));
+
+		SelectJoinStep<Record4<Integer, String, Integer, Integer>>
+			selectJoinStep = selectSelectStep.from(
+				"BQIndividualInterestScore"
+			).join(
+				"BQIdentityActivity"
+			).on(
+				DSL.field(
+					"BQIndividualInterestScore.identityId"
+				).eq(
+					DSL.field("BQIdentityActivity.identityId")
+				)
+			);
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"BQIdentityActivity.channelId"
+			).eq(
+				channelId
+			));
+
+		if (!StringUtils.isBlank(keywords)) {
+			conditions.add(
+				DSL.or(
+					DSL.field(
+						"keyword"
+					).containsIgnoreCase(
+						keywords
+					)
+				).or(
+					DSL.field(
+						"keyword", String.class
+					).similarTo(
+						keywords
+					)
+				));
+		}
+
+		AtomicInteger maxCount = new AtomicInteger(0);
+		AtomicInteger totalCount = new AtomicInteger(0);
+
+		List<Composition> compositions = _queryExecutor.queryForList(
+			record -> {
+				maxCount.set((Integer)record.get("maxCount"));
+				totalCount.set((Integer)record.get("totalCount"));
+
+				return new Composition(
+					(Integer)record.get("count"),
+					(String)record.get("keyword"));
+			},
+			selectJoinStep.where(
+				conditions
+			).groupBy(
+				DSL.field("keyword")
+			).orderBy(
+				_getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+
+		return new CompositionResultBag(
+			maxCount.get(), compositions, compositions.size(),
+			totalCount.get());
 	}
 
 	@Override

@@ -48,11 +48,11 @@ import org.springframework.stereotype.Component;
 public class InterestCompositionDog {
 
 	public CompositionResultBag getIndividualCompositionResultBag(
-		String channelId, String keywords, int size, Sort sort, int start) {
+		Long channelId, String keywords, int size, Sort sort, int start) {
 
-		return _getCompositionResultBag(
-			_getIndividualIds(false, channelId, null), keywords,
-			_getLastSuccessfulDate(), _getMinimumScore(), size, sort, start);
+		return _bqIndividualInterestScoreRepository.
+			getInterestCompositionResultBag(
+				channelId, keywords, PageRequest.of(start / size, size, sort));
 	}
 
 	public CompositionResultBag getIndividualSegmentCompositionResultBag(

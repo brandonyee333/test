@@ -136,15 +136,13 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualCompositionResultBag() {
 		checkResults(
 			_interestCompositionDog.getIndividualCompositionResultBag(
-				"1", null, 10, Sort.desc("count"), 0),
+				1L, "e", 1, Sort.asc("count"), 1),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("compelling metrics", 4L);
-					put("clicks-and-mortar e-tailers", 2L);
-					put("javascript", 1L);
 				}
 			},
-			4, 3, 4);
+			4, 1, 2);
 	}
 
 	@RepositoryResource(

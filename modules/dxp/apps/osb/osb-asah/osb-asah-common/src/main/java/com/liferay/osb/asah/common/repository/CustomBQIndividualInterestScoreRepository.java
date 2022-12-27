@@ -71,6 +71,9 @@ public interface CustomBQIndividualInterestScoreRepository {
 	public BQIndividualInterestScore getByIndividualIdAndKeywordAndRecordedDate(
 		String individualId, String keyword, Date recordedDate);
 
+	public CompositionResultBag getInterestCompositionResultBag(
+		Long channelId, @Nullable String keywords, Pageable pageable);
+
 	public List<Distribution> getInterestDistributions(
 		@Nullable List<String> individualIds, @Nullable String keyword,
 		@Nullable Date recordedDate, @Nullable Double score, Pageable pageable);
