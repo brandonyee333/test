@@ -489,20 +489,13 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 			WITH FilteredEvent AS ( 
 				SELECT 
 					event.canonicalUrl, 
-					event.channelId, 
-					event.contentLanguageId,
 					DATE_DIFF(CURRENT_DATE(), DATE(event.eventDate), DAY) as days_delta,
 					event.description, 
-					event.eventDate,
 					DATE(timestamp_trunc(event.eventDate, DAY)) as event_date,
-					event.eventId,
 					event.id,
 					COUNT(event.userId) OVER (PARTITION BY event.userId) AS interactions,  
 					event.keywords,  
-					event.languageId, 
-					event.projectId,
 					event.title, 
-					event.url,
 					event.userId, 
 					eventproperty.name, 
 					eventproperty.value
@@ -519,21 +512,13 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 				)
 				SELECT
 					canonicalUrl,
-					channelId, 
-					contentLanguageId, 
 					days_delta,
 					description, 
-					eventDate, 
-					eventId, 
 					event_date,
 					id,
-					interactions,
 					keywords,  
-					languageId, 
 					name, 
-					projectId,
 					title, 
-					url,
 					userId, 
 					value
 				FROM 
