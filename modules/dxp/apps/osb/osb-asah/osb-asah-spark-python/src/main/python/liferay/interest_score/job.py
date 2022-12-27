@@ -213,7 +213,7 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 				event_date as recordedDate,
 				userId as identityId,
 				keyword,
-				interest_score as score
+				interest_score as interestScore
 			FROM 
 				individual_interest_score
 		""")
