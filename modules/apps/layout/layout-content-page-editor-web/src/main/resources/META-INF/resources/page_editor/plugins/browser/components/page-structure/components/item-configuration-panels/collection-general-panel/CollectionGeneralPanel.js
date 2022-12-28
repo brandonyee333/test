@@ -28,11 +28,13 @@ import {FREEMARKER_FRAGMENT_ENTRY_PROCESSOR} from '../../../../../../../app/conf
 import {LAYOUT_DATA_ITEM_TYPES} from '../../../../../../../app/config/constants/layoutDataItemTypes';
 import {VIEWPORT_SIZES} from '../../../../../../../app/config/constants/viewportSizes';
 import {config} from '../../../../../../../app/config/index';
+import {useDisplayPagePreviewItem} from '../../../../../../../app/contexts/DisplayPagePreviewItemContext';
 import {
 	useDispatch,
 	useGetState,
 	useSelector,
 } from '../../../../../../../app/contexts/StoreContext';
+import selectSegmentsExperienceId from '../../../../../../../app/selectors/selectSegmentsExperienceId';
 import CollectionService from '../../../../../../../app/services/CollectionService';
 import InfoItemService from '../../../../../../../app/services/InfoItemService';
 import updateCollectionDisplayCollection from '../../../../../../../app/thunks/updateCollectionDisplayCollection';
@@ -76,16 +78,36 @@ export function CollectionGeneralPanel({item}) {
 		paginationType,
 	} = item.config;
 
+	const collectionItemType = collection?.itemType || null;
+	const flexEnabled =
+		listStyle === LIST_STYLES.flexColumn ||
+		listStyle === LIST_STYLES.flexRow;
+
+	const segmentsExperienceId = useSelector(selectSegmentsExperienceId);
+	const selectedViewportSize = useSelector(
+		(state) => state.selectedViewportSize
+	);
+
 	const [availableListItemStyles, setAvailableListItemStyles] = useState([]);
 	const [collectionConfiguration, setCollectionConfiguration] = useState(
 		null
 	);
+	const [
+		filterConfigurationVisible,
+		setFilterConfigurationVisible,
+	] = useState(false);
+
+	const collectionConfig = getResponsiveConfig(
+		item.config,
+		selectedViewportSize
+	);
+
 	const collectionEmptyCollectionMessageId = useId();
-	const collectionItemType = collection?.itemType || null;
 	const collectionLayoutId = useId();
 	const collectionListItemStyleId = useId();
 	const collectionPaginationTypeId = useId();
 	const collectionVerticalAlignmentId = useId();
+
 	const dispatch = useDispatch();
 	const getState = useGetState();
 
@@ -94,14 +116,53 @@ export function CollectionGeneralPanel({item}) {
 		onClose: onFilterConfigurationClose,
 	} = useModal({onClose: () => setFilterConfigurationVisible(false)});
 
-	const [
-		filterConfigurationVisible,
-		setFilterConfigurationVisible,
-	] = useState(false);
+	const editConfigurationURL = useCache({
+		fetcher: () =>
+			CollectionService.getCollectionEditConfigurationUrl({
+				collectionKey: collection?.key,
+				itemId: item.itemId,
+				segmentsExperienceId,
+			}).then(({url}) => url),
+		key: [CACHE_KEYS.collectionConfigurationUrl, collection?.key],
+	});
 
-	const optionsMenuItems = useMemo(
-		() =>
-			collectionConfiguration
+	const previewItem = useDisplayPagePreviewItem();
+
+	const optionsMenuItems = useMemo(() => {
+		if (Liferay.FeatureFlags['LPS-166275']) {
+			if (!editConfigurationURL) {
+				return [];
+			}
+
+			const url = new URL(editConfigurationURL);
+
+			url.searchParams.set(
+				`${config.portletNamespace}type`,
+				collection.type
+			);
+
+			if (previewItem) {
+				url.searchParams.set(
+					`${config.portletNamespace}classNameId`,
+					previewItem.data.classNameId
+				);
+
+				url.searchParams.set(
+					`${config.portletNamespace}classPK`,
+					previewItem.data.classPK
+				);
+			}
+
+			return [
+				{
+					href: url.href,
+					label: Liferay.Language.get('filter-collection'),
+					symbolLeft: 'filter',
+				},
+			];
+		}
+		else {
+			return collectionConfiguration
 				? [
 						{
 							label: Liferay.Language.get('prefilter-collection'),
@@ -109,18 +170,15 @@ export function CollectionGeneralPanel({item}) {
 							symbolLeft: 'filter',
 						},
 				  ]
-				: [],
-		[collectionConfiguration, setFilterConfigurationVisible]
-	);
-
-	const selectedViewportSize = useSelector(
-		(state) => state.selectedViewportSize
-	);
-
-	const collectionConfig = getResponsiveConfig(
-		item.config,
-		selectedViewportSize
-	);
+				: [];
+		}
+	}, [
+		collection,
+		collectionConfiguration,
+		editConfigurationURL,
+		previewItem,
+		setFilterConfigurationVisible,
+	]);
 
 	const handleCollectionSelect = (collection = {}) => {
 		dispatch(
@@ -131,6 +189,22 @@ export function CollectionGeneralPanel({item}) {
 			})
 		);
 	};
+
+	const handleConfigurationChanged = useCallback(
+		(itemConfig) => {
+			if (selectedViewportSize !== VIEWPORT_SIZES.desktop) {
+				itemConfig = {[selectedViewportSize]: itemConfig};
+			}
+
+			dispatch(
+				updateItemConfig({
+					itemConfig,
+					itemId: item.itemId,
+				})
+			);
+		},
+		[item.itemId, dispatch, selectedViewportSize]
+	);
 
 	const onPreventCollectionSelect = useCallback(
 		(callback) => {
@@ -183,22 +257,6 @@ export function CollectionGeneralPanel({item}) {
 		[getState, item.itemId]
 	);
 
-	const handleConfigurationChanged = useCallback(
-		(itemConfig) => {
-			if (selectedViewportSize !== VIEWPORT_SIZES.desktop) {
-				itemConfig = {[selectedViewportSize]: itemConfig};
-			}
-
-			dispatch(
-				updateItemConfig({
-					itemConfig,
-					itemId: item.itemId,
-				})
-			);
-		},
-		[item.itemId, dispatch, selectedViewportSize]
-	);
-
 	useEffect(() => {
 		if (
 			collection &&
@@ -240,10 +298,6 @@ export function CollectionGeneralPanel({item}) {
 			setCollectionConfiguration(null);
 		}
 	}, [collection]);
-
-	const flexEnabled =
-		listStyle === LIST_STYLES.flexColumn ||
-		listStyle === LIST_STYLES.flexRow;
 
 	return (
 		<>
