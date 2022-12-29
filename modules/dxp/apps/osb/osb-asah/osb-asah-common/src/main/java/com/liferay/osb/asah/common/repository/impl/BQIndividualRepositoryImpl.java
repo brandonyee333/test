@@ -276,9 +276,13 @@ public class BQIndividualRepositoryImpl
 			_dslContext.select();
 
 		return _queryExecutor.queryForList(
-			record -> new Distribution(
-				(Integer)record.get("count"),
-				Collections.singletonList(record.get("nestedField"))),
+			record -> {
+				BigDecimal count = (BigDecimal)record.get("count");
+
+				return new Distribution(
+					count.intValue(),
+					Collections.singletonList(record.get("nestedField")));
+			},
 			modifiedDateSelectSelectStep.select(
 				nestedField.as("nestedField"),
 				DSL.count(
