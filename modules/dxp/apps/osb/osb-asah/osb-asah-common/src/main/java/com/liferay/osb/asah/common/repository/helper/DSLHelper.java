@@ -71,6 +71,19 @@ public class DSLHelper {
 		return DSL.concat(fields);
 	}
 
+	public Condition containsSubstring(String fieldName, String value) {
+		if (isBigQueryDialect()) {
+			return DSL.condition(
+				String.format("CONTAINS_SUBSTR(%s, '%s')", fieldName, value));
+		}
+
+		return DSL.field(
+			fieldName
+		).containsIgnoreCase(
+			value
+		);
+	}
+
 	public Field<Integer> countIf(Condition condition) {
 		if (isBigQueryDialect()) {
 			return DSL.field("countif({0})", Integer.class, condition);

@@ -585,20 +585,7 @@ public class BQIndividualInterestScoreRepositoryImpl
 			));
 
 		if (!StringUtils.isBlank(keywords)) {
-			conditions.add(
-				DSL.or(
-					DSL.field(
-						"keyword"
-					).containsIgnoreCase(
-						keywords
-					)
-				).or(
-					DSL.field(
-						"keyword", String.class
-					).similarTo(
-						keywords
-					)
-				));
+			conditions.add(_dslHelper.containsSubstring("keyword", keywords));
 		}
 
 		AtomicInteger maxCount = new AtomicInteger(0);
