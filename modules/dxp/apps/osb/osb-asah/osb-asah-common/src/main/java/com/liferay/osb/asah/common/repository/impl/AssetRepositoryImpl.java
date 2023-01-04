@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -63,6 +64,28 @@ public class AssetRepositoryImpl
 
 		return selectCount.from(
 			_getAssetKeywordSelectStep(keyword)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	@Override
+	public long countByAssetTypeAndCanonicalURLIn(
+		String assetType, Collection<String> canonicalUrls) {
+
+		SelectSelectStep<Record1<Integer>> selectCount =
+			_dslContext.selectCount();
+
+		return selectCount.from(
+			_getAssetTable(assetType, canonicalUrls)
+		).where(
+			DSL.field(
+				"Asset.rownumber"
+			).eq(
+				1
+			)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -116,6 +139,33 @@ public class AssetRepositoryImpl
 			).asc()
 		).limit(
 			size
+		).fetch(
+			this::_toAsset
+		);
+	}
+
+	@Override
+	public List<Asset> findByAssetTypeAndCanonicalURLIn(
+		String assetType, Collection<String> canonicalUrls, Pageable pageable) {
+
+		return _dslContext.select(
+			DSL.table(
+				"Asset"
+			).asterisk()
+		).from(
+			_getAssetTable(assetType, canonicalUrls)
+		).where(
+			DSL.field(
+				"Asset.rownumber"
+			).eq(
+				1
+			)
+		).orderBy(
+			getSortFields(pageable.getSort(), DSL.table("Asset"))
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
 		).fetch(
 			this::_toAsset
 		);
@@ -441,6 +491,42 @@ public class AssetRepositoryImpl
 			)
 		).where(
 			condition
+		);
+	}
+
+	private Table<Record> _getAssetTable(
+		String assetType, Collection<String> canonicalUrls) {
+
+		return _dslContext.select(
+			DSL.asterisk(),
+			DSL.rowNumber(
+			).over(
+				DSL.partitionBy(
+					DSL.field("Asset.canonicalURL")
+				).orderBy(
+					DSL.field(
+						"Asset.id"
+					).desc()
+				)
+			).as(
+				"rownumber"
+			)
+		).from(
+			"Asset"
+		).where(
+			DSL.and(
+				DSL.field(
+					"Asset.assetType"
+				).eq(
+					assetType
+				),
+				DSL.field(
+					"Asset.canonicalURL"
+				).in(
+					canonicalUrls
+				))
+		).asTable(
+			"Asset"
 		);
 	}
 
