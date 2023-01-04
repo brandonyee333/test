@@ -18,8 +18,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
 import com.liferay.osb.asah.common.entity.BQMembership;
-import com.liferay.osb.asah.common.model.Distribution;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
@@ -27,7 +25,6 @@ import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -159,18 +156,6 @@ public class BQIndividualInterestScoreRepositoryTest
 	}
 
 	@Test
-	public void testCountInterestDistributions() {
-		List<String> individualIds = Arrays.asList(
-			"374790572703144534", "374790572703144535");
-
-		Assertions.assertEquals(
-			2,
-			_bqIndividualInterestScoreRepository.countInterestDistributions(
-				individualIds, null,
-				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), null));
-	}
-
-	@Test
 	public void testDeleteByNameAndRecordedDateGreaterThanEqual() {
 		_bqIndividualInterestScoreRepository.
 			deleteByKeywordAndRecordedDateGreaterThanEqual(
@@ -196,28 +181,6 @@ public class BQIndividualInterestScoreRepositoryTest
 
 		Assertions.assertEquals(
 			3, _bqIndividualInterestScoreRepository.count());
-	}
-
-	@Test
-	public void testDeleteBySegmentId() {
-		Assertions.assertEquals(
-			5, _bqIndividualInterestScoreRepository.count());
-
-		Assertions.assertEquals(
-			1,
-			_bqIndividualInterestScoreRepository.countByIndividualId(
-				"374790569167317525"));
-
-		_bqIndividualInterestScoreRepository.deleteBySegmentIdIn(
-			Collections.singletonList(123L));
-
-		Assertions.assertEquals(
-			0,
-			_bqIndividualInterestScoreRepository.countByIndividualId(
-				"374790569167317525"));
-
-		Assertions.assertEquals(
-			4, _bqIndividualInterestScoreRepository.count());
 	}
 
 	@Test

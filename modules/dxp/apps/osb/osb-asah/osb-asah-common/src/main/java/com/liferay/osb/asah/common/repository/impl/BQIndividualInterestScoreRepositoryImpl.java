@@ -35,7 +35,6 @@ import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,11 +47,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
-import org.jooq.DeleteUsingStep;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Record2;
 import org.jooq.Record3;
 import org.jooq.Record4;
 import org.jooq.SelectFinalStep;
@@ -129,62 +126,6 @@ public class BQIndividualInterestScoreRepositoryImpl
 					individualId
 				)
 			));
-	}
-
-	@Override
-	public long countInterestDistributions(
-		List<String> individualIds, String keyword, Date recordedDate,
-		Double score) {
-
-		SelectSelectStep<Record1<Integer>> selectSelectStep1 =
-			_dslContext.selectCount();
-
-		SelectJoinStep<Record2<Integer, Object>> selectJoinStep2 =
-			_dslContext.select(
-				DSL.count(
-				).as(
-					"count"
-				),
-				DSL.field("keyword")
-			).from(
-				"BQIndividualInterestScore"
-			);
-
-		selectJoinStep2 = _getBQIdentitySelectJoinStep(
-			individualIds, selectJoinStep2);
-
-		return _queryExecutor.queryForLong(
-			selectSelectStep1.from(
-				selectJoinStep2.where(
-					_getConditions(
-						null, null, individualIds, keyword, recordedDate, score)
-				).groupBy(
-					DSL.field("keyword")
-				)));
-	}
-
-	@Override
-	public void deleteBySegmentIdIn(List<Long> segmentIds) {
-		DeleteUsingStep<Record> deleteUsingStep = _dslContext.deleteFrom(
-			DSL.table("BQIndividualInterestScore"));
-
-		deleteUsingStep.where(
-			DSL.field(
-				"BQIndividualInterestScore.identityId"
-			).in(
-				DSL.select(
-					DSL.field("BQMembership.individualId")
-				).from(
-					"BQMembership"
-				).where(
-					DSL.field(
-						"BQMembership.segmentId"
-					).in(
-						segmentIds
-					)
-				)
-			)
-		).execute();
 	}
 
 	@Override
@@ -647,44 +588,6 @@ public class BQIndividualInterestScoreRepositoryImpl
 		return new CompositionResultBag(
 			maxCount.get(), compositions, compositions.size(),
 			totalCount.get());
-	}
-
-	@Override
-	public List<Distribution> getInterestDistributions(
-		@Nullable List<String> individualIds, @Nullable String keyword,
-		@Nullable Date recordedDate, @Nullable Double score,
-		Pageable pageable) {
-
-		SelectSelectStep<Record2<Integer, Object>> selectSelectStep =
-			_dslContext.select(
-				DSL.count(
-				).as(
-					"count"
-				),
-				DSL.field("keyword"));
-
-		SelectJoinStep<Record2<Integer, Object>> selectJoinStep =
-			selectSelectStep.from("BQIndividualInterestScore");
-
-		selectJoinStep = _getBQIdentitySelectJoinStep(
-			individualIds, selectJoinStep);
-
-		return selectJoinStep.where(
-			_getConditions(
-				null, null, individualIds, keyword, recordedDate, score)
-		).groupBy(
-			DSL.field("keyword")
-		).orderBy(
-			_getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new Distribution(
-				(Integer)record.get("count"),
-				Collections.singletonList(record.getValue("keyword")))
-		);
 	}
 
 	@Override

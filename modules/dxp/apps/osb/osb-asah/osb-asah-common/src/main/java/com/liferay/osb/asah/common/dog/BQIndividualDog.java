@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -88,15 +87,6 @@ public class BQIndividualDog {
 		_setDataSourceName(individual.getFields());
 
 		return individual;
-	}
-
-	public List<String> getBQIndividualIds(
-		Long channelId, @Nullable Date lastActivityDate,
-		@Nullable Long segmentId) {
-
-		return _bqIndividualRepository.
-			findBQIndividualIdsByChannelIdAndLastActivityDateAndSegmentId(
-				channelId, lastActivityDate, segmentId);
 	}
 
 	public Page<Distribution> getDistributionPage(

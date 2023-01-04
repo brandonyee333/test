@@ -44,10 +44,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class BQIndividualInterestScoreDog {
 
-	public void deleteBQIndividualInterestScores(List<Long> segmentIds) {
-		_bqIndividualInterestScoreRepository.deleteBySegmentIdIn(segmentIds);
-	}
-
 	public Page<BQIndividualInterestScore> getBQIndividualInterestScorePage(
 		String individualId, int size, int start) {
 

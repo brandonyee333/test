@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
-import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.IndividualInterestScore;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
@@ -26,7 +25,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.lang.Nullable;
 
 /**
@@ -38,13 +36,6 @@ public interface CustomBQIndividualInterestScoreRepository {
 		FilterHelper filterHelper, @Nullable Double score);
 
 	public long countByIndividualId(String individualId);
-
-	public long countInterestDistributions(
-		List<String> individualIds, String keyword, Date recordedDate,
-		Double score);
-
-	@Modifying
-	public void deleteBySegmentIdIn(List<Long> segmentIds);
 
 	public List<IndividualInterestScore>
 		findByFilterStringAndScoreGreaterThanEqual(
