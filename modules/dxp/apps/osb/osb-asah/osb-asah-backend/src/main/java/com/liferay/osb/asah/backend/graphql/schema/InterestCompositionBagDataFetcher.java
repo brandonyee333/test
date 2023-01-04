@@ -25,6 +25,8 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLFieldDefinition;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,7 +55,8 @@ public class InterestCompositionBagDataFetcher
 
 		if (name.equals("individualInterests")) {
 			return _interestCompositionDog.getIndividualCompositionResultBag(
-				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
+				NumberUtils.createLong(
+					dataFetchingEnvironment.getArgument("channelId")),
 				dataFetchingEnvironment.getArgument("keywords"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")),
@@ -62,9 +65,10 @@ public class InterestCompositionBagDataFetcher
 
 		return _interestCompositionDog.getIndividualSegmentCompositionResultBag(
 			dataFetchingEnvironment.getArgument("active"),
-			Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
+			NumberUtils.createLong(
+				dataFetchingEnvironment.getArgument("channelId")),
 			dataFetchingEnvironment.getArgument("keywords"),
-			Long.valueOf(
+			NumberUtils.createLong(
 				dataFetchingEnvironment.getArgument("individualSegmentId")),
 			dataFetchingEnvironment.getArgument("size"),
 			Sort.of(dataFetchingEnvironment.getArgument("sort")),
