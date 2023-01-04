@@ -329,29 +329,6 @@ public class BQIndividualInterestScoreRepositoryTest
 	}
 
 	@Test
-	public void testGetInterestDistributions() {
-		List<String> individualIds = Arrays.asList(
-			"374790572703144534", "374790572703144535");
-
-		List<Distribution> distributions =
-			_bqIndividualInterestScoreRepository.getInterestDistributions(
-				individualIds, null,
-				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), null,
-				PageRequest.of(0, 10, Sort.desc("count")));
-
-		Assertions.assertEquals(
-			2, distributions.size(), distributions.toString());
-
-		Distribution distribution = distributions.get(0);
-
-		Assertions.assertEquals(
-			2, (int)distribution.getCount(), distribution.toString());
-		Assertions.assertEquals(
-			Arrays.asList("sales"), distribution.getValues(),
-			distribution.toString());
-	}
-
-	@Test
 	public void testGetInterestTransformationsByDay() {
 		List<Map<String, Object>> transformations =
 			_bqIndividualInterestScoreRepository.getTransformations(

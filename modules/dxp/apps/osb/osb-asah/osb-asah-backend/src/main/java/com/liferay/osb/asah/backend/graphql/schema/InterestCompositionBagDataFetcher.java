@@ -62,7 +62,7 @@ public class InterestCompositionBagDataFetcher
 
 		return _interestCompositionDog.getIndividualSegmentCompositionResultBag(
 			dataFetchingEnvironment.getArgument("active"),
-			dataFetchingEnvironment.getArgument("channelId"),
+			Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 			dataFetchingEnvironment.getArgument("keywords"),
 			Long.valueOf(
 				dataFetchingEnvironment.getArgument("individualSegmentId")),

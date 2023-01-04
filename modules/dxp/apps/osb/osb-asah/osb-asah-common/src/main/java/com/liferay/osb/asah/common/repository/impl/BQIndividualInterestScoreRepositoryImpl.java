@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
 import com.liferay.osb.asah.common.model.Composition;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
-import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.IndividualInterestScore;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualInterestScoreRepository;
@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 
 import java.sql.Timestamp;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
@@ -541,7 +542,8 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 	@Override
 	public CompositionResultBag getInterestCompositionResultBag(
-		Long channelId, @Nullable String keywords, Pageable pageable) {
+		boolean active, Long channelId, @Nullable String keywords,
+		@Nullable Long segmentId, Pageable pageable) {
 
 		SelectSelectStep<Record4<Integer, String, Integer, Integer>>
 			selectSelectStep = _dslContext.select(
@@ -577,6 +579,18 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
+		if (active) {
+			LocalDateTime newDayLocalDateTime = DateUtil.newDayLocalDateTime(
+				TimeZoneDogUtil.getZoneId());
+
+			conditions.add(
+				DSL.field(
+					"BQIdentityActivity.lastActivityDate"
+				).ge(
+					DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30))
+				));
+		}
+
 		conditions.add(
 			DSL.field(
 				"BQIdentityActivity.channelId"
@@ -586,6 +600,24 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 		if (!StringUtils.isBlank(keywords)) {
 			conditions.add(_dslHelper.containsSubstring("keyword", keywords));
+		}
+
+		if (segmentId != null) {
+			selectJoinStep = selectJoinStep.join(
+				"BQMembership"
+			).on(
+				DSL.and(
+					DSL.field(
+						"BQIdentityActivity.identityId"
+					).eq(
+						DSL.field("BQMembership.userId")
+					),
+					DSL.field(
+						"BQMembership.segmentId", Long.class
+					).eq(
+						segmentId
+					))
+			);
 		}
 
 		AtomicInteger maxCount = new AtomicInteger(0);

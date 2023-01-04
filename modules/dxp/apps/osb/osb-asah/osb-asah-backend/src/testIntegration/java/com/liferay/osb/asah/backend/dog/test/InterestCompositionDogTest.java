@@ -16,10 +16,8 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.InterestCompositionDog;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
@@ -40,94 +38,12 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_individuals.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIndividualInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
-	)
-	@SQLResource(
-		resourcePath = "bq_individual_interest_score_identity_activities.sql"
-	)
-	@Test
-	public void testGetActiveIndividualSegmentCompositionResultBag() {
-		checkResults(
-			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				true, "1", null, 366637689379787789L, 10, Sort.desc("count"),
-				0),
-			new LinkedHashMap<String, Long>() {
-				{
-					put("clicks-and-mortar e-tailers", 2L);
-					put("compelling metrics", 2L);
-					put("javascript", 1L);
-				}
-			},
-			2, 3, 2);
-	}
-
-	@RepositoryResource(
-		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_individuals.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AsahMarkerRepository.class,
-		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_1.json"
-	)
-	@SQLResource(
-		resourcePath = "bq_individual_interest_score_identity_activities.sql"
-	)
-	@Test
-	public void testGetInactiveIndividualSegmentCompositionResultBag() {
-		checkResults(
-			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", null, 366637689379787789L, 10, Sort.desc("count"),
-				0),
-			new LinkedHashMap<String, Long>() {
-				{
-					put("compelling metrics", 3L);
-					put("clicks-and-mortar e-tailers", 2L);
-					put("javascript", 1L);
-				}
-			},
-			3, 3, 3);
-	}
-
-	@RepositoryResource(
-		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_individuals.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AsahMarkerRepository.class,
-		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_2.json"
 	)
 	@SQLResource(
 		resourcePath = "bq_individual_interest_score_identity_activities.sql"
@@ -150,8 +66,34 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_individuals.json"
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQIndividualInterestScoreRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
+	)
+	@SQLResource(
+		resourcePath = "bq_individual_interest_score_identity_activities.sql"
+	)
+	@Test
+	public void testGetIndividualCompositionResultBagWithOrderByAsc() {
+		checkResults(
+			_interestCompositionDog.getIndividualCompositionResultBag(
+				1L, null, 10, Sort.asc("name"), 0),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("clicks-and-mortar e-tailers", 2L);
+					put("compelling metrics", 4L);
+					put("javascript", 2L);
+				}
+			},
+			4, 3, 3);
+	}
+
+	@RepositoryResource(
+		repositoryClass = BQIdentityRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
@@ -168,23 +110,19 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualSegmentCompositionResultBagWithKeyword() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", "compel", 366637689379787789L, 10,
+				Boolean.TRUE, 1L, "compel", 366637689379787789L, 10,
 				Sort.desc("count"), 0),
 			new LinkedHashMap<String, Long>() {
 				{
-					put("compelling metrics", 3L);
+					put("compelling metrics", 2L);
 				}
 			},
-			3, 1, 3);
+			2, 1, 1);
 	}
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_individuals.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
@@ -193,10 +131,6 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	@RepositoryResource(
 		repositoryClass = BQIndividualInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AsahMarkerRepository.class,
-		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_1.json"
 	)
 	@SQLResource(
 		resourcePath = "bq_individual_interest_score_identity_activities.sql"
@@ -205,25 +139,21 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualSegmentCompositionResultBagWithSortAsc() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", null, 366637689379787789L, 10, Sort.asc("count"),
-				0),
+				Boolean.TRUE, 1L, null, 366637689379787789L, 10,
+				Sort.asc("count"), 0),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("javascript", 1L);
 					put("clicks-and-mortar e-tailers", 2L);
-					put("compelling metrics", 3L);
+					put("compelling metrics", 2L);
 				}
 			},
-			3, 3, 3);
+			2, 3, 3);
 	}
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_individuals.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
@@ -233,10 +163,6 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		repositoryClass = BQIndividualInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
 	)
-	@RepositoryResource(
-		repositoryClass = AsahMarkerRepository.class,
-		resourcePath = "osbasahfaroinfo/osbasahmarkers_info_1.json"
-	)
 	@SQLResource(
 		resourcePath = "bq_individual_interest_score_identity_activities.sql"
 	)
@@ -244,15 +170,16 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualSegmentCompositionResultBagWithSortName() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", null, 366637689379787789L, 10, Sort.asc("name"), 0),
+				Boolean.TRUE, 1L, null, 366637689379787789L, 10,
+				Sort.asc("name"), 0),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("clicks-and-mortar e-tailers", 2L);
-					put("compelling metrics", 3L);
+					put("compelling metrics", 2L);
 					put("javascript", 1L);
 				}
 			},
-			3, 3, 3);
+			2, 3, 3);
 	}
 
 	@Autowired
