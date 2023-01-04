@@ -63,7 +63,7 @@ public interface CustomBQIndividualInterestScoreRepository {
 		String individualId, String keyword, Date recordedDate);
 
 	public CompositionResultBag getInterestCompositionResultBag(
-		boolean active, Long channelId, @Nullable String keywords,
+		boolean active, @Nullable Long channelId, @Nullable String keywords,
 		@Nullable Long segmentId, Pageable pageable);
 
 	public List<String> getTopKeywordsByIndividualId(

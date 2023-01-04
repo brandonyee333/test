@@ -483,7 +483,7 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 	@Override
 	public CompositionResultBag getInterestCompositionResultBag(
-		boolean active, Long channelId, @Nullable String keywords,
+		boolean active, @Nullable Long channelId, @Nullable String keywords,
 		@Nullable Long segmentId, Pageable pageable) {
 
 		SelectSelectStep<Record4<Integer, String, Integer, Integer>>
@@ -532,12 +532,14 @@ public class BQIndividualInterestScoreRepositoryImpl
 				));
 		}
 
-		conditions.add(
-			DSL.field(
-				"BQIdentityActivity.channelId"
-			).eq(
-				channelId
-			));
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"BQIdentityActivity.channelId", Long.class
+				).eq(
+					channelId
+				));
+		}
 
 		if (!StringUtils.isBlank(keywords)) {
 			conditions.add(_dslHelper.containsSubstring("keyword", keywords));
