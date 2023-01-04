@@ -31,11 +31,11 @@ public interface AssetRepository
 
 	@Cacheable
 	public long countByAssetTypeAndCanonicalURLIn(
-		String assetType, Collection<String> cannonicalUrls);
+		String assetType, Collection<String> canonicalUrls);
 
 	@Cacheable
 	public List<Asset> findByAssetTypeAndCanonicalURLIn(
-		String assetType, Collection<String> cannonicalUrls, Pageable pageable);
+		String assetType, Collection<String> canonicalUrls, Pageable pageable);
 
 	@Cacheable
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(

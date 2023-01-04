@@ -172,7 +172,7 @@ public class AssetDog {
 	}
 
 	public Map<String, Asset> getAssets(
-		String assetType, Collection<String> cannonicalUrls) {
+		String assetType, Collection<String> canonicalUrls) {
 
 		List<Asset> assets = new ArrayList<>();
 
@@ -181,7 +181,7 @@ public class AssetDog {
 		while (true) {
 			List<Asset> currentAssets =
 				_assetRepository.findByAssetTypeAndCanonicalURLIn(
-					assetType, cannonicalUrls,
+					assetType, canonicalUrls,
 					PageRequest.of(
 						page++, 10000, Sort.by(Sort.Direction.DESC, "id")));
 
@@ -205,11 +205,11 @@ public class AssetDog {
 	}
 
 	public List<Asset> getAssets(
-		String assetType, Collection<String> cannonicalUrls, int page, int size,
+		String assetType, Collection<String> canonicalUrls, int page, int size,
 		Sort sort) {
 
 		return _assetRepository.findByAssetTypeAndCanonicalURLIn(
-			assetType, cannonicalUrls, PageRequest.of(page, size, sort));
+			assetType, canonicalUrls, PageRequest.of(page, size, sort));
 	}
 
 	public List<Asset> getAssets(String assetType, String assetKeyword) {
@@ -222,10 +222,10 @@ public class AssetDog {
 	}
 
 	public long getAssetsCount(
-		String assetType, Collection<String> cannonicalUrls) {
+		String assetType, Collection<String> canonicalUrls) {
 
 		return _assetRepository.countByAssetTypeAndCanonicalURLIn(
-			assetType, cannonicalUrls);
+			assetType, canonicalUrls);
 	}
 
 	public List<String> getDataSourceAssetPKs(String keyword) {
