@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,10 @@ public interface CustomAssetRepository {
 	public long countAssetKeywords(String keyword);
 
 	@Cacheable
+	public long countByAssetTypeAndCanonicalURLIn(
+		String assetType, Collection<String> canonicalUrls);
+
+	@Cacheable
 	public long countByAssetTypeAndFilterStringAndKeywords(
 		String assetType, FilterHelper filterHelper, @Nullable String keywords);
 
@@ -44,6 +49,10 @@ public interface CustomAssetRepository {
 	@Cacheable
 	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
 		Long assetId, String assetType, int size);
+
+	@Cacheable
+	public List<Asset> findByAssetTypeAndCanonicalURLIn(
+		String assetType, Collection<String> canonicalUrls, Pageable pageable);
 
 	@Cacheable
 	public List<Asset> findByAssetTypeAndFilterString(

@@ -16,26 +16,15 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Asset;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
 
 /**
  * @author Marcellus Tavares
  */
 public interface AssetRepository
 	extends CustomAssetRepository, Repository<Asset, Long> {
-
-	@Cacheable
-	public long countByAssetTypeAndCanonicalURLIn(
-		String assetType, Collection<String> canonicalUrls);
-
-	@Cacheable
-	public List<Asset> findByAssetTypeAndCanonicalURLIn(
-		String assetType, Collection<String> canonicalUrls, Pageable pageable);
 
 	@Cacheable
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
