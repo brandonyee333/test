@@ -27,60 +27,33 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link FilterExpressionParser#expression}.
+	 * Visit a parse tree produced by the {@code ToLogicalTerm}
+	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpression(FilterExpressionParser.ExpressionContext ctx);
+	T visitToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToLogicalAndExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
+	 * Visit a parse tree produced by the {@code BooleanParenthesis}
+	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx);
+	T visitBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code OrExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
+	 * Visit a parse tree produced by the {@code NotExpression}
+	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOrExpression(FilterExpressionParser.OrExpressionContext ctx);
+	T visitNotExpression(FilterExpressionParser.NotExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code AndExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
+	 * Visit a parse tree produced by the {@code ToBooleanOperandExpression}
+	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAndExpression(FilterExpressionParser.AndExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ToEqualityExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code NotEqualsExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ToComparisonExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code EqualsExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
+	T visitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code GreaterThanOrEqualsExpression}
 	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
@@ -117,61 +90,56 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code NotExpression}
-	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
+	 * Visit a parse tree produced by the {@code NotEqualsExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNotExpression(FilterExpressionParser.NotExpressionContext ctx);
+	T visitNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToBooleanOperandExpression}
-	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
+	 * Visit a parse tree produced by the {@code ToComparisonExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx);
+	T visitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToLogicalTerm}
-	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
+	 * Visit a parse tree produced by the {@code EqualsExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx);
+	T visitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code BooleanParenthesis}
-	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
+	 * Visit a parse tree produced by {@link FilterExpressionParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx);
+	T visitExpression(FilterExpressionParser.ExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToLiteral}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Visit a parse tree produced by {@link FilterExpressionParser#filterExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitToLiteral(FilterExpressionParser.ToLiteralContext ctx);
+	T visitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToFunctionCallExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Visit a parse tree produced by {@link FilterExpressionParser#functionParameters}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx);
+	T visitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToFilterExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Visit a parse tree produced by {@link FilterExpressionParser#functionParameter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	T visitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code LogicalVariable}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Visit a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx);
+	T visitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code FloatingPointLiteral}
 	 * labeled alternative in {@link FilterExpressionParser#literal}.
@@ -208,27 +176,59 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStringLiteral(FilterExpressionParser.StringLiteralContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
+	 * Visit a parse tree produced by the {@code AndExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx);
+	T visitAndExpression(FilterExpressionParser.AndExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FilterExpressionParser#functionParameters}.
+	 * Visit a parse tree produced by the {@code ToEqualityExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
+	T visitToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FilterExpressionParser#functionParameter}.
+	 * Visit a parse tree produced by the {@code ToLogicalAndExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
+	T visitToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FilterExpressionParser#filterExpression}.
+	 * Visit a parse tree produced by the {@code OrExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
+	T visitOrExpression(FilterExpressionParser.OrExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToLiteral}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToLiteral(FilterExpressionParser.ToLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToFunctionCallExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToFilterExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LogicalVariable}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx);
 }

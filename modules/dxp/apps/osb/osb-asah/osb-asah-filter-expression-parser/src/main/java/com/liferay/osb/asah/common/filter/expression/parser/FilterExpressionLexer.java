@@ -35,7 +35,7 @@ public class FilterExpressionLexer extends Lexer {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, AND=5, COMMA=6, EQ=7, FLOATING_POINT_LITERAL=8, 
 		NEQ=9, GE=10, GT=11, INTEGER_LITERAL=12, LE=13, LPAREN=14, RPAREN=15, 
-		LT=16, NOT=17, OR=18, STRING_LITERAL=19, IDENTIFIER=20, WS=21;
+		LT=16, NOT=17, OR=18, STRING_LITERAL=19, VARIABLE_IDENTIFIER=20, WS=21;
 	public static String[] modeNames = {
 		"DEFAULT_MODE"
 	};
@@ -43,18 +43,18 @@ public class FilterExpressionLexer extends Lexer {
 	public static final String[] ruleNames = {
 		"T__0", "T__1", "T__2", "T__3", "AND", "COMMA", "EQ", "FLOATING_POINT_LITERAL", 
 		"NEQ", "GE", "GT", "INTEGER_LITERAL", "LE", "LPAREN", "RPAREN", "LT", 
-		"NOT", "OR", "STRING_LITERAL", "IDENTIFIER", "DIGITS", "MINUS", "NAME_CHAR", 
-		"NAME_START_CHAR", "WS"
+		"NOT", "OR", "STRING_LITERAL", "VARIABLE_IDENTIFIER", "DIGITS", "MINUS", 
+		"NAME_CHAR", "NAME_START_CHAR", "WS"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'true'", "'false'", "'null'", "'.filter(filter='", null, "','", 
+		null, "'.filter(filter='", "'true'", "'false'", "'null'", null, "','", 
 		null, null, "'ne'", "'ge'", "'gt'", null, "'le'", "'('", "')'", "'lt'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, "AND", "COMMA", "EQ", "FLOATING_POINT_LITERAL", 
 		"NEQ", "GE", "GT", "INTEGER_LITERAL", "LE", "LPAREN", "RPAREN", "LT", 
-		"NOT", "OR", "STRING_LITERAL", "IDENTIFIER", "WS"
+		"NOT", "OR", "STRING_LITERAL", "VARIABLE_IDENTIFIER", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -115,8 +115,8 @@ public class FilterExpressionLexer extends Lexer {
 		"\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4"+
 		"\13\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22"+
 		"\t\22\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31"+
-		"\t\31\4\32\t\32\3\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3"+
-		"\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
+		"\t\31\4\32\t\32\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3"+
+		"\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5"+
 		"\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6_\n\6\3\7\3\7\3\b\3\b\3\b"+
 		"\5\bf\n\b\3\t\5\ti\n\t\3\t\3\t\3\t\5\tn\n\t\3\t\5\tq\n\t\3\t\3\t\5\tu"+
 		"\n\t\3\n\3\n\3\n\3\13\3\13\3\13\3\f\3\f\3\f\3\r\5\r\u0081\n\r\3\r\3\r"+
@@ -137,16 +137,16 @@ public class FilterExpressionLexer extends Lexer {
 		"\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2\2\2\2\25\3\2\2\2\2\27\3"+
 		"\2\2\2\2\31\3\2\2\2\2\33\3\2\2\2\2\35\3\2\2\2\2\37\3\2\2\2\2!\3\2\2\2"+
 		"\2#\3\2\2\2\2%\3\2\2\2\2\'\3\2\2\2\2)\3\2\2\2\2\63\3\2\2\2\3\65\3\2\2"+
-		"\2\5:\3\2\2\2\7@\3\2\2\2\tE\3\2\2\2\13^\3\2\2\2\r`\3\2\2\2\17e\3\2\2\2"+
+		"\2\5E\3\2\2\2\7J\3\2\2\2\tP\3\2\2\2\13^\3\2\2\2\r`\3\2\2\2\17e\3\2\2\2"+
 		"\21t\3\2\2\2\23v\3\2\2\2\25y\3\2\2\2\27|\3\2\2\2\31\u0080\3\2\2\2\33\u0084"+
 		"\3\2\2\2\35\u0087\3\2\2\2\37\u0089\3\2\2\2!\u008b\3\2\2\2#\u0094\3\2\2"+
 		"\2%\u009d\3\2\2\2\'\u00b3\3\2\2\2)\u00e1\3\2\2\2+\u00e4\3\2\2\2-\u00e8"+
-		"\3\2\2\2/\u00ec\3\2\2\2\61\u00ee\3\2\2\2\63\u00f1\3\2\2\2\65\66\7v\2\2"+
-		"\66\67\7t\2\2\678\7w\2\289\7g\2\29\4\3\2\2\2:;\7h\2\2;<\7c\2\2<=\7n\2"+
-		"\2=>\7u\2\2>?\7g\2\2?\6\3\2\2\2@A\7p\2\2AB\7w\2\2BC\7n\2\2CD\7n\2\2D\b"+
-		"\3\2\2\2EF\7\60\2\2FG\7h\2\2GH\7k\2\2HI\7n\2\2IJ\7v\2\2JK\7g\2\2KL\7t"+
-		"\2\2LM\7*\2\2MN\7h\2\2NO\7k\2\2OP\7n\2\2PQ\7v\2\2QR\7g\2\2RS\7t\2\2ST"+
-		"\7?\2\2T\n\3\2\2\2UV\7(\2\2V_\7(\2\2W_\7(\2\2XY\7c\2\2YZ\7p\2\2Z_\7f\2"+
+		"\3\2\2\2/\u00ec\3\2\2\2\61\u00ee\3\2\2\2\63\u00f1\3\2\2\2\65\66\7\60\2"+
+		"\2\66\67\7h\2\2\678\7k\2\289\7n\2\29:\7v\2\2:;\7g\2\2;<\7t\2\2<=\7*\2"+
+		"\2=>\7h\2\2>?\7k\2\2?@\7n\2\2@A\7v\2\2AB\7g\2\2BC\7t\2\2CD\7?\2\2D\4\3"+
+		"\2\2\2EF\7v\2\2FG\7t\2\2GH\7w\2\2HI\7g\2\2I\6\3\2\2\2JK\7h\2\2KL\7c\2"+
+		"\2LM\7n\2\2MN\7u\2\2NO\7g\2\2O\b\3\2\2\2PQ\7p\2\2QR\7w\2\2RS\7n\2\2ST"+
+		"\7n\2\2T\n\3\2\2\2UV\7(\2\2V_\7(\2\2W_\7(\2\2XY\7c\2\2YZ\7p\2\2Z_\7f\2"+
 		"\2[\\\7C\2\2\\]\7P\2\2]_\7F\2\2^U\3\2\2\2^W\3\2\2\2^X\3\2\2\2^[\3\2\2"+
 		"\2_\f\3\2\2\2`a\7.\2\2a\16\3\2\2\2bc\7g\2\2cf\7s\2\2df\7?\2\2eb\3\2\2"+
 		"\2ed\3\2\2\2f\20\3\2\2\2gi\5-\27\2hg\3\2\2\2hi\3\2\2\2ij\3\2\2\2jk\5+"+

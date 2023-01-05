@@ -24,99 +24,53 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface FilterExpressionListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link FilterExpressionParser#expression}.
+	 * Enter a parse tree produced by the {@code ToLogicalTerm}
+	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(FilterExpressionParser.ExpressionContext ctx);
+	void enterToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link FilterExpressionParser#expression}.
+	 * Exit a parse tree produced by the {@code ToLogicalTerm}
+	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(FilterExpressionParser.ExpressionContext ctx);
+	void exitToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ToLogicalAndExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
+	 * Enter a parse tree produced by the {@code BooleanParenthesis}
+	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx);
+	void enterBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ToLogicalAndExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
+	 * Exit a parse tree produced by the {@code BooleanParenthesis}
+	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx);
+	void exitBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code OrExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
+	 * Enter a parse tree produced by the {@code NotExpression}
+	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterOrExpression(FilterExpressionParser.OrExpressionContext ctx);
+	void enterNotExpression(FilterExpressionParser.NotExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code OrExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
+	 * Exit a parse tree produced by the {@code NotExpression}
+	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitOrExpression(FilterExpressionParser.OrExpressionContext ctx);
+	void exitNotExpression(FilterExpressionParser.NotExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code AndExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
+	 * Enter a parse tree produced by the {@code ToBooleanOperandExpression}
+	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterAndExpression(FilterExpressionParser.AndExpressionContext ctx);
+	void enterToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code AndExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
+	 * Exit a parse tree produced by the {@code ToBooleanOperandExpression}
+	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitAndExpression(FilterExpressionParser.AndExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code ToEqualityExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ToEqualityExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code NotEqualsExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NotEqualsExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code ToComparisonExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ToComparisonExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code EqualsExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code EqualsExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
+	void exitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code GreaterThanOrEqualsExpression}
 	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
@@ -178,101 +132,91 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 */
 	void exitLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code NotExpression}
-	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
+	 * Enter a parse tree produced by the {@code NotEqualsExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterNotExpression(FilterExpressionParser.NotExpressionContext ctx);
+	void enterNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code NotExpression}
-	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
+	 * Exit a parse tree produced by the {@code NotEqualsExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitNotExpression(FilterExpressionParser.NotExpressionContext ctx);
+	void exitNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ToBooleanOperandExpression}
-	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
+	 * Enter a parse tree produced by the {@code ToComparisonExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx);
+	void enterToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ToBooleanOperandExpression}
-	 * labeled alternative in {@link FilterExpressionParser#booleanUnaryExpression}.
+	 * Exit a parse tree produced by the {@code ToComparisonExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx);
+	void exitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ToLogicalTerm}
-	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
+	 * Enter a parse tree produced by the {@code EqualsExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx);
+	void enterEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ToLogicalTerm}
-	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
+	 * Exit a parse tree produced by the {@code EqualsExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx);
+	void exitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code BooleanParenthesis}
-	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
+	 * Enter a parse tree produced by {@link FilterExpressionParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx);
+	void enterExpression(FilterExpressionParser.ExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code BooleanParenthesis}
-	 * labeled alternative in {@link FilterExpressionParser#booleanOperandExpression}.
+	 * Exit a parse tree produced by {@link FilterExpressionParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx);
+	void exitExpression(FilterExpressionParser.ExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ToLiteral}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Enter a parse tree produced by {@link FilterExpressionParser#filterExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterToLiteral(FilterExpressionParser.ToLiteralContext ctx);
+	void enterFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ToLiteral}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Exit a parse tree produced by {@link FilterExpressionParser#filterExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitToLiteral(FilterExpressionParser.ToLiteralContext ctx);
+	void exitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ToFunctionCallExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Enter a parse tree produced by {@link FilterExpressionParser#functionParameters}.
 	 * @param ctx the parse tree
 	 */
-	void enterToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx);
+	void enterFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ToFunctionCallExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Exit a parse tree produced by {@link FilterExpressionParser#functionParameters}.
 	 * @param ctx the parse tree
 	 */
-	void exitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx);
+	void exitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ToFilterExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Enter a parse tree produced by {@link FilterExpressionParser#functionParameter}.
 	 * @param ctx the parse tree
 	 */
-	void enterToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	void enterFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ToFilterExpression}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Exit a parse tree produced by {@link FilterExpressionParser#functionParameter}.
 	 * @param ctx the parse tree
 	 */
-	void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	void exitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code LogicalVariable}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Enter a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx);
+	void enterFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code LogicalVariable}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * Exit a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx);
+	void exitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code FloatingPointLiteral}
 	 * labeled alternative in {@link FilterExpressionParser#literal}.
@@ -334,43 +278,99 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 */
 	void exitStringLiteral(FilterExpressionParser.StringLiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
+	 * Enter a parse tree produced by the {@code AndExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx);
+	void enterAndExpression(FilterExpressionParser.AndExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
+	 * Exit a parse tree produced by the {@code AndExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx);
+	void exitAndExpression(FilterExpressionParser.AndExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FilterExpressionParser#functionParameters}.
+	 * Enter a parse tree produced by the {@code ToEqualityExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
+	void enterToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link FilterExpressionParser#functionParameters}.
+	 * Exit a parse tree produced by the {@code ToEqualityExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalAndExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
+	void exitToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FilterExpressionParser#functionParameter}.
+	 * Enter a parse tree produced by the {@code ToLogicalAndExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
+	void enterToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link FilterExpressionParser#functionParameter}.
+	 * Exit a parse tree produced by the {@code ToLogicalAndExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
+	void exitToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FilterExpressionParser#filterExpression}.
+	 * Enter a parse tree produced by the {@code OrExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
+	void enterOrExpression(FilterExpressionParser.OrExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link FilterExpressionParser#filterExpression}.
+	 * Exit a parse tree produced by the {@code OrExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalOrExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
+	void exitOrExpression(FilterExpressionParser.OrExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ToLiteral}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void enterToLiteral(FilterExpressionParser.ToLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ToLiteral}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void exitToLiteral(FilterExpressionParser.ToLiteralContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ToFunctionCallExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void enterToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ToFunctionCallExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void exitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ToFilterExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void enterToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ToFilterExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LogicalVariable}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void enterLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LogicalVariable}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void exitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx);
 }

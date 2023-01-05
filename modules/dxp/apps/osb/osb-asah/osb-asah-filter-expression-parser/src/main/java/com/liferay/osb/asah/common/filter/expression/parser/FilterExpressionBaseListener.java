@@ -32,97 +32,49 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression(FilterExpressionParser.ExpressionContext ctx) { }
+	@Override public void enterToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpression(FilterExpressionParser.ExpressionContext ctx) { }
+	@Override public void exitToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx) { }
+	@Override public void enterBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx) { }
+	@Override public void exitBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOrExpression(FilterExpressionParser.OrExpressionContext ctx) { }
+	@Override public void enterNotExpression(FilterExpressionParser.NotExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOrExpression(FilterExpressionParser.OrExpressionContext ctx) { }
+	@Override public void exitNotExpression(FilterExpressionParser.NotExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAndExpression(FilterExpressionParser.AndExpressionContext ctx) { }
+	@Override public void enterToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAndExpression(FilterExpressionParser.AndExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { }
+	@Override public void exitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -188,97 +140,97 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNotExpression(FilterExpressionParser.NotExpressionContext ctx) { }
+	@Override public void enterNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNotExpression(FilterExpressionParser.NotExpressionContext ctx) { }
+	@Override public void exitNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx) { }
+	@Override public void enterToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx) { }
+	@Override public void exitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx) { }
+	@Override public void enterEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx) { }
+	@Override public void exitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx) { }
+	@Override public void enterExpression(FilterExpressionParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx) { }
+	@Override public void exitExpression(FilterExpressionParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterToLiteral(FilterExpressionParser.ToLiteralContext ctx) { }
+	@Override public void enterFilterExpression(FilterExpressionParser.FilterExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitToLiteral(FilterExpressionParser.ToLiteralContext ctx) { }
+	@Override public void exitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx) { }
+	@Override public void enterFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx) { }
+	@Override public void exitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { }
+	@Override public void enterFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { }
+	@Override public void exitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { }
+	@Override public void enterFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { }
+	@Override public void exitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -344,49 +296,97 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { }
+	@Override public void enterAndExpression(FilterExpressionParser.AndExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { }
+	@Override public void exitAndExpression(FilterExpressionParser.AndExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { }
+	@Override public void enterToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { }
+	@Override public void exitToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { }
+	@Override public void enterToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { }
+	@Override public void exitToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFilterExpression(FilterExpressionParser.FilterExpressionContext ctx) { }
+	@Override public void enterOrExpression(FilterExpressionParser.OrExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx) { }
+	@Override public void exitOrExpression(FilterExpressionParser.OrExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterToLiteral(FilterExpressionParser.ToLiteralContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitToLiteral(FilterExpressionParser.ToLiteralContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

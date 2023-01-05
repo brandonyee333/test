@@ -33,56 +33,28 @@ public class FilterExpressionBaseVisitor<T> extends AbstractParseTreeVisitor<T> 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExpression(FilterExpressionParser.ExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitOrExpression(FilterExpressionParser.OrExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNotExpression(FilterExpressionParser.NotExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAndExpression(FilterExpressionParser.AndExpressionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -124,56 +96,56 @@ public class FilterExpressionBaseVisitor<T> extends AbstractParseTreeVisitor<T> 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNotExpression(FilterExpressionParser.NotExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNotEqualsExpression(FilterExpressionParser.NotEqualsExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitToLogicalTerm(FilterExpressionParser.ToLogicalTermContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBooleanParenthesis(FilterExpressionParser.BooleanParenthesisContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExpression(FilterExpressionParser.ExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitToLiteral(FilterExpressionParser.ToLiteralContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -215,26 +187,54 @@ public class FilterExpressionBaseVisitor<T> extends AbstractParseTreeVisitor<T> 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAndExpression(FilterExpressionParser.AndExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { return visitChildren(ctx); }
+	@Override public T visitToEqualityExpression(FilterExpressionParser.ToEqualityExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { return visitChildren(ctx); }
+	@Override public T visitToLogicalAndExpression(FilterExpressionParser.ToLogicalAndExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitOrExpression(FilterExpressionParser.OrExpressionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitToLiteral(FilterExpressionParser.ToLiteralContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitToFunctionCallExpression(FilterExpressionParser.ToFunctionCallExpressionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { return visitChildren(ctx); }
 }
