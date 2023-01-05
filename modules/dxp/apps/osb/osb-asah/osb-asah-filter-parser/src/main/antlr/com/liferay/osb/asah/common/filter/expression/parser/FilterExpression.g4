@@ -19,7 +19,7 @@ options {
  * details.
  */
 
-package com.liferay.osb.asah.common.filterexpression.parser;
+package com.liferay.osb.asah.common.filter.expression.parser;
 }
 
 expression
