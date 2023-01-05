@@ -22,24 +22,14 @@ options {
 package com.liferay.osb.asah.common.filter.expression.parser;
 }
 
-expression
-	: logicalOrExpression EOF
+booleanOperandExpression
+	: logicalTerm # ToLogicalTerm
+	| LPAREN logicalOrExpression RPAREN # BooleanParenthesis
 	;
 
-logicalOrExpression
-	: logicalOrExpression OR logicalAndExpression # OrExpression
-	| logicalAndExpression # ToLogicalAndExpression
-	;
-
-logicalAndExpression
-	: logicalAndExpression AND equalityExpression # AndExpression
-	| equalityExpression # ToEqualityExpression
-	;
-
-equalityExpression
-	: equalityExpression EQ comparisonExpression # EqualsExpression
-	| equalityExpression NEQ comparisonExpression # NotEqualsExpression
-	| comparisonExpression #ToComparisonExpression
+booleanUnaryExpression
+	: NOT booleanUnaryExpression # NotExpression
+	| booleanOperandExpression # ToBooleanOperandExpression
 	;
 
 comparisonExpression
@@ -50,33 +40,18 @@ comparisonExpression
 	| booleanUnaryExpression #ToBooleanUnaryExpression
 	;
 
-booleanUnaryExpression
-	: NOT booleanUnaryExpression # NotExpression
-	| booleanOperandExpression # ToBooleanOperandExpression
+equalityExpression
+	: equalityExpression EQ comparisonExpression # EqualsExpression
+	| equalityExpression NEQ comparisonExpression # NotEqualsExpression
+	| comparisonExpression #ToComparisonExpression
 	;
 
-booleanOperandExpression
-	: logicalTerm # ToLogicalTerm
-	| LPAREN logicalOrExpression RPAREN # BooleanParenthesis
+expression
+	: logicalOrExpression EOF
 	;
 
-logicalTerm
-	: literal # ToLiteral
-	| functionCallExpression # ToFunctionCallExpression
-	| filterExpression # ToFilterExpression
-	| IDENTIFIER # LogicalVariable
-	;
-
-literal
-	: FLOATING_POINT_LITERAL # FloatingPointLiteral
-	| INTEGER_LITERAL # IntegerLiteral
-	| ('true' | 'false') # BooleanLiteral
-	| 'null' # NullLiteral
-	| STRING_LITERAL # StringLiteral
-	;
-
-functionCallExpression
-	: functionName=IDENTIFIER LPAREN functionParameters? RPAREN
+filterExpression
+	: domainName=VARIABLE_IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')'
 	;
 
 functionParameters
@@ -87,8 +62,33 @@ functionParameter
 	: logicalOrExpression
 	;
 
-filterExpression
-	: domainName=IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')'
+functionCallExpression
+	: functionName=VARIABLE_IDENTIFIER LPAREN functionParameters? RPAREN
+	;
+
+literal
+	: FLOATING_POINT_LITERAL # FloatingPointLiteral
+	| INTEGER_LITERAL # IntegerLiteral
+	| ('true' | 'false') # BooleanLiteral
+	| 'null' # NullLiteral
+	| STRING_LITERAL # StringLiteral
+	;
+
+logicalAndExpression
+	: logicalAndExpression AND equalityExpression # AndExpression
+	| equalityExpression # ToEqualityExpression
+	;
+
+logicalOrExpression
+	: logicalOrExpression OR logicalAndExpression # OrExpression
+	| logicalAndExpression # ToLogicalAndExpression
+	;
+
+logicalTerm
+	: literal # ToLiteral
+	| functionCallExpression # ToFunctionCallExpression
+	| filterExpression # ToFilterExpression
+	| VARIABLE_IDENTIFIER # LogicalVariable
 	;
 
 AND
@@ -161,7 +161,7 @@ STRING_LITERAL
 	| '\'' ( '\'\'' | ~['] )* '\''
 	;
 
-IDENTIFIER
+VARIABLE_IDENTIFIER
 	: NAME_START_CHAR NAME_CHAR*
     | NAME_START_CHAR NAME_CHAR* '/' NAME_START_CHAR NAME_CHAR*
 	| NAME_START_CHAR NAME_CHAR* '/' NAME_START_CHAR NAME_CHAR* '/value'
