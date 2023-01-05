@@ -14,7 +14,7 @@
  * details.
  */
 
-package com.liferay.osb.asah.common.filterexpression.parser;
+package com.liferay.osb.asah.common.filter.expression.parser;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
