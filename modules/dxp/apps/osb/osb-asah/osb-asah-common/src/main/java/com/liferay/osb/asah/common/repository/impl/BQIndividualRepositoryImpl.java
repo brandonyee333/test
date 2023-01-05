@@ -159,11 +159,11 @@ public class BQIndividualRepositoryImpl
 							(List<FieldValueList>)map.get("fields")));
 				}
 
-				BigDecimal activitiescount = new BigDecimal(
+				BigDecimal activitiesCount = new BigDecimal(
 					String.valueOf(map.get("activitiescount")));
 
 				return new Individual(
-					activitiescount.longValue(), new BQIndividual(map),
+					activitiesCount.longValue(), new BQIndividual(map),
 					(Date)map.get("lastactivitydate"), _objectMapper);
 			},
 			(SelectJoinStep)_getIndividualSelectOnConditionStep(
