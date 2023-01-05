@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -563,17 +563,23 @@ public class BQIndividualInterestScoreRepositoryImpl
 			);
 		}
 
-		AtomicInteger maxCount = new AtomicInteger(0);
-		AtomicInteger totalCount = new AtomicInteger(0);
+		AtomicReference<String> maxCountAtomicReference = new AtomicReference<>(
+			"0");
+		AtomicReference<String> totalCountAtomicReference =
+			new AtomicReference<>("0");
 
 		List<Composition> compositions = _queryExecutor.queryForList(
 			record -> {
-				maxCount.set((Integer)record.get("maxCount"));
-				totalCount.set((Integer)record.get("totalCount"));
+				maxCountAtomicReference.set(
+					String.valueOf(record.get("maxCount")));
+				totalCountAtomicReference.set(
+					String.valueOf(record.get("totalCount")));
+
+				BigDecimal count = new BigDecimal(
+					String.valueOf(record.get("count")));
 
 				return new Composition(
-					(Integer)record.get("count"),
-					(String)record.get("keyword"));
+					count.longValue(), (String)record.get("keyword"));
 			},
 			selectJoinStep.where(
 				conditions
@@ -587,9 +593,14 @@ public class BQIndividualInterestScoreRepositoryImpl
 				pageable.getOffset()
 			));
 
+		BigDecimal maxCountBigDecimal = new BigDecimal(
+			maxCountAtomicReference.get());
+		BigDecimal totalCountBigDecimal = new BigDecimal(
+			totalCountAtomicReference.get());
+
 		return new CompositionResultBag(
-			maxCount.get(), compositions, compositions.size(),
-			totalCount.get());
+			maxCountBigDecimal.longValue(), compositions, compositions.size(),
+			totalCountBigDecimal.longValue());
 	}
 
 	@Override
