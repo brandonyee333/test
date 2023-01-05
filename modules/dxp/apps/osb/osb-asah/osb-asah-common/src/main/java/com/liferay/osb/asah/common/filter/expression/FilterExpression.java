@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.osb.asah.common.filterexpression;
+package com.liferay.osb.asah.common.filter.expression;
 
-import com.liferay.osb.asah.common.filterexpression.parser.FilterExpressionLexer;
-import com.liferay.osb.asah.common.filterexpression.parser.FilterExpressionParser;
+import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionLexer;
+import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BailErrorStrategy;

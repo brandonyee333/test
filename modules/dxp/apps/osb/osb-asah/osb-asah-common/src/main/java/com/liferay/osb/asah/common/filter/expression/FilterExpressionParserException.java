@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.filterexpression;
+package com.liferay.osb.asah.common.filter.expression;
 
 /**
  * @author Marcellus Tavares

@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.osb.asah.common.filterexpression;
+package com.liferay.osb.asah.common.filter.expression;
 
-import com.liferay.osb.asah.common.filterexpression.parser.FilterExpressionBaseVisitor;
-import com.liferay.osb.asah.common.filterexpression.parser.FilterExpressionParser;
+import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionBaseVisitor;
+import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;

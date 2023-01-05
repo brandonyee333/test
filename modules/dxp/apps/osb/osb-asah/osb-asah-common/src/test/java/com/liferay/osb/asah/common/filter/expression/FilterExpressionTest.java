@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.filterexpression;
+package com.liferay.osb.asah.common.filter.expression;
 
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
