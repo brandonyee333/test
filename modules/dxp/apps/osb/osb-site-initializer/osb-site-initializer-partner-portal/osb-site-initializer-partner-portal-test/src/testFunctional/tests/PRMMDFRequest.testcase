@@ -60,7 +60,6 @@ definition {
 			User.logoutAndLoginPG(
 				userLoginEmailAddress = "partner@liferay.com",
 				userLoginFullName = "partner");
-
 			PRMUtils.gotoPRM();
 		}
 
@@ -126,6 +125,45 @@ definition {
 
 			PRMMDFListing.viewOnList(campaignName = "Campaign Name");
 		}
+	}
+	@description = "This is a test for LPS-171637. Verify that an alert will appear when user don't fill a mandatory* field and that “Continue” button only will be clickable after fill all mandatory fields"
+	@priority = "5"
+	test CannotContinueWithoutFillRequiredField {
+		task ("Given I go to add a new MDF Request") {
+			PRMMarketing.gotoAddNewMDF();
+		}
+
+		task ("When I fill all mandatory fields on the MDF Request") {
+			PRMMDFRequest.fillGoalsPage(
+					accountName = "Account 1",
+					additionalOptions = "6.x to DXP Migration/Upgrade,Migration from competitor platform",
+					campaignDescription = "Campaign Description",
+					campaignName = "Campaign Name",
+					countryName = "Global",
+					goalsOptions = "Lead generation",
+					targetMarketOptions = "Education,Energy",
+					targetRolesOptions = "Administrator");
+		}
+		task ("Then the Continue button will be clickable") {
+			Button.click(button = "Continue");
+		}
+
+		task ("When I don't fill all mandatory fields on the MDF Request") {
+			PRMNavigator.goToNavItem(navItem = "Marketing");
+			PRMMarketing.gotoAddNewMDF();
+			PRMMDFRequest.fillGoalsPage(
+					accountName = "Account 1",
+					additionalOptions = "6.x to DXP Migration/Upgrade,Migration from competitor platform",
+					campaignName = "Campaign Name",
+					countryName = "Global",
+					goalsOptions = "Lead generation",
+					targetMarketOptions = "Education,Energy",
+					targetRolesOptions = "Administrator");
+		}
+		task ("Then the Continue button will be disabled") {
+			PRMMDFRequest.CannotContinue();		
+		}
+
 	}
 
 }
