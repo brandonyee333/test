@@ -51,7 +51,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record3;
-import org.jooq.Record4;
+import org.jooq.Record5;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
@@ -486,7 +486,7 @@ public class BQIndividualInterestScoreRepositoryImpl
 		boolean active, @Nullable Long channelId, @Nullable String keywords,
 		@Nullable Long segmentId, Pageable pageable) {
 
-		SelectSelectStep<Record4<Integer, String, Integer, Integer>>
+		SelectSelectStep<Record5<Integer, String, Integer, Integer, BigDecimal>>
 			selectSelectStep = _dslContext.select(
 				DSL.count(
 				).as(
@@ -502,10 +502,16 @@ public class BQIndividualInterestScoreRepositoryImpl
 				DSL.count(
 				).over(
 				).as(
+					"total"
+				),
+				DSL.sum(
+					DSL.count()
+				).over(
+				).as(
 					"totalCount"
 				));
 
-		SelectJoinStep<Record4<Integer, String, Integer, Integer>>
+		SelectJoinStep<Record5<Integer, String, Integer, Integer, BigDecimal>>
 			selectJoinStep = selectSelectStep.from(
 				"BQIndividualInterestScore"
 			).join(
@@ -565,15 +571,18 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 		AtomicReference<String> maxCountAtomicReference = new AtomicReference<>(
 			"0");
-		AtomicReference<String> totalCountAtomicReference =
-			new AtomicReference<>("0");
+		AtomicReference<String> totalAtomicReference = new AtomicReference<>(
+			"0");
+		AtomicReference<BigDecimal> totalCountAtomicReference =
+			new AtomicReference<>(BigDecimal.ZERO);
 
 		List<Composition> compositions = _queryExecutor.queryForList(
 			record -> {
 				maxCountAtomicReference.set(
 					String.valueOf(record.get("maxCount")));
+				totalAtomicReference.set(String.valueOf(record.get("total")));
 				totalCountAtomicReference.set(
-					String.valueOf(record.get("totalCount")));
+					(BigDecimal)record.get("totalCount"));
 
 				BigDecimal count = new BigDecimal(
 					String.valueOf(record.get("count")));
@@ -595,12 +604,12 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 		BigDecimal maxCountBigDecimal = new BigDecimal(
 			maxCountAtomicReference.get());
-		BigDecimal totalCountBigDecimal = new BigDecimal(
-			totalCountAtomicReference.get());
+		BigDecimal totalBigDecimal = new BigDecimal(totalAtomicReference.get());
+		BigDecimal totalCountBigDecimal = totalCountAtomicReference.get();
 
 		return new CompositionResultBag(
-			maxCountBigDecimal.longValue(), compositions, compositions.size(),
-			totalCountBigDecimal.longValue());
+			maxCountBigDecimal.longValue(), compositions,
+			totalBigDecimal.longValue(), totalCountBigDecimal.longValue());
 	}
 
 	@Override

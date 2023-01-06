@@ -58,7 +58,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 4L);
 				}
 			},
-			4, 1, 2);
+			4, 2, 6);
 	}
 
 	@RepositoryResource(
@@ -88,7 +88,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("javascript", 2L);
 				}
 			},
-			4, 3, 3);
+			4, 3, 8);
 	}
 
 	@RepositoryResource(
@@ -117,7 +117,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 2L);
 				}
 			},
-			2, 1, 1);
+			2, 1, 2);
 	}
 
 	@RepositoryResource(
@@ -148,7 +148,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 2L);
 				}
 			},
-			2, 3, 3);
+			2, 3, 5);
 	}
 
 	@RepositoryResource(
@@ -179,7 +179,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("javascript", 1L);
 				}
 			},
-			2, 3, 3);
+			2, 3, 5);
 	}
 
 	@Autowired
