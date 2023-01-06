@@ -251,7 +251,7 @@ public class ReportRestController extends BaseRestController {
 		bodyBuilder.contentType(MediaType.APPLICATION_OCTET_STREAM);
 
 		String fileName = String.format(
-			"%s-data-%s.json", StringUtils.lowerCase(type),
+			"%s-data-%s.zip", StringUtils.lowerCase(type),
 			DateUtil.toUTCString(dataExportTask.getCompletedDate()));
 
 		bodyBuilder.header(

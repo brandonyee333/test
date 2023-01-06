@@ -79,7 +79,7 @@ public class DataExportTaskDog {
 
 	public File getDataExportTaskFile(Long dataExportTaskId) {
 		Path path = Paths.get(
-			_exportPath, FilenameUtils.getName(dataExportTaskId + ".json"));
+			_exportPath, FilenameUtils.getName(dataExportTaskId + ".zip"));
 
 		path = path.normalize();
 
