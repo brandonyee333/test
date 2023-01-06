@@ -14,18 +14,30 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.fasterxml.jackson.core.JsonFactory;
+
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.BigQueryDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
-import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.ReportDataExporterFactory;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SegmentDataExporter;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.entity.DataExportTask;
+import com.liferay.osb.asah.common.http.ReportHttp;
 
+import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.jooq.DSLContext;
 
 import org.json.JSONObject;
 
@@ -41,11 +53,12 @@ public class DataExportNanite extends BaseNanite {
 
 	@Autowired
 	public DataExportNanite(
-		DataExportTaskDog dataExportTaskDog,
-		ReportDataExporterFactory reportDataExporterFactory) {
+		DataExportTaskDog dataExportTaskDog, DSLContext dslContext,
+		ReportHttp reportHttp) {
 
 		_dataExportTaskDog = dataExportTaskDog;
-		_reportDataExporterFactory = reportDataExporterFactory;
+		_dslContext = dslContext;
+		_reportHttp = reportHttp;
 	}
 
 	@Override
@@ -67,45 +80,86 @@ public class DataExportNanite extends BaseNanite {
 		return _log;
 	}
 
-	private DataExporter _createDataExporter(
-			DataExportTask dataExportTask, OutputStream outputStream)
+	private void _runBigQueryDataExportTask(DataExportTask dataExportTask)
 		throws Exception {
 
-		return _reportDataExporterFactory.create(dataExportTask, outputStream);
+		DataExporter dataExporter = null;
+
+		if (dataExportTask.getType() == DataExportTask.Type.INDIVIDUAL) {
+			dataExporter = new BigQueryDataExporter(
+				dataExportTask, "createDate", _dslContext, _exportPath,
+				"Individual");
+		}
+		else if (dataExportTask.getType() == DataExportTask.Type.PAGE) {
+			dataExporter = new BigQueryDataExporter(
+				dataExportTask, "eventDate", _dslContext, _exportPath,
+				"PageDaily");
+		}
+		else {
+			throw new IllegalArgumentException(
+				"Invalid data export task type: " + dataExportTask.getType());
+		}
+
+		dataExporter.export();
 	}
 
 	private void _runDataExportTask(DataExportTask dataExportTask) {
 		_dataExportTaskDog.updateDataExportTask(
 			dataExportTask.getId(), DataExportTask.Status.RUNNING);
 
-		try (OutputStream outputStream = new FileOutputStream(
-				_exportPath + "/" + dataExportTask.getId() + ".json")) {
+		try {
+			if (dataExportTask.getType() == DataExportTask.Type.SEGMENT) {
+				_runSegmentDataExportTask(dataExportTask);
+			}
+			else {
+				_runBigQueryDataExportTask(dataExportTask);
+			}
 
-			DataExporter dataExporter = _createDataExporter(
-				dataExportTask, outputStream);
-
-			dataExporter.export();
+			_dataExportTaskDog.updateDataExportTask(
+				dataExportTask.getId(), DataExportTask.Status.COMPLETED);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
 
 			_dataExportTaskDog.updateDataExportTask(
 				dataExportTask.getId(), DataExportTask.Status.ERROR);
-
-			return;
 		}
+	}
 
-		_dataExportTaskDog.updateDataExportTask(
-			dataExportTask.getId(), DataExportTask.Status.COMPLETED);
+	private void _runSegmentDataExportTask(DataExportTask dataExportTask)
+		throws Exception {
+
+		Path path = Paths.get(
+			_exportPath,
+			FilenameUtils.getName(dataExportTask.getId() + ".zip"));
+
+		ZipOutputStream zipOutputStream = new ZipOutputStream(
+			new FileOutputStream(path.toFile()));
+
+		File file = new File("data.json");
+
+		zipOutputStream.putNextEntry(new ZipEntry(file.getName()));
+
+		DataExporter dataExporter = new SegmentDataExporter(
+			dataExportTask.getFromDate(), _jsonFactory, zipOutputStream,
+			_reportHttp, dataExportTask.getToDate());
+
+		dataExporter.export();
+
+		zipOutputStream.closeEntry();
+
+		zipOutputStream.close();
 	}
 
 	private static final Log _log = LogFactory.getLog(DataExportNanite.class);
 
 	private final DataExportTaskDog _dataExportTaskDog;
+	private final DSLContext _dslContext;
 
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPath;
 
-	private final ReportDataExporterFactory _reportDataExporterFactory;
+	private final JsonFactory _jsonFactory = new JsonFactory();
+	private final ReportHttp _reportHttp;
 
 }
