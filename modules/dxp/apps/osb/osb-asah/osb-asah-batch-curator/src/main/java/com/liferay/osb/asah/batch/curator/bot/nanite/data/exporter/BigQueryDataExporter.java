@@ -1,0 +1,202 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
+
+import com.google.api.gax.paging.Page;
+import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.BigQueryOptions;
+import com.google.cloud.bigquery.QueryJobConfiguration;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+
+import com.liferay.osb.asah.common.entity.DataExportTask;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.jooq.Condition;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.SelectSelectStep;
+import org.jooq.impl.DSL;
+
+/**
+ * @author Marcellus Tavares
+ */
+public class BigQueryDataExporter implements DataExporter {
+
+	public BigQueryDataExporter(
+		DataExportTask dataExportTask, String dateFieldName,
+		DSLContext dslContext, String exportPath, String tableName) {
+
+		_dataExportTask = dataExportTask;
+		_dateFieldName = dateFieldName;
+		_dslContext = dslContext;
+		_exportPath = exportPath;
+		_tableName = tableName;
+
+		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
+
+		_bigQuery = bigQueryOptions.getService();
+		_googleProjectId = bigQueryOptions.getProjectId();
+
+		StorageOptions storageOptions = StorageOptions.getDefaultInstance();
+
+		_storage = storageOptions.getService();
+	}
+
+	@Override
+	public void export() throws Exception {
+		String exportBucket = StringUtils.replace(
+			_DATA_EXPORTER_BUCKET_TEMPLATE, "{googleProjectId}",
+			_googleProjectId);
+
+		String exportBucketFolder =
+			ProjectIdThreadLocal.getProjectId() + "/" + _dataExportTask.getId();
+
+		_runBigQueryExportJob(exportBucket, exportBucketFolder);
+
+		_createDataExportZipFile(exportBucket, exportBucketFolder);
+	}
+
+	private void _createDataExportZipFile(
+			String exportBucket, String exportBucketFolder)
+		throws Exception {
+
+		Page<Blob> blobs = _storage.list(
+			exportBucket, Storage.BlobListOption.prefix(exportBucketFolder));
+
+		Path path = Paths.get(
+			_exportPath,
+			FilenameUtils.getName(_dataExportTask.getId() + ".zip"));
+
+		File dataExportZipFile = path.toFile();
+
+		ZipOutputStream zipOutputStream = new ZipOutputStream(
+			new FileOutputStream(dataExportZipFile));
+
+		File file = new File("data.json");
+
+		zipOutputStream.putNextEntry(new ZipEntry(file.getName()));
+
+		for (Blob blob : blobs.iterateAll()) {
+			String blobName = blob.getName();
+
+			if (!blobName.endsWith(".json")) {
+				continue;
+			}
+
+			try {
+				byte[] bytes = blob.getContent();
+
+				zipOutputStream.write(bytes, 0, bytes.length);
+			}
+			catch (IOException ioException) {
+				_log.error(ioException.getMessage(), ioException);
+			}
+		}
+
+		zipOutputStream.closeEntry();
+
+		zipOutputStream.close();
+	}
+
+	private String _getBigQueryTableName(String tableName) {
+		return "`" + _googleProjectId + "." +
+			ProjectIdThreadLocal.getProjectId() + "." +
+				StringUtils.lowerCase(tableName + "`");
+	}
+
+	private List<Condition> _getConditions() {
+		List<Condition> conditions = new ArrayList<>();
+
+		if (_dataExportTask.getFromDate() != null) {
+			conditions.add(
+				DSL.field(
+					_dateFieldName
+				).greaterOrEqual(
+					_dataExportTask.getFromDate()
+				));
+		}
+
+		if (_dataExportTask.getToDate() != null) {
+			conditions.add(
+				DSL.field(
+					_dateFieldName
+				).lessOrEqual(
+					_dataExportTask.getToDate()
+				));
+		}
+
+		return conditions;
+	}
+
+	private void _runBigQueryExportJob(
+			String exportBucket, String exportBucketFolder)
+		throws Exception {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		QueryJobConfiguration queryJobConfiguration =
+			QueryJobConfiguration.newBuilder(
+				String.format(
+					_EXPORT_DATA_QUERY_TEMPLATE, exportBucket,
+					exportBucketFolder,
+					selectSelectStep.from(
+						_getBigQueryTableName(_tableName)
+					).where(
+						_getConditions()
+					).getSQL())
+			).build();
+
+		_bigQuery.query(queryJobConfiguration);
+	}
+
+	private static final String _DATA_EXPORTER_BUCKET_TEMPLATE =
+		"gs://{googleProjectId}-data-exporter";
+
+	private static final String _EXPORT_DATA_QUERY_TEMPLATE =
+		"EXPORT DATA OPTIONS(format='JSON', overwrite=true, " +
+			"uri='%s/%s/*.json') AS %s";
+
+	private static final Log _log = LogFactory.getLog(
+		BigQueryDataExporter.class);
+
+	private final BigQuery _bigQuery;
+	private final DataExportTask _dataExportTask;
+	private final String _dateFieldName;
+	private final DSLContext _dslContext;
+	private final String _exportPath;
+	private final String _googleProjectId;
+	private final Storage _storage;
+	private final String _tableName;
+
+}
