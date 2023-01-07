@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -569,27 +569,8 @@ public class BQIndividualInterestScoreRepositoryImpl
 			);
 		}
 
-		AtomicReference<String> maxCountAtomicReference = new AtomicReference<>(
-			"0");
-		AtomicReference<String> totalAtomicReference = new AtomicReference<>(
-			"0");
-		AtomicReference<BigDecimal> totalCountAtomicReference =
-			new AtomicReference<>(BigDecimal.ZERO);
-
-		List<Composition> compositions = _queryExecutor.queryForList(
-			record -> {
-				maxCountAtomicReference.set(
-					String.valueOf(record.get("maxCount")));
-				totalAtomicReference.set(String.valueOf(record.get("total")));
-				totalCountAtomicReference.set(
-					(BigDecimal)record.get("totalCount"));
-
-				BigDecimal count = new BigDecimal(
-					String.valueOf(record.get("count")));
-
-				return new Composition(
-					count.longValue(), (String)record.get("keyword"));
-			},
+		List<Map<String, Object>> records = _queryExecutor.queryForList(
+			Function.identity(),
 			selectJoinStep.where(
 				conditions
 			).groupBy(
@@ -602,10 +583,28 @@ public class BQIndividualInterestScoreRepositoryImpl
 				pageable.getOffset()
 			));
 
-		BigDecimal maxCountBigDecimal = new BigDecimal(
-			maxCountAtomicReference.get());
-		BigDecimal totalBigDecimal = new BigDecimal(totalAtomicReference.get());
-		BigDecimal totalCountBigDecimal = totalCountAtomicReference.get();
+		BigDecimal maxCountBigDecimal = BigDecimal.ZERO;
+		BigDecimal totalBigDecimal = BigDecimal.ZERO;
+		BigDecimal totalCountBigDecimal = BigDecimal.ZERO;
+
+		List<Composition> compositions = new ArrayList<>();
+
+		for (int i = 0; i < records.size(); i++) {
+			Map<String, Object> record = records.get(i);
+
+			if (i == 0) {
+				maxCountBigDecimal = (BigDecimal)record.get("maxCount");
+				totalBigDecimal = (BigDecimal)record.get("total");
+				totalCountBigDecimal = (BigDecimal)record.get("totalCount");
+			}
+
+			BigDecimal count = new BigDecimal(
+				String.valueOf(record.get("count")));
+
+			compositions.add(
+				new Composition(
+					count.longValue(), (String)record.get("keyword")));
+		}
 
 		return new CompositionResultBag(
 			maxCountBigDecimal.longValue(), compositions,
