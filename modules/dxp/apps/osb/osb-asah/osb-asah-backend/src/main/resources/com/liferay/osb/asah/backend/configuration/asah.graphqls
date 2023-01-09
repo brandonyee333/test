@@ -1292,6 +1292,7 @@ type QueryType {
 	): [CurrencyValue]
 
 	organizations(
+		channelId: String,
 		keywords: String,
 		size: Int!,
 		sort: Sort!,
@@ -1344,6 +1345,7 @@ type QueryType {
 	): Preference
 
 	roles(
+		channelId: String,
 		keywords: String,
 		size: Int!,
 		sort: Sort!,
@@ -1410,6 +1412,7 @@ type QueryType {
 	timeRange: [TimeRange]
 
 	userGroups(
+		channelId: String,
 		keywords: String,
 		size: Int!,
 		sort: Sort!,
