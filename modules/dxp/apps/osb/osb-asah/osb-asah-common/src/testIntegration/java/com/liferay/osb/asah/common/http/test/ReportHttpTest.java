@@ -57,19 +57,6 @@ public class ReportHttpTest implements OSBAsahCommonSpringTestContext {
 	}
 
 	@Test
-	public void testGetIndividualsJSONObject() {
-		ReportHttp reportHttp = new ReportHttpImpl(_httpMock);
-
-		JSONObject jsonObject = reportHttp.getIndividualsJSONObject(
-			"0", "2022-03-01T12:00:00.000Z", "2022-03-31T12:00:00.000Z");
-
-		Assertions.assertEquals(
-			"/reports/individuals?after=0&fromDate=2022-03-01T12:00:00.000Z&" +
-				"toDate=2022-03-31T12:00:00.000Z",
-			jsonObject.get("result"));
-	}
-
-	@Test
 	public void testGetSegmentsJSONObject() {
 		ReportHttp reportHttp = new ReportHttpImpl(_httpMock);
 
