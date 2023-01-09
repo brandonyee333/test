@@ -423,6 +423,23 @@ definition {
 		Portlet.viewPG(portletName = "Web Content Display");
 	}
 
+	@description = "This is for LPS-150849."
+	@priority = "5"
+	test ChooseColumnTypeAndViewSelectedIcon {
+		Page.add(pageName = "Site Page Name");
+
+		SitePageNavigator.gotoEditPage(page = "Site Page Name");
+
+		Click(
+			key_columnName = "1 Column",
+			locator1 = "SitePagesEditPage#LAYOUT_CARD");
+
+		AssertCssValue(
+			locator1 = "//input[@value='1_column']/following-sibling::div",
+			locator2 = "box-shadow",
+			value1 = "rgb(101, 182, 240) 0px 0px 0px 2px inset");
+	}
+
 	@ignore = "true"
 	@priority = "4"
 	test CopyApplicationsFromPageToPage {
