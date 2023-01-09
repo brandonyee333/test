@@ -593,8 +593,10 @@ public class BQIndividualInterestScoreRepositoryImpl
 			Map<String, Object> record = records.get(i);
 
 			if (i == 0) {
-				maxCountBigDecimal = (BigDecimal)record.get("maxCount");
-				totalBigDecimal = (BigDecimal)record.get("total");
+				maxCountBigDecimal = new BigDecimal(
+					String.valueOf(record.get("maxCount")));
+				totalBigDecimal = new BigDecimal(
+					String.valueOf(record.get("total")));
 				totalCountBigDecimal = (BigDecimal)record.get("totalCount");
 			}
 
