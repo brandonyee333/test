@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.http.ReportHttp;
 import java.io.OutputStream;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.json.JSONObject;
 
@@ -37,13 +38,19 @@ public class SegmentDataExporter extends BaseDataExporter {
 
 		super(jsonFactory, outputStream, reportHttp);
 
-		if (fromDate != null) {
-			_fromDate = DateUtil.toUTCString(fromDate);
-		}
+		_fromDate = DateUtil.toUTCString(
+			Optional.ofNullable(
+				fromDate
+			).orElse(
+				_defaultDate
+			));
 
-		if (toDate != null) {
-			_toDate = DateUtil.toUTCString(toDate);
-		}
+		_toDate = DateUtil.toUTCString(
+			Optional.ofNullable(
+				toDate
+			).orElse(
+				_defaultDate
+			));
 	}
 
 	@Override
@@ -51,7 +58,10 @@ public class SegmentDataExporter extends BaseDataExporter {
 		return reportHttp.getSegmentsJSONObject(afterId, _fromDate, _toDate);
 	}
 
-	private String _fromDate;
-	private String _toDate;
+	private static final Date _defaultDate = DateUtil.toUTCDate(
+		"1970-01-01T00:00:00.000Z");
+
+	private final String _fromDate;
+	private final String _toDate;
 
 }
