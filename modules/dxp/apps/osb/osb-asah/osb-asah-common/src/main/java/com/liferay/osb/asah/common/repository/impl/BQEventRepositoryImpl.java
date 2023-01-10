@@ -395,24 +395,8 @@ public class BQEventRepositoryImpl
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		Field<OffsetDateTime> eventDateField =
-			_dslHelper.getDateAtTimeZoneField("BQEvent.eventDate", timeZoneId);
-
-		if (interval == Interval.DAY) {
-			eventDateField = _dslHelper.dateTrunc(DatePart.DAY, eventDateField);
-		}
-		else if (interval == Interval.HOUR) {
-			eventDateField = _dslHelper.dateTrunc(
-				DatePart.HOUR, eventDateField);
-		}
-		else if (interval == Interval.MONTH) {
-			eventDateField = _dslHelper.dateTrunc(
-				DatePart.MONTH, eventDateField);
-		}
-		else {
-			eventDateField = _dslHelper.dateTrunc(
-				DatePart.WEEK, eventDateField);
-		}
+		Field<OffsetDateTime> eventDateField = _getTruncatedEventDateField(
+			"BQEvent.eventDate", interval, timeZoneId);
 
 		eventDateField = eventDateField.as("eventDateTrunc");
 
@@ -444,16 +428,8 @@ public class BQEventRepositoryImpl
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		Field<OffsetDateTime> eventDateField =
-			_dslHelper.getDateAtTimeZoneField("BQEvent.eventDate", timeZoneId);
-
-		if (interval != Interval.HOUR) {
-			eventDateField = _dslHelper.dateTrunc(DatePart.DAY, eventDateField);
-		}
-		else {
-			eventDateField = _dslHelper.dateTrunc(
-				DatePart.HOUR, eventDateField);
-		}
+		Field<OffsetDateTime> eventDateField = _getTruncatedEventDateField(
+			"BQEvent.eventDate", interval, timeZoneId);
 
 		eventDateField = eventDateField.as("eventDate");
 
@@ -1625,6 +1601,26 @@ public class BQEventRepositoryImpl
 		}
 
 		return DSL.field(name + " " + eventAnalysisBreakdown.getSortType());
+	}
+
+	private Field<OffsetDateTime> _getTruncatedEventDateField(
+		String fieldName, Interval interval, String timeZoneId) {
+
+		Field<OffsetDateTime> eventDateField =
+			_dslHelper.getDateAtTimeZoneField(fieldName, timeZoneId);
+
+		if (interval == Interval.DAY) {
+			return _dslHelper.dateTrunc(DatePart.DAY, eventDateField);
+		}
+		else if (interval == Interval.HOUR) {
+			return _dslHelper.dateTrunc(DatePart.HOUR, eventDateField);
+		}
+		else if (interval == Interval.MONTH) {
+			return _dslHelper.dateTrunc(DatePart.MONTH, eventDateField);
+		}
+		else {
+			return _dslHelper.dateTrunc(DatePart.WEEK, eventDateField);
+		}
 	}
 
 	private Field<Integer> _getUniqueIndividualsField(TimeRange timeRange) {
