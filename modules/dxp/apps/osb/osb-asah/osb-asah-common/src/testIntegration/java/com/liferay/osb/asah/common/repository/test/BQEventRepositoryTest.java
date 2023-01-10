@@ -41,6 +41,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -1093,6 +1094,58 @@ public class BQEventRepositoryTest
 		Assertions.assertEquals(
 			expectedEventSessionsCountGroupByEventDate,
 			eventSessionsCountGroupByEventDate);
+	}
+
+	@SQLResource(
+		resourcePath = "test_bq_event_count_grouped_by_event_date_custom_range.sql"
+	)
+	@Test
+	public void testGetEventSessionsCountGroupByEventDateMonthlyInterval() {
+		TimeRange timeRange = TimeRange.of(
+			LocalDate.parse("2022-12-31"), LocalDate.parse("2022-12-01"));
+
+		Map<String, Integer> eventSessionsCountGroupByEventDate =
+			_bqEventRepository.getEventSessionsCountGroupByEventDate(
+				1L, null, Interval.MONTH, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Assertions.assertEquals(
+			1, eventSessionsCountGroupByEventDate.size(),
+			eventSessionsCountGroupByEventDate.toString());
+
+		Collection<Integer> values =
+			eventSessionsCountGroupByEventDate.values();
+
+		MatcherAssert.assertThat(
+			new Integer[] {7},
+			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
+	}
+
+	@SQLResource(
+		resourcePath = "test_bq_event_count_grouped_by_event_date_custom_range.sql"
+	)
+	@Test
+	public void testGetEventSessionsCountGroupByEventDateWeeklyInterval() {
+		TimeRange timeRange = TimeRange.of(
+			LocalDate.parse("2022-12-31"), LocalDate.parse("2022-12-01"));
+
+		Map<String, Integer> eventSessionsCountGroupByEventDate =
+			_bqEventRepository.getEventSessionsCountGroupByEventDate(
+				1L, null, Interval.WEEK, null, timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime(),
+				_timeZoneDog.getTimeZoneId());
+
+		Assertions.assertEquals(
+			5, eventSessionsCountGroupByEventDate.size(),
+			eventSessionsCountGroupByEventDate.toString());
+
+		Collection<Integer> values =
+			eventSessionsCountGroupByEventDate.values();
+
+		MatcherAssert.assertThat(
+			new Integer[] {1, 1, 2, 2, 2},
+			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
 
 	@SQLResource(resourcePath = "test_bq_events.sql")
