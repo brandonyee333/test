@@ -27,7 +27,7 @@ public class JIRARESTConnectorConfigurationValues {
 	public static final String JIRA_DOMAIN_NAME = GetterUtil.getString(
 		JIRARESTConnectorConfigurationUtil.get("jira.domain.name"));
 
-	public static final String JIRA_USER_NAME = GetterUtil.getString(
-		JIRARESTConnectorConfigurationUtil.get("jira.user.name"));
+	public static final String JIRA_EMAIL_ADDRESS = GetterUtil.getString(
+		JIRARESTConnectorConfigurationUtil.get("jira.email.address"));
 
 }

@@ -122,7 +122,7 @@ public class JIRAHttpUtil {
 
 	private static String _getCredentials() {
 		String jiraUserNameAndJiraApiToken =
-			JIRARESTConnectorConfigurationValues.JIRA_USER_NAME +
+			JIRARESTConnectorConfigurationValues.JIRA_EMAIL_ADDRESS +
 				StringPool.COLON +
 					JIRARESTConnectorConfigurationValues.JIRA_API_TOKEN;
 
