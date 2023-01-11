@@ -65,13 +65,14 @@ public class BQIdentityInterestScoreDog {
 	}
 
 	public IdentityInterestScore getIdentityInterestScore(Long id) {
-		Optional<IdentityInterestScore> interestOptional =
+		Optional<IdentityInterestScore> identityInterestScoreOptional =
 			_bqIdentityInterestScoreRepository.findIdentityInterestScoreById(
 				id);
 
-		return interestOptional.orElseThrow(
+		return identityInterestScoreOptional.orElseThrow(
 			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "There is no interest with ID " + id));
+				HttpStatus.BAD_REQUEST,
+				"There is no identity interest score with ID " + id));
 	}
 
 	public Page<IdentityInterestScore> getIdentityInterestScorePage(

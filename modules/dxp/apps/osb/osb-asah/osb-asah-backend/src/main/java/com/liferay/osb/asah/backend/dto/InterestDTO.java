@@ -37,13 +37,13 @@ public class InterestDTO {
 	public InterestDTO() {
 	}
 
-	public InterestDTO(IdentityInterestScore individualInterestScore) {
-		_id = StringUtil.get(individualInterestScore.getId(), null);
-		_name = individualInterestScore.getKeyword();
-		_ownerId = individualInterestScore.getIndividualId();
+	public InterestDTO(IdentityInterestScore identityInterestScore) {
+		_id = StringUtil.get(identityInterestScore.getId(), null);
+		_name = identityInterestScore.getKeyword();
+		_ownerId = identityInterestScore.getIndividualId();
 		_ownerType = "individual";
-		_recordedDate = individualInterestScore.getRecordedDate();
-		_score = individualInterestScore.getInterestScore();
+		_recordedDate = identityInterestScore.getRecordedDate();
+		_score = identityInterestScore.getInterestScore();
 		_views = null;
 	}
 

@@ -140,9 +140,9 @@ public class InterestsRestController
 	@NotNull
 	private InterestDTO _createInterestDTO(
 		boolean addPageVisited, int days,
-		IdentityInterestScore individualInterestScore) {
+		IdentityInterestScore identityInterestScore) {
 
-		InterestDTO interestDTO = new InterestDTO(individualInterestScore);
+		InterestDTO interestDTO = new InterestDTO(identityInterestScore);
 
 		Map<String, Object> embedded = new HashMap<>();
 
@@ -154,8 +154,8 @@ public class InterestsRestController
 				"interest-aggregation-last-" + days + "-days",
 				_getInterestAggregations(
 					endDayLocalDateTime,
-					individualInterestScore.getIndividualId(),
-					individualInterestScore.getKeyword(),
+					identityInterestScore.getIndividualId(),
+					identityInterestScore.getKeyword(),
 					endDayLocalDateTime.plusDays(1 - days)));
 		}
 
@@ -172,7 +172,7 @@ public class InterestsRestController
 	}
 
 	private Set<InterestDTO> _createInterestDTOs(
-		String expand, List<IdentityInterestScore> individualInterestScores) {
+		String expand, List<IdentityInterestScore> identityInterestScores) {
 
 		int days = _getDaysRange(expand);
 
@@ -180,12 +180,12 @@ public class InterestsRestController
 
 		Set<InterestDTO> interestDTOs = new LinkedHashSet<>();
 
-		for (IdentityInterestScore individualInterestScore :
-				individualInterestScores) {
+		for (IdentityInterestScore identityInterestScore :
+				identityInterestScores) {
 
 			interestDTOs.add(
 				_createInterestDTO(
-					addPageVisited, days, individualInterestScore));
+					addPageVisited, days, identityInterestScore));
 		}
 
 		return interestDTOs;
@@ -271,23 +271,23 @@ public class InterestsRestController
 
 	private PageDTO<InterestDTO> _toPageDTO(
 		InterestDTO interestDTO,
-		Page<IdentityInterestScore> individualInterestScores) {
+		Page<IdentityInterestScore> identityInterestScores) {
 
 		return new PageDTO<>(
-			"_embedded", interestDTO, individualInterestScores.getNumber(),
-			individualInterestScores.getSize(),
-			individualInterestScores.getTotalElements(),
-			individualInterestScores.getTotalPages());
+			"_embedded", interestDTO, identityInterestScores.getNumber(),
+			identityInterestScores.getSize(),
+			identityInterestScores.getTotalElements(),
+			identityInterestScores.getTotalPages());
 	}
 
 	private PageDTO<InterestDTO> _toPageDTO(
-		String expand, Page<IdentityInterestScore> individualInterestScores) {
+		String expand, Page<IdentityInterestScore> identityInterestScores) {
 
 		return _toPageDTO(
 			new InterestDTO(
 				_createInterestDTOs(
-					expand, individualInterestScores.getContent())),
-			individualInterestScores);
+					expand, identityInterestScores.getContent())),
+			identityInterestScores);
 	}
 
 	@Autowired

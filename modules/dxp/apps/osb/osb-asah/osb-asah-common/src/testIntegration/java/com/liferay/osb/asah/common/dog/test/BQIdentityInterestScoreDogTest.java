@@ -49,14 +49,14 @@ public class BQIdentityInterestScoreDogTest
 	)
 	@Test
 	public void testGetBQIdentityInterestScore() {
-		IdentityInterestScore individualInterestScore =
+		IdentityInterestScore identityInterestScore =
 			_bqIdentityInterestScoreDog.getIdentityInterestScore(
 				635452168436521350L);
 
 		Assertions.assertEquals(
-			635452168436521350L, individualInterestScore.getId());
+			635452168436521350L, identityInterestScore.getId());
 
-		Assertions.assertEquals("sales", individualInterestScore.getKeyword());
+		Assertions.assertEquals("sales", identityInterestScore.getKeyword());
 	}
 
 	@RepositoryResource(

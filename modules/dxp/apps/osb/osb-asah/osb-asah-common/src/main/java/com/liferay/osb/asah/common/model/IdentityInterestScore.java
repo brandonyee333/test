@@ -46,10 +46,10 @@ public class IdentityInterestScore {
 			return false;
 		}
 
-		IdentityInterestScore individualInterestScore =
+		IdentityInterestScore identityInterestScore =
 			(IdentityInterestScore)obj;
 
-		if (Objects.equals(_id, individualInterestScore._id)) {
+		if (Objects.equals(_id, identityInterestScore._id)) {
 			return true;
 		}
 
