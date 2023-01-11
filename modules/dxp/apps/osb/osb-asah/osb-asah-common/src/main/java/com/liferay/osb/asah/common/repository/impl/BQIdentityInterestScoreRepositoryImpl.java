@@ -782,7 +782,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	private List<Condition> _getConditions(
-		@Nullable FilterHelper filterHelper, boolean interested,
+		@Nullable FilterHelper filterHelper, Boolean interested,
 		@Nullable Long interestId, @Nullable List<String> individualIds,
 		@Nullable String keywords, @Nullable Date recordedDate) {
 
@@ -803,12 +803,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 				));
 		}
 
-		if (interested) {
+		if (interested != null) {
 			conditions.add(
 				DSL.field(
 					"interested", Boolean.class
 				).eq(
-					Boolean.TRUE
+					interested
 				));
 		}
 
