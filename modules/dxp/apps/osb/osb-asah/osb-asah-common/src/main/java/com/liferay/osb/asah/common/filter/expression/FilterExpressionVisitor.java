@@ -45,10 +45,10 @@ public class FilterExpressionVisitor
 	public Object visitAndExpression(
 		FilterExpressionParser.AndExpressionContext andExpressionContext) {
 
-		Condition left = _visitChild(andExpressionContext, 0);
-		Condition right = _visitChild(andExpressionContext, 2);
+		Condition leftCondition = _visitChild(andExpressionContext, 0);
+		Condition rightCondition = _visitChild(andExpressionContext, 2);
 
-		return left.and(right);
+		return leftCondition.and(rightCondition);
 	}
 
 	@Override
@@ -71,14 +71,14 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.EqualsExpressionContext
 			equalsExpressionContext) {
 
-		Field left = _visitChild(equalsExpressionContext, 0);
-		Field right = _visitChild(equalsExpressionContext, 2);
+		Field leftField = _visitChild(equalsExpressionContext, 0);
+		Field rightField = _visitChild(equalsExpressionContext, 2);
 
-		if (right == null) {
-			return left.isNull();
+		if (rightField == null) {
+			return leftField.isNull();
 		}
 
-		return left.eq(right);
+		return leftField.eq(rightField);
 	}
 
 	@Override
@@ -97,14 +97,20 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.FilterExpressionContext
 			filterExpressionContext) {
 
-		String filter = filterExpressionContext.filter.getText();
+		Token filterToken = filterExpressionContext.filter;
 
-		filter = filter.replaceAll("\\s''", " '");
-		filter = filter.replaceAll("''\\s", "' ");
-		filter = filter.replaceAll("''\\)", "')");
+		String filterExpressionString = filterToken.getText();
+
+		filterExpressionString = filterExpressionString.replaceAll(
+			"\\s''", " '");
+		filterExpressionString = filterExpressionString.replaceAll(
+			"''\\s", "' ");
+		filterExpressionString = filterExpressionString.replaceAll(
+			"''\\)", "')");
 
 		FilterExpression filterExpression = new FilterExpression(
-			filter.substring(1, filter.length() - 1));
+			filterExpressionString.substring(
+				1, filterExpressionString.length() - 1));
 
 		return filterExpression.getCondition();
 	}
@@ -164,13 +170,13 @@ public class FilterExpressionVisitor
 		List<Object> parameters = new ArrayList<>();
 
 		for (int i = 0; i < functionParametersContext.getChildCount(); i++) {
-			ParseTree child = functionParametersContext.getChild(i);
+			ParseTree childParseTree = functionParametersContext.getChild(i);
 
-			if (child instanceof TerminalNode) {
+			if (childParseTree instanceof TerminalNode) {
 				continue;
 			}
 
-			parameters.add(child.accept(this));
+			parameters.add(childParseTree.accept(this));
 		}
 
 		return parameters;
@@ -181,10 +187,10 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.GreaterThanExpressionContext
 			greaterThanExpressionContext) {
 
-		Field left = _visitChild(greaterThanExpressionContext, 0);
-		Field right = _visitChild(greaterThanExpressionContext, 2);
+		Field leftField = _visitChild(greaterThanExpressionContext, 0);
+		Field rightField = _visitChild(greaterThanExpressionContext, 2);
 
-		return left.gt(right);
+		return leftField.gt(rightField);
 	}
 
 	@Override
@@ -192,10 +198,10 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.GreaterThanOrEqualsExpressionContext
 			greaterThanOrEqualsExpressionContext) {
 
-		Field left = _visitChild(greaterThanOrEqualsExpressionContext, 0);
-		Field right = _visitChild(greaterThanOrEqualsExpressionContext, 2);
+		Field leftField = _visitChild(greaterThanOrEqualsExpressionContext, 0);
+		Field rightField = _visitChild(greaterThanOrEqualsExpressionContext, 2);
 
-		return left.ge(right);
+		return leftField.ge(rightField);
 	}
 
 	@Override
@@ -212,10 +218,10 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.LessThanExpressionContext
 			lessThanExpressionContext) {
 
-		Field left = _visitChild(lessThanExpressionContext, 0);
-		Field right = _visitChild(lessThanExpressionContext, 2);
+		Field leftField = _visitChild(lessThanExpressionContext, 0);
+		Field rightField = _visitChild(lessThanExpressionContext, 2);
 
-		return left.lt(right);
+		return leftField.lt(rightField);
 	}
 
 	@Override
@@ -223,10 +229,10 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.LessThanOrEqualsExpressionContext
 			lessThanOrEqualsExpressionContext) {
 
-		Field left = _visitChild(lessThanOrEqualsExpressionContext, 0);
-		Field right = _visitChild(lessThanOrEqualsExpressionContext, 2);
+		Field leftField = _visitChild(lessThanOrEqualsExpressionContext, 0);
+		Field rightField = _visitChild(lessThanOrEqualsExpressionContext, 2);
 
-		return left.le(right);
+		return leftField.le(rightField);
 	}
 
 	@Override
@@ -253,14 +259,14 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.NotEqualsExpressionContext
 			notEqualsExpressionContext) {
 
-		Field left = _visitChild(notEqualsExpressionContext, 0);
-		Field right = _visitChild(notEqualsExpressionContext, 2);
+		Field leftField = _visitChild(notEqualsExpressionContext, 0);
+		Field rightField = _visitChild(notEqualsExpressionContext, 2);
 
-		if (right == null) {
-			return left.isNotNull();
+		if (rightField == null) {
+			return leftField.isNotNull();
 		}
 
-		return left.ne(right);
+		return leftField.ne(rightField);
 	}
 
 	@Override
@@ -283,10 +289,10 @@ public class FilterExpressionVisitor
 	public Object visitOrExpression(
 		FilterExpressionParser.OrExpressionContext orExpressionContext) {
 
-		Condition left = _visitChild(orExpressionContext, 0);
-		Condition right = _visitChild(orExpressionContext, 2);
+		Condition leftCondition = _visitChild(orExpressionContext, 0);
+		Condition rightCondition = _visitChild(orExpressionContext, 2);
 
-		return left.or(right);
+		return leftCondition.or(rightCondition);
 	}
 
 	@Override
