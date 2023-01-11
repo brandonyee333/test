@@ -57,10 +57,10 @@ public class BQIdentityInterestScore implements Persistable<Long> {
 			return false;
 		}
 
-		BQIdentityInterestScore bqIndividualInterestScore =
+		BQIdentityInterestScore bqIdentityInterestScore =
 			(BQIdentityInterestScore)obj;
 
-		if (Objects.equals(_id, bqIndividualInterestScore._id)) {
+		if (Objects.equals(_id, bqIdentityInterestScore._id)) {
 			return true;
 		}
 

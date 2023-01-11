@@ -25,8 +25,7 @@ import java.util.Objects;
 public class IdentityInterestScore {
 
 	public IdentityInterestScore(
-		BQIdentityInterestScore bqIdentityInterestScore,
-		String individualId) {
+		BQIdentityInterestScore bqIdentityInterestScore, String individualId) {
 
 		_individualId = individualId;
 

@@ -140,6 +140,14 @@ CREATE TABLE IF NOT EXISTS BQIdentity (
 	individualId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS BQIdentityInterestScore (
+	id BIGSERIAL PRIMARY KEY,
+	identityId TEXT,
+	interestScore DOUBLE PRECISION,
+	keyword TEXT,
+	recordedDate TIMESTAMPTZ
+);
+
 CREATE TABLE IF NOT EXISTS BQIndividual (
 	createDate TIMESTAMP,
 	emailAddress TEXT,
@@ -151,14 +159,6 @@ CREATE TABLE IF NOT EXISTS BQIndividual (
 	middleName TEXT,
 	modifiedDate TIMESTAMPTZ,
 	screenName TEXT
-);
-
-CREATE TABLE IF NOT EXISTS BQIndividualInterestScore (
-    id BIGSERIAL PRIMARY KEY,
-    identityId TEXT,
-    interestScore DOUBLE PRECISION,
-    keyword TEXT,
-    recordedDate TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS BQMembership (

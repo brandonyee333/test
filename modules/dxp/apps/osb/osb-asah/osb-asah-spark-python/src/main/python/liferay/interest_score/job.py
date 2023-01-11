@@ -28,10 +28,10 @@ from sparknlp.annotator import Chunker, \
 from sparknlp.base import DocumentAssembler, \
 	Finisher
 
-class IndividualInterestScoreSparkJob(BaseSparkJob):
+class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 	def __init__(self, spark_application):
-		super(IndividualInterestScoreSparkJob, self).__init__(spark_application)
+		super(IdentityInterestScoreSparkJob, self).__init__(spark_application)
 
 		self._global_keyword_weight = 1.0
 		self._interest_score_decay_rate = 0.9

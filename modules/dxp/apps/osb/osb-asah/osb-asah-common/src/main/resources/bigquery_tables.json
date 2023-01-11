@@ -1124,6 +1124,35 @@
 			}
 		]
 	},
+	"identityinterestscore": {
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "id",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "identityId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "interestScore",
+				"type": "FLOAT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "keyword",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "recordedDate",
+				"type": "TIMESTAMP"
+			}
+		]
+	},
 	"individual": {
 		"clusteringFields": [
 			"id",
@@ -1202,35 +1231,6 @@
 			"field": "modifiedDate",
 			"type": "DAY"
 		}
-	},
-	"individualinterestscore": {
-		"fields": [
-			{
-				"mode": "REQUIRED",
-				"name": "id",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "identityId",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "interestScore",
-				"type": "FLOAT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "keyword",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "recordedDate",
-				"type": "TIMESTAMP"
-			}
-		]
 	},
 	"journaldaily": {
 		"clusteringFields": [

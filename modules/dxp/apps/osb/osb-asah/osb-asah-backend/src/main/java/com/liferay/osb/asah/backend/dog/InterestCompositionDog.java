@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +31,7 @@ public class InterestCompositionDog {
 	public CompositionResultBag getIndividualCompositionResultBag(
 		Long channelId, String keywords, int size, Sort sort, int start) {
 
-		return _bqIndividualInterestScoreRepository.
+		return _bqIdentityInterestScoreRepository.
 			getInterestCompositionResultBag(
 				Boolean.FALSE, channelId, keywords, null,
 				PageRequest.of(start / size, size, sort));
@@ -41,14 +41,14 @@ public class InterestCompositionDog {
 		boolean active, Long channelId, String keywords, Long segmentId,
 		int size, Sort sort, int start) {
 
-		return _bqIndividualInterestScoreRepository.
+		return _bqIdentityInterestScoreRepository.
 			getInterestCompositionResultBag(
 				active, channelId, keywords, segmentId,
 				PageRequest.of(start / size, size, sort));
 	}
 
 	@Autowired
-	private BQIndividualInterestScoreRepository
-		_bqIndividualInterestScoreRepository;
+	private BQIdentityInterestScoreRepository
+		_bqIdentityInterestScoreRepository;
 
 }

@@ -17,9 +17,9 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
-import com.liferay.osb.asah.common.model.IndividualInterestScore;
+import com.liferay.osb.asah.common.model.IdentityInterestScore;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -44,47 +44,37 @@ import org.springframework.stereotype.Component;
 @Component
 public class BQIdentityInterestScoreDog {
 
-	public Page<BQIdentityInterestScore> getBQIndividualInterestScorePage(
+	public Page<BQIdentityInterestScore> getBQIdentityInterestScorePage(
 		String individualId, int size, int start) {
 
 		return PageableExecutionUtils.getPage(
-			_bqIndividualInterestScoreRepository.findByIndividualId(
+			_bqIdentityInterestScoreRepository.findByIndividualId(
 				individualId, PageRequest.of(start / size, size)),
 			PageRequest.of(start / size, size),
-			() -> _bqIndividualInterestScoreRepository.countByIndividualId(
+			() -> _bqIdentityInterestScoreRepository.countByIndividualId(
 				individualId));
 	}
 
-	public List<BQIdentityInterestScore> getBQIndividualInterestScores(
+	public List<BQIdentityInterestScore> getBQIdentityInterestScores(
 		String individualId, String keyword, Date fromRecordedDate,
 		Date toRecordedDate) {
 
-		return _bqIndividualInterestScoreRepository.
+		return _bqIdentityInterestScoreRepository.
 			findByIndividualIdAndKeywordAndRecordedDateBetween(
 				individualId, keyword, fromRecordedDate, toRecordedDate);
 	}
 
-	public List<String> getIndividualIds(
-		String filterString, String individualId) {
-
-		return _bqIndividualInterestScoreRepository.
-			findIndividualIdsByFilterStringAndIndividualId(
-				new FilterHelper(
-					null, filterString, _interestFilterStringConverterHelper),
-				individualId);
-	}
-
-	public IndividualInterestScore getIndividualInterestScore(Long id) {
-		Optional<IndividualInterestScore> interestOptional =
-			_bqIndividualInterestScoreRepository.
-				findIndividualInterestScoreById(id);
+	public IdentityInterestScore getIdentityInterestScore(Long id) {
+		Optional<IdentityInterestScore> interestOptional =
+			_bqIdentityInterestScoreRepository.findIdentityInterestScoreById(
+				id);
 
 		return interestOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "There is no interest with ID " + id));
 	}
 
-	public Page<IndividualInterestScore> getIndividualInterestScorePage(
+	public Page<IdentityInterestScore> getIdentityInterestScorePage(
 		String filterString, Double score, int page, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(
@@ -94,19 +84,29 @@ public class BQIdentityInterestScoreDog {
 			null, filterString, new InterestFilterStringConverterHelper());
 
 		return PageableExecutionUtils.getPage(
-			_bqIndividualInterestScoreRepository.
+			_bqIdentityInterestScoreRepository.
 				findByFilterStringAndScoreGreaterThanEqual(
 					filterHelper, score, pageRequest),
 			pageRequest,
 			() ->
-				_bqIndividualInterestScoreRepository.
+				_bqIdentityInterestScoreRepository.
 					countByFilterStringAndScoreGreaterThanEqual(
 						filterHelper, score));
 	}
 
+	public List<String> getIndividualIds(
+		String filterString, String individualId) {
+
+		return _bqIdentityInterestScoreRepository.
+			findIndividualIdsByFilterStringAndIndividualId(
+				new FilterHelper(
+					null, filterString, _interestFilterStringConverterHelper),
+				individualId);
+	}
+
 	public List<String> getTopKeywords(String individualId, int size) {
-		return _bqIndividualInterestScoreRepository.
-			getTopKeywordsByIndividualId(individualId, size);
+		return _bqIdentityInterestScoreRepository.getTopKeywordsByIndividualId(
+			individualId, size);
 	}
 
 	public JSONArray getTransformations(
@@ -136,7 +136,7 @@ public class BQIdentityInterestScoreDog {
 		Date fromDate = DateUtil.addDays(toDate, 1 - size);
 
 		return new JSONArray(
-			_bqIndividualInterestScoreRepository.getTransformations(
+			_bqIdentityInterestScoreRepository.getTransformations(
 				fromDate,
 				new FilterHelper(
 					null, filterString,
@@ -151,7 +151,7 @@ public class BQIdentityInterestScoreDog {
 		"compute\\((?<period>\\w+)\\((?<fieldName>\\w+)\\)\\)");
 
 	@Autowired
-	private BQIndividualInterestScoreRepository
-		_bqIndividualInterestScoreRepository;
+	private BQIdentityInterestScoreRepository
+		_bqIdentityInterestScoreRepository;
 
 }

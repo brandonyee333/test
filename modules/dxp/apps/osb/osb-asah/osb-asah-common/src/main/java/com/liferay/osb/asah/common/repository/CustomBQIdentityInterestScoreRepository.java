@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
-import com.liferay.osb.asah.common.model.IndividualInterestScore;
+import com.liferay.osb.asah.common.model.IdentityInterestScore;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
@@ -37,7 +37,7 @@ public interface CustomBQIdentityInterestScoreRepository {
 
 	public long countByIndividualId(String individualId);
 
-	public List<IndividualInterestScore>
+	public List<IdentityInterestScore>
 		findByFilterStringAndScoreGreaterThanEqual(
 			@Nullable FilterHelper filterHelper, @Nullable Double score,
 			Pageable pageable);
@@ -53,11 +53,11 @@ public interface CustomBQIdentityInterestScoreRepository {
 	public List<BQIdentityInterestScore> findByRecordedDate(
 		@Nullable Long interestId, @Nullable Date recordedDate, int size);
 
+	public Optional<IdentityInterestScore> findIdentityInterestScoreById(
+		Long id);
+
 	public List<String> findIndividualIdsByFilterStringAndIndividualId(
 		FilterHelper filterHelper, @Nullable String individualId);
-
-	public Optional<IndividualInterestScore> findIndividualInterestScoreById(
-		Long id);
 
 	public BQIdentityInterestScore getByIndividualIdAndKeywordAndRecordedDate(
 		String individualId, String keyword, Date recordedDate);

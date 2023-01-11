@@ -19,9 +19,9 @@ import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.Composition;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
-import com.liferay.osb.asah.common.model.IndividualInterestScore;
+import com.liferay.osb.asah.common.model.IdentityInterestScore;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.CustomBQIndividualInterestScoreRepository;
+import com.liferay.osb.asah.common.repository.CustomBQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -69,8 +69,7 @@ import org.springframework.lang.Nullable;
  * @author Robson Pastor
  */
 public class BQIdentityInterestScoreRepositoryImpl
-	extends BaseRepository
-	implements CustomBQIndividualInterestScoreRepository {
+	extends BaseRepository implements CustomBQIdentityInterestScoreRepository {
 
 	public BQIdentityInterestScoreRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
@@ -92,12 +91,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 		return _queryExecutor.queryForLong(
 			selectSelectStep.from(
-				"BQIndividualInterestScore"
+				"BQIdentityInterestScore"
 			).join(
 				"BQIdentity"
 			).on(
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).eq(
 					DSL.field("BQIdentity.id")
 				)
@@ -111,12 +110,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 		return _queryExecutor.queryForLong(
 			_dslContext.selectCount(
 			).from(
-				"BQIndividualInterestScore"
+				"BQIdentityInterestScore"
 			).join(
 				"BQIdentity"
 			).on(
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).eq(
 					DSL.field("BQIdentity.id")
 				)
@@ -130,38 +129,38 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public List<IndividualInterestScore>
+	public List<IdentityInterestScore>
 		findByFilterStringAndScoreGreaterThanEqual(
 			@Nullable FilterHelper filterHelper, @Nullable Double score,
 			Pageable pageable) {
 
 		return _queryExecutor.queryForList(
-			record -> new IndividualInterestScore(
+			record -> new IdentityInterestScore(
 				new BQIdentityInterestScore(record),
 				(String)record.get("individualId")),
 			_dslContext.select(
 				DSL.field(
-					"BQIndividualInterestScore.id"
+					"BQIdentityInterestScore.id"
 				).as(
 					"id"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).as(
 					"identityId"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.interestScore"
+					"BQIdentityInterestScore.interestScore"
 				).as(
 					"interestScore"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.keyword"
+					"BQIdentityInterestScore.keyword"
 				).as(
 					"keyword"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.recordedDate"
+					"BQIdentityInterestScore.recordedDate"
 				).as(
 					"recordedDate"
 				),
@@ -171,12 +170,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"individualId"
 				)
 			).from(
-				"BQIndividualInterestScore"
+				"BQIdentityInterestScore"
 			).join(
 				"BQIdentity"
 			).on(
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).eq(
 					DSL.field("BQIdentity.id")
 				)
@@ -199,37 +198,37 @@ public class BQIdentityInterestScoreRepositoryImpl
 			BQIdentityInterestScore::new,
 			_dslContext.selectDistinct(
 				DSL.field(
-					"BQIndividualInterestScore.id"
+					"BQIdentityInterestScore.id"
 				).as(
 					"id"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).as(
 					"identityId"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.interestScore"
+					"BQIdentityInterestScore.interestScore"
 				).as(
 					"interestScore"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.keyword"
+					"BQIdentityInterestScore.keyword"
 				).as(
 					"keyword"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.recordedDate"
+					"BQIdentityInterestScore.recordedDate"
 				).as(
 					"recordedDate"
 				)
 			).from(
-				"BQIndividualInterestScore"
+				"BQIdentityInterestScore"
 			).join(
 				"BQIdentity"
 			).on(
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).eq(
 					DSL.field("BQIdentity.id")
 				)
@@ -256,37 +255,37 @@ public class BQIdentityInterestScoreRepositoryImpl
 			BQIdentityInterestScore::new,
 			_dslContext.selectDistinct(
 				DSL.field(
-					"BQIndividualInterestScore.id"
+					"BQIdentityInterestScore.id"
 				).as(
 					"id"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).as(
 					"identityId"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.interestScore"
+					"BQIdentityInterestScore.interestScore"
 				).as(
 					"interestScore"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.keyword"
+					"BQIdentityInterestScore.keyword"
 				).as(
 					"keyword"
 				),
 				DSL.field(
-					"BQIndividualInterestScore.recordedDate"
+					"BQIdentityInterestScore.recordedDate"
 				).as(
 					"recordedDate"
 				)
 			).from(
-				"BQIndividualInterestScore"
+				"BQIdentityInterestScore"
 			).join(
 				"BQIdentity"
 			).on(
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).eq(
 					DSL.field("BQIdentity.id")
 				)
@@ -298,13 +297,13 @@ public class BQIdentityInterestScoreRepositoryImpl
 				)
 			).and(
 				DSL.field(
-					"BQIndividualInterestScore.keyword"
+					"BQIdentityInterestScore.keyword"
 				).eq(
 					keyword
 				)
 			).and(
 				DSL.field(
-					"BQIndividualInterestScore.recordedDate"
+					"BQIdentityInterestScore.recordedDate"
 				).between(
 					recordedDate1, recordedDate2
 				)
@@ -320,13 +319,71 @@ public class BQIdentityInterestScoreRepositoryImpl
 		return _queryExecutor.queryForList(
 			BQIdentityInterestScore::new,
 			selectSelectStep.from(
-				"BQIndividualInterestScore"
+				"BQIdentityInterestScore"
 			).where(
 				_getConditions(null, interestId, null, null, recordedDate, null)
 			).orderBy(
 				DSL.field("id")
 			).limit(
 				size
+			));
+	}
+
+	@Override
+	public Optional<IdentityInterestScore> findIdentityInterestScoreById(
+		Long id) {
+
+		return _queryExecutor.queryForObject(
+			record -> new IdentityInterestScore(
+				new BQIdentityInterestScore(record),
+				(String)record.get("individualId")),
+			(SelectFinalStep)_dslContext.select(
+				DSL.field(
+					"BQIdentityInterestScore.id"
+				).as(
+					"id"
+				),
+				DSL.field(
+					"BQIdentityInterestScore.identityId"
+				).as(
+					"identityId"
+				),
+				DSL.field(
+					"BQIdentityInterestScore.interestScore"
+				).as(
+					"interestScore"
+				),
+				DSL.field(
+					"BQIdentityInterestScore.keyword"
+				).as(
+					"keyword"
+				),
+				DSL.field(
+					"BQIdentityInterestScore.recordedDate"
+				).as(
+					"recordedDate"
+				),
+				DSL.field(
+					"BQIdentity.individualId"
+				).as(
+					"individualId"
+				)
+			).from(
+				"BQIdentityInterestScore"
+			).join(
+				"BQIdentity"
+			).on(
+				DSL.field(
+					"BQIdentityInterestScore.identityId"
+				).eq(
+					DSL.field("BQIdentity.id")
+				)
+			).where(
+				DSL.field(
+					"BQIdentityInterestScore.id"
+				).eq(
+					id
+				)
 			));
 	}
 
@@ -339,7 +396,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 		SelectJoinStep<Record1<String>> selectJoinStep = _dslContext.select(
 			field
 		).from(
-			"BQIndividualInterestScore"
+			"BQIdentityInterestScore"
 		);
 
 		List<String> individualIds = new ArrayList<>();
@@ -359,104 +416,46 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public Optional<IndividualInterestScore> findIndividualInterestScoreById(
-		Long id) {
-
-		return _queryExecutor.queryForObject(
-			record -> new IndividualInterestScore(
-				new BQIdentityInterestScore(record),
-				(String)record.get("individualId")),
-			(SelectFinalStep)_dslContext.select(
-				DSL.field(
-					"BQIndividualInterestScore.id"
-				).as(
-					"id"
-				),
-				DSL.field(
-					"BQIndividualInterestScore.identityId"
-				).as(
-					"identityId"
-				),
-				DSL.field(
-					"BQIndividualInterestScore.interestScore"
-				).as(
-					"interestScore"
-				),
-				DSL.field(
-					"BQIndividualInterestScore.keyword"
-				).as(
-					"keyword"
-				),
-				DSL.field(
-					"BQIndividualInterestScore.recordedDate"
-				).as(
-					"recordedDate"
-				),
-				DSL.field(
-					"BQIdentity.individualId"
-				).as(
-					"individualId"
-				)
-			).from(
-				"BQIndividualInterestScore"
-			).join(
-				"BQIdentity"
-			).on(
-				DSL.field(
-					"BQIndividualInterestScore.identityId"
-				).eq(
-					DSL.field("BQIdentity.id")
-				)
-			).where(
-				DSL.field(
-					"BQIndividualInterestScore.id"
-				).eq(
-					id
-				)
-			));
-	}
-
-	@Override
 	public BQIdentityInterestScore getByIndividualIdAndKeywordAndRecordedDate(
 		String individualId, String keyword, Date recordedDate) {
 
 		SelectSelectStep selectSelectStep = _dslContext.selectDistinct(
 			DSL.field(
-				"BQIndividualInterestScore.id"
+				"BQIdentityInterestScore.id"
 			).as(
 				"id"
 			),
 			DSL.field(
-				"BQIndividualInterestScore.identityId"
+				"BQIdentityInterestScore.identityId"
 			).as(
 				"identityId"
 			),
 			DSL.field(
-				"BQIndividualInterestScore.interestScore"
+				"BQIdentityInterestScore.interestScore"
 			).as(
 				"interestScore"
 			),
 			DSL.field(
-				"BQIndividualInterestScore.keyword"
+				"BQIdentityInterestScore.keyword"
 			).as(
 				"keyword"
 			),
 			DSL.field(
-				"BQIndividualInterestScore.recordedDate"
+				"BQIdentityInterestScore.recordedDate"
 			).as(
 				"recordedDate"
 			));
 
-		Optional<BQIdentityInterestScore> bqIndividualInterestScoreOptional =
+		Optional<BQIdentityInterestScore> bqIdentityInterestScoreOptional =
 			_queryExecutor.queryForObject(
 				BQIdentityInterestScore::new,
 				selectSelectStep.from(
-					"BQIndividualInterestScore"
+					"BQIdentityInterestScore"
 				).join(
 					"BQIdentity"
 				).on(
 					DSL.field(
-						"BQIndividualInterestScore.identityId"
+						"BQIdentityInterestScore.identityId"
 					).eq(
 						DSL.field("BQIdentity.id")
 					)
@@ -467,18 +466,18 @@ public class BQIdentityInterestScoreRepositoryImpl
 						individualId
 					),
 					DSL.field(
-						"BQIndividualInterestScore.keyword"
+						"BQIdentityInterestScore.keyword"
 					).eq(
 						keyword
 					),
 					DSL.field(
-						"BQIndividualInterestScore.recordedDate"
+						"BQIdentityInterestScore.recordedDate"
 					).eq(
 						recordedDate
 					)
 				));
 
-		return bqIndividualInterestScoreOptional.orElseThrow(
+		return bqIdentityInterestScoreOptional.orElseThrow(
 			IllegalArgumentException::new);
 	}
 
@@ -490,14 +489,14 @@ public class BQIdentityInterestScoreRepositoryImpl
 		SelectOnConditionStep<Record2<String, String>> selectSelectStep =
 			_dslContext.select(
 				DSL.field("BQIdentityActivity.identityId", String.class),
-				DSL.field("BQIndividualInterestScore.keyword", String.class)
+				DSL.field("BQIdentityInterestScore.keyword", String.class)
 			).from(
-				"BQIndividualInterestScore"
+				"BQIdentityInterestScore"
 			).join(
 				"BQIdentityActivity"
 			).on(
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).eq(
 					DSL.field("BQIdentityActivity.identityId")
 				)
@@ -643,12 +642,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 			DSL.field("keyword", String.class));
 
 		return selectSelectStep.from(
-			"BQIndividualInterestScore"
+			"BQIdentityInterestScore"
 		).join(
 			"BQIdentity"
 		).on(
 			DSL.field(
-				"BQIndividualInterestScore.identityId"
+				"BQIdentityInterestScore.identityId"
 			).eq(
 				DSL.field("BQIdentity.id")
 			)
@@ -713,7 +712,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 		}
 
 		return selectSelectStep.from(
-			"BQIndividualInterestScore"
+			"BQIdentityInterestScore"
 		).rightJoin(
 			_dslHelper.getTimeSeriesTable(
 				datePart, new Timestamp(fromDate.getTime()),
@@ -765,7 +764,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 				"BQIdentity"
 			).on(
 				DSL.field(
-					"BQIndividualInterestScore.identityId"
+					"BQIdentityInterestScore.identityId"
 				).eq(
 					DSL.field("BQIdentity.id")
 				)

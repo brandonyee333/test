@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.InterestCompositionDog;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
@@ -42,7 +42,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
 	)
 	@SQLResource(
@@ -70,7 +70,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
 	)
 	@SQLResource(
@@ -100,7 +100,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
 	)
 	@SQLResource(
@@ -129,7 +129,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
 	)
 	@SQLResource(
@@ -160,7 +160,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
 	)
 	@SQLResource(

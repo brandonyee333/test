@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.dog.BQIndividualInterestScoreDog;
+import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
 
@@ -40,7 +40,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
-	private BQIndividualInterestScoreDog _bqIndividualInterestScoreDog;
+	private BQIdentityInterestScoreDog _bqIdentityInterestScoreDog;
 
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;

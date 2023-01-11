@@ -20,10 +20,10 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.entity.AsahMarker;
-import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.IndividualInterestScore;
+import com.liferay.osb.asah.common.model.IdentityInterestScore;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
@@ -72,7 +72,7 @@ public class InterestsRestController
 
 		return _createInterestDTO(
 			_containsPageVisited(expand), _getDaysRange(expand),
-			bqIndividualInterestScoreDog.getIndividualInterestScore(id));
+			bqIdentityInterestScoreDog.getIdentityInterestScore(id));
 	}
 
 	@Cacheable
@@ -86,7 +86,7 @@ public class InterestsRestController
 
 		return _toPageDTO(
 			expand,
-			bqIndividualInterestScoreDog.getIndividualInterestScorePage(
+			bqIdentityInterestScoreDog.getIdentityInterestScorePage(
 				filterString, _getScore(), page, size, sorts));
 	}
 
@@ -122,7 +122,7 @@ public class InterestsRestController
 			"_embedded",
 			JSONUtil.put(
 				"interest-transformations",
-				bqIndividualInterestScoreDog.getTransformations(
+				bqIdentityInterestScoreDog.getTransformations(
 					apply, filterString, page, size))
 		).put(
 			"page", getPageJSONObject(page, size, size)
@@ -143,7 +143,7 @@ public class InterestsRestController
 	@NotNull
 	private InterestDTO _createInterestDTO(
 		boolean addPageVisited, int days,
-		IndividualInterestScore individualInterestScore) {
+		IdentityInterestScore individualInterestScore) {
 
 		InterestDTO interestDTO = new InterestDTO(individualInterestScore);
 
@@ -175,7 +175,7 @@ public class InterestsRestController
 	}
 
 	private Set<InterestDTO> _createInterestDTOs(
-		String expand, List<IndividualInterestScore> individualInterestScores) {
+		String expand, List<IdentityInterestScore> individualInterestScores) {
 
 		int days = _getDaysRange(expand);
 
@@ -183,7 +183,7 @@ public class InterestsRestController
 
 		Set<InterestDTO> interestDTOs = new LinkedHashSet<>();
 
-		for (IndividualInterestScore individualInterestScore :
+		for (IdentityInterestScore individualInterestScore :
 				individualInterestScores) {
 
 			interestDTOs.add(
@@ -223,38 +223,38 @@ public class InterestsRestController
 
 		List<Map<String, Object>> interestAggregations = new ArrayList<>();
 
-		List<BQIndividualInterestScore> bqIndividualInterestScores =
-			bqIndividualInterestScoreDog.getBQIndividualInterestScores(
+		List<BQIdentityInterestScore> bqIdentityInterestScores =
+			bqIdentityInterestScoreDog.getBQIdentityInterestScores(
 				individualId, keyword,
 				DateUtil.toUTCDate(startDayLocalDateTime),
 				DateUtil.toUTCDate(endDayLocalDateTime));
 
-		Map<LocalDateTime, BQIndividualInterestScore>
-			bqIndividualInterestScoreMap = new HashMap<>();
+		Map<LocalDateTime, BQIdentityInterestScore> bqIdentityInterestScoreMap =
+			new HashMap<>();
 
-		for (BQIndividualInterestScore bqIndividualInterestScore :
-				bqIndividualInterestScores) {
+		for (BQIdentityInterestScore bqIdentityInterestScore :
+				bqIdentityInterestScores) {
 
-			bqIndividualInterestScoreMap.put(
+			bqIdentityInterestScoreMap.put(
 				DateUtil.toLocalDateTime(
-					bqIndividualInterestScore.getRecordedDate(),
+					bqIdentityInterestScore.getRecordedDate(),
 					TimeZoneDogUtil.getZoneId()),
-				bqIndividualInterestScore);
+				bqIdentityInterestScore);
 		}
 
 		LocalDateTime currentDayLocalDateTime = startDayLocalDateTime;
 
 		while (currentDayLocalDateTime.compareTo(endDayLocalDateTime) <= 0) {
-			BQIndividualInterestScore bqIndividualInterestScore =
-				bqIndividualInterestScoreMap.get(currentDayLocalDateTime);
+			BQIdentityInterestScore bqIdentityInterestScore =
+				bqIdentityInterestScoreMap.get(currentDayLocalDateTime);
 
 			Map<String, Object> item = new HashMap<>();
 
 			item.put("intervalInitDate", currentDayLocalDateTime.toString());
 
-			if (bqIndividualInterestScore != null) {
+			if (bqIdentityInterestScore != null) {
 				item.put(
-					"scoreAvg", bqIndividualInterestScore.getInterestScore());
+					"scoreAvg", bqIdentityInterestScore.getInterestScore());
 				item.put("totalElements", 1);
 				item.put("viewsSum", 0);
 			}
@@ -292,7 +292,7 @@ public class InterestsRestController
 
 	private PageDTO<InterestDTO> _toPageDTO(
 		InterestDTO interestDTO,
-		Page<IndividualInterestScore> individualInterestScores) {
+		Page<IdentityInterestScore> individualInterestScores) {
 
 		return new PageDTO<>(
 			"_embedded", interestDTO, individualInterestScores.getNumber(),
@@ -302,7 +302,7 @@ public class InterestsRestController
 	}
 
 	private PageDTO<InterestDTO> _toPageDTO(
-		String expand, Page<IndividualInterestScore> individualInterestScores) {
+		String expand, Page<IdentityInterestScore> individualInterestScores) {
 
 		return _toPageDTO(
 			new InterestDTO(

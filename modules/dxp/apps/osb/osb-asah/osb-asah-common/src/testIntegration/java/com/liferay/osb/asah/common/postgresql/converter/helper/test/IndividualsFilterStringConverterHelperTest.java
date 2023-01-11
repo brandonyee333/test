@@ -31,7 +31,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
@@ -528,7 +528,7 @@ public class IndividualsFilterStringConverterHelperTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
@@ -542,7 +542,7 @@ public class IndividualsFilterStringConverterHelperTest
 
 		_asahMarkerDog.addAsahMarker(
 			new AsahMarker(
-				"IndividualInterestScoresNanite",
+				"IdentityInterestScoresNanite",
 				JSONUtil.put(
 					"lastSuccessfulDay", DateUtil.newDayDateString())));
 
@@ -575,14 +575,14 @@ public class IndividualsFilterStringConverterHelperTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests.json"
 	)
 	@Test
 	public void testInterestsFilterWithIndividual() {
 		_asahMarkerDog.addAsahMarker(
 			new AsahMarker(
-				"IndividualInterestScoresNanite",
+				"IdentityInterestScoresNanite",
 				JSONUtil.put(
 					"lastSuccessfulDay", DateUtil.newDayDateString())));
 

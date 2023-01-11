@@ -17,9 +17,9 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
-import com.liferay.osb.asah.common.model.IndividualInterestScore;
+import com.liferay.osb.asah.common.model.IdentityInterestScore;
+import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -44,13 +44,13 @@ public class BQIdentityInterestScoreDogTest
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_info.json"
 	)
 	@Test
-	public void testGetBQIndividualInterestScore() {
-		IndividualInterestScore individualInterestScore =
-			_bqIndividualInterestScoreDog.getIndividualInterestScore(
+	public void testGetBQIdentityInterestScore() {
+		IdentityInterestScore individualInterestScore =
+			_bqIdentityInterestScoreDog.getIdentityInterestScore(
 				635452168436521350L);
 
 		Assertions.assertEquals(
@@ -64,14 +64,14 @@ public class BQIdentityInterestScoreDogTest
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_info.json"
 	)
 	@Test
-	public void testGetBQIndividualInterestScoreBadRequest() {
+	public void testGetBQIdentityInterestScoreBadRequest() {
 		Assertions.assertThrows(
 			OSBAsahException.class,
-			() -> _bqIndividualInterestScoreDog.getIndividualInterestScore(
+			() -> _bqIdentityInterestScoreDog.getIdentityInterestScore(
 				374790572703144534L));
 	}
 
@@ -80,25 +80,25 @@ public class BQIdentityInterestScoreDogTest
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_info.json"
 	)
 	@Test
-	public void testGetBQIndividualInterestScorePage() {
+	public void testGetBQIdentityInterestScorePage() {
 		Page<BQIdentityInterestScore> interestPage =
-			_bqIndividualInterestScoreDog.getBQIndividualInterestScorePage(
+			_bqIdentityInterestScoreDog.getBQIdentityInterestScorePage(
 				"374790572703144534", 20, 0);
 
 		Assertions.assertEquals(1, interestPage.getTotalElements());
 
-		List<BQIdentityInterestScore> bqIndividualInterestScores =
+		List<BQIdentityInterestScore> bqIdentityInterestScores =
 			interestPage.getContent();
 
-		BQIdentityInterestScore bqIndividualInterestScore =
-			bqIndividualInterestScores.get(0);
+		BQIdentityInterestScore bqIdentityInterestScore =
+			bqIdentityInterestScores.get(0);
 
 		Assertions.assertEquals(
-			"compelling metrics", bqIndividualInterestScore.getKeyword());
+			"compelling metrics", bqIdentityInterestScore.getKeyword());
 	}
 
 	@RepositoryResource(
@@ -106,27 +106,27 @@ public class BQIdentityInterestScoreDogTest
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_info.json"
 	)
 	@Test
-	public void testGetBQIndividualInterestScorePageByFilterStringAndScore() {
-		Page<IndividualInterestScore> individualInterestScorePage =
-			_bqIndividualInterestScoreDog.getIndividualInterestScorePage(
+	public void testGetBQIdentityInterestScorePageByFilterStringAndScore() {
+		Page<IdentityInterestScore> individualInterestScorePage =
+			_bqIdentityInterestScoreDog.getIdentityInterestScorePage(
 				"name eq 'javascript'", 0.1, 0, 20, null);
 
 		Assertions.assertEquals(
 			2, individualInterestScorePage.getTotalElements());
 
-		List<IndividualInterestScore> individualInterestScores =
+		List<IdentityInterestScore> individualInterestScores =
 			individualInterestScorePage.getContent();
 
-		IndividualInterestScore interest = individualInterestScores.get(0);
+		IdentityInterestScore interest = individualInterestScores.get(0);
 
 		Assertions.assertEquals("javascript", interest.getKeyword());
 	}
 
 	@Autowired
-	private BQIdentityInterestScoreDog _bqIndividualInterestScoreDog;
+	private BQIdentityInterestScoreDog _bqIdentityInterestScoreDog;
 
 }

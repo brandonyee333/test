@@ -72,7 +72,7 @@ public class AdminRestControllerTest
 	@Test
 	public void testPostTask() {
 		_adminRestController.postTask(
-			"IndividualInterestScoresNanite",
+			"IdentityInterestScoresNanite",
 			JSONUtil.put(
 				"dataSourceId", "123"
 			).put(
@@ -86,7 +86,7 @@ public class AdminRestControllerTest
 		AsahTask asahTask = asahTasks.get(0);
 
 		Assertions.assertEquals(
-			"IndividualInterestScoresNanite", asahTask.getClassName());
+			"IdentityInterestScoresNanite", asahTask.getClassName());
 		Assertions.assertNull(asahTask.getCronExpression());
 		Assertions.assertNotNull(asahTask.getId());
 

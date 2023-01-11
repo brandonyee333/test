@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.AssetRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -87,7 +87,7 @@ public class AssetDog {
 
 		if (assetKeywords != null) {
 			for (AssetKeyword assetKeyword : assetKeywords) {
-				_bqIndividualInterestScoreRepository.
+				_bqIdentityInterestScoreRepository.
 					deleteByKeywordAndRecordedDateGreaterThanEqual(
 						assetKeyword.getKeyword(),
 						DateUtil.toUTCDate(deletionDayDateString));
@@ -284,8 +284,8 @@ public class AssetDog {
 	private AssetRepository _assetRepository;
 
 	@Autowired
-	private BQIndividualInterestScoreRepository
-		_bqIndividualInterestScoreRepository;
+	private BQIdentityInterestScoreRepository
+		_bqIdentityInterestScoreRepository;
 
 	private final DefaultFilterStringConverterHelper
 		_defaultFilterStringConverterHelper =

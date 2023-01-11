@@ -26,7 +26,7 @@ import org.springframework.data.repository.query.Param;
  * @author Robson Pastor
  */
 public interface BQIdentityInterestScoreRepository
-	extends CustomBQIndividualInterestScoreRepository,
+	extends CustomBQIdentityInterestScoreRepository,
 			PagingAndSortingRepository<BQIdentityInterestScore, Long> {
 
 	@Modifying

@@ -17,7 +17,7 @@ package com.liferay.osb.asah.test.util.faro;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
-import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.BQOrganization;
@@ -171,38 +171,36 @@ public class FaroInfoTestUtil {
 		return bqCSVUser;
 	}
 
-	public static List<BQIndividualInterestScore>
-		buildBQIndividualInterestScores(
-			String identityId, JSONArray keywordsJSONArray, Date recordedDate,
-			double score) {
+	public static List<BQIdentityInterestScore> buildBQIdentityInterestScores(
+		String identityId, JSONArray keywordsJSONArray, Date recordedDate,
+		double score) {
 
-		List<BQIndividualInterestScore> bqIndividualInterestScores =
+		List<BQIdentityInterestScore> bqIdentityInterestScores =
 			new ArrayList<>();
 
 		for (int i = 0; i < keywordsJSONArray.length(); i++) {
 			JSONObject keywordJSONObject = keywordsJSONArray.getJSONObject(i);
-			BQIndividualInterestScore bqIndividualInterestScore =
-				new BQIndividualInterestScore();
+			BQIdentityInterestScore bqIdentityInterestScore =
+				new BQIdentityInterestScore();
 
-			bqIndividualInterestScore.setIdentityId(identityId);
-			bqIndividualInterestScore.setIsNew(Boolean.TRUE);
-			bqIndividualInterestScore.setKeyword(
+			bqIdentityInterestScore.setIdentityId(identityId);
+			bqIdentityInterestScore.setIsNew(Boolean.TRUE);
+			bqIdentityInterestScore.setKeyword(
 				keywordJSONObject.getString("keyword"));
-			bqIndividualInterestScore.setRecordedDate(recordedDate);
-			bqIndividualInterestScore.setInterestScore(score);
+			bqIdentityInterestScore.setRecordedDate(recordedDate);
+			bqIdentityInterestScore.setInterestScore(score);
 
-			bqIndividualInterestScores.add(bqIndividualInterestScore);
+			bqIdentityInterestScores.add(bqIdentityInterestScore);
 		}
 
-		return bqIndividualInterestScores;
+		return bqIdentityInterestScores;
 	}
 
-	public static List<BQIndividualInterestScore>
-		buildBQIndividualInterestScores(
-			String identityId, JSONObject assetJSONObject, Date recordedDate,
-			double score) {
+	public static List<BQIdentityInterestScore> buildBQIdentityInterestScores(
+		String identityId, JSONObject assetJSONObject, Date recordedDate,
+		double score) {
 
-		return buildBQIndividualInterestScores(
+		return buildBQIdentityInterestScores(
 			identityId, assetJSONObject.getJSONArray("keywords"), recordedDate,
 			score);
 	}

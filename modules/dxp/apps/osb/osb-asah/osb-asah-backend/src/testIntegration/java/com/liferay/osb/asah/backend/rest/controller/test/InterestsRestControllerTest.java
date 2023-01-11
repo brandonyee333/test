@@ -23,8 +23,8 @@ import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -67,7 +67,7 @@ public class InterestsRestControllerTest
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
 	)
 	@Test
@@ -96,7 +96,7 @@ public class InterestsRestControllerTest
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
 	)
 	@RepositoryResource(
@@ -122,7 +122,7 @@ public class InterestsRestControllerTest
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
 	)
 	@Test
@@ -157,7 +157,7 @@ public class InterestsRestControllerTest
 		resourcePath = "osbasahfaroinfo/visited_pages_1.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
 	)
 	@Test
@@ -235,7 +235,7 @@ public class InterestsRestControllerTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests_2.json"
 	)
 	@Test
@@ -253,7 +253,7 @@ public class InterestsRestControllerTest
 
 	@Disabled
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/interests_2.json"
 	)
 	@Test
@@ -278,7 +278,7 @@ public class InterestsRestControllerTest
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
 	)
 	@RepositoryResource(
@@ -378,7 +378,7 @@ public class InterestsRestControllerTest
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
 	)
 	@Test
@@ -396,7 +396,7 @@ public class InterestsRestControllerTest
 		resourcePath = "osbasahfaroinfo/individuals.json"
 	)
 	@RepositoryResource(
-		repositoryClass = BQIndividualInterestScoreRepository.class,
+		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
 	)
 	@Test
