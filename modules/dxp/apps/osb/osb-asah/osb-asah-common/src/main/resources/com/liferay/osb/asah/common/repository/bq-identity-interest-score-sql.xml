@@ -2,27 +2,27 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="BQIndividualInterestScore.deleteByKeywordAndRecordedDateGreaterThanEqual">
+	<entry key="BQIdentityInterestScore.deleteByKeywordAndRecordedDateGreaterThanEqual">
 		<![CDATA[
 			DELETE FROM
-				BQIndividualInterestScore
+				BQIdentityInterestScore
 			WHERE
 				keyword = :keyword AND
 				recordedDate >= :recordedDate
 		]]>
 	</entry>
-	<entry key="BQIndividualInterestScore.deleteByRecordedDate">
+	<entry key="BQIdentityInterestScore.deleteByRecordedDate">
 		<![CDATA[
 			DELETE FROM
-				BQIndividualInterestScore
+				BQIdentityInterestScore
 			WHERE
 				recordedDate = :recordedDate
 		]]>
 	</entry>
-	<entry key="BQIndividualInterestScore.deleteByRecordedDateLessThanEqual">
+	<entry key="BQIdentityInterestScore.deleteByRecordedDateLessThanEqual">
 		<![CDATA[
 			DELETE FROM
-				BQIndividualInterestScore
+				BQIdentityInterestScore
 			WHERE
 				recordedDate <= :recordedDate
 		]]>

@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.IndividualInterestScore;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
@@ -42,9 +42,9 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class BQIndividualInterestScoreDog {
+public class BQIdentityInterestScoreDog {
 
-	public Page<BQIndividualInterestScore> getBQIndividualInterestScorePage(
+	public Page<BQIdentityInterestScore> getBQIndividualInterestScorePage(
 		String individualId, int size, int start) {
 
 		return PageableExecutionUtils.getPage(
@@ -55,7 +55,7 @@ public class BQIndividualInterestScoreDog {
 				individualId));
 	}
 
-	public List<BQIndividualInterestScore> getBQIndividualInterestScores(
+	public List<BQIdentityInterestScore> getBQIndividualInterestScores(
 		String individualId, String keyword, Date fromRecordedDate,
 		Date toRecordedDate) {
 

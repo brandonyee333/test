@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 
 import java.util.Date;
 
@@ -25,9 +25,9 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author Robson Pastor
  */
-public interface BQIndividualInterestScoreRepository
+public interface BQIdentityInterestScoreRepository
 	extends CustomBQIndividualInterestScoreRepository,
-			PagingAndSortingRepository<BQIndividualInterestScore, Long> {
+			PagingAndSortingRepository<BQIdentityInterestScore, Long> {
 
 	@Modifying
 	public void deleteByKeywordAndRecordedDateGreaterThanEqual(

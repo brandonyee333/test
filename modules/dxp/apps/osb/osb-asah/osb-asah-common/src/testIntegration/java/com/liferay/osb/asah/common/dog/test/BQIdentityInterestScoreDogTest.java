@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
-import com.liferay.osb.asah.common.dog.BQIndividualInterestScoreDog;
-import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.IndividualInterestScore;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
@@ -35,7 +35,7 @@ import org.springframework.data.domain.Page;
 /**
  * @author Marcellus Tavares
  */
-public class BQIndividualInterestScoreDogTest
+public class BQIdentityInterestScoreDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -85,16 +85,16 @@ public class BQIndividualInterestScoreDogTest
 	)
 	@Test
 	public void testGetBQIndividualInterestScorePage() {
-		Page<BQIndividualInterestScore> interestPage =
+		Page<BQIdentityInterestScore> interestPage =
 			_bqIndividualInterestScoreDog.getBQIndividualInterestScorePage(
 				"374790572703144534", 20, 0);
 
 		Assertions.assertEquals(1, interestPage.getTotalElements());
 
-		List<BQIndividualInterestScore> bqIndividualInterestScores =
+		List<BQIdentityInterestScore> bqIndividualInterestScores =
 			interestPage.getContent();
 
-		BQIndividualInterestScore bqIndividualInterestScore =
+		BQIdentityInterestScore bqIndividualInterestScore =
 			bqIndividualInterestScores.get(0);
 
 		Assertions.assertEquals(
@@ -127,6 +127,6 @@ public class BQIndividualInterestScoreDogTest
 	}
 
 	@Autowired
-	private BQIndividualInterestScoreDog _bqIndividualInterestScoreDog;
+	private BQIdentityInterestScoreDog _bqIndividualInterestScoreDog;
 
 }

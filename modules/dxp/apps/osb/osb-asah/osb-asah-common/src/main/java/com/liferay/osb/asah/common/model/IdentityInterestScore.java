@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.model;
 
-import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 
 import java.util.Date;
 import java.util.Objects;
@@ -22,19 +22,19 @@ import java.util.Objects;
 /**
  * @author Ivica Cardic
  */
-public class IndividualInterestScore {
+public class IdentityInterestScore {
 
-	public IndividualInterestScore(
-		BQIndividualInterestScore bqIndividualInterestScore,
+	public IdentityInterestScore(
+		BQIdentityInterestScore bqIdentityInterestScore,
 		String individualId) {
 
 		_individualId = individualId;
 
-		_id = bqIndividualInterestScore.getId();
-		_identityId = bqIndividualInterestScore.getIdentityId();
-		_interestScore = bqIndividualInterestScore.getInterestScore();
-		_keyword = bqIndividualInterestScore.getKeyword();
-		_recordedDate = bqIndividualInterestScore.getRecordedDate();
+		_id = bqIdentityInterestScore.getId();
+		_identityId = bqIdentityInterestScore.getIdentityId();
+		_interestScore = bqIdentityInterestScore.getInterestScore();
+		_keyword = bqIdentityInterestScore.getKeyword();
+		_recordedDate = bqIdentityInterestScore.getRecordedDate();
 	}
 
 	@Override
@@ -43,12 +43,12 @@ public class IndividualInterestScore {
 			return true;
 		}
 
-		if (!(obj instanceof IndividualInterestScore)) {
+		if (!(obj instanceof IdentityInterestScore)) {
 			return false;
 		}
 
-		IndividualInterestScore individualInterestScore =
-			(IndividualInterestScore)obj;
+		IdentityInterestScore individualInterestScore =
+			(IdentityInterestScore)obj;
 
 		if (Objects.equals(_id, individualInterestScore._id)) {
 			return true;

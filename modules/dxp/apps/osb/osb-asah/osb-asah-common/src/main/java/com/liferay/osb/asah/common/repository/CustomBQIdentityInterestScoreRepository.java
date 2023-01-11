@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.IndividualInterestScore;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface CustomBQIndividualInterestScoreRepository {
+public interface CustomBQIdentityInterestScoreRepository {
 
 	public long countByFilterStringAndScoreGreaterThanEqual(
 		FilterHelper filterHelper, @Nullable Double score);
@@ -42,15 +42,15 @@ public interface CustomBQIndividualInterestScoreRepository {
 			@Nullable FilterHelper filterHelper, @Nullable Double score,
 			Pageable pageable);
 
-	public List<BQIndividualInterestScore> findByIndividualId(
+	public List<BQIdentityInterestScore> findByIndividualId(
 		String individualId, Pageable pageable);
 
-	public List<BQIndividualInterestScore>
+	public List<BQIdentityInterestScore>
 		findByIndividualIdAndKeywordAndRecordedDateBetween(
 			String individualId, String keyword, Date recordedDate1,
 			Date recordedDate2);
 
-	public List<BQIndividualInterestScore> findByRecordedDate(
+	public List<BQIdentityInterestScore> findByRecordedDate(
 		@Nullable Long interestId, @Nullable Date recordedDate, int size);
 
 	public List<String> findIndividualIdsByFilterStringAndIndividualId(
@@ -59,7 +59,7 @@ public interface CustomBQIndividualInterestScoreRepository {
 	public Optional<IndividualInterestScore> findIndividualInterestScoreById(
 		Long id);
 
-	public BQIndividualInterestScore getByIndividualIdAndKeywordAndRecordedDate(
+	public BQIdentityInterestScore getByIndividualIdAndKeywordAndRecordedDate(
 		String individualId, String keyword, Date recordedDate);
 
 	public CompositionResultBag getInterestCompositionResultBag(

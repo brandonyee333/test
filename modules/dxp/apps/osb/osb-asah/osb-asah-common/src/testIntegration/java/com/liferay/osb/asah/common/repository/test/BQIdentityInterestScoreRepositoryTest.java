@@ -16,11 +16,11 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQIdentity;
-import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualInterestScoreRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
@@ -40,13 +40,13 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * @author Robson Pastor
  */
-public class BQIndividualInterestScoreRepositoryTest
-	extends BaseRepositoryTestCase<BQIndividualInterestScore, Long> {
+public class BQIdentityInterestScoreRepositoryTest
+	extends BaseRepositoryTestCase<BQIdentityInterestScore, Long> {
 
 	@BeforeEach
 	public void setUp() {
-		BQIndividualInterestScore bqIndividualInterestScore1 =
-			new BQIndividualInterestScore();
+		BQIdentityInterestScore bqIndividualInterestScore1 =
+			new BQIdentityInterestScore();
 
 		bqIndividualInterestScore1.setIdentityId("374790569167317525");
 		bqIndividualInterestScore1.setInterestScore(1.767661917648994);
@@ -62,8 +62,8 @@ public class BQIndividualInterestScoreRepositoryTest
 
 		_bqIdentityRepository.save(bqIdentity1);
 
-		BQIndividualInterestScore bqIndividualInterestScore2 =
-			new BQIndividualInterestScore();
+		BQIdentityInterestScore bqIndividualInterestScore2 =
+			new BQIdentityInterestScore();
 
 		bqIndividualInterestScore2.setIdentityId("374790575409131096");
 		bqIndividualInterestScore2.setInterestScore(2.61495977803619);
@@ -79,8 +79,8 @@ public class BQIndividualInterestScoreRepositoryTest
 
 		_bqIdentityRepository.save(bqIdentity2);
 
-		BQIndividualInterestScore bqIndividualInterestScore3 =
-			new BQIndividualInterestScore();
+		BQIdentityInterestScore bqIndividualInterestScore3 =
+			new BQIdentityInterestScore();
 
 		bqIndividualInterestScore3.setIdentityId("374790572703144534");
 		bqIndividualInterestScore3.setInterestScore(0.770222520473574);
@@ -96,8 +96,8 @@ public class BQIndividualInterestScoreRepositoryTest
 
 		_bqIdentityRepository.save(bqIdentity3);
 
-		BQIndividualInterestScore bqIndividualInterestScore4 =
-			new BQIndividualInterestScore();
+		BQIdentityInterestScore bqIndividualInterestScore4 =
+			new BQIdentityInterestScore();
 
 		bqIndividualInterestScore4.setIdentityId("374790572703144534");
 		bqIndividualInterestScore4.setInterestScore(1.454684984987494);
@@ -105,8 +105,8 @@ public class BQIndividualInterestScoreRepositoryTest
 		bqIndividualInterestScore4.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
 
-		BQIndividualInterestScore bqIndividualInterestScore5 =
-			new BQIndividualInterestScore();
+		BQIdentityInterestScore bqIndividualInterestScore5 =
+			new BQIdentityInterestScore();
 
 		bqIndividualInterestScore5.setIdentityId("374790572703144535");
 		bqIndividualInterestScore5.setInterestScore(1.454684984987494);
@@ -185,7 +185,7 @@ public class BQIndividualInterestScoreRepositoryTest
 
 	@Test
 	public void testFindByIndividualId() {
-		List<BQIndividualInterestScore> bqIndividualInterestScores =
+		List<BQIdentityInterestScore> bqIndividualInterestScores =
 			_bqIndividualInterestScoreRepository.findByIndividualId(
 				"374790572703144534", PageRequest.of(0, 10));
 
@@ -199,7 +199,7 @@ public class BQIndividualInterestScoreRepositoryTest
 
 	@Test
 	public void testFindByNameAndIndividualIdAndRecordedDateBetween() {
-		List<BQIndividualInterestScore> bqIndividualInterestScores =
+		List<BQIdentityInterestScore> bqIndividualInterestScores =
 			_bqIndividualInterestScoreRepository.
 				findByIndividualIdAndKeywordAndRecordedDateBetween(
 					"374790572703144535", "sales",
@@ -252,7 +252,7 @@ public class BQIndividualInterestScoreRepositoryTest
 
 	@Test
 	public void testFindByRecordedDate() {
-		List<BQIndividualInterestScore> bqIndividualInterestScores =
+		List<BQIdentityInterestScore> bqIndividualInterestScores =
 			_bqIndividualInterestScoreRepository.findByRecordedDate(
 				null, DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), 10);
 
@@ -282,7 +282,7 @@ public class BQIndividualInterestScoreRepositoryTest
 
 	@Test
 	public void testGetByNameAndIndividualIdAndRecordedDate() {
-		BQIndividualInterestScore bqIndividualInterestScore =
+		BQIdentityInterestScore bqIndividualInterestScore =
 			_bqIndividualInterestScoreRepository.
 				getByIndividualIdAndKeywordAndRecordedDate(
 					"374790575409131096", "javascript",
@@ -344,7 +344,7 @@ public class BQIndividualInterestScoreRepositoryTest
 	}
 
 	@Override
-	protected PagingAndSortingRepository<BQIndividualInterestScore, Long>
+	protected PagingAndSortingRepository<BQIdentityInterestScore, Long>
 		getPagingAndSortingRepository() {
 
 		return _bqIndividualInterestScoreRepository;
@@ -365,7 +365,7 @@ public class BQIndividualInterestScoreRepositoryTest
 	private BQIdentityRepository _bqIdentityRepository;
 
 	@Autowired
-	private BQIndividualInterestScoreRepository
+	private BQIdentityInterestScoreRepository
 		_bqIndividualInterestScoreRepository;
 
 	@Autowired

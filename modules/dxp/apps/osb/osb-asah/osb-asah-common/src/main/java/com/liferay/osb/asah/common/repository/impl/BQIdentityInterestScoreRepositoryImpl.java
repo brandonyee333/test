@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
-import com.liferay.osb.asah.common.entity.BQIndividualInterestScore;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.Composition;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.IndividualInterestScore;
@@ -68,11 +68,11 @@ import org.springframework.lang.Nullable;
 /**
  * @author Robson Pastor
  */
-public class BQIndividualInterestScoreRepositoryImpl
+public class BQIdentityInterestScoreRepositoryImpl
 	extends BaseRepository
 	implements CustomBQIndividualInterestScoreRepository {
 
-	public BQIndividualInterestScoreRepositoryImpl(DSLContext dslContext) {
+	public BQIdentityInterestScoreRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 
 		InterestFilterStringConverterHelper
@@ -137,7 +137,7 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			record -> new IndividualInterestScore(
-				new BQIndividualInterestScore(record),
+				new BQIdentityInterestScore(record),
 				(String)record.get("individualId")),
 			_dslContext.select(
 				DSL.field(
@@ -192,11 +192,11 @@ public class BQIndividualInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public List<BQIndividualInterestScore> findByIndividualId(
+	public List<BQIdentityInterestScore> findByIndividualId(
 		String individualId, Pageable pageable) {
 
 		return _queryExecutor.queryForList(
-			BQIndividualInterestScore::new,
+			BQIdentityInterestScore::new,
 			_dslContext.selectDistinct(
 				DSL.field(
 					"BQIndividualInterestScore.id"
@@ -247,13 +247,13 @@ public class BQIndividualInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public List<BQIndividualInterestScore>
+	public List<BQIdentityInterestScore>
 		findByIndividualIdAndKeywordAndRecordedDateBetween(
 			String individualId, String keyword, Date recordedDate1,
 			Date recordedDate2) {
 
 		return _queryExecutor.queryForList(
-			BQIndividualInterestScore::new,
+			BQIdentityInterestScore::new,
 			_dslContext.selectDistinct(
 				DSL.field(
 					"BQIndividualInterestScore.id"
@@ -312,13 +312,13 @@ public class BQIndividualInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public List<BQIndividualInterestScore> findByRecordedDate(
+	public List<BQIdentityInterestScore> findByRecordedDate(
 		@Nullable Long interestId, @Nullable Date recordedDate, int size) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return _queryExecutor.queryForList(
-			BQIndividualInterestScore::new,
+			BQIdentityInterestScore::new,
 			selectSelectStep.from(
 				"BQIndividualInterestScore"
 			).where(
@@ -364,7 +364,7 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 		return _queryExecutor.queryForObject(
 			record -> new IndividualInterestScore(
-				new BQIndividualInterestScore(record),
+				new BQIdentityInterestScore(record),
 				(String)record.get("individualId")),
 			(SelectFinalStep)_dslContext.select(
 				DSL.field(
@@ -417,7 +417,7 @@ public class BQIndividualInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public BQIndividualInterestScore getByIndividualIdAndKeywordAndRecordedDate(
+	public BQIdentityInterestScore getByIndividualIdAndKeywordAndRecordedDate(
 		String individualId, String keyword, Date recordedDate) {
 
 		SelectSelectStep selectSelectStep = _dslContext.selectDistinct(
@@ -447,9 +447,9 @@ public class BQIndividualInterestScoreRepositoryImpl
 				"recordedDate"
 			));
 
-		Optional<BQIndividualInterestScore> bqIndividualInterestScoreOptional =
+		Optional<BQIdentityInterestScore> bqIndividualInterestScoreOptional =
 			_queryExecutor.queryForObject(
-				BQIndividualInterestScore::new,
+				BQIdentityInterestScore::new,
 				selectSelectStep.from(
 					"BQIndividualInterestScore"
 				).join(

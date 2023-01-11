@@ -38,12 +38,12 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcellus Tavares
  */
 @Table
-public class BQIndividualInterestScore implements Persistable<Long> {
+public class BQIdentityInterestScore implements Persistable<Long> {
 
-	public BQIndividualInterestScore() {
+	public BQIdentityInterestScore() {
 	}
 
-	public BQIndividualInterestScore(Map<String, Object> source) {
+	public BQIdentityInterestScore(Map<String, Object> source) {
 		BeanUtils.copyProperties(source, this);
 	}
 
@@ -53,12 +53,12 @@ public class BQIndividualInterestScore implements Persistable<Long> {
 			return true;
 		}
 
-		if (!(obj instanceof BQIndividualInterestScore)) {
+		if (!(obj instanceof BQIdentityInterestScore)) {
 			return false;
 		}
 
-		BQIndividualInterestScore bqIndividualInterestScore =
-			(BQIndividualInterestScore)obj;
+		BQIdentityInterestScore bqIndividualInterestScore =
+			(BQIdentityInterestScore)obj;
 
 		if (Objects.equals(_id, bqIndividualInterestScore._id)) {
 			return true;
