@@ -44,7 +44,6 @@ public class SegmentDataExporter extends BaseDataExporter {
 			).orElse(
 				_defaultDate
 			));
-
 		_toDate = DateUtil.toUTCString(
 			Optional.ofNullable(
 				toDate
