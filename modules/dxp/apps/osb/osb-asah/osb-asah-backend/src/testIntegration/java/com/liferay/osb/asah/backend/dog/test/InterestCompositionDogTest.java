@@ -35,18 +35,18 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_memberships.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores_info.json"
 	)
 	@SQLResource(
-		resourcePath = "bq_individual_interest_score_identity_activities.sql"
+		resourcePath = "bq_identity_interest_score_identity_activities.sql"
 	)
 	@Test
 	public void testGetIndividualCompositionResultBag() {
@@ -63,18 +63,18 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_memberships.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores_info.json"
 	)
 	@SQLResource(
-		resourcePath = "bq_individual_interest_score_identity_activities.sql"
+		resourcePath = "bq_identity_interest_score_identity_activities.sql"
 	)
 	@Test
 	public void testGetIndividualCompositionResultBagWithOrderByAsc() {
@@ -93,18 +93,18 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_memberships.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores_info.json"
 	)
 	@SQLResource(
-		resourcePath = "bq_individual_interest_score_identity_activities.sql"
+		resourcePath = "bq_identity_interest_score_identity_activities.sql"
 	)
 	@Test
 	public void testGetIndividualSegmentCompositionResultBagWithKeyword() {
@@ -122,18 +122,18 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_memberships.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores_info.json"
 	)
 	@SQLResource(
-		resourcePath = "bq_individual_interest_score_identity_activities.sql"
+		resourcePath = "bq_identity_interest_score_identity_activities.sql"
 	)
 	@Test
 	public void testGetIndividualSegmentCompositionResultBagWithSortAsc() {
@@ -153,18 +153,18 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_memberships.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_memberships.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores_info.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores_info.json"
 	)
 	@SQLResource(
-		resourcePath = "bq_individual_interest_score_identity_activities.sql"
+		resourcePath = "bq_identity_interest_score_identity_activities.sql"
 	)
 	@Test
 	public void testGetIndividualSegmentCompositionResultBagWithSortName() {

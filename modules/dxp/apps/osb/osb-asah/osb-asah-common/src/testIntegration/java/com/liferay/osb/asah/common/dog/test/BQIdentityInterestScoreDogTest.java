@@ -41,11 +41,11 @@ public class BQIdentityInterestScoreDogTest
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_info.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_info.json"
 	)
 	@Test
 	public void testGetBQIdentityInterestScore() {
@@ -61,11 +61,11 @@ public class BQIdentityInterestScoreDogTest
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_info.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_info.json"
 	)
 	@Test
 	public void testGetBQIdentityInterestScoreBadRequest() {
@@ -77,11 +77,11 @@ public class BQIdentityInterestScoreDogTest
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_info.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_info.json"
 	)
 	@Test
 	public void testGetBQIdentityInterestScorePage() {
@@ -103,11 +103,11 @@ public class BQIdentityInterestScoreDogTest
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_info.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_info.json"
 	)
 	@Test
 	public void testGetBQIdentityInterestScorePageByFilterString() {

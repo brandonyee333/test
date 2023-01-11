@@ -64,11 +64,11 @@ public class InterestsRestControllerTest
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
 	)
 	@Test
 	public void testGetInterestDTO() {
@@ -93,11 +93,11 @@ public class InterestsRestControllerTest
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
 	)
 	@RepositoryResource(
 		repositoryClass = AsahMarkerRepository.class,
@@ -119,11 +119,11 @@ public class InterestsRestControllerTest
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_identities.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
 	)
 	@Test
 	public void testGetInterestDTOsPageDTOOrderByName() {
@@ -158,7 +158,7 @@ public class InterestsRestControllerTest
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
 	)
 	@Test
 	public void testGetInterestDTOWithEmbedded() {
@@ -279,7 +279,7 @@ public class InterestsRestControllerTest
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
 	)
 	@RepositoryResource(
 		repositoryClass = InterestTopicRepository.class,
@@ -379,7 +379,7 @@ public class InterestsRestControllerTest
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
 	)
 	@Test
 	public void testGetTermsWithNoIndividualInterestTerms() throws Exception {
@@ -397,7 +397,7 @@ public class InterestsRestControllerTest
 	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_individual_interest_scores.json"
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
 	)
 	@Test
 	public void testGetTermsWithNoTopicsRelatedToIndividualInterestTerms()
