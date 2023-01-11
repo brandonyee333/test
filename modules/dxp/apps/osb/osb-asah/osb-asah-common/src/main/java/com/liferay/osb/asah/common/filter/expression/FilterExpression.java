@@ -36,7 +36,8 @@ import org.springframework.util.Assert;
 public class FilterExpression {
 
 	public FilterExpression(String filterExpressionString) {
-		Assert.notNull(filterExpressionString, "The filter expression is null");
+		Assert.notNull(
+			filterExpressionString, "The filter expression string is null");
 
 		try {
 			ErrorListener errorListener = new ErrorListener();
