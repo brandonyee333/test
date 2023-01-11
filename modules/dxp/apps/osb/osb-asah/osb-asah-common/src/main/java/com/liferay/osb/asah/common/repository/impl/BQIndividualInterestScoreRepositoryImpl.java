@@ -50,10 +50,11 @@ import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.Record2;
 import org.jooq.Record3;
-import org.jooq.Record5;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectJoinStep;
+import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
 import org.jooq.Table;
@@ -486,33 +487,11 @@ public class BQIndividualInterestScoreRepositoryImpl
 		boolean active, @Nullable Long channelId, @Nullable String keywords,
 		@Nullable Long segmentId, Pageable pageable) {
 
-		SelectSelectStep<Record5<Integer, String, Integer, Integer, BigDecimal>>
-			selectSelectStep = _dslContext.select(
-				DSL.count(
-				).as(
-					"count"
-				),
-				DSL.field("keyword", String.class),
-				DSL.max(
-					DSL.count()
-				).over(
-				).as(
-					"maxCount"
-				),
-				DSL.count(
-				).over(
-				).as(
-					"total"
-				),
-				DSL.sum(
-					DSL.count()
-				).over(
-				).as(
-					"totalCount"
-				));
-
-		SelectJoinStep<Record5<Integer, String, Integer, Integer, BigDecimal>>
-			selectJoinStep = selectSelectStep.from(
+		SelectOnConditionStep<Record2<String, String>> selectSelectStep =
+			_dslContext.select(
+				DSL.field("BQIdentityActivity.identityId", String.class),
+				DSL.field("BQIndividualInterestScore.keyword", String.class)
+			).from(
 				"BQIndividualInterestScore"
 			).join(
 				"BQIdentityActivity"
@@ -552,7 +531,7 @@ public class BQIndividualInterestScoreRepositoryImpl
 		}
 
 		if (segmentId != null) {
-			selectJoinStep = selectJoinStep.join(
+			selectSelectStep = selectSelectStep.join(
 				"BQMembership"
 			).on(
 				DSL.and(
@@ -571,8 +550,50 @@ public class BQIndividualInterestScoreRepositoryImpl
 
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
 			Function.identity(),
-			selectJoinStep.where(
-				conditions
+			_dslContext.with(
+				"KeywordIdentity"
+			).as(
+				selectSelectStep.where(conditions)
+			).with(
+				"IdentitySummary"
+			).as(
+				_dslContext.select(
+					DSL.countDistinct(
+						DSL.field("identityId")
+					).as(
+						"totalCount"
+					)
+				).from(
+					"KeywordIdentity"
+				)
+			).select(
+				DSL.count(
+				).as(
+					"count"
+				),
+				DSL.field("keyword"),
+				DSL.max(
+					DSL.count()
+				).over(
+				).as(
+					"maxCount"
+				),
+				DSL.count(
+				).over(
+				).as(
+					"total"
+				),
+				DSL.max(
+					DSL.field("totalCount")
+				).as(
+					"totalCount"
+				)
+			).from(
+				DSL.table(
+					"KeywordIdentity"
+				).crossJoin(
+					"IdentitySummary"
+				)
 			).groupBy(
 				DSL.field("keyword")
 			).orderBy(
@@ -597,7 +618,8 @@ public class BQIndividualInterestScoreRepositoryImpl
 					String.valueOf(record.get("maxCount")));
 				totalBigDecimal = new BigDecimal(
 					String.valueOf(record.get("total")));
-				totalCountBigDecimal = (BigDecimal)record.get("totalCount");
+				totalCountBigDecimal = new BigDecimal(
+					String.valueOf(record.get("totalCount")));
 			}
 
 			BigDecimal count = new BigDecimal(
