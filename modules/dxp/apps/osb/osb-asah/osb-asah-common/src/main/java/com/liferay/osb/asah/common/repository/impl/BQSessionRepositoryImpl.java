@@ -135,6 +135,9 @@ public class BQSessionRepositoryImpl
 					"acquisitionsReferrersList"
 				).groupBy(
 					DSL.field("field")
+				).orderBy(
+					DSL.count(
+					).desc()
 				).limit(
 					pageable.getPageSize()
 				).offset(
@@ -171,6 +174,9 @@ public class BQSessionRepositoryImpl
 					field.isNotNull())
 			).groupBy(
 				DSL.field("field")
+			).orderBy(
+				DSL.count(
+				).desc()
 			).limit(
 				pageable.getPageSize()
 			).offset(
@@ -293,6 +299,9 @@ public class BQSessionRepositoryImpl
 				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
 				field
+			).orderBy(
+				DSL.count(
+				).desc()
 			),
 			GetterUtil::getBigDecimal);
 	}
@@ -319,6 +328,10 @@ public class BQSessionRepositoryImpl
 				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
 				deviceTypeField, platformNameField
+			).orderBy(
+				deviceTypeField,
+				DSL.count(
+				).desc()
 			));
 	}
 
@@ -338,6 +351,9 @@ public class BQSessionRepositoryImpl
 				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
 				field
+			).orderBy(
+				DSL.count(
+				).desc()
 			),
 			GetterUtil::getBigDecimal);
 	}
