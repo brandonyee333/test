@@ -25,7 +25,8 @@ USING
 		FROM
 			`{{ dag.default_args['ac_project_id'] }}.pagehourly`
 		WHERE
-			eventDate BETWEEN '{{ data_interval_start.at(0, 0, 0) }}' AND '{{ data_interval_start.at(23, 59, 59) }}'
+			eventDate BETWEEN '{{ data_interval_start.at(0, 0, 0) }}' AND '{{ data_interval_start.at(23, 59, 59) }}' AND
+			sessionId IS NOT NULL
 		GROUP BY
 			browserName, canonicalUrl, channelId, city, country, deviceType,
 			eventDate, platformName, region, sessionId, title, userId
