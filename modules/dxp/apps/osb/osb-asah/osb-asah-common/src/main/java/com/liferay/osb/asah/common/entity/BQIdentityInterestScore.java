@@ -81,6 +81,11 @@ public class BQIdentityInterestScore implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Boolean getInterested() {
+		return _interested;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Double getInterestScore() {
 		return _interestScore;
 	}
@@ -108,7 +113,12 @@ public class BQIdentityInterestScore implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _identityId, _interestScore, _keyword, _recordedDate);
+			_id, _identityId, _interested, _interestScore, _keyword,
+			_recordedDate);
+	}
+
+	public Boolean isInterested() {
+		return _interested;
 	}
 
 	@JsonIgnore
@@ -127,6 +137,10 @@ public class BQIdentityInterestScore implements Persistable<Long> {
 
 	public void setIdentityId(String identityId) {
 		_identityId = identityId;
+	}
+
+	public void setInterested(Boolean interested) {
+		_interested = interested;
 	}
 
 	public void setInterestScore(Double interestScore) {
@@ -152,6 +166,9 @@ public class BQIdentityInterestScore implements Persistable<Long> {
 
 	@Transient
 	private String _identityId;
+
+	@Transient
+	private Boolean _interested;
 
 	@Transient
 	private Double _interestScore;

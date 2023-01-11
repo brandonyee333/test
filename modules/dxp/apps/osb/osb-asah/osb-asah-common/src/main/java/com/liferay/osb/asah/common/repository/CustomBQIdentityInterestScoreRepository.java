@@ -32,15 +32,12 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomBQIdentityInterestScoreRepository {
 
-	public long countByFilterStringAndScoreGreaterThanEqual(
-		FilterHelper filterHelper, @Nullable Double score);
+	public long countByFilterString(FilterHelper filterHelper);
 
 	public long countByIndividualId(String individualId);
 
-	public List<IdentityInterestScore>
-		findByFilterStringAndScoreGreaterThanEqual(
-			@Nullable FilterHelper filterHelper, @Nullable Double score,
-			Pageable pageable);
+	public List<IdentityInterestScore> findByFilterString(
+		@Nullable FilterHelper filterHelper, Pageable pageable);
 
 	public List<BQIdentityInterestScore> findByIndividualId(
 		String individualId, Pageable pageable);

@@ -49,6 +49,7 @@ public class BQIdentityInterestScoreRepositoryTest
 			new BQIdentityInterestScore();
 
 		bqIdentityInterestScore1.setIdentityId("374790569167317525");
+		bqIdentityInterestScore1.setInterested(Boolean.TRUE);
 		bqIdentityInterestScore1.setInterestScore(1.767661917648994);
 		bqIdentityInterestScore1.setKeyword("clicks-and-mortar e-tailers");
 		bqIdentityInterestScore1.setRecordedDate(
@@ -66,6 +67,7 @@ public class BQIdentityInterestScoreRepositoryTest
 			new BQIdentityInterestScore();
 
 		bqIdentityInterestScore2.setIdentityId("374790575409131096");
+		bqIdentityInterestScore2.setInterested(Boolean.TRUE);
 		bqIdentityInterestScore2.setInterestScore(2.61495977803619);
 		bqIdentityInterestScore2.setKeyword("javascript");
 		bqIdentityInterestScore2.setRecordedDate(
@@ -83,6 +85,7 @@ public class BQIdentityInterestScoreRepositoryTest
 			new BQIdentityInterestScore();
 
 		bqIdentityInterestScore3.setIdentityId("374790572703144534");
+		bqIdentityInterestScore3.setInterested(Boolean.FALSE);
 		bqIdentityInterestScore3.setInterestScore(0.770222520473574);
 		bqIdentityInterestScore3.setKeyword("compelling metrics");
 		bqIdentityInterestScore3.setRecordedDate(
@@ -100,6 +103,7 @@ public class BQIdentityInterestScoreRepositoryTest
 			new BQIdentityInterestScore();
 
 		bqIdentityInterestScore4.setIdentityId("374790572703144534");
+		bqIdentityInterestScore4.setInterested(Boolean.TRUE);
 		bqIdentityInterestScore4.setInterestScore(1.454684984987494);
 		bqIdentityInterestScore4.setKeyword("sales");
 		bqIdentityInterestScore4.setRecordedDate(
@@ -109,6 +113,7 @@ public class BQIdentityInterestScoreRepositoryTest
 			new BQIdentityInterestScore();
 
 		bqIdentityInterestScore5.setIdentityId("374790572703144535");
+		bqIdentityInterestScore5.setInterested(Boolean.TRUE);
 		bqIdentityInterestScore5.setInterestScore(1.454684984987494);
 		bqIdentityInterestScore5.setKeyword("sales");
 		bqIdentityInterestScore5.setRecordedDate(
@@ -139,12 +144,11 @@ public class BQIdentityInterestScoreRepositoryTest
 	}
 
 	@Test
-	public void testCountByFilterStringAndScore() {
+	public void testCountByFilterString() {
 		Assertions.assertEquals(
 			4,
-			_bqIdentityInterestScoreRepository.
-				countByFilterStringAndScoreGreaterThanEqual(
-					new FilterHelper(null), 1.454684984987494));
+			_bqIdentityInterestScoreRepository.countByFilterString(
+				new FilterHelper(null)));
 	}
 
 	@Test

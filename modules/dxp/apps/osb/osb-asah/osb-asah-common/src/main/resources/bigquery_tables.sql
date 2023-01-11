@@ -143,6 +143,7 @@ CREATE TABLE IF NOT EXISTS BQIdentity (
 CREATE TABLE IF NOT EXISTS BQIdentityInterestScore (
 	id BIGSERIAL PRIMARY KEY,
 	identityId TEXT,
+	interested BOOLEAN,
 	interestScore DOUBLE PRECISION,
 	keyword TEXT,
 	recordedDate TIMESTAMPTZ

@@ -1137,6 +1137,11 @@
 				"type": "STRING"
 			},
 			{
+				"mode": "NULLABLE",
+				"name": "interested",
+				"type": "BOOL"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "interestScore",
 				"type": "FLOAT64"

@@ -110,10 +110,10 @@ public class BQIdentityInterestScoreDogTest
 		resourcePath = "osbasahfaroinfo/bq_individual_interest_score_info.json"
 	)
 	@Test
-	public void testGetBQIdentityInterestScorePageByFilterStringAndScore() {
+	public void testGetBQIdentityInterestScorePageByFilterString() {
 		Page<IdentityInterestScore> individualInterestScorePage =
 			_bqIdentityInterestScoreDog.getIdentityInterestScorePage(
-				"name eq 'javascript'", 0.1, 0, 20, null);
+				"name eq 'javascript'", 0, 20, null);
 
 		Assertions.assertEquals(
 			2, individualInterestScorePage.getTotalElements());

@@ -4,6 +4,7 @@
 		"id": "635452168436521342",
 		"identityId": "374790569167317525",
 		"interestScore": 2.614959778036198,
+		"interested": true,
 		"keyword": "javascript"
 	},
 	{
@@ -46,6 +47,7 @@
 		"id": "635452168436521348",
 		"identityId": "374790575409131096",
 		"interestScore": 0.7702225204735745,
+		"interested": true,
 		"keyword": "javascript"
 	},
 	{
@@ -61,5 +63,13 @@
 		"identityId": "386190546467211094",
 		"interestScore": 1.4546849849874945,
 		"keyword": "sales"
+	},
+	{
+		"dateRecorded": "2019-05-16T00:00:00.000Z",
+		"id": "635452168436521351",
+		"identityId": "374790575409131099",
+		"interestScore": 0.01,
+		"interested": false,
+		"keyword": "javascript"
 	}
 ]

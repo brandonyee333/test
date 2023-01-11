@@ -75,7 +75,7 @@ public class BQIdentityInterestScoreDog {
 	}
 
 	public Page<IdentityInterestScore> getIdentityInterestScorePage(
-		String filterString, Double score, int page, int size, String[] sorts) {
+		String filterString, int page, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
@@ -84,14 +84,11 @@ public class BQIdentityInterestScoreDog {
 			null, filterString, new InterestFilterStringConverterHelper());
 
 		return PageableExecutionUtils.getPage(
-			_bqIdentityInterestScoreRepository.
-				findByFilterStringAndScoreGreaterThanEqual(
-					filterHelper, score, pageRequest),
+			_bqIdentityInterestScoreRepository.findByFilterString(
+				filterHelper, pageRequest),
 			pageRequest,
-			() ->
-				_bqIdentityInterestScoreRepository.
-					countByFilterStringAndScoreGreaterThanEqual(
-						filterHelper, score));
+			() -> _bqIdentityInterestScoreRepository.countByFilterString(
+				filterHelper));
 	}
 
 	public List<String> getIndividualIds(

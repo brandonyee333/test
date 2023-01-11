@@ -19,7 +19,6 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -42,8 +41,6 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jetbrains.annotations.NotNull;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -87,7 +84,7 @@ public class InterestsRestController
 		return _toPageDTO(
 			expand,
 			bqIdentityInterestScoreDog.getIdentityInterestScorePage(
-				filterString, _getScore(), page, size, sorts));
+				filterString, page, size, sorts));
 	}
 
 	@GetMapping("/keywords")
@@ -270,24 +267,6 @@ public class InterestsRestController
 		}
 
 		return interestAggregations;
-	}
-
-	private Double _getScore() {
-		AsahMarker asahMarker = asahMarkerDog.fetchAsahMarker(
-			"InterestThresholdScoreNanite");
-
-		if (asahMarker == null) {
-			return null;
-		}
-
-		JSONObject asahMarkerContextJSONObject =
-			asahMarker.getContextJSONObject();
-
-		if (asahMarkerContextJSONObject.has("score")) {
-			return asahMarkerContextJSONObject.getDouble("score");
-		}
-
-		return null;
 	}
 
 	private PageDTO<InterestDTO> _toPageDTO(

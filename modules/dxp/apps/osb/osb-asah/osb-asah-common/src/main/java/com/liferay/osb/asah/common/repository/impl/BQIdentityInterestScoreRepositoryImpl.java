@@ -83,9 +83,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public long countByFilterStringAndScoreGreaterThanEqual(
-		FilterHelper filterHelper, @Nullable Double score) {
-
+	public long countByFilterString(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
@@ -101,7 +99,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field("BQIdentity.id")
 				)
 			).where(
-				_getConditions(filterHelper, null, null, null, null, score)
+				_getConditions(
+					filterHelper, Boolean.TRUE, null, null, null, null)
 			));
 	}
 
@@ -129,10 +128,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public List<IdentityInterestScore>
-		findByFilterStringAndScoreGreaterThanEqual(
-			@Nullable FilterHelper filterHelper, @Nullable Double score,
-			Pageable pageable) {
+	public List<IdentityInterestScore> findByFilterString(
+		@Nullable FilterHelper filterHelper, Pageable pageable) {
 
 		return _queryExecutor.queryForList(
 			record -> new IdentityInterestScore(
@@ -180,7 +177,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field("BQIdentity.id")
 				)
 			).where(
-				_getConditions(filterHelper, null, null, null, null, score)
+				_getConditions(
+					filterHelper, Boolean.TRUE, null, null, null, null)
 			).orderBy(
 				_getSortFields(pageable.getSort(), null)
 			).limit(
@@ -321,7 +319,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 			selectSelectStep.from(
 				"BQIdentityInterestScore"
 			).where(
-				_getConditions(null, interestId, null, null, recordedDate, null)
+				_getConditions(
+					null, Boolean.FALSE, null, null, null, recordedDate)
 			).orderBy(
 				DSL.field("id")
 			).limit(
@@ -412,7 +411,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 			record -> (String)record.get("individualId"),
 			selectJoinStep.where(
 				_getConditions(
-					filterHelper, null, individualIds, null, null, null)));
+					filterHelper, Boolean.FALSE, null, individualIds, null,
+					null)));
 	}
 
 	@Override
@@ -524,6 +524,13 @@ public class BQIdentityInterestScoreRepositoryImpl
 					channelId
 				));
 		}
+
+		conditions.add(
+			DSL.field(
+				"BQIdentityInterestScore.interested", Boolean.class
+			).eq(
+				Boolean.TRUE
+			));
 
 		if (!StringUtils.isBlank(keywords)) {
 			conditions.add(_dslHelper.containsSubstring("keyword", keywords));
@@ -775,9 +782,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	private List<Condition> _getConditions(
-		@Nullable FilterHelper filterHelper, @Nullable Long interestId,
-		@Nullable List<String> individualIds, @Nullable String keywords,
-		@Nullable Date recordedDate, @Nullable Double interestScore) {
+		@Nullable FilterHelper filterHelper, boolean interested,
+		@Nullable Long interestId, @Nullable List<String> individualIds,
+		@Nullable String keywords, @Nullable Date recordedDate) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -785,6 +792,33 @@ public class BQIdentityInterestScoreRepositoryImpl
 			!StringUtils.isEmpty(filterHelper.getFilterString())) {
 
 			conditions.add(filterHelper.getCondition());
+		}
+
+		if ((individualIds != null) && !individualIds.isEmpty()) {
+			conditions.add(
+				DSL.field(
+					"individualId", String.class
+				).in(
+					individualIds
+				));
+		}
+
+		if (interested) {
+			conditions.add(
+				DSL.field(
+					"interested", Boolean.class
+				).eq(
+					Boolean.TRUE
+				));
+		}
+
+		if (interestId != null) {
+			conditions.add(
+				DSL.field(
+					"id"
+				).gt(
+					interestId
+				));
 		}
 
 		if (!StringUtils.isBlank(keywords)) {
@@ -804,39 +838,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 				));
 		}
 
-		if (interestId != null) {
-			conditions.add(
-				DSL.field(
-					"id"
-				).gt(
-					interestId
-				));
-		}
-
-		if ((individualIds != null) && !individualIds.isEmpty()) {
-			conditions.add(
-				DSL.field(
-					"individualId", String.class
-				).in(
-					individualIds
-				));
-		}
-
 		if (recordedDate != null) {
 			conditions.add(
 				DSL.field(
 					"recordedDate"
 				).eq(
 					recordedDate
-				));
-		}
-
-		if (interestScore != null) {
-			conditions.add(
-				DSL.field(
-					"interestScore"
-				).greaterOrEqual(
-					interestScore
 				));
 		}
 
