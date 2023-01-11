@@ -353,6 +353,12 @@ public class DXPEntityRepositoryImpl
 
 		List<SelectFieldOrAsterisk> fields = new ArrayList<>();
 
+		fields.add(DSL.field("id"));
+		fields.add(DSL.field("datasourceid"));
+		fields.add(DSL.field("fields"));
+		fields.add(DSL.field("modifieddate"));
+		fields.add(DSL.field("type"));
+
 		for (Sort.Order order : pageable.getSort()) {
 			String property = order.getProperty();
 
