@@ -319,8 +319,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			selectSelectStep.from(
 				"BQIdentityInterestScore"
 			).where(
-				_getConditions(
-					null, Boolean.FALSE, null, null, null, recordedDate)
+				_getConditions(null, null, null, null, null, recordedDate)
 			).orderBy(
 				DSL.field("id")
 			).limit(
@@ -411,8 +410,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			record -> (String)record.get("individualId"),
 			selectJoinStep.where(
 				_getConditions(
-					filterHelper, Boolean.FALSE, null, individualIds, null,
-					null)));
+					filterHelper, null, null, individualIds, null, null)));
 	}
 
 	@Override
@@ -782,7 +780,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	private List<Condition> _getConditions(
-		@Nullable FilterHelper filterHelper, Boolean interested,
+		@Nullable FilterHelper filterHelper, @Nullable Boolean interested,
 		@Nullable Long interestId, @Nullable List<String> individualIds,
 		@Nullable String keywords, @Nullable Date recordedDate) {
 
