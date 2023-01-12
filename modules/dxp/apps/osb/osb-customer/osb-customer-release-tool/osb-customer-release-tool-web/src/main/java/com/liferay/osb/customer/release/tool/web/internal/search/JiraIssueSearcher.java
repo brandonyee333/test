@@ -57,22 +57,19 @@ public class JiraIssueSearcher extends BaseSearcher {
 		String jiraFixPackJQLField =
 			"cf[" + jiraFixPackCustomField.substring(pos + 1) + "]";
 
-		String jiraParentProject = null;
 		String[] jiraProjects = null;
 
 		String productName = preferences.getValue("productName", null);
 
 		if (productName.equals(ProductConstants.COMMERCE)) {
-			jiraParentProject = "COMMERCE";
 			jiraProjects = new String[] {"COMMERCE"};
 		}
 		else {
-			jiraParentProject = "LPS";
 			jiraProjects =
 				ReleaseToolConfigurationValues.FIX_PACK_JIRA_PROJECTS;
 		}
 
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(24);
 
 		sb.append("project in (\"");
 		sb.append(StringUtil.merge(jiraProjects, "\",\""));
@@ -94,19 +91,11 @@ public class JiraIssueSearcher extends BaseSearcher {
 		}
 
 		if (!ArrayUtil.isEmpty(components)) {
-			sb.append(" AND (");
+			sb.append(" AND ");
 
-			for (String component : components) {
-				sb.append("component in subcomponents(");
-				sb.append(jiraParentProject);
-				sb.append(", \"");
-				sb.append(component);
-				sb.append("\", \"true\") OR ");
-			}
-
-			sb.append("component in componentMatch(\"");
-			sb.append(StringUtil.merge(components, "|"));
-			sb.append("\"))");
+			sb.append("component in (\"");
+			sb.append(StringUtil.merge(components, "\", \""));
+			sb.append("\")");
 		}
 
 		sb.append(" AND level is empty");
