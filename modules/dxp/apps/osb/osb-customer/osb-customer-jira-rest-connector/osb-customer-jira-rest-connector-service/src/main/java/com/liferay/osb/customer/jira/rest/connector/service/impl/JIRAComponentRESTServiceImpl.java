@@ -40,33 +40,6 @@ public class JIRAComponentRESTServiceImpl implements JIRAComponentRESTService {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		Set<Long> componentIds = new HashSet<>();
-
-		JSONArray subcomponentJSONArray = getJIRASubcomponents(project);
-
-		for (int i = 0; i < subcomponentJSONArray.length(); i++) {
-			JSONObject subcomponentJSONObject =
-				subcomponentJSONArray.getJSONObject(i);
-
-			long id = subcomponentJSONObject.getLong("refId");
-
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("id", id);
-			jsonObject.put("name", subcomponentJSONObject.getString("name"));
-
-			jsonArray.put(jsonObject);
-
-			componentIds.add(id);
-
-			JSONArray childJSONArray = subcomponentJSONObject.getJSONArray(
-				"children");
-
-			if (childJSONArray != null) {
-				componentIds.addAll(getJIRASubcomponentIds(childJSONArray));
-			}
-		}
-
 		JSONArray componentJSONArray = JIRAHttpUtil.getToJSONArray(
 			"/rest/api/2/project/" + project + "/components");
 
@@ -74,58 +47,15 @@ public class JIRAComponentRESTServiceImpl implements JIRAComponentRESTService {
 			JSONObject componentJSONObject = componentJSONArray.getJSONObject(
 				i);
 
-			long id = componentJSONObject.getLong("id");
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			if (!componentIds.contains(id)) {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+			jsonObject.put("id", componentJSONObject.getLong("id"));
+			jsonObject.put("name", componentJSONObject.getString("name"));
 
-				jsonObject.put("id", id);
-				jsonObject.put("name", componentJSONObject.getString("name"));
-
-				jsonArray.put(jsonObject);
-			}
+			jsonArray.put(jsonObject);
 		}
 
 		return jsonArray;
-	}
-
-	protected Set<Long> getJIRASubcomponentIds(JSONArray jsonArray) {
-		Set<Long> componentIds = new HashSet<>();
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			componentIds.add(jsonObject.getLong("refId"));
-
-			JSONArray childJSONArray = jsonObject.getJSONArray("children");
-
-			if (childJSONArray != null) {
-				componentIds.addAll(getJIRASubcomponentIds(childJSONArray));
-			}
-		}
-
-		return componentIds;
-	}
-
-	protected JSONArray getJIRASubcomponents(String project)
-		throws PortalException {
-
-		String endpoint =
-			"/rest/net.brokenbuild.subcomponents/latest/subcomponents/" +
-				project;
-
-		String response = JIRAHttpUtil.get(endpoint);
-
-		if (Validator.isNotNull(response)) {
-			response = response.replaceAll(
-				"\"refType\":\"COMPONENT\",", StringPool.BLANK);
-
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(response);
-
-			return jsonObject.getJSONArray("subcomponents");
-		}
-
-		return JSONFactoryUtil.createJSONArray();
 	}
 
 	protected void validate(String project) throws PortalException {
