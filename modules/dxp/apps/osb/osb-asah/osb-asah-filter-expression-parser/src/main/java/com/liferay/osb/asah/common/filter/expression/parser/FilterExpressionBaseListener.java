@@ -200,30 +200,6 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -231,6 +207,18 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -375,18 +363,6 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

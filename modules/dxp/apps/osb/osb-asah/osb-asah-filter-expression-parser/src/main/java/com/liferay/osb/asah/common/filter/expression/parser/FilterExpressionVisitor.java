@@ -123,23 +123,17 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FilterExpressionParser#functionParameters}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FilterExpressionParser#functionParameter}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FilterExpressionParser#functionParameters}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code FloatingPointLiteral}
 	 * labeled alternative in {@link FilterExpressionParser#literal}.
@@ -224,11 +218,4 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code LogicalVariable}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx);
 }

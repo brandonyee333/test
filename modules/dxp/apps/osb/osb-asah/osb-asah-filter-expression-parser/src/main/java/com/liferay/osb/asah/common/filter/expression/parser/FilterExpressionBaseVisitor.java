@@ -131,21 +131,14 @@ public class FilterExpressionBaseVisitor<T> extends AbstractParseTreeVisitor<T> 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -230,11 +223,4 @@ public class FilterExpressionBaseVisitor<T> extends AbstractParseTreeVisitor<T> 
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx) { return visitChildren(ctx); }
 }

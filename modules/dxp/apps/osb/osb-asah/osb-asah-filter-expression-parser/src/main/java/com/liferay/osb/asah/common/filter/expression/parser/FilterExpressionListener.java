@@ -188,26 +188,6 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 */
 	void exitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FilterExpressionParser#functionParameters}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FilterExpressionParser#functionParameters}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link FilterExpressionParser#functionParameter}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FilterExpressionParser#functionParameter}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionParameter(FilterExpressionParser.FunctionParameterContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
 	 * @param ctx the parse tree
 	 */
@@ -217,6 +197,16 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FilterExpressionParser#functionParameters}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FilterExpressionParser#functionParameters}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionParameters(FilterExpressionParser.FunctionParametersContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code FloatingPointLiteral}
 	 * labeled alternative in {@link FilterExpressionParser#literal}.
@@ -361,16 +351,4 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code LogicalVariable}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code LogicalVariable}
-	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitLogicalVariable(FilterExpressionParser.LogicalVariableContext ctx);
 }
