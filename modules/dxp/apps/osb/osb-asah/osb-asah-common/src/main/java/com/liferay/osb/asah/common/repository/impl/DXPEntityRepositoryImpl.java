@@ -20,12 +20,10 @@ import com.liferay.osb.asah.common.repository.CustomDXPEntityRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,7 +33,6 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectConditionStep;
-import org.jooq.SelectFieldOrAsterisk;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
 import org.jooq.impl.DSL;
@@ -351,32 +348,7 @@ public class DXPEntityRepositoryImpl
 		List<Long> dataSourceIds, @Nullable String keywords,
 		DXPEntity.Type type, Pageable pageable) {
 
-		List<SelectFieldOrAsterisk> fields = new ArrayList<>();
-
-		fields.add(DSL.field("id"));
-		fields.add(DSL.field("datasourceid"));
-		fields.add(DSL.field("fields"));
-		fields.add(DSL.field("modifieddate"));
-		fields.add(DSL.field("type"));
-
-		for (Sort.Order order : pageable.getSort()) {
-			String property = order.getProperty();
-
-			Set<String> strings = _orders.keySet();
-
-			if (strings.contains(property)) {
-				fields.add(
-					DSL.field(
-						String.format(
-							"cast(fields::json->'%s' as %s)", property,
-							_orders.get(property))
-					).as(
-						property
-					));
-			}
-		}
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select(fields);
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"DXPEntity"
@@ -560,13 +532,6 @@ public class DXPEntityRepositoryImpl
 
 		return getSortFields(Sort.by(orders), null);
 	}
-
-	private static final Map<String, String> _orders =
-		new HashMap<String, String>() {
-			{
-				put("name", "varchar");
-			}
-		};
 
 	private final DSLContext _dslContext;
 
