@@ -14,19 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
-
-import org.junit.jupiter.api.Disabled;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
 /**
  * @author Geyson Silva
  */
-@Disabled
-@RepositoryResource(
-	repositoryClass = CrudBQPageRepository.class,
-	resourcePath = "osbasahcerebroinfo/pages_info.json"
-)
+@SQLResource(resourcePath = "search_term_graphql_rest_controller_test.sql")
 public class SearchTermGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
