@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -91,7 +92,16 @@ public class DXPEntityRepositoryTest
 				"dependencies/user_fields2.json", this));
 		dxpEntity2.setType(DXPEntity.Type.USER);
 
-		setUpRepository(dxpEntity1, dxpEntity2);
+		DXPEntity dxpEntity3 = new DXPEntity();
+
+		dxpEntity3.setDataSourceId(123L);
+		dxpEntity3.setFieldsJSONObject(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/user_group_fields1.json", this));
+		dxpEntity3.setModifiedDate(DateUtil.newDate());
+		dxpEntity3.setType(DXPEntity.Type.USER_GROUP);
+
+		setUpRepository(dxpEntity1, dxpEntity2, dxpEntity3);
 	}
 
 	@AfterEach
@@ -311,10 +321,13 @@ public class DXPEntityRepositoryTest
 
 		DXPEntity dxpEntity = dxpEntities.get(0);
 
+		Assertions.assertEquals("Jane Doe", dxpEntity.getName());
+
 		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
 		Assertions.assertEquals(
 			"Jane", fieldsJSONObject.getString("firstName"));
+		Assertions.assertEquals("Doe", fieldsJSONObject.getString("lastName"));
 
 		dxpEntities =
 			_dxpEntityRepository.searchByDataSourceIdsAndKeywordsAndType(
@@ -323,12 +336,26 @@ public class DXPEntityRepositoryTest
 
 		dxpEntity = dxpEntities.get(0);
 
+		Assertions.assertEquals("John Doe", dxpEntity.getName());
+
 		fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
 		Assertions.assertEquals(
 			"John", fieldsJSONObject.getString("firstName"));
+		Assertions.assertEquals("Doe", fieldsJSONObject.getString("lastName"));
 
 		Assertions.assertEquals(2, dxpEntities.size(), dxpEntities.toString());
+
+		dxpEntities =
+			_dxpEntityRepository.searchByDataSourceIdsAndKeywordsAndType(
+				Arrays.asList(123L), null, DXPEntity.Type.USER_GROUP,
+				PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name")));
+
+		dxpEntity = dxpEntities.get(0);
+
+		Assertions.assertEquals("User Group 1", dxpEntity.getName());
+
+		Assertions.assertEquals(1, dxpEntities.size(), dxpEntities.toString());
 	}
 
 	@Override
