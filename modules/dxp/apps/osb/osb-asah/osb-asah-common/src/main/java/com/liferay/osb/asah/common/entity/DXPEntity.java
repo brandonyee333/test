@@ -134,6 +134,11 @@ public class DXPEntity implements Persistable<Long> {
 
 	public String getName() {
 		if (_name == null) {
+			if (getType() == Type.USER) {
+				return _fieldsJSONObject.optString("firstName") + " " +
+					_fieldsJSONObject.optString("lastName");
+			}
+
 			return _fieldsJSONObject.optString("name", null);
 		}
 

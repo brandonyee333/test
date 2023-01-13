@@ -197,7 +197,14 @@ public class DXPEntityDog {
 
 		JSONObject fieldsJSONObject = dxpEntity.getFieldsJSONObject();
 
-		dxpEntity.setName(fieldsJSONObject.optString("name"));
+		if (dxpEntity.getType() == DXPEntity.Type.USER) {
+			dxpEntity.setName(
+				fieldsJSONObject.optString("firstName") + " " +
+					fieldsJSONObject.optString("lastName"));
+		}
+		else {
+			dxpEntity.setName(fieldsJSONObject.optString("name"));
+		}
 
 		return dxpEntity;
 	}
