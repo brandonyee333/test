@@ -56,6 +56,11 @@ public class DataSourceFilterStringConverterHelper
 	}
 
 	@Override
+	public String getFilterType() {
+		return "dataSourceAccountPKs";
+	}
+
+	@Override
 	public Condition getLogicFunctionCondition(
 		String fieldName, String operator, boolean processString,
 		String valueString) {

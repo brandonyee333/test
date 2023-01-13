@@ -151,6 +151,11 @@ public class IndividualsFilterStringConverterHelper
 	}
 
 	@Override
+	public String getTableName() {
+		return "Individual";
+	}
+
+	@Override
 	public Object processValue(String fieldName, String valueString) {
 		if (fieldName.equalsIgnoreCase("Individual.modifiedDate") &&
 			!StringUtils.isBlank(valueString)) {

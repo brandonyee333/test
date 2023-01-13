@@ -30,12 +30,20 @@ public interface FilterStringConverterHelper {
 
 	public Map<String, String> getFieldNameConversionMap();
 
+	public default String getFilterType() {
+		return null;
+	}
+
 	public Condition getInferredCondition(String fieldName);
 
 	public Condition getLogicFunctionCondition(
 			String fieldName, String operator, boolean processString,
 			String valueString)
 		throws Exception;
+
+	public default String getTableName() {
+		return null;
+	}
 
 	public default Object processValue(String fieldName, String valueString) {
 		return null;

@@ -61,4 +61,9 @@ public class InterestFilterStringConverterHelper
 		return null;
 	}
 
+	@Override
+	public String getTableName() {
+		return "Interest";
+	}
+
 }

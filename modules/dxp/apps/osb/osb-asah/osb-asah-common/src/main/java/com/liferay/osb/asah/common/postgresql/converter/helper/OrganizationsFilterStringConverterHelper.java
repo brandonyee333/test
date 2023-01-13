@@ -48,6 +48,11 @@ public class OrganizationsFilterStringConverterHelper
 	}
 
 	@Override
+	public String getFilterType() {
+		return "organizations";
+	}
+
+	@Override
 	public Condition getLogicFunctionCondition(
 		String fieldName, String operator, boolean processString,
 		String valueString) {
@@ -58,6 +63,7 @@ public class OrganizationsFilterStringConverterHelper
 
 		Optional<BQOrganization> bqOrganizationOptional =
 			_bqOrganizationRepository.findById(StringUtil.unquote(valueString));
+
 		if (!bqOrganizationOptional.isPresent()) {
 			return null;
 		}
@@ -85,6 +91,11 @@ public class OrganizationsFilterStringConverterHelper
 		}
 
 		return null;
+	}
+
+	@Override
+	public String getTableName() {
+		return "Organization";
 	}
 
 	@Autowired

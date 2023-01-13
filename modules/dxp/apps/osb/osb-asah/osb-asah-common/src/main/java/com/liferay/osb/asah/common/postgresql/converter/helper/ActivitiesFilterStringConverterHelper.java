@@ -41,6 +41,11 @@ public class ActivitiesFilterStringConverterHelper
 	}
 
 	@Override
+	public String getFilterType() {
+		return "activities";
+	}
+
+	@Override
 	public Condition getLogicFunctionCondition(
 		String fieldName, String operator, boolean processString,
 		String valueString) {
@@ -74,6 +79,11 @@ public class ActivitiesFilterStringConverterHelper
 		}
 
 		return null;
+	}
+
+	@Override
+	public String getTableName() {
+		return "Event";
 	}
 
 	private Condition _getDayDateCondition(
