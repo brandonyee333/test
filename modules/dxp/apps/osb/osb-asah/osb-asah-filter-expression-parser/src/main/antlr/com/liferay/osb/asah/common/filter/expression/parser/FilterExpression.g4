@@ -37,13 +37,19 @@ comparisonExpression
 	| comparisonExpression GE booleanOperandExpression # GreaterThanOrEqualsExpression
 	| comparisonExpression LT booleanOperandExpression # LessThanExpression
 	| comparisonExpression LE booleanOperandExpression # LessThanOrEqualsExpression
+    | VARIABLE_IDENTIFIER GT booleanOperandExpression # GreaterThanExpression
+    | VARIABLE_IDENTIFIER GE booleanOperandExpression # GreaterThanOrEqualsExpression
+    | VARIABLE_IDENTIFIER LT booleanOperandExpression # LessThanExpression
+	| VARIABLE_IDENTIFIER LE booleanOperandExpression # LessThanOrEqualsExpression
 	| booleanUnaryExpression #ToBooleanUnaryExpression
 	;
 
 equalityExpression
 	: equalityExpression EQ comparisonExpression # EqualsExpression
 	| equalityExpression NEQ comparisonExpression # NotEqualsExpression
-	| comparisonExpression #ToComparisonExpression
+    | VARIABLE_IDENTIFIER EQ comparisonExpression # EqualsExpression
+    | VARIABLE_IDENTIFIER NEQ comparisonExpression # NotEqualsExpression
+    | comparisonExpression #ToComparisonExpression
 	;
 
 expression
@@ -51,19 +57,15 @@ expression
 	;
 
 filterExpression
-	: domainName=VARIABLE_IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')'
-	;
-
-functionParameters
-	: functionParameter (COMMA functionParameter)*
-	;
-
-functionParameter
-	: logicalOrExpression
+	: filterType=VARIABLE_IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')'
 	;
 
 functionCallExpression
-	: functionName=VARIABLE_IDENTIFIER LPAREN functionParameters? RPAREN
+	: functionName=VARIABLE_IDENTIFIER LPAREN functionParameters RPAREN
+	;
+
+functionParameters
+	: VARIABLE_IDENTIFIER COMMA literal
 	;
 
 literal
@@ -88,7 +90,6 @@ logicalTerm
 	: literal # ToLiteral
 	| functionCallExpression # ToFunctionCallExpression
 	| filterExpression # ToFilterExpression
-	| VARIABLE_IDENTIFIER # LogicalVariable
 	;
 
 AND
