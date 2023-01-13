@@ -40,9 +40,9 @@ public class OrganizationsFilterStringConverterHelper
 	public Map<String, String> getFieldNameConversionMap() {
 		Map<String, String> map = new HashMap<>();
 
-		map.put("dataSourceId", "organization.dataSourceId");
-		map.put("id", "organization.id");
-		map.put("name", "organization.name");
+		map.put("dataSourceId", "Organization.dataSourceId");
+		map.put("id", "Organization.id");
+		map.put("name", "Organization.name");
 
 		return map;
 	}
@@ -57,7 +57,6 @@ public class OrganizationsFilterStringConverterHelper
 
 		Optional<BQOrganization> bqOrganizationOptional =
 			_bqOrganizationRepository.findById(StringUtil.unquote(valueString));
-
 		if (!bqOrganizationOptional.isPresent()) {
 			return null;
 		}

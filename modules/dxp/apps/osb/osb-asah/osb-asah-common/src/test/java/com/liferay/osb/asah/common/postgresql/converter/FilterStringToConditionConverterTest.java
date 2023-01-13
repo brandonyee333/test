@@ -261,7 +261,7 @@ public class FilterStringToConditionConverterTest {
 	public void testIndividualsEqAndNull() {
 		Condition expectedCondition = DSL.and(
 			DSL.field(
-				"identityActivity.channelId"
+				"IdentityActivity.channelId"
 			).cast(
 				Long.class
 			).eq(

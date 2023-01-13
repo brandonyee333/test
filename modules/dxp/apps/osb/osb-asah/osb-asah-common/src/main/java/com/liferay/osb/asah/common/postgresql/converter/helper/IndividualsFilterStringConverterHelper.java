@@ -96,8 +96,8 @@ public class IndividualsFilterStringConverterHelper
 	public Map<String, String> getFieldNameConversionMap() {
 		Map<String, String> map = new HashMap<>();
 
-		map.put("channelIds", "identityActivity.channelId");
-		map.put("lastEnrichmentDate", "individual.modifieddate");
+		map.put("channelIds", "IdentityActivity.channelId");
+		map.put("lastEnrichmentDate", "Individual.modifiedDate");
 
 		return map;
 	}
@@ -151,7 +151,7 @@ public class IndividualsFilterStringConverterHelper
 
 	@Override
 	public Object processValue(String fieldName, String valueString) {
-		if (fieldName.equalsIgnoreCase("individual.modifieddate") &&
+		if (fieldName.equalsIgnoreCase("Individual.modifiedDate") &&
 			!StringUtils.isBlank(valueString)) {
 
 			try {
