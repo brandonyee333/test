@@ -2,7 +2,7 @@ WITH
 	FormEvent AS (
 		SELECT
 			formId.value AS assetId,
-			formTitle.value AS assetTitle,
+			COALESCE(formTitle.value, Event.title) AS assetTitle,
 			Event.browserName,
 			Event.canonicalUrl,
 			Event.channelId,
@@ -19,18 +19,18 @@ WITH
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS formId ON (
-			Event.id = formId.id AND formId.name = 'formId'
+			Event.id = formId.id AND formId.name = 'formId' AND
+			formId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			formId.value IS NOT NULL
 		)
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS formTitle ON (
-			Event.id = formTitle.id AND formTitle.name = 'title'
+			Event.id = formTitle.id AND formTitle.name = 'title' AND
+			formTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 		)
 		WHERE
 			Event.applicationId = 'Form' AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			Event.eventId IN ('formSubmitted', 'formViewed') AND
-			formId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			formId.value IS NOT NULL AND
-			formTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			Event.eventId IN ('formSubmitted', 'formViewed')
 	),
 	FormSubmissionTimes AS (
 		SELECT
@@ -93,10 +93,10 @@ SELECT
 		)
 	) AS abandonments,
 	FormEvent.assetId,
-	MAX(CASE WHEN FormEvent.eventId = 'formViewed' THEN FormEvent.assetTitle END) AS assetTitle,
+	COALESCE(MAX(FormEvent.assetTitle), '') AS assetTitle,
 	FormEvent.browserName,
 	FormEvent.canonicalUrl,
-	FormEvent.channelId,
+	CAST(FormEvent.channelId AS INT64) AS channelId,
 	FormEvent.city,
 	FormEvent.country,
 	FormEvent.deviceType,
