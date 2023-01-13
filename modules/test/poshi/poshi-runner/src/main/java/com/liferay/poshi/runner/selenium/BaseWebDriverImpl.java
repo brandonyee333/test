@@ -1432,6 +1432,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			return getHtmlNodeText(locator);
 		}
 
+		System.out.println(locator);
+
 		WebElement webElement = getWebElement(locator, timeout);
 
 		scrollWebElementIntoView(webElement);
@@ -1439,6 +1441,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		String text = webElement.getText();
 
 		text = text.trim();
+
+		System.out.println(text);
 
 		return StringUtil.replace(text, "\n", " ");
 	}
