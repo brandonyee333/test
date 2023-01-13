@@ -527,7 +527,8 @@ public class DXPEntityRepositoryImpl
 
 			orders.add(
 				new Sort.Order(
-					order.getDirection(), _createFieldPath(property)));
+					order.getDirection(),
+					_createFieldPath("fields." + property)));
 		}
 
 		return getSortFields(Sort.by(orders), null);
