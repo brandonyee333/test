@@ -45,7 +45,8 @@ public class InterestFilterStringConverterHelper
 
 	@Override
 	public Condition getLogicFunctionCondition(
-		String fieldName, String operator, String valueString) {
+		String fieldName, String operator, boolean processString,
+		String valueString) {
 
 		if (fieldName.equals("score") && operator.equals("eq")) {
 			Double score = Double.valueOf(valueString);

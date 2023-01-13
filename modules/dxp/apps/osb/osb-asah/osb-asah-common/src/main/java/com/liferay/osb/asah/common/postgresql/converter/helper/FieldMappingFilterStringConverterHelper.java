@@ -29,7 +29,8 @@ public class FieldMappingFilterStringConverterHelper
 
 	@Override
 	public Condition getLogicFunctionCondition(
-		String fieldName, String operator, String valueString) {
+		String fieldName, String operator, boolean processString,
+		String valueString) {
 
 		if (!fieldName.startsWith("dataSourceFieldNames/")) {
 			return null;

@@ -33,7 +33,8 @@ public interface FilterStringConverterHelper {
 	public Condition getInferredCondition(String fieldName);
 
 	public Condition getLogicFunctionCondition(
-			String fieldName, String operator, String valueString)
+			String fieldName, String operator, boolean processString,
+			String valueString)
 		throws Exception;
 
 	public default Object processValue(String fieldName, String valueString) {

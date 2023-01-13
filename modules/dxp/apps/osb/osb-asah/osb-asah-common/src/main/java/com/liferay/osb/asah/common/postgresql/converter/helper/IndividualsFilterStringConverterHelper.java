@@ -121,7 +121,8 @@ public class IndividualsFilterStringConverterHelper
 
 	@Override
 	public Condition getLogicFunctionCondition(
-			String fieldName, String operator, String valueString)
+			String fieldName, String operator, boolean processString,
+			String valueString)
 		throws Exception {
 
 		// TODO Add activities criteria condition

@@ -49,7 +49,8 @@ public class OrganizationsFilterStringConverterHelper
 
 	@Override
 	public Condition getLogicFunctionCondition(
-		String fieldName, String operator, String valueString) {
+		String fieldName, String operator, boolean processString,
+		String valueString) {
 
 		if (!fieldName.equalsIgnoreCase("parentId")) {
 			return null;

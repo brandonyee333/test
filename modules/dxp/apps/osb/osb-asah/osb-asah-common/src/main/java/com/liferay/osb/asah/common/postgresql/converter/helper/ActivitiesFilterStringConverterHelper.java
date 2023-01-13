@@ -42,7 +42,8 @@ public class ActivitiesFilterStringConverterHelper
 
 	@Override
 	public Condition getLogicFunctionCondition(
-		String fieldName, String operator, String valueString) {
+		String fieldName, String operator, boolean processString,
+		String valueString) {
 
 		if (fieldName.equals("channelId") || fieldName.equals("ownerId")) {
 			Field<Long> field = DSL.field(
@@ -61,7 +62,7 @@ public class ActivitiesFilterStringConverterHelper
 		}
 
 		Condition condition = getTimeFrameCondition(
-			fieldName, operator, "activities", valueString);
+			fieldName, operator, processString, "activities", valueString);
 
 		if (condition != null) {
 			return condition;
