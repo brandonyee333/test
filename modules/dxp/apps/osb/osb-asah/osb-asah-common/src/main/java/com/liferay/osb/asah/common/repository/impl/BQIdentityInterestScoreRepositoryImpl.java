@@ -508,7 +508,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 			conditions.add(
 				DSL.field(
-					"BQIdentityActivity.lastActivityDate"
+					"BQIdentityActivity.lastActivityDate", Date.class
 				).ge(
 					DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30))
 				));
