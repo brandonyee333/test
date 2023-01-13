@@ -14,15 +14,42 @@
 
 package com.liferay.osb.asah.common.filter.expression;
 
-import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
+import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
+import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
+import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
+import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.postgresql.converter.helper.OrganizationsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.postgresql.converter.helper.SessionsFilterStringConverter;
+
+import java.io.File;
+import java.io.IOException;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author Marcellus Tavares
@@ -131,17 +158,16 @@ public class FilterExpressionTest {
 			"column1 eq 'value''1'");
 	}
 
-	@Disabled
 	@Test
 	public void testFreestyle1() {
 		_assertEquals(
-			DSL.and(
-				DSL.or(
-					DSL.field(
-						DSL.cast(DSL.field("column1"), Long.class)
-					).gt(
-						42L
-					),
+			DSL.or(
+				DSL.field(
+					DSL.cast(DSL.field("column1"), Long.class)
+				).gt(
+					42L
+				),
+				DSL.and(
 					DSL.or(
 						DSL.field(
 							"column2"
@@ -158,16 +184,13 @@ public class FilterExpressionTest {
 								"column4"
 							).le(
 								97531.8642
-							)))),
-				DSL.field(
-					"column5"
-				).isNotNull()),
-			"((column1 gt 42 or ((contains(column2, 'escaped''quote)')) or " +
-				"(column3 ne true and column4 le 97531.8642)) and column5 ne " +
-					"null))");
+							))),
+					DSL.field(
+						"column5"
+					).isNotNull())),
+			_testFilters.get("testFreestyle1"));
 	}
 
-	@Disabled
 	@Test
 	public void testFreestyle2() {
 		_assertEquals(
@@ -204,9 +227,7 @@ public class FilterExpressionTest {
 						).le(
 							-8192L
 						)))),
-			"((column1 ne 'null' and column2 ne null) or ((column3 eq 'true' " +
-				"and column4 eq true) or (column5 gt -53.21 and column6 le " +
-					"-8192)))");
+			_testFilters.get("testFreestyle2"));
 	}
 
 	@Test
@@ -229,8 +250,274 @@ public class FilterExpressionTest {
 				).eq(
 					"value3"
 				)),
-			"((column1 eq 'value1' or column2 eq 'value2') and column3 eq " +
-				"'value3')");
+			_testFilters.get("testFreestyle3"));
+	}
+
+	@Test
+	public void testFreestyle4() {
+		_assertEquals(
+			DSL.cast(
+				DSL.field("annualRevenue"), Long.class
+			).gt(
+				500000L
+			),
+			_testFilters.get("testFreestyle4"),
+			_filterTypeFilterStringConverterHelpers, Collections.emptySet());
+	}
+
+	@Test
+	public void testFreestyle5() {
+		_assertEquals(
+			DSL.field(
+				"jobTitle"
+			).containsIgnoreCase(
+				"manager"
+			),
+			"contains(demographics/jobTitle/value, 'manager')");
+	}
+
+	@Test
+	public void testFreestyle6() {
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"Individual.addresses"
+				).eq(
+					"address1"
+				),
+				DSL.field(
+					"Session.browserName"
+				).eq(
+					"browser1"
+				),
+				DSL.field(
+					"Session.completeDate"
+				).gt(
+					localDateTime.minusHours(24)
+				),
+				DSL.field(
+					"Individual.addresses"
+				).eq(
+					"address2"
+				)),
+			_testFilters.get("testFreestyle6"),
+			_filterTypeFilterStringConverterHelpers,
+			new HashSet<>(Arrays.asList("Individual", "Session")));
+	}
+
+	@Test
+	public void testFreestyle7() {
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		_assertEquals(
+			DSL.or(
+				DSL.and(
+					DSL.field(
+						"Session.country"
+					).eq(
+						"country1"
+					),
+					DSL.field(
+						"Session.completeDate"
+					).gt(
+						localDateTime.minusHours(24)
+					)),
+				DSL.and(
+					DSL.field(
+						"Session.url"
+					).eq(
+						"url1"
+					),
+					DSL.field(
+						"Session.completeDate"
+					).gt(
+						localDateTime.minusHours(24)
+					))),
+			_testFilters.get("testFreestyle7"),
+			_filterTypeFilterStringConverterHelpers,
+			new HashSet<>(Arrays.asList("Session")));
+	}
+
+	@Test
+	public void testFreestyle8() {
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"Organization.name"
+				).eq(
+					"name1"
+				),
+				DSL.field(
+					"Organization.type"
+				).eq(
+					"type1"
+				)),
+			_testFilters.get("testFreestyle8"),
+			_filterTypeFilterStringConverterHelpers,
+			new HashSet<>(Arrays.asList("Organization")));
+	}
+
+	@Test
+	public void testFreestyle9() {
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"Individual.addresses"
+				).eq(
+					"address1"
+				),
+				DSL.field(
+					"Session.country"
+				).eq(
+					"country1"
+				),
+				DSL.field(
+					"Session.completeDate"
+				).gt(
+					localDateTime.minusHours(24)
+				),
+				DSL.field(
+					"Individual.emailAddress"
+				).eq(
+					"emailAddress1"
+				),
+				DSL.field(
+					"Session.url"
+				).eq(
+					"url1"
+				),
+				DSL.field(
+					"Session.completeDate"
+				).gt(
+					localDateTime.minusHours(24)
+				),
+				DSL.field(
+					"Session.completeDate"
+				).eq(
+					"2022-12-20T16:56:05.761Z"
+				),
+				DSL.field(
+					"Session.deviceType"
+				).eq(
+					"deviceType1"
+				),
+				DSL.field(
+					"Session.completeDate"
+				).gt(
+					localDateTime.minusHours(24)
+				),
+				DSL.field(
+					"Session.browserName"
+				).eq(
+					"browserName1"
+				),
+				DSL.field(
+					"Session.completeDate"
+				).gt(
+					localDateTime.minusHours(24)
+				),
+				DSL.field(
+					"Organization.name"
+				).eq(
+					"name1"
+				)),
+			_testFilters.get("testFreestyle9"),
+			_filterTypeFilterStringConverterHelpers,
+			new HashSet<>(
+				Arrays.asList("Individual", "Organization", "Session")));
+	}
+
+	@Test
+	public void testFreestyle10() {
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		_assertEquals(
+			DSL.and(
+				DSL.or(
+					DSL.field(
+						"Individual.addresses"
+					).eq(
+						"address1"
+					),
+					DSL.and(
+						DSL.field(
+							"Session.country"
+						).eq(
+							"country1"
+						),
+						DSL.field(
+							"Session.completeDate"
+						).gt(
+							localDateTime.minusHours(24)
+						),
+						DSL.field(
+							"Individual.emailAddress"
+						).eq(
+							"emailAddress1"
+						),
+						DSL.field(
+							"Session.url"
+						).eq(
+							"url1"
+						),
+						DSL.field(
+							"Session.completeDate"
+						).gt(
+							localDateTime.minusHours(24)
+						),
+						DSL.field(
+							"Session.completeDate"
+						).eq(
+							"2022-12-20T16:56:05.761Z"
+						))),
+				DSL.field(
+					"Session.deviceType"
+				).eq(
+					"deviceType1"
+				),
+				DSL.field(
+					"Session.completeDate"
+				).gt(
+					localDateTime.minusHours(24)
+				),
+				DSL.field(
+					"Session.browserName"
+				).eq(
+					"browserName1"
+				),
+				DSL.field(
+					"Session.completeDate"
+				).gt(
+					localDateTime.minusHours(24)
+				),
+				DSL.field(
+					"Organization.name"
+				).eq(
+					"name1"
+				)),
+			_testFilters.get("testFreestyle10"),
+			_filterTypeFilterStringConverterHelpers,
+			new HashSet<>(
+				Arrays.asList("Individual", "Organization", "Session")));
+	}
+
+	@Test
+	public void testFreestyle11() {
+		_assertEquals(
+			DSL.field(
+				"accountPKs"
+			).eq(
+				"ae549a89-a2f4-4167-858c-e6f23f51beee"
+			),
+			_testFilters.get("testFreestyle11"));
 	}
 
 	@Test
@@ -265,22 +552,15 @@ public class FilterExpressionTest {
 	public void testIndividualsEqAndNull() {
 		Condition expectedCondition = DSL.and(
 			DSL.field(
-				"identityActivity.channelId"
-			).cast(
-				Long.class
+				"IdentityActivity.channelId"
 			).eq(
 				506297979389450553L
 			),
 			DSL.field(
-				"field.name"
-			).eq(
 				"email"
-			),
-			DSL.field(
-				"field.value"
 			).isNotNull());
 
-		Condition actualCondition = FilterStringToConditionConverter.convert(
+		Condition actualCondition = FilterExpression.convert(
 			"(channelIds eq '506297979389450553' and " +
 				"(demographics/email/value ne null))",
 			new IndividualsFilterStringConverterHelper());
@@ -289,7 +569,6 @@ public class FilterExpressionTest {
 			expectedCondition.toString(), actualCondition.toString());
 	}
 
-	@Disabled
 	@Test
 	public void testIntegerValue() {
 		_assertEquals(
@@ -309,11 +588,10 @@ public class FilterExpressionTest {
 				"instead");
 	}
 
-	@Disabled
 	@Test
 	public void testInvalidObjectThrowsException() {
 		_assertThrowsException(
-			"column1 eq value1", "Unknown object value1 used in filter");
+			"column1 eq value1", "no viable alternative at input 'value1'");
 	}
 
 	@Test
@@ -321,7 +599,6 @@ public class FilterExpressionTest {
 		_assertThrowsException("column1 is 'value1'", "Invalid operator: is");
 	}
 
-	@Disabled
 	@Test
 	public void testInvalidStringFunctionArgumentThrowsException() {
 		_assertThrowsException(
@@ -502,7 +779,6 @@ public class FilterExpressionTest {
 			"startsWith(column1, 'value1')");
 	}
 
-	@Disabled
 	@Test
 	public void testTooManyStringFunctionArgumentsThrowsException() {
 		_assertThrowsException(
@@ -528,11 +804,24 @@ public class FilterExpressionTest {
 	private void _assertEquals(
 		Condition expectedCondition, String actualFilterExpressionString) {
 
-		FilterExpression filterExpression = new FilterExpression(
-			actualFilterExpressionString);
+		Assertions.assertEquals(
+			expectedCondition,
+			FilterExpression.convert(actualFilterExpressionString));
+	}
+
+	private void _assertEquals(
+		Condition expectedCondition, String actualFilterExpressionString,
+		List<FilterStringConverterHelper> filterTypeStringConverterHelpers,
+		Set<String> includedTableNames) {
+
+		JoinCondition joinCondition = FilterExpression.joinConvert(
+			actualFilterExpressionString, filterTypeStringConverterHelpers);
 
 		Assertions.assertEquals(
-			expectedCondition, filterExpression.getCondition());
+			expectedCondition, joinCondition.getCondition());
+
+		Assertions.assertEquals(
+			includedTableNames, joinCondition.getIncludedTableNames());
 	}
 
 	private void _assertThrowsException(
@@ -540,13 +829,45 @@ public class FilterExpressionTest {
 
 		Assertions.assertThrows(
 			FilterExpressionParserException.class,
-			() -> {
-				FilterExpression filterExpression = new FilterExpression(
-					filterExpressionString);
-
-				filterExpression.getCondition();
-			},
-			message);
+			() -> FilterExpression.convert(filterExpressionString), message);
 	}
+
+	@SuppressFBWarnings
+	private Map<String, String> _getTestFilters() {
+		ClassPathResource classPathResource = new ClassPathResource(
+			"filters.txt", getClass());
+
+		try {
+			File file = classPathResource.getFile();
+
+			List<String> filters = Files.readAllLines(
+				Paths.get(file.getAbsolutePath()));
+
+			Stream<String> stream = filters.stream();
+
+			return stream.map(
+				filter -> filter.split("=", 2)
+			).collect(
+				Collectors.toMap(filter -> filter[0], filter -> filter[1])
+			);
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+	}
+
+	private static final List<FilterStringConverterHelper>
+		_filterTypeFilterStringConverterHelpers =
+			new ArrayList<FilterStringConverterHelper>() {
+				{
+					add(new IndividualsFilterStringConverterHelper());
+					add(new ActivitiesFilterStringConverterHelper());
+					add(new DataSourceFilterStringConverterHelper());
+					add(new OrganizationsFilterStringConverterHelper());
+					add(new SessionsFilterStringConverter());
+				}
+			};
+
+	private final Map<String, String> _testFilters = _getTestFilters();
 
 }
