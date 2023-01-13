@@ -36,9 +36,8 @@ public class LockImpl extends LockBaseImpl {
 		else if (System.currentTimeMillis() > getExpirationDate().getTime()) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	@Override

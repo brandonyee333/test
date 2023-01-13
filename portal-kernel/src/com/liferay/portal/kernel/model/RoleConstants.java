@@ -131,9 +131,8 @@ public class RoleConstants {
 		else if (type == TYPE_SITE) {
 			return TYPE_SITE_LABEL;
 		}
-		else {
-			return TYPE_REGULAR_LABEL;
-		}
+
+		return TYPE_REGULAR_LABEL;
 	}
 
 }

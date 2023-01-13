@@ -42,9 +42,8 @@ public class VisibilityConstants {
 		else if (visibility == WORKERS) {
 			return "workers";
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public static int toVisibility(String label) {
@@ -60,9 +59,8 @@ public class VisibilityConstants {
 		else if (label.equals("workers")) {
 			return WORKERS;
 		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 }

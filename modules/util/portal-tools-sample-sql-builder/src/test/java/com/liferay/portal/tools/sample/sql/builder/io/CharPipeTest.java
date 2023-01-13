@@ -850,11 +850,10 @@ public class CharPipeTest {
 					else if (_close && !_force && (result == -1)) {
 						return;
 					}
-					else {
-						_failed = true;
 
-						break;
-					}
+					_failed = true;
+
+					break;
 				}
 
 				if (_close && _force) {

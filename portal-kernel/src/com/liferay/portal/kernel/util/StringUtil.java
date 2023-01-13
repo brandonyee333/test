@@ -4360,9 +4360,8 @@ public class StringUtil {
 		else if (obj instanceof Long) {
 			return toHexString(((Long)obj).longValue());
 		}
-		else {
-			return String.valueOf(obj);
-		}
+
+		return String.valueOf(obj);
 	}
 
 	/**
@@ -4663,9 +4662,8 @@ public class StringUtil {
 		else if (x == 0) {
 			return s;
 		}
-		else {
-			return s.substring(x);
-		}
+
+		return s.substring(x);
 	}
 
 	/**
@@ -4725,9 +4723,8 @@ public class StringUtil {
 		else if (x == 0) {
 			return s;
 		}
-		else {
-			return s.substring(x);
-		}
+
+		return s.substring(x);
 	}
 
 	/**
@@ -4765,9 +4762,8 @@ public class StringUtil {
 		else if (x == len) {
 			return s;
 		}
-		else {
-			return s.substring(0, x);
-		}
+
+		return s.substring(0, x);
 	}
 
 	/**
@@ -4826,9 +4822,8 @@ public class StringUtil {
 		else if (x == len) {
 			return s;
 		}
-		else {
-			return s.substring(0, x);
-		}
+
+		return s.substring(0, x);
 	}
 
 	/**

@@ -260,9 +260,8 @@ public class NodeImpl implements Node {
 		else if (obj instanceof List<?>) {
 			return SAXReaderImpl.toNewNodes((List<org.dom4j.Node>)obj);
 		}
-		else {
-			return obj;
-		}
+
+		return obj;
 	}
 
 	@Override

@@ -128,9 +128,8 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 		else if (orderByCol.equals("name")) {
 			return "name";
 		}
-		else {
-			return orderByCol;
-		}
+
+		return orderByCol;
 	}
 
 	@Override

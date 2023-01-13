@@ -118,9 +118,8 @@ public class AccountEntryConstants {
 		else if (language.equals(Account.Language.SPANISH)) {
 			return "es_ES";
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public static String getLanguageLabel(String languageId) {
@@ -146,9 +145,8 @@ public class AccountEntryConstants {
 		else if (tier == TIER_T4) {
 			return "T4";
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public static String getTypeLabel(int type) {
@@ -167,9 +165,8 @@ public class AccountEntryConstants {
 		else if (type == TYPE_TRIAL) {
 			return "trial";
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 }

@@ -100,9 +100,8 @@ public class ExpandoColumnImpl extends ExpandoColumnBaseImpl {
 			else if (type == ExpandoColumnConstants.STRING_LOCALIZED) {
 				return (Serializable)value.getStringMap();
 			}
-			else {
-				return value.getString();
-			}
+
+			return value.getString();
 		}
 		catch (Exception e) {
 			return null;

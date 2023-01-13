@@ -51,9 +51,8 @@ public class ArtifactVersionConstants {
 		else if (repositoryLabel.equals("third-party")) {
 			return REPOSITORY_THIRD_PARTY;
 		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 	public static String getRepositoryURL(

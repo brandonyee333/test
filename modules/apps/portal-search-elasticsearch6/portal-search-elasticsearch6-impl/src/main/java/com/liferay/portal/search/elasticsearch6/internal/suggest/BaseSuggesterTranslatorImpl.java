@@ -45,9 +45,8 @@ public abstract class BaseSuggesterTranslatorImpl {
 		else if (stringDistance == Suggester.StringDistance.NGRAM) {
 			return "ngram";
 		}
-		else {
-			return "internal";
-		}
+
+		return "internal";
 	}
 
 	protected String translate(Suggester.SuggestMode suggestMode) {
@@ -57,9 +56,8 @@ public abstract class BaseSuggesterTranslatorImpl {
 		else if (suggestMode == Suggester.SuggestMode.POPULAR) {
 			return "popular";
 		}
-		else {
-			return "missing";
-		}
+
+		return "missing";
 	}
 
 	protected TermSuggestionBuilder.StringDistanceImpl translateDistance(
@@ -77,9 +75,8 @@ public abstract class BaseSuggesterTranslatorImpl {
 		else if (stringDistance == Suggester.StringDistance.NGRAM) {
 			return TermSuggestionBuilder.StringDistanceImpl.NGRAM;
 		}
-		else {
-			return TermSuggestionBuilder.StringDistanceImpl.INTERNAL;
-		}
+
+		return TermSuggestionBuilder.StringDistanceImpl.INTERNAL;
 	}
 
 	protected TermSuggestionBuilder.SuggestMode translateMode(
@@ -91,9 +88,8 @@ public abstract class BaseSuggesterTranslatorImpl {
 		else if (suggestMode == Suggester.SuggestMode.POPULAR) {
 			return TermSuggestionBuilder.SuggestMode.POPULAR;
 		}
-		else {
-			return TermSuggestionBuilder.SuggestMode.MISSING;
-		}
+
+		return TermSuggestionBuilder.SuggestMode.MISSING;
 	}
 
 	protected SortBy translateSort(Suggester.Sort sort) {

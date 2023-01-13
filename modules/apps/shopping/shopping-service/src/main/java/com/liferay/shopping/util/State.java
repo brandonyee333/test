@@ -41,9 +41,8 @@ public class State {
 			return lowerCaseName.compareTo(
 				StringUtil.toLowerCase(state.getName()));
 		}
-		else {
-			return -1;
-		}
+
+		return -1;
 	}
 
 	@Override
@@ -64,9 +63,8 @@ public class State {
 		else if ((getName() != null) && (state.getName() != null)) {
 			return StringUtil.equalsIgnoreCase(getName(), state.getName());
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public String getId() {

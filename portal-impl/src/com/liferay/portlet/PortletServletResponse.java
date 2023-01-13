@@ -222,9 +222,8 @@ public class PortletServletResponse extends HttpServletResponseWrapper {
 		else if (!_include) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	@Override

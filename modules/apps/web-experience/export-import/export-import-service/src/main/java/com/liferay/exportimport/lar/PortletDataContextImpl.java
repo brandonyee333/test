@@ -1792,9 +1792,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	@Override

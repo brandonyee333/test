@@ -45,9 +45,8 @@ public class LoopParticipantAssignmentConstants {
 		else if (type == TYPE_MEMBER) {
 			return LABEL_MEMBER;
 		}
-		else {
-			return LABEL_SPONSOR;
-		}
+
+		return LABEL_SPONSOR;
 	}
 
 }

@@ -47,9 +47,8 @@ public class OrderSearchTerms extends OrderDisplayTerms {
 		else if (status.equals(ShoppingOrderConstants.STATUSES[4])) {
 			return ShoppingOrderConstants.STATUS_REFUNDED;
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 }

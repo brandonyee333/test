@@ -244,9 +244,8 @@ public class LCSConstants {
 		else if (patchStatus == PATCHES_UNKNOWN) {
 			return LABEL_PATCHES_UNKNOWN;
 		}
-		else {
-			return LABEL_PATCHES_ERROR;
-		}
+
+		return LABEL_PATCHES_ERROR;
 	}
 
 }

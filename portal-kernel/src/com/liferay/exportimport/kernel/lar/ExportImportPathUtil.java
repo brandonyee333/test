@@ -544,9 +544,8 @@ public class ExportImportPathUtil {
 		else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_USER) {
 			return "user/";
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	protected static String getRootPath(

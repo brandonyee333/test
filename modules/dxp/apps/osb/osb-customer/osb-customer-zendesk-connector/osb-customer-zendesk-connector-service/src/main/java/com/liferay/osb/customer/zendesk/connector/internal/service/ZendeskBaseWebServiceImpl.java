@@ -210,11 +210,9 @@ public class ZendeskBaseWebServiceImpl
 			else if (body != null) {
 				return delete(zendeskRequest.getEndpoint(), body.toString());
 			}
-			else {
-				return delete(
-					zendeskRequest.getEndpoint(),
-					new HashMap<String, String>());
-			}
+
+			return delete(
+				zendeskRequest.getEndpoint(), new HashMap<String, String>());
 		}
 		else if (method.equals("get")) {
 			return get(
@@ -226,9 +224,8 @@ public class ZendeskBaseWebServiceImpl
 		else if (method.equals("put")) {
 			return put(zendeskRequest.getEndpoint(), body.toString());
 		}
-		else {
-			throw new PortalException("Invalid Zendesk Request");
-		}
+
+		throw new PortalException("Invalid Zendesk Request");
 	}
 
 	@Override

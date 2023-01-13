@@ -51,9 +51,8 @@ public class LoopImageURLFactory {
 
 			return new LoopImageURL(loopTopic, keyword, type);
 		}
-		else {
-			return new LoopImageURL(null, StringPool.BLANK, StringPool.BLANK);
-		}
+
+		return new LoopImageURL(null, StringPool.BLANK, StringPool.BLANK);
 	}
 
 }

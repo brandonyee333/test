@@ -166,9 +166,8 @@ public class BranchImpl extends NodeImpl implements Branch {
 		else if (node instanceof Text) {
 			return new TextImpl((Text)node);
 		}
-		else {
-			return new NodeImpl(node);
-		}
+
+		return new NodeImpl(node);
 	}
 
 	@Override

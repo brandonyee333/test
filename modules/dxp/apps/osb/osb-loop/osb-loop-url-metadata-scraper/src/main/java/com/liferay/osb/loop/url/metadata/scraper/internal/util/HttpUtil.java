@@ -70,9 +70,8 @@ public class HttpUtil {
 		else if (url.startsWith(HTTPS_WITH_SLASH)) {
 			return url.substring(HTTPS_WITH_SLASH.length());
 		}
-		else {
-			return url;
-		}
+
+		return url;
 	}
 
 }

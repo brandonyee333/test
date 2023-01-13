@@ -30,9 +30,8 @@ public class AccountEnvironmentAttachmentConstants {
 		else if (type == TYPE_PORTAL_EXT) {
 			return "portal-ext";
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 }

@@ -489,10 +489,9 @@ public class MBThreadServiceImpl extends MBThreadServiceBaseImpl {
 		else if (includeAnonymous) {
 			return mbThreadFinder.findByG_U(groupId, userId, queryDefinition);
 		}
-		else {
-			return mbThreadFinder.findByG_U_A(
-				groupId, userId, false, queryDefinition);
-		}
+
+		return mbThreadFinder.findByG_U_A(
+			groupId, userId, false, queryDefinition);
 	}
 
 	protected int doGetGroupThreadsCount(
@@ -517,10 +516,9 @@ public class MBThreadServiceImpl extends MBThreadServiceBaseImpl {
 		else if (includeAnonymous) {
 			return mbThreadFinder.countByG_U(groupId, userId, queryDefinition);
 		}
-		else {
-			return mbThreadFinder.countByG_U_A(
-				groupId, userId, false, queryDefinition);
-		}
+
+		return mbThreadFinder.countByG_U_A(
+			groupId, userId, false, queryDefinition);
 	}
 
 }

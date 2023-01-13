@@ -69,9 +69,8 @@ public class CompanyImpl extends CompanyBaseImpl {
 		else if (webId2.equals(PropsValues.COMPANY_DEFAULT_WEB_ID)) {
 			return 1;
 		}
-		else {
-			return webId1.compareTo(webId2);
-		}
+
+		return webId1.compareTo(webId2);
 	}
 
 	@Override

@@ -389,9 +389,8 @@ public class JournalTransformer {
 				else if (e instanceof TransformException) {
 					throw (TransformException)e;
 				}
-				else {
-					throw new TransformException("Unhandled exception", e);
-				}
+
+				throw new TransformException("Unhandled exception", e);
 			}
 
 			output = unsyncStringWriter.toString();

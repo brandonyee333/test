@@ -54,9 +54,8 @@ public abstract class BaseJournalArticlePortletConfigurationIcon
 		else if (journalContentConfigurationUtil.isSingleMenuContent()) {
 			return getSingleMenuContentWeight();
 		}
-		else {
-			return getSeparateMenusWeight();
-		}
+
+		return getSeparateMenusWeight();
 	}
 
 	public boolean isShow(PortletRequest portletRequest) {

@@ -47,9 +47,8 @@ public class SyncFileSizeComparator implements Comparator<SyncFile> {
 
 			return 1;
 		}
-		else {
-			return Long.compare(syncFile1.getSize(), syncFile2.getSize());
-		}
+
+		return Long.compare(syncFile1.getSize(), syncFile2.getSize());
 	}
 
 }

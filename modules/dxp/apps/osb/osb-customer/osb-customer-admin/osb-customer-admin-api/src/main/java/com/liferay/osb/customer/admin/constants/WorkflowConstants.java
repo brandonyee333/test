@@ -52,10 +52,9 @@ public class WorkflowConstants
 		else if (status == STATUS_REJECTED) {
 			return LABEL_REJECTED;
 		}
-		else {
-			return com.liferay.portal.kernel.workflow.WorkflowConstants.
-				getStatusLabel(status);
-		}
+
+		return com.liferay.portal.kernel.workflow.WorkflowConstants.
+			getStatusLabel(status);
 	}
 
 }

@@ -654,9 +654,8 @@ public class DDMExpressionImpl<T> implements DDMExpression<T> {
 		else if (_expressionClass.isAssignableFrom(Long.class)) {
 			return result.longValue();
 		}
-		else {
-			return decodeString(result);
-		}
+
+		return decodeString(result);
 	}
 
 	private static final String _FLOAT_REGEXP = "^([+-]?\\d*\\.?\\d*)$";

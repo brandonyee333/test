@@ -541,11 +541,10 @@ public class ExpandoValueLocalServiceImpl
 				companyId, className, tableName, columnName, classPK,
 				(String)data);
 		}
-		else {
-			return expandoValueLocalService.addValue(
-				companyId, className, tableName, columnName, classPK,
-				(Map<Locale, ?>)data, LocaleUtil.getDefault());
-		}
+
+		return expandoValueLocalService.addValue(
+			companyId, className, tableName, columnName, classPK,
+			(Map<Locale, ?>)data, LocaleUtil.getDefault());
 	}
 
 	@Override
@@ -1777,11 +1776,10 @@ public class ExpandoValueLocalServiceImpl
 				companyId, className, tableName, columnName, classPK,
 				value.getString());
 		}
-		else {
-			return (Serializable)expandoValueLocalService.getData(
-				companyId, className, tableName, columnName, classPK,
-				new HashMap<Object, Object>());
-		}
+
+		return (Serializable)expandoValueLocalService.getData(
+			companyId, className, tableName, columnName, classPK,
+			new HashMap<Object, Object>());
 	}
 
 	protected Object handleCollections(int type, Object object) {

@@ -166,9 +166,8 @@ public class LicenseKeyConstants {
 		else if (licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL)) {
 			return SERVER_ID_TRIAL;
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public static String getSizingLabel(int sizing) {

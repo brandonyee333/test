@@ -60,9 +60,8 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		else if (browserMetadata.isFirefox()) {
 			return BROWSER_ID_FIREFOX;
 		}
-		else {
-			return BROWSER_ID_OTHER;
-		}
+
+		return BROWSER_ID_OTHER;
 	}
 
 	@Override

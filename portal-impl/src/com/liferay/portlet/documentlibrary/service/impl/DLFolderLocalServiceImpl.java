@@ -492,10 +492,9 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 			return dlFolderPersistence.countByG_P_H_S(
 				groupId, parentFolderId, false, status);
 		}
-		else {
-			return dlFolderPersistence.countByG_M_P_H_S(
-				groupId, false, parentFolderId, false, status);
-		}
+
+		return dlFolderPersistence.countByG_M_P_H_S(
+			groupId, false, parentFolderId, false, status);
 	}
 
 	@Override

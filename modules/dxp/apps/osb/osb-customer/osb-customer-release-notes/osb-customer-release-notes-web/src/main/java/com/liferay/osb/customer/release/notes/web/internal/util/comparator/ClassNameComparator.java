@@ -55,12 +55,11 @@ public class ClassNameComparator implements Comparator<String> {
 		else if (packageParts1.length < packageParts2.length) {
 			return -1;
 		}
-		else {
-			String name1 = _getName(className1);
-			String name2 = _getName(className2);
 
-			return name1.compareTo(name2);
-		}
+		String name1 = _getName(className1);
+		String name2 = _getName(className2);
+
+		return name1.compareTo(name2);
 	}
 
 	private String _getName(String className) {

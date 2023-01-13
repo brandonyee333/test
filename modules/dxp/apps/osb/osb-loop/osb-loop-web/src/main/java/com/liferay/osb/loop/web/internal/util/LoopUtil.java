@@ -333,9 +333,8 @@ public class LoopUtil {
 		else if (baseModel instanceof LoopTopic) {
 			return "topics";
 		}
-		else {
-			return "home";
-		}
+
+		return "home";
 	}
 
 	public static String getDisplayURL(

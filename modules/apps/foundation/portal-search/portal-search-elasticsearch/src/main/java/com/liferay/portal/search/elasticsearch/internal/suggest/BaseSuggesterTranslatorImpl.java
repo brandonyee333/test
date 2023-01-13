@@ -42,9 +42,8 @@ public abstract class BaseSuggesterTranslatorImpl {
 		else if (stringDistance == Suggester.StringDistance.NGRAM) {
 			return "ngram";
 		}
-		else {
-			return "internal";
-		}
+
+		return "internal";
 	}
 
 	protected String translate(Suggester.SuggestMode suggestMode) {
@@ -54,9 +53,8 @@ public abstract class BaseSuggesterTranslatorImpl {
 		else if (suggestMode == Suggester.SuggestMode.POPULAR) {
 			return "popular";
 		}
-		else {
-			return "missing";
-		}
+
+		return "missing";
 	}
 
 }

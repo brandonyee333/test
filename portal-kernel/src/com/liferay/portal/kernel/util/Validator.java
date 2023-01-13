@@ -129,9 +129,8 @@ public class Validator {
 		else if ((obj1 == null) || (obj2 == null)) {
 			return false;
 		}
-		else {
-			return obj1.equals(obj2);
-		}
+
+		return obj1.equals(obj2);
 	}
 
 	/**
@@ -1041,9 +1040,8 @@ public class Validator {
 		else if (obj == null) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
@@ -1294,9 +1292,8 @@ public class Validator {
 		else if (s.startsWith(_XML_BEGIN) || s.startsWith(_XML_EMPTY)) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	private static final String[] _BOOLEANS = {"false", "on", "off", "true"};

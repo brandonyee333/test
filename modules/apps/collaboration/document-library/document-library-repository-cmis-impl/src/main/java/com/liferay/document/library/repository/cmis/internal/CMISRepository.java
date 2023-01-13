@@ -2203,15 +2203,13 @@ public class CMISRepository extends BaseCmisRepository {
 				else if (e instanceof SystemException) {
 					throw (SystemException)e;
 				}
-				else {
-					processException(e);
 
-					throw new RepositoryException(e);
-				}
+				processException(e);
+
+				throw new RepositoryException(e);
 			}
-			else {
-				_log.error("Unable to update asset", e);
-			}
+
+			_log.error("Unable to update asset", e);
 		}
 
 		dlAppHelperLocalService.checkAssetEntry(
@@ -2318,9 +2316,8 @@ public class CMISRepository extends BaseCmisRepository {
 
 			return toFolder(cmisFolder);
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 	protected void updateMappedId(long repositoryEntryId, String mappedId)

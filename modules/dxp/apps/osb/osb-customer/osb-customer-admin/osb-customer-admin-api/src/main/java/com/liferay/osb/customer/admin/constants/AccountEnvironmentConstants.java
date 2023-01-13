@@ -681,9 +681,8 @@ public class AccountEnvironmentConstants {
 
 			return _envSocialOfficeVersion3.get(envListType);
 		}
-		else {
-			return _envPortalVersionOther.get(envListType);
-		}
+
+		return _envPortalVersionOther.get(envListType);
 	}
 
 	private static final long[] _ENV_AS_DIGITAL_ENTERPRISE_VERSION_7_0 = {

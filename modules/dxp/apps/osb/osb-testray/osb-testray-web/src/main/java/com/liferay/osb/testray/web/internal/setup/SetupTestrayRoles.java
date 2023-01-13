@@ -173,9 +173,8 @@ public class SetupTestrayRoles {
 		else if (Objects.equals(roleLabel, RoleConstants.TYPE_SITE_LABEL)) {
 			return RoleConstants.TYPE_SITE;
 		}
-		else {
-			return RoleConstants.TYPE_REGULAR;
-		}
+
+		return RoleConstants.TYPE_REGULAR;
 	}
 
 	protected void importResourceActions() throws Exception {

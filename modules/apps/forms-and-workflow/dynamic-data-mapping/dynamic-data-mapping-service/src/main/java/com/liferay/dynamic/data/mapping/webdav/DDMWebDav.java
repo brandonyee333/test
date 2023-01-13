@@ -138,9 +138,8 @@ public class DDMWebDav {
 
 				return HttpServletResponse.SC_NO_CONTENT;
 			}
-			else {
-				return HttpServletResponse.SC_FORBIDDEN;
-			}
+
+			return HttpServletResponse.SC_FORBIDDEN;
 		}
 		catch (PortalException pe) {
 			if (_log.isDebugEnabled()) {
@@ -272,9 +271,8 @@ public class DDMWebDav {
 
 				return HttpServletResponse.SC_CREATED;
 			}
-			else {
-				return HttpServletResponse.SC_FORBIDDEN;
-			}
+
+			return HttpServletResponse.SC_FORBIDDEN;
 		}
 		catch (PortalException pe) {
 			if (_log.isDebugEnabled()) {

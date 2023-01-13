@@ -30,9 +30,8 @@ public class AccountAttachmentConstants {
 		else if (type == TYPE_OEM_INSTRUCTIONS) {
 			return "oem-instructions";
 		}
-		else {
-			return "none";
-		}
+
+		return "none";
 	}
 
 }

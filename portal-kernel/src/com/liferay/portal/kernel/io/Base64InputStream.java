@@ -167,9 +167,8 @@ public class Base64InputStream extends InputStream {
 
 			return 3;
 		}
-		else {
-			return -1;
-		}
+
+		return -1;
 	}
 
 	protected int decodeUnit(byte[] outputBuffer, int position)

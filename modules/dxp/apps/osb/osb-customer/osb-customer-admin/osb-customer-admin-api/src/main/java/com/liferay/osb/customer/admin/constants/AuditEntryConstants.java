@@ -149,9 +149,8 @@ public class AuditEntryConstants {
 		else if (action == ACTION_UPDATE) {
 			return "updated";
 		}
-		else {
-			return NOT_AVAILABLE;
-		}
+
+		return NOT_AVAILABLE;
 	}
 
 	public static String getFieldClassNameIdLabel(long fieldClassNameId) {
@@ -166,9 +165,8 @@ public class AuditEntryConstants {
 		else if (fieldClassName.equals(AccountEntry.class.getName())) {
 			return "project";
 		}
-		else {
-			return NOT_AVAILABLE;
-		}
+
+		return NOT_AVAILABLE;
 	}
 
 	public static String getFieldLabel(int field) {

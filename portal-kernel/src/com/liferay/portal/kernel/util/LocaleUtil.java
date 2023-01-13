@@ -457,10 +457,9 @@ public class LocaleUtil {
 		else if (languageId.equals("zh_TW")) {
 			return "zh-Hant-TW";
 		}
-		else {
-			return StringUtil.replace(
-				languageId, CharPool.UNDERLINE, CharPool.MINUS);
-		}
+
+		return StringUtil.replace(
+			languageId, CharPool.UNDERLINE, CharPool.MINUS);
 	}
 
 	private String[] _toBCP47LanguageIds(Locale[] locales) {

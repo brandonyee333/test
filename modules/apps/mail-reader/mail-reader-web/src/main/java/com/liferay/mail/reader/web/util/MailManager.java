@@ -436,9 +436,8 @@ public class MailManager {
 		else if (includeNonRequiredFolders) {
 			return nonRequiredFolders;
 		}
-		else {
-			return requiredFolders;
-		}
+
+		return requiredFolders;
 	}
 
 	public long getFolderUnreadMessagesCount(long folderId) {

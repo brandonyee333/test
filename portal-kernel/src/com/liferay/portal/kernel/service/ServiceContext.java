@@ -322,9 +322,8 @@ public class ServiceContext implements Cloneable, Serializable {
 		else if (defaultCreateDate != null) {
 			return defaultCreateDate;
 		}
-		else {
-			return new Date();
-		}
+
+		return new Date();
 	}
 
 	/**
@@ -551,9 +550,8 @@ public class ServiceContext implements Cloneable, Serializable {
 		else if (defaultModifiedDate != null) {
 			return defaultModifiedDate;
 		}
-		else {
-			return new Date();
-		}
+
+		return new Date();
 	}
 
 	public String getPathFriendlyURLPrivateGroup() {

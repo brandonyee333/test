@@ -598,10 +598,8 @@ public class GroupImpl extends GroupBaseImpl {
 		else if (isLayoutPrototype()) {
 			return themeDisplay.translate("default");
 		}
-		else {
-			return HtmlUtil.escape(
-				getDescriptiveName(themeDisplay.getLocale()));
-		}
+
+		return HtmlUtil.escape(getDescriptiveName(themeDisplay.getLocale()));
 	}
 
 	@Override

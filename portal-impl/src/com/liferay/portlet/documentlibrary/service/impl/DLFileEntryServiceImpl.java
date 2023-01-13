@@ -420,11 +420,9 @@ public class DLFileEntryServiceImpl extends DLFileEntryServiceBaseImpl {
 			return dlFileEntryPersistence.filterFindByG_F(
 				groupId, ArrayUtil.toLongArray(folderIds), start, end, obc);
 		}
-		else {
-			return dlFileEntryPersistence.filterFindByG_U_F(
-				groupId, userId, ArrayUtil.toLongArray(folderIds), start, end,
-				obc);
-		}
+
+		return dlFileEntryPersistence.filterFindByG_U_F(
+			groupId, userId, ArrayUtil.toLongArray(folderIds), start, end, obc);
 	}
 
 	@Override
@@ -487,10 +485,9 @@ public class DLFileEntryServiceImpl extends DLFileEntryServiceBaseImpl {
 			return dlFileEntryPersistence.filterCountByG_F(
 				groupId, ArrayUtil.toLongArray(folderIds));
 		}
-		else {
-			return dlFileEntryPersistence.filterCountByG_U_F(
-				groupId, userId, ArrayUtil.toLongArray(folderIds));
-		}
+
+		return dlFileEntryPersistence.filterCountByG_U_F(
+			groupId, userId, ArrayUtil.toLongArray(folderIds));
 	}
 
 	@Override

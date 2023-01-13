@@ -157,12 +157,11 @@ public class BookmarksEntryServiceImpl extends BookmarksEntryServiceBaseImpl {
 				WorkflowConstants.STATUS_APPROVED, start, end,
 				new EntryModifiedDateComparator());
 		}
-		else {
-			return bookmarksEntryPersistence.filterFindByG_U_F_S(
-				groupId, userId, ArrayUtil.toLongArray(folderIds),
-				WorkflowConstants.STATUS_APPROVED, start, end,
-				new EntryModifiedDateComparator());
-		}
+
+		return bookmarksEntryPersistence.filterFindByG_U_F_S(
+			groupId, userId, ArrayUtil.toLongArray(folderIds),
+			WorkflowConstants.STATUS_APPROVED, start, end,
+			new EntryModifiedDateComparator());
 	}
 
 	@Override
@@ -204,11 +203,10 @@ public class BookmarksEntryServiceImpl extends BookmarksEntryServiceBaseImpl {
 				groupId, ArrayUtil.toLongArray(folderIds),
 				WorkflowConstants.STATUS_APPROVED);
 		}
-		else {
-			return bookmarksEntryPersistence.filterCountByG_U_F_S(
-				groupId, userId, ArrayUtil.toLongArray(folderIds),
-				WorkflowConstants.STATUS_APPROVED);
-		}
+
+		return bookmarksEntryPersistence.filterCountByG_U_F_S(
+			groupId, userId, ArrayUtil.toLongArray(folderIds),
+			WorkflowConstants.STATUS_APPROVED);
 	}
 
 	@Override

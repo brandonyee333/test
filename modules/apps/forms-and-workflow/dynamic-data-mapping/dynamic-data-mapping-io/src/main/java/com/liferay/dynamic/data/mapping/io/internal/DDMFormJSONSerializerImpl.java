@@ -224,9 +224,8 @@ public class DDMFormJSONSerializerImpl implements DDMFormJSONSerializer {
 		else if (Objects.equals(dataType, "ddm-validation")) {
 			return toJSONObject((DDMFormFieldValidation)property);
 		}
-		else {
-			return String.valueOf(property);
-		}
+
+		return String.valueOf(property);
 	}
 
 	@Reference(unbind = "-")

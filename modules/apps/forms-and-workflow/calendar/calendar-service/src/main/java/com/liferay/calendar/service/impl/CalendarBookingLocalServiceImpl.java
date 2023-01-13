@@ -1477,9 +1477,8 @@ public class CalendarBookingLocalServiceImpl
 		else if (isCustomCalendarResource(calendarResource)) {
 			return groupLocalService.getGroup(calendarResource.getGroupId());
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 	protected String getExtraDataJSON(CalendarBooking calendarBooking) {

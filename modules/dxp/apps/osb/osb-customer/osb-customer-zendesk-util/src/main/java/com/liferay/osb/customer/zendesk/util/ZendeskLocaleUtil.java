@@ -44,9 +44,8 @@ public class ZendeskLocaleUtil {
 		else if (locale.equals(LocaleUtil.CHINA)) {
 			return ZendeskLocales.CHINA;
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public String convertToZendeskLocale(String languageId) {
@@ -65,9 +64,8 @@ public class ZendeskLocaleUtil {
 		else if (languageId.equals("zh_CN")) {
 			return ZendeskLocales.CHINA;
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 }

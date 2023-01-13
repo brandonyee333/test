@@ -279,9 +279,8 @@ public class ProductEntryConstants {
 		else if (environment == ENVIRONMENT_PRODUCTION) {
 			return "production";
 		}
-		else {
-			return "N/A";
-		}
+
+		return "N/A";
 	}
 
 	public static Date getEOPSDate(int version) {
@@ -302,9 +301,8 @@ public class ProductEntryConstants {
 		else if (isPortalVersion6_2(version)) {
 			return EOPS_DATE_PORTAL_VERSION_6_2;
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 	public static int getMajorVersion(int productVersion) {
@@ -327,9 +325,8 @@ public class ProductEntryConstants {
 
 			return PORTAL_MAJOR_VERSION_5;
 		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 	public static int getMinorVersion(int productVersion) {
@@ -363,9 +360,8 @@ public class ProductEntryConstants {
 		else if (isPortalVersion5_1(productVersion)) {
 			return PORTAL_MINOR_VERSION_5_1;
 		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 	public static String getSupportPhaseLabel(int version) {

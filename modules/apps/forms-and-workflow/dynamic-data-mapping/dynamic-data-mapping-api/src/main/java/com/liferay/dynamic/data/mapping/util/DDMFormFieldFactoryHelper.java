@@ -181,9 +181,8 @@ public class DDMFormFieldFactoryHelper {
 
 			return "short";
 		}
-		else {
-			return "string";
-		}
+
+		return "string";
 	}
 
 	protected LocalizedValue getDDMFormFieldLabel() {
