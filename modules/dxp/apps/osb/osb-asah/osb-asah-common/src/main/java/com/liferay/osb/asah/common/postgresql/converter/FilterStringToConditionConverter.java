@@ -190,7 +190,7 @@ public class FilterStringToConditionConverter {
 		try {
 			Condition condition =
 				filterStringConverterHelper.getLogicFunctionCondition(
-					fieldName, operator, valueString);
+					fieldName, operator, true, valueString);
 
 			if (condition != null) {
 				conditions.add(condition);
