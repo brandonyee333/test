@@ -14,19 +14,29 @@
 
 package com.liferay.osb.asah.common.filter.expression;
 
+import java.util.Set;
+
+import org.jooq.Condition;
+
 /**
- * @author Marcellus Tavares
+ * @author Ivica Cardic
  */
-public class FilterExpressionParserException extends RuntimeException {
+public class JoinCondition {
 
-	public FilterExpressionParserException(String message) {
-		super(message);
+	public JoinCondition(Condition condition, Set<String> includedTableNames) {
+		_condition = condition;
+		_includedTableNames = includedTableNames;
 	}
 
-	public FilterExpressionParserException(
-		String message, Throwable throwable) {
-
-		super(message, throwable);
+	public Condition getCondition() {
+		return _condition;
 	}
+
+	public Set<String> getIncludedTableNames() {
+		return _includedTableNames;
+	}
+
+	private final Condition _condition;
+	private final Set<String> _includedTableNames;
 
 }

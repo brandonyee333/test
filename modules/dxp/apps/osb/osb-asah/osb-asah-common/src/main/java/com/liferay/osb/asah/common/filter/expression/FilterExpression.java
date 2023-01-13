@@ -14,8 +14,15 @@
 
 package com.liferay.osb.asah.common.filter.expression;
 
+import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionLexer;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BailErrorStrategy;
@@ -35,9 +42,48 @@ import org.springframework.util.Assert;
  */
 public class FilterExpression {
 
-	public FilterExpression(String filterExpressionString) {
-		Assert.notNull(
-			filterExpressionString, "Filter expression string is null");
+	public static Condition convert(String filterExpressionString) {
+		FilterExpression filterExpression = new FilterExpression(
+			filterExpressionString);
+
+		return filterExpression.getCondition();
+	}
+
+	public static Condition convert(
+		String filterExpressionString,
+		FilterStringConverterHelper filterStringConverterHelper) {
+
+		FilterExpression filterExpression = new FilterExpression(
+			filterExpressionString,
+			new ArrayList<FilterStringConverterHelper>() {
+				{
+					add(filterStringConverterHelper);
+				}
+			});
+
+		return filterExpression.getCondition();
+	}
+
+	public static JoinCondition joinConvert(
+		String filterExpressionString,
+		List<FilterStringConverterHelper> filterTypeStringConverterHelpers) {
+
+		FilterExpression filterExpression = new FilterExpression(
+			filterExpressionString, filterTypeStringConverterHelpers);
+
+		return filterExpression._getJoinCondition();
+	}
+
+	protected FilterExpression(
+		String filterExpressionString, String filterType,
+		List<FilterStringConverterHelper> filterTypeStringConverterHelpers,
+		Set<String> includedTableNames) {
+
+		Assert.notNull(filterExpressionString, "The filter expression is null");
+
+		_filterType = filterType;
+		_filterTypeStringConverterHelpers = filterTypeStringConverterHelpers;
+		_includedTableNames = includedTableNames;
 
 		try {
 			ErrorListener errorListener = new ErrorListener();
@@ -63,12 +109,42 @@ public class FilterExpression {
 		}
 	}
 
-	public Condition getCondition() {
+	protected Condition getCondition() {
 		return (Condition)_expressionContext.accept(
-			new FilterExpressionVisitor());
+			new FilterExpressionVisitor(
+				_filterType, _filterTypeStringConverterHelpers,
+				_includedTableNames));
+	}
+
+	private FilterExpression(String filterExpressionString) {
+		this(filterExpressionString, null, Collections.emptyList(), null);
+	}
+
+	private FilterExpression(
+		String filterExpressionString,
+		List<FilterStringConverterHelper> filterTypeStringConverterHelpers) {
+
+		this(
+			filterExpressionString, null, filterTypeStringConverterHelpers,
+			null);
+	}
+
+	private JoinCondition _getJoinCondition() {
+		Set<String> includedTableNames = new HashSet<>();
+
+		Condition condition = (Condition)_expressionContext.accept(
+			new FilterExpressionVisitor(
+				_filterType, _filterTypeStringConverterHelpers,
+				includedTableNames));
+
+		return new JoinCondition(condition, includedTableNames);
 	}
 
 	private final FilterExpressionParser.ExpressionContext _expressionContext;
+	private final String _filterType;
+	private final List<FilterStringConverterHelper>
+		_filterTypeStringConverterHelpers;
+	private final Set<String> _includedTableNames;
 
 	private static class ErrorListener extends BaseErrorListener {
 

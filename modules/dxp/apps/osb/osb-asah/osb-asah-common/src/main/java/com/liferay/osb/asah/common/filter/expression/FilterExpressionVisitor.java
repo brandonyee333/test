@@ -14,12 +14,16 @@
 
 package com.liferay.osb.asah.common.filter.expression;
 
+import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionBaseVisitor;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -27,6 +31,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -40,6 +45,18 @@ import org.jooq.impl.DSL;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class FilterExpressionVisitor
 	extends FilterExpressionBaseVisitor<Object> {
+
+	public FilterExpressionVisitor(
+		String filterType,
+		List<FilterStringConverterHelper>
+			filterTypeFilterStringConverterHelpers,
+		Set<String> includedTableNames) {
+
+		_filterType = filterType;
+		_filterTypeFilterStringConverterHelpers =
+			filterTypeFilterStringConverterHelpers;
+		_includedTableNames = includedTableNames;
+	}
 
 	@Override
 	public Object visitAndExpression(
@@ -71,11 +88,21 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.EqualsExpressionContext
 			equalsExpressionContext) {
 
-		Field leftField = _visitChild(equalsExpressionContext, 0);
 		Field rightField = _visitChild(equalsExpressionContext, 2);
+
+		Field leftField = _getLeftField(equalsExpressionContext, rightField);
 
 		if (rightField == null) {
 			return leftField.isNull();
+		}
+
+		rightField = _checkRightField(leftField, rightField);
+
+		Condition condition = _getLogicFunctionCondition(
+			leftField, rightField, "eq");
+
+		if (condition != null) {
+			return condition;
 		}
 
 		return leftField.eq(rightField);
@@ -97,20 +124,16 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.FilterExpressionContext
 			filterExpressionContext) {
 
-		Token filterToken = filterExpressionContext.filter;
+		String filter = filterExpressionContext.filter.getText();
 
-		String filterExpressionString = filterToken.getText();
-
-		filterExpressionString = filterExpressionString.replaceAll(
-			"\\s''", " '");
-		filterExpressionString = filterExpressionString.replaceAll(
-			"''\\s", "' ");
-		filterExpressionString = filterExpressionString.replaceAll(
-			"''\\)", "')");
+		filter = filter.replaceAll("\\s''", " '");
+		filter = filter.replaceAll("''\\s", "' ");
+		filter = filter.replaceAll("''\\)", "')");
 
 		FilterExpression filterExpression = new FilterExpression(
-			filterExpressionString.substring(
-				1, filterExpressionString.length() - 1));
+			filter.substring(1, filter.length() - 1),
+			filterExpressionContext.filterType.getText(),
+			_filterTypeFilterStringConverterHelpers, _includedTableNames);
 
 		return filterExpression.getCondition();
 	}
@@ -158,8 +181,10 @@ public class FilterExpressionVisitor
 
 			return field.similarTo(param.getValue() + "%");
 		}
-
-		return null;
+		else {
+			throw new FilterExpressionParserException(
+				"Invalid string function: " + functionName);
+		}
 	}
 
 	@Override
@@ -169,15 +194,15 @@ public class FilterExpressionVisitor
 
 		List<Object> parameters = new ArrayList<>();
 
-		for (int i = 0; i < functionParametersContext.getChildCount(); i++) {
-			ParseTree childParseTree = functionParametersContext.getChild(i);
+		ParseTree childIdentifierParseTree = functionParametersContext.getChild(
+			0);
 
-			if (childParseTree instanceof TerminalNode) {
-				continue;
-			}
+		ParseTree childLiteralParseTree = functionParametersContext.getChild(2);
 
-			parameters.add(childParseTree.accept(this));
-		}
+		Object value = childLiteralParseTree.accept(this);
+
+		parameters.add(_getField(childIdentifierParseTree.getText(), value));
+		parameters.add(value);
 
 		return parameters;
 	}
@@ -187,8 +212,17 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.GreaterThanExpressionContext
 			greaterThanExpressionContext) {
 
-		Field leftField = _visitChild(greaterThanExpressionContext, 0);
 		Field rightField = _visitChild(greaterThanExpressionContext, 2);
+
+		Field leftField = _getLeftField(
+			greaterThanExpressionContext, rightField);
+
+		Condition condition = _getLogicFunctionCondition(
+			leftField, rightField, "gt");
+
+		if (condition != null) {
+			return condition;
+		}
 
 		return leftField.gt(rightField);
 	}
@@ -198,8 +232,17 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.GreaterThanOrEqualsExpressionContext
 			greaterThanOrEqualsExpressionContext) {
 
-		Field leftField = _visitChild(greaterThanOrEqualsExpressionContext, 0);
 		Field rightField = _visitChild(greaterThanOrEqualsExpressionContext, 2);
+
+		Field leftField = _getLeftField(
+			greaterThanOrEqualsExpressionContext, rightField);
+
+		Condition condition = _getLogicFunctionCondition(
+			leftField, rightField, "ge");
+
+		if (condition != null) {
+			return condition;
+		}
 
 		return leftField.ge(rightField);
 	}
@@ -218,8 +261,16 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.LessThanExpressionContext
 			lessThanExpressionContext) {
 
-		Field leftField = _visitChild(lessThanExpressionContext, 0);
 		Field rightField = _visitChild(lessThanExpressionContext, 2);
+
+		Field leftField = _getLeftField(lessThanExpressionContext, rightField);
+
+		Condition condition = _getLogicFunctionCondition(
+			leftField, rightField, "lt");
+
+		if (condition != null) {
+			return condition;
+		}
 
 		return leftField.lt(rightField);
 	}
@@ -229,29 +280,19 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.LessThanOrEqualsExpressionContext
 			lessThanOrEqualsExpressionContext) {
 
-		Field leftField = _visitChild(lessThanOrEqualsExpressionContext, 0);
 		Field rightField = _visitChild(lessThanOrEqualsExpressionContext, 2);
 
-		return leftField.le(rightField);
-	}
+		Field leftField = _getLeftField(
+			lessThanOrEqualsExpressionContext, rightField);
 
-	@Override
-	public Object visitLogicalVariable(
-		FilterExpressionParser.LogicalVariableContext logicalVariableContext) {
+		Condition condition = _getLogicFunctionCondition(
+			leftField, rightField, "le");
 
-		String fieldName = logicalVariableContext.getText();
-
-		if (fieldName.startsWith("context/") ||
-			fieldName.startsWith("dataSourceAccountPKs/") ||
-			fieldName.startsWith("demographics/") ||
-			fieldName.startsWith("organization/")) {
-
-			String[] fieldNames = fieldName.split("/");
-
-			fieldName = fieldNames[1];
+		if (condition != null) {
+			return condition;
 		}
 
-		return DSL.field(fieldName);
+		return leftField.le(rightField);
 	}
 
 	@Override
@@ -259,11 +300,19 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.NotEqualsExpressionContext
 			notEqualsExpressionContext) {
 
-		Field leftField = _visitChild(notEqualsExpressionContext, 0);
 		Field rightField = _visitChild(notEqualsExpressionContext, 2);
+
+		Field leftField = _getLeftField(notEqualsExpressionContext, rightField);
 
 		if (rightField == null) {
 			return leftField.isNotNull();
+		}
+
+		Condition condition = _getLogicFunctionCondition(
+			leftField, rightField, "ne");
+
+		if (condition != null) {
+			return condition;
 		}
 
 		return leftField.ne(rightField);
@@ -304,6 +353,162 @@ public class FilterExpressionVisitor
 		return DSL.val(StringUtil.unquoteAndDecodeInnerQuotes(string));
 	}
 
+	private Field _checkRightField(Field leftField, Field rightField) {
+		if (!(rightField instanceof Param)) {
+			return rightField;
+		}
+
+		Param rightFieldParam = (Param)rightField;
+
+		Object paramValue = rightFieldParam.getValue();
+
+		if (!(paramValue instanceof String)) {
+			return rightField;
+		}
+
+		FilterStringConverterHelper filterStringConverterHelper =
+			_getFilterStringConverterHelper(_filterType);
+
+		if (filterStringConverterHelper == null) {
+			return rightField;
+		}
+
+		String valueString = (String)paramValue;
+
+		String newValueString = StringUtil.unquote(valueString);
+
+		Object value = null;
+
+		Object processedValue = filterStringConverterHelper.processValue(
+			leftField.getName(), newValueString);
+
+		if ((processedValue == null) &&
+			NumberUtils.isCreatable(newValueString) &&
+			!newValueString.contains(".")) {
+
+			value = Long.valueOf(newValueString);
+		}
+		else if (processedValue != null) {
+			value = processedValue;
+		}
+
+		if (value != null) {
+			return DSL.val(value);
+		}
+
+		return rightField;
+	}
+
+	private Field<?> _getField(String fieldName, Object value) {
+		if (fieldName.contains("/")) {
+			String[] fieldNames = fieldName.split("/");
+
+			fieldName = fieldNames[1];
+		}
+
+		FilterStringConverterHelper filterStringConverterHelper =
+			_getFilterStringConverterHelper(_filterType);
+
+		if (filterStringConverterHelper != null) {
+			Map<String, String> fieldNameConversionMap =
+				filterStringConverterHelper.getFieldNameConversionMap();
+
+			if (fieldNameConversionMap.containsKey(fieldName)) {
+				fieldName = fieldNameConversionMap.get(fieldName);
+			}
+
+			if ((_includedTableNames != null) &&
+				StringUtils.isNotEmpty(
+					filterStringConverterHelper.getTableName())) {
+
+				String tableName = filterStringConverterHelper.getTableName();
+
+				_includedTableNames.add(tableName);
+
+				if (!StringUtils.startsWithIgnoreCase(fieldName, tableName)) {
+					fieldName = tableName + "." + fieldName;
+				}
+			}
+		}
+
+		Field field = null;
+
+		if (value instanceof Long) {
+			field = DSL.cast(DSL.field(fieldName), Long.class);
+		}
+		else {
+			field = DSL.field(fieldName);
+		}
+
+		return field;
+	}
+
+	private FilterStringConverterHelper _getFilterStringConverterHelper(
+		String filterType) {
+
+		for (FilterStringConverterHelper filterStringConverterHelper :
+				_filterTypeFilterStringConverterHelpers) {
+
+			if (Objects.equals(
+					filterStringConverterHelper.getFilterType(), filterType)) {
+
+				return filterStringConverterHelper;
+			}
+		}
+
+		return null;
+	}
+
+	private Field _getLeftField(
+		ParserRuleContext parserRuleContext, Field rightField) {
+
+		if (parserRuleContext.getChild(0) instanceof TerminalNode) {
+			TerminalNode terminalNode =
+				(TerminalNode)parserRuleContext.getChild(0);
+
+			Object value = null;
+
+			if (rightField instanceof Param) {
+				Param rightFieldParma = (Param)rightField;
+
+				value = rightFieldParma.getValue();
+			}
+
+			return _getField(terminalNode.getText(), value);
+		}
+
+		return _visitChild(parserRuleContext, 0);
+	}
+
+	private Condition _getLogicFunctionCondition(
+		Field leftField, Field rightField, String operator) {
+
+		if (!(rightField instanceof Param)) {
+			return null;
+		}
+
+		Param<?> param = (Param<?>)rightField;
+
+		if (!(param.getValue() instanceof String)) {
+			return null;
+		}
+
+		FilterStringConverterHelper filterStringConverterHelper =
+			_getFilterStringConverterHelper(_filterType);
+
+		if (filterStringConverterHelper == null) {
+			return null;
+		}
+
+		try {
+			return filterStringConverterHelper.getLogicFunctionCondition(
+				leftField.getName(), operator, false, (String)param.getValue());
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+
 	private <T> T _visitChild(
 		ParserRuleContext parserRuleContext, int childIndex) {
 
@@ -311,5 +516,10 @@ public class FilterExpressionVisitor
 
 		return (T)parseTree.accept(this);
 	}
+
+	private final String _filterType;
+	private final List<FilterStringConverterHelper>
+		_filterTypeFilterStringConverterHelpers;
+	private final Set<String> _includedTableNames;
 
 }
