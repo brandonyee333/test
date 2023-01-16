@@ -166,11 +166,11 @@ CREATE TABLE IF NOT EXISTS BQMembership (
 	createDate TIMESTAMPTZ,
 	id BIGSERIAL PRIMARY KEY,
 	individualId TEXT,
+    identityId TEXT,
 	modifiedDate TIMESTAMPTZ,
 	removedDate TIMESTAMPTZ,
 	segmentId BIGINT,
-	status TEXT,
-	userId TEXT
+	status TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQMembershipChange (

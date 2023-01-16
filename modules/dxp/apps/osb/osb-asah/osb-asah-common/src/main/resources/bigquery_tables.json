@@ -1342,6 +1342,11 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "identityId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "modifiedDate",
 				"type": "TIMESTAMP"
 			},
@@ -1358,11 +1363,6 @@
 			{
 				"mode": "REQUIRED",
 				"name": "status",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "userId",
 				"type": "STRING"
 			}
 		]
