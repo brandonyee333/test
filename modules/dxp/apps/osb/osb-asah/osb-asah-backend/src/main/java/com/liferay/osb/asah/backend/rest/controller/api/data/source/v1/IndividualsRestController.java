@@ -223,7 +223,7 @@ public class IndividualsRestController extends BaseRestController {
 			if (expandPart.equals("active-membership")) {
 				membershipsJSONObjects =
 					_bqMembershipDog.getMembershipsJSONObjects(
-						segmentsPage.getContent(), String.valueOf(id));
+						String.valueOf(id), segmentsPage.getContent());
 			}
 			else if (_log.isWarnEnabled()) {
 				_log.warn("Invalid expand: " + expandPart);

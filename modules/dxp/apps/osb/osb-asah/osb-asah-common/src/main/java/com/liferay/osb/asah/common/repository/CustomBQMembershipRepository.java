@@ -39,28 +39,28 @@ public interface CustomBQMembershipRepository {
 	public void deleteBySegmentIdIn(List<Long> segmentIds);
 
 	@Cacheable
-	public List<Long> findSegmentIdByStatusAndUserId(
-		String status, String userId);
-
-	@Cacheable
-	public List<Long> findSegmentIdByStatusAndUserIdIn(
-		String status, List<String> userIds);
-
-	@Cacheable
-	public List<Map<String, Long>>
-		findSegmentIdIdentitiesCountByStatusAndUserId(
-			String status, String userId);
-
-	@Cacheable
-	public List<Long> findTop20SegmentIdByUserId(String userId);
-
-	@Cacheable
-	public List<String> findUserIdBySegmentIdAndStatus(
+	public List<String> findIdentityIdBySegmentIdAndStatus(
 		Long segmentId, String status);
 
 	@Cacheable
-	public List<String> findUserIdBySegmentIdIn(
+	public List<String> findIdentityIdBySegmentIdIn(
 		List<Long> segmentIds, int max, int min, boolean ascending);
+
+	@Cacheable
+	public List<Long> findSegmentIdByIdentityIdAndStatus(
+		String identityId, String status);
+
+	@Cacheable
+	public List<Long> findSegmentIdByIdentityIdInAndStatus(
+		List<String> identityIds, String status);
+
+	@Cacheable
+	public List<Map<String, Long>>
+		findSegmentIdIdentitiesCountByIdentityIdAndStatusAnd(
+			String identityId, String status);
+
+	@Cacheable
+	public List<Long> findTop20SegmentIdByIdentityId(String identityId);
 
 	@Cacheable
 	public List<BQMembership> searchBQMemberships(

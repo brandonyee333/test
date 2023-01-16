@@ -46,7 +46,7 @@ public class BQMembershipDTO {
 		_removedDate = bqMembership.getRemovedDate();
 		_segmentId = StringUtil.get(bqMembership.getSegmentId(), null);
 		_status = bqMembership.getStatus();
-		_userId = StringUtil.get(bqMembership.getUserId(), null);
+		_userId = StringUtil.get(bqMembership.getIndividualId(), null);
 	}
 
 	public BQMembershipDTO(List<BQMembership> bqMemberships) {

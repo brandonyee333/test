@@ -87,11 +87,11 @@ public class BQMembershipDogTest
 
 		bqMembership.setCreateDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
+		bqMembership.setIdentityId("123");
 		bqMembership.setModifiedDate(
 			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
 		bqMembership.setSegmentId(234L);
 		bqMembership.setStatus("ACTIVE");
-		bqMembership.setUserId("123");
 
 		bqMembership = _bqMembershipDog.addBQMembership(bqMembership);
 
@@ -186,10 +186,10 @@ public class BQMembershipDogTest
 	)
 	@Test
 	public void testIsMember() {
-		Assertions.assertFalse(_bqMembershipDog.isMember(0L, "0"));
+		Assertions.assertFalse(_bqMembershipDog.isMember("0", 0L));
 		Assertions.assertTrue(
 			_bqMembershipDog.isMember(
-				338511398116723458L, "338486041327913341"));
+				"338486041327913341", 338511398116723458L));
 	}
 
 	@Autowired

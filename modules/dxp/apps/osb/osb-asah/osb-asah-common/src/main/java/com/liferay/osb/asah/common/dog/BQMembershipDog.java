@@ -63,10 +63,10 @@ public class BQMembershipDog {
 			BQMembership bqMembership = new BQMembership();
 
 			bqMembership.setCreateDate(createDate);
+			bqMembership.setIdentityId(String.valueOf(individual.getId()));
 			bqMembership.setModifiedDate(createDate);
 			bqMembership.setSegmentId(segmentId);
 			bqMembership.setStatus("ACTIVE");
-			bqMembership.setUserId(String.valueOf(individual.getId()));
 
 			bqMemberships.add(bqMembership);
 		}
@@ -98,20 +98,37 @@ public class BQMembershipDog {
 	}
 
 	public List<BQMembership> getActiveBQMemberships(
-		List<Long> segmentIds, String userId) {
+		String identityId, List<Long> segmentIds) {
 
-		return _bqMembershipRepository.findBySegmentIdInAndStatusAndUserId(
-			segmentIds, "ACTIVE", userId);
+		return _bqMembershipRepository.findByIdentityIdAndSegmentIdInAndStatus(
+			identityId, segmentIds, "ACTIVE");
 	}
 
 	public List<String> getActiveIdentityIds(Long segmentId) {
-		return _bqMembershipRepository.findUserIdBySegmentIdAndStatus(
+		return _bqMembershipRepository.findIdentityIdBySegmentIdAndStatus(
 			segmentId, "ACTIVE");
 	}
 
-	public List<Map<String, Long>> getActiveSegmentIds(String userId) {
+	public List<Map<String, Long>> getActiveSegmentIds(String identityId) {
 		return _bqMembershipRepository.
-			findSegmentIdIdentitiesCountByStatusAndUserId("ACTIVE", userId);
+			findSegmentIdIdentitiesCountByIdentityIdAndStatusAnd(
+				identityId, "ACTIVE");
+	}
+
+	public Page<BQMembership> getBQMembershipPage(
+		List<String> identityIds, Long segmentId, String status, int page,
+		int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_bqMembershipRepository.findByIdentityIdInAndSegmentIdAndStatus(
+				identityIds, segmentId, status, pageRequest),
+			pageRequest,
+			() ->
+				_bqMembershipRepository.
+					countByIdentityIdInAndSegmentIdAndStatus(
+						identityIds, segmentId, status));
 	}
 
 	public Page<BQMembership> getBQMembershipPage(
@@ -127,25 +144,11 @@ public class BQMembershipDog {
 				segmentId, status));
 	}
 
-	public Page<BQMembership> getBQMembershipPage(
-		Long segmentId, String status, List<String> userIds, int page, int size,
-		String[] sorts) {
-
-		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
-
-		return PageableExecutionUtils.getPage(
-			_bqMembershipRepository.findBySegmentIdAndStatusAndUserIdIn(
-				segmentId, status, userIds, pageRequest),
-			pageRequest,
-			() -> _bqMembershipRepository.countBySegmentIdAndStatusAndUserIdIn(
-				segmentId, status, userIds));
-	}
-
 	public Map<Long, JSONObject> getMembershipsJSONObjects(
-		List<Segment> segments, String userId) {
+		String identityId, List<Segment> segments) {
 
 		List<BQMembership> bqMemberships = getActiveBQMemberships(
-			ListUtil.map(segments, Segment::getId), userId);
+			identityId, ListUtil.map(segments, Segment::getId));
 
 		Map<Long, JSONObject> segmentJSONObjects = new HashMap<>();
 
@@ -163,8 +166,8 @@ public class BQMembershipDog {
 			if (!segmentJSONObjects.containsKey(segmentId)) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
-						"Unable to get active membership for user " + userId +
-							"and individual segment " + segmentId);
+						"Unable to get active membership for user " +
+							identityId + "and individual segment " + segmentId);
 				}
 
 				continue;
@@ -185,12 +188,13 @@ public class BQMembershipDog {
 	}
 
 	public List<Long> getSegmentIds(String identityId) {
-		return _bqMembershipRepository.findTop20SegmentIdByUserId(identityId);
+		return _bqMembershipRepository.findTop20SegmentIdByIdentityId(
+			identityId);
 	}
 
-	public boolean isMember(Long segmentId, String userId) {
-		return _bqMembershipRepository.existsBySegmentIdAndStatusAndUserId(
-			segmentId, "ACTIVE", userId);
+	public boolean isMember(String identityId, Long segmentId) {
+		return _bqMembershipRepository.existsByIdentityIdAndSegmentIdAndStatus(
+			identityId, segmentId, "ACTIVE");
 	}
 
 	public List<BQMembership> searchBQMemberships(
