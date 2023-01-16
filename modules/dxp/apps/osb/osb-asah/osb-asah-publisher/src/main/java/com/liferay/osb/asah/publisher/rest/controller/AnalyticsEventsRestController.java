@@ -18,6 +18,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -106,6 +107,21 @@ public class AnalyticsEventsRestController {
 
 		if (analyticsEventsMessageId != null) {
 			_analyticsEventMessageIds.put(analyticsEventsMessageId, true);
+		}
+
+		if (ServiceConstants.blockAnonymousEventProjectIds.contains(
+				ProjectIdThreadLocal.getProjectId()) &&
+			StringUtils.isEmpty(
+				analyticsEventsMessage.getEmailAddressHashed())) {
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Discarding anonymous message: " +
+						analyticsEventsMessage.toJSON());
+			}
+
+			return new ResponseEntity<>(
+				"Anonymous message " + analyticsEventsMessageId, HttpStatus.OK);
 		}
 
 		String clientIP = httpHeaders.getFirst("X-Forwarded-For");

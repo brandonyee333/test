@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.constants;
 
+import com.liferay.osb.asah.common.util.SetUtil;
+
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,6 +55,8 @@ public class ServiceConstants {
 
 	public static final String URL_STREAM_CURATOR;
 
+	public static final Set<String> blockAnonymousEventProjectIds;
+
 	public static boolean isInternalServiceURL(String url) {
 		return _internalServiceURLs.contains(url);
 	}
@@ -76,6 +81,24 @@ public class ServiceConstants {
 		}
 
 		return internalServiceURL;
+	}
+
+	private static Set<String> _getBlockAnonymousEventProjectIds() {
+		String blockAnonymousEventProjectIds = System.getenv(
+			"OSB_ASAH_BLOCK_ANONYMOUS_EVENT_PROJECT_IDS");
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Block Anonymous Event Project IDs: " +
+					blockAnonymousEventProjectIds);
+		}
+
+		if (blockAnonymousEventProjectIds == null) {
+			return Collections.emptySet();
+		}
+
+		return SetUtil.of(
+			StringUtils.split(blockAnonymousEventProjectIds, ","));
 	}
 
 	private static String _getPostgreSQLClusterURL() {
@@ -142,6 +165,8 @@ public class ServiceConstants {
 		if (_log.isInfoEnabled()) {
 			_log.info("OSB_ASAH_LCP_DOMAIN_SUFFIX: " + _DOMAIN_SUFFIX);
 		}
+
+		blockAnonymousEventProjectIds = _getBlockAnonymousEventProjectIds();
 
 		POSTGRESQL_SERVER_IP = _getPostgreSQLClusterURL();
 
