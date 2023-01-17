@@ -2,7 +2,7 @@ WITH
 	FormEvent AS (
 		SELECT
 			formId.value AS assetId,
-			COALESCE(formTitle.value, Event.title) AS assetTitle,
+			formTitle.value AS assetTitle,
 			Event.browserName,
 			Event.canonicalUrl,
 			Event.channelId,
