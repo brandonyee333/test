@@ -525,10 +525,15 @@ public class DXPEntityRepositoryImpl
 				continue;
 			}
 
+			if (!StringUtils.equalsIgnoreCase(property, "dataSourceName") &&
+				!StringUtils.startsWith(property, "fields.")) {
+
+				property = "fields." + property;
+			}
+
 			orders.add(
 				new Sort.Order(
-					order.getDirection(),
-					_createFieldPath("fields." + property)));
+					order.getDirection(), _createFieldPath(property)));
 		}
 
 		return getSortFields(Sort.by(orders), null);
