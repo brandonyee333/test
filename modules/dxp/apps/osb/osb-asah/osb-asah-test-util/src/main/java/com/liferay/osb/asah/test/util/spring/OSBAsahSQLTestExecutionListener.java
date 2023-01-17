@@ -14,6 +14,14 @@
 
 package com.liferay.osb.asah.test.util.spring;
 
+import com.google.api.gax.paging.Page;
+import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.Dataset;
+import com.google.cloud.bigquery.QueryJobConfiguration;
+import com.google.cloud.bigquery.Table;
+import com.google.cloud.bigquery.TableId;
+
+import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
 import java.io.File;
@@ -25,7 +33,6 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import java.util.Objects;
 
@@ -53,9 +60,37 @@ public class OSBAsahSQLTestExecutionListener
 	extends BaseOSBAsahTestExecutionListener {
 
 	@Override
-	public void afterTestMethod(TestContext testContext) throws SQLException {
+	public void afterTestMethod(TestContext testContext) throws Exception {
 		if (!_isTestExecutionListenerEnabled()) {
 			return;
+		}
+
+		SQLResource sqlResource = AnnotatedElementUtils.getMergedAnnotation(
+			testContext.getTestMethod(), SQLResource.class);
+
+		if ((sqlResource != null) &&
+			StringUtils.endsWithIgnoreCase(
+				sqlResource.dataSource(), "BigQuery")) {
+
+			StringBuilder sb = new StringBuilder();
+
+			Page<Table> tablePage = _bigQuery.listTables("test");
+
+			for (Table table : tablePage.iterateAll()) {
+				TableId tableId = table.getTableId();
+
+				sb.append(
+					String.format(
+						"DELETE FROM `%s.%s` WHERE TRUE;", tableId.getDataset(),
+						tableId.getTable()));
+			}
+
+			QueryJobConfiguration queryJobConfiguration =
+				QueryJobConfiguration.newBuilder(
+					sb.toString()
+				).build();
+
+			_bigQuery.query(queryJobConfiguration);
 		}
 
 		if (_postgreSQLDataSource != null) {
@@ -133,6 +168,14 @@ public class OSBAsahSQLTestExecutionListener
 		}
 	}
 
+	private void _createSchema() {
+		Dataset testDataset = _bigQuery.getDataset("test");
+
+		if (testDataset == null) {
+			_bigQuerySchemaManager.createTables("test");
+		}
+	}
+
 	private String _getResourcePath(SQLResource sqlResource) {
 		if (StringUtils.startsWith(sqlResource.resourcePath(), "/")) {
 			return sqlResource.resourcePath();
@@ -172,13 +215,34 @@ public class OSBAsahSQLTestExecutionListener
 						Files.readAllBytes(file.toPath()),
 						StandardCharsets.UTF_8));
 
-			DatabasePopulatorUtils.execute(
-				new ResourceDatabasePopulator(
-					new ByteArrayResource(
-						replaceSQLVariables.getBytes(StandardCharsets.UTF_8))),
-				_postgreSQLDataSource);
+			if (StringUtils.endsWithIgnoreCase(
+					sqlResource.dataSource(), "BigQuery")) {
+
+				_createSchema();
+
+				QueryJobConfiguration queryJobConfiguration =
+					QueryJobConfiguration.newBuilder(
+						replaceSQLVariables
+					).build();
+
+				_bigQuery.query(queryJobConfiguration);
+			}
+			else {
+				DatabasePopulatorUtils.execute(
+					new ResourceDatabasePopulator(
+						new ByteArrayResource(
+							replaceSQLVariables.getBytes(
+								StandardCharsets.UTF_8))),
+					_postgreSQLDataSource);
+			}
 		}
 	}
+
+	@Autowired
+	private BigQuery _bigQuery;
+
+	@Autowired
+	private BigQuerySchemaManager _bigQuerySchemaManager;
 
 	@Autowired
 	private CacheManager _cacheManager;
