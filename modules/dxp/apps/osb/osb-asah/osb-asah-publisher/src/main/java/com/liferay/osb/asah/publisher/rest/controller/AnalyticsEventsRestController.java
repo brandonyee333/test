@@ -109,7 +109,7 @@ public class AnalyticsEventsRestController {
 			_analyticsEventMessageIds.put(analyticsEventsMessageId, true);
 		}
 
-		if (ServiceConstants.blockAnonymousEventProjectIds.contains(
+		if (ServiceConstants.blockedAnonymousEventProjectIds.contains(
 				ProjectIdThreadLocal.getProjectId()) &&
 			StringUtils.isEmpty(
 				analyticsEventsMessage.getEmailAddressHashed())) {

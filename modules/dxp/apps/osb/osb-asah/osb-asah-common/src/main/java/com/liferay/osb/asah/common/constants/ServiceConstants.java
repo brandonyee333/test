@@ -55,7 +55,7 @@ public class ServiceConstants {
 
 	public static final String URL_STREAM_CURATOR;
 
-	public static final Set<String> blockAnonymousEventProjectIds;
+	public static final Set<String> blockedAnonymousEventProjectIds;
 
 	public static boolean isInternalServiceURL(String url) {
 		return _internalServiceURLs.contains(url);
@@ -83,22 +83,22 @@ public class ServiceConstants {
 		return internalServiceURL;
 	}
 
-	private static Set<String> _getBlockAnonymousEventProjectIds() {
-		String blockAnonymousEventProjectIds = System.getenv(
-			"OSB_ASAH_BLOCK_ANONYMOUS_EVENT_PROJECT_IDS");
+	private static Set<String> _getBlockedAnonymousEventProjectIds() {
+		String blockedAnonymousEventProjectIds = System.getenv(
+			"OSB_ASAH_BLOCKED_ANONYMOUS_EVENT_PROJECT_IDS");
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Block Anonymous Event Project IDs: " +
-					blockAnonymousEventProjectIds);
+				"Blocked Anonymous Event Project IDs: " +
+					blockedAnonymousEventProjectIds);
 		}
 
-		if (blockAnonymousEventProjectIds == null) {
+		if (blockedAnonymousEventProjectIds == null) {
 			return Collections.emptySet();
 		}
 
 		return SetUtil.of(
-			StringUtils.split(blockAnonymousEventProjectIds, ","));
+			StringUtils.split(blockedAnonymousEventProjectIds, ","));
 	}
 
 	private static String _getPostgreSQLClusterURL() {
@@ -166,7 +166,7 @@ public class ServiceConstants {
 			_log.info("OSB_ASAH_LCP_DOMAIN_SUFFIX: " + _DOMAIN_SUFFIX);
 		}
 
-		blockAnonymousEventProjectIds = _getBlockAnonymousEventProjectIds();
+		blockedAnonymousEventProjectIds = _getBlockedAnonymousEventProjectIds();
 
 		POSTGRESQL_SERVER_IP = _getPostgreSQLClusterURL();
 
