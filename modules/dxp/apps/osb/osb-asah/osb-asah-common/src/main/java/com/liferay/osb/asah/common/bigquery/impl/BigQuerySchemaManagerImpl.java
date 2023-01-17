@@ -66,7 +66,7 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -74,6 +74,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
+
+	@Autowired
+	public BigQuerySchemaManagerImpl(BigQuery bigQuery) {
+		_bigQuery = bigQuery;
+
+		_bigQueryOptions = bigQuery.getOptions();
+	}
 
 	@Override
 	public void createSchema(Project project) {
@@ -145,7 +152,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	public void deleteSchema(String projectId) {
 		try {
 			boolean success = _bigQuery.delete(
-				DatasetId.of(_googleProjectId, projectId),
+				DatasetId.of(_bigQueryOptions.getProjectId(), projectId),
 				BigQuery.DatasetDeleteOption.deleteContents());
 
 			if (_log.isInfoEnabled()) {
@@ -242,7 +249,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		}
 
 		return builder.setLocation(
-			_location
+			_bigQueryOptions.getLocation()
 		).setSchema(
 			_buildSchema(tableJSONObject.getJSONArray("fields"))
 		).build();
@@ -263,7 +270,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	private Dataset _createDataset(Project project) {
 		DatasetInfo.Builder builder = DatasetInfo.newBuilder(project.getId());
 
-		builder = builder.setLocation(_location);
+		builder = builder.setLocation(_bigQueryOptions.getLocation());
 
 		Dataset dataset = _bigQuery.create(builder.build());
 
@@ -344,16 +351,12 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	}
 
 	private String _getProjectId() {
-		return _googleProjectId + "." + ProjectIdThreadLocal.getProjectId();
+		return _bigQueryOptions.getProjectId() + "." +
+			ProjectIdThreadLocal.getProjectId();
 	}
 
 	@PostConstruct
 	private void _init() {
-		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
-
-		_bigQuery = bigQueryOptions.getService();
-		_googleProjectId = bigQueryOptions.getProjectId();
-
 		_functionsJSONObject = new JSONObject(
 			_readFile("/bigquery_functions.json"));
 		_tablesJSONObject = new JSONObject(_readFile("/bigquery_tables.json"));
@@ -376,13 +379,9 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	private static final Log _log = LogFactory.getLog(
 		BigQuerySchemaManagerImpl.class);
 
-	private BigQuery _bigQuery;
+	private final BigQuery _bigQuery;
+	private final BigQueryOptions _bigQueryOptions;
 	private JSONObject _functionsJSONObject;
-	private String _googleProjectId;
-
-	@Value("${gcloud.compute.region}")
-	private String _location;
-
 	private JSONObject _tablesJSONObject;
 	private JSONObject _viewsJSONObject;
 
