@@ -85,7 +85,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	@Override
 	public void createSchema(Project project) {
 		try {
-			Dataset dataset = _createDataset(project);
+			Dataset dataset = _createDataset(project.getId());
 
 			for (String functionName : _functionsJSONObject.keySet()) {
 				JSONObject jsonObject = _functionsJSONObject.getJSONObject(
@@ -104,11 +104,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 				}
 			}
 
-			for (String tableName : _tablesJSONObject.keySet()) {
-				_createTable(
-					dataset.getDatasetId(),
-					_tablesJSONObject.getJSONObject(tableName), tableName);
-			}
+			createTables(project.getId());
 
 			Map<String, JSONObject> jsonObjects = new HashMap<>();
 
@@ -149,11 +145,25 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	}
 
 	@Override
+	public void createTables(String projectId) {
+		Dataset dataset = _bigQuery.getDataset(projectId);
+
+		if (dataset == null) {
+			_createDataset(projectId);
+		}
+
+		for (String tableName : _tablesJSONObject.keySet()) {
+			_createTable(
+				projectId, _tablesJSONObject.getJSONObject(tableName),
+				tableName);
+		}
+	}
+
+	@Override
 	public void deleteSchema(String projectId) {
 		try {
 			boolean success = _bigQuery.delete(
-				DatasetId.of(_bigQueryOptions.getProjectId(), projectId),
-				BigQuery.DatasetDeleteOption.deleteContents());
+				DatasetId.of(_bigQueryOptions.getProjectId(), projectId));
 
 			if (_log.isInfoEnabled()) {
 				if (success) {
@@ -267,8 +277,8 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		).build();
 	}
 
-	private Dataset _createDataset(Project project) {
-		DatasetInfo.Builder builder = DatasetInfo.newBuilder(project.getId());
+	private Dataset _createDataset(String projectId) {
+		DatasetInfo.Builder builder = DatasetInfo.newBuilder(projectId);
 
 		builder = builder.setLocation(_bigQueryOptions.getLocation());
 
@@ -276,17 +286,16 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				String.format(
-					"Dataset %s created successfully", project.getId()));
+				String.format("Dataset %s created successfully", projectId));
 		}
 
 		return dataset;
 	}
 
 	private Table _createTable(
-		DatasetId datasetId, JSONObject tablesJSONObject, String tableName) {
+		String dataset, JSONObject tablesJSONObject, String tableName) {
 
-		TableId tableId = TableId.of(datasetId.getDataset(), tableName);
+		TableId tableId = TableId.of(dataset, tableName);
 
 		TableInfo.Builder builder = TableInfo.newBuilder(
 			tableId, _buildTableDefinition(tablesJSONObject));
@@ -296,7 +305,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				String.format(
-					"Table %s.%s created successfully", datasetId, tableName));
+					"Table %s.%s created successfully", dataset, tableName));
 		}
 
 		return table;
