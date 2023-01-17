@@ -14,14 +14,12 @@
 
 package com.liferay.osb.asah.common.bigquery;
 
-import com.liferay.osb.asah.common.entity.Project;
-
 /**
  * @author Marcellus Tavares
  */
 public interface BigQuerySchemaManager {
 
-	public void createSchema(Project project);
+	public void createSchema(String projectId);
 
 	public void createTables(String projectId);
 

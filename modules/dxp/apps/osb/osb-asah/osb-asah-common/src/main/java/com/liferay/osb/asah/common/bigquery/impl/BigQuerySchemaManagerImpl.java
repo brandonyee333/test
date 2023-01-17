@@ -38,7 +38,6 @@ import com.google.cloud.bigquery.TimePartitioning;
 import com.google.cloud.bigquery.ViewDefinition;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
-import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
@@ -83,9 +82,9 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	}
 
 	@Override
-	public void createSchema(Project project) {
+	public void createSchema(String projectId) {
 		try {
-			Dataset dataset = _createDataset(project.getId());
+			Dataset dataset = _createDataset(projectId);
 
 			for (String functionName : _functionsJSONObject.keySet()) {
 				JSONObject jsonObject = _functionsJSONObject.getJSONObject(
@@ -104,7 +103,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 				}
 			}
 
-			createTables(project.getId());
+			createTables(projectId);
 
 			Map<String, JSONObject> jsonObjects = new HashMap<>();
 
@@ -139,8 +138,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		}
 		catch (Exception exception) {
 			_log.error(
-				"Unable to create schema for project " + project.getId(),
-				exception);
+				"Unable to create schema for project " + projectId, exception);
 		}
 	}
 

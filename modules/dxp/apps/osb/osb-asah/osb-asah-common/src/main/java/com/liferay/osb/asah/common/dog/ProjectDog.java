@@ -61,7 +61,7 @@ public class ProjectDog {
 			consumer.accept(project.getId());
 		}
 
-		_bigQuerySchemaManager.createSchema(project);
+		_bigQuerySchemaManager.createSchema(project.getId());
 		_postgreSQLSchemaManager.createSchema(project);
 
 		try {
