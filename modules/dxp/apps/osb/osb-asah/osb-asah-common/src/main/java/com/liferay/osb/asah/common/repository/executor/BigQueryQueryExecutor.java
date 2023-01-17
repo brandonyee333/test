@@ -39,8 +39,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -50,6 +48,7 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectFinalStep;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -58,6 +57,13 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnGoogleApplicationCredentials
 public class BigQueryQueryExecutor implements QueryExecutor {
+
+	@Autowired
+	public BigQueryQueryExecutor(BigQuery bigQuery) {
+		_bigQuery = bigQuery;
+
+		_bigQueryOptions = bigQuery.getOptions();
+	}
 
 	@Override
 	public BigDecimal queryForBigDecimal(
@@ -175,7 +181,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	private String _getBigQueryTableName(String tableName) {
-		return "`" + _googleProjectId + "." +
+		return "`" + _bigQueryOptions.getProjectId() + "." +
 			ProjectIdThreadLocal.getProjectId() + "." +
 				StringUtils.lowerCase(tableName.replace("BQ", "") + "`");
 	}
@@ -213,14 +219,6 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		}
 
 		return fieldValue.getValue();
-	}
-
-	@PostConstruct
-	private void _init() {
-		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
-
-		_bigQuery = bigQueryOptions.getService();
-		_googleProjectId = bigQueryOptions.getProjectId();
 	}
 
 	private TableResult _query(SelectFinalStep selectFinalStep) {
@@ -325,7 +323,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	private static final Log _log = LogFactory.getLog(
 		BigQueryQueryExecutor.class);
 
-	private BigQuery _bigQuery;
-	private String _googleProjectId;
+	private final BigQuery _bigQuery;
+	private final BigQueryOptions _bigQueryOptions;
 
 }
