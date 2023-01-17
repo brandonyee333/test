@@ -40,7 +40,6 @@ import com.google.cloud.bigquery.ViewDefinition;
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.InputStream;
@@ -74,7 +73,6 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@ConditionalOnGoogleApplicationCredentials
 public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 	@Override
