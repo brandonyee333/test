@@ -84,7 +84,7 @@ public class AMImageAddConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Assert.assertEquals(
 			StringPool.BLANK, amImageConfigurationEntry.getDescription());
@@ -104,7 +104,7 @@ public class AMImageAddConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -170,7 +170,7 @@ public class AMImageAddConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -228,7 +228,7 @@ public class AMImageAddConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Assert.assertEquals(
 			"desc:;desc", amImageConfigurationEntry.getDescription());
@@ -248,7 +248,7 @@ public class AMImageAddConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Assert.assertEquals("one:;one", amImageConfigurationEntry.getName());
 	}
@@ -309,7 +309,7 @@ public class AMImageAddConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -330,7 +330,7 @@ public class AMImageAddConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -422,7 +422,7 @@ public class AMImageAddConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();
@@ -488,7 +488,7 @@ public class AMImageAddConfigurationTest
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
 				TestPropsValues.getCompanyId(), "1");
 
-		Assert.assertTrue(amImageConfigurationEntry != null);
+		Assert.assertNotNull(amImageConfigurationEntry);
 
 		Map<String, String> actualProperties =
 			amImageConfigurationEntry.getProperties();

@@ -187,11 +187,9 @@ public class AMImageDisableConfigurationTest
 		_amImageConfigurationHelper.disableAMImageConfigurationEntry(
 			TestPropsValues.getCompanyId(), uuid);
 
-		AMImageConfigurationEntry amImageConfigurationEntry =
+		Assert.assertNull(
 			_amImageConfigurationHelper.getAMImageConfigurationEntry(
-				TestPropsValues.getCompanyId(), uuid);
-
-		Assert.assertFalse(amImageConfigurationEntry != null);
+				TestPropsValues.getCompanyId(), uuid));
 	}
 
 	@Test
