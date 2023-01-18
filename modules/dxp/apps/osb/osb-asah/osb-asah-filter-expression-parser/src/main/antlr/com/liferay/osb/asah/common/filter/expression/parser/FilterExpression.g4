@@ -33,11 +33,7 @@ booleanUnaryExpression
 	;
 
 comparisonExpression
-	: comparisonExpression GT booleanOperandExpression # GreaterThanExpression
-	| comparisonExpression GE booleanOperandExpression # GreaterThanOrEqualsExpression
-	| comparisonExpression LT booleanOperandExpression # LessThanExpression
-	| comparisonExpression LE booleanOperandExpression # LessThanOrEqualsExpression
-    | VARIABLE_IDENTIFIER GT booleanOperandExpression # GreaterThanExpression
+    : VARIABLE_IDENTIFIER GT booleanOperandExpression # GreaterThanExpression
     | VARIABLE_IDENTIFIER GE booleanOperandExpression # GreaterThanOrEqualsExpression
     | VARIABLE_IDENTIFIER LT booleanOperandExpression # LessThanExpression
 	| VARIABLE_IDENTIFIER LE booleanOperandExpression # LessThanOrEqualsExpression
@@ -45,9 +41,7 @@ comparisonExpression
 	;
 
 equalityExpression
-	: equalityExpression EQ comparisonExpression # EqualsExpression
-	| equalityExpression NEQ comparisonExpression # NotEqualsExpression
-    | VARIABLE_IDENTIFIER EQ comparisonExpression # EqualsExpression
+    : VARIABLE_IDENTIFIER EQ comparisonExpression # EqualsExpression
     | VARIABLE_IDENTIFIER NEQ comparisonExpression # NotEqualsExpression
     | comparisonExpression #ToComparisonExpression
 	;
