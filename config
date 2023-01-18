@@ -1,0 +1,16 @@
+[core]
+      repositoryformatversion = 0
+      filemode = false
+      bare = false
+      logallrefupdates = true
+      ignorecase = true
+      autocrlf = input
+[remote "origin"]
+  fetch = +refs/heads/*:refs/remotes/origin/*
+  url = git@github.com:kvale1733/liferay-portal-ee.git
+[remote "upstream"]
+      fetch = +refs/heads/*:refs/remotes/upstream/*
+      url = git@github.com:liferay/liferay-portal-ee.git
+      remoteInputLines = 
+[github]
+      user = kvale1733
