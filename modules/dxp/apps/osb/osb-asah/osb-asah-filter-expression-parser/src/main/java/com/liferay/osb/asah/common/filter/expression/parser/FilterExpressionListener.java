@@ -72,6 +72,18 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 */
 	void exitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code GreaterThanExpression}
+	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code GreaterThanExpression}
+	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code GreaterThanOrEqualsExpression}
 	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
 	 * @param ctx the parse tree
@@ -83,6 +95,18 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitGreaterThanOrEqualsExpression(FilterExpressionParser.GreaterThanOrEqualsExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LessThanExpression}
+	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LessThanExpression}
+	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code LessThanOrEqualsExpression}
 	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
@@ -96,18 +120,6 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 */
 	void exitLessThanOrEqualsExpression(FilterExpressionParser.LessThanOrEqualsExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code GreaterThanExpression}
-	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code GreaterThanExpression}
-	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code ToBooleanUnaryExpression}
 	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
 	 * @param ctx the parse tree
@@ -120,17 +132,17 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 */
 	void exitToBooleanUnaryExpression(FilterExpressionParser.ToBooleanUnaryExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code LessThanExpression}
-	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
+	 * Enter a parse tree produced by the {@code EqualsExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx);
+	void enterEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code LessThanExpression}
-	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
+	 * Exit a parse tree produced by the {@code EqualsExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx);
+	void exitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code NotEqualsExpression}
 	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
@@ -155,18 +167,6 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code EqualsExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code EqualsExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FilterExpressionParser#expression}.
 	 * @param ctx the parse tree

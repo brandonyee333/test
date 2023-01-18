@@ -80,6 +80,18 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterGreaterThanOrEqualsExpression(FilterExpressionParser.GreaterThanOrEqualsExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -87,6 +99,18 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitGreaterThanOrEqualsExpression(FilterExpressionParser.GreaterThanOrEqualsExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -104,18 +128,6 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterToBooleanUnaryExpression(FilterExpressionParser.ToBooleanUnaryExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -128,13 +140,13 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx) { }
+	@Override public void enterEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx) { }
+	@Override public void exitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -159,18 +171,6 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

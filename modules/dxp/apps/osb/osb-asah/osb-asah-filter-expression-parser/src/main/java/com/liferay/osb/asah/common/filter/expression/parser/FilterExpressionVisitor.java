@@ -55,12 +55,26 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitToBooleanOperandExpression(FilterExpressionParser.ToBooleanOperandExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code GreaterThanExpression}
+	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code GreaterThanOrEqualsExpression}
 	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitGreaterThanOrEqualsExpression(FilterExpressionParser.GreaterThanOrEqualsExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LessThanExpression}
+	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code LessThanOrEqualsExpression}
 	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
@@ -69,13 +83,6 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLessThanOrEqualsExpression(FilterExpressionParser.LessThanOrEqualsExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code GreaterThanExpression}
-	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitGreaterThanExpression(FilterExpressionParser.GreaterThanExpressionContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ToBooleanUnaryExpression}
 	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
 	 * @param ctx the parse tree
@@ -83,12 +90,12 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitToBooleanUnaryExpression(FilterExpressionParser.ToBooleanUnaryExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code LessThanExpression}
-	 * labeled alternative in {@link FilterExpressionParser#comparisonExpression}.
+	 * Visit a parse tree produced by the {@code EqualsExpression}
+	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLessThanExpression(FilterExpressionParser.LessThanExpressionContext ctx);
+	T visitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code NotEqualsExpression}
 	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
@@ -103,13 +110,6 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitToComparisonExpression(FilterExpressionParser.ToComparisonExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code EqualsExpression}
-	 * labeled alternative in {@link FilterExpressionParser#equalityExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqualsExpression(FilterExpressionParser.EqualsExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FilterExpressionParser#expression}.
 	 * @param ctx the parse tree
