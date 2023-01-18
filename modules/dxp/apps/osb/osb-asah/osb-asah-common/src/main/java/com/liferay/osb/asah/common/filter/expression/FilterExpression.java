@@ -64,7 +64,7 @@ public class FilterExpression {
 		return filterExpression.getCondition();
 	}
 
-	public static JoinCondition joinConvert(
+	public static JoinCondition convert(
 		String filterExpressionString,
 		List<FilterStringConverterHelper> filterTypeStringConverterHelpers) {
 
@@ -79,7 +79,8 @@ public class FilterExpression {
 		List<FilterStringConverterHelper> filterTypeStringConverterHelpers,
 		Set<String> includedTableNames) {
 
-		Assert.notNull(filterExpressionString, "The filter expression is null");
+		Assert.notNull(
+			filterExpressionString, "The filter expression string is null");
 
 		_filterType = filterType;
 		_filterTypeStringConverterHelpers = filterTypeStringConverterHelpers;

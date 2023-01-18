@@ -814,7 +814,7 @@ public class FilterExpressionTest {
 		List<FilterStringConverterHelper> filterTypeStringConverterHelpers,
 		Set<String> includedTableNames) {
 
-		JoinCondition joinCondition = FilterExpression.joinConvert(
+		JoinCondition joinCondition = FilterExpression.convert(
 			actualFilterExpressionString, filterTypeStringConverterHelpers);
 
 		Assertions.assertEquals(
