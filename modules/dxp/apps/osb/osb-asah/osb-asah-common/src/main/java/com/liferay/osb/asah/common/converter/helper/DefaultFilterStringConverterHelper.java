@@ -66,18 +66,8 @@ public class DefaultFilterStringConverterHelper
 	}
 
 	public Condition getTimeFrameCondition(
-		String fieldName, String operator, boolean processString, String type,
+		String fieldName, String operator, boolean processString,
 		String valueString) {
-
-		if ((!fieldName.equalsIgnoreCase("completeDate") &&
-			 !fieldName.equalsIgnoreCase("Session.completeDate") &&
-			 type.equalsIgnoreCase("sessions")) ||
-			(!fieldName.equalsIgnoreCase("dayDate") &&
-			 !fieldName.equalsIgnoreCase("Event.dayDate") &&
-			 type.equalsIgnoreCase("activities"))) {
-
-			return null;
-		}
 
 		String value = valueString;
 

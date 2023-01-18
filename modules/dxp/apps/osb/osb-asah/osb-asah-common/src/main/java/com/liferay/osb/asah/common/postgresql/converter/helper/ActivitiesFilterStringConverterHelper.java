@@ -67,7 +67,7 @@ public class ActivitiesFilterStringConverterHelper
 		}
 
 		Condition condition = getTimeFrameCondition(
-			fieldName, operator, processString, "activities", valueString);
+			fieldName, operator, processString, valueString);
 
 		if (condition != null) {
 			return condition;

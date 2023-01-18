@@ -36,7 +36,7 @@ public class SessionsFilterStringConverter
 		throws Exception {
 
 		Condition condition = getTimeFrameCondition(
-			fieldName, operator, processString, "sessions", valueString);
+			fieldName, operator, processString, valueString);
 
 		if (condition != null) {
 			return condition;
