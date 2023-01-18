@@ -67,6 +67,8 @@ public class AnalyticsEvent {
 			Objects.equals(context, analyticsEvent.context) &&
 			Objects.equals(createDate, analyticsEvent.createDate) &&
 			Objects.equals(dataSourceId, analyticsEvent.dataSourceId) &&
+			Objects.equals(
+				emailAddressHashed, analyticsEvent.emailAddressHashed) &&
 			Objects.equals(eventDate, analyticsEvent.eventDate) &&
 			Objects.equals(eventId, analyticsEvent.eventId) &&
 			Objects.equals(eventProperties, analyticsEvent.eventProperties) &&
@@ -86,8 +88,8 @@ public class AnalyticsEvent {
 	public int hashCode() {
 		return Objects.hash(
 			applicationId, channelId, clientIP, context, createDate,
-			dataSourceId, eventDate, eventId, eventProperties, id, projectId,
-			projectTimeZoneId, userId);
+			dataSourceId, emailAddressHashed, eventDate, eventId,
+			eventProperties, id, projectId, projectTimeZoneId, userId);
 	}
 
 	public String applicationId;
