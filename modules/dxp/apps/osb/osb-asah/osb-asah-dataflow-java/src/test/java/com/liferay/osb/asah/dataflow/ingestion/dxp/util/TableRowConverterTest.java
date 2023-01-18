@@ -29,8 +29,8 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author Riccardo Ferrari
@@ -43,7 +43,7 @@ public class TableRowConverterTest {
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
-		Assertions.assertEquals(
+		Assert.assertEquals(
 			String.valueOf(testEntity.integer), tableRow.get("integer"));
 	}
 
@@ -55,9 +55,9 @@ public class TableRowConverterTest {
 
 		Object stringList = tableRow.get("stringList");
 
-		Assertions.assertInstanceOf(List.class, stringList);
+		Assert.assertTrue(stringList instanceof List);
 
-		Assertions.assertLinesMatch(testEntity.stringList, (List)stringList);
+		Assert.assertEquals(testEntity.stringList, stringList);
 	}
 
 	@Test
@@ -68,9 +68,9 @@ public class TableRowConverterTest {
 
 		Object map = tableRow.get("map");
 
-		Assertions.assertInstanceOf(String.class, map);
+		Assert.assertTrue(map instanceof String);
 
-		Assertions.assertEquals(
+		Assert.assertEquals(
 			ObjectMapperUtil.writeValueAsString(testEntity.map), map);
 	}
 
@@ -88,11 +88,11 @@ public class TableRowConverterTest {
 
 		Object mapList = tableRow.get("mapList");
 
-		Assertions.assertInstanceOf(List.class, mapList);
+		Assert.assertTrue(mapList instanceof List);
 
 		List<String> mapStrings = (List)mapList;
 
-		Assertions.assertArrayEquals(
+		Assert.assertArrayEquals(
 			expectedResult.toArray(new String[0]),
 			mapStrings.toArray(new String[0]));
 	}
@@ -107,11 +107,11 @@ public class TableRowConverterTest {
 
 		Object nestedObject = tableRow.get("testEntity");
 
-		Assertions.assertInstanceOf(TableRow.class, nestedObject);
+		Assert.assertTrue(nestedObject instanceof TableRow);
 
 		TableRow nestedTableRow = (TableRow)nestedObject;
 
-		Assertions.assertEquals(
+		Assert.assertEquals(
 			nestedTableRow, TableRowConverter.asTableRow(nestedTestEntity));
 	}
 
@@ -123,14 +123,14 @@ public class TableRowConverterTest {
 
 		Object testEntitiesTableRows = tableRow.get("testEntityList");
 
-		Assertions.assertInstanceOf(List.class, testEntitiesTableRows);
+		Assert.assertTrue(testEntitiesTableRows instanceof List);
 
 		List<TableRow> tableRows = (List)testEntitiesTableRows;
 
 		Stream<TestEntity> testEntityStream =
 			testEntity.testEntityList.stream();
 
-		Assertions.assertArrayEquals(
+		Assert.assertArrayEquals(
 			testEntityStream.map(
 				TableRowConverter::asTableRow
 			).toArray(
@@ -145,7 +145,7 @@ public class TableRowConverterTest {
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
-		Assertions.assertEquals(
+		Assert.assertEquals(
 			Arrays.toString(testEntity.objectArray),
 			tableRow.get("objectArray"));
 	}
@@ -156,9 +156,9 @@ public class TableRowConverterTest {
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
-		Assertions.assertEquals(
+		Assert.assertEquals(
 			String.valueOf(testEntity.bool), tableRow.get("bool"));
-		Assertions.assertEquals(
+		Assert.assertEquals(
 			String.valueOf(testEntity.number), tableRow.get("number"));
 	}
 
@@ -168,7 +168,7 @@ public class TableRowConverterTest {
 
 		TableRow tableRow = TableRowConverter.asTableRow(testEntity);
 
-		Assertions.assertEquals(testEntity.string, tableRow.get("string"));
+		Assert.assertEquals(testEntity.string, tableRow.get("string"));
 	}
 
 	private TestEntity _newTestEntity(boolean includeNested) {
