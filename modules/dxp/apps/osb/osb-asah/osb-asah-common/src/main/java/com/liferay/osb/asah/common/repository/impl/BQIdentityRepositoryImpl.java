@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
+import com.liferay.osb.asah.common.filter.expression.JoinCondition;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -32,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.BiFunction;
 
 import org.apache.commons.lang3.BooleanUtils;
 
@@ -146,6 +151,38 @@ public class BQIdentityRepositoryImpl
 				return count.longValue();
 			},
 			selectConditionStep.orderBy(DSL.field("unionOrder")));
+	}
+
+	@Override
+	public List<Long> searchBQIdentityIds(
+		String filterString,
+		List<FilterStringConverterHelper>
+			filterTypeFilterStringConverterHelpers,
+		BiFunction
+			<Set<String>, SelectJoinStep<Record1<Long>>,
+			 SelectJoinStep<Record1<Long>>> joinFunction) {
+
+		Field<Long> identityIdField = DSL.field("Identity.id", Long.class);
+
+		SelectSelectStep<Record1<Long>> selectSelectStep = _dslContext.select(
+			identityIdField.as("id"));
+
+		SelectJoinStep<Record1<Long>> selectJoinStep = selectSelectStep.from(
+			DSL.table(
+				"BQIdentity"
+			).as(
+				"Identity"
+			));
+
+		JoinCondition joinCondition = FilterExpression.joinConvert(
+			filterString, filterTypeFilterStringConverterHelpers);
+
+		selectJoinStep = joinFunction.apply(
+			joinCondition.getIncludedTableNames(), selectJoinStep);
+
+		return _queryExecutor.queryForList(
+			record -> (Long)record.get("id"),
+			selectJoinStep.where(joinCondition.getCondition()));
 	}
 
 	private List<Condition> _getConditions(

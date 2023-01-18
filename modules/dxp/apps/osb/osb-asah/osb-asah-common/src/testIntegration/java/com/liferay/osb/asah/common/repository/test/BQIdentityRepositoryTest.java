@@ -14,27 +14,40 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
+import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
+import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.postgresql.converter.helper.SessionsFilterStringConverter;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
+
+import org.jooq.Record1;
+import org.jooq.SelectJoinStep;
+import org.jooq.impl.DSL;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -60,6 +73,7 @@ public class BQIdentityRepositoryTest
 
 		_addBQEvents();
 		_addBQIndividuals();
+		_addBQSessions();
 	}
 
 	@AfterEach
@@ -119,6 +133,62 @@ public class BQIdentityRepositoryTest
 		Assertions.assertEquals(
 			Arrays.asList(bqIdentity),
 			_bqIdentityRepository.saveAll(Arrays.asList(bqIdentity)));
+	}
+
+	@Test
+	public void testSearchBQIdentityIds1() {
+		List<Long> identityIds = _bqIdentityRepository.searchBQIdentityIds(
+			"(demographics/firstName/value eq 'Test1' and (sessions.filter(" +
+				"filter='(context/browserName eq ''browser1'' and " +
+					"sessionStart gt ''last24Hours'')') and " +
+						"demographics/emailAddress/value eq " +
+							"'test1@liferay.com'))",
+			new ArrayList<FilterStringConverterHelper>() {
+				{
+					add(new IndividualsFilterStringConverterHelper());
+					add(new SessionsFilterStringConverter());
+				}
+			},
+			(Set<String> includedTableNames,
+			 SelectJoinStep<Record1<Long>> selectJoinStep) -> {
+
+				if (includedTableNames.contains("Individual")) {
+					selectJoinStep = selectJoinStep.join(
+						DSL.table(
+							"BQIndividual"
+						).as(
+							"Individual"
+						)
+					).on(
+						DSL.field(
+							"Identity.individualId"
+						).eq(
+							DSL.field("Individual.id")
+						)
+					);
+				}
+
+				if (includedTableNames.contains("Session")) {
+					selectJoinStep = selectJoinStep.join(
+						DSL.table(
+							"BQSession"
+						).as(
+							"Session"
+						)
+					).on(
+						DSL.field(
+							"Identity.id"
+						).eq(
+							DSL.field("Session.userId")
+						)
+					);
+				}
+
+				return selectJoinStep;
+			});
+
+		Assertions.assertEquals(1, identityIds.size());
+		Assertions.assertEquals(1, identityIds.get(0));
 	}
 
 	@Override
@@ -240,6 +310,7 @@ public class BQIdentityRepositoryTest
 
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -2));
 		bqIndividual.setEmailAddress("test1@liferay.com");
+		bqIndividual.setFirstName("Test1");
 		bqIndividual.setId(DigestUtils.sha256Hex("test1@liferay.com"));
 		bqIndividual.setIsNew(Boolean.TRUE);
 
@@ -273,6 +344,24 @@ public class BQIdentityRepositoryTest
 		_bqIndividualRepository.save(bqIndividual);
 	}
 
+	private void _addBQSessions() {
+		BQSession bqSession = new BQSession();
+
+		bqSession.setBrowserName("browser1");
+		bqSession.setId("1");
+		bqSession.setSessionEnd(new Date());
+		bqSession.setSessionStart(
+			DateUtil.toDate(
+				LocalDateTime.now(
+				).minus(
+					3, ChronoUnit.HOURS
+				),
+				ZoneId.systemDefault()));
+		bqSession.setUserId("1");
+
+		_bqSessionRepository.save(bqSession);
+	}
+
 	private BQIdentity _randomBQIdentity() {
 		BQIdentity bqIdentity = new BQIdentity();
 
@@ -292,6 +381,9 @@ public class BQIdentityRepositoryTest
 
 	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;
+
+	@Autowired
+	private BQSessionRepository _bqSessionRepository;
 
 	@Autowired
 	private EventDog _eventDog;

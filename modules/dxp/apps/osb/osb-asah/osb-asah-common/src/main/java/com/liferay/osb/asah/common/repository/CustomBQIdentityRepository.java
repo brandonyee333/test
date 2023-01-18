@@ -14,12 +14,18 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.model.MetricType;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 
 import java.util.List;
+import java.util.Set;
+import java.util.function.BiFunction;
+
+import org.jooq.Record1;
+import org.jooq.SelectJoinStep;
 
 import org.springframework.lang.Nullable;
 
@@ -38,5 +44,13 @@ public interface CustomBQIdentityRepository {
 		@Nullable Boolean active, @Nullable Long channelId,
 		List<LocalDate> localDates, List<MetricType> metricTypes,
 		ZoneId zoneId);
+
+	public List<Long> searchBQIdentityIds(
+		String filterString,
+		List<FilterStringConverterHelper>
+			filterTypeFilterStringConverterHelpers,
+		BiFunction
+			<Set<String>, SelectJoinStep<Record1<Long>>,
+			 SelectJoinStep<Record1<Long>>> joinFunction);
 
 }
