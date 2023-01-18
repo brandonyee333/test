@@ -202,8 +202,8 @@ public class EventIngestionPipelineTest {
 		context.put("userAgent", userAgent);
 
 		return _createAnalyticsEvent(
-			"", "", "", context, "", "", "", "", "", Collections.emptyMap(),
-			"", "", "", "");
+			"", "", "", context, "", "", "", "", "", Collections.emptyMap(), "",
+			"", "", "");
 	}
 
 	private AnalyticsEvent _createTestAnalyticsEvent(
@@ -216,8 +216,8 @@ public class EventIngestionPipelineTest {
 		context.put("userAgent", userAgent);
 
 		return _createAnalyticsEvent(
-			"", "", "", context, "", "", "", "", "", Collections.emptyMap(),
-			"", "", "", "");
+			"", "", "", context, "", "", "", "", "", Collections.emptyMap(), "",
+			"", "", "");
 	}
 
 	private String _readResourceAsString(String resourcePath)
