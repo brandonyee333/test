@@ -22,7 +22,7 @@ import com.google.cloud.bigquery.Table;
 import com.google.cloud.bigquery.TableId;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
-import com.liferay.osb.asah.test.util.annotation.BigQueryResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.io.File;
 
@@ -43,7 +43,7 @@ import org.springframework.test.context.TestContext;
 /**
  * @author Leslie Wong
  */
-public class OSBAsahBigQueryTestExecutionListener
+public class OSBAsahBQSQLTestExecutionListener
 	extends BaseOSBAsahTestExecutionListener {
 
 	@Override
@@ -52,11 +52,10 @@ public class OSBAsahBigQueryTestExecutionListener
 			return;
 		}
 
-		BigQueryResource bigQueryResource =
-			AnnotatedElementUtils.getMergedAnnotation(
-				testContext.getTestMethod(), BigQueryResource.class);
+		BQSQLResource bqSQLResource = AnnotatedElementUtils.getMergedAnnotation(
+			testContext.getTestMethod(), BQSQLResource.class);
 
-		if (bigQueryResource != null) {
+		if (bqSQLResource != null) {
 			StringBuilder sb = new StringBuilder();
 
 			Page<Table> tablePage = _bigQuery.listTables("test");
@@ -97,19 +96,19 @@ public class OSBAsahBigQueryTestExecutionListener
 
 		Class<?> clazz = testContext.getTestClass();
 
-		BigQueryResource[] bigQueryResources = clazz.getAnnotationsByType(
-			BigQueryResource.class);
+		BQSQLResource[] bqSQLResources = clazz.getAnnotationsByType(
+			BQSQLResource.class);
 
-		if (bigQueryResources.length == 0) {
+		if (bqSQLResources.length == 0) {
 			return;
 		}
 
-		if (bigQueryResources.length > 1) {
+		if (bqSQLResources.length > 1) {
 			throw new IllegalArgumentException(
-				"Only 1 BigQueryResource annotation allowed");
+				"Only 1 BQSQLResource annotation allowed");
 		}
 
-		_prepareTables(clazz, bigQueryResources[0]);
+		_prepareTables(clazz, bqSQLResources[0]);
 	}
 
 	@Override
@@ -118,12 +117,11 @@ public class OSBAsahBigQueryTestExecutionListener
 			return;
 		}
 
-		BigQueryResource bigQueryResource =
-			AnnotatedElementUtils.getMergedAnnotation(
-				testContext.getTestMethod(), BigQueryResource.class);
+		BQSQLResource bqSQLResource = AnnotatedElementUtils.getMergedAnnotation(
+			testContext.getTestMethod(), BQSQLResource.class);
 
-		if (bigQueryResource != null) {
-			_prepareTables(testContext.getTestClass(), bigQueryResource);
+		if (bqSQLResource != null) {
+			_prepareTables(testContext.getTestClass(), bqSQLResource);
 		}
 	}
 
@@ -135,12 +133,12 @@ public class OSBAsahBigQueryTestExecutionListener
 		}
 	}
 
-	private String _getResourcePath(BigQueryResource bigQueryResource) {
-		if (StringUtils.startsWith(bigQueryResource.resourcePath(), "/")) {
-			return bigQueryResource.resourcePath();
+	private String _getResourcePath(BQSQLResource bqSQLResource) {
+		if (StringUtils.startsWith(bqSQLResource.resourcePath(), "/")) {
+			return bqSQLResource.resourcePath();
 		}
 
-		return "dependencies/" + bigQueryResource.resourcePath();
+		return "dependencies/" + bqSQLResource.resourcePath();
 	}
 
 	private boolean _isTestExecutionListenerEnabled() {
@@ -151,13 +149,12 @@ public class OSBAsahBigQueryTestExecutionListener
 		return false;
 	}
 
-	private void _prepareTables(
-			Class<?> clazz, BigQueryResource bigQueryResource)
+	private void _prepareTables(Class<?> clazz, BQSQLResource bqSQLResource)
 		throws Exception {
 
-		if (!Objects.equals(bigQueryResource.resourcePath(), "")) {
+		if (!Objects.equals(bqSQLResource.resourcePath(), "")) {
 			ClassPathResource classPathResource = new ClassPathResource(
-				_getResourcePath(bigQueryResource), clazz);
+				_getResourcePath(bqSQLResource), clazz);
 
 			File file = classPathResource.getFile();
 
