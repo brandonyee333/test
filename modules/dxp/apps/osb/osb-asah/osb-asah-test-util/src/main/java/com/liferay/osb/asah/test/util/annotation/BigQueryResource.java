@@ -24,8 +24,10 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface SQLResources {
+public @interface BigQueryResource {
 
-	public SQLResource[] value();
+	public String dataSource() default "";
+
+	public String resourcePath() default "";
 
 }
