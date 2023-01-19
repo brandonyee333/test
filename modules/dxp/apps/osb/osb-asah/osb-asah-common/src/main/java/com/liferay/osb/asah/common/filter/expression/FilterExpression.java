@@ -80,7 +80,7 @@ public class FilterExpression {
 		Set<String> includedTableNames) {
 
 		Assert.notNull(
-			filterExpressionString, "The filter expression string is null");
+			filterExpressionString, "Filter expression string is null");
 
 		_filterType = filterType;
 		_filterTypeStringConverterHelpers = filterTypeStringConverterHelpers;
