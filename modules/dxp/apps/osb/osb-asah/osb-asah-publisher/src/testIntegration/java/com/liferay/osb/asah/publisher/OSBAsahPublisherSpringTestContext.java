@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.publisher;
 
 import com.liferay.osb.asah.publisher.spring.OSBAsahPublisherSpringBootApplication;
+import com.liferay.osb.asah.test.util.spring.OSBAsahBQSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
@@ -41,6 +42,7 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 	value = {
 		DependencyInjectionTestExecutionListener.class,
 		MockitoTestExecutionListener.class,
+		OSBAsahBQSQLTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class,
 		ResetMocksTestExecutionListener.class,
