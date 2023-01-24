@@ -303,7 +303,11 @@ public class FilterStringToConditionConverter {
 					Long.valueOf(StringUtil.unquote(arguments.get(2)))));
 		}
 		else if (stringFunction.equalsIgnoreCase("contains")) {
-			condition = field.containsIgnoreCase(value);
+			condition = DSL.lower(
+				DSL.field(fieldName, String.class)
+			).like(
+				DSL.lower(value)
+			);
 		}
 		else if (stringFunction.equalsIgnoreCase("endsWith")) {
 			condition = field.similarTo("%" + value);
