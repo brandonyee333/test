@@ -17,12 +17,13 @@ package com.liferay.osb.asah.backend.repository.impl;
 import com.liferay.osb.asah.backend.repository.PageReferrerRepository;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
+import com.liferay.osb.asah.common.util.GetterUtil;
 
 import java.math.BigDecimal;
 
 import java.time.ZoneId;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jooq.Condition;
@@ -45,8 +46,6 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		String canonicalUrl, Long channelId, TimeRange timeRange,
 		ZoneId zoneId) {
 
-		Map<String, Double> result = new LinkedHashMap<>();
-
 		Field<String> acquisitionChannelField = DSL.field(
 			"acquisitionChannel", String.class);
 
@@ -56,35 +55,31 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			"accesses"
 		);
 
-		dslContext.select(
-			acquisitionChannelField, accessesField
-		).from(
-			"BQPageReferrers"
-		).where(
-			_createWhereClauseCondition(
-				canonicalUrl, channelId, timeRange, zoneId)
-		).groupBy(
-			acquisitionChannelField
-		).orderBy(
-			accessesField
-		).fetch(
-		).forEach(
-			record -> {
-				BigDecimal accessesBigDecimal = record.value2();
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			dslContext.select(
+				acquisitionChannelField, accessesField
+			).from(
+				"BQPageReferrers"
+			).where(
+				_createWhereClauseCondition(
+					canonicalUrl, channelId, timeRange, zoneId)
+			).groupBy(
+				acquisitionChannelField
+			).orderBy(
+				accessesField
+			),
+			value -> {
+				BigDecimal bigDecimalValue = (BigDecimal)value;
 
-				result.put(record.value1(), accessesBigDecimal.doubleValue());
-			}
-		);
-
-		return result;
+				return bigDecimalValue.doubleValue();
+			});
 	}
 
 	@Override
 	public Map<String, Double> getPageReferrerAccesses(
 		String canonicalUrl, Long channelId, TimeRange timeRange,
 		ZoneId zoneId) {
-
-		Map<String, Double> result = new LinkedHashMap<>();
 
 		Field<BigDecimal> accessesField = DSL.sum(
 			DSL.field("access", Long.class)
@@ -94,35 +89,33 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 		Field<String> referrerField = DSL.field("referrer", String.class);
 
-		dslContext.select(
-			accessesField, referrerField
-		).from(
-			"BQPageReferrers"
-		).where(
-			DSL.and(
-				_createWhereClauseCondition(
-					canonicalUrl, channelId, timeRange, zoneId),
-				DSL.field(
-					"referrer"
-				).notEqual(
-					""
-				))
-		).groupBy(
-			referrerField
-		).orderBy(
-			accessesField
-		).limit(
-			3
-		).fetch(
-		).forEach(
-			record -> {
-				BigDecimal accessesBigDecimal = record.value1();
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			dslContext.select(
+				referrerField, accessesField
+			).from(
+				"BQPageReferrers"
+			).where(
+				DSL.and(
+					_createWhereClauseCondition(
+						canonicalUrl, channelId, timeRange, zoneId),
+					DSL.field(
+						"referrer"
+					).notEqual(
+						""
+					))
+			).groupBy(
+				referrerField
+			).orderBy(
+				accessesField
+			).limit(
+				3
+			),
+			value -> {
+				BigDecimal bigDecimalValue = (BigDecimal)value;
 
-				result.put(record.value2(), accessesBigDecimal.doubleValue());
-			}
-		);
-
-		return result;
+				return bigDecimalValue.doubleValue();
+			});
 	}
 
 	@Override
@@ -130,8 +123,6 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		getSocialPageReferrerAccessesByReferrerCanonicalUrl(
 			String canonicalUrl, Long channelId, Pageable pageable,
 			TimeRange timeRange, ZoneId zoneId) {
-
-		Map<String, Double> result = new LinkedHashMap<>();
 
 		Field<String> referrerCanonicalUrl = DSL.field(
 			"referrerCanonicalUrl", String.class);
@@ -142,47 +133,43 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			"accesses"
 		);
 
-		dslContext.select(
-			referrerCanonicalUrl, accessesField
-		).from(
-			"BQPageReferrers"
-		).where(
-			DSL.and(
-				_createWhereClauseCondition(
-					canonicalUrl, channelId, timeRange, zoneId),
-				DSL.not(
-					DSL.field(
-						"acquisitionChannel"
-					).in(
-						null, "organic", "social"
-					)),
-				referrerCanonicalUrl.notEqual(""))
-		).groupBy(
-			referrerCanonicalUrl
-		).orderBy(
-			accessesField
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).forEach(
-			record -> {
-				BigDecimal accessesBigDecimal = record.value2();
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			dslContext.select(
+				referrerCanonicalUrl, accessesField
+			).from(
+				"BQPageReferrers"
+			).where(
+				DSL.and(
+					_createWhereClauseCondition(
+						canonicalUrl, channelId, timeRange, zoneId),
+					DSL.not(
+						DSL.field(
+							"acquisitionChannel"
+						).in(
+							null, "organic", "social"
+						)),
+					referrerCanonicalUrl.notEqual(""))
+			).groupBy(
+				referrerCanonicalUrl
+			).orderBy(
+				accessesField
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			),
+			value -> {
+				BigDecimal bigDecimalValue = (BigDecimal)value;
 
-				result.put(record.value1(), accessesBigDecimal.doubleValue());
-			}
-		);
-
-		return result;
+				return bigDecimalValue.doubleValue();
+			});
 	}
 
 	@Override
 	public Map<String, Double> getSocialPageReferrerAccessesByReferrerHost(
 		String canonicalUrl, Long channelId, Pageable pageable,
 		TimeRange timeRange, ZoneId zoneId) {
-
-		Map<String, Double> result = new LinkedHashMap<>();
 
 		Field<String> referrerHostField = DSL.field(
 			"referrerHost", String.class);
@@ -193,39 +180,37 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			"accesses"
 		);
 
-		dslContext.select(
-			referrerHostField, accessesField
-		).from(
-			"BQPageReferrers"
-		).where(
-			DSL.and(
-				_createWhereClauseCondition(
-					canonicalUrl, channelId, timeRange, zoneId),
-				DSL.not(
-					DSL.field(
-						"acquisitionChannel"
-					).in(
-						null, "organic", "social"
-					)),
-				referrerHostField.notEqual(""))
-		).groupBy(
-			referrerHostField
-		).orderBy(
-			accessesField
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).forEach(
-			record -> {
-				BigDecimal accessesBigDecimal = record.value2();
+		return _queryExecutor.queryForMap(
+			GetterUtil::getString,
+			dslContext.select(
+				referrerHostField, accessesField
+			).from(
+				"BQPageReferrers"
+			).where(
+				DSL.and(
+					_createWhereClauseCondition(
+						canonicalUrl, channelId, timeRange, zoneId),
+					DSL.not(
+						DSL.field(
+							"acquisitionChannel"
+						).in(
+							null, "organic", "social"
+						)),
+					referrerHostField.notEqual(""))
+			).groupBy(
+				referrerHostField
+			).orderBy(
+				accessesField
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			),
+			value -> {
+				BigDecimal bigDecimalValue = (BigDecimal)value;
 
-				result.put(record.value1(), accessesBigDecimal.doubleValue());
-			}
-		);
-
-		return result;
+				return bigDecimalValue.doubleValue();
+			});
 	}
 
 	@Autowired
@@ -255,5 +240,8 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 					timeRange.getEndLocalDateTime(), zoneId)
 			));
 	}
+
+	@Autowired
+	private QueryExecutor _queryExecutor;
 
 }
