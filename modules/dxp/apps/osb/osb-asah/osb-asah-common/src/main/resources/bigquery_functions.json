@@ -1,4 +1,7 @@
 {
+	"acquisitionChannel": {
+		"path": "function_acquisition_channel.sql"
+	},
 	"searchTerm": {
 		"path": "function_search_term.sql"
 	}
