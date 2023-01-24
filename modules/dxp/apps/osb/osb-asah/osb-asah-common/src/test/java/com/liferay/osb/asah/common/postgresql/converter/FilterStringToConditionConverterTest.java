@@ -69,10 +69,10 @@ public class FilterStringToConditionConverterTest {
 	@Test
 	public void testContainsOperator() throws Exception {
 		_assertEquals(
-			DSL.field(
-				"column1"
-			).containsIgnoreCase(
-				"value1"
+			DSL.lower(
+				DSL.field("column1", String.class)
+			).like(
+				DSL.lower("value1")
 			),
 			"contains(column1, 'value1')");
 	}
@@ -140,10 +140,10 @@ public class FilterStringToConditionConverterTest {
 						42L
 					),
 					DSL.or(
-						DSL.field(
-							"column2"
-						).containsIgnoreCase(
-							"escaped'quote)"
+						DSL.lower(
+							DSL.field("column2", String.class)
+						).like(
+							DSL.lower("escaped'quote)")
 						),
 						DSL.and(
 							DSL.field(
@@ -367,10 +367,10 @@ public class FilterStringToConditionConverterTest {
 	public void testNotContainsOperator() throws Exception {
 		_assertEquals(
 			DSL.not(
-				DSL.field(
-					"column1"
-				).containsIgnoreCase(
-					"value1"
+				DSL.lower(
+					DSL.field("column1", String.class)
+				).like(
+					DSL.lower("value1")
 				)),
 			"not contains(column1, 'value1')");
 	}
