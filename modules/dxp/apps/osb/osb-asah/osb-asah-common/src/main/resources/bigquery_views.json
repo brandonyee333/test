@@ -27,5 +27,8 @@
 	},
 	"pagehourly": {
 		"path": "page_hourly.sql"
+	},
+	"pagereferrers": {
+		"path": "page_referrers.sql"
 	}
 }
