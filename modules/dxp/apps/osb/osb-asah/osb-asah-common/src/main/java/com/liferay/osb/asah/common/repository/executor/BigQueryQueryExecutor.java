@@ -314,10 +314,10 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		"BlogDaily", "BlogHourly", "BQEvent", "BQEventProperty",
 		"BQFieldMapping", "BQIdentity", "BQIdentityActivity",
 		"BQIdentityChannel", "BQIdentityInterestScore", "BQIndividual",
-		"BQMembership", "BQOrder", "BQSession", "CustomAssetDaily",
-		"CustomAssetHourly", "DocumentLibraryDaily", "DocumentLibraryHourly",
-		"FormDaily", "FormHourly", "JournalDaily", "JournalHourly", "PageDaily",
-		"PageHourly", "SEARCH_TERM"
+		"BQMembership", "BQOrder", "BQPageReferrers", "BQSession",
+		"CustomAssetDaily", "CustomAssetHourly", "DocumentLibraryDaily",
+		"DocumentLibraryHourly", "FormDaily", "FormHourly", "JournalDaily",
+		"JournalHourly", "PageDaily", "PageHourly", "SEARCH_TERM"
 	};
 
 	private static final Log _log = LogFactory.getLog(
