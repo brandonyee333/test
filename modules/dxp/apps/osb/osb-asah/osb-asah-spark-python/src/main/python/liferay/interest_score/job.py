@@ -38,6 +38,8 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		self._max_days_delta = 60
 		self._minimum_logscore_threshold = 0.01
 		self._user_keyword_weight = 2.0
+		self._decay_threshold_weight = self._interest_score_decay_rate ** 14
+		self._interest_score_minimum_threshold = 0.1
 
 		findspark.init()
 
@@ -113,6 +115,18 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		return sum(values, F.lit(0))
 
+	def _30_day_sum(self, column, window):
+		values = list()
+
+		offsets = [i for i in range(0, 30)]
+
+		for i in offsets:
+			values.append(
+				F.coalesce(F.lag(column, i).over(window), F.lit(0))
+			)
+
+		return sum(values, F.lit(0))
+
 	def run(self):
 		analytics_events_data_frame = self.spark_session.table(
 			'analytics_events'
@@ -134,10 +148,36 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 				analytics_events_with_keywords_data_frame
 			)
 
+# Date Range: 2022-11-24 to 2023-01-22
+		print('Writing keyword_count_with_totals_data_frame to BQ')
+
+		keyword_count_with_totals_data_frame.write.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.keyword_count_with_totals_data_frame'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
+
 		user_keyword_counts_with_totals_data_frame = \
 			self._get_user_keyword_count_with_totals_data_frame(
 				analytics_events_with_keywords_data_frame
 			)
+
+# Date Range: 2022-11-24 to 2023-01-22
+		print('Writing user_keyword_counts_with_totals_data_frame to BQ')
+
+		keyword_count_with_totals_data_frame.write.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.user_keyword_counts_with_totals_data_frame'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
 
 		daily_logscores_data_frame = \
 			user_keyword_counts_with_totals_data_frame.join(
@@ -156,6 +196,83 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			)
 		)
 
+		# Attempting to add Thresholds to daily_logscores_data_frame
+# Date Range: 2022-11-24 to 2023-01-22
+		print('Writing daily_logscores_data_frame to BQ')
+
+		daily_logscores_data_frame.write.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.daily_logscores_zero'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
+
+		# Generate Thresholds Table
+		# The sums of the totalView for each keyword, and each
+
+		# Only get the dates that are within 30 days of the current date
+
+		#thresholds_data_frame = daily_logscores_data_frame.withColumn(
+	#		'keyword_threshold',
+	#	)
+	#	user_total_keyword_count
+
+		print('Writing keyword_count_with_totals_data_frame to BQ')
+
+		temp_data_frame_writer = keyword_count_with_totals_data_frame.write
+
+		temp_data_frame_writer.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.keyword_count_with_totals'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
+
+		# Attempting to create Threshold Tables
+		print('Atempting to calculate threshold_data_frame')
+# Date Range: 2022-11-24 to 2023-01-22
+		threshold_data_frame = keyword_count_with_totals_data_frame.select(
+			'event_date', 'keyword', 'keyword_count', 'total_keywords_count'
+		).fillna(
+			{'keyword_count': 0,
+			 'total_keywords_count': 0}
+		).withColumn(
+			'keyword_view_count_30_days',
+			self._30_day_sum(
+				F.col('keyword_count'),
+				Window.partitionBy('keyword').orderBy('event_date')
+			)
+		).withColumn(
+			'all_keyword_views_30_days',
+			self._30_day_sum(
+				F.col('total_keywords_count'),
+				Window.partitionBy('keyword').orderBy('event_date')
+			)
+		).withColumn(
+			'threshold_score',
+			F.log(10.0, F.col('all_keyword_views_30_days') / F.col('keyword_view_count_30_days')) * self._decay_threshold_weight
+		)
+
+		print('Writing threshold_data_frame to BQ')
+
+		temp_data_frame_writer = threshold_data_frame.write
+
+		temp_data_frame_writer.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.threshold_data_frame'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
+
 		date_range_data_frame = self.spark_session.sql(
 			"SELECT sequence(to_date('{}'), to_date('{}'), interval 1 day) "
 			"as event_date".format(
@@ -170,8 +287,36 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 				F.col('userId'), F.col('keyword')
 			).distinct()
 
+		print('Writing distinct_user_id_keyword_data_frame to BQ')
+
+		temp_data_frame_writer = distinct_user_id_keyword_data_frame.write
+
+		temp_data_frame_writer.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.distinct_user_id_keyword_data_frame'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
+
 		date_user_id_keyword_data_frame = date_range_data_frame.crossJoin(
 			distinct_user_id_keyword_data_frame)
+
+		print('Writing date_user_id_keyword_data_frame to BQ')
+
+		temp_data_frame_writer = date_user_id_keyword_data_frame.write
+
+		temp_data_frame_writer.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.date_user_id_keyword_data_frame'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
 
 		expanded_dates_logscore_data_frame = \
 			date_user_id_keyword_data_frame.join(
@@ -179,6 +324,22 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 				['event_date', 'userId', 'keyword'],
 				how='left'
 			)
+
+		# DEBUG HERE: THIS IS WHERE THINGS GET WEIRD
+
+		print('Writing expanded_dates_logscore_data_frame to BQ')
+
+		temp_data_frame_writer = expanded_dates_logscore_data_frame.write
+
+		temp_data_frame_writer.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.expanded_dates_logscore_data_frame'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
 
 		offsets = [i for i in range(0, self._max_days_delta)]
 		weights = [
@@ -205,6 +366,42 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			)
 		)
 
+		print('Writing pre_interest_score_data_frame to BQ')
+
+		temp_data_frame_writer = interest_score_data_frame.write
+
+		temp_data_frame_writer.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.pre_interest_score_data_frame'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
+
+		interest_score_data_frame = interest_score_data_frame.join(threshold_data_frame,
+									   ['event_date', 'keyword'], 'left').fillna(
+			{'threshold_score': self._interest_score_minimum_threshold}
+		)
+
+		print('Writing updated interest_score_data_frame to BQ')
+
+		temp_data_frame_writer = interest_score_data_frame.write
+
+		temp_data_frame_writer.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.interest_score_data_frame'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
+
+		interest_score_data_frame = interest_score_data_frame.withColumn('interested',
+											 F.col('interest_score') >= F.col('threshold_score'))
+
 		interest_score_data_frame.createOrReplaceTempView(
 			'individual_interest_score')
 
@@ -213,7 +410,8 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 				event_date as recordedDate,
 				userId as identityId,
 				keyword,
-				interest_score as interestScore
+				interest_score as interestScore,
+				interested
 			FROM 
 				individual_interest_score
 		""")
