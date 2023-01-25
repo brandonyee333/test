@@ -4,63 +4,63 @@
 		"dateModified": "2019-02-11T20:26:53.218Z",
 		"dateRemoved": null,
 		"id": "338511398389279305",
+		"identityId": "338486041327913339",
 		"segmentId": "338511398116723457",
-		"status": "ACTIVE",
-		"userId": "338486041327913339"
+		"status": "ACTIVE"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.218Z",
 		"dateModified": "2019-02-11T20:26:53.218Z",
 		"dateRemoved": "2019-02-11T20:26:53.218Z",
 		"id": "338511398389279306",
+		"identityId": "338486041327913339",
 		"segmentId": "338511398116723457",
-		"status": "INACTIVE",
-		"userId": "338486041327913339"
+		"status": "INACTIVE"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.215Z",
 		"dateModified": "2019-02-11T20:26:53.215Z",
 		"dateRemoved": null,
 		"id": "338511398389279307",
+		"identityId": "338486037253283140",
 		"individualId": "abc338511398389279307",
 		"segmentId": "338511398116723458",
-		"status": "ACTIVE",
-		"userId": "338486037253283140"
+		"status": "ACTIVE"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.218Z",
 		"dateModified": "2019-02-11T20:26:53.218Z",
 		"dateRemoved": null,
 		"id": "338511398389279308",
+		"identityId": "338486041327913341",
 		"segmentId": "338511398116723458",
-		"status": "ACTIVE",
-		"userId": "338486041327913341"
+		"status": "ACTIVE"
 	},
 	{
 		"dateCreated": "2019-02-11T20:26:53.221Z",
 		"dateModified": "2019-02-11T20:27:36.615Z",
 		"dateRemoved": "2019-02-11T20:27:36.615Z",
 		"id": "338511398389279310",
+		"identityId": "338486039084349956",
 		"segmentId": "338511398116723458",
-		"status": "INACTIVE",
-		"userId": "338486039084349956"
+		"status": "INACTIVE"
 	},
 	{
 		"dateCreated": "2019-02-11T20:27:18.882Z",
 		"dateModified": "2019-02-11T20:27:18.882Z",
 		"dateRemoved": null,
 		"id": "338511452214945319",
+		"identityId": "338486044983457832",
 		"segmentId": "338511451975440187",
-		"status": "ACTIVE",
-		"userId": "338486044983457832"
+		"status": "ACTIVE"
 	},
 	{
 		"dateCreated": "2019-02-11T20:27:18.892Z",
 		"dateModified": "2019-02-11T20:27:47.590Z",
 		"dateRemoved": "2019-02-11T20:27:47.590Z",
 		"id": "338511452214945320",
+		"identityId": "338486040159673751",
 		"segmentId": "338511451975440187",
-		"status": "INACTIVE",
-		"userId": "338486040159673751"
+		"status": "INACTIVE"
 	}
 ]

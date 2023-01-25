@@ -542,7 +542,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field(
 						"BQIdentityActivity.identityId"
 					).eq(
-						DSL.field("BQMembership.userId")
+						DSL.field("BQMembership.identityId")
 					),
 					DSL.field(
 						"BQMembership.segmentId", Long.class
