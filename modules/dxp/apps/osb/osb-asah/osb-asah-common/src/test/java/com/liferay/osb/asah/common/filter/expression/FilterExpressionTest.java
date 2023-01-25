@@ -32,6 +32,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +45,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jooq.Condition;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 
 import org.junit.jupiter.api.Assertions;
@@ -518,6 +520,313 @@ public class FilterExpressionTest {
 				"ae549a89-a2f4-4167-858c-e6f23f51beee"
 			),
 			_testFilters.get("testFreestyle11"));
+	}
+
+	@Test
+	public void testFreestyle12() {
+		Field userIdField = DSL.field("Event.userId");
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		_assertEquals(
+			DSL.exists(
+				DSL.select(
+					userIdField
+				).from(
+					DSL.table(
+						"BQEvent"
+					).as(
+						"Event"
+					)
+				).where(
+					DSL.field(
+						"Event.applicationId"
+					).eq(
+						"Blog"
+					).and(
+						DSL.field(
+							"Event.eventId"
+						).eq(
+							"blogViewed"
+						)
+					).and(
+						DSL.field(
+							"Event.id"
+						).eq(
+							"370994124094927024"
+						)
+					).and(
+						DSL.field(
+							"Event.dayDate"
+						).gt(
+							localDateTime.minus(1, ChronoUnit.DAYS)
+						)
+					).and(
+						userIdField.eq(DSL.field("Identity.id"))
+					)
+				).groupBy(
+					userIdField
+				).having(
+					DSL.count(
+						userIdField
+					).ge(
+						1
+					)
+				)),
+			_testFilters.get("testFreestyle12"),
+			_filterTypeFilterStringConverterHelpers,
+			new HashSet<>(Arrays.asList("Event", "Identity")));
+	}
+
+	@Test
+	public void testFreestyle13() {
+		Field userIdField = DSL.field("Event.userId");
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		_assertEquals(
+			DSL.exists(
+				DSL.select(
+					userIdField
+				).from(
+					DSL.table(
+						"BQEvent"
+					).as(
+						"Event"
+					)
+				).where(
+					DSL.field(
+						"Event.applicationId"
+					).eq(
+						"Form"
+					).and(
+						DSL.field(
+							"Event.eventId"
+						).eq(
+							"formSubmitted"
+						)
+					).and(
+						DSL.field(
+							"Event.id"
+						).eq(
+							"519356017509996745"
+						)
+					).and(
+						DSL.field(
+							"Event.dayDate"
+						).gt(
+							localDateTime.minus(1, ChronoUnit.DAYS)
+						)
+					).and(
+						userIdField.eq(DSL.field("Identity.id"))
+					)
+				).groupBy(
+					userIdField
+				).having(
+					DSL.count(
+						userIdField
+					).ge(
+						1
+					)
+				)
+			).and(
+				DSL.exists(
+					DSL.select(
+						userIdField
+					).from(
+						DSL.table(
+							"BQEvent"
+						).as(
+							"Event"
+						)
+					).where(
+						DSL.field(
+							"Event.applicationId"
+						).eq(
+							"Form"
+						).and(
+							DSL.field(
+								"Event.eventId"
+							).eq(
+								"formSubmitted"
+							)
+						).and(
+							DSL.field(
+								"Event.id"
+							).eq(
+								"499704442662154327"
+							)
+						).and(
+							DSL.field(
+								"Event.dayDate"
+							).gt(
+								localDateTime.minus(1, ChronoUnit.DAYS)
+							)
+						).and(
+							userIdField.eq(DSL.field("Identity.id"))
+						)
+					).groupBy(
+						userIdField
+					).having(
+						DSL.count(
+							userIdField
+						).ge(
+							1
+						)
+					))
+			),
+			_testFilters.get("testFreestyle13"),
+			_filterTypeFilterStringConverterHelpers,
+			new HashSet<>(Arrays.asList("Event", "Identity")));
+	}
+
+	@Test
+	public void testFreestyle14() {
+		Field userIdField = DSL.field("Event.userId");
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		_assertEquals(
+			DSL.field(
+				"Individual.address"
+			).eq(
+				"address"
+			).and(
+				DSL.or(
+					DSL.field(
+						"Individual.jobTitle"
+					).eq(
+						"jobtitle"
+					),
+					DSL.exists(
+						DSL.select(
+							userIdField
+						).from(
+							DSL.table(
+								"BQEvent"
+							).as(
+								"Event"
+							)
+						).where(
+							DSL.field(
+								"Event.applicationId"
+							).eq(
+								"Page"
+							).and(
+								DSL.field(
+									"Event.eventId"
+								).eq(
+									"pageViewed"
+								)
+							).and(
+								DSL.field(
+									"Event.id"
+								).eq(
+									"370983685501627145"
+								)
+							).and(
+								DSL.field(
+									"Event.dayDate"
+								).gt(
+									localDateTime.minus(1, ChronoUnit.DAYS)
+								)
+							).and(
+								userIdField.eq(DSL.field("Identity.id"))
+							)
+						).groupBy(
+							userIdField
+						).having(
+							DSL.count(
+								userIdField
+							).ge(
+								1
+							)
+						)))
+			).and(
+				DSL.field(
+					"Individual.email"
+				).eq(
+					"email@test.com"
+				)
+			),
+			_testFilters.get("testFreestyle14"),
+			_filterTypeFilterStringConverterHelpers,
+			new HashSet<>(Arrays.asList("Event", "Identity", "Individual")));
+	}
+
+	@Test
+	public void testFreestyle15() {
+		Field userIdField = DSL.field("Event.userId");
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		_assertEquals(
+			DSL.field(
+				"Individual.address"
+			).eq(
+				"address"
+			).and(
+				DSL.or(
+					DSL.field(
+						"Individual.jobTitle"
+					).eq(
+						"jobtitle"
+					),
+					DSL.not(
+						DSL.exists(
+							DSL.select(
+								userIdField
+							).from(
+								DSL.table(
+									"BQEvent"
+								).as(
+									"Event"
+								)
+							).where(
+								DSL.field(
+									"Event.applicationId"
+								).eq(
+									"Page"
+								).and(
+									DSL.field(
+										"Event.eventId"
+									).eq(
+										"pageViewed"
+									)
+								).and(
+									DSL.field(
+										"Event.id"
+									).eq(
+										"370983685501627145"
+									)
+								).and(
+									DSL.field(
+										"Event.dayDate"
+									).gt(
+										localDateTime.minus(1, ChronoUnit.DAYS)
+									)
+								).and(
+									userIdField.eq(DSL.field("Identity.id"))
+								)
+							).groupBy(
+								userIdField
+							).having(
+								DSL.count(
+									userIdField
+								).ge(
+									1
+								)
+							))))
+			).and(
+				DSL.field(
+					"Individual.email"
+				).eq(
+					"email@test.com"
+				)
+			),
+			_testFilters.get("testFreestyle15"),
+			_filterTypeFilterStringConverterHelpers,
+			new HashSet<>(Arrays.asList("Event", "Identity", "Individual")));
 	}
 
 	@Test
