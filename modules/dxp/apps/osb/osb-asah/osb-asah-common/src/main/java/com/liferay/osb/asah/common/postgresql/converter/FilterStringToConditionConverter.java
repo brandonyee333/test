@@ -306,7 +306,7 @@ public class FilterStringToConditionConverter {
 			condition = DSL.lower(
 				DSL.field(fieldName, String.class)
 			).like(
-				DSL.lower(value)
+				DSL.lower("%" + value + "%")
 			);
 		}
 		else if (stringFunction.equalsIgnoreCase("endsWith")) {
