@@ -174,7 +174,7 @@ public class BQIdentityRepositoryImpl
 				"Identity"
 			));
 
-		JoinCondition joinCondition = FilterExpression.joinConvert(
+		JoinCondition joinCondition = FilterExpression.convert(
 			filterString, filterTypeFilterStringConverterHelpers);
 
 		selectJoinStep = joinFunction.apply(
