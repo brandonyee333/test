@@ -123,6 +123,12 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link FilterExpressionParser#filterByCountExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFilterByCountExpression(FilterExpressionParser.FilterByCountExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -218,4 +224,11 @@ public interface FilterExpressionVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToFilterByCountExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToFilterByCountExpression(FilterExpressionParser.ToFilterByCountExpressionContext ctx);
 }

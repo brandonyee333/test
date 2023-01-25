@@ -200,6 +200,18 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFilterByCountExpression(FilterExpressionParser.FilterByCountExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFilterByCountExpression(FilterExpressionParser.FilterByCountExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunctionCallExpression(FilterExpressionParser.FunctionCallExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -363,6 +375,18 @@ public class FilterExpressionBaseListener implements FilterExpressionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterToFilterByCountExpression(FilterExpressionParser.ToFilterByCountExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitToFilterByCountExpression(FilterExpressionParser.ToFilterByCountExpressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

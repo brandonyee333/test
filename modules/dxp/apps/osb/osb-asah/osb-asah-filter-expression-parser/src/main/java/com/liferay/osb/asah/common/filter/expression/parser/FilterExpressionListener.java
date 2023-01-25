@@ -188,6 +188,16 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 */
 	void exitFilterExpression(FilterExpressionParser.FilterExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link FilterExpressionParser#filterByCountExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFilterByCountExpression(FilterExpressionParser.FilterByCountExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FilterExpressionParser#filterByCountExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFilterByCountExpression(FilterExpressionParser.FilterByCountExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FilterExpressionParser#functionCallExpression}.
 	 * @param ctx the parse tree
 	 */
@@ -351,4 +361,16 @@ public interface FilterExpressionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitToFilterExpression(FilterExpressionParser.ToFilterExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ToFilterByCountExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void enterToFilterByCountExpression(FilterExpressionParser.ToFilterByCountExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ToFilterByCountExpression}
+	 * labeled alternative in {@link FilterExpressionParser#logicalTerm}.
+	 * @param ctx the parse tree
+	 */
+	void exitToFilterByCountExpression(FilterExpressionParser.ToFilterByCountExpressionContext ctx);
 }
