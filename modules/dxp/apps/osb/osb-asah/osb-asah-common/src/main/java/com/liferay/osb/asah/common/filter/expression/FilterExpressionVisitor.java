@@ -120,15 +120,67 @@ public class FilterExpressionVisitor
 	}
 
 	@Override
+	public Object visitFilterByCountExpression(
+		FilterExpressionParser.FilterByCountExpressionContext
+			filterExpressionContext) {
+
+		_includedTableNames.add("Identity");
+
+		String filter = _parseFilterExpression(filterExpressionContext.filter);
+
+		FilterExpression filterExpression = new FilterExpression(
+			filter.substring(1, filter.length() - 1),
+			filterExpressionContext.filterType.getText(),
+			_filterTypeFilterStringConverterHelpers, _includedTableNames);
+
+		String operator = filterExpressionContext.operator.getText();
+		Integer value = Integer.parseInt(
+			filterExpressionContext.value.getText());
+		Field userIdField = DSL.field("Event.userId");
+
+		Condition havingCondition = null;
+
+		if (Objects.equals(StringUtil.unquote(operator), "ge")) {
+			havingCondition = DSL.count(
+				userIdField
+			).ge(
+				value
+			);
+		}
+		else {
+			havingCondition = DSL.count(
+				userIdField
+			).le(
+				value
+			);
+		}
+
+		return DSL.exists(
+			DSL.select(
+				userIdField
+			).from(
+				DSL.table(
+					"BQEvent"
+				).as(
+					"Event"
+				)
+			).where(
+				filterExpression.getCondition()
+			).and(
+				userIdField.eq(DSL.field("Identity.id"))
+			).groupBy(
+				userIdField
+			).having(
+				havingCondition
+			));
+	}
+
+	@Override
 	public Object visitFilterExpression(
 		FilterExpressionParser.FilterExpressionContext
 			filterExpressionContext) {
 
-		String filter = filterExpressionContext.filter.getText();
-
-		filter = filter.replaceAll("\\s''", " '");
-		filter = filter.replaceAll("''\\s", "' ");
-		filter = filter.replaceAll("''\\)", "')");
+		String filter = _parseFilterExpression(filterExpressionContext.filter);
 
 		FilterExpression filterExpression = new FilterExpression(
 			filter.substring(1, filter.length() - 1),
@@ -506,6 +558,16 @@ public class FilterExpressionVisitor
 		catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
+	}
+
+	private String _parseFilterExpression(Token filterToken) {
+		String filter = filterToken.getText();
+
+		filter = filter.replaceAll("\\s''", " '");
+		filter = filter.replaceAll("''\\s", "' ");
+		filter = filter.replaceAll("''\\)", "')");
+
+		return filter;
 	}
 
 	private <T> T _visitChild(
