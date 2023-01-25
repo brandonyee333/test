@@ -50,7 +50,34 @@ public class ActivitiesFilterStringConverterHelper
 		String fieldName, String operator, boolean processString,
 		String valueString) {
 
-		if (fieldName.equals("channelId") || fieldName.equals("ownerId")) {
+		if (fieldName.equals("Event.activityKey")) {
+			String[] values = valueString.split("#");
+
+			Field<String> applicationIdField = DSL.field(
+				"Event.applicationId", String.class);
+			Field<String> eventIdField = DSL.field(
+				"Event.eventId", String.class);
+			Field<String> idField = DSL.field("Event.id", String.class);
+
+			if (operator.equals("eq")) {
+				Condition condition = applicationIdField.eq(values[0]);
+
+				condition = condition.and(eventIdField.eq(values[1]));
+
+				return condition.and(idField.eq(values[2]));
+			}
+
+			Condition condition = applicationIdField.ne(values[0]);
+
+			condition = condition.and(eventIdField.ne(values[1]));
+
+			return condition.and(idField.ne(values[2]));
+		}
+
+		if (fieldName.equals("channelId") ||
+			fieldName.equals("Event.channelId") ||
+			fieldName.equals("ownerId")) {
+
 			Field<Long> field = DSL.field(
 				fieldName
 			).cast(
