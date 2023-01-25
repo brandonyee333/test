@@ -33,6 +33,7 @@ import graphql.schema.DataFetchingFieldSelectionSet;
 import graphql.schema.GraphQLFieldDefinition;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -134,12 +135,29 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 		if ((dataFetchingEnvironment.getArgument("rangeEnd") != null) &&
 			(dataFetchingEnvironment.getArgument("rangeStart") != null)) {
 
-			searchQueryContext.setTimeRange(
-				TimeRange.of(
-					LocalDate.parse(
-						dataFetchingEnvironment.getArgument("rangeEnd")),
-					LocalDate.parse(
-						dataFetchingEnvironment.getArgument("rangeStart"))));
+			String rangeEnd = dataFetchingEnvironment.getArgument("rangeEnd");
+
+			String rangeStart = dataFetchingEnvironment.getArgument(
+				"rangeStart");
+
+			if (rangeEnd.contains("T") && rangeStart.contains("T")) {
+				searchQueryContext.setTimeRange(
+					TimeRange.of(
+						LocalDateTime.parse(
+							dataFetchingEnvironment.getArgument("rangeEnd")),
+						LocalDateTime.parse(
+							dataFetchingEnvironment.getArgument(
+								"rangeStart"))));
+			}
+			else {
+				searchQueryContext.setTimeRange(
+					TimeRange.of(
+						LocalDate.parse(
+							dataFetchingEnvironment.getArgument("rangeEnd")),
+						LocalDate.parse(
+							dataFetchingEnvironment.getArgument(
+								"rangeStart"))));
+			}
 		}
 		else if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
 			TimeRange timeRange = TimeRange.of(
