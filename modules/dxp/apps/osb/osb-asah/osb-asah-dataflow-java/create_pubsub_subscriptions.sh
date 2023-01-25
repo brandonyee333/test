@@ -2,9 +2,8 @@
 
 if [ "$#" -ne 1 ]
 then
-echo "Usage: create_pubsub_subscriptions [dxp-cloud-project]"
-
-exit 1
+	echo "Usage: create_pubsub_subscriptions [dxp-cloud-project]"
+	exit 1
 fi
 
 DXP_CLOUD_PROJECT=${1}
@@ -17,10 +16,9 @@ function create_subscription {
 
 	gcloud pubsub topics describe --project ${project} ${topic} &>/dev/null
 
-		if [ $? -ne 0 ]
-		then
-				echo "Could not find topic ${topic}, skipping"
-
+	if [ $? -ne 0 ]
+	then
+		echo "Unable not find topic ${topic}. Skipping subscription ${subscription}."
 		return
 	fi
 
@@ -28,9 +26,9 @@ function create_subscription {
 
 	if [ $? -eq 0 ]
 	then
-		echo "Subscirption ${subscription} created successfully"
+		echo "Subscription ${subscription} created successfully."
 	else
-		echo "Unable to create new subscription ${subscription}, already existing?"
+		echo "Unable to create subscription ${subscription}."
 	fi
 }
 
