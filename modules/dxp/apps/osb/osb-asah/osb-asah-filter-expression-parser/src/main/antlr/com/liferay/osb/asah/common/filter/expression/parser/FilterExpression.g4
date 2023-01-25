@@ -54,6 +54,10 @@ filterExpression
 	: filterType=VARIABLE_IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')'
 	;
 
+filterByCountExpression
+	: filterType=VARIABLE_IDENTIFIER '.filterByCount(filter=' filter=STRING_LITERAL COMMA 'operator=' operator=STRING_LITERAL COMMA 'value=' value=INTEGER_LITERAL ')'
+	;
+
 functionCallExpression
 	: functionName=VARIABLE_IDENTIFIER LPAREN functionParameters RPAREN
 	;
@@ -84,6 +88,7 @@ logicalTerm
 	: literal # ToLiteral
 	| functionCallExpression # ToFunctionCallExpression
 	| filterExpression # ToFilterExpression
+	| filterByCountExpression # ToFilterByCountExpression
 	;
 
 AND
