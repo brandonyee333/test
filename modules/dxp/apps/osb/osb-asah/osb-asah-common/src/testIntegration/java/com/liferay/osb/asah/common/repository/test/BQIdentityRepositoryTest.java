@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
+import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.postgresql.converter.helper.SessionsFilterStringConverter;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
@@ -191,6 +192,113 @@ public class BQIdentityRepositoryTest
 		Assertions.assertEquals(1, identityIds.get(0));
 	}
 
+	@Test
+	public void testSearchBQIdentityIds2() {
+		List<Long> identityIds = _bqIdentityRepository.searchBQIdentityIds(
+			"(demographics/firstName/value eq 'Test1' and " +
+				"(activities.filterByCount(filter='(activityKey eq " +
+					"''Blog#blogClicked#1'')',operator='ge',value=1)))",
+			new ArrayList<FilterStringConverterHelper>() {
+				{
+					add(new ActivitiesFilterStringConverterHelper());
+					add(new IndividualsFilterStringConverterHelper());
+				}
+			},
+			(Set<String> includedTableNames,
+			 SelectJoinStep<Record1<Long>> selectJoinStep) -> {
+
+				if (includedTableNames.contains("Event")) {
+					selectJoinStep = selectJoinStep.join(
+						DSL.table(
+							"BQEvent"
+						).as(
+							"Event"
+						)
+					).on(
+						DSL.field(
+							"Event.userId"
+						).eq(
+							DSL.field("Identity.id")
+						)
+					);
+				}
+
+				if (includedTableNames.contains("Individual")) {
+					selectJoinStep = selectJoinStep.join(
+						DSL.table(
+							"BQIndividual"
+						).as(
+							"Individual"
+						)
+					).on(
+						DSL.field(
+							"Identity.individualId"
+						).eq(
+							DSL.field("Individual.id")
+						)
+					);
+				}
+
+				return selectJoinStep;
+			});
+
+		Assertions.assertEquals(1, identityIds.size());
+		Assertions.assertEquals(1, identityIds.get(0));
+	}
+
+	@Test
+	public void testSearchBQIdentityIds3() {
+		List<Long> identityIds = _bqIdentityRepository.searchBQIdentityIds(
+			"(demographics/firstName/value eq 'Test1' and " +
+				"(activities.filterByCount(filter='(activityKey eq " +
+					"''Blog#blogClicked#2'')',operator='ge',value=1)))",
+			new ArrayList<FilterStringConverterHelper>() {
+				{
+					add(new ActivitiesFilterStringConverterHelper());
+					add(new IndividualsFilterStringConverterHelper());
+				}
+			},
+			(Set<String> includedTableNames,
+			 SelectJoinStep<Record1<Long>> selectJoinStep) -> {
+
+				if (includedTableNames.contains("Event")) {
+					selectJoinStep = selectJoinStep.join(
+						DSL.table(
+							"BQEvent"
+						).as(
+							"Event"
+						)
+					).on(
+						DSL.field(
+							"Event.userId"
+						).eq(
+							DSL.field("Identity.id")
+						)
+					);
+				}
+
+				if (includedTableNames.contains("Individual")) {
+					selectJoinStep = selectJoinStep.join(
+						DSL.table(
+							"BQIndividual"
+						).as(
+							"Individual"
+						)
+					).on(
+						DSL.field(
+							"Identity.individualId"
+						).eq(
+							DSL.field("Individual.id")
+						)
+					);
+				}
+
+				return selectJoinStep;
+			});
+
+		Assertions.assertEquals(0, identityIds.size());
+	}
+
 	@Override
 	protected PagingAndSortingRepository<BQIdentity, String>
 		getPagingAndSortingRepository() {
@@ -201,6 +309,7 @@ public class BQIdentityRepositoryTest
 	private void _addBQEvents() {
 		BQEvent bqEvent = new BQEvent();
 
+		bqEvent.setApplicationId("Blog");
 		bqEvent.setChannelId(1L);
 		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -2));
 		bqEvent.setEventDate(DateUtil.addDays(new Date(), -2));
@@ -212,6 +321,7 @@ public class BQIdentityRepositoryTest
 
 		bqEvent = new BQEvent();
 
+		bqEvent.setApplicationId("Blog");
 		bqEvent.setChannelId(1L);
 		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -4));
 		bqEvent.setEventDate(DateUtil.addDays(new Date(), -4));
@@ -223,6 +333,7 @@ public class BQIdentityRepositoryTest
 
 		bqEvent = new BQEvent();
 
+		bqEvent.setApplicationId("Blog");
 		bqEvent.setChannelId(1L);
 		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqEvent.setEventDate(DateUtil.addDays(new Date(), -11));
@@ -234,6 +345,7 @@ public class BQIdentityRepositoryTest
 
 		bqEvent = new BQEvent();
 
+		bqEvent.setApplicationId("Blog");
 		bqEvent.setChannelId(1L);
 		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -35));
 		bqEvent.setEventDate(DateUtil.addDays(new Date(), -35));
@@ -245,6 +357,7 @@ public class BQIdentityRepositoryTest
 
 		bqEvent = new BQEvent();
 
+		bqEvent.setApplicationId("Blog");
 		bqEvent.setChannelId(1L);
 		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqEvent.setEventDate(DateUtil.addDays(new Date(), -11));
