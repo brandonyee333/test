@@ -30,16 +30,29 @@ from sparknlp.base import DocumentAssembler, \
 
 class IdentityInterestScoreSparkJob(BaseSparkJob):
 
+	def _30_day_sum(self, column, window):
+		values = list()
+
+		offsets = [i for i in range(0, 30)]
+
+		for i in offsets:
+			values.append(
+				F.coalesce(F.lag(column, i).over(window), F.lit(0))
+			)
+
+		return sum(values, F.lit(0))
+
 	def __init__(self, spark_application):
 		super(IdentityInterestScoreSparkJob, self).__init__(spark_application)
 
 		self._global_keyword_weight = 1.0
 		self._interest_score_decay_rate = 0.9
+		self._interest_score_minimum_threshold = 0.1
 		self._max_days_delta = 60
 		self._minimum_logscore_threshold = 0.01
 		self._user_keyword_weight = 2.0
+
 		self._decay_threshold_weight = self._interest_score_decay_rate ** 14
-		self._interest_score_minimum_threshold = 0.1
 
 		findspark.init()
 
@@ -115,18 +128,6 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		return sum(values, F.lit(0))
 
-	def _30_day_sum(self, column, window):
-		values = list()
-
-		offsets = [i for i in range(0, 30)]
-
-		for i in offsets:
-			values.append(
-				F.coalesce(F.lag(column, i).over(window), F.lit(0))
-			)
-
-		return sum(values, F.lit(0))
-
 	def run(self):
 		analytics_events_data_frame = self.spark_session.table(
 			'analytics_events'
@@ -189,7 +190,13 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			)
 		).withColumn(
 			'threshold_score',
-			F.log(10.0, F.col('all_keyword_views_30_days') / F.col('keyword_view_count_30_days')) * self._decay_threshold_weight
+			F.log(
+				10.0,
+				(
+					F.col('all_keyword_views_30_days') /
+					F.col('keyword_view_count_30_days')
+				)
+			) * self._decay_threshold_weight
 		)
 
 		date_range_data_frame = self.spark_session.sql(
@@ -241,13 +248,20 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			)
 		)
 
-		interest_score_data_frame = interest_score_data_frame.join(threshold_data_frame,
-									   ['event_date', 'keyword'], 'left').fillna(
-			{'threshold_score': self._interest_score_minimum_threshold}
+		interest_score_data_frame = interest_score_data_frame.join(
+			threshold_data_frame,
+			['event_date', 'keyword'],
+			how='left'
+		).fillna(
+			{
+				'threshold_score': self._interest_score_minimum_threshold
+			}
 		)
 
-		interest_score_data_frame = interest_score_data_frame.withColumn('interested',
-											 F.col('interest_score') >= F.col('threshold_score'))
+		interest_score_data_frame = interest_score_data_frame.withColumn(
+			'interested',
+			F.col('interest_score') >= F.col('threshold_score')
+		)
 
 		interest_score_data_frame.createOrReplaceTempView(
 			'individual_interest_score')
