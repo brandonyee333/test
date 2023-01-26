@@ -9,7 +9,6 @@
 # distribution rights of the Software.
 #
 
-import findspark
 import json
 import logging
 
@@ -53,8 +52,6 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		self._user_keyword_weight = 2.0
 
 		self._decay_threshold_weight = self._interest_score_decay_rate ** 14
-
-		findspark.init()
 
 	def _get_job_parameter(self, parameter_name, default_value=None):
 		job_parameters = json.loads(self.spark_application_args.job_parameters)
