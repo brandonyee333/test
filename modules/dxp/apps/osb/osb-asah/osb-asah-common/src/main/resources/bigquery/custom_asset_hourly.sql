@@ -11,16 +11,11 @@ WITH CustomAssetEvent AS (
 				)
 			)
 		) AS assetPrimaryKey,
-		COALESCE(category.value, 'default') AS category,
-		formEnabled.value AS formEnabled
+		COALESCE(category.value, 'default') AS category
 	FROM
 		`$[AC_PROJECT_ID].event` Event
 	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS assetId ON (
 		Event.id = assetid.id AND assetid.name = 'assetId'
-	)
-	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS formEnabled ON (
-		Event.id = formEnabled.id AND
-		formEnabled.name = 'formEnabled'
 	)
 	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS category ON (
 		Event.id = category.id AND category.name = 'category'
@@ -30,8 +25,7 @@ WITH CustomAssetEvent AS (
 		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 		assetId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 		assetId.value IS NOT NULL AND
-		category.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-		formEnabled.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+		category.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 ),
 CustomAssetFinalizedEvent AS (
 	SELECT
@@ -124,8 +118,6 @@ Abandoments AS (
 		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate
 	FROM
 		CustomAssetFinalizedEvent
-	WHERE
-		formenabled = 'true'
 	GROUP BY
 		assetPrimaryKey,
 		normalizedEventDate
