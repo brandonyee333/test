@@ -3,6 +3,7 @@
 if [ "$#" -ne 1 ]
 then
 	echo "Usage: create_pubsub_subscriptions [dxp-cloud-project]"
+
 	exit 1
 fi
 
@@ -11,14 +12,15 @@ PROJECT_ID=$(gcloud config get-value project)
 
 function create_subscription {
 	local project=${1}
-	local topic=${2}
 	local subscription=${3}
+	local topic=${2}
 
 	gcloud pubsub topics describe --project ${project} ${topic} &>/dev/null
 
 	if [ $? -ne 0 ]
 	then
 		echo "Unable not find topic ${topic}. Skipping subscription ${subscription}."
+
 		return
 	fi
 
@@ -32,17 +34,22 @@ function create_subscription {
 	fi
 }
 
-# DXP Commerce Entities
+function main {
 
-create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_default ${DXP_CLOUD_PROJECT}_dxp_commerce_entities_default
-create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_order ${DXP_CLOUD_PROJECT}_dxp_commerce_entities_order
-create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_product ${DXP_CLOUD_PROJECT}_dxp_commerce_entities_product
+	# DXP Commerce Entities
 
-# DXP Entities
+	create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_default ${DXP_CLOUD_PROJECT}_dxp_commerce_entities_default
+	create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_order ${DXP_CLOUD_PROJECT}_dxp_commerce_entities_order
+	create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_product ${DXP_CLOUD_PROJECT}_dxp_commerce_entities_product
 
-create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_default ${DXP_CLOUD_PROJECT}_dxp_entities_default
+	# DXP Entities
 
-# Events
+	create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_default ${DXP_CLOUD_PROJECT}_dxp_entities_default
 
-create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_analytics_events ${DXP_CLOUD_PROJECT}_analytics_events_dataflow
-create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_analytics_events ${DXP_CLOUD_PROJECT}_analytics_events_dataflow_backup
+	# Events
+
+	create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_analytics_events ${DXP_CLOUD_PROJECT}_analytics_events_dataflow
+	create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_analytics_events ${DXP_CLOUD_PROJECT}_analytics_events_dataflow_backup
+}
+
+main
