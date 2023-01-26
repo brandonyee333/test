@@ -788,10 +788,6 @@ public class AccountSynchronizer {
 
 		Map<String, String> properties = account.getProperties();
 
-		if (properties.containsKey("extendedPatchPolicy")) {
-			tags.add("180_day_hotfix");
-		}
-
 		if (properties.containsKey("projectSolution")) {
 			tags.add(_toZendeskTag(properties.get("projectSolution")));
 		}
