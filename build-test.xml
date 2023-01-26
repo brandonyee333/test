@@ -6802,6 +6802,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 								<elseif>
 									<isset property="operating.system.docker.image" />
 									<then>
+										<echo>@@@@  os docker image is set</echo>
 										<sequential>
 											<get-operating-system-property property.name="operating.system.host" />
 
@@ -6814,6 +6815,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 									</then>
 								</elseif>
 								<else>
+									<echo>@@@@ in last else statement </echo>
 									<beanshell>
 										<![CDATA[
 											import com.liferay.jenkins.results.parser.AppServer;
