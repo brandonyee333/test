@@ -42,13 +42,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
-
-import org.jooq.Record1;
-import org.jooq.SelectJoinStep;
-import org.jooq.impl.DSL;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -137,164 +132,56 @@ public class BQIdentityRepositoryTest
 	}
 
 	@Test
-	public void testSearchBQIdentityIds1() {
-		List<Long> identityIds = _bqIdentityRepository.searchBQIdentityIds(
-			"(demographics/firstName/value eq 'Test1' and (sessions.filter(" +
-				"filter='(context/browserName eq ''browser1'' and " +
-					"sessionStart gt ''last24Hours'')') and " +
-						"demographics/emailAddress/value eq " +
-							"'test1@liferay.com'))",
-			new ArrayList<FilterStringConverterHelper>() {
-				{
-					add(new IndividualsFilterStringConverterHelper());
-					add(new SessionsFilterStringConverter());
-				}
-			},
-			(Set<String> includedTableNames,
-			 SelectJoinStep<Record1<Long>> selectJoinStep) -> {
-
-				if (includedTableNames.contains("Individual")) {
-					selectJoinStep = selectJoinStep.join(
-						DSL.table(
-							"BQIndividual"
-						).as(
-							"Individual"
-						)
-					).on(
-						DSL.field(
-							"Identity.individualId"
-						).eq(
-							DSL.field("Individual.id")
-						)
-					);
-				}
-
-				if (includedTableNames.contains("Session")) {
-					selectJoinStep = selectJoinStep.join(
-						DSL.table(
-							"BQSession"
-						).as(
-							"Session"
-						)
-					).on(
-						DSL.field(
-							"Identity.id"
-						).eq(
-							DSL.field("Session.userId")
-						)
-					);
-				}
-
-				return selectJoinStep;
-			});
+	public void testSearchSegmentBQIdentityIds1() {
+		List<Long> identityIds =
+			_bqIdentityRepository.searchSegmentBQIdentityIds(
+				"(demographics/firstName/value eq 'Test1' and " +
+					"(sessions.filter(filter='(context/browserName eq " +
+						"''browser1'' and sessionStart gt ''last24Hours'')') " +
+							"and demographics/emailAddress/value eq " +
+								"'test1@liferay.com'))",
+				new ArrayList<FilterStringConverterHelper>() {
+					{
+						add(new IndividualsFilterStringConverterHelper());
+						add(new SessionsFilterStringConverter());
+					}
+				});
 
 		Assertions.assertEquals(1, identityIds.size());
 		Assertions.assertEquals(1, identityIds.get(0));
 	}
 
 	@Test
-	public void testSearchBQIdentityIds2() {
-		List<Long> identityIds = _bqIdentityRepository.searchBQIdentityIds(
-			"(demographics/firstName/value eq 'Test1' and " +
-				"(activities.filterByCount(filter='(activityKey eq " +
-					"''Blog#blogClicked#1'')',operator='ge',value=1)))",
-			new ArrayList<FilterStringConverterHelper>() {
-				{
-					add(new ActivitiesFilterStringConverterHelper());
-					add(new IndividualsFilterStringConverterHelper());
-				}
-			},
-			(Set<String> includedTableNames,
-			 SelectJoinStep<Record1<Long>> selectJoinStep) -> {
-
-				if (includedTableNames.contains("Event")) {
-					selectJoinStep = selectJoinStep.join(
-						DSL.table(
-							"BQEvent"
-						).as(
-							"Event"
-						)
-					).on(
-						DSL.field(
-							"Event.userId"
-						).eq(
-							DSL.field("Identity.id")
-						)
-					);
-				}
-
-				if (includedTableNames.contains("Individual")) {
-					selectJoinStep = selectJoinStep.join(
-						DSL.table(
-							"BQIndividual"
-						).as(
-							"Individual"
-						)
-					).on(
-						DSL.field(
-							"Identity.individualId"
-						).eq(
-							DSL.field("Individual.id")
-						)
-					);
-				}
-
-				return selectJoinStep;
-			});
+	public void testSearchSegmentBQIdentityIds2() {
+		List<Long> identityIds =
+			_bqIdentityRepository.searchSegmentBQIdentityIds(
+				"(demographics/firstName/value eq 'Test1' and " +
+					"(activities.filterByCount(filter='(activityKey eq " +
+						"''Blog#blogClicked#1'')',operator='ge',value=1)))",
+				new ArrayList<FilterStringConverterHelper>() {
+					{
+						add(new ActivitiesFilterStringConverterHelper());
+						add(new IndividualsFilterStringConverterHelper());
+					}
+				});
 
 		Assertions.assertEquals(1, identityIds.size());
 		Assertions.assertEquals(1, identityIds.get(0));
 	}
 
 	@Test
-	public void testSearchBQIdentityIds3() {
-		List<Long> identityIds = _bqIdentityRepository.searchBQIdentityIds(
-			"(demographics/firstName/value eq 'Test1' and " +
-				"(activities.filterByCount(filter='(activityKey eq " +
-					"''Blog#blogClicked#2'')',operator='ge',value=1)))",
-			new ArrayList<FilterStringConverterHelper>() {
-				{
-					add(new ActivitiesFilterStringConverterHelper());
-					add(new IndividualsFilterStringConverterHelper());
-				}
-			},
-			(Set<String> includedTableNames,
-			 SelectJoinStep<Record1<Long>> selectJoinStep) -> {
-
-				if (includedTableNames.contains("Event")) {
-					selectJoinStep = selectJoinStep.join(
-						DSL.table(
-							"BQEvent"
-						).as(
-							"Event"
-						)
-					).on(
-						DSL.field(
-							"Event.userId"
-						).eq(
-							DSL.field("Identity.id")
-						)
-					);
-				}
-
-				if (includedTableNames.contains("Individual")) {
-					selectJoinStep = selectJoinStep.join(
-						DSL.table(
-							"BQIndividual"
-						).as(
-							"Individual"
-						)
-					).on(
-						DSL.field(
-							"Identity.individualId"
-						).eq(
-							DSL.field("Individual.id")
-						)
-					);
-				}
-
-				return selectJoinStep;
-			});
+	public void testSearchSegmentBQIdentityIds3() {
+		List<Long> identityIds =
+			_bqIdentityRepository.searchSegmentBQIdentityIds(
+				"(demographics/firstName/value eq 'Test1' and " +
+					"(activities.filterByCount(filter='(activityKey eq " +
+						"''Blog#blogClicked#2'')',operator='ge',value=1)))",
+				new ArrayList<FilterStringConverterHelper>() {
+					{
+						add(new ActivitiesFilterStringConverterHelper());
+						add(new IndividualsFilterStringConverterHelper());
+					}
+				});
 
 		Assertions.assertEquals(0, identityIds.size());
 	}

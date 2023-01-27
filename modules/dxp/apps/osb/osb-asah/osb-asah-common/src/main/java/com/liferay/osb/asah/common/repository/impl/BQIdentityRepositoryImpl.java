@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import org.apache.commons.lang3.BooleanUtils;
 
@@ -154,13 +153,10 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public List<Long> searchBQIdentityIds(
+	public List<Long> searchSegmentBQIdentityIds(
 		String filterString,
 		List<FilterStringConverterHelper>
-			filterTypeFilterStringConverterHelpers,
-		BiFunction
-			<Set<String>, SelectJoinStep<Record1<Long>>,
-			 SelectJoinStep<Record1<Long>>> joinFunction) {
+			filterTypeFilterStringConverterHelpers) {
 
 		Field<Long> identityIdField = DSL.field("Identity.id", Long.class);
 
@@ -177,7 +173,7 @@ public class BQIdentityRepositoryImpl
 		JoinCondition joinCondition = FilterExpression.convert(
 			filterString, filterTypeFilterStringConverterHelpers);
 
-		selectJoinStep = joinFunction.apply(
+		selectJoinStep = _getSelectJoinStep(
 			joinCondition.getIncludedTableNames(), selectJoinStep);
 
 		return _queryExecutor.queryForList(
@@ -316,6 +312,61 @@ public class BQIdentityRepositoryImpl
 
 		return selectJoinStep.where(
 			_getConditions(active, channelId, localDate, metricType, zoneId));
+	}
+
+	private SelectJoinStep<Record1<Long>> _getSelectJoinStep(
+		Set<String> includedTableNames,
+		SelectJoinStep<Record1<Long>> selectJoinStep) {
+
+		if (includedTableNames.contains("Event")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQEvent"
+				).as(
+					"Event"
+				)
+			).on(
+				DSL.field(
+					"Event.userId"
+				).eq(
+					DSL.field("Identity.id")
+				)
+			);
+		}
+
+		if (includedTableNames.contains("Individual")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).on(
+				DSL.field(
+					"Identity.individualId"
+				).eq(
+					DSL.field("Individual.id")
+				)
+			);
+		}
+
+		if (includedTableNames.contains("Session")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
+			).on(
+				DSL.field(
+					"Identity.id"
+				).eq(
+					DSL.field("Session.userId")
+				)
+			);
+		}
+
+		return selectJoinStep;
 	}
 
 	private final DSLContext _dslContext;

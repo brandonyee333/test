@@ -21,11 +21,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 import java.util.List;
-import java.util.Set;
-import java.util.function.BiFunction;
-
-import org.jooq.Record1;
-import org.jooq.SelectJoinStep;
 
 import org.springframework.lang.Nullable;
 
@@ -45,12 +40,9 @@ public interface CustomBQIdentityRepository {
 		List<LocalDate> localDates, List<MetricType> metricTypes,
 		ZoneId zoneId);
 
-	public List<Long> searchBQIdentityIds(
+	public List<Long> searchSegmentBQIdentityIds(
 		String filterString,
 		List<FilterStringConverterHelper>
-			filterTypeFilterStringConverterHelpers,
-		BiFunction
-			<Set<String>, SelectJoinStep<Record1<Long>>,
-			 SelectJoinStep<Record1<Long>>> joinFunction);
+			filterTypeFilterStringConverterHelpers);
 
 }
