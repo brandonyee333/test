@@ -97,6 +97,7 @@ public class IndividualsFilterStringConverterHelper
 		Map<String, String> map = new HashMap<>();
 
 		map.put("channelIds", "IdentityActivity.channelId");
+		map.put("email", "Individual.emailAddress");
 		map.put("lastEnrichmentDate", "Individual.modifiedDate");
 
 		return map;

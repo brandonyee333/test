@@ -138,7 +138,7 @@ public class BQIdentityRepositoryTest
 				"(demographics/firstName/value eq 'Test1' and " +
 					"(sessions.filter(filter='(context/browserName eq " +
 						"''browser1'' and sessionStart gt ''last24Hours'')') " +
-							"and demographics/emailAddress/value eq " +
+							"and demographics/email/value eq " +
 								"'test1@liferay.com'))",
 				new ArrayList<FilterStringConverterHelper>() {
 					{

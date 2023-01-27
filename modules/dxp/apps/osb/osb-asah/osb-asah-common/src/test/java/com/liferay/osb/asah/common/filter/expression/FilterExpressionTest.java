@@ -744,7 +744,7 @@ public class FilterExpressionTest {
 						)))
 			).and(
 				DSL.field(
-					"Individual.email"
+					"Individual.emailAddress"
 				).eq(
 					"email@test.com"
 				)
@@ -819,7 +819,7 @@ public class FilterExpressionTest {
 							))))
 			).and(
 				DSL.field(
-					"Individual.email"
+					"Individual.emailAddress"
 				).eq(
 					"email@test.com"
 				)
@@ -866,7 +866,7 @@ public class FilterExpressionTest {
 				506297979389450553L
 			),
 			DSL.field(
-				"email"
+				"Individual.emailAddress"
 			).isNotNull());
 
 		Condition actualCondition = FilterExpression.convert(
