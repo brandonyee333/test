@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.repository.CustomBQUserRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,7 +90,8 @@ public class BQUserRepositoryImpl
 			ConditionUtil.toConditions(
 				dataSourceIds, keywords, new String[] {"firstName", "lastName"})
 		).orderBy(
-			getSortFields(pageable.getSort(), null)
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -97,6 +99,14 @@ public class BQUserRepositoryImpl
 		).fetch(
 			record -> new BQUser(record.intoMap())
 		);
+	}
+
+	private Map<String, String> _getSortFieldNameConversionMap() {
+		return new HashMap<String, String>() {
+			{
+				put("name", "CONCAT(firstName, ' ', lastName)");
+			}
+		};
 	}
 
 	private final DSLContext _dslContext;
