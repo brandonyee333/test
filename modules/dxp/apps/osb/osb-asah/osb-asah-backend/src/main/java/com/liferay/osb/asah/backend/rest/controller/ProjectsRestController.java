@@ -14,10 +14,15 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
+import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.entity.Project;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,10 +56,30 @@ public class ProjectsRestController extends BaseRestController {
 		return _projectDog.getProjects();
 	}
 
+	@GetMapping("/timezones")
+	public Map<String, String> getTimeZones() {
+		Map<String, String> timeZones = new HashMap<>();
+
+		ProjectIdThreadLocal.forProjects(
+			_projectDog.getProjects(),
+			() -> {
+				Preference preference = _preferenceDog.getPreference(
+					"time-zone-id");
+
+				timeZones.put(
+					ProjectIdThreadLocal.getProjectId(), preference.getValue());
+			});
+
+		return timeZones;
+	}
+
 	@PostMapping
 	public void postProject(@RequestBody Project project) {
 		_projectDog.addProject(project);
 	}
+
+	@Autowired
+	private PreferenceDog _preferenceDog;
 
 	@Autowired
 	private ProjectDog _projectDog;
