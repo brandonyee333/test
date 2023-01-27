@@ -15,22 +15,46 @@ WITH CustomAssetEvent AS (
 		formEnabled.value AS formEnabled
 	FROM
 		`$[AC_PROJECT_ID].event` Event
-	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS assetId ON (
-		Event.id = assetid.id AND assetid.name = 'assetId'
+	LEFT JOIN (
+		SELECT
+			id,
+			value
+		FROM
+			`$[AC_PROJECT_ID].eventproperty`
+		WHERE
+			name = 'assetId' AND
+			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+	) AS assetId ON (
+		Event.id = assetid.id
 	)
-	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS category ON (
-		Event.id = category.id AND category.name = 'category'
+	LEFT JOIN (
+		SELECT
+			id,
+			value
+		FROM
+			`$[AC_PROJECT_ID].eventproperty`
+		WHERE
+			name = 'category' AND
+			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+	) AS category ON (
+		Event.id = category.id
 	)
-	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS formEnabled ON (
-		Event.id = formEnabled.id AND formEnabled.name = 'formEnabled'
+	LEFT JOIN (
+		SELECT
+			id,
+			value
+		FROM
+			`$[AC_PROJECT_ID].eventproperty`
+		WHERE
+			name = 'formEnabled' AND
+			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+	) AS formEnabled ON (
+		Event.id = formEnabled.id
 	)
 	WHERE
 		Event.applicationid = 'Custom' AND
 		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-		assetId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-		assetId.value IS NOT NULL AND
-		category.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-		formEnabled.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+		assetId.value IS NOT NULL
 ),
 CustomAssetFinalizedEvent AS (
 	SELECT
