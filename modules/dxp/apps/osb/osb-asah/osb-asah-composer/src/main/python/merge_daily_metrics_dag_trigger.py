@@ -11,12 +11,13 @@
 
 import airflow
 import datetime
+import requests
 
-from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
+from airflow.models import Variable
 
 from liferay.bigquery import BigQueryInsertJobFromTemplateOperator
 
-def create_dag(ac_project_id, dag_id, dag_description):
+def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 	with airflow.DAG(
 			dag_id=dag_id,
 			default_args={
@@ -40,14 +41,14 @@ def create_dag(ac_project_id, dag_id, dag_description):
 
 		return dag
 
-bigquery_hook = BigQueryHook(gcp_conn_id='google_cloud_default')
+response = requests.get(Variable.get('osb.asah.backend.url'))
 
-client = bigquery_hook.get_client()
+projects_json = response.json()
 
-for dataset in client.list_datasets():
-	dag_id = 'merge_daily_metrics_{}'.format(dataset.dataset_id)
+for ac_project_id, ac_project_time_zone_id in projects_json.items():
+	dag_id = 'merge_daily_metrics_{}'.format(ac_project_id)
 
 	globals()[dag_id] = create_dag(
-		dataset.dataset_id, dag_id,
-		'Daily Merge DAG For {}'.format(dataset.dataset_id)
+		ac_project_id, ac_project_time_zone_id, dag_id,
+		'Daily Merge DAG For {}'.format(ac_project_id)
 	)
