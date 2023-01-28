@@ -22,8 +22,8 @@ WITH CustomAssetEvent AS (
 		FROM
 			`$[AC_PROJECT_ID].eventproperty`
 		WHERE
-			name = 'assetId' AND
-			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			name = 'assetId'
 	) AS assetId ON (
 		Event.id = assetid.id
 	)
@@ -34,8 +34,8 @@ WITH CustomAssetEvent AS (
 		FROM
 			`$[AC_PROJECT_ID].eventproperty`
 		WHERE
-			name = 'category' AND
-			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			name = 'category'
 	) AS category ON (
 		Event.id = category.id
 	)
@@ -46,8 +46,8 @@ WITH CustomAssetEvent AS (
 		FROM
 			`$[AC_PROJECT_ID].eventproperty`
 		WHERE
-			name = 'formEnabled' AND
-			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			name = 'formEnabled'
 	) AS formEnabled ON (
 		Event.id = formEnabled.id
 	)
