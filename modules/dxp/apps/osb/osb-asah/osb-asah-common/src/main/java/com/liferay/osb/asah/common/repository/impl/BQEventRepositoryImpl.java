@@ -1619,9 +1619,8 @@ public class BQEventRepositoryImpl
 		else if (interval == Interval.MONTH) {
 			return _dslHelper.dateTrunc(DatePart.MONTH, eventDateField);
 		}
-		else {
-			return _dslHelper.dateTrunc(DatePart.WEEK, eventDateField);
-		}
+
+		return _dslHelper.dateTrunc(DatePart.WEEK, eventDateField);
 	}
 
 	private Field<Integer> _getUniqueIndividualsField(TimeRange timeRange) {

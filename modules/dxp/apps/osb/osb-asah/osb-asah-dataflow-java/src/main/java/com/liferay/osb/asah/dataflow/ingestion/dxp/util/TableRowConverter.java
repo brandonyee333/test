@@ -96,10 +96,9 @@ public class TableRowConverter {
 		else if (fieldTypeClassName.startsWith(_PACKAGE_NAME)) {
 			return asTableRow(value);
 		}
-		else {
-			throw new IllegalStateException(
-				"Unknown field type class name " + fieldTypeClassName);
-		}
+
+		throw new IllegalStateException(
+			"Unknown field type class name " + fieldTypeClassName);
 	}
 
 	private static Object _getFieldValues(List<?> values) {
@@ -129,9 +128,8 @@ public class TableRowConverter {
 				Collectors.toList()
 			);
 		}
-		else {
-			return values;
-		}
+
+		return values;
 	}
 
 	private static String _getObjectClassName(Object object) {

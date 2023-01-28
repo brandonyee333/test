@@ -181,10 +181,9 @@ public class FilterExpressionVisitor
 
 			return field.similarTo(param.getValue() + "%");
 		}
-		else {
-			throw new FilterExpressionParserException(
-				"Invalid string function: " + functionName);
-		}
+
+		throw new FilterExpressionParserException(
+			"Invalid string function: " + functionName);
 	}
 
 	@Override
