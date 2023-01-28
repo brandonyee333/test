@@ -82,7 +82,8 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 
 		if ((method.equals(HttpMethod.GET.name()) &&
 			 (requestURI.equals("/") || requestURI.equals("/context") ||
-			  requestURI.startsWith("/actuator"))) ||
+			  requestURI.startsWith("/actuator") ||
+			  requestURI.startsWith("/projects"))) ||
 			(method.equals(HttpMethod.OPTIONS.name()) &&
 			 (requestURI.equals("/") || requestURI.equals("/identity")))) {
 
