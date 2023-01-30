@@ -1223,11 +1223,12 @@ public class BQEventRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
-		for (EventAnalysisFilter filter : eventAnalysisFilters) {
+		for (EventAnalysisFilter eventAnalysisFilter : eventAnalysisFilters) {
 			conditions.add(
 				_getEventAnalysisFilterCondition(
-					filter.getAttributeType(), filter, filteredEventsTableName,
-					rangeEndDate, rangeStartDate, timeZoneId));
+					filter.getAttributeType(), eventAnalysisFilter,
+					filteredEventsTableName, rangeEndDate, rangeStartDate,
+					timeZoneId));
 		}
 
 		return conditions;
