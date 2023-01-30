@@ -58,7 +58,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -67,7 +67,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-171637. Verify that an alert will appear when user don't fill a mandatory* field and that “Continue” button only will be clickable after fill all mandatory fields"
-	@priority = "5"
+	@priority = 5
 	test CannotContinueWithoutFillRequiredField {
 		task ("Given I go to add a new MDF Request") {
 			PRMMarketing.gotoAddNewMDF();
@@ -120,7 +120,7 @@ definition {
 	}
 
 	@description = "This is test is for LPS-173510. Verify that the start date cannot be before the current date"
-	@priority = "5"
+	@priority = 5
 	test StartDateCannotBeBeforeToCurrentDate {
 		task ("Given I go to add a new MDF Request") {
 			PRMMarketing.gotoAddNewMDF();
@@ -157,7 +157,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-172891. Verify that the start date cannot be equals to the current date"
-	@priority = "5"
+	@priority = 5
 	test StartDateCannotBeEqualsToCurrentDate {
 		task ("Given I go to add a new MDF Request and fill all Goals form with my information") {
 			PRMMarketing.gotoAddNewMDF();
@@ -192,7 +192,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-169960. Verify that a submited MDF will be displayed on the list"
-	@priority = "5"
+	@priority = 5
 	test SubmittedMDFAppearsOnListing {
 		task ("Given I go to add a new MDF Request") {
 			PRMMarketing.gotoAddNewMDF();
