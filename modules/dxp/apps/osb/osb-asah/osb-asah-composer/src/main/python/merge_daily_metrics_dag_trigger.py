@@ -42,7 +42,9 @@ def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 
 		return dag
 
-response = requests.get(Variable.get('osb.asah.backend.url'))
+response = requests.get(
+	Variable.get('osb.asah.backend.url'),
+	headers={'OSB-Asah-Faro-Backend-Security-Signature': Variable.get('osb.asah.faro.backend.security.signature')})
 
 projects_json = response.json()
 
