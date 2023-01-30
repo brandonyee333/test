@@ -26,7 +26,7 @@ USING
 		FROM
 			`{{ dag.default_args['ac_project_id'] }}.bloghourly`
 		WHERE
-			eventDate BETWEEN '{{ data_interval_start.at(0, 0, 0) }}' AND '{{ data_interval_start.at(23, 59, 59) }}'
+			DATE(eventDate, '{{ dag.default_args['ac_project_time_zone_id'] }}') = '{{ data_interval_start.to_date_string() }}'
 		GROUP BY
 			assetId, assetTitle, browserName, canonicalUrl, channelId, city,
 			country, deviceType, eventDate, pageTitle, platformName, region,

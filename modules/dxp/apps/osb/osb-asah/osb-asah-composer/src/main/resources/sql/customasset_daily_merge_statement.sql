@@ -17,7 +17,7 @@ USING
 		FROM
 			`{{ dag.default_args['ac_project_id'] }}.customassethourly`
 		WHERE
-			eventDate BETWEEN '{{ data_interval_start.at(0, 0, 0) }}' AND '{{ data_interval_start.at(23, 59, 59) }}'
+			DATE(eventDate, '{{ dag.default_args['ac_project_time_zone_id'] }}') = '{{ data_interval_start.to_date_string() }}'
 		GROUP BY
 			assetPrimaryKey, channelId, eventDate
 	) AS staging

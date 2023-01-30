@@ -22,6 +22,7 @@ def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 			dag_id=dag_id,
 			default_args={
 				'ac_project_id': ac_project_id,
+				'ac_project_time_zone_id': ac_project_time_zone_id,
 				'owner': 'Liferay'
 			},
 			description=dag_description,
