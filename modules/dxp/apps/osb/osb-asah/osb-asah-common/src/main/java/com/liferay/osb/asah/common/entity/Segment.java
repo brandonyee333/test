@@ -70,7 +70,7 @@ public class Segment implements Persistable<Long> {
 		if (Objects.equals(_author, segment._author) &&
 			Objects.equals(_channelId, segment._channelId) &&
 			Objects.equals(_createDate, segment._createDate) &&
-			Objects.equals(_filter, segment._filter) &&
+			Objects.equals(_filterString, segment._filterString) &&
 			Objects.equals(_filterMetadata, segment._filterMetadata) &&
 			Objects.equals(_id, segment._id) &&
 			Objects.equals(
@@ -137,7 +137,7 @@ public class Segment implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getFilter() {
-		return _filter;
+		return _filterString;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -185,11 +185,11 @@ public class Segment implements Persistable<Long> {
 	}
 
 	public Set<Long> getReferencedAssetIds() {
-		if (StringUtils.isBlank(_filter)) {
+		if (StringUtils.isBlank(_filterString)) {
 			return Collections.emptySet();
 		}
 
-		Matcher matcher = _pattern.matcher(_filter);
+		Matcher matcher = _pattern.matcher(_filterString);
 
 		Set<Long> assetsIds = new HashSet<>();
 
@@ -231,8 +231,8 @@ public class Segment implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_author, _channelId, _createDate, _filter, _filterMetadata, _id,
-			_includeAnonymousUsers, _modifiedDate, _name,
+			_author, _channelId, _createDate, _filterString, _filterMetadata,
+			_id, _includeAnonymousUsers, _modifiedDate, _name,
 			_referencedAssetDataSourceIds, _referencedFieldMappingIds, _scope,
 			_state, _status, _type);
 	}
@@ -281,8 +281,8 @@ public class Segment implements Persistable<Long> {
 		}
 	}
 
-	public void setFilter(String filter) {
-		_filter = filter;
+	public void setFilter(String filterString) {
+		_filterString = filterString;
 	}
 
 	public void setFilterMetadata(String filterMetadata) {
@@ -367,10 +367,10 @@ public class Segment implements Persistable<Long> {
 	private Date _createDate;
 
 	@Transient
-	private String _filter;
+	private String _filterMetadata;
 
 	@Transient
-	private String _filterMetadata;
+	private String _filterString;
 
 	@Transient
 	private Long _id;

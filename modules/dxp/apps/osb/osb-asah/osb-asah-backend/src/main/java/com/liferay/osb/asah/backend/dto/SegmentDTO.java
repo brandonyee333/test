@@ -72,7 +72,7 @@ public class SegmentDTO {
 
 		_channelId = StringUtil.get(segment.getChannelId(), null);
 		_createDate = segment.getCreateDate();
-		_filter = segment.getFilter();
+		_filterString = segment.getFilter();
 		_filterMetadata = segment.getFilterMetadata();
 		_id = StringUtil.get(segment.getId(), null);
 		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
@@ -160,7 +160,7 @@ public class SegmentDTO {
 
 	@JsonProperty("filter")
 	public String getFilter() {
-		return _filter;
+		return _filterString;
 	}
 
 	@JsonProperty("filterMetadata")
@@ -288,8 +288,8 @@ public class SegmentDTO {
 		_embedded = embedded;
 	}
 
-	public void setFilter(String filter) {
-		_filter = filter;
+	public void setFilter(String filterString) {
+		_filterString = filterString;
 	}
 
 	public void setFilterMetadata(String filterMetadata) {
@@ -428,8 +428,8 @@ public class SegmentDTO {
 	private String _channelId;
 	private Date _createDate;
 	private Map<String, Object> _embedded;
-	private String _filter;
 	private String _filterMetadata;
+	private String _filterString;
 	private String _id;
 	private Long _identitiesCount;
 	private Boolean _includeAnonymousUsers;

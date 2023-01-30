@@ -78,13 +78,13 @@ import org.springframework.stereotype.Component;
 public class SegmentDog {
 
 	public Segment addSegment(
-		Date createDate, String filter, Date modifiedDate, String name,
+		Date createDate, String filterString, Date modifiedDate, String name,
 		String scope, String type, String status) {
 
 		Segment segment = new Segment();
 
 		segment.setCreateDate(createDate);
-		segment.setFilter(_parserFilter(filter));
+		segment.setFilter(_parseFilterString(filterString));
 		segment.setModifiedDate(modifiedDate);
 		segment.setName(name);
 		segment.setScope(scope);
@@ -106,7 +106,7 @@ public class SegmentDog {
 			segment.setState("READY");
 		}
 
-		segment.setFilter(_parserFilter(segment.getFilter()));
+		segment.setFilter(_parseFilterString(segment.getFilter()));
 
 		segment = _segmentRepository.save(segment);
 
@@ -313,10 +313,10 @@ public class SegmentDog {
 	}
 
 	public List<Segment> getSegments(
-		String filter, String state, String status, int page, int size) {
+		String filterString, String state, String status, int page, int size) {
 
 		return _segmentRepository.searchSegments(
-			filter, state, status, PageRequest.of(page, size));
+			filterString, state, status, PageRequest.of(page, size));
 	}
 
 	public Map<String, JSONObject> getSegmentsJSONObjects(
@@ -631,9 +631,9 @@ public class SegmentDog {
 		return referencedObjectIds;
 	}
 
-	private String _parserFilter(String filter) {
-		if (filter != null) {
-			Matcher matcher = _pattern.matcher(filter);
+	private String _parseFilterString(String filterString) {
+		if (filterString != null) {
+			Matcher matcher = _pattern.matcher(filterString);
 
 			while (matcher.find()) {
 				if (_log.isWarnEnabled()) {
@@ -646,14 +646,14 @@ public class SegmentDog {
 					Integer.MAX_VALUE);
 
 				if (bigDecimal.compareTo(maxIntegerBigDecimal) > 0) {
-					filter = StringUtils.replace(
-						filter, matcher.group(),
+					filterString = StringUtils.replace(
+						filterString, matcher.group(),
 						String.valueOf(Integer.MAX_VALUE));
 				}
 			}
 		}
 
-		return filter;
+		return filterString;
 	}
 
 	private Exception _processLogicalOperator(
@@ -829,7 +829,7 @@ public class SegmentDog {
 			BeanUtils.copyProperties(partialSegment, existingSegment);
 
 			existingSegment.setFilter(
-				_parserFilter(existingSegment.getFilter()));
+				_parseFilterString(existingSegment.getFilter()));
 
 			existingSegment = _segmentRepository.save(existingSegment);
 

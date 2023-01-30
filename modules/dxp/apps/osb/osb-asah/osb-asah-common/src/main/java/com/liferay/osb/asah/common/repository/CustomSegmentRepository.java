@@ -81,6 +81,6 @@ public interface CustomSegmentRepository {
 
 	@Cacheable
 	public List<Segment> searchSegments(
-		String filter, String state, String status, Pageable pageable);
+		String filterString, String state, String status, Pageable pageable);
 
 }

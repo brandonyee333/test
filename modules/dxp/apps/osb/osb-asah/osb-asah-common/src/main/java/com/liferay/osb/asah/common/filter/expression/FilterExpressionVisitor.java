@@ -126,10 +126,11 @@ public class FilterExpressionVisitor
 
 		_includedTableNames.add("Identity");
 
-		String filter = _parseFilterExpression(filterExpressionContext.filter);
+		String filterString = _parseFilterStringExpression(
+			filterExpressionContext.filter);
 
 		FilterExpression filterExpression = new FilterExpression(
-			filter.substring(1, filter.length() - 1),
+			filterString.substring(1, filterString.length() - 1),
 			filterExpressionContext.filterType.getText(),
 			_filterTypeFilterStringConverterHelpers, _includedTableNames);
 
@@ -180,10 +181,11 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.FilterExpressionContext
 			filterExpressionContext) {
 
-		String filter = _parseFilterExpression(filterExpressionContext.filter);
+		String filterString = _parseFilterStringExpression(
+			filterExpressionContext.filter);
 
 		FilterExpression filterExpression = new FilterExpression(
-			filter.substring(1, filter.length() - 1),
+			filterString.substring(1, filterString.length() - 1),
 			filterExpressionContext.filterType.getText(),
 			_filterTypeFilterStringConverterHelpers, _includedTableNames);
 
@@ -560,14 +562,14 @@ public class FilterExpressionVisitor
 		}
 	}
 
-	private String _parseFilterExpression(Token filterToken) {
-		String filter = filterToken.getText();
+	private String _parseFilterStringExpression(Token filterToken) {
+		String filterString = filterToken.getText();
 
-		filter = filter.replaceAll("\\s''", " '");
-		filter = filter.replaceAll("''\\s", "' ");
-		filter = filter.replaceAll("''\\)", "')");
+		filterString = filterString.replaceAll("\\s''", " '");
+		filterString = filterString.replaceAll("''\\s", "' ");
+		filterString = filterString.replaceAll("''\\)", "')");
 
-		return filter;
+		return filterString;
 	}
 
 	private <T> T _visitChild(

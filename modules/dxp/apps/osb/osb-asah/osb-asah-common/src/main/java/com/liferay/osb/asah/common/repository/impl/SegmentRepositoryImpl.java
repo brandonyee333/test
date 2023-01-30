@@ -502,14 +502,14 @@ public class SegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchSegments(
-		String filter, String state, String status, Pageable pageable) {
+		String filterString, String state, String status, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"Segment"
 		).where(
-			_getConditions(filter, state, status)
+			_getConditions(filterString, state, status)
 		).orderBy(
 			getSortFields(
 				_getSortFieldNameConversionMap(), pageable.getSort(), null)
@@ -604,14 +604,14 @@ public class SegmentRepositoryImpl
 	}
 
 	private List<Condition> _getConditions(
-		String filter, String state, String status) {
+		String filterString, String state, String status) {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if (StringUtils.isNotEmpty(filter)) {
+		if (StringUtils.isNotEmpty(filterString)) {
 			conditions.add(
 				DSL.condition(
-					"{0} ~* {1}", DSL.field("filter"), DSL.val(filter)));
+					"{0} ~* {1}", DSL.field("filter"), DSL.val(filterString)));
 		}
 
 		if (StringUtils.isNotEmpty(state)) {

@@ -89,7 +89,7 @@ public interface SegmentRepository
 	public List<Segment> findByStateNotAndType(String state, Segment.Type type);
 
 	@Cacheable
-	public List<Long> findIdByFilterLike(@Param("filter") String filter);
+	public List<Long> findIdByFilterLike(@Param("filter") String filterString);
 
 	@Cacheable
 	public List<Long> findIdByNameInAndStatus(
