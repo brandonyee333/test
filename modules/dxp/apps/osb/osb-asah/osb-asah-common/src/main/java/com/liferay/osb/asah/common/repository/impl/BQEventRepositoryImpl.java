@@ -1226,7 +1226,7 @@ public class BQEventRepositoryImpl
 		for (EventAnalysisFilter eventAnalysisFilter : eventAnalysisFilters) {
 			conditions.add(
 				_getEventAnalysisFilterCondition(
-					filter.getAttributeType(), eventAnalysisFilter,
+					eventAnalysisFilter.getAttributeType(), eventAnalysisFilter,
 					filteredEventsTableName, rangeEndDate, rangeStartDate,
 					timeZoneId));
 		}
