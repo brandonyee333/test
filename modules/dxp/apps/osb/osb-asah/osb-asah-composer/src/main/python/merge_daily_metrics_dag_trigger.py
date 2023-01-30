@@ -10,7 +10,7 @@
 #
 
 import airflow
-import datetime
+import pendulum
 import requests
 
 from airflow.models import Variable
@@ -27,7 +27,7 @@ def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 			description=dag_description,
 			max_active_runs=1,
 			schedule_interval='0 1 * * *',
-			start_date=datetime.datetime.now() - datetime.timedelta(days=2)
+			start_date=pendulum.now(ac_project_time_zone_id) - pendulum.duration(days=2)
 	) as dag:
 		[
 			BigQueryInsertJobFromTemplateOperator(task_id='blog_daily_merge'),
