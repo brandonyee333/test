@@ -14,15 +14,22 @@
 
 package com.liferay.segments.asah.connector.internal.client;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NestableRuntimeException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -40,8 +47,9 @@ import com.liferay.segments.asah.connector.internal.client.model.Topic;
 import com.liferay.segments.asah.connector.internal.client.util.FilterBuilder;
 import com.liferay.segments.asah.connector.internal.client.util.OrderByField;
 
+import java.net.HttpURLConnection;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,11 +62,10 @@ import javax.ws.rs.core.MultivaluedMap;
 public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 
 	public AsahFaroBackendClientImpl(
-		AnalyticsSettingsManager analyticsSettingsManager,
-		JSONWebServiceClient jsonWebServiceClient) {
+		AnalyticsSettingsManager analyticsSettingsManager, Http http) {
 
 		_analyticsSettingsManager = analyticsSettingsManager;
-		_jsonWebServiceClient = jsonWebServiceClient;
+		_http = http;
 	}
 
 	@Override
@@ -68,13 +75,11 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		}
 
 		try {
-			AnalyticsConfiguration analyticsConfiguration =
-				_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
-
-			return _jsonWebServiceClient.doPost(
-				Experiment.class,
-				analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
-				_PATH_EXPERIMENTS, experiment, _getHeaders(companyId));
+			return _objectMapper.readValue(
+				_getResponse(
+					companyId, Http.Method.POST, null, _PATH_EXPERIMENTS,
+					experiment),
+				Experiment.class);
 		}
 		catch (Exception exception) {
 			throw new NestableRuntimeException(
@@ -88,16 +93,12 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		ExperimentSettings experimentSettings) {
 
 		try {
-			AnalyticsConfiguration analyticsConfiguration =
-				_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
-
-			String days = _jsonWebServiceClient.doPost(
-				String.class,
-				analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
+			String days = _getResponse(
+				companyId, Http.Method.POST, null,
 				StringUtil.replace(
 					_PATH_EXPERIMENTS_ESTIMATED_DAYS_DURATION, "{experimentId}",
 					experimentId),
-				experimentSettings, _getHeaders(companyId));
+				experimentSettings);
 
 			if (Validator.isNull(days)) {
 				return null;
@@ -128,15 +129,10 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		}
 
 		try {
-			AnalyticsConfiguration analyticsConfiguration =
-				_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
+			String path = StringUtil.replace(
+				_PATH_EXPERIMENTS_EXPERIMENT, "{experimentId}", experimentId);
 
-			_jsonWebServiceClient.doDelete(
-				analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
-				StringUtil.replace(
-					_PATH_EXPERIMENTS_EXPERIMENT, "{experimentId}",
-					experimentId),
-				new HashMap<>(), _getHeaders(companyId));
+			_getResponse(companyId, Http.Method.DELETE, null, path, null);
 		}
 		catch (Exception exception) {
 			throw new NestableRuntimeException(
@@ -164,17 +160,15 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 
 			uriVariables.putSingle("includeAnonymousUsers", true);
 
-			String response = _jsonWebServiceClient.doGet(
-				analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
-				_PATH_INDIVIDUALS,
-				_getParameters(
-					filterBuilder,
-					FilterConstants.FIELD_NAME_CONTEXT_INDIVIDUAL, 1, 1, null,
-					uriVariables),
-				_getHeaders(companyId));
-
 			Results<Individual> individualResults =
-				_individualJSONObjectMapper.mapToResults(response);
+				_individualJSONObjectMapper.mapToResults(
+					_getResponse(
+						companyId, Http.Method.GET,
+						_getParameters(
+							filterBuilder,
+							FilterConstants.FIELD_NAME_CONTEXT_INDIVIDUAL, 1, 1,
+							null, uriVariables),
+						_PATH_INDIVIDUALS, null));
 
 			List<Individual> items = individualResults.getItems();
 
@@ -196,21 +190,17 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		List<OrderByField> orderByFields) {
 
 		try {
-			AnalyticsConfiguration analyticsConfiguration =
-				_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
-
-			String response = _jsonWebServiceClient.doGet(
-				analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
-				StringUtil.replace(
-					_PATH_INDIVIDUAL_SEGMENTS_INDIVIDUALS, "{id}",
-					individualSegmentId),
-				_getParameters(
-					new FilterBuilder(),
-					FilterConstants.FIELD_NAME_CONTEXT_INDIVIDUAL, cur, delta,
-					orderByFields),
-				_getHeaders(companyId));
-
-			return _individualJSONObjectMapper.mapToResults(response);
+			return _individualJSONObjectMapper.mapToResults(
+				_getResponse(
+					companyId, Http.Method.GET,
+					_getParameters(
+						new FilterBuilder(),
+						FilterConstants.FIELD_NAME_CONTEXT_INDIVIDUAL, cur,
+						delta, orderByFields),
+					StringUtil.replace(
+						_PATH_INDIVIDUAL_SEGMENTS_INDIVIDUALS, "{id}",
+						individualSegmentId),
+					null));
 		}
 		catch (Exception exception) {
 			throw new NestableRuntimeException(
@@ -241,11 +231,10 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 				"dataSourceId",
 				analyticsConfiguration.liferayAnalyticsDataSourceId());
 
-			String response = _jsonWebServiceClient.doGet(
-				analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
-				_PATH_INDIVIDUAL_SEGMENTS, parameters, _getHeaders(companyId));
-
-			return _individualSegmentJSONObjectMapper.mapToResults(response);
+			return _individualSegmentJSONObjectMapper.mapToResults(
+				_getResponse(
+					companyId, Http.Method.GET, parameters,
+					_PATH_INDIVIDUAL_SEGMENTS, null));
 		}
 		catch (Exception exception) {
 			throw new NestableRuntimeException(
@@ -258,15 +247,12 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		long companyId, String userId) {
 
 		try {
-			AnalyticsConfiguration analyticsConfiguration =
-				_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
-
-			String response = _jsonWebServiceClient.doGet(
-				analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
-				StringUtil.replace(_PATH_INTERESTS_TERMS, "{userId}", userId),
-				new MultivaluedHashMap<>(), _getHeaders(companyId));
-
-			return _interestTermsJSONObjectMapper.mapToResults(response);
+			return _interestTermsJSONObjectMapper.mapToResults(
+				_getResponse(
+					companyId, Http.Method.GET, null,
+					StringUtil.replace(
+						_PATH_INTERESTS_TERMS, "{userId}", userId),
+					null));
 		}
 		catch (Exception exception) {
 			throw new NestableRuntimeException(
@@ -282,15 +268,12 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		}
 
 		try {
-			AnalyticsConfiguration analyticsConfiguration =
-				_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
-
-			_jsonWebServiceClient.doPatch(
-				analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
+			_getResponse(
+				companyId, Http.Method.PATCH, null,
 				StringUtil.replace(
 					_PATH_EXPERIMENTS_EXPERIMENT, "{experimentId}",
 					experiment.getId()),
-				experiment, _getHeaders(companyId));
+				experiment);
 		}
 		catch (Exception exception) {
 			throw new NestableRuntimeException(
@@ -312,15 +295,12 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		}
 
 		try {
-			AnalyticsConfiguration analyticsConfiguration =
-				_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
-
-			_jsonWebServiceClient.doPut(
-				analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
+			_getResponse(
+				companyId, Http.Method.PUT, null,
 				StringUtil.replace(
 					_PATH_EXPERIMENTS_DXP_VARIANTS, "{experimentId}",
 					experimentId),
-				dxpVariants, _getHeaders(companyId));
+				dxpVariants);
 		}
 		catch (Exception exception) {
 			throw new NestableRuntimeException(
@@ -329,13 +309,15 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		}
 	}
 
-	private Map<String, String> _getHeaders(long companyId)
-		throws ConfigurationException {
-
+	private Map<String, String> _getHeaders(long companyId) throws Exception {
 		AnalyticsConfiguration analyticsConfiguration =
 			_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
 
 		return HashMapBuilder.put(
+			"Accept", "application/json"
+		).put(
+			"Content-Type", "application/json"
+		).put(
 			"OSB-Asah-Faro-Backend-Security-Signature",
 			analyticsConfiguration.
 				liferayAnalyticsFaroBackendSecuritySignature()
@@ -368,6 +350,61 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		uriVariables.putSingle("filter", filterBuilder.build());
 
 		return uriVariables;
+	}
+
+	private String _getResponse(
+			long companyId, Http.Method method,
+			MultivaluedMap<String, Object> parameters, String path,
+			Object object)
+		throws Exception {
+
+		AnalyticsConfiguration analyticsConfiguration =
+			_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
+
+		String url = StringBundler.concat(
+			analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
+			StringPool.SLASH, path);
+
+		Http.Options options = new Http.Options();
+
+		if (parameters != null) {
+			for (MultivaluedMap.Entry<String, List<Object>> entry :
+					parameters.entrySet()) {
+
+				for (Object value : entry.getValue()) {
+					url = HttpComponentsUtil.addParameter(
+						url, entry.getKey(), value.toString());
+				}
+			}
+		}
+
+		if (object != null) {
+			options.setBody(
+				_objectMapper.writeValueAsString(object),
+				ContentTypes.APPLICATION_JSON, StringPool.UTF8);
+		}
+
+		options.setLocation(url);
+		options.setMethod(method);
+		options.setHeaders(_getHeaders(companyId));
+
+		String response = _http.URLtoString(options);
+
+		Http.Response httpResponse = options.getResponse();
+
+		if (httpResponse.getResponseCode() != HttpURLConnection.HTTP_OK) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Response code " + httpResponse.getResponseCode());
+			}
+
+			throw new NestableRuntimeException(
+				StringBundler.concat(
+					"Unexpected response status ",
+					httpResponse.getResponseCode(), " with response message: ",
+					response));
+		}
+
+		return response;
 	}
 
 	private MultivaluedMap<String, Object> _getUriVariables(
@@ -442,8 +479,14 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 			new IndividualSegmentJSONObjectMapper();
 	private static final InterestTermsJSONObjectMapper
 		_interestTermsJSONObjectMapper = new InterestTermsJSONObjectMapper();
+	private static final ObjectMapper _objectMapper = new ObjectMapper() {
+		{
+			configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		}
+	};
 
 	private final AnalyticsSettingsManager _analyticsSettingsManager;
-	private final JSONWebServiceClient _jsonWebServiceClient;
+	private final Http _http;
 
 }
