@@ -207,7 +207,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		distinct_user_id_keyword_data_frame = \
 			daily_logscores_data_frame.select(
-				F.col('userId'), F.col('keyword')
+				F.col('userId'), F.col('keyword'), F.col('sessionId')
 			).distinct()
 
 		date_user_id_keyword_data_frame = date_range_data_frame.crossJoin(
@@ -216,7 +216,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		expanded_dates_logscore_data_frame = \
 			date_user_id_keyword_data_frame.join(
 				daily_logscores_data_frame,
-				['event_date', 'userId', 'keyword'],
+				['event_date', 'userId', 'keyword', 'sessionId'],
 				how='left'
 			)
 
@@ -227,7 +227,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		]
 
 		interest_score_data_frame = expanded_dates_logscore_data_frame.select(
-			'event_date', 'userId', 'keyword', 'logscore'
+			'event_date', 'sessionId', 'userId', 'keyword', 'logscore'
 		).fillna(
 			{'logscore': 0}
 		).withColumn(
@@ -282,6 +282,30 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			"overwrite"
 		).save(
 			'{}.individualinterestscore'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
+
+		final_session_interest_score_data_frame = self.spark_session.sql("""
+			SELECT 
+				event_date as recordedDate,
+				sessionId,
+				userId as identityId,
+				keyword,
+				interest_score as interestScore,
+				interested
+			FROM 
+				individual_interest_score
+		""")
+
+		data_frame_writer = final_session_interest_score_data_frame.write
+
+		data_frame_writer.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.sessioninterestscore'.format(
 				self.spark_application_args.lcp_project_id
 			)
 		)
@@ -550,7 +574,8 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 					DATE(timestamp_trunc(event.eventDate, DAY)) as event_date,
 					event.id,
 					COUNT(event.userId) OVER (PARTITION BY event.userId) AS interactions,  
-					event.keywords,  
+					event.keywords,
+					event.sessionId,
 					event.title, 
 					event.userId, 
 					eventproperty.name, 
@@ -574,6 +599,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 					id,
 					keywords,  
 					name, 
+					sessionId,
 					title, 
 					userId, 
 					value
