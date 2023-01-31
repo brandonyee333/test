@@ -63,6 +63,9 @@ public interface CustomBQIdentityInterestScoreRepository {
 		boolean active, @Nullable Long channelId, @Nullable String keywords,
 		@Nullable Long segmentId, Pageable pageable);
 
+	public List<String> getKeywords(
+		@Nullable String keywords, Pageable pageable);
+
 	public List<String> getTopKeywordsByIndividualId(
 		String individualId, int size);
 

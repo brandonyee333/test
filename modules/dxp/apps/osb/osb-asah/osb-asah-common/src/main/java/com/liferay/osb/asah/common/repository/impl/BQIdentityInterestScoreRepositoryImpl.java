@@ -639,6 +639,29 @@ public class BQIdentityInterestScoreRepositoryImpl
 			totalBigDecimal.longValue(), totalCountBigDecimal.longValue());
 	}
 
+	public List<String> getKeywords(
+		@Nullable String keywords, Pageable pageable) {
+
+		Field<String> field = DSL.field("keyword", String.class);
+
+		SelectSelectStep<Record1<String>> selectSelectStep =
+			_dslContext.selectDistinct(field);
+
+		return _queryExecutor.queryForList(
+			record -> (String)record.get("keyword"),
+			selectSelectStep.from(
+				"BQIdentityInterestScore"
+			).where(
+				_getConditions(null, null, null, null, keywords, null)
+			).orderBy(
+				field.asc()
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
 	@Override
 	public List<String> getTopKeywordsByIndividualId(
 		String individualId, int size) {
