@@ -11,7 +11,7 @@ create index IX_D49C2E66 on AnnouncementsEntry (userId);
 create index IX_F2949120 on AnnouncementsEntry (uuid_[$COLUMN_LENGTH:75$], companyId);
 
 create index IX_9C7EB9F on AnnouncementsFlag (entryId);
-create unique index IX_4539A99C on AnnouncementsFlag (userId, entryId, value);
+create index IX_4539A99C on AnnouncementsFlag (userId, entryId, value);
 
 create index IX_C7F39FCA on AssetCategory (groupId, name[$COLUMN_LENGTH:75$], vocabularyId);
 create index IX_852EA801 on AssetCategory (groupId, parentCategoryId, name[$COLUMN_LENGTH:75$], vocabularyId);
