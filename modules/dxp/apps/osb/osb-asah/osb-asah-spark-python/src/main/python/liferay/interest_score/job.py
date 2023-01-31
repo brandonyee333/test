@@ -207,7 +207,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		distinct_user_id_keyword_data_frame = \
 			daily_logscores_data_frame.select(
-				F.col('userId'), F.col('keyword'), F.col('sessionId')
+				F.col('keyword'), F.col('sessionId'), F.col('userId'),
 			).distinct()
 
 		date_user_id_keyword_data_frame = date_range_data_frame.crossJoin(
@@ -216,7 +216,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		expanded_dates_logscore_data_frame = \
 			date_user_id_keyword_data_frame.join(
 				daily_logscores_data_frame,
-				['event_date', 'userId', 'keyword', 'sessionId'],
+				['event_date', 'keyword', 'sessionId', 'userId'],
 				how='left'
 			)
 
@@ -227,7 +227,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		]
 
 		interest_score_data_frame = expanded_dates_logscore_data_frame.select(
-			'event_date', 'sessionId', 'userId', 'keyword', 'logscore'
+			'event_date', 'keyword', 'logscore', 'sessionId', 'userId'
 		).fillna(
 			{'logscore': 0}
 		).withColumn(
@@ -263,18 +263,18 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		interest_score_data_frame.createOrReplaceTempView(
 			'individual_interest_score')
 
-		final_interest_score_data_frame = self.spark_session.sql("""
-			SELECT 
-				event_date as recordedDate,
+		individual_interest_score_data_frame = self.spark_session.sql("""
+			SELECT
 				userId as identityId,
-				keyword,
+				interested,
 				interest_score as interestScore,
-				interested
-			FROM 
+				keyword,
+				event_date as recordedDate
+			FROM
 				individual_interest_score
 		""")
 
-		data_frame_writer = final_interest_score_data_frame.write
+		data_frame_writer = individual_interest_score_data_frame.write
 
 		data_frame_writer.format(
 			'bigquery'
@@ -286,19 +286,19 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			)
 		)
 
-		final_session_interest_score_data_frame = self.spark_session.sql("""
-			SELECT 
-				event_date as recordedDate,
-				sessionId,
+		session_interest_score_data_frame = self.spark_session.sql("""
+			SELECT
 				userId as identityId,
-				keyword,
+				interested,
 				interest_score as interestScore,
-				interested
+				keyword,
+				event_date as recordedDate,
+				sessionId
 			FROM 
 				individual_interest_score
 		""")
 
-		data_frame_writer = final_session_interest_score_data_frame.write
+		data_frame_writer = session_interest_score_data_frame.write
 
 		data_frame_writer.format(
 			'bigquery'
