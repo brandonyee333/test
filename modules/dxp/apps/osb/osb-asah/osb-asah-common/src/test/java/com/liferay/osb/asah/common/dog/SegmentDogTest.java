@@ -29,29 +29,29 @@ public class SegmentDogTest {
 		Assertions.assertEquals(
 			"demographics/additionalName/value eq 'Miles'",
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_segmentDog, "_parseFilterString",
 				"demographics/additionalName/value eq 'Miles'"));
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_segmentDog, "_parseFilterString",
 				"demographics/age/value ge " +
 					"12345678901234567262899398937898378787878"));
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_segmentDog, "_parseFilterString",
 				"demographics/age/value ge 1.2345678901234568e+21"));
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_segmentDog, "_parseFilterString",
 				"demographics/age/value ge " + Integer.MAX_VALUE));
 		Assertions.assertEquals(
 			"organizations.filter(filter='(dateModified gt " +
 				Integer.MAX_VALUE + ")')",
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parserFilter",
+				_segmentDog, "_parseFilterString",
 				"organizations.filter(filter='(dateModified gt " +
 					"1580256740750)')"));
 	}
