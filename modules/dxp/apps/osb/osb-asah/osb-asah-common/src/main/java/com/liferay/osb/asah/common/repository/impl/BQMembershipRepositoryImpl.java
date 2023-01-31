@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
-import org.jooq.Record3;
+import org.jooq.Record5;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -301,8 +302,15 @@ public class BQMembershipRepositoryImpl
 
 	@Override
 	public void updateBQMemberships(String filterString, Long segmentId) {
-		SelectSelectStep<Record3<String, String, Long>> selectSelectStep =
-			_dslContext.select(
+		Date date = new Date();
+
+		SelectSelectStep<Record5<Date, String, String, Date, Long>>
+			selectSelectStep = _dslContext.select(
+				DSL.val(
+					date, Date.class
+				).as(
+					"createDate"
+				),
 				DSL.field(
 					"Identity.id", String.class
 				).as(
@@ -314,13 +322,18 @@ public class BQMembershipRepositoryImpl
 					"individualId"
 				),
 				DSL.val(
+					date, Date.class
+				).as(
+					"modifiedDate"
+				),
+				DSL.val(
 					segmentId
 				).as(
 					"segmentId"
 				));
 
-		SelectJoinStep<Record3<String, String, Long>> selectJoinStep =
-			selectSelectStep.from(
+		SelectJoinStep<Record5<Date, String, String, Date, Long>>
+			selectJoinStep = selectSelectStep.from(
 				DSL.table(
 					"BQIdentity"
 				).as(
@@ -349,8 +362,10 @@ public class BQMembershipRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQMembership")
 			).columns(
+				DSL.field("createDate", Date.class),
 				DSL.field("identityId", String.class),
 				DSL.field("individualId", String.class),
+				DSL.field("modifiedDate", Date.class),
 				DSL.field("segmentId", Long.class)
 			).select(
 				selectJoinStep.where(filterExpression.getCondition())
@@ -374,9 +389,11 @@ public class BQMembershipRepositoryImpl
 		return conditions;
 	}
 
-	private SelectJoinStep<Record3<String, String, Long>> _getSelectJoinStep(
-		Set<String> referencedTableNames,
-		SelectJoinStep<Record3<String, String, Long>> selectJoinStep) {
+	private SelectJoinStep<Record5<Date, String, String, Date, Long>>
+		_getSelectJoinStep(
+			Set<String> referencedTableNames,
+			SelectJoinStep<Record5<Date, String, String, Date, Long>>
+				selectJoinStep) {
 
 		if (referencedTableNames.contains("Event")) {
 			selectJoinStep = selectJoinStep.join(
