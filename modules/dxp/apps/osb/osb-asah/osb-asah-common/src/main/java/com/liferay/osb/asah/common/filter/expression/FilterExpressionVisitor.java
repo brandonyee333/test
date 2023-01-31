@@ -17,9 +17,16 @@ package com.liferay.osb.asah.common.filter.expression;
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionBaseVisitor;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
+import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
+import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
+import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.postgresql.converter.helper.OrganizationsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.postgresql.converter.helper.SessionsFilterStringConverter;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -46,16 +53,20 @@ import org.jooq.impl.DSL;
 public class FilterExpressionVisitor
 	extends FilterExpressionBaseVisitor<Object> {
 
-	public FilterExpressionVisitor(
-		String filterType,
-		List<FilterStringConverterHelper>
-			filterTypeFilterStringConverterHelpers,
-		Set<String> includedTableNames) {
-
+	public FilterExpressionVisitor(String filterType) {
 		_filterType = filterType;
-		_filterTypeFilterStringConverterHelpers =
-			filterTypeFilterStringConverterHelpers;
-		_includedTableNames = includedTableNames;
+
+		FilterStringConverterHelper filterStringConverterHelper =
+			_filterTypeFilterStringConverterHelpers.get(filterType);
+
+		if (filterStringConverterHelper != null) {
+			_referencedTableNames.add(
+				filterStringConverterHelper.getTableName());
+		}
+	}
+
+	public Set<String> getReferencedTableNames() {
+		return _referencedTableNames;
 	}
 
 	@Override
@@ -124,15 +135,15 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.FilterByCountExpressionContext
 			filterExpressionContext) {
 
-		_includedTableNames.add("Identity");
-
 		String filterString = _parseFilterStringExpression(
 			filterExpressionContext.filter);
 
 		FilterExpression filterExpression = new FilterExpression(
 			filterString.substring(1, filterString.length() - 1),
-			filterExpressionContext.filterType.getText(),
-			_filterTypeFilterStringConverterHelpers, _includedTableNames);
+			filterExpressionContext.filterType.getText());
+
+		_referencedTableNames.addAll(
+			filterExpression.getReferencedTableNames());
 
 		String operator = filterExpressionContext.operator.getText();
 		Integer value = Integer.parseInt(
@@ -186,8 +197,10 @@ public class FilterExpressionVisitor
 
 		FilterExpression filterExpression = new FilterExpression(
 			filterString.substring(1, filterString.length() - 1),
-			filterExpressionContext.filterType.getText(),
-			_filterTypeFilterStringConverterHelpers, _includedTableNames);
+			filterExpressionContext.filterType.getText());
+
+		_referencedTableNames.addAll(
+			filterExpression.getReferencedTableNames());
 
 		return filterExpression.getCondition();
 	}
@@ -420,7 +433,7 @@ public class FilterExpressionVisitor
 		}
 
 		FilterStringConverterHelper filterStringConverterHelper =
-			_getFilterStringConverterHelper(_filterType);
+			_filterTypeFilterStringConverterHelpers.get(_filterType);
 
 		if (filterStringConverterHelper == null) {
 			return rightField;
@@ -456,11 +469,15 @@ public class FilterExpressionVisitor
 		if (fieldName.contains("/")) {
 			String[] fieldNames = fieldName.split("/");
 
+			if (Objects.equals("demographics", fieldNames[0])) {
+				_filterType = "individual";
+			}
+
 			fieldName = fieldNames[1];
 		}
 
 		FilterStringConverterHelper filterStringConverterHelper =
-			_getFilterStringConverterHelper(_filterType);
+			_filterTypeFilterStringConverterHelpers.get(_filterType);
 
 		if (filterStringConverterHelper != null) {
 			Map<String, String> fieldNameConversionMap =
@@ -470,13 +487,13 @@ public class FilterExpressionVisitor
 				fieldName = fieldNameConversionMap.get(fieldName);
 			}
 
-			if ((_includedTableNames != null) &&
+			if ((_referencedTableNames != null) &&
 				StringUtils.isNotEmpty(
 					filterStringConverterHelper.getTableName())) {
 
 				String tableName = filterStringConverterHelper.getTableName();
 
-				_includedTableNames.add(tableName);
+				_referencedTableNames.add(tableName);
 
 				if (!StringUtils.startsWithIgnoreCase(fieldName, tableName)) {
 					fieldName = tableName + "." + fieldName;
@@ -494,22 +511,6 @@ public class FilterExpressionVisitor
 		}
 
 		return field;
-	}
-
-	private FilterStringConverterHelper _getFilterStringConverterHelper(
-		String filterType) {
-
-		for (FilterStringConverterHelper filterStringConverterHelper :
-				_filterTypeFilterStringConverterHelpers) {
-
-			if (Objects.equals(
-					filterStringConverterHelper.getFilterType(), filterType)) {
-
-				return filterStringConverterHelper;
-			}
-		}
-
-		return null;
 	}
 
 	private Field _getLeftField(
@@ -547,7 +548,7 @@ public class FilterExpressionVisitor
 		}
 
 		FilterStringConverterHelper filterStringConverterHelper =
-			_getFilterStringConverterHelper(_filterType);
+			_filterTypeFilterStringConverterHelpers.get(_filterType);
 
 		if (filterStringConverterHelper == null) {
 			return null;
@@ -580,9 +581,26 @@ public class FilterExpressionVisitor
 		return (T)parseTree.accept(this);
 	}
 
-	private final String _filterType;
-	private final List<FilterStringConverterHelper>
-		_filterTypeFilterStringConverterHelpers;
-	private final Set<String> _includedTableNames;
+	private String _filterType;
+	private final Map<String, FilterStringConverterHelper>
+		_filterTypeFilterStringConverterHelpers =
+			new HashMap<String, FilterStringConverterHelper>() {
+				{
+					put(
+						"activities",
+						new ActivitiesFilterStringConverterHelper());
+					put(
+						"dataSourceAccountPKs",
+						new DataSourceFilterStringConverterHelper());
+					put(
+						"individual",
+						new IndividualsFilterStringConverterHelper());
+					put(
+						"organizations",
+						new OrganizationsFilterStringConverterHelper());
+					put("sessions", new SessionsFilterStringConverter());
+				}
+			};
+	private final Set<String> _referencedTableNames = new HashSet<>();
 
 }

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.model.MetricType;
 
 import java.time.LocalDate;
@@ -40,9 +39,6 @@ public interface CustomBQIdentityRepository {
 		List<LocalDate> localDates, List<MetricType> metricTypes,
 		ZoneId zoneId);
 
-	public List<Long> searchSegmentBQIdentityIds(
-		String filterString,
-		List<FilterStringConverterHelper>
-			filterTypeFilterStringConverterHelpers);
+	public List<Long> searchSegmentBQIdentityIds(String filterString);
 
 }

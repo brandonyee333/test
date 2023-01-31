@@ -104,6 +104,11 @@ public class IndividualsFilterStringConverterHelper
 	}
 
 	@Override
+	public String getFilterType() {
+		return "individual";
+	}
+
+	@Override
 	public Condition getInferredCondition(String fieldName) {
 		if (!fieldName.startsWith("demographics") ||
 			!fieldName.endsWith("value")) {

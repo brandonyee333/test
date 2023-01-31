@@ -14,9 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
-import com.liferay.osb.asah.common.filter.expression.JoinCondition;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -153,11 +151,7 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public List<Long> searchSegmentBQIdentityIds(
-		String filterString,
-		List<FilterStringConverterHelper>
-			filterTypeFilterStringConverterHelpers) {
-
+	public List<Long> searchSegmentBQIdentityIds(String filterString) {
 		Field<Long> identityIdField = DSL.field("Identity.id", Long.class);
 
 		SelectSelectStep<Record1<Long>> selectSelectStep = _dslContext.select(
@@ -170,15 +164,14 @@ public class BQIdentityRepositoryImpl
 				"Identity"
 			));
 
-		JoinCondition joinCondition = FilterExpression.convert(
-			filterString, filterTypeFilterStringConverterHelpers);
+		FilterExpression filterExpression = new FilterExpression(filterString);
 
 		selectJoinStep = _getSelectJoinStep(
-			joinCondition.getIncludedTableNames(), selectJoinStep);
+			filterExpression.getReferencedTableNames(), selectJoinStep);
 
 		return _queryExecutor.queryForList(
 			record -> (Long)record.get("id"),
-			selectJoinStep.where(joinCondition.getCondition()));
+			selectJoinStep.where(filterExpression.getCondition()));
 	}
 
 	private List<Condition> _getConditions(
@@ -315,10 +308,10 @@ public class BQIdentityRepositoryImpl
 	}
 
 	private SelectJoinStep<Record1<Long>> _getSelectJoinStep(
-		Set<String> includedTableNames,
+		Set<String> referencedTableNames,
 		SelectJoinStep<Record1<Long>> selectJoinStep) {
 
-		if (includedTableNames.contains("Event")) {
+		if (referencedTableNames.contains("Event")) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"BQEvent"
@@ -334,7 +327,7 @@ public class BQIdentityRepositoryImpl
 			);
 		}
 
-		if (includedTableNames.contains("Individual")) {
+		if (referencedTableNames.contains("Individual")) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"BQIndividual"
@@ -350,7 +343,7 @@ public class BQIdentityRepositoryImpl
 			);
 		}
 
-		if (includedTableNames.contains("Session")) {
+		if (referencedTableNames.contains("Session")) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"BQSession"

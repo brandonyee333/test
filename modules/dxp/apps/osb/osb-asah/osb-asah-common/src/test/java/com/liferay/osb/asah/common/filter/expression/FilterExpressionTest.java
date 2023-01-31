@@ -14,14 +14,8 @@
 
 package com.liferay.osb.asah.common.filter.expression;
 
-import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
-import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.OrganizationsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.SessionsFilterStringConverter;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +28,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -263,15 +256,14 @@ public class FilterExpressionTest {
 			).gt(
 				500000L
 			),
-			_testFilters.get("testFreestyle4"),
-			_filterTypeFilterStringConverterHelpers, Collections.emptySet());
+			_testFilters.get("testFreestyle4"), Collections.emptySet());
 	}
 
 	@Test
 	public void testFreestyle5() {
 		_assertEquals(
 			DSL.field(
-				"jobTitle"
+				"Individual.jobTitle"
 			).containsIgnoreCase(
 				"manager"
 			),
@@ -306,7 +298,6 @@ public class FilterExpressionTest {
 					"address2"
 				)),
 			_testFilters.get("testFreestyle6"),
-			_filterTypeFilterStringConverterHelpers,
 			new HashSet<>(Arrays.asList("Individual", "Session")));
 	}
 
@@ -340,7 +331,6 @@ public class FilterExpressionTest {
 						localDateTime.minusHours(24)
 					))),
 			_testFilters.get("testFreestyle7"),
-			_filterTypeFilterStringConverterHelpers,
 			new HashSet<>(Arrays.asList("Session")));
 	}
 
@@ -359,7 +349,6 @@ public class FilterExpressionTest {
 					"type1"
 				)),
 			_testFilters.get("testFreestyle8"),
-			_filterTypeFilterStringConverterHelpers,
 			new HashSet<>(Arrays.asList("Organization")));
 	}
 
@@ -431,7 +420,6 @@ public class FilterExpressionTest {
 					"name1"
 				)),
 			_testFilters.get("testFreestyle9"),
-			_filterTypeFilterStringConverterHelpers,
 			new HashSet<>(
 				Arrays.asList("Individual", "Organization", "Session")));
 	}
@@ -506,7 +494,6 @@ public class FilterExpressionTest {
 					"name1"
 				)),
 			_testFilters.get("testFreestyle10"),
-			_filterTypeFilterStringConverterHelpers,
 			new HashSet<>(
 				Arrays.asList("Individual", "Organization", "Session")));
 	}
@@ -574,8 +561,7 @@ public class FilterExpressionTest {
 					)
 				)),
 			_testFilters.get("testFreestyle12"),
-			_filterTypeFilterStringConverterHelpers,
-			new HashSet<>(Arrays.asList("Event", "Identity")));
+			new HashSet<>(Arrays.asList("Event")));
 	}
 
 	@Test
@@ -676,8 +662,7 @@ public class FilterExpressionTest {
 					))
 			),
 			_testFilters.get("testFreestyle13"),
-			_filterTypeFilterStringConverterHelpers,
-			new HashSet<>(Arrays.asList("Event", "Identity")));
+			new HashSet<>(Arrays.asList("Event")));
 	}
 
 	@Test
@@ -750,8 +735,7 @@ public class FilterExpressionTest {
 				)
 			),
 			_testFilters.get("testFreestyle14"),
-			_filterTypeFilterStringConverterHelpers,
-			new HashSet<>(Arrays.asList("Event", "Identity", "Individual")));
+			new HashSet<>(Arrays.asList("Event", "Individual")));
 	}
 
 	@Test
@@ -825,8 +809,7 @@ public class FilterExpressionTest {
 				)
 			),
 			_testFilters.get("testFreestyle15"),
-			_filterTypeFilterStringConverterHelpers,
-			new HashSet<>(Arrays.asList("Event", "Identity", "Individual")));
+			new HashSet<>(Arrays.asList("Event", "Individual")));
 	}
 
 	@Test
@@ -869,10 +852,11 @@ public class FilterExpressionTest {
 				"Individual.emailAddress"
 			).isNotNull());
 
-		Condition actualCondition = FilterExpression.convert(
+		FilterExpression filterExpression = new FilterExpression(
 			"(channelIds eq '506297979389450553' and " +
-				"(demographics/email/value ne null))",
-			new IndividualsFilterStringConverterHelper());
+				"(demographics/email/value ne null))");
+
+		Condition actualCondition = filterExpression.getCondition();
 
 		Assertions.assertEquals(
 			expectedCondition.toString(), actualCondition.toString());
@@ -1113,24 +1097,25 @@ public class FilterExpressionTest {
 	private void _assertEquals(
 		Condition expectedCondition, String actualFilterExpressionString) {
 
+		FilterExpression filterExpression = new FilterExpression(
+			actualFilterExpressionString);
+
 		Assertions.assertEquals(
-			expectedCondition,
-			FilterExpression.convert(actualFilterExpressionString));
+			expectedCondition, filterExpression.getCondition());
 	}
 
 	private void _assertEquals(
 		Condition expectedCondition, String actualFilterExpressionString,
-		List<FilterStringConverterHelper> filterTypeStringConverterHelpers,
 		Set<String> includedTableNames) {
 
-		JoinCondition joinCondition = FilterExpression.convert(
-			actualFilterExpressionString, filterTypeStringConverterHelpers);
+		FilterExpression filterExpression = new FilterExpression(
+			actualFilterExpressionString);
 
 		Assertions.assertEquals(
-			expectedCondition, joinCondition.getCondition());
+			expectedCondition, filterExpression.getCondition());
 
 		Assertions.assertEquals(
-			includedTableNames, joinCondition.getIncludedTableNames());
+			includedTableNames, filterExpression.getReferencedTableNames());
 	}
 
 	private void _assertThrowsException(
@@ -1138,7 +1123,7 @@ public class FilterExpressionTest {
 
 		Assertions.assertThrows(
 			FilterExpressionParserException.class,
-			() -> FilterExpression.convert(filterExpressionString), message);
+			() -> new FilterExpression(filterExpressionString), message);
 	}
 
 	@SuppressFBWarnings
@@ -1164,18 +1149,6 @@ public class FilterExpressionTest {
 			throw new RuntimeException(ioException);
 		}
 	}
-
-	private static final List<FilterStringConverterHelper>
-		_filterTypeFilterStringConverterHelpers =
-			new ArrayList<FilterStringConverterHelper>() {
-				{
-					add(new IndividualsFilterStringConverterHelper());
-					add(new ActivitiesFilterStringConverterHelper());
-					add(new DataSourceFilterStringConverterHelper());
-					add(new OrganizationsFilterStringConverterHelper());
-					add(new SessionsFilterStringConverter());
-				}
-			};
 
 	private final Map<String, String> _testFilters = _getTestFilters();
 

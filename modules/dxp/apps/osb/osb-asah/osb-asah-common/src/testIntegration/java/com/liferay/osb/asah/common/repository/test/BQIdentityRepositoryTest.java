@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.EventDog;
@@ -23,9 +22,6 @@ import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
-import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.SessionsFilterStringConverter;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
@@ -139,13 +135,7 @@ public class BQIdentityRepositoryTest
 					"(sessions.filter(filter='(context/browserName eq " +
 						"''browser1'' and sessionStart gt ''last24Hours'')') " +
 							"and demographics/email/value eq " +
-								"'test1@liferay.com'))",
-				new ArrayList<FilterStringConverterHelper>() {
-					{
-						add(new IndividualsFilterStringConverterHelper());
-						add(new SessionsFilterStringConverter());
-					}
-				});
+								"'test1@liferay.com'))");
 
 		Assertions.assertEquals(1, identityIds.size());
 		Assertions.assertEquals(1, identityIds.get(0));
@@ -157,13 +147,7 @@ public class BQIdentityRepositoryTest
 			_bqIdentityRepository.searchSegmentBQIdentityIds(
 				"(demographics/firstName/value eq 'Test1' and " +
 					"(activities.filterByCount(filter='(activityKey eq " +
-						"''Blog#blogClicked#1'')',operator='ge',value=1)))",
-				new ArrayList<FilterStringConverterHelper>() {
-					{
-						add(new ActivitiesFilterStringConverterHelper());
-						add(new IndividualsFilterStringConverterHelper());
-					}
-				});
+						"''Blog#blogClicked#1'')',operator='ge',value=1)))");
 
 		Assertions.assertEquals(1, identityIds.size());
 		Assertions.assertEquals(1, identityIds.get(0));
@@ -175,13 +159,7 @@ public class BQIdentityRepositoryTest
 			_bqIdentityRepository.searchSegmentBQIdentityIds(
 				"(demographics/firstName/value eq 'Test1' and " +
 					"(activities.filterByCount(filter='(activityKey eq " +
-						"''Blog#blogClicked#2'')',operator='ge',value=1)))",
-				new ArrayList<FilterStringConverterHelper>() {
-					{
-						add(new ActivitiesFilterStringConverterHelper());
-						add(new IndividualsFilterStringConverterHelper());
-					}
-				});
+						"''Blog#blogClicked#2'')',operator='ge',value=1)))");
 
 		Assertions.assertEquals(0, identityIds.size());
 	}
