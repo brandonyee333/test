@@ -303,6 +303,10 @@ public class SegmentDog {
 		return _segmentRepository.findAll(PageRequest.of(page, size));
 	}
 
+	public List<Segment> getSegments(int page, int size, Segment.Type type) {
+		return _segmentRepository.findByType(PageRequest.of(page, size), type);
+	}
+
 	public List<Segment> getSegments(Iterable<Long> segmentIds) {
 		return IterableUtils.toList(_segmentRepository.findAllById(segmentIds));
 	}

@@ -261,6 +261,14 @@ public class SegmentRepositoryTest
 	}
 
 	@Test
+	public void testFindByType() {
+		List<Segment> segments = _segmentRepository.findByType(
+			PageRequest.of(0, 20), Segment.Type.DYNAMIC);
+
+		Assertions.assertEquals(2, segments.size());
+	}
+
+	@Test
 	public void testFindIdByNameInAndStatus() {
 		List<Long> ids = _segmentRepository.findIdByNameInAndStatus(
 			Arrays.asList("Segment 1", "Segment 2"), "STARTED");
