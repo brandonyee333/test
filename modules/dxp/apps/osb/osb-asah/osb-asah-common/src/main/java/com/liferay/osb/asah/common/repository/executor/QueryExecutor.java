@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectFinalStep;
@@ -29,6 +30,8 @@ import org.jooq.SelectFinalStep;
  * @author Matthew Kong
  */
 public interface QueryExecutor {
+
+	public void queryExecute(Query query);
 
 	public BigDecimal queryForBigDecimal(
 		SelectFinalStep<Record1<Number>> selectFinalStep);

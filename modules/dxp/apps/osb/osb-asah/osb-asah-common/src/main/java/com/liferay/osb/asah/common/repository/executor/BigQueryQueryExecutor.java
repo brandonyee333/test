@@ -44,6 +44,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectFinalStep;
@@ -63,6 +64,11 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		_bigQuery = bigQuery;
 
 		_bigQueryOptions = bigQuery.getOptions();
+	}
+
+	@Override
+	public void queryExecute(Query query) {
+		_query(query);
 	}
 
 	@Override
@@ -221,9 +227,8 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		return fieldValue.getValue();
 	}
 
-	private TableResult _query(SelectFinalStep selectFinalStep) {
-		String translatedQuery = _translate(
-			String.valueOf(selectFinalStep.getQuery()));
+	private TableResult _query(Query query) {
+		String translatedQuery = _translate(String.valueOf(query));
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Executing query: " + translatedQuery);

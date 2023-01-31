@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Result;
@@ -37,6 +38,11 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnGoogleApplicationCredentials(matchIfMissing = true)
 public class PostgreSQLQueryExecutor implements QueryExecutor {
+
+	@Override
+	public void queryExecute(Query query) {
+		query.execute();
+	}
 
 	@Override
 	public BigDecimal queryForBigDecimal(

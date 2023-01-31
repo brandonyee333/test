@@ -15,7 +15,9 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.repository.CustomBQMembershipRepository;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
 import java.math.BigDecimal;
 
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jooq.AggregateFunction;
 import org.jooq.Condition;
@@ -32,9 +35,12 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
+import org.jooq.Record3;
+import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 
 /**
@@ -293,6 +299,64 @@ public class BQMembershipRepositoryImpl
 		);
 	}
 
+	@Override
+	public void updateBQMemberships(String filterString, Long segmentId) {
+		SelectSelectStep<Record3<String, String, Long>> selectSelectStep =
+			_dslContext.select(
+				DSL.field(
+					"Identity.id", String.class
+				).as(
+					"identityId"
+				),
+				DSL.field(
+					"Identity.individualId", String.class
+				).as(
+					"individualId"
+				),
+				DSL.val(
+					segmentId
+				).as(
+					"segmentId"
+				));
+
+		SelectJoinStep<Record3<String, String, Long>> selectJoinStep =
+			selectSelectStep.from(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				));
+
+		FilterExpression filterExpression = new FilterExpression(filterString);
+
+		selectJoinStep = _getSelectJoinStep(
+			filterExpression.getReferencedTableNames(), selectJoinStep);
+
+		// TODO Replace DELETE/INSERT by BigQuery MERGE Statement
+
+		_queryExecutor.queryExecute(
+			_dslContext.deleteFrom(
+				DSL.table("BQMembership")
+			).where(
+				DSL.field(
+					"segmentId", Long.class
+				).eq(
+					segmentId
+				)
+			));
+
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQMembership")
+			).columns(
+				DSL.field("identityId", String.class),
+				DSL.field("individualId", String.class),
+				DSL.field("segmentId", Long.class)
+			).select(
+				selectJoinStep.where(filterExpression.getCondition())
+			));
+	}
+
 	private List<Condition> _getConditions(
 		int max, int min, boolean ascending) {
 
@@ -310,6 +374,64 @@ public class BQMembershipRepositoryImpl
 		return conditions;
 	}
 
+	private SelectJoinStep<Record3<String, String, Long>> _getSelectJoinStep(
+		Set<String> referencedTableNames,
+		SelectJoinStep<Record3<String, String, Long>> selectJoinStep) {
+
+		if (referencedTableNames.contains("Event")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQEvent"
+				).as(
+					"Event"
+				)
+			).on(
+				DSL.field(
+					"Event.userId"
+				).eq(
+					DSL.field("Identity.id")
+				)
+			);
+		}
+
+		if (referencedTableNames.contains("Individual")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).on(
+				DSL.field(
+					"Identity.individualId"
+				).eq(
+					DSL.field("Individual.id")
+				)
+			);
+		}
+
+		if (referencedTableNames.contains("Session")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
+			).on(
+				DSL.field(
+					"Identity.id"
+				).eq(
+					DSL.field("Session.userId")
+				)
+			);
+		}
+
+		return selectJoinStep;
+	}
+
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private QueryExecutor _queryExecutor;
 
 }
