@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
@@ -190,6 +191,15 @@ public class BQMembershipDogTest
 		Assertions.assertTrue(
 			_bqMembershipDog.isMember(
 				"338486041327913341", 338511398116723458L));
+	}
+
+	@SQLResource(resourcePath = "test_bq_memberships.sql")
+	@Test
+	public void testUpdateBQMemberships() {
+		_bqMembershipDog.updateBQMemberships(
+			"contains(demographics/email/value, 'delta.com')", 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
 
 	@Autowired
