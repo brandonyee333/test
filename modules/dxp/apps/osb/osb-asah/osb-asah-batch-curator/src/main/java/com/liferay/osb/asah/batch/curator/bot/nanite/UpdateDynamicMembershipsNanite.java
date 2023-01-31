@@ -26,7 +26,6 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,13 +39,14 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		int page = 0;
 
 		while (true) {
-			Page<Segment> segmentPage = _segmentDog.getSegmentPage(page++, 50);
+			List<Segment> segments = _segmentDog.getSegments(
+				page++, 50, Segment.Type.DYNAMIC);
 
-			if (segmentPage.isEmpty()) {
+			if (segments.isEmpty()) {
 				break;
 			}
 
-			_updateSegmentsMemberships(segmentPage.getContent());
+			_updateSegmentsMemberships(segments);
 		}
 	}
 
