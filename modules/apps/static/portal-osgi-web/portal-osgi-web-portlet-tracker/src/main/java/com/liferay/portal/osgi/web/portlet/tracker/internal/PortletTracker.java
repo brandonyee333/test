@@ -419,7 +419,17 @@ public class PortletTracker
 
 			Class<?> portletClazz = portlet.getClass();
 
-			portletModel.setPortletClass(portletClazz.getName());
+			String portletClass = portletClazz.getName();
+
+			if (portlet instanceof InvokerPortlet) {
+				InvokerPortlet invokerPortlet = (InvokerPortlet)portlet;
+
+				if (invokerPortlet.isFacesPortlet()) {
+					portletClass = "javax.portlet.faces.GenericFacesPortlet";
+				}
+			}
+
+			portletModel.setPortletClass(portletClass);
 
 			_collectJxPortletFeatures(serviceReference, portletModel);
 			_collectLiferayFeatures(serviceReference, portletModel);
