@@ -144,6 +144,10 @@ public class BQMembershipDog {
 				segmentId, status));
 	}
 
+	public long getBQMembershipsCount(Long segmentId) {
+		return _bqMembershipRepository.countBySegmentId(segmentId);
+	}
+
 	public Map<Long, JSONObject> getMembershipsJSONObjects(
 		String identityId, List<Segment> segments) {
 
@@ -202,6 +206,10 @@ public class BQMembershipDog {
 
 		return _bqMembershipRepository.searchBQMemberships(
 			bqMembershipId, segmentId, size, status);
+	}
+
+	public void updateBQMemberships(String filterString, Long segmentId) {
+		_bqMembershipRepository.updateBQMemberships(filterString, segmentId);
 	}
 
 	private Sort _getSort(String[] sorts) {

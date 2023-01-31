@@ -66,4 +66,8 @@ public interface CustomBQMembershipRepository {
 	public List<BQMembership> searchBQMemberships(
 		@Nullable Long id, Long segmentId, int size, String status);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void updateBQMemberships(String filterString, Long segmentId);
+
 }

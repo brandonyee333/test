@@ -177,6 +177,12 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
+	@Scheduled(fixedDelay = DateUtil.HOUR)
+	public void runUpdateDynamicMembershipsNanite() {
+		_asahTaskManager.runNanitesForAllProjects(
+			"UpdateDynamicMembershipsNanite");
+	}
+
 	private String _buildCronExpression(int second, int minute) {
 		return String.format("%d %d 0 * * ?", second, minute);
 	}
