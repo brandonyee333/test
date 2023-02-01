@@ -36,6 +36,8 @@ public interface CustomBQIdentityInterestScoreRepository {
 
 	public long countByIndividualId(String individualId);
 
+	public long countKeywords(@Nullable String keywords);
+
 	public List<IdentityInterestScore> findByFilterString(
 		@Nullable FilterHelper filterHelper, Pageable pageable);
 

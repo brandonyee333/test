@@ -127,6 +127,17 @@ public class BQIdentityInterestScoreRepositoryImpl
 			));
 	}
 
+	public long countKeywords(@Nullable String keywords) {
+		return _queryExecutor.queryForLong(
+			_dslContext.select(
+				DSL.countDistinct(DSL.field("keyword", String.class))
+			).from(
+				"BQIdentityInterestScore"
+			).where(
+				_getConditions(null, null, null, null, keywords, null)
+			));
+	}
+
 	@Override
 	public List<IdentityInterestScore> findByFilterString(
 		@Nullable FilterHelper filterHelper, Pageable pageable) {
