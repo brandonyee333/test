@@ -33,15 +33,16 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -274,25 +275,30 @@ public class IndividualSegmentsRestController {
 			return bqMembershipJSONObject.toString();
 		}
 
-		Stream<Object> stream = JSONUtil.toObjectStream(new JSONArray(json));
+		List<BQMembership> bqMemberships = new ArrayList<>();
 
-		List<BQMembership> bqMemberships = stream.map(
-			jsonObject -> objectMapper.convertValue(
-				jsonObject, BQMembership.class)
-		).map(
-			bqMembership -> {
+		JSONArray jsonArray = new JSONArray(json);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			BQMembershipDTO bqMembershipDTO = objectMapper.convertValue(
+				jsonArray.getJSONObject(i), BQMembershipDTO.class);
+
+			for (String identityId :
+					_bqIdentityRepository.getIdentityIds(
+						bqMembershipDTO.getIndividualId())) {
+
+				BQMembership bqMembership = new BQMembership();
+
 				bqMembership.setCreateDate(date);
 				bqMembership.setModifiedDate(date);
 				bqMembership.setSegmentId(id);
+				bqMembership.setIndividualId(bqMembershipDTO.getIndividualId());
+				bqMembership.setIdentityId(identityId);
+				bqMembership.setStatus(bqMembershipDTO.getStatus());
 
-				return bqMembership;
+				bqMemberships.add(bqMembership);
 			}
-		).filter(
-			membership -> !_isMember(
-				membership.getIdentityId(), membership.getSegmentId())
-		).collect(
-			Collectors.toList()
-		);
+		}
 
 		if (bqMemberships.isEmpty()) {
 			return null;
@@ -458,6 +464,9 @@ public class IndividualSegmentsRestController {
 
 	@Autowired
 	private AssetDog _assetDog;
+
+	@Autowired
+	private BQIdentityRepository _bqIdentityRepository;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;

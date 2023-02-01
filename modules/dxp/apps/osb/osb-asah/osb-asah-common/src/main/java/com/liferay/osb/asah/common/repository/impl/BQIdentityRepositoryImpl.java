@@ -93,6 +93,23 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
+	public List<String> getIdentityIds(String individualId) {
+		return _queryExecutor.queryForList(
+			record -> (String)record.get("id"),
+			_dslContext.select(
+				DSL.field("id", String.class)
+			).from(
+				"BQIdentity"
+			).where(
+				DSL.field(
+					"individualId", String.class
+				).eq(
+					individualId
+				)
+			));
+	}
+
+	@Override
 	public long getIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, ZoneId zoneId) {

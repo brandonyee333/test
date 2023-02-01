@@ -30,6 +30,8 @@ public interface CustomBQIdentityRepository {
 
 	public long countIndividuals(boolean includeAnonymousUsers);
 
+	public List<String> getIdentityIds(String individualId);
+
 	public long getIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, ZoneId zoneId);
