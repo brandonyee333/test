@@ -1,4 +1,7 @@
 {
+	"asset": {
+		"path": "asset.sql"
+	},
 	"bloghourly": {
 		"path": "blog_hourly.sql"
 	},
