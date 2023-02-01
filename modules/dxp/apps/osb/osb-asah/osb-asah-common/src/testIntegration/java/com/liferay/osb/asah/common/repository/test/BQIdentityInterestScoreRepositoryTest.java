@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -157,6 +158,18 @@ public class BQIdentityInterestScoreRepositoryTest
 			2,
 			_bqIdentityInterestScoreRepository.countByIndividualId(
 				"374790572703144534"));
+	}
+
+	@Test
+	public void testCountKeywords() {
+		Assertions.assertEquals(
+			4, _bqIdentityInterestScoreRepository.countKeywords(null));
+	}
+
+	@Test
+	public void testCountKeywordsWithFilter() {
+		Assertions.assertEquals(
+			2, _bqIdentityInterestScoreRepository.countKeywords("le"));
 	}
 
 	@Test
@@ -331,6 +344,47 @@ public class BQIdentityInterestScoreRepositoryTest
 		_assertTransformation(
 			"2021-09-12T00:00:00.000Z", 1.6124428372267494, 5,
 			transformations.get(2));
+	}
+
+	@Test
+	public void testGetKeywords() {
+		Assertions.assertEquals(
+			new ArrayList<String>() {
+				{
+					add("clicks-and-mortar e-tailers");
+					add("compelling metrics");
+					add("javascript");
+					add("sales");
+				}
+			},
+			_bqIdentityInterestScoreRepository.getKeywords(
+				null, PageRequest.of(0, 20)));
+	}
+
+	@Test
+	public void testGetKeywordsPagination() {
+		Assertions.assertEquals(
+			new ArrayList<String>() {
+				{
+					add("javascript");
+					add("sales");
+				}
+			},
+			_bqIdentityInterestScoreRepository.getKeywords(
+				null, PageRequest.of(1, 2)));
+	}
+
+	@Test
+	public void testGetKeywordsWithFilter() {
+		Assertions.assertEquals(
+			new ArrayList<String>() {
+				{
+					add("clicks-and-mortar e-tailers");
+					add("sales");
+				}
+			},
+			_bqIdentityInterestScoreRepository.getKeywords(
+				"le", PageRequest.of(0, 20)));
 	}
 
 	@Test
