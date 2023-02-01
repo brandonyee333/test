@@ -46,7 +46,7 @@ import org.jooq.Param;
 import org.jooq.impl.DSL;
 
 /**
- * @author Marcelllus Tavares
+ * @author Marcellus Tavares
  * @author Ivica Cardic
  */
 @SuppressWarnings({"rawtypes", "unchecked"})

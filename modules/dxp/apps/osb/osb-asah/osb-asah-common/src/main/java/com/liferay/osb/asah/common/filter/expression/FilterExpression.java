@@ -32,7 +32,7 @@ import org.jooq.Condition;
 import org.springframework.util.Assert;
 
 /**
- * @author Marcelllus Tavares
+ * @author Marcellus Tavares
  * @author Ivica Cardic
  */
 public class FilterExpression {
