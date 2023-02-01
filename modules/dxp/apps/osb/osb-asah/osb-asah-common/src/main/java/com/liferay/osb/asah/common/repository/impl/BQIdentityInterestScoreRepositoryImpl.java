@@ -854,20 +854,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 		}
 
 		if (!StringUtils.isBlank(keywords)) {
-			conditions.add(
-				DSL.or(
-					DSL.field(
-						"keyword"
-					).containsIgnoreCase(
-						keywords
-					)
-				).or(
-					DSL.field(
-						"keyword"
-					).similarTo(
-						keywords
-					)
-				));
+			conditions.add(_dslHelper.containsSubstring("keyword", keywords));
 		}
 
 		if (recordedDate != null) {
