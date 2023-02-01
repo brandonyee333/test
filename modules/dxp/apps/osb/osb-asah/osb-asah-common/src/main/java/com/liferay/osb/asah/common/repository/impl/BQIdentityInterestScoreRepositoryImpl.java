@@ -541,7 +541,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 				Boolean.TRUE
 			));
 
-		if (!StringUtils.isBlank(keywords)) {
+		if (StringUtils.isNotBlank(keywords)) {
 			conditions.add(_dslHelper.containsSubstring("keyword", keywords));
 		}
 
@@ -853,7 +853,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 				));
 		}
 
-		if (!StringUtils.isBlank(keywords)) {
+		if (StringUtils.isNotBlank(keywords)) {
 			conditions.add(_dslHelper.containsSubstring("keyword", keywords));
 		}
 
