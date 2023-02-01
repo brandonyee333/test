@@ -19,11 +19,11 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.IdentityInterestScore;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import java.time.LocalDateTime;
@@ -89,19 +89,19 @@ public class InterestsRestController
 
 	@GetMapping("/keywords")
 	public String getInterestKeywords(
-			@RequestParam(required = false) String name,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
+		@RequestParam(required = false) String name,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
+
+		Page<String> keywordsPage = _bqIdentityInterestScoreDog.getKeywordsPage(
+			name, page, size);
 
 		return JSONUtil.put(
 			"_embedded",
-			JSONUtil.put(
-				"interest-keywords",
-				_assetDog.getKeywords(name, page, size, Sort.asc("keyword")))
+			JSONUtil.put("interest-keywords", keywordsPage.getContent())
 		).put(
 			"page",
-			getPageJSONObject(page, size, _assetDog.getKeywordsCount(name))
+			getPageJSONObject(page, size, keywordsPage.getTotalElements())
 		).toString();
 	}
 
@@ -292,5 +292,8 @@ public class InterestsRestController
 
 	@Autowired
 	private AssetDog _assetDog;
+
+	@Autowired
+	private BQIdentityInterestScoreDog _bqIdentityInterestScoreDog;
 
 }

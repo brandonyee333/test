@@ -102,6 +102,16 @@ public class BQIdentityInterestScoreDog {
 				individualId);
 	}
 
+	public Page<String> getKeywordsPage(String keywords, int page, int size) {
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		return PageableExecutionUtils.getPage(
+			_bqIdentityInterestScoreRepository.getKeywords(
+				keywords, pageRequest),
+			pageRequest,
+			() -> _bqIdentityInterestScoreRepository.countKeywords(keywords));
+	}
+
 	public List<String> getTopKeywords(String individualId, int size) {
 		return _bqIdentityInterestScoreRepository.getTopKeywordsByIndividualId(
 			individualId, size);
