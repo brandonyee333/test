@@ -630,9 +630,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).as(
 				dslContext.selectDistinct(
 					DSL.field(
-						"membership.userId"
+						"membership.identityId"
 					).as(
-						"userId"
+						"identityId"
 					),
 					DSL.field(
 						"membership.individualId"
@@ -655,7 +655,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					DSL.field(
 						"metric.userId"
 					).eq(
-						DSL.field("membership.userId")
+						DSL.field("membership.identityId")
 					)
 				).where(
 					whereClauseCondition.and(
@@ -670,7 +670,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).as(
 				dslContext.select(
 					DSL.countDistinct(
-						DSL.field("segmentedIndividuals.userId")
+						DSL.field("segmentedIndividuals.identityId")
 					).as(
 						"value"
 					)
@@ -737,9 +737,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				"segmentedIndividuals"
 			).as(
 				dslContext.select(
+					DSL.field("membership.identityId"),
 					DSL.field("membership.individualId"),
-					DSL.field("membership.segmentId"),
-					DSL.field("membership.userId")
+					DSL.field("membership.segmentId")
 				).from(
 					DSL.table(
 						getTableName(timeRange)
@@ -754,7 +754,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					)
 				).on(
 					DSL.field(
-						"membership.userId"
+						"membership.identityId"
 					).eq(
 						DSL.field("metric.userId")
 					)
@@ -776,7 +776,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 						"segmentId"
 					),
 					DSL.countDistinct(
-						DSL.field("segmentedIndividuals.userId")
+						DSL.field("segmentedIndividuals.identityId")
 					).as(
 						"value"
 					)
