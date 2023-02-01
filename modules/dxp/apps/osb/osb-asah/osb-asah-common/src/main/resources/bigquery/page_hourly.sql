@@ -79,11 +79,11 @@ PageEntrances AS (
 			PageEvent.userId
 		FROM
 			PageEvent
-        INNER JOIN
-            `$[AC_PROJECT_ID].session` AS Session ON
-                PageEvent.sessionId = Session.id
-        WHERE
-		    Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+		INNER JOIN
+			`$[AC_PROJECT_ID].session` AS Session ON
+				PageEvent.sessionId = Session.id
+		WHERE
+			Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	) AS EventEntrance
 	WHERE
 		rank = 1
@@ -120,11 +120,11 @@ PageExits AS (
 			PageEvent.userId
 		FROM
 			PageEvent
-        INNER JOIN
-            `$[AC_PROJECT_ID].session` AS Session ON
-                PageEvent.sessionId = Session.id
-        WHERE
-		    Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+		INNER JOIN
+			`$[AC_PROJECT_ID].session` AS Session ON
+				PageEvent.sessionId = Session.id
+		WHERE
+			Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	) AS EventExit
 	WHERE
 		rank = 1
@@ -161,11 +161,11 @@ PageTimeOnPages AS (
 			PageEvent.userId
 		FROM
 			PageEvent
-        INNER JOIN
-            `$[AC_PROJECT_ID].session` AS Session ON
-                PageEvent.sessionId = Session.id
-        WHERE
-		    Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+		INNER JOIN
+			`$[AC_PROJECT_ID].session` AS Session ON
+				PageEvent.sessionId = Session.id
+		WHERE
+			Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	) AS EventTimeOnPage
 	GROUP BY
 		browserName, canonicalUrl, channelId, city, country, deviceType,
@@ -207,7 +207,7 @@ PageViews AS (
 		title,
 		userId
 	FROM
-	    PageEvent
+		PageEvent
 	WHERE
 		applicationId = 'Page' AND eventId = 'pageViewed'
 	GROUP BY
