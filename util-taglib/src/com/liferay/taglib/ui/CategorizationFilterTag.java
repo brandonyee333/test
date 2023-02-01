@@ -58,7 +58,7 @@ public class CategorizationFilterTag extends IncludeTag {
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
 		request.setAttribute(
-			"liferay-asset:categorization-filter:groupIds", _groupIds);
+			"liferay-ui:categorization-filter:groupIds", _groupIds);
 		request.setAttribute(
 			"liferay-ui:categorization-filter:assetType", _assetType);
 		request.setAttribute(

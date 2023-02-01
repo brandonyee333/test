@@ -25,7 +25,7 @@ long assetCategoryId = ParamUtil.getLong(request, "categoryId");
 
 String assetTagName = ParamUtil.getString(request, "tag");
 
-long[] groupIds = GetterUtil.getLongValues(request.getAttribute("liferay-asset:categorization-filter:groupIds"), new long[] {layout.getGroupId()});
+long[] groupIds = GetterUtil.getLongValues(request.getAttribute("liferay-ui:categorization-filter:groupIds"), new long[] {layout.getGroupId()});
 
 long[] assetTagIds = AssetTagLocalServiceUtil.getTagIds(groupIds, assetTagName);
 
@@ -50,7 +50,7 @@ if (assetCategoryId != 0) {
 	assetVocabularyTitle = assetVocabulary.getTitle(locale);
 }
 
-PortletURL portletURL = (PortletURL)request.getAttribute("liferay-asset:categorization-filter:portletURL");
+PortletURL portletURL = (PortletURL)request.getAttribute("liferay-ui:categorization-filter:portletURL");
 
 if (portletURL == null) {
 	portletURL = renderResponse.createRenderURL();
