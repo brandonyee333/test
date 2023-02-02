@@ -1,0 +1,3 @@
+INSERT INTO BQSession (browserName, channelId, id, referrers) VALUES ('Chrome', 1, '366909399944213421', ARRAY['http://192.168.118.3:7400/c/portal/logout', 'http://192.168.118.3:7400/web/guest/home']::TEXT[])
+INSERT INTO BQSession (browserName, channelId, id, referrers) VALUES ('Firefox', 1, '366909399944215919', ARRAY['http://192.168.118.3:7400/web/forms/shared/-/form/44224?p_p_state=pop_up&p_p_auth=V2Mnn7B1']::TEXT[])
+INSERT INTO BQSession (browserName, channelId, id, referrers) VALUES ('Chrome', 1, '366909399944215920', ARRAY['http://192.168.118.3:7400/']::TEXT[])
