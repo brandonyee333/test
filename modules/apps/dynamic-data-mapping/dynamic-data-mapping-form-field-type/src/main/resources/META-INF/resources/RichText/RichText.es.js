@@ -16,6 +16,7 @@ import {ClassicEditor} from 'frontend-editor-ckeditor-web';
 import React, {useEffect, useMemo, useRef} from 'react';
 
 import {FieldBase} from '../FieldBase/ReactFieldBase.es';
+import {RichTextLocalized} from './RichTextLocalized.es';
 
 const RichText = ({
 	editable,
@@ -26,9 +27,14 @@ const RichText = ({
 	onBlur,
 	onChange,
 	onFocus,
+	onSelectedLocaleChange = ({}),
 	predefinedValue = '',
 	readOnly,
-	value,
+	selectedLocale = 'en_US',
+	translatable = true,
+	translations = {en_US: 'My text'},
+	value = {},
+	label = 'RichText Label',
 	visible,
 	...otherProps
 }) => {
@@ -57,6 +63,7 @@ const RichText = ({
 		<FieldBase
 			{...otherProps}
 			id={id}
+			label={label}
 			name={name}
 			readOnly={readOnly}
 			style={readOnly ? {pointerEvents: 'none'} : null}
@@ -67,11 +74,20 @@ const RichText = ({
 				editorConfig={editorConfig}
 				name={name}
 				onBlur={onBlur}
-				onChange={(content) => {
-					if (contents !== content) {
-						onChange({target: {value: content}});
-					}
-				}}
+				onChange={
+					translatable
+						? (content) => {
+								if (contents !== content) {
+									onChange({target: {value: content}});
+								}
+						  }
+						: (content) => {
+								onTranslationsChange({
+									...translations,
+									[selectedLocale]: content,
+								});
+						  }
+				}
 				onFocus={onFocus}
 				onSetData={({data: {dataValue: value}, editor: {mode}}) => {
 					if (mode === 'source') {
@@ -82,7 +98,15 @@ const RichText = ({
 				ref={editorRef}
 			/>
 
-			<input name={name} type="hidden" value={contents} />
+			{translatable ? (
+				<RichTextLocalized
+					onSelectedLocaleChange
+					selectedLocale={selectedLocale}
+					translations={translations}
+				/>
+			) : (
+				<input name={name} type="hidden" value={contents} />
+			)}
 		</FieldBase>
 	);
 };
