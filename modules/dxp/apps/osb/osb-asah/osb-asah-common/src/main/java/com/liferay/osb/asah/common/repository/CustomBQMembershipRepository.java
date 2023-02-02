@@ -62,6 +62,10 @@ public interface CustomBQMembershipRepository {
 	@Cacheable
 	public List<Long> findTop20SegmentIdByIdentityId(String identityId);
 
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void saveBQMemberships(List<BQMembership> bqMemberships);
+
 	@Cacheable
 	public List<BQMembership> searchBQMemberships(
 		@Nullable Long id, Long segmentId, int size, String status);

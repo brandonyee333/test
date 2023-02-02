@@ -33,6 +33,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DeleteUsingStep;
 import org.jooq.Field;
+import org.jooq.InsertValuesStep5;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
@@ -64,11 +65,11 @@ public class BQMembershipRepositoryImpl
 		DeleteUsingStep<Record> deleteUsingStep = _dslContext.deleteFrom(
 			DSL.table("BQMembership"));
 
-		deleteUsingStep.where(
-			DSL.and(
-				individualIdField.eq(individualId),
-				segmentIdField.eq(segmentId))
-		).execute();
+		_queryExecutor.queryExecute(
+			deleteUsingStep.where(
+				DSL.and(
+					individualIdField.eq(individualId),
+					segmentIdField.eq(segmentId))));
 	}
 
 	@Override
@@ -257,6 +258,29 @@ public class BQMembershipRepositoryImpl
 		).fetch(
 			0, Long.class
 		);
+	}
+
+	@Override
+	public void saveBQMemberships(List<BQMembership> bqMemberships) {
+		InsertValuesStep5<Record, Date, String, String, Date, Long>
+			insertValuesStep5 = _dslContext.insertInto(
+				DSL.table("BQMembership")
+			).columns(
+				DSL.field("createDate", Date.class),
+				DSL.field("individualId", String.class),
+				DSL.field("identityId", String.class),
+				DSL.field("modifiedDate", Date.class),
+				DSL.field("segmentId", Long.class)
+			);
+
+		for (BQMembership bqMembership : bqMemberships) {
+			insertValuesStep5 = insertValuesStep5.values(
+				bqMembership.getCreateDate(), bqMembership.getIndividualId(),
+				bqMembership.getIdentityId(), bqMembership.getModifiedDate(),
+				bqMembership.getSegmentId());
+		}
+
+		_queryExecutor.queryExecute(insertValuesStep5);
 	}
 
 	@Override
