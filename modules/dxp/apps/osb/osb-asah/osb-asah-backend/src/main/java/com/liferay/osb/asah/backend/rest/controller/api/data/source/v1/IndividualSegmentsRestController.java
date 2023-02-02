@@ -169,9 +169,7 @@ public class IndividualSegmentsRestController {
 
 		Segment segment = segmentDog.getSegment(id);
 
-		SegmentDTO segmentDTO = new SegmentDTO(
-			_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(id),
-			segmentDog.getLastActivityDate(segment), segment);
+		SegmentDTO segmentDTO = new SegmentDTO(null, null, segment);
 
 		if (StringUtils.isNotEmpty(expand)) {
 			String[] expandParts = expand.split(",");
