@@ -246,6 +246,7 @@ CREATE TABLE IF NOT EXISTS BQSession (
 	region TEXT,
 	sessionEnd TIMESTAMPTZ,
 	sessionStart TIMESTAMPTZ,
+	urls TEXT[],
 	userId TEXT
 );
 

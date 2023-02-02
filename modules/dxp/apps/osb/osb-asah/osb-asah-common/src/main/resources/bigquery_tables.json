@@ -2609,6 +2609,11 @@
 				"mode": "REQUIRED",
 				"name": "userId",
 				"type": "STRING"
+			},
+			{
+				"mode": "REPEATED",
+				"name": "urls",
+				"type": "STRING"
 			}
 		],
 		"timePartitioning": {
