@@ -188,6 +188,11 @@ public class BQSession implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Set<String> getUrls() {
+		return _urls;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getUserId() {
 		return _userId;
 	}
@@ -293,6 +298,10 @@ public class BQSession implements Persistable<String> {
 		}
 	}
 
+	public void setUrls(Set<String> urls) {
+		_urls = urls;
+	}
+
 	public void setUserId(String userId) {
 		_userId = userId;
 	}
@@ -353,6 +362,9 @@ public class BQSession implements Persistable<String> {
 
 	@Transient
 	private Date _sessionStart;
+
+	@Transient
+	private Set<String> _urls;
 
 	@Transient
 	private String _userId;
