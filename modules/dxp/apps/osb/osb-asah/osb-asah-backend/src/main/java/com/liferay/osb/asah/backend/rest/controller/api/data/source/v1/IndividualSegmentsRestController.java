@@ -24,6 +24,7 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.BQFieldMappingDog;
 import com.liferay.osb.asah.common.dog.BQIdentityDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
@@ -366,9 +367,13 @@ public class IndividualSegmentsRestController {
 				_assetDog.getAssets(segment.getReferencedAssetIds()),
 				asset -> objectMapper.convertValue(asset, JSONObject.class)));
 
-		// TODO Add BQFieldMapping references
-
-		jsonObject.put("field-mappings", new JSONArray());
+		jsonObject.put(
+			"field-mappings",
+			JSONUtil.toJSONArray(
+				_bqFieldMappingDog.getFieldMappings(
+					segment.getReferencedFieldMappingIds()),
+				fieldMapping -> objectMapper.convertValue(
+					fieldMapping, JSONObject.class)));
 		jsonObject.put("groups", Collections.emptyList());
 		jsonObject.put("organizations", Collections.emptyList());
 		jsonObject.put("roles", Collections.emptyList());
@@ -462,6 +467,9 @@ public class IndividualSegmentsRestController {
 
 	@Autowired
 	private AssetDog _assetDog;
+
+	@Autowired
+	private BQFieldMappingDog _bqFieldMappingDog;
 
 	@Autowired
 	private BQIdentityDog _bqIdentityDog;
