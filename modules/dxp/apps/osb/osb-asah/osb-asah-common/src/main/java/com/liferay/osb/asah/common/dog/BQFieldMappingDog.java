@@ -21,7 +21,11 @@ import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.collections4.IterableUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,6 +49,11 @@ public class BQFieldMappingDog {
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no field mapping with ID " + id));
+	}
+
+	public List<BQFieldMapping> getFieldMappings(Set<String> ids) {
+		return IterableUtils.toList(
+			_bqFieldMappingRepository.findByFieldNameIn(ids));
 	}
 
 	public Page<BQFieldMapping> searchBQFieldMappingPage(
