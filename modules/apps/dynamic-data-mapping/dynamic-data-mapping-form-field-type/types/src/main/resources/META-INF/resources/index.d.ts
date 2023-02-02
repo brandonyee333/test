@@ -15,3 +15,4 @@
 export {default as FieldBase} from './FieldBase/FieldBase.es';
 export {FieldBase as ReactFieldBase} from './FieldBase/ReactFieldBase.es';
 export type {FieldChangeEventHandler} from './types';
+export {RichTextLocalizedd as RichTextLocalized} from './RichText/RichTextLocalized.es';
