@@ -47,10 +47,10 @@ public class ProductConstants {
 	public static final String NAME_SERVICE_PARTNERSHIP_REFERRAL_PROGRAM =
 		"Service Partnership - Referral Program";
 
-	public static final String NAME_SERVICE_PARTNERSHIP_RESELLER_PROGRAM =
-		"Service Partnership - Reseller Program";
-
 	public static final String NAME_SILVER = "Silver Subscription";
+
+	public static final String NAME_SOLUTION_PARTNERSHIP_RESELLER_PROGRAM =
+		"Solution Partnership - Reseller Program";
 
 	public static final String NAME_TRAINING_PARTNERSHIP =
 		"Training Partnership";
@@ -62,16 +62,12 @@ public class ProductConstants {
 		NAME_BASIC_RESELLER_PARTNERSHIP, NAME_DISTRIBUTION_PARTNERSHIP,
 		NAME_RESELLER_PARTNERSHIP, NAME_SERVICE_PARTNERSHIP,
 		NAME_SERVICE_PARTNERSHIP_REFERRAL_PROGRAM,
-		NAME_SERVICE_PARTNERSHIP_RESELLER_PROGRAM, NAME_TRAINING_PARTNERSHIP,
+		NAME_SOLUTION_PARTNERSHIP_RESELLER_PROGRAM, NAME_TRAINING_PARTNERSHIP,
 		NAME_VALUE_ADDED_RESELLER_PARTNERSHIP
 	};
 
 	public static final String[] NAMES_SUBSCRIPTION = {
 		NAME_GOLD, NAME_LIMITED, NAME_PLATINUM, NAME_PREMIUM, NAME_SILVER
 	};
-
-	public static final String PROPERTY_TYPE = "type";
-
-	public static final String TYPE_PRIMARY = "primary";
 
 }
