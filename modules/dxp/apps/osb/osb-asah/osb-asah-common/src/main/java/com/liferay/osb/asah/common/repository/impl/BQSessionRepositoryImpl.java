@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.CustomBQSessionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.GetterUtil;
 
 import java.math.BigDecimal;
@@ -34,15 +35,19 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.Record3;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectJoinStep;
@@ -63,6 +68,44 @@ public class BQSessionRepositoryImpl
 
 	public BQSessionRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	@Override
+	public long countSessionFieldValues(
+		String fieldName, FilterHelper filterHelper, String value) {
+
+		Field<String> field = null;
+
+		if (_nestedFieldNamesMap.get(fieldName) != null) {
+			field = DSL.field("value", String.class);
+		}
+		else {
+			field = DSL.field(fieldName, String.class);
+		}
+
+		SelectJoinStep<Record1<Integer>> selectJoinStep = _dslContext.select(
+			DSL.countDistinct(field)
+		).from(
+			"BQSession"
+		);
+
+		if (_nestedFieldNamesMap.get(fieldName) != null) {
+			selectJoinStep = selectJoinStep.crossJoin(
+				"unnest(" + _nestedFieldNamesMap.get(fieldName) + ") as value");
+		}
+
+		Condition condition = filterHelper.getCondition();
+
+		if (!StringUtils.isEmpty(value)) {
+			condition = condition.and(
+				DSL.lower(
+					field
+				).like(
+					DSL.lower(StringUtils.wrap(value, "%"))
+				));
+		}
+
+		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
 	}
 
 	@Override
@@ -509,6 +552,59 @@ public class BQSessionRepositoryImpl
 			));
 	}
 
+	@Override
+	public List<String> searchSessionFieldValues(
+		String fieldName, FilterHelper filterHelper, Pageable pageable,
+		String value) {
+
+		Field<String> field = null;
+
+		if (_nestedFieldNamesMap.get(fieldName) != null) {
+			field = DSL.field("value", String.class);
+		}
+		else {
+			field = DSL.field(fieldName, String.class);
+		}
+
+		Condition condition = filterHelper.getCondition();
+
+		if (!StringUtils.isEmpty(value)) {
+			condition = condition.and(
+				DSL.lower(
+					field
+				).like(
+					DSL.lower(StringUtils.wrap(value, "%"))
+				));
+		}
+
+		SelectJoinStep<Record1<String>> selectJoinStep = _dslContext.select(
+			field
+		).from(
+			"BQSession"
+		);
+
+		if (_nestedFieldNamesMap.get(fieldName) != null) {
+			selectJoinStep = selectJoinStep.crossJoin(
+				"unnest(" + _nestedFieldNamesMap.get(fieldName) + ") as value");
+		}
+
+		String key = field.getName();
+
+		return _queryExecutor.queryForList(
+			recordMap -> String.valueOf(recordMap.get(key)),
+			selectJoinStep.where(
+				condition
+			).groupBy(
+				field
+			).orderBy(
+				field.asc()
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
 	private WithStep _createCohortWithStep(
 		Long channelId, Interval interval, TimeRange timeRange, ZoneId zoneId) {
 
@@ -834,6 +930,14 @@ public class BQSessionRepositoryImpl
 			)
 		);
 	}
+
+	private static final Map<String, String> _nestedFieldNamesMap =
+		new HashMap<String, String>() {
+			{
+				put("referrer", "referrers");
+				put("url", "urls");
+			}
+		};
 
 	private final DSLContext _dslContext;
 

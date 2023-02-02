@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoSessionsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
 
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -60,6 +64,22 @@ public class UserSessionDog {
 		// TODO Search for individual ids
 
 		return individualIds;
+	}
+
+	public Page<String> searchBQSessionsFieldValues(
+		String fieldName, String filterString, int page, int size,
+		String value) {
+
+		FilterHelper filterHelper = new FilterHelper(filterString);
+
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		return PageableExecutionUtils.getPage(
+			_bqSessionRepository.searchSessionFieldValues(
+				fieldName, filterHelper, pageRequest, value),
+			pageRequest,
+			() -> _bqSessionRepository.countSessionFieldValues(
+				fieldName, filterHelper, value));
 	}
 
 	@Autowired

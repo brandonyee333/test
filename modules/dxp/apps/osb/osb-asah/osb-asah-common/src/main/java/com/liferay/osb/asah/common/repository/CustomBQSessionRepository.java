@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.AcquisitionType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.SiteVisitorBehaviorMetric;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.math.BigDecimal;
 
@@ -34,6 +35,9 @@ import org.springframework.data.domain.Pageable;
  * @author Marcos Martins
  */
 public interface CustomBQSessionRepository {
+
+	public long countSessionFieldValues(
+		String fieldName, FilterHelper filterHelper, String value);
 
 	public List<BQSession> findAllById(Collection<String> sessionIds);
 
@@ -68,5 +72,9 @@ public interface CustomBQSessionRepository {
 
 	public List<Map<String, BigDecimal>> getVisitorsCountGroupedByDayAndTime(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
+
+	public List<String> searchSessionFieldValues(
+		String fieldName, FilterHelper filterHelper, Pageable pageable,
+		String value);
 
 }
