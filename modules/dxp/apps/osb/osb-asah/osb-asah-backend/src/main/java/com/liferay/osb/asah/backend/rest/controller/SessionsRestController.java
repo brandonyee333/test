@@ -14,6 +14,16 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.common.dog.UserSessionDog;
+import com.liferay.osb.asah.common.json.JSONUtil;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.jooq.tools.json.JSONArray;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SessionsRestController extends BaseRestController {
 
 	@GetMapping("/values")
-	public String getSessionValues(
+	public PageDTO<String> getSessionValues(
 			@RequestParam String fieldName,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
@@ -38,9 +48,23 @@ public class SessionsRestController extends BaseRestController {
 			@RequestParam(required = false) String value)
 		throws Exception {
 
-		// TODO transform user-sessions to "session-values"
+		Page<String> userSessionsFieldValuesPage =
+			_userSessionDog.searchBQSessionsFieldValues(
+				StringUtils.substringAfter(fieldName, "/"), filterString, page,
+				size, value);
 
-		return null;
+		return new PageDTO(
+			"_embedded",
+			JSONUtil.put(
+				"session-values",
+				new JSONArray(userSessionsFieldValuesPage.getContent())),
+			userSessionsFieldValuesPage.getNumber(),
+			userSessionsFieldValuesPage.getSize(),
+			userSessionsFieldValuesPage.getTotalElements(),
+			userSessionsFieldValuesPage.getTotalPages());
 	}
+
+	@Autowired
+	private UserSessionDog _userSessionDog;
 
 }
