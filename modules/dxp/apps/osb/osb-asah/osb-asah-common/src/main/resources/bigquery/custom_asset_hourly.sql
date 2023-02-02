@@ -125,7 +125,7 @@ Abandoments AS (
 			SUM(
 				CASE
 					WHEN
-						eventId = 'assetViewed'
+						eventId = 'assetViewed' AND formEnabled = 'true'
 					THEN
 						1
 					ELSE
@@ -147,8 +147,6 @@ Abandoments AS (
 		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate
 	FROM
 		CustomAssetFinalizedEvent
-	WHERE
-		formenabled = 'true'
 	GROUP BY
 		assetPrimaryKey,
 		normalizedEventDate
