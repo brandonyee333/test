@@ -536,25 +536,32 @@ public class AnalyticsEventsIngestionNanite {
 		bqSession.setId(sessionContext.id);
 		bqSession.setPlatformName(context.get("platformName"));
 
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+		Set<String> referrers = new HashSet();
+		Set<String> urls = new HashSet();
 
-		bqSession.setReferrers(
-			stream.map(
-				analyticsEvent -> {
-					Map<String, String> analyticsEventContext =
-						analyticsEvent.getContext();
+		analyticsEvents.forEach(
+			analyticsEvent -> {
+				Map<String, String> analyticsEventContext =
+					analyticsEvent.getContext();
 
-					return analyticsEventContext.get("referrer");
+				String referrer = analyticsEventContext.get("referrer");
+
+				if (StringUtils.isNotEmpty(referrer)) {
+					referrers.add(referrer);
 				}
-			).filter(
-				StringUtils::isNotEmpty
-			).collect(
-				Collectors.toSet()
-			));
 
+				String url = analyticsEventContext.get("url");
+
+				if (StringUtils.isNotEmpty(url)) {
+					urls.add(url);
+				}
+			});
+
+		bqSession.setReferrers(referrers);
 		bqSession.setRegion("Local Network");
 		bqSession.setSessionEnd(lastAnalyticsEvent.getEventDate());
 		bqSession.setSessionStart(firstAnalyticsEvent.getEventDate());
+		bqSession.setUrls(urls);
 		bqSession.setUserId(sessionContext.userId);
 
 		_bqSessionRepository.save(bqSession);

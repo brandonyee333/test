@@ -30,10 +30,10 @@ import java.time.ZonedDateTime;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Set;
 
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.PipelineResult;
@@ -681,26 +681,32 @@ public class EventIngestionPipeline {
 		tableRow.set("platformName", context.get("platformName"));
 		tableRow.set("projectId", sessionKeyParts[0]);
 
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+		Set<String> referrers = new HashSet();
+		Set<String> urls = new HashSet();
 
-		tableRow.set(
-			"referrers",
-			stream.map(
-				analyticsEvent -> {
-					Map<String, String> analyticsEventContext =
-						analyticsEvent.context;
+		analyticsEvents.forEach(
+			analyticsEvent -> {
+				Map<String, String> analyticsEventContext =
+					analyticsEvent.context;
 
-					return analyticsEventContext.get("referrer");
+				String referrer = analyticsEventContext.get("referrer");
+
+				if (StringUtils.isNotEmpty(referrer)) {
+					referrers.add(referrer);
 				}
-			).filter(
-				StringUtils::isNotEmpty
-			).collect(
-				Collectors.toSet()
-			));
 
+				String url = analyticsEventContext.get("url");
+
+				if (StringUtils.isNotEmpty(url)) {
+					urls.add(url);
+				}
+			});
+
+		tableRow.set("referrers", referrers);
 		tableRow.set("region", context.get("region"));
 		tableRow.set("sessionEnd", lastAnalyticsEvent.eventDate);
 		tableRow.set("sessionStart", firstAnalyticsEvent.eventDate);
+		tableRow.set("urls", urls);
 		tableRow.set("userId", sessionKeyParts[3]);
 
 		processContext.output(tableRow);
