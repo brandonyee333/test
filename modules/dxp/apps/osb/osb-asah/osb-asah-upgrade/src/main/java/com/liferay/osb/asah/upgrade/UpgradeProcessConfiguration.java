@@ -74,7 +74,7 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_suppressionMigrationUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"3.1.4", "3.2.0", upgradeSteps.toArray(new UpgradeStep[0]));
+			"3.6.0", "4.0.0", upgradeSteps.toArray(new UpgradeStep[0]));
 
 		return upgradeProcess;
 	}
