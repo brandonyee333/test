@@ -262,7 +262,7 @@ public class IndividualSegmentsRestControllerTest
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
 			327968823603500655L, null);
 
-		Assertions.assertNotEquals(0L, segmentDTO.getKnownIdentitiesCount());
+		Assertions.assertEquals(0L, segmentDTO.getKnownIdentitiesCount());
 	}
 
 	@RepositoryResource(
