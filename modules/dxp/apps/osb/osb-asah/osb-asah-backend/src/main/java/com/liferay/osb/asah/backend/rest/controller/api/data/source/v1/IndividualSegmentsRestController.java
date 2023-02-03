@@ -24,6 +24,7 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.BQIdentityDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -33,7 +34,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import java.util.ArrayList;
@@ -284,7 +284,7 @@ public class IndividualSegmentsRestController {
 				jsonArray.getJSONObject(i), BQMembershipDTO.class);
 
 			for (String identityId :
-					_bqIdentityRepository.getIdentityIds(
+					_bqIdentityDog.getIdentityIds(
 						bqMembershipDTO.getIndividualId())) {
 
 				BQMembership bqMembership = new BQMembership();
@@ -466,7 +466,7 @@ public class IndividualSegmentsRestController {
 	private AssetDog _assetDog;
 
 	@Autowired
-	private BQIdentityRepository _bqIdentityRepository;
+	private BQIdentityDog _bqIdentityDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
