@@ -136,27 +136,20 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 			(dataFetchingEnvironment.getArgument("rangeStart") != null)) {
 
 			String rangeEnd = dataFetchingEnvironment.getArgument("rangeEnd");
-
 			String rangeStart = dataFetchingEnvironment.getArgument(
 				"rangeStart");
 
 			if (rangeEnd.contains("T") && rangeStart.contains("T")) {
 				searchQueryContext.setTimeRange(
 					TimeRange.of(
-						LocalDateTime.parse(
-							dataFetchingEnvironment.getArgument("rangeEnd")),
-						LocalDateTime.parse(
-							dataFetchingEnvironment.getArgument(
-								"rangeStart"))));
+						LocalDateTime.parse(rangeEnd),
+						LocalDateTime.parse(rangeStart)));
 			}
 			else {
 				searchQueryContext.setTimeRange(
 					TimeRange.of(
-						LocalDate.parse(
-							dataFetchingEnvironment.getArgument("rangeEnd")),
-						LocalDate.parse(
-							dataFetchingEnvironment.getArgument(
-								"rangeStart"))));
+						LocalDate.parse(rangeEnd),
+						LocalDate.parse(rangeStart)));
 			}
 		}
 		else if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
