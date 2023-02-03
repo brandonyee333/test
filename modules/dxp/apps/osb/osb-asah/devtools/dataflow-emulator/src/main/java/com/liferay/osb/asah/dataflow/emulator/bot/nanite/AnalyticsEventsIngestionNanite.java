@@ -502,6 +502,8 @@ public class AnalyticsEventsIngestionNanite {
 
 		int interactionsCount = 0;
 		int pageViewsCount = 0;
+		Set<String> referrers = new HashSet();
+		Set<String> urls = new HashSet();
 
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
 			String eventId = analyticsEvent.getEventId();
@@ -514,6 +516,21 @@ public class AnalyticsEventsIngestionNanite {
 
 			if (!_noninteractionEvents.contains(analyticsEvent.getEventId())) {
 				interactionsCount++;
+			}
+
+			Map<String, String> analyticsEventContext =
+				analyticsEvent.getContext();
+
+			String referrer = analyticsEventContext.get("referrer");
+
+			if (StringUtils.isNotEmpty(referrer)) {
+				referrers.add(referrer);
+			}
+
+			String url = analyticsEventContext.get("url");
+
+			if (StringUtils.isNotEmpty(url)) {
+				urls.add(url);
 			}
 		}
 
@@ -535,28 +552,6 @@ public class AnalyticsEventsIngestionNanite {
 				lastAnalyticsEvent.getEventDate()));
 		bqSession.setId(sessionContext.id);
 		bqSession.setPlatformName(context.get("platformName"));
-
-		Set<String> referrers = new HashSet();
-		Set<String> urls = new HashSet();
-
-		analyticsEvents.forEach(
-			analyticsEvent -> {
-				Map<String, String> analyticsEventContext =
-					analyticsEvent.getContext();
-
-				String referrer = analyticsEventContext.get("referrer");
-
-				if (StringUtils.isNotEmpty(referrer)) {
-					referrers.add(referrer);
-				}
-
-				String url = analyticsEventContext.get("url");
-
-				if (StringUtils.isNotEmpty(url)) {
-					urls.add(url);
-				}
-			});
-
 		bqSession.setReferrers(referrers);
 		bqSession.setRegion("Local Network");
 		bqSession.setSessionEnd(lastAnalyticsEvent.getEventDate());

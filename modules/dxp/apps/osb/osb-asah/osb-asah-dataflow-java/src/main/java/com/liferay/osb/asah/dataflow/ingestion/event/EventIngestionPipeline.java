@@ -637,6 +637,8 @@ public class EventIngestionPipeline {
 
 		int interactionsCount = 0;
 		int pageViewsCount = 0;
+		Set<String> referrers = new HashSet();
+		Set<String> urls = new HashSet();
 
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
 			String eventId = analyticsEvent.eventId;
@@ -656,6 +658,20 @@ public class EventIngestionPipeline {
 				!eventId.equals("webContentViewed")) {
 
 				interactionsCount++;
+			}
+
+			Map<String, String> analyticsEventContext = analyticsEvent.context;
+
+			String referrer = analyticsEventContext.get("referrer");
+
+			if (StringUtils.isNotEmpty(referrer)) {
+				referrers.add(referrer);
+			}
+
+			String url = analyticsEventContext.get("url");
+
+			if (StringUtils.isNotEmpty(url)) {
+				urls.add(url);
 			}
 		}
 
@@ -680,28 +696,6 @@ public class EventIngestionPipeline {
 			DigestUtils.sha256Hex(sessionKey + "#" + intervalWindow.start()));
 		tableRow.set("platformName", context.get("platformName"));
 		tableRow.set("projectId", sessionKeyParts[0]);
-
-		Set<String> referrers = new HashSet();
-		Set<String> urls = new HashSet();
-
-		analyticsEvents.forEach(
-			analyticsEvent -> {
-				Map<String, String> analyticsEventContext =
-					analyticsEvent.context;
-
-				String referrer = analyticsEventContext.get("referrer");
-
-				if (StringUtils.isNotEmpty(referrer)) {
-					referrers.add(referrer);
-				}
-
-				String url = analyticsEventContext.get("url");
-
-				if (StringUtils.isNotEmpty(url)) {
-					urls.add(url);
-				}
-			});
-
 		tableRow.set("referrers", referrers);
 		tableRow.set("region", context.get("region"));
 		tableRow.set("sessionEnd", lastAnalyticsEvent.eventDate);
