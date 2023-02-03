@@ -17,7 +17,6 @@ package com.liferay.osb.asah.upgrade.v4_0_0;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.Field;
-import com.google.cloud.bigquery.FieldList;
 import com.google.cloud.bigquery.LegacySQLTypeName;
 import com.google.cloud.bigquery.Schema;
 import com.google.cloud.bigquery.StandardTableDefinition;
@@ -51,39 +50,38 @@ public class DatabaseSchemaV400UpgradeStep implements UpgradeStep {
 			Field.Mode.REPEATED
 		).build();
 
-		_addTableColumn(field, ProjectIdThreadLocal.getProjectId(), "session");
+		_addTableField(field, ProjectIdThreadLocal.getProjectId(), "session");
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Database successfully upgraded to schema 4.0.0");
 		}
 	}
 
-	private void _addTableColumn(
+	private void _addTableField(
 		Field field, String projectId, String tableName) {
 
 		Table table = _bigQuery.getTable(projectId, tableName);
 
-		TableDefinition definition = table.getDefinition();
+		List<Field> fields = _getTableFields(table);
 
-		Schema schema = definition.getSchema();
-
-		FieldList fields = schema.getFields();
-
-		List<Field> fieldsList = new ArrayList<>();
-
-		fields.forEach(fieldsList::add);
-
-		fieldsList.add(field);
-
-		Schema newSchema = Schema.of(fieldsList);
+		fields.add(field);
 
 		Table.Builder builder = table.toBuilder();
 
-		builder = builder.setDefinition(StandardTableDefinition.of(newSchema));
+		builder = builder.setDefinition(
+			StandardTableDefinition.of(Schema.of(fields)));
 
 		table = builder.build();
 
 		table.update();
+	}
+
+	private List<Field> _getTableFields(Table table) {
+		TableDefinition definition = table.getDefinition();
+
+		Schema currentSchema = definition.getSchema();
+
+		return new ArrayList<>(currentSchema.getFields());
 	}
 
 	@PostConstruct
