@@ -2606,13 +2606,13 @@
 				"type": "TIMESTAMP"
 			},
 			{
-				"mode": "REQUIRED",
-				"name": "userId",
+				"mode": "REPEATED",
+				"name": "urls",
 				"type": "STRING"
 			},
 			{
-				"mode": "REPEATED",
-				"name": "urls",
+				"mode": "REQUIRED",
+				"name": "userId",
 				"type": "STRING"
 			}
 		],
