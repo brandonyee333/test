@@ -76,7 +76,7 @@ public class BQSessionRepositoryImpl
 
 		Field<String> field = null;
 
-		if (_nestedFieldNamesMap.get(fieldName) != null) {
+		if (_nestedFieldNamesMap.containsKey(fieldName)) {
 			field = DSL.field("value", String.class);
 		}
 		else {
@@ -89,9 +89,14 @@ public class BQSessionRepositoryImpl
 			"BQSession"
 		);
 
-		if (_nestedFieldNamesMap.get(fieldName) != null) {
+		if (_nestedFieldNamesMap.containsKey(fieldName)) {
 			selectJoinStep = selectJoinStep.crossJoin(
-				"unnest(" + _nestedFieldNamesMap.get(fieldName) + ") as value");
+				DSL.unnest(
+					DSL.field(
+						_nestedFieldNamesMap.get(fieldName), String[].class)
+				).as(
+					"value"
+				));
 		}
 
 		Condition condition = filterHelper.getCondition();
@@ -559,7 +564,7 @@ public class BQSessionRepositoryImpl
 
 		Field<String> field = null;
 
-		if (_nestedFieldNamesMap.get(fieldName) != null) {
+		if (_nestedFieldNamesMap.containsKey(fieldName)) {
 			field = DSL.field("value", String.class);
 		}
 		else {
@@ -583,9 +588,14 @@ public class BQSessionRepositoryImpl
 			"BQSession"
 		);
 
-		if (_nestedFieldNamesMap.get(fieldName) != null) {
+		if (_nestedFieldNamesMap.containsKey(fieldName)) {
 			selectJoinStep = selectJoinStep.crossJoin(
-				"unnest(" + _nestedFieldNamesMap.get(fieldName) + ") as value");
+				DSL.unnest(
+					DSL.field(
+						_nestedFieldNamesMap.get(fieldName), String[].class)
+				).as(
+					"value"
+				));
 		}
 
 		String key = field.getName();
