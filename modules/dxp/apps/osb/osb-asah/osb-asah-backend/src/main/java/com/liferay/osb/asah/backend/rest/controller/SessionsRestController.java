@@ -40,13 +40,11 @@ public class SessionsRestController extends BaseRestController {
 
 	@GetMapping("/values")
 	public PageDTO<String> getSessionValues(
-			@RequestParam String fieldName,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(required = false) String value)
-		throws Exception {
+		@RequestParam String fieldName,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(required = false) String value) {
 
 		Page<String> userSessionsFieldValuesPage =
 			_userSessionDog.searchBQSessionsFieldValues(
