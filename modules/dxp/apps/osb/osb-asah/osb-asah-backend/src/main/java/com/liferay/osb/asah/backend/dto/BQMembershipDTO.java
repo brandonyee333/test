@@ -42,11 +42,11 @@ public class BQMembershipDTO {
 	public BQMembershipDTO(BQMembership bqMembership) {
 		_createDate = bqMembership.getCreateDate();
 		_id = StringUtil.get(bqMembership.getId(), null);
+		_individualId = StringUtil.get(bqMembership.getIndividualId(), null);
 		_modifiedDate = bqMembership.getModifiedDate();
 		_removedDate = bqMembership.getRemovedDate();
 		_segmentId = StringUtil.get(bqMembership.getSegmentId(), null);
 		_status = bqMembership.getStatus();
-		_individualId = StringUtil.get(bqMembership.getIndividualId(), null);
 	}
 
 	public BQMembershipDTO(List<BQMembership> bqMemberships) {
