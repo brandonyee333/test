@@ -64,7 +64,10 @@ public class SiteMetricDogTest
 	public void testAcquisitionChannel() {
 		CompositionResultBag compositionResultBag =
 			_siteMetricDog.getAcquisitionsMetricsCompositionResultBag(
-				AcquisitionType.CHANNEL, "1", 5, 0, TimeRange.LAST_7_DAYS);
+				AcquisitionType.CHANNEL, "1", 5, 0,
+				TimeRange.of(
+					LocalDate.parse("2023-02-01"),
+					LocalDate.parse("2023-01-01")));
 
 		List<Composition> results = compositionResultBag.getResults();
 
