@@ -16,16 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 
-import java.util.Collection;
-
 /**
  * @author Marcellus Tavares
  */
 public interface BQFieldMappingRepository
 	extends CustomBQFieldMappingRepository,
 			ReadOnlyRepository<BQFieldMapping, String> {
-
-	public Iterable<BQFieldMapping> findByFieldNameIn(
-		Collection<String> fieldNames);
-
 }
