@@ -19,12 +19,15 @@ import com.liferay.osb.asah.common.repository.CustomBQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.util.Collection;
 import java.util.List;
 
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -53,14 +56,40 @@ public class BQFieldMappingRepositoryImpl
 	}
 
 	@Override
-	public List<BQFieldMapping> searchBQFieldMappings(
-		FilterHelper filterHelper, Pageable pageable) {
+	public List<BQFieldMapping> findByFieldNameIn(
+		Collection<String> fieldNames) {
 
-		SelectSelectStep<Record> selectCount = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		Condition condition = DSL.noCondition();
+
+		if (!fieldNames.isEmpty()) {
+			condition = condition.and(
+				DSL.field(
+					"fieldName"
+				).in(
+					fieldNames
+				));
+		}
 
 		return _queryExecutor.queryForList(
 			BQFieldMapping::new,
-			selectCount.from(
+			selectSelectStep.from(
+				"BQFieldMapping"
+			).where(
+				condition
+			));
+	}
+
+	@Override
+	public List<BQFieldMapping> searchBQFieldMappings(
+		FilterHelper filterHelper, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return _queryExecutor.queryForList(
+			BQFieldMapping::new,
+			selectSelectStep.from(
 				"BQFieldMapping"
 			).where(
 				filterHelper.getCondition()
