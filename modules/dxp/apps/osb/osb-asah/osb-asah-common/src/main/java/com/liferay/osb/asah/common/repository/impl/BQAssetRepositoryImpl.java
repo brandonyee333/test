@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQAsset;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
-import com.liferay.osb.asah.common.postgresql.converter.helper.AssetFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.CustomBQAssetRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
@@ -49,6 +48,9 @@ public class BQAssetRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
+		FilterExpression filterExpression = new FilterExpression(
+			filterString, "assets");
+
 		return _queryExecutor.queryForList(
 			BQAsset::new,
 			selectSelectStep.from(
@@ -58,8 +60,7 @@ public class BQAssetRepositoryImpl
 					"Asset"
 				)
 			).where(
-				FilterExpression.convert(
-					filterString, new AssetFilterStringConverterHelper())
+				filterExpression.getCondition()
 			).orderBy(
 				getSortFields(
 					new HashMap<String, String>() {

@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionBaseVisitor;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
 import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
+import com.liferay.osb.asah.common.postgresql.converter.helper.AssetFilterStringConverterHelper;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.postgresql.converter.helper.OrganizationsFilterStringConverterHelper;
@@ -589,6 +590,7 @@ public class FilterExpressionVisitor
 					put(
 						"activities",
 						new ActivitiesFilterStringConverterHelper());
+					put("assets", new AssetFilterStringConverterHelper());
 					put(
 						"dataSourceAccountPKs",
 						new DataSourceFilterStringConverterHelper());
