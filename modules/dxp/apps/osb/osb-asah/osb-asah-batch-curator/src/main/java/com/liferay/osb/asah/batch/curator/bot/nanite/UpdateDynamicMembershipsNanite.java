@@ -65,16 +65,16 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					String.format(
-						"Memberships updated successfully for Segment ID %s, " +
-							"filterString %s ",
+						"Updated memberships successfully for segment ID %s " +
+							"and filter %s",
 						segmentId, filterString));
 			}
 		}
 		catch (Exception exception) {
 			_log.error(
 				String.format(
-					"Unable to update memberships for Segment ID %s, " +
-						"filterString %s ",
+					"Unable to update memberships for segment ID %s and " +
+						"filter %s",
 					segmentId, filterString));
 		}
 	}
