@@ -38,24 +38,25 @@ public class BQAsset {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
+	public boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
 		}
 
-		if ((o == null) || (getClass() != o.getClass())) {
+		if (!(obj instanceof BQAsset)) {
 			return false;
 		}
 
-		BQAsset that = (BQAsset)o;
+		BQAsset bqAsset = (BQAsset)obj;
 
-		if ((_views == that._views) && Objects.equals(_id, that._id) &&
-			Objects.equals(_assetId, that._assetId) &&
-			Objects.equals(_assetTitle, that._assetTitle) &&
-			Objects.equals(_assetType, that._assetType) &&
-			Objects.equals(_channelId, that._channelId) &&
-			Objects.equals(_dataSourceId, that._dataSourceId) &&
-			Objects.equals(_modifiedDate, that._modifiedDate)) {
+		if (Objects.equals(_assetId, bqAsset._assetId) &&
+			Objects.equals(_assetTitle, bqAsset._assetTitle) &&
+			Objects.equals(_assetType, bqAsset._assetType) &&
+			Objects.equals(_channelId, bqAsset._channelId) &&
+			Objects.equals(_dataSourceId, bqAsset._dataSourceId) &&
+			Objects.equals(_id, bqAsset._id) &&
+			Objects.equals(_modifiedDate, bqAsset._modifiedDate) &&
+			Objects.equals(_views, bqAsset._views)) {
 
 			return true;
 		}
@@ -107,7 +108,7 @@ public class BQAsset {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _assetId, _assetTitle, _assetType, _channelId, _dataSourceId,
+			_assetId, _assetTitle, _assetType, _channelId, _dataSourceId, _id,
 			_modifiedDate, _views);
 	}
 
