@@ -58,15 +58,7 @@ public class UserSessionDog {
 		return _bqSessionRepository.findAllById(ids);
 	}
 
-	public List<Long> getIndividualIds(String filterString) {
-		List<Long> individualIds = new ArrayList<>();
-
-		// TODO Search for individual ids
-
-		return individualIds;
-	}
-
-	public Page<String> searchBQSessionsFieldValues(
+	public Page<String> getBQSessionFieldValuePage(
 		String fieldName, String filterString, int page, int size,
 		String value) {
 
@@ -80,6 +72,14 @@ public class UserSessionDog {
 			pageRequest,
 			() -> _bqSessionRepository.countSessionFieldValues(
 				fieldName, filterHelper, value));
+	}
+
+	public List<Long> getIndividualIds(String filterString) {
+		List<Long> individualIds = new ArrayList<>();
+
+		// TODO Search for individual ids
+
+		return individualIds;
 	}
 
 	@Autowired

@@ -49,7 +49,7 @@ public class SessionsRestControllerTest
 			JSONUtil.putAll("California", "Indiana"),
 			(JSONArray)JSONUtil.getValue(
 				new JSONObject(
-					_sessionsRestController.getSessionValues(
+					_sessionsRestController.getBQSessionFieldValuePageDTO(
 						"context/region", "context/country eq 'United States'",
 						0, 20, null)),
 				"JSONObject/_embedded", "JSONArray/session-values"),
@@ -58,7 +58,7 @@ public class SessionsRestControllerTest
 			JSONUtil.putAll("Budapest", "California", "Indiana", "Tokyo"),
 			(JSONArray)JSONUtil.getValue(
 				new JSONObject(
-					_sessionsRestController.getSessionValues(
+					_sessionsRestController.getBQSessionFieldValuePageDTO(
 						"context/region", null, 0, 20, null)),
 				"JSONObject/_embedded", "JSONArray/session-values"),
 			false);
@@ -66,7 +66,7 @@ public class SessionsRestControllerTest
 			JSONUtil.put("California"),
 			(JSONArray)JSONUtil.getValue(
 				new JSONObject(
-					_sessionsRestController.getSessionValues(
+					_sessionsRestController.getBQSessionFieldValuePageDTO(
 						"context/region", null, 0, 20, "cal")),
 				"JSONObject/_embedded", "JSONArray/session-values"),
 			false);

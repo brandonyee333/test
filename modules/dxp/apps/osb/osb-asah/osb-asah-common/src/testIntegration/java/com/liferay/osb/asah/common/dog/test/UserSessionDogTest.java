@@ -61,6 +61,58 @@ public class UserSessionDogTest
 		Assertions.assertEquals(2, bqSessions3.size());
 	}
 
+	@SQLResource(resourcePath = "test_bq_sessions_field_values.sql")
+	@Test
+	public void testGetBQSessionFieldValuePage() {
+		Page<String> bqSessionFieldValuePage =
+			_userSessionDog.getBQSessionFieldValuePage(
+				"browserName", null, 0, 10, null);
+
+		Assertions.assertEquals(2, bqSessionFieldValuePage.getTotalElements());
+
+		List<String> content = bqSessionFieldValuePage.getContent();
+
+		Assertions.assertEquals(Arrays.asList("Chrome", "Firefox"), content);
+
+		bqSessionFieldValuePage = _userSessionDog.getBQSessionFieldValuePage(
+			"browserName", null, 0, 10, "Chro");
+
+		Assertions.assertEquals(1, bqSessionFieldValuePage.getTotalElements());
+
+		content = bqSessionFieldValuePage.getContent();
+
+		Assertions.assertEquals(Arrays.asList("Chrome"), content);
+
+		bqSessionFieldValuePage = _userSessionDog.getBQSessionFieldValuePage(
+			"referrer", null, 0, 10, null);
+
+		Assertions.assertEquals(4, bqSessionFieldValuePage.getTotalElements());
+
+		content = bqSessionFieldValuePage.getContent();
+
+		Assertions.assertEquals(
+			Arrays.asList(
+				"http://192.168.118.3:7400/",
+				"http://192.168.118.3:7400/c/portal/logout",
+				"http://192.168.118.3:7400/web/forms/shared/-/form/44224?" +
+					"p_p_state=pop_up&p_p_auth=V2Mnn7B1",
+				"http://192.168.118.3:7400/web/guest/home"),
+			content);
+
+		bqSessionFieldValuePage = _userSessionDog.getBQSessionFieldValuePage(
+			"referrer", null, 0, 10, "http://192.168.118.3:7400/web/forms");
+
+		Assertions.assertEquals(1, bqSessionFieldValuePage.getTotalElements());
+
+		content = bqSessionFieldValuePage.getContent();
+
+		Assertions.assertEquals(
+			Arrays.asList(
+				"http://192.168.118.3:7400/web/forms/shared/-/form/44224?" +
+					"p_p_state=pop_up&p_p_auth=V2Mnn7B1"),
+			content);
+	}
+
 	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQSessionRepository.class,
@@ -91,65 +143,6 @@ public class UserSessionDogTest
 			Collections.emptyList(),
 			_userSessionDog.getIndividualIds(
 				"(country eq 'Germany' and completeDate gt 'last24Hours')"));
-	}
-
-	@SQLResource(resourcePath = "test_bq_sessions_field_values.sql")
-	@Test
-	public void testSearchBQSessionsFieldValues() {
-		Page<String> searchBQSessionsFieldValues =
-			_userSessionDog.searchBQSessionsFieldValues(
-				"browserName", null, 0, 10, null);
-
-		Assertions.assertEquals(
-			2, searchBQSessionsFieldValues.getTotalElements());
-
-		List<String> content = searchBQSessionsFieldValues.getContent();
-
-		Assertions.assertEquals(Arrays.asList("Chrome", "Firefox"), content);
-
-		searchBQSessionsFieldValues =
-			_userSessionDog.searchBQSessionsFieldValues(
-				"browserName", null, 0, 10, "Chro");
-
-		Assertions.assertEquals(
-			1, searchBQSessionsFieldValues.getTotalElements());
-
-		content = searchBQSessionsFieldValues.getContent();
-
-		Assertions.assertEquals(Arrays.asList("Chrome"), content);
-
-		searchBQSessionsFieldValues =
-			_userSessionDog.searchBQSessionsFieldValues(
-				"referrer", null, 0, 10, null);
-
-		Assertions.assertEquals(
-			4, searchBQSessionsFieldValues.getTotalElements());
-
-		content = searchBQSessionsFieldValues.getContent();
-
-		Assertions.assertEquals(
-			Arrays.asList(
-				"http://192.168.118.3:7400/",
-				"http://192.168.118.3:7400/c/portal/logout",
-				"http://192.168.118.3:7400/web/forms/shared/-/form/44224?" +
-					"p_p_state=pop_up&p_p_auth=V2Mnn7B1",
-				"http://192.168.118.3:7400/web/guest/home"),
-			content);
-
-		searchBQSessionsFieldValues =
-			_userSessionDog.searchBQSessionsFieldValues(
-				"referrer", null, 0, 10, "http://192.168.118.3:7400/web/forms");
-
-		Assertions.assertEquals(
-			1, searchBQSessionsFieldValues.getTotalElements());
-
-		content = searchBQSessionsFieldValues.getContent();
-
-		Assertions.assertEquals(
-			Arrays.asList(
-				"http://192.168.118.3:7400/web/forms/shared/-/form/44224?" +
-					"p_p_state=pop_up&p_p_auth=V2Mnn7B1"),
-			content);
 	}
 
 	@Autowired

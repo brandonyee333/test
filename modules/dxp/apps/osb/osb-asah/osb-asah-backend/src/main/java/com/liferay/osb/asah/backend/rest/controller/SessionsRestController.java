@@ -39,15 +39,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class SessionsRestController extends BaseRestController {
 
 	@GetMapping("/values")
-	public PageDTO<String> getSessionValues(
+	public PageDTO<String> getBQSessionFieldValuePageDTO(
 		@RequestParam String fieldName,
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(required = false) String value) {
 
-		Page<String> userSessionsFieldValuesPage =
-			_userSessionDog.searchBQSessionsFieldValues(
+		Page<String> bqSessionFieldValuePage =
+			_userSessionDog.getBQSessionFieldValuePage(
 				StringUtils.substringAfter(fieldName, "/"), filterString, page,
 				size, value);
 
@@ -55,11 +55,11 @@ public class SessionsRestController extends BaseRestController {
 			"_embedded",
 			JSONUtil.put(
 				"session-values",
-				new JSONArray(userSessionsFieldValuesPage.getContent())),
-			userSessionsFieldValuesPage.getNumber(),
-			userSessionsFieldValuesPage.getSize(),
-			userSessionsFieldValuesPage.getTotalElements(),
-			userSessionsFieldValuesPage.getTotalPages());
+				new JSONArray(bqSessionFieldValuePage.getContent())),
+			bqSessionFieldValuePage.getNumber(),
+			bqSessionFieldValuePage.getSize(),
+			bqSessionFieldValuePage.getTotalElements(),
+			bqSessionFieldValuePage.getTotalPages());
 	}
 
 	@Autowired
