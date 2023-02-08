@@ -30,6 +30,7 @@ import com.liferay.osb.asah.upgrade.v4_0_0.ExperimentMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.IdentityMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.JobMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.JobRunMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_0.SegmentFilterUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SequenceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SuppressionMigrationUpgradeStep;
 
@@ -72,6 +73,7 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_jobRunMigrationUpgradeStep);
 		upgradeSteps.add(_sequenceUpgradeStep);
 		upgradeSteps.add(_suppressionMigrationUpgradeStep);
+		upgradeSteps.add(_segmentFilterUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"3.6.0", "4.0.0", upgradeSteps.toArray(new UpgradeStep[0]));
@@ -130,6 +132,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
+
+	@Autowired
+	private SegmentFilterUpgradeStep _segmentFilterUpgradeStep;
 
 	@Autowired
 	private SuppressionMigrationUpgradeStep _suppressionMigrationUpgradeStep;
