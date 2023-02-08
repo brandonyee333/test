@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Search Elasticsearch
 Bundle-SymbolicName: com.liferay.portal.search.elasticsearch
-Bundle-Version: 2.1.99
+Bundle-Version: 2.1.100
 Export-Package: com.liferay.portal.search.elasticsearch.settings
 Import-Package:\
 	!com.carrotsearch.hppc.*,\
