@@ -275,7 +275,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		String assetId, @Nullable String assetTitle, Long channelId,
 		MetricType metricType, TimeRange timeRange) {
 
-		Field<String> browserNameField = DSL.field("browserName", String.class);
+		Field<String> browserNameField = DSL.coalesce(
+			DSL.field("browserName", String.class), DSL.val("Unknown")
+		).as(
+			"browserName"
+		);
 		Field<BigDecimal> metricField1 = getMetricFieldAliased(
 			metricType, timeRange);
 		Field<BigDecimal> metricField2 = getMetricField(metricType, timeRange);
@@ -318,12 +322,19 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		String assetId, @Null String assetTitle, Long channelId,
 		MetricType metricType, TimeRange timeRange) {
 
-		Field<String> deviceTypeField = DSL.field("deviceType", String.class);
+		Field<String> deviceTypeField = DSL.coalesce(
+			DSL.field("deviceType", String.class), DSL.val("Unknown")
+		).as(
+			"deviceType"
+		);
 		Field<BigDecimal> metricField1 = getMetricFieldAliased(
 			metricType, timeRange);
 		Field<BigDecimal> metricField2 = getMetricField(metricType, timeRange);
-		Field<String> platformNameField = DSL.field(
-			"platformName", String.class);
+		Field<String> platformNameField = DSL.coalesce(
+			DSL.field("platformName", String.class), DSL.val("Unknown")
+		).as(
+			"platformName"
+		);
 
 		Map<String, Metric> metrics = new LinkedHashMap<>();
 
@@ -386,7 +397,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		String assetId, @Nullable String assetTitle, Long channelId,
 		MetricType metricType, TimeRange timeRange) {
 
-		Field<String> countryField = DSL.field("country", String.class);
+		Field<String> countryField = DSL.coalesce(
+			DSL.field("country", String.class), DSL.val("Unknown")
+		).as(
+			"country"
+		);
 		Field<BigDecimal> metricField1 = getMetricFieldAliased(
 			metricType, timeRange);
 		Field<BigDecimal> metricField2 = getMetricField(metricType, timeRange);
