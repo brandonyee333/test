@@ -57,18 +57,20 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			self, analytics_events_data_frame, extracted_keywords_data_frame):
 
 		return analytics_events_data_frame.groupby(
-			'userId', 'canonicalUrl'
-		).agg(F.count('*').alias('views')).join(
+			'canonicalUrl', 'userId'
+		).agg(
+			F.count('*').alias('views')
+		).join(
 			extracted_keywords_data_frame,
 			how='inner',
 			on=['canonicalUrl']
 		).withColumn(
 			'keyword', F.explode(F.col('extracted_keywords'))
 		).select(
+			F.col('canonicalUrl'),
 			F.col('userId').alias('identityId'),
 			F.col('keyword'),
-			F.col('canonicalUrl'),
-			F.col('title').alias('pageTitle'),
+			F.col('title'),
 			F.col('views')
 		)
 
@@ -155,13 +157,12 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		analytics_events_with_keywords_data_frame = \
 			analytics_events_data_frame.drop(
-				'keywords',
-				'description',
-				'title').join(
-					extracted_keywords_data_frame,
-					how='inner',
-					on=['canonicalUrl']
-				)
+				'description', 'keywords', 'title'
+			).join(
+				extracted_keywords_data_frame,
+				how='inner',
+				on=['canonicalUrl']
+			)
 
 		keyword_count_with_totals_data_frame = \
 			self._get_keyword_count_with_totals_data_frame(
@@ -588,7 +589,8 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 		).withColumn(
 			'extracted_keywords', F.array_remove('extracted_keywords', '')
 		).select(
-			'canonicalUrl', 'title', 'description', 'title_and_description', 'extracted_keywords'
+			'canonicalUrl', 'description', 'extracted_keywords', 'title',
+			'title_and_description'
 		)
 
 		extracted_keywords_data_frame.createOrReplaceTempView(
