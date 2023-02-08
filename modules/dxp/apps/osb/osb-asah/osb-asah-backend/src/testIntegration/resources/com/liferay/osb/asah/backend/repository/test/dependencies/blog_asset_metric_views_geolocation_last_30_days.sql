@@ -1,3 +1,4 @@
+INSERT INTO BQBlog (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, NULL, date_trunc('HOUR', timestamp '${now-1d}'), 'test', 1);
 INSERT INTO BQBlog (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'United States', date_trunc('HOUR', timestamp '${now-1d}'), 'test', 1);
 INSERT INTO BQBlog (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'Japan', date_trunc('HOUR', timestamp '${now-5d}'), 'test', 2);
 INSERT INTO BQBlog (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'France', date_trunc('HOUR', timestamp '${now-10d}'), 'test', 3);

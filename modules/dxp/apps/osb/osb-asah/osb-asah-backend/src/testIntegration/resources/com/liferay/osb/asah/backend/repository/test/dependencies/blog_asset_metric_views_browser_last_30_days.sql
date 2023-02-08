@@ -1,3 +1,4 @@
+INSERT INTO BQBlog (assetId, browserName, channelId, eventDate, projectId, views) VALUES ('e131fabc', NULL, 1, date_trunc('HOUR', timestamp '${now-15d}'), 'test', 1);
 INSERT INTO BQBlog (assetId, browserName, channelId, eventDate, projectId, views) VALUES ('e131fabc', 'Chrome', 1, date_trunc('HOUR', timestamp '${now-15d}'), 'test', 4);
 INSERT INTO BQBlog (assetId, browserName, channelId, eventDate, projectId, views) VALUES ('e131fabc', 'Chrome', 1, date_trunc('HOUR', timestamp '${now-35d}'), 'test', 6);
 INSERT INTO BQBlog (assetId, browserName, channelId, eventDate, projectId, views) VALUES ('e131fabc', 'Chrome', 1, date_trunc('HOUR', timestamp '${now-4d}'), 'test', 3);

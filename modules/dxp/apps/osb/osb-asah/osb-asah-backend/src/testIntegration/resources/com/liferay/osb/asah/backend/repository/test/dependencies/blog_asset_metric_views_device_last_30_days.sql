@@ -1,3 +1,4 @@
+INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, NULL, date_trunc('HOUR', timestamp '${now-1d}'), 'Windows', 'test', 1);
 INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-1d}'), 'Windows', 'test', 1);
 INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-5d}'), 'Ubuntu','test', 2);
 INSERT INTO BQBlog (assetId, channelId, deviceType, eventDate, platformName, projectId, views) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-10d}'), 'Windows','test', 3);

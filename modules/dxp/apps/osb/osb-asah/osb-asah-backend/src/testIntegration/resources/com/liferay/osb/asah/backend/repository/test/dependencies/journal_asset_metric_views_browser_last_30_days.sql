@@ -27,9 +27,9 @@ INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, 
 INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, id) VALUES ('WebContent', 'Firefox', 1, date_trunc('HOUR', timestamp '${today-1h}'), 'webContentViewed', '27');
 INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, id) VALUES ('WebContent', 'Firefox', 1, date_trunc('HOUR', timestamp '${today-1h}'), 'webContentViewed', '28');
 INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, id) VALUES ('WebContent', 'Firefox', 1, date_trunc('HOUR', timestamp '${today-1h}'), 'webContentViewed', '29');
-INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, id) VALUES ('WebContent', 'Opera Desktop', 1, date_trunc('HOUR', timestamp '${now-18d}'), 'webContentViewed', '30');
-INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, id) VALUES ('WebContent', 'Opera Desktop', 1, date_trunc('HOUR', timestamp '${now-18d}'), 'webContentViewed', '31');
-INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, id) VALUES ('WebContent', 'Opera Desktop', 1, date_trunc('HOUR', timestamp '${now-18d}'), 'webContentViewed', '32');
+INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, id) VALUES ('WebContent', NULL, 1, date_trunc('HOUR', timestamp '${now-18d}'), 'webContentViewed', '30');
+INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, id) VALUES ('WebContent', NULL, 1, date_trunc('HOUR', timestamp '${now-18d}'), 'webContentViewed', '31');
+INSERT INTO BQEvent (applicationId, browserName, channelId, eventDate, eventId, id) VALUES ('WebContent', NULL, 1, date_trunc('HOUR', timestamp '${now-18d}'), 'webContentViewed', '32');
 
 INSERT INTO BQEventProperty (id, name, value) VALUES ('1', 'articleId', 'e131fabc');
 INSERT INTO BQEventProperty (id, name, value) VALUES ('2', 'articleId', 'e131fabc');

@@ -58,7 +58,7 @@ public class JournalAssetMetricRepositoryTest
 		assertMetrics(
 			Arrays.asList(
 				new Tuple2("Firefox", 14D), new Tuple2("Chrome", 9D),
-				new Tuple2("Opera Desktop", 3D)),
+				new Tuple2("Unknown", 3D)),
 			_assetMetricRepository.getBrowserMetrics(
 				"e131fabc", null, 1L, JournalMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));

@@ -59,7 +59,7 @@ public class BlogAssetMetricRepositoryTest
 		assertMetrics(
 			Arrays.asList(
 				new Tuple2("Firefox", 14D), new Tuple2("Chrome", 9D),
-				new Tuple2("Opera Desktop", 3D)),
+				new Tuple2("Opera Desktop", 3D), new Tuple2("Unknown", 1D)),
 			_assetMetricRepository.getBrowserMetrics(
 				"e131fabc", null, 1L, BlogMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
@@ -73,7 +73,8 @@ public class BlogAssetMetricRepositoryTest
 	public void testGetDeviceMetricsLast30Days() {
 		assertMetrics(
 			Arrays.asList(
-				new Tuple2("Desktop", 22D), new Tuple2("Mobile", 12D)),
+				new Tuple2("Desktop", 22D), new Tuple2("Mobile", 12D),
+				new Tuple2("Unknown", 1D)),
 			_assetMetricRepository.getDeviceMetrics(
 				"e131fabc", null, 1L, BlogMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
@@ -88,7 +89,7 @@ public class BlogAssetMetricRepositoryTest
 		assertMetrics(
 			Arrays.asList(
 				new Tuple2("France", 9D), new Tuple2("Japan", 7D),
-				new Tuple2("United States", 5D)),
+				new Tuple2("United States", 5D), new Tuple2("Unknown", 1D)),
 			_assetMetricRepository.getGeolocationMetrics(
 				"e131fabc", null, 1L, BlogMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
