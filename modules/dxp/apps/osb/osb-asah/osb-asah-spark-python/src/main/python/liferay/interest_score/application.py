@@ -31,14 +31,14 @@ class InterestScoreApplication(BaseSparkApplication):
 			usage='{} liferay.interest_score.InterestScoreApplication '
 			'-configuration <Configuration Path> '
 		  	'-job-parameters <Job Parameters> '
-			'-lcp-project-id <LCP Project ID>'.format(sys.argv[0])
+			'-ac-project-id <AC Project ID>'.format(sys.argv[0])
 		)
 
 		argument_parser.add_argument('application')
 		argument_parser.add_argument('-configuration', required=True)
 		argument_parser.add_argument(
 			'-job-parameters', default='[]', required=False)
-		argument_parser.add_argument('-lcp-project-id', required=True)
+		argument_parser.add_argument('-ac-project-id', required=True)
 
 		return argument_parser
 
@@ -47,7 +47,7 @@ class InterestScoreApplication(BaseSparkApplication):
 
 		spark_conf.setAppName('Interest Score')
 
-		spark_conf.set('materializationDataset', self.args.lcp_project_id)
+		spark_conf.set('materializationDataset', self.args.ac_project_id)
 		spark_conf.set(
 			'spark.jars.packages',
 			self.configuration.get('spark.jars.packages'))

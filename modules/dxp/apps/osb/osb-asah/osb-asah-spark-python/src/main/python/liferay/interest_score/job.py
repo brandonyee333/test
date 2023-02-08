@@ -187,7 +187,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			"overwrite"
 		).save(
 			'{}.identityinterestpages'.format(
-				self.spark_application_args.lcp_project_id
+				self.spark_application_args.ac_project_id
 			)
 		)
 
@@ -322,7 +322,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			"overwrite"
 		).save(
 			'{}.individualinterestscore'.format(
-				self.spark_application_args.lcp_project_id
+				self.spark_application_args.ac_project_id
 			)
 		)
 
@@ -346,7 +346,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			"overwrite"
 		).save(
 			'{}.sessioninterestscore'.format(
-				self.spark_application_args.lcp_project_id
+				self.spark_application_args.ac_project_id
 			)
 		)
 
@@ -622,8 +622,8 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 					eventproperty.name, 
 					eventproperty.value
 				FROM 
-					`{self.spark_application_args.lcp_project_id}`.event 
-				JOIN `{self.spark_application_args.lcp_project_id}`.eventproperty ON 
+					`{self.spark_application_args.ac_project_id}`.event 
+				JOIN `{self.spark_application_args.ac_project_id}`.eventproperty ON 
 					event.id = eventproperty.id
 				WHERE 
 					event.eventDate >= TIMESTAMP(DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta} DAY)) AND
@@ -670,7 +670,7 @@ class SegmentInterestScoreSparkJob(BaseSparkJob):
 				self.spark_application_configuration.get(
 					'google.storage.path.individuals'
 				),
-				self.spark_application_args.lcp_project_id
+				self.spark_application_args.ac_project_id
 			)
 		)
 
@@ -697,7 +697,7 @@ class SegmentInterestScoreSparkJob(BaseSparkJob):
 				self.spark_application_configuration.get(
 					'google.storage.path.individual-segments'
 				),
-				self.spark_application_args.lcp_project_id
+				self.spark_application_args.ac_project_id
 			)
 		).select(
 			'id', 'name'
