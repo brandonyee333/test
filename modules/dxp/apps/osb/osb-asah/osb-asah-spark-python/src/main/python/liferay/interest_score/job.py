@@ -53,6 +53,25 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		self._decay_threshold_weight = self._interest_score_decay_rate ** 14
 
+	def _get_identity_interest_pages_data_frame(
+			self, analytics_events_data_frame, extracted_keywords_data_frame):
+
+		return analytics_events_data_frame.groupby(
+			'userId', 'canonicalUrl'
+		).agg(F.count('*').alias('views')).join(
+			extracted_keywords_data_frame,
+			how='inner',
+			on=['canonicalUrl']
+		).withColumn(
+			'keyword', F.explode(F.col('extracted_keywords'))
+		).select(
+			F.col('userId').alias('identityId'),
+			F.col('keyword'),
+			F.col('canonicalUrl'),
+			F.col('title').alias('pageTitle'),
+			F.col('views')
+		)
+
 	def _get_job_parameter(self, parameter_name, default_value=None):
 		job_parameters = json.loads(self.spark_application_args.job_parameters)
 
@@ -135,11 +154,14 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		)
 
 		analytics_events_with_keywords_data_frame = \
-			analytics_events_data_frame.join(
-				extracted_keywords_data_frame,
-				how='inner',
-				on=['canonicalUrl']
-			)
+			analytics_events_data_frame.drop(
+				'keywords',
+				'description',
+				'title').join(
+					extracted_keywords_data_frame,
+					how='inner',
+					on=['canonicalUrl']
+				)
 
 		keyword_count_with_totals_data_frame = \
 			self._get_keyword_count_with_totals_data_frame(
@@ -150,6 +172,23 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			self._get_user_keyword_count_with_totals_data_frame(
 				analytics_events_with_keywords_data_frame
 			)
+
+		analytics_events_with_keywords_data_frame.createOrReplaceTempView(
+			'analytics_events_with_keywords_data_frame')
+
+		identity_interest_pages_data_frame = self._get_identity_interest_pages_data_frame(
+			analytics_events_data_frame,
+			extracted_keywords_data_frame)
+
+		identity_interest_pages_data_frame.write.format(
+			'bigquery'
+		).mode(
+			"overwrite"
+		).save(
+			'{}.identityinterestpages'.format(
+				self.spark_application_args.lcp_project_id
+			)
+		)
 
 		daily_logscores_data_frame = \
 			user_keyword_counts_with_totals_data_frame.join(
@@ -549,7 +588,7 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 		).withColumn(
 			'extracted_keywords', F.array_remove('extracted_keywords', '')
 		).select(
-			'canonicalUrl', 'extracted_keywords'
+			'canonicalUrl', 'title', 'description', 'title_and_description', 'extracted_keywords'
 		)
 
 		extracted_keywords_data_frame.createOrReplaceTempView(
