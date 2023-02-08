@@ -6,7 +6,7 @@ google:
             analytics-events: gs://analytics-cloud-analytics-events-uat
             individual-segments: gs://analytics-cloud-individual-segments-uat
             individuals: gs://analytics-cloud-individuals-uat
-            temporaryGcsBucket: ac-interest-scores/temp_write_bucket_for_bq_writes
+            temporaryGcsBucket: ac-interest-score/temp_write_bucket_for_bq_writes
 interest:
     models:
         language-detector:
