@@ -1,5 +1,5 @@
-Bundle-Name: sample2-api
-Bundle-SymbolicName: sample2.api
+Bundle-Name: sample-2-api
+Bundle-SymbolicName: sample-2-api
 Bundle-Version: 1.0.0
 Export-Package:\
 	sample2.exception,\
@@ -9,4 +9,4 @@ Export-Package:\
 	sample2.service,\
 	sample2.service.persistence
 -check: EXPORTS
--includeresource: META-INF/service.xml=../sample2-service/service.xml
+-includeresource: META-INF/service.xml=../sample-2-service/service.xml
