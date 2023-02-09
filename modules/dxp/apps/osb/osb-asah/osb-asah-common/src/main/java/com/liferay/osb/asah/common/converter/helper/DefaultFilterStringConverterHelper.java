@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import org.jooq.Condition;
@@ -39,21 +38,8 @@ public class DefaultFilterStringConverterHelper
 	implements FilterStringConverterHelper {
 
 	@Override
-	public Condition getCustomFunctionCondition(
-			List<String> arguments, String customFunctionName, boolean negated)
-		throws Exception {
-
-		return null;
-	}
-
-	@Override
 	public Map<String, String> getFieldNameConversionMap() {
 		return Collections.emptyMap();
-	}
-
-	@Override
-	public Condition getInferredCondition(String fieldName) {
-		return null;
 	}
 
 	@Override
@@ -115,10 +101,6 @@ public class DefaultFilterStringConverterHelper
 		}
 
 		return condition;
-	}
-
-	protected String toFieldName(String fieldName) {
-		return fieldName.replace('/', '.');
 	}
 
 }

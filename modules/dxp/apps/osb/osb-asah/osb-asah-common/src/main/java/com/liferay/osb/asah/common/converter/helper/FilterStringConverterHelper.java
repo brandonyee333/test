@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.converter.helper;
 
-import java.util.List;
 import java.util.Map;
 
 import org.jooq.Condition;
@@ -24,17 +23,11 @@ import org.jooq.Condition;
  */
 public interface FilterStringConverterHelper {
 
-	public Condition getCustomFunctionCondition(
-			List<String> arguments, String customFunctionName, boolean negated)
-		throws Exception;
-
 	public Map<String, String> getFieldNameConversionMap();
 
 	public default String getFilterType() {
 		return null;
 	}
-
-	public Condition getInferredCondition(String fieldName);
 
 	public Condition getLogicFunctionCondition(
 			String fieldName, String operator, boolean processString,
