@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,12 +26,12 @@ import org.springframework.data.domain.Pageable;
  */
 public interface CustomBQFieldMappingRepository {
 
-	public long countBQFieldMappings(FilterHelper filterHelper);
+	public long countByFilterString(String filterString);
 
 	public List<BQFieldMapping> findByFieldNameIn(
 		Collection<String> fieldNames);
 
-	public List<BQFieldMapping> searchBQFieldMappings(
-		FilterHelper filterHelper, Pageable pageable);
+	public List<BQFieldMapping> searchByFilterString(
+		String filterString, Pageable pageable);
 
 }

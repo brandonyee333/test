@@ -37,7 +37,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
 	public FieldMappingDTO getFieldMappingDTO(@PathVariable String id) {
-		return new FieldMappingDTO(_bqFieldMappingDog.getFieldMapping(id));
+		return new FieldMappingDTO(_bqFieldMappingDog.getBQFieldMapping(id));
 	}
 
 	@GetMapping(params = "!apply")

@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.List;
@@ -39,7 +38,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BQFieldMappingDog {
 
-	public BQFieldMapping getFieldMapping(String id) {
+	public BQFieldMapping getBQFieldMapping(String id) {
 		Optional<BQFieldMapping> fieldMappingOptional =
 			_bqFieldMappingRepository.findById(id);
 
@@ -49,7 +48,7 @@ public class BQFieldMappingDog {
 				"There is no field mapping with ID " + id));
 	}
 
-	public List<BQFieldMapping> getFieldMappings(Set<String> ids) {
+	public List<BQFieldMapping> getBQFieldMappings(Set<String> ids) {
 		return _bqFieldMappingRepository.findByFieldNameIn(ids);
 	}
 
@@ -57,17 +56,15 @@ public class BQFieldMappingDog {
 		@Nullable String filterString, int page, int size,
 		@Nullable String[] sorts) {
 
-		FilterHelper filterHelper = new FilterHelper(filterString);
-
 		PageRequest pageRequest = PageRequest.of(
 			page, size,
 			SortUtil.getSort(Sort.by(Sort.Order.asc("fieldName")), sorts));
 
 		return PageableExecutionUtils.getPage(
-			_bqFieldMappingRepository.searchBQFieldMappings(
-				filterHelper, pageRequest),
+			_bqFieldMappingRepository.searchByFilterString(
+				filterString, pageRequest),
 			pageRequest,
-			() -> _bqFieldMappingRepository.countBQFieldMappings(filterHelper));
+			() -> _bqFieldMappingRepository.countByFilterString(filterString));
 	}
 
 	@Autowired

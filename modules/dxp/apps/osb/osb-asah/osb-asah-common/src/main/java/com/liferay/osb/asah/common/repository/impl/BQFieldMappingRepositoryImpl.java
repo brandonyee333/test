@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.repository.CustomBQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.Collection;
 import java.util.List;
@@ -43,7 +43,7 @@ public class BQFieldMappingRepositoryImpl
 	}
 
 	@Override
-	public long countBQFieldMappings(FilterHelper filterHelper) {
+	public long countByFilterString(String filterString) {
 		SelectSelectStep<Record1<Integer>> selectCount =
 			_dslContext.selectCount();
 
@@ -51,7 +51,7 @@ public class BQFieldMappingRepositoryImpl
 			selectCount.from(
 				"BQFieldMapping"
 			).where(
-				filterHelper.getCondition()
+				ConditionUtil.toCondition(filterString)
 			));
 	}
 
@@ -82,8 +82,8 @@ public class BQFieldMappingRepositoryImpl
 	}
 
 	@Override
-	public List<BQFieldMapping> searchBQFieldMappings(
-		FilterHelper filterHelper, Pageable pageable) {
+	public List<BQFieldMapping> searchByFilterString(
+		String filterString, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -92,7 +92,7 @@ public class BQFieldMappingRepositoryImpl
 			selectSelectStep.from(
 				"BQFieldMapping"
 			).where(
-				filterHelper.getCondition()
+				ConditionUtil.toCondition(filterString)
 			).orderBy(
 				getSortFields(pageable.getSort(), null)
 			).limit(
