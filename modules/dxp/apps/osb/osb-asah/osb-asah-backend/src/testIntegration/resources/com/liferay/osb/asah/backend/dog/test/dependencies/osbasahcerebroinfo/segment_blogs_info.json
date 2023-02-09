@@ -22,7 +22,7 @@
 		],
 		"title": "Azul blog title",
 		"urls": [
-			"http://192.168.109.41:8181/web/guest/azul-page?p_p_id=com_liferay_blogs_web_portlet_BlogsPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_state_rcv=1&p_p_auth=xPVE2Yd7"
+			"http://192.168.109.41:8181/web/guest/azul-page?p_p_auth=xPVE2Yd7&p_p_id=com_liferay_blogs_web_portlet_BlogsPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_state_rcv=1"
 		],
 		"userId": "1",
 		"views": 3
@@ -50,7 +50,7 @@
 		],
 		"title": "Azul blog title",
 		"urls": [
-			"http://192.168.109.41:8181/web/guest/azul-page?p_p_id=com_liferay_blogs_web_portlet_BlogsPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_state_rcv=1&p_p_auth=xPVE2Yd7"
+			"http://192.168.109.41:8181/web/guest/azul-page?p_p_auth=xPVE2Yd7&p_p_id=com_liferay_blogs_web_portlet_BlogsPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_state_rcv=1"
 		],
 		"userId": "1",
 		"views": 1

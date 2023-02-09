@@ -63,7 +63,6 @@ public class UserSessionDog {
 		String value) {
 
 		FilterHelper filterHelper = new FilterHelper(filterString);
-
 		PageRequest pageRequest = PageRequest.of(page, size);
 
 		return PageableExecutionUtils.getPage(

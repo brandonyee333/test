@@ -95,7 +95,7 @@ public class UserSessionDogTest
 				"http://192.168.118.3:7400/",
 				"http://192.168.118.3:7400/c/portal/logout",
 				"http://192.168.118.3:7400/web/forms/shared/-/form/44224?" +
-					"p_p_state=pop_up&p_p_auth=V2Mnn7B1",
+					"p_p_auth=V2Mnn7B1&p_p_state=pop_up",
 				"http://192.168.118.3:7400/web/guest/home"),
 			content);
 
@@ -109,7 +109,7 @@ public class UserSessionDogTest
 		Assertions.assertEquals(
 			Arrays.asList(
 				"http://192.168.118.3:7400/web/forms/shared/-/form/44224?" +
-					"p_p_state=pop_up&p_p_auth=V2Mnn7B1"),
+					"p_p_auth=V2Mnn7B1&p_p_state=pop_up"),
 			content);
 	}
 
