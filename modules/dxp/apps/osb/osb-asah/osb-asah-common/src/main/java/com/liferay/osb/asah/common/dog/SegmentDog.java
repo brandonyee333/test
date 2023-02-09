@@ -18,16 +18,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
-import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
-import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.postgresql.converter.helper.SegmentFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -36,7 +32,6 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.math.BigDecimal;
 
@@ -44,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -52,7 +46,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -452,8 +445,13 @@ public class SegmentDog {
 	}
 
 	public void setReferencedFields(Segment segment) {
-		Map<String, Set<String>> referencedObjectIds = _getReferencedObjectIds(
-			segment.getFilter(), null);
+		FilterExpression filterExpression = new FilterExpression(
+			segment.getFilter(), "individual");
+
+		// TODO Move _getReferencedObjectIds logic to FilterExpression
+
+		Map<String, Set<String>> referencedObjectIds =
+			filterExpression.getReferencedObjectIds();
 
 		if (referencedObjectIds.isEmpty()) {
 			return;
@@ -495,146 +493,6 @@ public class SegmentDog {
 		}
 	}
 
-	private Exception _addAssetReferenceId(
-		Long assetId, Map<String, Set<String>> referencedObjectSets) {
-
-		Set<String> referencedAssetDataSourceIds = referencedObjectSets.get(
-			"referencedAssetDataSourceIds");
-
-		Asset asset = _assetDog.getAsset(assetId);
-
-		referencedAssetDataSourceIds.add(
-			String.valueOf(asset.getDataSourceId()));
-
-		return null;
-	}
-
-	private Exception _addReferencedFieldMappingId(
-		String fullFieldName, String ownerType,
-		Set<String> referencedFieldMappingIds) {
-
-		String[] fieldNameParts = fullFieldName.split("/");
-
-		if (fieldNameParts.length < 2) {
-			return null;
-		}
-
-		String fieldName = fieldNameParts[1];
-
-		referencedFieldMappingIds.add(fieldName);
-
-		return null;
-	}
-
-	private Exception _addReferencedId(
-		String collectionName, String id,
-		Map<String, Set<String>> referencedObjectSets) {
-
-		Set<String> referencedAssetDataSourceIds = referencedObjectSets.get(
-			"referencedAssetDataSourceIds");
-
-		if (collectionName.equalsIgnoreCase("organizations") ||
-			(DXPEntity.Type.ofCollectionName(collectionName) == null)) {
-
-			BQOrganization bqOrganization =
-				_bqOrganizationDog.getBQOrganization(id);
-
-			referencedAssetDataSourceIds.add(
-				String.valueOf(bqOrganization.getDataSourceId()));
-		}
-		else {
-			DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
-				Collections.singletonMap("id", Long.valueOf(id)),
-				DXPEntity.Type.ofCollectionName(collectionName));
-
-			referencedAssetDataSourceIds.add(
-				String.valueOf(dxpEntity.getDataSourceId()));
-		}
-
-		return null;
-	}
-
-	private Long _getAssetId(String[] terms) {
-		if (terms.length != 3) {
-			throw new IllegalArgumentException(
-				"Invalid terms length: " + terms.length);
-		}
-
-		String fieldName = terms[0];
-		String operator = terms[1];
-
-		if ((!fieldName.startsWith("activities/") &&
-			 !fieldName.equals("activityKey")) ||
-			(!operator.equalsIgnoreCase("eq") &&
-			 !operator.equalsIgnoreCase("ne"))) {
-
-			return null;
-		}
-
-		String activityKey = StringUtil.unquote(terms[2]);
-
-		return Long.valueOf(
-			activityKey.substring(activityKey.lastIndexOf("#") + 1));
-	}
-
-	private Map<String, Set<String>> _getReferencedObjectIds(
-		String filterString, String outerFunctionName) {
-
-		if (filterString == null) {
-			return Collections.emptyMap();
-		}
-
-		Map<String, Set<String>> referencedObjectSets = new HashMap<>();
-
-		for (String referencedObjectName : _REFERENCED_OBJECT_NAMES) {
-			referencedObjectSets.put(referencedObjectName, new HashSet<>());
-		}
-
-		Map<String, Set<String>> referencedObjectIds = FilterStringParser.parse(
-			filterString, () -> referencedObjectSets,
-			innerFilterString -> {
-				try {
-					Map<String, Set<String>> innerReferencedObjectIds =
-						_getReferencedObjectIds(
-							innerFilterString, outerFunctionName);
-
-					Set<Map.Entry<String, Set<String>>> entrySet =
-						referencedObjectSets.entrySet();
-
-					Stream<Map.Entry<String, Set<String>>> stream =
-						entrySet.stream();
-
-					stream.forEach(
-						entry -> {
-							Set<String> values = entry.getValue();
-
-							values.addAll(
-								innerReferencedObjectIds.get(entry.getKey()));
-						});
-				}
-				catch (Exception exception) {
-					return exception;
-				}
-
-				return null;
-			},
-			logicalOperator -> null,
-			terms -> _processLogicalOperator(
-				outerFunctionName, referencedObjectSets, terms),
-			functionData -> _processStringFunction(
-				functionData, outerFunctionName, referencedObjectSets));
-
-		if ((referencedObjectIds == null) || referencedObjectIds.isEmpty()) {
-			referencedObjectIds = new HashMap<>();
-
-			for (String referencedObjectName : _REFERENCED_OBJECT_NAMES) {
-				referencedObjectIds.put(referencedObjectName, new HashSet<>());
-			}
-		}
-
-		return referencedObjectIds;
-	}
-
 	private String _parseFilterString(String filterString) {
 		if (filterString != null) {
 			Matcher matcher = _pattern.matcher(filterString);
@@ -658,136 +516,6 @@ public class SegmentDog {
 		}
 
 		return filterString;
-	}
-
-	private Exception _processLogicalOperator(
-		String outerFunctionName, Map<String, Set<String>> referencedObjectSets,
-		String[] terms) {
-
-		if (StringUtils.equals(outerFunctionName, "organizations.filter")) {
-			return _processOrganizationLogicalOperator(
-				referencedObjectSets, terms);
-		}
-
-		try {
-			Long assetId = _getAssetId(terms);
-
-			if (assetId != null) {
-				return _addAssetReferenceId(assetId, referencedObjectSets);
-			}
-
-			DXPEntity.Type dxpEntityType = DXPEntity.Type.ofIndividualFieldName(
-				terms[0]);
-
-			if (dxpEntityType != null) {
-				return _addReferencedId(
-					dxpEntityType.getCollectionName(),
-					StringUtil.unquote(terms[2]), referencedObjectSets);
-			}
-
-			return _addReferencedFieldMappingId(
-				terms[0], null,
-				referencedObjectSets.get("referencedFieldMappingIds"));
-		}
-		catch (Exception exception) {
-			return exception;
-		}
-	}
-
-	private Exception _processOrganizationLogicalOperator(
-		Map<String, Set<String>> referencedObjectSets, String[] terms) {
-
-		if (terms.length != 3) {
-			return null;
-		}
-
-		String fieldName = terms[0];
-
-		if (fieldName.equals("id") || fieldName.equals("parentId")) {
-			return _addReferencedId(
-				"organizations", StringUtil.unquote(terms[2]),
-				referencedObjectSets);
-		}
-
-		return _addReferencedFieldMappingId(
-			fieldName, "organization",
-			referencedObjectSets.get("referencedFieldMappingIds"));
-	}
-
-	private Exception _processStringFunction(
-		Object[] functionData, String outerFunctionName,
-		Map<String, Set<String>> referencedObjectSets) {
-
-		List<String> arguments = (List<String>)functionData[0];
-
-		String name = (String)functionData[2];
-
-		if (Objects.equals(name, "activities.filter") ||
-			Objects.equals(name, "activities.filterByCount") ||
-			Objects.equals(name, "organizations.filter")) {
-
-			String[] argumentNames = null;
-
-			if (name.contains("filterByCount")) {
-				argumentNames = new String[] {"filter", "operator", "value"};
-			}
-			else {
-				argumentNames = new String[] {"filter"};
-			}
-
-			String[] argumentValues = FilterUtil.getArgumentValues(
-				arguments, argumentNames);
-
-			try {
-				if (Objects.equals(name, "organizations.filter")) {
-					outerFunctionName = name;
-				}
-
-				Map<String, Set<String>> referencedObjectIds =
-					_getReferencedObjectIds(
-						StringUtil.unquoteAndDecodeInnerQuotes(
-							argumentValues[0]),
-						outerFunctionName);
-
-				Set<Map.Entry<String, Set<String>>> entrySet =
-					referencedObjectSets.entrySet();
-
-				Stream<Map.Entry<String, Set<String>>> stream =
-					entrySet.stream();
-
-				stream.forEach(
-					entry -> {
-						Set<String> values = entry.getValue();
-
-						values.addAll(referencedObjectIds.get(entry.getKey()));
-					});
-			}
-			catch (Exception exception) {
-				return exception;
-			}
-		}
-		else if (Objects.equals(name, "contains") ||
-				 Objects.equals(name, "endsWith") ||
-				 Objects.equals(name, "startsWith")) {
-
-			if (arguments.size() != 2) {
-				return new IllegalArgumentException(
-					"Expected 2 arguments for " + name + " function, got " +
-						arguments.size() + " instead: " + arguments);
-			}
-
-			String ownerType = null;
-
-			if (StringUtils.equals(outerFunctionName, "organizations.filter")) {
-				ownerType = "organization";
-			}
-
-			return _addReferencedFieldMappingId(
-				arguments.get(0), ownerType,
-				referencedObjectSets.get("referencedFieldMappingIds"));
-		}
-
-		return null;
 	}
 
 	private void _setState(Segment segment) {
@@ -842,10 +570,6 @@ public class SegmentDog {
 
 		return existingSegment;
 	}
-
-	private static final String[] _REFERENCED_OBJECT_NAMES = {
-		"referencedAssetDataSourceIds", "referencedFieldMappingIds"
-	};
 
 	private static final Log _log = LogFactory.getLog(SegmentDog.class);
 
