@@ -108,11 +108,11 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 		_modulesExcludeDirs = GradleUtil.getProperty(
 			settings, WorkspacePlugin.PROPERTY_PREFIX + NAME + ".excludes.dir",
 			null);
-		_moduleDirs = GradleUtil.getProperty(
+		_modulesDirs = GradleUtil.getProperty(
 			settings, WorkspacePlugin.PROPERTY_PREFIX + NAME + ".dir",
 			_DEFAULT_MODULES_DIR);
 
-		_moduleExcludeProjectPathMap = _getModuleExcludeProjectPathMap(
+		_modulesExcludeProjectPathMap = _getModulesExcludeProjectPathMap(
 			settings);
 	}
 
@@ -253,22 +253,14 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 						_configureTaskSetUpTestableTomcat(
 							setUpTestableTomcatTask, workspaceExtension);
 					}
+
+					_disableModuleExcludeProjectTasks(
+						project, _modulesExcludeProjectPathMap);
 				}
 
 			});
 
 		addTaskDockerDeploy(project, jarSourcePath, workspaceExtension);
-
-		project.afterEvaluate(
-			new Action<Project>() {
-
-				@Override
-				public void execute(Project project) {
-					_disableModuleExcludeProjectTasks(
-						project, _moduleExcludeProjectPathMap);
-				}
-
-			});
 	}
 
 	@Override
@@ -563,23 +555,24 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 	}
 
 	private void _disableModuleExcludeProjectTasks(
-		Project project, Map<String, Path> moduleExcludeProjectPathMap) {
+		Project project, Map<String, Path> modulesExcludeProjectPathMap) {
 
 		File projectDir = project.getProjectDir();
 
 		Path projectDirPath = projectDir.toPath();
 
-		Collection<Path> moduleExcludeProjectPathList =
-			moduleExcludeProjectPathMap.values();
+		Collection<Path> modulesExcludeProjectPaths =
+			modulesExcludeProjectPathMap.values();
 
-		for (Path modulesExcludeDir : moduleExcludeProjectPathList) {
+		for (Path modulesExcludeDir : modulesExcludeProjectPaths) {
 			if (projectDirPath.startsWith(modulesExcludeDir)) {
-				Map<Project, Set<Task>> allTasks = project.getAllTasks(true);
+				Map<Project, Set<Task>> projectTasksMap = project.getAllTasks(
+					true);
 
-				Collection<Set<Task>> taskSetValues = allTasks.values();
+				Collection<Set<Task>> projectTasks = projectTasksMap.values();
 
-				for (Set<Task> taskSet : taskSetValues) {
-					for (Task task : taskSet) {
+				for (Set<Task> tasks : projectTasks) {
+					for (Task task : tasks) {
 						task.setEnabled(false);
 					}
 				}
@@ -593,48 +586,46 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 				project.getVersion() + ".jar");
 	}
 
-	private Map<String, Path> _getModuleExcludeProjectPathMap(
+	private Map<String, Path> _getModulesExcludeProjectPathMap(
 		Settings settings) {
 
 		if (Objects.isNull(_modulesExcludeDirs)) {
 			return Collections.emptyMap();
 		}
 
-		List<String> modulesExcludeDirList = Arrays.asList(
+		List<String> modulesExcludeDirs = Arrays.asList(
 			_modulesExcludeDirs.split(","));
 
-		if (Objects.isNull(modulesExcludeDirList) ||
-			modulesExcludeDirList.isEmpty()) {
+		if (Objects.isNull(modulesExcludeDirs) ||
+			modulesExcludeDirs.isEmpty()) {
 
 			return Collections.emptyMap();
 		}
 
-		List<String> modulesDirList = Arrays.asList(_moduleDirs.split(","));
+		List<String> modulesDirs = Arrays.asList(_modulesDirs.split(","));
 
-		Map<String, Path> moduleExcludeProjectPathMap = new HashMap<>();
+		Map<String, Path> modulesExcludeProjectPathMap = new HashMap<>();
 
-		for (String moduleDirString : modulesDirList) {
-			File moduleDirFile = new File(
-				settings.getRootDir(), moduleDirString.trim());
+		for (String modulesDirString : modulesDirs) {
+			File modulesDirFile = new File(
+				settings.getRootDir(), modulesDirString.trim());
 
-			if (moduleDirFile.isDirectory()) {
+			if (modulesDirFile.isDirectory()) {
 				try {
-					for (String moduleExcludeDirString :
-							modulesExcludeDirList) {
-
-						ModuleProjectExcludeVisitor moduleExcludeVisitor =
-							new ModuleProjectExcludeVisitor(
-								moduleExcludeDirString.trim());
+					for (String modulesExcludeDirString : modulesExcludeDirs) {
+						ModulesProjectExcludeVisitor modulesExcludeVisitor =
+							new ModulesProjectExcludeVisitor(
+								modulesExcludeDirString.trim());
 
 						Files.walkFileTree(
-							moduleDirFile.toPath(), moduleExcludeVisitor);
+							modulesDirFile.toPath(), modulesExcludeVisitor);
 
-						Path moduleExcludePath =
-							moduleExcludeVisitor.getModuleExcludePath();
+						Path modulesExcludePath =
+							modulesExcludeVisitor.getModulesExcludePath();
 
-						if (Objects.nonNull(moduleExcludePath)) {
-							moduleExcludeProjectPathMap.put(
-								moduleExcludeDirString, moduleExcludePath);
+						if (Objects.nonNull(modulesExcludePath)) {
+							modulesExcludeProjectPathMap.put(
+								modulesExcludeDirString, modulesExcludePath);
 						}
 					}
 				}
@@ -644,42 +635,43 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 			}
 		}
 
-		Set<Map.Entry<String, Path>> moduleExcludeProjectPathEntrySet =
-			moduleExcludeProjectPathMap.entrySet();
+		Set<Map.Entry<String, Path>> modulesExcludeProjectPathEntrys =
+			modulesExcludeProjectPathMap.entrySet();
 
 		for (Map.Entry<String, Path> modulesExcludeEntry :
-				moduleExcludeProjectPathEntrySet) {
+				modulesExcludeProjectPathEntrys) {
 
-			String excludeMoudleName = modulesExcludeEntry.getKey();
+			String modulesExcludeName = modulesExcludeEntry.getKey();
 
-			Path excludeMoudlePath = modulesExcludeEntry.getValue();
+			Path modulesExcludePath = modulesExcludeEntry.getValue();
 
-			for (String moduleDirString : modulesDirList) {
-				File moduleDirFile = new File(
-					settings.getRootDir(), moduleDirString);
+			for (String modulesDirString : modulesDirs) {
+				File modulesDirFile = new File(
+					settings.getRootDir(), modulesDirString);
 
-				Path excludeParentMoudlePath = excludeMoudlePath.getParent();
+				Path modulesExcludeParentPath = modulesExcludePath.getParent();
 
 				boolean findParentModule = false;
 
 				while (!Objects.equals(
-							excludeParentMoudlePath, moduleDirFile.toPath())) {
+							modulesExcludeParentPath,
+							modulesDirFile.toPath())) {
 
-					excludeMoudlePath = excludeParentMoudlePath;
+					modulesExcludePath = modulesExcludeParentPath;
 
-					excludeParentMoudlePath = excludeMoudlePath.getParent();
+					modulesExcludeParentPath = modulesExcludePath.getParent();
 
 					findParentModule = true;
 				}
 
 				if (findParentModule) {
-					moduleExcludeProjectPathMap.put(
-						excludeMoudleName, excludeMoudlePath);
+					modulesExcludeProjectPathMap.put(
+						modulesExcludeName, modulesExcludePath);
 				}
 			}
 		}
 
-		return moduleExcludeProjectPathMap;
+		return modulesExcludeProjectPathMap;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -731,18 +723,18 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 
 	private boolean _defaultRepositoryEnabled;
 	private boolean _jspPrecompileEnabled;
-	private final String _moduleDirs;
-	private final Map<String, Path> _moduleExcludeProjectPathMap;
+	private final String _modulesDirs;
 	private final String _modulesExcludeDirs;
+	private final Map<String, Path> _modulesExcludeProjectPathMap;
 
-	private class ModuleProjectExcludeVisitor extends SimpleFileVisitor<Path> {
+	private class ModulesProjectExcludeVisitor extends SimpleFileVisitor<Path> {
 
-		public ModuleProjectExcludeVisitor(String moduleExcludeName) {
-			_moduleExcludeName = moduleExcludeName;
+		public ModulesProjectExcludeVisitor(String moduleExcludeName) {
+			_modulesExcludeName = moduleExcludeName;
 		}
 
-		public Path getModuleExcludePath() {
-			return _moduleExcludePath;
+		public Path getModulesExcludePath() {
+			return _modulesExcludePath;
 		}
 
 		@Override
@@ -752,8 +744,8 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 
 			super.preVisitDirectory(dir, basicFileAttributes);
 
-			if (Files.exists(dir.resolve(_moduleExcludeName))) {
-				_moduleExcludePath = dir.resolve(_moduleExcludeName);
+			if (Files.exists(dir.resolve(_modulesExcludeName))) {
+				_modulesExcludePath = dir.resolve(_modulesExcludeName);
 
 				return FileVisitResult.SKIP_SUBTREE;
 			}
@@ -761,8 +753,8 @@ public class ModulesProjectConfigurator extends BaseProjectConfigurator {
 			return FileVisitResult.CONTINUE;
 		}
 
-		private final String _moduleExcludeName;
-		private Path _moduleExcludePath;
+		private final String _modulesExcludeName;
+		private Path _modulesExcludePath;
 
 	}
 
